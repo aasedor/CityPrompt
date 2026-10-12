@@ -68,8 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v009 (reopened, v010 in progress)
+## Open blockers after v010 (reopened run ended)
 
-Reopened run, v009 reviewed 0 P0 / 1 P1 (candidate); v010 in progress. Open v009 P1:
+Ended at v010, the second of the two versions allowed by the reopened run (docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md, limit lifted 2026-10-12). The candidate GLB stays v009 (0 P0 / 1 P1, the rear-bar roof plane); v010 is evidence only. Open v010 P1, for a human to weigh:
 
-1. **Rear bar roof.** A separate lighter plane below the wings' dark lids, no fascia on the rear elevation, and a pale lid over the courtyard-face galleries; the sources show one continuous dark membrane and parapet round the U.
+1. **Cedar top-storey band.** The cedar top storey wraps the street, courtyard, rear and west faces; the sources show flush taupe panel there, with cedar only on the set-back south penthouse walls and soffits, the balcony reveals and the rear-bar galleries.
+2. **East street elevation rhythm.** Six aligned wide two-pane windows per floor; the sources show eight to nine narrow tall windows per floor, staggered from floor to floor.
