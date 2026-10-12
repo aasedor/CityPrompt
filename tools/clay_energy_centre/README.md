@@ -68,8 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v009 (reopened, v010 in progress)
+## Open blockers after v010 (passed)
 
-Reopened run, v009 reviewed 0 P0 / 1 P1 (candidate); v010 in progress. Open v009 P1:
-
-1. **Corner bands.** The west corner bay's concrete band and upper glass band do not line up with the south face's at the corner pier; the sources show them meeting level.
+Passed at v010 (0 P0 / 0 P1 / 9 P2) in the reopened run after the lifted GLB limit; no open blockers. Open P2 for a later detail pass, including the recorded lower-volume height disagreement (about 12 to 15 percent short against the locked front, consistent with the locked top), the corten unit positions, the pane grid and the door pier. Not keeper-approved; RLASM asset review, runtime acceptance and publication approval are separate checkpoints.
