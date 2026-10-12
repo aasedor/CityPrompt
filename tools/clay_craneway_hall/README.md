@@ -68,9 +68,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v007 (reopened, v008 in progress)
+## Open blockers after v008 (reopened run ended)
 
-Reopened run, v007 reviewed 0 P0 / 2 P1 (candidate); v008 in progress. Open v007 P1:
+Ended at v008, the second of the two versions allowed by the reopened run (docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md, limit lifted 2026-10-12). The candidate GLB stays v007 (0 P0 / 2 P1, the monitor form and rows); v008 is evidence only. Open v008 P1, for a human to weigh:
 
-1. **Monitor form.** Square in plan, tall, blank cheeks; the sources show long low monitors with continuous glazed bands on both long sides and solid gable ends.
-2. **Monitor rows.** All nine on the nave in a staggered pattern; the sources show one row of three per roof level (south aisle, nave, north aisle).
+1. **Aisle monitor orientation.** The six aisle-roof monitors repeat the nave monitor's orientation; both oblique sources turn them 90 degrees, with the ridge across the hall and the glazed band under the west eave. Only the nave-ridge row runs along the hall.
+2. **Gallery knee braces.** The slanted brace at every lattice column drops from the walkway soffit and ends in mid-air in front of the X-bracing.
+3. **Aisle windows.** The hooded windows sit flush in the cladding plane with no jamb, head or sill return.
