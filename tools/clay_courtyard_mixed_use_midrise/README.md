@@ -68,10 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v008 (hard cap reached)
+## Open blockers after v009 (reopened, v010 in progress)
 
-Ended at v008, the hard cap of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB is v008. Open v008 P1, for a human to weigh:
+Reopened run, v009 reviewed 0 P0 / 1 P1 (candidate); v010 in progress. Open v009 P1:
 
-1. **Penthouses.** The set-back penthouses are neutral tan under a thin pale-edged lid. The source shows cedar walls under a dark, deeply cantilevered canopy with a cedar soffit, and cedar terrace decking. Earlier reviews rated this P2.
-
-The wall-material disagreement between the v005/v006 and v007 reviewers is settled by the v008 pixel sampling in favour of taupe east and courtyard walls.
+1. **Rear bar roof.** A separate lighter plane below the wings' dark lids, no fascia on the rear elevation, and a pale lid over the courtyard-face galleries; the sources show one continuous dark membrane and parapet round the U.

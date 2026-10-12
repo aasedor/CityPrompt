@@ -24,7 +24,8 @@ NWG = (-6.4, 14.0, 0.0, 20.0)      # north wing
 WG = (-28.0, -9.4, -23.0, -4.5)    # one-storey wing
 WG_ROOF, WG_CROWN = 4.8, 5.3
 TOWER = (9.0, 16.0, -20.0, -13.0)  # glazed lobby tower footprint
-TOWER_H = 15.2
+TOWER_H = 13.3                     # glazing and columns stop about 1 m below the main roof (sources)
+HEADER = (TOWER_H, CROWN + .2)     # solid banded header box over the tower glass, its top 0.2 m above the parapet cap
 CANOPY_Z = 4.6
 LOT = (-36.0, 28.0, -33.0, 26.0)   # site extent
 EPS = .002
@@ -32,12 +33,12 @@ PALETTE = dict(wall=(.58, .52, .40), joint=(.46, .41, .32), trim=(.08, .08, .085
     pale=(.70, .70, .68), stone=(.30, .26, .22), roof=(.80, .80, .78), sand=(.62, .57, .46),
     foundation=(.30, .30, .30), glass=(.50, .55, .54), hardware=(.09, .09, .095),
     interior=(.74, .70, .60), floor=(.40, .40, .39), timber=(.40, .30, .20), blue=(.14, .22, .28),
-    planting=(.30, .42, .18), soil=(.19, .14, .08), charcoal=(.22, .22, .23), accent=(.05, .07, .16), green=(.22, .40, .20),
+    planting=(.30, .42, .18), soil=(.19, .14, .08), charcoal=(.22, .22, .23), accent=(.05, .07, .16), bandgreen=(.016, .040, .030), green=(.22, .40, .20),
     cap=(.14, .14, .15), membrane=(.80, .80, .78))
 
 
 def manifest(version):
-    h = TOWER_H + .4
+    h = HEADER[1] + .4
     cams = G.camera_roster(LOT[1] - LOT[0], LOT[3] - LOT[2], h, [
         ('facade_close', (36.0, -2.0, 5.0), (16.0, -6.0, 5.5), 45),
         ('architecture_close', (30.0, -36.0, 13.0), (12.0, -20.0, 12.0), 50),
@@ -59,12 +60,12 @@ def manifest(version):
         measurement_contract=dict(dimensions_m=dict(width=LOT[1] - LOT[0], depth=LOT[3] - LOT[2], height=h),
             observed_storeys=4, storey_programme='lobby level and three guest-room floors; one-storey wing; fixed authored assembly',
             plan='L-plan four-storey block (south block 32 x 20 m, north wing 20.4 x 20 m read from the 590 x 540 px top view at 0.075 m/px), one-storey wing 18.6 x 18.5 m at the south-west, glazed lobby tower 7 x 7 m at the south-east corner',
-            windows='paired punched guest-room windows per 4 m bay on every floor; beige EIFS with charcoal sections; accent band under the parapet',
+            windows='paired punched guest-room windows per 4 m bay on every floor; beige EIFS with charcoal sections; accent band under the parapet: navy on the beige south leg and the tower header, dark green on the charcoal north leg and the beige leg west end',
             canopies='glass-roofed porte-cocheres on stone piers projecting east (10 m) and south (10 m) from the lobby corner',
             levels_m=[G0] + LV, roof_m=ROOF, parapet_m=CROWN - ROOF, wing_roof_m=WG_ROOF, tower_m=TOWER_H,
             site='parking court west and north, drive loop east, pylon sign at the road',
             inferred='32 m south block calibrates the bay cadence; the west and north faces repeat the window grammar; interiors are teaching assumptions.'),
-        roof_contract=dict(type='flat white membrane behind a dark parapet; rooftop units; one-storey wing roof with a rooflight; glass canopies', datum_m=ROOF, crowns_m=[CROWN, TOWER_H]),
+        roof_contract=dict(type='flat white membrane behind a dark parapet; rooftop units; one-storey wing roof with a rooflight; glass canopies', datum_m=ROOF, crowns_m=[CROWN, HEADER[1]]),
         identity_contract=dict(owner='beige and charcoal EIFS L-block with paired windows, accent band, glazed lobby tower, stone-piered glass porte-cocheres, low glazed wing'),
         material_contract=dict(profile='source-palette clay: beige and charcoal EIFS with recessed panel joints, dark parapet cap and accent band, warm stone pier cladding, dark window frames, white membrane', textured_keeper=False),
         programme_contract=dict(storeys=4, ground='lobby, breakfast room and pool wing, ground-floor rooms', upper='double-loaded guest-room corridors', stairs='straight supported flights in the lobby tower'),
@@ -209,26 +210,26 @@ def blocks():
     # South block, west face (u = -y): ground exposed only for y -4.5..0; upper floors exposed all along.
     f = face(*SB, 'west', 'south block west')
     holes = room_rows(-10.0 + T, 10.0 - T, [G0] + LV, exposed=lambda c, l: (l not in (G0, LV[0])) or (c < -10.0 + 4.5 - 1.0))
-    elevation(f, -10.0 + T, 10.0 - T, holes)
+    elevation(f, -10.0 + T, 10.0 - T, holes, band='bandgreen')   # green band on the beige leg's west end (sources)
     # South block, north face (u = -x): exposed for x 14..16 and x -16..-6.4 (north wing covers the rest).
     f = face(*SB, 'north', 'south block north')
     holes = room_rows(6.4, 16.0, [G0] + LV)
-    elevation(f, 6.4 + EPS, 16.0, holes, field='charcoal', band='accent')
-    elevation(f, -16.0, -14.0 - EPS, [], field='charcoal', band='accent')
+    elevation(f, 6.4 + EPS, 16.0, holes, field='charcoal', band='bandgreen')
+    elevation(f, -16.0, -14.0 - EPS, [], field='charcoal', band='bandgreen')
     # North wing: east, north and west faces.
     f = face(*NWG, 'east', 'north wing east')
     holes = room_rows(-10.0 + T, 10.0 - T, [G0] + LV)
-    elevation(f, -10.0, 10.0 - T, holes, field='charcoal', band='accent')
+    elevation(f, -10.0, 10.0 - T, holes, field='charcoal', band='bandgreen')
     f = face(*NWG, 'north', 'north wing north')
     holes = room_rows(-10.2, 10.2, [G0] + LV, exposed=lambda c, l: not (l == G0 and abs(c) < 2.5))
     door = hole('Rear entry doors', 0.0, G0, 2.4, 2.8, kind='door')
-    elevation(f, -10.2, 10.2, holes, extra=[door], field='charcoal', band='accent')
+    elevation(f, -10.2, 10.2, holes, extra=[door], field='charcoal', band='bandgreen')
     f.window(door['id'], door['u'], door['z'], door['w'], door['h'], cols=2, rows=1, frame='trim', depth=T, sill=False, kind='glazed door')
     lined(f, door)
     f.part('Rear entry canopy', 0.0, -.9, door['z'] + door['h'] + .25, 4.0, 1.8, .16, 'cap', 'rear entry', 0)
     f = face(*NWG, 'west', 'north wing west')
     holes = room_rows(-10.0 + T, 10.0 - T, [G0] + LV)
-    elevation(f, -10.0 + T, 10.0, holes, field='charcoal', band='accent')
+    elevation(f, -10.0 + T, 10.0, holes, field='charcoal', band='bandgreen')
     # One-storey wing: south, west and north faces, plus the short east face south of the block.
     for side, lo, hi, label in (('south', -(wx1 - wx0) / 2, (wx1 - wx0) / 2, 'wing south'), ('west', -(wy1 - wy0) / 2 + T, (wy1 - wy0) / 2 - T, 'wing west'),
                                 ('north', -(wx1 - wx0) / 2 + (wx1 - sx0) + EPS, (wx1 - wx0) / 2, 'wing north')):
@@ -269,8 +270,14 @@ def tower():
             C.box(f'Tower {label} mullion', (mx, my, G0 + (TOWER_H - G0 - .4) / 2), (max(.07, .12 * abs(ty)), max(.07, .12 * abs(tx)), TOWER_H - G0 - .4), 'trim', 'tower frame', 0)
         for z in LV + [CANOPY_Z + .6]:
             C.box(f'Tower {label} transom', (px, py, z), (max(.12, span * abs(tx)), max(.12, span * abs(ty)), .14), 'trim', 'tower frame', 0)
-    C.box('Tower head', (cx, cy, TOWER_H - .2), (x1 - x0, y1 - y0, .40), 'cap', 'lobby tower', 0)
-    C.box('Tower roof cap', (cx, cy, TOWER_H + .05), (x1 - x0 + .1, y1 - y0 + .1, .10), 'cap', 'lobby tower', 0)
+    # Solid banded header box over the glass (sources): charcoal with two navy courses, projecting 0.3 m past the glass on
+    # every face, its top 0.2 m above the parapet cap; the tower's own flat roof sits under it, 1 m below the main roof.
+    hz0, hz1 = HEADER
+    C.box('Tower roof plate', (cx, cy, TOWER_H - .05), (x1 - x0 - .2, y1 - y0 - .2, .10), 'cap', 'lobby tower', 0)
+    C.box('Tower header', (cx, cy, (hz0 + hz1) / 2), (x1 - x0 + .6, y1 - y0 + .6, hz1 - hz0), 'charcoal', 'lobby tower', 0)
+    for zz in (hz0 + .30, hz1 - .30):
+        C.box('Tower header course', (cx, cy, zz), (x1 - x0 + .64, y1 - y0 + .64, .16), 'accent', 'lobby tower', 0)
+    C.box('Tower header cap', (cx, cy, hz1 + .04), (x1 - x0 + .66, y1 - y0 + .66, .08), 'cap', 'lobby tower', 0)
     # Lobby doors in the south glazing and the east glazing at grade.
     for (px, py, tx, ty) in ((cx, y0 - .02, 1, 0), (x1 + .02, cy, 0, 1)):
         frame = C.box('Lobby door frame', (px, py, G0 + 1.5), (max(.08, 2.6 * tx), max(.08, 2.6 * ty), 3.0), 'trim', 'lobby doors', 0)

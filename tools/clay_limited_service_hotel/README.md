@@ -68,12 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (stopped)
+## Open blockers after v006 (reopened, v007 in progress)
 
-Stopped at v005 under rule 2 of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB is v003 (0 P0 / 3 P1 in its own review). Open v005 P1, for a human to weigh:
+Reopened run, v006 reviewed 0 P0 / 2 P1 (candidate); v007 in progress. Open v006 P1:
 
-1. **Black slot.** One pure-black slot remains across the east drive apron, a z-fight where the drive crosses the sidewalk and verge.
-2. **Frontage order.** The sequence along the road is inverted against the top source, and the pylon sign blocks the hero front view.
-3. **Accent band.** The band under the parapet reads royal blue and lime green; the sources show a dark navy band.
-4. **Breakfast wing.** It is glazed as one even ribbon; the sources show three large glazed bays.
-5. **Parked cars.** Some overhang the green verge strips.
+1. **Lobby tower height.** It rises about half a storey to a storey above the main parapet; the sources put its banded header level with the parapet caps and its own roof below the main roof.
+2. **Band colours.** Navy on every block; the sources show navy only on the beige south leg and the tower header, dark green on the charcoal north leg and the beige leg's west end.

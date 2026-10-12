@@ -297,6 +297,9 @@ def volumes():
         # Street terrace in front of the top storey: pavers and a glass guard just inside the parapet.
         C.box(f'{name} terrace decking', ((x0 + x1) / 2, Y0 + T + (SB - T) / 2, ROOF + .012), (x1 - x0 - 2 * T - .1, SB - T - .05, .024), 'cedar', 'terrace', 0)
         glass_rail((x0 + T + .2, Y0 + T + .25), (x1 - T - .2, Y0 + T + .25), ROOF)
+    # The same dark roof lid and fascia continues across the rear bar, abutting the wing lids, so the U reads as one roof
+    # plane with one parapet (v009 P1); the courtyard-face galleries get the same dark lid.
+    C.box('rear top fascia', ((CX0 + CX1) / 2, (CY1 + Y1) / 2, RROOF + .30), (CX1 - CX0 - .10 - 2 * EPS, Y1 - CY1 + .10, .40), 'trim', 'roof', 0)
     for x, y, w, d, zr in ((CC - 1.0, 10.5, 7.0, 3.2, RROOF), (13.5, 10.0, 5.0, 3.0, RROOF), (-13.5, 9.0, 4.0, 3.0, RROOF)):
         C.box('Mechanical enclosure', (x, y, zr + .02 + 1.2), (w, d, 2.4), 'wall', 'rooftop plant', 0)
         for k in range(5):
@@ -381,7 +384,7 @@ def build():
     ribbed_face(north, -hw, -CX1 - T, ROOF - .30 + EPS, RROOF + .5, [(-15.0, 'window', 2.4), (-11.5, 'window', 2.4)], module='north east wing top', role='cedar', ribs=False, levels=[ROOF])
     ribbed_face(north, -CX0 + T, hw, ROOF - .30 + EPS, RROOF + .5, [(9.0, 'window', 2.4), (14.0, 'window', 2.4)], module='north west wing top', role='cedar', ribs=False, levels=[ROOF])
     ribbed_face(north, -CX1 - T, -CX0 + T, z0, ROOF - .30, [(-5.0, 'window', 1.6), (0.0, 'window', 1.6)], module='north rear bar upper')
-    ribbed_face(north, -CX1 - T, -CX0 + T, ROOF - .30 + EPS, RROOF + .5, [(-5.0, 'window', 2.4), (0.0, 'window', 2.4)], module='north rear bar top', role='cedar', ribs=False, levels=[ROOF])
+    ribbed_face(north, -CX1 - T, -CX0 + T, ROOF - .30 + EPS, RROOF + .48, [(-5.0, 'window', 2.4), (0.0, 'window', 2.4)], module='north rear bar top', role='cedar', ribs=False, levels=[ROOF])
     # Rear bar side walls above the wing roofs (and the hollow between the wing and rear plates below them).
     for sx, lbl in ((CX0, 'rear bar west side'), (CX1, 'rear bar east side')):
         if sx < 0:
@@ -394,7 +397,7 @@ def build():
         # Fill the hollow between the wing and rear-bar plates up to the continuous roof slab, and return the parapet at the courtyard corner.
         fx = sx - T if sx < 0 else sx + T
         C.box(lbl + ' hollow filler', ((sx + fx) / 2, (CY1 + T + Y1 - T) / 2, (ROOF - .30 + RROOF - .12 - EPS) / 2), (2 * T, Y1 - CY1 - 2 * T, RROOF - .12 - EPS - ROOF + .30), 'tan', 'roof', 0)
-        C.box(lbl + ' parapet return', ((sx + fx) / 2, CY1 + T / 2, (ROOF - .30 + RROOF + .5) / 2), (2 * T, T, RROOF + .5 - ROOF + .30), 'tan', 'roof', 0)
+        C.box(lbl + ' parapet return', ((sx + fx) / 2, CY1 + T / 2, (ROOF - .30 + RROOF + .48) / 2), (2 * T, T, RROOF + .48 - ROOF + .30), 'tan', 'roof', 0)
     cw = C.Face((CX0, (Y0 + CY1) / 2, 0), (0, 1, 0), (-1, 0, 0), 'courtyard west')
     ce = C.Face((CX1, (Y0 + CY1) / 2, 0), (0, -1, 0), (1, 0, 0), 'courtyard east')
     cr = C.Face(((CX0 + CX1) / 2, CY1, 0), (1, 0, 0), (0, 1, 0), 'courtyard rear')
@@ -409,12 +412,13 @@ def build():
     for name, (lo_t, hi_t), pat in (('west', (-hw + T, CX0 - T), [(-15.0, 'window', 3.0), (-10.0, 'window', 3.0)]), ('east', (CX1 + T, hw - T), [(10.0, 'window', 3.0), (15.0, 'window', 3.0)])):
         st = C.Face((0, Y0 + SB, 0), (1, 0, 0), (0, 1, 0), f'{name} top street')
         ribbed_face(st, lo_t, hi_t, ROOF - .30 + EPS, RROOF + .5, pat, module=f'{name} top street', role='tan', ribs=False, levels=[ROOF])
-    ribbed_face(cr, -(CX1 - CX0) / 2 + T, (CX1 - CX0) / 2 - T, z0, RROOF + .5, [(-3.8, 'window', 3.2), (0.0, 'window', 3.2), (3.8, 'window', 3.2)], module='courtyard rear upper', role='cedar', ribs=False, levels=RLEVELS)
+    ribbed_face(cr, -(CX1 - CX0) / 2 + T, (CX1 - CX0) / 2 - T, z0, RROOF + .48, [(-3.8, 'window', 3.2), (0.0, 'window', 3.2), (3.8, 'window', 3.2)], module='courtyard rear upper', role='cedar', ribs=False, levels=RLEVELS)
     rear_bar_balconies(cr)
     # Floating roof slab over the rear bar's courtyard face: projects 1.75 m past the top-storey glazing between the wing
     # courtyard faces (1 cm clear of both), abuts the rear carrier, pale soffit and dark fascia, on three slender posts.
     fy0, fy1 = CY1 - 1.75, CY1 - EPS
-    C.box('Rear bar floating roof slab', ((CX0 + CX1) / 2, (fy0 + fy1) / 2, RROOF + .36), (CX1 - CX0 - .02, fy1 - fy0, .32), 'pale', 'rear bar roof slab', 0)
+    C.box('Rear bar floating roof slab', ((CX0 + CX1) / 2, (fy0 + fy1) / 2, RROOF + .36), (CX1 - CX0 - .02, fy1 - fy0, .32), 'trim', 'rear bar roof slab', 0)
+    C.box('Rear bar floating roof soffit', ((CX0 + CX1) / 2, (fy0 + fy1) / 2, RROOF + .195), (CX1 - CX0 - .06, fy1 - fy0 - .04, .01), 'pale', 'rear bar roof slab', 0)
     C.box('Rear bar floating roof fascia', ((CX0 + CX1) / 2, fy0 - .02, RROOF + .36), (CX1 - CX0 - .02, .04, .40), 'trim', 'rear bar roof slab', 0)
     for px in (CX0 + 1.2, (CX0 + CX1) / 2, CX1 - 1.2):
         C.box('Rear bar slab post', (px, CY1 - 1.62, (L1 + RROOF + .20) / 2), (.14, .14, RROOF + .20 - L1), 'hardware', 'rear bar roof slab', 0)
