@@ -68,11 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v008 (reopened, v009 in progress)
+## Open blockers after v009 (reopened run ended)
 
-Reopened run, v008 reviewed 0 P0 / 4 P1 (candidate); v009 in progress. Open v008 P1:
+Ended at v009, the second of the two versions allowed by the reopened run (docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md, limit lifted 2026-10-12). The candidate GLB is v009 (0 P0 / 2 P1). Open v009 P1, for a human to weigh:
 
-1. **Upper bay.** The storey above each end bay is not a set-back canted bay with angled flank sashes under the gable.
-2. **Rake gap.** A dark gap runs inside both rakes of both end gables between the bargeboard and the infill.
-3. **Reveal corners.** Small black voids at the corners of every window and door reveal.
-4. **East elevation.** Blank gable and one column of windows where the sources show two attic sashes, a first-floor window and two ground windows.
+1. **Frame corner voids.** A 4 by 4 px black void at every window and door frame corner at 1440 px. The cause is the bevelled corner of the frame bars in the shared window helper (tools/catalogue_services_batch/clay_core.py); the proud butt-jointed reveal liners of v009 did not cover it. A core-level fix (no bevel on frame bars, or mitred corners) would clear it for every family.
+2. **Double eave.** An extra slate skirt reads below the main front eave across the middle unit and beside the upper bays; neither source shows it.
