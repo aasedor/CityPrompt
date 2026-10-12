@@ -67,9 +67,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v009 (reopened, v010 in progress)
+## Open blockers after v010 (reopened run ended)
 
-Reopened run, v009 reviewed 0 P0 / 2 P1; v010 in progress. Open v009 P1:
+Ended at v010, the second of the two versions allowed by the reopened run (docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md, limit lifted 2026-10-12). The candidate GLB is v010 (0 P0 / 1 P1). Open v010 P1, for a human to weigh:
 
-1. **Front camera.** The end-cap's south-east corner still runs off the right frame edge.
-2. **West flank.** Two parapet tiers (the lower tier behind the cafe is higher than the cafe) where all three sources show one cafe parapet with only the set-back full-height anchor box behind it.
+1. **Interior roof junction.** In the interior view an open strip shows sky and two rooftop units where the lower cafe roof meets the taller anchor box; the wall between the two roof levels is not closed from inside after the west-flank parapet merge. Exterior views are clean.

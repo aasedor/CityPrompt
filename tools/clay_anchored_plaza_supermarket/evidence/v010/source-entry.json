@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-anchored-plaza-supermarket",
+  "variant_id": "clay-anchored-plaza-supermarket-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "commercial_strip_mall/variant_1",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/commercial-strip-mall/variant_1.png",
+      "path": "sources/front.png",
+      "bytes": 1275376,
+      "sha256": "3f3a08740e09cc7921e52683c6c1bf70ecb3d6307805040cdf8f17227b9aef71"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/commercial-strip-mall/variant_1_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 824868,
+      "sha256": "edde850b2f0e0e0ce81f7ebbaa21a8463f865ec4c15a476f019e338eed15dbb2"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/commercial-strip-mall/variant_1_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 875913,
+      "sha256": "b5bb02c1baea52cfa585079d67b1c15146c909be1a40156d997f9995097ff775"
+    }
+  ]
+}
