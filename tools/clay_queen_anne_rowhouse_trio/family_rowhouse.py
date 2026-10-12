@@ -83,11 +83,12 @@ def hole(name, u, z, w, h, **kw):
 
 
 def reveal(f, u, z, w, h, inset=.14, role='sand'):
-    d = inset / 2 + .005
+    """Reveal liners straddling every opening edge (3.5 cm each way), 2 cm proud of the face and butt-jointed at the corners, so the bevelled frame-bar corners never show (v008 P1)."""
+    d = inset / 2                                            # from 2 cm proud of the face to 2 cm past the inset
     for s in (-1, 1):
-        f.part('Reveal jamb liner', u + s * (w / 2 - .011), d, z + h / 2, .022, inset + .01, h, role, 'reveals', 0)
-    f.part('Reveal head liner', u, d, z + h - .011, w, inset + .01, .022, role, 'reveals', 0)
-    f.part('Reveal sill liner', u, d, z + .011, w, inset + .01, .022, role, 'reveals', 0)
+        f.part('Reveal jamb liner', u + s * w / 2, d, z + h / 2, .07, inset + .04, h + .07, role, 'reveals', 0)
+    f.part('Reveal head liner', u, d, z + h, w - .07, inset + .04, .07, role, 'reveals', 0)   # butt-jointed between the jambs: no overlapping faces
+    f.part('Reveal sill liner', u, d, z, w - .07, inset + .04, .07, role, 'reveals', 0)
 
 
 def sash(f, name, u, z, w, h, curtain=False, arched=False, lintel=True):
@@ -140,34 +141,41 @@ def stoop(x, y_wall, role='stone'):
 
 
 def bay_window(xc, y_wall, z1=EAVE - .25):
-    """Canted bay through both storeys under the end gable: three carriers with sash windows on both floors (side lights on the
-    canted facets), brick courses, cream piers and bands, a slate band between the floors and a slate hip cap."""
-    half, out, side = 1.3, 1.0, .7                           # facets kept inside the end walls (no slab past the party wall or corner)
+    """Canted bay through both storeys under the end gable (sources): a wider ground bay, a slate hip skirt between the floors,
+    and a narrower set-back canted upper bay carrying the gable; sash windows on every facet, brick courses, cream piers and bands."""
+    half, out, side = 1.3, 1.0, .7                           # ground facets kept inside the end walls (no slab past the party wall or corner)
+    SB = .28                                                 # upper bay set back from the ground bay faces
     pts = [(xc - half - side, y_wall), (xc - half, y_wall - out), (xc + half, y_wall - out), (xc + half + side, y_wall)]
-    faces = []
-    for i in range(3):
-        (ax, ay), (bx, by) = pts[i], pts[i + 1]
-        length = math.dist((ax, ay), (bx, by))
-        tx, ty = (bx - ax) / length, (by - ay) / length
-        nx, ny = -ty, tx    # inward (toward the house) for a path running west-to-east along the front
-        if ny < 0: nx, ny = -nx, -ny
-        f = C.Face(((ax + bx) / 2, (ay + by) / 2, 0), (tx, ty, 0), (nx, ny, 0), f'bay {xc:+.1f} face {i}')
-        w = length - .36 if i == 1 else length - .30
-        bw = min(w - .5, 1.4 if i == 1 else .6)
-        h = [hole(f'Bay window {xc:+.1f}-{i}', 0.0, .95, bw, 1.9), hole(f'Bay upper window {xc:+.1f}-{i}', 0.0, U + .85, bw, 1.7)]
-        f.wall(f'Bay carrier {xc:+.1f}-{i}', -length / 2, length / 2, G0, z1, depth=T, holes=h)
-        G.brick_courses(f, -length / 2 + .02, length / 2 - .02, G0, z1, h, spacing=.15)
-        sash(f, h[0]['id'], 0.0, .95, bw, 1.9, curtain=i == 1, lintel=False)
-        sash(f, h[1]['id'], 0.0, U + .85, bw, 1.7, curtain=i == 1, lintel=False)
-        f.part('Bay plinth band', 0.0, -.03, .45, length - .04, .34, .30, 'pale', 'string courses', 0)
-        f.part('Bay head band', 0.0, -.04, z1 - .12, length - .04, .36, .22, 'pale', 'string courses', 0)
-        faces.append(f)
-    # Cream stone piers on the two outer bay corners (identity: banded brick with stone piers).
+    upts = [(xc - half - side, y_wall), (xc - half + SB * .45, y_wall - out + SB), (xc + half - SB * .45, y_wall - out + SB), (xc + half + side, y_wall)]
+    ZG = U + .05                                             # ground facets stop under the skirt; upper facets start inside it
+    def facets(P, z0, z1_, tag, hz, hh, curtain_mid, plinth, head):
+        for i in range(3):
+            (ax, ay), (bx, by) = P[i], P[i + 1]
+            length = math.dist((ax, ay), (bx, by))
+            tx, ty = (bx - ax) / length, (by - ay) / length
+            nx, ny = -ty, tx
+            if ny < 0: nx, ny = -nx, -ny
+            f = C.Face(((ax + bx) / 2, (ay + by) / 2, 0), (tx, ty, 0), (nx, ny, 0), f'bay {xc:+.1f} {tag} face {i}')
+            w = length - .36 if i == 1 else length - .30
+            bw = min(w - .5, 1.4 if i == 1 else .6)
+            h = [hole(f'Bay {tag} window {xc:+.1f}-{i}', 0.0, hz, bw, hh)]
+            f.wall(f'Bay {tag} carrier {xc:+.1f}-{i}', -length / 2, length / 2, z0, z1_, depth=T, holes=h)
+            G.brick_courses(f, -length / 2 + .02, length / 2 - .02, z0, z1_, h, spacing=.15)
+            sash(f, h[0]['id'], 0.0, hz, bw, hh, curtain=(i == 1 and curtain_mid), lintel=False)
+            if plinth:
+                f.part('Bay plinth band', 0.0, -.03, .45, length - .04, .34, .30, 'pale', 'string courses', 0)
+            if head:
+                f.part('Bay head band', 0.0, -.04, z1_ - .12, length - .04, .36, .22, 'pale', 'string courses', 0)
+    facets(pts, G0, ZG, 'ground', .95, 1.9, True, True, False)
+    facets(upts, ZG, z1, 'upper', U + .85, 1.7, True, False, True)
+    # Cream stone piers on the outer corners of both bays.
     for (px, py) in (pts[1], pts[2]):
-        C.box(f'Bay pier {xc:+.1f}', (px, py, (G0 + z1 - .23) / 2), (.26, .26, z1 - .23 - G0), 'pale', 'bay piers', 0)
-    # Hipped slate cap between the floors: one mesh round the bay polygon, projecting 0.3 m with mitred hips at the cant
-    # corners, a fascia edge and its back edge on the facet faces.
-    off, zt, zb, fz = .30, U + .30, U - .12, .14
+        C.box(f'Bay pier {xc:+.1f}', (px, py, (G0 + ZG - .20) / 2), (.26, .26, ZG - .20 - G0), 'pale', 'bay piers', 0)
+    for (px, py) in (upts[1], upts[2]):
+        C.box(f'Bay upper pier {xc:+.1f}', (px, py, (U + .50 + z1 - .23) / 2), (.26, .26, z1 - .23 - U - .50), 'pale', 'bay piers', 0)
+    # Hipped slate skirt between the floors: from a fascia 0.3 m outside the ground bay up to the set-back upper bay faces,
+    # mitred at the cant corners.
+    off, zt, zb, fz = .30, U + .48, U - .12, .14
     def outward(i):
         (ax, ay), (bx, by) = pts[i], pts[i + 1]
         l = math.dist((ax, ay), (bx, by)); return ((by - ay) / l, -(bx - ax) / l)
@@ -181,18 +189,19 @@ def bay_window(xc, y_wall, z1=EAVE - .25):
         (ax, ay), (bx, by) = pts[i], pts[i + 1]
         lines.append(((ax + nx_ * off, ay + ny_ * off), (bx - ax, by - ay)))
     outer = [meet(lines[0][0], lines[0][1], (0, y_wall), (1, 0)), meet(*lines[0], *lines[1]), meet(*lines[1], *lines[2]), meet(lines[2][0], lines[2][1], (0, y_wall), (1, 0))]
-    verts = [(x, y, zt) for x, y in pts] + [(x, y, zb) for x, y in outer] + [(x, y, zb - fz) for x, y in outer] + [(x, y, zb - fz) for x, y in pts]
+    inner = [(x, y + .01) if j in (0, 3) else (x, y) for j, (x, y) in enumerate(upts)]
+    verts = [(x, y, zt) for x, y in inner] + [(x, y, zb) for x, y in outer] + [(x, y, zb - fz) for x, y in outer] + [(x, y, zb - fz) for x, y in pts]
     faces_ = []
     for i in range(3):
         faces_ += [(i, i + 1, 4 + i + 1, 4 + i), (4 + i, 4 + i + 1, 8 + i + 1, 8 + i), (8 + i, 8 + i + 1, 12 + i + 1, 12 + i)]
     faces_ += [(0, 4, 8, 12), (3, 15, 11, 7)]
     C.mesh(f'Bay hip cap {xc:+.1f}', verts, faces_, 'roof', 'bay caps')
-    # Under the end gable the bay finishes flat at the first-floor head with a green fascia board; the gable's timber infill
-    # comes down onto it (no slate inside the gable).
-    tv = [(x, y, z1) for x, y in pts] + [(x, y, z1 + .06) for x, y in pts]
+    # Under the end gable the upper bay finishes flat at the first-floor head with a green fascia board; the gable's timber
+    # infill comes down onto it (no slate inside the gable).
+    tv = [(x, y, z1) for x, y in upts] + [(x, y, z1 + .06) for x, y in upts]
     C.mesh(f'Bay top {xc:+.1f}', tv, [(3, 2, 1, 0), (4, 5, 6, 7), (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)], 'lead', 'bay caps')
     for i in range(3):
-        (ax, ay), (bx, by) = pts[i], pts[i + 1]
+        (ax, ay), (bx, by) = upts[i], upts[i + 1]
         C.beam(f'Bay head fascia {xc:+.1f}', (ax, ay - (.06 if i != 1 else 0), z1 + .06), (bx, by - .06, z1 + .06), .24, .10, 'green', 'bay caps')
 
 
@@ -287,7 +296,7 @@ def gable(xc, y_wall, width, apex, eave, face_dir=-1, infill=True, finial=True, 
     for side in (-1, 1):
         # Flat bargeboard in the gable plane (a parallelogram band), identical on both rakes, foot to apex.
         # The board's top edge lies on the roof plate's top line, so nothing of it rises above the slate behind it.
-        f.panel('Bargeboard', [(side * (hw + .15), eave), (0.0, apex + .30), (0.0, apex - .04), (side * (hw + .15), eave - .34)][::side], -.27, -.20, barge_role, 'bargeboards')
+        f.panel('Bargeboard', [(side * (hw + .15), eave), (0.0, apex + .30), (0.0, apex - .04), (side * (hw + .15), eave - .34)][::side], -.27, .04, barge_role, 'bargeboards')   # solid to the infill: no slot behind the board (v008 P1)
         f.part('Gable kneeler', side * (hw + .05), -.14, eave - .05, .50, .44, .34, 'pale', 'bargeboards', 0)
     f.part('Gable apex block', 0.0, -.20, apex + .26, .34, .46, .46, barge_role, 'bargeboards', 0)
     if finial:
@@ -389,12 +398,18 @@ def roofs():
 def sides_and_rear(f_right, f_rear, f_left):
     """East end wall exposed (end of row) with the cream bands returning; west party wall blank; rear with wings."""
     span = D - 2 * T
-    eh = [hole('End wall ground window', 2.0, .95, 1.0, 1.9), hole('End wall upper window', 2.0, U + .85, 1.0, 1.8)]
+    eh = [hole('End wall ground window', 2.0, .95, 1.0, 1.9), hole('End wall upper window', 2.0, U + .85, 1.0, 1.8), hole('End wall front ground window', -3.2, .95, 1.0, 1.9)]   # two ground columns (sources)
     f_right.wall('East end carrier', -span / 2, span / 2, G0, EAVE, depth=T, holes=eh)
     G.brick_courses(f_right, -span / 2 + .02, span / 2 - .02, G0, EAVE, eh, spacing=.10)
     for h in eh:
         sash(f_right, h['id'], h['u'], h['z'], h['w'], h['h'])
-    f_right.panel('East end gable', [(-span / 2, EAVE - EPS), (span / 2, EAVE - EPS), (span / 2, EAVE + .30), (0, RIDGE + .32), (-span / 2, EAVE + .30)], 0, T, 'wall', 'gables')
+    gp = f_right.panel('East end gable', [(-span / 2, EAVE - EPS), (span / 2, EAVE - EPS), (span / 2, EAVE + .30), (0, RIDGE + .32), (-span / 2, EAVE + .30)], 0, T, 'wall', 'gables')
+    for k, gu in enumerate((-.95, .95)):                       # two tall narrow attic sashes in the east gable (locked front)
+        gw_, gh_, gz_ = .70, 1.5, EAVE + .95
+        f_right.cut(gp, f'East attic window {k} cut', gu, gz_, gw_, gh_, depth=T)
+        sash(f_right, f'East attic window {k}', gu, gz_, gw_, gh_)
+        C.OPENINGS.append(dict(id=f'East attic window {k}', face=f_right.label, u=gu, z=gz_, width=gw_, height=gh_, kind='window', clear_wall_cut=True,
+            carrier_depth_m=T, frame_inset_m=.14, pane_inset_m=.177, face_origin=list(f_right.o), face_tangent=list(f_right.t), face_inward=list(f_right.n), occupied_space='attic room'))
     C.beam('East gable coping', f_right.p(-span / 2 - .05, -.02, EAVE + .34), f_right.p(.12, -.02, RIDGE + .36 - .12 * PITCH), .14, T + .08, 'sand', 'gables')
     C.beam('East gable coping', f_right.p(span / 2 + .05, -.02, EAVE + .34), f_right.p(-.12, -.02, RIDGE + .36 - .12 * PITCH), .14, T + .08, 'sand', 'gables')
     f_right.part('East gable apex block', 0.0, -.02, RIDGE + .24, .62, .42, .56, 'sand', 'gables', 0)
