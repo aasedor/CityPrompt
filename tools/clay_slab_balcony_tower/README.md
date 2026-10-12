@@ -68,8 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v006 (stopped)
+## Open blockers after v007 (passed)
 
-Stopped at v006 under rule 2 of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB is v006. Open v006 P1, for a human to weigh:
-
-1. **Corner fin heads.** Where the two corner fin plates meet above the parapet, a small black void shows at each of the four corners: the hollow corner pier has no top cap. The fix is one solid cap box per corner at fin-head height, about 2.6 KB of GLB.
+Passed at v007 (0 P0 / 0 P1 / 7 P2) in the reopened run after the lifted GLB limit; no open blockers. Open P2 for a later detail pass: light hotspots through the glazing, a stepped penthouse where the source shows one cube, generic rooftop unit placement, a heavier corner pier than the source's thin fin, a thin canopy, a small speckled sliver at one north fin head, a tight interior camera. Not keeper-approved; RLASM asset review, runtime acceptance and publication approval are separate checkpoints.
