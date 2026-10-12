@@ -1,4 +1,3 @@
-import { PromptSpellingSuggestions } from './PromptSpellingSuggestions';
 /**
  * StreetViewPanel — floating panel that appears when the street view pegman
  * is placed on the map. Shows compass direction, rotation controls, and a
@@ -710,7 +709,6 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
               rows={2}
               className="w-full resize-y rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-xs text-white placeholder:text-white/40 focus:border-amber-400 focus:outline-none"
             />
-            <PromptSpellingSuggestions value={customPrompt} onChange={setCustomPrompt} />
           </div>
           {/* Footer — re-render controls */}
           <div className="flex items-center justify-between border-t border-white/10 px-5 py-3">
@@ -834,7 +832,6 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
             rows={2}
             className="w-full resize-y rounded-lg border-2 border-[#151515]/20 bg-white/80 px-3 py-2 text-xs text-[#151515] placeholder:text-[#151515]/50 focus:border-[#151515] focus:outline-none"
           />
-          <PromptSpellingSuggestions value={customPrompt} onChange={setCustomPrompt} />
         </div>
         {/* Direction controls */}
         <button

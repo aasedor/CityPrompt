@@ -1,4 +1,3 @@
-import { PromptSpellingSuggestions } from './PromptSpellingSuggestions';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Cpu, Loader2, X } from 'lucide-react';
@@ -150,7 +149,6 @@ function LocalTrialDialog({ projectId, render, onSaved, onImageSaved, onClose }:
             {isSource && preset?.kind === 'video' && <p className="mb-2 text-sm">Select a finished image render to animate it. Finish this 3D source with an image model first.</p>}
             <label htmlFor="comfy-prompt" className="block text-sm font-semibold">Prompt</label>
             <textarea spellCheck={true} lang="en-CA" id="comfy-prompt" value={prompt} maxLength={1500} disabled={busy || !!job} onChange={e => setPrompt(e.target.value)} rows={5} className="mt-1 w-full rounded-lg border p-2 text-sm" />
-            <PromptSpellingSuggestions value={prompt} onChange={setPrompt} disabled={busy || !!job} maxLength={1500} />
             {!job && <button onClick={() => void generate()} disabled={loading || busy || !!error || !preset?.available || !prompt.trim() || (isSource && preset.kind === 'video')} className="mt-3 min-h-11 rounded-lg bg-lime-300 px-4 font-semibold disabled:opacity-50">{busy ? 'Submitting…' : 'Run local trial'}</button>}
           </>}
           {job && <p role="status" className="mt-3 font-semibold">Local trial: {job.status}{busy && <Loader2 size={16} className="ml-2 inline animate-spin" />}</p>}

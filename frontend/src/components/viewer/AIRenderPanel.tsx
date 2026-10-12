@@ -1,4 +1,3 @@
-import { PromptSpellingSuggestions } from './PromptSpellingSuggestions';
 /**
  * AIRenderPanel — UI panel for the aerial AI render pipeline.
  *
@@ -405,7 +404,6 @@ export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZon
             rows={2}
             className="w-full resize-y rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white placeholder-gray-500 focus:border-amber-500/50 focus:outline-none focus:ring-1 focus:ring-amber-500/30"
           />
-          <PromptSpellingSuggestions value={customPrompt} onChange={setCustomPrompt} />
         </div>
 
         {/* ── Advanced options disclosure ───────────────────────────────── */}
