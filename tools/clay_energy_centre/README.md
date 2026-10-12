@@ -68,8 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v008 (hard cap reached)
+## Open blockers after v009 (reopened, v010 in progress)
 
-Ended at v008, the hard cap of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB is v008. Open v008 P1, for a human to weigh:
+Reopened run, v009 reviewed 0 P0 / 1 P1 (candidate); v010 in progress. Open v009 P1:
 
-1. **Lower volume proportion.** The west block's south face is about 1.6 times wider than it is tall in the render; the sources read it at about 0.85 to 1.05. This is a massing-ratio reading that no earlier review raised; the 34 x 19 m plan and 12.2 m crown were measured from the locked top view and front, so it may be a reviewer disagreement about foreshortening in the sources.
+1. **Corner bands.** The west corner bay's concrete band and upper glass band do not line up with the south face's at the corner pier; the sources show them meeting level.

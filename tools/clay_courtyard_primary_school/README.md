@@ -69,11 +69,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v007 (stopped)
+## Open blockers after v008 (reopened, v009 in progress)
 
-Stopped at v007 under rule 2 of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB is v005. Open v007 P1, for a human to weigh:
+Reopened run, v008 reviewed 0 P0 / 2 P1 (candidate); v009 in progress. Open v008 P1:
 
-1. **Open passage.** It reads only as a gap south of the east wing, beside the concrete wall.
-2. **Corten canopy.** It reads as a thin plate; the sources show a deep fascia band.
-3. **Coloured fins.** They appear only on the upper storey; the sources carry them on the ground-floor classroom glazing too.
-4. **Corten third storey.** Its opening rhythm differs from the sources on the long glazed face.
+1. **Street side of the passage.** The entrance block's east ground floor is a classroom window; the sources show a concrete-lined opening with recessed glazed entry doors facing the street.
+2. **Corner wall and canopy.** The corner concrete wall extends beyond the canopy with its top exposed; the sources show the deep corten fascia passing over it.

@@ -47,7 +47,7 @@ def manifest(version):
         ('glass_close', (-12.0, -32.0, 3.6), (-8.0, YA0, 3.6), 50),
         ('gable_mouth', (-70.0, -22.0, 8.0), (X0, 0.0, 9.0), 40),
         ('crane_interior', (-62.0, 0.0, 14.5), (X0 + 12.0, 0.0, 14.0), 40),
-        ('monitor_close', (-30.0, -36.0, 30.0), (-18.0, -13.0, 16.0), 45),
+        ('monitor_close', (-16.0, -36.0, 24.0), (0.0, -13.6, 14.0), 45),
         ('stair_contact', (-48.0, -34.0, 5.0), (X0 + 4.0, YA0, 6.0), 40),
         ('yard_sidings', (-30.0, 48.0, 8.0), (-6.0, YA1 + 8.0, 2.0), 40),
         ('interior', (X0 + 6.0, -3.0, 4.0), (X0 + 40.0, 3.0, 7.0), 30),
@@ -62,10 +62,10 @@ def manifest(version):
             section=dict(aisle_eave_m=A_EAVE, aisle_top_m=A_TOP, nave_eave_m=N_EAVE, ridge_m=RIDGE, clerestory_m=[CL0, CL1]),
             gable_end='lower storey clad with three green sliding doors across the nave; upper storey an open lattice frame with the crane girder visible; clad gable triangle above',
             aisle_walls='lattice columns with X-bracing every bay, a deep sloping corrugated pent roof across every bay at mid-wall over a low wide window band, roll-up doors in two bays',
-            monitors='four gabled monitors on each aisle roof and three on the nave ridge, glazed on their long sides',
+            monitors='three long low gabled monitors in a row on each roof level (south aisle, nave ridge, north aisle), ridges along the hall, continuous glazed bands on both long sides, solid gable ends',
             yard='concrete apron all round; two rail sidings with a boxcar along the north side; external stair at the south-west corner',
             inferred='84 m length calibrates twelve bays; the east gable end is not visible and repeats the west end without the open frame; the crane and interior are teaching assumptions.'),
-        roof_contract=dict(type='low-pitch gable over the nave, lean-to aisle roofs, nine gabled monitors in three staggered rows, ridges across the hall; corrugated plates', datum_m=A_EAVE, crowns_m=[RIDGE, RIDGE + 2.8]),
+        roof_contract=dict(type='low-pitch gable over the nave, lean-to aisle roofs, nine long low gabled monitors in three rows, ridges along the hall; corrugated plates', datum_m=A_EAVE, crowns_m=[RIDGE, RIDGE + 2.8]),
         identity_contract=dict(owner='stepped nave-and-aisle silhouette with glazed clerestory and monitor rows, open-framed gable mouth over green sliding doors, lattice X-braced aisle walls, external stair, rail sidings'),
         material_contract=dict(profile='source-palette clay: weathered galvanised corrugated cladding with recessed seams, dark steel lattice, green painted doors, rusty corrugated roofs, concrete apron, dark rails and sleepers', textured_keeper=False),
         programme_contract=dict(storeys=1, nave='crane hall with an overhead travelling crane on rails at 14 m', aisles='workshop bays with benches', stairs='external steel stair to the aisle roof at the south-west corner'),
@@ -308,11 +308,14 @@ def roofs():
         C.prism(f'Aisle roof plate {sign}', [(ya2, za2), (yb2, zb2), (yb2, zb2 - t), (ya2, za2 - t)], 'x', x0 + T, x1 - T, 'roof', 'roofs')
         ribs(x0 + T, x1 - T, ya2, za2, yb2, zb2)
     C.beam('Ridge cap', (x0, 0, RIDGE + .05), (x1, 0, RIDGE + .05), .30, .10, 'pale', 'roofs')
-    # Monitors: four per aisle roof, three on the nave ridge.
+    # Monitors (sources): one row per roof level, three long low monitors each, ridges along the hall, continuous glazed
+    # bands on both long sides, solid gable ends: nave ridge row and one row on each aisle roof (v007 P1).
     nave_slope = lambda y: RIDGE - abs(y) * (RIDGE - N_EAVE) / YN1
-    for yc, xs in ((-6.0, (-30.0, -10.0, 10.0)), (0.0, (-20.0, 0.0, 20.0)), (6.0, (-10.0, 10.0, 30.0))):
-        for xc in xs:
-            monitor(xc, yc, 6.0, 6.5, slope=nave_slope)   # wider and lower than v006 (P1 3)
+    za2, zb2 = A_TOP, AE2 - .4 * (A_TOP - AE2) / AISLE
+    aisle_slope = lambda y: za2 + (zb2 - za2) * (abs(y) - (YN1 - T)) / ((YA1 + .4) - (YN1 - T))
+    for yc, sl in ((0.0, nave_slope), (YN1 + AISLE / 2 - .2, aisle_slope), (-(YN1 + AISLE / 2 - .2), aisle_slope)):
+        for xc in (-26.0, 0.0, 26.0):
+            monitor(xc, yc, 10.0, 4.4, slope=sl)
 
 
 def ribs(xa, xb, ya, za, yb, zb, spacing=1.2):
@@ -323,26 +326,34 @@ def ribs(xa, xb, ya, za, yb, zb, spacing=1.2):
         C.beam('Roof corrugation seam', (x, ya, za + .035), (x, yb, zb + .035), .05, .05, 'joint', 'roofs')
 
 
-def monitor(xc, yc, w, length, slope, h=2.0, PF=.22):
-    """Gabled roof monitor whose ridge runs across the hall: glazed cheeks face west and east, solid gable triangles face
-    north and south, the base follows the nave roof (split at the ridge so every piece stays convex)."""
-    xa, xb = xc - w / 2, xc + w / 2
-    ya, yb = yc - length / 2, yc + length / 2
-    top = max(slope(ya), slope(yb), slope(0.0) if ya < 0 < yb else -1e9) + h
+def monitor(xc, yc, length, w, slope, h=1.7, PF=.30):
+    """Long low gabled roof monitor with its ridge along the hall: solid cheeks on the long sides up to a continuous glazed
+    band under the eave, solid gable ends whose base follows the roof slope, corrugated roof plates and a ridge cap."""
+    xa, xb = xc - length / 2, xc + length / 2
+    ya, yb = yc - w / 2, yc + w / 2
+    ze = max(slope(ya), slope(yb), slope(0.0) if ya < 0 < yb else -1e9) + h     # eave over the higher cheek base
+    for y in (ya, yb):
+        zb_ = slope(y) - .3
+        C.box('Monitor cheek', (xc, y, (zb_ + ze - 1.3) / 2), (length, .16, ze - 1.3 - zb_), 'wall', 'monitors', 0)
+        C.box('Monitor sill', (xc, y, ze - 1.3 + .05), (length, .20, .10), 'trim', 'monitors', 0)
+        C.box('Monitor glazing', (xc, y, ze - .7), (length - .3, .012, 1.2), 'glass', 'monitors', 0)
+        n = max(2, round(length / .9))
+        for k in range(1, n):
+            C.box('Monitor mullion', (xa + .15 + k * (length - .3) / n, y, ze - .7), (.06, .14, 1.2), 'trim', 'monitors', 0)
+        C.box('Monitor head', (xc, y, ze - .06), (length, .20, .12), 'trim', 'monitors', 0)
     spans = [(ya, 0.0), (0.0, yb)] if ya < 0 < yb else [(ya, yb)]
-    for x, lo, hi in ((xa, xa, xa + .16), (xb, xb - .16, xb)):
-        for y0, y1 in spans:
-            C.prism('Monitor cheek', [(y0, slope(y0) - .3), (y1, slope(y1) - .3), (y1, top - 1.4), (y0, top - 1.4)], 'x', lo, hi, 'wall', 'monitors')
-        xm = (lo + hi) / 2
-        C.box('Monitor glazing', (xm, yc, top - .7), (.012, length - .4, 1.2), 'glass', 'monitors', 0)
-        C.box('Monitor head', (xm, yc, top - .06), (.16, length, .12), 'trim', 'monitors', 0)
-        for k in range(1, 4):
-            C.box('Monitor mullion', (xm, ya + k * length / 4, top - .7), (.14, .06, 1.2), 'trim', 'monitors', 0)
-    for y, lo, hi in ((ya, ya - .16, ya), (yb, yb, yb + .16)):
-        C.prism('Monitor gable end', [(xa, slope(y) - .3), (xb, slope(y) - .3), (xb, top), (xc, top + w * PF), (xa, top)], 'y', lo, hi, 'wall', 'monitors')
+    for x, lo, hi in ((xa, xa - .16, xa), (xb, xb, xb + .16)):
+        if len(spans) == 2:
+            C.prism('Monitor gable end', [(ya, slope(ya) - .3), (0.0, slope(0.0) - .3), (0.0, ze + w * PF), (ya, ze)], 'x', lo, hi, 'wall', 'monitors')
+            C.prism('Monitor gable end', [(0.0, slope(0.0) - .3), (yb, slope(yb) - .3), (yb, ze), (0.0, ze + w * PF)], 'x', lo, hi, 'wall', 'monitors')
+        else:
+            C.prism('Monitor gable end', [(ya, slope(ya) - .3), (yb, slope(yb) - .3), (yb, ze), (yc, ze + w * PF), (ya, ze)], 'x', lo, hi, 'wall', 'monitors')
     for sgn in (-1, 1):
-        C.prism('Monitor roof plate', [(xc, top + w * PF + .02), (xc + sgn * (w / 2 + .25), top - .25 * w * PF / (w / 2) + .02), (xc + sgn * (w / 2 + .25), top - .25 * w * PF / (w / 2) - .14), (xc, top + w * PF - .12)],
-                'y', ya - .25, yb + .25, 'roof', 'monitors')
+        yo = yc + sgn * (w / 2 + .25)
+        C.prism('Monitor roof plate', [(yc, ze + w * PF + .02), (yo, ze - .5 * PF + .02), (yo, ze - .5 * PF - .12), (yc, ze + w * PF - .12)],
+                'x', xa - .25, xb + .25, 'roof', 'monitors')
+        ribs(xa - .25, xb + .25, yc, ze + w * PF + .02, yo, ze - .5 * PF + .02, spacing=.9)
+    C.beam('Monitor ridge cap', (xa - .25, yc, ze + w * PF + .05), (xb + .25, yc, ze + w * PF + .05), .22, .08, 'pale', 'monitors')
 
 
 def stair():

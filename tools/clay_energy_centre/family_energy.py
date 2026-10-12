@@ -158,7 +158,7 @@ def frame_face(f, lo, hi, bays):
             if h.get('door'):
                 head, pt, utop, ucols = G0 + third, G0 + 2 * third, top, round(h['w'] / 1.5)
             else:
-                head, pt, utop, ucols = G0 + .36 * (WEST_HEAD + 1.5 - G0), WEST_HEAD - 1.75, WEST_HEAD, 6
+                head, pt, utop, ucols = G0 + third, G0 + 2 * third, WEST_HEAD, 6     # same concrete datums as the south face, so the bands meet level at the corner (v009 P1)
             g = hole(h['id'] + ' ground glazing', h['u'], G0, h['w'], head - G0)
             u = hole(h['id'] + ' upper glazing', h['u'], pt, h['w'], utop - pt)
             f.window(g['id'], g['u'], g['z'], g['w'], g['h'], cols=round(h['w'] / 1.5), rows=2, frame='trim', depth=T, sill=False)

@@ -68,14 +68,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v007 (stopped)
+## Open blockers after v008 (reopened, v009 in progress)
 
-Stopped at v007 under rule 2 of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB stays at v006 (0 P0 / 2 P1). Open v007 P1, for a human to weigh:
+Reopened run, v008 reviewed 0 P0 / 3 P1; the candidate stays v006 (0 P0 / 2 P1); v009 in progress. Open v008 P1:
 
-1. **Dome foot.** The cresting is a ring of opaque dark panels over a plain stone band. The sources show a strongly projecting cornice disc with pierced copper scroll cresting on its lip. This survived the v006 and v007 fixes.
-2. **Dormers.** They are cream toothed rings with flat hood plates. The sources show smooth copper round dormers with curved bonnet hoods merging into the dome.
-3. **Dome ribs.** They are segmented and stand off the shell at the silhouette. The sources show about eight continuous seated ribs.
-4. **Chamfer bay.** It has three flat facets with brick strips beside it. The sources show a continuously bowed stone bay with five lights per level and one curved railing.
-5. **Front camera.** The front render is a wing elevation, not an eye-level view centred on the chamfer.
-
-The first three are partly a budget limit: a swept, pierced copper dome at source fidelity does not fit the 1 MiB GLB limit alongside the rest of the block.
+1. **Dormers.** Solid copper discs with hood plates, no glazed oculus in a moulded frame; the outer two stand off the dome outline.
+2. **Ribs.** Only the front rib reads continuous; the others read as stepped segments with gaps that stop short of the lantern base.
+3. **Cresting.** A thin post-and-zigzag fence at the disc edge on a stone-coloured disc; the sources show tall pierced copper scroll panels at the dome base, about a fifth of the dome height.

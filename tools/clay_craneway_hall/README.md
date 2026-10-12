@@ -68,10 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v006 (stopped)
+## Open blockers after v007 (reopened, v008 in progress)
 
-Stopped at v006 under rule 2 of docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md. The candidate GLB is v004. Open v006 P1, for a human to weigh:
+Reopened run, v007 reviewed 0 P0 / 2 P1 (candidate); v008 in progress. Open v007 P1:
 
-1. **Aisle roof.** It still reads as a wide blank lean-to above the gallery; the sources show a tall glazed band and only a narrow roof strip.
-2. **West aisle upper storeys.** They are short lean-to wedges; the sources show upright full-height open frames.
-3. **Monitors.** They are small, near-square tall boxes; the sources show wider, lower monitors.
+1. **Monitor form.** Square in plan, tall, blank cheeks; the sources show long low monitors with continuous glazed bands on both long sides and solid gable ends.
+2. **Monitor rows.** All nine on the nave in a staggered pattern; the sources show one row of three per roof level (south aisle, nave, north aisle).

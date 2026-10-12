@@ -1,0 +1,2557 @@
+{
+  "candidate": "clay-chamfer-corner-dome-block-clay-v008",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 730,
+    "vertices": 19379,
+    "polygons": 31244,
+    "triangles": 31244,
+    "path": "clay-chamfer-corner-dome-block-clay-v008-authoring.blend",
+    "bytes": 6898704,
+    "sha256": "396a876c6ba3840245ae1fcb48d759b7fc02e0d4d3601d7dbe45acf9d83e268d"
+  },
+  "runtime": {
+    "path": "clay-chamfer-corner-dome-block-clay-v008.glb",
+    "bytes": 1660860,
+    "sha256": "a131819fb3e6a8711a1b552fe4d42bfca54933455e333570abd680c1350e8e8a",
+    "meshes": 16,
+    "materials": 16,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 16,
+    "vertices": 19379,
+    "polygons": 31244,
+    "triangles": 31244
+  },
+  "original_bounds_m": [
+    [
+      -18.0,
+      -18.0,
+      0.0
+    ],
+    [
+      18.0,
+      18.0,
+      25.450000762939453
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -18.0,
+      -18.0,
+      0.0
+    ],
+    [
+      18.0,
+      18.0,
+      25.450000762939453
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 24.0,
+    "depth": 24.0,
+    "height": 27.0
+  },
+  "native_dimensions_m": {
+    "width": 36.0,
+    "depth": 36.0,
+    "height": 25.450000762939453
+  },
+  "native_bottom_center_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 4,
+    "joint": 5,
+    "trim": 29,
+    "pale": 15,
+    "stone": 72,
+    "foundation": 4,
+    "glass": 13,
+    "hardware": 213,
+    "interior": 5,
+    "floor": 5,
+    "timber": 15,
+    "blue": 2,
+    "planting": 6,
+    "copper": 335,
+    "membrane": 1,
+    "rustic": 6
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/chamfer_dome.png",
+    "renders/balcony_ironwork.png",
+    "renders/ground_arcade.png",
+    "renders/cornice_contact.png",
+    "renders/roof_terrace.png",
+    "renders/interior.png",
+    "renders/rear_court.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.1276695430278778,
+      "xmax": 0.8723303079605103,
+      "ymin": 0.21518369019031525,
+      "ymax": 0.816789984703064
+    },
+    "front_corner": {
+      "xmin": 0.24006235599517822,
+      "xmax": 0.762545108795166,
+      "ymin": 0.08853860944509506,
+      "ymax": 0.6841397285461426
+    },
+    "aerial": {
+      "xmin": 0.24040938913822174,
+      "xmax": 0.7075669169425964,
+      "ymin": 0.0818062424659729,
+      "ymax": 0.7277271747589111
+    },
+    "top": {
+      "xmin": 0.1841086745262146,
+      "xmax": 0.8158913254737854,
+      "ymin": 0.07881154119968414,
+      "ymax": 0.921188473701477
+    },
+    "left_side": {
+      "xmin": 0.10721780359745026,
+      "xmax": 0.8927816152572632,
+      "ymin": 0.09656529128551483,
+      "ymax": 0.8270848393440247
+    },
+    "right_side": {
+      "xmin": 0.10721836984157562,
+      "xmax": 0.8602332472801208,
+      "ymin": 0.09656529128551483,
+      "ymax": 0.80067378282547
+    },
+    "rear": {
+      "xmin": 0.2262323945760727,
+      "xmax": 0.8927820324897766,
+      "ymin": 0.09656577557325363,
+      "ymax": 0.8006742596626282
+    },
+    "rear_side": {
+      "xmin": 0.20319703221321106,
+      "xmax": 0.8031619191169739,
+      "ymin": 0.08016625791788101,
+      "ymax": 0.8037623763084412
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Bowed bay on the rusticated ground floor; copper skirt on the bay cornice pedestal; lantern on a solid neck out of the dome apex; corner posts at every corner",
+      "bay_top_m": 12.799999999999999,
+      "dome_top_m": 21.5
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "south shop opening 0",
+      "face": "south",
+      "u": -6.6135146134954015,
+      "z": 0.15,
+      "width": 1.6,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        3.181980609893799,
+        -12.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "south shop opening 1",
+      "face": "south",
+      "u": -2.204504871165134,
+      "z": 0.15,
+      "width": 1.6,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        3.181980609893799,
+        -12.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "south shop opening 2",
+      "face": "south",
+      "u": 2.2045048711651347,
+      "z": 0.15,
+      "width": 1.6,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        3.181980609893799,
+        -12.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "south shop opening 3",
+      "face": "south",
+      "u": 6.613514613495401,
+      "z": 0.15,
+      "width": 1.6,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        3.181980609893799,
+        -12.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "south window 0-0",
+      "face": "south",
+      "u": -6.6135146134954015,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        3.181980609893799,
+        -12.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 0-1",
+      "face": "south",
+      "u": -6.6135146134954015,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        3.181980609893799,
+        -12.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 1-0",
+      "face": "south",
+      "u": -2.204504871165134,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        3.181980609893799,
+        -12.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 1-1",
+      "face": "south",
+      "u": -2.204504871165134,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        3.181980609893799,
+        -12.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 2-0",
+      "face": "south",
+      "u": 2.2045048711651347,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        3.181980609893799,
+        -12.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 2-1",
+      "face": "south",
+      "u": 2.2045048711651347,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        3.181980609893799,
+        -12.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 3-0",
+      "face": "south",
+      "u": 6.613514613495401,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        3.181980609893799,
+        -12.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "south window 3-1",
+      "face": "south",
+      "u": 6.613514613495401,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        3.181980609893799,
+        -12.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "west shop opening 0",
+      "face": "west",
+      "u": -6.316014613495401,
+      "z": 0.15,
+      "width": 1.6,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        3.181980609893799,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "west shop opening 1",
+      "face": "west",
+      "u": -1.9920048711651344,
+      "z": 0.15,
+      "width": 1.6,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        3.181980609893799,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "west shop opening 2",
+      "face": "west",
+      "u": 2.332004871165134,
+      "z": 0.15,
+      "width": 1.6,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        3.181980609893799,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "west shop opening 3",
+      "face": "west",
+      "u": 6.656014613495401,
+      "z": 0.15,
+      "width": 1.6,
+      "height": 4.4,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        3.181980609893799,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "west window 0-0",
+      "face": "west",
+      "u": -6.316014613495401,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        3.181980609893799,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "west window 0-1",
+      "face": "west",
+      "u": -6.316014613495401,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        3.181980609893799,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "west window 1-0",
+      "face": "west",
+      "u": -1.9920048711651344,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        3.181980609893799,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "west window 1-1",
+      "face": "west",
+      "u": -1.9920048711651344,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        3.181980609893799,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "west window 2-0",
+      "face": "west",
+      "u": 2.332004871165134,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        3.181980609893799,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "west window 2-1",
+      "face": "west",
+      "u": 2.332004871165134,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        3.181980609893799,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "west window 3-0",
+      "face": "west",
+      "u": 6.656014613495401,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        3.181980609893799,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "west window 3-1",
+      "face": "west",
+      "u": 6.656014613495401,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        3.181980609893799,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north ground window 0",
+      "face": "north",
+      "u": -9.0,
+      "z": 1.2,
+      "width": 1.6,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        12.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "service"
+    },
+    {
+      "id": "north ground window 2",
+      "face": "north",
+      "u": 3.0,
+      "z": 1.2,
+      "width": 1.6,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        12.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "service"
+    },
+    {
+      "id": "north window 0-0",
+      "face": "north",
+      "u": -9.0,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        12.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 0-1",
+      "face": "north",
+      "u": -9.0,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        12.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 1-0",
+      "face": "north",
+      "u": -3.0,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        12.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 1-1",
+      "face": "north",
+      "u": -3.0,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        12.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 2-0",
+      "face": "north",
+      "u": 3.0,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        12.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 2-1",
+      "face": "north",
+      "u": 3.0,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        12.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 3-0",
+      "face": "north",
+      "u": 9.0,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        12.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "north window 3-1",
+      "face": "north",
+      "u": 9.0,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        12.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east ground window 0",
+      "face": "east",
+      "u": -8.745000000000001,
+      "z": 1.2,
+      "width": 1.6,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "service"
+    },
+    {
+      "id": "east ground window 2",
+      "face": "east",
+      "u": 2.914999999999999,
+      "z": 1.2,
+      "width": 1.6,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "service"
+    },
+    {
+      "id": "east window 0-0",
+      "face": "east",
+      "u": -8.745000000000001,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 0-1",
+      "face": "east",
+      "u": -8.745000000000001,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 1-0",
+      "face": "east",
+      "u": -2.914999999999999,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 1-1",
+      "face": "east",
+      "u": -2.914999999999999,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 2-0",
+      "face": "east",
+      "u": 2.914999999999999,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 2-1",
+      "face": "east",
+      "u": 2.914999999999999,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 3-0",
+      "face": "east",
+      "u": 8.745000000000001,
+      "z": 5.12,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "east window 3-1",
+      "face": "east",
+      "u": 8.745000000000001,
+      "z": 9.319999999999999,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "apartment"
+    },
+    {
+      "id": "Entrance doors",
+      "face": "chamfer",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 2.6,
+      "height": 4.3,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -8.81801986694336,
+        -8.81801986694336,
+        0.0
+      ],
+      "face_tangent": [
+        0.7071067690849304,
+        -0.7071067690849304,
+        0.0
+      ],
+      "face_inward": [
+        0.7071067690849304,
+        0.7071067690849304,
+        0.0
+      ],
+      "occupied_space": "residential entrance hall"
+    },
+    {
+      "id": "Bay light 1-0",
+      "face": "bay facet 1",
+      "u": 0.0,
+      "z": 5.9,
+      "width": 1.0069081589624171,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -11.951600074768066,
+        -7.747575759887695,
+        0.0
+      ],
+      "face_tangent": [
+        0.12782254815101624,
+        -0.9917970299720764,
+        0.0
+      ],
+      "face_inward": [
+        0.9917970299720764,
+        0.12782254815101624,
+        0.0
+      ],
+      "occupied_space": "salon"
+    },
+    {
+      "id": "Bay light 1-1",
+      "face": "bay facet 1",
+      "u": 0.0,
+      "z": 10.1,
+      "width": 1.0069081589624171,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -11.951600074768066,
+        -7.747575759887695,
+        0.0
+      ],
+      "face_tangent": [
+        0.12782254815101624,
+        -0.9917970299720764,
+        0.0
+      ],
+      "face_inward": [
+        0.9917970299720764,
+        0.12782254815101624,
+        0.0
+      ],
+      "occupied_space": "bedroom"
+    },
+    {
+      "id": "Bay light 2-0",
+      "face": "bay facet 2",
+      "u": 0.0,
+      "z": 5.9,
+      "width": 1.271003419330809,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -11.475208282470703,
+        -9.142149925231934,
+        0.0
+      ],
+      "face_tangent": [
+        0.47704556584358215,
+        -0.8788785934448242,
+        0.0
+      ],
+      "face_inward": [
+        0.8788785934448242,
+        0.47704556584358215,
+        0.0
+      ],
+      "occupied_space": "salon"
+    },
+    {
+      "id": "Bay light 2-1",
+      "face": "bay facet 2",
+      "u": 0.0,
+      "z": 10.1,
+      "width": 1.271003419330809,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -11.475208282470703,
+        -9.142149925231934,
+        0.0
+      ],
+      "face_tangent": [
+        0.47704556584358215,
+        -0.8788785934448242,
+        0.0
+      ],
+      "face_inward": [
+        0.8788785934448242,
+        0.47704556584358215,
+        0.0
+      ],
+      "occupied_space": "bedroom"
+    },
+    {
+      "id": "Bay light 3-0",
+      "face": "bay facet 3",
+      "u": 0.0,
+      "z": 5.9,
+      "width": 1.375663284859253,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -10.472526550292969,
+        -10.472526550292969,
+        0.0
+      ],
+      "face_tangent": [
+        0.7071067690849304,
+        -0.7071067690849304,
+        0.0
+      ],
+      "face_inward": [
+        0.7071067690849304,
+        0.7071067690849304,
+        0.0
+      ],
+      "occupied_space": "salon"
+    },
+    {
+      "id": "Bay light 3-1",
+      "face": "bay facet 3",
+      "u": 0.0,
+      "z": 10.1,
+      "width": 1.375663284859253,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -10.472526550292969,
+        -10.472526550292969,
+        0.0
+      ],
+      "face_tangent": [
+        0.7071067690849304,
+        -0.7071067690849304,
+        0.0
+      ],
+      "face_inward": [
+        0.7071067690849304,
+        0.7071067690849304,
+        0.0
+      ],
+      "occupied_space": "bedroom"
+    },
+    {
+      "id": "Bay light 4-0",
+      "face": "bay facet 4",
+      "u": 0.0,
+      "z": 5.9,
+      "width": 1.2710034193308073,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -9.142149925231934,
+        -11.475208282470703,
+        0.0
+      ],
+      "face_tangent": [
+        0.8788785934448242,
+        -0.47704556584358215,
+        0.0
+      ],
+      "face_inward": [
+        0.47704556584358215,
+        0.8788785934448242,
+        0.0
+      ],
+      "occupied_space": "salon"
+    },
+    {
+      "id": "Bay light 4-1",
+      "face": "bay facet 4",
+      "u": 0.0,
+      "z": 10.1,
+      "width": 1.2710034193308073,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -9.142149925231934,
+        -11.475208282470703,
+        0.0
+      ],
+      "face_tangent": [
+        0.8788785934448242,
+        -0.47704556584358215,
+        0.0
+      ],
+      "face_inward": [
+        0.47704556584358215,
+        0.8788785934448242,
+        0.0
+      ],
+      "occupied_space": "bedroom"
+    },
+    {
+      "id": "Bay light 5-0",
+      "face": "bay facet 5",
+      "u": 0.0,
+      "z": 5.9,
+      "width": 1.006908158962419,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -7.747575759887695,
+        -11.951600074768066,
+        0.0
+      ],
+      "face_tangent": [
+        0.9917970299720764,
+        -0.12782254815101624,
+        0.0
+      ],
+      "face_inward": [
+        0.12782254815101624,
+        0.9917970299720764,
+        0.0
+      ],
+      "occupied_space": "salon"
+    },
+    {
+      "id": "Bay light 5-1",
+      "face": "bay facet 5",
+      "u": 0.0,
+      "z": 10.1,
+      "width": 1.006908158962419,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.34,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -7.747575759887695,
+        -11.951600074768066,
+        0.0
+      ],
+      "face_tangent": [
+        0.9917970299720764,
+        -0.12782254815101624,
+        0.0
+      ],
+      "face_inward": [
+        0.12782254815101624,
+        0.9917970299720764,
+        0.0
+      ],
+      "occupied_space": "bedroom"
+    }
+  ],
+  "authoring_modules": {
+    "sidewalk": [
+      "South sidewalk",
+      "West sidewalk",
+      "Kerb south",
+      "Kerb west"
+    ],
+    "court": [
+      "Rear court"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005"
+    ],
+    "foundation": [
+      "Ground slab"
+    ],
+    "occupied floors": [
+      "Floor 5.0",
+      "Floor 9.2"
+    ],
+    "roof": [
+      "Roof slab",
+      "Roof tiles"
+    ],
+    "rooflights": [
+      "Pyramid rooflight",
+      "Pyramid rooflight curb",
+      "Rooflight curb",
+      "Rooflight",
+      "Rooflight curb.001",
+      "Rooflight.001"
+    ],
+    "chimneys": [
+      "Chimney stack",
+      "Chimney cap",
+      "Chimney stack.001",
+      "Chimney cap.001",
+      "Chimney stack.002",
+      "Chimney cap.002"
+    ],
+    "living furniture": [
+      "Sofa grounded foot",
+      "Sofa grounded foot.001",
+      "Sofa grounded foot.002",
+      "Sofa grounded foot.003",
+      "Sofa plinth",
+      "Sofa seat",
+      "Sofa back",
+      "Sofa arm",
+      "Sofa arm.001",
+      "Coffee table",
+      "Coffee table leg",
+      "Coffee table leg.001",
+      "Coffee table leg.002",
+      "Coffee table leg.003"
+    ],
+    "office furniture": [
+      "Desk surface",
+      "Desk leg",
+      "Desk leg.001",
+      "Desk leg.002",
+      "Desk leg.003",
+      "Monitor base",
+      "Monitor stem",
+      "Monitor",
+      "Chair seat",
+      "Chair back",
+      "Chair leg",
+      "Chair leg.001",
+      "Chair leg.002",
+      "Chair leg.003"
+    ],
+    "partitions": [
+      "Salon partition"
+    ],
+    "envelope": [
+      "south ground carrier",
+      "south upper carrier",
+      "west ground carrier",
+      "west upper carrier",
+      "north ground carrier",
+      "north upper carrier",
+      "east ground carrier",
+      "east upper carrier",
+      "chamfer ground carrier",
+      "chamfer upper carrier",
+      "bay facet 0 carrier",
+      "bay facet 1 carrier",
+      "bay facet 2 carrier",
+      "bay facet 3 carrier",
+      "bay facet 4 carrier",
+      "bay facet 5 carrier",
+      "bay facet 6 carrier"
+    ],
+    "brick joints": [
+      "south measured mortar courses",
+      "south measured mortar courses.001",
+      "west measured mortar courses",
+      "west measured mortar courses.001",
+      "chamfer measured mortar courses"
+    ],
+    "facade": [
+      "south facade trim",
+      "south facade glass",
+      "south facade stone",
+      "south facade hardware",
+      "south facade pale",
+      "west facade trim",
+      "west facade glass",
+      "west facade stone",
+      "west facade hardware",
+      "west facade pale",
+      "north facade trim",
+      "north facade glass",
+      "north facade stone",
+      "north facade pale",
+      "east facade trim",
+      "east facade glass",
+      "east facade stone",
+      "east facade pale"
+    ],
+    "arches": [
+      "Arch spandrel"
+    ],
+    "chamfer": [
+      "chamfer chamfer trim",
+      "chamfer chamfer glass",
+      "chamfer chamfer stone",
+      "chamfer chamfer rustic"
+    ],
+    "bay": [
+      "bay facet 0 bay stone",
+      "bay facet 1 bay trim",
+      "bay facet 1 bay glass",
+      "bay facet 1 bay stone",
+      "bay facet 2 bay trim",
+      "bay facet 2 bay glass",
+      "bay facet 2 bay stone",
+      "bay facet 3 bay trim",
+      "bay facet 3 bay glass",
+      "bay facet 3 bay stone",
+      "bay facet 4 bay trim",
+      "bay facet 4 bay glass",
+      "bay facet 4 bay stone",
+      "bay facet 5 bay trim",
+      "bay facet 5 bay glass",
+      "bay facet 5 bay stone",
+      "bay facet 6 bay stone"
+    ],
+    "bay columns": [
+      "Bay column",
+      "Bay column base",
+      "Bay column capital",
+      "Bay column.001",
+      "Bay column base.001",
+      "Bay column capital.001",
+      "Bay column.002",
+      "Bay column base.002",
+      "Bay column capital.002",
+      "Bay column.003",
+      "Bay column base.003",
+      "Bay column capital.003",
+      "Bay column.004",
+      "Bay column base.004",
+      "Bay column capital.004",
+      "Bay column.005",
+      "Bay column base.005",
+      "Bay column capital.005"
+    ],
+    "bay floors": [
+      "Bay floor",
+      "Bay sill course",
+      "Bay floor.001",
+      "Bay sill course.001",
+      "Bow corbel",
+      "Bow corbel.001",
+      "Bow corbel.002",
+      "Bow corbel.003",
+      "Bow corbel.004"
+    ],
+    "bay railing": [
+      "Bay rail picket",
+      "Bay rail picket.001",
+      "Bay rail picket.002",
+      "Bay rail picket.003",
+      "Bay rail picket.004",
+      "Bay rail picket.005",
+      "Bay rail picket.006",
+      "Bay rail picket.007",
+      "Bay rail picket.008",
+      "Bay rail picket.009",
+      "Bay rail picket.010",
+      "Bay rail picket.011",
+      "Bay rail picket.012",
+      "Bay rail picket.013",
+      "Bay rail picket.014",
+      "Bay rail picket.015",
+      "Bay rail picket.016",
+      "Bay rail picket.017",
+      "Bay rail picket.018",
+      "Bay rail picket.019",
+      "Bay rail picket.020",
+      "Bay rail picket.021",
+      "Bay rail picket.022",
+      "Bay rail picket.023",
+      "Bay rail picket.024",
+      "Bay rail picket.025",
+      "Bay rail picket.026",
+      "Bay rail picket.027",
+      "Bay rail picket.028",
+      "Bay rail picket.029",
+      "Bay rail picket.030",
+      "Bay rail picket.031",
+      "Bay rail picket.032",
+      "Bay rail picket.033",
+      "Bay rail picket.034",
+      "Bay rail top",
+      "Bay rail mid",
+      "Bay rail top.001",
+      "Bay rail mid.001",
+      "Bay rail top.002",
+      "Bay rail mid.002",
+      "Bay rail top.003",
+      "Bay rail mid.003",
+      "Bay rail top.004",
+      "Bay rail mid.004",
+      "Bay rail top.005",
+      "Bay rail mid.005",
+      "Bay rail top.006",
+      "Bay rail mid.006",
+      "Bay rail top.007",
+      "Bay rail mid.007",
+      "Bay rail top.008",
+      "Bay rail mid.008",
+      "Bay rail top.009",
+      "Bay rail mid.009",
+      "Bay rail top.010",
+      "Bay rail mid.010",
+      "Bay rail top.011",
+      "Bay rail mid.011",
+      "Bay rail top.012",
+      "Bay rail mid.012",
+      "Bay rail top.013",
+      "Bay rail mid.013",
+      "Bay rail top.014",
+      "Bay rail mid.014",
+      "Bay rail top.015",
+      "Bay rail mid.015",
+      "Bay rail top.016",
+      "Bay rail mid.016",
+      "Bay rail top.017",
+      "Bay rail mid.017",
+      "Bay rail top.018",
+      "Bay rail mid.018",
+      "Bay rail top.019",
+      "Bay rail mid.019",
+      "Bay rail top.020",
+      "Bay rail mid.020",
+      "Bay rail top.021",
+      "Bay rail mid.021",
+      "Bay rail top.022",
+      "Bay rail mid.022",
+      "Bay rail top.023",
+      "Bay rail mid.023",
+      "Bay rail top.024",
+      "Bay rail mid.024",
+      "Bay rail top.025",
+      "Bay rail mid.025",
+      "Bay rail top.026",
+      "Bay rail mid.026",
+      "Bay rail top.027",
+      "Bay rail mid.027",
+      "Bay rail top.028",
+      "Bay rail mid.028",
+      "Bay rail top.029",
+      "Bay rail mid.029",
+      "Bay rail top.030",
+      "Bay rail mid.030",
+      "Bay rail top.031",
+      "Bay rail mid.031",
+      "Bay rail top.032",
+      "Bay rail mid.032",
+      "Bay rail top.033",
+      "Bay rail mid.033",
+      "Bay rail end post",
+      "Bay rail end post.001",
+      "Bay rail picket.035",
+      "Bay rail picket.036",
+      "Bay rail picket.037",
+      "Bay rail picket.038",
+      "Bay rail picket.039",
+      "Bay rail picket.040",
+      "Bay rail picket.041",
+      "Bay rail picket.042",
+      "Bay rail picket.043",
+      "Bay rail picket.044",
+      "Bay rail picket.045",
+      "Bay rail picket.046",
+      "Bay rail picket.047",
+      "Bay rail picket.048",
+      "Bay rail picket.049",
+      "Bay rail picket.050",
+      "Bay rail picket.051",
+      "Bay rail picket.052",
+      "Bay rail picket.053",
+      "Bay rail picket.054",
+      "Bay rail picket.055",
+      "Bay rail picket.056",
+      "Bay rail picket.057",
+      "Bay rail picket.058",
+      "Bay rail picket.059",
+      "Bay rail picket.060",
+      "Bay rail picket.061",
+      "Bay rail picket.062",
+      "Bay rail picket.063",
+      "Bay rail picket.064",
+      "Bay rail picket.065",
+      "Bay rail picket.066",
+      "Bay rail picket.067",
+      "Bay rail picket.068",
+      "Bay rail picket.069",
+      "Bay rail top.034",
+      "Bay rail mid.034",
+      "Bay rail top.035",
+      "Bay rail mid.035",
+      "Bay rail top.036",
+      "Bay rail mid.036",
+      "Bay rail top.037",
+      "Bay rail mid.037",
+      "Bay rail top.038",
+      "Bay rail mid.038",
+      "Bay rail top.039",
+      "Bay rail mid.039",
+      "Bay rail top.040",
+      "Bay rail mid.040",
+      "Bay rail top.041",
+      "Bay rail mid.041",
+      "Bay rail top.042",
+      "Bay rail mid.042",
+      "Bay rail top.043",
+      "Bay rail mid.043",
+      "Bay rail top.044",
+      "Bay rail mid.044",
+      "Bay rail top.045",
+      "Bay rail mid.045",
+      "Bay rail top.046",
+      "Bay rail mid.046",
+      "Bay rail top.047",
+      "Bay rail mid.047",
+      "Bay rail top.048",
+      "Bay rail mid.048",
+      "Bay rail top.049",
+      "Bay rail mid.049",
+      "Bay rail top.050",
+      "Bay rail mid.050",
+      "Bay rail top.051",
+      "Bay rail mid.051",
+      "Bay rail top.052",
+      "Bay rail mid.052",
+      "Bay rail top.053",
+      "Bay rail mid.053",
+      "Bay rail top.054",
+      "Bay rail mid.054",
+      "Bay rail top.055",
+      "Bay rail mid.055",
+      "Bay rail top.056",
+      "Bay rail mid.056",
+      "Bay rail top.057",
+      "Bay rail mid.057",
+      "Bay rail top.058",
+      "Bay rail mid.058",
+      "Bay rail top.059",
+      "Bay rail mid.059",
+      "Bay rail top.060",
+      "Bay rail mid.060",
+      "Bay rail top.061",
+      "Bay rail mid.061",
+      "Bay rail top.062",
+      "Bay rail mid.062",
+      "Bay rail top.063",
+      "Bay rail mid.063",
+      "Bay rail top.064",
+      "Bay rail mid.064",
+      "Bay rail top.065",
+      "Bay rail mid.065",
+      "Bay rail top.066",
+      "Bay rail mid.066",
+      "Bay rail top.067",
+      "Bay rail mid.067",
+      "Bay rail end post.002",
+      "Bay rail end post.003"
+    ],
+    "bay roof": [
+      "Bay cornice",
+      "Bow frieze",
+      "Frieze moulding"
+    ],
+    "turret": [
+      "Frieze pedestal",
+      "Dome foot bed mould",
+      "Dome foot cornice disc",
+      "Copper eave",
+      "Copper skirt",
+      "Cresting post",
+      "Cresting finial",
+      "Cresting arch",
+      "Cresting arch.001",
+      "Cresting rail",
+      "Cresting post.001",
+      "Cresting finial.001",
+      "Cresting arch.002",
+      "Cresting arch.003",
+      "Cresting rail.001",
+      "Cresting post.002",
+      "Cresting finial.002",
+      "Cresting arch.004",
+      "Cresting arch.005",
+      "Cresting rail.002",
+      "Cresting post.003",
+      "Cresting finial.003",
+      "Cresting arch.006",
+      "Cresting arch.007",
+      "Cresting rail.003",
+      "Cresting post.004",
+      "Cresting finial.004",
+      "Cresting arch.008",
+      "Cresting arch.009",
+      "Cresting rail.004",
+      "Cresting post.005",
+      "Cresting finial.005",
+      "Cresting arch.010",
+      "Cresting arch.011",
+      "Cresting rail.005",
+      "Cresting post.006",
+      "Cresting finial.006",
+      "Cresting arch.012",
+      "Cresting arch.013",
+      "Cresting rail.006",
+      "Cresting post.007",
+      "Cresting finial.007",
+      "Cresting arch.014",
+      "Cresting arch.015",
+      "Cresting rail.007",
+      "Cresting post.008",
+      "Cresting finial.008",
+      "Cresting arch.016",
+      "Cresting arch.017",
+      "Cresting rail.008",
+      "Cresting post.009",
+      "Cresting finial.009",
+      "Cresting arch.018",
+      "Cresting arch.019",
+      "Cresting rail.009",
+      "Cresting post.010",
+      "Cresting finial.010",
+      "Cresting arch.020",
+      "Cresting arch.021",
+      "Cresting rail.010",
+      "Cresting post.011",
+      "Cresting finial.011",
+      "Cresting arch.022",
+      "Cresting arch.023",
+      "Cresting rail.011",
+      "Cresting post.012",
+      "Cresting finial.012",
+      "Cresting arch.024",
+      "Cresting arch.025",
+      "Cresting rail.012",
+      "Cresting post.013",
+      "Cresting finial.013",
+      "Cresting arch.026",
+      "Cresting arch.027",
+      "Cresting rail.013",
+      "Cresting post.014",
+      "Cresting finial.014",
+      "Cresting arch.028",
+      "Cresting arch.029",
+      "Cresting rail.014",
+      "Cresting post.015",
+      "Cresting finial.015",
+      "Cresting arch.030",
+      "Cresting arch.031",
+      "Cresting rail.015",
+      "Cresting post.016",
+      "Cresting finial.016",
+      "Cresting arch.032",
+      "Cresting arch.033",
+      "Cresting rail.016",
+      "Cresting post.017",
+      "Cresting finial.017",
+      "Cresting arch.034",
+      "Cresting arch.035",
+      "Cresting rail.017",
+      "Cresting post.018",
+      "Cresting finial.018",
+      "Cresting arch.036",
+      "Cresting arch.037",
+      "Cresting rail.018",
+      "Cresting post.019",
+      "Cresting finial.019",
+      "Cresting arch.038",
+      "Cresting arch.039",
+      "Cresting rail.019",
+      "Cresting post.020",
+      "Cresting finial.020",
+      "Cresting arch.040",
+      "Cresting arch.041",
+      "Cresting rail.020",
+      "Cresting post.021",
+      "Cresting finial.021",
+      "Cresting arch.042",
+      "Cresting arch.043",
+      "Cresting rail.021",
+      "Cresting post.022",
+      "Cresting finial.022",
+      "Cresting arch.044",
+      "Cresting arch.045",
+      "Cresting rail.022",
+      "Cresting post.023",
+      "Cresting finial.023",
+      "Cresting arch.046",
+      "Cresting arch.047",
+      "Cresting rail.023",
+      "Cresting post.024",
+      "Cresting finial.024",
+      "Cresting arch.048",
+      "Cresting arch.049",
+      "Cresting rail.024",
+      "Cresting post.025",
+      "Cresting finial.025",
+      "Cresting arch.050",
+      "Cresting arch.051",
+      "Cresting rail.025",
+      "Cresting post.026",
+      "Cresting finial.026",
+      "Cresting arch.052",
+      "Cresting arch.053",
+      "Cresting rail.026",
+      "Cresting post.027",
+      "Cresting finial.027",
+      "Cresting arch.054",
+      "Cresting arch.055",
+      "Cresting rail.027",
+      "Copper dome",
+      "Dome rib",
+      "Dome rib.001",
+      "Dome rib.002",
+      "Dome rib.003",
+      "Dome rib.004",
+      "Dome rib.005",
+      "Dome rib.006",
+      "Dome rib.007",
+      "Dome rib.008",
+      "Dome rib.009",
+      "Dome rib.010",
+      "Dome rib.011",
+      "Dome rib.012",
+      "Dome rib.013",
+      "Dome rib.014",
+      "Dome rib.015",
+      "Dome rib.016",
+      "Dome rib.017",
+      "Dome rib.018",
+      "Dome rib.019",
+      "Dome rib.020",
+      "Dome rib.021",
+      "Dome rib.022",
+      "Dome rib.023",
+      "Dome rib.024",
+      "Dome rib.025",
+      "Dome rib.026",
+      "Dome rib.027",
+      "Dome rib.028",
+      "Dome rib.029",
+      "Dome rib.030",
+      "Dome rib.031",
+      "Dome rib.032",
+      "Dome rib.033",
+      "Dome rib.034",
+      "Dome rib.035",
+      "Dome rib.036",
+      "Dome rib.037",
+      "Dome rib.038",
+      "Dome rib.039",
+      "Dome rib.040",
+      "Dome rib.041",
+      "Dome rib.042",
+      "Dome rib.043",
+      "Dome rib.044",
+      "Dome rib.045",
+      "Dome rib.046",
+      "Dome rib.047",
+      "Dome rib.048",
+      "Dome rib.049",
+      "Dome rib.050",
+      "Dome rib.051",
+      "Dome rib.052",
+      "Dome rib.053",
+      "Dome rib.054",
+      "Dome rib.055",
+      "Dome rib.056",
+      "Dome rib.057",
+      "Dome rib.058",
+      "Dome rib.059",
+      "Dome rib.060",
+      "Dome rib.061",
+      "Dome rib.062",
+      "Dome rib.063",
+      "Dome rib.064",
+      "Dome rib.065",
+      "Dome rib.066",
+      "Dome rib.067",
+      "Dome rib.068",
+      "Dome rib.069",
+      "Dome rib.070",
+      "Dome rib.071",
+      "Dome rib.072",
+      "Dome rib.073",
+      "Dome rib.074",
+      "Dome rib.075",
+      "Dome rib.076",
+      "Dome rib.077",
+      "Dome rib.078",
+      "Dome rib.079",
+      "Dome rib.080",
+      "Dome rib.081",
+      "Dome rib.082",
+      "Dome rib.083",
+      "Dome rib.084",
+      "Dome rib.085",
+      "Dome rib.086",
+      "Dome rib.087",
+      "Dome rib.088",
+      "Dome rib.089",
+      "Dome rib.090",
+      "Dome rib.091",
+      "Dome rib.092",
+      "Dome rib.093",
+      "Dome rib.094",
+      "Dome rib.095",
+      "Dome rib.096",
+      "Dome rib.097",
+      "Dome rib.098",
+      "Dome rib.099",
+      "Dome rib.100",
+      "Dome rib.101",
+      "Dome rib.102",
+      "Dome rib.103",
+      "Dome rib.104",
+      "Dome rib.105",
+      "Dome rib.106",
+      "Dome rib.107",
+      "Dome rib.108",
+      "Dome rib.109",
+      "Dome rib.110",
+      "Dome rib.111",
+      "Dome rib.112",
+      "Dome rib.113",
+      "Dome rib.114",
+      "Dome rib.115",
+      "Dome rib.116",
+      "Dome rib.117",
+      "Dome rib.118",
+      "Dome rib.119",
+      "Dome rib.120",
+      "Dome rib.121",
+      "Dome rib.122",
+      "Dome rib.123",
+      "Dome rib.124",
+      "Dome rib.125",
+      "Dome rib.126",
+      "Dome rib.127",
+      "Dome rib.128",
+      "Dome rib.129",
+      "Dome rib.130",
+      "Dome rib.131",
+      "Dome rib.132",
+      "Dome rib.133",
+      "Dome rib.134",
+      "Dome rib.135",
+      "Dome rib.136",
+      "Dome rib.137",
+      "Dome rib.138",
+      "Dome rib.139",
+      "Dome rib.140",
+      "Dome rib.141",
+      "Dome rib.142",
+      "Dome rib.143",
+      "Dome rib.144",
+      "Dome rib.145",
+      "Dome rib.146",
+      "Dome rib.147",
+      "Dome rib.148",
+      "Dome rib.149",
+      "Dome rib.150",
+      "Dome rib.151",
+      "Dome rib.152",
+      "Dome rib.153",
+      "Dome rib.154",
+      "Dome rib.155",
+      "Dome rib.156",
+      "Dome rib.157",
+      "Dome rib.158",
+      "Dome rib.159",
+      "Dome rib.160",
+      "Dome rib.161",
+      "Dome rib.162",
+      "Dome rib.163",
+      "Dome rib.164",
+      "Dome rib.165",
+      "Dome rib.166",
+      "Dome rib.167",
+      "Dome rib.168",
+      "Dome rib.169",
+      "Dome rib.170",
+      "Dome rib.171",
+      "Dome rib.172",
+      "Dome rib.173",
+      "Dome rib.174",
+      "Dome rib.175",
+      "Dome dormer",
+      "Dome dormer rim",
+      "Dome dormer glass",
+      "Dome dormer bonnet",
+      "Dome dormer.001",
+      "Dome dormer rim.001",
+      "Dome dormer glass.001",
+      "Dome dormer bonnet.001",
+      "Dome dormer.002",
+      "Dome dormer rim.002",
+      "Dome dormer glass.002",
+      "Dome dormer bonnet.002",
+      "Dome dormer.003",
+      "Dome dormer rim.003",
+      "Dome dormer glass.003",
+      "Dome dormer bonnet.003",
+      "Lantern neck",
+      "Lantern base",
+      "Lantern column",
+      "Lantern column.001",
+      "Lantern column.002",
+      "Lantern column.003",
+      "Lantern column.004",
+      "Lantern column.005",
+      "Lantern column.006",
+      "Lantern column.007",
+      "Lantern cap ring",
+      "Copper dome.001",
+      "Finial"
+    ],
+    "corner posts": [
+      "Chamfer corner pilaster",
+      "Chamfer corner capital",
+      "Chamfer corner base",
+      "Chamfer corner pilaster.001",
+      "Chamfer corner capital.001",
+      "Chamfer corner base.001",
+      "Corner quoin",
+      "Corner quoin capital",
+      "Corner quoin.001",
+      "Corner quoin capital.001",
+      "Corner quoin.002",
+      "Corner quoin capital.002"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-12T08:57:08.277322+00:00",
+  "delivery_and_render_seconds": 12553.337296658,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

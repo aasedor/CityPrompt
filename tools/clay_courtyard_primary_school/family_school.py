@@ -216,7 +216,7 @@ def blocks():
     dy = (SE[3] - SE[2]) / 2
     # South face of the two-storey wing, under the corten pad: entrance doors and a window below, blank brick above.
     elevation(F['south'], -(SE[1] - SE[0]) / 2, (SE[1] - SE[0]) / 2, [hole('Entrance passage south', 0.0, G0, 6.4, U - .45, kind='passage')], [])   # open concrete-framed passage under the pad; blank brick above (both sources)
-    elevation(F['east'], -dy + T, dy, [hole(f'Entrance block east ground window {i}', u, .9, 3.0, 2.6, cols=3) for i, u in enumerate((-2.4, 2.4))], [hole(f'Entrance block east strip {i}', u, U + 1.1, 3.6, 1.9) for i, u in enumerate((-2.2, 2.4))])
+    elevation(F['east'], -dy + T, dy, [hole('Entrance passage street', -2.0, G0, 4.4, U - .45, kind='passage'), hole('Entrance block east ground window', 2.6, .9, 2.4, 2.6, cols=2)], [hole(f'Entrance block east strip {i}', u, U + 1.1, 3.6, 1.9) for i, u in enumerate((-2.2, 2.4))])   # concrete-lined street opening with the recessed entry doors (v008 P1)
     elevation(F['west'], -dy + T, dy - T, [hole('Entrance passage court', 2.0, G0, 4.4, U - .45, kind='passage')], [hole(f'Entrance block court strip {i}', u, U + 1.1, 3.6, 1.9) for i, u in enumerate((-2.2, 2.4))])
     passage_interior()
 
@@ -228,6 +228,16 @@ def passage_interior():
     ys = -8.5                                                # screen line: lobby north of it, passage south of it
     C.box('Passage floor', ((x0 + x1) / 2, (y0 + T + ys) / 2, G0 + .01), (x1 - x0 - 2 * T - .02, ys - y0 - T - .02, .02), 'pale', 'entrance passage', 0)
     C.box('Passage soffit', ((x0 + x1) / 2, (y0 + T + ys) / 2, U - .165), (x1 - x0 - 2 * T - .02, ys - y0 - T - .02, .03), 'pale', 'entrance passage', 0)
+    # Recessed glazed entry doors facing the street, 1.5 m inside the east opening (sources).
+    fe = C.Face((x1 - 1.5, (y0 + T + ys) / 2 - .05, 0), (0, 1, 0), (-1, 0, 0), 'passage street screen')
+    ge = hole('Passage street entry doors', 0.0, G0, 3.6, U - .9)
+    fe.wall('Passage street screen carrier', -(ys - y0 - T) / 2 + .1, (ys - y0 - T) / 2 - .1, G0, U - .15, depth=.20, role='pale', holes=[ge])
+    fe.window(ge['id'], ge['u'], ge['z'], ge['w'], ge['h'], cols=3, rows=2, frame='trim', depth=.20, sill=False, kind='glazed door')
+    lined(fe, ge, inset=.10, role='pale')
+    for du in (-.12, .12):
+        C.rod('Street door pull', fe.p(du, .09, G0 + .9), fe.p(du, .09, G0 + 1.5), .018, 'hardware', 'door hardware')
+    C.OPENINGS.append(dict(id=ge['id'], face=fe.label, u=ge['u'], z=ge['z'], width=ge['w'], height=ge['h'], kind='glazed door', clear_wall_cut=True,
+        carrier_depth_m=.20, frame_inset_m=.10, pane_inset_m=.14, face_origin=list(fe.o), face_tangent=list(fe.t), face_inward=list(fe.n), occupied_space='entrance hall'))
     f = C.Face(((x0 + x1) / 2, ys, 0), (1, 0, 0), (0, 1, 0), 'passage screen')
     g = hole('Passage entrance screen', 0.0, G0, x1 - x0 - 2 * T - .8, U - .6)
     f.wall('Passage screen carrier', -(x1 - x0) / 2 + T, (x1 - x0) / 2 - T, G0, U - .15, depth=.20, role='pale', holes=[g])
@@ -263,7 +273,7 @@ def passage_and_canopy():
     # inside the fascias so no face is shared; slender post at the court end.
     # The box is the yard's east enclosure: a narrow, long board-formed wall from under the pad's corner to the street fence,
     # its east face on the canopy's east edge.
-    cx0, cx1, cy0, cy1 = bx1 - .1 - 1.55, bx1 - .1, CY0 + .15, PAD_Y0 + 3.0
+    cx0, cx1, cy0, cy1 = bx1 - .1 - 1.55, bx1 - .1, PAD_Y0 + .14, PAD_Y0 + 3.0   # wholly under the pad: the fascia passes over its top (v008 P1)
     C.box('Corner concrete box', ((cx0 + cx1) / 2, (cy0 + cy1) / 2, (G0 + CANOPY - EPS) / 2), (cx1 - cx0, cy1 - cy0, CANOPY - EPS - G0), 'pale', 'corten canopy', 0)
     for k in range(1, 4):
         zz = G0 + k * (CANOPY - G0) / 4
@@ -275,11 +285,12 @@ def passage_and_canopy():
     C.qa_room_light('Canopy pad', ((x0 + x1) / 2, (by0 + by1) / 2, CANOPY - .5), 60, 3.0)
     # Open yard paving from the pad to the street line, with the street fence and a gate.
     # Dark rubber yard paving south of the pad, matching the court, closed by the box on the east and the fence on the street.
-    C.box('Yard paving', ((CX1 + cx0) / 2, (CY0 + PAD_Y0) / 2, G0 + .01), (cx0 - CX1 - EPS, PAD_Y0 - CY0, .02), 'court', 'playground', 0)   # east of the court surface, never overlapping it
-    C.box('Yard kerb', ((CX1 + cx0) / 2, CY0 + .15, G0 + .12), (cx0 - CX1 - EPS, .30, .24), 'pale', 'playground', 0)
+    C.box('Yard paving', ((CX1 + cx1 - .1) / 2, (CY0 + PAD_Y0) / 2, G0 + .01), (cx1 - .1 - CX1 - EPS, PAD_Y0 - CY0, .02), 'court', 'playground', 0)   # east of the court surface, never overlapping it
+    C.box('Yard kerb', ((CX1 + cx1 - .1) / 2, CY0 + .15, G0 + .12), (cx1 - .1 - CX1 - EPS, .30, .24), 'pale', 'playground', 0)
     C.railing('Yard fence', (6.2, CY0 + .15, G0 + .24), (12.0, CY0 + .15, G0 + .24), height=1.3, spacing=.22, role='hardware')
     C.railing('Yard gate', (12.2, CY0 + .15, G0 + .24), (14.2, CY0 + .15, G0 + .24), height=1.3, spacing=.22, role='fin_red')
-    C.railing('Yard fence east', (14.4, CY0 + .15, G0 + .24), (cx0 - .05, CY0 + .15, G0 + .24), height=1.3, spacing=.22, role='hardware')
+    C.railing('Yard fence east', (14.4, CY0 + .15, G0 + .24), (cx1 - .3, CY0 + .15, G0 + .24), height=1.3, spacing=.22, role='hardware')
+    C.railing('Yard fence east return', (cx1 - .3, CY0 + .15, G0 + .24), (cx1 - .3, cy0 - .05, G0 + .24), height=1.3, spacing=.22, role='hardware')
     C.box('Canopy bench', (ax0 + 2.6, -10.0, .45), (.45, 3.0, .08), 'timber', 'playground', 0)
     for dy in (-1.2, 1.2):
         C.box('Canopy bench leg', (ax0 + 2.6, -10.0 + dy, .21), (.4, .1, .42), 'hardware', 'playground', 0)

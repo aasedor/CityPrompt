@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-craneway-hall",
+  "variant_id": "clay-craneway-hall-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "early_20c_megastructure_industrial/variant_1",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/early_20c_megastructure_industrial/variant_1.png",
+      "path": "sources/front.png",
+      "bytes": 1216317,
+      "sha256": "fb465a8b7cba59a7a4347a68c5ba29d164ac9bb541adc1f59ba27c8e69131647"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/early_20c_megastructure_industrial/variant_1_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 893797,
+      "sha256": "848bf059b331200134b0765e505160f7cfda28dfb7016c0be130bf7682466baa"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/early_20c_megastructure_industrial/variant_1_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 937510,
+      "sha256": "a2d3f265b150e7bc58367e9bb54f691d168b70af34dbf1fe3c1cb18dca64ae2d"
+    }
+  ]
+}
