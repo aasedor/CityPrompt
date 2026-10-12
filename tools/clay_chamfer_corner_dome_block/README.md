@@ -68,10 +68,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v008 (reopened, v009 in progress)
+## Open blockers after v009 (reopened run ended)
 
-Reopened run, v008 reviewed 0 P0 / 3 P1; the candidate stays v006 (0 P0 / 2 P1); v009 in progress. Open v008 P1:
+Ended at v009, the second of the two versions allowed by the reopened run (docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md, limit lifted 2026-10-12). The candidate GLB stays v006 (0 P0 / 2 P1); v008 and v009 are evidence only. Open v009 P1, for a human to weigh:
 
-1. **Dormers.** Solid copper discs with hood plates, no glazed oculus in a moulded frame; the outer two stand off the dome outline.
-2. **Ribs.** Only the front rib reads continuous; the others read as stepped segments with gaps that stop short of the lantern base.
-3. **Cresting.** A thin post-and-zigzag fence at the disc edge on a stone-coloured disc; the sources show tall pierced copper scroll panels at the dome base, about a fifth of the dome height.
+1. **Dormer oculi.** Still read as copper with no glass or dark recess (the glass disc sits too deep behind the ring to read); the hoods read as one-sided fins.
+2. **Dome pattern alignment.** A rib runs down the chamfer axis with dormers either side; the source front centres a dormer panel on the axis with ribs either side (rotate the rib and dormer set by half a bay).
+3. **Lantern.** An open ring of pale posts with a plain cap and rod finial; the source shows a glazed copper octagonal lantern with an entablature, ribbed cupola and ball finial.
+4. **Rooflights.** The pyramid and small rooflights read as flat grey slabs from above; the source top shows a four-facet framed glazed pyramid.
