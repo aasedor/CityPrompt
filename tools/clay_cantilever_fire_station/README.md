@@ -68,11 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v008 (reopened, v009 in progress)
+## Open blockers after v009 (reopened run ended)
 
-Reopened run, v008 reviewed 0 P0 / 4 P1 (candidate); v009 in progress. Open v008 P1:
+Ended at v009, the second of the two versions allowed by the reopened run (docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md, limit lifted 2026-10-12). The candidate GLB is v009 (0 P0 / 1 P1). Open v009 P1, for a human to weigh:
 
-1. **Storey split.** The glazed hall is about a third of the height; the sources show about half, with the oxblood box about 1.0 to 1.15 hall heights and no second upper floor.
-2. **Clock tower.** Too short (about 1.45 building heights against 1.8) and thin (0.75 of a bay pitch against about 1.0).
-3. **Loggia ceiling.** Pale with a strip light; the source shows a dark oxblood soffit.
-4. **Roof plate.** The loggia head plate rises above the roof slab as a raised oxblood plate along the west edge.
+1. **Bay transoms.** Every apparatus bay has a flat matte-black header where the source has a glazed transom over the door; the hall glass reads about 0.32 of the facade height against about 0.46. Finite fix: replace the bay head panels with glazed transoms whose mullions follow the door grid.
