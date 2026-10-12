@@ -68,9 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v006 (reopened, v007 in progress)
+## Open blockers after v007 (reopened run ended)
 
-Reopened run, v006 reviewed 0 P0 / 2 P1 (candidate); v007 in progress. Open v006 P1:
+Ended at v007, the second of the two versions allowed by the reopened run (docs/showcase/REWORK_STOPPING_RULE_2026-10-11.md, limit lifted 2026-10-12). The candidate GLB is v007 (0 P0 / 1 P1). Open v007 P1, for a human to weigh:
 
-1. **Lobby tower height.** It rises about half a storey to a storey above the main parapet; the sources put its banded header level with the parapet caps and its own roof below the main roof.
-2. **Band colours.** Navy on every block; the sources show navy only on the beige south leg and the tower header, dark green on the charcoal north leg and the beige leg's west end.
+1. **Lobby tower head.** The banded header still stands proud of the main parapet and cuts the navy band; the oblique source shows the tower roof about 1 m below the main parapet as a pale membrane, with the main parapet and band running continuously behind it, and a taupe header. Finite fix: drop the header and tower roof 0.8 to 1.0 m below the parapet cap, white membrane on the tower roof, carry the parapet and band behind the tower, taupe header.
