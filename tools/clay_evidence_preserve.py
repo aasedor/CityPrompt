@@ -1,7 +1,7 @@
 """Preserve one RLASM clay candidate from its artefact directory into the repository.
 
 Mirrors the pilot brownstone preservation: the GLB goes to tools/<family>/candidates/ as an
-ordinary blob (must stay under 1 MiB; Git LFS uploads are refused from the cloud build host),
+ordinary blob (cap 4 MiB since 2026-10-12; was 1 MiB; LFS is blocked at lfs.github.com from the cloud build host),
 the build report, source entry, prework manifest, aperture audit, reviewer brief and the
 independent review record go to tools/<family>/evidence/<version>/, and every render and
 phone board is stored there as a JPEG under 950 KB. Full-resolution PNGs plus the GLB are
@@ -18,7 +18,7 @@ from pathlib import Path
 from PIL import Image
 
 MAX_JPEG = 950_000
-MAX_GLB = 1_048_576
+MAX_GLB = 4 * 1_048_576
 DOCS = ['build-report.json', 'source-entry.json', 'prework-manifest.json']
 
 
