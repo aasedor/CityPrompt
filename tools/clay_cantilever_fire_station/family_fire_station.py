@@ -17,15 +17,17 @@ from contract import subtract_openings
 SLUG = 'clay-cantilever-fire-station'
 W, D = 44.0, 32.0
 T = .30
-G0, U, ROOF, CROWN = .15, 5.50, 10.00, 10.60
+G0, U, ROOF, CROWN = .15, 7.00, 16.50, 17.10   # v008: about 2.6 bay pitches overall, the oxblood box about 1.5 ground storeys (v007 P0)
+U2 = 11.75                         # intermediate floor inside the oxblood box, kept clear of the loggia recess
+STEP_Z = 4.0                       # door-head height where the red skin steps down at the lobby and over the west ground wall
 FRONT_Y, REAR_Y, WEST_X, EAST_X = -D / 2, D / 2, -W / 2, W / 2
 SETBACK = 2.8                      # ground-floor south wall sits this far under the upper storey (sources: about 2.5 to 3 m)
 GY = FRONT_Y + SETBACK             # ground south wall plane
-BAY_W, BAY_H = 5.75, 4.6
+BAY_W, BAY_H = 5.75, 5.5
 PIER = .25 * BAY_W                 # solid grey steel piers about a quarter of a bay wide
 BAY_X0 = -W / 2 + .17 * W          # four bays between piers from about 17 to 79 percent of the south face
 BAYS = [BAY_X0 + BAY_W / 2 + i * (BAY_W + PIER) for i in range(4)]
-TW_X0, TW_X1, TW_Y0, TW_Y1, TW_H = EAST_X - 1.8, EAST_X + 3.7, FRONT_Y - 1.8, FRONT_Y + 6.2, 15.6   # straddles the south-east corner, 1.8 m proud of the south face
+TW_X0, TW_X1, TW_Y0, TW_Y1, TW_H = EAST_X - 1.8, EAST_X + 3.7, FRONT_Y - 1.8, FRONT_Y + 6.2, 24.0   # straddles the south-east corner, 1.8 m proud of the south face
 APRON = 18.0
 EPS = .002
 PALETTE = dict(wall=(.25, .06, .07), joint=(.17, .04, .045), trim=(.03, .03, .032),
@@ -38,13 +40,13 @@ PALETTE = dict(wall=(.25, .06, .07), joint=(.17, .04, .045), trim=(.03, .03, .03
 def manifest(version):
     h = TW_H + .6
     cams = G.camera_roster(W + 6.0, D + APRON, h, [
-        ('facade_close', (-16.0, -34.0, 5.0), (0.0, FRONT_Y, 5.0), 45),
-        ('architecture_close', (-30.0, -32.0, 9.5), (-12.0, FRONT_Y, 7.5), 50),
+        ('facade_close', (-16.0, -34.0, 7.0), (0.0, FRONT_Y, 8.0), 45),
+        ('architecture_close', (-30.0, -32.0, 13.0), (-12.0, FRONT_Y, 10.5), 50),
         ('glass_close', (-14.0, -24.0, 3.2), (-12.0, GY, 3.0), 50),
         ('apparatus_bays', (6.0, -30.0, 3.0), (5.0, GY, 3.2), 40),
         ('soffit_corner', (-30.0, -22.0, 3.0), (WEST_X, FRONT_Y, 5.2), 40),
-        ('tower_clock', (18.0, -36.0, 10.0), ((TW_X0 + TW_X1) / 2, TW_Y0, 11.5), 45),
-        ('loggia_close', (-34.0, -26.0, 9.0), (WEST_X, -10.0, 8.0), 45),
+        ('tower_clock', (18.0, -36.0, 15.0), ((TW_X0 + TW_X1) / 2, TW_Y0, 18.5), 45),
+        ('loggia_close', (-34.0, -26.0, 13.0), (WEST_X, -10.0, 11.5), 45),
         ('apron_contact', (16.0, -24.0, 1.6), (8.0, GY, 1.2), 40),
         ('interior', (-9.4, 9.6, 2.4), (12.0, GY + .8, 2.6), 40),
         ('rear_door', (10.0, 26.0, 2.5), (0.0, REAR_Y, 2.4), 40)])
@@ -53,18 +55,18 @@ def manifest(version):
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='modern_fire_station/variant_2 (fire_cantilevered_modern)',
         measurement_contract=dict(dimensions_m=dict(width=W + 6.0, depth=D + APRON, height=h),
-            observed_storeys=2, storey_programme='tall apparatus hall level and one upper storey; fixed authored assembly',
+            observed_storeys=3, storey_programme='tall apparatus hall level and two levels inside the oxblood box; fixed authored assembly',
             plan='rectangular box 490 x 350 px in the top view (1.4 : 1) with the glass tower on the east side projecting south of the front',
             apparatus_bays=4, bay_m=[BAY_W, BAY_H], bays_position='east half of the south face, recessed 2 m under the upper storey',
             south_west_ground='full-height curtain wall under the cantilever', loggia='deep glazed recess in the south-west of the upper storey framed by the red box',
             west='ribbon window on the upper storey, dark concrete ground wall', tower_m=[TW_X1 - TW_X0, TW_Y1 - TW_Y0, TW_H], tower='fully glazed, clock faces south and west, sign band below, red cap',
-            levels_m=[G0, U], roof_m=ROOF, parapet_m=CROWN - ROOF,
+            levels_m=[G0, U, U2], roof_m=ROOF, parapet_m=CROWN - ROOF,
             forecourt='concrete apron with bollards at each bay, flagpole, memorial wall and benches to the south-west, flat shelter east of the tower, lawn panels west',
             inferred='44 m frontage calibrates four 4.6 m bays plus the glazed hall; the north face is not visible and repeats the red panel grammar with service doors; interiors (four appliances, dormitory) are teaching assumptions.'),
         roof_contract=dict(type='flat white membrane behind a 0.6 m parapet; one rooftop hatch; tower roof capped in red', datum_m=ROOF, crowns_m=[CROWN, TW_H + .6]),
         identity_contract=dict(owner='oxblood panel box cantilevered over a glazed apparatus hall with four bays and a lit soffit edge, south-west loggia, and a slender glass clock tower'),
         material_contract=dict(profile='source-palette clay: oxblood composite panels with recessed joints, near-black mullions, dark concrete plinth, white membrane, pale aluminium tower frame, warm light strip', textured_keeper=False),
-        programme_contract=dict(storeys=2, ground='apparatus hall with four appliances, watch room behind the south-west glass', upper='dormitory, day room and offices behind the loggia', stairs='straight supported flight behind the hall'),
+        programme_contract=dict(storeys=3, ground='apparatus hall with four appliances, watch room behind the south-west glass', upper='dormitory on the first level, day room and offices on the second, both behind the loggia', stairs='straight supported flight behind the hall'),
         contact_contract=['Grade-zero slab and apron', 'Bay thresholds at slab level', 'Soffit slab cantilevers 2 m over the bay line with the light strip at its edge', 'Tower seated on its own slab and tied to the east wall', 'Bollards, flagpole, benches and memorial wall seated on the apron', 'Shelter posts on the apron'],
         runtime_contract=dict(scale='fixed_native_only', installation='not installed', review='NOT TESTED'),
         camera_roster=cams, mandatory_review_views=[c['name'] for c in cams])
@@ -74,7 +76,7 @@ def hole(name, u, z, w, h, **kw):
     return dict(id=name, u=u, z=z, w=w, h=h, **kw)
 
 
-def joints(f, lo, hi, z0, z1, holes, spacing=1.2, rows=(7.0, 8.6)):
+def joints(f, lo, hi, z0, z1, holes, spacing=1.2, rows=(10.4, 13.8)):
     """Recessed panel joints: vertical at 1.2 m, horizontal at the stated datums, one mesh per elevation."""
     vertices, faces = [], []
     def quad(a, b, c, d):
@@ -129,7 +131,7 @@ def bay_door(f, name, u, z, w, h):
 
 def south_upper(f):
     """Oxblood upper box at the front plane with the deep loggia and the cantilever soffit below."""
-    sw = [hole(f'South upper window {i}', x, U + (2.0 if i % 2 == 0 else 2.5), 1.0, 1.8) for i, x in enumerate((-8.2, -6.6, -5.0, -3.4))]
+    sw = [hole(f'South upper window {i}', x, U + (3.0 if i % 2 == 0 else 3.5), 1.0, 1.8) for i, x in enumerate((-8.2, -6.6, -5.0, -3.4))]
     f.wall('South upper carrier', WEST_X, EAST_X, U, CROWN, depth=T, holes=sw)
     joints(f, WEST_X + .2, EAST_X - .2, U + EPS, CROWN - EPS, sw)
     for h in sw:
@@ -140,11 +142,11 @@ def south_upper(f):
     # The red skin steps down at both ends to door-head height; the light strip traces the stepped profile.
     for x0, x1 in ((EAST_X - 7.0, EAST_X),):
         cx = (x0 + x1) / 2
-        C.box('Stepped soffit volume', (cx, FRONT_Y + SETBACK / 2 + T / 2, (3.6 + U - .75 - EPS) / 2), (x1 - x0, SETBACK + T, U - .75 - EPS - 3.6), 'wall', 'cantilever', 0)
-        C.box('Stepped soffit lining', (cx, FRONT_Y + SETBACK / 2 + .10, 3.595), (x1 - x0 - .02, SETBACK - .2, .01), 'pale', 'cantilever', 0)
-        C.box('Step light strip', (cx, FRONT_Y - .035, 3.6 + .04), (x1 - x0 - .04, .07, .08), 'glow', 'cantilever', 0)
+        C.box('Stepped soffit volume', (cx, FRONT_Y + SETBACK / 2 + T / 2, (STEP_Z + U - .75 - EPS) / 2), (x1 - x0, SETBACK + T, U - .75 - EPS - STEP_Z), 'wall', 'cantilever', 0)
+        C.box('Stepped soffit lining', (cx, FRONT_Y + SETBACK / 2 + .10, (STEP_Z - .005)), (x1 - x0 - .02, SETBACK - .2, .01), 'pale', 'cantilever', 0)
+        C.box('Step light strip', (cx, FRONT_Y - .035, STEP_Z + .04), (x1 - x0 - .04, .07, .08), 'glow', 'cantilever', 0)
         sx = x1 if x0 == WEST_X else x0
-        C.box('Step riser light strip', (sx - .04, FRONT_Y - .035, (3.6 + U - .75) / 2), (.08, .07, U - .75 - 3.6 + .08), 'glow', 'cantilever', 0)
+        C.box('Step riser light strip', (sx - .04, FRONT_Y - .035, (STEP_Z + U - .75) / 2), (.08, .07, U - .75 - STEP_Z + .08), 'glow', 'cantilever', 0)
         C.qa_room_light('Soffit', (cx, FRONT_Y + SETBACK / 2, 3.2), 70, 2.4)
     C.box('Soffit light strip', ((WEST_X - .07 + EAST_X - 7.0 - .08) / 2, FRONT_Y - .035, U - .75 + .04), (EAST_X - 7.0 - .08 - WEST_X + .07, .07, .08), 'glow', 'cantilever', 0)
     # South-west notch: one folded red return over the slab end (no seam cube), with the lit edge running round it.
@@ -162,7 +164,7 @@ def south_ground(f):
     wa, wb = WEST_X + T + .11, BAYS[0] - BAY_W / 2 - PIER
     zt = (U - .75 - EPS)
     west = hole('Watch room glazing', (wa + wb) / 2, G0, wb - wa, zt - G0)
-    f.window(west['id'], west['u'], west['z'], west['w'], west['h'], cols=4, rows=2, frame='trim', depth=T, sill=False)
+    f.window(west['id'], west['u'], west['z'], west['w'], west['h'], cols=4, rows=3, frame='trim', depth=T, sill=False)
     for b in BAYS:
         bay_door(f, f'Apparatus bay {BAYS.index(b) + 1}', b, G0, BAY_W, BAY_H)
         f.part('Bay head glazing frame', b, .16, (BAY_H + G0 + zt) / 2, BAY_W, .10, zt - BAY_H - G0, 'trim', 'apparatus doors', 0)
@@ -171,7 +173,7 @@ def south_ground(f):
         f.part('Bay pier', u, T / 2 - .03, (G0 + zt) / 2, PIER, T + .06, zt - G0, 'pale', 'bay piers', 0)
     ea = BAYS[-1] + BAY_W / 2 + PIER
     east = hole('Entrance lobby glazing', (ea + EAST_X - T - .11) / 2, G0, (EAST_X - T - .11) - ea, zt - G0)
-    f.window(east['id'], east['u'], east['z'], east['w'], east['h'], cols=3, rows=2, frame='trim', depth=T, sill=False, kind='glazed door')
+    f.window(east['id'], east['u'], east['z'], east['w'], east['h'], cols=3, rows=3, frame='trim', depth=T, sill=False, kind='glazed door')
     for du in (-.12, .12):
         C.rod('Lobby door pull', f.p(east['u'] + du, .01, G0 + .9), f.p(east['u'] + du, .01, G0 + 1.5), .018, 'hardware', 'door hardware')
     f.part('Hall threshold', 0, .06, G0 - .005, W - .4, .40, .03, 'sand', 'apron', 0)
@@ -179,12 +181,13 @@ def south_ground(f):
 
 def west(f):
     """West face: dark concrete ground with a curtain-wall return at the south corner; red upper with a ribbon window."""
-    loggia = hole('West loggia', 1.95, U + .9, 25.9, 3.2)
+    loggia = hole('West loggia', 1.95, U + .9, 25.9, CROWN - .45 - (U + .9))   # from the sill to the lit parapet line (v007 P1 2)
     f.wall('West upper carrier', -D / 2 + T, D / 2 - T, U, CROWN, depth=T, holes=[loggia])
     joints(f, -D / 2 + T + .2, D / 2 - .2, U + EPS, CROWN - EPS, [loggia])
-    # Loggia: 1.2 m deep red returns and soffit, glazed wall at the back of the recess.
-    lined(f, loggia, inset=2.0, role='wall')
-    f.window(loggia['id'], loggia['u'], loggia['z'], loggia['w'], loggia['h'], cols=13, rows=1, frame='trim', inset=2.0, depth=T, sill=False)
+    # Loggia: 3 m deep red returns, soffit and floor, glazed wall at the back of the recess, open guard rail at its lip.
+    lined(f, loggia, inset=3.0, role='wall')
+    f.window(loggia['id'], loggia['u'], loggia['z'], loggia['w'], loggia['h'], cols=13, rows=3, frame='trim', inset=3.0, depth=T, sill=False)
+    C.railing('Loggia guard', f.p(loggia['u'] - loggia['w'] / 2 + .12, .10, loggia['z'] + .03), f.p(loggia['u'] + loggia['w'] / 2 - .12, .10, loggia['z'] + .03), height=1.05, spacing=.14, role='hardware')
     # The oxblood panel frames the recess itself; a thin lit edge traces its head and sill as in the sources.
     lu, lz, lw, lh = loggia['u'], loggia['z'], loggia['w'], loggia['h']
     # West sill band: one red plane from the north red leg to the south-west corner, its underside level with the
@@ -192,24 +195,26 @@ def west(f):
     C.box('West sill band', (WEST_X + T / 2, (FRONT_Y + REAR_Y - T) / 2, (U - .75 + U) / 2), (T, REAR_Y - T - FRONT_Y, .75), 'wall', 'cantilever', 0)
     # One continuous lit line: parapet top edge, north-west vertical, bottom of the north red leg, up the notch riser,
     # along the sill band underside to the south-west corner, down into the south soffit line; plus the south-west vertical.
-    lx, ly = WEST_X - .035, (WEST_X - .15)
+    lx = WEST_X - .035
     leg_s = REAR_Y - T - 13.8
     C.box('West parapet lit edge', (lx, (FRONT_Y + REAR_Y) / 2, CROWN - .04), (.07, D, .08), 'glow', 'lit edge', 0)
     C.box('North-west lit vertical upper', (lx, REAR_Y - .035, (U + .05 + CROWN) / 2), (.07, .07, CROWN - U - .05), 'glow', 'lit edge', 0)
-    C.box('North-west lit vertical lower', (ly, REAR_Y - T - .035, (3.58 + U + .05) / 2), (.06, .07, U + .05 - 3.58), 'glow', 'lit edge', 0)
-    C.box('Notch riser lit edge', (ly, leg_s + .035, (3.58 + U - .75) / 2), (.06, .07, U - .75 - 3.58 + .05), 'glow', 'lit edge', 0)
+    C.box('North-west lit vertical lower', (lx, REAR_Y - T - .035, ((STEP_Z - .02) + U + .05) / 2), (.06, .07, U + .05 - (STEP_Z - .02)), 'glow', 'lit edge', 0)
+    C.box('Notch riser lit edge', (lx, leg_s + .035, ((STEP_Z - .02) + U - .75) / 2), (.06, .07, U - .75 - (STEP_Z - .02) + .05), 'glow', 'lit edge', 0)
     C.box('West sill band lit edge', (lx, (FRONT_Y + leg_s) / 2, U - .75 + .04), (.07, leg_s - FRONT_Y, .08), 'glow', 'lit edge', 0)
     C.box('South-west lit vertical', (lx, FRONT_Y - .035, (U - .75 + CROWN) / 2), (.07, .07, CROWN - U + .75), 'glow', 'lit edge', 0)
     C.box('Loggia lit edge sill', f.p(lu, .04, lz + .03), (.05, lw - .1, .05), 'glow', 'loggia frame', 0)
     C.qa_room_light('Loggia', f.p(lu, 1.0, lz + lh - .3), 60, 4.0)
-    # Red leg: the oxblood skin continues flush down over the ground wall at the north end of the west face.
-    C.box('West red leg', (WEST_X - .03, REAR_Y - T - 6.9, (3.6 + U + .05) / 2), (.18, 13.8, U + .05 - 3.6), 'wall', 'cantilever', 0)
-    C.box('West red leg light strip', (WEST_X - .15, REAR_Y - T - 6.9, 3.58), (.06, 13.4, .05), 'glow', 'cantilever', 0)
+    # Red leg: the oxblood skin continues flush down over the north part of the ground wall in the wall plane itself
+    # (stone carrier below STEP_Z, red carrier above it, no applied slab or seam); the lit line runs along their joint.
+    leg_u = -D / 2 + T + 13.8            # u = -y: the leg ends at leg_s
     ret = hole('West hall glass return', 8.3, G0, 10.6, U - 1.0 - G0, kind='curtain')
     sd = hole('West staff door', -4.0, G0, 1.1, 2.4, kind='door')
     gw = hole('West ground window', -10.0, 1.2, 2.4, 2.0)
-    holes = [ret, sd, gw]
-    f.wall('West ground carrier', -D / 2 + T, D / 2 - SETBACK - T, G0, U - .75, depth=T, role='stone', holes=holes)
+    f.wall('West ground carrier north', -D / 2 + T, leg_u - EPS, G0, STEP_Z, depth=T, role='stone', holes=[sd, gw])
+    f.wall('West red leg', -D / 2 + T, leg_u - EPS, STEP_Z, U - .75, depth=T, role='wall')
+    f.wall('West ground carrier south', leg_u, D / 2 - SETBACK - T, G0, U - .75, depth=T, role='stone', holes=[ret])
+    C.box('West red leg light strip', (lx, REAR_Y - T - 6.9, STEP_Z - .02), (.07, 13.8 - .07, .06), 'glow', 'cantilever', 0)
     curtain(f, ret, cols=5, rows=2)
     f.door(sd['id'], sd['u'], sd['z'], sd['w'], sd['h'], role='trim', panels=1); lined(f, sd, inset=.19)
     f.part('Door step', sd['u'], -.17, G0 / 2, 1.4, .34, G0, 'stone', 'entry steps', 0)
@@ -233,7 +238,7 @@ def east(f):
 
 
 def north(f):
-    holes = [hole(f'Rear upper window {i}', u, U + 1.2, 3.0, 2.2) for i, u in enumerate((-12.0, -4.0, 4.0, 12.0))]
+    holes = [hole(f'Rear upper window {j}{i}', u, zb + 1.4, 3.0, 2.2) for j, zb in enumerate((U, U2)) for i, u in enumerate((-12.0, -4.0, 4.0, 12.0))]
     f.wall('North upper carrier', WEST_X, EAST_X, U, CROWN, depth=T, holes=holes)
     joints(f, WEST_X + .2, EAST_X - .2, U + EPS, CROWN - EPS, holes)
     for h in holes:
@@ -262,7 +267,7 @@ def tower():
     C.box('Tower slab', (cx, cy, (G0 + .01) / 2), (x1 - x0, y1 - y0, G0 + .01), 'foundation', 'tower', 0)
     for xx, yy in ((x0 + .22, y0 + .22), (x1 - .22, y0 + .22), (x1 - .22, y1 - .22), (x0 + .22, y1 - .22)):
         C.box('Tower corner column', (xx, yy, G0 + (h - G0) / 2), (.40, .40, h - G0), 'trim', 'tower', 0)
-    for z in (U, 9.5, 13.5):
+    for z in (U, U2, 16.5, 20.5):
         C.box('Tower floor plate', (cx, cy, z - .10), (x1 - x0 - .5, y1 - y0 - .5, .20), 'floor', 'tower', 0)
     # Glazed faces: south, east, north full; west only where it stands proud of the station box.
     faces = [((cx, y0 + .02), (1, 0), x1 - x0 - .44, 'south'), ((x1 - .02, cy), (0, 1), y1 - y0 - .44, 'east'),
@@ -273,7 +278,7 @@ def tower():
         for i in range(1, n):
             mx, my = px + tx * (-span / 2 + i * span / n), py + ty * (-span / 2 + i * span / n)
             C.box(f'Tower {label} mullion', (mx, my, G0 + (h - G0) / 2), (max(.06, .10 * abs(ty)), max(.06, .10 * abs(tx)), h - G0 - .4), 'pale', 'tower frame', 0)
-        for z in (U, 9.5, 13.5):
+        for z in (U, U2, 16.5, 20.5):
             C.box(f'Tower {label} transom', (px + tx * 0, py + ty * 0, z), (max(.10, span * abs(tx)), max(.10, span * abs(ty)), .12), 'pale', 'tower frame', 0)
     C.box('Tower fascia', (cx, cy, h + .25), (x1 - x0 + .10, y1 - y0 + .10, .50), 'wall', 'tower', 0)
     C.box('Tower roof membrane', (cx, cy, h + .504), (x1 - x0 - .10, y1 - y0 - .10, .008), 'roof', 'tower', 0)
@@ -283,7 +288,7 @@ def tower():
     C.box('Tower west upper glazing', (x0 + .02, (wy0 + wy1) / 2, (CROWN + .1 + h - .2) / 2), (.012, wy1 - wy0, h - .3 - CROWN), 'glass', 'tower glazing', 0)
     for k in range(1, 5):
         C.box('Tower west upper mullion', (x0 + .02, wy0 + k * (wy1 - wy0) / 5, (CROWN + .1 + h - .2) / 2), (.06, .10, h - .3 - CROWN), 'pale', 'tower frame', 0)
-    zc, zs = 13.2, 11.35
+    zc, zs = 20.3, 18.2
     for (px, py, nx, ny) in ((cx, y0 - .03, 0, -1), (x0 - .03, (FRONT_Y + y1) / 2, -1, 0)):
         C.rod('Clock face', (px - nx * .012, py - ny * .012, zc), (px + nx * .012, py + ny * .012, zc), 1.3, 'white', 'clock', 48)
         C.beam('Clock hour hand', (px + nx * .02, py + ny * .02, zc), (px + nx * .02 + ny * .75, py + ny * .02 - nx * .75, zc + .6), .08, .02, 'trim', 'clock')
@@ -312,11 +317,13 @@ def floors():
     C.box('Lawn panel', (24.0, FRONT_Y - 14.0, .021), (10.0, 6.0, .012), 'planting', 'landscape', 0)
     fy0, fy1 = FRONT_Y + SETBACK + T, REAR_Y - T
     upper = C.box('Upper floor', (0, (fy0 + fy1) / 2, U - .075), (W - 2 * T, fy1 - fy0, .15), 'floor', 'occupied floors', 0)
-    y_end = 2.0 + 5.2
-    C.cut_box(upper, 'Stair aperture', (-18.0, y_end - 1.9, U), (1.4, 3.6, .6))
+    x2 = WEST_X + T + 3.0                # the second level stops at the loggia recess so the recess reads full height
+    C.box('Upper floor 2', ((x2 + EAST_X - T) / 2, (fy0 + fy1) / 2, U2 - .075), (EAST_X - T - x2, fy1 - fy0, .15), 'floor', 'occupied floors', 0)
+    y_end = 2.0 + 7.0
+    C.cut_box(upper, 'Stair aperture', (-18.0, y_end - 2.4, U), (1.4, 4.6, .6))
     C.railing('Stair guard', (-17.2, y_end - 3.7, U), (-17.2, y_end - .1, U), height=1.02, spacing=.30, role='hardware')
     C.railing('Stair end guard', (-17.2, y_end - .1, U), (-18.8, y_end - .1, U), height=1.02, spacing=.30, role='hardware')
-    G.stair('Hall to dormitory stair', -18.0, 2.0, G0, U, length=5.2, width=1.2, landing_gap=.12)
+    G.stair('Hall to dormitory stair', -18.0, 2.0, G0, U, length=7.0, width=1.2, landing_gap=.12)
     # Hall partition between the apparatus bays and the watch room / stair hall.
     f = C.Face((BAYS[0] - BAY_W / 2 - 1.2, 0, 0), (0, 1, 0), (1, 0, 0), 'hall partition')
     ph = [hole('Partition door', -8.0, G0, 1.4, 2.4), hole('Partition window', -2.0, 1.0, 4.0, 2.2)]
@@ -376,8 +383,9 @@ def programme():
         A.bed(x, y, U)
     A.sofa(-6.0, -12.0, U)
     for x in (-16.0, -8.0, 4.0):
-        C.qa_room_light('Dormitory', (x, -10.0, ROOF - .5), 70, 3.5)
-    C.qa_room_light('Tower', ((TW_X0 + TW_X1) / 2, (TW_Y0 + TW_Y1) / 2, 12.5), 50, 2.5)
+        C.qa_room_light('Dormitory', (x, -10.0, U2 - .5), 70, 3.5)
+        C.qa_room_light('Day room', (x, -10.0, ROOF - .5), 70, 3.5)
+    C.qa_room_light('Tower', ((TW_X0 + TW_X1) / 2, (TW_Y0 + TW_Y1) / 2, 19.0), 50, 2.5)
 
 
 def build():

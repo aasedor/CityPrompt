@@ -64,7 +64,7 @@ def manifest(version):
             levels_m=[G0, U], roof_m=ROOF, parapet_m=CROWN - ROOF, penthouse_roof_m=P_ROOF, canopy_m=CANOPY,
             street_faces='brick with a concrete band at the first floor and at the parapet; ground large windows; upper strip windows with coloured fins',
             court_faces='full-height classroom glazing on the ground floor, strip windows with coloured fins above',
-            entrance='entrance doors in the two-storey wing face under a one-storey slatted corten canopy pad over the south-east corner, on a solid concrete box at the street corner, the corten strip continuing along the east edge of the playground; open fenced yard to the street',
+            entrance='open concrete-framed passage through the wing ground floor with a glazed screen into the hall, under a one-storey slatted corten canopy pad over the south-east corner, on a solid concrete box at the street corner, the corten strip continuing along the east edge of the playground; open fenced yard to the street',
             roofs='gravel with perimeter rails on the wings; paved terrace on the hall block with a gravel panel at the north-east; corten storey with its own gravel roof',
             inferred='40 m street frontage calibrates the plan; the party walls are blank; interiors (classrooms, hall) are teaching assumptions; the catalogue label (Art Deco) conflicts with the pixels and the pixels govern.'),
         roof_contract=dict(type='flat gravel and paved roofs behind 0.5 m concrete parapets; corten third storey; corten canopy slab', datum_m=ROOF, crowns_m=[CROWN, P_CROWN]),
@@ -105,8 +105,12 @@ def strip_window(f, h, fins=True, cols=4):
 
 
 def classroom_glazing(f, h, cols=4):
+    """Ground-floor classroom glazing with the coloured fins between its lights (sources carry them on both storeys)."""
     f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=cols, rows=2, frame='trim', depth=T, sill=False, curtain=False)
     lined(f, h)
+    for i in range(1, cols):
+        u = h['u'] - h['w'] / 2 + i * h['w'] / cols
+        f.part('Coloured fin', u, -.18, h['z'] + h['h'] / 2, .12, .38, h['h'] + .02, FIN_COLOURS[(i + int(h['u']) + 1) % 4], 'coloured fins', 0)
 
 
 def brick(f, lo, hi, z0, z1, holes):
@@ -211,9 +215,30 @@ def blocks():
     F = block_faces(*SE, 'se')
     dy = (SE[3] - SE[2]) / 2
     # South face of the two-storey wing, under the corten pad: entrance doors and a window below, blank brick above.
-    elevation(F['south'], -(SE[1] - SE[0]) / 2, (SE[1] - SE[0]) / 2, [hole('Entrance doors', -1.6, G0, 3.0, 2.8, kind='door'), hole('Entrance block south window', 2.6, .9, 2.4, 2.6, cols=2)], [])   # blank brick above the canopy (both sources)
+    elevation(F['south'], -(SE[1] - SE[0]) / 2, (SE[1] - SE[0]) / 2, [hole('Entrance passage south', 0.0, G0, 6.4, U - .45, kind='passage')], [])   # open concrete-framed passage under the pad; blank brick above (both sources)
     elevation(F['east'], -dy + T, dy, [hole(f'Entrance block east ground window {i}', u, .9, 3.0, 2.6, cols=3) for i, u in enumerate((-2.4, 2.4))], [hole(f'Entrance block east strip {i}', u, U + 1.1, 3.6, 1.9) for i, u in enumerate((-2.2, 2.4))])
-    elevation(F['west'], -dy + T, dy - T, [hole('Entrance block court window', -2.2, .9, 3.0, 2.6, cols=3), hole('Entrance block court door', 2.2, G0, 1.6, 2.6, kind='door')], [hole(f'Entrance block court strip {i}', u, U + 1.1, 3.6, 1.9) for i, u in enumerate((-2.2, 2.4))])
+    elevation(F['west'], -dy + T, dy - T, [hole('Entrance passage court', 2.0, G0, 4.4, U - .45, kind='passage')], [hole(f'Entrance block court strip {i}', u, U + 1.1, 3.6, 1.9) for i, u in enumerate((-2.2, 2.4))])
+    passage_interior()
+
+
+def passage_interior():
+    """The entrance block's ground floor is the open passage: concrete floor and soffit, a glazed entrance screen across
+    its north side into the hall, open to the yard (south) and the court (west) through the lined carrier openings."""
+    x0, x1, y0, y1 = SE
+    ys = -8.5                                                # screen line: lobby north of it, passage south of it
+    C.box('Passage floor', ((x0 + x1) / 2, (y0 + T + ys) / 2, G0 + .01), (x1 - x0 - 2 * T - .02, ys - y0 - T - .02, .02), 'pale', 'entrance passage', 0)
+    C.box('Passage soffit', ((x0 + x1) / 2, (y0 + T + ys) / 2, U - .165), (x1 - x0 - 2 * T - .02, ys - y0 - T - .02, .03), 'pale', 'entrance passage', 0)
+    f = C.Face(((x0 + x1) / 2, ys, 0), (1, 0, 0), (0, 1, 0), 'passage screen')
+    g = hole('Passage entrance screen', 0.0, G0, x1 - x0 - 2 * T - .8, U - .6)
+    f.wall('Passage screen carrier', -(x1 - x0) / 2 + T, (x1 - x0) / 2 - T, G0, U - .15, depth=.20, role='pale', holes=[g])
+    f.window(g['id'], g['u'], g['z'], g['w'], g['h'], cols=5, rows=2, frame='trim', depth=.20, sill=False, kind='glazed door')
+    lined(f, g, inset=.10, role='pale')
+    for du in (-.12, .12):
+        C.rod('Screen door pull', f.p(du, .09, G0 + .9), f.p(du, .09, G0 + 1.5), .018, 'hardware', 'door hardware')
+    C.OPENINGS.append(dict(id=g['id'], face=f.label, u=g['u'], z=g['z'], width=g['w'], height=g['h'], kind='glazed door', clear_wall_cut=True,
+        carrier_depth_m=.20, frame_inset_m=.10, pane_inset_m=.14, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='entrance hall'))
+    C.qa_room_light('Passage', ((x0 + x1) / 2, (y0 + ys) / 2, U - .5), 60, 3.0)
+    C.CONTACTS.append(dict(name='Open entrance passage through the entrance block ground floor: concrete floor at slab level, lined concrete jambs and lintels, glazed screen into the hall', grade_m=0, soffit_m=U - .165))
 
 
 def passage_and_canopy():
@@ -227,10 +252,10 @@ def passage_and_canopy():
     bx0, bx1, by0, by1 = x0, x1 - .02, PAD_Y0, y0 - EPS
     C.box('Corten canopy plate', ((ax0 + .06 + ax1) / 2, (ay0 + .06 + ay1 - .06) / 2, CANOPY + .06), (ax1 - ax0 - .06, ay1 - ay0 - .12, .12), 'corten', 'corten canopy', 0)
     C.box('Corten pad plate', ((bx0 + bx1 - .06) / 2, (by0 + .06 + by1) / 2, CANOPY + .06), (bx1 - .06 - bx0, by1 - by0 - .06, .12), 'corten', 'corten canopy', 0)
-    C.box('Corten canopy fascia west', (ax0 + .03, (ay0 + ay1) / 2, CANOPY), (.06, ay1 - ay0, .28), 'corten', 'corten canopy', 0)
-    C.box('Corten canopy fascia north', ((ax0 + .06 + ax1) / 2, ay1 - .03, CANOPY), (ax1 - ax0 - .06, .06, .28), 'corten', 'corten canopy', 0)
-    C.box('Corten pad fascia south', ((ax0 + .06 + bx1) / 2, ay0 + .03, CANOPY), (bx1 - ax0 - .06, .06, .28), 'corten', 'corten canopy', 0)
-    C.box('Corten pad fascia east', (bx1 - .03, (by0 + .06 + by1) / 2, CANOPY), (.06, by1 - by0 - .06, .28), 'corten', 'corten canopy', 0)
+    C.box('Corten canopy fascia west', (ax0 + .03, (ay0 + ay1) / 2, CANOPY - .33), (.06, ay1 - ay0, .90), 'corten', 'corten canopy', 0)
+    C.box('Corten canopy fascia north', ((ax0 + .06 + ax1) / 2, ay1 - .03, CANOPY - .33), (ax1 - ax0 - .06, .06, .90), 'corten', 'corten canopy', 0)
+    C.box('Corten pad fascia south', ((ax0 + .06 + bx1) / 2, ay0 + .03, CANOPY - .33), (bx1 - ax0 - .06, .06, .90), 'corten', 'corten canopy', 0)
+    C.box('Corten pad fascia east', (bx1 - .03, (by0 + .06 + by1) / 2, CANOPY - .33), (.06, by1 - by0 - .06, .90), 'corten', 'corten canopy', 0)
     for k in range(1, 16):                                   # slats read from above (locked top)
         xx = ax0 + k * (bx1 - ax0) / 16
         C.box('Corten pad slat joint', (xx, (by0 + by1) / 2, zt + .002), (.04, by1 - by0 - .2, .004), 'joint', 'corten canopy', 0)
@@ -302,9 +327,9 @@ def roofs():
         span = (px1 - px0) if label in ('south', 'north') else (py1 - py0)
         holes = []
         if label == 'east':
-            holes = [hole(f'Penthouse east window {i}', u, ROOF + 1.0, 4.0, 2.2, cols=3) for i, u in enumerate((-7.0, -1.0, 5.0))]
+            holes = [hole('Penthouse east glazed band', 0.0, ROOF + .15, .84 * (py1 - py0), P_ROOF - ROOF - .55, cols=14)]   # one full-height band with slim mullions (v007 P1 4)
         elif label == 'south':
-            holes = [hole('Penthouse south window', 3.0, ROOF + 1.0, 5.0, 2.2, cols=3), hole('Penthouse terrace door', -4.0, ROOF, 1.2, 2.4, kind='door')]
+            holes = [hole('Penthouse terrace door', -4.0, ROOF, 1.2, 2.4, kind='door')]
         lo, hi = (-span / 2, span / 2) if label in ('south', 'north') else (-span / 2 + T, span / 2 - T)
         f.wall(f'Penthouse carrier {label}', lo, hi, ROOF, P_CROWN, depth=T, role='corten', holes=holes)
         for h in holes:

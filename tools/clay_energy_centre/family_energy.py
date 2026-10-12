@@ -19,9 +19,9 @@ T = .30
 G0 = .15
 WB = (-18.0, 1.0, -17.0, 17.0)       # west glazed plant block
 EB = (1.0, 18.0, -17.0, 17.0)        # east corten block
-L1, W_ROOF, W_CROWN = 5.6, 11.6, 12.2
+L1, W_ROOF, W_CROWN = 6.2, 13.4, 14.0       # v009: lower volume raised about 15 percent (v008 P1 proportion reading)
 WEST_HEAD = W_CROWN - 1.5          # west corner bay window head: brick head band of about 1/7 of the wall above it
-E_ROOF, E_CROWN = 14.2, 14.8
+E_ROOF, E_CROWN = 16.4, 17.0
 BAY = 5.6
 EPS = .002
 PALETTE = dict(wall=(.50, .33, .18), joint=(.34, .22, .12), trim=(.08, .08, .085),
@@ -29,19 +29,19 @@ PALETTE = dict(wall=(.50, .33, .18), joint=(.34, .22, .12), trim=(.08, .08, .085
     foundation=(.36, .36, .36), glass=(.50, .55, .54), hardware=(.10, .10, .11),
     interior=(.74, .70, .62), floor=(.40, .40, .39), timber=(.40, .30, .20), blue=(.14, .22, .28),
     planting=(.24, .42, .14), soil=(.19, .14, .08), corten=(.10, .072, .058), concrete=(.40, .40, .38),
-    steel=(.62, .64, .66), teal=(.18, .48, .46), membrane=(.66, .66, .64))
+    steel=(.62, .64, .66), teal=(.18, .48, .46), membrane=(.66, .66, .64), precast=(.58, .58, .56))
 
 
 def manifest(version):
     h = W_ROOF + 10.5
     cams = G.camera_roster(EB[1] - WB[0] + 8.0, WB[3] - WB[2] + 8.0, h, [
         ('facade_close', (-30.0, -26.0, 5.0), (-10.0, WB[2], 5.0), 45),
-        ('architecture_close', (-24.0, -30.0, 12.0), (-4.0, WB[2], 10.0), 50),
+        ('architecture_close', (-24.0, -30.0, 13.5), (-4.0, WB[2], 11.5), 50),
         ('glass_close', (-28.0, -12.0, 3.0), (WB[0], -3.0, 3.2), 50),
         ('plant_window', (-9.0, -28.0, 2.4), (-9.0, WB[2], 2.6), 40),
-        ('stack_contact', (-30.0, -30.0, 20.0), (-10.0, -6.0, 15.0), 45),
-        ('corten_block', (16.0, -34.0, 9.0), (EB[0] + 8.5, EB[2], 7.5), 45),
-        ('roof_plant', (-38.0, 12.0, 27.0), (-8.0, 2.0, 14.5), 45),
+        ('stack_contact', (-30.0, -30.0, 22.0), (-10.0, -6.0, 17.0), 45),
+        ('corten_block', (16.0, -34.0, 10.5), (EB[0] + 8.5, EB[2], 9.0), 45),
+        ('roof_plant', (-38.0, 12.0, 29.0), (-8.0, 2.0, 16.3), 45),
         ('corner_entry', (-31.0, -7.0, 2.2), (WB[0], 1.0, 2.6), 40),
         ('interior', (-9.0, -3.0, 2.2), (-9.0, WB[2], 2.0), 55),
         ('rear_service', (-10.0, 30.0, 4.0), (-4.0, WB[3], 3.0), 40)])
@@ -53,7 +53,7 @@ def manifest(version):
             observed_storeys=2, storey_programme='two tall plant levels in the west block, three in the corten block; fixed authored assembly',
             plan='two abutting blocks read from the 560 x 560 px top view at 0.064 m/px: west glazed block 19 x 34 m, east corten block 17 x 34 m; streets west and south',
             west_block='buff brick piers; west face north to south: service bay with a seven-light clerestory over a board-formed concrete panel holding the service door, two-storey curtain-wall bay with the glazed entrance beside a concrete fin under a canopy, corner bay with ground glazing, board-formed concrete panel and glazing strip; south face: the matching corner bay and one narrow curtain-wall bay',
-            east_block='corten panel cladding 14.2 m to the roof with a narrow slot window on the south face',
+            east_block='corten panel cladding 16.4 m to the roof with a narrow slot window on the south face',
             roof='membrane; two three-fan cooling banks on the west edge, duct runs, three slender flues at the centre, one hourglass stack with a dark cap; two rooftop units on the corten block',
             levels_m=[G0, L1], roofs_m=[W_ROOF, E_ROOF],
             inferred='36 m frontage calibrates the bays; north and east faces are not visible and repeat the grammar with service doors; plant interiors are teaching assumptions.'),
@@ -84,7 +84,8 @@ def glazed_bay(f, h, cols=3, rows=4):
     lined(f, h)
 
 
-def corten_joints(f, lo, hi, z0, z1, holes, spacing=1.2):
+def corten_joints(f, lo, hi, z0, z1, holes, spacing=.36):
+    """Narrow standing-seam corten: vertical seams only (v008 P2 7)."""
     vertices, faces = [], []
     n = max(1, round((hi - lo) / spacing))
     for i in range(1, n):
@@ -97,13 +98,18 @@ def corten_joints(f, lo, hi, z0, z1, holes, spacing=1.2):
             o = len(vertices)
             vertices.extend([f.p(u - .006, -.002, a), f.p(u + .006, -.002, a), f.p(u + .006, -.002, b), f.p(u - .006, -.002, b)])
             faces.append((o, o + 1, o + 2, o + 3))
-    for z in (4.0, 7.5, 11.0):
-        for a, b in subtract_openings(lo, hi, z - .006, z + .006, holes):
-            o = len(vertices)
-            vertices.extend([f.p(a, -.002, z - .006), f.p(b, -.002, z - .006), f.p(b, -.002, z + .006), f.p(a, -.002, z + .006)])
-            faces.append((o, o + 1, o + 2, o + 3))
     if faces:
         C.mesh(f.label + ' corten joints', vertices, faces, 'joint', 'panel joints')
+
+
+def cone(name, c, r0, r1, z0, z1, role, module, sides=12):
+    """Closed frustum (flue cap) as one mesh."""
+    vs = [(c[0] + r0 * math.cos(2 * math.pi * k / sides), c[1] + r0 * math.sin(2 * math.pi * k / sides), z0) for k in range(sides)]
+    vs += [(c[0] + r1 * math.cos(2 * math.pi * k / sides), c[1] + r1 * math.sin(2 * math.pi * k / sides), z1) for k in range(sides)]
+    fs = [(k, (k + 1) % sides, sides + (k + 1) % sides, sides + k) for k in range(sides)]
+    fs.append(tuple(range(sides - 1, -1, -1)))
+    fs.append(tuple(range(sides, 2 * sides)))
+    C.mesh(name, vs, fs, role, module)
 
 
 def face(x0, x1, y0, y1, side, label):
@@ -157,7 +163,7 @@ def frame_face(f, lo, hi, bays):
             u = hole(h['id'] + ' upper glazing', h['u'], pt, h['w'], utop - pt)
             f.window(g['id'], g['u'], g['z'], g['w'], g['h'], cols=round(h['w'] / 1.5), rows=2, frame='trim', depth=T, sill=False)
             lined(f, g)
-            f.window(u['id'], u['u'], u['z'], u['w'], u['h'], cols=ucols, rows=2 if (u['h'] > 2.2 and h.get('door')) else 1, frame='trim', depth=T, sill=False)
+            f.window(u['id'], u['u'], u['z'], u['w'], u['h'], cols=ucols, rows=1, frame='trim', depth=T, sill=False)
             lined(f, u)
             # Board-formed concrete panel between the ground glazing and the upper glazing, a touch proud of the brick:
             # large panels with vertical joints at about 1.2 m and one horizontal mid joint (no lap lines).
@@ -174,7 +180,7 @@ def frame_face(f, lo, hi, bays):
                 f.part('Corner bay door leaf', du, .16, G0 + 1.3, 1.1, .03, 2.5, 'trim', 'entrance', 0)
                 f.part('Corner bay door glass', du, .18, G0 + 1.4, .8, .01, 2.1, 'glass', 'entrance', 0)
         elif k == 'clerestory':
-            f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=7, rows=1, frame='trim', depth=T, sill=False)
+            f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=5, rows=1, frame='trim', depth=T, sill=False)
             lined(f, h)
         elif k == 'service panel':
             z0, z1, a, b = h['z'], h['z'] + h['h'], h['u'] - h['w'] / 2, h['u'] + h['w'] / 2
@@ -182,9 +188,9 @@ def frame_face(f, lo, hi, bays):
             du = a + .45 + dw / 2
             dd = hole(h['id'] + ' service door', du, G0, dw, dh, kind='recessed door')
             rd, rt = .14 + (T - .14) / 2, T - .14
-            f.part('Service bay concrete panel', (du + dw / 2 + b) / 2, rd, (z0 + z1) / 2, b - du - dw / 2, rt, z1 - z0, 'concrete', 'concrete panel', 0)
-            f.part('Service bay concrete panel', (a + du - dw / 2) / 2, rd, (z0 + z1) / 2, du - dw / 2 - a, rt, z1 - z0, 'concrete', 'concrete panel', 0)
-            f.part('Service bay concrete panel', du, rd, (G0 + dh + z1) / 2, dw, rt, z1 - G0 - dh, 'concrete', 'concrete panel', 0)
+            f.part('Service bay concrete panel', (du + dw / 2 + b) / 2, rd, (z0 + z1) / 2, b - du - dw / 2, rt, z1 - z0, 'precast', 'concrete panel', 0)
+            f.part('Service bay concrete panel', (a + du - dw / 2) / 2, rd, (z0 + z1) / 2, du - dw / 2 - a, rt, z1 - z0, 'precast', 'concrete panel', 0)
+            f.part('Service bay concrete panel', du, rd, (G0 + dh + z1) / 2, dw, rt, z1 - G0 - dh, 'precast', 'concrete panel', 0)
             n = max(2, round(h['w'] / 1.2))
             for kk in range(1, n):
                 uu = a + kk * h['w'] / n
@@ -240,7 +246,7 @@ def west_block():
     # West face (u = -y), north to south: pier, service bay 7 m, pier, entrance curtain-wall bay 9 m, pier, corner bay 14 m, pier (34 m).
     f = face(*WB, 'west', 'west block west')
     half = (y1 - y0) / 2
-    frame_face(f, -half + T, half - T, [(-half + 1.0 + 5.4, 10.8, 'service'), (-half + 12.8 + 3.6, 7.2, 'entrance'), (-half + 21.2 + 4.5, 9.0, 'corner')])   # north bay ~32 %, entrance ~22 %, corner ~27 % of the face (sources)
+    frame_face(f, -half + T, half - T, [(-half + 2.0 + 5.0, 10.0, 'service'), (-half + 14.4 + 3.6, 7.2, 'entrance'), (-half + 24.0 + 4.0, 8.0, 'corner')])   # piers 2.0 / 2.4 / 2.4 / 2.0 m, about 6 to 7 percent each (v008 P2 10)   # north bay ~32 %, entrance ~22 %, corner ~27 % of the face (sources)
     # North face: brick with service openings.
     f = face(*WB, 'north', 'west block north')
     nh = [hole('North louvre bay 0', -4.0, 1.0, 3.0, 2.5), hole('North service door', 4.0, G0, 2.4, 3.2, kind='door')]
@@ -265,7 +271,7 @@ def west_block():
     C.railing('Mezzanine edge guard', (x0 + T + 3.0, y0 + T + .2, L1), (x0 + T + 3.0, y1 - T - .2, L1), height=1.05, spacing=.3, role='hardware')
     C.box('West roof slab', ((x0 + x1) / 2, (y0 + y1) / 2, W_ROOF - .12), (x1 - x0 - 2 * T, y1 - y0 - 2 * T, .24), 'floor', 'roof', 0)
     C.box('West roof membrane', ((x0 + x1) / 2, (y0 + y1) / 2, W_ROOF + .004), (x1 - x0 - 2 * T - .02, y1 - y0 - 2 * T - .02, .008), 'membrane', 'roof', 0)
-    G.stair('Plant stair', x0 + 2.0, 4.0, G0, L1, length=5.8, width=1.1, landing_gap=.12)
+    G.stair('Plant stair', x0 + 2.0, 4.0, G0, L1, length=6.4, width=1.1, landing_gap=.12)
 
 
 def east_block():
@@ -278,7 +284,7 @@ def east_block():
             lo, hi = -span / 2, span / 2 - EPS
         holes = []
         if side == 'south':
-            holes = [hole('Corten slot window', 2.5, 1.6, 1.2, E_CROWN - .5 - 1.6, cols=1, rows=4)]
+            holes = [hole('Corten slot window', 2.5, 1.6, 2.4, .79 * E_CROWN - 1.6, cols=1, rows=1)]   # one deep slot, head about 21 percent below the parapet (v008 P2 4)
         elif side == 'east':
             holes = [hole('East service door', -8.0, G0, 2.4, 3.2, kind='door'), hole('East louvre', 6.0, 3.0, 4.0, 2.4)]
         f.wall(f'east block {side} carrier', lo, hi, G0, E_CROWN, depth=T, role='corten', holes=holes)
@@ -296,25 +302,41 @@ def east_block():
                 C.OPENINGS.append(dict(id=h['id'], face=f.label, u=h['u'], z=h['z'], width=h['w'], height=h['h'], kind='louvre', clear_wall_cut=True,
                     carrier_depth_m=T, frame_inset_m=.16, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='boiler house'))
             else:
-                f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=1, rows=4, frame='trim', depth=T, sill=False)
+                f.window(h['id'], h['u'], h['z'], h['w'], h['h'], cols=1, rows=1, frame='trim', depth=T, sill=False)
                 lined(f, h, role='corten')
         f.part('Corten parapet coping', (lo + hi) / 2, T / 2, E_CROWN + .03, hi - lo - 2 * EPS, T + .06, .06, 'corten', 'coping', 0)
     # West side of the corten block above the west block roof.
     f = face(*EB, 'west', 'east block west')
-    f.wall('east block west upper carrier', -(y1 - y0) / 2 + T, (y1 - y0) / 2 - T, W_ROOF - .24, E_CROWN, depth=T, role='corten')
-    corten_joints(f, -(y1 - y0) / 2 + T + .3, (y1 - y0) / 2 - T - .3, W_ROOF + EPS, E_CROWN - EPS, [])
+    wl = hole('Corten west louvre', (y1 - y0) / 2 - T - 2.75, W_CROWN + .9, 1.5, 1.0)   # dark grille just above the lower parapet near the south end (v008 P2 3)
+    f.wall('east block west upper carrier', -(y1 - y0) / 2 + T, (y1 - y0) / 2 - T, W_ROOF - .24, E_CROWN, depth=T, role='corten', holes=[wl])
+    corten_joints(f, -(y1 - y0) / 2 + T + .3, (y1 - y0) / 2 - T - .3, W_ROOF + EPS, E_CROWN - EPS, [wl])
+    lined(f, wl, inset=.14, role='pale')
+    for k in range(5):
+        f.part('Louvre blade', wl['u'], .16, wl['z'] + .15 + k * (wl['h'] - .3) / 4, wl['w'] - .05, .06, .08, 'hardware', 'louvres', 0)
+    C.OPENINGS.append(dict(id=wl['id'], face=f.label, u=wl['u'], z=wl['z'], width=wl['w'], height=wl['h'], kind='louvre', clear_wall_cut=True,
+        carrier_depth_m=T, frame_inset_m=.16, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='boiler house'))
     f.part('Corten parapet coping', 0, T / 2, E_CROWN + .03, y1 - y0 - 2 * T - 2 * EPS, T + .06, .06, 'corten', 'coping', 0)
     C.box('East slab', ((x0 + x1) / 2, (y0 + y1) / 2, G0 / 2), (x1 - x0, y1 - y0, G0), 'foundation', 'foundation', 0)
-    for z in (L1, 9.6):
+    for z in (L1, 11.2):
         C.box('East floor', ((x0 + x1) / 2, (y0 + y1) / 2, z - .075), (x1 - x0 - 2 * T, y1 - y0 - 2 * T, .15), 'floor', 'occupied floors', 0)
     C.box('East roof slab', ((x0 + x1) / 2, (y0 + y1) / 2, E_ROOF - .12), (x1 - x0 - 2 * T, y1 - y0 - 2 * T, .24), 'floor', 'roof', 0)
     C.box('East roof membrane', ((x0 + x1) / 2, (y0 + y1) / 2, E_ROOF + .004), (x1 - x0 - 2 * T - .02, y1 - y0 - 2 * T - .02, .008), 'membrane', 'roof', 0)
-    for x, y, fans, size in ((x0 + 8.0, y1 - 9.0, 3, (3.4, 7.2)), (x0 + 8.0, y0 + 7.0, 1, (3.0, 3.0))):
+    yl = y1 - .42 * (y1 - y0)            # single-fan unit at about 0.42 of the block length from the north (v008 P2 6)
+    for x, y, fans, size in ((x0 + 8.0, y1 - 6.0, 2, (3.4, 5.0)), (x0 + 8.0, yl, 1, (3.0, 3.0))):
         C.box('Rooftop unit curb', (x, y, E_ROOF + .15), (size[0] + .2, size[1] + .2, .30), 'pale', 'rooftop plant', 0)
         C.box('Rooftop unit', (x, y, E_ROOF + .30 + .9), (size[0], size[1], 1.8), 'steel', 'rooftop plant', 0)
         for k in range(fans):
             yy = y + (k - (fans - 1) / 2) * 2.2
             C.rod('Rooftop unit fan', (x, yy, E_ROOF + 2.1), (x, yy, E_ROOF + 2.3), .6, 'hardware', 'rooftop plant', 14)
+    # Pipe loop round the single-fan unit on short stands, with two risers into it.
+    lx, lz = x0 + 8.0, E_ROOF + .95
+    ring = [(lx - 2.5, yl - 2.5), (lx + 2.5, yl - 2.5), (lx + 2.5, yl + 2.5), (lx - 2.5, yl + 2.5)]
+    for k in range(4):
+        a, b = ring[k], ring[(k + 1) % 4]
+        C.rod('Roof pipe loop', (a[0], a[1], lz), (b[0], b[1], lz), .14, 'steel', 'rooftop plant', 10)
+        C.box('Pipe stand', ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (E_ROOF + lz - .14) / 2), (.16, .16, lz - .14 - E_ROOF), 'hardware', 'rooftop plant', 0)
+    for dy in (-2.5, 2.5):
+        C.rod('Roof pipe riser', (lx, yl + dy, lz), (lx, yl + dy * .62, lz), .14, 'steel', 'rooftop plant', 10)
     C.box('Small rooftop box', (x1 - 3.0, y0 + 3.0, E_ROOF + .5), (1.2, 1.2, 1.0), 'steel', 'rooftop plant', 0)
     C.qa_room_light('Boiler house', ((x0 + x1) / 2, 0, 9.0), 90, 4.0)
 
@@ -353,9 +375,9 @@ def rooftop_plant():
     FY = -4.5
     C.box('Flue base', (x0 + 12.5, FY, z + .25), (2.6, 1.4, .50), 'concrete', 'flues', 0)
     for k in (-1, 0, 1):
-        C.rod('Slender flue', (x0 + 12.5 + k * .8, FY, z + .5), (x0 + 12.5 + k * .8, FY, z + 6.5), .22, 'steel', 'flues', 12)
-        C.rod('Flue cap', (x0 + 12.5 + k * .8, FY, z + 6.5), (x0 + 12.5 + k * .8, FY, z + 6.7), .30, 'hardware', 'flues', 12)
-    C.box('Flue brace', (x0 + 12.5, FY, z + 4.0), (2.2, .10, .10), 'pale', 'flues', 0)
+        C.rod('Slender flue', (x0 + 12.5 + k * .8, FY, z + .5), (x0 + 12.5 + k * .8, FY, z + 3.4), .22, 'steel', 'flues', 12)   # about 1.3 cooling-bank heights (v008 P2 2)
+        cone('Flue cone cap', (x0 + 12.5 + k * .8, FY), .32, .09, z + 3.4, z + 3.9, 'hardware', 'flues')
+    C.box('Flue brace', (x0 + 12.5, FY, z + 2.4), (2.2, .10, .10), 'pale', 'flues', 0)
     # Exhaust stack midway between the banks: one slender constant tube with an open top inside a square
     # hourglass cage. Four corner struts run from a collar platform near the top, pinch in to the tube at
     # mid-height and splay back out to a square plinth, tied by a ring at about a third of the height.

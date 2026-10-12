@@ -21,8 +21,8 @@ NAVE, AISLE = 19.5, 8.25
 W = NAVE + 2 * AISLE                     # 36 m across
 T = .25
 G0 = .15
-A_EAVE, A_TOP = 10.0, 13.1               # gallery level on the aisle wall, and the aisle roof against the nave wall
-AE2 = 12.4                               # aisle outer eave over the glazed upper storey
+A_EAVE, A_TOP = 8.6, 13.1                # gallery level on the aisle wall, and the aisle roof against the nave wall (v007: 8.6 so the glazed upper storey is 4 m tall)
+AE2 = 12.6                               # aisle outer eave over the glazed upper storey: the roof strip above it is a narrow near-flat band
 N_EAVE, RIDGE = 17.5, 20.5               # nave eaves and ridge
 CL0, CL1 = 13.4, 16.4                    # nave clerestory band
 BAY = 7.0
@@ -240,6 +240,7 @@ def gable_end(f, open_frame=True):
             C.beam('Aisle end truss diagonal', f.p(uu(ya), -.12, A_EAVE + .1), f.p(uu(yb), -.12, AE2 - .2), .07, .07, 'pale', 'open frame')
             C.beam('Aisle end brace', f.p(uu(yb) + (.3 if uu(yb) < uu(ya) else -.3), -.12, A_EAVE), f.p(uu(ya) - (.3 if uu(yb) < uu(ya) else -.3), -.12, A_EAVE + .1), .07, .07, 'pale', 'open frame')
             C.beam('Aisle end brace', f.p(uu(ya) - (.3 if uu(yb) < uu(ya) else -.3), -.12, A_EAVE), f.p(uu((ya + yb) / 2), -.12, A_TOP - 1.3), .07, .07, 'pale', 'open frame')
+            C.beam('Aisle end mid post', f.p(uu((ya + yb) / 2), -.10, A_EAVE), f.p(uu((ya + yb) / 2), -.10, (AE2 + A_TOP) / 2 - .15), .20, .20, 'pale', 'open frame')
             C.railing('Aisle end rail', f.p(uu(yb), -.10, A_EAVE), f.p(uu(ya), -.10, A_EAVE), height=1.0, spacing=.35, role='hardware')
     # Nave end: open lattice frame between the aisle top and the nave eaves (west) or clad (east); clad gable triangle above.
     if open_frame:
@@ -300,19 +301,29 @@ def roofs():
         ya, yb = 0.0, sign * (YN1 + .4)
         za, zb = RIDGE, N_EAVE - .4 * (RIDGE - N_EAVE) / YN1
         C.prism(f'Nave roof plate {sign}', [(ya, za), (yb, zb), (yb, zb - t), (ya, za - t)], 'x', x0 + T, x1 - T, 'roof', 'roofs')
+        ribs(x0 + T, x1 - T, ya, za, yb, zb)
         # Aisle lean-to plates from the nave wall down to the aisle eave.
         ya2, yb2 = sign * (YN1 - T), sign * (YA1 + .4)
         za2, zb2 = A_TOP, AE2 - .4 * (A_TOP - AE2) / AISLE
         C.prism(f'Aisle roof plate {sign}', [(ya2, za2), (yb2, zb2), (yb2, zb2 - t), (ya2, za2 - t)], 'x', x0 + T, x1 - T, 'roof', 'roofs')
+        ribs(x0 + T, x1 - T, ya2, za2, yb2, zb2)
     C.beam('Ridge cap', (x0, 0, RIDGE + .05), (x1, 0, RIDGE + .05), .30, .10, 'pale', 'roofs')
     # Monitors: four per aisle roof, three on the nave ridge.
     nave_slope = lambda y: RIDGE - abs(y) * (RIDGE - N_EAVE) / YN1
     for yc, xs in ((-6.0, (-30.0, -10.0, 10.0)), (0.0, (-20.0, 0.0, 20.0)), (6.0, (-10.0, 10.0, 30.0))):
         for xc in xs:
-            monitor(xc, yc, 4.0, 4.6, slope=nave_slope)
+            monitor(xc, yc, 6.0, 6.5, slope=nave_slope)   # wider and lower than v006 (P1 3)
 
 
-def monitor(xc, yc, w, length, slope, h=2.6):
+def ribs(xa, xb, ya, za, yb, zb, spacing=1.2):
+    """Corrugation seam lines down the slope of a roof plate, one dark bead every 1.2 m along the hall."""
+    n = max(1, round((xb - xa) / spacing))
+    for i in range(1, n):
+        x = xa + i * (xb - xa) / n
+        C.beam('Roof corrugation seam', (x, ya, za + .035), (x, yb, zb + .035), .05, .05, 'joint', 'roofs')
+
+
+def monitor(xc, yc, w, length, slope, h=2.0, PF=.22):
     """Gabled roof monitor whose ridge runs across the hall: glazed cheeks face west and east, solid gable triangles face
     north and south, the base follows the nave roof (split at the ridge so every piece stays convex)."""
     xa, xb = xc - w / 2, xc + w / 2
@@ -328,16 +339,17 @@ def monitor(xc, yc, w, length, slope, h=2.6):
         for k in range(1, 4):
             C.box('Monitor mullion', (xm, ya + k * length / 4, top - .7), (.14, .06, 1.2), 'trim', 'monitors', 0)
     for y, lo, hi in ((ya, ya - .16, ya), (yb, yb, yb + .16)):
-        C.prism('Monitor gable end', [(xa, slope(y) - .3), (xb, slope(y) - .3), (xb, top), (xc, top + w * .35), (xa, top)], 'y', lo, hi, 'wall', 'monitors')
+        C.prism('Monitor gable end', [(xa, slope(y) - .3), (xb, slope(y) - .3), (xb, top), (xc, top + w * PF), (xa, top)], 'y', lo, hi, 'wall', 'monitors')
     for sgn in (-1, 1):
-        C.prism('Monitor roof plate', [(xc, top + w * .35 + .02), (xc + sgn * (w / 2 + .25), top - .25 * w * .35 / (w / 2) + .02), (xc + sgn * (w / 2 + .25), top - .25 * w * .35 / (w / 2) - .14), (xc, top + w * .35 - .12)],
+        C.prism('Monitor roof plate', [(xc, top + w * PF + .02), (xc + sgn * (w / 2 + .25), top - .25 * w * PF / (w / 2) + .02), (xc + sgn * (w / 2 + .25), top - .25 * w * PF / (w / 2) - .14), (xc, top + w * PF - .12)],
                 'y', ya - .25, yb + .25, 'roof', 'monitors')
 
 
 def stair():
     """Switchback steel stair at the south-west corner: two flights with an intermediate landing onto a railed walkway at the aisle eave."""
     x0, y = X0 + 2.0, YA0 - 1.3
-    runs = ((x0, 0.0, x0 + 7.0, 5.0), (x0 + 7.0, 5.0, x0, A_EAVE))
+    LZ = A_EAVE / 2
+    runs = ((x0, 0.0, x0 + 7.0, LZ), (x0 + 7.0, LZ, x0, A_EAVE))
     for i, (xa, za, xb, zb) in enumerate(runs):
         n = 14
         for k in range(n):
@@ -347,10 +359,10 @@ def stair():
         for s in (-1, 1):
             C.beam('Stair stringer', (xa + (.3 if xb > xa else -.3), y + s * .55, za + .32), (xb, y + s * .55, zb + .32), .06, .30, 'pale', 'external stair')
             C.railing(f'Stair rail {i}{s}', (xa, y + s * .55, za + .1), (xb, y + s * .55, zb + .1), height=1.0, spacing=.35, role='hardware')
-    C.box('Intermediate landing', (x0 + 7.6, y, 5.0 - .03), (1.2, 1.4, .06), 'pale', 'external stair', 0)
-    C.railing('Intermediate landing rail', (x0 + 7.0, y - .6, 5.1), (x0 + 8.2, y - .6, 5.1), height=1.0, spacing=.35, role='hardware')
-    C.railing('Intermediate landing end rail', (x0 + 8.2, y - .6, 5.1), (x0 + 8.2, y + .6, 5.1), height=1.0, spacing=.35, role='hardware')
-    for x, z in ((x0 + 7.6, 5.0), (x0 - .6, A_EAVE)):
+    C.box('Intermediate landing', (x0 + 7.6, y, LZ - .03), (1.2, 1.4, .06), 'pale', 'external stair', 0)
+    C.railing('Intermediate landing rail', (x0 + 7.0, y - .6, LZ + .1), (x0 + 8.2, y - .6, LZ + .1), height=1.0, spacing=.35, role='hardware')
+    C.railing('Intermediate landing end rail', (x0 + 8.2, y - .6, LZ + .1), (x0 + 8.2, y + .6, LZ + .1), height=1.0, spacing=.35, role='hardware')
+    for x, z in ((x0 + 7.6, LZ), (x0 - .6, A_EAVE)):
         for s in (-1, 1):
             C.box('Stair post', (x, y + s * .6, z / 2), (.12, .12, z), 'pale', 'external stair', 0)
     # The stair lands on the full-length aisle gallery.
