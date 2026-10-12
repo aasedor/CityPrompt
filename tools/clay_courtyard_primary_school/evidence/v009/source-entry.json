@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-courtyard-primary-school",
+  "variant_id": "clay-courtyard-primary-school-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "ecole_republicaine/variant_3",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/ecole-republicaine/variant_3.png",
+      "path": "sources/front.png",
+      "bytes": 1323463,
+      "sha256": "353d70cf1e6d860e840bcb57cf9e10dbdaf558f17c5127e78c8e79655c68e467"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/ecole-republicaine/variant_3_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 990119,
+      "sha256": "ad3f15097e602c85aabe104deecfc293a9eb4fbc33bee7de15489d418cb12bf6"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/ecole-republicaine/variant_3_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 904476,
+      "sha256": "c833b66c8e3184baeef6f16471dc2693f2f33a235778423333e18814001cbca3"
+    }
+  ]
+}

@@ -69,9 +69,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v008 (reopened, v009 in progress)
+## Open blockers after v009 (passed)
 
-Reopened run, v008 reviewed 0 P0 / 2 P1 (candidate); v009 in progress. Open v008 P1:
-
-1. **Street side of the passage.** The entrance block's east ground floor is a classroom window; the sources show a concrete-lined opening with recessed glazed entry doors facing the street.
-2. **Corner wall and canopy.** The corner concrete wall extends beyond the canopy with its top exposed; the sources show the deep corten fascia passing over it.
+Passed at v009 (0 P0 / 0 P1 / 7 P2) in the reopened run after the lifted GLB limit; no open blockers. Open P2 for a later detail pass: the passage stair meets the soffit with no stairwell void, an extra brick roof box on the terrace, the two west-wing rooflight boxes missing, chunky canopy posts where the source shows one slender column, no fence or gate between the corner wall and the entrance block, finned windows into the north notch, flat corten panelling. Not keeper-approved; RLASM asset review, runtime acceptance and publication approval are separate checkpoints.
