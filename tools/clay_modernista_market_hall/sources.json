@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "barcelona_mercat",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "mercat_modernista",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "barcelona_mercat",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "mercat_modernista",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/barcelona-mercat/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1903324,
+      "sha256": "0f36972485949c74b9afca973334080d446609f4fbb3bdc44ebbb76e91488bb2",
+      "dimensions_px": [
+        1200,
+        900
+      ]
+    },
+    {
+      "archetype_id": "barcelona_mercat",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "mercat_modernista",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/barcelona-mercat/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 1034373,
+      "sha256": "34a74012d1eb1fc3f3b9fcf7a5a76491e3384e00b573f1c36c6ee5b2bd3503d0",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "barcelona_mercat",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "mercat_modernista",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/barcelona-mercat/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 934010,
+      "sha256": "63b0b905caa5e7fc8a663b7e319532749bce1736f0b7a382892ba2f376040568",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

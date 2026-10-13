@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "chateauesque_grand_railway_hotel",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "scottish_baronial_granite_tower",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "chateauesque_grand_railway_hotel",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "scottish_baronial_granite_tower",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1350586,
+      "sha256": "c3d62e25c041ad01aceb2834f53bdd5f2d826bf3ab39f22ff0c5c2aea5b27e81",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "chateauesque_grand_railway_hotel",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "scottish_baronial_granite_tower",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 944635,
+      "sha256": "61c519072f8ecc212bf498c3acc1f58ece431348c8e83e37f7be2992beeea64a",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "chateauesque_grand_railway_hotel",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "scottish_baronial_granite_tower",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 898813,
+      "sha256": "cb03f9474ec9e17d3ba67d70bab6d0241376cf13edbc54601829f42d969483c7",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "grand_magasin",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "grand-magasin-belle-epoque",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "grand_magasin",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "grand-magasin-belle-epoque",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/grand-magasin/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1498973,
+      "sha256": "502d6d50e7b5ca032a3104f8505b4e4d2f372d2f22e62c091caaa6f9af8f8b12",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "grand_magasin",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "grand-magasin-belle-epoque",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/grand-magasin/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 1019929,
+      "sha256": "acf6e2d1ff51f77ff823231d5dd2ccf9a707fb4607dac53a962a6bea82bdf4ef",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "grand_magasin",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "grand-magasin-belle-epoque",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/grand-magasin/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 915820,
+      "sha256": "945b348e6548ae6b2b6ea0ad637ea4dbe98f49e377ea04ade4ff19e298ecd1c7",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

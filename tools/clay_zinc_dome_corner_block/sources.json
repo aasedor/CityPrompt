@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "parisian_corner_with_dome",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "parisian-corner-with-dome-zinc-mansard",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "parisian_corner_with_dome",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "parisian-corner-with-dome-zinc-mansard",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/parisian-corner-with-dome/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1404367,
+      "sha256": "abed71053e7f90d7456b7eb8f0c618d9934e9442288c533bb65409b06f498d93",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "parisian_corner_with_dome",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "parisian-corner-with-dome-zinc-mansard",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/parisian-corner-with-dome/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 1004937,
+      "sha256": "4c5d48f6f4bae3626d715fbb78edbc8b32b1ef58cb5c53393176cd28657dce47",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "parisian_corner_with_dome",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "parisian-corner-with-dome-zinc-mansard",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/parisian-corner-with-dome/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 964784,
+      "sha256": "7c0dff0f3930d314f739ede27c78357ae7124380461ef0d4679e95dee104045a",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

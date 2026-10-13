@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "montreal_second_empire_civic",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "montreal_civic_city_hall",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "montreal_second_empire_civic",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "montreal_civic_city_hall",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/montreal-second-empire-civic/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1240997,
+      "sha256": "b65649dc4ebd7c66e01b4adacf677cf42222214ec6456b77d8a22cddcb65316b",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "montreal_second_empire_civic",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "montreal_civic_city_hall",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/montreal-second-empire-civic/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 875908,
+      "sha256": "49679d3a9749ea9d76d646473f2bf8bdb166fc2b9d15fe4bb1ac0ada333aa63c",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "montreal_second_empire_civic",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "montreal_civic_city_hall",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/montreal-second-empire-civic/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 819505,
+      "sha256": "e0480ccd7131dfa37d2d071e67f0a4da339500b5b8687a9e382ccc8263bd9678",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}
