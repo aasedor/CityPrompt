@@ -69,6 +69,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (All five v003 findings resolved in the pixels: the full-height porte-cochere slot is gone (four small pinholes remain, P2) and the court-corner notches are gone. Improved from 1 + 4 to 0 + 2; becomes the candidate.)
+## Open blockers after v005 (Both v004 P1s resolved in the pixels (voussoir ring on impost caps flush with the piers; no black deck lines). Same count as v004 (0 + 2): first review that did not lower P0+P1; v004 stays the candidate. v005 is evidence only.)
 
-P1 the outer voussoir ring of the street-side pointed arch stops short of the jamb piers (wall shows in the gap) and sits outboard of the pier faces, so the arch does not bear on its jambs; P1 a pure-black void line runs along the tower roof deck at the parapet inner faces and round the porch deck (a gap, visible in the nadir view)
+P1 the porch walls and jamb piers stop short of the ground at the street threshold (a pure-black slot under the porch wall, the lawn running under the east pier and flank wall); P1 pure-black void lines inside the carriage passage along the vault and west side wall join and under the court-side arch ring
