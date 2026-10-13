@@ -1,0 +1,1518 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "court front ground window 0",
+      "face": "court front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court front first window 0",
+      "face": "court front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court front second window 0",
+      "face": "court front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court front ground window 1",
+      "face": "court front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court front first window 1",
+      "face": "court front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court front second window 1",
+      "face": "court front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court front ground window 2",
+      "face": "court front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court front first window 2",
+      "face": "court front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court front second window 2",
+      "face": "court front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court front ground window 3",
+      "face": "court front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court front first window 3",
+      "face": "court front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court front second window 3",
+      "face": "court front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court right ground window 0",
+      "face": "court right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court right first window 0",
+      "face": "court right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court right second window 0",
+      "face": "court right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court right ground window 1",
+      "face": "court right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court right first window 1",
+      "face": "court right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court right second window 1",
+      "face": "court right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court rear ground window 0",
+      "face": "court rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court rear first window 0",
+      "face": "court rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court rear second window 0",
+      "face": "court rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court rear ground window 1",
+      "face": "court rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court rear first window 1",
+      "face": "court rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court rear second window 1",
+      "face": "court rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court rear ground window 2",
+      "face": "court rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court rear first window 2",
+      "face": "court rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court rear second window 2",
+      "face": "court rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court rear ground window 3",
+      "face": "court rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court rear first window 3",
+      "face": "court rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court rear second window 3",
+      "face": "court rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court left ground window 0",
+      "face": "court left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court left first window 0",
+      "face": "court left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court left second window 0",
+      "face": "court left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court left ground window 1",
+      "face": "court left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court left first window 1",
+      "face": "court left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "court left second window 1",
+      "face": "court left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-west pavilion basement window 0",
+      "face": "south-west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-west pavilion basement window 1",
+      "face": "south-west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-west pavilion main floor window 0",
+      "face": "south-west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-west pavilion main floor window 1",
+      "face": "south-west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-west pavilion upper window 0",
+      "face": "south-west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-west pavilion upper window 1",
+      "face": "south-west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-west pavilion attic window 0",
+      "face": "south-west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-west pavilion attic window 1",
+      "face": "south-west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-west pavilion attic window 2",
+      "face": "south-west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run west basement window 0",
+      "face": "south run west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run west basement window 1",
+      "face": "south run west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run west basement window 2",
+      "face": "south run west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run west main floor window 0",
+      "face": "south run west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run west main floor window 1",
+      "face": "south run west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run west main floor window 2",
+      "face": "south run west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run west upper window 0",
+      "face": "south run west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run west upper window 1",
+      "face": "south run west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run west upper window 2",
+      "face": "south run west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south central pavilion basement window 0",
+      "face": "south central pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south central pavilion basement window 1",
+      "face": "south central pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south central pavilion basement window 2",
+      "face": "south central pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south central pavilion main floor window 0",
+      "face": "south central pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Entrance doors",
+      "face": "south central pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south central pavilion main floor window 2",
+      "face": "south central pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south central pavilion upper window 0",
+      "face": "south central pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south central pavilion upper window 1",
+      "face": "south central pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south central pavilion upper window 2",
+      "face": "south central pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run east basement window 0",
+      "face": "south run east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run east basement window 1",
+      "face": "south run east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run east basement window 2",
+      "face": "south run east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run east main floor window 0",
+      "face": "south run east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run east main floor window 1",
+      "face": "south run east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run east main floor window 2",
+      "face": "south run east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run east upper window 0",
+      "face": "south run east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run east upper window 1",
+      "face": "south run east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run east upper window 2",
+      "face": "south run east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-east pavilion basement window 0",
+      "face": "south-east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-east pavilion basement window 1",
+      "face": "south-east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-east pavilion main floor window 0",
+      "face": "south-east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-east pavilion main floor window 1",
+      "face": "south-east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-east pavilion upper window 0",
+      "face": "south-east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-east pavilion upper window 1",
+      "face": "south-east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-east pavilion attic window 0",
+      "face": "south-east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-east pavilion attic window 1",
+      "face": "south-east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south-east pavilion attic window 2",
+      "face": "south-east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west south pavilion basement window 0",
+      "face": "west south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west south pavilion basement window 1",
+      "face": "west south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west south pavilion main floor window 0",
+      "face": "west south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west south pavilion main floor window 1",
+      "face": "west south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west south pavilion upper window 0",
+      "face": "west south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west south pavilion upper window 1",
+      "face": "west south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west south pavilion attic window 0",
+      "face": "west south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west south pavilion attic window 1",
+      "face": "west south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west south pavilion attic window 2",
+      "face": "west south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run basement window 0",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run basement window 1",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run basement window 2",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run basement window 3",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run basement window 4",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run basement window 5",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run basement window 6",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run main floor window 0",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run main floor window 1",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run main floor window 2",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run main floor window 3",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run main floor window 4",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run main floor window 5",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run main floor window 6",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run upper window 0",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run upper window 1",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run upper window 2",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run upper window 3",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run upper window 4",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run upper window 5",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run upper window 6",
+      "face": "west run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west north pavilion basement window 0",
+      "face": "west north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west north pavilion basement window 1",
+      "face": "west north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west north pavilion main floor window 0",
+      "face": "west north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west north pavilion main floor window 1",
+      "face": "west north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west north pavilion upper window 0",
+      "face": "west north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west north pavilion upper window 1",
+      "face": "west north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west north pavilion attic window 0",
+      "face": "west north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west north pavilion attic window 1",
+      "face": "west north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west north pavilion attic window 2",
+      "face": "west north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east pavilion basement window 0",
+      "face": "north east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east pavilion basement window 1",
+      "face": "north east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east pavilion main floor window 0",
+      "face": "north east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east pavilion main floor window 1",
+      "face": "north east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east pavilion upper window 0",
+      "face": "north east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east pavilion upper window 1",
+      "face": "north east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east pavilion attic window 0",
+      "face": "north east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east pavilion attic window 1",
+      "face": "north east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east pavilion attic window 2",
+      "face": "north east pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run basement window 0",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run basement window 1",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run basement window 2",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run basement window 3",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run basement window 4",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run basement window 5",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run basement window 6",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run basement window 7",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run basement window 8",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run main floor window 0",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run main floor window 1",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run main floor window 2",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run main floor window 3",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run main floor window 4",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run main floor window 5",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run main floor window 6",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run main floor window 7",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run main floor window 8",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run upper window 0",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run upper window 1",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run upper window 2",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run upper window 3",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run upper window 4",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run upper window 5",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run upper window 6",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run upper window 7",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run upper window 8",
+      "face": "north run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west pavilion basement window 0",
+      "face": "north west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west pavilion basement window 1",
+      "face": "north west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west pavilion main floor window 0",
+      "face": "north west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west pavilion main floor window 1",
+      "face": "north west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west pavilion upper window 0",
+      "face": "north west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west pavilion upper window 1",
+      "face": "north west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west pavilion attic window 0",
+      "face": "north west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west pavilion attic window 1",
+      "face": "north west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west pavilion attic window 2",
+      "face": "north west pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east south pavilion basement window 0",
+      "face": "east south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east south pavilion basement window 1",
+      "face": "east south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east south pavilion main floor window 0",
+      "face": "east south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east south pavilion main floor window 1",
+      "face": "east south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east south pavilion upper window 0",
+      "face": "east south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east south pavilion upper window 1",
+      "face": "east south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east south pavilion attic window 0",
+      "face": "east south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east south pavilion attic window 1",
+      "face": "east south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east south pavilion attic window 2",
+      "face": "east south pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run basement window 0",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run basement window 1",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run basement window 2",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run basement window 3",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run basement window 4",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run basement window 5",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run basement window 6",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run main floor window 0",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run main floor window 1",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run main floor window 2",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run main floor window 3",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run main floor window 4",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run main floor window 5",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run main floor window 6",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run upper window 0",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run upper window 1",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run upper window 2",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run upper window 3",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run upper window 4",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run upper window 5",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run upper window 6",
+      "face": "east run",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east north pavilion basement window 0",
+      "face": "east north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east north pavilion basement window 1",
+      "face": "east north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east north pavilion main floor window 0",
+      "face": "east north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east north pavilion main floor window 1",
+      "face": "east north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east north pavilion upper window 0",
+      "face": "east north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east north pavilion upper window 1",
+      "face": "east north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east north pavilion attic window 0",
+      "face": "east north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east north pavilion attic window 1",
+      "face": "east north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east north pavilion attic window 2",
+      "face": "east north pavilion",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run west dormer window -13.2",
+      "face": "south run west dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run west dormer window -9.9",
+      "face": "south run west dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run west dormer window -6.6",
+      "face": "south run west dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run east dormer window 6.6",
+      "face": "south run east dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run east dormer window 9.9",
+      "face": "south run east dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south run east dormer window 13.2",
+      "face": "south run east dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run dormer window -9.8",
+      "face": "west run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run dormer window -6.5",
+      "face": "west run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run dormer window -3.3",
+      "face": "west run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run dormer window 0.0",
+      "face": "west run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run dormer window 3.3",
+      "face": "west run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run dormer window 6.5",
+      "face": "west run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west run dormer window 9.8",
+      "face": "west run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run dormer window -13.2",
+      "face": "north run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run dormer window -9.9",
+      "face": "north run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run dormer window -6.6",
+      "face": "north run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run dormer window -3.3",
+      "face": "north run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run dormer window 0.0",
+      "face": "north run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run dormer window 3.3",
+      "face": "north run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run dormer window 6.6",
+      "face": "north run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run dormer window 9.9",
+      "face": "north run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north run dormer window 13.2",
+      "face": "north run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run dormer window -9.8",
+      "face": "east run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run dormer window -6.5",
+      "face": "east run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run dormer window -3.3",
+      "face": "east run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run dormer window 0.0",
+      "face": "east run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run dormer window 3.3",
+      "face": "east run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run dormer window 6.5",
+      "face": "east run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east run dormer window 9.8",
+      "face": "east run dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "pavilion south dormer window 0.0",
+      "face": "pavilion south dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "pavilion west dormer window 0.0",
+      "face": "pavilion west dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "pavilion south dormer window 0.0",
+      "face": "pavilion south dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "pavilion east dormer window 0.0",
+      "face": "pavilion east dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "pavilion north dormer window 0.0",
+      "face": "pavilion north dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "pavilion east dormer window 0.0",
+      "face": "pavilion east dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "pavilion north dormer window 0.0",
+      "face": "pavilion north dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "pavilion west dormer window 0.0",
+      "face": "pavilion west dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Porch arch 0",
+      "face": "porch front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Porch arch 1",
+      "face": "porch front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Porch arch 2",
+      "face": "porch front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower front shaft opening",
+      "face": "tower front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower right shaft opening",
+      "face": "tower right",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower rear shaft opening",
+      "face": "tower rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower left shaft opening",
+      "face": "tower left",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower stage front dormer window 0.0",
+      "face": "tower stage front dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower stage right dormer window 0.0",
+      "face": "tower stage right dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower stage rear dormer window 0.0",
+      "face": "tower stage rear dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower stage left dormer window 0.0",
+      "face": "tower stage left dormer",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
