@@ -286,6 +286,18 @@ def annulus(name, centre, axis, r_in, r_out, d0, d1, role, module, segs=24):
     return C.mesh(name, vs, fs, role, module)
 
 
+def cut_rod(owner, centre, r, z0, z1, sides=48):
+    """Boolean-subtract a vertical cylinder from `owner` (like clay_core.cut_box, for round cut-outs)."""
+    cx, cy = centre
+    cutter = C.rod('Cylinder cutter', (cx, cy, z0), (cx, cy, z1), r, 'wall', 'construction cutter', sides)
+    cutter.data.materials.clear(); cutter.data.materials.append(owner.data.materials[0])
+    C.bpy.context.view_layer.objects.active = owner
+    mod = owner.modifiers.new('cylinder cut', 'BOOLEAN'); mod.operation = 'DIFFERENCE'; mod.solver = 'EXACT'; mod.object = cutter
+    C.bpy.ops.object.modifier_apply(modifier=mod.name)
+    C.remove_cutter(cutter)
+    C.normalise(owner.data)
+
+
 # ---- building ----
 
 def cone(name, cx, cy, z0, r0, z1, r1, role, module, segs=24):
@@ -328,7 +340,7 @@ def window_dressing(m, h, street):
     m.box('stone', h['u'], -.07, h['z'] - .08, h['w'] + .36, T + .20, .12)
 
 
-def elevation(f, lo, hi, street=True, gables=(), skip_bays=()):
+def elevation(f, lo, hi, street=True, gables=(), skip_bays=(), pad=0.0):
     """One face: rusticated granite carrier, tall ground-floor windows, sash windows with stone dressings, string
     courses, corbelled eaves course; optional two-bay wall gables centred on bay boundaries given in `gables`."""
     span = hi - lo
@@ -357,10 +369,10 @@ def elevation(f, lo, hi, street=True, gables=(), skip_bays=()):
         else:
             m.box('stone', h['u'], -.05, h['z'] + h['h'] + .15, h['w'] + .50, T + .16, .22)
     for zl in LEVELS:
-        m.box('stone', (lo + hi) / 2, -.04, zl - .12, span - 2 * EPS, T + .14, .18)
-    m.box('stone', (lo + hi) / 2, -.07, G0 + .55, span - 2 * EPS, T + .20, .40)          # plinth course
+        m.box('stone', (lo + hi) / 2, -.04 - pad, zl - .12, span - 2 * EPS, T + .14 + pad, .18 + 2 * pad)
+    m.box('stone', (lo + hi) / 2, -.07 - pad, G0 + .55, span - 2 * EPS, T + .20 + pad, .40 + 2 * pad)          # plinth course
     # Corbelled eaves course: continuous corbel table under a projecting stone cornice (v001 P1 12).
-    m.box('stone', (lo + hi) / 2, -.20, EAVE - .16, span - 2 * EPS, T + .46, .32)
+    m.box('stone', (lo + hi) / 2, -.20 - pad, EAVE - .16, span - 2 * EPS, T + .46 + pad, .32 + 2 * pad)
     nc = max(2, int(span / 2.0))
     for i in range(nc + 1):
         m.box('stone', lo + .3 + (span - .6) * i / nc, -.14, EAVE - .52, .34, T + .34, .40)
@@ -382,34 +394,43 @@ def crow_gable(f, u, z_e, holes, w=10.0, rise=1.0, run=.55):
         x -= run; z += rise
         steps_r.append((x, z))
     top = z
-    def outline_z(xa):        # height of the stepped outline above |u - centre| = xa
-        n = 0
-        for (xs, zs) in steps_r:
-            if xs >= xa:
-                n += 1
-        return z_e + .40 + n * rise
-    pts = [(-half, z_e - .6), (half, z_e - .6), (half, z_e + .40)]
-    right = []
+    # The gable is a stack of rectangular step slabs, not one concave panel: window cuts through the concave panel
+    # lost its tower-side flank (v003 P1: straight rake, missing risers).
+    slabs = [(half, z_e - .6, z_e + .40)]
     zz = z_e + .40
     for (x2, z2) in steps_r:
-        right += [(x2, zz), (x2, z2)]
-        zz = z2
-    pts += right + [(.45, top), (-.45, top)] + [(-a, b) for a, b in reversed(right)] + [(-half, z_e + .40)]
-    panel = f.panel(f'{f.label} crow gable {u:.0f}', [(u + a, b) for a, b in pts], -.05, T, 'wall', 'gables')
+        slabs.append((x2, zz, z2)); zz = z2
+    pieces = [f.panel(f'{f.label} crow gable {u:.0f} step {k}', [(u - xs, za), (u + xs, za), (u + xs, zb), (u - xs, zb)], -.05, T, 'wall', 'gables')
+              for k, (xs, za, zb) in enumerate(slabs)]
+    def half_at(z):
+        for xs, za, zb in slabs:
+            if z <= zb:
+                return xs
+        return 0.0
+    # Windows fitted so every head mould clears the copes by 0.45 m and every dressing stays 0.35 m inside the
+    # risers (v003 P1): three lights where they fit, else two, else one; an attic light above where it fits.
+    zl_, hl_ = z_e + .9, 2.2
+    lim = half_at(zl_ + hl_ + .37 + .45) - .35
     wins = []
-    pair = max(1.5, w * .21)
-    if outline_z(pair + .65 + .2) >= z_e + .9 + 2.4 + .4:
-        wins += [(-pair, z_e + .9, 1.3, 2.4), (pair, z_e + .9, 1.3, 2.4)]
-    else:
-        wins += [(0.0, z_e + .9, 1.3, 2.4)]
-    if outline_z(.55 + .2) >= z_e + 4.4 + 2.0 + .4 and len(wins) == 2:
-        wins.append((0.0, z_e + 4.4, 1.1, 2.0))
+    for ww, n in ((1.1, 3), (.95, 3), (1.1, 2), (.8, 2), (1.1, 1)):
+        d = min(lim - ww / 2 - .25, 2.0)
+        if n == 1 and d >= 0:
+            wins = [(0.0, zl_, ww, hl_)]; break
+        if n == 3 and d >= ww + .55:
+            wins = [(-d, zl_, ww, hl_), (0.0, zl_, ww, hl_), (d, zl_, ww, hl_)]; break
+        if n == 2 and 2 * d >= ww + .55:
+            wins = [(-d, zl_, ww, hl_), (d, zl_, ww, hl_)]; break
+    za_, ha_ = z_e + 4.7, 1.5
+    if half_at(za_ + ha_ + .37 + .45) - .35 >= .45 + .25:
+        wins.append((0.0, za_, .9, ha_))
     m = Merge(f)
     gh = []
     for (du, zw, ww, hw) in wins:
         uu = u + du
-        f.cut(panel, f'{f.label} gable window cut {u:.0f}{du:+.1f}', uu, zw, ww, hw, depth=T + .1)
-        h = hole(f'{f.label} gable window {u:.0f}{du:+.1f}', uu, zw, ww, hw)
+        for pc, (xs, za, zb) in zip(pieces, slabs):
+            if za < zw + hw and zb > zw:
+                f.cut(pc, f'{f.label} gable window cut {u:.0f}{du:+.1f} {za:.1f}', uu, zw, ww, hw, depth=T + .1)
+        h = hole(f'{f.label} gable window {u:.0f}{du:+.1f} {zw:.1f}', uu, zw, ww, hw)
         gh.append(h)
         reveal(m, f, h, .16, 'stone'); framed(m, f, h, cols=2, rows=2, occupied='attic room')
         window_dressing(m, h, True)
@@ -559,7 +580,7 @@ def tower():
     arch_w, arch_h, arch_r = 4.6, 6.6, 2.0
     # Tower front carrier: the passage arch at the foot (behind the porch) and windows above the porch.
     front = C.Face((TX, y0, 0), (1, 0, 0), (0, 1, 0), 'tower front')
-    ta = hole('Tower passage arch', 0.0, G0, arch_w, arch_h, kind='open arch')
+    ta = hole('Tower passage arch', 0.0, G0, arch_w + .24, arch_h + .1, kind='open arch')   # reveal buried in the passage walls (v003 P0: coplanar reveal and wall face rendered a black slot)
     holes = [ta]
     for k, zl in enumerate(LEVELS):
         if zl + .75 > PORCH_H + 1.2:
@@ -610,7 +631,9 @@ def tower():
     C.rod('Flagpole', (TX, y0 + TD / 2, zt), (TX, y0 + TD / 2, zt + 5.0), .05, 'hardware', 'parapet', 8)
     for sgn in (-1, 1):
         bartizan(TX + sgn * (TW / 2 + .1), y0 - .1, 1.0, TOWER_TOP - 2.6, TOWER_TOP + 1.0)
-    tourelle(x1 - .2, y0 + TD - .2, 1.4, EAVE + 1.0, TOWER_TOP + 2.6, TOWER_TOP + 7.0, math.radians(45), windows=False, label='tower stair tourelle')
+    tourelle(x1 + .25, y0 + TD - 1.7, 1.7, RIDGE + .6, TOWER_TOP + 4.6, TOWER_TOP + 11.0, 0.0, windows=False, label='tower stair tourelle')   # rear-east stair tourelle corbelled out above the ridge, tall shaft and cone (v003 P1)
+    for zz in (TOWER_TOP + 1.2, TOWER_TOP + 3.0):
+        C.box('Stair tourelle slit', (x1 + .25 + 1.7 + .01, y0 + TD - 1.7, zz), (.08, .22, 1.0), 'hardware', 'tourelles', 0)
     # Projecting two-storey porch with the pointed porte-cochere, crenellated top and corner bartizans.
     pf = C.Face((TX, yp, 0), (1, 0, 0), (0, 1, 0), 'porch front')
     pa = hole('Porte-cochere', 0.0, G0, arch_w, arch_h, kind='open arch')
@@ -641,7 +664,7 @@ def tower():
     y1 = -D / 2 + WING
     C.box('Passage floor', (TX, (yp + y1) / 2, G0 / 2 + .001), (arch_w + .4, y1 - yp, G0), 'foundation', 'passage', 0)
     for sgn in (-1, 1):
-        C.box('Passage wall', (TX + sgn * (arch_w / 2 + .2), (yp + T + y1 - T) / 2, (G0 + arch_h + .2) / 2), (.40, y1 - yp - 2 * T, arch_h + .2 - G0), 'wall', 'passage', 0)
+        C.box('Passage wall', (TX + sgn * (arch_w / 2 + .26), (yp + T + y1 - T) / 2, (G0 + arch_h + .2) / 2), (.40, y1 - yp - 2 * T, arch_h + .2 - G0), 'wall', 'passage', 0)
     C.box('Passage ceiling', (TX, (yp + T + y1 - T) / 2, arch_h + G0 + .35), (arch_w + .8, y1 - yp - 2 * T, .30), 'stone', 'passage', 0)
     court_face = C.Face((TX, y1, 0), (-1, 0, 0), (0, -1, 0), 'passage court face')
     ca = hole('Court arch', 0.0, G0, arch_w, arch_h, kind='open arch')
@@ -703,7 +726,7 @@ def roofs_and_floors():
                 elevation(C.Face(f.o, f.t, f.n, 'court front west'), lo, TX - PASS_W / 2, street=False)
             elevation(C.Face(f.o, f.t, f.n, 'court front east'), TX + PASS_W / 2, hi, street=False)
             continue
-        elevation(f, lo, hi, street=False, gables=((0.0, 9.0),))
+        elevation(f, lo, hi, street=False, gables=((0.0, 9.0),), pad=.015 if i % 2 else 0.0)
     for (qx, qy) in court:                       # plug the inner eaves corners (v002 P1)
         C.box('Court corner eaves block', (qx * 1.004, qy * 1.004, EAVE - .1), (1.3, 1.3, .9), 'stone', 'roofs', 0)
     strip('Outer slate slopes', outer, ridge, EAVE, RIDGE, 'roof', 'roofs')

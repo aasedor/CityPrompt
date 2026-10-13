@@ -65,7 +65,7 @@ def manifest(version):
         measurement_contract=dict(dimensions_m=dict(width=W + 8.0, depth=D + 8.0, height=h),
             observed_storeys=5, storey_programme='stone cafe ground floor, stone first storey, three brick storeys, zinc mansard attic',
             plan='34 x 30 m corner block (top view) with a 12 x 10 m inner court, streets south and west, a 6.5 m chamfer at the south-west corner under the dome',
-            facade='bays at 3.3 m of French windows 1.3 x 2.6 m with stone surrounds; individual iron balconies on the first and third storeys, continuous iron balconies on the second and fourth; stone string courses in the brick; quoins at the corners and the chamfer; bracketed cornice at 18.0 m',
+            facade='bays at 3.3 m of French windows 1.3 x 2.6 m with stone surrounds; individual iron balconies on the first and third storeys, continuous iron balconies on the second and fourth (on the chamfer the second-storey balcony is a stone slab on two consoles); stone string courses in the brick; quoins at the corners and the chamfer; bracketed cornice at 18.0 m',
             levels_m=[G0] + LEVELS, cornice_m=CORNICE, mansard='3.6 m zinc mansard set in 1.5 m with arched dormers at every bay; flat zinc top',
             dome='stone drum 7.4 m across and 3.0 m high centred 2.3 m behind the chamfer plane on a corbel ring over the chamfer cornice, with three oeil-de-boeuf windows and a cornice; ribbed zinc dome 8.2 m across and 5.0 m high with a projecting framed oculus dormer at its base on the chamfer axis; open lantern and gilded finial to 30 m',
             ground='stone ground floor with timber shopfronts; the cafe occupies the chamfer and two bays each side under one continuous red awning projecting 2.6 m, mitred around both chamfer arrises',
@@ -290,6 +290,18 @@ def annulus(name, centre, axis, r_in, r_out, d0, d1, role, module, segs=24):
     return C.mesh(name, vs, fs, role, module)
 
 
+def cut_rod(owner, centre, r, z0, z1, sides=48):
+    """Boolean-subtract a vertical cylinder from `owner` (like clay_core.cut_box, for round cut-outs)."""
+    cx, cy = centre
+    cutter = C.rod('Cylinder cutter', (cx, cy, z0), (cx, cy, z1), r, 'wall', 'construction cutter', sides)
+    cutter.data.materials.clear(); cutter.data.materials.append(owner.data.materials[0])
+    C.bpy.context.view_layer.objects.active = owner
+    mod = owner.modifiers.new('cylinder cut', 'BOOLEAN'); mod.operation = 'DIFFERENCE'; mod.solver = 'EXACT'; mod.object = cutter
+    C.bpy.ops.object.modifier_apply(modifier=mod.name)
+    C.remove_cutter(cutter)
+    C.normalise(owner.data)
+
+
 # ---- building ----
 
 def arch_fill(f, u, z_top, w, rise, role='stone', d0=-.03, d1=None):
@@ -482,12 +494,12 @@ def chamfer_bay():
             m.box('stone', h['u'] + sgn * (h['w'] / 2 + .14), -.04, h['z'] + h['h'] / 2, .28, T + .14, h['h'] + .28)
         m.box('stone', h['u'], -.06, h['z'] + h['h'] + .18, h['w'] + .70, T + .18, .26)
         k = h['level']
-        if k == 0:        # projecting stone balcony on consoles (locked front)
+        if k == 1:        # projecting stone balcony on consoles at the second storey; window-width balconies at the first and third (locked front and oblique, v004 P1)
             m.box('stone', 0.0, -.45, h['z'] - .12, CH - .8, 1.24, .22)
             for sgn in (-1, 1):
                 m.box('stone', sgn * 1.6, -.40, h['z'] - .58, .36, .80, .70)
             balustrade_iron(m, f, -(CH - .8) / 2 + .05, (CH - .8) / 2 - .05, -1.02, h['z'])
-        elif k in (1, 3):
+        elif k == 3:
             iron_balcony(m, f, 0.0, LEVELS[k], CH - .30, depth=.85)
         else:
             iron_balcony(m, f, h['u'], h['z'], h['w'] + .8, depth=.70)
@@ -640,6 +652,15 @@ def roofs_and_floors():
             m.box('stone', h['u'], -.06, h['z'] - .08, h['w'] + .30, T + .18, .12)
         eave_cornice(m, lo, hi, CORNICE, T, .36, modillions=False)
         m.flush('court')
+    # Zinc gutter capping every wall head above the cornice, with corner blocks closing each corner column
+    # (v004 P2: brick band on top of the cornice and open corner tops seen from above).
+    mid_out = offset_polygon(outer, T / 2)
+    mid_court = [(cx - hw - T / 2, cy - hd - T / 2), (cx + hw + T / 2, cy - hd - T / 2), (cx + hw + T / 2, cy + hd + T / 2), (cx - hw - T / 2, cy + hd + T / 2)]
+    for ring in (mid_out, mid_court):
+        for (ax, ay), (bx, by) in zip(ring, ring[1:] + ring[:1]):
+            C.beam('Wall-head gutter', (ax, ay, CORNICE + .24), (bx, by, CORNICE + .24), T + .14, .44, 'zinc', 'mansard')
+        for (px, py) in ring:
+            C.box('Wall-head corner block', (px, py, CORNICE + .25), (T + .30, T + .30, .46), 'zinc', 'mansard', 0)
     # Mansards: outer ring (closed pentagon), court ring, flat zinc annulus between them.
     top_outer = offset_polygon(outer, MANS_IN)
     strip('Outer mansard', outer, top_outer, CORNICE, CORNICE + MANS_H, 'zinc', 'mansard')
