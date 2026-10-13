@@ -138,14 +138,14 @@ def reveal(m, f, h, inset=.16, role='stone', jambs_only=False):
     m.box(role, u, inset / 2 - .01, z + .02, w, inset + .02, .04)
 
 
-def iron_balcony(m, f, u, z, w, depth=.8, role='hardware', slab='stone'):
+def iron_balcony(m, f, u, z, w, depth=.8, role='hardware', slab='stone', spacing=.30):
     """Cantilevered balcony: stone slab with a merged iron lattice (top rail, end rails, mid rail, pickets)."""
     m.box(slab, u, -depth / 2 + .02, z - .10, w, depth + .04, .20)
     m.box(role, u, -depth + .04, z + .98, w, .05, .05)
     for e in (-1, 1):
         m.box(role, u + e * (w / 2 - .02), -depth / 2 + .02, z + .98, .05, depth - .04, .05)
     m.box(role, u, -depth + .04, z + .50, w, .03, .03)
-    n = max(4, int(w / .30))
+    n = max(4, int(w / spacing))
     for i in range(n + 1):
         m.box(role, u - w / 2 + .02 + (w - .04) * i / n, -depth + .04, z + .55, .03, .03, .86)
     for e in (-1, 1):
@@ -592,7 +592,7 @@ def tower():
                 holes.append(hole(f'tower window {k}{du:+.0f}', du, zl + .75, 1.3, 2.9, level=k))
     holes.append(hole('tower upper window', 0.0, EAVE + 1.0, 2.0, 3.6, level=9))
     holes += [hole(f'tower top window {du:+.0f}', du, EAVE + 6.4, 1.0, 1.8, level=10) for du in (-1.8, 1.8)]
-    front.wall('tower front carrier', -TW / 2, TW / 2, G0, TOWER_TOP - .20, depth=T, role='wall', holes=holes)
+    front.wall('tower front carrier', -TW / 2, TW / 2, -.02, TOWER_TOP - .20, depth=T, role='wall', holes=holes)      # down to grade (v005 P1 1)
     rustication(front, -TW / 2 + .02, TW / 2 - .02, PORCH_H + .3, TOWER_TOP - 1.6, holes)
     pointed_fill16(front, 0.0, ta['z'] + ta['h'], ta['w'], arch_r, 'stone')
     m = Merge(front)
@@ -614,7 +614,7 @@ def tower():
         f = C.Face((x, y0 + TD / 2, 0), (0, sgn, 0), (-sgn, 0, 0), label)
         lo, hi = ((-TD / 2, TD / 2 - T) if sgn < 0 else (-TD / 2 + T, TD / 2))
         hs = [hole(f'{label} window {k}', 0.0, zl + .75, 1.3, 2.9) for k, zl in enumerate(LEVELS) if zl > 7.0] + [hole(f'{label} upper window', 0.0, EAVE + 1.0, 1.6, 3.6)]
-        f.wall(f'{label} carrier', lo, hi, G0, TOWER_TOP - .20, depth=T, role='wall', holes=hs)
+        f.wall(f'{label} carrier', lo, hi, -.02, TOWER_TOP - .20, depth=T, role='wall', holes=hs)
         rustication(f, lo + .02, hi - .02, G0 + .35, TOWER_TOP - 1.6, hs)
         mm = Merge(f)
         for h in hs:
@@ -642,20 +642,20 @@ def tower():
     pf = C.Face((TX, yp, 0), (1, 0, 0), (0, 1, 0), 'porch front')
     pa = hole('Porte-cochere', 0.0, G0, arch_w, arch_h, kind='open arch')
     pw_ = [hole('porch window', 0.0, PORCH_H - 2.0, 1.0, 1.4)]
-    pf.wall('porch front carrier', -PORCH_W / 2, PORCH_W / 2, G0, PORCH_H, depth=T, role='wall', holes=[pa] + pw_)
+    pf.wall('porch front carrier', -PORCH_W / 2, PORCH_W / 2, -.02, PORCH_H, depth=T, role='wall', holes=[pa] + pw_)
     rustication(pf, -PORCH_W / 2 + .02, PORCH_W / 2 - .02, G0 + .35, PORCH_H - .4, [pa] + pw_)
     pointed_fill16(pf, 0.0, pa['z'] + pa['h'], pa['w'], arch_r, 'stone')
     pointed_hood(pf, 0.0, pa['z'] + pa['h'] - arch_r, pa['w'], arch_r)
     mp_ = Merge(pf)
     for sgn in (-1, 1):
-        mp_.box('stone', sgn * (pa['w'] / 2 + .32), -.10, (G0 + pa['z'] + pa['h'] - arch_r) / 2, .50, T + .24, pa['z'] + pa['h'] - arch_r - G0)   # arch jamb piers
+        mp_.box('stone', sgn * (pa['w'] / 2 + .32), -.10, (-.02 + pa['z'] + pa['h'] - arch_r) / 2, .50, T + .24, pa['z'] + pa['h'] - arch_r + .02)   # arch jamb piers to grade (v005 P1 1)
         mp_.box('stone', sgn * (pa['w'] / 2 + .30), -.13, pa['z'] + pa['h'] - arch_r + .05, .78, T + .32, .22)                               # impost cap the voussoir ring lands on
     framed(mp_, pf, pw_[0], cols=1, rows=2, occupied='porch room')
     mp_.flush('porch')
     for sgn in (-1, 1):
         side = C.Face((TX + sgn * PORCH_W / 2, yp + PORCH_D / 2, 0), (0, sgn, 0), (-sgn, 0, 0), f'porch side {sgn}')
         lo, hi = ((-PORCH_D / 2 - .05, PORCH_D / 2 - T) if sgn < 0 else (-PORCH_D / 2 + T, PORCH_D / 2 + .05))
-        side.wall(f'porch side carrier {sgn}', lo, hi, G0, PORCH_H, depth=T, role='wall', holes=())
+        side.wall(f'porch side carrier {sgn}', lo, hi, -.02, PORCH_H, depth=T, role='wall', holes=())
         rustication(side, lo + .02, hi - .02, G0 + .35, PORCH_H - .4, ())
     pring = [(TX - PORCH_W / 2, yp), (TX + PORCH_W / 2, yp), (TX + PORCH_W / 2, y0), (TX - PORCH_W / 2, y0)]
     corbel_table(pring[:2] + [(TX + PORCH_W / 2, y0 - .01), (TX - PORCH_W / 2, y0 - .01)], PORCH_H, out=.25)
@@ -667,10 +667,11 @@ def tower():
         face_origin=list(pf.o), face_tangent=list(pf.t), face_inward=list(pf.n), occupied_space='open porte-cochere passage to the court'))
     # Passage from the porch through the south wing: floor, walls, ceiling, court-side arch between two carriers.
     y1 = -D / 2 + WING
-    C.box('Passage floor', (TX, (yp + y1) / 2, G0 / 2 + .001), (arch_w + .4, y1 - yp, G0), 'foundation', 'passage', 0)
+    C.box('Passage floor', (TX, (yp + y1) / 2, (G0 + .01) / 2), (arch_w + .4, y1 - yp, G0 + .01), 'foundation', 'passage', 0)
+    C.box('Tower and porch base slab', (TX, (yp - .05 - D / 2) / 2, (G0 - .01) / 2), (TW + .10, -D / 2 - yp + .05, G0 - .01), 'foundation', 'passage', 0)   # the projection stands on grade (v005 P1 1)
     for sgn in (-1, 1):
-        C.box('Passage wall', (TX + sgn * (arch_w / 2 + .26), (yp + T + y1 - T) / 2, (G0 + arch_h + .2) / 2), (.40, y1 - yp - 2 * T, arch_h + .2 - G0), 'wall', 'passage', 0)
-    C.box('Passage ceiling', (TX, (yp + T + y1 - T) / 2, arch_h + G0 + .35), (arch_w + .8, y1 - yp - 2 * T, .30), 'stone', 'passage', 0)
+        C.box('Passage wall', (TX + sgn * (arch_w / 2 + .26), (yp + y1) / 2, (G0 + arch_h + .5) / 2), (.40, y1 - yp - 2 * T + .20, arch_h + .5 - G0), 'wall', 'passage', 0)   # into the ceiling and the carriers (v005 P1 2)
+    C.box('Passage ceiling', (TX, (yp + y1) / 2, arch_h + G0 + .35), (arch_w + .8, y1 - yp - 2 * T + .20, .30), 'stone', 'passage', 0)
     court_face = C.Face((TX, y1, 0), (-1, 0, 0), (0, -1, 0), 'passage court face')
     ca = hole('Court arch', 0.0, G0, arch_w, arch_h, kind='open arch')
     pw_holes = [hole(f'passage court window {k}', 0.0, zl + .75, 1.3, 2.9) for k, zl in enumerate(LEVELS) if zl > arch_h + .5]
@@ -678,7 +679,7 @@ def tower():
     p_hi = PASS_W / 2 - EPS if TX - PASS_W / 2 + cw_half > 2.5 else TX + cw_half - EPS      # u = TX - x: run to the court corner when no west run fits
     court_face.wall('Passage court carrier', -PASS_W / 2, p_hi, G0, EAVE + .30, depth=T, role='wall', holes=[ca] + pw_holes)
     pointed_fill16(court_face, 0.0, ca['z'] + ca['h'], ca['w'], arch_r, 'stone')
-    pointed_hood(court_face, 0.0, ca['z'] + ca['h'] - arch_r, ca['w'], arch_r)
+    pointed_hood(court_face, 0.0, ca['z'] + ca['h'] - arch_r, ca['w'], arch_r, d=-.11)      # ring set into the court wall face (v005 P1 2)
     mp = Merge(court_face)
     for h in pw_holes:
         framed(mp, court_face, h, cols=2, rows=2, occupied='guest room', lite=True)
