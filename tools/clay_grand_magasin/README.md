@@ -69,6 +69,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 in progress)
+## Open blockers after v003 (Same count as v002 (0 + 4): first review that did not lower P0+P1; v002 stays the candidate (tie keeps the earlier version). v003 is evidence only.)
 
-Carried into v003.
+P1 corner crown is attic + drum + dome: the glazed attic tier remains and the corner gilded band steps up a storey above the wing cornice band (v002 finding, survived one fix); P1 corner dome a low hemisphere (h/w about 0.44) where the source is a stilted bulb (0.7-0.9); P1 corner bay a uniform grid of 7-8 narrow lights where the source has three wide arched iron bays between two strong columns (v002 finding, survived one fix); P1 top view dome hierarchy reversed: corner dome about 30% of width, court dome 26% in a 33% well, where the source has the court dome about 38% in a 53% well and the corner dome about 18%
