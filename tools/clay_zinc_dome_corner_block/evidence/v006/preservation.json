@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-zinc-dome-corner-block-clay-v006",
+  "glb": "clay-zinc-dome-corner-block-clay-v006.glb",
+  "glb_bytes": 3926748,
+  "glb_sha256": "f04fc3b24915efce74270d0d6e2f53c1bb4c55b2d2944eca8755190d4f652c69",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "balcony_ironwork.png": 92,
+    "cafe_awning.png": 92,
+    "corner_dome.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "mansard_dormers.png": 92,
+    "rear.png": 92,
+    "rear_court.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_court.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-zinc-dome-corner-block-clay-v006-renders-and-glb.zip",
+  "zip_bytes": 34986871
+}

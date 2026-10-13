@@ -69,6 +69,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (All three v004 findings resolved in the pixels (balcony order narrow, wide on consoles, narrow, wide; zinc gutter on the wall heads; corner blocks). Same count as v004 (0 + 1): first review that did not lower P0+P1; v004 stays the candidate. v005 is evidence only.)
+## Open blockers after v006 (v005 P1 resolved in the pixels (cornice unbroken across the chamfer, drum set behind it). Same count as v004 and v005 (0 + 1): second consecutive review that did not lower P0+P1, so the stopping rule (rule 2) ends the run; v004 stays the candidate. v006 is evidence only.)
 
-P1 the stone drum bulges forward past the chamfer wall on a curved corbel soffit and breaks the main bracketed cornice down to just above the storey-4 window head, where both sources run the cornice unbroken across the chamfer with the dome set back above it (contradicts the v001 review's request for a drum projecting over the cornice on a corbel ring; the source pixels side with v005)
+P1 dome silhouette: the dome narrows to a springing ring about 0.85 of its widest point (slightly onion-like) on a tall drum buried in the mansard (drum about 0.4 of the dome height against about 0.1 in the oblique source), a second oeil-de-boeuf stacked under the dome oculus, and the oculus dormer a projecting ring with a loose flat hood slab, where the sources show a stilted hemisphere springing at full width just above the cornice with a single oculus in a stone aedicule on the springing ring
