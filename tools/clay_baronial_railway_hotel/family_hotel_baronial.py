@@ -592,7 +592,7 @@ def tower():
                 holes.append(hole(f'tower window {k}{du:+.0f}', du, zl + .75, 1.3, 2.9, level=k))
     holes.append(hole('tower upper window', 0.0, EAVE + 1.0, 2.0, 3.6, level=9))
     holes += [hole(f'tower top window {du:+.0f}', du, EAVE + 6.4, 1.0, 1.8, level=10) for du in (-1.8, 1.8)]
-    front.wall('tower front carrier', -TW / 2, TW / 2, -.02, TOWER_TOP - .20, depth=T, role='wall', holes=holes)      # down to grade (v005 P1 1)
+    front.wall('tower front carrier', -TW / 2, TW / 2, 0.0, TOWER_TOP - .20, depth=T, role='wall', holes=holes)      # down to grade (v005 P1 1)
     rustication(front, -TW / 2 + .02, TW / 2 - .02, PORCH_H + .3, TOWER_TOP - 1.6, holes)
     pointed_fill16(front, 0.0, ta['z'] + ta['h'], ta['w'], arch_r, 'stone')
     m = Merge(front)
@@ -614,7 +614,7 @@ def tower():
         f = C.Face((x, y0 + TD / 2, 0), (0, sgn, 0), (-sgn, 0, 0), label)
         lo, hi = ((-TD / 2, TD / 2 - T) if sgn < 0 else (-TD / 2 + T, TD / 2))
         hs = [hole(f'{label} window {k}', 0.0, zl + .75, 1.3, 2.9) for k, zl in enumerate(LEVELS) if zl > 7.0] + [hole(f'{label} upper window', 0.0, EAVE + 1.0, 1.6, 3.6)]
-        f.wall(f'{label} carrier', lo, hi, -.02, TOWER_TOP - .20, depth=T, role='wall', holes=hs)
+        f.wall(f'{label} carrier', lo, hi, 0.0, TOWER_TOP - .20, depth=T, role='wall', holes=hs)
         rustication(f, lo + .02, hi - .02, G0 + .35, TOWER_TOP - 1.6, hs)
         mm = Merge(f)
         for h in hs:
@@ -642,20 +642,20 @@ def tower():
     pf = C.Face((TX, yp, 0), (1, 0, 0), (0, 1, 0), 'porch front')
     pa = hole('Porte-cochere', 0.0, G0, arch_w, arch_h, kind='open arch')
     pw_ = [hole('porch window', 0.0, PORCH_H - 2.0, 1.0, 1.4)]
-    pf.wall('porch front carrier', -PORCH_W / 2, PORCH_W / 2, -.02, PORCH_H, depth=T, role='wall', holes=[pa] + pw_)
+    pf.wall('porch front carrier', -PORCH_W / 2, PORCH_W / 2, 0.0, PORCH_H, depth=T, role='wall', holes=[pa] + pw_)
     rustication(pf, -PORCH_W / 2 + .02, PORCH_W / 2 - .02, G0 + .35, PORCH_H - .4, [pa] + pw_)
     pointed_fill16(pf, 0.0, pa['z'] + pa['h'], pa['w'], arch_r, 'stone')
     pointed_hood(pf, 0.0, pa['z'] + pa['h'] - arch_r, pa['w'], arch_r)
     mp_ = Merge(pf)
     for sgn in (-1, 1):
-        mp_.box('stone', sgn * (pa['w'] / 2 + .32), -.10, (-.02 + pa['z'] + pa['h'] - arch_r) / 2, .50, T + .24, pa['z'] + pa['h'] - arch_r + .02)   # arch jamb piers to grade (v005 P1 1)
+        mp_.box('stone', sgn * (pa['w'] / 2 + .32), -.10, (pa['z'] + pa['h'] - arch_r) / 2, .50, T + .24, pa['z'] + pa['h'] - arch_r)   # arch jamb piers to grade (v005 P1 1)
         mp_.box('stone', sgn * (pa['w'] / 2 + .30), -.13, pa['z'] + pa['h'] - arch_r + .05, .78, T + .32, .22)                               # impost cap the voussoir ring lands on
     framed(mp_, pf, pw_[0], cols=1, rows=2, occupied='porch room')
     mp_.flush('porch')
     for sgn in (-1, 1):
         side = C.Face((TX + sgn * PORCH_W / 2, yp + PORCH_D / 2, 0), (0, sgn, 0), (-sgn, 0, 0), f'porch side {sgn}')
         lo, hi = ((-PORCH_D / 2 - .05, PORCH_D / 2 - T) if sgn < 0 else (-PORCH_D / 2 + T, PORCH_D / 2 + .05))
-        side.wall(f'porch side carrier {sgn}', lo, hi, -.02, PORCH_H, depth=T, role='wall', holes=())
+        side.wall(f'porch side carrier {sgn}', lo, hi, 0.0, PORCH_H, depth=T, role='wall', holes=())
         rustication(side, lo + .02, hi - .02, G0 + .35, PORCH_H - .4, ())
     pring = [(TX - PORCH_W / 2, yp), (TX + PORCH_W / 2, yp), (TX + PORCH_W / 2, y0), (TX - PORCH_W / 2, y0)]
     corbel_table(pring[:2] + [(TX + PORCH_W / 2, y0 - .01), (TX - PORCH_W / 2, y0 - .01)], PORCH_H, out=.25)
