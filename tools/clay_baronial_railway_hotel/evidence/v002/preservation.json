@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-baronial-railway-hotel-clay-v002",
+  "glb": "clay-baronial-railway-hotel-clay-v002.glb",
+  "glb_bytes": 4188932,
+  "glb_sha256": "2be13fd0c31caa4ab169981d355f0250f731e4d00ee0e74d986c80aa8c18e1ea",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "corner_tourelle.png": 92,
+    "crow_gables.png": 92,
+    "entrance_tower.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "porte_cochere.png": 92,
+    "rear.png": 92,
+    "rear_court.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_court.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-baronial-railway-hotel-clay-v002-renders-and-glb.zip",
+  "zip_bytes": 34299269
+}
