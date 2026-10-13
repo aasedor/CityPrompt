@@ -722,8 +722,8 @@ def interior():
                     C.rod('Hall column', (x, y, G0), (x, y, EAVE_W - .3), .20, 'hardware', 'hall columns', 10)
                     C.rod('Hall column capital', (x, y, EAVE_W - .8), (x, y, EAVE_W - .3), .30, 'hardware', 'hall columns', 10)
             slope = (RIDGE - EAVE_W) / HW
-            for i in range(0, 4):
-                u = sgn * (HW + 1.0 + (S / 2 - 2.6 - HW) * i / 3)
+            for i in range(-1, 4):          # i = -1: a truss at the lantern edge, seen from the hall under the near nave (v003 P1 1)
+                u = sgn * (LANT + .45) if i < 0 else sgn * (HW + 1.0 + (S / 2 - 2.6 - HW) * i / 3)
                 P = lambda a_, z_: (a_, u, z_) if axis == 'y' else (u, a_, z_)
                 for s_ in (-1, 1):
                     C.beam('Hall truss rafter', P(s_ * (HW - .3), EAVE_W - .5 + .3 * slope - .35), P(0.0, RIDGE - .55), .14, .26, 'hardware', 'trusses')
