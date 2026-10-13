@@ -609,15 +609,17 @@ def gable_dormer(f, u, w=4.2):
 STILTED = [(1.0, 0.0), (1.0, .16), (.985, .32), (.94, .48), (.84, .63), (.66, .78), (.40, .91), (0.0, 1.0)]      # stilted bulb with near-vertical lower flanks (v003 P1 2)
 
 
-def glass_dome(cx, cy, z0, r, h, ribs=16, rings=4, lantern=True, module='dome', scale=1.0, profile=None):
+def glass_dome(cx, cy, z0, r, h, ribs=16, rings=4, lantern=True, module='dome', scale=1.0, profile=None, rib_top=.96, cap=0.0):
     profile = profile or [(1.0, 0.0), (1.0, .10), (.97, .30), (.88, .50), (.72, .68), (.50, .84), (.26, .95), (0.0, 1.0)]
     dome('Glass dome', cx, cy, z0, r, h, profile, 'glass', module, 28, 16)
     sp = smooth_profile(profile, 22)
     for k in range(ribs):
-        rib_mesh('Dome rib', cx, cy, z0, math.tau * k / ribs, [(rf * r, zf * h) for rf, zf in sp if zf <= .96], .10 * scale, .05 * scale, 'hardware', module)
+        rib_mesh('Dome rib', cx, cy, z0, math.tau * k / ribs, [(rf * r, zf * h) for rf, zf in sp if zf <= rib_top], .10 * scale, .05 * scale, 'hardware', module)
+    if cap:                             # central cap covering the rib ends (locked top)
+        dome('Dome cap', cx, cy, z0 + h * .955, cap, h * .07 + .25, [(1.0, 0.0), (.8, .5), (0.0, 1.0)], 'zinc', module, 24, 6)
     for j in range(1, rings + 1):
         rf, zf = sp[int(len(sp) * j / (rings + 1))]
-        rr, zz = rf * r + .05, z0 + zf * h
+        rr, zz = rf * r + .02, z0 + zf * h + .02
         pts_ = [(cx + rr * math.cos(math.tau * i / 24), cy + rr * math.sin(math.tau * i / 24)) for i in range(25)]
         for (px, py), (qx, qy) in zip(pts_, pts_[1:]):
             C.beam('Dome purlin', (px, py, zz), (qx, qy, zz), .06 * scale, .06 * scale, 'hardware', module)
@@ -643,7 +645,7 @@ def drum_and_domes():
     for nm in ('Outer mansard', 'Upper roof outer slope', 'Ridge band'):
         ob = C.bpy.data.objects.get(nm)
         if ob is not None:
-            cut_rod(ob, (cx, cy), DRUM_R - .10, CORNICE - .5, CORNICE + MANS_H + UPPER_RISE + 1.0)
+            cut_rod(ob, (cx, cy), DRUM_R + .5, CORNICE - .5, CORNICE + MANS_H + UPPER_RISE + 1.0)      # a terrace ring round the drum: its lower tier stands clear on the cornice (v005 P1 1)
     C.rod('Corner cornice', (ACX, ACY, CORNICE - .40), (ACX, ACY, z0), R + .55, 'stone', 'corner bay', 48)
     a0, a1 = math.radians(180), math.radians(270)
     ring = [(ACX + (R + .30) * math.cos(a0 + (a1 - a0) * i / 28), ACY + (R + .30) * math.sin(a0 + (a1 - a0) * i / 28)) for i in range(29)]
@@ -665,16 +667,25 @@ def drum_and_domes():
         if s < MANS_IN:
             return MANS_H * s / MANS_IN
         return min(MANS_H + .04 + UPPER_RISE * (s - MANS_IN) / 2.8, MANS_H + .04 + UPPER_RISE)
-    for k in range(16):                 # posts start where they leave the roof: no spikes through the zinc (v004 P1 1)
+    rc = DRUM_R + .5                    # zinc skirt closing the cut roof edges round the terrace ring
+    vs, fs = [], []
+    nsk = 64
+    for k in range(nsk + 1):
+        a = math.tau * k / nsk
+        px, py = cx + math.cos(a) * rc, cy + math.sin(a) * rc
+        hh = roof_h(px, py)
+        vs += [(px, py, CORNICE + .04), (px, py, CORNICE + max(hh, 0.0) + .06)]
+    for k in range(nsk):
+        if roof_h(*vs[2 * k][:2]) > .02 or roof_h(*vs[2 * k + 2][:2]) > .02:
+            fs.append((2 * k, 2 * k + 2, 2 * k + 3, 2 * k + 1))
+    C.mesh('Drum terrace skirt', vs, fs, 'zinc', 'dome')
+    for k in range(16):                 # full-height posts from the plinth, transoms all round (v005 P1 1)
         a = math.tau * k / 16
         px, py = cx + math.cos(a) * DRUM_R, cy + math.sin(a) * DRUM_R
-        zb_ = CORNICE + max(.40, roof_h(px, py) - .12)
-        if zb_ < z1 - .7:
-            C.beam('Drum post', (px, py, zb_), (px, py, z1 - .45), .24, .24, 'hardware', 'dome')
+        C.beam('Drum post', (px, py, CORNICE + .40), (px, py, z1 - .45), .24, .24, 'hardware', 'dome')
         qx, qy = cx + math.cos(a + math.tau / 16) * DRUM_R, cy + math.sin(a + math.tau / 16) * DRUM_R
         for zz in (CORNICE + 1.6, CORNICE + 2.9):
-            if CORNICE + max(roof_h(px, py), roof_h(qx, qy)) < zz - .1:
-                C.beam('Drum transom', (px, py, zz), (qx, qy, zz), .05, .05, 'hardware', 'dome')
+            C.beam('Drum transom', (px, py, zz), (qx, qy, zz), .05, .05, 'hardware', 'dome')
     C.rod('Drum backing', (cx, cy, CORNICE + .06), (cx, cy, z1 - .46), DRUM_R - .9, 'trim', 'dome', 32)          # dark backing: the drum reads as glass, not a pale bowl (v004 P1 1)     # lit room behind the drum glass so the drum does not read hollow
     C.rod('Drum entablature', (cx, cy, z1 - .45), (cx, cy, z1 - .12), DRUM_R + .16, 'stone', 'dome', 48)
     C.rod('Drum cornice', (cx, cy, z1 - .12), (cx, cy, z1 + .08), DRUM_R + .28, 'stone', 'dome', 48)
@@ -688,7 +699,7 @@ def drum_and_domes():
         C.beam('Court girder', (ccx - hw_ - .3, ccy + sgn * rr * .72, zb), (ccx + hw_ + .3, ccy + sgn * rr * .72, zb), .30, .50, 'hardware', 'court dome')
         C.beam('Court girder', (ccx + sgn * rr * .72, ccy - hd_ - .3, zb + .02), (ccx + sgn * rr * .72, ccy + hd_ + .3, zb + .02), .30, .50, 'hardware', 'court dome')
     annulus('Court dome ring beam', (ccx, ccy, zb + .25), (0, 0, 1), rr - .25, rr + .2, 0.0, .45, 'hardware', 'court dome', 48)
-    glass_dome(ccx, ccy, zb + .70, rr, hh_, ribs=12, rings=2, module='court dome', scale=.6)
+    glass_dome(ccx, ccy, zb + .70, rr, hh_, ribs=16, rings=1, module='court dome', scale=.6, rib_top=.99, cap=1.6)      # 16 continuous ribs to a central cap (locked top, v005 P1 2)
     C.CONTACTS.append(dict(name='Corner cornice disc on the corner bay carriers carrying the gilded balustrade ring; glazed drum on the cornice; dome on the drum cornice; court dome on a ring beam over four girders bearing on the light-well walls', drum_top_m=z1, dome_top_m=z1 + .30 + DOME_H))
 
 
