@@ -33,6 +33,7 @@ PALETTE = dict(wall=(.62, .54, .44), joint=(.46, .40, .32), trim=(.16, .18, .17)
     interior=(.80, .76, .68), floor=(.50, .48, .44), timber=(.40, .28, .16), blue=(.14, .22, .28),
     planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.64, .62, .58), tile=(.66, .46, .30), tile_dark=(.48, .30, .20),
     stain_red=(.62, .16, .14), stain_gold=(.84, .64, .20), stain_blue=(.20, .34, .58), stain_green=(.24, .48, .30),
+    stain_teal=(.24, .46, .44), stain_aqua=(.32, .52, .50), stain_amber=(.66, .50, .24),
     awning_red=(.70, .14, .10), awning_yellow=(.86, .68, .16), awning_blue=(.16, .30, .60), gilt=(.80, .64, .26), produce=(.62, .32, .16))
 
 
@@ -283,6 +284,18 @@ def annulus(name, centre, axis, r_in, r_out, d0, d1, role, module, segs=24):
     return C.mesh(name, vs, fs, role, module)
 
 
+def cut_rod(owner, centre, r, z0, z1, sides=48):
+    """Boolean-subtract a vertical cylinder from `owner` (like clay_core.cut_box, for round cut-outs)."""
+    cx, cy = centre
+    cutter = C.rod('Cylinder cutter', (cx, cy, z0), (cx, cy, z1), r, 'wall', 'construction cutter', sides)
+    cutter.data.materials.clear(); cutter.data.materials.append(owner.data.materials[0])
+    C.bpy.context.view_layer.objects.active = owner
+    mod = owner.modifiers.new('cylinder cut', 'BOOLEAN'); mod.operation = 'DIFFERENCE'; mod.solver = 'EXACT'; mod.object = cutter
+    C.bpy.ops.object.modifier_apply(modifier=mod.name)
+    C.remove_cutter(cutter)
+    C.normalise(owner.data)
+
+
 # ---- building ----
 
 def quad(name, p0, p1, p2, p3, t, role, module):
@@ -481,6 +494,31 @@ def roof_plate_with_strips(name, pts_section, axis, lo, hi, strips, t=.18):
     return plate
 
 
+PANES = {}
+PANE_COLS = ('stain_teal', 'stain_aqua', 'stain_teal', 'stain_amber', 'stain_aqua', 'glass', 'stain_teal')
+
+
+def leaded_grid(a, b, c, n, seed):
+    """Small leaded panes over triangle a-b-c: an n-step triangular grid, each pane shrunk toward its centre so the
+    dark leading plate beneath shows between them, lifted clear of the plate."""
+    def P(i, j):
+        return tuple(a[k] + (b[k] - a[k]) * j / n + (c[k] - a[k]) * i / n for k in range(3))
+    cells = []
+    for i in range(n):
+        for j in range(n - i):
+            cells.append((P(i, j), P(i, j + 1), P(i + 1, j)))
+            if j < n - i - 1:
+                cells.append((P(i, j + 1), P(i + 1, j + 1), P(i + 1, j)))
+    for q, (p0, p1, p2) in enumerate(cells):
+        role = PANE_COLS[(q * 3 + seed) % len(PANE_COLS)]
+        cen = tuple((p0[k] + p1[k] + p2[k]) / 3 for k in range(3))
+        pts = [tuple(cen[k] + (p[k] - cen[k]) * .80 for k in range(3)) for p in (p0, p1, p2)]
+        vs, fs = PANES.setdefault(role, ([], []))
+        o = len(vs)
+        vs += [(x, y, z + .05) for x, y, z in pts] + [(x, y, z + .03) for x, y, z in pts]
+        fs += [(o, o + 1, o + 2), (o + 5, o + 4, o + 3), (o, o + 3, o + 4, o + 1), (o + 1, o + 4, o + 5, o + 2), (o + 2, o + 5, o + 3, o)]
+
+
 def wing_roofs():
     """Two full-length gabled wings crossing under the lantern (no open valleys, v001 P0 2); glazed strips cut through the
     plates; clerestory louvre walls over the quadrant roofs; ridge monitors beside the lantern; quadrant roofs with glazed
@@ -491,19 +529,25 @@ def wing_roofs():
         lo, hi = -(S / 2 + .60), S / 2 + .60
         e = EAVE_W - .5 * slope
         pts = [(-(HW + .5), e), (0.0, RIDGE), (HW + .5, e), (HW + .5, e - t), (0.0, RIDGE - t), (-(HW + .5), e - t)]
-        strips = []
-        for side in (-1, 1):
-            for (g0, g1) in ((lo + 2.0, -LANT - 1.6), (LANT + 1.6, hi - 2.0)):
-                for (a_lo, a_hi) in ((1.6, 3.0), (4.6, 6.0)):
-                    a0, a1 = side * a_lo, side * a_hi
-                    za = RIDGE - a_lo * slope + .02; zb = RIDGE - a_hi * slope + .02
-                    strips.append((a0, a1, g0, g1, za, zb))
-        roof_plate_with_strips(f'Wing roof {axis}', pts, axis, lo, hi, strips)
+        # Opaque standing-seam wing roofs, glazed only at the ridge monitors (locked top, v003 P2 5); the crossing under
+        # the lantern is cut open so the lantern clerestory is seen from the hall (v003 P1 1).
+        plate = roof_plate_with_strips(f'Wing roof {axis}', pts, axis, lo, hi, [])
+        C.cut_box(plate, f'Wing roof {axis} crossing cut', (0.0, 0.0, (RIDGE + EAVE_W) / 2), (2 * LANT - .10, 2 * LANT - .10, 12.0))
+        for q in range(1, 9):                    # standing seams
+            for side in (-1, 1):
+                a_ = side * HW * q / 9
+                zq = RIDGE - abs(a_) * slope + .04
+                for (g0, g1) in ((lo + .3, -LANT - .05), (LANT + .05, hi - .3)):
+                    if axis == 'y':
+                        C.beam('Standing seam', (a_, g0, zq), (a_, g1, zq), .04, .05, 'hardware', 'wing roofs')
+                    else:
+                        C.beam('Standing seam', (g0, a_, zq), (g1, a_, zq), .04, .05, 'hardware', 'wing roofs')
         for side in (1,):
-            if axis == 'y':
-                C.beam('Ridge cap', (0.0, lo, RIDGE + .06), (0.0, hi, RIDGE + .06), .30, .12, 'hardware', 'wing roofs')
-            else:
-                C.beam('Ridge cap', (lo, 0.0, RIDGE + .06), (hi, 0.0, RIDGE + .06), .30, .12, 'hardware', 'wing roofs')
+            for (g0, g1) in ((lo, -LANT - .1), (LANT + .1, hi)):      # stops at the open crossing
+                if axis == 'y':
+                    C.beam('Ridge cap', (0.0, g0, RIDGE + .06), (0.0, g1, RIDGE + .06), .30, .12, 'hardware', 'wing roofs')
+                else:
+                    C.beam('Ridge cap', (g0, 0.0, RIDGE + .06), (g1, 0.0, RIDGE + .06), .30, .12, 'hardware', 'wing roofs')
         # Ridge monitors beside the lantern: raised glazed boxes 3.2 m wide and 1.4 m tall on the ridge (locked oblique).
         for sgn in (-1, 1):
             c0, c1 = sgn * (LANT + 1.8), sgn * (LANT + 9.0)
@@ -573,7 +617,7 @@ def wing_roofs():
                 C.OPENINGS.append(dict(id=f'{f.label} glazing', face=f.label, u=(u0 + u1) / 2, z=EAVE_A, width=abs(u1 - u0), height=EAVE_W - EAVE_A, kind='clerestory glazing', clear_wall_cut=False,
                     carrier_depth_m=.012, frame_inset_m=0.0, pane_inset_m=0.0, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='market hall'))
     # Quadrant roofs: steep glazed pyramids with stained-glass panes on iron hips (locked oblique and top, v002 P1 F3).
-    stains = ('stain_blue', 'stain_green', 'stain_gold', 'stain_red')
+    PANES.clear()
     for sx in (-1, 1):
         for sy in (-1, 1):
             x0, x1 = sorted((sx * (HW + .02), sx * (S / 2 + .6)))
@@ -581,12 +625,12 @@ def wing_roofs():
             qc = ((x0 + x1) / 2, (y0 + y1) / 2, EAVE_A + 5.0)
             base = [(x0, y0, EAVE_A - .05), (x1, y0, EAVE_A - .05), (x1, y1, EAVE_A - .05), (x0, y1, EAVE_A - .05)]
             for j, (p0, p1) in enumerate(zip(base, base[1:] + base[:1])):
-                tri(f'Quadrant pyramid glass {sx}{sy}{j}', p0, p1, qc, .05, 'glass', 'quadrant roofs')
-                fc = tuple((p0[i] + p1[i] + qc[i]) / 3 for i in range(3))
-                for s_, frac in ((.78, 0), (.45, 1)):
-                    q0 = tuple(fc[i] + (p0[i] - fc[i]) * s_ for i in range(3)); q1 = tuple(fc[i] + (p1[i] - fc[i]) * s_ for i in range(3)); q2 = tuple(fc[i] + (qc[i] - fc[i]) * s_ for i in range(3))
-                    lift = (.03 + .02 * frac)
-                    tri(f'Quadrant pyramid pane {sx}{sy}{j}{frac}', (q0[0], q0[1], q0[2] + lift), (q1[0], q1[1], q1[2] + lift), (q2[0], q2[1], q2[2] + lift), .02, stains[(j + frac + (sx > 0) * 2) % 4], 'quadrant roofs')
+                # Outer zone opaque metal; inner zone a grid of small leaded panes in muted teal, aqua and amber on a
+                # dark iron leading plate (locked top and oblique, v003 P1 3).
+                pa_ = tuple(p0[i] + (qc[i] - p0[i]) * .38 for i in range(3)); pb_ = tuple(p1[i] + (qc[i] - p1[i]) * .38 for i in range(3))
+                quad(f'Quadrant metal {sx}{sy}{j}', p0, p1, pb_, pa_, .05, 'roof', 'quadrant roofs')
+                tri(f'Quadrant leading {sx}{sy}{j}', pa_, pb_, qc, .05, 'hardware', 'quadrant roofs')
+                leaded_grid(pa_, pb_, qc, 6, (j + (sx > 0) + 2 * (sy > 0)) % 5)
                 C.beam('Quadrant hip', p0, qc, .16, .16, 'hardware', 'quadrant roofs')
                 C.beam('Quadrant eave', p0, p1, .22, .18, 'hardware', 'quadrant roofs')
                 for fr in (.35, .65):
@@ -603,25 +647,38 @@ def wing_roofs():
                         cx, cy = sx * (S / 2 + .3), sy * d
                         f = C.Face((cx, cy, 0), (0, sy * 1.0, 0), (-sx, 0, 0), f'gablet {sx}{sy}{k}y')
                     gablet(f, EAVE_A - .3, k_slope)
-    # Lantern: glazed drum from inside the roof crossing to LANT_TOP, steep glazed pyramid with iron hips and a finial.
+    for role, (vs, fs) in PANES.items():
+        C.mesh(f'Quadrant panes {role}', vs, fs, role, 'quadrant roofs')
+    # Lantern: clerestory glazed only above the wing-roof profiles it stands on, with a sill along those profiles and
+    # posts and transoms carried down to it (v003 P1 2); opaque metal pyramid with iron hips and a finial (v003 P2 4).
     L = LANT
+    slope = (RIDGE - EAVE_W) / HW
     lf = A.faces(2 * L, 2 * L, 0, 0, 'lantern ')
+    def prof(u):
+        return RIDGE - abs(u) * slope
     for f in lf:
-        f.panel(f'{f.label} glazing', [(-L, LANT_BASE), (L, LANT_BASE), (L, LANT_TOP - .3), (-L, LANT_TOP - .3)], -.006, .006, 'glass', 'lantern')
+        for sgn in (-1, 1):
+            f.panel(f'{f.label} glazing {sgn}', [(0.0, LANT_TOP - .3), (sgn * L, LANT_TOP - .3), (sgn * L, prof(L) - .10), (0.0, RIDGE - .10)][::(1 if sgn < 0 else -1)], -.006, .006, 'glass', 'lantern')
+            C.beam('Lantern sill', f.p(0.0, -.10, RIDGE + .02), f.p(sgn * (L + .15), -.10, prof(L + .15) + .02), .34, .26, 'hardware', 'lantern')
         m = Merge(f)
         for i in range(7):
-            m.box('hardware', -L + 2 * L * i / 6, 0.0, (RIDGE - 1.0 + LANT_TOP - .3) / 2, .16, .16, LANT_TOP - .3 - RIDGE + 1.0)
+            u = -L + 2 * L * i / 6
+            z0_ = prof(u) - .05
+            m.box('hardware', u, 0.0, (z0_ + LANT_TOP - .3) / 2, .16, .16, LANT_TOP - .3 - z0_)
         m.box('hardware', 0.0, 0.0, LANT_TOP - .34, 2 * L + .3, .26, .30)
-        m.box('hardware', 0.0, 0.0, RIDGE + .9, 2 * L, .16, .12)
-        for j in range(4):
-            m.box('hardware', 0.0, -.02, LANT_TOP - 1.2 - j * .55, 2 * L - .3, .05, .09)
+        for zt_ in [LANT_TOP - 1.2 - j * .55 for j in range(4)] + [RIDGE - 1.0, RIDGE - 2.4, RIDGE - 3.8]:
+            ua = max(0.05, (RIDGE - zt_) / slope)
+            for sgn in (-1, 1):
+                lo_, hi_ = sorted((sgn * ua, sgn * (L - .15)))
+                if hi_ - lo_ > .3:
+                    m.box('hardware', (lo_ + hi_) / 2, -.02, zt_, hi_ - lo_, .05, .09)
         m.flush('lantern')
     C.OPENINGS.append(dict(id='lantern glazing', face='lantern', u=0.0, z=RIDGE, width=2 * L, height=LANT_TOP - .3 - RIDGE, kind='lantern glazing', clear_wall_cut=False, carrier_depth_m=.012, frame_inset_m=0.0, pane_inset_m=0.0,
         face_origin=[0, -L, 0], face_tangent=[1, 0, 0], face_inward=[0, 1, 0], occupied_space='market hall'))
     o = L + .5
     apex = (0.0, 0.0, LANT_APEX)
     for (p0, p1) in (((-o, -o), (o, -o)), ((o, -o), (o, o)), ((o, o), (-o, o)), ((-o, o), (-o, -o))):
-        tri('Lantern pyramid glass', (p0[0], p0[1], LANT_TOP - .2), (p1[0], p1[1], LANT_TOP - .2), apex, .06, 'glass', 'lantern')
+        tri('Lantern pyramid metal', (p0[0], p0[1], LANT_TOP - .2), (p1[0], p1[1], LANT_TOP - .2), apex, .06, 'roof', 'lantern')
         C.beam('Lantern hip', (p0[0], p0[1], LANT_TOP - .2), apex, .16, .16, 'hardware', 'lantern')
         for fr in (.33, .66):
             C.beam('Lantern purlin', (p0[0] * (1 - fr), p0[1] * (1 - fr), LANT_TOP - .2 + (LANT_APEX - LANT_TOP + .2) * fr), (p1[0] * (1 - fr), p1[1] * (1 - fr), LANT_TOP - .2 + (LANT_APEX - LANT_TOP + .2) * fr), .07, .07, 'hardware', 'lantern')
@@ -690,7 +747,7 @@ def interior():
                 C.rod('Stall post', (x + sx * (w / 2 - .1), y + sy * (d / 2 - .1), G0 + .9), (x + sx * (w / 2 - .1), y + sy * (d / 2 - .1), G0 + 2.86), .03, 'hardware', 'stalls', 6)
     C.qa_room_light('Hall south', (0.0, -12.0, 8.0), 160, 8.0); C.qa_room_light('Hall north', (0.0, 12.0, 8.0), 120, 8.0)
     C.qa_room_light('Hall east', (12.0, 0.0, 8.0), 120, 8.0); C.qa_room_light('Hall west', (-12.0, 0.0, 8.0), 120, 8.0)
-    C.qa_room_light('Lantern', (0.0, 0.0, 15.0), 500, 12.0)
+    C.qa_room_light('Lantern', (0.0, 0.0, 17.5), 220, 10.0)          # softer: the v003 lantern light blew out the corners
     for (lx, ly) in ((0.0, -16.0), (0.0, 16.0), (-16.0, 0.0), (16.0, 0.0)):
         C.qa_room_light(f'Wing roof {lx:.0f}{ly:.0f}', (lx, ly, EAVE_W + 1.0), 380, 9.0)
     C.qa_room_light('Hall entrance', (0.0, -18.0, 6.0), 160, 8.0)
