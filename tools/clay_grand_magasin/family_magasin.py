@@ -27,7 +27,7 @@ MANS_H, MANS_IN = 3.4, 1.4
 UPPER_RISE = 2.4                  # hipped upper roofs over each wing (v001 P1 3)
 PAV_OUT = .5                      # flanking pavilion projection beside the corner bay (v001 P1 6)
 DRUM_R, DRUM_H = 4.2, 4.4          # glazed drum standing directly on the corner cornice behind the gilded balustrade (no attic stage, v003 P1 1)
-DOME_R, DOME_H = 4.35, 7.0         # tall stilted ribbed glass dome, height about 0.8 of its width (v003 P1 2); about 20 percent of the building width in plan (v003 P1 4)
+DOME_R, DOME_H = 4.2, 7.0          # tall stilted ribbed glass dome, height about 0.8 of its width (v003 P1 2); about 20 percent of the building width in plan (v003 P1 4)
 DOME_SET = 2.3                     # drum centre moved from the arc centre toward the corner so its face stands just behind the balustrade
 COURT_DOME = (7.0, 4.0)            # dominant ribbed glass dome over the light well, 14 m across, crown below the inner ridge (locked top, v003 P1 4 and P2 8)
 BAY = 5.0
@@ -56,7 +56,7 @@ def manifest(version):
         ('gilded_balconies', (-10.0, -28.0, 11.0), (-4.0, -D / 2, 12.0), 45),
         ('mansard_dormers', (8.0, -34.0, 22.0), (10.0, -D / 2, 22.5), 45),
         ('roof_domes', (-46.0, -50.0, 46.0), (0.0, 2.0, 20.0), 45),
-        ('interior', (-2.0, -D / 2 + 1.2, 1.7), (-2.0, -D / 2 + 9.0, 3.0), 45),
+        ('interior', (-17.0, -D / 2 + 4.0, 1.7), (10.0, -D / 2 + 5.6, 2.8), 30),      # along the south sales hall (v004 P1 2)
         ('rear_court', (COURT[0] + 14.0, COURT[2] + 12.0, 36.0), (COURT[0], COURT[2], 22.0), 38)])
     for c in cams:
         if c['name'] == 'front':          # eye level on the corner axis (locked front)
@@ -145,14 +145,14 @@ def reveal(m, f, h, inset=.16, role='stone', jambs_only=False):
     m.box(role, u, inset / 2 - .01, z + .02, w, inset + .02, .04)
 
 
-def iron_balcony(m, f, u, z, w, depth=.8, role='hardware', slab='stone'):
+def iron_balcony(m, f, u, z, w, depth=.8, role='hardware', slab='stone', spacing=.30):
     """Cantilevered balcony: stone slab with a merged iron lattice (top rail, end rails, mid rail, pickets)."""
     m.box(slab, u, -depth / 2 + .02, z - .10, w, depth + .04, .20)
     m.box(role, u, -depth + .04, z + .98, w, .05, .05)
     for e in (-1, 1):
         m.box(role, u + e * (w / 2 - .02), -depth / 2 + .02, z + .98, .05, depth - .04, .05)
     m.box(role, u, -depth + .04, z + .50, w, .03, .03)
-    n = max(4, int(w / .30))
+    n = max(4, int(w / spacing))
     for i in range(n + 1):
         m.box(role, u - w / 2 + .02 + (w - .04) * i / n, -depth + .04, z + .55, .03, .03, .86)
     for e in (-1, 1):
@@ -653,20 +653,32 @@ def drum_and_domes():
     for (px, py) in ring[::4]:
         C.box('Corner balustrade pedestal', (px, py, CORNICE + .55), (.36, .36, 1.0), 'stone', 'corner bay', 0)
         C.box('Corner balustrade ball', (px, py, CORNICE + 1.17), (.22, .22, .22), 'gilt', 'corner bay', 0)
-    C.qa_room_light('Drum', (cx, cy, CORNICE + 2.0), 160, 5.0)
     C.rod('Drum plinth', (cx, cy, CORNICE - .10), (cx, cy, CORNICE + .40), DRUM_R + .12, 'stone', 'dome', 48)
     C.rod('Drum glass', (cx, cy, CORNICE + .40), (cx, cy, z1 - .45), DRUM_R - .06, 'glass', 'dome', 48)
-    for k in range(16):
+    def roof_h(x, y):                  # height of the corner roofs above the cornice at a plan point (mansard then upper slope)
+        if x < ACX and y < ACY:
+            s = R - math.hypot(x - ACX, y - ACY)
+        else:
+            s = min(x + W / 2, y + D / 2)
+        if s <= 0:
+            return 0.0
+        if s < MANS_IN:
+            return MANS_H * s / MANS_IN
+        return min(MANS_H + .04 + UPPER_RISE * (s - MANS_IN) / 2.8, MANS_H + .04 + UPPER_RISE)
+    for k in range(16):                 # posts start where they leave the roof: no spikes through the zinc (v004 P1 1)
         a = math.tau * k / 16
         px, py = cx + math.cos(a) * DRUM_R, cy + math.sin(a) * DRUM_R
-        C.beam('Drum post', (px, py, CORNICE + .40), (px, py, z1 - .45), .24, .24, 'hardware', 'dome')
+        zb_ = CORNICE + max(.40, roof_h(px, py) - .12)
+        if zb_ < z1 - .7:
+            C.beam('Drum post', (px, py, zb_), (px, py, z1 - .45), .24, .24, 'hardware', 'dome')
+        qx, qy = cx + math.cos(a + math.tau / 16) * DRUM_R, cy + math.sin(a + math.tau / 16) * DRUM_R
         for zz in (CORNICE + 1.6, CORNICE + 2.9):
-            qx, qy = cx + math.cos(a + math.tau / 16) * DRUM_R, cy + math.sin(a + math.tau / 16) * DRUM_R
-            C.beam('Drum transom', (px, py, zz), (qx, qy, zz), .05, .05, 'hardware', 'dome')
-    C.rod('Drum room wall', (cx, cy, CORNICE + .06), (cx, cy, z1 - .46), DRUM_R - .9, 'interior', 'dome', 32)     # lit room behind the drum glass so the drum does not read hollow
-    C.rod('Drum entablature', (cx, cy, z1 - .45), (cx, cy, z1 - .12), DRUM_R + .26, 'stone', 'dome', 48)
-    C.rod('Drum cornice', (cx, cy, z1 - .12), (cx, cy, z1 + .08), DRUM_R + .42, 'stone', 'dome', 48)
-    C.rod('Dome base ring', (cx, cy, z1 + .08), (cx, cy, z1 + .30), DOME_R + .08, 'hardware', 'dome', 48)
+            if CORNICE + max(roof_h(px, py), roof_h(qx, qy)) < zz - .1:
+                C.beam('Drum transom', (px, py, zz), (qx, qy, zz), .05, .05, 'hardware', 'dome')
+    C.rod('Drum backing', (cx, cy, CORNICE + .06), (cx, cy, z1 - .46), DRUM_R - .9, 'trim', 'dome', 32)          # dark backing: the drum reads as glass, not a pale bowl (v004 P1 1)     # lit room behind the drum glass so the drum does not read hollow
+    C.rod('Drum entablature', (cx, cy, z1 - .45), (cx, cy, z1 - .12), DRUM_R + .16, 'stone', 'dome', 48)
+    C.rod('Drum cornice', (cx, cy, z1 - .12), (cx, cy, z1 + .08), DRUM_R + .28, 'stone', 'dome', 48)
+    C.rod('Dome base ring', (cx, cy, z1 + .08), (cx, cy, z1 + .30), DOME_R + .05, 'hardware', 'dome', 48)
     glass_dome(cx, cy, z1 + .30, DOME_R, DOME_H, profile=STILTED)
     # Large ribbed glass dome over the central court on a ring beam carried by four iron girders (locked top).
     ccx, hw_, ccy, hd_ = COURT
@@ -757,7 +769,7 @@ def roofs_and_floors():
     # Sales hall for the interior view: counters and a column line.
     for x in (-8.0, -2.0, 4.0):
         C.rod('Hall column', (x, -D / 2 + 8.0, G0), (x, -D / 2 + 8.0, LEVELS[0] - .30), .30, 'hardware', 'hall', 12)
-    for x, y in ((-6.0, -D / 2 + 5.0), (2.0, -D / 2 + 5.0), (-3.0, -D / 2 + 11.0)):
+    for x, y in ((-6.0, -D / 2 + 5.0), (2.0, -D / 2 + 5.0), (-3.0, -D / 2 + 9.6), (8.0, -D / 2 + 7.0)):
         C.box('Sales counter', (x, y, G0 + .5), (3.2, 1.1, 1.0), 'timber', 'hall', 0)
 
 
