@@ -1,0 +1,424 @@
+{
+  "candidate": "clay-grand-magasin-clay-v004",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-grand-magasin",
+  "variant_id": "clay-grand-magasin-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "grand_magasin/variant_0 (grand-magasin-belle-epoque)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 52.0,
+      "depth": 44.0,
+      "height": 36.8
+    },
+    "observed_storeys": 5,
+    "storey_programme": "double-height display ground floor, four sales storeys, mansard attic",
+    "plan": "44 x 36 m corner block (top view) around a 20 x 17 m central light well with inner facades, streets south and west, a 7 m radius curved corner bay under the dome, one-bay stone pavilions projecting 0.5 m beside it",
+    "facade": "bays at 5.0 m: display windows 4.2 x 4.1 m with transoms at the ground floor under a glass marquise projecting 2.4 m with a sign band; upper bays 3.6 x 3.0 m of iron-and-glass with solid gilded panel fronts at every storey between limestone pilasters; round-arched top storey; bracketed cornice at 21.0 m with a continuous gilded balustrade on the street faces; flanking pavilions with segmental-arched gable dormers through the mansard",
+    "levels_m": [
+      0.15,
+      6.2,
+      10.0,
+      13.6,
+      17.2
+    ],
+    "cornice_m": 21.0,
+    "mansard": "3.4 m zinc mansard set in 1.4 m with arched dormers at every bay; hipped zinc upper roofs rising 2.4 m to ridges along each wing, inner slopes to the court",
+    "dome": "a glazed drum 8.4 m across and 4.4 m high with sixteen iron posts stands directly on the corner cornice behind the gilded balustrade, which runs unbroken from the wings round the corner; tall stilted ribbed glass dome 8.7 m across and 7.0 m high with sixteen iron ribs and purlin rings; glazed lantern and finial; a dominant ribbed glass dome 14 m across over the light well, seated low on girders (locked top)",
+    "corner": "quarter-round glazed bay between stone piers, divided by two strong iron columns into three wide iron-and-glass bays (two, three and two facets) with one large arched head per bay at the top storey, glazed doors at the centre, gilded balconies at every storey",
+    "inferred": "north and east faces repeat the grammar without balconies; light-well faces plain; interiors are teaching assumptions; the second dome position is read from the top view"
+  },
+  "roof_contract": {
+    "type": "zinc mansard with dormers and hipped upper roofs; glass domes",
+    "datum_m": 21.0,
+    "crowns_m": [
+      26.799999999999997,
+      32.8,
+      36.8
+    ]
+  },
+  "identity_contract": {
+    "owner": "glass corner dome over the curved glazed bay, gilded balcony fronts on iron-and-glass bays between limestone pilasters, marquise with sign band over continuous display windows, zinc mansard, second glass dome"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: pale limestone with recessed joints, dark iron frames, gilt balcony lattices, glass drum and domes, zinc roofs, dark red sign band",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 6,
+    "ground": "sales hall and display windows, corner entrance",
+    "upper": "sales floors around the light well",
+    "roof": "attic workrooms in the mansard"
+  },
+  "contact_contract": [
+    "Grade-zero slab and sidewalks",
+    "Balconies cantilevered from the carriers",
+    "Marquise on brackets from the ground-floor carrier",
+    "Mansard seated on the cornice",
+    "Drum on the corner cornice through the mansard; dome on the drum cornice; lantern on a solid collar",
+    "Court dome on a ring beam over girders bearing on the light-well walls"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -64.49747468305833,
+        -60.49747468305832,
+        1.7
+      ],
+      "target": [
+        -15.0,
+        -11.0,
+        15.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -68.952,
+        -74.25599999999999,
+        73.6
+      ],
+      "target": [
+        0,
+        0,
+        16.56
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        61.87999999999999,
+        -70.72,
+        110.39999999999999
+      ],
+      "target": [
+        0,
+        0,
+        16.56
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        132.6
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 72.8
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -88.39999999999999,
+        0,
+        22.08
+      ],
+      "target": [
+        0,
+        0,
+        16.56
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        88.39999999999999,
+        0,
+        22.08
+      ],
+      "target": [
+        0,
+        0,
+        16.56
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        88.39999999999999,
+        22.08
+      ],
+      "target": [
+        0,
+        0,
+        16.56
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        61.87999999999999,
+        70.72,
+        66.24
+      ],
+      "target": [
+        0,
+        0,
+        16.56
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -6.0,
+        -36.0,
+        7.0
+      ],
+      "target": [
+        0.0,
+        -18.0,
+        10.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -40.0,
+        -38.0,
+        16.0
+      ],
+      "target": [
+        -15.0,
+        -11.0,
+        14.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -8.0,
+        -26.0,
+        2.4
+      ],
+      "target": [
+        -3.0,
+        -18.0,
+        3.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "corner_dome",
+      "location": [
+        -42.0,
+        -42.0,
+        32.0
+      ],
+      "target": [
+        -16.62634559672906,
+        -12.62634559672906,
+        28.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "marquise_sign",
+      "location": [
+        -30.0,
+        -30.0,
+        2.6
+      ],
+      "target": [
+        -19.94974746830583,
+        -15.949747468305832,
+        4.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "gilded_balconies",
+      "location": [
+        -10.0,
+        -28.0,
+        11.0
+      ],
+      "target": [
+        -4.0,
+        -18.0,
+        12.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "mansard_dormers",
+      "location": [
+        8.0,
+        -34.0,
+        22.0
+      ],
+      "target": [
+        10.0,
+        -18.0,
+        22.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_domes",
+      "location": [
+        -46.0,
+        -50.0,
+        46.0
+      ],
+      "target": [
+        0.0,
+        2.0,
+        20.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -2.0,
+        -16.8,
+        1.7
+      ],
+      "target": [
+        -2.0,
+        -9.0,
+        3.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "rear_court",
+      "location": [
+        15.0,
+        13.0,
+        36.0
+      ],
+      "target": [
+        1.0,
+        1.0,
+        22.0
+      ],
+      "lens": 38,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "corner_dome",
+    "marquise_sign",
+    "gilded_balconies",
+    "mansard_dormers",
+    "roof_domes",
+    "interior",
+    "rear_court"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/grand-magasin/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1498973,
+        "sha256": "502d6d50e7b5ca032a3104f8505b4e4d2f372d2f22e62c091caaa6f9af8f8b12"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/grand-magasin/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 1019929,
+        "sha256": "acf6e2d1ff51f77ff823231d5dd2ccf9a707fb4607dac53a962a6bea82bdf4ef"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/grand-magasin/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 915820,
+        "sha256": "945b348e6548ae6b2b6ea0ad637ea4dbe98f49e377ea04ade4ff19e298ecd1c7"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_magasin.py",
+        "sha256": "e0fb30b6226c570ed8fa314c9fb5d154ec45052b64aa1a694e1f427620f87d77"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "ba7d0ed983a16a9c9b33092dcf53c0e5b19ab8dc53a88de664efc6bd624691d0"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "9f5afcd5ab8605fcc6a57795f8fe17c7b707f3fdf5e8b47be4cdf8ce4fafc3c0"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-13T15:13:01.697682+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

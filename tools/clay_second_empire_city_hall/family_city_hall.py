@@ -148,14 +148,14 @@ def reveal(m, f, h, inset=.16, role='stone', jambs_only=False):
     m.box(role, u, inset / 2 - .01, z + .02, w, inset + .02, .04)
 
 
-def iron_balcony(m, f, u, z, w, depth=.8, role='hardware', slab='stone'):
+def iron_balcony(m, f, u, z, w, depth=.8, role='hardware', slab='stone', spacing=.30):
     """Cantilevered balcony: stone slab with a merged iron lattice (top rail, end rails, mid rail, pickets)."""
     m.box(slab, u, -depth / 2 + .02, z - .10, w, depth + .04, .20)
     m.box(role, u, -depth + .04, z + .98, w, .05, .05)
     for e in (-1, 1):
         m.box(role, u + e * (w / 2 - .02), -depth / 2 + .02, z + .98, .05, depth - .04, .05)
     m.box(role, u, -depth + .04, z + .50, w, .03, .03)
-    n = max(4, int(w / .30))
+    n = max(4, int(w / spacing))
     for i in range(n + 1):
         m.box(role, u - w / 2 + .02 + (w - .04) * i / n, -depth + .04, z + .55, .03, .03, .86)
     for e in (-1, 1):
@@ -379,7 +379,7 @@ def bay_openings(lo, hi, label):
 
 
 def elevation(f, lo, hi, kind='wing', plain=False, returns=()):
-    lite_ = f.label.startswith(('north', 'east'))          # rear faces: light frames keep the GLB under 4 MiB
+    lite_ = f.label.startswith(('north', 'east', 'west'))  # side and rear faces: light frames keep the GLB under 4 MiB
     """One run of bays: low rusticated basement with short windows, round-arched main floor, rectangular hooded upper
     floor, cornice (locked front, v003 P1 1). kind: wing | pavilion | central."""
     span = hi - lo
@@ -427,7 +427,7 @@ def elevation(f, lo, hi, kind='wing', plain=False, returns=()):
         m.box('stone', h['u'], -.10, h['z'] - .10, h['w'] + .40, T + .26, .14)
     if kind == 'pavilion':          # balconies on consoles at the main floor and the pedimented upper floor (v004 P1 1)
         for zb in (L1 + .55, L2 + .75):
-            iron_balcony(m, f, (lo + hi) / 2, zb, span - 1.2, depth=.85)
+            iron_balcony(m, f, (lo + hi) / 2, zb, span - 1.2, depth=.85, spacing=.42)
             for i in range(1, round(span / pitch)):
                 m.box('stone', lo + pitch * i, -.44, zb - .40, .40, .80, .60)      # consoles under the balcony
     m.box('stone', (lo + hi) / 2, -.07, L1 - .12, span - 2 * EPS, T + .22, .30)
@@ -446,9 +446,9 @@ def elevation(f, lo, hi, kind='wing', plain=False, returns=()):
         eave_cornice(m, lo, hi, CORNICE + ATT, T, .55, modillions=False)
     for u, side in returns:          # long-and-short quoins at the pavilion edges (v004 P1 2)
         if kind in ('pavilion', 'central'):
-            for q, zq in enumerate([G0 + .30 + .72 * j for j in range(int((CORNICE - 1.4 - G0) / .72))]):
+            for q, zq in enumerate([G0 + .30 + .86 * j for j in range(int((CORNICE - 1.4 - G0) / .86))]):
                 wq = .62 if q % 2 == 0 else .42          # clear of the window surrounds, fronts off the band planes (v005 P1 2, 3)
-                m.box('stone', u + side * (wq / 2 - .05), -.06, zq + .32, wq, T + .08, .64)
+                m.box('stone', u + side * (wq / 2 - .05), -.06, zq + .37, wq, T + .08, .74)
     for u, side in returns:
         m.box('wall', u + side * (T / 2 + .012), (T - .03 + PAV_OUT + T * .6) / 2, (G0 + top_) / 2, T, PAV_OUT + T * .6 - (T - .03), top_ - G0)
     m.flush('facade')
@@ -483,7 +483,7 @@ def mansard_dormer(f, u, z_e, rise, setin, w=1.7, role='stone', win=(1.0, 1.75),
     g = C.Face(f.p(0, shift, 0), f.t, f.n, f.label + ' dormer')
     mg = Merge(g)
     h = hole(f'{f.label} dormer window {u:.1f}', u, zw, ww, hw)
-    framed(mg, g, h, cols=1, rows=2, inset=.10, occupied='attic office', kind='dormer window')
+    framed(mg, g, h, cols=1, rows=2, inset=.10, occupied='attic office', kind='dormer window', lite=True)
     mg.flush('dormers')
     arch_fill(g, u, zw + hw, ww, ww / 2, role, -.03, .28)
     # arched hood moulding and keystone round the window
@@ -833,8 +833,8 @@ def site():
     C.box('North sidewalk', (0, (D / 2 + PAV_OUT + y1) / 2, .0075), (W + 2 * PAV_OUT, y1 - D / 2 - PAV_OUT, .015), 'foundation', 'sidewalk', 0)
     C.box('Forecourt lawn', ((xf + W / 2 + PAV_OUT) / 2, (yf + .3 + yb) / 2, .02), (W / 2 + PAV_OUT - xf, yb - yf - .3, .04), 'planting', 'forecourt', 0)
     C.box('West lawn', ((xf + .3 + wx) / 2, (yb + D / 2 + PAV_OUT) / 2, .02), (wx - xf - .3, D / 2 + PAV_OUT - yb, .04), 'planting', 'forecourt', 0)
-    iron_fence((xf, yf), (-3.75, yf)); iron_fence((3.75, yf), (W / 2 + PAV_OUT, yf))
-    iron_fence((xf, D / 2 + PAV_OUT), (xf, yf))
+    iron_fence((xf, yf), (-3.75, yf), spacing=.40); iron_fence((3.75, yf), (W / 2 + PAV_OUT, yf), spacing=.40)
+    iron_fence((xf, D / 2 + PAV_OUT), (xf, yf), spacing=.40)
     for sgn in (-1, 1):
         C.box('Gate pier', (sgn * 3.95, yf, 1.2), (.7, .7, 2.4), 'stone', 'fence', 0); C.box('Gate pier cap', (sgn * 3.95, yf, 2.48), (.9, .9, .16), 'stone', 'fence', 0)
     for sgn in (-1, 1):                                  # clipped hedges along the building base and shrubs by the fence
@@ -881,12 +881,12 @@ def build():
         C.box('Corner quoin', (qx, qy, (CORNICE + ATT + .45) / 2), (1.1, 1.1, CORNICE + ATT + .45), 'stone', 'corner posts', 0)
         C.box('Corner attic cornice block', (qx + (.10 if qx > 0 else -.10), qy + (.10 if qy > 0 else -.10), CORNICE + ATT - .30), (1.40, 1.40, .60), 'stone', 'corner posts', 0)
         sx, sy = (1 if qx > 0 else -1), (1 if qy > 0 else -1)
-        for j in range(int((CORNICE - 1.4 - G0) / .72)):          # long-and-short quoins on both faces (v004 P1 2)
-            zq = G0 + .30 + .72 * j + .32
+        for j in range(int((CORNICE - 1.4 - G0) / .86)):          # long-and-short quoins on both faces (v004 P1 2)
+            zq = G0 + .30 + .86 * j + .37
             if j % 2 == 0:
-                C.box('Quoin block', (qx - sx * .2, qy, zq), (1.5, 1.22, .64), 'stone', 'corner posts', 0)
+                C.box('Quoin block', (qx - sx * .15, qy, zq), (1.5, 1.22, .74), 'stone', 'corner posts', 0)     # long face 5 cm proud of the post (no shared plane)
             else:
-                C.box('Quoin block', (qx, qy - sy * .2, zq), (1.22, 1.5, .64), 'stone', 'corner posts', 0)
+                C.box('Quoin block', (qx, qy - sy * .15, zq), (1.22, 1.5, .74), 'stone', 'corner posts', 0)
         C.box('Corner cornice block', (qx + (.14 if qx > 0 else -.14), qy + (.14 if qy > 0 else -.14), CORNICE - .36), (1.62, 1.62, .72), 'stone', 'corner posts', 0)
     for qx, qy in ((-W / 2 + PAV, -D / 2 - .3), (W / 2 - PAV, -D / 2 - .3), (-CEN_W / 2, -D / 2 - .3), (CEN_W / 2, -D / 2 - .3),
                    (-W / 2 - .3, -D / 2 + PAV), (-W / 2 - .3, D / 2 - PAV), (-W / 2 + PAV, D / 2 + .3), (W / 2 - PAV, D / 2 + .3), (W / 2 + .3, -D / 2 + PAV), (W / 2 + .3, D / 2 - PAV)):
