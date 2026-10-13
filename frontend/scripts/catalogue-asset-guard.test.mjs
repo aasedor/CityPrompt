@@ -7,6 +7,20 @@ import { createServer } from 'vite';
 import { catalogueAssetGuard } from './catalogue-asset-guard.mjs';
 import { createHash } from 'node:crypto';
 
+test('recovered detail catalogue refuses missing or changed delivery',async()=>{
+  const root=mkdtempSync(join(tmpdir(),'cityprompt-recovered-guard-'));
+  mkdirSync(join(root,'src/features/parks'),{recursive:true});
+  mkdirSync(join(root,'public/park-kits/recovered-details-v1'),{recursive:true});
+  const row={url:'/park-kits/recovered-details-v1/model.glb',sha256:'a'.repeat(64),bytes:10,thumbnailUrl:'/park-kits/recovered-details-v1/model.webp',thumbnailSha256:'b'.repeat(64)};
+  writeFileSync(join(root,'src/features/parks/recoveredDetails.json'),JSON.stringify([row]));
+  const options=()=>({configFile:false,root,plugins:[catalogueAssetGuard()],logLevel:'silent',optimizeDeps:{noDiscovery:true,entries:[]}});
+  try {
+    await assert.rejects(createServer(options()),/not hydrated/);
+    writeFileSync(join(root,'public/park-kits/recovered-details-v1/model.glb'),'wrong bytes');
+    await assert.rejects(createServer(options()),/SHA-256 differs/);
+  } finally {rmSync(root,{recursive:true,force:true});}
+});
+
 test('missing and unhydrated assets cannot return the HTTP-200 application page',async()=>{
   const root=mkdtempSync(join(tmpdir(),'cityprompt-asset-guard-'));
   writeFileSync(join(root,'index.html'),'<!doctype html><html>application</html>');

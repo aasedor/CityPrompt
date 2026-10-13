@@ -7,6 +7,7 @@ import {
 import equipment from "../../../public/park-kits/shared-park-equipment-v1/kit_manifest.json";
 import rustic from "../../../public/landscape-pilots/neighborhood-rustic-v5/manifest.json";
 import extras from "./detailCatalogueExtras.json";
+import recovered from "./recoveredDetails.json";
 
 describe("standalone detail catalogue", () => {
   it("offers the twenty site-finishing details with bounded geometry", () => {
@@ -22,8 +23,8 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(165);
-    expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(165);
+    expect(DETAIL_CATALOGUE).toHaveLength(165 + recovered.length);
+    expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-"),
     )) {
@@ -51,6 +52,7 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails("picnic", "Seating").map((a) => a.id)).toEqual([
       "picnic-table-accessible",
       "detail-classic-picnic-table",
+      "detail-meshy-07_table_civic_picnic",
     ]);
     expect(searchDetails("water", "Street furniture").map((a) => a.id)).toEqual(
       ["drinking-fountain-accessible"],

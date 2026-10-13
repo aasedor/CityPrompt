@@ -1,4 +1,5 @@
 import extras from "./detailCatalogueExtras.json";
+import recovered from "./recoveredDetails.json";
 import type { DetailWalkSurface } from "./detailWalking";
 export interface DetailAsset {
   id: string;
@@ -7,6 +8,8 @@ export interface DetailAsset {
   description: string;
   dimensions: readonly number[];
   url: string;
+  /** Reviewed model capture; avoids decoding GLBs just to browse cards. */
+  thumbnailUrl?: string;
   color: string;
   kind: "bench" | "tree" | "object";
   /** Translation in source Y-up coordinates, before the globe conversion. */
@@ -14,7 +17,7 @@ export interface DetailAsset {
   /** Authored pedestrian surface only; furniture and roofs never lift the walker. */
   walkSurface?: DetailWalkSurface;
 }
-const extraModels = extras as DetailAsset[];
+const extraModels = [...extras, ...recovered] as DetailAsset[];
 /** Existing metric assets only. No user-provided paths or nonuniform scaling. */
 const RUSTIC = "/landscape-pilots/neighborhood-rustic-v5";
 const EQUIPMENT = "/park-kits/shared-park-equipment-v1";

@@ -27,6 +27,17 @@ export function catalogueAssetGuard() {
     }
     const directory=process.env.CITYPROMPT_CATALOGUE_PACKET;
     bindings=new Map();
+    const recoveredFile=path.join(config.root,'src/features/parks/recoveredDetails.json');
+    // Source-only Vitest runs do not serve assets; dev/build/preview still fail closed.
+    if(config.mode!=='test'&&fs.existsSync(recoveredFile)) for(const asset of JSON.parse(fs.readFileSync(recoveredFile,'utf8'))) {
+      for(const [url,hash] of [[asset.url,asset.sha256],[asset.thumbnailUrl,asset.thumbnailSha256]]) {
+        const file=containedPath(config.publicDir,url);
+        if(!fs.existsSync(file)) throw new Error('Recovered details are not hydrated: '+url+'. See docs/ADD_DETAILS_RECOVERY_2026-10-12.md');
+        const checked=inspectAsset(fs.readFileSync(file),url.endsWith('.glb')?'glb':'image',hash);
+        if(url.endsWith('.glb')&&checked.bytes!==asset.bytes) throw new Error('Recovered detail size differs: '+url);
+        bindings.set(url,{url,sha256:hash,bytes:checked.bytes,file});
+      }
+    }
     if(directory) {
       const receipt=JSON.parse(fs.readFileSync(path.join(directory,'delivery-manifest.json'),'utf8'));
       if(receipt.schema!=='cityprompt.catalogue-packet@1'||receipt.catalogue_activation!==false) throw new Error('Invalid local catalogue packet');

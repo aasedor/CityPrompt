@@ -1,0 +1,4627 @@
+[
+  {
+    "id": "detail-recovered-botanical-garden-formal-fluted-urn-v1",
+    "label": "Formal fluted urn",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.1997838616371155,
+      1.198982834815979,
+      1.750083863735199
+    ],
+    "offset": [
+      2.816319465637207e-05,
+      -7.331371307373047e-06,
+      -0.00018835067749023438
+    ],
+    "url": "/park-kits/recovered-details-v1/botanical-garden-formal-fluted-urn-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "86725a515c863e3fae37bd87d64fa42cc373aca9865fc3a2a479f7a434345b45",
+    "bytes": 1634764,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-botanical-garden-formal-fluted-urn-v1.webp",
+    "thumbnailSha256": "7f2a6edb77a9636966fa21302a84accdd7f2e03e3bd48f3a5ac7b40307326ff3"
+  },
+  {
+    "id": "detail-recovered-community-garden-enhanced-accessible-raised-planter-v1",
+    "label": "Community Garden Enhanced Accessible Raised Planter",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.0001654624938965,
+      1.2999834418296814,
+      0.9001136422157288
+    ],
+    "offset": [
+      -0.0001575946807861328,
+      -0.0,
+      -0.00011083483695983887
+    ],
+    "url": "/park-kits/recovered-details-v1/community-garden-enhanced-accessible-raised-planter-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "0a531759c9297046a223b42d996ece637d22a8b1312605945c72d0e0dac488e4",
+    "bytes": 1507656,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-community-garden-enhanced-accessible-raised-planter-v1.webp",
+    "thumbnailSha256": "42fdd7e3dbb1af21becf8ea01784071b211f2e63922730e350c03cd982e86580"
+  },
+  {
+    "id": "detail-recovered-community-garden-enhanced-glazed-cold-frame-v1",
+    "label": "Community Garden Enhanced Glazed Cold Frame",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.2001184225082397,
+      1.1999854445457458,
+      1.049549162387848
+    ],
+    "offset": [
+      -5.918741226196289e-05,
+      -0.0004507899284362793,
+      7.3015689849853516e-06
+    ],
+    "url": "/park-kits/recovered-details-v1/community-garden-enhanced-glazed-cold-frame-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "4d665a7a9d179b14f88dcdf2facea54b91a87c09f94843ede2ecabd179fcc7bb",
+    "bytes": 1512816,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-community-garden-enhanced-glazed-cold-frame-v1.webp",
+    "thumbnailSha256": "cfab47bad70b6d02145ce803e3cb812a9669a3f6e502fd3695f8995e97e1d680"
+  },
+  {
+    "id": "detail-recovered-community-garden-enhanced-woven-harvest-basket-rack-v1",
+    "label": "Community Garden Enhanced Woven Harvest Basket Rack",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.0,
+      0.6521744728088379,
+      1.5541457966901362
+    ],
+    "offset": [
+      -0.0,
+      0.0041458443738520145,
+      -0.0007087588310241699
+    ],
+    "url": "/park-kits/recovered-details-v1/community-garden-enhanced-woven-harvest-basket-rack-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "8c8c5bbfc671c656a344256094db2d94a85e850d600e31420283506af81497aa",
+    "bytes": 2295360,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-community-garden-enhanced-woven-harvest-basket-rack-v1.webp",
+    "thumbnailSha256": "075e9f3b1dc03e03fb864c06b14e2930c87e5181653c6b3fee7b5b58c9cb88c4"
+  },
+  {
+    "id": "detail-recovered-community-garden-rain-barrel-rack-v1",
+    "label": "Community Garden Rain Barrel Rack",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.4999622106552124,
+      0.9003468453884125,
+      1.7050382047891617
+    ],
+    "offset": [
+      -1.8894672393798828e-05,
+      0.002821102738380432,
+      -5.428493022918701e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/community-garden-rain-barrel-rack-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "29b82c960919471835a3c9b76a9fd2d813d24973ba379a1104b1e5fd8804faf3",
+    "bytes": 1613740,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-community-garden-rain-barrel-rack-v1.webp",
+    "thumbnailSha256": "1a14c7a2f710d5c599b9d1638ce649caf4832dcadb993b75bda7dd4c82a98f1d"
+  },
+  {
+    "id": "detail-recovered-community-garden-timber-compost-bay-v1",
+    "label": "Community Garden Timber Compost Bay",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.999171495437622,
+      1.1993306875228882,
+      1.2530847452580929
+    ],
+    "offset": [
+      -0.00011658668518066406,
+      0.0013711117208003998,
+      -4.380941390991211e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/community-garden-timber-compost-bay-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "ac463a5bb1dea6dccba2079c97a7f95448ddaf1072ce6a535f980b16ed460b89",
+    "bytes": 1738536,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-community-garden-timber-compost-bay-v1.webp",
+    "thumbnailSha256": "eb48bd33d0c30ed253ab69646ecc069c2886eff5996dab8efe33a352904f5bb5"
+  },
+  {
+    "id": "detail-recovered-community-park-carved-stone-urn-v1",
+    "label": "Community Park Carved Stone Urn",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.099478840827942,
+      1.1009750962257385,
+      1.6525755366892554
+    ],
+    "offset": [
+      0.0009405612945556641,
+      0.0007217368693090975,
+      -0.002033621072769165
+    ],
+    "url": "/park-kits/recovered-details-v1/community-park-carved-stone-urn-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "01314121f1156f4d7650b243b63e90e7ad59d9231ae624bd22003ef06214b6d7",
+    "bytes": 1623600,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-community-park-carved-stone-urn-v1.webp",
+    "thumbnailSha256": "6da61bc0acdb4072769442e7298b8f89517bfb9d6cd5cfd5be1ce57aaeb00c8b"
+  },
+  {
+    "id": "detail-recovered-halifax-public-gardens-victorian-cast-iron-urn-v1",
+    "label": "Halifax Public Gardens Victorian Cast Iron Urn",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.2002320289611816,
+      1.1992107033729553,
+      1.7001492168055847
+    ],
+    "offset": [
+      -0.00011599063873291016,
+      0.000740685616619885,
+      1.576542854309082e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/halifax-public-gardens-victorian-cast-iron-urn-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "781dba16910b162c86fae0986ec0b8612cbb9988bc9e3ed278fa64053c38f403",
+    "bytes": 1548848,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-halifax-public-gardens-victorian-cast-iron-urn-v1.webp",
+    "thumbnailSha256": "ee7356ab4e5c86b41281ccad31656e81e8a3d08e4d783c2d290a27d0803df93c"
+  },
+  {
+    "id": "detail-recovered-japanese-garden-weathered-rose-arbor-v1",
+    "label": "Japanese Garden Weathered Rose Arbor",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.6024051904678345,
+      1.1991171836853027,
+      2.804906773613766
+    ],
+    "offset": [
+      0.0019193291664123535,
+      0.0005428076256066561,
+      0.00014162063598632812
+    ],
+    "url": "/park-kits/recovered-details-v1/japanese-garden-weathered-rose-arbor-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "c66f84e8857c4af84d2ff918b94ea9f795b015ae78f2dac16ff818265d5ab95f",
+    "bytes": 1901520,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-japanese-garden-weathered-rose-arbor-v1.webp",
+    "thumbnailSha256": "e7c7f358ea9f29ad5fb1ac3f88e7cec7bebf846cb8162e0e2ed2441c01a6c7df"
+  },
+  {
+    "id": "detail-recovered-memorial-garden-woodland-remembrance-marker-v1",
+    "label": "Memorial Garden Woodland Remembrance Marker",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.2008391618728638,
+      0.5483023226261139,
+      1.7508068435126916
+    ],
+    "offset": [
+      0.0003230571746826172,
+      0.0002644412452355027,
+      2.1323561668395996e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/memorial-garden-woodland-remembrance-marker-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "bc1c5d9769123afc6a4e814965f8613ce7cd943ef7e91b6eeea5c06f48db203d",
+    "bytes": 1718800,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-memorial-garden-woodland-remembrance-marker-v1.webp",
+    "thumbnailSha256": "9ae3deca327b62b3e131999c2d1ad435bf046839a80c0726f0aafa2d3a422b23"
+  },
+  {
+    "id": "detail-recovered-newyork-community-garden-compost-sifter-station-v1",
+    "label": "Newyork Community Garden Compost Sifter Station",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.200000286102295,
+      1.0,
+      1.5
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/newyork-community-garden-compost-sifter-station-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "e464c9490196963d40a9037aed3d77efac2b31e62b3b35a0b772acbb457a87b7",
+    "bytes": 1942784,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-newyork-community-garden-compost-sifter-station-v1.webp",
+    "thumbnailSha256": "077bd71814f617b23ed39efaf5174c0c3b118b57aeccab9f02eb08c7bfdd6968"
+  },
+  {
+    "id": "detail-recovered-newyork-community-garden-painted-rain-barrel-v1",
+    "label": "Newyork Community Garden Painted Rain Barrel",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.0,
+      1.000207781791687,
+      1.350334087619558
+    ],
+    "offset": [
+      -0.0,
+      0.000303307780995965,
+      -0.0004736185073852539
+    ],
+    "url": "/park-kits/recovered-details-v1/newyork-community-garden-painted-rain-barrel-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "ac0cbc7ff21b764563812e49ba3c679d05b899a06ca56b7756e0de5536fdd9dc",
+    "bytes": 1612824,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-newyork-community-garden-painted-rain-barrel-v1.webp",
+    "thumbnailSha256": "392d369b7309381063c94d9fa4de8efa34d871c6e0acc5d17ebdf268ecf4a432"
+  },
+  {
+    "id": "detail-recovered-newyork-community-garden-salvaged-steel-garden-arch-v1",
+    "label": "Newyork Community Garden Salvaged Steel Garden Arch",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.799836754798889,
+      0.8011312186717987,
+      2.602273365482688
+    ],
+    "offset": [
+      8.159875869750977e-05,
+      0.0016709771007299423,
+      -0.00029300153255462646
+    ],
+    "url": "/park-kits/recovered-details-v1/newyork-community-garden-salvaged-steel-garden-arch-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "f3e2c49026a1d77f6d774fcb7b9a9f0b11126b25cdb13e289cdadf8f018edc5c",
+    "bytes": 1398776,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-newyork-community-garden-salvaged-steel-garden-arch-v1.webp",
+    "thumbnailSha256": "75ecafd443248441c2f2d9d31c349927ea82da2d85c7782fd898afb508ded78c"
+  },
+  {
+    "id": "detail-recovered-parisian-jardin-versailles-stone-urn-v1",
+    "label": "Parisian Jardin Versailles Stone Urn",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.248672366142273,
+      1.251484990119934,
+      1.8031620099791326
+    ],
+    "offset": [
+      -0.0004931092262268066,
+      0.0003302409895695746,
+      -0.0011668801307678223
+    ],
+    "url": "/park-kits/recovered-details-v1/parisian-jardin-versailles-stone-urn-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "f9d34d78610d5b46b876840869809d3f259a9e5eef7fb7826b4a96da975a9059",
+    "bytes": 1640096,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-parisian-jardin-versailles-stone-urn-v1.webp",
+    "thumbnailSha256": "13ed29d8f114157bb2b0076a021116e14cfa1e4de927418b864caa7fb48f25ff"
+  },
+  {
+    "id": "detail-recovered-productive-garden-rustic-potting-bench-v1",
+    "label": "Productive Garden Rustic Potting Bench",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.2000539302825928,
+      0.8001875579357147,
+      1.3000988689309452
+    ],
+    "offset": [
+      2.682209014892578e-05,
+      -7.20295065548271e-05,
+      -9.725987911224365e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/productive-garden-rustic-potting-bench-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "be5c3952b5d39abe961300cbf5acb3f139a9996993ada6c3dca1782d8c8626b6",
+    "bytes": 1569492,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-productive-garden-rustic-potting-bench-v1.webp",
+    "thumbnailSha256": "7e25badd7f27b662b858d4e9f6ed92030082a85a400403d07a30b94fe2f4081d"
+  },
+  {
+    "id": "detail-recovered-quarry-garden-limestone-outcrop-v1",
+    "label": "Quarry Garden Limestone Outcrop",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      5.499647855758667,
+      2.1994788646698,
+      2.8001337895548204
+    ],
+    "offset": [
+      -0.0001760721206665039,
+      0.00013765193580184132,
+      0.000672459602355957
+    ],
+    "url": "/park-kits/recovered-details-v1/quarry-garden-limestone-outcrop-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "579d46aa942fc992f2be513be43ecd9be9fbf923fde4d1bce324a143d85ce386",
+    "bytes": 1454168,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-quarry-garden-limestone-outcrop-v1.webp",
+    "thumbnailSha256": "bbcf136f2e9ec95bc60bce8d27e8302df0b640051a93bf322b653c44e6bf5ab8"
+  },
+  {
+    "id": "detail-recovered-rooftop-garden-beehive-stand-v1",
+    "label": "Rooftop Garden Beehive Stand",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.200000047683716,
+      0.9011246562004089,
+      1.5505471229553223
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0007008612155914307
+    ],
+    "url": "/park-kits/recovered-details-v1/rooftop-garden-beehive-stand-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "b32d8f71d0c6db3e8e16e59aaf2259b09b9d6447ed35e81d28f9b14c467cd660",
+    "bytes": 1548596,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-rooftop-garden-beehive-stand-v1.webp",
+    "thumbnailSha256": "b6879968a6868fe8260c4154c6e9f975fc2c28ae181f499e63059f3ad4aa55e3"
+  },
+  {
+    "id": "detail-recovered-urban-pocket-park-terracotta-planter-ensemble-v1",
+    "label": "Urban Pocket Park Terracotta Planter Ensemble",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.2001630067825317,
+      1.400715410709381,
+      1.250163100688951
+    ],
+    "offset": [
+      -0.0005509257316589355,
+      0.0001191124611068517,
+      8.341670036315918e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/urban-pocket-park-terracotta-planter-ensemble-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "acf1e1c960fead4cabc75ab2d69f14d39d15b43eb624962ba568b3c5b75a68cf",
+    "bytes": 1328880,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-urban-pocket-park-terracotta-planter-ensemble-v1.webp",
+    "thumbnailSha256": "2a0874e6cb11c79a5729354f25f9cbfc0aa77dec8310ebfdcac21dbd4632e6db"
+  },
+  {
+    "id": "detail-recovered-wetland-rain-garden-pallet-insect-habitat-v1",
+    "label": "Wetland Rain Garden Pallet Insect Habitat",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.1004680395126343,
+      1.1020858883857727,
+      1.7053384869359434
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/wetland-rain-garden-pallet-insect-habitat-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "ec4afb97accf4e6def0660845fe3e8e1fe5306f9dc75881afdce551d1f3618de",
+    "bytes": 2046044,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-wetland-rain-garden-pallet-insect-habitat-v1.webp",
+    "thumbnailSha256": "5ac777c669025117f1b3019fb1f1abbb442b64938da176805c6d18c36cf5312c"
+  },
+  {
+    "id": "detail-recovered-wetland-rain-garden-stone-steel-check-weir-v1",
+    "label": "Wetland Rain Garden Stone Steel Check Weir",
+    "category": "Garden & growing",
+    "description": "Garden equipment. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.605170488357544,
+      1.054386019706726,
+      0.8385875504463911
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/wetland-rain-garden-stone-steel-check-weir-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "5d6442e25f85266af79fcd54dd6a10cfbe8cb24214fb87f68716c0a6ccc72ba6",
+    "bytes": 2239168,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-wetland-rain-garden-stone-steel-check-weir-v1.webp",
+    "thumbnailSha256": "447acb8195de2348463a3d7efe2cae394e6734e033a1a3081a9d7206d94579f9"
+  },
+  {
+    "id": "detail-recovered-community-park-corten-path-light-cluster-v1",
+    "label": "Community Park Corten Path Light Cluster",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.4000543355941772,
+      0.7001124620437622,
+      1.0499746799468994
+    ],
+    "offset": [
+      -3.6656856536865234e-05,
+      -0.0,
+      -2.5838613510131836e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/community-park-corten-path-light-cluster-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "152a335068a5b235cabdb734454c38087762a489d1a0b1963a69876a46c9e27f",
+    "bytes": 1316364,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-community-park-corten-path-light-cluster-v1.webp",
+    "thumbnailSha256": "71d2148589f78abe080e50206c2c2d50c29f33f2b6b705fbaac5318296efc30a"
+  },
+  {
+    "id": "detail-recovered-community-park-olive-oil-amphora-v1",
+    "label": "Community Park Olive Oil Amphora",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.000446081161499,
+      0.9995280504226685,
+      1.650129242496405
+    ],
+    "offset": [
+      0.00022524595260620117,
+      -1.8791599359246902e-05,
+      -0.00013551115989685059
+    ],
+    "url": "/park-kits/recovered-details-v1/community-park-olive-oil-amphora-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "6fd7af5ecd97bf05f2a88add9acc54ddf1169770e2eb2ba19a57045981925872",
+    "bytes": 1306156,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-community-park-olive-oil-amphora-v1.webp",
+    "thumbnailSha256": "4586021ce7f60eb83866a07af2eef55376374fe65defd39a96d4de1c7c3a2c5c"
+  },
+  {
+    "id": "detail-recovered-constructed-wetland-eco-park-pond-dipping-platform-v1",
+    "label": "Constructed Wetland Eco Park Pond Dipping Platform",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.2015907764434814,
+      2.4046119451522827,
+      1.150673219060991
+    ],
+    "offset": [
+      -0.0001558065414428711,
+      0.0008122409344650805,
+      0.0018058419227600098
+    ],
+    "url": "/park-kits/recovered-details-v1/constructed-wetland-eco-park-pond-dipping-platform-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "d2be38b7a158a2a7abe8e980d3dd4463c0828989e15f0b2782c301581731f715",
+    "bytes": 1672980,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-constructed-wetland-eco-park-pond-dipping-platform-v1.webp",
+    "thumbnailSha256": "9af8c0912a1e408245c8121c3a0039dffe022b6d34836211385433cdc812625f"
+  },
+  {
+    "id": "detail-recovered-constructed-wetland-eco-park-wildlife-nesting-raft-v1",
+    "label": "Constructed Wetland Eco Park Wildlife Nesting Raft",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.002239227294922,
+      2.2021151781082153,
+      0.6999787390232086
+    ],
+    "offset": [
+      0.0012001991271972656,
+      -8.851289749145508e-06,
+      -0.0005154013633728027
+    ],
+    "url": "/park-kits/recovered-details-v1/constructed-wetland-eco-park-wildlife-nesting-raft-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "eb982f19e4ab1716af5cf333fb0cb6394a62e41a39cc6d51e58adc95ae31d6ce",
+    "bytes": 1929500,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-constructed-wetland-eco-park-wildlife-nesting-raft-v1.webp",
+    "thumbnailSha256": "c512ff10fbe95081ffa62018eb05d01b4d15144095ed974c85bd6bb35004e35c"
+  },
+  {
+    "id": "detail-recovered-dog-park-curved-concrete-tunnel-v1",
+    "label": "Dog Park Curved Concrete Tunnel",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.799840807914734,
+      1.5000823140144348,
+      1.400011658668518
+    ],
+    "offset": [
+      4.571676254272461e-05,
+      -0.0,
+      -4.1157007217407227e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/dog-park-curved-concrete-tunnel-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "411525e2bdab5ef00f8a606386c3e72cc704638bb44c3f9f7fe3163f241a257e",
+    "bytes": 1157564,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-dog-park-curved-concrete-tunnel-v1.webp",
+    "thumbnailSha256": "a511fc713ecba2243633de3c454fab56329f4a53621cb9a64c9275a6114a6d3b"
+  },
+  {
+    "id": "detail-recovered-dog-park-rustic-agility-ramp-v1",
+    "label": "Dog Park Rustic Agility Ramp",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.4021838903427124,
+      1.0,
+      1.4534098590957
+    ],
+    "offset": [
+      5.65648078918457e-05,
+      0.0017501796828582883,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/dog-park-rustic-agility-ramp-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "9e8d96e737d34c082af6e6892e56500f009e5f2b17e09333986afd653f8e5135",
+    "bytes": 1607544,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-dog-park-rustic-agility-ramp-v1.webp",
+    "thumbnailSha256": "7c51a4e56d15410bde410beb7fbd7f874aa44b3fa6f4e5ec559753193f46b5b0"
+  },
+  {
+    "id": "detail-recovered-linear-park-greenway-kayak-storage-rack-v1",
+    "label": "Linear Park Greenway Kayak Storage Rack",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.99817156791687,
+      1.199577271938324,
+      1.802764453110285
+    ],
+    "offset": [
+      -0.0010759830474853516,
+      0.0013990775914862752,
+      0.00021144747734069824
+    ],
+    "url": "/park-kits/recovered-details-v1/linear-park-greenway-kayak-storage-rack-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "e38142160fc35438537181e0587affccb313d55d035f56eae17d1db4d41070cc",
+    "bytes": 1689752,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-linear-park-greenway-kayak-storage-rack-v1.webp",
+    "thumbnailSha256": "4750f2ad031cd065ca3342c1b945a8dc932b2a2e63b5d959270bbf06852e4eea"
+  },
+  {
+    "id": "detail-recovered-linear-park-greenway-natural-riffle-weir-v1",
+    "label": "Linear Park Greenway Natural Riffle Weir",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.001165747642517,
+      1.798099935054779,
+      0.8049907526583411
+    ],
+    "offset": [
+      -0.005720674991607666,
+      0.0009240350336767733,
+      -0.004065185785293579
+    ],
+    "url": "/park-kits/recovered-details-v1/linear-park-greenway-natural-riffle-weir-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "8a87a223b3a0da878f92d7fc63815bded97f83c37d6f56fa31191abdec7eccfe",
+    "bytes": 1842956,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-linear-park-greenway-natural-riffle-weir-v1.webp",
+    "thumbnailSha256": "b67aa1313c2791e2353a60b19fb03cdd88854f9ae8c07fb7c7d4beefd52b6811"
+  },
+  {
+    "id": "detail-recovered-nature-preserve-dune-sand-fence-v1",
+    "label": "Nature Preserve Dune Sand Fence",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.002879858016968,
+      0.45018555223941803,
+      1.2020032054279
+    ],
+    "offset": [
+      -0.00035774707794189453,
+      0.002369011053815484,
+      9.278208017349243e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/nature-preserve-dune-sand-fence-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "c6c5178b8dc72392bf7f347d4f66505e15b3acf7917cd2039d187d80e3e5aa75",
+    "bytes": 1866108,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-nature-preserve-dune-sand-fence-v1.webp",
+    "thumbnailSha256": "1c063bc7853f4638fa7d9bf591c5cef34d2d5f0366a0f98edf78941aae73952f"
+  },
+  {
+    "id": "detail-recovered-nature-preserve-mossy-nurse-log-v1",
+    "label": "Nature Preserve Mossy Nurse Log",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.5007758140563965,
+      1.1980005502700806,
+      1.0489264787174761
+    ],
+    "offset": [
+      -0.00384521484375,
+      -0.001073592808097601,
+      -0.000999748706817627
+    ],
+    "url": "/park-kits/recovered-details-v1/nature-preserve-mossy-nurse-log-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "36be466be3a299ad0f62ee069ba49047209e859ea972a2c7ff5f238b01f21a29",
+    "bytes": 1928308,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-nature-preserve-mossy-nurse-log-v1.webp",
+    "thumbnailSha256": "65aca79fbcf146d1550abc0897ad7595775520e243909e795a67165005d3b64c"
+  },
+  {
+    "id": "detail-recovered-nature-preserve-observation-scope-pedestal-v1",
+    "label": "Nature Preserve Observation Scope Pedestal",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      0.9997672140598297,
+      0.7490743696689606,
+      1.5500723913355614
+    ],
+    "offset": [
+      -6.817281246185303e-05,
+      0.00010510236461414024,
+      -0.00017423927783966064
+    ],
+    "url": "/park-kits/recovered-details-v1/nature-preserve-observation-scope-pedestal-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "7249d04151378af575f1cb271e25f3b28e93edd6279e09117b267d66246c139d",
+    "bytes": 1639212,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-nature-preserve-observation-scope-pedestal-v1.webp",
+    "thumbnailSha256": "0bb634c25eb7ec37bc57a0ac07c2c6b2014f0d0fb55689575514313f52d0e4b7"
+  },
+  {
+    "id": "detail-recovered-pollinator-insect-hotel-timber-v1",
+    "label": "Pollinator Insect Hotel Timber",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.4013143181800842,
+      0.5093139111995697,
+      2.0011282103369012
+    ],
+    "offset": [
+      -0.0006572306156158447,
+      0.0011283295461907983,
+      -0.0025896579027175903
+    ],
+    "url": "/park-kits/recovered-details-v1/pollinator-insect-hotel-timber-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "8664f52e0343c548db4948de0d03df77481e2021845c4a6a87298e38180c0e78",
+    "bytes": 2033488,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-pollinator-insect-hotel-timber-v1.webp",
+    "thumbnailSha256": "b6bf6ef69d4758e381b78b4d40d0fe8ff5f83cd9b656b88bc6a5226ba4671211"
+  },
+  {
+    "id": "detail-recovered-pond-lake-fishing-rod-rest-v1",
+    "label": "Pond Lake Fishing Rod Rest",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.1999857425689697,
+      0.5999876856803894,
+      1.1506096751254518
+    ],
+    "offset": [
+      -6.711483001708984e-05,
+      0.00043613024172373116,
+      6.16908073425293e-06
+    ],
+    "url": "/park-kits/recovered-details-v1/pond-lake-fishing-rod-rest-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "55f16dc3b1082bd7cc46be6b499550ee7ff48ef103670199a73c0bbc8d7d9039",
+    "bytes": 1422044,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-pond-lake-fishing-rod-rest-v1.webp",
+    "thumbnailSha256": "afcd799797d520aea005327212429d1f51538ca38d469c4464769c5a15693773"
+  },
+  {
+    "id": "detail-recovered-pond-lake-reed-habitat-bundle-v1",
+    "label": "Pond Lake Reed Habitat Bundle",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.4152278900146484,
+      1.4009268283843994,
+      1.2086039017885923
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/pond-lake-reed-habitat-bundle-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "f4db14fbcd41ff4b094510ff8f61ea4001d99aff40eef0f1b368018e7dc77b88",
+    "bytes": 2038812,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-pond-lake-reed-habitat-bundle-v1.webp",
+    "thumbnailSha256": "5464cd213b35429d6d443cc5650c1414a2f4ece19e2ecfb12b995ebc5dabd995"
+  },
+  {
+    "id": "detail-recovered-promenade-boardwalk-timber-fishing-rod-rack-v1",
+    "label": "Promenade Boardwalk Timber Fishing Rod Rack",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.60043203830719,
+      0.699508011341095,
+      1.1998869581402687
+    ],
+    "offset": [
+      7.706880569458008e-05,
+      -5.980299101793207e-05,
+      -6.80685043334961e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/promenade-boardwalk-timber-fishing-rod-rack-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "f256bc44dfe19795b471e085d8294bbdad81363d93c39060b1e617b7fdff0608",
+    "bytes": 1435044,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-promenade-boardwalk-timber-fishing-rod-rack-v1.webp",
+    "thumbnailSha256": "522adbf31d62ba8c3689c743bcdefa93f40e2339bda4ccc5b7ca26d4e5889233"
+  },
+  {
+    "id": "detail-recovered-regional-park-limestone-picnic-hearth-v1",
+    "label": "Regional Park Limestone Picnic Hearth",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.6030024290084839,
+      1.201507806777954,
+      1.1568272029981017
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/regional-park-limestone-picnic-hearth-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "a34d3d23d5188395ef18fc7bfccd66c9e989239ef6717fc9ec6ef67309cb228c",
+    "bytes": 1976780,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-regional-park-limestone-picnic-hearth-v1.webp",
+    "thumbnailSha256": "d67ddbaf6b34993346d1988d0c27a57eff1bad16aa4e29ad67bd5c991e54217b"
+  },
+  {
+    "id": "detail-recovered-rewilding-brush-habitat-pile-v1",
+    "label": "Rewilding Brush Habitat Pile",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.0,
+      2.6209304332733154,
+      1.6109292041510344
+    ],
+    "offset": [
+      -0.0,
+      0.004602385684847832,
+      -0.0013797283172607422
+    ],
+    "url": "/park-kits/recovered-details-v1/rewilding-brush-habitat-pile-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "748c63475461501e871173af88f9b6df5143fe07d2711bad7197d9712173f42e",
+    "bytes": 2075360,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-rewilding-brush-habitat-pile-v1.webp",
+    "thumbnailSha256": "8d5713b93810430028d601cf12e0c6f01d9f9638bad2a2a2cdbd79f6fed69c76"
+  },
+  {
+    "id": "detail-recovered-rewilding-root-wad-large-v1",
+    "label": "Rewilding Root Wad Large",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.2018630504608154,
+      2.7998589277267456,
+      2.207515870046336
+    ],
+    "offset": [
+      0.00018644332885742188,
+      0.0005547151085920632,
+      7.039308547973633e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/rewilding-root-wad-large-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "b0671e44920c961da4578f8b6928631a69de81847e6ff4f04799916893c160d9",
+    "bytes": 1786676,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-rewilding-root-wad-large-v1.webp",
+    "thumbnailSha256": "a58088f1ed9510f00344c668048076396756ccf1b99373dbac6a7df58b706eff"
+  },
+  {
+    "id": "detail-recovered-rewilding-standing-snag-hollow-v1",
+    "label": "Rewilding Standing Snag Hollow",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.4000551104545593,
+      1.404431700706482,
+      5.997767138294876
+    ],
+    "offset": [
+      -0.00027701258659362793,
+      -0.0015013935044407845,
+      0.0015795230865478516
+    ],
+    "url": "/park-kits/recovered-details-v1/rewilding-standing-snag-hollow-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "f56769a2bdf3ae7cfcf124f00b45dd38d1aa558448b6b3db02108695a28ad2b5",
+    "bytes": 1555944,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-rewilding-standing-snag-hollow-v1.webp",
+    "thumbnailSha256": "046470ceb2ff0a1eb65c0f11e176ade9e377453a3de3cfbbfcde0c5c7a15b574"
+  },
+  {
+    "id": "detail-recovered-rewilding-standing-snag-v1",
+    "label": "Rewilding Standing Snag",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.2010815143585205,
+      1.2001053094863892,
+      5.500061821843701
+    ],
+    "offset": [
+      0.0004901885986328125,
+      -3.116140214842744e-05,
+      4.83393669128418e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/rewilding-standing-snag-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "c0a3048b8454d0c24e77e1808c25cac2ccb3b5be3c458d53056e4bb0fa10d218",
+    "bytes": 1347132,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-rewilding-standing-snag-v1.webp",
+    "thumbnailSha256": "358d0ac4fd8f0c18c58699cea642212db10a2dccb369349d486d2d842064780a"
+  },
+  {
+    "id": "detail-recovered-riparian-buffer-coir-bank-fascine-v1",
+    "label": "Riparian Buffer Coir Bank Fascine",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.002123117446899,
+      1.0985429883003235,
+      0.6695146439597011
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/riparian-buffer-coir-bank-fascine-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "18d1b97ba7dca804f024de5e575c42120fd669ea2af9d84762f3d6092b7e12c5",
+    "bytes": 2102972,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-riparian-buffer-coir-bank-fascine-v1.webp",
+    "thumbnailSha256": "b64f925d0b11805d84a1a155f2a58db46d336b4e69300b0c46d1ce158e93c430"
+  },
+  {
+    "id": "detail-recovered-riparian-buffer-timber-overlook-rail-v1",
+    "label": "Riparian Buffer Timber Overlook Rail",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.5001943111419678,
+      0.6000481247901917,
+      1.200084388256073
+    ],
+    "offset": [
+      9.703636169433594e-05,
+      -6.502866744995117e-05,
+      4.6193599700927734e-06
+    ],
+    "url": "/park-kits/recovered-details-v1/riparian-buffer-timber-overlook-rail-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "deb9072bc24b8a892478df5268de5faf8f3f38f651c60a61f4f96f7351402d2f",
+    "bytes": 1561216,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-riparian-buffer-timber-overlook-rail-v1.webp",
+    "thumbnailSha256": "88d3e03aa197063f4adafc454fcdec7c4342c7440a9d80cfe495d40669651522"
+  },
+  {
+    "id": "detail-recovered-riverfront-park-beach-cedar-kayak-rack-v1",
+    "label": "Riverfront Park Beach Cedar Kayak Rack",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.4005608558654785,
+      1.4021866917610168,
+      1.8021875473205
+    ],
+    "offset": [
+      -0.0002803802490234375,
+      0.0008725973311811686,
+      -0.0009111464023590088
+    ],
+    "url": "/park-kits/recovered-details-v1/riverfront-park-beach-cedar-kayak-rack-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "10e31bc7e77bf0c5fc8487b9299c21406f63bd7a70e0e8fec6674104ddfaf4da",
+    "bytes": 1669912,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-riverfront-park-beach-cedar-kayak-rack-v1.webp",
+    "thumbnailSha256": "05820b101a94781c57553b74da6c5848355c6dd0ef310c248212f94557e7aaac"
+  },
+  {
+    "id": "detail-recovered-riverfront-park-beach-willow-fascine-revetment-v1",
+    "label": "Riverfront Park Beach Willow Fascine Revetment",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.193936347961426,
+      1.4066410064697266,
+      0.859825756167993
+    ],
+    "offset": [
+      -0.0016903877258300781,
+      0.0026205440517514944,
+      -0.003320455551147461
+    ],
+    "url": "/park-kits/recovered-details-v1/riverfront-park-beach-willow-fascine-revetment-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "a1028bd0eb838a2c5efc073e4d7ad6a2f8241bb200da8195c7d6fe503d3ab662",
+    "bytes": 2228340,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-riverfront-park-beach-willow-fascine-revetment-v1.webp",
+    "thumbnailSha256": "d5fe9901e0265cb9960745a89871091232b984de5019f41730767dd2370d1cc6"
+  },
+  {
+    "id": "detail-recovered-splash-pad-area-bronze-animal-sprayer-v1",
+    "label": "Splash Pad Area Bronze Animal Sprayer",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.500032901763916,
+      0.8000496625900269,
+      1.2002667726846994
+    ],
+    "offset": [
+      0.00034242868423461914,
+      7.51556726754643e-05,
+      -0.0001322031021118164
+    ],
+    "url": "/park-kits/recovered-details-v1/splash-pad-area-bronze-animal-sprayer-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "6cd661cfcf8c66d898f330bcc00c50ae7fdd549a63d8c52214e84a52650b8db9",
+    "bytes": 1352316,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-splash-pad-area-bronze-animal-sprayer-v1.webp",
+    "thumbnailSha256": "93bb516501f6c69b9601adb59baca5e41bfd7baa95b1b1e7be9dcfe86a4b9809"
+  },
+  {
+    "id": "detail-recovered-street-plaza-parklet-curbside-stage-platform-v1",
+    "label": "Street Plaza Parklet Curbside Stage Platform",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.5995014905929565,
+      2.2004064321517944,
+      0.6505328627245035
+    ],
+    "offset": [
+      1.6629695892333984e-05,
+      0.0004643412248697132,
+      3.236532211303711e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/street-plaza-parklet-curbside-stage-platform-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "af7ac6b7e32c9bf2c90f7a1c8643fc57ed6a1f99b8838a2b6e12bc98720f9877",
+    "bytes": 1459756,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-street-plaza-parklet-curbside-stage-platform-v1.webp",
+    "thumbnailSha256": "6d1c3137d1c4f4ec602b6db627a141c2562a007687b6c51cba3d6f1bc768ba1d"
+  },
+  {
+    "id": "detail-recovered-tidal-marsh-boardwalk-hexagonal-overlook-rail-v1",
+    "label": "Tidal Marsh Boardwalk Hexagonal Overlook Rail",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.2001227140426636,
+      1.1996971368789673,
+      1.1499567352002487
+    ],
+    "offset": [
+      6.145238876342773e-05,
+      -0.00022217410150915384,
+      1.7523765563964844e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/tidal-marsh-boardwalk-hexagonal-overlook-rail-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "3809879543d61d46fd3af84cd59f9b80655e9bc5430f6fd3388b1173b6f2d4d8",
+    "bytes": 1489368,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-tidal-marsh-boardwalk-hexagonal-overlook-rail-v1.webp",
+    "thumbnailSha256": "5e23b9c508e35d0c09c50caae4b0f658c6cb9f2b87f5cf4261db1f1bddf725ee"
+  },
+  {
+    "id": "detail-recovered-tidal-marsh-boardwalk-low-wetland-viewing-hide-v1",
+    "label": "Tidal Marsh Boardwalk Low Wetland Viewing Hide",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.8003926277160645,
+      1.4998786449432373,
+      1.7021226659417152
+    ],
+    "offset": [
+      0.0007814168930053711,
+      0.001900888979434967,
+      -6.073713302612305e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/tidal-marsh-boardwalk-low-wetland-viewing-hide-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "7b6300ccbe27e429bdbb0216e8dbf17962de26215602cf3d7fbdc05aa2a1526d",
+    "bytes": 1780164,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-tidal-marsh-boardwalk-low-wetland-viewing-hide-v1.webp",
+    "thumbnailSha256": "a24695b4870e476cdd139d62c96c19ca7587f5b852ab5763327a76c6f6b5a545"
+  },
+  {
+    "id": "detail-recovered-tidal-marsh-boardwalk-mangrove-bird-hide-v1",
+    "label": "Tidal Marsh Boardwalk Mangrove Bird Hide",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.600463628768921,
+      1.3033473491668701,
+      2.2038450601976365
+    ],
+    "offset": [
+      -0.000788569450378418,
+      0.0027394655626267195,
+      0.0013331174850463867
+    ],
+    "url": "/park-kits/recovered-details-v1/tidal-marsh-boardwalk-mangrove-bird-hide-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "9aacb95267d6da9e1b47321e3403216880fa41c625990b2352ffa26000fbb736",
+    "bytes": 1736568,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-tidal-marsh-boardwalk-mangrove-bird-hide-v1.webp",
+    "thumbnailSha256": "4864e49570ef0f5f2844847128d597bba061774d2ce810b96dedc9d6fac17b7d"
+  },
+  {
+    "id": "detail-recovered-urban-beach-beach-shower-column-v1",
+    "label": "Urban Beach Beach Shower Column",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      0.9999493956565857,
+      0.8010479509830475,
+      2.400918434606865
+    ],
+    "offset": [
+      4.44948673248291e-05,
+      0.00048417900688946247,
+      7.806718349456787e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/urban-beach-beach-shower-column-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "fdee5f6bc6f8b759de230972dc0a0dde1ebfa3091d8bfa339c2636a90c350c9a",
+    "bytes": 1518868,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-urban-beach-beach-shower-column-v1.webp",
+    "thumbnailSha256": "6727376a4e0a333dffda4f3cd4667f1a98a300b644084e843b6d7c9e6d65c19e"
+  },
+  {
+    "id": "detail-recovered-urban-beach-driftwood-windbreak-v1",
+    "label": "Urban Beach Driftwood Windbreak",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.499380350112915,
+      0.6993155777454376,
+      1.6002971104987864
+    ],
+    "offset": [
+      -0.00040340423583984375,
+      1.6860374216776108e-06,
+      -0.00026883184909820557
+    ],
+    "url": "/park-kits/recovered-details-v1/urban-beach-driftwood-windbreak-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "75d2eb7b47993b79fa8933b475f52d52136634dd17e68a5cc9fa8e7537672033",
+    "bytes": 1557464,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-urban-beach-driftwood-windbreak-v1.webp",
+    "thumbnailSha256": "5b14584328af5d48a0ddd3cc3c31bf9fd81a0d2f8b973ec63a0a0c266a475f1c"
+  },
+  {
+    "id": "detail-recovered-urban-forest-interpretive-trail-marker-v1",
+    "label": "Urban Forest Interpretive Trail Marker",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.1999831199645996,
+      0.45014670491218567,
+      1.5500818017972051
+    ],
+    "offset": [
+      -1.3768672943115234e-05,
+      -8.754691953072324e-05,
+      2.9012560844421387e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/urban-forest-interpretive-trail-marker-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "f2f8f53364a38d6b664b1181d801f02f41de1450f4583b1e01f83bf3d02c808b",
+    "bytes": 1438376,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-urban-forest-interpretive-trail-marker-v1.webp",
+    "thumbnailSha256": "82a8794a2904b6204877f046b1aed33028de960220197af2bb0de44c08d24fee"
+  },
+  {
+    "id": "detail-recovered-urban-forest-oyster-reef-module-v1",
+    "label": "Urban Forest Oyster Reef Module",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.8057583570480347,
+      1.800041675567627,
+      0.8995153391733766
+    ],
+    "offset": [
+      -0.0010456442832946777,
+      -0.0014010583981871605,
+      -2.086162567138672e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/urban-forest-oyster-reef-module-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "a0cb7b51a2ef82609ba5e8dfd99e0e4b610665e9e6ded0b5592388238d81c506",
+    "bytes": 1735732,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-urban-forest-oyster-reef-module-v1.webp",
+    "thumbnailSha256": "443efc2bc7a2c273d8ef5524f28c66391e65c73e6f53ac1fd691df912dfce5c3"
+  },
+  {
+    "id": "detail-recovered-wetland-timber-bird-blind-v1",
+    "label": "Wetland Timber Bird Blind",
+    "category": "Landscape",
+    "description": "Landscape and ecology. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.0032875537872314,
+      1.404530107975006,
+      2.4997108300885884
+    ],
+    "offset": [
+      -0.0010625123977661133,
+      8.085572335403413e-05,
+      -0.0012731850147247314
+    ],
+    "url": "/park-kits/recovered-details-v1/wetland-timber-bird-blind-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "a5729d5afdbc55395ad92342dd56673dc0d6487ad9c96a5dc3b5c8271684bf3d",
+    "bytes": 1567568,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-wetland-timber-bird-blind-v1.webp",
+    "thumbnailSha256": "9623b06b00075dd2a7dedaa91c0f950c16b2fb51ad26087c4a2880a5a08f748a"
+  },
+  {
+    "id": "detail-recovered-climbing-log-meshy-v1",
+    "label": "Climbing Log",
+    "category": "Play",
+    "description": "Play and recreation. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.20009970664978,
+      0.9002951085567474,
+      0.9000694418282364
+    ],
+    "offset": [
+      1.3709068298339844e-05,
+      6.314757774816826e-05,
+      -0.0001490563154220581
+    ],
+    "url": "/park-kits/recovered-details-v1/climbing-log-meshy-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "0f467c895105a34fded987da50403e26235b0af4c3384db48acdde7798cebf46",
+    "bytes": 1418440,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-climbing-log-meshy-v1.webp",
+    "thumbnailSha256": "f961161933a69c218b74a97f2fdddbecaa90e240d5ca300ac6c1aeb8a29a0d61"
+  },
+  {
+    "id": "detail-recovered-mini-golf-hollow-log-tunnel-v1",
+    "label": "Mini Golf Hollow Log Tunnel",
+    "category": "Play",
+    "description": "Play and recreation. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.800840973854065,
+      1.0000072419643402,
+      1.0999145896930713
+    ],
+    "offset": [
+      0.00017458200454711914,
+      -0.00016268176841549575,
+      4.187226295471191e-06
+    ],
+    "url": "/park-kits/recovered-details-v1/mini-golf-hollow-log-tunnel-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "8631f54f43955f8366e79078c1b29e617d465139567f8876c1ad93e49126c7d3",
+    "bytes": 1335372,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-mini-golf-hollow-log-tunnel-v1.webp",
+    "thumbnailSha256": "c5b6804e96085a79c5151e869dd691cbd698faa2b4582b9f914eddf8e6b483f0"
+  },
+  {
+    "id": "detail-recovered-mini-golf-sculptural-rock-obstacle-v1",
+    "label": "Mini Golf Sculptural Rock Obstacle",
+    "category": "Play",
+    "description": "Play and recreation. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.0011361837387085,
+      2.200608015060425,
+      1.99961792078102
+    ],
+    "offset": [
+      -6.872415542602539e-05,
+      -0.0003820792189799249,
+      0.0006760358810424805
+    ],
+    "url": "/park-kits/recovered-details-v1/mini-golf-sculptural-rock-obstacle-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "1721e7db311e776b10035a2c80444607de3f9969a9b2fa29bf9e1c4b8200e42b",
+    "bytes": 1382724,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-mini-golf-sculptural-rock-obstacle-v1.webp",
+    "thumbnailSha256": "a8c231e790347dd97561bee47530225bc6284a69f70b2ab644ce336bb0e701c4"
+  },
+  {
+    "id": "detail-recovered-mini-golf-stump-gate-obstacle-v1",
+    "label": "Mini Golf Stump Gate Obstacle",
+    "category": "Play",
+    "description": "Play and recreation. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.3999699354171753,
+      0.7998608648777008,
+      1.5000291397736873
+    ],
+    "offset": [
+      -4.5239925384521484e-05,
+      -0.00012320969835855067,
+      0.00010888278484344482
+    ],
+    "url": "/park-kits/recovered-details-v1/mini-golf-stump-gate-obstacle-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "5acc3f88fd8186357f553d50edd04bbd7c6343e58f88fdf88c83c493659b7f69",
+    "bytes": 1384732,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-mini-golf-stump-gate-obstacle-v1.webp",
+    "thumbnailSha256": "7f137022f194b864a02f70857124977a3a56edf4520bb7bf1fa67774692ae382"
+  },
+  {
+    "id": "detail-recovered-nature-play-climbing-boulder-granite-v1",
+    "label": "Nature Play Climbing Boulder Granite",
+    "category": "Play",
+    "description": "Play and recreation. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.800519347190857,
+      2.199587106704712,
+      1.7996005361201242
+    ],
+    "offset": [
+      -0.00031822919845581055,
+      -0.000413840520195663,
+      -0.00036203861236572266
+    ],
+    "url": "/park-kits/recovered-details-v1/nature-play-climbing-boulder-granite-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "2321ff5f9524cf8f53e0d94650c51be2ff608679c53db9ddda0e62b2ac902360",
+    "bytes": 1445812,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-nature-play-climbing-boulder-granite-v1.webp",
+    "thumbnailSha256": "244fdd88f62b50b20c257a58e046d02d6d547290df73e339b974ff4833762e25"
+  },
+  {
+    "id": "detail-recovered-nature-play-climbing-boulder-sandstone-v1",
+    "label": "Nature Play Climbing Boulder Sandstone",
+    "category": "Play",
+    "description": "Play and recreation. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.6000434160232544,
+      2.000027358531952,
+      1.6004356842313427
+    ],
+    "offset": [
+      4.589557647705078e-06,
+      0.00015742590767331421,
+      -0.0002231895923614502
+    ],
+    "url": "/park-kits/recovered-details-v1/nature-play-climbing-boulder-sandstone-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "7333ff9941e9a03d685d1805bc2a56a58e5c66c583e068acf216eee5c42e967d",
+    "bytes": 1040788,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-nature-play-climbing-boulder-sandstone-v1.webp",
+    "thumbnailSha256": "c615c5cc04729f6f4dd0ceb31c8734c80535397f5f83160948c9000218564581"
+  },
+  {
+    "id": "detail-recovered-playground-adventure-carved-timber-play-animal-v1",
+    "label": "Playground Adventure Carved Timber Play Animal",
+    "category": "Play",
+    "description": "Play and recreation. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.800891160964966,
+      1.2003310322761536,
+      1.448414200465777
+    ],
+    "offset": [
+      0.0004456043243408203,
+      -0.00020087369193788618,
+      -0.00016555190086364746
+    ],
+    "url": "/park-kits/recovered-details-v1/playground-adventure-carved-timber-play-animal-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "db8766cc7f98bae7fc603d5ee046de97afb27a16423747a19e03535ca7baedb0",
+    "bytes": 1382708,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-playground-adventure-carved-timber-play-animal-v1.webp",
+    "thumbnailSha256": "ea388b068fca168f442f965199808b2e3b0494ae725179d9ea9a6c58b96a0335"
+  },
+  {
+    "id": "detail-recovered-playground-adventure-concrete-play-tunnel-mound-v1",
+    "label": "Playground Adventure Concrete Play Tunnel Mound",
+    "category": "Play",
+    "description": "Play and recreation. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.9989678859710693,
+      2.5996315479278564,
+      1.7997108032286633
+    ],
+    "offset": [
+      0.00013458728790283203,
+      -6.932715768925846e-05,
+      -0.00023889541625976562
+    ],
+    "url": "/park-kits/recovered-details-v1/playground-adventure-concrete-play-tunnel-mound-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "79ceedef67dd4b5197dfd867df5ffee78b48d52f23092a43933db76f3f23c1ed",
+    "bytes": 1068328,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-playground-adventure-concrete-play-tunnel-mound-v1.webp",
+    "thumbnailSha256": "347c7c4869dba655027649cb78d7c343da142a3d410a60016990dc04a8f059f7"
+  },
+  {
+    "id": "detail-recovered-playground-adventure-rope-climbing-pyramid-v1",
+    "label": "Playground Adventure Rope Climbing Pyramid",
+    "category": "Play",
+    "description": "Play and recreation. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.0,
+      4.000170946121216,
+      3.814698114991188
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/playground-adventure-rope-climbing-pyramid-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "4fa12a4db43d18cbd39266c6a6fa28676cb20eff4fc62b8236ccf59b2543957d",
+    "bytes": 1889808,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-playground-adventure-rope-climbing-pyramid-v1.webp",
+    "thumbnailSha256": "727e96e7498d7477e3779eb2ace14af2c3aac57af7d275ccf95c560a1d9d94dd"
+  },
+  {
+    "id": "detail-recovered-playground-adventure-timber-adventure-tower-v1",
+    "label": "Playground Adventure Timber Adventure Tower",
+    "category": "Play",
+    "description": "Play and recreation. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.2070478200912476,
+      2.816744804382324,
+      4.005796547513455
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/playground-adventure-timber-adventure-tower-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "bdf85bb39d13dcdee04725eb36a16609a5298e1f07aa5d1225477eabc3224379",
+    "bytes": 1859852,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-playground-adventure-timber-adventure-tower-v1.webp",
+    "thumbnailSha256": "ceac7f5a96000c36fd2251a27acc5f335903514f6d27453b8863d377c6151e20"
+  },
+  {
+    "id": "detail-recovered-riverfront-park-beach-cargo-net-climbing-frame-v1",
+    "label": "Riverfront Park Beach Cargo Net Climbing Frame",
+    "category": "Play",
+    "description": "Play and recreation. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.6006349325180054,
+      2.9988824129104614,
+      3.0066959615796804
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/riverfront-park-beach-cargo-net-climbing-frame-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "3b6eefea65b5841ce9c85bd11ba6e71287e33528f8cc0d02d9b09931b97cd56c",
+    "bytes": 1997036,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-riverfront-park-beach-cargo-net-climbing-frame-v1.webp",
+    "thumbnailSha256": "b99c694dca162ba95950565bd8063def61bc11e9ad38911bb9edd2efe25664e4"
+  },
+  {
+    "id": "detail-recovered-beer-garden-sculptural-fire-bowl-v1",
+    "label": "Beer Garden Sculptural Fire Bowl",
+    "category": "Water & landmarks",
+    "description": "Public art and landmarks. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.6000001430511475,
+      1.600016474723816,
+      0.7200917092995951
+    ],
+    "offset": [
+      -0.0,
+      5.663315823767334e-05,
+      -8.165836334228516e-06
+    ],
+    "url": "/park-kits/recovered-details-v1/beer-garden-sculptural-fire-bowl-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "b4dc3fbba2c7ff018fc3f81a32f786f9fea9675181f100729d099668fa106e31",
+    "bytes": 1192324,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-beer-garden-sculptural-fire-bowl-v1.webp",
+    "thumbnailSha256": "9cd6c9bdc5e796301046178169a342261a699cb7c9dae44c807a1321b0ed59b2"
+  },
+  {
+    "id": "detail-recovered-botanical-garden-concrete-corten-art-plinth-v1",
+    "label": "Botanical Garden Concrete Corten Art Plinth",
+    "category": "Water & landmarks",
+    "description": "Public art and landmarks. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.200151205062866,
+      1.2000000476837158,
+      2.600069999694824
+    ],
+    "offset": [
+      -7.784366607666016e-05,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/botanical-garden-concrete-corten-art-plinth-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "b8a67c596cee0b829e5a6bdd2cfa68e7affdd6fa8d2cb763ebe59bc2e75b6d74",
+    "bytes": 1090884,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-botanical-garden-concrete-corten-art-plinth-v1.webp",
+    "thumbnailSha256": "19f042c81c9378998bd3c0ed18888719ff89dd2828c62d6702e57a5ed5904c81"
+  },
+  {
+    "id": "detail-recovered-japanese-garden-concrete-corten-sculpture-v1",
+    "label": "Japanese Garden Concrete Corten Sculpture",
+    "category": "Water & landmarks",
+    "description": "Public art and landmarks. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.2000532150268555,
+      1.0996322631835938,
+      3.1998871564865112
+    ],
+    "offset": [
+      -0.00018978118896484375,
+      -0.00010263919830322266,
+      2.956390380859375e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/japanese-garden-concrete-corten-sculpture-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "86497bc1bf438d8be3faf9c000c16858c457e92722f43751ae607ed0d93776c4",
+    "bytes": 1395652,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-japanese-garden-concrete-corten-sculpture-v1.webp",
+    "thumbnailSha256": "8e8e42bf51ef39f11938b6f6e13716173327d3a3696e06783943d9012039b7a8"
+  },
+  {
+    "id": "detail-recovered-linear-park-greenway-railway-switch-sculpture-v1",
+    "label": "Linear Park Greenway Railway Switch Sculpture",
+    "category": "Water & landmarks",
+    "description": "Public art and landmarks. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.40046489238739,
+      1.5019265413284302,
+      0.9976889111567289
+    ],
+    "offset": [
+      0.00023251771926879883,
+      -0.0023110888432711363,
+      0.0005872249603271484
+    ],
+    "url": "/park-kits/recovered-details-v1/linear-park-greenway-railway-switch-sculpture-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "bb5290af8238043dd1449627f49c8966416796cbb0631c2893b8078ff4803ae1",
+    "bytes": 2111788,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-linear-park-greenway-railway-switch-sculpture-v1.webp",
+    "thumbnailSha256": "dbc69d852e40a0e23e69af19dc34f8493725d92b8ee7053e9c45d8e3c11048de"
+  },
+  {
+    "id": "detail-recovered-memorial-garden-stainless-mourning-sculpture-v1",
+    "label": "Memorial Garden Stainless Mourning Sculpture",
+    "category": "Water & landmarks",
+    "description": "Public art and landmarks. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.100072145462036,
+      1.200329303741455,
+      3.0003330130130053
+    ],
+    "offset": [
+      3.1828880310058594e-05,
+      1.8777325749397278e-05,
+      -0.00029015541076660156
+    ],
+    "url": "/park-kits/recovered-details-v1/memorial-garden-stainless-mourning-sculpture-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "4d0f4a49f3248f3798955252f93fa0a2173d8b321a78fc64008091313a767273",
+    "bytes": 1293720,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-memorial-garden-stainless-mourning-sculpture-v1.webp",
+    "thumbnailSha256": "110ddf6c37ce6e9d287f7e75d9b77da9414e3832448984d9f04d0aaa2645b3cc"
+  },
+  {
+    "id": "detail-recovered-memorial-garden-stone-sundial-v1",
+    "label": "Memorial Garden Stone Sundial",
+    "category": "Water & landmarks",
+    "description": "Public art and landmarks. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.100108563899994,
+      1.0997871160507202,
+      1.4500144985440784
+    ],
+    "offset": [
+      5.4270029067993164e-05,
+      1.445086036255816e-05,
+      0.00010639429092407227
+    ],
+    "url": "/park-kits/recovered-details-v1/memorial-garden-stone-sundial-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "77081b7e38d42c07808fecbad776db2dc219853d5eb6b6cfb6681f620161dc98",
+    "bytes": 1409744,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-memorial-garden-stone-sundial-v1.webp",
+    "thumbnailSha256": "6101bb806e2e448aaa7fb8306795a21326a2a74c7fb5a7b933b417cdadffce82"
+  },
+  {
+    "id": "detail-recovered-parisian-jardin-classical-stone-sundial-v1",
+    "label": "Parisian Jardin Classical Stone Sundial",
+    "category": "Water & landmarks",
+    "description": "Public art and landmarks. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.2002347707748413,
+      1.2000526785850525,
+      1.550978863996761
+    ],
+    "offset": [
+      0.00047075748443603516,
+      -2.419191105218488e-06,
+      3.591179847717285e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/parisian-jardin-classical-stone-sundial-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "f49df83eb2db5284225ac3363cbb1306dbe28124ff761d496cfb2273ae7cf127",
+    "bytes": 1477516,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-parisian-jardin-classical-stone-sundial-v1.webp",
+    "thumbnailSha256": "9596313097469d22ed901006dbba30b802f7fb65331549bbc6161583b45370e1"
+  },
+  {
+    "id": "detail-recovered-rooftop-garden-sculptural-shade-pergola-v1",
+    "label": "Rooftop Garden Sculptural Shade Pergola",
+    "category": "Water & landmarks",
+    "description": "Public art and landmarks. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.800139904022217,
+      3.0019067525863647,
+      2.8030768441967666
+    ],
+    "offset": [
+      -6.985664367675781e-05,
+      0.0030234861187636852,
+      -0.0008085370063781738
+    ],
+    "url": "/park-kits/recovered-details-v1/rooftop-garden-sculptural-shade-pergola-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "c46551504a46e136915a6d263b853583f42e4766109202a772b39960b1f2673a",
+    "bytes": 1553412,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-rooftop-garden-sculptural-shade-pergola-v1.webp",
+    "thumbnailSha256": "f59b28cb2d0b0a400353360fc52659bc6eaff34c34d92ac43bcf839db70d6840"
+  },
+  {
+    "id": "detail-recovered-sculpture-garden-corten-loop-v1",
+    "label": "Sculpture Garden Corten Loop",
+    "category": "Water & landmarks",
+    "description": "Public art and landmarks. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.200170159339905,
+      1.6000521779060364,
+      2.999924713076325
+    ],
+    "offset": [
+      -8.51750373840332e-05,
+      -0.00014395147445611656,
+      2.6017427444458008e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/sculpture-garden-corten-loop-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "b7dd97c42a0c1b25d07b44b8df0ccebee9d226c4b1d7a04e23956083c7ac1aef",
+    "bytes": 1150964,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-sculpture-garden-corten-loop-v1.webp",
+    "thumbnailSha256": "34e59395ed45c939751a1715846573b552de182b49c1d15c4230b7d0bbd67d21"
+  },
+  {
+    "id": "detail-recovered-sculpture-garden-stone-portal-v1",
+    "label": "Sculpture Garden Stone Portal",
+    "category": "Water & landmarks",
+    "description": "Public art and landmarks. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.5996264219284058,
+      1.4999037981033325,
+      3.2000582218170166
+    ],
+    "offset": [
+      4.416704177856445e-05,
+      -1.6689300537109375e-06,
+      -8.52346420288086e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/sculpture-garden-stone-portal-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "008e1fae5eb4fc294f2e926cc1be3bfa58ae90df5e949c5b76e2b147bbedee8f",
+    "bytes": 970316,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-sculpture-garden-stone-portal-v1.webp",
+    "thumbnailSha256": "38a9f93150d873c21d95961ae5816b3c5275b9f30062a7e8101782b6079d873a"
+  },
+  {
+    "id": "detail-recovered-amphitheater-lawn-carved-stone-seat-block-v1",
+    "label": "Amphitheater Lawn Carved Stone Seat Block",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.8125051486360206,
+      0.5926691985911975,
+      0.48796125066769874
+    ],
+    "offset": [
+      -5.551115123125783e-17,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/amphitheater-lawn-carved-stone-seat-block-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "f2dbc4bb585f67523e64c2f0155b2dfab110d1fe56b2536be0af84d14997c6ef",
+    "bytes": 1243184,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-amphitheater-lawn-carved-stone-seat-block-v1.webp",
+    "thumbnailSha256": "dcfbb374ca662f8c41879ce900d245298766d570e4b6b89f5c8fbbf93e655cb9"
+  },
+  {
+    "id": "detail-recovered-amsterdam-hofje-garden-timber-storage-bench-v1",
+    "label": "Amsterdam Hofje Garden Timber Storage Bench",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.0000752210617065,
+      0.7502248585224152,
+      0.9997261118446659
+    ],
+    "offset": [
+      8.064508438110352e-05,
+      2.915815002779709e-06,
+      0.0001096576452255249
+    ],
+    "url": "/park-kits/recovered-details-v1/amsterdam-hofje-garden-timber-storage-bench-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "e15a56c04b4922f9798c4c145c075252b4a8f63914eb8ba5561884411bbf9f2e",
+    "bytes": 1468724,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-amsterdam-hofje-garden-timber-storage-bench-v1.webp",
+    "thumbnailSha256": "5caa1a429c89c5451ef103cd189d8c1d312a55b31ad26093c6d08b4bcd456417"
+  },
+  {
+    "id": "detail-recovered-beer-garden-communal-trestle-set-v1",
+    "label": "Beer Garden Communal Trestle Set",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.7990150451660156,
+      1.8000314831733704,
+      0.8512245947495103
+    ],
+    "offset": [
+      -0.0006690025329589844,
+      0.0011212164536118507,
+      6.756186485290527e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/beer-garden-communal-trestle-set-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "166614db164e688b5c1487c8f151b72dc9d57dbf899ad6bed503c6e1f0abdf34",
+    "bytes": 1554160,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-beer-garden-communal-trestle-set-v1.webp",
+    "thumbnailSha256": "2cd201c960a1f132a8808bff0168cb4402e86bb3343bab52b3cacbab8d26832e"
+  },
+  {
+    "id": "detail-recovered-halifax-public-gardens-victorian-park-bench-v1",
+    "label": "Halifax Public Gardens Victorian Park Bench",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.9993504881858826,
+      0.8003648817539215,
+      1.0498473579064012
+    ],
+    "offset": [
+      0.0005798637866973877,
+      -0.0004457300528883934,
+      -0.0007363408803939819
+    ],
+    "url": "/park-kits/recovered-details-v1/halifax-public-gardens-victorian-park-bench-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "ca61a755caaa6f05bd9b697aaecfecfbb3119e53f40399494a105536aa19635e",
+    "bytes": 1766800,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-halifax-public-gardens-victorian-park-bench-v1.webp",
+    "thumbnailSha256": "c737e3234c83ca755e34b85e7641ee1e907965fee70cb8a9b8770df1d5b036df"
+  },
+  {
+    "id": "detail-recovered-linear-park-greenway-railroad-tie-bench-v1",
+    "label": "Linear Park Greenway Railroad Tie Bench",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.599909543991089,
+      0.7501007318496704,
+      0.7998062200931599
+    ],
+    "offset": [
+      -4.5180320739746094e-05,
+      -0.00017263217887375504,
+      -3.102421760559082e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/linear-park-greenway-railroad-tie-bench-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "061e3dbf17c69c90183439d0b0f73ded86ed009b52b76e71e48d533156d605b3",
+    "bytes": 1275872,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-linear-park-greenway-railroad-tie-bench-v1.webp",
+    "thumbnailSha256": "ed629910033b1dce3ecc6aff26424a2d64ece85310ad96ab6ab90a213ef48535"
+  },
+  {
+    "id": "detail-recovered-memorial-garden-antique-remembrance-bench-v1",
+    "label": "Memorial Garden Antique Remembrance Bench",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.0042914152145386,
+      0.8011938631534576,
+      1.0558667466975749
+    ],
+    "offset": [
+      0.0017941594123840332,
+      0.004273562226444483,
+      -0.00026498734951019287
+    ],
+    "url": "/park-kits/recovered-details-v1/memorial-garden-antique-remembrance-bench-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "f52dfb8079d35be2d0fc3a5ec88bb241f0c554289965f645a7442ed35c496f8b",
+    "bytes": 1865776,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-memorial-garden-antique-remembrance-bench-v1.webp",
+    "thumbnailSha256": "c2d12cc3e6a9b84b8b5645f2e13968290a6289d44609f9a1727567c859f0d5eb"
+  },
+  {
+    "id": "detail-recovered-memorial-woodland-bench-v1",
+    "label": "Memorial Woodland Bench",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.400083303451538,
+      0.7996851205825806,
+      0.9991094362922013
+    ],
+    "offset": [
+      4.1604042053222656e-05,
+      -0.0008117067627608776,
+      3.9637088775634766e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/memorial-woodland-bench-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "3371c1b2ad51beae464939f4c5a9ae58888d0c0fa337b07b937f0bedd39f61d1",
+    "bytes": 1616020,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-memorial-woodland-bench-v1.webp",
+    "thumbnailSha256": "fd665db970220ec616a1bf8ee85e4465a8b8449a8c73cb8cd24df971aa0d38c2"
+  },
+  {
+    "id": "detail-recovered-neighborhood-park-limestone-seat-wall-v1",
+    "label": "Neighborhood Park Limestone Seat Wall",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.706048852736116,
+      0.5639873120032111,
+      0.46730601436935104
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/neighborhood-park-limestone-seat-wall-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "864c612e79c5c3eca7e42c0e86bf3bd8332e12b556a2c85366c78c6e2c6f3918",
+    "bytes": 1779016,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-neighborhood-park-limestone-seat-wall-v1.webp",
+    "thumbnailSha256": "df2439e3cd242fb01371625a39274771b1db44c6629210c9bc29cc11db04e84f"
+  },
+  {
+    "id": "detail-recovered-newyork-community-garden-mosaic-garden-bench-v1",
+    "label": "Newyork Community Garden Mosaic Garden Bench",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.9090405488715634,
+      0.6941850398376037,
+      0.8678476799335648
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -2.7755575615628914e-17
+    ],
+    "url": "/park-kits/recovered-details-v1/newyork-community-garden-mosaic-garden-bench-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "07835a804b67bbb92c3823ca3f8158182eeec5a48eda3053eb09f54e6f74228a",
+    "bytes": 1260076,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-newyork-community-garden-mosaic-garden-bench-v1.webp",
+    "thumbnailSha256": "6217f7e85259bba5c40d27f7cf4b6ac96abc48538170400428890a91d21988e2"
+  },
+  {
+    "id": "detail-recovered-parisian-jardin-wrought-iron-chair-pair-v1",
+    "label": "Parisian Jardin Wrought Iron Chair Pair",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.8018572926521301,
+      0.8013757169246674,
+      0.9508449358399957
+    ],
+    "offset": [
+      -0.0009286105632781982,
+      0.001301042502745986,
+      -0.0005656331777572632
+    ],
+    "url": "/park-kits/recovered-details-v1/parisian-jardin-wrought-iron-chair-pair-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "c2a805dd4731fab2d87ed984026212da826d594beaf81de40c1970b75b654f34",
+    "bytes": 1844552,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-parisian-jardin-wrought-iron-chair-pair-v1.webp",
+    "thumbnailSha256": "532cec5c6d9c2fb7907053deb679df23c0bfdb1b573044bdb36d26a02e10e1bc"
+  },
+  {
+    "id": "detail-recovered-pond-lake-carved-lakeside-bench-v1",
+    "label": "Pond Lake Carved Lakeside Bench",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.2922543017913628,
+      0.42155487049832063,
+      0.505581337510589
+    ],
+    "offset": [
+      5.551115123125783e-17,
+      -0.0,
+      -1.3877787807814457e-17
+    ],
+    "url": "/park-kits/recovered-details-v1/pond-lake-carved-lakeside-bench-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "70579240a32a42c0c2bbb514189ec3fa48162d61560c5890a10fb28a7ac309e9",
+    "bytes": 1286616,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-pond-lake-carved-lakeside-bench-v1.webp",
+    "thumbnailSha256": "4e6a65cd49742bdabedfc0f22f09935e3c73637628a59179f138ae4291e25c85"
+  },
+  {
+    "id": "detail-recovered-regional-park-sculptural-concrete-lounger-v1",
+    "label": "Regional Park Sculptural Concrete Lounger",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.2501027584075928,
+      0.7500090897083282,
+      0.7799490772449644
+    ],
+    "offset": [
+      -5.137920379638672e-05,
+      -8.546483877580613e-05,
+      1.862645149230957e-06
+    ],
+    "url": "/park-kits/recovered-details-v1/regional-park-sculptural-concrete-lounger-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "1fe0c30e6270a8f2a3993365b0f3870fe1c26da52e3c3830099c8d9b123181d3",
+    "bytes": 1058072,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-regional-park-sculptural-concrete-lounger-v1.webp",
+    "thumbnailSha256": "2f2faea984b9f441547a82d12cfebbeb29b5949e96dcbd2cdcef6433e3e1f126"
+  },
+  {
+    "id": "detail-recovered-regional-park-volcanic-rock-seat-cluster-v1",
+    "label": "Regional Park Volcanic Rock Seat Cluster",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.0,
+      1.9990660548210144,
+      1.0488455493468791
+    ],
+    "offset": [
+      -0.0,
+      -0.00157020497135818,
+      0.00046697258949279785
+    ],
+    "url": "/park-kits/recovered-details-v1/regional-park-volcanic-rock-seat-cluster-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "0c690af48800d0d1a7108e6a782f50662da1d9767eb304d22430cb4c0dbc72ba",
+    "bytes": 1908848,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-regional-park-volcanic-rock-seat-cluster-v1.webp",
+    "thumbnailSha256": "baacacaf964a316fadf58a2e1cfbd9fa1c0f47e6327b9964f14af6de52902b08"
+  },
+  {
+    "id": "detail-recovered-riparian-buffer-gabion-seat-module-v1",
+    "label": "Riparian Buffer Gabion Seat Module",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.7222326588876853,
+      0.5514782863673404,
+      0.45952956326846706
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/riparian-buffer-gabion-seat-module-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "4a79c637f8c0a8e4a69df1f77d8f56302dce881338f8b1decc919691116ab98d",
+    "bytes": 2399964,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-riparian-buffer-gabion-seat-module-v1.webp",
+    "thumbnailSha256": "ae2137338ca0ae31720d867fa6b9ead1cf491670a4a19927792209ce4453d097"
+  },
+  {
+    "id": "detail-recovered-riparian-buffer-reclaimed-trail-bench-v1",
+    "label": "Riparian Buffer Reclaimed Trail Bench",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.8400296577870794,
+      0.627629163294257,
+      0.7529011183084798
+    ],
+    "offset": [
+      -5.551115123125783e-17,
+      -0.0,
+      -2.7755575615628914e-17
+    ],
+    "url": "/park-kits/recovered-details-v1/riparian-buffer-reclaimed-trail-bench-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "c8bee642a46ac6744ed8c3aa474222f254f476714f2cbe381b25a01511d5385a",
+    "bytes": 1575312,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-riparian-buffer-reclaimed-trail-bench-v1.webp",
+    "thumbnailSha256": "c06bd299d0c1defc8f1170ca9f3d0294210350e990548594fbfb00f6f7988e94"
+  },
+  {
+    "id": "detail-recovered-riverfront-park-beach-parasol-deckchair-ensemble-v1",
+    "label": "Riverfront Park Beach Parasol Deckchair Ensemble",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.799811363220215,
+      2.60184109210968,
+      2.5019662980921566
+    ],
+    "offset": [
+      -9.429454803466797e-05,
+      0.0031381254084408283,
+      -0.0009205937385559082
+    ],
+    "url": "/park-kits/recovered-details-v1/riverfront-park-beach-parasol-deckchair-ensemble-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "d5b2713fba3de559c5d785b2f287b249043d883e4a299af737d8698a93feaf23",
+    "bytes": 1840836,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-riverfront-park-beach-parasol-deckchair-ensemble-v1.webp",
+    "thumbnailSha256": "0603594023a2070613b6605c639529e84596d278fbfd7a8bd4287412b0c46df4"
+  },
+  {
+    "id": "detail-recovered-street-plaza-parklet-bench-planter-module-v1",
+    "label": "Street Plaza Parklet Bench Planter Module",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.403589963912964,
+      1.2039708495140076,
+      0.9057406582869589
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/street-plaza-parklet-bench-planter-module-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "37089149a482eeb6f55dff27f6d6c42696d7f5ebb798b9b69a2e2c28c1d91b34",
+    "bytes": 1978348,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-street-plaza-parklet-bench-planter-module-v1.webp",
+    "thumbnailSha256": "35c480612bb63f46e333d8f49ab82f8c5ff25dc2bd5d15fbff307663cb96ff99"
+  },
+  {
+    "id": "detail-recovered-urban-pocket-park-ornamental-iron-loveseat-v1",
+    "label": "Urban Pocket Park Ornamental Iron Loveseat",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.6995024681091309,
+      0.7203318178653717,
+      0.9504423219477758
+    ],
+    "offset": [
+      -0.0006142854690551758,
+      -0.00011914188507944345,
+      -0.00016589462757110596
+    ],
+    "url": "/park-kits/recovered-details-v1/urban-pocket-park-ornamental-iron-loveseat-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "da62fd0a3b1de175364476f64aaf19a340192c74b925401d2d8026f604d72593",
+    "bytes": 1632456,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-urban-pocket-park-ornamental-iron-loveseat-v1.webp",
+    "thumbnailSha256": "baaf9d89725490d32e58e16bc79b20a065c97b219efaef0cdf664150109d7394"
+  },
+  {
+    "id": "detail-recovered-vancouver-beach-driftwood-seat-log-v1",
+    "label": "Vancouver Beach Driftwood Seat Log",
+    "category": "Seating",
+    "description": "Seating. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.81943671570747,
+      0.7421538268091445,
+      0.5935753244219576
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/vancouver-beach-driftwood-seat-log-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "edf8e467f323a07d0deadba97d59bea465e32c77b8d4c78b22fddfb4d65ff5ba",
+    "bytes": 1286188,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-vancouver-beach-driftwood-seat-log-v1.webp",
+    "thumbnailSha256": "0df197314410617a874641e048718da13c86200ab2ee5168464804bb7146bb0d"
+  },
+  {
+    "id": "detail-recovered-amphitheater-lawn-timber-sound-reflector-v1",
+    "label": "Amphitheater Lawn Timber Sound Reflector",
+    "category": "Shelters & markets",
+    "description": "Shelters and structures. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.9988914728164673,
+      1.2006161212921143,
+      2.700172535391175
+    ],
+    "offset": [
+      -0.0007925629615783691,
+      0.0001724877074593678,
+      5.5670738220214844e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/amphitheater-lawn-timber-sound-reflector-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "bf6c650bc4550ccfb9fc4befb81a01744faf1058fc5d420dc01ed5b76a7e08d7",
+    "bytes": 1629272,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-amphitheater-lawn-timber-sound-reflector-v1.webp",
+    "thumbnailSha256": "b79d6ab32d5f8c8274b21650b883bdcf1086ed1783f6ae5a48059210f4e4c39d"
+  },
+  {
+    "id": "detail-recovered-community-park-thatched-shade-umbrella-v1",
+    "label": "Community Park Thatched Shade Umbrella",
+    "category": "Shelters & markets",
+    "description": "Shelters and structures. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.4105457067489624,
+      3.4108707904815674,
+      3.001108628581278
+    ],
+    "offset": [
+      -0.0038712620735168457,
+      0.001108628581278026,
+      -0.005435347557067871
+    ],
+    "url": "/park-kits/recovered-details-v1/community-park-thatched-shade-umbrella-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "fb99465bb29fe8f1c2b921abfc6d7656a5f957d57c642be6ea51d18e33540af5",
+    "bytes": 2068128,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-community-park-thatched-shade-umbrella-v1.webp",
+    "thumbnailSha256": "a77388155e0eb902ed6de107193b1c71caa2585b6ef735bb649a1b33b14ab327"
+  },
+  {
+    "id": "detail-recovered-japanese-garden-arched-timber-footbridge-v1",
+    "label": "Japanese Garden Arched Timber Footbridge",
+    "category": "Shelters & markets",
+    "description": "Shelters and structures. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.202998399734497,
+      1.6001781821250916,
+      1.3468581776833162
+    ],
+    "offset": [
+      -0.0016158819198608398,
+      -0.0015700716758146882,
+      8.913874626159668e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/japanese-garden-arched-timber-footbridge-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "a6aff483b05cb1c0689c090d2f7ee501908d88e85eb9e65a7e9fd03e8a28cff0",
+    "bytes": 1677712,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-japanese-garden-arched-timber-footbridge-v1.webp",
+    "thumbnailSha256": "735b7adb6db8549304d706f100bd404e31603746cf02833f80a7f07a5b259845"
+  },
+  {
+    "id": "detail-recovered-nature-preserve-prairie-nesting-tower-v1",
+    "label": "Nature Preserve Prairie Nesting Tower",
+    "category": "Shelters & markets",
+    "description": "Shelters and structures. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.3001456260681152,
+      1.3014139533042908,
+      3.7974882614798844
+    ],
+    "offset": [
+      0.0006376504898071289,
+      -0.0008480059914290905,
+      0.00027063488960266113
+    ],
+    "url": "/park-kits/recovered-details-v1/nature-preserve-prairie-nesting-tower-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "8803920c3ecc7f058cecd01b9140bd5746ca0b17d6b75f9be6f21de2e0658f0d",
+    "bytes": 1779200,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-nature-preserve-prairie-nesting-tower-v1.webp",
+    "thumbnailSha256": "52367562336122a382cbb62d592d4b13b89a81eb6f6f6f613bd650909cb95d08"
+  },
+  {
+    "id": "detail-recovered-neighborhood-park-romantic-stone-footbridge-v1",
+    "label": "Neighborhood Park Romantic Stone Footbridge",
+    "category": "Shelters & markets",
+    "description": "Shelters and structures. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.408474922180176,
+      1.598277747631073,
+      1.149174013233278
+    ],
+    "offset": [
+      0.004003286361694336,
+      0.00014642725000157952,
+      -0.00012060999870300293
+    ],
+    "url": "/park-kits/recovered-details-v1/neighborhood-park-romantic-stone-footbridge-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "afb9f1b85713f5751acfa9b267b0c2bd8d0a98d8b8c30442d4bc0588e6b37fc4",
+    "bytes": 1846204,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-neighborhood-park-romantic-stone-footbridge-v1.webp",
+    "thumbnailSha256": "6278dec99341bb2bd56b69833b6a505b6ca1f8ab7e25c5c13c9e7494e17c60d8"
+  },
+  {
+    "id": "detail-recovered-neighborhood-park-woven-palm-shade-v1",
+    "label": "Neighborhood Park Woven Palm Shade",
+    "category": "Shelters & markets",
+    "description": "Shelters and structures. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.5999999046325684,
+      3.200000286102295,
+      2.900031513447175
+    ],
+    "offset": [
+      -0.0,
+      -0.0001600320392753929,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/neighborhood-park-woven-palm-shade-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "39b87db8e34333b07bd3bd407c94d4c0f7377c3af4b7fc41944a899229d8156f",
+    "bytes": 1754632,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-neighborhood-park-woven-palm-shade-v1.webp",
+    "thumbnailSha256": "9d9e79092e0e36b36f360597a16e0ea01a12e1ecb9c16debf97ec9de46c35603"
+  },
+  {
+    "id": "detail-recovered-promenade-boardwalk-thatched-cabana-daybed-v1",
+    "label": "Promenade Boardwalk Thatched Cabana Daybed",
+    "category": "Shelters & markets",
+    "description": "Shelters and structures. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.2071346044540405,
+      2.3999998569488525,
+      2.7152215307578444
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/promenade-boardwalk-thatched-cabana-daybed-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "6f4eb074466cb517c79c84d50ad45ba6e0add271ebddaa638e274ae7c0bde596",
+    "bytes": 2145612,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-promenade-boardwalk-thatched-cabana-daybed-v1.webp",
+    "thumbnailSha256": "e929faf1929a34f9d241d9b9de59448554c86c8256899529daaf53a23f4dc012"
+  },
+  {
+    "id": "detail-recovered-tidal-marsh-boardwalk-timber-birdwatch-tower-v1",
+    "label": "Tidal Marsh Boardwalk Timber Birdwatch Tower",
+    "category": "Shelters & markets",
+    "description": "Shelters and structures. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.7999831438064575,
+      2.799873113632202,
+      5.204674671404064
+    ],
+    "offset": [
+      -8.404254913330078e-06,
+      0.004487465135753155,
+      6.341934204101562e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/tidal-marsh-boardwalk-timber-birdwatch-tower-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "ade81843c82998e7dbb85f2140c8e22c5449dfb8e7655b1623a231087c785508",
+    "bytes": 1898240,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-tidal-marsh-boardwalk-timber-birdwatch-tower-v1.webp",
+    "thumbnailSha256": "a0c99e1026c51d439b73405b9f8bfe6ea0ea41674bacc6cf674227580f0a7445"
+  },
+  {
+    "id": "detail-recovered-urban-beach-shade-sail-canopy-v1",
+    "label": "Urban Beach Shade Sail Canopy",
+    "category": "Shelters & markets",
+    "description": "Shelters and structures. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.20141077041626,
+      3.4026100635528564,
+      3.099745273590088
+    ],
+    "offset": [
+      0.00031113624572753906,
+      -0.0,
+      -0.00020837783813476562
+    ],
+    "url": "/park-kits/recovered-details-v1/urban-beach-shade-sail-canopy-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "8f0340998b0e9d43a177f8cd98e914456c63071be01642b9a3995939b4c96312",
+    "bytes": 1595648,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-urban-beach-shade-sail-canopy-v1.webp",
+    "thumbnailSha256": "9fe932aa517399e0513c0bd0ec58e1649475bf904139cac7bbd15e24fdd8b337"
+  },
+  {
+    "id": "detail-recovered-urban-forest-reclaimed-habitat-tower-v1",
+    "label": "Urban Forest Reclaimed Habitat Tower",
+    "category": "Shelters & markets",
+    "description": "Shelters and structures. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.4037636518478394,
+      0.8003650009632111,
+      2.6015027185349027
+    ],
+    "offset": [
+      0.0017321109771728516,
+      -0.0001310686202486977,
+      0.0003996342420578003
+    ],
+    "url": "/park-kits/recovered-details-v1/urban-forest-reclaimed-habitat-tower-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "ae178853978bb3a30d452c4c80ee9b0b94f97176bb5be0867917d0c98faa2be8",
+    "bytes": 1795216,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-urban-forest-reclaimed-habitat-tower-v1.webp",
+    "thumbnailSha256": "5c9f0f5c5cc9d0fa764262437052fdb841db9c982f1ba585b247ecdca87454a0"
+  },
+  {
+    "id": "detail-recovered-amphitheater-lawn-stage-lantern-tower-v1",
+    "label": "Amphitheater Lawn Stage Lantern Tower",
+    "category": "Street furniture",
+    "description": "Street and park details. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.2072516083717346,
+      1.2173490524291992,
+      3.5100257750600576
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/amphitheater-lawn-stage-lantern-tower-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "edddfe04a0244b7b2d6689a4e91cc7065e44c3ebe0186d29ad90d5d08d03b1d8",
+    "bytes": 2226376,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-amphitheater-lawn-stage-lantern-tower-v1.webp",
+    "thumbnailSha256": "56f7b9882995eebed8768ab7924980dbbb79fd9359aeab979bdb5fecc9e777e0"
+  },
+  {
+    "id": "detail-recovered-amsterdam-hofje-garden-wrought-iron-courtyard-gate-v1",
+    "label": "Amsterdam Hofje Garden Wrought Iron Courtyard Gate",
+    "category": "Street furniture",
+    "description": "Street and park details. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.5994843244552612,
+      0.5014427304267883,
+      2.401505367248319
+    ],
+    "offset": [
+      0.00025790929794311523,
+      0.0013336105039343238,
+      -0.0004512667655944824
+    ],
+    "url": "/park-kits/recovered-details-v1/amsterdam-hofje-garden-wrought-iron-courtyard-gate-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "750b6ee42fdec9f0ddfc2a039d42a48207b041940cb447cc822c7d2437bc6cc9",
+    "bytes": 1545568,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-amsterdam-hofje-garden-wrought-iron-courtyard-gate-v1.webp",
+    "thumbnailSha256": "78998d1613bcd1b551db050af9f78b822a9ba3e1ad93e65e469f911ea7be9930"
+  },
+  {
+    "id": "detail-recovered-botanical-garden-weathered-cottage-gate-v1",
+    "label": "Botanical Garden Weathered Cottage Gate",
+    "category": "Street furniture",
+    "description": "Street and park details. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.600805401802063,
+      0.6493629217147827,
+      2.251469612121582
+    ],
+    "offset": [
+      -0.00010341405868530273,
+      -0.0,
+      0.00031644105911254883
+    ],
+    "url": "/park-kits/recovered-details-v1/botanical-garden-weathered-cottage-gate-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "2510d823bb651c6db35cbc660952eed9a788f7a2b68a341ea46f0905c13a58d2",
+    "bytes": 1786976,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-botanical-garden-weathered-cottage-gate-v1.webp",
+    "thumbnailSha256": "1b8c8f8f4872c0eee60b6d0f6af7fa1eb5f67ca1576c90b38fb316e587c10fc8"
+  },
+  {
+    "id": "detail-recovered-community-garden-seed-library-cabinet-v1",
+    "label": "Community Garden Seed Library Cabinet",
+    "category": "Street furniture",
+    "description": "Street and park details. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.0998344421386719,
+      0.5504288971424103,
+      1.8002830226323567
+    ],
+    "offset": [
+      -0.00035858154296875,
+      -0.0008032839396037161,
+      0.00017844140529632568
+    ],
+    "url": "/park-kits/recovered-details-v1/community-garden-seed-library-cabinet-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "a1d63fde6ece33ebe89f32b820f1fddf1a9268b6c1e25556291e114fd0878bd5",
+    "bytes": 1689756,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-community-garden-seed-library-cabinet-v1.webp",
+    "thumbnailSha256": "5f9f5a4c359e7cc625a7f39af14d0f04e30d936b5123f352f0ee1ea137ac61be"
+  },
+  {
+    "id": "detail-recovered-constructed-wetland-eco-park-sluice-control-gate-v1",
+    "label": "Constructed Wetland Eco Park Sluice Control Gate",
+    "category": "Street furniture",
+    "description": "Street and park details. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.198163866996765,
+      1.098663568496704,
+      2.001709873205982
+    ],
+    "offset": [
+      -0.0007529854774475098,
+      0.0015551395481452346,
+      -0.0001582503318786621
+    ],
+    "url": "/park-kits/recovered-details-v1/constructed-wetland-eco-park-sluice-control-gate-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "fb3ebd170eb98a9f6884256094ab06bd36700074d3f4e1fff402b9ff03192de1",
+    "bytes": 1804956,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-constructed-wetland-eco-park-sluice-control-gate-v1.webp",
+    "thumbnailSha256": "8dd2b991a714ac5b7583944a0a404c2d78f3da2494fa03754b6cea06244169dc"
+  },
+  {
+    "id": "detail-recovered-promenade-boardwalk-maritime-bollard-rope-v1",
+    "label": "Promenade Boardwalk Maritime Bollard Rope",
+    "category": "Street furniture",
+    "description": "Street and park details. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.8000800609588623,
+      0.6998012661933899,
+      1.050027711331495
+    ],
+    "offset": [
+      -9.167194366455078e-05,
+      -0.0002157855633413419,
+      0.0001437664031982422
+    ],
+    "url": "/park-kits/recovered-details-v1/promenade-boardwalk-maritime-bollard-rope-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "4a79a123b13f53d7c30bb05c63a20c463180b311270f9c2839d5c273409c5055",
+    "bytes": 1666604,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-promenade-boardwalk-maritime-bollard-rope-v1.webp",
+    "thumbnailSha256": "084bd94c620ec3b23c562d03cddf717ca7fffb5800464bb898f372f39798a27d"
+  },
+  {
+    "id": "detail-recovered-street-plaza-parklet-bike-corral-planter-v1",
+    "label": "Street Plaza Parklet Bike Corral Planter",
+    "category": "Street furniture",
+    "description": "Street and park details. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.1993457078933716,
+      0.9999987781047821,
+      0.9001161199557828
+    ],
+    "offset": [
+      -0.00032716989517211914,
+      8.425531268585473e-05,
+      -0.00014705955982208252
+    ],
+    "url": "/park-kits/recovered-details-v1/street-plaza-parklet-bike-corral-planter-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "c18a21e0034eb434cf04bcb7f5b752bb1f1451e8e242ec685a72cd256b20c8c6",
+    "bytes": 1514540,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-street-plaza-parklet-bike-corral-planter-v1.webp",
+    "thumbnailSha256": "3b3e89f09fdfc1ae6c65b19ac28f9d22dcac5364a12ab5f6612e8dff025efc0e"
+  },
+  {
+    "id": "detail-recovered-wetland-rain-garden-wildlife-interpretive-sign-v1",
+    "label": "Wetland Rain Garden Wildlife Interpretive Sign",
+    "category": "Street furniture",
+    "description": "Street and park details. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.499915361404419,
+      0.500457152724266,
+      1.4496371314162388
+    ],
+    "offset": [
+      -0.00010037422180175781,
+      -0.0004623368149623275,
+      -0.000308014452457428
+    ],
+    "url": "/park-kits/recovered-details-v1/wetland-rain-garden-wildlife-interpretive-sign-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "e8327b3f018b75d81684250e35ea817838d2d4d8d2699ca163b3db8fde5fc12e",
+    "bytes": 1552112,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-wetland-rain-garden-wildlife-interpretive-sign-v1.webp",
+    "thumbnailSha256": "91aebed1e881901c01deab755f6024b67d96651c97540ac42dedcca77416ff64"
+  },
+  {
+    "id": "detail-recovered-amphitheater-lawn-portable-acoustic-shell-v1",
+    "label": "Amphitheater Lawn Portable Acoustic Shell",
+    "category": "Seating",
+    "description": "Tables. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.199852466583252,
+      2.400053024291992,
+      3.201126486674184
+    ],
+    "offset": [
+      7.367134094238281e-05,
+      0.00010576905333437026,
+      -2.658367156982422e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/amphitheater-lawn-portable-acoustic-shell-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "78fe6c67461f29c4805a413c5ecc480015689dc1feb863cc55bc6e2c7e04829a",
+    "bytes": 1444480,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-amphitheater-lawn-portable-acoustic-shell-v1.webp",
+    "thumbnailSha256": "a8e03302d1dbfd6b130d8740470e2e7abe204a960aafb6793e574d056a215a7e"
+  },
+  {
+    "id": "detail-recovered-beer-garden-barrel-standing-table-v1",
+    "label": "Beer Garden Barrel Standing Table",
+    "category": "Seating",
+    "description": "Tables. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      0.9998362362384796,
+      1.0,
+      1.1502544625545852
+    ],
+    "offset": [
+      -8.188188076019287e-05,
+      0.0002563937450759113,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/beer-garden-barrel-standing-table-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "078584c5616fbf7adf985186dbea2bb7e35d71385e3a214dcaeacc26af2c476a",
+    "bytes": 1655064,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-beer-garden-barrel-standing-table-v1.webp",
+    "thumbnailSha256": "12ae7bfad0a91ba52c0e99ac6a4a6cb48ff49f7aa092693df52fd5c5f9f83202"
+  },
+  {
+    "id": "detail-recovered-community-garden-enhanced-communal-harvest-table-v1",
+    "label": "Community Garden Enhanced Communal Harvest Table",
+    "category": "Seating",
+    "description": "Tables. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.7979025840759277,
+      1.0007945597171783,
+      0.8995207545522135
+    ],
+    "offset": [
+      -5.555152893066406e-05,
+      -0.00047922160592861474,
+      -0.0005370229482650757
+    ],
+    "url": "/park-kits/recovered-details-v1/community-garden-enhanced-communal-harvest-table-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "a9b25861186e2d804adcbb4caa2b0371938c55e3703f7f0f410760c9e4e4986e",
+    "bytes": 1786464,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-community-garden-enhanced-communal-harvest-table-v1.webp",
+    "thumbnailSha256": "b7d4260d642437068867fec31491cea8a6a5ef43a34b1d08b28bf21c135a0320"
+  },
+  {
+    "id": "detail-recovered-constructed-wetland-eco-park-tactile-interpretive-table-v1",
+    "label": "Constructed Wetland Eco Park Tactile Interpretive Table",
+    "category": "Seating",
+    "description": "Tables. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.7999998331069946,
+      1.000795841217041,
+      1.0503977019834565
+    ],
+    "offset": [
+      -0.0,
+      0.000116654162411578,
+      -0.0003979206085205078
+    ],
+    "url": "/park-kits/recovered-details-v1/constructed-wetland-eco-park-tactile-interpretive-table-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "a0feb13b84c79e41d4a882ec640631d6793b79b17c0d0c29017e5fc34647fed8",
+    "bytes": 1678212,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-constructed-wetland-eco-park-tactile-interpretive-table-v1.webp",
+    "thumbnailSha256": "faaabef4ae29f901824aca4ed2f3331bd9a13a77f2d373c351fd1c9b0f411196"
+  },
+  {
+    "id": "detail-recovered-nature-play-timber-water-table-v1",
+    "label": "Nature Play Timber Water Table",
+    "category": "Seating",
+    "description": "Tables. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.199581503868103,
+      1.0,
+      0.8499179766913585
+    ],
+    "offset": [
+      2.086162567138672e-06,
+      5.1109625928802416e-05,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/nature-play-timber-water-table-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "cf4d677bbcac2acc7f51b4a0f047931ecb3889a2a853309b2efe05a3914d835d",
+    "bytes": 1569872,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-nature-play-timber-water-table-v1.webp",
+    "thumbnailSha256": "060ce12e62f1186c83cea88264caf6c199693f2da10fa277775acd61e48afc9e"
+  },
+  {
+    "id": "detail-recovered-amsterdam-hofje-garden-communal-well-cover-v1",
+    "label": "Amsterdam Hofje Garden Communal Well Cover",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.799750030040741,
+      1.7996215224266052,
+      1.5048611131496727
+    ],
+    "offset": [
+      -0.0004264414310455322,
+      0.004713055212050676,
+      -1.7851591110229492e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/amsterdam-hofje-garden-communal-well-cover-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "356be9f72bd8e3f5cbd3aa0db5d8ba82019eb89f6130e3fc7d553ab609e05758",
+    "bytes": 1933892,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-amsterdam-hofje-garden-communal-well-cover-v1.webp",
+    "thumbnailSha256": "b7993fd6df25dee7b6260efb1b2b9eb509d89a9edb27ba369512fda9cf3ce7e7"
+  },
+  {
+    "id": "detail-recovered-amsterdam-hofje-garden-sandstone-water-pump-v1",
+    "label": "Amsterdam Hofje Garden Sandstone Water Pump",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.0998056530952454,
+      0.8494440019130707,
+      1.5493746806751005
+    ],
+    "offset": [
+      0.0002237856388092041,
+      -0.0005761574138887227,
+      6.224215030670166e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/amsterdam-hofje-garden-sandstone-water-pump-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "25bb67ea243193eedbedb3702e9c7f26718d93c2eff8a3ba04632b0074a51eaf",
+    "bytes": 1524964,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-amsterdam-hofje-garden-sandstone-water-pump-v1.webp",
+    "thumbnailSha256": "e6540c4af2f63217dcb0b5960694cd693341625ed3a38ea926b0b2bb332bf57f"
+  },
+  {
+    "id": "detail-recovered-community-garden-garden-wash-station-v1",
+    "label": "Community Garden Garden Wash Station",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.1998103857040405,
+      0.7999311089515686,
+      1.250787615776062
+    ],
+    "offset": [
+      -0.00027364492416381836,
+      -0.0,
+      3.4421682357788086e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/community-garden-garden-wash-station-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "01cd628de4b02f378f3840a8b608fb8420ed7b9ce5a60fb40faa705b94f250d1",
+    "bytes": 1643872,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-community-garden-garden-wash-station-v1.webp",
+    "thumbnailSha256": "9ec8eda385350e90726dc901506c0cdac7b06d97f40b25628df82611ed76a16a"
+  },
+  {
+    "id": "detail-recovered-dog-park-dog-drinking-fountain-v1",
+    "label": "Dog Park Dog Drinking Fountain",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      0.9994989037513733,
+      0.8000000715255737,
+      1.1497030710970648
+    ],
+    "offset": [
+      0.0002505481243133545,
+      7.19783656677464e-06,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/dog-park-dog-drinking-fountain-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "885c56dbf37c4f37c6b1eb5c40181d48f8d463292357cfcc3542c5594f29339d",
+    "bytes": 1504272,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-dog-park-dog-drinking-fountain-v1.webp",
+    "thumbnailSha256": "ba72d7b31e9aa4b206ed6ffc3d46ddd4432e67dfca66bc83e98d16c04334f8e7"
+  },
+  {
+    "id": "detail-recovered-dog-park-urban-dog-wash-v1",
+    "label": "Dog Park Urban Dog Wash",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.8001742362976074,
+      1.0004467368125916,
+      1.5503375299158506
+    ],
+    "offset": [
+      -8.71419906616211e-05,
+      0.00033757759956642985,
+      -1.659989356994629e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/dog-park-urban-dog-wash-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "fd0c183d9df5ab8afdefecd97587f24326014e50d332833fa80e0833e613c36b",
+    "bytes": 1778356,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-dog-park-urban-dog-wash-v1.webp",
+    "thumbnailSha256": "9b957d9a5768cb7eb4acdb49555a75bfbd4e96c5af09741693e5755df1c29415"
+  },
+  {
+    "id": "detail-recovered-fountain-water-feature-bronze-lotus-bowl-v1",
+    "label": "Fountain Water Feature Bronze Lotus Bowl",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.001053214073181,
+      2.0007115602493286,
+      1.0020343237556517
+    ],
+    "offset": [
+      0.000432431697845459,
+      0.0011193924583494663,
+      -0.00035578012466430664
+    ],
+    "url": "/park-kits/recovered-details-v1/fountain-water-feature-bronze-lotus-bowl-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "6819e472a7abafb263b44b7681b0b6ec5ff170cc325166f3e0b54e9e5b7ca55a",
+    "bytes": 1642380,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-fountain-water-feature-bronze-lotus-bowl-v1.webp",
+    "thumbnailSha256": "63ae349a76238290e02b7b54cd57c179af5a1ce3ed6bb0ee38348bdd733bd59d"
+  },
+  {
+    "id": "detail-recovered-fountain-water-feature-carved-wall-spout-v1",
+    "label": "Fountain Water Feature Carved Wall Spout",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.3998936414718628,
+      0.7996058166027069,
+      1.8009973495500162
+    ],
+    "offset": [
+      5.316734313964844e-05,
+      0.0010077684419229627,
+      0.00022234022617340088
+    ],
+    "url": "/park-kits/recovered-details-v1/fountain-water-feature-carved-wall-spout-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "5c6dc217943f3958d7ca589a3fce75f818724c16658692e06a210c3b129d0e66",
+    "bytes": 1605916,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-fountain-water-feature-carved-wall-spout-v1.webp",
+    "thumbnailSha256": "842713f543c0143f5cb5e759921f8f1645ff07bfa59ca3c10bfadf0c4b339fe6"
+  },
+  {
+    "id": "detail-recovered-fountain-water-feature-corten-cascade-vessels-v1",
+    "label": "Fountain Water Feature Corten Cascade Vessels",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.1998211145401,
+      1.4997584223747253,
+      2.0000950678822846
+    ],
+    "offset": [
+      -0.0001824498176574707,
+      -1.7942524209502153e-05,
+      0.0001023709774017334
+    ],
+    "url": "/park-kits/recovered-details-v1/fountain-water-feature-corten-cascade-vessels-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "54018d0f207507118b79685aa4f1db0c03292e160c600554ea3b044c25321201",
+    "bytes": 1348160,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-fountain-water-feature-corten-cascade-vessels-v1.webp",
+    "thumbnailSha256": "8c2ee535094bebd1674c6ab154dc701bd64e039bd74e05228df8ad3868c37858"
+  },
+  {
+    "id": "detail-recovered-fountain-water-feature-stainless-water-hoop-v1",
+    "label": "Fountain Water Feature Stainless Water Hoop",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.601288676261902,
+      0.7001220881938934,
+      2.5996193641331047
+    ],
+    "offset": [
+      -0.0006441473960876465,
+      -0.0005843883845955133,
+      6.105005741119385e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/fountain-water-feature-stainless-water-hoop-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "f233af05d07f29442ffa9d5631ac5d0cb0ca25e9c894ab77793c4ded7855ada2",
+    "bytes": 1697368,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-fountain-water-feature-stainless-water-hoop-v1.webp",
+    "thumbnailSha256": "9fc4cdc342e678bb83205cd195d541dcae93583ed77ee8c8d0a6c7aee7851319"
+  },
+  {
+    "id": "detail-recovered-labyrinth-bronze-water-bowl-v1",
+    "label": "Labyrinth Bronze Water Bowl",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.4998818039894104,
+      1.4999458193778992,
+      0.800070131749095
+    ],
+    "offset": [
+      -2.4884939193725586e-05,
+      4.419984236392338e-07,
+      -0.00010910630226135254
+    ],
+    "url": "/park-kits/recovered-details-v1/labyrinth-bronze-water-bowl-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "f9f76492d0ede06cb7183ac3159f77b4b35af71ec79cc87b1e574e425176c2aa",
+    "bytes": 1247300,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-labyrinth-bronze-water-bowl-v1.webp",
+    "thumbnailSha256": "f55c40c99a78759ebcaeadb352e39a24515f4f9357cc3da08882b485300abdb0"
+  },
+  {
+    "id": "detail-recovered-regional-park-carved-stone-drinking-fountain-v1",
+    "label": "Regional Park Carved Stone Drinking Fountain",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.0997763872146606,
+      0.8499218225479126,
+      1.250037794099626
+    ],
+    "offset": [
+      -0.0001710057258605957,
+      1.3833032426191494e-05,
+      -3.910064697265625e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/regional-park-carved-stone-drinking-fountain-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "59711794c6b42142cca50704c022d1302686d5c829d41e57b920d488e0a1e08c",
+    "bytes": 1385204,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-regional-park-carved-stone-drinking-fountain-v1.webp",
+    "thumbnailSha256": "b465deef92ac36f3823093a290f5337109bfbf8350e89ddc8ec4d43a0589d900"
+  },
+  {
+    "id": "detail-recovered-rooftop-garden-rainwater-tank-v1",
+    "label": "Rooftop Garden Rainwater Tank",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.8029175400733948,
+      1.3006660342216492,
+      2.0014801372308284
+    ],
+    "offset": [
+      -0.0014587938785552979,
+      0.0009041179437190294,
+      -0.000752180814743042
+    ],
+    "url": "/park-kits/recovered-details-v1/rooftop-garden-rainwater-tank-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "5fa5d331cd9fc5110f9d52392e268d9a04c092c9cd704d6ab4918d228dfd08fb",
+    "bytes": 1670520,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-rooftop-garden-rainwater-tank-v1.webp",
+    "thumbnailSha256": "55cbce09197ba495b75582237dc538f18e1486efe4ecc4094df4edd536f6f27d"
+  },
+  {
+    "id": "detail-recovered-splash-pad-area-stainless-water-arch-v1",
+    "label": "Splash Pad Area Stainless Water Arch",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.80020272731781,
+      0.799592912197113,
+      2.6001319885253906
+    ],
+    "offset": [
+      -0.00042635202407836914,
+      -0.0,
+      -0.0001773536205291748
+    ],
+    "url": "/park-kits/recovered-details-v1/splash-pad-area-stainless-water-arch-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "3ce706090391e32683e3ff5b5ac4b8507e4e30aed0f64197b94c76bd95cc2e6f",
+    "bytes": 936980,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-splash-pad-area-stainless-water-arch-v1.webp",
+    "thumbnailSha256": "9d8aefdfb5d3c7521ab27605d242f930297e7f70d43224b8f8bf8c118e990ff2"
+  },
+  {
+    "id": "detail-recovered-splash-pad-area-stone-splash-bowl-v1",
+    "label": "Splash Pad Area Stone Splash Bowl",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.7995226979255676,
+      1.79985111951828,
+      0.799790620803833
+    ],
+    "offset": [
+      0.00010707974433898926,
+      -0.0,
+      -0.00020572543144226074
+    ],
+    "url": "/park-kits/recovered-details-v1/splash-pad-area-stone-splash-bowl-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "c9cc7b715c4c09d23d9808f452be83e457604659a2d64ac6e68991240105fa57",
+    "bytes": 1381120,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-splash-pad-area-stone-splash-bowl-v1.webp",
+    "thumbnailSha256": "23480a74360ac8ed6e32f470bbe5780d857b034a8fdc97902ada4be305830044"
+  },
+  {
+    "id": "detail-recovered-stormwater-retention-pond-gabion-overflow-weir-v1",
+    "label": "Stormwater Retention Pond Gabion Overflow Weir",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.000133752822876,
+      1.399999976158142,
+      1.0109172902302817
+    ],
+    "offset": [
+      6.687641143798828e-05,
+      0.0015176377492025495,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/stormwater-retention-pond-gabion-overflow-weir-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "3803990e3314c31aacee0155bf7983f5296bf8db6ae20a71bc23d64b410dbd73",
+    "bytes": 2247832,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-stormwater-retention-pond-gabion-overflow-weir-v1.webp",
+    "thumbnailSha256": "07a85355d61ec9557e030b04f6d13bc8721aff628014c06c81ef0b2cd459e2d4"
+  },
+  {
+    "id": "detail-recovered-stormwater-retention-pond-pond-overlook-screen-v1",
+    "label": "Stormwater Retention Pond Pond Overlook Screen",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      3.4999195337295532,
+      0.7997457981109619,
+      1.8005131083255037
+    ],
+    "offset": [
+      4.023313522338867e-05,
+      6.397319339157548e-06,
+      -0.0006693005561828613
+    ],
+    "url": "/park-kits/recovered-details-v1/stormwater-retention-pond-pond-overlook-screen-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "493840e1d1594afa33840423d4415166564d5a6a17bba93f276e90b5c39fa706",
+    "bytes": 1519408,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-stormwater-retention-pond-pond-overlook-screen-v1.webp",
+    "thumbnailSha256": "4512e9156eaf493c41ee73fad0461b1c84f15c2992f27ac92d938a7c80e5af20"
+  },
+  {
+    "id": "detail-recovered-stormwater-retention-pond-rock-armored-spillway-v1",
+    "label": "Stormwater Retention Pond Rock Armored Spillway",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      4.205639839172363,
+      2.2013204097747803,
+      1.2043728227145039
+    ],
+    "offset": [
+      0.0003514289855957031,
+      0.0009048575884662569,
+      -0.0006603002548217773
+    ],
+    "url": "/park-kits/recovered-details-v1/stormwater-retention-pond-rock-armored-spillway-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "cea6a53b2d15a23f2b89298461f90170ebeffb9921157bd344358f9cc405626c",
+    "bytes": 1759264,
+    "triangles": 11999,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-stormwater-retention-pond-rock-armored-spillway-v1.webp",
+    "thumbnailSha256": "a39051154fb2828d763564374c6cd26bff641bdc88ec803451348e026726e25f"
+  },
+  {
+    "id": "detail-recovered-stormwater-retention-pond-stormwater-trash-rack-v1",
+    "label": "Stormwater Retention Pond Stormwater Trash Rack",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.798739790916443,
+      1.0005042552947998,
+      1.4001700003282167
+    ],
+    "offset": [
+      0.0006300806999206543,
+      0.00030270410934463143,
+      -0.00025212764739990234
+    ],
+    "url": "/park-kits/recovered-details-v1/stormwater-retention-pond-stormwater-trash-rack-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "cc4d390c26aa26133a2ec3a2dc73277e1adf91377263602f003f724eaed75687",
+    "bytes": 1547104,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-stormwater-retention-pond-stormwater-trash-rack-v1.webp",
+    "thumbnailSha256": "a1a288fb3163f343aded1898760e708cf2250aa620129b5f8bcdfd2094f1e1e5"
+  },
+  {
+    "id": "detail-recovered-urban-forest-rain-cistern-pipework-v1",
+    "label": "Urban Forest Rain Cistern Pipework",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      2.040217161178589,
+      1.4170018434524536,
+      2.2532785534858704
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/urban-forest-rain-cistern-pipework-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "8511658937edfea95f907ee070d83220f71e08456a79320dcbe53ec308dd6619",
+    "bytes": 2390760,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-urban-forest-rain-cistern-pipework-v1.webp",
+    "thumbnailSha256": "786358c380e6bebbdb71064b15fc97c478ab243ecd0ef65c356a5d90fff8d0d9"
+  },
+  {
+    "id": "detail-recovered-urban-pocket-park-basalt-water-bowl-v1",
+    "label": "Urban Pocket Park Basalt Water Bowl",
+    "category": "Water & landmarks",
+    "description": "Water features. Fixed-size textured model for site visualization.",
+    "dimensions": [
+      1.7002280950546265,
+      1.7005109190940857,
+      0.7197606523986906
+    ],
+    "offset": [
+      0.0001849532127380371,
+      -0.00022417702712118626,
+      2.625584602355957e-05
+    ],
+    "url": "/park-kits/recovered-details-v1/urban-pocket-park-basalt-water-bowl-v1.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "c0c0ed7d4d8a0c84a44818b637dc746b8137dae5159b5addc77f7523edb2ba9f",
+    "bytes": 1144188,
+    "triangles": 12000,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-recovered-urban-pocket-park-basalt-water-bowl-v1.webp",
+    "thumbnailSha256": "c318f2c453eec2dfd25e5b267a596e6681ff56837b5f395189cc612bbeda3b88"
+  },
+  {
+    "id": "detail-meshy-01_bench_timber_backed",
+    "label": "Timber-backed bench",
+    "category": "Seating",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      1.9971804174516823,
+      0.6697544666107383,
+      0.8500000000000001
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/01_bench_timber_backed.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "dec89408f14f21c0eedd853d38fb05ef625dd5bfe68e7c54b6b54c7c16ecad3d",
+    "bytes": 2268576,
+    "triangles": 2664,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-01_bench_timber_backed.webp",
+    "thumbnailSha256": "b3a34be435c20293d2e86bce61ae9d091176fb368b1c52182e8d2f793581faef"
+  },
+  {
+    "id": "detail-meshy-02_bench_stone_timber",
+    "label": "Stone + timber bench",
+    "category": "Seating",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.170000646520252,
+      0.5200006126118469,
+      0.45000000000000007
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/02_bench_stone_timber.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "a6e684da43b7984fbff7a5c832435243e5a0ae85b30e41c7537377d92a6e85a7",
+    "bytes": 3400444,
+    "triangles": 2308,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-02_bench_stone_timber.webp",
+    "thumbnailSha256": "388bba248839aabb023d430359e81484725722fa12c8fc9365e221ccec8e7919"
+  },
+  {
+    "id": "detail-meshy-03_bench_crescent_concrete",
+    "label": "Crescent concrete bench",
+    "category": "Seating",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.415665535697383,
+      1.066896029663148,
+      0.44999999999999996
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/03_bench_crescent_concrete.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "a6e2c0b922e95109b39ecc2dcdd8558617b4989d75973f1aee1da8f456ad024d",
+    "bytes": 3347264,
+    "triangles": 2877,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-03_bench_crescent_concrete.webp",
+    "thumbnailSha256": "1ff57f61a399ee13e6db2d06138dfdc925d6c4a3386dfba79cd7153098b94a95"
+  },
+  {
+    "id": "detail-meshy-04_bench_double_sided",
+    "label": "Double-sided plaza bench",
+    "category": "Seating",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.6254393413377852,
+      1.1423141436805522,
+      0.85
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/04_bench_double_sided.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "ff06fa5f7d43f4339e8141075279f9626f08e049e9d898332b89c2f1fcdc49bb",
+    "bytes": 2747540,
+    "triangles": 3122,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-04_bench_double_sided.webp",
+    "thumbnailSha256": "27505119ab79a10cb7b1631973f8bbe999975bd1ec7f83e0fbc73cb4e8519e92"
+  },
+  {
+    "id": "detail-meshy-05_planter_faceted_corten",
+    "label": "Faceted corten planter",
+    "category": "Garden & growing",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      1.3885407460932577,
+      1.1828848659574893,
+      0.75
+    ],
+    "offset": [
+      5.551115123125783e-17,
+      -0.0,
+      -5.551115123125783e-17
+    ],
+    "url": "/park-kits/recovered-details-v1/05_planter_faceted_corten.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "2358b044caff80b559519bc9fd9a979895f0d385004bb6008014c76913761e54",
+    "bytes": 3307688,
+    "triangles": 1594,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-05_planter_faceted_corten.webp",
+    "thumbnailSha256": "f0e6f4f65ef110efb2211eaa0538e2a1d5e2fff31706393b3b99c52da77d12a5"
+  },
+  {
+    "id": "detail-meshy-06_planter_rounded_stone",
+    "label": "Rounded stone planter",
+    "category": "Garden & growing",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      0.9818088397164292,
+      0.9848347820948362,
+      0.6499999999999999
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/06_planter_rounded_stone.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "a594bdcab994c7bebd81af95c0d9d0b6f70e8398cb166282c63c6457d449f6b5",
+    "bytes": 4355548,
+    "triangles": 2102,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-06_planter_rounded_stone.webp",
+    "thumbnailSha256": "d2f365dc81fc5f3732848b524736542125f70a8fd4bdca0fddf2100d0bceafe6"
+  },
+  {
+    "id": "detail-meshy-07_table_civic_picnic",
+    "label": "Civic picnic table",
+    "category": "Seating",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.300872144166725,
+      2.305603721338417,
+      0.75
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      1.1102230246251565e-16
+    ],
+    "url": "/park-kits/recovered-details-v1/07_table_civic_picnic.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "10be357cd053a45fabde9f2a158e9dce22814a65184dedb6fb46d524e02c24a5",
+    "bytes": 3707392,
+    "triangles": 4039,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-07_table_civic_picnic.webp",
+    "thumbnailSha256": "c178a43053c27c4cc27b25753ab8c1f84c155afcb88be4c5922c57b143010414"
+  },
+  {
+    "id": "detail-meshy-08_bin_ribbed_hexagonal",
+    "label": "Ribbed hexagonal bin",
+    "category": "Street furniture",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      0.6242299012320953,
+      0.5616019169799156,
+      0.9999999999999999
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      2.7755575615628914e-17
+    ],
+    "url": "/park-kits/recovered-details-v1/08_bin_ribbed_hexagonal.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "90dbc65f433d3ad33357bfeb2353ede547a6f1110d95283d9f1e4bdacd07f2ee",
+    "bytes": 2929424,
+    "triangles": 2082,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-08_bin_ribbed_hexagonal.webp",
+    "thumbnailSha256": "6a5e758e617a137528782a4824211f847375e7f860005fd1e0f46fe6df39a5c4"
+  },
+  {
+    "id": "detail-meshy-09_fountain_modern_pedestal",
+    "label": "Modern drinking fountain",
+    "category": "Street furniture",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      0.3832398484573711,
+      0.6354980150103855,
+      1.35
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -2.7755575615628914e-17
+    ],
+    "url": "/park-kits/recovered-details-v1/09_fountain_modern_pedestal.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "b45d0e91fc617d7bbc907d300cd99d6fcfc24303d1e05eeff879483d3b1fc189",
+    "bytes": 3333604,
+    "triangles": 3014,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-09_fountain_modern_pedestal.webp",
+    "thumbnailSha256": "1b16ac65e053e791710a23e6502d102a23ed27d57275bca53a2c9ada9beef30e"
+  },
+  {
+    "id": "detail-meshy-10_sculpture_twisted_arch",
+    "label": "Twisted arch sculpture",
+    "category": "Water & landmarks",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      1.5451737803529233,
+      0.9158112555080461,
+      1.9999999999999998
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/10_sculpture_twisted_arch.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "c8bad2d4bb4fcd00018d9b51f3370837c7d125b634d6cf4ac0df104a2ae44654",
+    "bytes": 3250416,
+    "triangles": 4210,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-10_sculpture_twisted_arch.webp",
+    "thumbnailSha256": "e250109f4eb487421148f22ad18a993b634eb301bb8916f0818f475ad7273882"
+  },
+  {
+    "id": "detail-meshy-11_seat_ribbon_loop",
+    "label": "Ribbon-loop seat",
+    "category": "Seating",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.0889109744821277,
+      0.7853609358381413,
+      0.8500000000000001
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      2.7755575615628914e-17
+    ],
+    "url": "/park-kits/recovered-details-v1/11_seat_ribbon_loop.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "3306f36ea58a7fcf87416e3c3e9693be61a1cd0d968419bded606aaa6b8c50f2",
+    "bytes": 2262328,
+    "triangles": 3348,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-11_seat_ribbon_loop.webp",
+    "thumbnailSha256": "4b66c25ff25b63460f71cbe4ecec8153ecc8f58b329b9b47c6c4e92205217267"
+  },
+  {
+    "id": "detail-meshy-12_bike_rack_leaf",
+    "label": "Leaf bike rack",
+    "category": "Street furniture",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      1.167263533756639,
+      0.11249991024233671,
+      0.85
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      3.469446951953614e-18
+    ],
+    "url": "/park-kits/recovered-details-v1/12_bike_rack_leaf.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "dd90f7a613e0bafec57f9bdcfb8006c99b4e410b8eafaa8ddf206b7292c9d47d",
+    "bytes": 2003612,
+    "triangles": 2348,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-12_bike_rack_leaf.webp",
+    "thumbnailSha256": "afd61a6ecfcd1e83e83df76e18c1919c19945ade2f01fab2b89f6df123d4ba08"
+  },
+  {
+    "id": "detail-meshy-13_bike_rack_folded_bird",
+    "label": "Folded-bird bike rack",
+    "category": "Street furniture",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      1.471270395066888,
+      0.22042596049683455,
+      0.8500000000000001
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/13_bike_rack_folded_bird.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "74095bdf0e9e5e9684e77e71499ce77ded43c32872f584a47deea299dd008479",
+    "bytes": 2020740,
+    "triangles": 2744,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-13_bike_rack_folded_bird.webp",
+    "thumbnailSha256": "2f65a05989aa5bf6e085366f8db42fd552fa19110d624605b8d0132d6d189b3e"
+  },
+  {
+    "id": "detail-meshy-14_stall_farmers_market",
+    "label": "Farmers-market stall",
+    "category": "Shelters & markets",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.9759703849950645,
+      1.70363390212946,
+      2.5
+    ],
+    "offset": [
+      -1.1102230246251565e-16,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/14_stall_farmers_market.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "10c27c415bb9212469631c10a8d77fa597ee980539acad3467fe3fe7c4f00f29",
+    "bytes": 3622240,
+    "triangles": 4227,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-14_stall_farmers_market.webp",
+    "thumbnailSha256": "95d7d3505642e15f5366790d1e7314ba5469386b0b7b93e4d5a1b76597a19014"
+  },
+  {
+    "id": "detail-meshy-15_shelter_curved_timber_rib",
+    "label": "Timber-rib Rain Shelter",
+    "category": "Shelters & markets",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      4.450553011188383,
+      3.966695994190148,
+      2.7
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/15_shelter_curved_timber_rib.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "f0f060012f884da61642c411d5effd293e69d373bf6a7a814fed7c04f6bdc25c",
+    "bytes": 2373536,
+    "triangles": 5371,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-15_shelter_curved_timber_rib.webp",
+    "thumbnailSha256": "bb5be49676e3db73718322c8fc2ee36915102ff1456ea0e7b45991ebf7111209"
+  },
+  {
+    "id": "detail-meshy-17_play_lantern_seed_tower",
+    "label": "Lantern Seed Play Tower",
+    "category": "Play",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      4.6144303625028105,
+      6.015463334192753,
+      3.5999999999999996
+    ],
+    "offset": [
+      2.220446049250313e-16,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/17_play_lantern_seed_tower.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "13ba591cca03be2f83af0bc6b11c39d701b737df08806a072b448086d2cef27b",
+    "bytes": 3555132,
+    "triangles": 11810,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-17_play_lantern_seed_tower.webp",
+    "thumbnailSha256": "2a2cc1fc2442e6448b49caf5b5b55847519ee46c05610cacfc2436ea5f202c2f"
+  },
+  {
+    "id": "detail-meshy-18_play_pebble_balance_crescent",
+    "label": "Pebble Balance Crescent",
+    "category": "Play",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      3.6,
+      3.525888782894919,
+      0.18157284095643866
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -1.1102230246251565e-16
+    ],
+    "url": "/park-kits/recovered-details-v1/18_play_pebble_balance_crescent.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "8e6effee4320a9616abc8d7e1d25c24afbb8ce9eab349d7479ee64e8a5d3cd72",
+    "bytes": 3773836,
+    "triangles": 3656,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-18_play_pebble_balance_crescent.webp",
+    "thumbnailSha256": "7b97fbb21203455ca6957d3759215b54eb2b99c4da075bd76ee7c64f3b01f3a6"
+  },
+  {
+    "id": "detail-meshy-19_play_colour_wheel_screen",
+    "label": "Colour Wheel Tactile Screen",
+    "category": "Play",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.7317462832563404,
+      0.18960696918603626,
+      1.25
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -6.938893903907228e-18
+    ],
+    "url": "/park-kits/recovered-details-v1/19_play_colour_wheel_screen.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "7d0665cf4c530364bf4556fc3231da333f4c3485acbb37838baa4515b349c1fc",
+    "bytes": 3186352,
+    "triangles": 4511,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-19_play_colour_wheel_screen.webp",
+    "thumbnailSha256": "1620a6dc0a4d3587ee26c89b18073bdac8da10909de10526c39974d0c346f4cf"
+  },
+  {
+    "id": "detail-meshy-20_shade_folded_fan",
+    "label": "Folded Fan Shade",
+    "category": "Shelters & markets",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      6.789385986450656,
+      7.510351893657198,
+      3.2
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      2.220446049250313e-16
+    ],
+    "url": "/park-kits/recovered-details-v1/20_shade_folded_fan.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "d7b3529d26dc6a9508a3d4a5ac471f018e8e3cc87fd134ec07d8c6aa46044644",
+    "bytes": 3206208,
+    "triangles": 5812,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-20_shade_folded_fan.webp",
+    "thumbnailSha256": "91b8ca414f07b72b265e9a3c5d23ae6ef69d48f1040da7edff9ceebc72e40d2b"
+  },
+  {
+    "id": "detail-meshy-21_play_conversation_trumpets",
+    "label": "Twin Conversation Trumpets",
+    "category": "Play",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.5141578038045886,
+      0.6964478878921438,
+      1.25
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      2.7755575615628914e-17
+    ],
+    "url": "/park-kits/recovered-details-v1/21_play_conversation_trumpets.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "bad2d7f22451aa43fdef7158d30f7262a8635789c322901ab397aa39837d4353",
+    "bytes": 3205396,
+    "triangles": 5121,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-21_play_conversation_trumpets.webp",
+    "thumbnailSha256": "e317f72854ce9efab164609ef3f9c1ef2bbb78657d2f2177805d76f7cceb3e05"
+  },
+  {
+    "id": "detail-meshy-23_car_compact_hatch",
+    "label": "Compact five-door hatchback",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.0283642679452893,
+      4.1,
+      1.5683607354760167
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/23_car_compact_hatch.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "be287fc3b4bf80aa5b218a5a9ecd8a73109a752c73f021be5fbcc7e174ff4aaa",
+    "bytes": 3321144,
+    "triangles": 4206,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-23_car_compact_hatch.webp",
+    "thumbnailSha256": "f103acc8756f094da807f5e7a01be39f10fc63347fdcdbdd8419577192496c36"
+  },
+  {
+    "id": "detail-meshy-24_car_midsize_sedan",
+    "label": "Midsize sedan",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      1.9697679579257965,
+      4.75,
+      1.4673319719731808
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/24_car_midsize_sedan.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "33585562d55539e7069b39d7caab4dce7155688b361f4bdb5061268254674e41",
+    "bytes": 3515672,
+    "triangles": 4537,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-24_car_midsize_sedan.webp",
+    "thumbnailSha256": "acc299b17100326553c7c13b93d197038596bb111be6d4893657206be4298b4e"
+  },
+  {
+    "id": "detail-meshy-25_car_estate_wagon",
+    "label": "Long-roof estate wagon",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      1.9698431968688963,
+      4.8,
+      1.5325535774230956
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/25_car_estate_wagon.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "d6b87baad11cf45b5634c01fbbf67dd9a7980a522e7e3abd99bcdd0ec3da13f5",
+    "bytes": 3538440,
+    "triangles": 4901,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-25_car_estate_wagon.webp",
+    "thumbnailSha256": "c071e48c8aab000c19ed1d51d44ec4b8a76d8eaa3efb4bbfec8403246473a517"
+  },
+  {
+    "id": "detail-meshy-26_car_small_crossover",
+    "label": "Small urban crossover",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.127809189260006,
+      4.25,
+      1.770571295171976
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/26_car_small_crossover.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "28569c244393484508b14d86699c4bc2df03a052393dc452bfa8a6486ca8050b",
+    "bytes": 3328196,
+    "triangles": 4673,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-26_car_small_crossover.webp",
+    "thumbnailSha256": "f94ddd4589d85b7134233854e98d20feafa9658ea8279e0d2f946aa51c5e5223"
+  },
+  {
+    "id": "detail-meshy-27_car_family_suv",
+    "label": "Family SUV",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.144131015986204,
+      4.75,
+      1.8155973069369793
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/27_car_family_suv.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "44d2b9126c405f3799c4c60efb32de5272336045b419f5122dbf6910fb212d9f",
+    "bytes": 3346232,
+    "triangles": 5254,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-27_car_family_suv.webp",
+    "thumbnailSha256": "15dfeeabb9b49bb0a93739920d798a9958ff3ecca23259f59616f562485b3be6"
+  },
+  {
+    "id": "detail-meshy-28_car_boxy_suv",
+    "label": "Boxy utility SUV",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      1.963780578225851,
+      4.45,
+      1.9059483647346498
+    ],
+    "offset": [
+      5.551115123125783e-17,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/28_car_boxy_suv.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "889c618e1178129c1281a053e97544c2173226d5950975fe4a9f98e76cffddf7",
+    "bytes": 3470692,
+    "triangles": 4534,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-28_car_boxy_suv.webp",
+    "thumbnailSha256": "4e257e2db0325d45eac123cc8d7a022f2b50ae1739250a3081994e4506e51815"
+  },
+  {
+    "id": "detail-meshy-29_car_compact_ev",
+    "label": "Compact electric hatchback",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.1366829097270967,
+      4.3,
+      1.6409961357712746
+    ],
+    "offset": [
+      1.1102230246251565e-16,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/29_car_compact_ev.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "5d7e9a006e23cd1b6006282fdaa456947b98952a5fc6a00d7bc19cb53c3e7880",
+    "bytes": 3359728,
+    "triangles": 4457,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-29_car_compact_ev.webp",
+    "thumbnailSha256": "6b2f4e02278b26dcf7cbad5f52c58f51772eb2fa20ff72e83c090f059d3e7032"
+  },
+  {
+    "id": "detail-meshy-30_car_fastback_ev",
+    "label": "Long electric fastback",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.1034401349723337,
+      4.85,
+      1.4730517439544202
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/30_car_fastback_ev.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "681a58b1ef581da1dc3febeaa7088afa1d5487a439981822ff6b3cc9fb79dc4c",
+    "bytes": 3510772,
+    "triangles": 4811,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-30_car_fastback_ev.webp",
+    "thumbnailSha256": "73f7b537367b9843223e9bed1ff6fc8b4c08b4739a58e8fd3d4fa59c2a1cbefc"
+  },
+  {
+    "id": "detail-meshy-31_car_two_door_coupe",
+    "label": "Two-door coupe",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      1.9106505431234835,
+      4.35,
+      1.2599731273949146
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/31_car_two_door_coupe.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "dbeb801be2c0479b7125f4e11ec05764527f1d42a71060f32019c9c6b9348b25",
+    "bytes": 3627896,
+    "triangles": 4535,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-31_car_two_door_coupe.webp",
+    "thumbnailSha256": "a8ca8bdf000f5a91ec976143aa264b8c257be53242f7e7bcbe1e864d47f490c6"
+  },
+  {
+    "id": "detail-meshy-32_car_compact_mpv",
+    "label": "Compact people carrier",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.008782036602497,
+      4.5,
+      1.7007884681224823
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/32_car_compact_mpv.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "d98a08670e886d8ea76fd9980177ab4e6358637f0889f0e6c4b423dc778853a0",
+    "bytes": 3494688,
+    "triangles": 4773,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-32_car_compact_mpv.webp",
+    "thumbnailSha256": "0d792064c6d2ad45c5540a2d30b85d27b334a19471cb8fdf5b2fdf5af7045ddc"
+  },
+  {
+    "id": "detail-meshy-33_truck_regular_pickup",
+    "label": "Regular-cab pickup",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.1672376710174373,
+      5.049999999999999,
+      1.6919423662748811
+    ],
+    "offset": [
+      1.1102230246251565e-16,
+      -0.0,
+      -2.220446049250313e-16
+    ],
+    "url": "/park-kits/recovered-details-v1/33_truck_regular_pickup.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "7f1daf37c0f8e80d8b5d45f8869467acd1b8ef82e938c1693719ae119780aaf1",
+    "bytes": 3613520,
+    "triangles": 4934,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-33_truck_regular_pickup.webp",
+    "thumbnailSha256": "2c8b7350a90d7d24ca02370f3a84499403998cc7ddc71d0361c536cf45f50b4b"
+  },
+  {
+    "id": "detail-meshy-34_truck_crew_pickup",
+    "label": "Crew-cab long-bed pickup",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.3671991784730384,
+      5.950000000000001,
+      1.7944452369424868
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      2.220446049250313e-16
+    ],
+    "url": "/park-kits/recovered-details-v1/34_truck_crew_pickup.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "81b9e4514059f95c3f10b51c697251d22e5cbef05ad0ecef1bd0f998409d7df0",
+    "bytes": 3671192,
+    "triangles": 5105,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-34_truck_crew_pickup.webp",
+    "thumbnailSha256": "e74333b3744f70772eca10e25a67a30eedd4c3278cbc9491e856656f12add4e0"
+  },
+  {
+    "id": "detail-meshy-35_van_compact_panel",
+    "label": "Compact panel van",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      1.9211728141928401,
+      4.449999999999999,
+      1.8343691201188017
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      2.220446049250313e-16
+    ],
+    "url": "/park-kits/recovered-details-v1/35_van_compact_panel.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "554aa7b87d23908a9202b6dc52dcb81ac4acc09c6598c9f3634edbc988948eb6",
+    "bytes": 2954240,
+    "triangles": 4047,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-35_van_compact_panel.webp",
+    "thumbnailSha256": "6c047ab8f9e9a88794fb196d56824b67033bc2f18687f8fcfad9233eb0b99985"
+  },
+  {
+    "id": "detail-meshy-36_van_high_roof_cargo",
+    "label": "High-roof cargo van",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.3523951877763167,
+      6.0,
+      2.262751723606182
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/36_van_high_roof_cargo.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "3a872a86c589649ddbab2006b11208d445718a17dca85df009e3c9b0bff5d88f",
+    "bytes": 2940652,
+    "triangles": 4844,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-36_van_high_roof_cargo.webp",
+    "thumbnailSha256": "fdfe7d8bb9847e67f57a60a78d1225d15e7d4914fbe4dec85cf56f0ddd218cca"
+  },
+  {
+    "id": "detail-meshy-37_van_passenger_shuttle",
+    "label": "Passenger shuttle van",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      1.9158435020212607,
+      5.449999999999999,
+      1.9269652749111317
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -2.220446049250313e-16
+    ],
+    "url": "/park-kits/recovered-details-v1/37_van_passenger_shuttle.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "fb6231cfb68db32e6a5bd4f3e64db776aeebf55e00bea8edc7889b6a5ff4a244",
+    "bytes": 3538424,
+    "triangles": 5171,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-37_van_passenger_shuttle.webp",
+    "thumbnailSha256": "5ecbb940dadf0c73dd562acec2f7163232404a9ae2cfa639bbddab4a0a34f616"
+  },
+  {
+    "id": "detail-meshy-38_truck_cabover_box",
+    "label": "Cab-over delivery truck",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.3444522932841063,
+      6.4,
+      2.4638296215757
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/38_truck_cabover_box.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "e2cf37342b760349f39d394f47875568c6fd23eef7ee6d312b990112c5994fc4",
+    "bytes": 2948964,
+    "triangles": 5113,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-38_truck_cabover_box.webp",
+    "thumbnailSha256": "5b5c9120165f45fc906c9c322f9570b786333d5b151de7cdcaa48ffbcdbb4191"
+  },
+  {
+    "id": "detail-meshy-39_truck_service_body",
+    "label": "Utility service pickup",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.3356196306645876,
+      5.65,
+      1.8279388785362245
+    ],
+    "offset": [
+      -1.1102230246251565e-16,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/39_truck_service_body.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "2bd6d5949ba9c8d3fe91fe7f9e7856a06fa8410edd7575d9eaae089a2d66161c",
+    "bytes": 3560248,
+    "triangles": 5670,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-39_truck_service_body.webp",
+    "thumbnailSha256": "c4bbc7230aa7300024ec3a953eba5cacc7f96f33f097ffc091e842fdf7341ae3"
+  },
+  {
+    "id": "detail-meshy-40_truck_flatbed",
+    "label": "Light flatbed truck",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.2865099608898163,
+      6.0,
+      1.9862819910049438
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/40_truck_flatbed.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "4d17605c3e4998e6188ae9faa6fc64807d3826f9aa20041a0179fc2bb3257241",
+    "bytes": 2653816,
+    "triangles": 4930,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-40_truck_flatbed.webp",
+    "thumbnailSha256": "4de3ec6b8b3874d2b679084b6fe7a3cf6ff8596dc469a91a65af37cb6c697edc"
+  },
+  {
+    "id": "detail-meshy-41_truck_small_tipper",
+    "label": "Small municipal tipper",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.775751805305481,
+      5.7,
+      2.4511937811970714
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/41_truck_small_tipper.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "9b08791895bb8c05da8e201e1330fff47ca534acd92783c7aed3447a3123614f",
+    "bytes": 3372704,
+    "triangles": 5597,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-41_truck_small_tipper.webp",
+    "thumbnailSha256": "7ac6669da135f725f8feaea50ae107f8f097160937777ab177a756028d3e1a48"
+  },
+  {
+    "id": "detail-meshy-42_truck_refuse_compact",
+    "label": "Compact refuse truck",
+    "category": "Vehicles",
+    "description": "Fixed-size textured vehicle. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.728913366794586,
+      7.1,
+      2.8806262508034703
+    ],
+    "offset": [
+      -1.1102230246251565e-16,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/42_truck_refuse_compact.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "0e085a945900cb0b86e535b4e725c33254379f2c601aef0d3d6346687cb8c284",
+    "bytes": 3018048,
+    "triangles": 6679,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-42_truck_refuse_compact.webp",
+    "thumbnailSha256": "b2e2a6995ff1faa2e86815a9ef2f017f28af00a3768a99bfca20189a52573916"
+  },
+  {
+    "id": "detail-meshy-43_play_cooperative_rocker",
+    "label": "Caterpillar cooperative rocker",
+    "category": "Play",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.43617895285489,
+      0.49189864922261106,
+      0.9000000000000001
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/43_play_cooperative_rocker.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "66d10341bfbceab3e26edd6bd2016a560f4c3022473e2b2b88e8e259df953b10",
+    "bytes": 2325924,
+    "triangles": 4858,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-43_play_cooperative_rocker.webp",
+    "thumbnailSha256": "79d08d8c9ba3c32b45483c38d94df35e2425dff308fd41a5413a4ae603d41536"
+  },
+  {
+    "id": "detail-meshy-44_play_sand_sorting_sail",
+    "label": "Sand-sorting sail station",
+    "category": "Play",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      2.397477841442359,
+      1.0917490804587728,
+      1.4
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/44_play_sand_sorting_sail.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "1b44549368788394eae05fc07e0e4b7ac5655fdbc3095ac3bc704c4c0f156423",
+    "bytes": 2028100,
+    "triangles": 5567,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-44_play_sand_sorting_sail.webp",
+    "thumbnailSha256": "87558ce70f871773438de7462bdd7ba8faf40dd958a497580251008082a1070b"
+  },
+  {
+    "id": "detail-meshy-45_play_zigzag_water_gate",
+    "label": "Stepped water gate",
+    "category": "Play",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      3.282231511265149,
+      0.5306744612159049,
+      0.65
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -2.7755575615628914e-17
+    ],
+    "url": "/park-kits/recovered-details-v1/45_play_zigzag_water_gate.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "193cc38dc8a9fc867ff9300a811d891715571bff78717736af199dbe71f17d1a",
+    "bytes": 3503480,
+    "triangles": 5635,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-45_play_zigzag_water_gate.webp",
+    "thumbnailSha256": "4f917825b2bcd1d8ef3644dd7898db3d2af6bc95f50e5bf547d52e1cf9e74877"
+  },
+  {
+    "id": "detail-meshy-46_play_touch_totems",
+    "label": "Constellation touch totems",
+    "category": "Play",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      1.7051956491436076,
+      0.5691056338953353,
+      1.35
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      2.7755575615628914e-17
+    ],
+    "url": "/park-kits/recovered-details-v1/46_play_touch_totems.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "55c4af9df32341825ea763182bcd0c0fc3e17966b9fcd84e04917bc5623369c3",
+    "bytes": 2447068,
+    "triangles": 2684,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-46_play_touch_totems.webp",
+    "thumbnailSha256": "2f88b6b801053bd4efda6b6b9f218ace5eadcf6383e7739c433e03adda0cca80"
+  },
+  {
+    "id": "detail-meshy-48_civic_compass_welcome_totem",
+    "label": "Compass welcome totem",
+    "category": "Street furniture",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      0.9293126866221427,
+      0.5469928875565528,
+      2.3
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/48_civic_compass_welcome_totem.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "f8f4c68a58379995ab9a677a46fcea5c05206b638ef8a50767c367318d9250e0",
+    "bytes": 2548136,
+    "triangles": 2730,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-48_civic_compass_welcome_totem.webp",
+    "thumbnailSha256": "b3cfab931bf2004aed005ac4fc5f24baa57112a4eac6ccafd2d7ab6caba11de9"
+  },
+  {
+    "id": "detail-meshy-49_tree_american_elm",
+    "label": "American elm",
+    "category": "Trees",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      12.375637475525153,
+      11.92745367394318,
+      12.0
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      4.440892098500626e-16
+    ],
+    "url": "/park-kits/recovered-details-v1/49_tree_american_elm.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "ae9982792f624d89e220a9b1dfe4391bb825f3094fc660607536dbc008d4547f",
+    "bytes": 4388024,
+    "triangles": 2989,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-49_tree_american_elm.webp",
+    "thumbnailSha256": "9b778b30666ddf4596d3335743ef7b013995e5c85f4460ebb9285608a04f946f"
+  },
+  {
+    "id": "detail-meshy-51_shrub_red_osier_dogwood",
+    "label": "Red-osier dogwood",
+    "category": "Planting",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      1.945584170094075,
+      1.9088671195927822,
+      1.7999999999999998
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      5.551115123125783e-17
+    ],
+    "url": "/park-kits/recovered-details-v1/51_shrub_red_osier_dogwood.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "c063f8945a9718e4fd7e3aa984e9d6e3dda88f78bcdeca80feb5d33b9b8323e3",
+    "bytes": 4073840,
+    "triangles": 1339,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-51_shrub_red_osier_dogwood.webp",
+    "thumbnailSha256": "8ddaad8c6ff0c9812f4e9ef4c5a0afd2cae97456eee78c3322869ad8ed726194"
+  },
+  {
+    "id": "detail-meshy-52_wetland_water_sedge",
+    "label": "Water sedge",
+    "category": "Planting",
+    "description": "Fixed-size textured site detail. Dimensions reflect the imported model.",
+    "dimensions": [
+      0.7607740626408077,
+      0.758301544760633,
+      0.75
+    ],
+    "offset": [
+      -0.0,
+      -0.0,
+      -0.0
+    ],
+    "url": "/park-kits/recovered-details-v1/52_wetland_water_sedge.glb",
+    "color": "#b8aa8b",
+    "kind": "object",
+    "sha256": "ba5fe75d7a880e8d75a107a0f776527a4745183840a543d5699f06ae1a0c52c7",
+    "bytes": 3375104,
+    "triangles": 870,
+    "sourceKit": "recovered-details-v1",
+    "thumbnailUrl": "/park-kits/recovered-details-v1/detail-meshy-52_wetland_water_sedge.webp",
+    "thumbnailSha256": "5a3d48b80f24d25c61f6b7cf6668bec3923bd426dec92c8b67b5d9119bf1820e"
+  }
+]
