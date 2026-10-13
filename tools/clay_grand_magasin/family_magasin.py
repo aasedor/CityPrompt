@@ -372,7 +372,7 @@ def gilt_front(m, f, u, z, w, depth=.55):
     m.box('gilt', u, -depth + .05, z + .52, w, .04, .92)                       # solid panel
     m.box('gilt', u, -depth + .02, z + .98, w + .04, .09, .08)                 # top rail
     m.box('gilt', u, -depth + .02, z + .06, w + .04, .09, .08)                 # base rail
-    n = max(2, int(w / .95))
+    n = max(2, int(w / 1.5))
     for i in range(n):
         c = u - w / 2 + w * (i + .5) / n
         m.box('gilt', c, -depth + .005, z + .52, .12, .03, .74)                # relief: central stem
@@ -398,7 +398,7 @@ def elevation(f, lo, hi, street=True, pavilion_end=None):
     holes = g + up
     f.wall(f'{f.label} ground carrier', lo, hi - EPS, G0, LEVELS[0] - .30, depth=T, role='stone', holes=holes)
     f.wall(f'{f.label} upper carrier', lo, hi - EPS, LEVELS[0] - .30, CORNICE + .40, depth=T, role='wall', holes=holes)
-    G.brick_courses(f, lo + .02, hi - .02, LEVELS[0] + .2, CORNICE - .9, up, spacing=1.8)
+    G.brick_courses(f, lo + .02, hi - .02, LEVELS[0] + .2, CORNICE - .9, up, spacing=2.4)
     m = Merge(f)
     if pavilion_end is not None:       # closed return of the projecting pavilion, overlapping the wing carrier
         m.box('stone', pavilion_end[0] + pavilion_end[1] * (T / 2 + .012), (T - .03 + PAV_OUT + T * .6) / 2, (G0 + CORNICE + .45) / 2, T, PAV_OUT + T * .6 - (T - .03), CORNICE + .45 - G0)
@@ -409,14 +409,14 @@ def elevation(f, lo, hi, street=True, pavilion_end=None):
             framed(m, f, h, cols=3, rows=2, inset=.18, occupied='sales hall', kind='storefront', frame='trim')
             m.box('trim', h['u'], .12, h['z'] + .30, h['w'] - .14, .06, .40)         # stall riser
         else:
-            framed(m, f, h, cols=1, rows=1, occupied='stock rooms')
+            framed(m, f, h, cols=1, rows=1, occupied='stock rooms', lite=True)
         m.box('stone', h['u'], -.05, h['z'] + h['h'] + .20, h['w'] + .50, T + .16, .32)
     for h in up:
         if street:
             reveal(m, f, h, .16, 'trim', jambs_only=True)
             for j in (1, 2):                                     # heavy iron mullions dividing the bay into three lights
                 m.box('trim', h['u'] - h['w'] / 2 + h['w'] * j / 3, .10, h['z'] + h['h'] / 2, .12, .10, h['h'] - .1)
-        framed(m, f, h, cols=3 if street else 2, rows=3 if street else 1, occupied='sales floor', kind='iron and glass bay', frame='trim')
+        framed(m, f, h, cols=3 if street else 2, rows=2 if street else 1, occupied='sales floor', kind='iron and glass bay', frame='trim', lite=not street)
         k = h['level']
         if k == 3:
             arch_fill(f, h['u'], h['z'] + h['h'], h['w'], h['w'] * .36, 'wall')
@@ -663,6 +663,7 @@ def drum_and_domes():
         for zz in (CORNICE + 1.6, CORNICE + 2.9):
             qx, qy = cx + math.cos(a + math.tau / 16) * DRUM_R, cy + math.sin(a + math.tau / 16) * DRUM_R
             C.beam('Drum transom', (px, py, zz), (qx, qy, zz), .05, .05, 'hardware', 'dome')
+    C.rod('Drum room wall', (cx, cy, CORNICE + .06), (cx, cy, z1 - .46), DRUM_R - .9, 'interior', 'dome', 32)     # lit room behind the drum glass so the drum does not read hollow
     C.rod('Drum entablature', (cx, cy, z1 - .45), (cx, cy, z1 - .12), DRUM_R + .26, 'stone', 'dome', 48)
     C.rod('Drum cornice', (cx, cy, z1 - .12), (cx, cy, z1 + .08), DRUM_R + .42, 'stone', 'dome', 48)
     C.rod('Dome base ring', (cx, cy, z1 + .08), (cx, cy, z1 + .30), DOME_R + .08, 'hardware', 'dome', 48)
@@ -709,7 +710,7 @@ def roofs_and_floors():
         f.wall(f'{f.label} carrier', lo, hi, G0, CORNICE + .40, depth=T, role='wall', holes=hs)
         m = Merge(f)
         for h in hs:
-            framed(m, f, h, cols=1, rows=1, occupied='sales floor', frame='trim')
+            framed(m, f, h, cols=1, rows=1, occupied='sales floor', frame='trim', lite=True)
             m.box('stone', h['u'], -.04, h['z'] + h['h'] + .12, h['w'] + .36, T + .14, .16)
             m.box('stone', h['u'], -.06, h['z'] - .08, h['w'] + .30, T + .18, .12)
         for k in range(nb + 1):      # pilaster grid of the inner facades
