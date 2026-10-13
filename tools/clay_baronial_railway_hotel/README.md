@@ -69,6 +69,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (Both v004 P1s resolved in the pixels (voussoir ring on impost caps flush with the piers; no black deck lines). Same count as v004 (0 + 2): first review that did not lower P0+P1; v004 stays the candidate. v005 is evidence only.)
+## Open blockers after v006 (Both v005 P1s resolved in the pixels (porch on a paved slab at grade, no void lines in the passage). PASS_ZERO_P0_P1; becomes the candidate. Keeper approval, runtime acceptance and publication remain separate human checkpoints.)
 
-P1 the porch walls and jamb piers stop short of the ground at the street threshold (a pure-black slot under the porch wall, the lawn running under the east pier and flank wall); P1 pure-black void lines inside the carriage passage along the vault and west side wall join and under the court-side arch ring
+none (P2 only: pinhole notches at the arch crowns and haunches and at string-course ends on the east jamb, and five others in the review)

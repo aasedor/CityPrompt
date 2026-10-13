@@ -1,0 +1,423 @@
+{
+  "candidate": "clay-baronial-railway-hotel-clay-v006",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-baronial-railway-hotel",
+  "variant_id": "clay-baronial-railway-hotel-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "chateauesque_grand_railway_hotel/variant_0 (scottish_baronial_granite_tower)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 78.0,
+      "depth": 72.0,
+      "height": 36.4
+    },
+    "observed_storeys": 5,
+    "storey_programme": "tall ground floor of public rooms, three guest-room storeys, attic storey in the wall gables and dormers (five levels, as the locked front reads; the catalogue text says six storeys)",
+    "plan": "58 x 50 m quadrangle (top view) of 14 m wings around a 30 x 22 m paved court with four corner trees, streets south and west; entrance tower 10 m square a third along the south face from the west corner, projecting 1.6 m with a 2.4 m crenellated porch",
+    "facade": "bays at 3.8 m: tall ground-floor windows 1.5 x 3.3 m and tall sash windows 1.3 x 2.9 m with stone surrounds in rusticated granite with recessed joints; string courses at each floor; corbelled wall head at 17.6 m; crow-stepped wall gables about three bays wide rising to near the ridge, with two windows and an attic light",
+    "levels_m": [
+      0.15,
+      5.0,
+      9.2,
+      13.4
+    ],
+    "eave_m": 17.6,
+    "ridge_m": 27.8,
+    "tower": "entrance tower to 30.4 m on a corbel table with a crenellated parapet and corbelled round bartizans at the front corners, a stair tourelle with a conical cap at the rear corner, and a projecting two-storey crenellated porch with corner bartizans carrying the pointed-arch porte-cochere 4.6 x 6.6 m through the south wing to the court",
+    "tourelles": "round corner tourelles 4.8 m across corbelled out above the ground floor at 5.6 m with cut windows and conical slate roofs to 28.1 m at the four outer corners; intermediate tourelles 3.2 m across corbelled out at 7 m on the west, east and north faces (locked top)",
+    "roof": "steep slate hipped ring roof 17.6 to 27.8 m with gabled dormers between the wall gables, chimney stacks on the ridge",
+    "inferred": "north and east faces repeat the grammar with tourelles and gables; court faces carry one central gable each; interiors are teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "slate hipped ring roof with wall gables and dormers; flat tower roof behind crenellations; conical tourelle roofs",
+    "datum_m": 17.6,
+    "crowns_m": [
+      27.8,
+      30.4,
+      37.4
+    ]
+  },
+  "identity_contract": {
+    "owner": "crenellated entrance tower with the porte-cochere and tourelles, conical corner tourelles, crow-stepped gables, steep slate roofs, rusticated granite with sash windows, iron fence and lawn"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: pink-grey granite with recessed rustication, pale stone dressings, dark slate, lead flashings, dark sash frames, black iron",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 7,
+    "ground": "reception, lounges and dining through the porte-cochere",
+    "upper": "guest rooms off double-loaded corridors",
+    "roof": "attic rooms in the dormers"
+  },
+  "contact_contract": [
+    "Grade-zero slab and sidewalks",
+    "Tower on the south wing; tourelles on corbel cones from the first-storey wall",
+    "Wall gables continuing the carriers through the eaves; gable roofs into the main slopes",
+    "Dormers seated on the slopes",
+    "Chimneys on the ridge"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -22.0,
+        -80.0,
+        1.7
+      ],
+      "target": [
+        2.0,
+        -25.0,
+        10.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -98.124,
+        -105.672,
+        72.8
+      ],
+      "target": [
+        0,
+        0,
+        16.38
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        88.05999999999999,
+        -100.64,
+        109.19999999999999
+      ],
+      "target": [
+        0,
+        0,
+        16.38
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        188.7
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 103.6
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -125.8,
+        0,
+        21.84
+      ],
+      "target": [
+        0,
+        0,
+        16.38
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        125.8,
+        0,
+        21.84
+      ],
+      "target": [
+        0,
+        0,
+        16.38
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        125.8,
+        21.84
+      ],
+      "target": [
+        0,
+        0,
+        16.38
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        88.05999999999999,
+        100.64,
+        65.52
+      ],
+      "target": [
+        0,
+        0,
+        16.38
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -24.0,
+        -46.0,
+        6.0
+      ],
+      "target": [
+        -9.6,
+        -25.0,
+        9.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -54.0,
+        -52.0,
+        20.0
+      ],
+      "target": [
+        -25.0,
+        -21.0,
+        16.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        2.0,
+        -36.0,
+        6.5
+      ],
+      "target": [
+        6.0,
+        -25.0,
+        7.5
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "entrance_tower",
+      "location": [
+        -22.0,
+        -62.0,
+        26.0
+      ],
+      "target": [
+        -11.6,
+        -25.0,
+        25.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "porte_cochere",
+      "location": [
+        -20.6,
+        -44.0,
+        2.0
+      ],
+      "target": [
+        -11.6,
+        -29.0,
+        4.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "corner_tourelle",
+      "location": [
+        -50.0,
+        -50.0,
+        24.0
+      ],
+      "target": [
+        -29.0,
+        -25.0,
+        24.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "crow_gables",
+      "location": [
+        8.0,
+        -46.0,
+        17.0
+      ],
+      "target": [
+        -1.0,
+        -25.0,
+        21.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_court",
+      "location": [
+        -60.0,
+        -66.0,
+        56.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        22.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        14.0,
+        -16.0,
+        6.6
+      ],
+      "target": [
+        14.0,
+        -24.5,
+        6.4
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "rear_court",
+      "location": [
+        2.0,
+        6.0,
+        2.5
+      ],
+      "target": [
+        -11.6,
+        -11.0,
+        6.5
+      ],
+      "lens": 40,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "entrance_tower",
+    "porte_cochere",
+    "corner_tourelle",
+    "crow_gables",
+    "roof_court",
+    "interior",
+    "rear_court"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1350586,
+        "sha256": "c3d62e25c041ad01aceb2834f53bdd5f2d826bf3ab39f22ff0c5c2aea5b27e81"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 944635,
+        "sha256": "61c519072f8ecc212bf498c3acc1f58ece431348c8e83e37f7be2992beeea64a"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 898813,
+        "sha256": "cb03f9474ec9e17d3ba67d70bab6d0241376cf13edbc54601829f42d969483c7"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_hotel_baronial.py",
+        "sha256": "4e2fceb1793d2681aef3d0f233519263550ae92c7db06315ffb5c676f84a2524"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "1f06b40da4e5fe4eff9e02397e8f96526f37ce44f3dc47d5380fa70a38a759aa"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "507462611ce981f41878bdd08517c803862f7693a76902d85ac7d6085dfa7a5c"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-13T19:27:30.678597+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
