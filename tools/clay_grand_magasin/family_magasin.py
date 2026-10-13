@@ -292,6 +292,18 @@ def annulus(name, centre, axis, r_in, r_out, d0, d1, role, module, segs=24):
     return C.mesh(name, vs, fs, role, module)
 
 
+def cut_rod(owner, centre, r, z0, z1, sides=48):
+    """Boolean-subtract a vertical cylinder from `owner` (like clay_core.cut_box, for round cut-outs)."""
+    cx, cy = centre
+    cutter = C.rod('Cylinder cutter', (cx, cy, z0), (cx, cy, z1), r, 'wall', 'construction cutter', sides)
+    cutter.data.materials.clear(); cutter.data.materials.append(owner.data.materials[0])
+    C.bpy.context.view_layer.objects.active = owner
+    mod = owner.modifiers.new('cylinder cut', 'BOOLEAN'); mod.operation = 'DIFFERENCE'; mod.solver = 'EXACT'; mod.object = cutter
+    C.bpy.ops.object.modifier_apply(modifier=mod.name)
+    C.remove_cutter(cutter)
+    C.normalise(owner.data)
+
+
 # ---- building ----
 
 def arch_fill(f, u, z_top, w, rise, role='stone', d0=-.03, d1=None):
@@ -385,7 +397,7 @@ def elevation(f, lo, hi, street=True, pavilion_end=None):
     holes = g + up
     f.wall(f'{f.label} ground carrier', lo, hi - EPS, G0, LEVELS[0] - .30, depth=T, role='stone', holes=holes)
     f.wall(f'{f.label} upper carrier', lo, hi - EPS, LEVELS[0] - .30, CORNICE + .40, depth=T, role='wall', holes=holes)
-    G.brick_courses(f, lo + .02, hi - .02, LEVELS[0] + .2, CORNICE - .9, up, spacing=1.4)
+    G.brick_courses(f, lo + .02, hi - .02, LEVELS[0] + .2, CORNICE - .9, up, spacing=1.8)
     m = Merge(f)
     if pavilion_end is not None:       # closed return of the projecting pavilion, overlapping the wing carrier
         m.box('stone', pavilion_end[0] + pavilion_end[1] * (T / 2 + .012), (T - .03 + PAV_OUT + T * .6) / 2, (G0 + CORNICE + .45) / 2, T, PAV_OUT + T * .6 - (T - .03), CORNICE + .45 - G0)
@@ -595,20 +607,26 @@ def drum_and_domes():
     cx, cy = ACX, ACY
     za = CORNICE + ATTIC_H                 # top of the solid stone attic (clear of the mansard top, v001 P0 1)
     z0, z1 = za, za + DRUM_H
-    # Glazed attic stage continuing the curved corner bay above the cornice (the source runs the glazed bay straight into
-    # the drum): glass cylinder with iron posts and transoms on a stone plinth, a cornice and a gilded balcony ring on top.
-    C.rod('Attic plinth', (cx, cy, CORNICE - .40), (cx, cy, CORNICE + .45), DRUM_R + .10, 'stone', 'dome', 48)
-    C.rod('Attic glass', (cx, cy, CORNICE + .45), (cx, cy, za - .36), DRUM_R - .02, 'glass', 'dome', 48)
-    C.rod('Attic cornice', (cx, cy, za - .36), (cx, cy, za - .02), DRUM_R + .55, 'stone', 'dome', 48)
+    # Glazed attic stage continuing the curved corner bay straight up above the cornice (v002 P1 1): a glass cylinder
+    # flush with the corner bay facade (radius R), iron posts and transoms, a stone cornice disc carrying the gilded
+    # balustrade ring; the mansard and upper roofs are cut away inside it so nothing shows through the glass.
+    for nm in ('Outer mansard', 'Upper roof outer slope', 'Ridge band'):
+        ob = C.bpy.data.objects.get(nm)
+        if ob is not None:
+            cut_rod(ob, (cx, cy), R + .02, CORNICE - .5, CORNICE + MANS_H + UPPER_RISE + 1.0)
+    C.rod('Attic floor', (cx, cy, CORNICE - .30), (cx, cy, CORNICE + .02), R - .05, 'floor', 'dome', 48)
+    C.rod('Attic glass', (cx, cy, CORNICE + .30), (cx, cy, za - .36), R - .04, 'glass', 'dome', 48)
+    C.rod('Attic cornice', (cx, cy, za - .36), (cx, cy, za - .02), R + .45, 'stone', 'dome', 48)
+    C.qa_room_light('Attic', (cx, cy, CORNICE + 1.8), 160, 6.0)
     base = math.atan2(CN[1], CN[0])
     for k in range(24):
         a = math.tau * k / 24
-        px, py = cx + math.cos(a) * (DRUM_R + .04), cy + math.sin(a) * (DRUM_R + .04)
-        C.beam('Attic post', (px, py, CORNICE + .45), (px, py, za - .36), .20, .20, 'hardware', 'dome')
-        qx, qy = cx + math.cos(a + math.tau / 24) * (DRUM_R + .04), cy + math.sin(a + math.tau / 24) * (DRUM_R + .04)
+        px, py = cx + math.cos(a) * (R + .02), cy + math.sin(a) * (R + .02)
+        C.beam('Attic post', (px, py, CORNICE + .30), (px, py, za - .36), .20, .20, 'hardware', 'dome')
+        qx, qy = cx + math.cos(a + math.tau / 24) * (R + .02), cy + math.sin(a + math.tau / 24) * (R + .02)
         C.beam('Attic transom', (px, py, CORNICE + 1.9), (qx, qy, CORNICE + 1.9), .06, .06, 'hardware', 'dome')
-    ring = [(cx + (DRUM_R + .40) * math.cos(math.tau * i / 32), cy + (DRUM_R + .40) * math.sin(math.tau * i / 32)) for i in range(33)]
-    inner = [(cx + (DRUM_R + .32) * math.cos(math.tau * i / 32), cy + (DRUM_R + .32) * math.sin(math.tau * i / 32)) for i in range(33)]
+    ring = [(cx + (R + .25) * math.cos(math.tau * i / 32), cy + (R + .25) * math.sin(math.tau * i / 32)) for i in range(33)]
+    inner = [(cx + (R + .17) * math.cos(math.tau * i / 32), cy + (R + .17) * math.sin(math.tau * i / 32)) for i in range(33)]
     strip('Attic balustrade panel', ring, inner, za + .86, za + .06, 'gilt', 'dome', closed=False)
     for (px, py), (qx, qy) in zip(ring, ring[1:]):
         C.beam('Attic balustrade rail', (px, py, za + .92), (qx, qy, za + .92), .10, .08, 'gilt', 'dome')
@@ -636,7 +654,7 @@ def drum_and_domes():
         C.beam('Court girder', (ccx - hw_ - .3, ccy + sgn * rr * .72, zb), (ccx + hw_ + .3, ccy + sgn * rr * .72, zb), .30, .50, 'hardware', 'court dome')
         C.beam('Court girder', (ccx + sgn * rr * .72, ccy - hd_ - .3, zb + .02), (ccx + sgn * rr * .72, ccy + hd_ + .3, zb + .02), .30, .50, 'hardware', 'court dome')
     annulus('Court dome ring beam', (ccx, ccy, zb + .25), (0, 0, 1), rr - .25, rr + .2, 0.0, .45, 'hardware', 'court dome', 48)
-    glass_dome(ccx, ccy, zb + .70, rr, hh_, ribs=16, rings=3, module='court dome', scale=.8)
+    glass_dome(ccx, ccy, zb + .70, rr, hh_, ribs=12, rings=2, module='court dome', scale=.8)
     C.CONTACTS.append(dict(name='Glazed attic stage on the corner bay cornice; gilded balustrade and glazed drum on the attic; dome on the drum cornice; court dome on a ring beam over four girders bearing on the court walls', attic_top_m=za, drum_top_m=z1, dome_top_m=z1 + .30 + DOME_H))
 
 
