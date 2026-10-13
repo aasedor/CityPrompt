@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-grand-magasin",
+  "variant_id": "clay-grand-magasin-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "grand_magasin/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/grand-magasin/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1498973,
+      "sha256": "502d6d50e7b5ca032a3104f8505b4e4d2f372d2f22e62c091caaa6f9af8f8b12"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/grand-magasin/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 1019929,
+      "sha256": "acf6e2d1ff51f77ff823231d5dd2ccf9a707fb4607dac53a962a6bea82bdf4ef"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/grand-magasin/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 915820,
+      "sha256": "945b348e6548ae6b2b6ea0ad637ea4dbe98f49e377ea04ade4ff19e298ecd1c7"
+    }
+  ]
+}
