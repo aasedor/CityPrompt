@@ -69,6 +69,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 in progress)
+## Open blockers after v003 (v002 P0 (trusses through the roofs) and the monitor-end and ridge-seam P1 resolved in the pixels. Improved from 1 + 3 to 0 + 3; becomes the candidate.)
 
-Carried into v003.
+P1 interior: the ceiling is still an opaque brown soffit with no lantern glazing, skylight strips or nave trusses visible from inside (v002 finding, half fixed after one fix); P1 lantern-roof junction: black corner posts stop in mid-air over a blown-out patch, blank translucent grey triangles without mullions fill down to the valleys, no sill on the roofs; P1 quadrant pyramid glass is a few huge red, yellow, blue and green triangles per facet where the sources show a grid of small leaded panes in muted teal, blue-green and amber with opaque metal outer zones

@@ -1,0 +1,252 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "south glazed bay -23-0",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south glazed bay -23-1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south glazed bay -23-2",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south glazed bay 10-0",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south glazed bay 10-1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south glazed bay 10-2",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south entrance",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south arch screen",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazed bay -23-0",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazed bay -23-1",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazed bay -23-2",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazed bay 10-0",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazed bay 10-1",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazed bay 10-2",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east entrance",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east arch screen",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazed bay -23-0",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazed bay -23-1",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazed bay -23-2",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazed bay 10-0",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazed bay 10-1",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazed bay 10-2",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north entrance",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north arch screen",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazed bay -23-0",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazed bay -23-1",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazed bay -23-2",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazed bay 10-0",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazed bay 10-1",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazed bay 10-2",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west entrance",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west arch screen",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clerestory y-1-1 glazing",
+      "face": "clerestory y-1-1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clerestory y-11 glazing",
+      "face": "clerestory y-11",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clerestory y1-1 glazing",
+      "face": "clerestory y1-1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clerestory y11 glazing",
+      "face": "clerestory y11",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clerestory x-1-1 glazing",
+      "face": "clerestory x-1-1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clerestory x-11 glazing",
+      "face": "clerestory x-11",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clerestory x1-1 glazing",
+      "face": "clerestory x1-1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clerestory x11 glazing",
+      "face": "clerestory x11",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lantern glazing",
+      "face": "lantern",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
