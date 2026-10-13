@@ -431,15 +431,6 @@ def gable_end(f, main=False):
         C.rod('Tympanum rose heart', f.p(0.0, dd, zc + 1.2), f.p(0.0, dd + (.02 if dd > T / 2 else -.02), zc + 1.2), .55, 'stain_red', 'gable screen', 12)
         for su in (-1, 1):
             C.rod('Tympanum roundel', f.p(su * 3.6, dd, zc + 3.3), f.p(su * 3.6, dd + (.012 if dd > T / 2 else -.012), zc + 3.3), .62, 'stain_blue', 'gable screen', 14)
-    # A band of stained-glass roundels round the archivolt in the spandrels (locked front, v004 P1 1).
-    for k in range(19):
-        a = math.radians(6 + 168 * k / 18)
-        ru, rz = math.cos(a) * (R_ + 1.15), zc + math.sin(a) * (R_ + 1.15)
-        zr = apex - .05 - (apex - .05 - EAVE_W + .30) * (abs(ru) / (half + .50)) - .45
-        if rz > zr or abs(ru) > half - 1.5:
-            continue
-        annulus('Spandrel roundel frame', f.p(ru, T / 2 - .16, rz), tuple(-x for x in f.n), .30, .42, 0.0, .10, 'hardware', 'great arch', 16)
-        C.rod('Spandrel roundel glass', f.p(ru, T / 2 - .12, rz), f.p(ru, T / 2 - .15, rz), .31, 'stain_blue' if k % 2 else 'stain_green', 'great arch', 14)
     for u in (-5.2, -2.7, 2.7, 5.2):
         m.box('hardware', u, T / 2 - .05, (DADO + .1 + zc) / 2, .09, .09, zc - DADO - .1)
     for z in (DADO + .1, 5.6, zc - .05):
@@ -452,8 +443,13 @@ def gable_end(f, main=False):
         a0, a1 = math.pi * k / 16, math.pi * (k + 1) / 16
         pa = f.p(math.cos(a0) * (R_ + .32), T / 2 - .25, zc + math.sin(a0) * (R_ + .32)); pb = f.p(math.cos(a1) * (R_ + .32), T / 2 - .25, zc + math.sin(a1) * (R_ + .32))
         C.beam('Archivolt', pa, pb, .62, .52, 'hardware', 'great arch')
-        am = (a0 + a1) / 2
-        C.rod('Archivolt rosette', f.p(math.cos(am) * (R_ + .32), T / 2 - .52, zc + math.sin(am) * (R_ + .32)), f.p(math.cos(am) * (R_ + .32), T / 2 - .60, zc + math.sin(am) * (R_ + .32)), .20, 'gilt', 'great arch', 8)
+
+    # A band of framed stained-glass roundels set round the archivolt (locked front, v004 P1 1).
+    for k in range(19):
+        a = math.radians(5 + 170 * k / 18)
+        ru, rz = math.cos(a) * (R_ + .32), zc + math.sin(a) * (R_ + .32)
+        annulus('Archivolt roundel frame', f.p(ru, T / 2 - .51, rz), tuple(-x for x in f.n), .21, .29, 0.0, .07, 'gilt', 'great arch', 16)
+        C.rod('Archivolt roundel glass', f.p(ru, T / 2 - .50, rz), f.p(ru, T / 2 - .53, rz), .22, 'stain_blue' if k % 2 else 'stain_green', 'great arch', 14)
     # Gable field above the arch: a closed iron lattice panel (glass backed) between the archivolt and the rakes.
     field = [(-(half + .50), EAVE_W - .30), (half + .50, EAVE_W - .30), (0.0, apex - .05)]
     f.panel(f'{f.label} gable field', field, T / 2 - .004, T / 2 + .004, 'glass', 'gable screen')
