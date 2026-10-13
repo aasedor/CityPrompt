@@ -16,27 +16,28 @@ import geometry as G
 
 SLUG = 'clay-second-empire-city-hall'
 W, D = 43.0, 36.0                 # block footprint; court 14 x 10 m inside
-CW, CD = 14.0, 10.0               # inner court
+CW, CD = 12.0, 6.0                # inner court: about 27 x 17 percent of the footprint (locked top, v002 P1 5)
 T = .36
 G0 = .15
 L1, L2 = 5.2, 10.2                 # piano nobile and second storey floor levels
 CORNICE = 14.4                    # top of the main cornice corona
 MANS_H, MANS_IN = 3.8, 1.3        # mansard rise and horizontal set-in
-UPPER_RISE = 2.2                  # hipped upper roof rise from the mansard top to the wing ridges (v001 P1 9)
+UPPER_RISE = 3.2                  # hipped upper roof rise from the mansard top to the wing ridges (v001 P1 9, v002 P1 5)
+TERRACE = 1.45                    # raised terrace in front of the ground arcade, reached by a short flight (v002 P1 3)
 PAV = 6.6                         # corner pavilion width along each face: two bays (v001 P1 10)
 PAV_OUT = .6                      # pavilion projection
 PAV_H = 7.6                       # pavilion mansard rise, about twice the wings (v001 P1 8)
 CEN_W = 9.9                       # central pavilion width: three bays
 TOWER = 7.6                       # tower side
-T_SHAFT, T_CLOCK, T_CAP, T_LAN = 25.2, 29.6, 36.4, 39.6
+T_SHAFT, T_CLOCK, T_CAP, T_LAN = 25.2, 31.0, 37.6, 40.8
 PORCH_D = 3.6                     # porch depth from the central pavilion face
 BAY = 3.3
 EPS = .002
-SITE = (-W / 2 - 9.0, W / 2 + 7.0, -D / 2 - 22.0, D / 2 + 7.0)
+SITE = (-W / 2 - 12.0, W / 2 + 7.0, -D / 2 - 22.0, D / 2 + 7.0)
 PALETTE = dict(wall=(.64, .57, .46), joint=(.48, .42, .34), trim=(.20, .18, .16),
     pale=(.74, .71, .64), stone=(.66, .64, .58), roof=(.24, .26, .30), sand=(.62, .58, .50),
     foundation=(.46, .46, .45), glass=(.44, .50, .52), hardware=(.12, .12, .12),
-    interior=(.80, .76, .68), floor=(.46, .44, .42), timber=(.36, .26, .16), zinc=(.40, .44, .46),
+    interior=(.80, .76, .68), floor=(.46, .44, .42), timber=(.36, .26, .16), zinc=(.32, .35, .37),
     planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.64, .62, .58), copper=(.36, .50, .44),
     rustic=(.58, .54, .47), clock=(.92, .90, .84), blue=(.14, .22, .28))
 
@@ -53,7 +54,7 @@ def manifest(version):
         ('cornice_contact', (12.0, -32.0, 10.5), (12.0, -D / 2, 13.6), 45),
         ('roof_court', (-44.0, -50.0, 44.0), (0.0, 2.0, 16.0), 45),
         ('interior', (10.0, -D / 2 + 8.0, L1 + 1.6), (10.0, -D / 2 + .5, L1 + 1.5), 50),
-        ('rear_court', (6.0, 4.0, 24.0), (-5.0, -3.5, 5.0), 40)])
+        ('rear_court', (4.5, 2.6, 24.0), (-4.0, -2.2, 3.0), 32)])
     for c in cams:
         if c['name'] == 'front':          # eye level on the forecourt axis, the tower centred (locked front)
             c['location'] = (-6.0, -96.0, 1.7); c['target'] = (-1.0, -D / 2, 13.0); c['lens'] = 30; c['whole'] = False
@@ -65,11 +66,11 @@ def manifest(version):
         source_archetype='montreal_second_empire_civic/variant_0 (montreal_civic_city_hall)',
         measurement_contract=dict(dimensions_m=dict(width=SITE[1] - SITE[0], depth=SITE[3] - SITE[2], height=h),
             observed_storeys=3, storey_programme='rusticated ground floor, piano nobile with balconies, second storey, slate mansard attic',
-            plan='43 x 36 m limestone block around a 14 x 10 m inner court (top view), streets south and west; two-bay corner pavilions and a three-bay central pavilion project 0.6 m (bay rhythm 2/3/3/3/2, v001 P1 10)',
+            plan='43 x 36 m limestone block around a 12 x 6 m inner court (top view), streets south and west; two-bay corner pavilions and a three-bay central pavilion project 0.6 m (bay rhythm 2/3/3/3/2, v001 P1 10)',
             facade='bays at 3.3 m: round-arched ground-floor windows 1.5 x 3.2 m in rustication; piano-nobile windows 1.5 x 3.0 m with pediment hoods, one continuous stone balcony with an iron rail across each pavilion; second-storey windows 1.4 x 2.4 m with cornice hoods; pilasters on the pavilions; bracketed cornice at 14.4 m',
-            levels_m=[G0, L1, L2], cornice_m=CORNICE, mansard='3.8 m slate mansard set in 1.3 m with arched dormers at every bay, hipped zinc upper roofs rising 2.2 m to ridges along each wing; corner pavilions carry 7.6 m square mansards with one large raised dormer per outer face and a crested cap',
-            tower='7.6 m square tower rising in the central pavilion face plane above the porch: stone shaft to 25.2 m with a pedimented arched aedicule per face and corner finials, clock stage to 29.6 m with four round faces under gablets, tall convex-concave zinc bell to 36.4 m, open lantern and finial to 39.6 m',
-            porch='four-column stone porch 9.4 m wide and 3.6 m deep at the piano nobile over a rusticated arcade, crowned by a pediment at second-storey height; broad stone stair between balustraded cheeks to the forecourt',
+            levels_m=[G0, L1, L2], cornice_m=CORNICE, mansard='3.8 m slate mansard set in 1.3 m with arched dormers at every bay, hipped dark zinc upper roofs rising 3.2 m to ridges along each wing; corner pavilions carry 7.6 m square mansards with one large raised dormer per outer face and a crested cap',
+            tower='7.6 m square tower rising in the central pavilion face plane above the porch: stone shaft to 25.2 m with a pedimented arched aedicule per face and corner urns, a slate taper, clock stage to 31.0 m with four round faces under gablets, convex ribbed zinc dome with four oculus dormers to 37.6 m, open lantern and finial to 40.8 m',
+            porch='short broad flight to a raised terrace at 1.45 m before a three-arch rusticated ground arcade; above it a four-column balustraded loggia at the piano nobile, crowned by a pediment at second-storey height',
             inferred='north and east faces repeat the grammar; court faces plain; interiors are teaching assumptions'),
         roof_contract=dict(type='slate mansard with zinc flat top and cresting; taller pavilion mansards; clock tower cap', datum_m=CORNICE, crowns_m=[CORNICE + MANS_H, CORNICE + PAV_H, T_LAN]),
         identity_contract=dict(owner='central clock tower over the columned porch and grand stair, corner pavilions with tall mansards, slate mansard with dormers, rusticated base, piano-nobile balconies, iron fence and lawn forecourt'),
@@ -328,7 +329,7 @@ def elevation(f, lo, hi, kind='wing', plain=False, returns=()):
     span = hi - lo
     pitch, g, p, s = bay_openings(lo, hi, f.label)
     if kind == 'central':
-        g = [hole('Entrance doors', 0.0, G0, 2.6, 3.6, kind='door')]        # the porch undercroft covers the centre; doors inside it
+        g = [hole('Entrance doors', 0.0, TERRACE + .05, 2.6, 3.2, kind='door')]        # the porch undercroft covers the centre; doors inside it
     holes = g + p + s
     f.wall(f'{f.label} carrier', lo, hi - EPS, G0, CORNICE + .45, depth=T, role='wall', holes=holes)
     G.brick_courses(f, lo + .02, hi - .02, G0 + .25, L1 - .55, g, spacing=.52)
@@ -424,8 +425,9 @@ def mansard_dormer(f, u, z_e, rise, setin, w=1.7, role='stone', win=(1.0, 1.75),
 def wing_mansard(f, lo, hi, dormers=True, inner=False):
     """Outer mansard slope of one run between pavilions, as a strip in face coordinates, with dormers at each bay."""
     z0, z1 = CORNICE, CORNICE + MANS_H
-    lower = [f.p(lo, 0.0, 0)[:2], f.p(hi, 0.0, 0)[:2]]
-    upper = [f.p(lo, MANS_IN, 0)[:2], f.p(hi, MANS_IN, 0)[:2]]
+    e = .9              # strip ends buried 0.9 m inside the neighbouring pavilion roofs (open ends rendered black, v002 P1 1)
+    lower = [f.p(lo - e, 0.0, 0)[:2], f.p(hi + e, 0.0, 0)[:2]]
+    upper = [f.p(lo - e, MANS_IN, 0)[:2], f.p(hi + e, MANS_IN, 0)[:2]]
     strip(f'{f.label} mansard', lower, upper, z0, z1, 'roof', 'mansard', closed=False)
     if dormers:
         nb = max(1, round((hi - lo) / BAY))
@@ -481,11 +483,17 @@ def tower():
     for sx in (-1, 1):
         for sy in (-1, 1):
             C.box('Shaft corner finial base', (cx + sx * (half - .2), cy + sy * (half - .2), T_SHAFT + .25), (.6, .6, .5), 'stone', 'tower', 0)
-            C.rod('Shaft corner finial', (cx + sx * (half - .2), cy + sy * (half - .2), T_SHAFT + .5), (cx + sx * (half - .2), cy + sy * (half - .2), T_SHAFT + 1.5), .12, 'stone', 'tower', 8)
+            ux_, uy_ = cx + sx * (half - .2), cy + sy * (half - .2)
+            C.rod('Shaft corner urn foot', (ux_, uy_, T_SHAFT + .5), (ux_, uy_, T_SHAFT + .7), .16, 'stone', 'tower', 10)
+            dome('Shaft corner urn', ux_, uy_, T_SHAFT + .7, .30, .75, [(.6, 0.0), (1.0, .25), (1.0, .5), (.7, .8), (.3, .95), (0.0, 1.0)], 'stone', 'tower', 12, 8)
+            C.rod('Shaft corner urn finial', (ux_, uy_, T_SHAFT + 1.4), (ux_, uy_, T_SHAFT + 1.8), .05, 'stone', 'tower', 6)
     # Clock stage: slightly narrower, verdigris-trimmed, with four round faces.
     ch = TOWER / 2 - .3
     C.box('Clock stage', (cx, cy, (T_SHAFT + T_CLOCK) / 2), (2 * ch, 2 * ch, T_CLOCK - T_SHAFT), 'stone', 'tower', 0)
-    C.box('Clock stage plinth', (cx, cy, T_SHAFT + .18), (2 * ch + .5, 2 * ch + .5, .36), 'stone', 'tower', 0)
+    tb = [(cx - half - .15, cy - half - .15), (cx + half + .15, cy - half - .15), (cx + half + .15, cy + half + .15), (cx - half - .15, cy + half + .15)]
+    tt = [(cx - ch - .02, cy - ch - .02), (cx + ch + .02, cy - ch - .02), (cx + ch + .02, cy + ch + .02), (cx - ch - .02, cy + ch + .02)]
+    strip('Tower slate taper', tb, tt, T_SHAFT + .45, T_SHAFT + 1.65, 'roof', 'tower')                  # slate taper between shaft and clock stage
+    C.box('Clock stage plinth', (cx, cy, T_SHAFT + 1.78), (2 * ch + .3, 2 * ch + .3, .26), 'stone', 'tower', 0)
     C.box('Clock stage cornice', (cx, cy, T_CLOCK - .25), (2 * ch + .9, 2 * ch + .9, .50), 'copper', 'tower', 0)
     C.box('Clock stage cap plinth', (cx, cy, T_CLOCK + .1), (2 * ch + .2, 2 * ch + .2, .20), 'copper', 'tower', 0)
     for (nx, ny) in ((0, -1), (1, 0), (0, 1), (-1, 0)):   # gablet over each clock face (v001 P1 7)
@@ -493,7 +501,7 @@ def tower():
         gf.panel('Clock gablet', [(-2.2, T_CLOCK - .02), (2.2, T_CLOCK - .02), (0.0, T_CLOCK + 1.2)], -.12, .5, 'stone', 'tower')
         for sgn in (-1, 1):
             C.beam('Clock gablet rake', gf.p(sgn * 2.35, -.20, T_CLOCK + .02), gf.p(0.0, -.20, T_CLOCK + 1.32), .14, .16, 'copper', 'tower')
-    zc = (T_SHAFT + T_CLOCK) / 2 + .1
+    zc = (T_SHAFT + 1.9 + T_CLOCK - .5) / 2
     for (nx, ny) in ((0, -1), (1, 0), (0, 1), (-1, 0)):
         px, py = cx + nx * ch, cy + ny * ch
         q = lambda d, dz=0: (px + nx * d, py + ny * d, zc + dz)
@@ -509,13 +517,23 @@ def tower():
             mx, my, mz = px + nx * .28 + tx * math.cos(a) * 1.2, py + ny * .28 + ty * math.cos(a) * 1.2, zc + math.sin(a) * 1.2
             C.rod('Clock mark', (mx - nx * .02, my - ny * .02, mz), (mx + nx * .02, my + ny * .02, mz), .05, 'hardware', 'clocks', 6)
         for sgn in (-1, 1):   # verdigris corner pilasters of the clock stage
-            C.box('Clock stage pilaster', (px + tx * sgn * (ch - .35) + nx * .08, py + ty * sgn * (ch - .35) + ny * .08, (T_SHAFT + T_CLOCK) / 2), (.7 if nx else .3, .3 if nx else .7, T_CLOCK - T_SHAFT - .5), 'copper', 'tower', 0)
+            C.box('Clock stage pilaster', (px + tx * sgn * (ch - .35) + nx * .08, py + ty * sgn * (ch - .35) + ny * .08, (T_SHAFT + 1.9 + T_CLOCK - .5) / 2), (.7 if nx else .3, .3 if nx else .7, T_CLOCK - .5 - T_SHAFT - 1.9), 'copper', 'tower', 0)
     # Convex-concave square cap, lantern and finial.
-    BELL = [(1.0, 0.0), (1.07, .06), (1.10, .14), (1.06, .24), (.94, .36), (.76, .48), (.58, .60), (.42, .72), (.28, .84), (.16, .93), (0.0, 1.0)]
+    BELL = [(1.0, 0.0), (1.02, .10), (1.0, .24), (.94, .40), (.84, .55), (.70, .68), (.52, .80), (.32, .90), (.14, .97), (0.0, 1.0)]   # convex ribbed dome (v002 P1 4)
     square_cap('Tower cap', cx, cy, T_CLOCK + .2, ch + .15, T_CAP - T_CLOCK - .2, BELL, 'zinc', 'tower')
     for k in range(4):
         a = math.tau * k / 4 + math.pi / 4
         rib_mesh('Cap rib', cx, cy, T_CLOCK + .2, a, [(rf * (ch + .15) * math.sqrt(2), zf * (T_CAP - T_CLOCK - .2)) for rf, zf in smooth_profile(BELL, 28) if zf < .95], .16, .06, 'zinc', 'tower')
+    capH = T_CAP - T_CLOCK - .2
+    for (nx, ny) in ((0, -1), (1, 0), (0, 1), (-1, 0)):   # oculus dormer on each face of the dome
+        r_at = (ch + .15) * .94
+        px, py, pz = cx + nx * r_at, cy + ny * r_at, T_CLOCK + .2 + capH * .40
+        n_ = (nx * .9, ny * .9, .44)
+        q = lambda d: (px + n_[0] * d, py + n_[1] * d, pz + n_[2] * d)
+        C.rod('Cap oculus hood', q(-.8), q(.35), .52, 'zinc', 'tower', 20)
+        annulus('Cap oculus frame', q(0), n_, .30, .52, .35, .50, 'copper', 'tower', 20)
+        annulus('Cap oculus reveal', q(0), n_, .28, .32, .05, .35, 'hardware', 'tower', 20)
+        C.rod('Cap oculus glass', q(.10), q(.12), .30, 'glass', 'tower', 20)
     C.rod('Lantern neck', (cx, cy, T_CAP - 1.2), (cx, cy, T_CAP + .1), .62, 'zinc', 'tower', 8)
     C.rod('Lantern base', (cx, cy, T_CAP), (cx, cy, T_CAP + .22), .95, 'zinc', 'tower', 8)
     for k in range(8):
@@ -546,28 +564,41 @@ def square_cap(name, cx, cy, z0, half, h, profile, role, module):
 
 
 def porch_and_stair():
-    """Four-column porch at the piano nobile over a rusticated arcade; broad stone stair to the forecourt."""
+    """Short broad flight to a raised terrace before a three-arch rusticated ground arcade; a four-column loggia with a
+    continuous front balustrade at the piano nobile above, crowned by a pediment (locked front and oblique, v002 P1 3)."""
     y_face = -D / 2 - PAV_OUT
     y_front = y_face - PORCH_D
     pw = 9.4
-    # Undercroft: arcade carriers on the front and both returns.
     front = C.Face((0, y_front, 0), (1, 0, 0), (0, 1, 0), 'porch front')
-    holes = [hole('Porch arch 1', 0.0, G0, 2.4, 3.9, kind='open arch'), hole('Porch arch 0', -4.0, G0, 1.0, 3.2, kind='open arch'), hole('Porch arch 2', 4.0, G0, 1.0, 3.2, kind='open arch')]
+    holes = [hole(f'Porch arch {i}', (i - 1) * 3.05, TERRACE, 2.2, 3.1, kind='open arch') for i in range(3)]
     front.wall('Porch arcade carrier', -pw / 2, pw / 2, G0, L1 - .35, depth=T, role='rustic', holes=holes)
     G.brick_courses(front, -pw / 2 + .02, pw / 2 - .02, G0 + .25, L1 - .55, holes, spacing=.52)
     for h in holes:
         arch_fill(front, h['u'], h['z'] + h['h'], h['w'], h['w'] / 2, 'rustic')
         C.OPENINGS.append(dict(id=h['id'], face='porch front', u=h['u'], z=h['z'], width=h['w'], height=h['h'], kind='open arch', clear_wall_cut=True, carrier_depth_m=T, frame_inset_m=None, pane_inset_m=None,
-            face_origin=list(front.o), face_tangent=list(front.t), face_inward=list(front.n), occupied_space='open undercroft to the ground-floor entrance'))
+            face_origin=list(front.o), face_tangent=list(front.t), face_inward=list(front.n), occupied_space='open arcade to the ground-floor entrance'))
     for sgn in (-1, 1):
         side = C.Face((sgn * pw / 2, (y_face + y_front) / 2, 0), (0, sgn, 0), (-sgn, 0, 0), f'porch side {sgn}')
-        sh = [hole(f'Porch side arch {sgn}', 0.0, G0, 2.4, 3.9, kind='open arch')]
+        sh = [hole(f'Porch side arch {sgn}', 0.0, TERRACE, 2.0, 3.1, kind='open arch')]
         side.wall(f'Porch side carrier {sgn}', -PORCH_D / 2 + T, PORCH_D / 2 - T, G0, L1 - .35, depth=T, role='rustic', holes=sh)
-        arch_fill(side, 0.0, sh[0]['z'] + sh[0]['h'], 2.4, 1.2, 'rustic')
-    C.box('Porch undercroft slab', (0, (y_face + y_front) / 2, G0 / 2 + .001), (pw - .1, PORCH_D - .1, G0), 'foundation', 'porch', 0)
+        arch_fill(side, 0.0, sh[0]['z'] + sh[0]['h'], 2.0, 1.0, 'rustic')
+    C.box('Porch undercroft floor', (0, (y_face + y_front) / 2, TERRACE / 2 + .001), (pw - .1, PORCH_D - .1, TERRACE), 'stone', 'porch', 0)
     C.box('Porch platform', (0, (y_face + y_front) / 2 - .02, L1 - .18), (pw - .1, PORCH_D + .46, .36), 'stone', 'porch', 0)
     C.qa_room_light('Undercroft', (0, (y_face + y_front) / 2, L1 - .8), 60, 4.0)
-    # Columns, entablature, balustrade at the second storey.
+    # Raised terrace in front of the arcade with a short broad flight.
+    td = 2.4
+    C.box('Terrace', (0, y_front - td / 2 - .01, TERRACE / 2), (pw + 1.4, td, TERRACE), 'stone', 'porch', 0)
+    C.box('Terrace cope', (0, y_front - td / 2 - .01, TERRACE + .04), (pw + 1.6, td + .2, .08), 'stone', 'porch', 0)
+    length = 2.8
+    y_s = y_front - td - length
+    G.stair('Grand stair', 0.0, y_s, G0, TERRACE, length, 6.4, .15)
+    for sgn in (-1, 1):
+        balustrade((sgn * 3.45, y_front - td), (sgn * (pw / 2 + .7), y_front - td), TERRACE + .08)
+        balustrade((sgn * (pw / 2 + .7), y_front - td), (sgn * (pw / 2 + .7), y_front - .05), TERRACE + .08)
+        C.prism('Stair cheek wall', [(y_s - .2, 0.0), (y_front - td + .02, TERRACE - .1), (y_front - td + .02, TERRACE + 1.0), (y_s - .2, .9)], 'x', sgn * 3.2 + sgn * .02, sgn * 3.2 + sgn * .34, 'stone', 'stairs')
+        C.box('Stair newel', (sgn * 3.38, y_s - .3, .7), (.6, .6, 1.4), 'stone', 'stairs', 0)
+        C.box('Stair newel cap', (sgn * 3.38, y_s - .3, 1.46), (.72, .72, .12), 'stone', 'stairs', 0)
+    # Loggia: columns, entablature, continuous front and side balustrades at the piano nobile.
     for i in range(4):
         x = -pw / 2 + 1.0 + (pw - 2.0) * i / 3
         C.rod('Porch column', (x, y_front + .9, L1 + .36), (x, y_front + .9, L2 - .72), .36, 'stone', 'porch', 16)
@@ -575,7 +606,6 @@ def porch_and_stair():
         C.box('Porch column capital', (x, y_front + .9, L2 - .60), (.95, .95, .30), 'stone', 'porch', 0)
     C.box('Porch entablature', (0, y_front + .9, L2 - .22), (pw + .4, 1.5, .50), 'stone', 'porch', 0)
     C.box('Porch cornice', (0, y_front + .9, L2 + .10), (pw + .8, 1.9, .16), 'stone', 'porch', 0)
-    # Pediment over the entablature, its tympanum set back, and a sloped roof running back to the pavilion face.
     pf = C.Face((0, y_front + .15, 0), (1, 0, 0), (0, 1, 0), 'porch pediment')
     pf.panel('Porch tympanum', [(-pw / 2 - .2, L2 + .18), (pw / 2 + .2, L2 + .18), (0.0, L2 + .18 + (pw / 2 + .2) * .30)], .18, 1.2, 'stone', 'porch')
     apex = L2 + .26 + (pw / 2 + .5) * .30
@@ -586,23 +616,12 @@ def porch_and_stair():
         vs = [(0.0, y_front + .3, apex), (0.0, y_face + .2, apex + .3), (sgn * (pw / 2 + .5), y_face + .2, L2 + .46), (sgn * (pw / 2 + .5), y_front + .3, L2 + .16)]
         vs += [(x, y, z - .16) for x, y, z in vs]
         C.mesh('Porch roof', vs, [(0, 1, 2, 3), (7, 6, 5, 4), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0)], 'zinc', 'porch')
-    for sgn in (-1, 1):   # side pilasters under the entablature ends
+    for sgn in (-1, 1):
         C.box('Porch pier', (sgn * (pw / 2 - .5), y_front + .9, (L1 + .36 + L2 - .6) / 2), (.6, 1.1, L2 - .6 - L1 - .36), 'stone', 'porch', 0)
-    # Piano-nobile balustrade at the platform edge, broken for the full stair width on newel piers (v001 P1 5).
-    balustrade((-pw / 2 - .2, y_front + .2), (-3.4, y_front + .2), L1 + .02)
-    balustrade((3.4, y_front + .2), (pw / 2 + .2, y_front + .2), L1 + .02)
+    balustrade((-pw / 2 + .2, y_front + .2), (pw / 2 - .2, y_front + .2), L1 + .02)
     for sgn in (-1, 1):
-        C.box('Stair head newel', (sgn * 3.25, y_front + .2, L1 + .62), (.5, .5, 1.24), 'stone', 'balustrades', 0)
-        C.box('Stair head newel cap', (sgn * 3.25, y_front + .2, L1 + 1.30), (.62, .62, .12), 'stone', 'balustrades', 0)
-    # Stair: 6 m wide, rising north to the platform.
-    length = 6.2
-    y_s = y_front - length
-    G.stair('Grand stair', 0.0, y_s, G0, L1, length, 6.0, .15)
-    for sgn in (-1, 1):
-        C.prism('Stair cheek wall', [(y_s - .2, 0.0), (y_front - .02, L1 - .20), (y_front - .02, L1 + 1.0), (y_s - .2, 1.0)], 'x', sgn * 3.0 + sgn * .02, sgn * 3.0 + sgn * .30, 'stone', 'stairs')
-        C.box('Stair newel', (sgn * 3.19, y_s - .3, .75), (.6, .6, 1.5), 'stone', 'stairs', 0)
-        C.box('Stair newel cap', (sgn * 3.19, y_s - .3, 1.56), (.72, .72, .12), 'stone', 'stairs', 0)
-    C.CONTACTS.append(dict(name='Porch columns on the platform over the arcade; platform on the arcade carriers; stair on the forecourt', platform_m=L1, entablature_m=L2))
+        balustrade((sgn * (pw / 2 - .2), y_front + .2), (sgn * (pw / 2 - .2), y_face - .05), L1 + .02)
+    C.CONTACTS.append(dict(name='Loggia columns on the platform over the arcade; platform on the arcade carriers; terrace and short flight on the forecourt', platform_m=L1, terrace_m=TERRACE, entablature_m=L2))
 
 
 def balustrade(a, b, z, skip=None, height=1.05):
@@ -634,6 +653,7 @@ def court_and_floors():
         C.qa_room_light(f'South rooms {zl:.1f}', (0.0, -D / 2 + 6.0, zl + 2.6), 80, 5.0)
         C.qa_room_light(f'West rooms {zl:.1f}', (-W / 2 + 6.0, 2.0, zl + 2.6), 60, 5.0)
     C.qa_room_light('Ground floor', (-10.0, -D / 2 + 6.0, L1 - .9), 90, 6.0)
+    C.qa_room_light('Court', (0.0, 0.0, 16.0), 500, 8.0)
     # Court faces: plain stone with windows, their own cornice and mansard ring rising inward.
     cf = A.faces(CW, CD, 0, 0, 'court ')
     for i, f in enumerate(cf):
@@ -667,8 +687,8 @@ def court_and_floors():
     flat_outer = [(-W / 2 + MANS_IN, -D / 2 + MANS_IN), (W / 2 - MANS_IN, -D / 2 + MANS_IN), (W / 2 - MANS_IN, D / 2 - MANS_IN), (-W / 2 + MANS_IN, D / 2 - MANS_IN)]
     wx, wy = ((W - CW) / 2 - 2 * MANS_IN) / 2, ((D - CD) / 2 - 2 * MANS_IN) / 2
     ridge = [(x + (wx if x < 0 else -wx), y + (wy if y < 0 else -wy)) for x, y in flat_outer]
-    strip('Wing upper roof outer', flat_outer, ridge, zt + .04, zt + .04 + UPPER_RISE, 'zinc', 'mansard')
-    strip('Wing upper roof inner', ridge, upper, zt + .04 + UPPER_RISE, zt + .04, 'zinc', 'mansard')
+    strip('Wing upper roof outer', flat_outer, ridge, zt + .04, zt + .04 + UPPER_RISE, 'roof', 'mansard')
+    strip('Wing upper roof inner', ridge, upper, zt + .04 + UPPER_RISE, zt + .04, 'roof', 'mansard')
     for (ax, ay), (bx, by) in zip(ridge, ridge[1:] + ridge[:1]):
         C.beam('Ridge cap', (ax, ay, zt + .06 + UPPER_RISE), (bx, by, zt + .06 + UPPER_RISE), .30, .10, 'zinc', 'mansard')
     for x, y in ((-W / 2 + PAV + 4.0, -D / 2 + 4.5), (W / 2 - PAV - 4.0, D / 2 - 4.5), (-W / 2 + 4.5, D / 2 - PAV - 4.0), (W / 2 - 4.5, -D / 2 + PAV + 4.0)):
@@ -702,7 +722,7 @@ def site():
     iron_fence((W / 2 + PAV_OUT, yb - .4), (W / 2 + PAV_OUT, yf))
     for x in (-17.0, 17.0):
         street_tree(x, yf + 2.4, height=7.0)
-    street_tree(x0 + 7.0, 12.0, height=8.0); street_tree(x0 + 7.0, -8.0, height=8.0)
+    street_tree(x0 + 7.4, 12.0, height=8.0, spread=1.5); street_tree(x0 + 7.4, -8.0, height=8.0, spread=1.5)
 
 
 def build():
@@ -742,7 +762,7 @@ def build():
         C.box('Corner cornice block', (qx + (.14 if qx > 0 else -.14), qy + (.14 if qy > 0 else -.14), CORNICE - .36), (1.62, 1.62, .72), 'stone', 'corner posts', 0)
     for qx, qy in ((-W / 2 + PAV, -D / 2 - .3), (W / 2 - PAV, -D / 2 - .3), (-CEN_W / 2, -D / 2 - .3), (CEN_W / 2, -D / 2 - .3),
                    (-W / 2 - .3, -D / 2 + PAV), (-W / 2 - .3, D / 2 - PAV), (-W / 2 + PAV, D / 2 + .3), (W / 2 - PAV, D / 2 + .3), (W / 2 + .3, -D / 2 + PAV), (W / 2 + .3, D / 2 - PAV)):
-        C.box('Pavilion cornice return block', (qx, qy, CORNICE - .36), (1.2, 1.2, .72), 'stone', 'corner posts', 0)
+        C.box('Pavilion cornice return block', (qx, qy, CORNICE - .35), (1.23, 1.23, .74), 'stone', 'corner posts', 0)
     # Roofs: wing mansards with dormers, pavilion mansards, court ring (in court_and_floors), tower.
     wing_mansard(C.Face(south.o, south.t, south.n, 'south run west'), -W / 2 + PAV, -CEN_W / 2)
     wing_mansard(C.Face(south.o, south.t, south.n, 'south run east'), CEN_W / 2, W / 2 - PAV)
