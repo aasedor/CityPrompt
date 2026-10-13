@@ -264,6 +264,31 @@ def eave_cornice(m, lo, hi, z, span_t=T, proj=.70, role='stone', modillions=True
     m.box(role, (lo + hi) / 2, -(proj / 2 - .02), z, span - 2 * EPS, span_t + proj - .10, .06)
 
 
+def annulus(name, centre, axis, r_in, r_out, d0, d1, role, module, segs=24):
+    """Ring (annulus) extruded along a unit axis from d0 to d1 about `centre`: a real frame with a hole, unlike rod()."""
+    ax = C.Vector(axis).normalized()
+    side = ax.cross(C.Vector((0, 0, 1)))
+    if side.length < 1e-6:
+        side = ax.cross(C.Vector((0, 1, 0)))
+    side.normalize(); up = ax.cross(side).normalized()
+    cen = C.Vector(centre)
+    vs = []
+    for d in (d0, d1):
+        for r in (r_in, r_out):
+            for i in range(segs):
+                a = math.tau * i / segs
+                vs.append(tuple(cen + ax * d + (side * math.cos(a) + up * math.sin(a)) * r))
+    I0, O0, I1, O1 = 0, segs, 2 * segs, 3 * segs
+    fs = []
+    for i in range(segs):
+        j = (i + 1) % segs
+        fs.append((I0 + i, O0 + i, O0 + j, I0 + j))      # d0 end
+        fs.append((I1 + j, O1 + j, O1 + i, I1 + i))      # d1 end
+        fs.append((O0 + i, O1 + i, O1 + j, O0 + j))      # outer wall
+        fs.append((I0 + j, I1 + j, I1 + i, I0 + i))      # inner wall
+    return C.mesh(name, vs, fs, role, module)
+
+
 # ---- building ----
 
 def arch_fill(f, u, z_top, w, rise, role='stone', d0=-.03, d1=None):
@@ -599,8 +624,9 @@ def court_and_floors():
     court = [(-CW / 2, -CD / 2), (CW / 2, -CD / 2), (CW / 2, CD / 2), (-CW / 2, CD / 2)]
     C.prism('Ground slab', outer, 'z', 0.0, G0, 'foundation', 'foundation')
     C.prism('Court paving', [(x * .999, y * .999) for x, y in court], 'z', G0, G0 + .01, 'stone', 'court')
-    wings = [((-W / 2 + T, -D / 2 + T), (W / 2 - T, -CD / 2)), ((-W / 2 + T, CD / 2), (W / 2 - T, D / 2 - T)),
-             ((-W / 2 + T, -CD / 2 - EPS), (-CW / 2, CD / 2 + EPS)), ((CW / 2, -CD / 2 - EPS), (W / 2 - T, CD / 2 + EPS))]
+    ci = T + .02      # court-side floor edges stop inside the court walls (shared planes render black)
+    wings = [((-W / 2 + T, -D / 2 + T), (W / 2 - T, -CD / 2 - ci)), ((-W / 2 + T, CD / 2 + ci), (W / 2 - T, D / 2 - T)),
+             ((-W / 2 + T, -CD / 2 - ci - EPS), (-CW / 2 - ci, CD / 2 + ci + EPS)), ((CW / 2 + ci, -CD / 2 - ci - EPS), (W / 2 - T, CD / 2 + ci + EPS))]
     for zl in (L1, L2, CORNICE):
         for (x0, y0), (x1, y1) in wings:
             C.prism(f'Floor {zl:.1f}', [(x0, y0), (x1, y0), (x1, y1), (x0, y1)], 'z', zl - .30, zl, 'floor', 'occupied floors')

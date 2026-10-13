@@ -263,6 +263,31 @@ def eave_cornice(m, lo, hi, z, span_t=T, proj=.70, role='stone', modillions=True
     m.box(role, (lo + hi) / 2, -(proj / 2 - .02), z, span - 2 * EPS, span_t + proj - .10, .06)
 
 
+def annulus(name, centre, axis, r_in, r_out, d0, d1, role, module, segs=24):
+    """Ring (annulus) extruded along a unit axis from d0 to d1 about `centre`: a real frame with a hole, unlike rod()."""
+    ax = C.Vector(axis).normalized()
+    side = ax.cross(C.Vector((0, 0, 1)))
+    if side.length < 1e-6:
+        side = ax.cross(C.Vector((0, 1, 0)))
+    side.normalize(); up = ax.cross(side).normalized()
+    cen = C.Vector(centre)
+    vs = []
+    for d in (d0, d1):
+        for r in (r_in, r_out):
+            for i in range(segs):
+                a = math.tau * i / segs
+                vs.append(tuple(cen + ax * d + (side * math.cos(a) + up * math.sin(a)) * r))
+    I0, O0, I1, O1 = 0, segs, 2 * segs, 3 * segs
+    fs = []
+    for i in range(segs):
+        j = (i + 1) % segs
+        fs.append((I0 + i, O0 + i, O0 + j, I0 + j))      # d0 end
+        fs.append((I1 + j, O1 + j, O1 + i, I1 + i))      # d1 end
+        fs.append((O0 + i, O1 + i, O1 + j, O0 + j))      # outer wall
+        fs.append((I0 + j, I1 + j, I1 + i, I0 + i))      # inner wall
+    return C.mesh(name, vs, fs, role, module)
+
+
 # ---- building ----
 
 def arch_fill(f, u, z_top, w, rise, role='stone', d0=-.03, d1=None):
@@ -504,19 +529,25 @@ def drum_and_dome():
     C.rod('Dome eave', (cx, cy, z1), (cx, cy, z1 + .20), DOME_R + .10, 'zinc', 'dome', 48)
     base = math.atan2(CN[1], CN[0])
     zc = CORNICE + 1.75
+    drum = C.bpy.data.objects['Dome drum']
     for da in (-48.0, 0.0, 48.0):
+        # Oeil-de-boeuf as a real opening (v002 P1 1): a pocket cut into the drum, a dark liner, recessed glass with a
+        # cross bar, a moulded stone annulus frame proud of the drum and four keystones.
         a = base + math.radians(da)
-        ux, uy = math.cos(a), math.sin(a)
-        q = lambda d: (cx + ux * (DRUM_R + d), cy + uy * (DRUM_R + d), zc)
-        C.rod('Oeil-de-boeuf frame', q(-.30), q(.18), .74, 'stone', 'dome', 24)
-        C.rod('Oeil-de-boeuf reveal', q(-.32), q(.06), .54, 'hardware', 'dome', 24)
-        C.rod('Oeil-de-boeuf glass', q(-.28), q(-.26), .50, 'glass', 'dome', 24)
-        tx, ty = -uy, ux
-        C.beam('Oeil-de-boeuf bar', (cx + ux * (DRUM_R - .24) + tx * .48, cy + uy * (DRUM_R - .24) + ty * .48, zc), (cx + ux * (DRUM_R - .24) - tx * .48, cy + uy * (DRUM_R - .24) - ty * .48, zc), .04, .04, 'hardware', 'dome')
-        C.beam('Oeil-de-boeuf bar', (cx + ux * (DRUM_R - .24), cy + uy * (DRUM_R - .24), zc - .48), (cx + ux * (DRUM_R - .24), cy + uy * (DRUM_R - .24), zc + .48), .04, .04, 'hardware', 'dome')
-        for k in range(8):   # keystones of the ring frame
-            ak = math.tau * k / 8
-            C.box('Oeil-de-boeuf keystone', (cx + ux * (DRUM_R + .20) + tx * math.cos(ak) * .74, cy + uy * (DRUM_R + .20) + ty * math.cos(ak) * .74, zc + math.sin(ak) * .74), (.22, .22, .22), 'stone', 'dome', 0)
+        ux, uy = math.cos(a), math.sin(a); tx, ty = -uy, ux
+        g = C.Face((cx + ux * (DRUM_R - .02), cy + uy * (DRUM_R - .02), 0), (tx, ty, 0), (-ux, -uy, 0), f'roundel {da:+.0f}')
+        g.cut(drum, f'roundel cut {da:+.0f}', 0.0, zc - .55, 1.1, 1.1, depth=.55)
+        mg = Merge(g)
+        mg.box('hardware', 0.0, .30, zc, 1.06, .50, 1.06)                      # dark liner filling the pocket
+        mg.flush('dome')
+        C.rod('Oeil-de-boeuf glass', (cx + ux * (DRUM_R - .30), cy + uy * (DRUM_R - .30), zc), (cx + ux * (DRUM_R - .27), cy + uy * (DRUM_R - .27), zc), .50, 'glass', 'dome', 24)
+        C.beam('Oeil-de-boeuf bar', (cx + ux * (DRUM_R - .26) + tx * .50, cy + uy * (DRUM_R - .26) + ty * .50, zc), (cx + ux * (DRUM_R - .26) - tx * .50, cy + uy * (DRUM_R - .26) - ty * .50, zc), .04, .04, 'hardware', 'dome')
+        C.beam('Oeil-de-boeuf bar', (cx + ux * (DRUM_R - .26), cy + uy * (DRUM_R - .26), zc - .50), (cx + ux * (DRUM_R - .26), cy + uy * (DRUM_R - .26), zc + .50), .04, .04, 'hardware', 'dome')
+        annulus('Oeil-de-boeuf reveal', (cx + ux * DRUM_R, cy + uy * DRUM_R, zc), (ux, uy, 0), .50, .58, -.28, .02, 'hardware', 'dome', 24)
+        annulus('Oeil-de-boeuf frame', (cx + ux * DRUM_R, cy + uy * DRUM_R, zc), (ux, uy, 0), .52, .82, -.02, .20, 'stone', 'dome', 24)
+        annulus('Oeil-de-boeuf frame bead', (cx + ux * DRUM_R, cy + uy * DRUM_R, zc), (ux, uy, 0), .66, .76, .20, .26, 'stone', 'dome', 24)
+        for ak in (0.0, math.pi / 2, math.pi, 3 * math.pi / 2):
+            C.box('Oeil-de-boeuf keystone', (cx + ux * (DRUM_R + .16) + tx * math.cos(ak) * .80, cy + uy * (DRUM_R + .16) + ty * math.cos(ak) * .80, zc + math.sin(ak) * .80), (.28, .28, .30), 'stone', 'dome', 0)
     for k in range(8):
         a = base + math.radians(24.0 + 45.0 * k)
         px, py = cx + math.cos(a) * DRUM_R, cy + math.sin(a) * DRUM_R
@@ -527,21 +558,22 @@ def drum_and_dome():
     sp = smooth_profile(profile, 36)
     for k in range(16):
         rib_mesh('Dome rib', cx, cy, dz, base + math.pi / 16 + math.tau * k / 16, [(rf * DOME_R, zf * DOME_H) for rf, zf in sp if zf <= .95], .11, .05, 'zinc', 'dome')
-    # Projecting framed oculus dormer at the dome base on the chamfer axis (v001 P1 4): round hood on the shell, moulded
-    # ring frame, deep dark reveal, recessed glass, scroll cheeks and a small bonnet.
+    # Projecting framed oculus dormer at the dome base on the chamfer axis (v001 P1 4, v002 P1 2): a zinc cylinder hood
+    # seated on the shell, a moulded stone annulus frame on its face, a dark annular reveal and recessed glass, scroll
+    # cheeks and a flat stone hood cap; nothing passes through anything else.
     ux, uy = math.cos(base), math.sin(base)
     px, py, pz = cx + ux * (DOME_R * .96), cy + uy * (DOME_R * .96), dz + DOME_H * .22
     n = (ux * .97, uy * .97, .24)
     q = lambda d: (px + n[0] * d, py + n[1] * d, pz + n[2] * d)
-    C.rod('Oculus hood', q(-1.2), q(.95), .78, 'zinc', 'dome', 24)
-    C.rod('Oculus ring frame', q(.90), q(1.10), .88, 'stone', 'dome', 24)
-    C.rod('Oculus ring bead', q(1.10), q(1.16), .74, 'stone', 'dome', 24)
-    C.rod('Oculus reveal', q(.55), q(1.17), .58, 'hardware', 'dome', 24)
-    C.rod('Oculus glass', q(.62), q(.64), .55, 'glass', 'dome', 24)
-    C.beam('Oculus bar', (q(.66)[0] - uy * .54, q(.66)[1] + ux * .54, q(.66)[2]), (q(.66)[0] + uy * .54, q(.66)[1] - ux * .54, q(.66)[2]), .04, .04, 'hardware', 'dome')
-    for sgn in (-1, 1):   # scroll cheeks
-        C.box('Oculus cheek', (px + n[0] * .2 - uy * sgn * .95, py + n[1] * .2 + ux * sgn * .95, pz - .35), (.5, .5, 1.4), 'zinc', 'dome', 0)
-    cone('Oculus bonnet', px + n[0] * .3, py + n[1] * .3, pz + .60, 1.05, pz + 1.75, .20, 'zinc', 'dome', 20)
+    C.rod('Oculus hood', q(-1.3), q(.78), .80, 'zinc', 'dome', 24)
+    annulus('Oculus ring frame', q(0), n, .54, .86, .78, 1.02, 'stone', 'dome', 24)
+    annulus('Oculus ring bead', q(0), n, .70, .80, 1.02, 1.08, 'stone', 'dome', 24)
+    annulus('Oculus reveal', q(0), n, .50, .56, .40, .80, 'hardware', 'dome', 24)
+    C.rod('Oculus glass', q(.44), q(.47), .52, 'glass', 'dome', 24)
+    C.beam('Oculus bar', (q(.50)[0] - uy * .50, q(.50)[1] + ux * .50, q(.50)[2]), (q(.50)[0] + uy * .50, q(.50)[1] - ux * .50, q(.50)[2]), .04, .04, 'hardware', 'dome')
+    for sgn in (-1, 1):
+        C.box('Oculus cheek', (px + n[0] * .1 - uy * sgn * 1.02, py + n[1] * .1 + ux * sgn * 1.02, pz - .30), (.46, .46, 1.3), 'zinc', 'dome', 0)
+    C.beam('Oculus hood cap', (q(-.2)[0], q(-.2)[1], q(-.2)[2] + .95), (q(1.0)[0], q(1.0)[1], q(1.0)[2] + .95), 2.0, .18, 'stone', 'dome')
     lz = dz + DOME_H + .30
     C.rod('Lantern neck', (cx, cy, dz + DOME_H * .82), (cx, cy, lz + .02), .55, 'zinc', 'dome', 8)
     C.rod('Lantern base', (cx, cy, lz), (cx, cy, lz + .22), .85, 'zinc', 'dome', 8)
@@ -571,17 +603,17 @@ def roofs_and_floors():
     C.prism('Court paving', [(x * .999, y * .999) for x, y in court], 'z', G0, G0 + .01, 'stone', 'court')
     # Floors as four strips around the court (the court sits inside the rectangle part of the plan).
     for zl in LEVELS + [CORNICE]:
-        for poly in ([(-W / 2 + T, -D / 2 + T), (W / 2 - T, -D / 2 + T), (W / 2 - T, cy - hd), (-W / 2 + T, cy - hd)],
-                     [(-W / 2 + T, cy + hd), (W / 2 - T, cy + hd), (W / 2 - T, D / 2 - T), (-W / 2 + T, D / 2 - T)],
-                     [(-W / 2 + T, cy - hd - EPS), (cx - hw, cy - hd - EPS), (cx - hw, cy + hd + EPS), (-W / 2 + T, cy + hd + EPS)],
-                     [(cx + hw, cy - hd - EPS), (W / 2 - T, cy - hd - EPS), (W / 2 - T, cy + hd + EPS), (cx + hw, cy + hd + EPS)]):
-            if poly[0] == (-W / 2 + T, -D / 2 + T):
-                poly = [(CX0 + .2, -D / 2 + T), (W / 2 - T, -D / 2 + T), (W / 2 - T, cy - hd), (-W / 2 + T, cy - hd), (-W / 2 + T, CY1 + .2)]
+        ci = T + .02      # court-side floor edges stop inside the court walls (shared planes render black, v002 P1 3)
+        for poly in ([(CX0 + .2, -D / 2 + T), (W / 2 - T, -D / 2 + T), (W / 2 - T, cy - hd - ci), (-W / 2 + T, cy - hd - ci), (-W / 2 + T, CY1 + .2)],
+                     [(-W / 2 + T, cy + hd + ci), (W / 2 - T, cy + hd + ci), (W / 2 - T, D / 2 - T), (-W / 2 + T, D / 2 - T)],
+                     [(-W / 2 + T, cy - hd - ci - EPS), (cx - hw - ci, cy - hd - ci - EPS), (cx - hw - ci, cy + hd + ci + EPS), (-W / 2 + T, cy + hd + ci + EPS)],
+                     [(cx + hw + ci, cy - hd - ci - EPS), (W / 2 - T, cy - hd - ci - EPS), (W / 2 - T, cy + hd + ci + EPS), (cx + hw + ci, cy + hd + ci + EPS)]):
             C.prism(f'Floor {zl:.1f}', poly, 'z', zl - .28, zl, 'floor', 'occupied floors')
     for zl in LEVELS:
         C.qa_room_light(f'South rooms {zl:.1f}', (-4.0, -D / 2 + 4.0, zl + 2.6), 70, 5.0)
         C.qa_room_light(f'West rooms {zl:.1f}', (-W / 2 + 4.0, 2.0, zl + 2.6), 60, 5.0)
     C.qa_room_light('Cafe', (CMX + 4.0, CMY + 4.0, LEVELS[0] - .8), 110, 6.0)
+    C.qa_room_light('Court', (COURT[0], COURT[2], 17.5), 700, 10.0)
     # Court faces.
     cf = A.faces(2 * hw, 2 * hd, cx, cy, 'court ')
     for i, f in enumerate(cf):

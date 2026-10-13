@@ -265,6 +265,31 @@ def eave_cornice(m, lo, hi, z, span_t=T, proj=.70, role='stone', modillions=True
     m.box(role, (lo + hi) / 2, -(proj / 2 - .02), z, span - 2 * EPS, span_t + proj - .10, .06)
 
 
+def annulus(name, centre, axis, r_in, r_out, d0, d1, role, module, segs=24):
+    """Ring (annulus) extruded along a unit axis from d0 to d1 about `centre`: a real frame with a hole, unlike rod()."""
+    ax = C.Vector(axis).normalized()
+    side = ax.cross(C.Vector((0, 0, 1)))
+    if side.length < 1e-6:
+        side = ax.cross(C.Vector((0, 1, 0)))
+    side.normalize(); up = ax.cross(side).normalized()
+    cen = C.Vector(centre)
+    vs = []
+    for d in (d0, d1):
+        for r in (r_in, r_out):
+            for i in range(segs):
+                a = math.tau * i / segs
+                vs.append(tuple(cen + ax * d + (side * math.cos(a) + up * math.sin(a)) * r))
+    I0, O0, I1, O1 = 0, segs, 2 * segs, 3 * segs
+    fs = []
+    for i in range(segs):
+        j = (i + 1) % segs
+        fs.append((I0 + i, O0 + i, O0 + j, I0 + j))      # d0 end
+        fs.append((I1 + j, O1 + j, O1 + i, I1 + i))      # d1 end
+        fs.append((O0 + i, O1 + i, O1 + j, O0 + j))      # outer wall
+        fs.append((I0 + j, I1 + j, I1 + i, I0 + i))      # inner wall
+    return C.mesh(name, vs, fs, role, module)
+
+
 # ---- building ----
 
 def arch_fill(f, u, z_top, w, rise, role='stone', d0=-.03, d1=None):
@@ -618,7 +643,7 @@ def roofs_and_floors():
     inner = offset_polygon(outer, T)
     for zl in LEVELS + [CORNICE]:
         slab = C.prism(f'Floor {zl:.1f}', inner, 'z', zl - .30, zl, 'floor', 'occupied floors')
-        C.cut_box(slab, 'Light well cut', (cx, cy, zl - .15), (2 * hw, 2 * hd, 1.0))
+        C.cut_box(slab, 'Light well cut', (cx, cy, zl - .15), (2 * hw + 2 * (T + .02), 2 * hd + 2 * (T + .02), 1.0))   # clear of the court wall planes
     for zl in [G0] + LEVELS:
         C.qa_room_light(f'South hall {zl:.1f}', (-6.0, -D / 2 + 5.0, zl + 2.8), 90, 6.0)
         C.qa_room_light(f'West hall {zl:.1f}', (-W / 2 + 5.0, 2.0, zl + 2.8), 70, 6.0)

@@ -256,6 +256,31 @@ def eave_cornice(m, lo, hi, z, span_t=T, proj=.70, role='stone', modillions=True
     m.box(role, (lo + hi) / 2, -(proj / 2 - .02), z, span - 2 * EPS, span_t + proj - .10, .06)
 
 
+def annulus(name, centre, axis, r_in, r_out, d0, d1, role, module, segs=24):
+    """Ring (annulus) extruded along a unit axis from d0 to d1 about `centre`: a real frame with a hole, unlike rod()."""
+    ax = C.Vector(axis).normalized()
+    side = ax.cross(C.Vector((0, 0, 1)))
+    if side.length < 1e-6:
+        side = ax.cross(C.Vector((0, 1, 0)))
+    side.normalize(); up = ax.cross(side).normalized()
+    cen = C.Vector(centre)
+    vs = []
+    for d in (d0, d1):
+        for r in (r_in, r_out):
+            for i in range(segs):
+                a = math.tau * i / segs
+                vs.append(tuple(cen + ax * d + (side * math.cos(a) + up * math.sin(a)) * r))
+    I0, O0, I1, O1 = 0, segs, 2 * segs, 3 * segs
+    fs = []
+    for i in range(segs):
+        j = (i + 1) % segs
+        fs.append((I0 + i, O0 + i, O0 + j, I0 + j))      # d0 end
+        fs.append((I1 + j, O1 + j, O1 + i, I1 + i))      # d1 end
+        fs.append((O0 + i, O1 + i, O1 + j, O0 + j))      # outer wall
+        fs.append((I0 + j, I1 + j, I1 + i, I0 + i))      # inner wall
+    return C.mesh(name, vs, fs, role, module)
+
+
 # ---- building ----
 
 def quad(name, p0, p1, p2, p3, t, role, module):

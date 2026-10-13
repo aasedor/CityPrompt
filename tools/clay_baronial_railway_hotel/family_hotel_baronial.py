@@ -258,6 +258,31 @@ def eave_cornice(m, lo, hi, z, span_t=T, proj=.70, role='stone', modillions=True
     m.box(role, (lo + hi) / 2, -(proj / 2 - .02), z, span - 2 * EPS, span_t + proj - .10, .06)
 
 
+def annulus(name, centre, axis, r_in, r_out, d0, d1, role, module, segs=24):
+    """Ring (annulus) extruded along a unit axis from d0 to d1 about `centre`: a real frame with a hole, unlike rod()."""
+    ax = C.Vector(axis).normalized()
+    side = ax.cross(C.Vector((0, 0, 1)))
+    if side.length < 1e-6:
+        side = ax.cross(C.Vector((0, 1, 0)))
+    side.normalize(); up = ax.cross(side).normalized()
+    cen = C.Vector(centre)
+    vs = []
+    for d in (d0, d1):
+        for r in (r_in, r_out):
+            for i in range(segs):
+                a = math.tau * i / segs
+                vs.append(tuple(cen + ax * d + (side * math.cos(a) + up * math.sin(a)) * r))
+    I0, O0, I1, O1 = 0, segs, 2 * segs, 3 * segs
+    fs = []
+    for i in range(segs):
+        j = (i + 1) % segs
+        fs.append((I0 + i, O0 + i, O0 + j, I0 + j))      # d0 end
+        fs.append((I1 + j, O1 + j, O1 + i, I1 + i))      # d1 end
+        fs.append((O0 + i, O1 + i, O1 + j, O0 + j))      # outer wall
+        fs.append((I0 + j, I1 + j, I1 + i, I0 + i))      # inner wall
+    return C.mesh(name, vs, fs, role, module)
+
+
 # ---- building ----
 
 def cone(name, cx, cy, z0, r0, z1, r1, role, module, segs=24):
@@ -542,8 +567,9 @@ def roofs_and_floors():
     for x, y in ((-11.0, -7.0), (11.0, -7.0), (11.0, 7.0), (-11.0, 7.0)):     # four corner trees (locked top, v001 P1 16)
         street_tree(x, y, G0 + .03, height=7.0, spread=1.8)
         C.box('Court planter', (x, y, G0 + .2), (2.4, 2.4, .34), 'stone', 'court', 0)
-    wings = [((-W / 2 + T, -D / 2 + T), (W / 2 - T, -D / 2 + WING)), ((-W / 2 + T, D / 2 - WING), (W / 2 - T, D / 2 - T)),
-             ((-W / 2 + T, -D / 2 + WING - EPS), (-W / 2 + WING, D / 2 - WING + EPS)), ((W / 2 - WING, -D / 2 + WING - EPS), (W / 2 - T, D / 2 - WING + EPS))]
+    ci = T + .02      # court-side floor edges stop inside the court walls (shared planes render black)
+    wings = [((-W / 2 + T, -D / 2 + T), (W / 2 - T, -D / 2 + WING - ci)), ((-W / 2 + T, D / 2 - WING + ci), (W / 2 - T, D / 2 - T)),
+             ((-W / 2 + T, -D / 2 + WING - ci - EPS), (-W / 2 + WING - ci, D / 2 - WING + ci + EPS)), ((W / 2 - WING + ci, -D / 2 + WING - ci - EPS), (W / 2 - T, D / 2 - WING + ci + EPS))]
     for zl in LEVELS + [EAVE]:
         for (x0, y0), (x1, y1) in wings:
             slab = C.prism(f'Floor {zl:.1f}', [(x0, y0), (x1, y0), (x1, y1), (x0, y1)], 'z', zl - .28, zl, 'floor', 'occupied floors')
