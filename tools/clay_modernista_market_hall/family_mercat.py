@@ -108,6 +108,8 @@ def framed(m, f, h, cols=1, rows=1, inset=.16, occupied='room', kind='window', f
     if lite:
         m.box(frame, u, inset + .06, z + hh / 2, w - .01, .08, hh - .01)
         m.box(glass, u, inset + .01, z + hh / 2, w - .03, .009, hh - .03)
+        m.box(frame, u, inset - .012, z + hh / 2, .05, .04, hh - .02)               # glazing bars in front of the pane
+        m.box(frame, u, inset - .012, z + hh * .55, w - .02, .04, .05)
         register(f, h, inset, kind, occupied)
         return
     for s in (-1, 1):
@@ -487,15 +489,17 @@ def wing_roofs():
     slope = (RIDGE - EAVE_W) / HW
     for axis in ('y', 'x'):
         lo, hi = -(S / 2 + .60), S / 2 + .60
+        e = EAVE_W - .5 * slope
+        pts = [(-(HW + .5), e), (0.0, RIDGE), (HW + .5, e), (HW + .5, e - t), (0.0, RIDGE - t), (-(HW + .5), e - t)]
+        strips = []
         for side in (-1, 1):
-            pts = [(0.0, RIDGE), (side * (HW + .5), EAVE_W - .5 * slope), (side * (HW + .5), EAVE_W - .5 * slope - t), (0.0, RIDGE - t)]
-            strips = []
             for (g0, g1) in ((lo + 2.0, -LANT - 1.6), (LANT + 1.6, hi - 2.0)):
                 for (a_lo, a_hi) in ((1.6, 3.0), (4.6, 6.0)):
                     a0, a1 = side * a_lo, side * a_hi
                     za = RIDGE - a_lo * slope + .02; zb = RIDGE - a_hi * slope + .02
                     strips.append((a0, a1, g0, g1, za, zb))
-            roof_plate_with_strips(f'Wing roof {axis}{side}', pts, axis, lo, hi, strips)
+        roof_plate_with_strips(f'Wing roof {axis}', pts, axis, lo, hi, strips)
+        for side in (1,):
             if axis == 'y':
                 C.beam('Ridge cap', (0.0, lo, RIDGE + .06), (0.0, hi, RIDGE + .06), .30, .12, 'hardware', 'wing roofs')
             else:
@@ -528,22 +532,24 @@ def wing_roofs():
             if axis == 'y':
                 for side in (-1, 1):
                     quad(f'Monitor roof {axis}{sgn}{side}', (0.0, c0, zb + 2.5), (0.0, c1, zb + 2.5), (side * 1.95, c1, zb + 1.45), (side * 1.95, c0, zb + 1.45), .08, 'glass', 'monitors')
-                for cc, off in ((c0, -.06 if c0 < c1 else .06), (c1, .06 if c0 < c1 else -.06)):   # gable ends clear of the glazing and roof planes
-                    tri(f'Monitor gable {axis}{sgn}', (-1.9, cc + off, zb + 1.45), (1.9, cc + off, zb + 1.45), (0.0, cc + off, zb + 2.5), .10, 'hardware', 'monitors')
+                for cc, dirn in ((c0, -1.0 if c0 < c1 else 1.0), (c1, 1.0 if c0 < c1 else -1.0)):   # closed gable ends as panels with real thickness
+                    gf = C.Face((0.0, cc + dirn * .02, 0), (1, 0, 0), (0, -dirn, 0), 'monitor end')
+                    gf.panel(f'Monitor gable {axis}{sgn}', [(-1.95, zb - .3), (1.95, zb - .3), (1.95, zb + 1.45), (0.0, zb + 2.52), (-1.95, zb + 1.45)], -.08, .04, 'hardware', 'monitors')
             else:
                 for side in (-1, 1):
                     quad(f'Monitor roof {axis}{sgn}{side}', (c0, 0.0, zb + 2.5), (c1, 0.0, zb + 2.5), (c1, side * 1.95, zb + 1.45), (c0, side * 1.95, zb + 1.45), .08, 'glass', 'monitors')
-                for cc, off in ((c0, -.06 if c0 < c1 else .06), (c1, .06 if c0 < c1 else -.06)):
-                    tri(f'Monitor gable {axis}{sgn}', (cc + off, -1.9, zb + 1.45), (cc + off, 1.9, zb + 1.45), (cc + off, 0.0, zb + 2.5), .10, 'hardware', 'monitors')
+                for cc, dirn in ((c0, -1.0 if c0 < c1 else 1.0), (c1, 1.0 if c0 < c1 else -1.0)):
+                    gf = C.Face((cc + dirn * .02, 0.0, 0), (0, 1, 0), (-dirn, 0, 0), 'monitor end')
+                    gf.panel(f'Monitor gable {axis}{sgn}', [(-1.95, zb - .3), (1.95, zb - .3), (1.95, zb + 1.45), (0.0, zb + 2.52), (-1.95, zb + 1.45)], -.08, .04, 'hardware', 'monitors')
     # Clerestory louvre walls of the wings over the quadrant roofs.
-    k_slope = (EAVE_W - EAVE_A) / (S / 2 - HW)
+    k_slope = 0.0      # quadrant pyramids meet the wing walls at the aisle eave (v002 P1 F3)
     for axis in ('y', 'x'):
         for sgn in (-1, 1):
             for side in (-1, 1):
                 u0, u1 = sgn * HW, sgn * (S / 2 - 1.4)
                 pts = []
                 for u in (u0, u1):
-                    z_q = EAVE_W - k_slope * (abs(u) - HW)
+                    z_q = EAVE_A + .4
                     pts.append((u, z_q - .35))
                 pts.append((u1, EAVE_W + .30)); pts.append((u0, EAVE_W + .30))
                 if axis == 'y':
@@ -556,33 +562,37 @@ def wing_roofs():
                 n = max(1, round(abs(u1 - u0) / BAY))
                 for i in range(n + 1):
                     u = u0 + (u1 - u0) * i / n
-                    z_q = EAVE_W - k_slope * (abs(u) - HW)
+                    z_q = EAVE_A + .4
                     m.box('hardware', u, 0.0, (z_q - .35 + EAVE_W + .04) / 2, .12, .12, EAVE_W + .04 - z_q + .35)
                 for j in range(6):           # louvre blades
                     zl = EAVE_W - .3 - j * .5
-                    seg = [u for u in (u0 + (u1 - u0) * k / 24 for k in range(25)) if EAVE_W - k_slope * (abs(u) - HW) - .2 < zl]
+                    seg = [u for u in (u0 + (u1 - u0) * k / 24 for k in range(25)) if EAVE_A + .2 < zl]
                     if len(seg) > 1:
                         m.box('hardware', (seg[0] + seg[-1]) / 2, -.03, zl, abs(seg[-1] - seg[0]), .05, .09)
                 m.flush('clerestory')
                 C.OPENINGS.append(dict(id=f'{f.label} glazing', face=f.label, u=(u0 + u1) / 2, z=EAVE_A, width=abs(u1 - u0), height=EAVE_W - EAVE_A, kind='clerestory glazing', clear_wall_cut=False,
                     carrier_depth_m=.012, frame_inset_m=0.0, pane_inset_m=0.0, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='market hall'))
-    # Quadrant roofs: two triangular plates per corner with glazed strips cut through; closed double-pitch gablets.
+    # Quadrant roofs: steep glazed pyramids with stained-glass panes on iron hips (locked oblique and top, v002 P1 F3).
+    stains = ('stain_blue', 'stain_green', 'stain_gold', 'stain_red')
     for sx in (-1, 1):
         for sy in (-1, 1):
-            oc = (sx * (S / 2 + .6), sy * (S / 2 + .6), EAVE_A - .05)
-            ic = (sx * HW, sy * HW, EAVE_W - .02)
-            ex = (sx * HW, sy * (S / 2 + .6), EAVE_A - .05)
-            ey = (sx * (S / 2 + .6), sy * HW, EAVE_A - .05)
-            ta = tri(f'Quadrant roof {sx}{sy}a', oc, ex, ic, .16, 'roof', 'quadrant roofs')
-            tb = tri(f'Quadrant roof {sx}{sy}b', oc, ic, ey, .16, 'roof', 'quadrant roofs')
-            # glazed strip across each plate (plan-aligned cutter through the sloping plate)
-            for plate, (cxs, cys, w_, d_) in ((ta, (sx * (HW + 4.0), sy * (S / 2 - 6.0), 3.0, 4.0)), (tb, (sx * (S / 2 - 6.0), sy * (HW + 4.0), 4.0, 3.0))):
-                C.cut_box(plate, 'Quadrant strip cut', (cxs, cys, EAVE_A + 1.0), (w_, d_, 6.0))
-                def zq(x, y):      # height of the quadrant plane through oc, ex/ey and ic
-                    fx = (abs(x) - HW) / (S / 2 + .6 - HW); fy = (abs(y) - HW) / (S / 2 + .6 - HW)
-                    return EAVE_W - .02 - max(fx, fy) * (EAVE_W - .02 - EAVE_A + .05)
-                x0, x1, y0, y1 = cxs - w_ / 2, cxs + w_ / 2, cys - d_ / 2, cys + d_ / 2
-                quad('Quadrant strip glass', (x0, y0, zq(x0, y0) + .01), (x1, y0, zq(x1, y0) + .01), (x1, y1, zq(x1, y1) + .01), (x0, y1, zq(x0, y1) + .01), .05, 'glass', 'quadrant roofs')
+            x0, x1 = sorted((sx * (HW + .02), sx * (S / 2 + .6)))
+            y0, y1 = sorted((sy * (HW + .02), sy * (S / 2 + .6)))
+            qc = ((x0 + x1) / 2, (y0 + y1) / 2, EAVE_A + 5.0)
+            base = [(x0, y0, EAVE_A - .05), (x1, y0, EAVE_A - .05), (x1, y1, EAVE_A - .05), (x0, y1, EAVE_A - .05)]
+            for j, (p0, p1) in enumerate(zip(base, base[1:] + base[:1])):
+                tri(f'Quadrant pyramid glass {sx}{sy}{j}', p0, p1, qc, .05, 'glass', 'quadrant roofs')
+                fc = tuple((p0[i] + p1[i] + qc[i]) / 3 for i in range(3))
+                for s_, frac in ((.78, 0), (.45, 1)):
+                    q0 = tuple(fc[i] + (p0[i] - fc[i]) * s_ for i in range(3)); q1 = tuple(fc[i] + (p1[i] - fc[i]) * s_ for i in range(3)); q2 = tuple(fc[i] + (qc[i] - fc[i]) * s_ for i in range(3))
+                    lift = (.03 + .02 * frac)
+                    tri(f'Quadrant pyramid pane {sx}{sy}{j}{frac}', (q0[0], q0[1], q0[2] + lift), (q1[0], q1[1], q1[2] + lift), (q2[0], q2[1], q2[2] + lift), .02, stains[(j + frac + (sx > 0) * 2) % 4], 'quadrant roofs')
+                C.beam('Quadrant hip', p0, qc, .16, .16, 'hardware', 'quadrant roofs')
+                C.beam('Quadrant eave', p0, p1, .22, .18, 'hardware', 'quadrant roofs')
+                for fr in (.35, .65):
+                    C.beam('Quadrant purlin', tuple(p0[i] + (qc[i] - p0[i]) * fr for i in range(3)), tuple(p1[i] + (qc[i] - p1[i]) * fr for i in range(3)), .07, .07, 'hardware', 'quadrant roofs')
+            C.rod('Quadrant finial', qc, (qc[0], qc[1], qc[2] + 1.4), .06, 'hardware', 'quadrant roofs', 6)
+            C.rod('Quadrant finial ball', (qc[0], qc[1], qc[2] + 1.0), (qc[0], qc[1], qc[2] + 1.25), .16, 'gilt', 'quadrant roofs', 8)
             for k in range(1, 3):
                 for along in ('x', 'y'):
                     d = HW + k * 4.6 + .2
@@ -654,18 +664,20 @@ def interior():
                     x, y = (side * HW, u) if axis == 'y' else (u, side * HW)
                     C.rod('Hall column', (x, y, G0), (x, y, EAVE_W - .3), .20, 'hardware', 'hall columns', 10)
                     C.rod('Hall column capital', (x, y, EAVE_W - .8), (x, y, EAVE_W - .3), .30, 'hardware', 'hall columns', 10)
+            slope = (RIDGE - EAVE_W) / HW
             for i in range(0, 4):
                 u = sgn * (HW + 1.0 + (S / 2 - 2.6 - HW) * i / 3)
-                pts = []
-                for k in range(13):
-                    a = math.pi * k / 12
-                    pts.append((-math.cos(a) * (HW - .3), EAVE_W - 1.2 + math.sin(a) * (RIDGE - EAVE_W + .4)))
-                for (a_, za), (b_, zb) in zip(pts, pts[1:]):
-                    pa = (a_, u, za) if axis == 'y' else (u, a_, za); pb = (b_, u, zb) if axis == 'y' else (u, b_, zb)
-                    C.beam('Hall truss', pa, pb, .14, .30, 'hardware', 'trusses')
-                for a_ in (-HW + .3, HW - .3):
-                    pa = (a_, u, EAVE_W - 1.2) if axis == 'y' else (u, a_, EAVE_W - 1.2); pb = (a_, u, EAVE_W - .3) if axis == 'y' else (u, a_, EAVE_W - .3)
-                    C.beam('Hall truss post', pa, pb, .14, .14, 'hardware', 'trusses')
+                P = lambda a_, z_: (a_, u, z_) if axis == 'y' else (u, a_, z_)
+                for s_ in (-1, 1):
+                    C.beam('Hall truss rafter', P(s_ * (HW - .3), EAVE_W - .5 + .3 * slope - .35), P(0.0, RIDGE - .55), .14, .26, 'hardware', 'trusses')
+                C.beam('Hall truss tie', P(-(HW - .3), EAVE_W - .45), P(HW - .3, EAVE_W - .45), .12, .16, 'hardware', 'trusses')
+                arc = [(-math.cos(math.pi * k / 10) * (HW - .3), EAVE_W - 1.0 + math.sin(math.pi * k / 10) * 1.2) for k in range(11)]
+                for (a_, za), (b_, zb) in zip(arc, arc[1:]):
+                    C.beam('Hall truss arch', P(a_, za), P(b_, zb), .10, .18, 'hardware', 'trusses')
+                C.beam('Hall truss king post', P(0.0, EAVE_W - .45), P(0.0, RIDGE - .6), .12, .12, 'hardware', 'trusses')
+                for s_ in (-1, 1):
+                    C.beam('Hall truss strut', P(s_ * (HW - .3) * .5, EAVE_W - .45), P(s_ * (HW - .3) * .25, RIDGE - .55 - (HW - .3) * .25 * slope), .10, .10, 'hardware', 'trusses')
+                    C.beam('Hall truss post', P(s_ * (HW - .3), EAVE_W - 1.0), P(s_ * (HW - .3), EAVE_W - .3), .14, .14, 'hardware', 'trusses')
     # Stalls: timber counters with produce boxes along the four aisles and around the lantern.
     for (x, y, w, d) in ((-5.5, -14.0, 3.2, 8.0), (5.5, -14.0, 3.2, 8.0), (-5.5, 14.0, 3.2, 8.0), (5.5, 14.0, 3.2, 8.0),
                          (-14.0, -5.5, 8.0, 3.2), (-14.0, 5.5, 8.0, 3.2), (14.0, -5.5, 8.0, 3.2), (14.0, 5.5, 8.0, 3.2),
@@ -678,7 +690,9 @@ def interior():
                 C.rod('Stall post', (x + sx * (w / 2 - .1), y + sy * (d / 2 - .1), G0 + .9), (x + sx * (w / 2 - .1), y + sy * (d / 2 - .1), G0 + 2.86), .03, 'hardware', 'stalls', 6)
     C.qa_room_light('Hall south', (0.0, -12.0, 8.0), 160, 8.0); C.qa_room_light('Hall north', (0.0, 12.0, 8.0), 120, 8.0)
     C.qa_room_light('Hall east', (12.0, 0.0, 8.0), 120, 8.0); C.qa_room_light('Hall west', (-12.0, 0.0, 8.0), 120, 8.0)
-    C.qa_room_light('Lantern', (0.0, 0.0, 14.0), 220, 10.0)
+    C.qa_room_light('Lantern', (0.0, 0.0, 15.0), 500, 12.0)
+    for (lx, ly) in ((0.0, -16.0), (0.0, 16.0), (-16.0, 0.0), (16.0, 0.0)):
+        C.qa_room_light(f'Wing roof {lx:.0f}{ly:.0f}', (lx, ly, EAVE_W + 1.0), 380, 9.0)
     C.qa_room_light('Hall entrance', (0.0, -18.0, 6.0), 160, 8.0)
 
 

@@ -115,6 +115,8 @@ def framed(m, f, h, cols=1, rows=1, inset=.16, occupied='room', kind='window', f
     if lite:
         m.box(frame, u, inset + .06, z + hh / 2, w - .01, .08, hh - .01)
         m.box(glass, u, inset + .01, z + hh / 2, w - .03, .009, hh - .03)
+        m.box(frame, u, inset - .012, z + hh / 2, .05, .04, hh - .02)               # glazing bars in front of the pane
+        m.box(frame, u, inset - .012, z + hh * .55, w - .02, .04, .05)
         register(f, h, inset, kind, occupied)
         return
     for s in (-1, 1):
@@ -565,7 +567,9 @@ def drum_and_dome():
     px, py, pz = cx + ux * (DOME_R * .96), cy + uy * (DOME_R * .96), dz + DOME_H * .22
     n = (ux * .97, uy * .97, .24)
     q = lambda d: (px + n[0] * d, py + n[1] * d, pz + n[2] * d)
-    C.rod('Oculus hood', q(-1.3), q(.78), .80, 'zinc', 'dome', 24)
+    C.rod('Oculus hood', q(-1.3), q(.36), .80, 'zinc', 'dome', 24)
+    annulus('Oculus hood ring', q(0), n, .58, .80, .36, .78, 'zinc', 'dome', 24)
+    C.rod('Oculus dark backing', q(.37), q(.40), .56, 'hardware', 'dome', 24)
     annulus('Oculus ring frame', q(0), n, .54, .86, .78, 1.02, 'stone', 'dome', 24)
     annulus('Oculus ring bead', q(0), n, .70, .80, 1.02, 1.08, 'stone', 'dome', 24)
     annulus('Oculus reveal', q(0), n, .50, .56, .40, .80, 'hardware', 'dome', 24)
@@ -619,7 +623,7 @@ def roofs_and_floors():
     for i, f in enumerate(cf):
         f = C.Face(f.o, f.t, f.n * -1, f.label)
         span = 2 * hw if i % 2 == 0 else 2 * hd
-        lo, hi = (-span / 2, span / 2 - EPS) if i % 2 == 0 else (-span / 2 + T, span / 2 - T)
+        lo, hi = (-span / 2, span / 2 - EPS) if i % 2 == 0 else (-span / 2 - T + .02, span / 2 + T - .02)   # side walls run into the front and rear walls (v003 P1 2)
         nb = max(1, int(span / 4.0)); pitch = span / nb
         hs = []
         for k in range(nb):
