@@ -372,7 +372,7 @@ def gilt_front(m, f, u, z, w, depth=.55):
     m.box('gilt', u, -depth + .05, z + .52, w, .04, .92)                       # solid panel
     m.box('gilt', u, -depth + .02, z + .98, w + .04, .09, .08)                 # top rail
     m.box('gilt', u, -depth + .02, z + .06, w + .04, .09, .08)                 # base rail
-    n = max(2, int(w / 1.5))
+    n = max(2, int(w / 2.0))
     for i in range(n):
         c = u - w / 2 + w * (i + .5) / n
         m.box('gilt', c, -depth + .005, z + .52, .12, .03, .74)                # relief: central stem
@@ -398,7 +398,7 @@ def elevation(f, lo, hi, street=True, pavilion_end=None):
     holes = g + up
     f.wall(f'{f.label} ground carrier', lo, hi - EPS, G0, LEVELS[0] - .30, depth=T, role='stone', holes=holes)
     f.wall(f'{f.label} upper carrier', lo, hi - EPS, LEVELS[0] - .30, CORNICE + .40, depth=T, role='wall', holes=holes)
-    G.brick_courses(f, lo + .02, hi - .02, LEVELS[0] + .2, CORNICE - .9, up, spacing=2.4)
+    G.brick_courses(f, lo + .02, hi - .02, LEVELS[0] + .2, CORNICE - .9, up, spacing=2.9)
     m = Merge(f)
     if pavilion_end is not None:       # closed return of the projecting pavilion, overlapping the wing carrier
         m.box('stone', pavilion_end[0] + pavilion_end[1] * (T / 2 + .012), (T - .03 + PAV_OUT + T * .6) / 2, (G0 + CORNICE + .45) / 2, T, PAV_OUT + T * .6 - (T - .03), CORNICE + .45 - G0)
@@ -699,7 +699,7 @@ def drum_and_domes():
         C.beam('Court girder', (ccx - hw_ - .3, ccy + sgn * rr * .72, zb), (ccx + hw_ + .3, ccy + sgn * rr * .72, zb), .30, .50, 'hardware', 'court dome')
         C.beam('Court girder', (ccx + sgn * rr * .72, ccy - hd_ - .3, zb + .02), (ccx + sgn * rr * .72, ccy + hd_ + .3, zb + .02), .30, .50, 'hardware', 'court dome')
     annulus('Court dome ring beam', (ccx, ccy, zb + .25), (0, 0, 1), rr - .25, rr + .2, 0.0, .45, 'hardware', 'court dome', 48)
-    glass_dome(ccx, ccy, zb + .70, rr, hh_, ribs=16, rings=1, module='court dome', scale=.6, rib_top=.99, cap=1.6)      # 16 continuous ribs to a central cap (locked top, v005 P1 2)
+    glass_dome(ccx, ccy, zb + .70, rr, hh_, ribs=16, rings=0, module='court dome', scale=.6, rib_top=.99, cap=1.6)      # 16 continuous ribs to a central cap (locked top, v005 P1 2)
     C.CONTACTS.append(dict(name='Corner cornice disc on the corner bay carriers carrying the gilded balustrade ring; glazed drum on the cornice; dome on the drum cornice; court dome on a ring beam over four girders bearing on the light-well walls', drum_top_m=z1, dome_top_m=z1 + .30 + DOME_H))
 
 
