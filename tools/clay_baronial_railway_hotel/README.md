@@ -69,6 +69,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 in progress)
+## Open blockers after v003 (Improved from 3 P0 + 8 P1 to 1 P0 + 4 P1; becomes the candidate.)
 
-Carried into v003; storey count follows the source pixels (the catalogue text says six storeys).
+P0 black slot inside the porte-cochere at the porch reveal and tower passage wall junction (v002 finding, survived one fix); P1 two-tier gable windows: lower heads merge into step copes, outer jambs flush with risers; P1 tower-side flank of the gable next to the tower is a straight rake with no risers and a near-black wedge from a roof plane in front; P1 conical stair tourelle too small and low, springs at parapet walk, base sinks into court roof, invisible at eye level; P1 black notches at court string-course inner corners (v002 finding, survived one fix)

@@ -1,0 +1,69 @@
+# Independent holistic review: clay-baronial-railway-hotel v003
+
+Reviewer: independent (did not build this candidate). Basis: the pixels of the three locked sources (`sources/front.png`, `sources/oblique.jpg`, `sources/top.jpg`), all 18 renders at full resolution with zoomed crops, and the four phone boards. I did not use the builder's notes, metadata or counts as proof.
+
+## 1. Verdict
+
+**VISUAL_REWORK_REQUIRED**: the v002 black slot at the tower/porch junction is still a full-height black void inside the porte-cochere in four views. The crow-stepped gables, the tower's tall stair tourelle and the inner court corners still show visible defects that block approval.
+
+Counts: P0 = 1, P1 = 4, P2 = 10
+
+## 2. Findings
+
+| # | severity | view(s) | symptom (what the pixels show) | likely cause | finite fix |
+|---|---|---|---|---|---|
+| 1 | P0 | porte_cochere, facade_close, front, front_corner | A full-height black vertical slot runs down the right (east) side of the porte-cochere passage, from about the arch springing to the floor (porte_cochere x≈760–775, y≈555–915; facade_close x≈790–805; it is also a visible black line inside the arch in front and front_corner). The passage does not read as a closed masonry tunnel at this point. | The projecting porch box and the tower's passage walls do not meet. A gap is left between the porch's inner reveal and the passage side wall, and the camera looks into the unlit space behind them. This is the same tower/porch junction defect as v002. | Extend the passage side walls (and the vault) forward to the porch's inner reveal face, or give the porch reveal a full-depth return that overlaps the tower passage wall by ≥0.1 m. Re-render porte_cochere and confirm there is no pixel darker than the passage shadow along that seam. |
+| 2 | P1 | crow_gables, entrance_tower, front (both gables east of the tower) | In every gable with two tiers of windows (two below, one above), the head moulds of the lower windows merge into the step copes. They form one continuous slab, and the outer jambs sit flush with the step risers, leaving no masonry margin (et_rg crop: left head and cope form one bar at the same height; right head runs into the cope at the step). The single-window gables (architecture_close) are clean. | The lower gable windows are placed at the same height as a step cope, and their width reaches the stepped outline. | Lower the lower-tier gable windows (or raise the steps) so each head clears the nearest cope by at least one course, and pull the outer jambs at least half a window-width inside the riser. A better fix, matching the front source, is one row of three narrower lights on the bay axes plus a small slit near the apex. |
+| 3 | P1 | crow_gables | On the tower-side (west) flank of the gable next to the tower, the pink gable edge is a straight raked line. The step risers are missing, and each cope cantilevers over a near-black wedge (sampled RGB ≈ 29,32,38) between the tower face and the gable. The east flank of the same gable is correctly stepped, and so is this flank when seen square-on in entrance_tower. | From this oblique angle, a roof plane in the tower/range valley passes in front of the stepped edge of the gable face, so the gable is cut by the roof. The near-black colour is roof in deep tower shadow. | Pull the valley/hip roof piece back behind the gable plane (or move the gable forward by its coping projection), so that the stepped wall rises clear of every roof surface. Verify from the crow_gables camera that pink step risers appear under every cope. |
+| 4 | P1 | front, entrance_tower, corner_tourelle, rear_side vs source front/oblique | In both locked sources, the tower's dominant skyline element is a tall round stair tourelle at its back-right corner. It is corbelled out at about the adjacent roof line, and its shaft and tall conical cap rise well above the crenellated parapet (cone height ≈0.5–0.75 of the tower width). In the render, the tourelle is a short shaft whose cone springs at parapet-walk level (cone ≈0.36 tower width). Its rounded base drops into the slate roof on the court side (rear_side). In the eye-level front render it cannot be seen at all, so the tower reads as a plain crenellated block. | The tourelle shaft is too short and set back on the north face. Its cap base is at walk level, not above the merlons. | Move the tourelle to the tower's NE (back-right) corner, flush with the east face. Corbel it out just above the adjacent range roof (no contact with the slates). Raise the shaft so that the cone springs about 1 m above the merlon tops, and enlarge the cone to about 0.5 of the tower width tall. Check that it shows above the parapet in the front render. |
+| 5 | P1 | rear_court | At the re-entrant inner court corner, every string course ends in a small black triangular notch where the two wings' courses meet (rc_corner crop: x≈875–895, y≈140–150 and y≈395–410). The v002 "black voids at inner court corners" finding is unchanged. | The string-course bars stop short of the corner and are not mitred or returned, so the dark corner gap shows through. | Extend each court string course to the corner and mitre it (or add a short return block), so that the two runs overlap. Re-render rear_court and confirm there are no black pixels at the corner. |
+| 6 | P2 | front, entrance_tower | Gable window axes do not sit over the bays below. Two lower lights sit over three wall bays. | The gable window layout is independent of the bay grid. | Align the gable lights to the wall bay axes (see #2). |
+| 7 | P2 | front vs source front | The dormer rhythm on the south front is sparse: the render has one dormer between the two east gables. The source shows three gabled dormers between the tower and the first crow gable. | Simplified roofline. | Add 2–3 gabled dormers east of the tower, ahead of the first gable. |
+| 8 | P2 | front, facade_close vs source front/oblique | The corbelled hanging oriel/bartizan at mid-height of the tower face is missing. The armorial panel is present. | Not modelled. | Add a small corbelled oriel turret at about the 2nd–3rd storey of the tower face. |
+| 9 | P2 | aerial vs source oblique/top | The east face (visible in the oblique and top sources with pavement and area railings at its base) is bare in the render. The railings and lawn run only along the south and west faces. | The site landscape was authored for two frontages only. | Add a low wall and railing along the east face base. |
+| 10 | P2 | top vs source top | The court is proportionally large and the ranges thin: court ≈50%×43% of the footprint, against ≈38%×29% in the top source. | The ranges are too shallow. | Deepen the ranges by about 20–25% inward. |
+| 11 | P2 | front_corner, porte_cochere | Trees stand on grey paving right against the facade, and the green lawn reads only as a thin strip at the railing line. One crown touches the porch's east side (facade_close). | Planting offsets are too tight. | Widen the lawn strip between the railing and the wall, and keep crowns ≥0.5 m off the walls. |
+| 12 | P2 | rear_court | A thin black seam runs under the court-side arch ring, and the tree crown hides half of the court arch. | The arch ring and soffit do not meet, and the tree is placed in front of the arch. | Close the seam, and move the tree or the camera so the arch is clear. |
+| 13 | P2 | glass_close | Window head moulds bite into the string course above. | The head height collides with the course. | Drop the heads or raise the course by about 5 cm. |
+| 14 | P2 | interior | Window openings show almost no reveal depth for a granite wall. | The interior wall is thin around the openings. | Return the wall thickness (≥0.5 m) into the interior reveals. |
+| 15 | P2 | front_corner | front_corner shows the SW corner, which no source shows. The source-matched oblique role (SE street corner, tower about 2/3 away) is covered only by aerial. | Camera role choice. | Optional: add or retarget an eye-level corner view on the SE corner to match the oblique. |
+
+## 3. Source conformance checklist
+
+| item | status | view used |
+|---|---|---|
+| Silhouette | **conforms** (quadrangle, tower about a third along the south front, corner and mid-face tourelles, gables through the eaves). Exception: the tower's tall tourelle is missing from the skyline (#4). | front, aerial, front_corner vs source front/oblique |
+| Storey count | **conforms**: ground floor + 3 upper storeys + attic in the gables and dormers. This matches the locked front and oblique (I counted the south front and the long face in the oblique). The catalogue text's "six storeys" conflicts with the source pixels. That is a catalogue-text issue, not a render defect. | front, right_side vs source front/oblique |
+| Entrance tower and porte-cochere | **deviates**: the tower position, projecting crenellated porch, pointed arch and through-passage to the court (court visible through the arch in front) conform. The black slot inside the passage (#1) is a P0. | front, facade_close, porte_cochere |
+| Tower tourelles and parapet | **deviates**: the crenellated parapet with corbel table and the round corbelled corner bartizans conform. The tall conical stair tourelle is undersized, set low and not visible from the front (#4). | entrance_tower, corner_tourelle, rear_side |
+| Corner tourelles | **conforms**: round tourelles with conical slate caps, corbelled out above the ground storey at the corners and mid-face. | front, right_side, architecture_close |
+| Crow-stepped gables | **deviates**: the gables are now properly stepped on most flanks, rise through the eaves and are about 3 bays wide. The window heads merge with the copes (#2), and the tower-side flank is cut by the roof (#3). | crow_gables, entrance_tower, architecture_close |
+| Roof slopes and dormers | **conforms with polish**: steep dark slate roofs, chimney stacks and gabled dormers are present, with strong wall/roof contrast. The dormers are sparser than the source on the south front (#7). | front, aerial, roof_court |
+| Window rhythm and surrounds | **conforms**: tall sash windows with glazing bars, recessed glass and stone surrounds with hoods, plus string courses. Gable light axes are off (#6). | glass_close, front |
+| Court | **conforms with defects**: an open court with four trees, court-facing gables and glazed court windows. Inner-corner black notches (#5) and proportion (#10). | top, roof_court, rear_court |
+| Fence and lawn | **conforms with polish**: an iron railing on a low wall with gate piers at the porch, plus a green strip and trees on the south and west. The lawn is thin, and the east frontage railing is missing (#9, #11). | porte_cochere, front_corner, top |
+| Materials hierarchy | **conforms**: pink-grey granite walls with channel coursing, lighter dressed stone for surrounds, courses and copes, and dark slate for roofs and cones. This is legible for clay. | all |
+
+## 4. Camera validity
+
+- No view has its target fully occluded, clipped or illegible, and all 18 views are valid.
+- **front**: the building fills the upper half of the frame above a large empty foreground. It is legible, but at eye level the tower's stair tourelle is not visible (a geometry issue, #4, not a camera issue).
+- **rear_court**: the tree crown hides about half of the court-side arch of the porte-cochere (P2, #12).
+- **front_corner**: valid, but it shows the SW corner, which no source shows. aerial carries the source-matched oblique role (#15).
+- **interior**: valid and legible, but generic.
+
+## 5. Previous-version (v002) findings: resolved in the pixels?
+
+| v002 finding | v002 sev | v003 status (pixels) |
+|---|---|---|
+| Black slot at the tower junction | P0 | **NOT resolved**. A full-height black slot is still inside the porte-cochere at the porch/tower passage junction (porte_cochere, facade_close, front, front_corner) → #1 P0. A near-black wedge also appears at the tower/gable junction in crow_gables (#3). |
+| Broken crow-stepped gables (windows past the stepped outline, copes through them) | P0 | **Partially resolved**. Steps now have proper risers and copes on most flanks, and no window passes outside the outline. The lower-tier window heads still merge into copes (#2, P1), and the tower-side flank is still cut by the roof with copes over a dark wedge (#3, P1). |
+| One storey too many | P0 | **Resolved**: ground floor + 3 upper storeys + attic, matching the locked front and oblique. |
+| Gables two bays and one storey high | P1 | **Resolved** in size: the gables are about 3 bays wide and rise about 1.5–2 storeys above the cornice. The light layout is off-axis (P2, #6). |
+| Plain tower without projecting crenellated porch, bartizans or corbel table | P1 | **Resolved**: a projecting crenellated porch with corbelled bartizans and corbel tables on both the porch and the tower parapet. The tall stair tourelle is still deficient (#4, a new P1). |
+| Tower centred instead of about a third along | P1 | **Resolved**: the tower centre is about 0.30 along the south front in the top render, and about 0.3–0.4 in front/aerial. This matches the front and oblique sources. The top source alone shows it centred, which is a conflict between sources. |
+| Squat window grid | P1 | **Resolved**: tall sash proportions with glazing bars (glass_close, front). |
+| Weak wall-roof contrast | P1 | **Resolved**: dark slate roofs and cones read clearly against the pink granite. |
+| Grey court window panels with black slits | P1 | **Resolved**: the court windows show frames, glazing bars and grey glass (rear_court). |
+| String course across the court arch | P1 | **Resolved**: the court string course stops short of the arch (rear_court). |
+| Small black voids at the inner court corners | P1 | **NOT resolved**: black notches remain where the string courses meet at the re-entrant corner (#5). |
