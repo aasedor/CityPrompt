@@ -767,6 +767,7 @@ def roofs_and_floors():
                 continue
             mansard_dormer(f, u, CORNICE, MANS_H, MANS_IN)
     # Sales hall for the interior view: counters and a column line.
+    C.qa_room_light('Sales hall view', (-6.0, -D / 2 + 5.5, 4.4), 220, 9.0)          # the interior view reads as a lit sales hall (v004 P1 2)
     for x in (-8.0, -2.0, 4.0):
         C.rod('Hall column', (x, -D / 2 + 8.0, G0), (x, -D / 2 + 8.0, LEVELS[0] - .30), .30, 'hardware', 'hall', 12)
     for x, y in ((-6.0, -D / 2 + 5.0), (2.0, -D / 2 + 5.0), (-3.0, -D / 2 + 9.6), (8.0, -D / 2 + 7.0)):
