@@ -28,14 +28,15 @@ TERRACE = L1                      # the flight rises to the main floor arcade un
 T_MID = CORNICE + 3.8 + 3.2 + .4  # top of the stone tower shaft, just above the upper roof ridges
 PAV = 6.6                         # corner pavilion width along each face: two bays (v001 P1 10)
 PAV_OUT = .6                      # pavilion projection
-PAV_H = 7.6                       # pavilion mansard rise, about twice the wings (v001 P1 8)
+PAV_H = 6.4                       # pavilion mansard rise above the attic storey (v001 P1 8)
+ATT = 2.6                         # corner-pavilion attic storey with three small windows per face under a second cornice (locked front and oblique, v005 P1 1)
 CEN_W = 9.9                       # central pavilion width: three bays
 TOWER = 7.6                       # tower side
 T_SHAFT, T_CLOCK, T_CAP, T_LAN = 24.2, 29.4, 35.8, 39.0   # T_SHAFT now tops the slate mansard stage (v003 P1 2)
 PORCH_D = 3.6                     # porch depth from the central pavilion face
 BAY = 3.3
 EPS = .002
-SITE = (-W / 2 - 12.0, W / 2 + 7.0, -D / 2 - 22.0, D / 2 + 7.0)
+SITE = (-W / 2 - 12.0, W / 2 + 7.0, -D / 2 - 17.0, D / 2 + 7.0)     # shallow forecourt (locked top, v005 P1 5)
 PALETTE = dict(wall=(.64, .57, .46), joint=(.48, .42, .34), trim=(.20, .18, .16),
     pale=(.74, .71, .64), stone=(.66, .64, .58), roof=(.24, .26, .30), sand=(.62, .58, .50),
     foundation=(.46, .46, .45), glass=(.44, .50, .52), hardware=(.12, .12, .12),
@@ -344,6 +345,27 @@ def banded(f, lo, hi, z0, z1, holes, spacing=.55, joint=.05):
         C.mesh(f.label + ' rustication grooves', vs, fs, 'groove', 'rustication')
 
 
+def arc_band(name, f, u, pts, d0, d1, t_in, t_out, role, module):
+    """Continuous moulding along an arc in a face: one swept mesh (no separate blocks, so no open joints; v005 P1 4).
+    pts run along the arc in (u, z); the end normals are vertical so the band stops exactly at its end points."""
+    n = len(pts); vs, fs = [], []
+    for i, (x, z) in enumerate(pts):
+        if i in (0, n - 1):
+            nx_, nz_ = 0.0, 1.0
+        else:
+            tx, tz = pts[i + 1][0] - pts[i - 1][0], pts[i + 1][1] - pts[i - 1][1]
+            ln = math.hypot(tx, tz); nx_, nz_ = tz / ln, -tx / ln
+            if nz_ < 0:
+                nx_, nz_ = -nx_, -nz_
+        ix, iz, ox, oz = x - nx_ * t_in, z - nz_ * t_in, x + nx_ * t_out, z + nz_ * t_out
+        vs += [f.p(u + ix, d0, iz), f.p(u + ox, d0, oz), f.p(u + ox, d1, oz), f.p(u + ix, d1, iz)]
+    for i in range(n - 1):
+        a, b = 4 * i, 4 * (i + 1)
+        fs += [(a, b, b + 1, a + 1), (a + 1, b + 1, b + 2, a + 2), (a + 2, b + 2, b + 3, a + 3), (a + 3, b + 3, b, a)]
+    fs += [(0, 1, 2, 3), (4 * (n - 1) + 3, 4 * (n - 1) + 2, 4 * (n - 1) + 1, 4 * (n - 1))]
+    return C.mesh(name, vs, fs, role, module)
+
+
 def bay_openings(lo, hi, label):
     nb = max(1, round((hi - lo) / BAY))
     pitch = (hi - lo) / nb
@@ -367,7 +389,10 @@ def elevation(f, lo, hi, kind='wing', plain=False, returns=()):
     holes = g + p + s
     # Grey stone basement carrier with banded rustication below the main-floor band; wall carrier above (v004 P1 2).
     f.wall(f'{f.label} basement carrier', lo, hi - EPS, G0, L1 - .20, depth=T, role='base', holes=holes)
-    f.wall(f'{f.label} carrier', lo, hi - EPS, L1 - .20, CORNICE + .45, depth=T, role='wall', holes=holes)
+    top_ = CORNICE + ATT + .45 if kind == 'pavilion' else CORNICE + .45
+    att = [hole(f'{f.label} attic window {k}', lo + span * (k + .5) / 3, CORNICE + .75, .9, .9, level=8) for k in range(3)] if kind == 'pavilion' else []
+    holes = holes + att
+    f.wall(f'{f.label} carrier', lo, hi - EPS, L1 - .20, top_, depth=T, role='wall', holes=holes)
     banded(f, lo + .02, hi - .02, G0 + .45, L1 - .30, g, spacing=.80)
     if kind in ('pavilion', 'central'):
         banded(f, lo + .02, hi - .02, L1 + .30, L2 - .30, p, spacing=.90)       # rusticated main floor on the pavilions
@@ -413,13 +438,19 @@ def elevation(f, lo, hi, kind='wing', plain=False, returns=()):
             m.box('stone', u, -.09, (L1 + CORNICE - .9) / 2, .62, T + .22, CORNICE - .9 - L1)
             m.box('stone', u, -.13, CORNICE - .98, .80, T + .30, .30)
     eave_cornice(m, lo, hi, CORNICE, T, .70)
+    for h in att:                    # attic storey of the corner pavilions under a second cornice (v005 P1 1)
+        reveal(m, f, h, .14, 'stone'); framed(m, f, h, cols=1, rows=1, occupied='attic offices', lite=True)
+        m.box('stone', h['u'], -.05, h['z'] - .08, h['w'] + .36, T + .16, .12)
+        m.box('stone', h['u'], -.06, h['z'] + h['h'] + .12, h['w'] + .44, T + .18, .18)
+    if kind == 'pavilion':
+        eave_cornice(m, lo, hi, CORNICE + ATT, T, .55, modillions=False)
     for u, side in returns:          # long-and-short quoins at the pavilion edges (v004 P1 2)
         if kind in ('pavilion', 'central'):
             for q, zq in enumerate([G0 + .30 + .72 * j for j in range(int((CORNICE - 1.4 - G0) / .72))]):
-                wq = 1.05 if q % 2 == 0 else .70
-                m.box('stone', u + side * (wq / 2 - .05), -.07, zq + .32, wq, T + .22, .64)
+                wq = .62 if q % 2 == 0 else .42          # clear of the window surrounds, fronts off the band planes (v005 P1 2, 3)
+                m.box('stone', u + side * (wq / 2 - .05), -.06, zq + .32, wq, T + .08, .64)
     for u, side in returns:
-        m.box('wall', u + side * (T / 2 + .012), (T - .03 + PAV_OUT + T * .6) / 2, (G0 + CORNICE + .45) / 2, T, PAV_OUT + T * .6 - (T - .03), CORNICE + .45 - G0)
+        m.box('wall', u + side * (T / 2 + .012), (T - .03 + PAV_OUT + T * .6) / 2, (G0 + top_) / 2, T, PAV_OUT + T * .6 - (T - .03), top_ - G0)
     m.flush('facade')
     return pitch
 
@@ -461,10 +492,8 @@ def mansard_dormer(f, u, z_e, rise, setin, w=1.7, role='stone', win=(1.0, 1.75),
         pa = g.p(u + math.cos(a0) * (ww / 2 + .10), -.06, zw + hw - ww / 2 + math.sin(a0) * (ww / 2 + .10))
         pb = g.p(u + math.cos(a1) * (ww / 2 + .10), -.06, zw + hw - ww / 2 + math.sin(a1) * (ww / 2 + .10))
         C.beam('Dormer hood', pa, pb, .12, .10, role, 'dormers')
-    if arched:                          # segmental hood moulding along the head
-        xh = [(w / 2 + .12) - (w + .24) * q / 4 for q in range(5)]
-        for xa, xb in zip(xh, xh[1:]):
-            C.beam('Dormer segmental hood', g.p(u + xa, -.10, arc_z(min(abs(xa), w / 2)) + .06), g.p(u + xb, -.10, arc_z(min(abs(xb), w / 2)) + .06), .20, .22, role, 'dormers')
+    if arched:                          # segmental hood moulding: one continuous band ending at the dormer sides (v005 P1 4)
+        arc_band('Dormer segmental hood', g, u, [(x, arc_z(x)) for x in xs_], -.12, .06, .05, .16, role, 'dormers')
     else:
         g.part('Dormer pediment', u, -.10, z_top - .12, w + .20, .22, .24, role, 'dormers', 0)
     # cheeks: from the front back to the slope, under the head at their own position
@@ -505,14 +534,15 @@ def wing_mansard(f, lo, hi, dormers=True, inner=False):
             mansard_dormer(f, lo + pitch * (i + .5), z0, MANS_H, MANS_IN)
 
 
-def pavilion_roof(cx, cy, w, d, rise, setin, cresting=True, dormer_faces=()):
+def pavilion_roof(cx, cy, w, d, rise, setin, cresting=True, dormer_faces=(), z0=None):
+    z0 = CORNICE if z0 is None else z0
     """Square-plan truncated mansard on a pavilion: four slopes, zinc flat, cresting, corner finials."""
     lower = [(cx - w / 2, cy - d / 2), (cx + w / 2, cy - d / 2), (cx + w / 2, cy + d / 2), (cx - w / 2, cy + d / 2)]
     upper = [(cx - w / 2 + setin, cy - d / 2 + setin), (cx + w / 2 - setin, cy - d / 2 + setin), (cx + w / 2 - setin, cy + d / 2 - setin), (cx - w / 2 + setin, cy + d / 2 - setin)]
-    strip('Pavilion mansard', lower, upper, CORNICE, CORNICE + rise, 'roof', 'mansard')
-    C.prism('Pavilion flat', [(x + (.02 if x < cx else -.02), y + (.02 if y < cy else -.02)) for x, y in upper], 'z', CORNICE + rise - .14, CORNICE + rise + .06, 'zinc', 'mansard')
+    strip('Pavilion mansard', lower, upper, z0, z0 + rise, 'roof', 'mansard')
+    C.prism('Pavilion flat', [(x + (.02 if x < cx else -.02), y + (.02 if y < cy else -.02)) for x, y in upper], 'z', z0 + rise - .14, z0 + rise + .06, 'zinc', 'mansard')
     if cresting:
-        zc = CORNICE + rise + .06
+        zc = z0 + rise + .06
         for (ax, ay), (bx, by) in zip(upper, upper[1:] + upper[:1]):
             C.beam('Cresting rail', (ax, ay, zc + .45), (bx, by, zc + .45), .04, .04, 'hardware', 'cresting')
             n = int(math.dist((ax, ay), (bx, by)) / .8)
@@ -532,7 +562,8 @@ def tower():
         lo, hi = -half, half - EPS
         if i in (1, 3):
             lo, hi = -half + T, half - T
-        h1 = hole(f'{f.label} shaft opening', 0.0, CORNICE + 1.5, 2.0, 3.5, kind='arched louvre')
+        h1 = hole(f'{f.label} shaft opening', 0.0, CORNICE + 1.5, 2.0, 3.5, kind='arched louvre') if i == 0 else \
+             hole(f'{f.label} shaft opening', 0.0, CORNICE + 4.05, 1.6, 2.2, kind='arched louvre')    # clear of the central pavilion roof (v005 P1 6)
         f.wall(f'{f.label} shaft carrier', lo, hi, z0, T_MID, depth=T, role='stone', holes=[h1])
         m = Merge(f)
         for h in (h1,):
@@ -541,7 +572,8 @@ def tower():
         arch_fill(f, 0.0, h1['z'] + h1['h'], h1['w'], h1['w'] / 2, 'stone')
         m.box('stone', 0.0, -.05, h1['z'] - .12, h1['w'] + .6, T + .16, .20)
         m.box('stone', 0.0, -.06, h1['z'] + h1['h'] + .30, h1['w'] + 1.0, T + .18, .26)
-        pediment(f, 0.0, h1['z'] + h1['h'] + .46, h1['w'] + 1.3)          # aedicule pediment over the arched opening
+        if i == 0:
+            pediment(f, 0.0, h1['z'] + h1['h'] + .46, h1['w'] + 1.3)          # aedicule pediment over the arched opening
         for sgn in (-1, 1):                                                 # pilasters of the aedicule
             m.box('stone', sgn * (h1['w'] / 2 + .55), -.10, (h1['z'] - .3 + h1['z'] + h1['h']) / 2, .40, T + .22, h1['h'] + .3)
         for sgn in (-1, 1):   # corner pilasters
@@ -564,9 +596,8 @@ def tower():
         mansard_dormer(f, 0.0, T_MID + .05, T_SHAFT - T_MID - .05, .92, w=2.4, win=(1.1, 1.8), top=T_SHAFT - T_MID - .45, arched=False)
         g_ = C.Face(f.p(0, .30 - .16, 0), f.t, f.n, f.label + ' aedicule')
         zt_ = T_MID + .05 + T_SHAFT - T_MID - .45
-        for k in range(8):                                   # segmental pediment over the aedicule
-            a0, a1 = math.pi * (.15 + .7 * k / 8), math.pi * (.15 + .7 * (k + 1) / 8)
-            C.beam('Aedicule segmental pediment', g_.p(math.cos(a0) * 1.55, -.18, zt_ - 1.1 + math.sin(a0) * 1.5), g_.p(math.cos(a1) * 1.55, -.18, zt_ - 1.1 + math.sin(a1) * 1.5), .18, .22, 'stone', 'tower')
+        arc_band('Aedicule segmental pediment', g_, 0.0, [(math.cos(math.pi * (.15 + .7 * k / 8)) * 1.55, zt_ - 1.1 + math.sin(math.pi * (.15 + .7 * k / 8)) * 1.5) for k in range(9)],
+                 -.27, -.09, .11, .11, 'stone', 'tower')      # one continuous segmental pediment (v005 P1 4)
         for sgn in (-1, 1):                                  # scroll consoles flanking the aedicule
             g_.part('Aedicule scroll', sgn * 1.45, -.10, T_MID + .75, .34, .55, 1.1, 'stone', 'tower', 0)
             C.rod('Aedicule scroll curl', g_.p(sgn * 1.45, -.38, T_MID + 1.30), g_.p(sgn * 1.45, .10, T_MID + 1.30), .26, 'stone', 'tower', 10)
@@ -667,10 +698,10 @@ def porch_and_stair():
     C.box('Porch platform', (0, (y_face + y_front) / 2 - .02, L2 - .18), (pw - .1, PORCH_D + .46, .36), 'stone', 'porch', 0)
     C.qa_room_light('Undercroft', (0, (y_face + y_front) / 2, L2 - .8), 60, 4.0)
     # Raised terrace in front of the arcade with a short broad flight.
-    td = 2.4
+    td = 1.2                      # short terrace and flight (locked top, v005 P1 5)
     C.box('Terrace', (0, y_front - td / 2 - .01, L1 / 2), (pw + 1.4, td, L1), 'stone', 'porch', 0)
     C.box('Terrace cope', (0, y_front - td / 2 - .01, L1 + .04), (pw + 1.6, td + .2, .08), 'stone', 'porch', 0)
-    length = 5.2
+    length = 4.0
     y_s = y_front - td - length
     G.stair('Grand stair', 0.0, y_s, G0, L1, length, 6.4, .15)
     for sgn in (-1, 1):
@@ -785,29 +816,32 @@ def court_and_floors():
 
 
 def site():
+    """Street, sidewalks and shallow fenced lawn strips along the south and west faces (locked top, v005 P1 5); the
+    porch flight descends through the fence line onto the sidewalk."""
     x0, x1, y0, y1 = SITE
-    yf = y0 + 8.5                      # fence line: street, kerb, 2.5 m sidewalk, fence
+    wx = -W / 2 - PAV_OUT
+    yb = -D / 2 - PAV_OUT
+    yf = yb - 3.0                       # south fence line: 3 m lawn strip
+    xf = wx - 3.0                       # west fence line: 3 m lawn strip
     C.box('Street south', ((x0 + x1) / 2, y0 + 3.0, .004), (x1 - x0, 6.0, .008), 'concrete', 'street', 0)
     C.box('Street west', (x0 + 3.0, (y0 + 6.0 + y1) / 2, .004), (6.0, y1 - y0 - 6.0, .008), 'concrete', 'street', 0)
     C.box('Kerb south', ((x0 + x1) / 2, y0 + 6.06, .06), (x1 - x0 - 6.0, .12, .12), 'stone', 'sidewalk', 0)
     C.box('Kerb west', (x0 + 6.06, (y0 + y1) / 2, .06), (.12, y1 - y0, .12), 'stone', 'sidewalk', 0)
     C.box('South sidewalk', ((x0 + 6.0 + x1) / 2, (y0 + 6.0 + yf) / 2, .0075), (x1 - x0 - 6.0, yf - y0 - 6.0, .015), 'foundation', 'sidewalk', 0)
-    wx = -W / 2 - PAV_OUT
-    C.box('West sidewalk', ((x0 + 6.0 + wx) / 2, (yf + y1) / 2, .0075), (wx - x0 - 6.0, y1 - yf, .015), 'foundation', 'sidewalk', 0)
+    C.box('West sidewalk', ((x0 + 6.0 + xf) / 2, (yf + y1) / 2, .0075), (xf - x0 - 6.0, y1 - yf, .015), 'foundation', 'sidewalk', 0)
     C.box('East sidewalk', ((W / 2 + PAV_OUT + x1) / 2, (yf + y1) / 2, .0075), (x1 - W / 2 - PAV_OUT, y1 - yf, .015), 'foundation', 'sidewalk', 0)
     C.box('North sidewalk', (0, (D / 2 + PAV_OUT + y1) / 2, .0075), (W + 2 * PAV_OUT, y1 - D / 2 - PAV_OUT, .015), 'foundation', 'sidewalk', 0)
-    yb = -D / 2 - PAV_OUT
-    C.box('Forecourt lawn', (0, (yf + .3 + yb) / 2, .02), (W + 2 * PAV_OUT, yb - yf - .3, .04), 'planting', 'forecourt', 0)
-    C.box('Forecourt path', (0, (yf + yb) / 2, .05), (8.4, yb - yf, .02), 'stone', 'forecourt', 0)
-    iron_fence((wx, yf), (-4.5, yf)); iron_fence((4.5, yf), (W / 2 + PAV_OUT, yf))
+    C.box('Forecourt lawn', ((xf + W / 2 + PAV_OUT) / 2, (yf + .3 + yb) / 2, .02), (W / 2 + PAV_OUT - xf, yb - yf - .3, .04), 'planting', 'forecourt', 0)
+    C.box('West lawn', ((xf + .3 + wx) / 2, (yb + D / 2 + PAV_OUT) / 2, .02), (wx - xf - .3, D / 2 + PAV_OUT - yb, .04), 'planting', 'forecourt', 0)
+    iron_fence((xf, yf), (-3.75, yf)); iron_fence((3.75, yf), (W / 2 + PAV_OUT, yf))
+    iron_fence((xf, D / 2 + PAV_OUT), (xf, yf))
     for sgn in (-1, 1):
-        C.box('Gate pier', (sgn * 4.7, yf, 1.2), (.7, .7, 2.4), 'stone', 'fence', 0); C.box('Gate pier cap', (sgn * 4.7, yf, 2.48), (.9, .9, .16), 'stone', 'fence', 0)
-    iron_fence((wx, yf), (wx, yb - .4))
-    iron_fence((W / 2 + PAV_OUT, yb - .4), (W / 2 + PAV_OUT, yf))
+        C.box('Gate pier', (sgn * 3.95, yf, 1.2), (.7, .7, 2.4), 'stone', 'fence', 0); C.box('Gate pier cap', (sgn * 3.95, yf, 2.48), (.9, .9, .16), 'stone', 'fence', 0)
     for sgn in (-1, 1):                                  # clipped hedges along the building base and shrubs by the fence
-        C.box('Forecourt hedge', (sgn * (W / 4 + 3.3), yb - 1.0, .55), (W / 2 - 7.6, 1.0, 1.1), 'planting', 'forecourt', 0)
+        C.box('Forecourt hedge', (sgn * (W / 4 + 3.3), yb - .9, .55), (W / 2 - 7.6, .9, 1.1), 'planting', 'forecourt', 0)
         for k in range(4):
-            A.shrub(sgn * (8.0 + k * 4.0), yf + 1.4, .04, .9)
+            A.shrub(sgn * (8.0 + k * 4.0), yf + .8, .04, .7)
+    C.box('West hedge', (wx - .9, (yb + D / 2) / 2, .55), (.9, D - 4.0, 1.1), 'planting', 'forecourt', 0)
     street_tree(x0 + 7.4, 12.0, height=8.0, spread=1.5); street_tree(x0 + 7.4, -8.0, height=8.0, spread=1.5)
 
 
@@ -844,14 +878,15 @@ def build():
     elevation(C.Face(ep.o, ep.t, ep.n, 'east north pavilion'), D / 2 - PAV, D / 2 + PAV_OUT - T, 'pavilion', returns=((D / 2 - PAV, 1),))
     # Corner quoin posts hide the mitres of bands and cornices.
     for qx, qy in ((-W / 2 - PAV_OUT, -D / 2 - PAV_OUT), (W / 2 + PAV_OUT, -D / 2 - PAV_OUT), (W / 2 + PAV_OUT, D / 2 + PAV_OUT), (-W / 2 - PAV_OUT, D / 2 + PAV_OUT)):
-        C.box('Corner quoin', (qx, qy, (CORNICE + .45) / 2), (1.1, 1.1, CORNICE + .45), 'stone', 'corner posts', 0)
+        C.box('Corner quoin', (qx, qy, (CORNICE + ATT + .45) / 2), (1.1, 1.1, CORNICE + ATT + .45), 'stone', 'corner posts', 0)
+        C.box('Corner attic cornice block', (qx + (.10 if qx > 0 else -.10), qy + (.10 if qy > 0 else -.10), CORNICE + ATT - .30), (1.40, 1.40, .60), 'stone', 'corner posts', 0)
         sx, sy = (1 if qx > 0 else -1), (1 if qy > 0 else -1)
         for j in range(int((CORNICE - 1.4 - G0) / .72)):          # long-and-short quoins on both faces (v004 P1 2)
             zq = G0 + .30 + .72 * j + .32
             if j % 2 == 0:
-                C.box('Quoin block', (qx - sx * .45, qy, zq), (2.1, 1.3, .64), 'stone', 'corner posts', 0)
+                C.box('Quoin block', (qx - sx * .2, qy, zq), (1.5, 1.22, .64), 'stone', 'corner posts', 0)
             else:
-                C.box('Quoin block', (qx, qy - sy * .45, zq), (1.3, 2.1, .64), 'stone', 'corner posts', 0)
+                C.box('Quoin block', (qx, qy - sy * .2, zq), (1.22, 1.5, .64), 'stone', 'corner posts', 0)
         C.box('Corner cornice block', (qx + (.14 if qx > 0 else -.14), qy + (.14 if qy > 0 else -.14), CORNICE - .36), (1.62, 1.62, .72), 'stone', 'corner posts', 0)
     for qx, qy in ((-W / 2 + PAV, -D / 2 - .3), (W / 2 - PAV, -D / 2 - .3), (-CEN_W / 2, -D / 2 - .3), (CEN_W / 2, -D / 2 - .3),
                    (-W / 2 - .3, -D / 2 + PAV), (-W / 2 - .3, D / 2 - PAV), (-W / 2 + PAV, D / 2 + .3), (W / 2 - PAV, D / 2 + .3), (W / 2 + .3, -D / 2 + PAV), (W / 2 + .3, D / 2 - PAV)):
@@ -864,7 +899,12 @@ def build():
     wing_mansard(C.Face(east.o, east.t, east.n, 'east run'), -D / 2 + PAV, D / 2 - PAV)
     for cx, cy in ((-W / 2 + PAV / 2 - PAV_OUT / 2, -D / 2 + PAV / 2 - PAV_OUT / 2), (W / 2 - PAV / 2 + PAV_OUT / 2, -D / 2 + PAV / 2 - PAV_OUT / 2),
                    (W / 2 - PAV / 2 + PAV_OUT / 2, D / 2 - PAV / 2 + PAV_OUT / 2), (-W / 2 + PAV / 2 - PAV_OUT / 2, D / 2 - PAV / 2 + PAV_OUT / 2)):
-        pavilion_roof(cx, cy, PAV + PAV_OUT, PAV + PAV_OUT, PAV_H, 1.7)
+        s_ = PAV + PAV_OUT; sx_, sy_ = (1 if cx > 0 else -1), (1 if cy > 0 else -1)
+        xa_, xb_ = sorted((cx - sx_ * (s_ / 2 + .02), cx + sx_ * (s_ / 2 - T - .25))); ya_, yb_ = sorted((cy - sy_ * (s_ / 2 + .02), cy + sy_ * (s_ / 2 - T - .25)))
+        C.prism('Pavilion attic body', [(xa_, ya_), (xb_, ya_), (xb_, yb_), (xa_, yb_)], 'z', CORNICE + .02, CORNICE + ATT - .02, 'wall', 'pavilions')
+        for (ax_, ay_), (bx_, by_) in (((cx - sx_ * s_ / 2, cy - sy_ * s_ / 2), (cx - sx_ * s_ / 2, cy + sy_ * (s_ / 2 - .2))), ((cx - sx_ * s_ / 2, cy - sy_ * s_ / 2), (cx + sx_ * (s_ / 2 - .2), cy - sy_ * s_ / 2))):
+            C.beam('Pavilion attic inner cornice', (ax_, ay_, CORNICE + ATT - .12), (bx_, by_, CORNICE + ATT - .12), .70, .30, 'stone', 'pavilions')
+        pavilion_roof(cx, cy, PAV + PAV_OUT, PAV + PAV_OUT, PAV_H, 1.7, z0=CORNICE + ATT)
         # dormers on the two outer faces of each pavilion
         hp = (PAV + PAV_OUT) / 2
         outer = []
@@ -873,7 +913,7 @@ def build():
         kp = 1.7 / PAV_H
         for f in outer:
             raised = C.Face(f.o + f.n * (1.3 * kp), f.t, f.n, f.label)
-            mansard_dormer(raised, 0.0, CORNICE + 1.3, PAV_H - 1.3, 1.7 - 1.3 * kp, w=2.6, win=(1.5, 2.3), top=3.9)
+            mansard_dormer(raised, 0.0, CORNICE + ATT + 1.3, PAV_H - 1.3, 1.7 - 1.3 * kp, w=2.6, win=(1.5, 2.3), top=3.9)
     CEN_D = 11.0
     pavilion_roof(0.0, -D / 2 - PAV_OUT + CEN_D / 2, CEN_W, CEN_D, MANS_H, MANS_IN, cresting=False)
     porch_and_stair()
