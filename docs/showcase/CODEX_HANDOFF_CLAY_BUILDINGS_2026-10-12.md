@@ -195,3 +195,20 @@ State which of these you are doing before you start, and do one at a time:
    Do not touch `buildingArchetypes.json` without the text-level splice rule.
 4. Report outcomes faithfully: say which version was reviewed, by whom, with what counts,
    and what is still open.
+
+## 9. Addendum, 2026-10-13: five more buildings (wave C)
+
+Five more families were added on the same branch after this handoff was written, bringing
+the total to twenty. Their candidates and open findings are in
+`docs/showcase/WAVE_C_FIVE_BUILDINGS_REPORT_2026-10-13.md`:
+
+| family folder | candidate | catalogue archetype / variant | review |
+|---|---|---|---|
+| `tools/clay_baronial_railway_hotel` | `clay-baronial-railway-hotel-clay-v006.glb` | chateauesque_grand_railway_hotel / variant_0 | PASS, 0 / 0 |
+| `tools/clay_grand_magasin` | `clay-grand-magasin-clay-v004.glb` | grand_magasin / variant_0 | 0 / 2 |
+| `tools/clay_modernista_market_hall` | `clay-modernista-market-hall-clay-v003.glb` | barcelona_mercat / variant_0 | 0 / 3 |
+| `tools/clay_second_empire_city_hall` | `clay-second-empire-city-hall-clay-v004.glb` | montreal_second_empire_civic / variant_0 | 0 / 3 |
+| `tools/clay_zinc_dome_corner_block` | `clay-zinc-dome-corner-block-clay-v004.glb` | parisian_corner_with_dome / variant_0 | 0 / 1 |
+
+These five GLBs run up to the 4 MiB cap (about 80,000 triangles). To try all twenty in a
+browser, use `docs/showcase/CODEX_BROWSER_TRIAL_PROMPT_2026-10-13.md`.
