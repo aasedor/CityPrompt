@@ -317,7 +317,7 @@ def pointed_fill(f, u, z_top, w, rise, role='stone', d0=-.03, d1=None):
     f.panel('Pointed arch spandrel', [(u + a, b) for a, b in pts], d0, d1, role, 'arches')
 
 
-def rustication(f, lo, hi, z0, z1, holes, spacing=1.0, joint=.04, clip=None):
+def rustication(f, lo, hi, z0, z1, holes, spacing=1.2, joint=.04, clip=None):
     """Recessed granite coursing: joint grooves as dark strips sunk into the carrier face (v001 P1 11), batched."""
     vs, fs = [], []
     for row in range(int((z1 - z0) / spacing)):
@@ -340,7 +340,7 @@ def window_dressing(m, h, street):
     m.box('stone', h['u'], -.07, h['z'] - .08, h['w'] + .36, T + .20, .12)
 
 
-def elevation(f, lo, hi, street=True, gables=(), skip_bays=(), pad=0.0):
+def elevation(f, lo, hi, street=True, gables=(), skip_bays=(), pad=0.0, lite=False):
     """One face: rusticated granite carrier, tall ground-floor windows, sash windows with stone dressings, string
     courses, corbelled eaves course; optional two-bay wall gables centred on bay boundaries given in `gables`."""
     span = hi - lo
@@ -358,12 +358,12 @@ def elevation(f, lo, hi, street=True, gables=(), skip_bays=(), pad=0.0):
     if street:
         rustication(f, lo + .02, hi - .02, G0 + .35, EAVE - .5, holes)
     else:
-        G.brick_courses(f, lo + .02, hi - .02, G0 + .3, EAVE - .4, holes, spacing=2.2)
+        G.brick_courses(f, lo + .02, hi - .02, G0 + .3, EAVE - .4, holes, spacing=2.8)
     m = Merge(f)
     for h in holes:
         if street:
             reveal(m, f, h, .16, 'stone', jambs_only=True)
-        framed(m, f, h, cols=2, rows=2, occupied='guest room' if h['level'] >= 0 else 'lounge', lite=not street)
+        framed(m, f, h, cols=2, rows=2, occupied='guest room' if h['level'] >= 0 else 'lounge', lite=lite or not street)
         if street:
             window_dressing(m, h, street)
         else:
@@ -432,7 +432,7 @@ def crow_gable(f, u, z_e, holes, w=10.0, rise=1.0, run=.55):
                 f.cut(pc, f'{f.label} gable window cut {u:.0f}{du:+.1f} {za:.1f}', uu, zw, ww, hw, depth=T + .1)
         h = hole(f'{f.label} gable window {u:.0f}{du:+.1f} {zw:.1f}', uu, zw, ww, hw)
         gh.append(h)
-        reveal(m, f, h, .16, 'stone'); framed(m, f, h, cols=2, rows=2, occupied='attic room')
+        reveal(m, f, h, .16, 'stone'); framed(m, f, h, cols=1, rows=2, occupied='attic room')
         window_dressing(m, h, True)
         m.box('interior', uu, T + .40, zw + hw / 2, ww + .3, .06, hw + .3)      # lit attic room behind the glass
     def clip(z, lo_, hi_):
@@ -487,14 +487,14 @@ def roof_dormer(f, u, z_e, rise, run, w=1.9):
         C.mesh('Dormer slate', vs, [(0, 1, 2, 3), (7, 6, 5, 4), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0)], 'roof', 'dormers')
 
 
-def tourelle(cx, cy, r, base, top, cap_top, facing, windows=True, label='tourelle'):
+def tourelle(cx, cy, r, base, top, cap_top, facing, windows=True, label='tourelle', segs=22):
     """Round corbelled tourelle: corbel cone, shaft with string courses and cut windows on the outward angles, conical
     slate roof and finial (v001 P0 5: windows are pockets cut into the shaft, framed and glazed inside)."""
-    cone(f'{label} corbel', cx, cy, base - 2.2, .45, base, r, 'stone', 'tourelles', 22)
-    shaft = C.rod(f'{label} shaft', (cx, cy, base), (cx, cy, top), r, 'wall', 'tourelles', 22)
+    cone(f'{label} corbel', cx, cy, base - 2.2, .45, base, r, 'stone', 'tourelles', segs)
+    shaft = C.rod(f'{label} shaft', (cx, cy, base), (cx, cy, top), r, 'wall', 'tourelles', segs)
     for zl in LEVELS:
         if zl > base + .5:
-            C.rod(f'{label} string', (cx, cy, zl - .12), (cx, cy, zl + .06), r + .10, 'stone', 'tourelles', 22)
+            C.rod(f'{label} string', (cx, cy, zl - .12), (cx, cy, zl + .06), r + .10, 'stone', 'tourelles', segs)
     if windows:
         for zl in [z for z in LEVELS if z > base + .5] + ([EAVE + .6] if top > EAVE + 3.4 else []):
             for da in (0.0,):
@@ -508,8 +508,8 @@ def tourelle(cx, cy, r, base, top, cap_top, facing, windows=True, label='tourell
                 mg.box('stone', 0.0, -.03, zl + .9 + 2.0 + .14, 1.5, .20, .20)
                 mg.box('stone', 0.0, -.04, zl + .9 - .08, 1.4, .22, .12)
                 mg.flush('tourelles')
-    C.rod(f'{label} eaves', (cx, cy, top), (cx, cy, top + .35), r + .25, 'stone', 'tourelles', 22)
-    cone(f'{label} roof', cx, cy, top + .35, r + .30, cap_top, 0.0, 'roof', 'tourelles', 22)
+    C.rod(f'{label} eaves', (cx, cy, top), (cx, cy, top + .35), r + .25, 'stone', 'tourelles', segs)
+    cone(f'{label} roof', cx, cy, top + .35, r + .30, cap_top, 0.0, 'roof', 'tourelles', segs)
     C.rod(f'{label} finial', (cx, cy, cap_top - .1), (cx, cy, cap_top + 1.0), .06, 'hardware', 'tourelles', 6)
 
 
@@ -788,12 +788,12 @@ def build():
             (east, -D / 2 + T, D / 2 - T, ((-16.15, 9.9), (16.15, 9.9)), (-9.0, 9.0)),
             (north, -W / 2, W / 2, ((0.0, 10.0),), (-14.0, 14.0))]
     for f, lo, hi, gables, tours in runs:
-        elevation(f, lo, hi, street=f.label != 'north', gables=gables)
+        elevation(f, lo, hi, street=f.label != 'north', gables=gables, lite=f.label == 'east')     # east face is seen only at distance: light frames keep the GLB under 4 MiB
     tower()
     for cx, cy, facing in ((-W / 2 + .9, -D / 2 + .9, math.radians(225)), (W / 2 - .9, -D / 2 + .9, math.radians(-45)), (W / 2 - .9, D / 2 - .9, math.radians(45)), (-W / 2 + .9, D / 2 - .9, math.radians(135))):
         tourelle(cx, cy, 2.4, LEVELS[0] + .6, EAVE + 4.0, EAVE + 10.5, facing, label='corner tourelle')
     for cx, cy, facing in ((-W / 2 + .2, -9.0, math.radians(180)), (-W / 2 + .2, 9.0, math.radians(180)), (W / 2 - .2, -9.0, 0.0), (W / 2 - .2, 9.0, 0.0), (-14.0, D / 2 - .2, math.radians(90)), (14.0, D / 2 - .2, math.radians(90))):
-        tourelle(cx, cy, 1.6, LEVELS[0] + 2.0, EAVE + 3.0, EAVE + 8.0, facing, label='side tourelle')
+        tourelle(cx, cy, 1.6, LEVELS[0] + 2.0, EAVE + 3.0, EAVE + 8.0, facing, label='side tourelle', segs=16)
     for f, lo, hi, gables, tours in runs:
         nb = max(1, round((hi - lo) / BAY)); pitch = (hi - lo) / nb
         for i in range(nb):
