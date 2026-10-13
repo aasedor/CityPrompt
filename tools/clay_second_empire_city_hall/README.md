@@ -69,6 +69,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 in progress)
+## Open blockers after v003 (v004 in progress)
 
-Carried into v003.
+Carried into v004; the storey hierarchy follows the source pixels.
