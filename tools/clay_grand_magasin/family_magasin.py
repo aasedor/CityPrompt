@@ -17,7 +17,7 @@ from contract import subtract_openings
 SLUG = 'clay-grand-magasin'
 W, D = 44.0, 36.0
 R = 7.0                           # corner bay radius
-COURT = (1.0, 7.0, 3.0, 6.0)      # inner court: cx, half width, cy, half depth (large and central, v001 P1 4)
+COURT = (1.0, 10.0, 1.0, 8.5)     # light well 20 x 17 m, about half the building width (locked top, v003 P1 4)
 T = .36
 G0 = .15
 GF = 6.2                          # double-height ground floor
@@ -25,11 +25,11 @@ LEVELS = [6.2, 10.0, 13.6, 17.2]  # upper floor levels
 CORNICE = 21.0
 MANS_H, MANS_IN = 3.4, 1.4
 UPPER_RISE = 2.4                  # hipped upper roofs over each wing (v001 P1 3)
-ATTIC_H = 3.6                     # glazed attic stage of the corner bay above the cornice: the bay runs straight into the drum (v002 P1 1)
 PAV_OUT = .5                      # flanking pavilion projection beside the corner bay (v001 P1 6)
-DRUM_R, DRUM_H = 6.0, 3.6
-DOME_R, DOME_H = 6.2, 5.8
-COURT_DOME = (5.7, 4.6)           # large ribbed glass dome over the central court (locked top, v002 advisory and P1 4): radius, height
+DRUM_R, DRUM_H = 4.2, 4.4          # glazed drum standing directly on the corner cornice behind the gilded balustrade (no attic stage, v003 P1 1)
+DOME_R, DOME_H = 4.35, 7.0         # tall stilted ribbed glass dome, height about 0.8 of its width (v003 P1 2); about 20 percent of the building width in plan (v003 P1 4)
+DOME_SET = 2.3                     # drum centre moved from the arc centre toward the corner so its face stands just behind the balustrade
+COURT_DOME = (7.0, 4.0)            # dominant ribbed glass dome over the light well, 14 m across, crown below the inner ridge (locked top, v003 P1 4 and P2 8)
 BAY = 5.0
 CANOPY_Z, CANOPY_OUT = 4.4, 2.4
 EPS = .002
@@ -42,15 +42,16 @@ PALETTE = dict(wall=(.76, .72, .62), joint=(.60, .56, .48), trim=(.16, .17, .16)
 
 ACX, ACY = -W / 2 + R, -D / 2 + R          # arc centre (also the dome centre)
 CN = (-1 / math.sqrt(2), -1 / math.sqrt(2))
+DCX, DCY = ACX + CN[0] * DOME_SET, ACY + CN[1] * DOME_SET
 
 
 def manifest(version):
-    h = CORNICE + ATTIC_H + DRUM_H + .4 + DOME_H + 4.0
+    h = CORNICE + DRUM_H + .4 + DOME_H + 4.0
     cams = G.camera_roster(W + 8.0, D + 8.0, h, [
         ('facade_close', (-6.0, -36.0, 7.0), (0.0, -D / 2, 10.0), 45),
         ('architecture_close', (-40.0, -38.0, 16.0), (ACX, ACY, 14.0), 50),
         ('glass_close', (-8.0, -26.0, 2.4), (-3.0, -D / 2, 3.0), 50),
-        ('corner_dome', (-42.0, -42.0, 32.0), (ACX, ACY, 29.0), 45),
+        ('corner_dome', (-42.0, -42.0, 32.0), (DCX, DCY, 28.0), 45),
         ('marquise_sign', (-30.0, -30.0, 2.6), (ACX + CN[0] * R, ACY + CN[1] * R, 4.0), 40),
         ('gilded_balconies', (-10.0, -28.0, 11.0), (-4.0, -D / 2, 12.0), 45),
         ('mansard_dormers', (8.0, -34.0, 22.0), (10.0, -D / 2, 22.5), 45),
@@ -66,17 +67,17 @@ def manifest(version):
         source_archetype='grand_magasin/variant_0 (grand-magasin-belle-epoque)',
         measurement_contract=dict(dimensions_m=dict(width=W + 8.0, depth=D + 8.0, height=h),
             observed_storeys=5, storey_programme='double-height display ground floor, four sales storeys, mansard attic',
-            plan='44 x 36 m corner block (top view) around a 14 x 12 m central court with inner facades, streets south and west, a 7 m radius curved corner bay under the dome, one-bay stone pavilions projecting 0.5 m beside it',
+            plan='44 x 36 m corner block (top view) around a 20 x 17 m central light well with inner facades, streets south and west, a 7 m radius curved corner bay under the dome, one-bay stone pavilions projecting 0.5 m beside it',
             facade='bays at 5.0 m: display windows 4.2 x 4.1 m with transoms at the ground floor under a glass marquise projecting 2.4 m with a sign band; upper bays 3.6 x 3.0 m of iron-and-glass with solid gilded panel fronts at every storey between limestone pilasters; round-arched top storey; bracketed cornice at 21.0 m with a continuous gilded balustrade on the street faces; flanking pavilions with segmental-arched gable dormers through the mansard',
             levels_m=[G0] + LEVELS, cornice_m=CORNICE, mansard='3.4 m zinc mansard set in 1.4 m with arched dormers at every bay; hipped zinc upper roofs rising 2.4 m to ridges along each wing, inner slopes to the court',
-            dome='the curved glazed corner bay continues above the cornice as a 3.6 m glazed iron stage with a gilded balcony ring, then a glazed drum 3.6 m high with sixteen iron posts and a cornice; ribbed glass dome 12.4 m across and 5.8 m high with sixteen iron ribs and purlin rings; glazed lantern and finial; a large ribbed glass dome 11.4 m across over the central court (locked top)',
-            corner='quarter-round glazed bay on seven facets between stone piers, glazed doors at the centre, gilded balconies at every storey',
+            dome='a glazed drum 8.4 m across and 4.4 m high with sixteen iron posts stands directly on the corner cornice behind the gilded balustrade, which runs unbroken from the wings round the corner; tall stilted ribbed glass dome 8.7 m across and 7.0 m high with sixteen iron ribs and purlin rings; glazed lantern and finial; a dominant ribbed glass dome 14 m across over the light well, seated low on girders (locked top)',
+            corner='quarter-round glazed bay between stone piers, divided by two strong iron columns into three wide iron-and-glass bays (two, three and two facets) with one large arched head per bay at the top storey, glazed doors at the centre, gilded balconies at every storey',
             inferred='north and east faces repeat the grammar without balconies; light-well faces plain; interiors are teaching assumptions; the second dome position is read from the top view'),
-        roof_contract=dict(type='zinc mansard with dormers and hipped upper roofs; glass domes', datum_m=CORNICE, crowns_m=[CORNICE + MANS_H + UPPER_RISE, CORNICE + ATTIC_H + DRUM_H + .4 + DOME_H, h]),
+        roof_contract=dict(type='zinc mansard with dormers and hipped upper roofs; glass domes', datum_m=CORNICE, crowns_m=[CORNICE + MANS_H + UPPER_RISE, CORNICE + DRUM_H + .4 + DOME_H, h]),
         identity_contract=dict(owner='glass corner dome over the curved glazed bay, gilded balcony fronts on iron-and-glass bays between limestone pilasters, marquise with sign band over continuous display windows, zinc mansard, second glass dome'),
         material_contract=dict(profile='source-palette clay: pale limestone with recessed joints, dark iron frames, gilt balcony lattices, glass drum and domes, zinc roofs, dark red sign band', textured_keeper=False),
         programme_contract=dict(storeys=6, ground='sales hall and display windows, corner entrance', upper='sales floors around the light well', roof='attic workrooms in the mansard'),
-        contact_contract=['Grade-zero slab and sidewalks', 'Balconies cantilevered from the carriers', 'Marquise on brackets from the ground-floor carrier', 'Mansard seated on the cornice', 'Drum on the corner bay walls through the mansard; dome on the drum cornice; lantern on a solid collar', 'Second dome on a curb on the flat'],
+        contact_contract=['Grade-zero slab and sidewalks', 'Balconies cantilevered from the carriers', 'Marquise on brackets from the ground-floor carrier', 'Mansard seated on the cornice', 'Drum on the corner cornice through the mansard; dome on the drum cornice; lantern on a solid collar', 'Court dome on a ring beam over girders bearing on the light-well walls'],
         runtime_contract=dict(scale='fixed_native_only', installation='not installed', review='NOT TESTED'),
         camera_roster=cams, mandatory_review_views=[c['name'] for c in cams])
 # ---- shared clay helpers (copied into each wave C family; kept identical) ----
@@ -422,7 +423,15 @@ def elevation(f, lo, hi, street=True, pavilion_end=None):
             m.box('stone', h['u'], -.06, h['z'] + h['h'] + .26, h['w'] + .70, T + .18, .22)
         else:
             m.box('stone', h['u'], -.05, h['z'] + h['h'] + .16, h['w'] + .50, T + .16, .26)
-        if street:
+        if street and k == 3:            # top storey: thin dark iron railing, the lower storeys gilded (v003 P2 5)
+            w_ = h['w'] + .40
+            m.box('stone', h['u'], -.26, h['z'] - .08, w_, .60, .16)
+            m.box('hardware', h['u'], -.50, h['z'] + .98, w_, .06, .06)
+            m.box('hardware', h['u'], -.50, h['z'] + .10, w_, .06, .05)
+            nbar = int(w_ / .30)
+            for q in range(nbar + 1):
+                m.box('hardware', h['u'] - w_ / 2 + w_ * q / nbar, -.50, h['z'] + .54, .03, .03, .86)
+        elif street:
             gilt_front(m, f, h['u'], h['z'], h['w'] + .40)
         else:
             m.box('stone', h['u'], -.08, h['z'] - .08, h['w'] + .40, T + .22, .12)
@@ -480,6 +489,9 @@ def marquise(f, lo, hi):
     m.flush('marquise')
 
 
+BAYS_C = [[0, 1], [2, 3, 4], [5, 6]]      # facets of the three arched corner bays
+
+
 def corner_bay():
     """Quarter-round glazed bay on seven facets between stone piers; glazed doors at the centre facet."""
     facets = 7
@@ -496,7 +508,7 @@ def corner_bay():
         f = C.Face((mx, my, 0), (ux, uy, 0), (inx, iny, 0), f'corner facet {i}')
         centre = i == facets // 2
         g = hole(f'corner facet {i} door' if centre else f'corner facet {i} display', 0.0, G0, length - .34, 4.1, kind='glazed door' if centre else 'storefront')
-        up = [hole(f'corner facet {i} bay {k}', 0.0, zl + .25, length - .34, 3.0 if k < 3 else 2.9, kind='iron and glass bay', level=k) for k, zl in enumerate(LEVELS)]
+        up = [hole(f'corner facet {i} bay {k}', 0.0, zl + .25, length - .16, 3.0 if k < 3 else 2.9, kind='iron and glass bay', level=k) for k, zl in enumerate(LEVELS)]
         holes = [g] + up
         f.wall(f'corner facet {i} ground carrier', -length / 2, length / 2, G0, LEVELS[0] - .30, depth=T, role='stone', holes=holes)
         f.wall(f'corner facet {i} upper carrier', -length / 2, length / 2, LEVELS[0] - .30, CORNICE + .40, depth=T, role='stone', holes=holes)
@@ -504,16 +516,31 @@ def corner_bay():
         reveal(m, f, g, .18, 'stone'); framed(m, f, g, cols=1, rows=2, inset=.18, occupied='entrance hall' if centre else 'sales hall', kind=g['kind'], frame='trim')
         for h in up:
             reveal(m, f, h, .16, 'stone'); framed(m, f, h, cols=1, rows=2, occupied='sales floor', kind='iron and glass bay', frame='trim')
-            if h['level'] == 3:
-                arch_fill(f, 0.0, h['z'] + h['h'], h['w'], h['w'] / 2, 'stone')         # semicircular heads on the top storey
+            if h['level'] == 3:          # one large arched head per bay across its facets (v003 P1 3)
+                bay = next(b for b in BAYS_C if i in b)
+                wb = len(bay) * length; s0 = (bay.index(i) + .5 - len(bay) / 2) * length
+                rise = min(.40 * wb, 1.6); ztop = h['z'] + h['h']
+                curve = []
+                for q in range(9):
+                    u = h['w'] / 2 - h['w'] * q / 8
+                    s = max(-1.0, min(1.0, 2 * (s0 + u) / wb))
+                    curve.append((u, ztop - rise + (rise - .10) * math.sqrt(max(0.0, 1 - s * s))))
+                f.panel(f'corner bay arch spandrel {i}', [(-h['w'] / 2, ztop), (h['w'] / 2, ztop)] + curve, -.03, T + .02, 'stone', 'corner bay')
         m.box('stone', 0.0, -.08, LEVELS[0] - .22, length - .02, T + .24, .36)
         m.box('stone', 0.0, -.10, CORNICE - .62, length - .02, T + .20, .26)
         m.flush('corner bay')
     # Slender iron columns at the facet joints, continuous gilt balcony fronts around the bay at every storey.
+    # Two strong iron columns with gilded capitals divide the bay into three (v003 P1 3); slim glazing bars elsewhere.
     for i in range(1, facets):
         jx, jy = pts[i]
-        d = math.dist((jx, jy), (ACX, ACY)); jx, jy = jx + (ACX - jx) / d * .10, jy + (ACY - jy) / d * .10
-        C.rod('Corner bay column', (jx, jy, G0 + .02), (jx, jy, CORNICE - .66), .14, 'hardware', 'corner bay', 12)
+        d = math.dist((jx, jy), (ACX, ACY))
+        strong = i in (BAYS_C[1][0], BAYS_C[2][0])
+        off = -.18 if strong else .10
+        jx, jy = jx + (ACX - jx) / d * off, jy + (ACY - jy) / d * off
+        C.rod('Corner bay column', (jx, jy, G0 + .02), (jx, jy, CORNICE - .66), .34 if strong else .08, 'hardware', 'corner bay', 16 if strong else 8)
+        if strong:
+            for zl in [G0 + 4.1] + LEVELS[1:] + [CORNICE - 1.0]:
+                C.rod('Corner column capital', (jx, jy, zl - .14), (jx, jy, zl + .14), .44, 'gilt', 'corner bay', 16)
     for k, zl in enumerate(LEVELS):
         ring = [(ACX + (R + .55) * math.cos(a0 + (a1 - a0) * i / 28), ACY + (R + .55) * math.sin(a0 + (a1 - a0) * i / 28)) for i in range(29)]
         inner = [(ACX + (R - .10) * math.cos(a0 + (a1 - a0) * i / 28), ACY + (R - .10) * math.sin(a0 + (a1 - a0) * i / 28)) for i in range(29)]
@@ -579,8 +606,11 @@ def gable_dormer(f, u, w=4.2):
     C.mesh('Gable dormer cap', vs, [(0, 1, 2, 3), (7, 6, 5, 4), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0)], 'zinc', 'dormers')
 
 
-def glass_dome(cx, cy, z0, r, h, ribs=16, rings=4, lantern=True, module='dome', scale=1.0):
-    profile = [(1.0, 0.0), (1.0, .10), (.97, .30), (.88, .50), (.72, .68), (.50, .84), (.26, .95), (0.0, 1.0)]
+STILTED = [(1.0, 0.0), (1.0, .16), (.985, .32), (.94, .48), (.84, .63), (.66, .78), (.40, .91), (0.0, 1.0)]      # stilted bulb with near-vertical lower flanks (v003 P1 2)
+
+
+def glass_dome(cx, cy, z0, r, h, ribs=16, rings=4, lantern=True, module='dome', scale=1.0, profile=None):
+    profile = profile or [(1.0, 0.0), (1.0, .10), (.97, .30), (.88, .50), (.72, .68), (.50, .84), (.26, .95), (0.0, 1.0)]
     dome('Glass dome', cx, cy, z0, r, h, profile, 'glass', module, 28, 16)
     sp = smooth_profile(profile, 22)
     for k in range(ribs):
@@ -604,58 +634,49 @@ def glass_dome(cx, cy, z0, r, h, ribs=16, rings=4, lantern=True, module='dome', 
 
 
 def drum_and_domes():
-    cx, cy = ACX, ACY
-    za = CORNICE + ATTIC_H                 # top of the solid stone attic (clear of the mansard top, v001 P0 1)
-    z0, z1 = za, za + DRUM_H
-    # Glazed attic stage continuing the curved corner bay straight up above the cornice (v002 P1 1): a glass cylinder
-    # flush with the corner bay facade (radius R), iron posts and transoms, a stone cornice disc carrying the gilded
-    # balustrade ring; the mansard and upper roofs are cut away inside it so nothing shows through the glass.
+    cx, cy = DCX, DCY
+    z0 = CORNICE + .05
+    z1 = z0 + DRUM_H
+    # No attic stage (v003 P1 1): a stone cornice disc caps the corner bay at the wings' cornice level and carries the
+    # gilded balustrade ring continuous with the wings; the glazed drum stands directly on it just behind the
+    # balustrade. The mansard and upper roofs are cut away inside the drum so nothing shows through the glass.
     for nm in ('Outer mansard', 'Upper roof outer slope', 'Ridge band'):
         ob = C.bpy.data.objects.get(nm)
         if ob is not None:
-            cut_rod(ob, (cx, cy), R + .02, CORNICE - .5, CORNICE + MANS_H + UPPER_RISE + 1.0)
-    C.rod('Attic floor', (cx, cy, CORNICE - .30), (cx, cy, CORNICE + .02), R - .05, 'floor', 'dome', 48)
-    C.rod('Attic glass', (cx, cy, CORNICE + .30), (cx, cy, za - .36), R - .04, 'glass', 'dome', 48)
-    C.rod('Attic cornice', (cx, cy, za - .36), (cx, cy, za - .02), R + .45, 'stone', 'dome', 48)
-    C.qa_room_light('Attic', (cx, cy, CORNICE + 1.8), 160, 6.0)
-    base = math.atan2(CN[1], CN[0])
-    for k in range(24):
-        a = math.tau * k / 24
-        px, py = cx + math.cos(a) * (R + .02), cy + math.sin(a) * (R + .02)
-        C.beam('Attic post', (px, py, CORNICE + .30), (px, py, za - .36), .20, .20, 'hardware', 'dome')
-        qx, qy = cx + math.cos(a + math.tau / 24) * (R + .02), cy + math.sin(a + math.tau / 24) * (R + .02)
-        C.beam('Attic transom', (px, py, CORNICE + 1.9), (qx, qy, CORNICE + 1.9), .06, .06, 'hardware', 'dome')
-    ring = [(cx + (R + .25) * math.cos(math.tau * i / 32), cy + (R + .25) * math.sin(math.tau * i / 32)) for i in range(33)]
-    inner = [(cx + (R + .17) * math.cos(math.tau * i / 32), cy + (R + .17) * math.sin(math.tau * i / 32)) for i in range(33)]
-    strip('Attic balustrade panel', ring, inner, za + .86, za + .06, 'gilt', 'dome', closed=False)
+            cut_rod(ob, (cx, cy), DRUM_R - .10, CORNICE - .5, CORNICE + MANS_H + UPPER_RISE + 1.0)
+    C.rod('Corner cornice', (ACX, ACY, CORNICE - .40), (ACX, ACY, z0), R + .55, 'stone', 'corner bay', 48)
+    a0, a1 = math.radians(180), math.radians(270)
+    ring = [(ACX + (R + .30) * math.cos(a0 + (a1 - a0) * i / 28), ACY + (R + .30) * math.sin(a0 + (a1 - a0) * i / 28)) for i in range(29)]
     for (px, py), (qx, qy) in zip(ring, ring[1:]):
-        C.beam('Attic balustrade rail', (px, py, za + .92), (qx, qy, za + .92), .10, .08, 'gilt', 'dome')
-    for i in range(0, 32, 2):
-        px, py = ring[i]
-        C.box('Attic balustrade pedestal', (px, py, za + .5), (.34, .34, 1.0), 'stone', 'dome', 0)
-    C.rod('Drum plinth', (cx, cy, za - .02), (cx, cy, za + .30), DRUM_R + .10, 'stone', 'dome', 48)
-    C.rod('Drum glass', (cx, cy, za + .30), (cx, cy, z1 - .45), DRUM_R - .06, 'glass', 'dome', 48)
+        C.beam('Corner balustrade panel', (px, py, CORNICE + .53), (qx, qy, CORNICE + .53), .06, .80, 'gilt', 'corner bay')
+        C.beam('Corner balustrade rail', (px, py, CORNICE + .97), (qx, qy, CORNICE + .97), .12, .10, 'gilt', 'corner bay')
+    for (px, py) in ring[::4]:
+        C.box('Corner balustrade pedestal', (px, py, CORNICE + .55), (.36, .36, 1.0), 'stone', 'corner bay', 0)
+        C.box('Corner balustrade ball', (px, py, CORNICE + 1.17), (.22, .22, .22), 'gilt', 'corner bay', 0)
+    C.qa_room_light('Drum', (cx, cy, CORNICE + 2.0), 160, 5.0)
+    C.rod('Drum plinth', (cx, cy, CORNICE - .10), (cx, cy, CORNICE + .40), DRUM_R + .12, 'stone', 'dome', 48)
+    C.rod('Drum glass', (cx, cy, CORNICE + .40), (cx, cy, z1 - .45), DRUM_R - .06, 'glass', 'dome', 48)
     for k in range(16):
         a = math.tau * k / 16
         px, py = cx + math.cos(a) * DRUM_R, cy + math.sin(a) * DRUM_R
-        C.beam('Drum post', (px, py, za + .30), (px, py, z1 - .45), .26, .26, 'hardware', 'dome')
-        for zz in (za + 1.3, za + 2.3):
+        C.beam('Drum post', (px, py, CORNICE + .40), (px, py, z1 - .45), .24, .24, 'hardware', 'dome')
+        for zz in (CORNICE + 1.6, CORNICE + 2.9):
             qx, qy = cx + math.cos(a + math.tau / 16) * DRUM_R, cy + math.sin(a + math.tau / 16) * DRUM_R
             C.beam('Drum transom', (px, py, zz), (qx, qy, zz), .05, .05, 'hardware', 'dome')
-    C.rod('Drum entablature', (cx, cy, z1 - .45), (cx, cy, z1 - .12), DRUM_R + .30, 'stone', 'dome', 48)
-    C.rod('Drum cornice', (cx, cy, z1 - .12), (cx, cy, z1 + .08), DRUM_R + .50, 'stone', 'dome', 48)
+    C.rod('Drum entablature', (cx, cy, z1 - .45), (cx, cy, z1 - .12), DRUM_R + .26, 'stone', 'dome', 48)
+    C.rod('Drum cornice', (cx, cy, z1 - .12), (cx, cy, z1 + .08), DRUM_R + .42, 'stone', 'dome', 48)
     C.rod('Dome base ring', (cx, cy, z1 + .08), (cx, cy, z1 + .30), DOME_R + .08, 'hardware', 'dome', 48)
-    glass_dome(cx, cy, z1 + .30, DOME_R, DOME_H)
+    glass_dome(cx, cy, z1 + .30, DOME_R, DOME_H, profile=STILTED)
     # Large ribbed glass dome over the central court on a ring beam carried by four iron girders (locked top).
     ccx, hw_, ccy, hd_ = COURT
     rr, hh_ = COURT_DOME
-    zb = CORNICE + .35
+    zb = CORNICE - .55                     # seated low so the crown stays under the inner ridge (v003 P2 8)
     for sgn in (-1, 1):
         C.beam('Court girder', (ccx - hw_ - .3, ccy + sgn * rr * .72, zb), (ccx + hw_ + .3, ccy + sgn * rr * .72, zb), .30, .50, 'hardware', 'court dome')
         C.beam('Court girder', (ccx + sgn * rr * .72, ccy - hd_ - .3, zb + .02), (ccx + sgn * rr * .72, ccy + hd_ + .3, zb + .02), .30, .50, 'hardware', 'court dome')
     annulus('Court dome ring beam', (ccx, ccy, zb + .25), (0, 0, 1), rr - .25, rr + .2, 0.0, .45, 'hardware', 'court dome', 48)
-    glass_dome(ccx, ccy, zb + .70, rr, hh_, ribs=12, rings=2, module='court dome', scale=.8)
-    C.CONTACTS.append(dict(name='Glazed attic stage on the corner bay cornice; gilded balustrade and glazed drum on the attic; dome on the drum cornice; court dome on a ring beam over four girders bearing on the court walls', attic_top_m=za, drum_top_m=z1, dome_top_m=z1 + .30 + DOME_H))
+    glass_dome(ccx, ccy, zb + .70, rr, hh_, ribs=12, rings=2, module='court dome', scale=.6)
+    C.CONTACTS.append(dict(name='Corner cornice disc on the corner bay carriers carrying the gilded balustrade ring; glazed drum on the cornice; dome on the drum cornice; court dome on a ring beam over four girders bearing on the light-well walls', drum_top_m=z1, dome_top_m=z1 + .30 + DOME_H))
 
 
 def roofs_and_floors():
@@ -709,17 +730,17 @@ def roofs_and_floors():
     zt = CORNICE + MANS_H
     # Hipped upper roofs (v001 P1 3): outer slope from the mansard top to an outer ridge ring, a flat ridge band, and an
     # inner slope from an inner ridge ring down to the court mansard top.
-    ridge_out = offset_polygon(outer, MANS_IN + 4.2)
+    ridge_out = offset_polygon(outer, MANS_IN + 2.8)
     strip('Upper roof outer slope', top_outer, ridge_out, zt + .04, zt + .04 + UPPER_RISE, 'zinc', 'mansard')
-    ridge_in = [(x + (3.6 if x > cx else -3.6), y + (3.6 if y > cy else -3.6)) for x, y in court_top]
+    ridge_in = [(x + (2.4 if x > cx else -2.4), y + (2.4 if y > cy else -2.4)) for x, y in court_top]
     strip('Upper roof inner slope', ridge_in[::-1], court_top[::-1], zt + .04 + UPPER_RISE, zt + .04, 'zinc', 'mansard')
     band = C.prism('Ridge band', ridge_out, 'z', zt + UPPER_RISE - .10, zt + UPPER_RISE + .06, 'zinc', 'mansard')
-    C.cut_box(band, 'Ridge band court cut', (cx, cy, zt + UPPER_RISE), (2 * (hw + MANS_IN + 3.6) - .02, 2 * (hd + MANS_IN + 3.6) - .02, 1.0))
+    C.cut_box(band, 'Ridge band court cut', (cx, cy, zt + UPPER_RISE), (2 * (hw + MANS_IN + 2.4) - .02, 2 * (hd + MANS_IN + 2.4) - .02, 1.0))
     zr = zt + UPPER_RISE
-    for x, y in ((W / 2 - 5.6, -D / 2 + 5.6), (W / 2 - 5.6, D / 2 - 5.6), (-2.0, D / 2 - 5.6)):
+    for x, y in ((W / 2 - 4.4, -D / 2 + 4.4), (W / 2 - 4.4, D / 2 - 4.4), (-2.0, D / 2 - 4.4)):
         C.box('Chimney stack', (x, y, zr + .9), (1.4, .9, 2.2), 'stone', 'chimneys', 0)
         C.box('Chimney pots', (x, y, zr + 2.12), (1.1, .5, .30), 'rustic', 'chimneys', 0)
-    for x, y in ((12.0, -D / 2 + 5.6), (-W / 2 + 5.6, 8.0), (6.0, D / 2 - 5.6), (W / 2 - 5.6, 0.0)):
+    for x, y in ((12.0, -D / 2 + 4.4), (-W / 2 + 4.4, 8.0), (6.0, D / 2 - 4.4), (W / 2 - 4.4, 0.0)):
         C.box('Rooflight curb', (x, y, zr + .20), (2.2, 1.6, .30), 'stone', 'rooflights', 0)
         C.box('Rooflight', (x, y, zr + .50), (2.0, 1.4, .30), 'glass', 'rooflights', 0)
     for f, lo, hi in ((C.Face(((ACX + W / 2) / 2, -D / 2, 0), (1, 0, 0), (0, 1, 0), 'south'), -(W / 2 - ACX) / 2, (W / 2 - ACX) / 2),
