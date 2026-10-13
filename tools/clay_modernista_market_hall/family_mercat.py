@@ -31,7 +31,7 @@ PALETTE = dict(wall=(.62, .54, .44), joint=(.46, .40, .32), trim=(.16, .18, .17)
     pale=(.78, .74, .66), stone=(.72, .66, .56), roof=(.38, .34, .28), sand=(.70, .64, .52),
     foundation=(.52, .52, .50), glass=(.46, .54, .56), hardware=(.14, .16, .15),
     interior=(.80, .76, .68), floor=(.50, .48, .44), timber=(.40, .28, .16), blue=(.14, .22, .28),
-    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.64, .62, .58), tile=(.66, .46, .30), tile_dark=(.48, .30, .20),
+    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.64, .62, .58), tile=(.82, .72, .54), tile_dark=(.46, .30, .20),
     stain_red=(.62, .16, .14), stain_gold=(.84, .64, .20), stain_blue=(.20, .34, .58), stain_green=(.24, .48, .30),
     stain_teal=(.24, .46, .44), stain_aqua=(.32, .52, .50), stain_amber=(.66, .50, .24),
     awning_red=(.70, .14, .10), awning_yellow=(.86, .68, .16), awning_blue=(.16, .30, .60), gilt=(.80, .64, .26), produce=(.62, .32, .16))
@@ -136,14 +136,14 @@ def reveal(m, f, h, inset=.16, role='stone', jambs_only=False):
     m.box(role, u, inset / 2 - .01, z + .02, w, inset + .02, .04)
 
 
-def iron_balcony(m, f, u, z, w, depth=.8, role='hardware', slab='stone'):
+def iron_balcony(m, f, u, z, w, depth=.8, role='hardware', slab='stone', spacing=.30):
     """Cantilevered balcony: stone slab with a merged iron lattice (top rail, end rails, mid rail, pickets)."""
     m.box(slab, u, -depth / 2 + .02, z - .10, w, depth + .04, .20)
     m.box(role, u, -depth + .04, z + .98, w, .05, .05)
     for e in (-1, 1):
         m.box(role, u + e * (w / 2 - .02), -depth / 2 + .02, z + .98, .05, depth - .04, .05)
     m.box(role, u, -depth + .04, z + .50, w, .03, .03)
-    n = max(4, int(w / .30))
+    n = max(4, int(w / spacing))
     for i in range(n + 1):
         m.box(role, u - w / 2 + .02 + (w - .04) * i / n, -depth + .04, z + .55, .03, .03, .86)
     for e in (-1, 1):
@@ -319,10 +319,26 @@ def aisle_wall(f, lo, hi, colour_offset=0):
     nb = max(1, round((hi - lo) / BAY)); pitch = (hi - lo) / nb
     f.wall(f'{f.label} dado {lo:.0f}', lo, hi - EPS, G0, DADO, depth=T, role='tile', holes=())
     m = Merge(f)
-    m.box('tile_dark', (lo + hi) / 2, -.03, G0 + .22, hi - lo - 2 * EPS, T + .10, .44)   # darker base course
     m.box('stone', (lo + hi) / 2, -.05, G0 + .05, hi - lo - 2 * EPS, T + .14, .10)       # plinth
     m.box('stone', (lo + hi) / 2, -.04, DADO + .08, hi - lo - 2 * EPS, T + .12, .16)      # dado cope
-    G.brick_courses(f, lo + .02, hi - .02, G0 + .7, DADO - .1, (), spacing=.30)
+    # Stone pedestal under every column and a patterned ceramic tile panel in a stone frame between them (locked
+    # front, v004 P1 2: the dado read as one continuous timber box).
+    for i in range(nb + 1):
+        uu = min(max(lo + pitch * i, lo + .42), hi - .42)
+        m.box('stone', uu, -.12, (G0 + DADO + .18) / 2, .84, T + .38, DADO + .18 - G0)
+        m.box('stone', uu, -.15, DADO + .22, 1.0, T + .46, .14)
+    for i in range(nb):
+        a_, b_ = lo + pitch * i + .50, lo + pitch * (i + 1) - .50
+        if b_ - a_ < .8:
+            continue
+        c_ = (a_ + b_) / 2
+        m.box('stone', c_, -.03, G0 + .30, b_ - a_, .08, .08)               # panel frame bottom
+        m.box('stone', c_, -.03, DADO - .10, b_ - a_, .08, .08)             # panel frame top
+        nq = max(2, int((b_ - a_) / .42))
+        for q in range(nq):
+            uq = a_ + (b_ - a_) * (q + .5) / nq
+            for r, zq in enumerate((G0 + .55, G0 + .86)):
+                m.box('tile_dark' if (q + r) % 2 == 0 else 'stain_blue', uq, -.01, zq, .24, .04, .24)
     m.box('hardware', (lo + hi) / 2, T / 2, EAVE_A - .10, hi - lo - 2 * EPS, .28, .34)   # eaves beam
     for i in range(nb + 1):
         u = lo + pitch * i
@@ -389,33 +405,41 @@ def gable_end(f, main=False):
     screen = f.panel(f'{f.label} arch screen', pts, T / 2 - .006, T / 2 + .006, 'glass', 'gable screen')
     f.cut(screen, f'{f.label} entrance cut', 0.0, G0, 5.2, 5.4, depth=.4)
     m = Merge(f)
-    # Stained-glass tympanum: dense radial mosaic of coloured panes (12 sectors x 3 rings) with a central rose, as
-    # opaque colour panels on both sides of the screen so the colour reads from inside and outside (v001 P1 3).
-    cols = ('stain_green', 'stain_gold', 'stain_blue', 'stain_red')
-    rings = ((2.2, 3.9), (4.0, 5.6), (5.7, R_ - .25))
-    for ri, (r0, r1) in enumerate(rings):
-        nsec = 12 if ri else 8
-        for k in range(nsec):
-            a0, a1 = math.pi * k / nsec, math.pi * (k + 1) / nsec
-            am = (a0 + a1) / 2; rm = (r0 + r1) / 2
-            w_ = (a1 - a0) * rm - .10; h_ = r1 - r0 - .10
-            role = cols[(k + ri) % 4] if main else ('stain_blue' if (k + ri) % 3 == 0 else 'glass')
-            if role == 'glass':
+    # Stained-glass tympanum: a dense mosaic of small muted green, amber and teal panes on a dark leading plate filling
+    # the semicircle, with the rose roundel and two blue roundels (locked front, v004 P1 1: large cards in a sunburst).
+    lead = [(R_ - .25, zc)] + [((R_ - .25) * math.cos(math.pi * k / 24), zc + (R_ - .25) * math.sin(math.pi * k / 24)) for k in range(1, 24)] + [(-(R_ - .25), zc)]
+    f.panel(f'{f.label} tympanum leading', lead, T / 2 - .012, T / 2 + .012, 'hardware', 'gable screen')
+    mos = ('stain_green', 'stain_teal', 'stain_amber', 'stain_green', 'stain_aqua', 'stain_amber', 'stain_green')
+    cell = .56
+    mesh_ = {}
+    for iz in range(int((R_ - .3) / cell)):
+        for ix in range(-int(R_ / cell) - 1, int(R_ / cell) + 1):
+            cu, cz = (ix + .5) * cell, zc + (iz + .5) * cell
+            if math.hypot(cu, cz - zc) > R_ - .25 - cell * .55 or math.hypot(cu, cz - zc - 1.2) < 1.2:
                 continue
-            for dd in (T / 2 - .022, T / 2 + .022):
-                # a pane as a thin box centred on the sector, rotated by placing it through a local face
-                g = C.Face(f.p(math.cos(am) * rm, dd, zc + math.sin(am) * rm), (f.t * math.cos(am) + C.Vector((0, 0, 1)) * math.sin(am)), f.n, 'pane')
-                g.part('Tympanum pane', 0.0, 0.0, 0.0, h_, .012, w_, role, 'gable screen', 0)
-    for dd in (T / 2 - .03, T / 2 + .03):
-        C.rod('Tympanum rose', f.p(0.0, dd, zc + 1.2), f.p(0.0, dd + (.012 if dd > T / 2 else -.012), zc + 1.2), 1.15, 'stain_gold' if main else 'stain_blue', 'gable screen', 16)
+            role = mos[(ix * 3 + iz * 5) % len(mos)]
+            vs, fs = mesh_.setdefault(role, ([], []))
+            hcell = cell * .42
+            for dd in (T / 2 - .03, T / 2 + .03):
+                o = len(vs)
+                vs += [f.p(cu - hcell, dd, cz - hcell), f.p(cu + hcell, dd, cz - hcell), f.p(cu + hcell, dd, cz + hcell), f.p(cu - hcell, dd, cz + hcell)]
+                fs.append((o, o + 1, o + 2, o + 3))
+    for role, (vs, fs) in mesh_.items():
+        C.mesh(f'{f.label} tympanum panes {role}', vs, fs, role, 'gable screen')
+    for dd in (T / 2 - .05, T / 2 + .05):
+        C.rod('Tympanum rose', f.p(0.0, dd, zc + 1.2), f.p(0.0, dd + (.012 if dd > T / 2 else -.012), zc + 1.2), 1.15, 'stain_gold', 'gable screen', 16)
         C.rod('Tympanum rose heart', f.p(0.0, dd, zc + 1.2), f.p(0.0, dd + (.02 if dd > T / 2 else -.02), zc + 1.2), .55, 'stain_red', 'gable screen', 12)
-    for k in range(13):
-        a = math.pi * k / 12
-        C.beam('Tympanum radial', f.p(math.cos(a) * 1.3, T / 2 - .06, zc + math.sin(a) * 1.3), f.p(math.cos(a) * (R_ - .22), T / 2 - .06, zc + math.sin(a) * (R_ - .22)), .07, .07, 'hardware', 'gable screen')
-    for rr in (2.15, 3.95, 5.65):
-        for k in range(16):
-            a0, a1 = math.pi * k / 16, math.pi * (k + 1) / 16
-            C.beam('Tympanum ring', f.p(math.cos(a0) * rr, T / 2 - .06, zc + math.sin(a0) * rr), f.p(math.cos(a1) * rr, T / 2 - .06, zc + math.sin(a1) * rr), .06, .06, 'hardware', 'gable screen')
+        for su in (-1, 1):
+            C.rod('Tympanum roundel', f.p(su * 3.6, dd, zc + 3.3), f.p(su * 3.6, dd + (.012 if dd > T / 2 else -.012), zc + 3.3), .62, 'stain_blue', 'gable screen', 14)
+    # A band of stained-glass roundels round the archivolt in the spandrels (locked front, v004 P1 1).
+    for k in range(19):
+        a = math.radians(6 + 168 * k / 18)
+        ru, rz = math.cos(a) * (R_ + 1.15), zc + math.sin(a) * (R_ + 1.15)
+        zr = apex - .05 - (apex - .05 - EAVE_W + .30) * (abs(ru) / (half + .50)) - .45
+        if rz > zr or abs(ru) > half - 1.5:
+            continue
+        annulus('Spandrel roundel frame', f.p(ru, T / 2 - .16, rz), tuple(-x for x in f.n), .30, .42, 0.0, .10, 'hardware', 'great arch', 16)
+        C.rod('Spandrel roundel glass', f.p(ru, T / 2 - .12, rz), f.p(ru, T / 2 - .15, rz), .31, 'stain_blue' if k % 2 else 'stain_green', 'great arch', 14)
     for u in (-5.2, -2.7, 2.7, 5.2):
         m.box('hardware', u, T / 2 - .05, (DADO + .1 + zc) / 2, .09, .09, zc - DADO - .1)
     for z in (DADO + .1, 5.6, zc - .05):
@@ -533,7 +557,7 @@ def wing_roofs():
         # the lantern is cut open so the lantern clerestory is seen from the hall (v003 P1 1).
         plate = roof_plate_with_strips(f'Wing roof {axis}', pts, axis, lo, hi, [])
         C.cut_box(plate, f'Wing roof {axis} crossing cut', (0.0, 0.0, (RIDGE + EAVE_W) / 2), (2 * LANT - .10, 2 * LANT - .10, 12.0))
-        for q in range(1, 9):                    # standing seams
+        for q in range(1, 8):                    # standing seams, clear of the gable pier capitals (v004 P1 3)
             for side in (-1, 1):
                 a_ = side * HW * q / 9
                 zq = RIDGE - abs(a_) * slope + .04
