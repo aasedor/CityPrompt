@@ -549,8 +549,10 @@ def bartizan(cx, cy, r, z0, z1):
     C.box('Bartizan slit', (cx, cy - r + .02, (z0 + z1) / 2), (.2, .1, 1.0), 'hardware', 'tourelles', 0)
 
 
-def pointed_hood(f, u, z_spring, w, rise, d=-.08):
-    """Hood moulding following a pointed arch: beams along the two arcs (v002 P1: no flat lintel)."""
+def pointed_hood(f, u, z_spring, w, rise, d=-.30):
+    """Outer voussoir ring following the pointed arch: beams along the two arcs, landing on the impost caps at the
+    springing and standing flush with the jamb pier faces (v003 P1: no flat lintel; v004 P1: it stopped short of the
+    jambs and sat outboard of them)."""
     R = w * .866 / .866          # two-centre arch: each arc centred on the opposite springing
     pts = []
     for k in range(9):
@@ -560,7 +562,9 @@ def pointed_hood(f, u, z_spring, w, rise, d=-.08):
         pts.append((x, zz))
     pts += [(-a, b) for a, b in reversed(pts[:-1])]
     for (xa, za), (xb, zb) in zip(pts, pts[1:]):
-        C.beam('Arch hood', f.p(u + xa * 1.12, d, za + .25), f.p(u + xb * 1.12, d, zb + .25), .22, .20, 'stone', 'arches')
+        fa, fb = (za - z_spring) / rise, (zb - z_spring) / rise
+        C.beam('Arch hood', f.p(u + xa * (1.0 + .10 * fa) + (.12 if xa > 0 else -.12) * (1 - fa), d, za + .22 * fa + .10 * (1 - fa)),
+               f.p(u + xb * (1.0 + .10 * fb) + (.12 if xb > 0 else -.12) * (1 - fb), d, zb + .22 * fb + .10 * (1 - fb)), .26, .24, 'stone', 'arches')
 
 
 def pointed_fill16(f, u, z_top, w, rise, role='stone', d0=-.03, d1=None):
@@ -627,7 +631,7 @@ def tower():
     corbel_table(ring, zt, out=.30)
     over = [(x0 - .3, y0 - .3), (x1 + .3, y0 - .3), (x1 + .3, y0 + TD + .3), (x0 - .3, y0 + TD + .3)]
     crenellation(over, zt + .12, h=.9, merlon=(.9, .7, 1.0), every=1.5)
-    C.box('Tower roof', (TX, y0 + TD / 2, zt - .12), (TW - .2, TD - .2, .24), 'lead', 'parapet', 0)
+    C.box('Tower roof', (TX, y0 + TD / 2, zt + .13), (TW + .4, TD + .4, .24), 'lead', 'parapet', 0)      # deck runs under the parapets, above the carrier tops (v004 P1: black void line at the parapet)
     C.rod('Flagpole', (TX, y0 + TD / 2, zt), (TX, y0 + TD / 2, zt + 5.0), .05, 'hardware', 'parapet', 8)
     for sgn in (-1, 1):
         bartizan(TX + sgn * (TW / 2 + .1), y0 - .1, 1.0, TOWER_TOP - 2.6, TOWER_TOP + 1.0)
@@ -645,6 +649,7 @@ def tower():
     mp_ = Merge(pf)
     for sgn in (-1, 1):
         mp_.box('stone', sgn * (pa['w'] / 2 + .32), -.10, (G0 + pa['z'] + pa['h'] - arch_r) / 2, .50, T + .24, pa['z'] + pa['h'] - arch_r - G0)   # arch jamb piers
+        mp_.box('stone', sgn * (pa['w'] / 2 + .30), -.13, pa['z'] + pa['h'] - arch_r + .05, .78, T + .32, .22)                               # impost cap the voussoir ring lands on
     framed(mp_, pf, pw_[0], cols=1, rows=2, occupied='porch room')
     mp_.flush('porch')
     for sgn in (-1, 1):
@@ -655,7 +660,7 @@ def tower():
     pring = [(TX - PORCH_W / 2, yp), (TX + PORCH_W / 2, yp), (TX + PORCH_W / 2, y0), (TX - PORCH_W / 2, y0)]
     corbel_table(pring[:2] + [(TX + PORCH_W / 2, y0 - .01), (TX - PORCH_W / 2, y0 - .01)], PORCH_H, out=.25)
     crenellation([(TX - PORCH_W / 2 - .25, yp - .25), (TX + PORCH_W / 2 + .25, yp - .25), (TX + PORCH_W / 2 + .25, y0 - .05), (TX - PORCH_W / 2 - .25, y0 - .05)], PORCH_H + .12, h=.7, merlon=(.7, .6, .8), every=1.2)
-    C.box('Porch roof', (TX, (yp + y0) / 2, PORCH_H - .1), (PORCH_W - .2, PORCH_D - .1, .2), 'lead', 'porch', 0)
+    C.box('Porch roof', (TX, (yp - .15 + y0 + .10) / 2, PORCH_H + .13), (PORCH_W + .2, y0 - yp + .25, .24), 'lead', 'porch', 0)      # deck under the parapet (v004 P1)
     for sgn in (-1, 1):
         bartizan(TX + sgn * (PORCH_W / 2 + .1), yp - .1, .75, PORCH_H - 2.2, PORCH_H + .8)
     C.OPENINGS.append(dict(id=pa['id'], face='porch front', u=0.0, z=pa['z'], width=pa['w'], height=pa['h'], kind='open arch', clear_wall_cut=True, carrier_depth_m=T, frame_inset_m=None, pane_inset_m=None,
