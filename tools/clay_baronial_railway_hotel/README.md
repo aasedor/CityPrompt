@@ -69,6 +69,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (Improved from 3 P0 + 8 P1 to 1 P0 + 4 P1; becomes the candidate.)
+## Open blockers after v004 (All five v003 findings resolved in the pixels: the full-height porte-cochere slot is gone (four small pinholes remain, P2) and the court-corner notches are gone. Improved from 1 + 4 to 0 + 2; becomes the candidate.)
 
-P0 black slot inside the porte-cochere at the porch reveal and tower passage wall junction (v002 finding, survived one fix); P1 two-tier gable windows: lower heads merge into step copes, outer jambs flush with risers; P1 tower-side flank of the gable next to the tower is a straight rake with no risers and a near-black wedge from a roof plane in front; P1 conical stair tourelle too small and low, springs at parapet walk, base sinks into court roof, invisible at eye level; P1 black notches at court string-course inner corners (v002 finding, survived one fix)
+P1 the outer voussoir ring of the street-side pointed arch stops short of the jamb piers (wall shows in the gap) and sits outboard of the pier faces, so the arch does not bear on its jambs; P1 a pure-black void line runs along the tower roof deck at the parapet inner faces and round the porch deck (a gap, visible in the nadir view)

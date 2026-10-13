@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-baronial-railway-hotel",
+  "variant_id": "clay-baronial-railway-hotel-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "chateauesque_grand_railway_hotel/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1350586,
+      "sha256": "c3d62e25c041ad01aceb2834f53bdd5f2d826bf3ab39f22ff0c5c2aea5b27e81"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 944635,
+      "sha256": "61c519072f8ecc212bf498c3acc1f58ece431348c8e83e37f7be2992beeea64a"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 898813,
+      "sha256": "cb03f9474ec9e17d3ba67d70bab6d0241376cf13edbc54601829f42d969483c7"
+    }
+  ]
+}
