@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-modernista-market-hall-clay-v004",
+  "glb": "clay-modernista-market-hall-clay-v004.glb",
+  "glb_bytes": 2437136,
+  "glb_sha256": "7bb6ae99b4954a24f18f26f94def33cbc28668029de3dec2f63046e57c2bc1ac",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "aisle_arcade.png": 92,
+    "architecture_close.png": 92,
+    "crest_contact.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "great_arch.png": 92,
+    "interior.png": 92,
+    "lantern_roofs.png": 92,
+    "left_side.png": 92,
+    "plaza_awnings.png": 92,
+    "rear.png": 92,
+    "rear_court.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-modernista-market-hall-clay-v004-renders-and-glb.zip",
+  "zip_bytes": 37436043
+}

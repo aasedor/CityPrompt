@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-modernista-market-hall",
+  "variant_id": "clay-modernista-market-hall-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "barcelona_mercat/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/barcelona-mercat/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1903324,
+      "sha256": "0f36972485949c74b9afca973334080d446609f4fbb3bdc44ebbb76e91488bb2"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/barcelona-mercat/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 1034373,
+      "sha256": "34a74012d1eb1fc3f3b9fcf7a5a76491e3384e00b573f1c36c6ee5b2bd3503d0"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/barcelona-mercat/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 934010,
+      "sha256": "63b0b905caa5e7fc8a663b7e319532749bce1736f0b7a382892ba2f376040568"
+    }
+  ]
+}
