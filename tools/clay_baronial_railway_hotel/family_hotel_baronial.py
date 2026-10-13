@@ -51,7 +51,7 @@ def manifest(version):
         ('rear_court', (9.0, 6.0, 2.5), (TX, -D / 2 + WING, 7.0), 40)])
     for c in cams:
         if c['name'] == 'front':          # eye level from the south-west on the street, tower at the left (locked front)
-            c['location'] = (-9.0, -64.0, 1.7); c['target'] = (12.0, -D / 2 + 2.0, 12.0); c['lens'] = 28; c['whole'] = False
+            c['location'] = (-14.0, -80.0, 1.7); c['target'] = (10.0, -D / 2, 11.0); c['lens'] = 26; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -124,11 +124,13 @@ def framed(m, f, h, cols=1, rows=1, inset=.16, occupied='room', kind='window', f
     register(f, h, inset, kind, occupied)
 
 
-def reveal(m, f, h, inset=.16, role='stone'):
-    """Lined reveal: four thin liners inside the cut from the face to the frame."""
+def reveal(m, f, h, inset=.16, role='stone', jambs_only=False):
+    """Lined reveal: thin liners inside the cut from the face to the frame (jambs only when the vertex budget asks)."""
     u, z, w, hh = h['u'], h['z'], h['w'], h['h']
     for s in (-1, 1):
         m.box(role, u + s * (w / 2 - .02), inset / 2 - .01, z + hh / 2, .04, inset + .02, hh)
+    if jambs_only:
+        return
     m.box(role, u, inset / 2 - .01, z + hh - .02, w, inset + .02, .04)
     m.box(role, u, inset / 2 - .01, z + .02, w, inset + .02, .04)
 
@@ -275,7 +277,7 @@ def pointed_fill(f, u, z_top, w, rise, role='stone', d0=-.03, d1=None):
     f.panel('Pointed arch spandrel', [(u + a, b) for a, b in pts], d0, d1, role, 'arches')
 
 
-def rustication(f, lo, hi, z0, z1, holes, spacing=.62, joint=.035):
+def rustication(f, lo, hi, z0, z1, holes, spacing=.80, joint=.035):
     """Recessed granite coursing: joint grooves as dark strips sunk into the carrier face (v001 P1 11), batched."""
     vs, fs = [], []
     for row in range(int((z1 - z0) / spacing)):
@@ -313,11 +315,11 @@ def elevation(f, lo, hi, street=True, gables=(), skip_bays=()):
     if street:
         rustication(f, lo + .02, hi - .02, G0 + .35, EAVE - .5, holes)
     else:
-        G.brick_courses(f, lo + .02, hi - .02, G0 + .3, EAVE - .4, holes, spacing=.95)
+        G.brick_courses(f, lo + .02, hi - .02, G0 + .3, EAVE - .4, holes, spacing=1.6)
     m = Merge(f)
     for h in holes:
         if street:
-            reveal(m, f, h, .16, 'stone')
+            reveal(m, f, h, .16, 'stone', jambs_only=True)
         framed(m, f, h, cols=2, rows=2, occupied='guest room' if h['level'] >= 0 else 'lounge', lite=not street)
         if street:
             window_dressing(m, h, street)
@@ -328,9 +330,9 @@ def elevation(f, lo, hi, street=True, gables=(), skip_bays=()):
     m.box('stone', (lo + hi) / 2, -.07, G0 + .55, span - 2 * EPS, T + .20, .40)          # plinth course
     # Corbelled eaves course: continuous corbel table under a projecting stone cornice (v001 P1 12).
     m.box('stone', (lo + hi) / 2, -.20, EAVE - .16, span - 2 * EPS, T + .46, .32)
-    nc = max(2, int(span / 1.2))
+    nc = max(2, int(span / 2.0))
     for i in range(nc + 1):
-        m.box('stone', lo + .3 + (span - .6) * i / nc, -.14, EAVE - .52, .30, T + .34, .40)
+        m.box('stone', lo + .3 + (span - .6) * i / nc, -.14, EAVE - .52, .34, T + .34, .40)
     m.flush('facade')
     for gc in gables:
         crow_gable(f, gc, EAVE, holes)
@@ -426,16 +428,16 @@ def tourelle(cx, cy, r, base, top, cap_top, facing, windows=True, label='tourell
             C.rod(f'{label} string', (cx, cy, zl - .12), (cx, cy, zl + .06), r + .10, 'stone', 'tourelles', 28)
     if windows:
         for zl in [z for z in LEVELS if z > base + .5] + ([EAVE + .6] if top > EAVE + 3.4 else []):
-            for da in (-32.0, 32.0):
+            for da in (0.0,):
                 a = facing + math.radians(da)
                 ux, uy = math.cos(a), math.sin(a)
                 g = C.Face((cx + ux * (r - .05), cy + uy * (r - .05), 0), (-uy, ux, 0), (-ux, -uy, 0), f'{label} window face')
-                h = hole(f'{label} window {zl:.0f}{da:+.0f}', 0.0, zl + .9, .9, 2.0)
-                g.cut(shaft, h['id'] + ' cut', 0.0, zl + .9, .9, 2.0, depth=.55)
+                h = hole(f'{label} window {zl:.0f}{da:+.0f}', 0.0, zl + .9, 1.1, 2.0)
+                g.cut(shaft, h['id'] + ' cut', 0.0, zl + .9, 1.1, 2.0, depth=.55)
                 mg = Merge(g)
                 framed(mg, g, h, cols=1, rows=2, inset=.16, occupied='tourelle room', lite=False)
-                mg.box('stone', 0.0, -.03, zl + .9 + 2.0 + .14, 1.3, .20, .20)
-                mg.box('stone', 0.0, -.04, zl + .9 - .08, 1.2, .22, .12)
+                mg.box('stone', 0.0, -.03, zl + .9 + 2.0 + .14, 1.5, .20, .20)
+                mg.box('stone', 0.0, -.04, zl + .9 - .08, 1.4, .22, .12)
                 mg.flush('tourelles')
     C.rod(f'{label} eaves', (cx, cy, top), (cx, cy, top + .35), r + .25, 'stone', 'tourelles', 28)
     cone(f'{label} roof', cx, cy, top + .35, r + .30, cap_top, 0.0, 'roof', 'tourelles', 28)
@@ -552,6 +554,7 @@ def roofs_and_floors():
         C.qa_room_light(f'West rooms {zl:.1f}', (-W / 2 + 5.0, 4.0, zl + 2.6), 60, 5.0)
     C.qa_room_light('Lounge', (14.0, -D / 2 + 6.0, LEVELS[0] - .9), 120, 6.0)
     C.qa_room_light('Interior view room', (14.0, -D / 2 + 4.5, LEVELS[0] + 3.4), 220, 5.0)
+    C.qa_room_light('Court south', (0.0, -5.0, 19.0), 900, 14.0); C.qa_room_light('Court north', (0.0, 5.0, 19.0), 700, 14.0)
     # Court faces: side walls run into the front and rear walls (closed corners, v001 P0 4); the south court face is
     # built in two runs either side of the passage carrier; one central gable per face.
     cw, cd = W - 2 * WING, D - 2 * WING
@@ -595,7 +598,7 @@ def site():
     iron_fence((xf, y1 - 2.0), (xf, yf), height=1.4, wall=.6, spacing=.40)
     for sgn in (-1, 1):
         C.box('Gate pier', (TX + sgn * 4.2, yf, 1.1), (.8, .8, 2.2), 'stone', 'fence', 0); C.box('Gate pier cap', (TX + sgn * 4.2, yf, 2.28), (1.0, 1.0, .16), 'stone', 'fence', 0)
-    for x in (-24.0, -14.0, 14.0, 24.0):
+    for x in (-24.0, -9.0, 9.0, 24.0):
         street_tree(x, yf + 3.2, .02, height=8.0, spread=2.0)
     for y in (-12.0, 2.0, 14.0):
         street_tree(xf + 2.6, y, .02, height=8.0, spread=2.0)

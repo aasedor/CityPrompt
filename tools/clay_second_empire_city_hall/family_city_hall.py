@@ -130,11 +130,13 @@ def framed(m, f, h, cols=1, rows=1, inset=.16, occupied='room', kind='window', f
     register(f, h, inset, kind, occupied)
 
 
-def reveal(m, f, h, inset=.16, role='stone'):
-    """Lined reveal: four thin liners inside the cut from the face to the frame."""
+def reveal(m, f, h, inset=.16, role='stone', jambs_only=False):
+    """Lined reveal: thin liners inside the cut from the face to the frame (jambs only when the vertex budget asks)."""
     u, z, w, hh = h['u'], h['z'], h['w'], h['h']
     for s in (-1, 1):
         m.box(role, u + s * (w / 2 - .02), inset / 2 - .01, z + hh / 2, .04, inset + .02, hh)
+    if jambs_only:
+        return
     m.box(role, u, inset / 2 - .01, z + hh - .02, w, inset + .02, .04)
     m.box(role, u, inset / 2 - .01, z + .02, w, inset + .02, .04)
 
