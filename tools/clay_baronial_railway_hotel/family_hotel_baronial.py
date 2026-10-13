@@ -23,6 +23,7 @@ EAVE = 23.2
 RIDGE = 29.8
 TX, TW, TD, TOUT = -10.0, 10.0, 11.6, 1.6     # entrance tower centre x, width, depth (with projection), projection
 TOWER_TOP = 34.0
+PASS_W = 7.4                      # passage carrier width on the court face (arch 5 m between 1.2 m piers)
 BAY = 3.6
 EPS = .002
 SITE = (-W / 2 - 12.0, W / 2 + 8.0, -D / 2 - 14.0, D / 2 + 8.0)
@@ -468,7 +469,17 @@ def tower():
     C.box('Passage ceiling', (TX, (y0 + T + y1 - T) / 2, 7.45), (5.8, y1 - y0 - 2 * T, .30), 'stone', 'passage', 0)
     court_face = C.Face((TX, y1, 0), (-1, 0, 0), (0, -1, 0), 'passage court face')
     ca = hole('Court arch', 0.0, G0, 5.0, 7.0, kind='open arch')
-    court_face.wall('Passage court carrier', -4.5, 4.5, G0, LEVELS[0] - .30, depth=T, role='wall', holes=[ca])
+    court_face.wall('Passage court carrier', -PASS_W / 2, PASS_W / 2 - EPS, G0, LEVELS[0] - .30, depth=T, role='wall', holes=[ca])
+    pw_holes = [hole(f'passage court window {k}', 0.0, zl + .9, 1.4, 2.2) for k, zl in enumerate(LEVELS) if zl > 7.5]
+    court_face.wall('Passage court upper carrier', -PASS_W / 2, PASS_W / 2 - EPS, LEVELS[0] - .30, EAVE + .30, depth=T, role='wall', holes=pw_holes + [ca])
+    mp = Merge(court_face)
+    for h in pw_holes:
+        framed(mp, court_face, h, cols=2, rows=2, occupied='guest room', lite=True)
+        mp.box('stone', h['u'], -.05, h['z'] + h['h'] + .15, h['w'] + .50, T + .16, .22)
+    for zl in LEVELS:
+        mp.box('stone', 0.0, -.04, zl - .12, PASS_W - 2 * EPS, T + .14, .18)
+    mp.box('stone', 0.0, -.16, EAVE - .20, PASS_W - 2 * EPS, T + .38, .34)
+    mp.flush('passage')
     pointed_fill(court_face, 0.0, ca['z'] + ca['h'], ca['w'], 2.2, 'stone')
     C.OPENINGS.append(dict(id=ca['id'], face='passage court face', u=0.0, z=ca['z'], width=ca['w'], height=ca['h'], kind='open arch', clear_wall_cut=True, carrier_depth_m=T, frame_inset_m=None, pane_inset_m=None,
         face_origin=list(court_face.o), face_tangent=list(court_face.t), face_inward=list(court_face.n), occupied_space='open porte-cochere passage'))
@@ -517,11 +528,11 @@ def roofs_and_floors():
         f = C.Face(f.o, f.t, f.n * -1, f.label)
         span = cw if i % 2 == 0 else cd
         lo, hi = (-span / 2, span / 2 - EPS) if i % 2 == 0 else (-span / 2 + T, span / 2 - T)
-        skip = ()
-        if i == 0:     # the south wing court face carries the passage arch at TX (u = x)
-            nb = max(1, round(span / BAY)); pitch = span / nb
-            skip = tuple(j for j in range(nb) if abs(lo + pitch * (j + .5) - TX) < 3.0)
-        elevation(f, lo, hi, street=False, skip=skip)
+        if i == 0:     # the south wing court face is built in two runs either side of the passage carrier at TX (u = x)
+            elevation(C.Face(f.o, f.t, f.n, 'court front west'), lo, TX - PASS_W / 2, street=False)
+            elevation(C.Face(f.o, f.t, f.n, 'court front east'), TX + PASS_W / 2, hi, street=False)
+            continue
+        elevation(f, lo, hi, street=False)
     # Hipped ring roof: outer slopes to the ridge ring, inner slopes down to the court eaves.
     strip('Outer slate slopes', outer, ridge, EAVE, RIDGE, 'roof', 'roofs')
     strip('Court slate slopes', ridge, court, RIDGE, EAVE, 'roof', 'roofs')

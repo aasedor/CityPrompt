@@ -1,0 +1,422 @@
+{
+  "candidate": "clay-second-empire-city-hall-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-second-empire-city-hall",
+  "variant_id": "clay-second-empire-city-hall-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "montreal_second_empire_civic/variant_0 (montreal_civic_city_hall)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 58.0,
+      "depth": 65.0,
+      "height": 38.2
+    },
+    "observed_storeys": 3,
+    "storey_programme": "rusticated ground floor, piano nobile with balconies, second storey, slate mansard attic",
+    "plan": "42 x 36 m limestone block around a 14 x 10 m inner court (top view), streets south and west; 9 m corner pavilions and a 12 m central pavilion project 0.6 m",
+    "facade": "bays at 3.4 m: round-arched ground-floor windows 1.5 x 3.2 m in rustication; piano-nobile windows 1.5 x 3.0 m with pediment hoods, stone balconies with iron rails on the pavilions; second-storey windows 1.4 x 2.4 m with cornice hoods; pilasters on the pavilions; bracketed cornice at 14.4 m",
+    "levels_m": [
+      0.15,
+      5.2,
+      10.2
+    ],
+    "cornice_m": 14.4,
+    "mansard": "3.8 m slate mansard set in 1.3 m with arched dormers at every bay, zinc flat top with iron cresting; corner pavilions carry 5.4 m square mansards",
+    "tower": "8 m square tower on the central pavilion: stone shaft to 25.2 m with a tall arched opening per face, clock stage to 29.4 m with four round faces, convex-concave zinc cap to 34.0 m, open lantern and finial to 37.0 m",
+    "porch": "four-column stone porch 10 m wide and 3.6 m deep at the piano nobile over a rusticated arcade, broad stone stair with balustrades to the forecourt",
+    "inferred": "north and east faces repeat the grammar; court faces plain; interiors are teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "slate mansard with zinc flat top and cresting; taller pavilion mansards; clock tower cap",
+    "datum_m": 14.4,
+    "crowns_m": [
+      18.2,
+      19.8,
+      37.0
+    ]
+  },
+  "identity_contract": {
+    "owner": "central clock tower over the columned porch and grand stair, corner pavilions with tall mansards, slate mansard with dormers, rusticated base, piano-nobile balconies, iron fence and lawn forecourt"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: grey limestone with recessed rustication, dark slate mansards, zinc flats and cap, verdigris clock-stage trim, black iron, pale clock faces",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 4,
+    "ground": "civic offices and records",
+    "upper": "council chamber over the porch, offices",
+    "roof": "attic offices in the mansard"
+  },
+  "contact_contract": [
+    "Grade-zero slab and sidewalks",
+    "Porch columns bearing on the arcade piers",
+    "Stair bearing on the forecourt",
+    "Mansards seated on the cornice",
+    "Tower on the central pavilion walls",
+    "Dormers seated on the mansard slope"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -6.0,
+        -96.0,
+        1.7
+      ],
+      "target": [
+        -1.0,
+        -18.0,
+        13.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -71.604,
+        -77.112,
+        76.4
+      ],
+      "target": [
+        0,
+        0,
+        17.19
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        64.25999999999999,
+        -73.44,
+        114.60000000000001
+      ],
+      "target": [
+        0,
+        0,
+        17.19
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        110.0
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 78.0
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -91.8,
+        0,
+        22.92
+      ],
+      "target": [
+        0,
+        0,
+        17.19
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        91.8,
+        0,
+        22.92
+      ],
+      "target": [
+        0,
+        0,
+        17.19
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        91.8,
+        22.92
+      ],
+      "target": [
+        0,
+        0,
+        17.19
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        64.25999999999999,
+        73.44,
+        68.76
+      ],
+      "target": [
+        0,
+        0,
+        17.19
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -10.0,
+        -40.0,
+        6.0
+      ],
+      "target": [
+        -6.0,
+        -18.0,
+        8.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -40.0,
+        -44.0,
+        16.0
+      ],
+      "target": [
+        -15.0,
+        -14.0,
+        12.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -3.0,
+        -31.0,
+        6.2
+      ],
+      "target": [
+        -6.0,
+        -18.0,
+        7.2
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "clock_tower",
+      "location": [
+        -26.0,
+        -52.0,
+        26.0
+      ],
+      "target": [
+        0.0,
+        -18.0,
+        29.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "porch_stair",
+      "location": [
+        -14.0,
+        -44.0,
+        3.0
+      ],
+      "target": [
+        0.0,
+        -23.0,
+        5.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "pavilion_mansard",
+      "location": [
+        -40.0,
+        -40.0,
+        22.0
+      ],
+      "target": [
+        -16.5,
+        -13.5,
+        17.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "cornice_contact",
+      "location": [
+        12.0,
+        -32.0,
+        10.5
+      ],
+      "target": [
+        12.0,
+        -18.0,
+        13.6
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_court",
+      "location": [
+        -44.0,
+        -50.0,
+        44.0
+      ],
+      "target": [
+        0.0,
+        2.0,
+        16.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        2.0,
+        -17.0,
+        6.800000000000001
+      ],
+      "target": [
+        2.0,
+        -11.0,
+        6.6
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "rear_court",
+      "location": [
+        16.0,
+        40.0,
+        12.0
+      ],
+      "target": [
+        4.0,
+        18.0,
+        9.0
+      ],
+      "lens": 40,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "clock_tower",
+    "porch_stair",
+    "pavilion_mansard",
+    "cornice_contact",
+    "roof_court",
+    "interior",
+    "rear_court"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/montreal-second-empire-civic/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1240997,
+        "sha256": "b65649dc4ebd7c66e01b4adacf677cf42222214ec6456b77d8a22cddcb65316b"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/montreal-second-empire-civic/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 875908,
+        "sha256": "49679d3a9749ea9d76d646473f2bf8bdb166fc2b9d15fe4bb1ac0ada333aa63c"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/montreal-second-empire-civic/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 819505,
+        "sha256": "e0480ccd7131dfa37d2d071e67f0a4da339500b5b8687a9e382ccc8263bd9678"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_city_hall.py",
+        "sha256": "b50d55a9f91d3eed2ea490bb95ea9035554765215095734636917b7943a5c53d"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "d2bdb621d889703c65073eb7e8a47a21f01547ca7346ac3a865414a523967f34"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "7e9575474b1e8a6cdbf811e42e5994b1f3aaa5bd869949ff7f843d35631caef2"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-13T05:58:22.796703+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

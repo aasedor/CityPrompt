@@ -23,8 +23,8 @@ G0 = .15
 LEVELS = [4.6, 8.0, 11.3, 14.6]   # upper floor levels: ground plus four storeys (locked front)
 CORNICE = 18.0
 MANS_H, MANS_IN = 3.6, 1.5
-DRUM_R, DRUM_H = 3.5, 2.5
-DOME_R, DOME_H = 3.95, 4.9
+DRUM_R, DRUM_H = 3.7, 3.0
+DOME_R, DOME_H = 4.1, 5.0
 BAY = 3.3
 EPS = .002
 AWN_Z = 3.45                      # awning bar height
@@ -39,7 +39,7 @@ CX0, CY0 = -W / 2 + CH / math.sqrt(2), -D / 2
 CX1, CY1 = -W / 2, -D / 2 + CH / math.sqrt(2)
 CMX, CMY = (CX0 + CX1) / 2, (CY0 + CY1) / 2
 CN = (-1 / math.sqrt(2), -1 / math.sqrt(2))
-DX, DY = CMX - CN[0] * (DRUM_R + .35), CMY - CN[1] * (DRUM_R + .35)     # drum centre, tangent-plus-margin behind the chamfer
+DX, DY = CMX - CN[0] * 2.3, CMY - CN[1] * 2.3     # drum centre 2.3 m behind the chamfer plane: the drum front projects 1.4 m over the chamfer cornice on a corbel ring (locked top and front, v001 P1 3)
 
 
 def manifest(version):
@@ -54,7 +54,7 @@ def manifest(version):
         ('mansard_dormers', (6.0, -30.0, 19.0), (8.0, -D / 2, 20.0), 45),
         ('roof_court', (-42.0, -46.0, 42.0), (2.0, 2.0, 18.0), 45),
         ('interior', (-4.0, -D / 2 + 1.2, LEVELS[0] + 1.6), (-4.0, -D / 2 + 7.0, LEVELS[0] + 1.3), 50),
-        ('rear_court', (16.0, 34.0, 12.0), (4.0, D / 2, 9.0), 40)])
+        ('rear_court', (COURT[0] + 5.5, COURT[2] + 4.5, 24.0), (COURT[0] - 3.0, COURT[2] - 2.5, 5.0), 40)])
     for c in cams:
         if c['name'] == 'front':          # eye level on the chamfer axis (locked front)
             c['location'] = (CMX + CN[0] * 60.0, CMY + CN[1] * 60.0, 1.7); c['target'] = (CMX, CMY, 13.5); c['lens'] = 30; c['whole'] = False
@@ -67,8 +67,8 @@ def manifest(version):
             plan='34 x 30 m corner block (top view) with a 12 x 10 m inner court, streets south and west, a 6.5 m chamfer at the south-west corner under the dome',
             facade='bays at 3.3 m of French windows 1.3 x 2.6 m with stone surrounds; individual iron balconies on the first and third storeys, continuous iron balconies on the second and fourth; stone string courses in the brick; quoins at the corners and the chamfer; bracketed cornice at 18.0 m',
             levels_m=[G0] + LEVELS, cornice_m=CORNICE, mansard='3.6 m zinc mansard set in 1.5 m with arched dormers at every bay; flat zinc top',
-            dome='stone drum 7 m across and 2.5 m high on the chamfer with three oeil-de-boeuf windows and a cornice; ribbed zinc dome 7.9 m across and 4.9 m high with an oculus dormer; open lantern and gilded finial to 29.6 m',
-            ground='stone ground floor with timber shopfronts; the cafe occupies the chamfer and two bays each side under a red awning projecting 2.6 m',
+            dome='stone drum 7.4 m across and 3.0 m high centred 2.3 m behind the chamfer plane on a corbel ring over the chamfer cornice, with three oeil-de-boeuf windows and a cornice; ribbed zinc dome 8.2 m across and 5.0 m high with a projecting framed oculus dormer at its base on the chamfer axis; open lantern and gilded finial to 30 m',
+            ground='stone ground floor with timber shopfronts; the cafe occupies the chamfer and two bays each side under one continuous red awning projecting 2.6 m, mitred around both chamfer arrises',
             inferred='north and east faces repeat the grammar without balconies; court faces plain; interiors are teaching assumptions'),
         roof_contract=dict(type='zinc mansard with dormers and a flat top; zinc dome on the chamfer drum', datum_m=CORNICE, crowns_m=[CORNICE + MANS_H, CORNICE + DRUM_H + DOME_H, h]),
         identity_contract=dict(owner='zinc dome on the chamfer with oculus and lantern, brick-and-stone Haussmann facades with iron balconies, zinc mansard with dormers, red cafe awning wrapping the corner'),
@@ -309,8 +309,8 @@ def mansard_dormer(f, u, z_e, rise, setin, w=1.5, role='zinc'):
     d_meet = (z_top - .02 - z_e - .14 * (d0 - .30) / 1.3) / (1 / k - .14 / 1.3)
     z_meet = z_e + d_meet / k
     for sgn in (-1, 1):
-        uu = u + sgn * (w / 2 - .06)
-        pts = [(d0 - .16, z_em - .6), (d0 - .16, z_top), (d_meet, z_meet), (d_meet, z_meet - .7)]
+        uu = u + sgn * (w / 2 - .14)
+        pts = [(d0 - .12, z_em - .6), (d0 - .12, z_top - .03), (d_meet, z_meet), (d_meet, z_meet - .7)]
         vs = [f.p(uu - .06, d, z) for d, z in pts] + [f.p(uu + .06, d, z) for d, z in pts]
         fs = [(3, 2, 1, 0), (4, 5, 6, 7), (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)]
         C.mesh('Dormer cheek', vs, fs, role, 'dormers')
@@ -391,25 +391,45 @@ def elevation(f, lo, hi, street=True, cafe_bays=(), label=None):
     return pitch, g
 
 
-def awning(f, lo, hi, holes=()):
-    """Red canvas awning on iron arms over the cafe bays: sloping canvas plate, scalloped valance, arms."""
-    out = 2.6
-    lower = [f.p(lo, -out, 0)[:2], f.p(hi, -out, 0)[:2]]
-    upper = [f.p(lo, -.02, 0)[:2], f.p(hi, -.02, 0)[:2]]
-    strip(f'{f.label} awning canvas', lower, upper, AWN_Z - .45, AWN_Z + .25, 'awning', 'awning', closed=False)
-    m = Merge(f)
-    m.box('awning', (lo + hi) / 2, -out + .02, AWN_Z - .60, hi - lo, .04, .34)        # valance
-    n = int((hi - lo) / .55)
-    for i in range(n + 1):
-        m.box('awning', lo + (hi - lo) * i / n, -out + .02, AWN_Z - .80, .30, .04, .12)   # scallop drops
-    m.box('hardware', (lo + hi) / 2, -out + .05, AWN_Z - .42, hi - lo + .04, .05, .05)     # front bar
-    m.box('hardware', (lo + hi) / 2, .02, AWN_Z + .30, hi - lo, .06, .10)                 # wall rail
-    for u in (lo + .4, (lo + hi) / 2, hi - .4):
-        a = f.p(u, .0, AWN_Z + .25); b = f.p(u, -out + .08, AWN_Z - .40)
-        C.beam('Awning arm', a, b, .05, .05, 'hardware', 'awning')
-        c = f.p(u, .0, AWN_Z - 1.2)
-        C.beam('Awning brace', c, (b[0] + (a[0] - b[0]) * .35, b[1] + (a[1] - b[1]) * .35, b[2] + (a[2] - b[2]) * .35), .035, .035, 'hardware', 'awning')
-    m.flush('awning')
+def awning_path(path, out=2.6):
+    """One continuous red awning along an open wall polyline (world xy points, building on the left): sloped canvas strip
+    between the wall line and its mitred outward offset, hanging valance with scallops, iron arms every 2.2 m."""
+    n = len(path)
+    # outward offset of the open polyline (right-hand side of the direction of travel is outward)
+    segs = []
+    for (ax, ay), (bx, by) in zip(path, path[1:]):
+        L = math.hypot(bx - ax, by - ay); ux, uy = (bx - ax) / L, (by - ay) / L
+        segs.append((ax + uy * out, ay - ux * out, ux, uy))
+    outer = [(segs[0][0], segs[0][1])]
+    for (px, py, ux, uy), (qx, qy, vx, vy) in zip(segs, segs[1:]):
+        den = ux * vy - uy * vx
+        t = ((qx - px) * vy - (qy - py) * vx) / den
+        outer.append((px + ux * t, py + uy * t))
+    lx, ly, lux, luy = segs[-1]
+    L = math.hypot(path[-1][0] - path[-2][0], path[-1][1] - path[-2][1])
+    outer.append((lx + lux * L, ly + luy * L))
+    inner = [(x - 0.0, y - 0.0) for x, y in path]
+    strip('Cafe awning canvas', outer, inner, AWN_Z - .45, AWN_Z + .25, 'awning', 'awning', closed=False)
+    for (ax, ay), (bx, by) in zip(outer, outer[1:]):
+        L = math.hypot(bx - ax, by - ay); ux, uy = (bx - ax) / L, (by - ay) / L
+        ix, iy = -uy, ux          # inward
+        C.beam('Awning valance', (ax + ix * .06, ay + iy * .06, AWN_Z - .82), (bx + ix * .06, by + iy * .06, AWN_Z - .82), .04, .36, 'awning', 'awning')
+        C.beam('Awning front bar', (ax + ix * .09, ay + iy * .09, AWN_Z - .48), (bx + ix * .09, by + iy * .09, AWN_Z - .48), .05, .05, 'hardware', 'awning')
+        k = max(2, int(L / .55))
+        for i in range(k + 1):
+            px, py = ax + ux * L * i / k, ay + uy * L * i / k
+            C.box('Awning scallop', (px + ix * .06, py + iy * .06, AWN_Z - 1.06), (.26, .26, .12), 'awning', 'awning', 0)
+    for (ax, ay), (bx, by) in zip(path, path[1:]):
+        L = math.hypot(bx - ax, by - ay); ux, uy = (bx - ax) / L, (by - ay) / L
+        ox, oy = uy, -ux          # outward
+        C.beam('Awning wall rail', (ax + ox * .02, ay + oy * .02, AWN_Z + .30), (bx + ox * .02, by + oy * .02, AWN_Z + .30), .06, .10, 'hardware', 'awning')
+        k = max(1, int(L / 2.2))
+        for i in range(k + 1):
+            t = (.35 + (L - .7) * i / k) if k else L / 2
+            px, py = ax + ux * t, ay + uy * t
+            a = (px, py, AWN_Z + .25); bq = (px + ox * (out - .10), py + oy * (out - .10), AWN_Z - .40)
+            C.beam('Awning arm', a, bq, .05, .05, 'hardware', 'awning')
+            C.beam('Awning brace', (px, py, AWN_Z - 1.2), (bq[0] + (a[0] - bq[0]) * .35, bq[1] + (a[1] - bq[1]) * .35, bq[2] + (a[2] - bq[2]) * .35), .035, .035, 'hardware', 'awning')
 
 
 def chamfer_bay():
@@ -446,7 +466,6 @@ def chamfer_bay():
     m.box('stone', 0.0, -.05, LEVELS[1] - .18, CH - 2 * EPS, T + .16, .22)
     eave_cornice(m, -half, half, CORNICE, T, .62)
     m.flush('chamfer')
-    awning(f, -half + .05, half - .05)
     # Quoin strips at the chamfer edges and the right-angle corners.
     for (qx, qy), (ox_, oy_) in (((CX0, CY0), (0, -1)), ((CX1, CY1), (-1, 0))):
         bxv, byv = ox_ + nx, oy_ + ny
@@ -473,48 +492,54 @@ def balustrade_iron(m, f, lo, hi, d, z, height=1.0):
 
 def drum_and_dome():
     cx, cy = DX, DY
-    z0 = CORNICE - .40
+    z0 = CORNICE - 1.0
     z1 = CORNICE + DRUM_H
-    C.rod('Dome drum', (cx, cy, z0), (cx, cy, z1 - .40), DRUM_R, 'stone', 'dome', 48)
+    # Corbel ring carrying the drum front over the chamfer cornice, then the stone drum with a moulded cornice.
+    cone('Drum corbel', cx, cy, z0, DRUM_R - 1.1, CORNICE + .30, DRUM_R, 'stone', 'dome', 48)
+    C.rod('Dome drum', (cx, cy, CORNICE + .30), (cx, cy, z1 - .40), DRUM_R, 'stone', 'dome', 48)
     C.rod('Drum cornice bed', (cx, cy, z1 - .40), (cx, cy, z1 - .18), DRUM_R + .22, 'stone', 'dome', 48)
     C.rod('Drum cornice', (cx, cy, z1 - .18), (cx, cy, z1), DRUM_R + .42, 'stone', 'dome', 48)
     C.rod('Dome eave', (cx, cy, z1), (cx, cy, z1 + .20), DOME_R + .10, 'zinc', 'dome', 48)
     base = math.atan2(CN[1], CN[0])
-    # Three oeil-de-boeuf windows: the chamfer axis and 40 degrees either side.
-    zc = CORNICE + 1.15
-    for da in (-42.0, 0.0, 42.0):
+    zc = CORNICE + 1.75
+    for da in (-48.0, 0.0, 48.0):
         a = base + math.radians(da)
         ux, uy = math.cos(a), math.sin(a)
         q = lambda d: (cx + ux * (DRUM_R + d), cy + uy * (DRUM_R + d), zc)
-        C.rod('Oeil-de-boeuf frame', q(-.30), q(.16), .72, 'stone', 'dome', 24)
-        C.rod('Oeil-de-boeuf reveal', q(-.20), q(.17), .54, 'hardware', 'dome', 24)
-        C.rod('Oeil-de-boeuf glass', q(-.06), q(-.04), .50, 'glass', 'dome', 24)
-        C.rod('Oeil-de-boeuf bar', q(-.03), q(-.01), .04, 'hardware', 'dome', 6)
+        C.rod('Oeil-de-boeuf frame', q(-.30), q(.18), .74, 'stone', 'dome', 24)
+        C.rod('Oeil-de-boeuf reveal', q(-.32), q(.06), .54, 'hardware', 'dome', 24)
+        C.rod('Oeil-de-boeuf glass', q(-.28), q(-.26), .50, 'glass', 'dome', 24)
         tx, ty = -uy, ux
-        C.beam('Oeil-de-boeuf bar', (cx + ux * (DRUM_R - .02) + tx * .48, cy + uy * (DRUM_R - .02) + ty * .48, zc), (cx + ux * (DRUM_R - .02) - tx * .48, cy + uy * (DRUM_R - .02) - ty * .48, zc), .04, .04, 'hardware', 'dome')
-        C.beam('Oeil-de-boeuf bar', (cx + ux * (DRUM_R - .02), cy + uy * (DRUM_R - .02), zc - .48), (cx + ux * (DRUM_R - .02), cy + uy * (DRUM_R - .02), zc + .48), .04, .04, 'hardware', 'dome')
-    for k in range(8):   # drum pilasters between the windows
-        a = base + math.radians(21.0 + 45.0 * k)
+        C.beam('Oeil-de-boeuf bar', (cx + ux * (DRUM_R - .24) + tx * .48, cy + uy * (DRUM_R - .24) + ty * .48, zc), (cx + ux * (DRUM_R - .24) - tx * .48, cy + uy * (DRUM_R - .24) - ty * .48, zc), .04, .04, 'hardware', 'dome')
+        C.beam('Oeil-de-boeuf bar', (cx + ux * (DRUM_R - .24), cy + uy * (DRUM_R - .24), zc - .48), (cx + ux * (DRUM_R - .24), cy + uy * (DRUM_R - .24), zc + .48), .04, .04, 'hardware', 'dome')
+        for k in range(8):   # keystones of the ring frame
+            ak = math.tau * k / 8
+            C.box('Oeil-de-boeuf keystone', (cx + ux * (DRUM_R + .20) + tx * math.cos(ak) * .74, cy + uy * (DRUM_R + .20) + ty * math.cos(ak) * .74, zc + math.sin(ak) * .74), (.22, .22, .22), 'stone', 'dome', 0)
+    for k in range(8):
+        a = base + math.radians(24.0 + 45.0 * k)
         px, py = cx + math.cos(a) * DRUM_R, cy + math.sin(a) * DRUM_R
-        C.beam('Drum pilaster', (px, py, z0 + .6), (px, py, z1 - .42), .55, .24, 'stone', 'dome')
-    # Ribbed zinc dome: bulbous profile, sixteen ribs seated on the shell, an oculus dormer on the chamfer axis.
+        C.beam('Drum pilaster', (px, py, CORNICE + .36), (px, py, z1 - .42), .55, .26, 'stone', 'dome')
     profile = [(1.0, 0.0), (1.05, .10), (1.04, .25), (.96, .42), (.82, .58), (.64, .72), (.44, .84), (.26, .93), (.10, .985), (0.0, 1.0)]
     dz = z1 + .20
     dome('Zinc dome', cx, cy, dz, DOME_R, DOME_H, profile, 'zinc', 'dome', 48, 28)
     sp = smooth_profile(profile, 36)
     for k in range(16):
         rib_mesh('Dome rib', cx, cy, dz, base + math.pi / 16 + math.tau * k / 16, [(rf * DOME_R, zf * DOME_H) for rf, zf in sp if zf <= .95], .11, .05, 'zinc', 'dome')
-    # Oculus dormer at 45 percent of the dome height on the chamfer axis.
-    nr, nz = .86, .51
+    # Projecting framed oculus dormer at the dome base on the chamfer axis (v001 P1 4): round hood on the shell, moulded
+    # ring frame, deep dark reveal, recessed glass, scroll cheeks and a small bonnet.
     ux, uy = math.cos(base), math.sin(base)
-    px, py, pz = cx + ux * DOME_R * .90, cy + uy * DOME_R * .90, dz + DOME_H * .45
-    n = (ux * nr, uy * nr, nz)
+    px, py, pz = cx + ux * (DOME_R * .96), cy + uy * (DOME_R * .96), dz + DOME_H * .22
+    n = (ux * .97, uy * .97, .24)
     q = lambda d: (px + n[0] * d, py + n[1] * d, pz + n[2] * d)
-    C.rod('Dome oculus hood', q(-.45), q(.30), .60, 'zinc', 'dome', 20)
-    C.rod('Dome oculus ring', q(.28), q(.40), .64, 'zinc', 'dome', 20)
-    C.rod('Dome oculus reveal', q(.10), q(.41), .46, 'hardware', 'dome', 20)
-    C.rod('Dome oculus glass', q(.20), q(.22), .44, 'glass', 'dome', 20)
-    # Lantern: solid neck, base, eight columns, bell cap, gilt finial.
+    C.rod('Oculus hood', q(-1.2), q(.95), .78, 'zinc', 'dome', 24)
+    C.rod('Oculus ring frame', q(.90), q(1.10), .88, 'stone', 'dome', 24)
+    C.rod('Oculus ring bead', q(1.10), q(1.16), .74, 'stone', 'dome', 24)
+    C.rod('Oculus reveal', q(.55), q(1.17), .58, 'hardware', 'dome', 24)
+    C.rod('Oculus glass', q(.62), q(.64), .55, 'glass', 'dome', 24)
+    C.beam('Oculus bar', (q(.66)[0] - uy * .54, q(.66)[1] + ux * .54, q(.66)[2]), (q(.66)[0] + uy * .54, q(.66)[1] - ux * .54, q(.66)[2]), .04, .04, 'hardware', 'dome')
+    for sgn in (-1, 1):   # scroll cheeks
+        C.box('Oculus cheek', (px + n[0] * .2 - uy * sgn * .95, py + n[1] * .2 + ux * sgn * .95, pz - .35), (.5, .5, 1.4), 'zinc', 'dome', 0)
+    cone('Oculus bonnet', px + n[0] * .3, py + n[1] * .3, pz + .60, 1.05, pz + 1.75, .20, 'zinc', 'dome', 20)
     lz = dz + DOME_H + .30
     C.rod('Lantern neck', (cx, cy, dz + DOME_H * .82), (cx, cy, lz + .02), .55, 'zinc', 'dome', 8)
     C.rod('Lantern base', (cx, cy, lz), (cx, cy, lz + .22), .85, 'zinc', 'dome', 8)
@@ -525,7 +550,14 @@ def drum_and_dome():
     dome('Lantern bell', cx, cy, lz + 1.6, .82, 1.05, [(1.0, 0.0), (1.0, .18), (.86, .48), (.5, .8), (0.0, 1.0)], 'zinc', 'dome', 24, 10)
     C.rod('Finial', (cx, cy, lz + 2.55), (cx, cy, lz + 3.6), .05, 'gilt', 'dome', 8)
     C.rod('Finial ball', (cx, cy, lz + 3.0), (cx, cy, lz + 3.34), .17, 'gilt', 'dome', 12)
-    C.CONTACTS.append(dict(name='Stone drum on the chamfer and adjoining walls through the mansard; zinc dome on the drum cornice; lantern on a solid neck', drum_top_m=z1, dome_top_m=dz + DOME_H))
+    C.CONTACTS.append(dict(name='Drum on a corbel ring over the chamfer cornice and the adjoining walls; zinc dome on the drum cornice; oculus dormer seated on the shell; lantern on a solid neck', drum_top_m=z1, dome_top_m=dz + DOME_H))
+
+
+def cone(name, cx, cy, z0, r0, z1, r1, role, module, segs=24):
+    vs = [(cx + r0 * math.cos(math.tau * i / segs), cy + r0 * math.sin(math.tau * i / segs), z0) for i in range(segs)]
+    vs += [(cx + max(r1, .001) * math.cos(math.tau * i / segs), cy + max(r1, .001) * math.sin(math.tau * i / segs), z1) for i in range(segs)]
+    fs = [tuple(range(segs - 1, -1, -1)), tuple(range(segs, 2 * segs))] + [(i, (i + 1) % segs, (i + 1) % segs + segs, i + segs) for i in range(segs)]
+    return C.mesh(name, vs, fs, role, module)
 
 
 def roofs_and_floors():
@@ -636,11 +668,12 @@ def build():
     pitch, gw = elevation(west, -hw + T, hw, street=True, cafe_bays=(7, 8) if round(2 * hw / BAY) == 9 else tuple(range(round(2 * hw / BAY) - 2, round(2 * hw / BAY))))
     elevation(north, -W / 2, W / 2, street=False)
     elevation(east, -D / 2 + T, D / 2 - T, street=False)
-    # Awnings over the cafe bays beside the chamfer on both street faces.
+    # One continuous awning: along the west face from the last cafe bay, round the chamfer, along the south face.
     cafe_s = [h for h in gs if h.get('cafe')]
-    awning(south, cafe_s[0]['u'] - pitch / 2 + .35, cafe_s[-1]['u'] + pitch / 2 - .2)
     cafe_w = [h for h in gw if h.get('cafe')]
-    awning(west, cafe_w[0]['u'] - pitch / 2 + .2, cafe_w[-1]['u'] + pitch / 2 - .35)
+    s_end = south.p(cafe_s[-1]['u'] + pitch / 2 - .2, 0, 0)[:2]
+    w_start = west.p(cafe_w[0]['u'] - pitch / 2 + .2, 0, 0)[:2]
+    awning_path([w_start, (CX1, CY1), (CX0, CY0), s_end])
     chamfer_bay()
     drum_and_dome()
 

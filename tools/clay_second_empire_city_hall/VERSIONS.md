@@ -2,4 +2,4 @@
 
 | version | purpose | result |
 |---|---|---|
-| v001 (1440 px, 32 spp, 18 views + 4 phone boards) | first full roster and independent review | rendering |
+| v001 (1440 px, 32 spp, 18 views + 4 phone boards) | first full roster and independent review | builder pass, aperture audit PASS, 73,402 triangles, 3,677,940-byte GLB; VISUAL_REWORK_REQUIRED: 0 P0, 13 P1 (black seams at every pavilion junction; black dormer cheeks; black pediment shells; porch without pediment or lower order; balustrade across the stair head and a cheek through an arcade arch; tower set back behind the pavilion mansard; squat tower cap and plain clock stage; pavilion mansards barely taller than the wings; flat upper roof; bay rhythm 3/2/4/2/3 against 2/3/3/3/2 with per-window balconettes; one wall tone and pale roofs; trees against the facade; rear_court camera on the outer face), 9 P2 |
