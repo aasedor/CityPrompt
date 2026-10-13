@@ -17,10 +17,10 @@ SLUG = 'clay-modernista-market-hall'
 S = 46.0                          # square hall side
 HW = 9.0                          # wing half-width (18 m wings)
 EAVE_A = 6.8                      # aisle (quadrant) eave at the outer walls
-EAVE_W = 10.0                     # wing eave over the quadrant roofs
-RIDGE = 15.0                      # wing ridge
+EAVE_W = 10.5                     # wing eave over the quadrant roofs
+RIDGE = 17.2                      # wing ridge (the great arch sits inside the gable, v001 P0 1)
 LANT = 7.0                        # central lantern half-side
-LANT_TOP, LANT_APEX = 18.0, 21.6
+LANT_BASE, LANT_TOP, LANT_APEX = 11.0, 20.4, 27.0   # glazed lantern drum buried in the roof crossing, steep glazed pyramid (v001 P0 2, P1 6)
 DADO = 1.3
 T = .30
 G0 = .15
@@ -28,10 +28,10 @@ BAY = 4.6
 EPS = .002
 PLAZA = 14.0
 PALETTE = dict(wall=(.62, .54, .44), joint=(.46, .40, .32), trim=(.16, .18, .17),
-    pale=(.78, .74, .66), stone=(.72, .66, .56), roof=(.44, .42, .38), sand=(.70, .64, .52),
+    pale=(.78, .74, .66), stone=(.72, .66, .56), roof=(.38, .34, .28), sand=(.70, .64, .52),
     foundation=(.52, .52, .50), glass=(.46, .54, .56), hardware=(.14, .16, .15),
     interior=(.80, .76, .68), floor=(.50, .48, .44), timber=(.40, .28, .16), blue=(.14, .22, .28),
-    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.64, .62, .58), tile=(.40, .50, .46),
+    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.64, .62, .58), tile=(.66, .46, .30), tile_dark=(.48, .30, .20),
     stain_red=(.62, .16, .14), stain_gold=(.84, .64, .20), stain_blue=(.20, .34, .58), stain_green=(.24, .48, .30),
     awning_red=(.70, .14, .10), awning_yellow=(.86, .68, .16), awning_blue=(.16, .30, .60), gilt=(.80, .64, .26), produce=(.62, .32, .16))
 
@@ -41,17 +41,17 @@ def manifest(version):
     cams = G.camera_roster(S + 2 * PLAZA, S + 2 * PLAZA, h, [
         ('facade_close', (-14.0, -42.0, 5.0), (-4.0, -S / 2, 7.0), 45),
         ('architecture_close', (-40.0, -40.0, 14.0), (-S / 2 + 6.0, -S / 2 + 6.0, 8.0), 50),
-        ('glass_close', (-10.0, -34.0, 3.0), (-6.0, -S / 2, 4.0), 50),
+        ('glass_close', (-14.0, -32.0, 3.0), (-14.0, -S / 2, 4.0), 50),
         ('great_arch', (-6.0, -52.0, 6.0), (0.0, -S / 2, 9.0), 40),
         ('aisle_arcade', (-30.0, -36.0, 3.0), (-14.0, -S / 2, 4.0), 40),
         ('lantern_roofs', (-40.0, -46.0, 30.0), (0.0, 0.0, 15.0), 45),
         ('crest_contact', (6.0, -40.0, 15.0), (0.0, -S / 2, 15.5), 45),
         ('plaza_awnings', (30.0, -38.0, 4.0), (10.0, -S / 2, 4.0), 40),
         ('interior', (0.0, -S / 2 + 2.0, 1.7), (0.0, 8.0, 5.0), 35),
-        ('rear_court', (30.0, 40.0, 8.0), (0.0, S / 2, 8.0), 40)])
+        ('rear_court', (26.0, 44.0, 8.0), (0.0, S / 2, 9.0), 40)])
     for c in cams:
         if c['name'] == 'front':          # eye level on the plaza axis facing the great arch (locked front)
-            c['location'] = (-12.0, -62.0, 1.7); c['target'] = (-2.0, -S / 2, 8.0); c['lens'] = 30; c['whole'] = False
+            c['location'] = (-16.0, -82.0, 1.7); c['target'] = (-2.0, -S / 2, 9.0); c['lens'] = 28; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -59,13 +59,13 @@ def manifest(version):
         measurement_contract=dict(dimensions_m=dict(width=S + 2 * PLAZA, depth=S + 2 * PLAZA, height=h),
             observed_storeys=1, storey_programme='single-storey market hall with a central lantern',
             plan='46 x 46 m square hall (top view) on a paved plaza: four 18 m gabled wings in a cross around a 14 m square lantern, lower aisle roofs in the four corner quadrants',
-            section='tiled dado 1.3 m, cast-iron columns at 4.6 m with iron-framed glazing to the aisle eave at 6.8 m; wing eaves at 10 m over the quadrant roofs with clerestory glazing; wing ridges at 15 m; lantern to 18 m with a pyramid roof to 21.6 m',
-            gables='each gable end a semicircular iron arch 16 m across with a glazed tympanum (stained glass on the south), iron lattice spandrels, bargeboards and a wrought-iron crest; the south gable over the main entrance between stone piers',
+            section='tiled dado 1.3 m, cast-iron columns at 4.6 m with iron-framed glazing to the aisle eave at 6.8 m; wing eaves at 10.5 m over the quadrant roofs with louvred clerestories; wing ridges at 17.2 m with glazed ridge monitors beside the lantern; glazed lantern drum to 20.4 m with a steep glazed pyramid to 27 m',
+            gables='each gable end a semicircular iron archivolt 14 m across set inside the gable with a stained-glass tympanum mosaic and rose, a coat-of-arms shield in the gable field, lattice spandrels, scrolled cresting along both rakes and a tall apex finial; the south gable over the main entrance between stone piers',
             perimeter='coloured canvas awnings over every bay, gablets along the quadrant eaves, bollards and trees on the plaza',
             inferred='the north and east gables repeat the south grammar with clear glass; interiors are stalls as teaching assumptions'),
-        roof_contract=dict(type='gabled iron roofs with glazed strips, pyramid lantern roof, lean-to quadrant roofs', datum_m=EAVE_A, crowns_m=[RIDGE, LANT_APEX]),
+        roof_contract=dict(type='gabled metal roofs with cut glazed strips and ridge monitors, glazed pyramid lantern, lean-to quadrant roofs with glazed strips and gablets', datum_m=EAVE_A, crowns_m=[RIDGE, LANT_APEX]),
         identity_contract=dict(owner='great iron gable arches with stained glass and crests, pinwheel of gabled wings around the square lantern, tiled dado with cast-iron columns and glazing, coloured awnings, plaza'),
-        material_contract=dict(profile='source-palette clay: patterned tile dado in green-grey, dark cast iron, glass, stained-glass colour panels, brown-grey roof plates with glass strips, red, yellow and blue canvas awnings, stone piers', textured_keeper=False),
+        material_contract=dict(profile='source-palette clay: warm ochre tile dado with a darker base, dark cast iron, glass, stained-glass colour panels, brown-grey roof plates with glass strips, red, yellow and blue canvas awnings, stone piers', textured_keeper=False),
         programme_contract=dict(storeys=1, ground='market stalls in four aisles meeting under the lantern', upper='none', roof='lantern ventilation'),
         contact_contract=['Grade-zero slab and plaza', 'Columns on the dado plinth', 'Wing walls on interior columns over the quadrant roofs', 'Gable screens between the stone piers on the plinth', 'Lantern on the wing ridges', 'Awnings on arms from the columns'],
         runtime_contract=dict(scale='fixed_native_only', installation='not installed', review='NOT TESTED'),
@@ -259,12 +259,12 @@ def eave_cornice(m, lo, hi, z, span_t=T, proj=.70, role='stone', modillions=True
 def quad(name, p0, p1, p2, p3, t, role, module):
     """Thin plate from four world points (top surface), thickness t straight down."""
     vs = [p0, p1, p2, p3] + [(x, y, z - t) for x, y, z in (p0, p1, p2, p3)]
-    C.mesh(name, vs, [(0, 1, 2, 3), (7, 6, 5, 4), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0)], role, module)
+    return C.mesh(name, vs, [(0, 1, 2, 3), (7, 6, 5, 4), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0)], role, module)
 
 
 def tri(name, p0, p1, p2, t, role, module):
     vs = [p0, p1, p2] + [(x, y, z - t) for x, y, z in (p0, p1, p2)]
-    C.mesh(name, vs, [(0, 1, 2), (5, 4, 3), (0, 3, 4, 1), (1, 4, 5, 2), (2, 5, 3, 0)], role, module)
+    return C.mesh(name, vs, [(0, 1, 2), (5, 4, 3), (0, 3, 4, 1), (1, 4, 5, 2), (2, 5, 3, 0)], role, module)
 
 
 def outer_faces():
@@ -277,7 +277,8 @@ def aisle_wall(f, lo, hi, colour_offset=0):
     nb = max(1, round((hi - lo) / BAY)); pitch = (hi - lo) / nb
     f.wall(f'{f.label} dado {lo:.0f}', lo, hi - EPS, G0, DADO, depth=T, role='tile', holes=())
     m = Merge(f)
-    m.box('stone', (lo + hi) / 2, -.05, G0 + .20, hi - lo - 2 * EPS, T + .14, .40)       # plinth
+    m.box('tile_dark', (lo + hi) / 2, -.03, G0 + .22, hi - lo - 2 * EPS, T + .10, .44)   # darker base course
+    m.box('stone', (lo + hi) / 2, -.05, G0 + .05, hi - lo - 2 * EPS, T + .14, .10)       # plinth
     m.box('stone', (lo + hi) / 2, -.04, DADO + .08, hi - lo - 2 * EPS, T + .12, .16)      # dado cope
     G.brick_courses(f, lo + .02, hi - .02, G0 + .7, DADO - .1, (), spacing=.30)
     m.box('hardware', (lo + hi) / 2, T / 2, EAVE_A - .10, hi - lo - 2 * EPS, .28, .34)   # eaves beam
@@ -325,17 +326,19 @@ def aisle_wall(f, lo, hi, colour_offset=0):
 
 
 def gable_end(f, main=False):
-    """Great semicircular iron arch screen between stone piers under a gable with lattice spandrels and a crest."""
+    """Gable end: stone piers, a semicircular iron archivolt set inside the gable with a stained-glass tympanum mosaic,
+    a coat-of-arms shield in the gable field, lattice spandrels, scrolled cresting on both rakes and a tall apex finial."""
     half = HW
-    R_ = 7.6
-    zc = EAVE_W - 1.6                  # arch springing
-    # Stone piers at both ends.
+    R_ = 7.0
+    zc = EAVE_W - 2.3                  # arch springing
+    apex = RIDGE + .55
     for sgn in (-1, 1):
         u = sgn * (half - .70)
         f.part(f'{f.label} gable pier', u, T / 2 + .1, (G0 + EAVE_W + .2) / 2, 1.40, 1.60, EAVE_W + .2 - G0, 'stone', 'gable piers', 0)
         f.part(f'{f.label} gable pier cap', u, T / 2 + .1, EAVE_W + .35, 1.70, 1.90, .30, 'stone', 'gable piers', 0)
         f.part(f'{f.label} gable pier base', u, T / 2 + .1, G0 + .35, 1.70, 1.90, .70, 'stone', 'gable piers', 0)
-    # Screen: a glass panel of arch shape (rectangle below the springing plus the semicircle), the entrance cut out.
+        f.part(f'{f.label} gable pier panel', u, T / 2 - .72, (DADO + 1.0 + EAVE_W - 1.6) / 2, .90, .06, EAVE_W - 2.6 - DADO, 'tile', 'gable piers', 0)
+    # Glass screen: rectangle below the springing plus the semicircle; the entrance cut out of it.
     pts = [(-R_, DADO + .1), (R_, DADO + .1), (R_, zc)]
     for k in range(1, 16):
         a = math.pi * k / 16
@@ -344,66 +347,90 @@ def gable_end(f, main=False):
     screen = f.panel(f'{f.label} arch screen', pts, T / 2 - .006, T / 2 + .006, 'glass', 'gable screen')
     f.cut(screen, f'{f.label} entrance cut', 0.0, G0, 5.2, 5.4, depth=.4)
     m = Merge(f)
-    # Stained-glass or clear tympanum: radial segments as coloured panels inside the semicircle for the main gable.
-    if main:
-        cols = ('stain_red', 'stain_gold', 'stain_blue', 'stain_green')
-        for k in range(8):
-            a0, a1 = math.pi * k / 8, math.pi * (k + 1) / 8
-            am = (a0 + a1) / 2
-            for rr, size in ((R_ * .78, .95), (R_ * .50, .80)):
-                m.box(cols[(k + int(rr)) % 4], math.cos(am) * rr, T / 2 - .02, zc + math.sin(am) * rr, size, .02, size)
-        m.box('stain_gold', 0.0, T / 2 - .03, zc + R_ * .30, 1.8, .03, 1.8)       # coat-of-arms shield
-        m.box('stain_red', 0.0, T / 2 - .04, zc + R_ * .30, 1.2, .02, 1.2)
-    else:
-        m.box('stain_gold', 0.0, T / 2 - .03, zc + R_ * .34, 1.8, .03, 1.8)
-        m.box('stain_red', 0.0, T / 2 - .04, zc + R_ * .34, 1.2, .02, 1.2)
-    # Iron bars: radial and ring bars over the tympanum, mullions and transoms below.
-    for k in range(9):
-        a = math.pi * k / 8
-        C.beam('Tympanum radial', f.p(0.0, T / 2 - .05, zc), f.p(math.cos(a) * (R_ - .25), T / 2 - .05, zc + math.sin(a) * (R_ - .25)), .07, .07, 'hardware', 'gable screen')
-    for rr in (R_ * .35, R_ * .66):
-        for k in range(12):
-            a0, a1 = math.pi * k / 12, math.pi * (k + 1) / 12
-            C.beam('Tympanum ring', f.p(math.cos(a0) * rr, T / 2 - .05, zc + math.sin(a0) * rr), f.p(math.cos(a1) * rr, T / 2 - .05, zc + math.sin(a1) * rr), .06, .06, 'hardware', 'gable screen')
-    for u in (-5.6, -2.9, 2.9, 5.6):
+    # Stained-glass tympanum: dense radial mosaic of coloured panes (12 sectors x 3 rings) with a central rose, as
+    # opaque colour panels on both sides of the screen so the colour reads from inside and outside (v001 P1 3).
+    cols = ('stain_green', 'stain_gold', 'stain_blue', 'stain_red')
+    rings = ((2.2, 3.9), (4.0, 5.6), (5.7, R_ - .25))
+    for ri, (r0, r1) in enumerate(rings):
+        nsec = 12 if ri else 8
+        for k in range(nsec):
+            a0, a1 = math.pi * k / nsec, math.pi * (k + 1) / nsec
+            am = (a0 + a1) / 2; rm = (r0 + r1) / 2
+            w_ = (a1 - a0) * rm - .10; h_ = r1 - r0 - .10
+            role = cols[(k + ri) % 4] if main else ('stain_blue' if (k + ri) % 3 == 0 else 'glass')
+            if role == 'glass':
+                continue
+            for dd in (T / 2 - .022, T / 2 + .022):
+                # a pane as a thin box centred on the sector, rotated by placing it through a local face
+                g = C.Face(f.p(math.cos(am) * rm, dd, zc + math.sin(am) * rm), (f.t * math.cos(am) + C.Vector((0, 0, 1)) * math.sin(am)), f.n, 'pane')
+                g.part('Tympanum pane', 0.0, 0.0, 0.0, h_, .012, w_, role, 'gable screen', 0)
+    for dd in (T / 2 - .03, T / 2 + .03):
+        C.rod('Tympanum rose', f.p(0.0, dd, zc + 1.2), f.p(0.0, dd + (.012 if dd > T / 2 else -.012), zc + 1.2), 1.15, 'stain_gold' if main else 'stain_blue', 'gable screen', 16)
+        C.rod('Tympanum rose heart', f.p(0.0, dd, zc + 1.2), f.p(0.0, dd + (.02 if dd > T / 2 else -.02), zc + 1.2), .55, 'stain_red', 'gable screen', 12)
+    for k in range(13):
+        a = math.pi * k / 12
+        C.beam('Tympanum radial', f.p(math.cos(a) * 1.3, T / 2 - .06, zc + math.sin(a) * 1.3), f.p(math.cos(a) * (R_ - .22), T / 2 - .06, zc + math.sin(a) * (R_ - .22)), .07, .07, 'hardware', 'gable screen')
+    for rr in (2.15, 3.95, 5.65):
+        for k in range(16):
+            a0, a1 = math.pi * k / 16, math.pi * (k + 1) / 16
+            C.beam('Tympanum ring', f.p(math.cos(a0) * rr, T / 2 - .06, zc + math.sin(a0) * rr), f.p(math.cos(a1) * rr, T / 2 - .06, zc + math.sin(a1) * rr), .06, .06, 'hardware', 'gable screen')
+    for u in (-5.2, -2.7, 2.7, 5.2):
         m.box('hardware', u, T / 2 - .05, (DADO + .1 + zc) / 2, .09, .09, zc - DADO - .1)
     for z in (DADO + .1, 5.6, zc - .05):
         m.box('hardware', 0.0, T / 2 - .05, z, 2 * R_, .09, .09)
-    for sgn in (-1, 1):   # entrance jambs and head
+    for sgn in (-1, 1):
         m.box('hardware', sgn * 2.65, T / 2 - .06, (G0 + 5.4) / 2, .16, .16, 5.4 - G0)
     m.box('hardware', 0.0, T / 2 - .06, 5.48, 5.5, .16, .16)
-    # The great arch ring: thick iron archivolt with gilt rosettes, and the gable lattice spandrels to the bargeboards.
+    # Archivolt inside the gable: thick iron ring with gilt rosettes.
     for k in range(16):
         a0, a1 = math.pi * k / 16, math.pi * (k + 1) / 16
         pa = f.p(math.cos(a0) * (R_ + .32), T / 2 - .25, zc + math.sin(a0) * (R_ + .32)); pb = f.p(math.cos(a1) * (R_ + .32), T / 2 - .25, zc + math.sin(a1) * (R_ + .32))
         C.beam('Archivolt', pa, pb, .62, .52, 'hardware', 'great arch')
         am = (a0 + a1) / 2
         C.rod('Archivolt rosette', f.p(math.cos(am) * (R_ + .32), T / 2 - .52, zc + math.sin(am) * (R_ + .32)), f.p(math.cos(am) * (R_ + .32), T / 2 - .60, zc + math.sin(am) * (R_ + .32)), .20, 'gilt', 'great arch', 8)
-    apex = RIDGE + .55
+    # Gable field above the arch: a closed iron lattice panel (glass backed) between the archivolt and the rakes.
+    field = [(-(half + .50), EAVE_W - .30), (half + .50, EAVE_W - .30), (0.0, apex - .05)]
+    f.panel(f'{f.label} gable field', field, T / 2 - .004, T / 2 + .004, 'glass', 'gable screen')
+    for k in range(1, 8):
+        u = k * 1.15
+        for sgn in (-1, 1):
+            z_top = apex - .05 - (apex - .05 - EAVE_W + .30) * (u / (half + .50)) - .20
+            z_bot = (zc + (max(R_ ** 2 - u ** 2, 0.0)) ** .5 + .75) if u < R_ else EAVE_W - .2
+            if z_top > z_bot + .3:
+                m.box('hardware', sgn * u, T / 2 - .10, (z_top + z_bot) / 2, .08, .08, z_top - z_bot)
+    for z in (EAVE_W + 1.4, EAVE_W + 3.4, EAVE_W + 5.2):
+        wz = 2 * (half + .50) * (apex - .05 - z) / (apex - .05 - EAVE_W + .30) - .4
+        if wz > 1.0:
+            m.box('hardware', 0.0, T / 2 - .10, z, wz, .08, .08)
+    # Coat-of-arms shield in the gable field above the archivolt (v001 P1 4).
+    sz = zc + R_ + 1.15
+    shield = [(-.9, sz + 1.0), (.9, sz + 1.0), (.9, sz - .1), (0.0, sz - .9), (-.9, sz - .1)]
+    f.panel('Shield', shield, T / 2 - .36, T / 2 - .12, 'stain_gold', 'crest')
+    for i in range(4):
+        f.part('Shield pale', -.675 + .45 * i, T / 2 - .38, sz + .05, .12, .04, 1.9 - .3, 'stain_red' if i % 2 == 0 else 'stain_gold', 'crest', 0)
+    f.part('Shield crown', 0.0, T / 2 - .36, sz + 1.25, 1.2, .24, .35, 'gilt', 'crest', 0)
+    # Rakes: bargeboards with continuous scrolled cresting and a tall apex finial (v001 P1 4).
     for sgn in (-1, 1):
         C.beam('Bargeboard', f.p(sgn * (half + .60), T / 2 - .25, EAVE_W - .45), f.p(0.0, T / 2 - .25, apex), .26, .40, 'hardware', 'great arch')
         C.beam('Bargeboard lower', f.p(sgn * (half + .60), T / 2 - .25, EAVE_W - .85), f.p(0.0, T / 2 - .25, apex - .40), .14, .14, 'hardware', 'great arch')
-        # lattice spandrel between the arch and the raking edge: diagonals
-        for k in range(1, 7):
-            u = sgn * (.9 + k * 1.15)
-            z_top = apex - (apex - EAVE_W + .45) * abs(u) / (half + .60) - .25
-            z_bot = zc + (max(R_ ** 2 - u ** 2, 0.0)) ** .5 + .35 if abs(u) < R_ else EAVE_W - .3
-            if z_top > z_bot + .3:
-                m.box('hardware', u, T / 2 - .12, (z_top + z_bot) / 2, .08, .08, z_top - z_bot)
-    # Horizontal tie at the springing line across the gable and the eaves cornice ends.
-    m.box('hardware', 0.0, T / 2 - .12, EAVE_W - .30, 2 * half + 1.0, .20, .24)
-    # Wrought-iron crest at the apex and finial spikes along the bargeboards.
-    for k in range(5):
-        a = math.pi * (k + .5) / 5
-        rr = 1.4
-        C.beam('Crest scroll', f.p(0.0, T / 2 - .25, apex + .2), f.p(math.cos(a) * rr, T / 2 - .25, apex + .2 + math.sin(a) * rr), .05, .05, 'hardware', 'crest')
-    C.rod('Crest finial', f.p(0.0, T / 2 - .25, apex), f.p(0.0, T / 2 - .25, apex + 2.6), .06, 'hardware', 'crest', 6)
-    C.rod('Crest ball', f.p(0.0, T / 2 - .25, apex + 2.2), f.p(0.0, T / 2 - .25, apex + 2.5), .18, 'gilt', 'crest', 8)
-    for sgn in (-1, 1):
-        for k in range(1, 4):
-            u = sgn * k * 2.4
-            z = apex - (apex - EAVE_W + .45) * abs(u) / (half + .60)
-            C.rod('Bargeboard spike', f.p(u, T / 2 - .25, z + .15), f.p(u, T / 2 - .25, z + .95), .035, 'hardware', 'crest', 6)
+        C.beam('Cresting rail', f.p(sgn * (half + .40), T / 2 - .25, EAVE_W - .05), f.p(.40 * sgn, T / 2 - .25, apex + .40), .05, .05, 'hardware', 'crest')
+        n = 9
+        for k in range(n + 1):
+            t = k / n
+            u = sgn * ((half + .40) * (1 - t) + .40 * t)
+            z = (EAVE_W - .45) * (1 - t) + apex * t
+            C.rod('Cresting spike', f.p(u, T / 2 - .25, z + .1), f.p(u, T / 2 - .25, z + .75), .03, 'hardware', 'crest', 6)
+            if k < n:
+                u2 = sgn * ((half + .40) * (1 - (t + .5 / n)) + .40 * (t + .5 / n)); z2 = (EAVE_W - .45) * (1 - (t + .5 / n)) + apex * (t + .5 / n)
+                C.rod('Cresting scroll', f.p(u2, T / 2 - .25, z2 + .15), f.p(u2, T / 2 - .25, z2 + .42), .12, 'hardware', 'crest', 8)
+    for k in range(8):
+        a = math.tau * k / 8
+        C.beam('Finial star', f.p(0.0, T / 2 - .25, apex + 1.5), f.p(math.cos(a) * .9, T / 2 - .25, apex + 1.5 + math.sin(a) * .9), .05, .05, 'hardware', 'crest')
+    for k in range(12):
+        a0, a1 = math.tau * k / 12, math.tau * (k + 1) / 12
+        C.beam('Finial ring', f.p(math.cos(a0) * .9, T / 2 - .25, apex + 1.5 + math.sin(a0) * .9), f.p(math.cos(a1) * .9, T / 2 - .25, apex + 1.5 + math.sin(a1) * .9), .06, .06, 'hardware', 'crest')
+    C.rod('Crest finial', f.p(0.0, T / 2 - .25, apex), f.p(0.0, T / 2 - .25, apex + 3.3), .07, 'hardware', 'crest', 6)
+    C.rod('Crest ball', f.p(0.0, T / 2 - .25, apex + 2.6), f.p(0.0, T / 2 - .25, apex + 2.95), .20, 'gilt', 'crest', 8)
     m.flush('gable screen')
     C.OPENINGS.append(dict(id=f'{f.label} entrance', face=f.label, u=0.0, z=G0, width=5.2, height=5.4, kind='open entrance', clear_wall_cut=True, carrier_depth_m=.012, frame_inset_m=None, pane_inset_m=None,
         face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='market hall'))
@@ -411,41 +438,85 @@ def gable_end(f, main=False):
         face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='market hall'))
 
 
+def roof_plate_with_strips(name, pts_section, axis, lo, hi, strips, t=.18):
+    """Pitched roof plate as a prism along one axis with glazed strips cut through it (plan-aligned cutters) and glass
+    plates in the cuts, so light passes into the hall (v001 P1 5, P1 9)."""
+    plate = C.prism(name, pts_section, axis, lo, hi, 'roof', 'wing roofs')
+    for (a0, a1, g0, g1, za, zb) in strips:
+        if axis == 'y':
+            C.cut_box(plate, name + ' strip cut', ((a0 + a1) / 2, (g0 + g1) / 2, (za + zb) / 2), (abs(a1 - a0), abs(g1 - g0), 6.0))
+            quad(name + ' glass', (a0, g0, za), (a1, g0, zb), (a1, g1, zb), (a0, g1, za), .05, 'glass', 'wing roofs')
+        else:
+            C.cut_box(plate, name + ' strip cut', ((g0 + g1) / 2, (a0 + a1) / 2, (za + zb) / 2), (abs(g1 - g0), abs(a1 - a0), 6.0))
+            quad(name + ' glass', (g0, a0, za), (g0, a1, zb), (g1, a1, zb), (g1, a0, za), .05, 'glass', 'wing roofs')
+    return plate
+
+
 def wing_roofs():
-    """Four gabled wings from the lantern walls to the gable ends; glazed strips; clerestory walls over the quadrant roofs."""
+    """Two full-length gabled wings crossing under the lantern (no open valleys, v001 P0 2); glazed strips cut through the
+    plates; clerestory louvre walls over the quadrant roofs; ridge monitors beside the lantern; quadrant roofs with glazed
+    strips and closed double-pitch gablets; glazed lantern drum and steep glazed pyramid."""
     t = .18
+    slope = (RIDGE - EAVE_W) / HW
     for axis in ('y', 'x'):
-        for sgn in (-1, 1):
-            # cross-section in (across, z): eaves at +-HW, ridge at 0
-            lo, hi = sgn * LANT, sgn * (S / 2 + .60)
-            lo, hi = min(lo, hi), max(lo, hi)
-            for side in (-1, 1):
-                pts = [(0.0, RIDGE), (side * (HW + .5), EAVE_W - .5 * (RIDGE - EAVE_W) / HW), (side * (HW + .5), EAVE_W - .5 * (RIDGE - EAVE_W) / HW - t), (0.0, RIDGE - t)]
-                C.prism(f'Wing roof {axis}{sgn}{side}', pts, 'y' if axis == 'y' else 'x', lo, hi, 'roof', 'wing roofs')
-                # glazed strip along the slope (long rooflight) with iron edge bars
-                g0, g1 = lo + 1.0, hi - 1.6
-                a_lo, a_hi = side * 2.4, side * 6.4
-                za = RIDGE - abs(a_lo) * (RIDGE - EAVE_W) / HW + .03; zb = RIDGE - abs(a_hi) * (RIDGE - EAVE_W) / HW + .03
-                if axis == 'y':
-                    quad(f'Wing rooflight {axis}{sgn}{side}', (a_lo, g0, za), (a_hi, g0, zb), (a_hi, g1, zb), (a_lo, g1, za), .04, 'glass', 'wing roofs')
-                else:
-                    quad(f'Wing rooflight {axis}{sgn}{side}', (g0, a_lo, za), (g0, a_hi, zb), (g1, a_hi, zb), (g1, a_lo, za), .04, 'glass', 'wing roofs')
-            # ridge cap and purlin lines
+        lo, hi = -(S / 2 + .60), S / 2 + .60
+        for side in (-1, 1):
+            pts = [(0.0, RIDGE), (side * (HW + .5), EAVE_W - .5 * slope), (side * (HW + .5), EAVE_W - .5 * slope - t), (0.0, RIDGE - t)]
+            strips = []
+            for (g0, g1) in ((lo + 2.0, -LANT - 1.6), (LANT + 1.6, hi - 2.0)):
+                for (a_lo, a_hi) in ((1.6, 3.0), (4.6, 6.0)):
+                    a0, a1 = side * a_lo, side * a_hi
+                    za = RIDGE - a_lo * slope + .02; zb = RIDGE - a_hi * slope + .02
+                    strips.append((a0, a1, g0, g1, za, zb))
+            roof_plate_with_strips(f'Wing roof {axis}{side}', pts, axis, lo, hi, strips)
             if axis == 'y':
                 C.beam('Ridge cap', (0.0, lo, RIDGE + .06), (0.0, hi, RIDGE + .06), .30, .12, 'hardware', 'wing roofs')
             else:
                 C.beam('Ridge cap', (lo, 0.0, RIDGE + .06), (hi, 0.0, RIDGE + .06), .30, .12, 'hardware', 'wing roofs')
-    # Clerestory walls of the wings over the quadrant roofs: glazed trapezoids on iron posts, from the lantern corner
-    # (where the quadrant roof reaches EAVE_W) out to the gable piers (quadrant eave at EAVE_A).
+        # Ridge monitors beside the lantern: raised glazed boxes 3.2 m wide and 1.4 m tall on the ridge (locked oblique).
+        for sgn in (-1, 1):
+            c0, c1 = sgn * (LANT + 1.8), sgn * (LANT + 9.0)
+            zb = RIDGE - 1.6 * slope
+            for side in (-1, 1):
+                if axis == 'y':
+                    f = C.Face((side * 1.6, (c0 + c1) / 2, 0), (0, 1, 0), (-side, 0, 0), f'monitor {axis}{sgn}{side}')
+                else:
+                    f = C.Face(((c0 + c1) / 2, side * 1.6, 0), (1, 0, 0), (0, -side, 0), f'monitor {axis}{sgn}{side}')
+                L = abs(c1 - c0)
+                f.panel(f'{f.label} glazing', [(-L / 2, zb - .3), (L / 2, zb - .3), (L / 2, zb + 1.4), (-L / 2, zb + 1.4)], -.006, .006, 'glass', 'monitors')
+                mm = Merge(f)
+                mm.box('hardware', 0.0, 0.0, zb + 1.46, L, .16, .16)
+                for i in range(int(L / 1.2) + 1):
+                    mm.box('hardware', -L / 2 + L * i / int(L / 1.2), 0.0, zb + .55, .10, .10, 1.7)
+                mm.flush('monitors')
+            if axis == 'y':
+                vs = [(-1.9, c0, zb + 1.5), (1.9, c0, zb + 1.5), (1.9, c1, zb + 1.5), (-1.9, c1, zb + 1.5)]
+                ends = ((0.0, c0), (0.0, c1))
+            else:
+                vs = [(c0, -1.9, zb + 1.5), (c0, 1.9, zb + 1.5), (c1, 1.9, zb + 1.5), (c1, -1.9, zb + 1.5)]
+                ends = ((c0, 0.0), (c1, 0.0))
+            for (p0, p1) in ((vs[0], vs[1]), (vs[1], vs[2]), (vs[2], vs[3]), (vs[3], vs[0])):
+                pass
+            # low glazed gable roof of the monitor: two plates to a ridge 1 m above the eaves
+            if axis == 'y':
+                for side in (-1, 1):
+                    quad(f'Monitor roof {axis}{sgn}{side}', (0.0, c0, zb + 2.5), (0.0, c1, zb + 2.5), (side * 1.95, c1, zb + 1.45), (side * 1.95, c0, zb + 1.45), .08, 'glass', 'monitors')
+                for cc, off in ((c0, -.06 if c0 < c1 else .06), (c1, .06 if c0 < c1 else -.06)):   # gable ends clear of the glazing and roof planes
+                    tri(f'Monitor gable {axis}{sgn}', (-1.9, cc + off, zb + 1.45), (1.9, cc + off, zb + 1.45), (0.0, cc + off, zb + 2.5), .10, 'hardware', 'monitors')
+            else:
+                for side in (-1, 1):
+                    quad(f'Monitor roof {axis}{sgn}{side}', (c0, 0.0, zb + 2.5), (c1, 0.0, zb + 2.5), (c1, side * 1.95, zb + 1.45), (c0, side * 1.95, zb + 1.45), .08, 'glass', 'monitors')
+                for cc, off in ((c0, -.06 if c0 < c1 else .06), (c1, .06 if c0 < c1 else -.06)):
+                    tri(f'Monitor gable {axis}{sgn}', (cc + off, -1.9, zb + 1.45), (cc + off, 1.9, zb + 1.45), (cc + off, 0.0, zb + 2.5), .10, 'hardware', 'monitors')
+    # Clerestory louvre walls of the wings over the quadrant roofs.
     k_slope = (EAVE_W - EAVE_A) / (S / 2 - HW)
     for axis in ('y', 'x'):
         for sgn in (-1, 1):
             for side in (-1, 1):
-                # wall plane: axis 'y' wings have walls at x = side*HW running in y from sgn*HW to sgn*(S/2 - .7)
-                pts = []
                 u0, u1 = sgn * HW, sgn * (S / 2 - 1.4)
+                pts = []
                 for u in (u0, u1):
-                    z_q = EAVE_W - k_slope * (abs(u) - HW)        # quadrant roof height at this point along the wall
+                    z_q = EAVE_W - k_slope * (abs(u) - HW)
                     pts.append((u, z_q - .35))
                 pts.append((u1, EAVE_W + .30)); pts.append((u0, EAVE_W + .30))
                 if axis == 'y':
@@ -460,19 +531,31 @@ def wing_roofs():
                     u = u0 + (u1 - u0) * i / n
                     z_q = EAVE_W - k_slope * (abs(u) - HW)
                     m.box('hardware', u, 0.0, (z_q - .35 + EAVE_W + .04) / 2, .12, .12, EAVE_W + .04 - z_q + .35)
+                for j in range(6):           # louvre blades
+                    zl = EAVE_W - .3 - j * .5
+                    seg = [u for u in (u0 + (u1 - u0) * k / 24 for k in range(25)) if EAVE_W - k_slope * (abs(u) - HW) - .2 < zl]
+                    if len(seg) > 1:
+                        m.box('hardware', (seg[0] + seg[-1]) / 2, -.03, zl, abs(seg[-1] - seg[0]), .05, .09)
                 m.flush('clerestory')
                 C.OPENINGS.append(dict(id=f'{f.label} glazing', face=f.label, u=(u0 + u1) / 2, z=EAVE_A, width=abs(u1 - u0), height=EAVE_W - EAVE_A, kind='clerestory glazing', clear_wall_cut=False,
                     carrier_depth_m=.012, frame_inset_m=0.0, pane_inset_m=0.0, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='market hall'))
-    # Quadrant roofs: two triangular plates per corner rising from the outer eaves to the wing corner at EAVE_W.
+    # Quadrant roofs: two triangular plates per corner with glazed strips cut through; closed double-pitch gablets.
     for sx in (-1, 1):
         for sy in (-1, 1):
             oc = (sx * (S / 2 + .6), sy * (S / 2 + .6), EAVE_A - .05)
             ic = (sx * HW, sy * HW, EAVE_W - .02)
             ex = (sx * HW, sy * (S / 2 + .6), EAVE_A - .05)
             ey = (sx * (S / 2 + .6), sy * HW, EAVE_A - .05)
-            tri(f'Quadrant roof {sx}{sy}a', oc, ex, ic, .16, 'roof', 'quadrant roofs')
-            tri(f'Quadrant roof {sx}{sy}b', oc, ic, ey, .16, 'roof', 'quadrant roofs')
-            # gablets along the two outer eaves (locked front: small gables over every other bay)
+            ta = tri(f'Quadrant roof {sx}{sy}a', oc, ex, ic, .16, 'roof', 'quadrant roofs')
+            tb = tri(f'Quadrant roof {sx}{sy}b', oc, ic, ey, .16, 'roof', 'quadrant roofs')
+            # glazed strip across each plate (plan-aligned cutter through the sloping plate)
+            for plate, (cxs, cys, w_, d_) in ((ta, (sx * (HW + 4.0), sy * (S / 2 - 6.0), 3.0, 4.0)), (tb, (sx * (S / 2 - 6.0), sy * (HW + 4.0), 4.0, 3.0))):
+                C.cut_box(plate, 'Quadrant strip cut', (cxs, cys, EAVE_A + 1.0), (w_, d_, 6.0))
+                def zq(x, y):      # height of the quadrant plane through oc, ex/ey and ic
+                    fx = (abs(x) - HW) / (S / 2 + .6 - HW); fy = (abs(y) - HW) / (S / 2 + .6 - HW)
+                    return EAVE_W - .02 - max(fx, fy) * (EAVE_W - .02 - EAVE_A + .05)
+                x0, x1, y0, y1 = cxs - w_ / 2, cxs + w_ / 2, cys - d_ / 2, cys + d_ / 2
+                quad('Quadrant strip glass', (x0, y0, zq(x0, y0) + .01), (x1, y0, zq(x1, y0) + .01), (x1, y1, zq(x1, y1) + .01), (x0, y1, zq(x0, y1) + .01), .05, 'glass', 'quadrant roofs')
             for k in range(1, 3):
                 for along in ('x', 'y'):
                     d = HW + k * 4.6 + .2
@@ -482,37 +565,53 @@ def wing_roofs():
                     else:
                         cx, cy = sx * (S / 2 + .3), sy * d
                         f = C.Face((cx, cy, 0), (0, sy * 1.0, 0), (-sx, 0, 0), f'gablet {sx}{sy}{k}y')
-                    zb = EAVE_A - .3
-                    f.panel(f'{f.label} front', [(-1.6, zb), (1.6, zb), (1.6, zb + 1.1), (0.0, zb + 2.3), (-1.6, zb + 1.1)], -.02, .12, 'hardware', 'gablets')
-                    f.panel(f'{f.label} glass', [(-1.2, zb + .2), (1.2, zb + .2), (1.2, zb + 1.0), (0.0, zb + 1.95), (-1.2, zb + 1.0)], -.03, -.01, 'glass', 'gablets')
-                    for sgn in (-1, 1):
-                        a = f.p(sgn * 1.75, -.05, zb + 1.0); b = f.p(0.0, -.05, zb + 2.42)
-                        C.beam('Gablet barge', a, b, .10, .16, 'hardware', 'gablets')
-                        c_ = f.p(sgn * 1.75, 1.5, zb + 1.0 + 1.5 * k_slope * .0 + .35); d_ = f.p(0.0, 1.5, zb + 2.42 + .35)
-                        quad(f'{f.label} slate', f.p(sgn * 1.75, -.05, zb + 1.0), f.p(0.0, -.05, zb + 2.42), d_, c_, .10, 'roof', 'gablets')
-    # Central lantern on the ridges: square glazed clerestory with iron posts and a pyramid roof with a finial.
+                    gablet(f, EAVE_A - .3, k_slope)
+    # Lantern: glazed drum from inside the roof crossing to LANT_TOP, steep glazed pyramid with iron hips and a finial.
     L = LANT
-    C.box('Lantern base ring', (0, 0, RIDGE - .6), (2 * L + .6, 2 * L + .6, 1.2), 'roof', 'lantern', 0)
     lf = A.faces(2 * L, 2 * L, 0, 0, 'lantern ')
     for f in lf:
-        f.panel(f'{f.label} glazing', [(-L, RIDGE), (L, RIDGE), (L, LANT_TOP - .3), (-L, LANT_TOP - .3)], -.006, .006, 'glass', 'lantern')
+        f.panel(f'{f.label} glazing', [(-L, LANT_BASE), (L, LANT_BASE), (L, LANT_TOP - .3), (-L, LANT_TOP - .3)], -.006, .006, 'glass', 'lantern')
         m = Merge(f)
         for i in range(7):
-            m.box('hardware', -L + 2 * L * i / 6, 0.0, (RIDGE + LANT_TOP - .3) / 2, .14, .14, LANT_TOP - .3 - RIDGE)
-        m.box('hardware', 0.0, 0.0, LANT_TOP - .34, 2 * L, .22, .30)
-        m.box('hardware', 0.0, 0.0, RIDGE + .05, 2 * L, .16, .12)
+            m.box('hardware', -L + 2 * L * i / 6, 0.0, (RIDGE - 1.0 + LANT_TOP - .3) / 2, .16, .16, LANT_TOP - .3 - RIDGE + 1.0)
+        m.box('hardware', 0.0, 0.0, LANT_TOP - .34, 2 * L + .3, .26, .30)
+        m.box('hardware', 0.0, 0.0, RIDGE + .9, 2 * L, .16, .12)
+        for j in range(4):
+            m.box('hardware', 0.0, -.02, LANT_TOP - 1.2 - j * .55, 2 * L - .3, .05, .09)
         m.flush('lantern')
     C.OPENINGS.append(dict(id='lantern glazing', face='lantern', u=0.0, z=RIDGE, width=2 * L, height=LANT_TOP - .3 - RIDGE, kind='lantern glazing', clear_wall_cut=False, carrier_depth_m=.012, frame_inset_m=0.0, pane_inset_m=0.0,
         face_origin=[0, -L, 0], face_tangent=[1, 0, 0], face_inward=[0, 1, 0], occupied_space='market hall'))
-    o = L + .6
+    o = L + .5
     apex = (0.0, 0.0, LANT_APEX)
     for (p0, p1) in (((-o, -o), (o, -o)), ((o, -o), (o, o)), ((o, o), (-o, o)), ((-o, o), (-o, -o))):
-        tri('Lantern roof', (p0[0], p0[1], LANT_TOP - .2), (p1[0], p1[1], LANT_TOP - .2), apex, .16, 'roof', 'lantern')
-        quad('Lantern rooflight', (p0[0] * .78 + p1[0] * .22, p0[1] * .78 + p1[1] * .22, LANT_TOP - .1 + .01), (p0[0] * .22 + p1[0] * .78, p0[1] * .22 + p1[1] * .78, LANT_TOP - .1 + .01),
-             ((p0[0] * .22 + p1[0] * .78) * .35, (p0[1] * .22 + p1[1] * .78) * .35, LANT_TOP - .1 + (LANT_APEX - LANT_TOP + .1) * .65 + .01), ((p0[0] * .78 + p1[0] * .22) * .35, (p0[1] * .78 + p1[1] * .22) * .35, LANT_TOP - .1 + (LANT_APEX - LANT_TOP + .1) * .65 + .01), .04, 'glass', 'lantern')
-    C.rod('Lantern finial', (0, 0, LANT_APEX - .2), (0, 0, LANT_APEX + 2.0), .07, 'hardware', 'lantern', 6)
-    C.rod('Lantern ball', (0, 0, LANT_APEX + 1.5), (0, 0, LANT_APEX + 1.85), .22, 'gilt', 'lantern', 8)
-    C.CONTACTS.append(dict(name='Wing roofs between the lantern and the gable screens; clerestory walls on interior columns over the quadrant roofs; lantern base ring on the four ridges', ridge_m=RIDGE, lantern_top_m=LANT_TOP))
+        tri('Lantern pyramid glass', (p0[0], p0[1], LANT_TOP - .2), (p1[0], p1[1], LANT_TOP - .2), apex, .06, 'glass', 'lantern')
+        C.beam('Lantern hip', (p0[0], p0[1], LANT_TOP - .2), apex, .16, .16, 'hardware', 'lantern')
+        for fr in (.33, .66):
+            C.beam('Lantern purlin', (p0[0] * (1 - fr), p0[1] * (1 - fr), LANT_TOP - .2 + (LANT_APEX - LANT_TOP + .2) * fr), (p1[0] * (1 - fr), p1[1] * (1 - fr), LANT_TOP - .2 + (LANT_APEX - LANT_TOP + .2) * fr), .07, .07, 'hardware', 'lantern')
+        C.beam('Lantern eave', (p0[0], p0[1], LANT_TOP - .2), (p1[0], p1[1], LANT_TOP - .2), .20, .16, 'hardware', 'lantern')
+    C.rod('Lantern finial', (0, 0, LANT_APEX - .3), (0, 0, LANT_APEX + 2.4), .08, 'hardware', 'lantern', 6)
+    C.rod('Lantern ball', (0, 0, LANT_APEX + 1.7), (0, 0, LANT_APEX + 2.1), .24, 'gilt', 'lantern', 8)
+    C.CONTACTS.append(dict(name='Two full-length gabled wings crossing under the lantern; lantern drum rising out of the crossing; clerestory walls on interior columns over the quadrant roofs; monitors on the ridges', ridge_m=RIDGE, lantern_top_m=LANT_TOP))
+
+
+def gablet(f, zb, k_slope):
+    """Closed double-pitch gablet on the quadrant eave: lattice front with glass, two mirrored slate plates meeting at
+    a ridge that descends into the quadrant slope, cheeks closed (v001 P1 7)."""
+    f.panel(f'{f.label} front', [(-1.6, zb), (1.6, zb), (1.6, zb + 1.1), (0.0, zb + 2.3), (-1.6, zb + 1.1)], -.02, .12, 'hardware', 'gablets')
+    f.panel(f'{f.label} glass', [(-1.2, zb + .2), (1.2, zb + .2), (1.2, zb + 1.0), (0.0, zb + 1.95), (-1.2, zb + 1.0)], -.035, -.025, 'glass', 'gablets')
+    d_back = 2.4
+    z_back = zb + .3 + d_back / 4.4      # quadrant slope is about 13 degrees: run per rise 4.4
+    for sgn in (-1, 1):
+        a = f.p(0.0, -.08, zb + 2.42); bq = f.p(0.0, d_back, z_back + .9)
+        c_ = f.p(sgn * 1.78, -.08, zb + 1.02); d_ = f.p(sgn * 1.78, d_back, z_back - .5)
+        vs = [a, bq, d_, c_]
+        vs += [(x, y, z - .10) for x, y, z in vs]
+        C.mesh(f'{f.label} slate', vs, [(0, 1, 2, 3), (7, 6, 5, 4), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0)], 'roof', 'gablets')
+        C.beam('Gablet barge', a, c_, .10, .16, 'hardware', 'gablets')
+        uu = sgn * 1.52
+        pts = [(.0, zb - .2), (.0, zb + 1.05), (d_back - .3, z_back - .45), (d_back - .3, zb - .2)]
+        vs2 = [f.p(uu - .05, d, z) for d, z in pts] + [f.p(uu + .05, d, z) for d, z in pts]
+        C.mesh(f'{f.label} cheek', vs2, [(3, 2, 1, 0), (4, 5, 6, 7), (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)], 'hardware', 'gablets')
 
 
 def interior():
@@ -528,8 +627,8 @@ def interior():
                     x, y = (side * HW, u) if axis == 'y' else (u, side * HW)
                     C.rod('Hall column', (x, y, G0), (x, y, EAVE_W - .3), .20, 'hardware', 'hall columns', 10)
                     C.rod('Hall column capital', (x, y, EAVE_W - .8), (x, y, EAVE_W - .3), .30, 'hardware', 'hall columns', 10)
-            for i in range(1, 4):
-                u = sgn * (HW + (S / 2 - 1.6 - HW) * i / 4)
+            for i in range(0, 4):
+                u = sgn * (HW + 1.0 + (S / 2 - 2.6 - HW) * i / 3)
                 pts = []
                 for k in range(13):
                     a = math.pi * k / 12
@@ -552,15 +651,17 @@ def interior():
                 C.rod('Stall post', (x + sx * (w / 2 - .1), y + sy * (d / 2 - .1), G0 + .9), (x + sx * (w / 2 - .1), y + sy * (d / 2 - .1), G0 + 2.86), .03, 'hardware', 'stalls', 6)
     C.qa_room_light('Hall south', (0.0, -12.0, 8.0), 160, 8.0); C.qa_room_light('Hall north', (0.0, 12.0, 8.0), 120, 8.0)
     C.qa_room_light('Hall east', (12.0, 0.0, 8.0), 120, 8.0); C.qa_room_light('Hall west', (-12.0, 0.0, 8.0), 120, 8.0)
-    C.qa_room_light('Lantern', (0.0, 0.0, 12.0), 140, 8.0)
+    C.qa_room_light('Lantern', (0.0, 0.0, 14.0), 220, 10.0)
+    C.qa_room_light('Hall entrance', (0.0, -18.0, 6.0), 160, 8.0)
 
 
 def plaza():
     ext = PLAZA
     C.box('Plaza paving', (0, 0, .0075), (S + 2 * ext, S + 2 * ext, .015), 'foundation', 'plaza', 0)
     for u in range(-5, 6):
-        C.rod('Bollard', (u * 4.2, -S / 2 - 7.0, .015), (u * 4.2, -S / 2 - 7.0, .9), .08, 'hardware', 'plaza', 6)
-    for x, y in ((-S / 2 - 8.0, -14.0), (-S / 2 - 8.0, 2.0), (-S / 2 - 8.0, 18.0), (S / 2 + 8.0, -14.0), (S / 2 + 8.0, 2.0), (S / 2 + 8.0, 18.0), (-20.0, S / 2 + 8.0), (0.0, S / 2 + 8.0), (20.0, S / 2 + 8.0)):
+        for (bx, by) in ((u * 4.2, -S / 2 - 7.0), (u * 4.2, S / 2 + 7.0), (-S / 2 - 7.0, u * 4.2), (S / 2 + 7.0, u * 4.2)):
+            C.rod('Bollard', (bx, by, .015), (bx, by, .9), .08, 'hardware', 'plaza', 6)
+    for x, y in ((-S / 2 - 8.0, -14.0), (-S / 2 - 8.0, 2.0), (-S / 2 - 8.0, 18.0), (S / 2 + 8.0, -14.0), (S / 2 + 8.0, 2.0), (S / 2 + 8.0, 18.0), (-20.0, S / 2 + 9.0), (-6.0, S / 2 + 9.0), (8.0, S / 2 + 9.0)):
         street_tree(x, y, .015, height=9.0, spread=2.4)
     for sgn in (-1, 1):
         C.rod('Lamp post', (sgn * 16.0, -S / 2 - 9.0, .015), (sgn * 16.0, -S / 2 - 9.0, 6.0), .08, 'hardware', 'plaza', 8)

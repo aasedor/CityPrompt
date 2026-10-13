@@ -12,27 +12,28 @@ import math
 import clay_core as C
 import assemblies as A
 import geometry as G
+from contract import subtract_openings
 
 SLUG = 'clay-baronial-railway-hotel'
 W, D = 58.0, 50.0                 # quadrangle footprint
 WING = 14.0                       # wing depth; court 30 x 22 m
 T = .40
 G0 = .15
-LEVELS = [4.6, 8.4, 12.2, 16.0, 19.8]
-EAVE = 23.2
-RIDGE = 29.8
-TX, TW, TD, TOUT = -10.0, 10.0, 11.6, 1.6     # entrance tower centre x, width, depth (with projection), projection
+LEVELS = [5.4, 9.3, 13.2, 17.1]   # tall ground floor plus four upper floors: five window rows below the eaves (v001 P0 1)
+EAVE = 21.0
+RIDGE = 31.0                      # steep slate roofs, about 55 degrees (v001 P1 12)
+TX, TW, TD, TOUT = 0.0, 10.0, 11.6, 1.6       # entrance tower centred on the south face (locked top), width, depth (with projection), projection
 TOWER_TOP = 34.0
 PASS_W = 7.4                      # passage carrier width on the court face (arch 5 m between 1.2 m piers)
-BAY = 3.6
+BAY = 4.8                         # about five bays from the tower to the corner tourelle (v001 P1 10)
 EPS = .002
 SITE = (-W / 2 - 12.0, W / 2 + 8.0, -D / 2 - 14.0, D / 2 + 8.0)
-PALETTE = dict(wall=(.66, .55, .49), joint=(.50, .41, .37), trim=(.22, .20, .18),
-    pale=(.76, .72, .66), stone=(.74, .68, .60), roof=(.22, .24, .28), sand=(.70, .64, .52),
+PALETTE = dict(wall=(.60, .47, .41), joint=(.40, .30, .27), trim=(.22, .20, .18),
+    pale=(.76, .72, .66), stone=(.70, .62, .56), roof=(.20, .22, .26), sand=(.70, .64, .52),
     foundation=(.46, .46, .45), glass=(.44, .50, .52), hardware=(.12, .12, .12),
     interior=(.80, .76, .68), floor=(.46, .44, .42), timber=(.36, .26, .16), blue=(.14, .22, .28),
     planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.64, .62, .58), lead=(.42, .44, .46),
-    rustic=(.62, .52, .46))
+    rustic=(.56, .44, .39))
 
 
 def manifest(version):
@@ -41,29 +42,29 @@ def manifest(version):
         ('facade_close', (-30.0, -48.0, 6.0), (-10.0, -D / 2, 10.0), 45),
         ('architecture_close', (-54.0, -52.0, 20.0), (-W / 2 + 4.0, -D / 2 + 4.0, 16.0), 50),
         ('glass_close', (2.0, -36.0, 6.5), (6.0, -D / 2, 7.5), 50),
-        ('entrance_tower', (-30.0, -62.0, 26.0), (TX, -D / 2, 24.0), 45),
-        ('porte_cochere', (-22.0, -42.0, 2.0), (TX, -D / 2 - TOUT, 4.5), 40),
+        ('entrance_tower', (-22.0, -62.0, 26.0), (TX, -D / 2, 25.0), 45),
+        ('porte_cochere', (-12.0, -44.0, 2.0), (TX, -D / 2 - TOUT, 4.5), 40),
         ('corner_tourelle', (-50.0, -50.0, 24.0), (-W / 2, -D / 2, 24.0), 45),
-        ('crow_gables', (14.0, -46.0, 22.0), (12.0, -D / 2, 25.0), 45),
+        ('crow_gables', (16.0, -48.0, 22.0), (12.0, -D / 2, 24.0), 45),
         ('roof_court', (-60.0, -66.0, 56.0), (0.0, 0.0, 22.0), 45),
-        ('interior', (-2.0, -D / 2 + 1.2, LEVELS[0] + 1.6), (-2.0, -D / 2 + 8.0, LEVELS[0] + 1.3), 50),
-        ('rear_court', (6.0, 8.0, 3.0), (-10.0, -D / 2 + WING, 8.0), 40)])
+        ('interior', (14.0, -D / 2 + 9.0, LEVELS[0] + 1.6), (14.0, -D / 2 + .5, LEVELS[0] + 1.4), 50),
+        ('rear_court', (9.0, 6.0, 2.5), (TX, -D / 2 + WING, 7.0), 40)])
     for c in cams:
         if c['name'] == 'front':          # eye level from the south-west on the street, tower at the left (locked front)
-            c['location'] = (-40.0, -70.0, 1.7); c['target'] = (-2.0, -D / 2, 13.0); c['lens'] = 30; c['whole'] = False
+            c['location'] = (-9.0, -64.0, 1.7); c['target'] = (12.0, -D / 2 + 2.0, 12.0); c['lens'] = 28; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='chateauesque_grand_railway_hotel/variant_0 (scottish_baronial_granite_tower)',
         measurement_contract=dict(dimensions_m=dict(width=SITE[1] - SITE[0], depth=SITE[3] - SITE[2], height=h),
-            observed_storeys=6, storey_programme='ground floor of public rooms, five guest-room storeys, attic rooms in the slate roof',
-            plan='58 x 50 m quadrangle (top view) of 14 m wings around a 30 x 22 m court, streets south and west; entrance tower 10 m square on the south face a quarter in from the west corner, projecting 1.6 m',
-            facade='bays at 3.6 m of sash windows 1.4 x 2.2 m with stone surrounds in rusticated granite; stone string courses at each floor; crow-stepped wall gables 5 m wide rising from the eaves every third bay on the street faces; eaves at 23.2 m',
+            observed_storeys=5, storey_programme='tall ground floor of public rooms, four guest-room storeys, attic rooms in the gables and dormers',
+            plan='58 x 50 m quadrangle (top view) of 14 m wings around a 30 x 22 m paved court with four corner trees, streets south and west; entrance tower 10 m square centred on the south face, projecting 1.6 m',
+            facade='bays at 4.8 m: tall ground-floor windows 1.8 x 3.4 m and sash windows 1.6 x 2.6 m with stone surrounds in rusticated granite with recessed joints; string courses at each floor; corbelled eaves course at 21.0 m; two-bay crow-stepped wall gables 9 m wide rising 7 m through the eaves with two windows each, beside the tower and the tourelles',
             levels_m=[G0] + LEVELS, eave_m=EAVE, ridge_m=RIDGE,
             tower='square entrance tower to 34 m with a crenellated parapet, pointed-arch porte-cochere 5 x 7 m through the south wing to the court, round tourelles 2.2 m across at the two front corners from 13 m with conical caps to 39 m, crest panel over the arch',
-            tourelles='round corner tourelles 4.8 m across corbelled out at 7 m with conical slate roofs to 31.5 m at the four outer corners',
-            roof='steep slate hipped ring roof 23.2 to 29.8 m with gabled dormers between the wall gables, chimney stacks on the ridge',
-            inferred='north and east faces repeat the grammar without wall gables; court faces plain; interiors are teaching assumptions'),
+            tourelles='round corner tourelles 4.8 m across corbelled out at 7 m with cut windows and conical slate roofs to 31.5 m at the four outer corners; intermediate tourelles 3.2 m across corbelled out at 9 m on the west, east and north faces (locked top)',
+            roof='steep slate hipped ring roof 21.0 to 31.0 m with gabled dormers between the wall gables, chimney stacks on the ridge',
+            inferred='north and east faces repeat the grammar with tourelles and gables; court faces carry one central gable each; interiors are teaching assumptions'),
         roof_contract=dict(type='slate hipped ring roof with wall gables and dormers; flat tower roof behind crenellations; conical tourelle roofs', datum_m=EAVE, crowns_m=[RIDGE, TOWER_TOP, 39.0]),
         identity_contract=dict(owner='crenellated entrance tower with the porte-cochere and tourelles, conical corner tourelles, crow-stepped gables, steep slate roofs, rusticated granite with sash windows, iron fence and lawn'),
         material_contract=dict(profile='source-palette clay: pink-grey granite with recessed rustication, pale stone dressings, dark slate, lead flashings, dark sash frames, black iron', textured_keeper=False),
@@ -258,7 +259,6 @@ def eave_cornice(m, lo, hi, z, span_t=T, proj=.70, role='stone', modillions=True
 # ---- building ----
 
 def cone(name, cx, cy, z0, r0, z1, r1, role, module, segs=24):
-    """Frustum of revolution (r1 may be 0.001 for a point)."""
     vs = [(cx + r0 * math.cos(math.tau * i / segs), cy + r0 * math.sin(math.tau * i / segs), z0) for i in range(segs)]
     vs += [(cx + max(r1, .001) * math.cos(math.tau * i / segs), cy + max(r1, .001) * math.sin(math.tau * i / segs), z1) for i in range(segs)]
     fs = [tuple(range(segs - 1, -1, -1)), tuple(range(segs, 2 * segs))] + [(i, (i + 1) % segs, (i + 1) % segs + segs, i + segs) for i in range(segs)]
@@ -266,19 +266,127 @@ def cone(name, cx, cy, z0, r0, z1, r1, role, module, segs=24):
 
 
 def pointed_fill(f, u, z_top, w, rise, role='stone', d0=-.03, d1=None):
-    """Spandrel above a pointed (two-centre) arch inside a rectangular cut."""
     d1 = T + .02 if d1 is None else d1
     pts = [(-w / 2, z_top), (w / 2, z_top), (w / 2, z_top - rise)]
     for k in range(1, 8):
         x = w / 2 - w * k / 8
-        xx = abs(x)
-        pts.append((x, z_top - rise + ((w ** 2 - (xx + w / 2) ** 2) ** .5) * rise / (w * .866)))   # arc centred on the opposite springing
+        pts.append((x, z_top - rise + ((w ** 2 - (abs(x) + w / 2) ** 2) ** .5) * rise / (w * .866)))
     pts.append((-w / 2, z_top - rise))
     f.panel('Pointed arch spandrel', [(u + a, b) for a, b in pts], d0, d1, role, 'arches')
 
 
-def roof_dormer(f, u, z_e, rise, run, w=1.7):
-    """Small gabled dormer standing on a slope of rise/run: stone front with a sash window, cheeks, slate gable."""
+def rustication(f, lo, hi, z0, z1, holes, spacing=.62, joint=.035):
+    """Recessed granite coursing: joint grooves as dark strips sunk into the carrier face (v001 P1 11), batched."""
+    vs, fs = [], []
+    for row in range(int((z1 - z0) / spacing)):
+        z = z0 + row * spacing
+        for a, b in subtract_openings(lo, hi, z, z + joint, holes):
+            o = len(vs)
+            vs.extend([f.p(a, -.004, z), f.p(b, -.004, z), f.p(b, -.004, z + joint), f.p(a, -.004, z + joint), f.p(a, .05, z), f.p(b, .05, z), f.p(b, .05, z + joint), f.p(a, .05, z + joint)])
+            fs.extend([(o, o + 1, o + 2, o + 3), (o + 7, o + 6, o + 5, o + 4), (o, o + 4, o + 5, o + 1), (o + 1, o + 5, o + 6, o + 2), (o + 2, o + 6, o + 7, o + 3), (o + 3, o + 7, o + 4, o)])
+    if fs:
+        C.mesh(f.label + ' rustication joints', vs, fs, 'joint', 'rustication')
+
+
+def window_dressing(m, h, street):
+    for sgn in (-1, 1):
+        m.box('stone', h['u'] + sgn * (h['w'] / 2 + .10), -.03, h['z'] + h['h'] / 2, .20, T + .12, h['h'] + .20)
+    m.box('stone', h['u'], -.05, h['z'] + h['h'] + .15, h['w'] + .50, T + .16, .22)
+    m.box('stone', h['u'], -.07, h['z'] - .08, h['w'] + .36, T + .20, .12)
+
+
+def elevation(f, lo, hi, street=True, gables=(), skip_bays=()):
+    """One face: rusticated granite carrier, tall ground-floor windows, sash windows with stone dressings, string
+    courses, corbelled eaves course; optional two-bay wall gables centred on bay boundaries given in `gables`."""
+    span = hi - lo
+    nb = max(1, round(span / BAY))
+    pitch = span / nb
+    holes = []
+    for i in range(nb):
+        if i in skip_bays:
+            continue
+        c = lo + pitch * (i + .5)
+        holes.append(hole(f'{f.label} ground window {i}', c, 1.0, 1.8, 3.4, level=-1))
+        for k, zl in enumerate(LEVELS):
+            holes.append(hole(f'{f.label} window {i}-{k}', c, zl + .9, 1.6, 2.6, level=k))
+    f.wall(f'{f.label} carrier', lo, hi - EPS, G0, EAVE + .30, depth=T, role='wall', holes=holes)
+    if street:
+        rustication(f, lo + .02, hi - .02, G0 + .35, EAVE - .5, holes)
+    else:
+        G.brick_courses(f, lo + .02, hi - .02, G0 + .3, EAVE - .4, holes, spacing=.95)
+    m = Merge(f)
+    for h in holes:
+        if street:
+            reveal(m, f, h, .16, 'stone')
+        framed(m, f, h, cols=2, rows=2, occupied='guest room' if h['level'] >= 0 else 'lounge', lite=not street)
+        if street:
+            window_dressing(m, h, street)
+        else:
+            m.box('stone', h['u'], -.05, h['z'] + h['h'] + .15, h['w'] + .50, T + .16, .22)
+    for zl in LEVELS:
+        m.box('stone', (lo + hi) / 2, -.04, zl - .12, span - 2 * EPS, T + .14, .18)
+    m.box('stone', (lo + hi) / 2, -.07, G0 + .55, span - 2 * EPS, T + .20, .40)          # plinth course
+    # Corbelled eaves course: continuous corbel table under a projecting stone cornice (v001 P1 12).
+    m.box('stone', (lo + hi) / 2, -.20, EAVE - .16, span - 2 * EPS, T + .46, .32)
+    nc = max(2, int(span / 1.2))
+    for i in range(nc + 1):
+        m.box('stone', lo + .3 + (span - .6) * i / nc, -.14, EAVE - .52, .30, T + .34, .40)
+    m.flush('facade')
+    for gc in gables:
+        crow_gable(f, gc, EAVE, holes)
+    return pitch
+
+
+def crow_gable(f, u, z_e, holes, w=9.0, rise_m=7.0):
+    """Two-bay crow-stepped wall gable: the carrier plane continued through the eaves as a stepped stone-coped gable with
+    two windows, and a slate gable roof whose ridge descends into the main slope (v001 P1 8, P0 6)."""
+    k = (WING / 2) / (RIDGE - EAVE)          # run per metre of rise on the main slope
+    rise, run = .60, .55
+    steps_r = []
+    x, z = w / 2, z_e + .40
+    treads = [(w / 2, None, z_e + .40)]
+    while x - run > .45:
+        x -= run; z += rise
+        steps_r.append((x, z))
+    top = z
+    pts = [(-w / 2, z_e - .6), (w / 2, z_e - .6), (w / 2, z_e + .40)]
+    right = []
+    xx, zz = w / 2, z_e + .40
+    for (x2, z2) in steps_r:
+        right += [(x2, zz), (x2, z2)]
+        xx, zz = x2, z2
+    pts += right + [(.45, top), (-.45, top)] + [(-a, b) for a, b in reversed(right)] + [(-w / 2, z_e + .40)]
+    panel = f.panel(f'{f.label} crow gable {u:.0f}', [(u + a, b) for a, b in pts], -.05, T, 'wall', 'gables')
+    m = Merge(f)
+    for sgn in (-1, 1):
+        ww, hw, zw = 1.6, 2.4, z_e + 1.0
+        uu = u + sgn * 2.4
+        f.cut(panel, f'{f.label} gable window cut {u:.0f}{sgn}', uu, zw, ww, hw, depth=T + .1)
+        h = hole(f'{f.label} gable window {u:.0f}{sgn}', uu, zw, ww, hw)
+        reveal(m, f, h, .16, 'stone'); framed(m, f, h, cols=2, rows=2, occupied='attic room')
+        window_dressing(m, h, True)
+    rustication(f, u - w / 2 + .02, u + w / 2 - .02, z_e + .3, top - .3, [hole('g', u + sgn * 2.4, z_e + 1.0, 1.6, 2.4) for sgn in (-1, 1)])
+    # Copes: one block on every tread, from the eave tread up to the apex block, built from the same step vertices.
+    tread_edges = [(w / 2, z_e + .40)] + steps_r
+    for sgn in (-1, 1):
+        for (xa, za), (xb, zb) in zip(tread_edges, tread_edges[1:]):
+            # tread between xa (outer) and xb (inner) at height za (the lower of the pair)
+            m.box('stone', u + sgn * ((xa + xb) / 2 + .03), -.10, za + .07, (xa - xb) + .14, T + .26, .16)
+    m.box('stone', u, -.10, top + .07, 1.1, T + .26, .16)
+    m.flush('gables')
+    C.rod('Gable finial', f.p(u, -.02, top + .1), f.p(u, -.02, top + 1.0), .06, 'stone', 'gables', 6)
+    # Slate gable roof behind the panel: two plates from the ridge to the eaves, the ridge descending into the main slope.
+    z_apex = top - .30
+    d_ridge = (z_apex - z_e) * k - .05
+    for sgn in (-1, 1):
+        a = f.p(u, T - .02, z_apex); b = f.p(u, d_ridge, z_e + d_ridge / k + .02)
+        c_ = f.p(u + sgn * (w / 2 - .50), T - .02, z_e + .42); d_ = f.p(u + sgn * (w / 2 - .50), d_ridge, z_e + d_ridge / k - 1.6)
+        vs = [a, b, d_, c_]
+        vs += [(x, y, z - .18) for x, y, z in vs]
+        C.mesh('Gable slate', vs, [(0, 1, 2, 3), (7, 6, 5, 4), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0)], 'roof', 'gables')
+
+
+def roof_dormer(f, u, z_e, rise, run, w=1.9):
     k = run / rise
     d0 = .70
     z_em = z_e + d0 / k
@@ -291,103 +399,47 @@ def roof_dormer(f, u, z_e, rise, run, w=1.7):
     h = hole(f'{f.label} dormer window {u:.1f}', u, zw, ww, hw)
     framed(mg, g, h, cols=1, rows=2, inset=.10, occupied='attic room', kind='dormer window')
     mg.flush('dormers')
-    # cheeks back to the slope under the gable plates
     d_back = d0 + 2.4
     for sgn in (-1, 1):
-        uu = u + sgn * (w / 2 - .06)
-        pts = [(d0 - .16, z_em - .5), (d0 - .16, z_top), (d_back, z_top), (d_back, z_e + d_back / k - .9)]
+        uu = u + sgn * (w / 2 - .14)
+        pts = [(d0 - .12, z_em - .5), (d0 - .12, z_top - .03), (d_back, z_top - .03), (d_back, z_e + d_back / k - .9)]
         vs = [f.p(uu - .06, d, z) for d, z in pts] + [f.p(uu + .06, d, z) for d, z in pts]
         fs = [(3, 2, 1, 0), (4, 5, 6, 7), (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)]
         C.mesh('Dormer cheek', vs, fs, 'stone', 'dormers')
-    # two slate plates from the ridge (front apex back to where the ridge meets the slope) to the eaves
     z_apex = z_top + .80
     d_ridge = (z_apex - z_e) * k - .1
     for sgn in (-1, 1):
         a = f.p(u, d0 - .32, z_apex); b = f.p(u, d_ridge, z_e + d_ridge / k + .02)
         c_ = f.p(u + sgn * (w / 2 + .22), d0 - .32, z_top - .10); d_ = f.p(u + sgn * (w / 2 + .22), d_ridge, z_e + d_ridge / k - .8)
         vs = [a, b, d_, c_]
-        t_ = .16
-        vs += [(x, y, z - t_) for x, y, z in vs]
+        vs += [(x, y, z - .16) for x, y, z in vs]
         C.mesh('Dormer slate', vs, [(0, 1, 2, 3), (7, 6, 5, 4), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0)], 'roof', 'dormers')
 
 
-def crow_gable(f, u, z_e, w=5.2, apex=28.6, run_per_rise=14.0 / (29.8 - 23.2) / 2):
-    """Crow-stepped wall gable: the carrier continued through the eaves as a stepped stone-coped gable with a window,
-    and a slate gable roof running back into the main slope."""
-    pts = [(-w / 2, z_e - .5), (w / 2, z_e - .5), (w / 2, z_e + .3)]
-    rise, run = .60, .42
-    x, z = w / 2, z_e + .3
-    right = []
-    while x - run > .30:
-        x -= run; right.append((x, z)); z += rise; right.append((x, z))
-    top = z
-    pts += right + [(.30, top), (-.30, top)] + [(-a, b) for a, b in reversed(right)] + [(-w / 2, z_e + .3)]
-    panel = f.panel(f'{f.label} crow gable', [(u + a, b) for a, b in pts], -.06, T, 'wall', 'gables')
-    zw, hw, ww = z_e + .9, 2.0, 1.3
-    f.cut(panel, f'{f.label} gable window cut', u, zw, ww, hw, depth=T + .1)
-    m = Merge(f)
-    h = hole(f'{f.label} gable window {u:.1f}', u, zw, ww, hw)
-    reveal(m, f, h, .16, 'stone'); framed(m, f, h, cols=2, rows=2, occupied='attic room')
-    for sgn in (-1, 1):
-        m.box('stone', u + sgn * (ww / 2 + .11), -.03, zw + hw / 2, .22, T + .12, hw + .22)
-    m.box('stone', u, -.05, zw + hw + .17, ww + .56, T + .16, .24)
-    # stone copes on every step
-    for (a, b) in right:
-        pass
-    steps = right[1::2]
-    for sgn in (-1, 1):
-        prev_x = w / 2
-        for (x, z) in steps:
-            m.box('stone', u + sgn * (x + (prev_x - x) / 2 - .02), -.09, z + .06, prev_x - x + .06, T + .24, .14)
-            prev_x = x
-    m.box('stone', u, -.09, top + .06, .70, T + .24, .14)
-    m.flush('gables')
-    C.rod('Gable finial', f.p(u, -.02, top + .1), f.p(u, -.02, top + .9), .05, 'stone', 'gables', 6)
-    # slate gable roof behind the panel, ridge descending into the main slope
-    k = run_per_rise
-    z_apex = top - .25
-    d_ridge = (z_apex - z_e) * k - .05
-    for sgn in (-1, 1):
-        a = f.p(u, T - .02, z_apex); b = f.p(u, d_ridge, z_e + d_ridge / k + .02)
-        c_ = f.p(u + sgn * (w / 2 - .30), T - .02, z_e + .35); d_ = f.p(u + sgn * (w / 2 - .30), d_ridge, z_e + d_ridge / k - 1.4)
-        vs = [a, b, d_, c_]
-        vs += [(x, y, z - .18) for x, y, z in vs]
-        C.mesh('Gable slate', vs, [(0, 1, 2, 3), (7, 6, 5, 4), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (3, 7, 4, 0)], 'roof', 'gables')
-
-
-def elevation(f, lo, hi, street=True, gables=(), skip=()):
-    """One face: rusticated granite carrier with sash windows and stone dressings; optional wall gables at bay indices."""
-    span = hi - lo
-    nb = max(1, round(span / BAY))
-    pitch = span / nb
-    holes = []
-    for i in range(nb):
-        if i in skip:
-            continue
-        c = lo + pitch * (i + .5)
-        holes.append(hole(f'{f.label} ground window {i}', c, 1.0, 1.5, 2.6, kind='window', level=-1))
-        for k, zl in enumerate(LEVELS):
-            holes.append(hole(f'{f.label} window {i}-{k}', c, zl + .9, 1.4, 2.2, level=k))
-    f.wall(f'{f.label} carrier', lo, hi - EPS, G0, EAVE + .30, depth=T, role='wall', holes=holes)
-    G.brick_courses(f, lo + .02, hi - .02, G0 + .3, EAVE - .4, holes, spacing=.58 if street else .95)
-    m = Merge(f)
-    for h in holes:
-        if street:
-            reveal(m, f, h, .16, 'stone')
-        framed(m, f, h, cols=2, rows=2, occupied='guest room' if h['level'] >= 0 else 'lounge', lite=not street)
-        if street:
-            for sgn in (-1, 1):
-                m.box('stone', h['u'] + sgn * (h['w'] / 2 + .10), -.03, h['z'] + h['h'] / 2, .20, T + .12, h['h'] + .20)
-            m.box('stone', h['u'], -.07, h['z'] - .08, h['w'] + .36, T + .20, .12)
-        m.box('stone', h['u'], -.05, h['z'] + h['h'] + .15, h['w'] + .50, T + .16, .22)
+def tourelle(cx, cy, r, base, top, cap_top, facing, windows=True, label='tourelle'):
+    """Round corbelled tourelle: corbel cone, shaft with string courses and cut windows on the outward angles, conical
+    slate roof and finial (v001 P0 5: windows are pockets cut into the shaft, framed and glazed inside)."""
+    cone(f'{label} corbel', cx, cy, base - 2.2, .45, base, r, 'stone', 'tourelles', 28)
+    shaft = C.rod(f'{label} shaft', (cx, cy, base), (cx, cy, top), r, 'wall', 'tourelles', 28)
     for zl in LEVELS:
-        m.box('stone', (lo + hi) / 2, -.04, zl - .12, span - 2 * EPS, T + .14, .18)
-    m.box('stone', (lo + hi) / 2, -.07, G0 + .55, span - 2 * EPS, T + .20, .40)          # plinth course
-    m.box('stone', (lo + hi) / 2, -.16, EAVE - .20, span - 2 * EPS, T + .38, .34)        # eaves course
-    m.flush('facade')
-    for i in gables:
-        crow_gable(f, lo + pitch * (i + .5), EAVE)
-    return pitch
+        if zl > base + .5:
+            C.rod(f'{label} string', (cx, cy, zl - .12), (cx, cy, zl + .06), r + .10, 'stone', 'tourelles', 28)
+    if windows:
+        for zl in [z for z in LEVELS if z > base + .5] + ([EAVE + .6] if top > EAVE + 3.4 else []):
+            for da in (-32.0, 32.0):
+                a = facing + math.radians(da)
+                ux, uy = math.cos(a), math.sin(a)
+                g = C.Face((cx + ux * (r - .05), cy + uy * (r - .05), 0), (-uy, ux, 0), (-ux, -uy, 0), f'{label} window face')
+                h = hole(f'{label} window {zl:.0f}{da:+.0f}', 0.0, zl + .9, .9, 2.0)
+                g.cut(shaft, h['id'] + ' cut', 0.0, zl + .9, .9, 2.0, depth=.55)
+                mg = Merge(g)
+                framed(mg, g, h, cols=1, rows=2, inset=.16, occupied='tourelle room', lite=False)
+                mg.box('stone', 0.0, -.03, zl + .9 + 2.0 + .14, 1.3, .20, .20)
+                mg.box('stone', 0.0, -.04, zl + .9 - .08, 1.2, .22, .12)
+                mg.flush('tourelles')
+    C.rod(f'{label} eaves', (cx, cy, top), (cx, cy, top + .35), r + .25, 'stone', 'tourelles', 28)
+    cone(f'{label} roof', cx, cy, top + .35, r + .30, cap_top, 0.0, 'roof', 'tourelles', 28)
+    C.rod(f'{label} finial', (cx, cy, cap_top - .1), (cx, cy, cap_top + 1.0), .06, 'hardware', 'tourelles', 6)
 
 
 def tower():
@@ -399,69 +451,62 @@ def tower():
     for k, zl in enumerate(LEVELS):
         if zl < 7.5:
             continue
-        for du in (-1.6, 1.6):
-            holes.append(hole(f'tower window {k}{du:+.0f}', du, zl + .9, 1.3, 2.2, level=k))
-    holes.append(hole('tower upper window', 0.0, EAVE + 1.2, 2.0, 3.0, level=9))
+        for du in (-1.8, 1.8):
+            holes.append(hole(f'tower window {k}{du:+.0f}', du, zl + .9, 1.5, 2.6, level=k))
+    holes.append(hole('tower upper window', 0.0, EAVE + 1.6, 2.2, 3.6, level=9))
     front.wall('tower front carrier', -TW / 2, TW / 2, G0, TOWER_TOP - .20, depth=T, role='wall', holes=holes)
-    G.brick_courses(front, -TW / 2 + .02, TW / 2 - .02, G0 + .3, TOWER_TOP - 1.4, holes, spacing=.58)
+    rustication(front, -TW / 2 + .02, TW / 2 - .02, G0 + .35, TOWER_TOP - 1.6, holes)
     m = Merge(front)
     for h in holes[1:]:
         reveal(m, front, h, .16, 'stone'); framed(m, front, h, cols=2, rows=2, occupied='tower rooms')
-        for sgn in (-1, 1):
-            m.box('stone', h['u'] + sgn * (h['w'] / 2 + .10), -.03, h['z'] + h['h'] / 2, .20, T + .12, h['h'] + .20)
-        m.box('stone', h['u'], -.05, h['z'] + h['h'] + .15, h['w'] + .50, T + .16, .22)
+        window_dressing(m, h, True)
     pointed_fill(front, 0.0, arch['z'] + arch['h'], arch['w'], 2.2, 'stone')
-    m.box('stone', 0.0, -.10, arch['z'] + arch['h'] + .30, arch['w'] + 1.6, T + .26, .36)   # hood course over the arch
+    m.box('stone', 0.0, -.10, arch['z'] + arch['h'] + .30, arch['w'] + 1.6, T + .26, .36)
     for sgn in (-1, 1):
         m.box('stone', sgn * (arch['w'] / 2 + .45), -.14, (G0 + arch['z'] + arch['h'] - 2.2) / 2, .70, T + .34, arch['z'] + arch['h'] - 2.2 - G0)
-    m.box('stone', 0.0, -.12, arch['z'] + arch['h'] + 1.5, 2.4, T + .30, 1.6)                 # crest panel
-    m.box('wall', 0.0, -.20, arch['z'] + arch['h'] + 1.5, 1.6, T + .34, 1.1)
+    m.box('stone', 0.0, -.12, arch['z'] + arch['h'] + 1.6, 2.4, T + .30, 1.6)      # crest panel
+    m.box('wall', 0.0, -.20, arch['z'] + arch['h'] + 1.6, 1.6, T + .34, 1.1)
     for zl in LEVELS:
         if zl > 7.5:
             m.box('stone', 0.0, -.04, zl - .12, TW - 2 * EPS, T + .14, .18)
-    m.box('stone', 0.0, -.18, TOWER_TOP - 1.3, TW - 2 * EPS, T + .42, .34)                   # corbel course under the parapet
+    m.box('stone', 0.0, -.18, TOWER_TOP - 1.3, TW - 2 * EPS, T + .42, .34)
     m.flush('tower')
     C.OPENINGS.append(dict(id=arch['id'], face='tower front', u=0.0, z=arch['z'], width=arch['w'], height=arch['h'], kind='open arch', clear_wall_cut=True, carrier_depth_m=T, frame_inset_m=None, pane_inset_m=None,
         face_origin=list(front.o), face_tangent=list(front.t), face_inward=list(front.n), occupied_space='open porte-cochere passage to the court'))
-    # Side and back carriers of the tower (plain above the roof), passage walls and ceiling, court-side arch.
     for sgn, label in ((-1, 'tower west'), (1, 'tower east')):
         x = TX + sgn * TW / 2
         f = C.Face((x, y0 + TD / 2, 0), (0, sgn, 0), (-sgn, 0, 0), label)
-        hs = [hole(f'{label} window {k}', 0.0, zl + .9, 1.3, 2.2) for k, zl in enumerate(LEVELS) if zl > 7.5] + [hole(f'{label} upper window', 0.0, EAVE + 1.2, 1.6, 3.0)]
+        hs = [hole(f'{label} window {k}', 0.0, zl + .9, 1.5, 2.6) for k, zl in enumerate(LEVELS) if zl > 7.5] + [hole(f'{label} upper window', 0.0, EAVE + 1.6, 1.8, 3.6)]
         f.wall(f'{label} carrier', -TD / 2 + T, TD / 2, G0, TOWER_TOP - .20, depth=T, role='wall', holes=hs)
+        rustication(f, -TD / 2 + T + .02, TD / 2 - .02, G0 + .35, TOWER_TOP - 1.6, hs)
         mm = Merge(f)
         for h in hs:
-            framed(mm, f, h, cols=2, rows=2, occupied='tower rooms')
-            m2 = mm
-            m2.box('stone', h['u'], -.05, h['z'] + h['h'] + .15, h['w'] + .50, T + .16, .22)
+            reveal(mm, f, h, .16, 'stone'); framed(mm, f, h, cols=2, rows=2, occupied='tower rooms')
+            window_dressing(mm, h, True)
         mm.box('stone', 0.0, -.18, TOWER_TOP - 1.3, TD - T - 2 * EPS, T + .42, .34)
         mm.flush('tower')
     back = C.Face((TX, y0 + TD, 0), (-1, 0, 0), (0, -1, 0), 'tower back')
-    back.wall('tower back carrier', -TW / 2 + T, TW / 2 - T, EAVE - 2.0, TOWER_TOP - .20, depth=T, role='wall', holes=[hole('tower back window', 0.0, EAVE + 1.2, 1.6, 3.0)])
-    mb = Merge(back); framed(mb, back, hole('tower back window', 0.0, EAVE + 1.2, 1.6, 3.0), cols=2, rows=2, occupied='tower rooms'); mb.box('stone', 0.0, -.18, TOWER_TOP - 1.3, TW - 2 * T - 2 * EPS, T + .42, .34); mb.flush('tower')
-    # Crenellated parapet: ring wall with merlons.
+    bh = [hole('tower back window', 0.0, EAVE + 1.6, 1.8, 3.6)]
+    back.wall('tower back carrier', -TW / 2 + T, TW / 2 - T, EAVE - 2.0, TOWER_TOP - .20, depth=T, role='wall', holes=bh)
+    mb = Merge(back); framed(mb, back, bh[0], cols=2, rows=2, occupied='tower rooms', lite=True); mb.box('stone', 0.0, -.18, TOWER_TOP - 1.3, TW - 2 * T - 2 * EPS, T + .42, .34); mb.flush('tower')
+    # Crenellated parapet: one merlon per position, corners not doubled (v001 P1 14).
     zt = TOWER_TOP - .20
-    for (ax, ay, bx, by) in ((x0, y0, x1, y0), (x1, y0, x1, y0 + TD), (x1, y0 + TD, x0, y0 + TD), (x0, y0 + TD, x0, y0)):
-        L = math.hypot(bx - ax, by - ay); n = int(L / 1.2)
+    sides = ((x0, y0, x1, y0), (x1, y0, x1, y0 + TD), (x1, y0 + TD, x0, y0 + TD), (x0, y0 + TD, x0, y0))
+    for (ax, ay, bx, by) in sides:
         C.beam('Parapet wall', (ax, ay, zt + .30), (bx, by, zt + .30), .40, .60, 'wall', 'parapet')
-        for i in range(n + 1):
+        L = math.hypot(bx - ax, by - ay); n = int(L / 1.2)
+        for i in range(1, n):
             if i % 2 == 0:
                 px, py = ax + (bx - ax) * i / n, ay + (by - ay) * i / n
                 C.box('Merlon', (px, py, zt + .60 + .45), (.70, .70, .90), 'wall', 'parapet', 0)
+    for (px, py) in ((x0, y0), (x1, y0), (x1, y0 + TD), (x0, y0 + TD)):
+        C.box('Corner merlon', (px, py, zt + .60 + .50), (.80, .80, 1.0), 'wall', 'parapet', 0)
     C.box('Tower roof', (TX, y0 + TD / 2, zt - .12), (TW - .2, TD - .2, .24), 'lead', 'parapet', 0)
     C.rod('Flagpole', (TX, y0 + TD / 2, zt), (TX, y0 + TD / 2, zt + 5.0), .05, 'hardware', 'parapet', 8)
-    # Front-corner tourelles: corbel cone, round shaft, conical cap, finial.
     for sgn in (-1, 1):
         cx, cy = TX + sgn * (TW / 2 - .55), y0 + .55
-        cone('Tourelle corbel', cx, cy, 11.2, .25, 13.2, 1.15, 'stone', 'tourelles', 20)
-        C.rod('Tourelle shaft', (cx, cy, 13.2), (cx, cy, TOWER_TOP + .9), 1.15, 'wall', 'tourelles', 20)
-        C.rod('Tourelle string', (cx, cy, TOWER_TOP + .9), (cx, cy, TOWER_TOP + 1.2), 1.30, 'stone', 'tourelles', 20)
-        cone('Tourelle cap', cx, cy, TOWER_TOP + 1.2, 1.32, TOWER_TOP + 5.0, 0.0, 'roof', 'tourelles', 20)
-        C.rod('Tourelle finial', (cx, cy, TOWER_TOP + 4.9), (cx, cy, TOWER_TOP + 5.8), .05, 'hardware', 'tourelles', 6)
-        for zl in (16.0, 19.8, 23.6, 27.4):
-            px, py = cx + sgn * .0 - 0.0, cy - 1.15
-            C.box('Tourelle slit', (cx, cy - 1.12, zl + 1.0), (.40, .12, 1.4), 'hardware', 'tourelles', 0)
-    # Passage through the south wing: floor, side walls, ceiling, court-side pointed arch.
+        tourelle(cx, cy, 1.15, 13.2, TOWER_TOP + .9, TOWER_TOP + 5.0, math.radians(-90 + sgn * 20), windows=False, label=f'tower tourelle {sgn}')
+    # Passage through the south wing: floor, side walls, ceiling, court-side pointed arch between two carriers.
     y1 = -D / 2 + WING
     C.box('Passage floor', (TX, (y0 + y1) / 2, G0 / 2 + .001), (5.0, y1 - y0, G0), 'foundation', 'passage', 0)
     for sgn in (-1, 1):
@@ -469,36 +514,21 @@ def tower():
     C.box('Passage ceiling', (TX, (y0 + T + y1 - T) / 2, 7.45), (5.8, y1 - y0 - 2 * T, .30), 'stone', 'passage', 0)
     court_face = C.Face((TX, y1, 0), (-1, 0, 0), (0, -1, 0), 'passage court face')
     ca = hole('Court arch', 0.0, G0, 5.0, 7.0, kind='open arch')
-    court_face.wall('Passage court carrier', -PASS_W / 2, PASS_W / 2 - EPS, G0, LEVELS[0] - .30, depth=T, role='wall', holes=[ca])
-    pw_holes = [hole(f'passage court window {k}', 0.0, zl + .9, 1.4, 2.2) for k, zl in enumerate(LEVELS) if zl > 7.5]
-    court_face.wall('Passage court upper carrier', -PASS_W / 2, PASS_W / 2 - EPS, LEVELS[0] - .30, EAVE + .30, depth=T, role='wall', holes=pw_holes + [ca])
+    pw_holes = [hole(f'passage court window {k}', 0.0, zl + .9, 1.6, 2.6) for k, zl in enumerate(LEVELS) if zl > 7.5]
+    court_face.wall('Passage court carrier', -PASS_W / 2, PASS_W / 2 - EPS, G0, EAVE + .30, depth=T, role='wall', holes=[ca] + pw_holes)
+    pointed_fill(court_face, 0.0, ca['z'] + ca['h'], ca['w'], 2.2, 'stone')
     mp = Merge(court_face)
     for h in pw_holes:
         framed(mp, court_face, h, cols=2, rows=2, occupied='guest room', lite=True)
         mp.box('stone', h['u'], -.05, h['z'] + h['h'] + .15, h['w'] + .50, T + .16, .22)
     for zl in LEVELS:
         mp.box('stone', 0.0, -.04, zl - .12, PASS_W - 2 * EPS, T + .14, .18)
-    mp.box('stone', 0.0, -.16, EAVE - .20, PASS_W - 2 * EPS, T + .38, .34)
+    mp.box('stone', 0.0, -.20, EAVE - .16, PASS_W - 2 * EPS, T + .46, .32)
     mp.flush('passage')
-    pointed_fill(court_face, 0.0, ca['z'] + ca['h'], ca['w'], 2.2, 'stone')
     C.OPENINGS.append(dict(id=ca['id'], face='passage court face', u=0.0, z=ca['z'], width=ca['w'], height=ca['h'], kind='open arch', clear_wall_cut=True, carrier_depth_m=T, frame_inset_m=None, pane_inset_m=None,
         face_origin=list(court_face.o), face_tangent=list(court_face.t), face_inward=list(court_face.n), occupied_space='open porte-cochere passage'))
-    C.qa_room_light('Passage', (TX, (y0 + y1) / 2, 6.5), 70, 4.0)
-    C.CONTACTS.append(dict(name='Tower on the south wing slab and carriers; tourelles on corbel cones from the tower wall; parapet on the tower walls; passage through the south wing', tower_top_m=TOWER_TOP))
-
-
-def corner_tourelle(cx, cy, base=7.0, top=25.6, r=2.4):
-    cone('Corner tourelle corbel', cx, cy, base - 2.2, .4, base, r, 'stone', 'tourelles', 28)
-    C.rod('Corner tourelle shaft', (cx, cy, base), (cx, cy, top), r, 'wall', 'tourelles', 28)
-    for zl in LEVELS:
-        if zl > base:
-            C.rod('Corner tourelle string', (cx, cy, zl - .12), (cx, cy, zl + .06), r + .10, 'stone', 'tourelles', 28)
-            for a in (math.radians(200), math.radians(245), math.radians(290)):
-                ax, ay = cx + math.cos(a) * (r - .02), cy + math.sin(a) * (r - .02)
-                C.beam('Corner tourelle window', (ax + math.cos(a) * -.30, ay + math.sin(a) * -.30, zl + .9), (ax + math.cos(a) * .015, ay + math.sin(a) * .015, zl + 2.9), .9, .9, 'hardware', 'tourelles')
-    C.rod('Corner tourelle eaves', (cx, cy, top), (cx, cy, top + .35), r + .25, 'stone', 'tourelles', 28)
-    cone('Corner tourelle roof', cx, cy, top + .35, r + .30, top + 6.3, 0.0, 'roof', 'tourelles', 28)
-    C.rod('Corner tourelle finial', (cx, cy, top + 6.2), (cx, cy, top + 7.2), .06, 'hardware', 'tourelles', 6)
+    C.qa_room_light('Passage', (TX, (y0 + y1) / 2, 6.5), 90, 4.0)
+    C.CONTACTS.append(dict(name='Tower on the south wing slab and carriers; tourelles on corbel cones from the tower wall; parapet on the tower walls; passage through the south wing between the two court carriers', tower_top_m=TOWER_TOP))
 
 
 def roofs_and_floors():
@@ -506,10 +536,10 @@ def roofs_and_floors():
     ridge = [(-W / 2 + WING / 2, -D / 2 + WING / 2), (W / 2 - WING / 2, -D / 2 + WING / 2), (W / 2 - WING / 2, D / 2 - WING / 2), (-W / 2 + WING / 2, D / 2 - WING / 2)]
     court = [(-W / 2 + WING, -D / 2 + WING), (W / 2 - WING, -D / 2 + WING), (W / 2 - WING, D / 2 - WING), (-W / 2 + WING, D / 2 - WING)]
     C.prism('Ground slab', outer, 'z', 0.0, G0, 'foundation', 'foundation')
-    C.prism('Court lawn', [(x * .99, y * .99) for x, y in court], 'z', G0, G0 + .03, 'planting', 'court')
-    C.prism('Court drive', [(-W / 2 + WING + .3, -D / 2 + WING - .01), (W / 2 - WING - .3, -D / 2 + WING - .01), (W / 2 - WING - .3, -D / 2 + WING + 6.0), (-W / 2 + WING + .3, -D / 2 + WING + 6.0)], 'z', G0 + .03, G0 + .05, 'stone', 'court')
-    for x, y in ((-8.0, 6.0), (8.0, 6.0), (0.0, 1.0)):
+    C.prism('Court paving', [(x * .99, y * .99) for x, y in court], 'z', G0, G0 + .03, 'stone', 'court')
+    for x, y in ((-11.0, -7.0), (11.0, -7.0), (11.0, 7.0), (-11.0, 7.0)):     # four corner trees (locked top, v001 P1 16)
         street_tree(x, y, G0 + .03, height=7.0, spread=1.8)
+        C.box('Court planter', (x, y, G0 + .2), (2.4, 2.4, .34), 'stone', 'court', 0)
     wings = [((-W / 2 + T, -D / 2 + T), (W / 2 - T, -D / 2 + WING)), ((-W / 2 + T, D / 2 - WING), (W / 2 - T, D / 2 - T)),
              ((-W / 2 + T, -D / 2 + WING - EPS), (-W / 2 + WING, D / 2 - WING + EPS)), ((W / 2 - WING, -D / 2 + WING - EPS), (W / 2 - T, D / 2 - WING + EPS))]
     for zl in LEVELS + [EAVE]:
@@ -518,27 +548,28 @@ def roofs_and_floors():
             if y1 <= -D / 2 + WING + .01 and zl < 8.0:
                 C.cut_box(slab, 'Passage cut', (TX, (y0 + y1) / 2, zl - .14), (5.6, WING + 2.0, 1.0))
     for zl in LEVELS[:3]:
-        C.qa_room_light(f'South rooms {zl:.1f}', (6.0, -D / 2 + 5.0, zl + 2.6), 70, 5.0)
+        C.qa_room_light(f'South rooms {zl:.1f}', (14.0, -D / 2 + 5.0, zl + 2.6), 120, 5.0)
         C.qa_room_light(f'West rooms {zl:.1f}', (-W / 2 + 5.0, 4.0, zl + 2.6), 60, 5.0)
-    C.qa_room_light('Lounge', (4.0, -D / 2 + 6.0, LEVELS[0] - .9), 90, 6.0)
-    # Court faces.
+    C.qa_room_light('Lounge', (14.0, -D / 2 + 6.0, LEVELS[0] - .9), 120, 6.0)
+    C.qa_room_light('Interior view room', (14.0, -D / 2 + 4.5, LEVELS[0] + 3.4), 220, 5.0)
+    # Court faces: side walls run into the front and rear walls (closed corners, v001 P0 4); the south court face is
+    # built in two runs either side of the passage carrier; one central gable per face.
     cw, cd = W - 2 * WING, D - 2 * WING
     cf = A.faces(cw, cd, 0, 0, 'court ')
     for i, f in enumerate(cf):
         f = C.Face(f.o, f.t, f.n * -1, f.label)
         span = cw if i % 2 == 0 else cd
-        lo, hi = (-span / 2, span / 2 - EPS) if i % 2 == 0 else (-span / 2 + T, span / 2 - T)
-        if i == 0:     # the south wing court face is built in two runs either side of the passage carrier at TX (u = x)
+        lo, hi = (-span / 2, span / 2 - EPS) if i % 2 == 0 else (-span / 2 - T + .02, span / 2 + T - .02)
+        if i == 0:
             elevation(C.Face(f.o, f.t, f.n, 'court front west'), lo, TX - PASS_W / 2, street=False)
             elevation(C.Face(f.o, f.t, f.n, 'court front east'), TX + PASS_W / 2, hi, street=False)
             continue
-        elevation(f, lo, hi, street=False)
-    # Hipped ring roof: outer slopes to the ridge ring, inner slopes down to the court eaves.
+        elevation(f, lo, hi, street=False, gables=(0.0,))
     strip('Outer slate slopes', outer, ridge, EAVE, RIDGE, 'roof', 'roofs')
     strip('Court slate slopes', ridge, court, RIDGE, EAVE, 'roof', 'roofs')
     for (ax, ay), (bx, by) in zip(ridge, ridge[1:] + ridge[:1]):
         C.beam('Ridge lead', (ax, ay, RIDGE + .06), (bx, by, RIDGE + .06), .36, .14, 'lead', 'roofs')
-    for x, y in ((-20.0, -D / 2 + WING / 2), (6.0, -D / 2 + WING / 2), (20.0, -D / 2 + WING / 2), (-W / 2 + WING / 2, 6.0), (-W / 2 + WING / 2, -6.0), (W / 2 - WING / 2, 0.0), (-12.0, D / 2 - WING / 2), (12.0, D / 2 - WING / 2)):
+    for x, y in ((-18.0, -D / 2 + WING / 2), (18.0, -D / 2 + WING / 2), (-W / 2 + WING / 2, 0.0), (W / 2 - WING / 2, 0.0), (-12.0, D / 2 - WING / 2), (12.0, D / 2 - WING / 2)):
         C.box('Chimney stack', (x, y, RIDGE + .9), (2.2, 1.1, 3.2), 'wall', 'chimneys', 0)
         C.box('Chimney cope', (x, y, RIDGE + 2.56), (2.5, 1.4, .16), 'stone', 'chimneys', 0)
         for dx in (-.6, 0.0, .6):
@@ -553,7 +584,7 @@ def site():
     C.box('Kerb west', (x0 + 7.06, (y0 + 7.0 + y1) / 2, .06), (.12, y1 - y0 - 7.0, .12), 'stone', 'sidewalk', 0)
     C.box('South sidewalk', ((x0 + 7.0 + x1) / 2, (y0 + 7.0 + y0 + 10.0) / 2, .0075), (x1 - x0 - 7.0, 3.0, .015), 'foundation', 'sidewalk', 0)
     C.box('West sidewalk', ((x0 + 7.0 + x0 + 10.0) / 2, (y0 + 10.0 + y1) / 2, .0075), (3.0, y1 - y0 - 10.0, .015), 'foundation', 'sidewalk', 0)
-    yf = y0 + 10.0     # fence line
+    yf = y0 + 10.0
     xf = x0 + 10.0
     C.box('South lawn', ((-W / 2 + x1) / 2, (yf + (-D / 2 - TOUT)) / 2, .02), (x1 + W / 2, -D / 2 - TOUT - yf, .04), 'planting', 'lawn', 0)
     C.box('West lawn', ((xf + (-W / 2)) / 2, (yf + y1) / 2, .02), (-W / 2 - xf, y1 - yf, .04), 'planting', 'lawn', 0)
@@ -564,10 +595,10 @@ def site():
     iron_fence((xf, y1 - 2.0), (xf, yf), height=1.4, wall=.6, spacing=.40)
     for sgn in (-1, 1):
         C.box('Gate pier', (TX + sgn * 4.2, yf, 1.1), (.8, .8, 2.2), 'stone', 'fence', 0); C.box('Gate pier cap', (TX + sgn * 4.2, yf, 2.28), (1.0, 1.0, .16), 'stone', 'fence', 0)
-    for x in (-22.0, 2.0, 14.0, 24.0):
-        street_tree(x, yf + 2.6, .02, height=9.0, spread=2.2)
+    for x in (-24.0, -14.0, 14.0, 24.0):
+        street_tree(x, yf + 3.2, .02, height=8.0, spread=2.0)
     for y in (-12.0, 2.0, 14.0):
-        street_tree(xf + 2.6, y, .02, height=9.0, spread=2.2)
+        street_tree(xf + 2.6, y, .02, height=8.0, spread=2.0)
 
 
 def build():
@@ -577,29 +608,34 @@ def build():
     west = C.Face((-W / 2, 0, 0), (0, -1, 0), (1, 0, 0), 'west')
     north = C.Face((0, D / 2, 0), (-1, 0, 0), (0, -1, 0), 'north')
     east = C.Face((W / 2, 0, 0), (0, 1, 0), (-1, 0, 0), 'east')
-    # South face in two runs either side of the tower; wall gables every third bay on the street faces.
+    # Street runs end 0.3 m inside the tower side carriers so no face is shared at the junction (v001 P0 3).
     sw = C.Face(south.o, south.t, south.n, 'south west run'); se = C.Face(south.o, south.t, south.n, 'south east run')
-    elevation(sw, -W / 2, TX - TW / 2, street=True, gables=(1,))
-    elevation(se, TX + TW / 2, W / 2, street=True, gables=(1, 4, 7))
-    elevation(west, -D / 2 + T, D / 2 - T, street=True, gables=(2, 5, 8, 11))
-    elevation(north, -W / 2, W / 2, street=False)
-    elevation(east, -D / 2 + T, D / 2 - T, street=False)
+    gx = TW / 2 + 1.0 + BAY            # wall gable centred on the two bays beside the tower
+    elevation(sw, -W / 2, TX - TW / 2 + .3, street=True, gables=(-gx,))
+    elevation(se, TX + TW / 2 - .3, W / 2, street=True, gables=(gx,))
+    # West and east faces (u = -y and u = y): intermediate tourelles at y = +-9 with a two-bay gable beside each; the north
+    # face has two tourelles at x = +-14 and a gable between.
+    elevation(west, -D / 2 + T, D / 2 - T, street=True, gables=(-16.0, 16.0))
+    elevation(east, -D / 2 + T, D / 2 - T, street=True, gables=(-16.0, 16.0))
+    elevation(north, -W / 2, W / 2, street=False, gables=(0.0,))
     tower()
-    for cx, cy in ((-W / 2 + .9, -D / 2 + .9), (W / 2 - .9, -D / 2 + .9), (W / 2 - .9, D / 2 - .9), (-W / 2 + .9, D / 2 - .9)):
-        corner_tourelle(cx, cy)
-    # Dormers between the wall gables on the outer slopes.
+    for cx, cy, facing in ((-W / 2 + .9, -D / 2 + .9, math.radians(225)), (W / 2 - .9, -D / 2 + .9, math.radians(-45)), (W / 2 - .9, D / 2 - .9, math.radians(45)), (-W / 2 + .9, D / 2 - .9, math.radians(135))):
+        tourelle(cx, cy, 2.4, 7.0, EAVE + 4.0, EAVE + 10.5, facing, label='corner tourelle')
+    for cx, cy, facing in ((-W / 2 + .2, -9.0, math.radians(180)), (-W / 2 + .2, 9.0, math.radians(180)), (W / 2 - .2, -9.0, 0.0), (W / 2 - .2, 9.0, 0.0), (-14.0, D / 2 - .2, math.radians(90)), (14.0, D / 2 - .2, math.radians(90))):
+        tourelle(cx, cy, 1.6, 9.0, EAVE + 3.0, EAVE + 8.0, facing, label='side tourelle')
     k_run = (WING / 2) / (RIDGE - EAVE)
-    for f, lo, hi, gables in ((sw, -W / 2, TX - TW / 2, (1,)), (se, TX + TW / 2, W / 2, (1, 4, 7)), (west, -D / 2 + T, D / 2 - T, (2, 5, 8, 11)),
-                              (north, -W / 2, W / 2, ()), (east, -D / 2 + T, D / 2 - T, ())):
+    for f, lo, hi, gables, pitch_n in ((sw, -W / 2, TX - TW / 2 + .3, (-gx,), None), (se, TX + TW / 2 - .3, W / 2, (gx,), None), (west, -D / 2 + T, D / 2 - T, (-16.0, 16.0), None),
+                                       (east, -D / 2 + T, D / 2 - T, (-16.0, 16.0), None), (north, -W / 2, W / 2, (0.0,), None)):
         nb = max(1, round((hi - lo) / BAY)); pitch = (hi - lo) / nb
         for i in range(nb):
-            if i in gables or i in (0, nb - 1):
+            u = lo + pitch * (i + .5)
+            if any(abs(u - g) < 5.2 for g in gables) or i in (0, nb - 1):
                 continue
-            if i % 2 == (0 if f.label in ('north', 'east') else 1):
+            if any(abs(u - g) < 7.4 for g in (-16.0, 16.0)) and f.label in ('west', 'east'):
                 continue
-            roof_dormer(f, lo + pitch * (i + .5), EAVE, RIDGE - EAVE, WING / 2)
-    A.sofa(2.0, -D / 2 + 6.0, LEVELS[0]); A.desk(-3.0, -D / 2 + 4.0, LEVELS[0] + .05)
-    C.box('Lounge partition', (8.0, -D / 2 + 6.0, LEVELS[0] + 1.7), (.16, 10.0, 3.4), 'interior', 'partitions', 0)
+            roof_dormer(f, u, EAVE, RIDGE - EAVE, WING / 2)
+    A.sofa(16.0, -D / 2 + 6.0, LEVELS[0]); A.desk(12.0, -D / 2 + 4.0, LEVELS[0] + .05)
+    C.box('Lounge partition', (20.0, -D / 2 + 6.0, LEVELS[0] + 1.7), (.16, 10.0, 3.4), 'interior', 'partitions', 0)
 
 
 LIGHT_RIG = dict(key=(-60, -70, 70), fill=(70, -36, 50), rear=(-26, 70, 60), target=(0, 0, 16.0), gain=11.0)

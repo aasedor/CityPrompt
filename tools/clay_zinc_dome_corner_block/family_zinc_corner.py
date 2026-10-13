@@ -29,10 +29,10 @@ BAY = 3.3
 EPS = .002
 AWN_Z = 3.45                      # awning bar height
 PALETTE = dict(wall=(.58, .30, .22), joint=(.42, .22, .16), trim=(.26, .20, .14),
-    pale=(.78, .74, .66), stone=(.74, .70, .60), roof=(.60, .62, .64), sand=(.70, .64, .52),
+    pale=(.78, .74, .66), stone=(.74, .70, .60), roof=(.44, .48, .52), sand=(.70, .64, .52),
     foundation=(.46, .46, .45), glass=(.44, .50, .52), hardware=(.12, .12, .12),
     interior=(.80, .76, .68), floor=(.46, .44, .42), timber=(.34, .22, .14), blue=(.14, .22, .28),
-    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.64, .62, .58), zinc=(.60, .62, .64),
+    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.64, .62, .58), zinc=(.44, .48, .52),
     awning=(.62, .10, .08), gilt=(.80, .64, .26), rustic=(.70, .66, .56))
 
 CX0, CY0 = -W / 2 + CH / math.sqrt(2), -D / 2
@@ -54,7 +54,7 @@ def manifest(version):
         ('mansard_dormers', (6.0, -30.0, 19.0), (8.0, -D / 2, 20.0), 45),
         ('roof_court', (-42.0, -46.0, 42.0), (2.0, 2.0, 18.0), 45),
         ('interior', (-4.0, -D / 2 + 1.2, LEVELS[0] + 1.6), (-4.0, -D / 2 + 7.0, LEVELS[0] + 1.3), 50),
-        ('rear_court', (COURT[0] + 5.5, COURT[2] + 4.5, 24.0), (COURT[0] - 3.0, COURT[2] - 2.5, 5.0), 40)])
+        ('rear_court', (COURT[0] + 4.5, COURT[2] + 3.5, 19.0), (COURT[0] - 4.5, COURT[2] - 3.5, 3.0), 35)])
     for c in cams:
         if c['name'] == 'front':          # eye level on the chamfer axis (locked front)
             c['location'] = (CMX + CN[0] * 60.0, CMY + CN[1] * 60.0, 1.7); c['target'] = (CMX, CMY, 13.5); c['lens'] = 30; c['whole'] = False
