@@ -69,6 +69,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (All four v003 P1s resolved in the pixels: the attic tier and the corner-bay grid did not survive their second fix; stilted dome 0.78-0.85; dome hierarchy fixed (corner 20 percent, court 32 percent in a 45 percent well). Improved from 0 + 4 to 0 + 2; becomes the candidate.)
+## Open blockers after v005 (v004 interior finding resolved (legible sales hall); the pale drum back wall and the ring overhang are fixed. Same count as v004 (0 + 2): first review that did not lower P0+P1; v004 stays the candidate. v005 is evidence only.)
 
-P1 the glazed corner drum is buried in the corner zinc mansard: the roof slopes cut across its lower half, the iron mullions run into the zinc ending in spikes, the lit back wall makes it read as an opaque pale bowl, and the dome ring overhangs the drum by about 17 percent of its diameter; P1 the interior view is illegible (a dim wall, two pure-black openings without glass and a column)
+P1 the corner drum still sits sunk in a zinc funnel: lower glass bowl-shaped, outer posts cut mid-tier and ending at staggered heights with no plinth or sill, where the locked front shows the lower tier fully exposed on the balustrade (v004 finding, survived one fix); P1 the light-well dome ribs do not join: short radial rods stopping short of the lantern, arched rib pieces lifting off the glass, a separate faceted ring crossing them, where the locked top shows 16 continuous ribs from the base ring to a central cap
