@@ -69,6 +69,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (Both v003 P1s resolved in the pixels (oculus reads dark glazed; court corners closed). Improved from 0 + 2 to 0 + 1; becomes the candidate.)
+## Open blockers after v005 (All three v004 findings resolved in the pixels (balcony order narrow, wide on consoles, narrow, wide; zinc gutter on the wall heads; corner blocks). Same count as v004 (0 + 1): first review that did not lower P0+P1; v004 stays the candidate. v005 is evidence only.)
 
-P1 chamfer balcony order: the full-width bracketed balcony sits at storey 1 over the awning frieze; both sources put a window-width balcony at storey 1 and the full-width bracketed balcony at storey 2 (narrow/wide/narrow/wide)
+P1 the stone drum bulges forward past the chamfer wall on a curved corbel soffit and breaks the main bracketed cornice down to just above the storey-4 window head, where both sources run the cornice unbroken across the chamfer with the dome set back above it (contradicts the v001 review's request for a drum projecting over the cornice on a corbel ring; the source pixels side with v005)

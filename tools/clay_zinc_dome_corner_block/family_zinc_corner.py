@@ -39,7 +39,7 @@ CX0, CY0 = -W / 2 + CH / math.sqrt(2), -D / 2
 CX1, CY1 = -W / 2, -D / 2 + CH / math.sqrt(2)
 CMX, CMY = (CX0 + CX1) / 2, (CY0 + CY1) / 2
 CN = (-1 / math.sqrt(2), -1 / math.sqrt(2))
-DX, DY = CMX - CN[0] * 2.3, CMY - CN[1] * 2.3     # drum centre 2.3 m behind the chamfer plane: the drum front projects 1.4 m over the chamfer cornice on a corbel ring (locked top and front, v001 P1 3)
+DX, DY = CMX - CN[0] * (DRUM_R + .15), CMY - CN[1] * (DRUM_R + .15)     # drum front just behind the chamfer face so the bracketed cornice runs unbroken across the chamfer, dome rising behind it (locked front and oblique, v005 P1)
 
 
 def manifest(version):
@@ -67,7 +67,7 @@ def manifest(version):
             plan='34 x 30 m corner block (top view) with a 12 x 10 m inner court, streets south and west, a 6.5 m chamfer at the south-west corner under the dome',
             facade='bays at 3.3 m of French windows 1.3 x 2.6 m with stone surrounds; individual iron balconies on the first and third storeys, continuous iron balconies on the second and fourth (on the chamfer the second-storey balcony is a stone slab on two consoles); stone string courses in the brick; quoins at the corners and the chamfer; bracketed cornice at 18.0 m',
             levels_m=[G0] + LEVELS, cornice_m=CORNICE, mansard='3.6 m zinc mansard set in 1.5 m with arched dormers at every bay; flat zinc top',
-            dome='stone drum 7.4 m across and 3.0 m high centred 2.3 m behind the chamfer plane on a corbel ring over the chamfer cornice, with three oeil-de-boeuf windows and a cornice; ribbed zinc dome 8.2 m across and 5.0 m high with a projecting framed oculus dormer at its base on the chamfer axis; open lantern and gilded finial to 30 m',
+            dome='stone drum 7.4 m across and 3.0 m high standing on the chamfer wall head just behind the face, the bracketed cornice running unbroken in front of it, with three oeil-de-boeuf windows and a cornice; ribbed zinc dome 8.2 m across and 5.0 m high with a projecting framed oculus dormer at its base on the chamfer axis; open lantern and gilded finial to 30 m',
             ground='stone ground floor with timber shopfronts; the cafe occupies the chamfer and two bays each side under one continuous red awning projecting 2.6 m, mitred around both chamfer arrises',
             inferred='north and east faces repeat the grammar without balconies; court faces plain; interiors are teaching assumptions'),
         roof_contract=dict(type='zinc mansard with dormers and a flat top; zinc dome on the chamfer drum', datum_m=CORNICE, crowns_m=[CORNICE + MANS_H, CORNICE + DRUM_H + DOME_H, h]),
@@ -535,9 +535,8 @@ def drum_and_dome():
     cx, cy = DX, DY
     z0 = CORNICE - 1.0
     z1 = CORNICE + DRUM_H
-    # Corbel ring carrying the drum front over the chamfer cornice, then the stone drum with a moulded cornice.
-    cone('Drum corbel', cx, cy, z0, DRUM_R - 1.1, CORNICE + .30, DRUM_R, 'stone', 'dome', 48)
-    C.rod('Dome drum', (cx, cy, CORNICE + .30), (cx, cy, z1 - .40), DRUM_R, 'stone', 'dome', 48)
+    # Stone drum standing on the chamfer wall head behind the unbroken cornice (no corbel ring, v005 P1), with a moulded cornice.
+    C.rod('Dome drum', (cx, cy, CORNICE + .04), (cx, cy, z1 - .40), DRUM_R, 'stone', 'dome', 48)
     C.rod('Drum cornice bed', (cx, cy, z1 - .40), (cx, cy, z1 - .18), DRUM_R + .22, 'stone', 'dome', 48)
     C.rod('Drum cornice', (cx, cy, z1 - .18), (cx, cy, z1), DRUM_R + .42, 'stone', 'dome', 48)
     C.rod('Dome eave', (cx, cy, z1), (cx, cy, z1 + .20), DOME_R + .10, 'zinc', 'dome', 48)
