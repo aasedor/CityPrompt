@@ -69,6 +69,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (v004 in progress)
+## Open blockers after v004 (All four v003 P1s resolved in the pixels. Improved from 0 + 4 to 0 + 3; becomes the candidate.)
 
-Carried into v004; the storey hierarchy follows the source pixels.
+P1 corner pavilions carry one iron balcony (main floor) where both sources stack a second balcony before the pedimented upper windows; P1 no rustication on the basement, main floor or pavilion corner piers (flat blocks, not quoins) and the basement is wall beige where the source shows banded stone and a grey stone base; P1 every dormer is a flat-capped box where all three sources show round or segmental arched hoods

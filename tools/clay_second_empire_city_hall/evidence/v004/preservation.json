@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-second-empire-city-hall-clay-v004",
+  "glb": "clay-second-empire-city-hall-clay-v004.glb",
+  "glb_bytes": 3768468,
+  "glb_sha256": "2e57b990349225840d1535d3abf7c616c49579833ba34a9c8264736285bfc7bb",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "clock_tower.png": 92,
+    "cornice_contact.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "pavilion_mansard.png": 92,
+    "porch_stair.png": 92,
+    "rear.png": 92,
+    "rear_court.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_court.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-second-empire-city-hall-clay-v004-renders-and-glb.zip",
+  "zip_bytes": 33334484
+}
