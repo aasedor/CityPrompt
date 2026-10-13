@@ -69,6 +69,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`),
 zoning use program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (v004 in progress)
+## Open blockers after v004 (Both v003 P1s resolved in the pixels (oculus reads dark glazed; court corners closed). Improved from 0 + 2 to 0 + 1; becomes the candidate.)
 
-Carried into v004.
+P1 chamfer balcony order: the full-width bracketed balcony sits at storey 1 over the awning frieze; both sources put a window-width balcony at storey 1 and the full-width bracketed balcony at storey 2 (narrow/wide/narrow/wide)
