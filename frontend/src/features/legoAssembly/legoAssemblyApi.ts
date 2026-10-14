@@ -293,6 +293,29 @@ export function legoArchetypeContextFromZone(
   };
 }
 
+/** Download URLs gain a backend origin and short-lived tickets in the response
+ * interceptor. Submit the original file identity so the server can still compare
+ * the exact locked recipe when the frontend and API use different domains. */
+function recipeFileIdentity(value: string): string {
+  try {
+    const base = new URL(api.defaults?.baseURL || window.location.origin, window.location.origin);
+    const url = new URL(value, base);
+    if (url.origin !== base.origin || !url.pathname.startsWith('/api/v1/files/')) return value;
+    for (const key of ['file_ticket', 'asset_ticket', 'share_token']) url.searchParams.delete(key);
+    return `${url.pathname}${url.search}${url.hash}`;
+  } catch {
+    return value;
+  }
+}
+
+function recipeForSubmission<T extends LegoAssemblyRecipe>(recipe: T): T {
+  return {
+    ...recipe,
+    instances: recipe.instances.map((instance) => ({ ...instance, model_url: recipeFileIdentity(instance.model_url) })),
+    ...(recipe.assembled_preview_url ? { assembled_preview_url: recipeFileIdentity(recipe.assembled_preview_url) } : {}),
+  };
+}
+
 export const legoAssemblyApi = {
   async listModules(): Promise<LegoModule[]> {
     const response = await api.get<{ modules: LegoModule[] }>('/api/v1/lego-assembly/modules');
@@ -307,7 +330,7 @@ export const legoAssemblyApi = {
   async saveRecipe(buildingId: string, recipe: LegoAssemblyRecipe): Promise<LegoAssemblyRecipe> {
     const response = await api.post<{ status: string; building_id: string; legoAssembly: LegoAssemblyRecipe }>(
       `/api/v1/lego-assembly/recipes/${buildingId}`,
-      recipe,
+      recipeForSubmission(recipe),
     );
     return response.data.legoAssembly;
   },
@@ -332,7 +355,7 @@ export const legoAssemblyApi = {
       building_id: string;
       building_created: boolean;
       legoAssembly: LegoAssemblyRecipe;
-    }>(`/api/v1/lego-assembly/place/${zoneId}`, recipe);
+    }>(`/api/v1/lego-assembly/place/${zoneId}`, recipeForSubmission(recipe));
     return response.data;
   },
 
@@ -351,7 +374,7 @@ export const legoAssemblyApi = {
     const response = await api.post<Community3DCompileResponse>(
       '/api/v1/lego-assembly/place-community',
       {
-        items,
+        items: items.map((item) => item.recipe ? { ...item, recipe: recipeForSubmission(item.recipe) } : item),
         ...(scopeZoneIds !== undefined ? { scope_zone_ids: scopeZoneIds } : {}),
         ...(scopeBoundaryId !== undefined ? { scope_boundary_id: scopeBoundaryId } : {}),
         ...(includeResidualLandscape !== undefined ? { include_residual_landscape: includeResidualLandscape } : {}),

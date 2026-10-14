@@ -14,7 +14,7 @@ const { apiGet, apiPost, apiPut, apiDelete } = vi.hoisted(() => ({
 }));
 
 vi.mock('@/services/api', () => ({
-  api: { get: apiGet, post: apiPost, put: apiPut, delete: apiDelete },
+  api: { get: apiGet, post: apiPost, put: apiPut, delete: apiDelete, defaults: { baseURL: 'https://api.cityprompt.test' } },
 }));
 
 const recipeFixture: LegoAssemblyRecipe = {
@@ -32,6 +32,40 @@ const recipeFixture: LegoAssemblyRecipe = {
 describe('legoAssemblyApi', () => {
   beforeEach(() => {
     vi.resetAllMocks();
+  });
+
+  it.each(['place', 'saveRecipe', 'compileCommunity'] as const)(
+    '%s submits the original private-file identity across separate hosting domains', async (operation) => {
+      const modelUrl = 'https://api.cityprompt.test/api/v1/files/library/duplex.glb?v=approved&file_ticket=temporary';
+      const recipe = {
+        ...recipeFixture,
+        instances: [{ model_url: modelUrl } as LegoAssemblyRecipe['instances'][number]],
+        assembled_preview_url: 'https://api.cityprompt.test/api/v1/files/library/duplex.png?asset_ticket=temporary',
+      };
+      apiPost.mockResolvedValue({ data: { legoAssembly: recipeFixture } });
+      if (operation === 'compileCommunity') {
+        await legoAssemblyApi.compileCommunity([{ zone_id: 'z', source_updated_at: 'revision', recipe }]);
+      } else await legoAssemblyApi[operation]('z', recipe);
+      const payload = apiPost.mock.calls[0][1];
+      const sent = operation === 'compileCommunity' ? payload.items[0].recipe : payload;
+      expect(sent.instances[0].model_url).toBe('/api/v1/files/library/duplex.glb?v=approved');
+      expect(sent.assembled_preview_url).toBe('/api/v1/files/library/duplex.png');
+      expect(recipe.instances[0].model_url).toBe(modelUrl);
+    },
+  );
+
+  it.each([
+    'https://untrusted.example/api/v1/files/library/duplex.glb?v=wrong',
+    'https://api.cityprompt.test.other.example/api/v1/files/library/duplex.glb',
+    'https://api.cityprompt.test/arbitrary/duplex.glb',
+    '/models/duplex.glb?v=approved',
+  ])('does not disguise a different asset URL: %s', async (modelUrl) => {
+    apiPost.mockResolvedValue({ data: { legoAssembly: recipeFixture } });
+    await legoAssemblyApi.saveRecipe('b', {
+      ...recipeFixture,
+      instances: [{ model_url: modelUrl } as LegoAssemblyRecipe['instances'][number]],
+    });
+    expect(apiPost.mock.calls[0][1].instances[0].model_url).toBe(modelUrl);
   });
 
   it('plan() posts the request (including allow_setback) and returns the plan', async () => {

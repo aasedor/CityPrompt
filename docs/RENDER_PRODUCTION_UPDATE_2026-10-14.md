@@ -55,7 +55,38 @@ npm ci --prefix frontend && python3 scripts/build_hosted_frontend.py --fetch-lfs
 The frontend uses `VITE_CLAUDE_FIVE_TRIAL=true`, Node 24.14.0 and Python 3.12.10.
 Private provider keys belong on the backend services, never in VITE variables.
 
-## Blocker and remaining acceptance
+## Hosted acceptance checkpoint (11:02 MDT)
+
+Workspace access was restored through the owner's approved invitation. API,
+worker and frontend reached `8dd56dc`; the frontend serves the new 156-choice
+catalogue. The expired Google Maps key was replaced with the owner-approved
+working local key on all three services. Saved values were compared without
+printing credentials. Address autocomplete and Fort Calgary Google 3D terrain
+now work in the live browser after reload. The approved CSP change adds only
+`'wasm-unsafe-eval'`; JavaScript `unsafe-eval` remains absent.
+
+The separate trial project is `6c68f75a-5df4-46bd-bd23-71719b0f3719`.
+Site-boundary creation/save and the default flat redevelopment surface passed.
+The first duplex placement exposed a hosted-only recipe mismatch: the response
+interceptor adds the API origin and download ticket, while locked server
+validation expects its original relative file path. A read-only server
+comparison confirmed URL decoration was the only recipe difference.
+
+The frontend submission fix restores own-API file paths for placement,
+community compilation and recipe saving. It preserves version parameters,
+foreign URLs and caller state. Three new regression cases failed before the
+fix; all 71 focused tests and TypeScript checks passed afterward. Independent
+review found no issues. Local landing-page browser check passed without console
+errors. Hosted verification of this fix is still pending.
+
+Remaining: finish the duplex placement/move/rotate/reload pilot; publish and
+verify the remaining 58 private models; complete the hosted catalogue audit,
+student workflow and the approved three paid tests (US$5 total ceiling).
+No paid test has started. The frontend version stamp currently reports
+`source_dirty=true`; its cause is not yet proven and must not be reported as a
+verified clean hosted checkout.
+
+## Earlier access interruption (resolved)
 
 During the frontend build, the Render dashboard began returning Access denied
 for the existing frontend service. A fresh sign-in to the same account showed
@@ -70,7 +101,7 @@ TypeScript checks, and a local landing-page browser check. The production npm
 dependency audit reports zero advisories after that update; development-tool
 advisories remain and are not represented as resolved.
 
-After authorized Render access is restored:
+Original acceptance checklist (still track outstanding items above):
 
 1. Inspect the existing frontend build outcome, then deploy the latest reviewed
    `deployment-version` commit. Confirm `/version.json` and the actual website.
