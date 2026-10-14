@@ -39,17 +39,21 @@ TypeScript checking passes. The real selector was also exercised on
 localhost:5174 using a temporary component harness with mocked availability;
 this is not a live paid render test.
 
-A read-only local model-discovery request returned HTTP 403 with Google's
-message: “Your API key was reported as leaked. Please use another API key.”
-No key value is recorded here. Known revoked keys disable this option. The
-hosted credential's validity has not been established by this test.
+Read-only model-discovery requests using the local and Render API credentials
+returned HTTP 403 with Google's message: “Your API key was reported as leaked.
+Please use another API key.” They are the same key; no key value is recorded
+here. The Render worker has no Gemini key configured. Known revoked keys
+disable this option. No production setting was changed during these checks.
 
 Before activation, replace the rejected Gemini key through the existing secret
 configuration and confirm model access. For Render, the API and worker need
 the same working `GEMINI_API_KEY`; no frontend key is needed. Do not put the
-secret into Git, a screenshot, or chat. Then approve a bounded paid aerial and
-street comparison to assess actual geometry fidelity and usage. No paid call
-was made for this initiative, and no production setting was changed.
+secret into Git, a screenshot, or chat. The owner has now authorized exactly
+two aerial and two street-view Nano Banana 2.1 renders after finalization.
+All four remain unrun while key replacement is pending. Record each outcome,
+actual geometry fidelity and available usage/cost evidence; do not duplicate
+an attempt with an unknown provider outcome. No paid call was made for this
+initiative, and no production setting was changed.
 
 Google Cloud promotional credits are not assumed to cover Gemini Developer API
 billing. This adapter uses the Developer API; it does not silently migrate
