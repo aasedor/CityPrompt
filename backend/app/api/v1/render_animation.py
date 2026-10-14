@@ -29,6 +29,7 @@ from app.services.kling_video import (
     estimate_kling_cost,
     validate_endpoint,
     validate_source_image,
+    prepare_kling_source,
     upload_kling_source,
     submit_kling_once,
     poll_kling_request,
@@ -66,6 +67,9 @@ class RenderAnimationPreflightResponse(BaseModel):
     source_render_id: str
     width: int
     height: int
+    provider_width: int
+    provider_height: int
+    source_padded: bool = False
     duration_seconds: Literal[5] = 5
     generate_audio: Literal[False] = False
     estimated_cost_usd: float
@@ -185,10 +189,17 @@ async def preflight_animation(
     usage = _check_budget(project, user, settings)
     await db.commit()  # Release the row lock before object storage I/O.
     source = await _load_source(key)
+    try:
+        prepared = await asyncio.to_thread(prepare_kling_source, source)
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
     return RenderAnimationPreflightResponse(
         source_render_id=str(req.source_render_id),
         width=source.width,
         height=source.height,
+        provider_width=prepared.width,
+        provider_height=prepared.height,
+        source_padded=prepared is not source,
         estimated_cost_usd=estimate_kling_cost(
             settings.kling_animation_cost_per_second_usd
         ),
@@ -270,10 +281,11 @@ async def animate_render(
     project.metadata_ = meta
     await db.commit()
 
-    # Upload only these stored bytes; there is no image URL/base64 input in this API.
+    # Preserve the stored original; prepare only a provider input copy if needed.
     try:
         source = await _load_source(source_key)
-        start_image_url = await upload_kling_source(settings.fal_key, source)
+        prepared = await asyncio.to_thread(prepare_kling_source, source)
+        start_image_url = await upload_kling_source(settings.fal_key, prepared)
         entry = await _update_attempt(
             db,
             req.project_id,
@@ -281,6 +293,10 @@ async def animate_render(
             source_sha256=hashlib.sha256(source.data).hexdigest(),
             source_width=source.width,
             source_height=source.height,
+            provider_source_sha256=hashlib.sha256(prepared.data).hexdigest(),
+            provider_source_width=prepared.width,
+            provider_source_height=prepared.height,
+            source_preparation="black_padding" if prepared is not source else "original",
             provider_source_url=start_image_url,
         )
     except Exception:

@@ -33,6 +33,58 @@ def test_saved_still_payload_matches_documented_schema_and_price():
         kling.validate_endpoint("https://untrusted.example/submit")
 
 
+@pytest.mark.parametrize("width,height,expected", [
+    (2032, 736, (2032, 814)), (736, 2032, (814, 2032)),
+    (1600, 900, (1600, 900)), (1500, 600, (1500, 600)),
+])
+def test_animation_padding_preserves_entire_source_without_resizing(width, height, expected):
+    original = png(width, height)
+    source = kling.validate_source_image(original)
+    prepared = kling.prepare_kling_source(source)
+    assert (prepared.width, prepared.height) == expected
+    if expected == (width, height):
+        assert prepared is source
+    with Image.open(io.BytesIO(prepared.data)) as image:
+        x, y = (image.width - width) // 2, (image.height - height) // 2
+        with Image.open(io.BytesIO(original)) as before:
+            assert image.crop((x, y, x + width, y + height)).tobytes() == before.tobytes()
+        if expected != (width, height):
+            assert image.getpixel((0, 0)) == (0, 0, 0)
+    assert source.data == original
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("status,terminal", [(422, True), (503, False), (401, False)])
+async def test_completed_provider_input_rejection_is_terminal_only_for_422(monkeypatch, status, terminal):
+    from fal_client import Completed
+    from fal_client.client import FalClientHTTPError
+    error = FalClientHTTPError("private source URL", status, {}, httpx.Response(status))
+    handle = SimpleNamespace(status=AsyncMock(return_value=Completed(logs=None, metrics={})),
+                             get=AsyncMock(side_effect=error))
+    monkeypatch.setattr(kling, "_fal_client", lambda _: SimpleNamespace(get_handle=AsyncMock(return_value=handle)))
+    with pytest.raises(kling.KlingGenerationFailed if terminal else FalClientHTTPError) as caught:
+        await kling.poll_kling_request("mock-key", "fal-ai/kling-video/v3/pro/image-to-video", "existing")
+    if terminal:
+        assert "private source URL" not in str(caught.value)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("status,terminal", [(422, True), (503, False)])
+async def test_legacy_fal_http_failure_uses_chained_status_not_message(monkeypatch, status, terminal):
+    from fal_client import Completed
+    from fal_client.client import FalClientError
+    async def get():
+        response = httpx.Response(status, request=httpx.Request("GET", "https://queue.fal.run/result"))
+        try:
+            response.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            raise FalClientError("image_aspect_ratio_error") from exc
+    handle = SimpleNamespace(status=AsyncMock(return_value=Completed(logs=None, metrics={})), get=get)
+    monkeypatch.setattr(kling, "_fal_client", lambda _: SimpleNamespace(get_handle=AsyncMock(return_value=handle)))
+    with pytest.raises(kling.KlingGenerationFailed if terminal else FalClientError):
+        await kling.poll_kling_request("mock-key", "fal-ai/kling-video/v3/pro/image-to-video", "existing")
+
+
 def test_brief_scene_direction_is_optional_bounded_and_part_of_the_single_prompt():
     import uuid
 

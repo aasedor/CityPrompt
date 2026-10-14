@@ -43,6 +43,15 @@ async function open(onSaved = vi.fn()) {
 }
 
 describe('saved finished render animation', () => {
+  it('explains provider padding before a wide image is submitted', async () => {
+    vi.mocked(renderAnimationApi.preflight).mockResolvedValue({ ...check, width: 2032, height: 736,
+      provider_width: 2032, provider_height: 814, source_padded: true });
+    await open();
+    expect(screen.getByText(/Black borders will fit the full image/)).toBeInTheDocument();
+    expect(screen.getByText(/2032 × 814/)).toBeInTheDocument();
+    expect(renderAnimationApi.generate).not.toHaveBeenCalled();
+  });
+
   it('shows the full saved source and submits IDs only, once on a double click', async () => {
     await open();
     expect(screen.getByText('1600 × 900 source')).toBeInTheDocument();

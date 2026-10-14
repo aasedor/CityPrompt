@@ -60,9 +60,9 @@ still be recovered if a fresh submission would exceed the credit allowance.
 
 - Requests identify the project and saved-render UUID. The backend checks current
   editor access, render membership and the exact project storage key. It reads
-  the saved PNG/JPEG/WebP bytes without resizing. Gallery thumbnails and a Direct
+  the saved PNG/JPEG/WebP bytes without resizing; see the aspect-fit rules below. Gallery thumbnails and a Direct
   3D `authoritative_source` fallback cannot become animation inputs.
-- The unchanged finished pixels are uploaded using the existing server-side fal
+- The finished image (with black padding only when required) is uploaded using the existing server-side fal
   client. Project ID, source render ID, source checksum/dimensions, prompts,
   endpoint and settings are retained in `video_pilot_attempts` project metadata.
 - A UUID idempotency key reserves an attempt before submission. Credits are
@@ -151,3 +151,22 @@ shots and new drone/bicycle route controls remain outside this change.
 | Saved-render/gallery integration | `frontend/src/features/projects/ProjectViewPage.tsx`, `frontend/src/features/projects/ProjectListPage.tsx`, `frontend/src/components/viewer/AIRenderPanel.tsx`, `frontend/src/components/viewer/VideoGeneratePanel.tsx`, `frontend/src/services/api.ts` |
 | Focused tests | `backend/tests/test_kling_video.py`, `backend/tests/test_render_animation.py`, `frontend/src/components/viewer/AnimateRenderButton.test.tsx` |
 | Setup/verification | `docs/ANIMATE_SAVED_RENDER.md` |
+
+### Hosted ultrawide compatibility fix (2026-10-14)
+
+A real 2032×736 saved render exposed Kling's 0.4–2.5 aspect-ratio limit. The
+server now adds centered black borders only to an out-of-range provider copy;
+there is no crop or resize. Normal inputs retain exact bytes. The gallery
+original, dimensions and SHA remain unchanged; provider dimensions, SHA and
+preparation type are recorded separately. The dialog discloses the padding
+before submission. The paid provider still controls its output framing.
+
+A completed provider result with HTTP 422 is terminal, including older
+fal-client errors that retain the HTTP status in their chained cause. Temporary
+503/authentication errors remain recoverable; no automatic paid resubmission
+is introduced. A failed saved request stays in history and is not erased.
+
+Validation: 31 backend tests (isolated local PostgreSQL; providers mocked),
+10 frontend tests, TypeScript check, and local browser dialog with no console
+errors. Independent review's SDK compatibility finding was addressed and
+covered by legacy-style 422 and 503 tests. Live retest is pending deployment.

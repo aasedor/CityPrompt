@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 from functools import lru_cache
 import io
+import math
 import re
 
 import httpx
@@ -66,6 +67,32 @@ def validate_source_image(data: bytes) -> SourceImage:
         raise ValueError("The saved render is not a valid image.") from exc
     # No resize, crop, compositing or thumbnail substitution.
     return SourceImage(data, mime, width, height)
+
+
+def prepare_kling_source(source: SourceImage) -> SourceImage:
+    """Fit the provider's 0.4–2.5 aspect range without cropping or scaling pixels.
+
+    The immutable gallery original stays separate. Ordinary images retain their
+    exact encoded bytes; only out-of-range images receive centered black bars.
+    """
+    width, height = source.width, source.height
+    if width > height * 2.5:
+        height = 2 * math.ceil(width / 2.5 / 2)
+    elif height > width * 2.5:
+        width = 2 * math.ceil(height / 2.5 / 2)
+    else:
+        return source
+    if width * height > 40_000_000:
+        raise ValueError("This render is too large to prepare for animation.")
+    with Image.open(io.BytesIO(source.data)) as image:
+        rgba = image.convert("RGBA")
+        canvas = Image.new("RGB", (width, height), "black")
+        canvas.paste(rgba, ((width - source.width) // 2, (height - source.height) // 2), rgba)
+        output = io.BytesIO()
+        canvas.save(output, "PNG", **({"icc_profile": image.info["icc_profile"]} if image.info.get("icc_profile") else {}))
+    if output.tell() > MAX_SOURCE_BYTES:
+        raise ValueError("The prepared animation image exceeds 25 MB.")
+    return SourceImage(output.getvalue(), "image/png", width, height)
 
 
 def validate_endpoint(endpoint: str) -> str:
@@ -137,6 +164,7 @@ async def poll_kling_request(
     api_key: str, endpoint: str, request_id: str
 ) -> tuple[str, str | None]:
     from fal_client import Completed, Queued
+    from fal_client.client import FalClientError
 
     client = _fal_client(api_key)
     handle = await client.get_handle(endpoint, request_id)
@@ -145,7 +173,19 @@ async def poll_kling_request(
         return ("queued" if isinstance(state, Queued) else "generating"), None
     if getattr(state, "error", None):
         raise KlingGenerationFailed(state.error)
-    result = await handle.get()
+    try:
+        result = await handle.get()
+    except FalClientError as exc:
+        status_code = getattr(exc, "status_code", None)
+        # Older supported fal-client versions retain HTTP status on the cause.
+        if status_code is None and isinstance(exc.__cause__, httpx.HTTPStatusError):
+            status_code = exc.__cause__.response.status_code
+        if status_code == 422:
+            raise KlingGenerationFailed(
+                "The video provider rejected this image or scene direction. No clip was generated. "
+                "This saved request cannot be retried; select a different finished render."
+            ) from exc
+        raise
     url = (result.get("video") or {}).get("url")
     if not isinstance(url, str) or not url.startswith("https://"):
         raise ValueError(

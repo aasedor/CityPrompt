@@ -15,6 +15,9 @@ export interface AnimationPreflight {
   source_render_id: string;
   width: number;
   height: number;
+  provider_width?: number;
+  provider_height?: number;
+  source_padded?: boolean;
   duration_seconds: 5;
   generate_audio: false;
   estimated_cost_usd: number;
@@ -230,6 +233,9 @@ function AnimateRenderDialog({ projectId, render, onSaved, onClose }: Props & { 
           {loading ? <p role="status" className="flex items-center gap-2 text-sm"><Loader2 size={16} className="animate-spin" /> Checking the saved render…</p>
             : !attempt && preflight && <div className="rounded-xl border border-black/10 bg-white p-3 text-sm">
               <p className="font-bold">{preflight.width} × {preflight.height} source</p>
+              {preflight.source_padded && <p className="mt-2 text-xs text-black/65">
+                Black borders will fit the full image into a {preflight.provider_width} × {preflight.provider_height} animation frame. Your saved render stays unchanged.
+              </p>}
               <p className="mt-1">{preflight.credit_cost} credits · provider estimate US${preflight.estimated_cost_usd.toFixed(2)}</p>
               <p className="mt-1 text-xs text-black/55">Creating a clip submits one paid generation.</p>
             </div>}

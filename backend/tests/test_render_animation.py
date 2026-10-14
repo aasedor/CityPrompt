@@ -141,6 +141,31 @@ async def test_free_preflight_reads_finished_full_resolution_without_provider_or
 
 
 @pytest.mark.asyncio
+async def test_wide_render_preflight_and_submission_keep_original_and_derivative_provenance(pilot, monkeypatch):
+    import hashlib
+    f = pilot
+    original = png(2032, 736)
+    monkeypatch.setattr(animation, "_read_source", lambda _: original)
+    async with f.sessions() as db:
+        result = await animation.preflight_animation(
+            animation.RenderAnimationPreflightRequest(project_id=f.project.id, source_render_id=f.request.source_render_id),
+            await db.get(User, f.user.id), db)
+        assert (result.width, result.height) == (2032, 736)
+        assert (result.provider_width, result.provider_height, result.source_padded) == (2032, 814, True)
+    f.submit.assert_not_awaited()
+    await generate(f)
+    prepared = f.upload.call_args.args[1]
+    assert (prepared.width, prepared.height) == (2032, 814)
+    async with f.sessions() as db:
+        stored = (await db.get(Project, f.project.id)).metadata_["video_pilot_attempts"][0]
+        assert stored["source_sha256"] == hashlib.sha256(original).hexdigest()
+        assert stored["provider_source_sha256"] == hashlib.sha256(prepared.data).hexdigest()
+        assert stored["source_preparation"] == "black_padding"
+        assert (stored["source_width"], stored["source_height"]) == (2032, 736)
+    f.submit.assert_awaited_once()
+
+
+@pytest.mark.asyncio
 async def test_concurrent_idempotent_requests_reserve_bill_and_submit_once(pilot):
     f = pilot
     responses = await asyncio.gather(*(generate(f) for _ in range(8)))

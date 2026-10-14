@@ -144,3 +144,18 @@ street image also interpreted distant context as water near the site. These
 are visual fidelity limitations still needing assessment, not passing claims.
 Google sign-in passed earlier; a final session check and animation playback
 remain before declaring the hosted acceptance complete.
+
+## Animation blocker and fix (11:48 MDT)
+
+API and worker `3063d7c` are live with animation enabled. Google sign-out,
+Google OAuth callback, and return to the saved project passed on the current
+frontend. A fresh report includes proposed R-CG zoning and current compiled
+housing quantities. The first animation request returned provider HTTP422:
+2032×736 is wider than its 2.5 maximum ratio. No video was produced; it must
+not be called a passing animation test. Its billing outcome is not verified.
+
+The tested fix preserves gallery originals, prepares a black-padded provider
+copy only when needed, discloses it in preflight and treats completed422 as
+terminal. 31 backend tests,10 frontend tests,tsc,local browser and independent
+review passed. Deployment/retest remain. Do not automatically resubmit the
+existing rejected request or claim a final provider invoice total.
