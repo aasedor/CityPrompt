@@ -284,7 +284,9 @@ export function benchPlacementProblem(
     (bench.propVariant || others.some((p) => p.propVariant))
   ) {
     const radius = (item: DetailBench) =>
-      item.treeVariant
+      // Recovered tree assets retain object storage for compatibility. Their
+      // crowns may overlap just like native trees; only trunks own clearance.
+      item.treeVariant || (item.propVariant && detailAsset(item.propVariant).category === "Trees")
         ? 0.45
         : item.propVariant
           ? Math.hypot(

@@ -1,6 +1,6 @@
 # City Prompt — October 13 release preparation
 
-This is the current release checklist for `codex/picker-category-audit-2026-10-13`, extending the verified Render preparation at `86f64d31e`. It supersedes the October 7 catalogue counts and asset-delivery limitations. Preparation is not a live deployment or a 40-student performance certification.
+This is the current release checklist for `codex/exchange-student-trial-2026-10-13`, extending the picker checkpoint at `6de28f3d0` and verified Render preparation at `86f64d31e`. It supersedes the October 7 catalogue counts and asset-delivery limitations. Preparation is not a live deployment or a 40-student performance certification.
 
 ## What this release fixes
 
@@ -83,3 +83,7 @@ The live local picker was checked on October 13 after the release build: all 74 
 Corrected Blue Glass Office Tower and Gilded Terracotta Tower to Offices, consistent with their exact model programmes. Corrected Timber-Screen Townhouse to Rowhouses & townhomes. Height alone can no longer move an office, hotel, civic, mixed-use or shop building into Residential towers. These browsing changes preserve all model bindings, geometry and zoning-use rules.
 
 Validation: 39 focused picker tests and TypeScript no-emit checks passed. Local browser evidence is in `D:/CityPrompt-render-readiness-2026-10-13/picker-category-browser-audit.json` and `picker-offices.png`. The prior complete production build remains evidence for `86f64d31e`; Render must build the newer branch for these corrections.
+
+## Final student workflow follow-up
+
+The Exchange trial found and fixed a zoning save/close recovery race and false canopy collisions for imported trees. See [the scoped browser trial report](EXCHANGE_STUDENT_TRIAL_2026-10-13.md) for tests, screenshots, completed actions and remaining acceptance limits. Use the branch at the top of this guide so these fixes are included.

@@ -19,7 +19,7 @@ const boundary:Position[]=[[-114.12,51.01],[-114.119,51.01],[-114.119,51.011],[-
 const layer={id:'saved',name:'Existing zoning study',content_hash:'a'.repeat(64),feature_collection:{type:'FeatureCollection',
   _citypromptStudy:{schema:1,condition:'existing',boundaryCoordinates:boundary},features:[{type:'Feature',id:'one',geometry:{type:'Polygon',coordinates:[[...boundary,boundary[0]]]},properties:{label:'Housing',color:'#dfb88b',origin:'student'}}]}} as unknown as ReferenceLayer;
 const props={projectId:'project',accountId:'student',boundaryId:'site',boundary,projectName:'Trial',layers:[layer],canEdit:true,onClose:vi.fn()};
-const setup=(changes:Partial<typeof props>&{mapDrawing?:StudyMapDrawing}={})=>render(<QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}><ZoningStudyEditor {...props} {...changes}/></QueryClientProvider>);
+const setup=(changes:Partial<typeof props>&{mapDrawing?:StudyMapDrawing}={},client=new QueryClient({defaultOptions:{queries:{retry:false}}}))=>render(<QueryClientProvider client={client}><ZoningStudyEditor {...props} {...changes}/></QueryClientProvider>);
 beforeEach(()=>{vi.clearAllMocks();localStorage.clear();});
 describe('zoning study editing and recovery',()=>{
   it('selects a drawn zone from the globe and edits its caption',async()=>{
@@ -131,6 +131,73 @@ describe('zoning study editing and recovery',()=>{
     view.unmount();setup();
     expect(screen.getByRole('button',{name:'Kept draft'})).toBeInTheDocument();
     expect(screen.getByRole('button',{name:'Save map layer'})).toBeEnabled();
+  });
+  it('clears the submitted draft when its save succeeds after the editor closes',async()=>{
+    let complete!: (response:{data:ReferenceLayer})=>void;
+    vi.mocked(api.put).mockImplementation(()=>new Promise(resolve=>{complete=resolve;}));
+    const view=setup();fireEvent.click(screen.getByRole('button',{name:'Housing'}));
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'  Saved homes  '}});
+    fireEvent.change(screen.getByLabelText('Study fill opacity'),{target:{value:'70'}});
+    fireEvent.click(screen.getByRole('button',{name:'Save map layer'}));
+    view.unmount();
+    const key=`cityprompt:zoning-study-v1:student:project:${JSON.stringify(['site',boundary])}:existing`;
+    expect(localStorage.getItem(key)).not.toBeNull();
+    const canonical={...layer,opacity:0.7,content_hash:'b'.repeat(64),feature_collection:{...layer.feature_collection,
+      features:layer.feature_collection.features.map(feature=>({...feature,properties:{...feature.properties,label:'Saved homes'}}))}};
+    await act(async()=>{complete({data:canonical});});
+    expect(localStorage.getItem(key)).toBeNull();
+    setup({layers:[canonical]});
+    expect(screen.getByRole('button',{name:'Saved homes'})).toBeInTheDocument();
+    expect(screen.getByRole('button',{name:'Save map layer'})).toBeDisabled();
+    expect(screen.queryByText(/shared version changed/)).not.toBeInTheDocument();
+  });
+  it('updates the cached shared layer before a delayed refetch and flushes the saved revision immediately',async()=>{
+    const client=new QueryClient();
+    const unrelated={...layer,id:'unrelated',feature_collection:{type:'FeatureCollection' as const,features:[]}};
+    client.setQueryData(['reference-layers','project'],{layers:[layer,unrelated],can_edit:true});
+    let finishRefetch!:()=>void;
+    vi.spyOn(client,'invalidateQueries').mockImplementation(()=>new Promise(resolve=>{finishRefetch=resolve;}));
+    const canonical={...layer,content_hash:'b'.repeat(64),feature_collection:{...layer.feature_collection,
+      features:layer.feature_collection.features.map(feature=>({...feature,properties:{...feature.properties,label:'Saved homes'}}))}};
+    vi.mocked(api.put).mockResolvedValue({data:canonical});
+    const view=setup({},client);fireEvent.click(screen.getByRole('button',{name:'Housing'}));
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Saved homes'}});
+    fireEvent(window,new Event('pagehide'));
+    fireEvent.click(screen.getByRole('button',{name:'Save map layer'}));
+    await act(async()=>{});
+    expect(client.getQueryData(['reference-layers','project'])).toEqual({layers:[unrelated,canonical],can_edit:true});
+    fireEvent(window,new Event('pagehide'));
+    view.unmount();
+    const key=`cityprompt:zoning-study-v1:student:project:${JSON.stringify(['site',boundary])}:existing`;
+    expect(localStorage.getItem(key)).toBeNull();
+    await act(async()=>{finishRefetch();});
+  });
+  it('does not erase a newer device draft when an earlier save finishes after close',async()=>{
+    let complete!: (response:{data:ReferenceLayer})=>void;
+    vi.mocked(api.put).mockImplementation(()=>new Promise(resolve=>{complete=resolve;}));
+    const view=setup();fireEvent.click(screen.getByRole('button',{name:'Housing'}));
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Submitted homes'}});
+    fireEvent.click(screen.getByRole('button',{name:'Save map layer'}));
+    view.unmount();
+    const reopened=setup();fireEvent.click(screen.getByRole('button',{name:'Submitted homes'}));
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Newer homes'}});
+    reopened.unmount();
+    const key=`cityprompt:zoning-study-v1:student:project:${JSON.stringify(['site',boundary])}:existing`;
+    const newerDraft=localStorage.getItem(key);
+    await act(async()=>{complete({data:{...layer,content_hash:'b'.repeat(64)}});});
+    expect(localStorage.getItem(key)).toBe(newerDraft);
+    expect(JSON.parse(newerDraft!)).toMatchObject({zones:[{label:'Newer homes'}]});
+  });
+  it('keeps a genuine shared revision conflict and its original expected hash after reopening',async()=>{
+    vi.mocked(api.put).mockRejectedValue(new Error('The shared study changed.'));
+    const view=setup();fireEvent.click(screen.getByRole('button',{name:'Housing'}));
+    fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'My revision'}});
+    view.unmount();
+    setup({layers:[{...layer,content_hash:'b'.repeat(64)}]});
+    expect(screen.getByText(/shared version changed/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button',{name:'Save map layer'}));
+    expect(await screen.findByRole('alert')).toHaveTextContent('shared study changed');
+    expect(vi.mocked(api.put).mock.calls[0][1]).toMatchObject({expected_hash:'a'.repeat(64),zones:[{label:'My revision'}]});
   });
   it('flushes the latest edit before an immediate reload or page suspension',()=>{
     const view=setup();fireEvent.click(screen.getByRole('button',{name:'Housing'}));

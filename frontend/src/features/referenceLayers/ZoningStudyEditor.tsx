@@ -197,7 +197,20 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
       });
       const canonical=studyZones(response.data);
       const opacity=response.data.opacity??slot.opacity;
-      setSlots(previous=>({...previous,[savedCondition]:{...previous[savedCondition],zones:canonical,baseHash:response.data.content_hash??null,baseline:JSON.stringify(canonical),opacity,baselineOpacity:opacity}}));
+      // Save completion can outlive the editor. Commit recovery state before
+      // React renders again so close/pagehide cannot flush the old revision.
+      const next={...latestSlots.current,[savedCondition]:{...latestSlots.current[savedCondition],zones:canonical,baseHash:response.data.content_hash??null,baseline:JSON.stringify(canonical),opacity,baselineOpacity:opacity}};
+      latestSlots.current=next;
+      setSlots(next);
+      try {
+        const key=draftPrefix+savedCondition;
+        const draft=JSON.parse(localStorage.getItem(key)??'null');
+        // A reopened editor or another tab may already have a newer draft.
+        if(draft?.schema===1 && draft.baseHash===slot.baseHash && draft.opacity===slot.opacity && JSON.stringify(draft.zones)===JSON.stringify(submitted)) localStorage.removeItem(key);
+      } catch { setStorageProblem(true); }
+      queryClient.setQueryData<{layers:ReferenceLayer[];can_edit:boolean}>(referenceLayerQueryKey(projectId),previous=>previous?{
+        ...previous,layers:[...previous.layers.filter(layer=>layer.id!==response.data.id && studyMetadata(layer)?.condition!==savedCondition),response.data],
+      }:previous);
       await queryClient.invalidateQueries({queryKey:referenceLayerQueryKey(projectId)});
       setNotice(`${studyTitle(savedCondition)} saved as its own map layer.`);
     }catch(cause){setError(getApiErrorMessage(cause,'The study could not save. Your draft is kept.'));}finally{setBusy(false);}

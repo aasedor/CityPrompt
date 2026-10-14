@@ -27,6 +27,26 @@ const zone = {
   },
 } as SiteZone;
 describe('rustic park bench edits', () => {
+  it('allows overlapping recovered tree crowns in the saved student layout', () => {
+    const context = benchContext(zone, undefined, 'project');
+    const items = [
+      { id: 'elm-1', point: { x: 296.8070214, y: 163.0391661 },
+        yaw: Math.PI / 12, propVariant: 'detail-meshy-49_tree_american_elm' },
+      { id: 'elm-2', point: { x: 303.7756805, y: 173.4758161 },
+        yaw: Math.PI / 12, propVariant: 'detail-meshy-49_tree_american_elm' },
+      { id: 'bench', point: { x: 285.5615570, y: 155.3582308 },
+        yaw: Math.PI / 12, propVariant: 'detail-meshy-01_bench_timber_backed' },
+    ];
+    for (const item of items)
+      expect(benchPlacementProblem(item, items, context)).toBeNull();
+    const stacked = { ...items[1],
+      point: { x: items[0].point.x + 0.5, y: items[0].point.y } };
+    expect(benchPlacementProblem(stacked, [items[0], stacked], context)).toMatch(/space/);
+    const obstructingBench = { ...items[2], point: { ...items[0].point } };
+    expect(benchPlacementProblem(obstructingBench, [items[0], obstructingBench], context)).toMatch(/space/);
+    const duplicateBench = { ...items[2], id: 'bench-2' };
+    expect(benchPlacementProblem(duplicateBench, [items[2], duplicateBench], context)).toMatch(/space/);
+  });
   it('keeps automatic planting clear of edited benches when the park planting regenerates', () => {
     const bench = { id: 'student-bench', point: { x: 20, y: 20 }, yaw: 0 };
     expect(
