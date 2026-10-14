@@ -1,0 +1,161 @@
+{
+  "candidate": "clay-second-empire-city-hall-clay-v010",
+  "model_sha256": "e6cc51be3727b71a75c96ecc647c3b94ca2733558f478ed6891c046e47b5bfc1",
+  "model_bytes": 4419620,
+  "reviewer": "Codex magasin_repair; independent of City Hall builder; prior v008/v009 reviewer",
+  "date": "2026-10-13",
+  "method": "RLASM v6.1",
+  "scope": "Holistic architectural-clay offline visual gate",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "decision": "PASS_ZERO_P0_P1",
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\boards\\phone-01-source-vs-render.png",
+      "sha256": "ce04ea1a9443ae8d56753e10db9a12805bed06fbe61ff279ae36d597e1c24509",
+      "bytes": 1613505
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\boards\\phone-02-details.png",
+      "sha256": "e4f6925b6df6c5c1a35a8e64e582cdc6477f01d0bcdeb1a6b021ad614f58fd26",
+      "bytes": 1130317
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\boards\\phone-03-details.png",
+      "sha256": "a9ec0dcf274b8aad059f0ee7a7557fe313fa2cff456d5c3e70716fa996d82646",
+      "bytes": 944209
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\boards\\phone-04-details.png",
+      "sha256": "c6e0973ff76b7d8776fa04422a9ea63fea54fbcf4a0ac930a70ff7923e0b8090",
+      "bytes": 426590
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\aerial.png",
+      "sha256": "7bc4fd126661d917f61be415bd2c7e0bd91198d6caf0e5f698cc47082c744af9",
+      "bytes": 1398769
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\architecture_close.png",
+      "sha256": "11eb8d9e38023b2ad91f9ada28e67f10e3ac7aefb2e16731d098bb5c24466029",
+      "bytes": 1675346
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\clock_tower.png",
+      "sha256": "99b55d216ad096d4a1d891fd3409c8bc8e3bbdfbeaaed4915044192a0a933ee6",
+      "bytes": 1383593
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\cornice_contact.png",
+      "sha256": "0c6686462c4df1c524102e5ef681685309022e2d2d1b8ae4f175d790bd6029b5",
+      "bytes": 1394613
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\facade_close.png",
+      "sha256": "3621f24f0d6507b285d5a452f67f2ab058e8ea7f0885d9d83fa0cefd5246c7d8",
+      "bytes": 1475944
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\front.png",
+      "sha256": "4b3c1c8a463f770480033d6637941c93e673919704629aa81ff0efe2342c404c",
+      "bytes": 1382637
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\front_corner.png",
+      "sha256": "e75e07d21f47a68eaa200ce7c745eb2aac90a569753aa2800e505b6f2a19706c",
+      "bytes": 1429537
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\glass_close.png",
+      "sha256": "b67cbc45239bc208b007dc903107cb5cbbb53cb5c150a7e3af81140137c6c74e",
+      "bytes": 1352445
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\interior.png",
+      "sha256": "d2ec27c6b772d1658ccb8dfc7dbcfe6ac5b0da237de6fcb08ca670444d0bb828",
+      "bytes": 1303180
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\left_side.png",
+      "sha256": "6acf9adbbcc22ba90cf67973cfa6d78b26016475dda70a825018bfa29b7ce09b",
+      "bytes": 1375320
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\pavilion_mansard.png",
+      "sha256": "506b55adc41ce38e1e096ffe04387bf686d2719a6df31457df36007e2ac3f5c1",
+      "bytes": 1626257
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\porch_stair.png",
+      "sha256": "dea756f4edf04bc7dc9681179f098aadd91993a4fbb7af83066326c9249919ec",
+      "bytes": 1596934
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\rear.png",
+      "sha256": "5e4546f958c10989462d4c4b3eccfb6454b39b7b318feeb6d40b1dd5ac409436",
+      "bytes": 1390871
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\rear_court.png",
+      "sha256": "10adf8e9ea777363c3f68f7aa49592b02f64dbe43cb7c505513d5b8abf012110",
+      "bytes": 1484829
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\rear_side.png",
+      "sha256": "adfe38ddbca6364c443e2224f5fc296c7e62f80badf46737420b95569b04dd25",
+      "bytes": 1454982
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\right_side.png",
+      "sha256": "9ea3315424aca7b77540799da5c2b4cf98d7e23535c7852d20bdccbfa134c66a",
+      "bytes": 1374224
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\roof_court.png",
+      "sha256": "962e8b7cda361da68f5c5a9e4e4c5631c38be1ad2d68aea2f9974a502fa6d8a4",
+      "bytes": 1689357
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\renders\\top.png",
+      "sha256": "3d471d67386eededc0971815103aba3251bd76c971374b7859d8090ca3d9c4c3",
+      "bytes": 1329190
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\sources\\front.png",
+      "sha256": "b65649dc4ebd7c66e01b4adacf677cf42222214ec6456b77d8a22cddcb65316b",
+      "bytes": 1240997
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\sources\\oblique.jpg",
+      "sha256": "49679d3a9749ea9d76d646473f2bf8bdb166fc2b9d15fe4bb1ac0ada333aa63c",
+      "bytes": 875908
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010\\sources\\top.jpg",
+      "sha256": "e0480ccd7131dfa37d2d071e67f0a4da339500b5b8687a9e382ccc8263bd9678",
+      "bytes": 819505
+    }
+  ],
+  "pixel_findings": [
+    "Tower dormer cap ends: clock_tower and pavilion_mansard show continuous pale closure at the previously open cap/cheek corners; earlier sharp black notches are absent. Roof_court confirms both visible tower faces. Original broad tympanum openings remain closed.",
+    "Porch staircase: porch_stair and side elevations retain solid stair cheeks and continuous contact with the ground and upper landing. No floating stair assembly is visible.",
+    "Envelope and openings: all four exterior elevations retain consistent framed recessed glazing and supported trim; glass_close shows room depth through the panes. Interior supplies a window-facing occupied-space proof, though not whole-building circulation verification.",
+    "Roof and courtyard: aerial, top, roof_court and rear_court show a continuous perimeter roof, four supported corner pavilions, central clock tower and open courtyard with finished walls and windows. No new silhouette, disconnected roof contact or courtyard regression is visible.",
+    "Identity and composition: central civic clock tower, stepped mansards, corner pavilions, two principal facade levels above a basement, columned porch and entry stair remain legible against all three locked sources."
+  ],
+  "limitations": [
+    "Architectural-clay pass only. Source segmental clock-face pediments are simplified to triangular pediments; tower crown and lantern, roof seams, masonry ornament and ironwork are abstracted.",
+    "Ordinary source dormer glazing is largely rectangular beneath a segmental hood; the model uses arched apertures. This remains a documented source-detail simplification at this gate.",
+    "The first phone board compares different camera scale and angle; direct source images and all full-size render files were inspected independently of the board.",
+    "No browser material, placement, save/reload, walkability, terrain fit, scaling, performance or human keeper approval is claimed."
+  ],
+  "prior_findings": [
+    {
+      "id": "CH9-01",
+      "status": "resolved",
+      "verification": "clock_tower cap/cheek contacts near x524-535/y749-765 and x701-714/y750-766; pavilion_mansard near x1209-1226/y219-236 now read as solid pale closure instead of open black notches."
+    }
+  ]
+}

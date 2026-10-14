@@ -1,0 +1,403 @@
+{
+  "schema": "cityprompt.rlasm-architectural-clay-library@1",
+  "created_at": "2026-10-13T00:00:00Z",
+  "updated_at": "2026-10-13",
+  "method": "RLASM",
+  "method_version": "6.1",
+  "delivery_format": "architectural_clay",
+  "reference_authority": "frontend/public/archetypes/buildings",
+  "runtime_policy": {
+    "building_detail_mode": "rlasm_architectural_clay_only",
+    "unsupported_archetype_fallback": "planned_massing",
+    "reference_images_drive_user_selection": true,
+    "reference_images_drive_render_conditioning": true,
+    "clay_previews_may_replace_catalogue_references": false,
+    "continuous_resize_allowed": false,
+    "terrain_fit_verified": false,
+    "scaling_verified": false
+  },
+  "activation": {
+    "authorized_by": "human_user",
+    "keeper_approval_implied": false,
+    "quote": "Please check these, test them, and if they work, put them in the browser.",
+    "scope": "local trial only"
+  },
+  "entries": [
+    {
+      "candidate": "clay-baronial-railway-hotel-clay-v006",
+      "family": "clay-baronial-railway-hotel",
+      "archetype_id": "chateauesque_grand_railway_hotel",
+      "archetype_label": "Chateauesque Grand Railway Hotel",
+      "variant_id": "scottish_baronial_granite_tower",
+      "variant_label": "Scottish Baronial railway hotel",
+      "runtime_enabled": true,
+      "local_trial_only": true,
+      "native_floors": 5,
+      "design_dimensions_m": {
+        "width": 78,
+        "depth": 72,
+        "height": 42.400001525878906
+      },
+      "source": {
+        "commit": "0dea20a092b20ac4055d66f75307827bb364a7cf",
+        "path": "tools/clay_baronial_railway_hotel/candidates/clay-baronial-railway-hotel-clay-v006.glb",
+        "original_bytes_unchanged": true,
+        "units": "metres",
+        "up_axis": "+Y",
+        "limitations": "Five authored levels; no working doors or configurable floors. Clay materials. No AI render test."
+      },
+      "model": {
+        "path": "../model-library/objects/claude-five/models/clay-baronial-railway-hotel-clay-v006.glb",
+        "sha256": "424b00606c40c0bb455bf00d0af51fd12d0506049b065863fdc7827b4e9ffbd9",
+        "bytes": 4172400,
+        "native_dimensions_m": {
+          "width": 78,
+          "depth": 72,
+          "height": 42.400001525878906
+        },
+        "mesh_count": 16,
+        "material_count": 16,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0.png",
+          "sha256": "c3d62e25c041ad01aceb2834f53bdd5f2d826bf3ab39f22ff0c5c2aea5b27e81",
+          "bytes": 1350586
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0_angle_60.jpg",
+          "sha256": "61c519072f8ecc212bf498c3acc1f58ece431348c8e83e37f7be2992beeea64a",
+          "bytes": 944635
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0_angle_90.jpg",
+          "sha256": "cb03f9474ec9e17d3ba67d70bab6d0241376cf13edbc54601829f42d969483c7",
+          "bytes": 898813
+        }
+      ],
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-baronial-railway-hotel-clay-v006.json",
+        "sha256": "2f38107d3d6cdcd54305b0134db1daa6d5c0e32391a70ab0d023cc242e535015",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "picker": {
+        "id": "claude_scottish_baronial_hotel",
+        "description": "A grand railway hotel with a pointed entrance passage, courtyard and turreted skyline. Five authored levels; fixed proportions. Architectural clay local trial.",
+        "group_id": "hotels",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; the complete hotel keeps its authored size and height.",
+        "width": 82,
+        "depth": 76,
+        "max_size": 250
+      }
+    },
+    {
+      "candidate": "clay-zinc-dome-corner-block-clay-v007",
+      "family": "clay-zinc-dome-corner-block",
+      "archetype_id": "parisian_corner_with_dome",
+      "archetype_label": "Zinc Dome Corner Block",
+      "variant_id": "parisian-corner-with-dome-zinc-mansard",
+      "variant_label": "Zinc Dome Corner Block",
+      "runtime_enabled": true,
+      "local_trial_only": true,
+      "native_floors": 6,
+      "design_dimensions_m": {
+        "width": 48.0,
+        "depth": 41.0,
+        "height": 27.649999618530273
+      },
+      "source": {
+        "commit": "0dea20a092b20ac4055d66f75307827bb364a7cf",
+        "repair_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\zinc-v007",
+        "original_bytes_unchanged": false,
+        "units": "metres",
+        "up_axis": "+Y",
+        "limitations": "Fixed authored assembly; architectural clay. Runtime trial pending."
+      },
+      "model": {
+        "path": "../model-library/objects/claude-five/models/clay-zinc-dome-corner-block-clay-v007.glb",
+        "sha256": "ff3718dd13d63e0380674bca3a5a1d9f07b613c9c9601fb5972d411f6fbbe179",
+        "bytes": 3844876,
+        "native_dimensions_m": {
+          "width": 48.0,
+          "depth": 41.0,
+          "height": 27.649999618530273
+        },
+        "mesh_count": 18,
+        "material_count": 18,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/parisian-corner-with-dome/variant_0.png",
+          "sha256": "abed71053e7f90d7456b7eb8f0c618d9934e9442288c533bb65409b06f498d93",
+          "bytes": 1404367
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/parisian-corner-with-dome/variant_0_angle_60.jpg",
+          "sha256": "4c5d48f6f4bae3626d715fbb78edbc8b32b1ef58cb5c53393176cd28657dce47",
+          "bytes": 1004937
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/parisian-corner-with-dome/variant_0_angle_90.jpg",
+          "sha256": "7c0dff0f3930d314f739ede27c78357ae7124380461ef0d4679e95dee104045a",
+          "bytes": 964784
+        }
+      ],
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-zinc-dome-corner-block-clay-v007.json",
+        "sha256": "d6b9262090eb3a117f364be484ed774de2cd561fc6781e5e52b007bb5ed45338",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "picker": {
+        "id": "claude_parisian_corner_with_dome",
+        "description": "Zinc Dome Corner Block. Complete fixed-size architectural model with recessed windows and authored roof details.",
+        "group_id": "mixed",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; the building keeps its authored size and height.",
+        "width": 52.0,
+        "depth": 45.0,
+        "max_size": 250
+      }
+    },
+    {
+      "candidate": "clay-grand-magasin-clay-v008",
+      "family": "clay-grand-magasin",
+      "archetype_id": "grand_magasin",
+      "archetype_label": "Grand Magasin",
+      "variant_id": "grand-magasin-belle-epoque",
+      "variant_label": "Grand Magasin",
+      "runtime_enabled": true,
+      "local_trial_only": true,
+      "native_floors": 6,
+      "design_dimensions_m": {
+        "width": 60.0,
+        "depth": 48.75,
+        "height": 35.349998474121094
+      },
+      "source": {
+        "commit": "0dea20a092b20ac4055d66f75307827bb364a7cf",
+        "repair_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008",
+        "original_bytes_unchanged": false,
+        "units": "metres",
+        "up_axis": "+Y",
+        "limitations": "Fixed authored assembly; architectural clay. Runtime trial pending."
+      },
+      "model": {
+        "path": "../model-library/objects/claude-five/models/clay-grand-magasin-clay-v008.glb",
+        "sha256": "fa054051b06e3596376ffbad1df78697cc53b3fbe01014021067aac490b4ad82",
+        "bytes": 6811612,
+        "native_dimensions_m": {
+          "width": 60.0,
+          "depth": 48.75,
+          "height": 35.349998474121094
+        },
+        "mesh_count": 16,
+        "material_count": 16,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/grand-magasin/variant_0.png",
+          "sha256": "502d6d50e7b5ca032a3104f8505b4e4d2f372d2f22e62c091caaa6f9af8f8b12",
+          "bytes": 1498973
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/grand-magasin/variant_0_angle_60.jpg",
+          "sha256": "acf6e2d1ff51f77ff823231d5dd2ccf9a707fb4607dac53a962a6bea82bdf4ef",
+          "bytes": 1019929
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/grand-magasin/variant_0_angle_90.jpg",
+          "sha256": "945b348e6548ae6b2b6ea0ad637ea4dbe98f49e377ea04ade4ff19e298ecd1c7",
+          "bytes": 915820
+        }
+      ],
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-grand-magasin-clay-v008.json",
+        "sha256": "1c2a8543c0a76e4d024f7fff879c49ed106f7a250a3a86387f7d56582b0111c5",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "picker": {
+        "id": "claude_grand_magasin",
+        "description": "Grand Magasin. Complete fixed-size architectural model with recessed windows and authored roof details.",
+        "group_id": "shops",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; the building keeps its authored size and height.",
+        "width": 64.0,
+        "depth": 52.8,
+        "max_size": 250
+      }
+    },
+    {
+      "candidate": "clay-modernista-market-hall-clay-v007",
+      "family": "clay-modernista-market-hall",
+      "archetype_id": "barcelona_mercat",
+      "archetype_label": "Modernista Market Hall",
+      "variant_id": "mercat_modernista",
+      "variant_label": "Modernista Market Hall",
+      "runtime_enabled": true,
+      "local_trial_only": true,
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 74.0,
+        "depth": 74.0,
+        "height": 29.399999618530273
+      },
+      "source": {
+        "commit": "0dea20a092b20ac4055d66f75307827bb364a7cf",
+        "repair_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007",
+        "original_bytes_unchanged": false,
+        "units": "metres",
+        "up_axis": "+Y",
+        "limitations": "Fixed authored assembly; architectural clay. Runtime trial pending."
+      },
+      "model": {
+        "path": "../model-library/objects/claude-five/models/clay-modernista-market-hall-clay-v007.glb",
+        "sha256": "8a861c3172158a552b3896fcfec89bce09eda40489db6b8f051538fd2f94e03f",
+        "bytes": 6719068,
+        "native_dimensions_m": {
+          "width": 74.0,
+          "depth": 74.0,
+          "height": 29.399999618530273
+        },
+        "mesh_count": 22,
+        "material_count": 22,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/barcelona-mercat/variant_0.png",
+          "sha256": "0f36972485949c74b9afca973334080d446609f4fbb3bdc44ebbb76e91488bb2",
+          "bytes": 1903324
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/barcelona-mercat/variant_0_angle_60.jpg",
+          "sha256": "34a74012d1eb1fc3f3b9fcf7a5a76491e3384e00b573f1c36c6ee5b2bd3503d0",
+          "bytes": 1034373
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/barcelona-mercat/variant_0_angle_90.jpg",
+          "sha256": "63b0b905caa5e7fc8a663b7e319532749bce1736f0b7a382892ba2f376040568",
+          "bytes": 934010
+        }
+      ],
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-modernista-market-hall-clay-v007.json",
+        "sha256": "be8a4050ef09d91040ee597fac09f095f87b77e8e4aed1bb725cf6dcd069c8b2",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "picker": {
+        "id": "claude_barcelona_mercat",
+        "description": "Modernista Market Hall. Complete fixed-size architectural model with recessed windows and authored roof details.",
+        "group_id": "shops",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; the building keeps its authored size and height.",
+        "width": 78.0,
+        "depth": 78.0,
+        "max_size": 250
+      }
+    },
+    {
+      "candidate": "clay-second-empire-city-hall-clay-v010",
+      "family": "clay-second-empire-city-hall",
+      "archetype_id": "montreal_second_empire_civic",
+      "archetype_label": "Second Empire City Hall",
+      "variant_id": "montreal_civic_city_hall",
+      "variant_label": "Second Empire City Hall",
+      "runtime_enabled": true,
+      "local_trial_only": true,
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 62.0,
+        "depth": 60.0,
+        "height": 39.0
+      },
+      "source": {
+        "commit": "0dea20a092b20ac4055d66f75307827bb364a7cf",
+        "repair_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\city-hall-v010",
+        "original_bytes_unchanged": false,
+        "units": "metres",
+        "up_axis": "+Y",
+        "limitations": "Fixed authored assembly; architectural clay. Runtime trial pending."
+      },
+      "model": {
+        "path": "../model-library/objects/claude-five/models/clay-second-empire-city-hall-clay-v010.glb",
+        "sha256": "e6cc51be3727b71a75c96ecc647c3b94ca2733558f478ed6891c046e47b5bfc1",
+        "bytes": 4419620,
+        "native_dimensions_m": {
+          "width": 62.0,
+          "depth": 60.0,
+          "height": 39.0
+        },
+        "mesh_count": 21,
+        "material_count": 21,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/montreal-second-empire-civic/variant_0.png",
+          "sha256": "b65649dc4ebd7c66e01b4adacf677cf42222214ec6456b77d8a22cddcb65316b",
+          "bytes": 1240997
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/montreal-second-empire-civic/variant_0_angle_60.jpg",
+          "sha256": "49679d3a9749ea9d76d646473f2bf8bdb166fc2b9d15fe4bb1ac0ada333aa63c",
+          "bytes": 875908
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/montreal-second-empire-civic/variant_0_angle_90.jpg",
+          "sha256": "e0480ccd7131dfa37d2d071e67f0a4da339500b5b8687a9e382ccc8263bd9678",
+          "bytes": 819505
+        }
+      ],
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-second-empire-city-hall-clay-v010.json",
+        "sha256": "72b165e0c0ea937435cb17e8a393969c180e60990710e3d460125e1326be3af9",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "picker": {
+        "id": "claude_montreal_second_empire_civic",
+        "description": "Second Empire City Hall. Complete fixed-size architectural model with recessed windows and authored roof details.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Resize the surrounding plot; the building keeps its authored size and height.",
+        "width": 66.0,
+        "depth": 64.0,
+        "max_size": 250
+      }
+    }
+  ],
+  "review_only_archive": []
+}

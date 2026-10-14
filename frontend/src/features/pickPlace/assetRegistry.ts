@@ -3,6 +3,7 @@ import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
 import communityBatch from '@/data/communityBuildingBatch.json';
 import finalFiveBatch from '@/data/finalFiveBuildingBatch.json';
+import claudeFiveTrial from '@/data/claudeFiveTrial.json';
 import october from '@/data/catalogueOctober2026.json';
 import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
 import flexibleParks from '@/data/flexibleParks.json';
@@ -287,7 +288,10 @@ export const FINAL_FIVE_BUILDING_ASSETS = CATALOGUE_BUILDING_ASSETS.filter(asset
   .map(asset => ({ ...asset, entranceSnap: finalFiveEntries.find(entry =>
     entry.variant_id === asset.model.variantId && entry.candidate === asset.model.revision)!.entrance }));
 
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
+// Local trial packages are not automatically published by a production build.
+export const CLAUDE_FIVE_TRIAL_ASSETS = (import.meta.env.DEV || import.meta.env.VITE_CLAUDE_FIVE_TRIAL === 'true')
+  ? claudeFiveTrial.assets as unknown as PlaceAsset[] : [];
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
   // Exact local validation buildings already declare their delivered GLB.
   // Keep that binding reproducible rather than depending on an unrelated
   // developer database having a matching Model Library row.

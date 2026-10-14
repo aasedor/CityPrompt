@@ -1,0 +1,130 @@
+{
+  "candidate": "clay-grand-magasin-clay-v008",
+  "model_sha256": "fa054051b06e3596376ffbad1df78697cc53b3fbe01014021067aac490b4ad82",
+  "reviewer": "Codex independent repair_evidence_review (not Magasin builder)",
+  "date": "2026-10-13",
+  "method": "RLASM v6.1",
+  "scope": "holistic architectural-clay offline visual gate",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "decision": "PASS_ZERO_P0_P1",
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\boards\\phone-01-source-vs-render.png",
+      "sha256": "74c6f9bd6766e13ed71a96ef88f144efc70fd570eefa61711f15c1283efb446b"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\boards\\phone-02-details.png",
+      "sha256": "b1eac27020d47572c9e5ec59d8ea6ef3183dcd6a9adccb91573d013df4dc5d7e"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\boards\\phone-03-details.png",
+      "sha256": "0a370144417da0982faee354349b7dbeee74716d69684b51ef49e501801d94dc"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\boards\\phone-04-details.png",
+      "sha256": "4ddabc27e2c459247bc64db17994883c706815a47b9c7a1413d01054da2bf0c3"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\aerial.png",
+      "sha256": "0157ab18325f8823a6c1ca526a2fd33864525eb73c276147feaedebe2ec7a25d"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\architecture_close.png",
+      "sha256": "e69b4acb8d2c4cdc5b6ba5ca6fae1304f6c634ec8a3207d3fad8419272d64e23"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\corner_dome.png",
+      "sha256": "9d26b18cbe37047d6e0c1b9c1ce3f1128cd1b1d11d782a337a262b4dbe7dbf5b"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\facade_close.png",
+      "sha256": "cd98b8b757f4c0b260971be3b022e9073470ba93dd5164937d0ab85164612b4a"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\front.png",
+      "sha256": "eec4ac78681cadd5f0688d6dc793143bc3b2a39fa613f64b124704b964c6c657"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\front_corner.png",
+      "sha256": "b7acb7ba48d528d135b21d5852853acdf115b05b7e1847644cebc13c6d5ccbce"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\gilded_balconies.png",
+      "sha256": "5e48de1309de8696886dfde673b3d0cf87f58a42f85d11f098ebc7679f47646a"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\glass_close.png",
+      "sha256": "3e238ebeec5f2d4956838fc04dd7311f5aa7bf14d7f6264bd2ffe8e2afa2876b"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\interior.png",
+      "sha256": "248981af0de6c153089f37ba8eeecda069745f82a4edce2c410fc64752944e48"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\left_side.png",
+      "sha256": "419f701aa8da40ac15ec101e66cf0ea7b93d3eaecc0113b1b98ae56463c2c32a"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\mansard_dormers.png",
+      "sha256": "d19669095303bd9c97719006a3b201f9affd77ffe61ddbe192e7530f0ffef264"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\marquise_sign.png",
+      "sha256": "2b5021c7bfcaef4384fa08f74e6f75d0fa3ecfaafac39b7f75d99e68a9c1eb22"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\rear.png",
+      "sha256": "6c0b1012b9ccd7629ecf28057dab9b1ecf3f1b5a4a7f7e7a3654fdc122b588e4"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\rear_court.png",
+      "sha256": "78bc756821ad618de961d4cbc3523838fdfd636d6f10fb47139d8129ea4ca4e1"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\rear_side.png",
+      "sha256": "01520d952103453d91853a4a4cb85088cb17d31ef75c94fb6b0a1af3b3308ade"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\right_side.png",
+      "sha256": "54fb4c1b94785a813973113544f93373bf5a5824a56f1668cc1f8a4d1385ba70"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\roof_domes.png",
+      "sha256": "8a6533845b2796fde7924631cc5bbce4f924ead9e453bdbc21e9c267321f4e91"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\renders\\top.png",
+      "sha256": "b738421062ef3c3b3e53be4c59f24ab83f7b16f9cb6edb6787927472a7d3d50c"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\sources\\front.png",
+      "sha256": "502d6d50e7b5ca032a3104f8505b4e4d2f372d2f22e62c091caaa6f9af8f8b12"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\sources\\oblique.jpg",
+      "sha256": "acf6e2d1ff51f77ff823231d5dd2ccf9a707fb4607dac53a962a6bea82bdf4ef"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\magasin-v008\\sources\\top.jpg",
+      "sha256": "945b348e6548ae6b2b6ea0ad637ea4dbe98f49e377ea04ade4ff19e298ecd1c7"
+    }
+  ],
+  "pixel_findings": [
+    "Corner dome: both previously open lower triangular cheeks now have continuous pale infill with zinc slope closures, visible in corner_dome and roof_domes. These join the aedicules and drum without blocking the intended drum glazing.",
+    "Attic: previously crossing horizontal strip is removed/repositioned above window heads; mansard_dormers shows intact framed apertures under a continuous eave. Side, rear and courtyard views confirm the correction is consistent.",
+    "Identity and topology: rounded glazed retail corner, corner dome, enclosed perimeter block, courtyard dome and mansard perimeter preserve the source-led architectural-clay identity. Top/aerial views show coherent roof and courtyard relations.",
+    "Balconies: genuine open bars and small raised bosses remain visible in gilded_balconies and architecture_close. Source ornament is simplified, but no flat opaque yellow balcony panel regression.",
+    "Openings/materials: recessed glazing, mullions and room depth remain visible. Interior is dim but legible, with floor, columns, display blocks and circulation space. No opaque wall substituted for ground-floor glazing.",
+    "Contacts/programme: corner canopy remains supported; ground-level contacts, street frontage and rear elevation bays show no concrete P0/P1 in the inspected set.",
+    "Holistic views: all elevations, roof, interior, close-up optical details, ground relation and four phone boards examined. No new P0/P1 found."
+  ],
+  "limitations": [
+    "Offline clay visual gate only; live browser interaction/materials, catalogue persistence, student-laptop performance and AI rendering are not approved by this review.",
+    "Simplified ironwork, plain sign band, roof seam detail, dormer surrounds and clay vegetation are P2 detail limitations compared with photoreal references.",
+    "Inherited storey rhythm and synthesized rear elevations are not a claim of exact photographic replication.",
+    "No source geometry edits or runtime activation performed by reviewer."
+  ]
+}

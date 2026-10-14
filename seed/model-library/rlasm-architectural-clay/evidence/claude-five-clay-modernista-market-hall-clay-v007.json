@@ -1,0 +1,136 @@
+{
+  "candidate": "clay-modernista-market-hall-clay-v007",
+  "model_sha256": "8a861c3172158a552b3896fcfec89bce09eda40489db6b8f051538fd2f94e03f",
+  "reviewer": "Codex repair_evidence_review; independent of Market builder",
+  "date": "2026-10-13",
+  "method": "RLASM v6.1",
+  "scope": "Holistic architectural-clay offline visual gate",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "decision": "PASS_ZERO_P0_P1",
+  "inspected_files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\boards\\phone-01-source-vs-render.png",
+      "sha256": "22ee42d0afe3aead44f57cd97f43b1a63c239d3205810d31bebe4917444ae373"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\boards\\phone-02-details.png",
+      "sha256": "ec081c22208a097635cb4463e2322f629024c67217e0a8c88edadbbc6f10a0fd"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\boards\\phone-03-details.png",
+      "sha256": "68c8e6e14f855532ba4176053ea52054e925b948eb137e2c4cb34822598dfbc5"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\boards\\phone-04-details.png",
+      "sha256": "a18a27d4b7e1cb93f25c313569c4afe8f622f1fb9f6211a1350812ad22d43952"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\aerial.png",
+      "sha256": "81785526119bf68ebcecb9c2a17ba580c16033d0f560a7b28fcffa3c468ec091"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\aisle_arcade.png",
+      "sha256": "4830fcb0c9daf20a1a94fb5fbfbbf55485dc4cefa88bcdfd07019d108c7be4f4"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\architecture_close.png",
+      "sha256": "370c642a6b643b89d3ba9c006e760691fd63e4152e8ec39726c22bef0de89fd5"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\crest_contact.png",
+      "sha256": "26732513d4d28f436ca65f8a4aecf9d4f1db907486288db29d2acf1561d78953"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\facade_close.png",
+      "sha256": "6e4860b1ccd01d6b22dbdabfe8cc1ee928ccf9e426e4ec9d69fa490ab5dcbec3"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\front.png",
+      "sha256": "3c8d84ccc5fd4fb267d8c9d3e8b2c95ef1db4ada54b9d64929abaf1f365dfcff"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\front_corner.png",
+      "sha256": "795f1fa8bed6dadeaedc10443d658b9b0678020ea5d6cb1c9c038d82e27172f8"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\glass_close.png",
+      "sha256": "8a6654b0bcc9a4b94886b57865a6ca892fa1f7b62677d2912ae4c51d0e4581b3"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\great_arch.png",
+      "sha256": "1006b9601feb633ecaf277d900649594333f7057616dc3d71a7b7ebc1bf7a65e"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\interior.png",
+      "sha256": "d0272ece3c4141ccdb7fb9d29fcefe89840c245a0d5f1a6d8a59a3afc98d6bd6"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\lantern_roofs.png",
+      "sha256": "329aa19d677486974ef9148f14b0a86b57862d758b9493118abe8e4b5cf905a0"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\left_side.png",
+      "sha256": "e24e120f6e5db58cce00416c61e310072ec37aabd9c0a3a3e12bafca39a6d2ea"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\plaza_awnings.png",
+      "sha256": "36c7190a7019ff438365a3ce935724fd11a46a6453f355e296ce33e8c973173b"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\rake_pier_contact.png",
+      "sha256": "c1ed53793209e6ad1306eb31d1f70d889cb722eb490be54b32f5e15d344ad0d0"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\rear.png",
+      "sha256": "0e330a79c5fa26c98ca289dc543ca2a924fc3f235a887f144af41962e87eb382"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\rear_court.png",
+      "sha256": "604e299e313329bc76a87b81965e1c7db77e9dbda662e0e25900a293702ecc77"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\rear_side.png",
+      "sha256": "b7477ce74996d74fa768c2257b6e8c8e5c2169e9bac8b36d64ec4b1f707a9b42"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\right_side.png",
+      "sha256": "4e58e398aba44da298af8060a1162d78a923b925653f99de63568c36aa57674a"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\roundel_tracing.png",
+      "sha256": "32ac226fb01e6383f355dd547e638fdf921d686104bb03e8aaefc861bd16c319"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\renders\\top.png",
+      "sha256": "12975f20c482f5be439359e2b5db6cf96ccbbc274b2ff890268ad6c4d40d2ed9"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\sources\\front.png",
+      "sha256": "0f36972485949c74b9afca973334080d446609f4fbb3bdc44ebbb76e91488bb2"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\sources\\oblique.jpg",
+      "sha256": "34a74012d1eb1fc3f3b9fcf7a5a76491e3384e00b573f1c36c6ee5b2bd3503d0"
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-five-repairs-2026-10-13\\market-v007\\sources\\top.jpg",
+      "sha256": "63b0b905caa5e7fc8a663b7e319532749bce1736f0b7a382892ba2f376040568"
+    }
+  ],
+  "pixel_findings": [
+    "Closed annular carrier is continuous in roundel_tracing and rake_pier_contact. Former triangular segment seams are no longer visible; remaining small faceted shading is surface shading, not open holes.",
+    "All roundels visible in the dedicated tracing/contact views are complete circles clear of the sloped fascia. Intentional redistribution places circles at crown and lower flanks with two wider intervals at the roof pinch; this remains coherent at full-building scale and preserves the decorated-gable identity.",
+    "Four decorated gables, cruciform roof topology, central glazed lantern, corner pyramidal rooflights, metal arcades and coloured awnings are preserved across front, rear, both sides, aerial and top.",
+    "Lower glazing provides actual visible room depth, market stalls and columns. Interior shows an unobstructed central aisle, overhead framing and rooflight; opening treatment does not collapse to opaque window stickers.",
+    "Rake end seats on the stone pier capital; shield and crest remain clear and supported. Ground contact shadows are visible at plinths without a demonstrated continuous air gap.",
+    "No new visible P0/P1 defect found across all twenty baseline/detail renders and four boards. Source comparison supports an architectural-clay abstraction, not a photoreal replica."
+  ],
+  "limitations": [
+    "Offline architectural-clay visual approval only. CityPrompt browser materials, capture, placement, persistence, walking and performance have not been verified by this review.",
+    "Intentional P2 abstraction: simplified ironwork and stained-glass motifs, low-poly planting, modified roundel cadence. Fine source ornament and patina are not reproduced.",
+    "No laptop suitability claim. Increased geometry cost must be measured separately in the runtime."
+  ]
+}

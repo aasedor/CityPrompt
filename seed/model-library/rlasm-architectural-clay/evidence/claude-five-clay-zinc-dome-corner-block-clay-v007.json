@@ -1,0 +1,128 @@
+{
+  "candidate": "clay-zinc-dome-corner-block-clay-v007",
+  "model_sha256": "ff3718dd13d63e0380674bca3a5a1d9f07b613c9c9601fb5972d411f6fbbe179",
+  "reviewer": "Codex independent repair_evidence_review (not Zinc builder)",
+  "date": "2026-10-13",
+  "method": "RLASM v6.1",
+  "scope": "holistic architectural-clay offline visual gate",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "decision": "PASS_ZERO_P0_P1",
+  "inspected_files": [
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/sources/front.png",
+      "sha256": "abed71053e7f90d7456b7eb8f0c618d9934e9442288c533bb65409b06f498d93"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/sources/oblique.jpg",
+      "sha256": "4c5d48f6f4bae3626d715fbb78edbc8b32b1ef58cb5c53393176cd28657dce47"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/sources/top.jpg",
+      "sha256": "7c0dff0f3930d314f739ede27c78357ae7124380461ef0d4679e95dee104045a"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/aerial.png",
+      "sha256": "27faa2a41cfac9457f1b98b94e71233264ef76fe4b127fff90ca18eb765f0211"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/architecture_close.png",
+      "sha256": "0ed9d30b91de4940a37db039468c7c35db22f64d069f2328bc4fa8e1931e9b0d"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/balcony_ironwork.png",
+      "sha256": "7f948ad94c60ed01fab79d0b713e483f4ef85ece4196974ab74077a7f6f6a42e"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/cafe_awning.png",
+      "sha256": "1d2ccdffaef4befedc280fd9eca2730e640cad6497356edddea31b0bb0b971a9"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/corner_dome.png",
+      "sha256": "d0a224b7dedac8dd7bf0bea050c77b4fdd78306400ff9c7e12988ae15c67cf79"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/facade_close.png",
+      "sha256": "8c9c8dea498ddb58a1de7f8b9d14e0153a9d0afb0d1ad51a7e87afb7a1acbe99"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/front.png",
+      "sha256": "0d050aa18f84d6b1e587dc1870899f883cdafb3b7fa8f9f59d3edc14251cffc8"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/front_corner.png",
+      "sha256": "10fabdd08de096b3ae6079364488ab517b55278fd210f6537dfa8255ab2094de"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/glass_close.png",
+      "sha256": "7664a4e849379309c8f50e3327d32a356f1495790d2804fd51dc9122838a56b1"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/interior.png",
+      "sha256": "206c91a89a938cb743d841ccef05ce396da646a9a4c0187414bd53ef14180bb4"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/left_side.png",
+      "sha256": "391f458417bf9f3aef62dc286c63cd56ac205a9a8754d3082ff42cfaf82b8972"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/mansard_dormers.png",
+      "sha256": "b760a67c3fedb00b31f90e3a2e8db79d3dd7f3f7333646c0eb567315bb80647c"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/rear.png",
+      "sha256": "16bdccc0646309da0223de30897611151ebe27a7ee4f558e938dcf19c973faf5"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/rear_court.png",
+      "sha256": "f50ca5e3e3a6713a5864afb9a1067563325b99d9d6e653e97d2d0729783038d6"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/rear_side.png",
+      "sha256": "2af19129ee6bcfe01500b7b65c0ed013f4d4cbff2eb9051a666fd47e9b140ae6"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/right_side.png",
+      "sha256": "d7f4bebe20e5673fccc7172960f0dae6165d5e6424291fbeb48819b945311614"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/roof_court.png",
+      "sha256": "137a4202bd3377c7ef22c8a5debaa7a13521ad86c0a00c5c25c6c2d008b884e8"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/renders/top.png",
+      "sha256": "dcee619ae43344da59b1b96c35f041ff6abd6de8ca6980d6e938f0910ff5cf63"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/boards/phone-01-source-vs-render.png",
+      "sha256": "b95e884588fb459b82b975e88526b011f9e5d7685f9fc90b6eb13d9a3ac5a5ca"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/boards/phone-02-details.png",
+      "sha256": "70a5782628e9eb56404d74f98c7ddfd597e0dccbd103902a16292e6ebbfa1c6d"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/boards/phone-03-details.png",
+      "sha256": "427996f0b0d59c887742cb736038735aacd06d4d1b630503cf90382699792e56"
+    },
+    {
+      "path": "C:/dev-artifacts/CityPrompt/claude-five-repairs-2026-10-13/zinc-v007/boards/phone-04-details.png",
+      "sha256": "a7eca7f232bcc22b360b948fc581df706ad7a272d129bcbb44e57009b97866f3"
+    }
+  ],
+  "pixel_findings": [
+    "Dome is now broad at springing and seated low behind the continuous chamfer cornice; no onion pinch or stacked lower oculus remains.",
+    "Single oculus is supported by a sill and two uprights at dome base; abstracted ears and ornament are acceptable architectural-clay simplification.",
+    "Balcony sequence at chamfer is narrow, bracketed wide, narrow, wide; ground-level cafe, awning, roof ring, open courtyard and all elevations remain coherent.",
+    "Recessed frames and glass show interior/court depth. Interior proof is dim but legible; this is not a furnished or fully circulatable building claim."
+  ],
+  "limitations": [
+    "Browser material/transparency, placement, save/reload, walkability and performance require separate runtime acceptance.",
+    "Retains deliberately extended storey programme and flat upper roof of delivered design; not a literal photographic replica.",
+    "Flat dormer caps, simple chimney blocks, low-poly planting, plain courtyard and basic ironwork are nonblocking clay simplifications.",
+    "Rear-corner dormers are tightly adjacent, isolated minor seams remain; no gross open envelope or broken load path found.",
+    "No paid AI render or student-laptop qualification is established by this review."
+  ]
+}
