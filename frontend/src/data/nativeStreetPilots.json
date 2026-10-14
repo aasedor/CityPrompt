@@ -83807,4 +83807,320 @@
     },
     "programSha256": "b9e1d9910c8b0f2849c22423d8517c6fd7585c0a64d9cbc1d1210ceb0e53a2ce"
   }
+,
+{
+  "id": "standalone_narrow_sidewalk_v1",
+  "sourceArchetypeId": "campus_pedestrian_spine",
+  "title": "Standalone narrow sidewalk",
+  "status": "candidate",
+  "sourceRecipeSha256": "322b6b9382cd811e18c81ae6c23e8d4868fe48d840c20dbea094bf7dbbb1ecf1",
+  "sourceAssemblySha256": "322b6b9382cd811e18c81ae6c23e8d4868fe48d840c20dbea094bf7dbbb1ecf1",
+  "referenceSha256": "dabc9ecf7d4fd90e86e140294a80ed0b9bb8f27b527d7c9ead15426630cd0044",
+  "widthM": 1.5,
+  "fixtureLengthM": 6,
+  "routeAxis": "local_y",
+  "junctionSurface": "pavers",
+  "sections": [
+    {
+      "name": "clear_walk",
+      "x": 0,
+      "width": 1.5,
+      "material": "paving"
+    }
+  ],
+  "placements": [],
+  "modules": {},
+  "treeWells": [],
+  "thumbnailUrl": "/archetypes/streets/standalone-sidewalks/standalone_narrow_sidewalk_v1.png",
+  "program": {
+    "schemaVersion": 1,
+    "adapter": "narrow-pathway-v1",
+    "surfaceRegions": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 1.5,
+        "depth": 6,
+        "material": "paving"
+      }
+    ],
+    "details": [],
+    "meshDetails": [],
+    "paving": "concrete",
+    "pavingModuleM": [
+      0.6,
+      0.4
+    ],
+    "minLengthM": 2,
+    "maxLengthM": 300,
+    "preparedLevelOnly": true,
+    "baseLiftM": 0.025,
+    "palette": {
+      "paving": [
+        0.62,
+        0.61,
+        0.58
+      ],
+      "edge": [
+        0.46,
+        0.45,
+        0.42
+      ],
+      "edge_strip": [
+        0.32,
+        0.33,
+        0.32
+      ],
+      "paving.tile0": [
+        0.6014,
+        0.5917,
+        0.5626
+      ],
+      "paving.tile1": [
+        0.6138,
+        0.6039,
+        0.5742
+      ],
+      "paving.tile2": [
+        0.6262,
+        0.6161,
+        0.5858
+      ],
+      "paving.tile3": [
+        0.6386,
+        0.6283,
+        0.5974
+      ]
+    }
+  },
+  "programSha256": "bde3ea5956bb1992baff8d7886f1dbdadeb0368484394ce0879d3bea13c87b61"
+}
+,
+{
+  "id": "standalone_neighbourhood_sidewalk_v1",
+  "sourceArchetypeId": "campus_pedestrian_spine",
+  "title": "Standalone neighbourhood sidewalk",
+  "status": "candidate",
+  "sourceRecipeSha256": "d859f4e399f17e9f6db270c6630fbc43dab8a4e355d61c880f558a102ca78b74",
+  "sourceAssemblySha256": "d859f4e399f17e9f6db270c6630fbc43dab8a4e355d61c880f558a102ca78b74",
+  "referenceSha256": "abaa73c45e121bf0cc4dee215cc4dee03f9357b7fa232e1d825986fa4dd64b13",
+  "widthM": 2.0,
+  "fixtureLengthM": 6,
+  "routeAxis": "local_y",
+  "junctionSurface": "pavers",
+  "sections": [
+    {
+      "name": "clear_walk",
+      "x": 0,
+      "width": 2.0,
+      "material": "paving"
+    }
+  ],
+  "placements": [],
+  "modules": {},
+  "treeWells": [],
+  "thumbnailUrl": "/archetypes/streets/standalone-sidewalks/standalone_neighbourhood_sidewalk_v1.png",
+  "program": {
+    "schemaVersion": 1,
+    "adapter": "narrow-pathway-v1",
+    "surfaceRegions": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 2.0,
+        "depth": 6,
+        "material": "paving"
+      }
+    ],
+    "details": [
+      {
+        "x": 0,
+        "y": -3,
+        "width": 2.0,
+        "depth": 0.006,
+        "z": 0.001,
+        "height": 0,
+        "material": "edge"
+      },
+      {
+        "x": 0,
+        "y": -1.5,
+        "width": 2.0,
+        "depth": 0.006,
+        "z": 0.001,
+        "height": 0,
+        "material": "edge"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "width": 2.0,
+        "depth": 0.006,
+        "z": 0.001,
+        "height": 0,
+        "material": "edge"
+      },
+      {
+        "x": 0,
+        "y": 1.5,
+        "width": 2.0,
+        "depth": 0.006,
+        "z": 0.001,
+        "height": 0,
+        "material": "edge"
+      },
+      {
+        "x": 0,
+        "y": 3,
+        "width": 2.0,
+        "depth": 0.006,
+        "z": 0.001,
+        "height": 0,
+        "material": "edge"
+      }
+    ],
+    "meshDetails": [],
+    "paving": "concrete",
+    "pavingModuleM": [
+      0.6,
+      0.4
+    ],
+    "minLengthM": 2,
+    "maxLengthM": 300,
+    "preparedLevelOnly": true,
+    "baseLiftM": 0.025,
+    "palette": {
+      "paving": [
+        0.61,
+        0.6,
+        0.56
+      ],
+      "edge": [
+        0.46,
+        0.45,
+        0.42
+      ],
+      "edge_strip": [
+        0.32,
+        0.33,
+        0.32
+      ],
+      "paving.tile0": [
+        0.5917,
+        0.582,
+        0.5432
+      ],
+      "paving.tile1": [
+        0.6039,
+        0.594,
+        0.5544
+      ],
+      "paving.tile2": [
+        0.6161,
+        0.606,
+        0.5656
+      ],
+      "paving.tile3": [
+        0.6283,
+        0.618,
+        0.5768
+      ]
+    }
+  },
+  "programSha256": "cd0acec45a0a0194b59d260e7f518c47eafc12b0ea3991dcc082cf8476436ba0"
+},
+{
+  "id": "standalone_urban_sidewalk_v1",
+  "sourceArchetypeId": "campus_pedestrian_spine",
+  "title": "Standalone urban sidewalk",
+  "status": "candidate",
+  "sourceRecipeSha256": "4ff46e23abc65c10c77525e82f5d5b8c614218b9c920c0cfbed72060f62f165f",
+  "sourceAssemblySha256": "4ff46e23abc65c10c77525e82f5d5b8c614218b9c920c0cfbed72060f62f165f",
+  "referenceSha256": "315a0b4a08fb04afccc1ffb52d7fcdb19d3aa85b00b41efe0a733718297f5ae6",
+  "widthM": 3.0,
+  "fixtureLengthM": 6,
+  "routeAxis": "local_y",
+  "junctionSurface": "pavers",
+  "sections": [
+    {
+      "name": "clear_walk",
+      "x": 0,
+      "width": 3.0,
+      "material": "paving"
+    }
+  ],
+  "placements": [],
+  "modules": {},
+  "treeWells": [],
+  "thumbnailUrl": "/archetypes/streets/standalone-sidewalks/standalone_urban_sidewalk_v1.png",
+  "program": {
+    "schemaVersion": 1,
+    "adapter": "narrow-pathway-v1",
+    "surfaceRegions": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 3.0,
+        "depth": 6,
+        "material": "paving"
+      },
+      {
+        "x": 1.4,
+        "y": 0,
+        "width": 0.2,
+        "depth": 6,
+        "material": "edge_strip"
+      }
+    ],
+    "details": [],
+    "meshDetails": [],
+    "paving": "brick",
+    "pavingModuleM": [
+      0.6,
+      0.4
+    ],
+    "minLengthM": 3.0,
+    "maxLengthM": 300,
+    "preparedLevelOnly": true,
+    "baseLiftM": 0.025,
+    "palette": {
+      "paving": [
+        0.6,
+        0.59,
+        0.55
+      ],
+      "edge": [
+        0.46,
+        0.45,
+        0.42
+      ],
+      "edge_strip": [
+        0.32,
+        0.33,
+        0.32
+      ],
+      "paving.tile0": [
+        0.582,
+        0.5723,
+        0.5335
+      ],
+      "paving.tile1": [
+        0.594,
+        0.5841,
+        0.5445
+      ],
+      "paving.tile2": [
+        0.606,
+        0.5959,
+        0.5555
+      ],
+      "paving.tile3": [
+        0.618,
+        0.6077,
+        0.5665
+      ]
+    }
+  },
+  "programSha256": "ad796579bdf9f8e2216b2778e264ce19dbc8e96a37042109a28c3ab0cce7b0df"
+}
 ]

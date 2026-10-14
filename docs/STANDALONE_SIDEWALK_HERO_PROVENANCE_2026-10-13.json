@@ -1,0 +1,40 @@
+{
+  "schema": "cityprompt.sidewalk-hero-provenance@1",
+  "date": "2026-10-13",
+  "mode": "built-in imagegen",
+  "images": [
+    {
+      "id": "standalone_narrow_sidewalk_v1",
+      "path": "frontend/public/archetypes/streets/standalone-sidewalks/standalone_narrow_sidewalk_v1.png",
+      "sha256": "dabc9ecf7d4fd90e86e140294a80ed0b9bb8f27b527d7c9ead15426630cd0044",
+      "resolution": [
+        1536,
+        1024
+      ],
+      "purpose": "photographic conceptual catalogue illustration; context is not runtime geometry",
+      "prompt": "Photorealistic architectural catalogue photograph, landscape composition, ground-level view along a plain 1.5 metre-wide standalone poured-concrete sidewalk winding slightly through a quiet Canadian residential green space. Clean pale warm-grey concrete, flush lawn edges, no curb, subtle natural surface grain, no road lanes. Sidewalk prominently in foreground, realistic scale, understated houses and trees in distant context, natural afternoon daylight, no text, no labels, no people standing on walkway. Save output for CityPrompt narrow sidewalk hero."
+    },
+    {
+      "id": "standalone_neighbourhood_sidewalk_v1",
+      "path": "frontend/public/archetypes/streets/standalone-sidewalks/standalone_neighbourhood_sidewalk_v1.png",
+      "sha256": "abaa73c45e121bf0cc4dee215cc4dee03f9357b7fa232e1d825986fa4dd64b13",
+      "resolution": [
+        1536,
+        1024
+      ],
+      "purpose": "photographic conceptual catalogue illustration; context is not runtime geometry",
+      "prompt": "Photorealistic architectural catalogue photograph, landscape composition, low street-level camera looking along a 2 metre-wide standalone neighbourhood sidewalk. Pale concrete rectangular slabs, subtle transverse joints every 1.5 metres, flush green lawn edges, clear walking surface. Beside quiet Canadian townhouses set back with small gardens; do not include road lanes as part of the sidewalk. Soft morning daylight, restrained colours, realistic concrete and planting, no text or labels. Distinct from a narrow garden path, sidewalk dominant in foreground. CityPrompt neighbourhood sidewalk hero."
+    },
+    {
+      "id": "standalone_urban_sidewalk_v1",
+      "path": "frontend/public/archetypes/streets/standalone-sidewalks/standalone_urban_sidewalk_v1.png",
+      "sha256": "315a0b4a08fb04afccc1ffb52d7fcdb19d3aa85b00b41efe0a733718297f5ae6",
+      "resolution": [
+        1536,
+        1024
+      ],
+      "purpose": "photographic conceptual catalogue illustration; context is not runtime geometry",
+      "prompt": "Photorealistic architectural catalogue photograph, landscape composition, street-level view of a 3 metre-wide standalone urban sidewalk with warm pale-grey concrete paving and a continuous slim dark charcoal paver strip along one edge. Gentle bend, fully clear walking space, flush surface, no furniture or tree pits on sidewalk. Urban mid-rise brick and glass frontage set back on one side and a green edge on the other. Natural overcast daylight, credible tactile materials, elegant but restrained architecture, no road lanes, no text, no labels. CityPrompt urban sidewalk hero."
+    }
+  ]
+}

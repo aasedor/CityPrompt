@@ -231,5 +231,31 @@
       "revision": "4797f51909b02bfeb54ea45605feb58ab98a6bdeb0add3993a17062b720309fb",
       "status": "local-pilot-runtime-pending"
     }
-  ]
+  ,
+{
+  "domain": "street",
+  "representation": "native-modules",
+  "archetypeId": "campus_pedestrian_spine",
+  "variantId": "standalone_narrow_sidewalk_v1",
+  "revision": "322b6b9382cd811e18c81ae6c23e8d4868fe48d840c20dbea094bf7dbbb1ecf1",
+  "status": "local-pilot-runtime-pending"
+}
+,
+{
+  "domain": "street",
+  "representation": "native-modules",
+  "archetypeId": "campus_pedestrian_spine",
+  "variantId": "standalone_neighbourhood_sidewalk_v1",
+  "revision": "d859f4e399f17e9f6db270c6630fbc43dab8a4e355d61c880f558a102ca78b74",
+  "status": "local-pilot-runtime-pending"
+},
+{
+  "domain": "street",
+  "representation": "native-modules",
+  "archetypeId": "campus_pedestrian_spine",
+  "variantId": "standalone_urban_sidewalk_v1",
+  "revision": "4ff46e23abc65c10c77525e82f5d5b8c614218b9c920c0cfbed72060f62f165f",
+  "status": "local-pilot-runtime-pending"
+}
+]
 }

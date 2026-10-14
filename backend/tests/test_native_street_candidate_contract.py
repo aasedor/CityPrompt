@@ -79,6 +79,8 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
         'elevated_rail_transit_corridor_v0',
         'garden_gravel_path_v1', 'concrete_neighbourhood_walk_v1',
         'brick_courtyard_path_v1', 'timber_garden_walk_v1', 'asphalt_shared_path_v1',
+        'standalone_narrow_sidewalk_v1', 'standalone_neighbourhood_sidewalk_v1',
+        'standalone_urban_sidewalk_v1',
         'student_rain_garden_residential_street_v1',
         'student_compact_one_way_shopping_street_v1',
         'student_neighbourhood_cycle_street_v1',

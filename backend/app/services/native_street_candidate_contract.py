@@ -28,6 +28,9 @@ _SURFACE_PATH_WIDTHS = {
     'garden_gravel_path_v1': 1.5, 'concrete_neighbourhood_walk_v1': 1.8,
     'brick_courtyard_path_v1': 2.0, 'timber_garden_walk_v1': 2.0,
     'asphalt_shared_path_v1': 3.0,
+    'standalone_narrow_sidewalk_v1': 1.5,
+    'standalone_neighbourhood_sidewalk_v1': 2.0,
+    'standalone_urban_sidewalk_v1': 3.0,
 }
 _APPEARANCE_BY_FINISH = {
     "pavers": "heritage_brick_stone",

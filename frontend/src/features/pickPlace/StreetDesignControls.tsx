@@ -23,27 +23,35 @@ export function StreetDesignControls({ zone, disabled, onSave }: {
   zone: SiteZone; disabled: boolean;
   onSave: (data: { coordinates: number[][]; properties: SiteZoneProperties }) => void;
 }) {
-  const [parent, setParent] = useState(String(zone.properties?.road_archetype_id ?? ''));
+  const [choiceId, setChoiceId] = useState(() => {
+    const parent = String(zone.properties?.road_archetype_id ?? '');
+    const savedVariant = String(zone.properties?.road_selected_variant_id ?? '');
+    return choices.find(c => c.option.id === parent && c.option.variants?.some(v => v.id === savedVariant))?.id
+      ?? choices.find(c => c.option.id === parent)?.id ?? '';
+  });
   const [variantId, setVariantId] = useState(String(zone.properties?.road_selected_variant_id ?? ''));
   const [query, setQuery] = useState('');
-  const choice = choices.find(c => c.option.id === parent);
+  const choice = choices.find(c => c.id === choiceId);
   const variant = choice?.option.variants?.find(v => v.id === variantId);
   const selected = choice ? selectedAsset({ choice, variant }) : undefined;
   const savedAsset = streetAssetForZone(zone);
-  const retained = savedAsset?.properties.road_archetype_id === parent && savedAsset.model.variantId === variantId ? savedAsset : undefined;
+  const retained = savedAsset && savedAsset.properties.road_archetype_id === (choice?.option.id ?? zone.properties?.road_archetype_id) && savedAsset.model.variantId === variantId ? savedAsset : undefined;
   const asset = selected?.kind === 'street' ? selected : retained;
-  const choose = (id: string) => { const next = choices.find(c => c.option.id === id)!; setParent(id); setVariantId(next.option.variants?.[0]?.id ?? ''); };
+  const choose = (id: string) => { const next = choices.find(c => c.id === id)!; setChoiceId(id); setVariantId(next.option.variants?.[0]?.id ?? ''); };
   return <form className="my-3 space-y-2" onSubmit={event => { event.preventDefault(); if (asset) onSave(streetDesignUpdate(zone, asset)); }}>
     <label className="block text-xs font-semibold">Find street type<input type="search" className={field} value={query} onChange={e => setQuery(e.target.value)} /></label>
-    <label className="block text-xs font-semibold">Street type<select className={field} value={parent} onChange={e => choose(e.target.value)}>
-      {choices.filter(c => c.option.id === parent || `${c.option.label} ${c.option.description}`.toLowerCase().includes(query.toLowerCase())).map(c => <option key={c.id} value={c.option.id}>{c.option.label}</option>)}
+    <label className="block text-xs font-semibold">Street type<select className={field} value={choiceId} onChange={e => choose(e.target.value)}>
+      {choices.filter(c => c.id === choiceId || `${c.option.label} ${c.option.description}`.toLowerCase().includes(query.toLowerCase())).map(c => <option key={c.id} value={c.id}>{c.option.label}</option>)}
     </select></label>
     <label className="block text-xs font-semibold">Street variant<select className={field} value={variantId} onChange={e => setVariantId(e.target.value)}>
       {retained && !variant && <option value={retained.model.variantId}>Saved version · {retained.label}</option>}
       {choice?.option.variants?.map(v => <option key={v.id} value={v.id}>{v.label}</option>)}
     </select></label>
     <label className="block text-xs font-semibold">Street width<select className={field} value={asset?.sectionWidth} onChange={e => {
-      const next = defaults.find(a => a.sectionWidth === Number(e.target.value)); if (next) choose(String(next.properties.road_archetype_id));
+      const next = defaults.find(a => a.sectionWidth === Number(e.target.value));
+      const nextChoice = next && choices.find(c => c.option.id === next.properties.road_archetype_id
+        && c.placements.some(a => a.model.variantId === next.model.variantId));
+      if (nextChoice) choose(nextChoice.id);
     }}>
       {widths.map(width => <option key={width} value={width}>{width} m · {defaults.filter(a => a.sectionWidth === width).length} street types</option>)}
       {asset && !widths.includes(asset.sectionWidth) && <option value={asset.sectionWidth}>{asset.sectionWidth} m · saved version</option>}

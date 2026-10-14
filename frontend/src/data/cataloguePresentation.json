@@ -2004,5 +2004,47 @@
       "surface",
       "layout"
     ]
+  },
+  "standalone_narrow_sidewalk_v1": {
+    "label": "Narrow Sidewalk · 1.5 m",
+    "description": "A standalone 1.5 m concrete sidewalk with a clear walking surface. Draw beside a street or between buildings on a prepared level site.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "sidewalk",
+      "standalone",
+      "footpath",
+      "concrete",
+      "narrow",
+      "pedestrian"
+    ]
+  },
+  "standalone_neighbourhood_sidewalk_v1": {
+    "label": "Neighbourhood Sidewalk · 2 m",
+    "description": "A standalone 2 m concrete sidewalk with subtle slab joints. Draw beside streets or through your community on a prepared level site.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "sidewalk",
+      "standalone",
+      "footpath",
+      "concrete",
+      "neighbourhood",
+      "pedestrian"
+    ]
+  },
+  "standalone_urban_sidewalk_v1": {
+    "label": "Urban Sidewalk · 3 m",
+    "description": "A standalone 3 m paved sidewalk with a flush charcoal edge strip. A generous walking surface for urban frontages on a prepared level site.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "sidewalk",
+      "standalone",
+      "footpath",
+      "paving",
+      "urban",
+      "pedestrian"
+    ]
   }
 }

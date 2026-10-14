@@ -151,5 +151,8 @@
   "claude_parisian_corner_with_dome": "/archetypes/buildings/parisian-corner-with-dome/variant_0.png",
   "claude_grand_magasin": "/archetypes/buildings/grand-magasin/variant_0.png",
   "claude_barcelona_mercat": "/archetypes/buildings/barcelona-mercat/variant_0.png",
-  "claude_montreal_second_empire_civic": "/archetypes/buildings/montreal-second-empire-civic/variant_0.png"
+  "claude_montreal_second_empire_civic": "/archetypes/buildings/montreal-second-empire-civic/variant_0.png",
+  "standalone_narrow_sidewalk_v1": "/archetypes/streets/standalone-sidewalks/standalone_narrow_sidewalk_v1.png",
+  "standalone_neighbourhood_sidewalk_v1": "/archetypes/streets/standalone-sidewalks/standalone_neighbourhood_sidewalk_v1.png",
+  "standalone_urban_sidewalk_v1": "/archetypes/streets/standalone-sidewalks/standalone_urban_sidewalk_v1.png"
 }

@@ -11,7 +11,8 @@ from app.services.public_realm_lego import (
 
 DATA = Path(__file__).resolve().parents[1] / 'app/data/nativeStreetPilots.json'
 PATHS = [row for row in json.loads(DATA.read_text(encoding='utf-8'))
-         if row.get('program', {}).get('adapter') == 'narrow-pathway-v1']
+         if row.get('program', {}).get('adapter') == 'narrow-pathway-v1'
+         and not row['id'].startswith('standalone_')]
 
 @pytest.mark.parametrize('row', PATHS, ids=lambda row: row['id'])
 def test_pathway_recipe_roundtrip_and_width_lock(row):

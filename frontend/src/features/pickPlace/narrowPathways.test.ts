@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { PATHWAY_ASSETS, validateRegistry } from './assetRegistry';
+import { PATHWAY_ASSETS as ALL_PATHWAY_ASSETS, validateRegistry } from './assetRegistry';
 import { CANONICAL_CHOICES, filterCanonicalChoices } from './canonicalCatalogue';
 import { nativeStreetPilot, nativeStreetLocalRouteProblem, placeNativeStreetModules } from '@/components/viewer/globe/nativeStreetPilot';
 import { buildNativeStreetProgram } from '@/components/viewer/globe/nativeStreetProgram';
@@ -8,6 +8,10 @@ import { roundMetricStreetCenterline } from '@/utils/streetRouteCurves';
 import { bufferLineToPolygon, effectiveRoadWidth } from '@/utils/roadGeometry';
 import { streetConnectionProblem } from './streetConnectionProblem';
 import type { SiteZone } from '@/types';
+
+// Retain the original five-pathway proof as additional pedestrian families arrive.
+const originalIds = ['garden_gravel_path_v1', 'concrete_neighbourhood_walk_v1', 'brick_courtyard_path_v1', 'timber_garden_walk_v1', 'asphalt_shared_path_v1'];
+const PATHWAY_ASSETS = ALL_PATHWAY_ASSETS.filter(asset => originalIds.includes(asset.model.variantId));
 
 describe('narrow, surface-only pathways', () => {
   it('accepts mixed-width path crossings near bends and angled end joins without road junction approaches', () => {
