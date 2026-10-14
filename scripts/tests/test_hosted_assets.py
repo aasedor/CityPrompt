@@ -9,10 +9,36 @@ import zipfile
 from unittest.mock import patch
 
 from scripts.hosted_assets import ROOT, RepositoryAssets, checked_payload, safe_target, public_requirements, write_asset, browser_environment, stamp_service_worker, validate_packet
-from scripts.hosted_assets import detail_requirements
+from scripts.hosted_assets import detail_requirements, hydrate_source_media
 
 
 class HostedAssetsTests(unittest.TestCase):
+    def test_imported_source_media_hydrates_only_exact_tracked_lfs_bytes(self):
+        sources = RepositoryAssets(ROOT)
+        with tempfile.TemporaryDirectory(prefix="cityprompt-source-media-") as directory:
+            sources.repo = Path(directory) / "source"
+            sources.lfs = Path(directory) / "lfs"
+            relative = "frontend/src/features/landing/media/test.png"
+            sources.tracked = {relative, "frontend/src/features/landing/media/README.md", "frontend/src/unrelated.png"}
+            payload = b"verified media payload"
+            digest = hashlib.sha256(payload).hexdigest()
+            source = sources.repo / relative
+            source.parent.mkdir(parents=True)
+            pointer = f"version https://git-lfs.github.com/spec/v1\noid sha256:{digest}\nsize {len(payload)}\n".encode()
+            source.write_bytes(pointer)
+            cached = sources.lfs / digest[:2] / digest[2:4] / digest
+            cached.parent.mkdir(parents=True)
+            cached.write_bytes(payload)
+            receipt = hydrate_source_media(sources)
+            self.assertEqual(source.read_bytes(), payload)
+            self.assertEqual(receipt, {relative: {"sha256": digest, "bytes": len(payload)}})
+            self.assertEqual(hydrate_source_media(sources), receipt)
+            source.write_bytes(pointer)
+            cached.write_bytes(b"tampered")
+            with self.assertRaisesRegex(ValueError, "SHA-256"):
+                hydrate_source_media(sources)
+            self.assertEqual(source.read_bytes(), pointer)
+
     def test_recovered_archive_serves_only_exact_locked_bytes(self):
         sources = RepositoryAssets(ROOT)
         url = "/park-kits/recovered-details-v1/test.glb"

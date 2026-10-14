@@ -7,6 +7,7 @@ This is the current release checklist for `codex/render-release-readiness-2026-1
 - The hosted build explicitly preserves the selected Claude five-building profile instead of silently omitting it. Production metadata checks use production feature flags, and reused asset packets must match the requested profile and source fingerprints.
 - The backend model contract includes the five exact new model revisions. Hosted database/storage verification includes their separate manifest.
 - The 185 recovered Add Details entries now have a portable, exact-hash LFS archive and manifest. The build verifies the member inventory, sizes and hashes; it also enumerates the existing 155 detail models. Eleven held concepts and pending Meshy exports remain excluded.
+- The hosted build hydrates the four tracked landing-page image/video imports from verified Git LFS bytes, including reused public packets.
 - Render configuration requires a separate server-side Google Maps key for address and site-context services, in addition to the browser key.
 - Nineteen older candidates' publication records are reconciled with the completed October 7 trials. Ten remaining buildings completed a new local browser trial with independent screenshot and saved-byte reviews. All 59 current private catalogue models now pass publication gates; geometry, hashes and supported operations are unchanged.
 
@@ -64,7 +65,7 @@ The Blueprint structure was checked against Render's current published JSON Sche
 - Full frontend suite: **393 files, 3,270 tests passed** after catalogue/UI/programme corrections.
 - Backend preparation suite: **342 passed, 26 skipped**, with providers mocked. The skipped opt-in database/storage cases are not counted as hosted acceptance.
 - Final promotion checks: 103 focused frontend tests, 9 catalogue checks, 34 hosted-verifier tests and 16 local-installer tests passed. Explicit-manifest seed checks: 45 passed. Ten new trial buildings have paired capture/occlusion evidence and independently verified saved dimensions, identities and served GLB hashes. These checks do not certify interiors, student-laptop performance or hosted services.
-- Hosted asset and Blueprint checks: **16 passed**. Catalogue packing: **18 passed**, using the browser's actual decoder. Current Blueprint also passed Render's published JSON Schema.
+- Hosted asset and Blueprint checks: **17 passed**. Catalogue packing: **18 passed**, using the browser's actual decoder. Current Blueprint also passed Render's published JSON Schema.
 - The production-profile asset audit found **153 catalogue choices and 511 image/model dependencies**, with no asset-delivery failures. Add Details separately contributes **525 locked model/thumbnail requirements**. The complete prepared public packet contains 3,505 files, approximately 1.42 GiB, loaded on demand rather than on the landing page.
 
 The first complete production build exposed accumulated bundle growth: 8,738.6 KiB JavaScript against the existing 8,448 KiB budget, and 188.6 KiB CSS against the older 175 KiB budget. Additional catalogue domains now use the existing lossless compression mechanism; decoder round-trip tests include preservation of signed zero. The JavaScript and route-isolation limits are unchanged.

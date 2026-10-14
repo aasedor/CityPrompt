@@ -13,7 +13,7 @@ import shutil
 import subprocess
 import tempfile
 
-from hosted_assets import ROOT, RepositoryAssets, browser_environment, prepare, stamp_service_worker, validate_packet
+from hosted_assets import ROOT, RepositoryAssets, browser_environment, hydrate_source_media, prepare, stamp_service_worker, validate_packet
 
 
 def main():
@@ -44,6 +44,11 @@ def main():
                                   {"claude_five": env["VITE_CLAUDE_FIVE_TRIAL"] == "true"})
     else:
         receipt = prepare(assets, args.fetch_lfs)
+    source_media = hydrate_source_media(RepositoryAssets(ROOT, args.fetch_lfs))
+    # Pointer and hydrated fingerprints must agree with the prepared source set.
+    for relative, media in source_media.items():
+        if receipt["source_inputs"].get(relative) != media["sha256"]:
+            raise ValueError(f"Source media differs from asset packet: {relative}")
     env["CITYPROMPT_PUBLIC_DIR"] = str(assets / "public")
     env["CITYPROMPT_BUILD_DIR"] = str(output)
     frontend = ROOT / "frontend"
@@ -82,6 +87,7 @@ def main():
     shutil.copyfile(assets / "assets.json", work / "delivery-assets.json")
     (work / "build-receipt.json").write_text(json.dumps({**version, "output": str(output),
         "asset_bytes": receipt["bytes"],
+        "source_media": source_media,
         "release_approval": False}, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"output": str(output), "receipt": str(work / "build-receipt.json"), **version}))
 

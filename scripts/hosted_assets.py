@@ -19,6 +19,26 @@ ROOT = Path(__file__).resolve().parents[1]
 LFS = b"version https://git-lfs.github.com/spec/v1"
 DETAIL_MANIFESTS = ("frontend/src/features/parks/detailCatalogueExtras.json",
                     "frontend/src/features/parks/recoveredDetails.json")
+SOURCE_MEDIA_PREFIX = "frontend/src/features/landing/media/"
+
+
+def hydrate_source_media(sources) -> dict:
+    """Materialize bounded tracked Vite imports; public-dir overrides do not cover them."""
+    paths = {p for p in sources.tracked if p.startswith(SOURCE_MEDIA_PREFIX)
+             and PurePosixPath(p).suffix.lower() in {".png", ".mp4"}}
+    sources.prefetch(paths)
+    # Validate every payload before replacing any source pointer.
+    payloads = {p: sources.read(p) for p in sorted(paths)}
+    receipt = {}
+    for relative, data in payloads.items():
+        target = (sources.repo / relative).resolve()
+        current = target.read_bytes()
+        if sources.pointer.fullmatch(current):
+            target.write_bytes(data)
+        elif current != data:
+            raise ValueError(f"Source media changed during preparation: {relative}")
+        receipt[relative] = {"sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data)}
+    return receipt
 
 
 def stamp_service_worker(source: str, identity: bytes) -> str:
@@ -222,7 +242,9 @@ class RepositoryAssets:
             subprocess.run(["git", "lfs", "fetch", "origin", "--include=" + ",".join(batch), "--exclude="], cwd=self.repo, check=True)
 
     def read(self, relative: str) -> bytes:
-        if relative not in self.tracked or not (relative.startswith(("frontend/public/", "frontend/src/data/", "seed/")) or relative in DETAIL_MANIFESTS):
+        if relative not in self.tracked or not (relative.startswith(("frontend/public/", "frontend/src/data/", "seed/"))
+                or relative in DETAIL_MANIFESTS
+                or (relative.startswith(SOURCE_MEDIA_PREFIX) and PurePosixPath(relative).suffix.lower() in {".png", ".mp4"})):
             raise ValueError(f"Source is not a tracked runtime input: {relative}")
         path = (self.repo / relative).resolve()
         if not path.is_relative_to(self.repo):
