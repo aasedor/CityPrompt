@@ -21,6 +21,17 @@ URL = f"https://github.com/git-lfs/git-lfs/releases/download/v{VERSION}/git-lfs-
 SHA256 = "1c0b6ee5200ca708c5cebebb18fdeb0e1c98f1af5c1a9cba205a4c0ab5a5ec08"
 
 
+def ensure_render_origin(repo: Path) -> None:
+    """Render strips clone remotes; restore only this known public source."""
+    if subprocess.run(["git", "remote", "get-url", "origin"], cwd=repo, capture_output=True).returncode == 0:
+        return
+    if os.environ.get("RENDER") != "true" or os.environ.get("RENDER_GIT_REPO_SLUG") != "aasedor/CityPrompt":
+        raise RuntimeError("Git origin is missing; configure the intended asset repository before --fetch-lfs")
+    subprocess.run(
+        ["git", "remote", "add", "origin", "https://github.com/aasedor/CityPrompt.git"], cwd=repo, check=True
+    )
+
+
 def ensure_git_lfs() -> None:
     if subprocess.run(["git", "lfs", "version"], capture_output=True).returncode == 0:
         return

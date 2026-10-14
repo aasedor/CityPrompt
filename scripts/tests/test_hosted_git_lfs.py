@@ -10,6 +10,23 @@ import pytest
 from scripts import hosted_git_lfs as lfs
 
 
+def test_render_missing_origin_is_restored_to_exact_release_repository(tmp_path, monkeypatch):
+    monkeypatch.setenv("RENDER", "true")
+    monkeypatch.setenv("RENDER_GIT_REPO_SLUG", "aasedor/CityPrompt")
+    subprocess.run(["git", "init", str(tmp_path)], check=True, capture_output=True)
+    lfs.ensure_render_origin(tmp_path)
+    result = subprocess.check_output(["git", "remote", "get-url", "origin"], cwd=tmp_path, text=True).strip()
+    assert result == "https://github.com/aasedor/CityPrompt.git"
+    lfs.ensure_render_origin(tmp_path)
+
+
+def test_missing_origin_outside_expected_render_checkout_fails(tmp_path, monkeypatch):
+    monkeypatch.delenv("RENDER", raising=False)
+    subprocess.run(["git", "init", str(tmp_path)], check=True, capture_output=True)
+    with pytest.raises(RuntimeError, match="origin"):
+        lfs.ensure_render_origin(tmp_path)
+
+
 def archive():
     output = io.BytesIO()
     with tarfile.open(fileobj=output, mode="w:gz") as tar:

@@ -33,7 +33,13 @@ Render's native frontend build image did not include the git-lfs executable.
 When --fetch-lfs is selected and Git LFS is absent, the build bootstraps the
 official Linux amd64 v3.7.1 binary into a temporary directory. Its archive must
 match the SHA-256 published by the Git LFS project before execution. Only the
-build process PATH changes; no global install or Git configuration is modified.
+build process PATH changes; no global installation is performed.
+
+Render also strips the origin remote from the native build checkout. If origin
+is absent, the helper restores the public aasedor/CityPrompt HTTPS remote only
+when Render's supplied repository slug matches that exact repository. It leaves
+existing remotes unchanged and refuses to guess a remote outside that context.
+No GitHub token or additional repository permissions are required.
 
 Choose only the files needed for the task. A fresh clone will not automatically
 contain every historical model, image, texture, or video.

@@ -14,7 +14,7 @@ import subprocess
 import tempfile
 
 from hosted_assets import ROOT, RepositoryAssets, browser_environment, hydrate_source_media, prepare, stamp_service_worker, validate_packet
-from hosted_git_lfs import ensure_git_lfs
+from hosted_git_lfs import ensure_git_lfs, ensure_render_origin
 
 
 def main():
@@ -41,6 +41,7 @@ def main():
     env = browser_environment(os.environ, work / "env", work / "unused-public")
     if args.fetch_lfs:
         ensure_git_lfs()
+        ensure_render_origin(ROOT)
         env["PATH"] = os.environ["PATH"]
     assets = args.assets.resolve() if args.assets else work / "assets"
     if args.assets:
