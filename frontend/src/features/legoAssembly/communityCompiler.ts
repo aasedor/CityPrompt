@@ -26,6 +26,8 @@ import {
   normalizeArchetypeId,
 } from './legoShared';
 import { compileProjectCommunity3D } from './projectCommunityCompile';
+import { automaticSiteTreesEnabled } from '@/features/siteLandscape/automaticSiteTrees';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 
 const BUILDABLE_ZONE_TYPES = new Set<string>([
   'building',
@@ -380,9 +382,9 @@ async function reloadCommunityCompilerZones(
  * unexpected planner, geometry, revision, and response-integrity failures
  * still fail closed. */
 export function communityCompileOptionsForZones(
-  _zones: SiteZone[],
+  zones: SiteZone[],
 ): MixedCommunityCompileOptions {
-  return {};
+  return { includeResidualLandscape: automaticSiteTreesEnabled(getActiveSiteBoundary(zones)) };
 }
 
 type CommunityCompileItem = Community3DCompileResponse['items'][number];
@@ -641,7 +643,7 @@ export async function compileMixedCommunity3D(
       compileItems,
       scopeZoneIds,
       options.scopeBoundaryId,
-      options.includeResidualLandscape,
+      options.includeResidualLandscape ?? communityCompileOptionsForZones(zones).includeResidualLandscape,
     );
   } catch (error) {
     if (options.recoverSourceChanges === false || !isCommunity3DSourceRevisionConflict(error)) {
@@ -726,6 +728,7 @@ export async function compileBoundaryCommunity3D(
     {
       scopeZoneIds: Array.from(containedZoneIds),
       scopeBoundaryId: boundaryZoneId,
+      includeResidualLandscape: automaticSiteTreesEnabled(projectZones.find(zone => zone.id === boundaryZoneId)),
     },
   );
 }

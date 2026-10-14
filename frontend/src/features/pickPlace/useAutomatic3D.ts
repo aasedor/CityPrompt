@@ -12,6 +12,7 @@ import { deriveCityPromptWorkflow } from '@/features/workflow/cityPromptWorkflow
 import { advanceDerivedZoneRevision } from '@/store/undoActions';
 import { representationNotice } from './representationNotice';
 import { nativeBuildingUrl } from './nativeBuildingContract';
+import { automaticSiteTreesEnabled } from '@/features/siteLandscape/automaticSiteTrees';
 
 const physicalZone = (zone: SiteZone) => resolveCommunity3DKind(zone) !== null && !zone.id.startsWith('temp-');
 const physicalScopeZone = (zone: SiteZone) => zone.zone_type !== 'site_boundary'
@@ -30,8 +31,9 @@ const customSourceFields = new Set([
 
 export function authoredPlacementKey(zones: SiteZone[], includeRuntimeEntrance = true): string {
   return JSON.stringify(zones.map(zone => ({ id: zone.id, zoneType: zone.zone_type, coordinates: zone.coordinates,
+    automaticSiteTrees: zone.zone_type === 'site_boundary' ? automaticSiteTreesEnabled(zone) : undefined,
     design: Object.fromEntries(Object.entries(zone.properties ?? {})
-      .filter(([name]) => (includeRuntimeEntrance || name !== 'pedestrian_building_entrance')
+      .filter(([name]) => name !== 'community_3d_landscape_mode' && (includeRuntimeEntrance || name !== 'pedestrian_building_entrance')
         && (customSourceFields.has(name) || /^(pick_place|user_generated_|native_home|building_footprint_|development_|green_space_|plaza_|road_|width$|floors$|floor_height$|height|custom_style_|generation_style_input$|neighborhood_park_layout$|park_trio_layout$|pedestrian_|park_access_points$|community_3d_landscape_mode$)/.test(name)))
       .sort(([a],[b]) => a.localeCompare(b))) })).sort((a,b) => a.id.localeCompare(b.id)));
 }
@@ -94,15 +96,16 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
             .filter(zone => !visibility?.hiddenLayers.has(String(zone.properties?._imported_from ?? '')));
           const sources = currentZones.filter(physicalZone);
           const scope = currentZones.filter(physicalScopeZone);
+          const currentBoundary = deriveCityPromptWorkflow(currentZones).activeBoundary;
           if (!sources.length) return { plannedMasses: 0 };
           const result = await compileMixedCommunity3D(sources, undefined, {
-            includeResidualLandscape: true,
+            includeResidualLandscape: automaticSiteTreesEnabled(currentBoundary),
             scopeMode: visibility?.hiddenLayers.size ? 'selection' : 'project',
             scopeZoneIds: scope.map(zone => zone.id),
           });
           const saved = await siteZonesApi.list(projectId);
           // Derived writes may advance undo's revision only over our own exact source.
-          for (const source of sources) {
+          for (const source of [...sources, ...(currentBoundary ? [currentBoundary] : [])]) {
             const after = saved.find(zone => zone.id === source.id);
             if (after && authoredPlacementKey([source]) === authoredPlacementKey([after])) {
               advanceDerivedZoneRevision(client, projectId, source.id, source.updated_at, after.updated_at);

@@ -1032,6 +1032,7 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
             <SiteLandscapePanel zone={zone} captureContext={captureLandscapeContext} onSaved={saved => setProps(current => ({...current,
               community_3d_landscape:saved.community_3d_landscape,
               community_3d_landscape_mode:saved.community_3d_landscape_mode,
+              community_3d_automatic_trees:saved.community_3d_automatic_trees,
             }))}/>
             {belowGlobeControls ? <details onToggle={event => setSiteAnalysisOpen(event.currentTarget.open)}>
               <summary className="min-h-11 cursor-pointer py-3 font-semibold focus-visible:outline focus-visible:outline-2">Optional AI site analysis</summary>

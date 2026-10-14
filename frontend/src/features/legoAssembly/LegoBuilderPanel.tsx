@@ -29,6 +29,7 @@ import {
   deriveGroundItems,
   deriveItems,
   compileMixedCommunity3D,
+  communityCompileOptionsForZones,
   isCommunity3DSourceRevisionConflict,
   recipeFromPlan,
   type CommunityCompileExpectation,
@@ -257,7 +258,7 @@ export function LegoBuilderPanel({
             zone_id: item.zone.id,
             source_updated_at: authoritativeZone(item.zone.id).updated_at,
           })),
-        ]);
+        ], undefined, undefined, communityCompileOptionsForZones(sourceZones).includeResidualLandscape);
       } catch (error) {
         if (!isCommunity3DSourceRevisionConflict(error)) throw error;
         setGenerationStage('Refreshing changed zones and rebuilding their 3D plans');
@@ -284,6 +285,7 @@ export function LegoBuilderPanel({
           refreshedRequestedZones,
           undefined,
           {
+            ...communityCompileOptionsForZones(refreshedZones),
             scopeZoneIds: refreshedZones
               .filter((zone) => resolveCommunity3DKind(zone) !== null)
               .map((zone) => zone.id),

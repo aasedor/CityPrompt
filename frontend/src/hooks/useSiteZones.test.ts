@@ -561,6 +561,30 @@ describe('useSiteZones', () => {
 
 
 describe('project write coordination', () => {
+  it('keeps the latest landscape when a site form save waits behind compilation', async () => {
+    const {runProjectWrite} = await import('@/utils/projectWriteQueue');
+    const client = new QueryClient({defaultOptions:{queries:{retry:false},mutations:{retry:false}}});
+    const zone = {...makeZone(REAL_ZONE_ID),updated_at:'r1',properties:{community_3d_automatic_trees:true,community_3d_landscape:null}};
+    const recipe = {state:'compiled',source_hash:'verified'};
+    const compiled = {...zone,updated_at:'r2',properties:{...zone.properties,community_3d_landscape:recipe}};
+    client.setQueryData(['site-zones', PROJECT_ID],[zone]);
+    vi.mocked(siteZonesApi.list).mockReset().mockImplementation(()=>new Promise(()=>{}));
+    vi.mocked(siteZonesApi.update).mockReset().mockResolvedValue(compiled);
+    let release!:()=>void;
+    const compiling=runProjectWrite(client,PROJECT_ID,async()=>{
+      await new Promise<void>(resolve=>{release=resolve});
+      client.setQueryData(['site-zones',PROJECT_ID],[compiled]);
+    });
+    const wrapper=({children}:{children:React.ReactNode})=>React.createElement(QueryClientProvider,{client},children);
+    const {result}=renderHook(()=>useSiteZones(PROJECT_ID),{wrapper});
+    await act(async()=>{await Promise.resolve()});
+    act(()=>result.current.updateZone.mutate({zoneId:REAL_ZONE_ID,data:{properties:{...zone.properties,site_name:'My new name'}}}));
+    expect(siteZonesApi.update).not.toHaveBeenCalled();
+    await act(async()=>{release();await compiling});
+    await waitFor(()=>expect(siteZonesApi.update).toHaveBeenCalledWith(REAL_ZONE_ID,expect.objectContaining({
+      expected_updated_at:'r2',properties:expect.objectContaining({site_name:'My new name',community_3d_landscape:recipe,community_3d_automatic_trees:true}),
+    })));
+  });
   it('waits for a derived revision before moving, then deletes with the move revision', async () => {
     const { runProjectWrite } = await import('@/utils/projectWriteQueue');
     const client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });

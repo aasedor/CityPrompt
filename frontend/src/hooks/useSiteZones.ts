@@ -1,5 +1,6 @@
 import { hasNativePark, nativeParkEditProperties, nativeParkFitProblem } from '@/features/parks/nativeParkRegistry';
 import { runProjectWrite } from '@/utils/projectWriteQueue';
+import { mergeSavedSiteLandscape } from '@/features/siteLandscape/automaticSiteTrees';
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useMutation, useQueryClient, useIsMutating } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -205,10 +206,19 @@ export function useSiteZones(projectId: string | undefined) {
     onMutate: (vars) => beginEdit(vars.zoneId),
     mutationFn: (vars: { zoneId: string; data: { name?: string; color?: string; coordinates?: number[][]; properties?: SiteZoneProperties }; previousData?: { name?: string; color?: string; coordinates?: number[][]; properties?: SiteZoneProperties } }) =>
       runProjectWrite(queryClient, projectId!, async () => {
+        const latest = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])
+          ?.find(zone => zone.id === vars.zoneId);
+        if (latest?.zone_type === 'site_boundary' && vars.data.properties) {
+          // Compilation may have finished while this form save was queued.
+          // Landscape controls save independently; retain their current state
+          // in both the submission and its Undo/Redo snapshots.
+          vars.data = {...vars.data, properties: mergeSavedSiteLandscape(vars.data.properties, latest.properties ?? {})};
+          if (vars.previousData?.properties) vars.previousData = {...vars.previousData,
+            properties: mergeSavedSiteLandscape(vars.previousData.properties, latest.properties ?? {})};
+        }
         const result = await siteZonesApi.update(vars.zoneId, {
           ...vars.data,
-          expected_updated_at: queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])
-            ?.find((zone) => zone.id === vars.zoneId)?.updated_at,
+          expected_updated_at: latest?.updated_at,
         });
         queryClient.setQueryData<SiteZone[]>(['site-zones', projectId], old => old?.map(z => z.id === result.id ? result : z));
         return result;

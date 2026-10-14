@@ -6443,8 +6443,9 @@ async def test_place_community_rejects_framework_overlay_without_mutating_it(cli
 @pytest.mark.parametrize("include_landscape", [True, False])
 @pytest.mark.parametrize("landscape_mode", [None, "generated", "placed_objects_only"])
 @pytest.mark.parametrize("landscape_state", ["compiled", "stale"])
+@pytest.mark.parametrize("automatic_trees", [None, True, False])
 async def test_place_community_derives_residual_from_all_project_zones(
-    client, mock_db, test_user, auth_headers, include_landscape, landscape_mode, landscape_state
+    client, mock_db, test_user, auth_headers, include_landscape, landscape_mode, landscape_state, automatic_trees
 ):
     from geoalchemy2.shape import from_shape, to_shape
     from shapely.geometry import box
@@ -6463,6 +6464,7 @@ async def test_place_community_derives_residual_from_all_project_zones(
         geometry=from_shape(box(-114.0800, 51.0400, -114.0780, 51.0415), srid=4326),
         properties={
             "site_name": "Residual landscape test",
+            **({"community_3d_automatic_trees": automatic_trees} if automatic_trees is not None else {}),
             **(
                 {
                     "community_3d_landscape_mode": landscape_mode,
@@ -6514,7 +6516,8 @@ async def test_place_community_derives_residual_from_all_project_zones(
 
     assert response.status_code == 200, response.text
     payload = response.json()
-    if not include_landscape or landscape_mode == "generated":
+    effective_include = automatic_trees if automatic_trees is not None else include_landscape
+    if not effective_include or landscape_mode == "generated":
         assert payload["residual_landscape"]["boundary_count"] == 0
         if landscape_mode == "generated":
             assert boundary.properties["community_3d_landscape"] == {"state": landscape_state, "source_hash": "previous-plan", "preset": "urban"}

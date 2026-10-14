@@ -278,6 +278,7 @@ describe('LegoBuilderPanel', () => {
     await waitFor(() => expect(apiPost).toHaveBeenCalledWith(
       '/api/v1/lego-assembly/place-community',
       {
+        include_residual_landscape: false,
         items: [expect.objectContaining({
           zone_id: 'auto-building',
           recipe: expect.any(Object),
@@ -434,6 +435,7 @@ describe('LegoBuilderPanel', () => {
     ));
     expect(compileRequests).toHaveLength(2);
     expect(compileRequests[1][1]).toEqual({
+      include_residual_landscape: false,
       items: [expect.objectContaining({
         zone_id: refreshed.id,
         source_updated_at: refreshed.updated_at,
@@ -542,6 +544,7 @@ describe('LegoBuilderPanel', () => {
       url === '/api/v1/lego-assembly/place-community'
     ));
     expect(compileRequests[1][1]).toEqual({
+      include_residual_landscape: false,
       items: [expect.objectContaining({
         zone_id: original.id,
         source_updated_at: refreshed.updated_at,
@@ -637,6 +640,7 @@ describe('LegoBuilderPanel', () => {
     expect(apiPost).toHaveBeenCalledWith(
       '/api/v1/lego-assembly/place-community',
       {
+        include_residual_landscape: false,
         items: expect.arrayContaining([
           expect.objectContaining({
             zone_id: 'z-building',
@@ -700,6 +704,7 @@ describe('LegoBuilderPanel', () => {
     await waitFor(() => expect(apiPost).toHaveBeenCalledWith(
       '/api/v1/lego-assembly/place-community',
       {
+        include_residual_landscape: false,
         items: expect.arrayContaining([
           { zone_id: 'z-park-refresh', source_updated_at: '2026-07-13T00:00:00Z' },
           { zone_id: 'z-street-refresh', source_updated_at: '2026-07-13T00:00:00Z' },
@@ -878,6 +883,7 @@ describe('LegoBuilderPanel', () => {
 
     const compileCall = apiPost.mock.calls.find(([url]) => url === '/api/v1/lego-assembly/place-community');
     expect(compileCall?.[1]).toEqual({
+      include_residual_landscape: false,
       items: expect.arrayContaining([
         { zone_id: 'z-missing', source_updated_at: '2026-07-13T00:00:00Z' },
         { zone_id: 'z-park', source_updated_at: '2026-07-13T00:00:00Z' },
@@ -1064,6 +1070,7 @@ describe('LegoBuilderPanel', () => {
     const compileCall = apiPost.mock.calls.find(([url]) => url === '/api/v1/lego-assembly/place-community');
     expect(compileCall?.[1]).toEqual(
       {
+        include_residual_landscape: false,
         items: expect.arrayContaining([
           expect.objectContaining({
             zone_id: 'z-a',
@@ -1241,6 +1248,7 @@ describe('LegoBuilderPanel', () => {
     await waitFor(() => expect(apiPost).toHaveBeenCalledWith(
       '/api/v1/lego-assembly/place-community',
       {
+        include_residual_landscape: false,
         items: [expect.objectContaining({
           zone_id: 'zone-placed',
           source_updated_at: '2026-08-04T00:30:00Z',

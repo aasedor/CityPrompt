@@ -172,9 +172,14 @@ describe('mixed community compiler', () => {
       development_archetype_id: 'supported_building',
     });
 
-    expect(communityCompileOptionsForZones([aiBuilding])).toEqual({});
-    expect(communityCompileOptionsForZones([manualBuilding])).toEqual({});
-    expect(communityCompileOptionsForZones([manualBuilding, aiBuilding])).toEqual({});
+    expect(communityCompileOptionsForZones([aiBuilding])).toEqual({includeResidualLandscape:false});
+    expect(communityCompileOptionsForZones([manualBuilding])).toEqual({includeResidualLandscape:false});
+    expect(communityCompileOptionsForZones([manualBuilding, aiBuilding])).toEqual({includeResidualLandscape:false});
+    const site = zone('site', 'site_boundary', {community_3d_automatic_trees:true});
+    expect(communityCompileOptionsForZones([manualBuilding, site])).toEqual({includeResidualLandscape:true});
+    expect(communityCompileOptionsForZones([manualBuilding, {...site, properties:{
+      community_3d_automatic_trees:false,community_3d_landscape_mode:'placed_objects_only',
+    }}])).toEqual({includeResidualLandscape:false});
   });
 
   it('uses the drawn parcel dimensions even when catalogue footprint guidance is absent', () => {
@@ -578,6 +583,8 @@ describe('mixed community compiler', () => {
     expect(compile).toHaveBeenCalledWith(
       [{ zone_id: unfinishedPark.id, source_updated_at: unfinishedPark.updated_at }],
       [alreadyCompiled.id, unfinishedPark.id],
+      undefined,
+      false,
     );
   });
 
@@ -832,7 +839,7 @@ describe('mixed community compiler', () => {
         recipe: expect.objectContaining({ module_family: 'supported-family' }),
       }),
       { zone_id: park.id, source_updated_at: park.updated_at },
-    ], [supported.id, park.id], boundaryId);
+    ], [supported.id, park.id], boundaryId, false);
     expect(compile.mock.calls[0][0]).not.toEqual(
       expect.arrayContaining([expect.objectContaining({ zone_id: unrelated.id })]),
     );
@@ -930,7 +937,7 @@ describe('mixed community compiler', () => {
           }),
         }),
       }),
-    ], [previewZone.id], boundaryId);
+    ], [previewZone.id], boundaryId, false);
     expect(previewZone.coordinates).toEqual(originalParcel);
   });
 
@@ -1017,7 +1024,7 @@ describe('mixed community compiler', () => {
 
     expect(compile).toHaveBeenCalledWith([
       { zone_id: missing.id, source_updated_at: missing.updated_at },
-    ], [missing.id], boundaryId);
+    ], [missing.id], boundaryId, false);
     expect(result).toMatchObject({ detailedBuildings: 0, plannedMasses: 1 });
   });
 

@@ -15,6 +15,7 @@ import type { SiteZone, SiteZoneProperties } from "@/types";
 import { runProjectWrite } from "@/utils/projectWriteQueue";
 import { useUndoRedoStore } from "@/store/undoRedo";
 import { createZoneUpdateAction } from "@/store/undoActions";
+import { automaticSiteTreesEnabled } from './automaticSiteTrees';
 import {
   landscapeKeepClear,
   type LandscapePreset,
@@ -90,7 +91,7 @@ export function SiteLandscapePanel({
     setError("");
   };
   const record = async (before: SiteZone, saved: SiteZone) => {
-    const keys = ["community_3d_landscape", "community_3d_landscape_mode"];
+    const keys = ["community_3d_landscape", "community_3d_landscape_mode", "community_3d_automatic_trees"];
     const oldProps = { ...before.properties },
       newProps = { ...saved.properties };
     keys.forEach((key) => {
@@ -112,6 +113,27 @@ export function SiteLandscapePanel({
     await client.invalidateQueries({
       queryKey: ["site-zones", zone.project_id],
     });
+  };
+  const toggleAutomaticTrees = async (enabled: boolean) => {
+    setBusy("Saving tree setting…");
+    clear();
+    try {
+      await runProjectWrite(client, zone.project_id, async () => {
+        const before = (await siteZonesApi.list(zone.project_id)).find(z => z.id === zone.id);
+        if (!before) throw new Error("This site is no longer available. Refresh the project.");
+        if (before.properties?.community_3d_landscape_mode === 'generated')
+          throw new Error("Remove the applied landscape before changing automatic site trees.");
+        const saved = await siteZonesApi.update(zone.id, {
+          expected_updated_at: before.updated_at,
+          properties: { ...before.properties, community_3d_automatic_trees: enabled,
+            community_3d_landscape: null,
+            community_3d_landscape_mode: enabled ? 'automatic' : 'placed_objects_only' },
+        });
+        await record(before, saved);
+      });
+    } catch (e) {
+      setError(getApiErrorMessage(e, "Could not save the tree setting."));
+    } finally { setBusy(""); }
   };
   const generate = async () => {
     const n = ++generation.current;
@@ -215,6 +237,7 @@ export function SiteLandscapePanel({
             ...before.properties,
             community_3d_landscape: null,
             community_3d_landscape_mode: "placed_objects_only",
+            community_3d_automatic_trees: false,
           },
         });
         await record(before, saved);
@@ -239,6 +262,20 @@ export function SiteLandscapePanel({
       <h3 className="flex items-center gap-2 font-semibold">
         <Trees size={18} /> Finish your site
       </h3>
+      <label className="flex min-h-11 items-center gap-3 rounded-lg border border-border p-2 text-sm font-semibold">
+        <input type="checkbox" aria-label="Automatic site trees"
+          checked={automaticSiteTreesEnabled(zone)}
+          disabled={!!busy || zone.id.startsWith('temp-') || zone.properties?.community_3d_landscape_mode === 'generated'}
+          onChange={event => void toggleAutomaticTrees(event.target.checked)} />
+        Automatic site trees
+      </label>
+      <p className="text-xs text-text-muted">
+        Off by default for a lighter walking view. Turn on to fill unused site space with trees and planting.
+        Trees you place yourself, and those in buildings and parks, stay unchanged. No generation tokens.
+      </p>
+      {zone.properties?.community_3d_landscape_mode === 'generated' && <p className="text-xs text-text-muted">
+        Your applied landscape controls its own planting. Remove it below to use automatic site trees.
+      </p>}
       <p className="text-xs text-text-muted">
         Fill the spaces around your buildings, streets and parks. Existing
         objects and access paths stay clear.

@@ -613,7 +613,7 @@ export function GlobeAIRenderPanel({
           );
         },
         {
-          ...communityCompileOptionsForZones(communityCompileZones),
+          ...communityCompileOptionsForZones(authoritativeZones),
           scopeMode: 'project',
           scopeZoneIds: communityZones.map((zone) => zone.id),
         },
@@ -650,6 +650,7 @@ export function GlobeAIRenderPanel({
     isQueuing3D,
     communityCompileZones,
     communityZones,
+    authoritativeZones,
     queryClient,
   ]);
 

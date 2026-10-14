@@ -8,6 +8,7 @@ import { siteZonesApi } from '@/services/api';
 import { authoredPlacementKey, useAutomatic3D } from './useAutomatic3D';
 import { nativeParkLayouts, nativeParkProperties } from '@/features/parks/nativeParkRegistry';
 import { rectangleAt } from './geometry';
+import { advanceDerivedZoneRevision } from '@/store/undoActions';
 import streetRecipes from '@/components/viewer/globe/__fixtures__/classroomStreetRecipes.json';
 vi.mock('@/features/legoAssembly/communityCompiler',()=>({compileMixedCommunity3D:vi.fn()}));
 vi.mock('@/services/api',()=>({siteZonesApi:{list:vi.fn()},getApiErrorMessage:(e:Error)=>e.message}));
@@ -17,6 +18,32 @@ const boundary=(state:'compiled'|'stale'):SiteZone=>({id:'boundary',project_id:'
 const wrapper=({children}:{children:ReactNode})=><QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}>{children}</QueryClientProvider>;
 const advance=()=>act(async()=>{await vi.advanceTimersByTimeAsync(750)});
 describe('automatic placement compilation',()=>{
+  it('leaves a new site without automatic trees and respects saved opt-in after reload',async()=>{
+    const bare={...boundary('compiled'),properties:{}};
+    const off={...bare,properties:{community_3d_landscape_mode:'placed_objects_only'}};
+    vi.mocked(siteZonesApi.list).mockResolvedValue([zone(0,true),off]);
+    const view=renderHook(({zones})=>useAutomatic3D('p',zones,false),{initialProps:{zones:[zone(),bare]},wrapper});
+    await advance();
+    expect(compileMixedCommunity3D).toHaveBeenLastCalledWith([zone()],undefined,expect.objectContaining({includeResidualLandscape:false}));
+    view.rerender({zones:[zone(0,true),off]});await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
+    const on={...bare,updated_at:'on-revision',properties:{community_3d_automatic_trees:true,community_3d_landscape_mode:'automatic'}};
+    const ready={...boundary('compiled'),updated_at:'compiled-revision',properties:{...boundary('compiled').properties,community_3d_automatic_trees:true}};
+    vi.mocked(siteZonesApi.list).mockResolvedValue([zone(0,true),ready]);
+    view.rerender({zones:[zone(0,true),on]});await advance();
+    expect(compileMixedCommunity3D).toHaveBeenLastCalledWith([zone(0,true)],undefined,expect.objectContaining({includeResidualLandscape:true}));
+    expect(advanceDerivedZoneRevision).toHaveBeenCalledWith(expect.anything(),'p','boundary','on-revision','compiled-revision');
+    view.rerender({zones:[zone(0,true),ready]});await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledTimes(2);
+    view.unmount();
+    const reloaded=renderHook(()=>useAutomatic3D('p',[zone(1),ready],false),{wrapper});await advance();
+    expect(compileMixedCommunity3D).toHaveBeenLastCalledWith([zone(1)],undefined,expect.objectContaining({includeResidualLandscape:true}));
+    reloaded.unmount();
+    const disabled={...off,properties:{...off.properties,community_3d_automatic_trees:false}};
+    const offReload=renderHook(()=>useAutomatic3D('p',[zone(2),disabled],false),{wrapper});await advance();
+    expect(compileMixedCommunity3D).toHaveBeenLastCalledWith([zone(2)],undefined,expect.objectContaining({includeResidualLandscape:false}));
+    offReload.unmount();
+  });
   it('rebuilds a native street after unchanged Apply removes only its compiled recipe',async()=>{
     const recipe=streetRecipes[0];
     const native:SiteZone={...zone(0,true),zone_type:'road',properties:{
@@ -39,7 +66,7 @@ describe('automatic placement compilation',()=>{
     const zones = kind === 'mixed' ? [custom, zone()] : [custom];
     const view = renderHook(() => useAutomatic3D('p', zones, false), { wrapper });
     await advance();
-    expect(compileMixedCommunity3D).toHaveBeenCalledWith(zones, undefined, expect.objectContaining({ scopeMode: 'project', includeResidualLandscape: true }));
+    expect(compileMixedCommunity3D).toHaveBeenCalledWith(zones, undefined, expect.objectContaining({ scopeMode: 'project', includeResidualLandscape: false }));
     view.unmount();
   });
   it('compiles only the selected scenario even when the query cache contains hidden alternatives', async () => {
@@ -50,7 +77,7 @@ describe('automatic placement compilation',()=>{
     const wrap = ({children}:{children:ReactNode}) => <QueryClientProvider client={client}>{children}</QueryClientProvider>;
     const view = renderHook(() => useAutomatic3D('p', [shown], false, {hiddenLayers: new Set(['scenario-b']), comparingPlans: false}), {wrapper:wrap});
     await advance();
-    expect(compileMixedCommunity3D).toHaveBeenCalledWith([shown], undefined, {includeResidualLandscape:true,scopeMode:'selection',scopeZoneIds:['shown']});
+    expect(compileMixedCommunity3D).toHaveBeenCalledWith([shown], undefined, {includeResidualLandscape:false,scopeMode:'selection',scopeZoneIds:['shown']});
     view.unmount();
   });
   it('waits for one scenario when alternatives are being compared', async () => {
@@ -121,7 +148,7 @@ describe('automatic placement compilation',()=>{
     });
     await advance();
     expect(compileMixedCommunity3D).toHaveBeenCalledWith([zone()],undefined,{
-      includeResidualLandscape:true,scopeMode:'project',scopeZoneIds:['zone','water'],
+      includeResidualLandscape:false,scopeMode:'project',scopeZoneIds:['zone','water'],
     });
     const movedWater={...water,coordinates:[[2,0],[3,0],[3,1],[2,1]]};
     rerender({zones:[zone(),movedWater]});

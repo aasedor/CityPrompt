@@ -2078,7 +2078,11 @@ async def place_community_3d(
                 and existing_landscape.get("state") in {"compiled", "stale"}
             ):
                 continue
-            if not body.include_residual_landscape:
+            # The locked boundary's saved preference wins over a request that
+            # may have started planning before another tab changed the toggle.
+            automatic_trees = (boundary.properties or {}).get("community_3d_automatic_trees")
+            include_landscape = automatic_trees if isinstance(automatic_trees, bool) else body.include_residual_landscape
+            if not include_landscape:
                 existing_landscape = (boundary.properties or {}).get("community_3d_landscape")
                 # Automatic object recompiles do not own a landscape the
                 # student explicitly generated in the Site tab. A zone edit
@@ -2088,6 +2092,7 @@ async def place_community_3d(
                     isinstance(existing_landscape, dict)
                     and existing_landscape.get("state") in {"compiled", "stale"}
                     and (boundary.properties or {}).get("community_3d_landscape_mode") != "placed_objects_only"
+                    and automatic_trees is not False
                 ):
                     continue
                 if (
