@@ -98,6 +98,9 @@ jobs:
         # historical typing backlog is removed.
         run: mypy app/core app/models app/schemas --ignore-missing-imports --no-error-summary
 
+      - name: Check legacy production migration path
+        run: python -m pytest ../scripts/tests/test_release_migration_graph.py -q
+
       - name: Migrate test database
         env:
           DATABASE_URL: postgresql+asyncpg://testuser:testpass@localhost:5432/test_db
