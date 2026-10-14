@@ -101,6 +101,10 @@ jobs:
       - name: Check legacy production migration path
         run: python -m pytest ../scripts/tests/test_release_migration_graph.py -q
 
+      - name: Check hosted asset downloads
+        working-directory: .
+        run: python -m pytest scripts/tests/test_hosted_git_lfs.py scripts/tests/test_hosted_assets.py -q
+
       - name: Migrate test database
         env:
           DATABASE_URL: postgresql+asyncpg://testuser:testpass@localhost:5432/test_db

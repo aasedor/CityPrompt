@@ -14,6 +14,7 @@ import subprocess
 import tempfile
 
 from hosted_assets import ROOT, RepositoryAssets, browser_environment, hydrate_source_media, prepare, stamp_service_worker, validate_packet
+from hosted_git_lfs import ensure_git_lfs
 
 
 def main():
@@ -38,6 +39,9 @@ def main():
     (work / "env").mkdir()
     # Validate before downloads, without printing any credential values.
     env = browser_environment(os.environ, work / "env", work / "unused-public")
+    if args.fetch_lfs:
+        ensure_git_lfs()
+        env["PATH"] = os.environ["PATH"]
     assets = args.assets.resolve() if args.assets else work / "assets"
     if args.assets:
         receipt = validate_packet(assets, RepositoryAssets(ROOT),

@@ -29,6 +29,12 @@ git lfs fetch origin --include="path/to/required.glb" --exclude=""
 git lfs checkout "path/to/required.glb"
 ```
 
+Render's native frontend build image did not include the git-lfs executable.
+When --fetch-lfs is selected and Git LFS is absent, the build bootstraps the
+official Linux amd64 v3.7.1 binary into a temporary directory. Its archive must
+match the SHA-256 published by the Git LFS project before execution. Only the
+build process PATH changes; no global install or Git configuration is modified.
+
 Choose only the files needed for the task. A fresh clone will not automatically
 contain every historical model, image, texture, or video.
 
