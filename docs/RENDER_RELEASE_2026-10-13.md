@@ -1,6 +1,6 @@
 # City Prompt — October 13 release preparation
 
-This is the current release checklist for `codex/render-release-readiness-2026-10-13`, based on `f93c46f81`. It supersedes the October 7 catalogue counts and asset-delivery limitations. Preparation is not a live deployment or a 40-student performance certification.
+This is the current release checklist for `codex/picker-category-audit-2026-10-13`, extending the verified Render preparation at `86f64d31e`. It supersedes the October 7 catalogue counts and asset-delivery limitations. Preparation is not a live deployment or a 40-student performance certification.
 
 ## What this release fixes
 
@@ -75,3 +75,11 @@ The CSS increase represents the implemented landing/catalogue interface: approxi
 Current generated evidence is outside Git at `D:/CityPrompt-render-readiness-2026-10-13/`. Source changes and reviewed LFS deliverables are separate from build output. Do not publish a build receipt reporting dirty source as the final release identity.
 
 Hosted credentials, remote model/database readback, backup restoration, live OAuth/mail and a staging browser rehearsal must be verified on the actual Render environment. Basic-laptop and 40-concurrent-student capacity remain separate measurements; more server capacity does not make the browser's GPU faster.
+
+## Picker follow-up
+
+The live local picker was checked on October 13 after the release build: all 74 building, 38 park and 41 street cards appeared and their preview images loaded. All 26 populated category tiles were opened and paginated to their full lists; their totals covered all 153 choices. This is discovery/preview evidence, not a new placement or rendering trial of every model.
+
+Corrected Blue Glass Office Tower and Gilded Terracotta Tower to Offices, consistent with their exact model programmes. Corrected Timber-Screen Townhouse to Rowhouses & townhomes. Height alone can no longer move an office, hotel, civic, mixed-use or shop building into Residential towers. These browsing changes preserve all model bindings, geometry and zoning-use rules.
+
+Validation: 39 focused picker tests and TypeScript no-emit checks passed. Local browser evidence is in `D:/CityPrompt-render-readiness-2026-10-13/picker-category-browser-audit.json` and `picker-offices.png`. The prior complete production build remains evidence for `86f64d31e`; Render must build the newer branch for these corrections.

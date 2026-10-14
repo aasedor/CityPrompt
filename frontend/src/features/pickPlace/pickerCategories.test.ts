@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { reviewedAssetClassification } from './catalogueClassification';
+import { CALGARY_GROUPS } from '@/features/calgaryCatalogue/guide';
 import { CLASSROOM_CHOICES } from './canonicalCatalogue';
 import { PICKER_CATEGORIES, availablePickerCategories, pickerCategory } from './pickerCategories';
 
@@ -6,6 +8,7 @@ describe('student picker categories', () => {
   it('assigns each exact model to one visible category in its own section', () => {
     for (const choice of CLASSROOM_CHOICES) {
       const id=pickerCategory(choice);
+      expect(CALGARY_GROUPS.filter(group => group.domain === choice.domain && group.id === choice.option.calgaryGuide?.groupId)).toHaveLength(1);
       expect(PICKER_CATEGORIES.filter(c=>c.id===id && c.domain===choice.domain)).toHaveLength(1);
       expect(availablePickerCategories(choice.domain,CLASSROOM_CHOICES).some(c=>c.id===id)).toBe(true);
     }
@@ -14,7 +17,7 @@ describe('student picker categories', () => {
   it.each([
     ['infill_duplex','low-density'], ['clapboard_north_end','low-density'],
     ['med_villa_tuscan','low-density'], ['nordic_timber_mass_timber','apartments'],
-    ['glass_tower_blue_reflective','towers'], ['vancouverism_classic','towers'],
+    ['glass_tower_blue_reflective','workplaces'], ['art_deco_cream_terracotta','workplaces'], ['contemporary_townhouse_timber_screen','townhomes'], ['vancouverism_classic','towers'],
     ['deco_theater_movie_palace','civic'], ['student_pickleball_garden_v1','play-sport'],
     ['student_stone_labyrinth_garden_v1','gardens'], ['wetland_rain_garden_v0','nature-trails'],
     ['student_grass_tram_avenue_v1','transit'], ['student_london_cobbled_mews_v1','alleys'],
@@ -36,4 +39,12 @@ describe('student picker categories', () => {
     expect(choice.option.calgaryGuide).toEqual(asset.calgaryGuide);
     expect(JSON.stringify(choice)).toBe(original);
   });
+});
+
+it('height alone never turns a non-residential building into a residential tower', () => {
+  const office = CLASSROOM_CHOICES.find(c => c.placements[0]?.model.variantId === 'glass_tower_blue_reflective')!.placements[0];
+  for (const groupId of ['offices', 'hotels', 'civic', 'mixed', 'shops']) {
+    const candidate = { ...office, model: { ...office.model, variantId: 'future-reviewed-model' }, calgaryGuide: { ...office.calgaryGuide, groupId }, properties: { ...office.properties, floors: 30 } };
+    expect(reviewedAssetClassification(candidate).calgaryGuide.groupId).toBe(groupId);
+  }
 });

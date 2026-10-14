@@ -19,7 +19,8 @@ describe('student asset browsing', () => {
     fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     expect(screen.getByRole('option',{name:'Low density'})).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText('Object category'),{target:{value:'towers'}});
-    expect(screen.getByRole('button',{name:/Blue glass office tower.*Choose & place/i})).toBeInTheDocument();
+    expect(screen.getByRole('button',{name:/Vancouver balcony and podium tower.*Choose & place/i})).toBeInTheDocument();
+    expect(screen.queryByRole('button',{name:/Blue glass office tower.*Choose & place/i})).not.toBeInTheDocument();
     expect(screen.queryByRole('button',{name:/Side-by-side duplex.*Choose & place/i})).not.toBeInTheDocument();
     expect(onPick).not.toHaveBeenCalled();
     fireEvent.click(screen.getAllByRole('button',{name:'Streets'})[1]);

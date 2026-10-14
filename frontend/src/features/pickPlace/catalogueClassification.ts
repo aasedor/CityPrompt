@@ -3,8 +3,9 @@ import type { CatalogueAsset } from './assetRegistry';
 /** Reviewed exact-model browsing groups. Never a parcel permission or geometry preset. */
 const REVIEWED_VARIANT_GROUPS: Record<string, string> = {
   clapboard_north_end: 'detached',
-  glass_tower_blue_reflective: 'towers',
-  art_deco_cream_terracotta: 'towers',
+  glass_tower_blue_reflective: 'offices',
+  art_deco_cream_terracotta: 'offices',
+  contemporary_townhouse_timber_screen: 'ground_housing',
   art_deco_streamline_moderne: 'apartments',
   market_historic_iron_glass: 'shops',
   brewery_crystal_brewhouse: 'shops',
@@ -44,6 +45,6 @@ const REVIEWED_VARIANT_GROUPS: Record<string, string> = {
 export function reviewedAssetClassification(asset: CatalogueAsset): CatalogueAsset {
   const storeys = asset.kind === 'object' ? asset.storeyProgram?.nativeStoreys ?? Number(asset.properties.floors ?? 0) : 0;
   const groupId = REVIEWED_VARIANT_GROUPS[asset.model.variantId]
-    ?? (asset.kind === 'object' && asset.zoneType === 'building' && storeys >= 12 ? 'towers' : undefined);
+    ?? (asset.kind === 'object' && asset.zoneType === 'building' && asset.calgaryGuide.groupId === 'apartments' && storeys >= 12 ? 'towers' : undefined);
   return groupId ? { ...asset, calgaryGuide: { ...asset.calgaryGuide, groupId } } : asset;
 }
