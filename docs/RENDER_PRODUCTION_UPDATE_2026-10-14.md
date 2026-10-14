@@ -1,6 +1,8 @@
 # Production update checkpoint — October 14, 2026
 
-This is an incomplete deployment checkpoint, not release acceptance. The owner
+The hosted demonstration workflow passed on October 14; see the final acceptance
+record below for exact coverage and remaining limitations. Earlier sections are
+historical checkpoints, not the current deployment status. The owner
 authorized replacing the existing CityPrompt.ca services in place with
 `aasedor/CityPrompt`, branch `deployment-version`. Do not synchronize the old
 Blueprint or create replacement databases, buckets, or paid services.
@@ -159,3 +161,58 @@ copy only when needed, discloses it in preflight and treats completed422 as
 terminal. 31 backend tests,10 frontend tests,tsc,local browser and independent
 review passed. Deployment/retest remain. Do not automatically resubmit the
 existing rejected request or claim a final provider invoice total.
+
+## Final hosted demonstration acceptance
+
+API, worker and frontend are live at
+`a100a7b78320dafbe1ea7faac0f15d2411c69e2e` from `deployment-version`.
+The website is https://www.cityprompt.ca. Existing data, domains and storage
+were preserved. No old Blueprint synchronization or replacement services were
+used. API readiness passed for database, Redis, storage and both worker checks.
+
+The saved trial is `6c68f75a-5df4-46bd-bd23-71719b0f3719`, named
+"Hosted release trial — October 14". Hosted checks passed for Google sign-in,
+maps and terrain, duplex placement/movement/rotation/save/reload, a courtyard,
+standalone sidewalk, a tree, zoning and transport layers, and updated report
+export. All 59 installed private model assemblies passed byte/hash/metadata
+checks; all 156 catalogue choices and 514 public dependencies passed the asset
+audit. This is not a claim of individual interactive placement testing for all
+59 private models or of measured student-laptop suitability.
+
+The approved aerial and street images completed, saved and downloaded. One
+animation completed after the initial aspect-ratio rejection. The successful
+attempt is `bc0966c7-db50-46b3-baa3-c426f6d0f981`, based on saved aerial
+`2156bb85-a1ac-4a88-ae53-a080db04b794`. Playback after reload, replay and the
+gallery's Download MP4 control passed in Edge: 5.041667 seconds, 2272 × 908,
+21,788,077 bytes. Download SHA-256 matches the stored MP4:
+`dd9b927d13d70745d7be641927d4c36187f257e433709fd49eb354b14cb1056b`.
+
+With explicit owner approval, the frontend response CSP now adds only
+`media-src 'self' blob: https://threed-platform-api.onrender.com` for playback.
+The live HTTP header was verified; the earlier approved `wasm-unsafe-eval`
+remains present and JavaScript `unsafe-eval` remains absent. No browser security
+warning was bypassed. The first blocked download was not counted as a pass;
+the final visible Download MP4 click produced the verified local file.
+
+Two images and two animation submissions (one failed, one completed) were made.
+The conservative application estimate including both animation requests is
+US$2.68 against the US$5 authorization. This is not a provider invoice total.
+No further paid generation, credit purchase or subscription change was made.
+
+Google OAuth, Google Maps, OpenAI image generation, fal animation, object
+storage, database and Redis were functionally exercised. Gemini, Anthropic,
+Meshy, Mapbox-specific functions and SMTP were not functionally tested; their
+keys are neither certified working nor identified as needing replacement.
+
+Remaining limitations: low walking views can show gaps at flattened terrain
+edges, and the street AI output interpreted some surrounding context as water.
+Dark-mode panel contrast remains an observed issue. The hosted version stamp
+reports `source_dirty=true`; the local release checkout was clean, but the
+hosted flag's cause has not been proven. These are disclosed follow-up items,
+not claims of a flawless visual result or exhaustive acceptance of every feature.
+
+Evidence remains outside Git in `D:/CityPrompt-production-update-2026-10-14/`,
+including `hosted-animation-playback-passed.png`, model/catalogue audit receipts,
+the updated planning report and the two render screenshots. The MP4 is also in
+the owner's Downloads folder. This documentation-only checkpoint does not
+require another application deploy.
