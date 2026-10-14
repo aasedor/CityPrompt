@@ -32,7 +32,9 @@ async def get_image_model_availability(api_key: str) -> dict:
                 # Listing permissions can differ from generation permissions.
                 # Unknown availability must not disable an existing engine.
                 pass
-        default_model = "gpt-image-2.5-flare" if available and "gpt-image-2.5-flare" in available else "gpt-image-2"
+        # 2.5 Flare is the default; fall back to Image 2 only when the listing
+        # succeeded and confirms Flare is absent for this account.
+        default_model = "gpt-image-2" if available is not None and "gpt-image-2.5-flare" not in available else "gpt-image-2.5-flare"
         result = {
             "default_model": default_model,
             "models": [

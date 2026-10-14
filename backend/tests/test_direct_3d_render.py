@@ -4462,7 +4462,7 @@ async def test_reservation_charges_user_and_creates_cap_row_before_provider():
 
     assert user.render_credits == 87
     assert reservation.tokens_spent == 13
-    assert reservation.model == "gpt-image-2"
+    assert reservation.model == "gpt-image-2.5-flare"  # a reservation without a model records the default engine
     db.refresh.assert_awaited_once_with(user, with_for_update=True)
     db.commit.assert_awaited_once()
     db.rollback.assert_not_awaited()

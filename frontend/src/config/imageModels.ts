@@ -1,7 +1,8 @@
 /** IDs shared by the Images edit API and Direct 3D. Keep legacy renders readable. */
-// Safe fallback before account capability discovery; never silently send an
-// unavailable new model or retry a paid request with another engine.
-export const DEFAULT_OPENAI_IMAGE_MODEL = 'gpt-image-2';
+// Default engine is GPT Image 2.5 Flare, also before account capability discovery
+// finishes. Discovery falls back to Image 2 only when the account's model list
+// confirms 2.5 is absent; a paid request is never retried with another engine.
+export const DEFAULT_OPENAI_IMAGE_MODEL = 'gpt-image-2.5-flare';
 
 export const OPENAI_IMAGE_MODELS = [
   { id: 'gpt-image-2.5-flare', label: 'GPT Image 2.5 Flare', option: 'Flare · Faster' },

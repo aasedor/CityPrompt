@@ -12,9 +12,10 @@ OpenAIImageModel = Literal[
     "gpt-image-2",
     "gpt-image-2-2026-04-21",
 ]
-# Old clients omit a model. Keep those requests working during the rollout;
-# current clients discover account access and prefer the new engines.
-DEFAULT_OPENAI_IMAGE_MODEL: OpenAIImageModel = "gpt-image-2"
+# Default engine for requests that omit a model and for unknown account access.
+# Accounts whose model list confirms 2.5 is absent fall back to "gpt-image-2"
+# (see app/services/image_model_availability.py).
+DEFAULT_OPENAI_IMAGE_MODEL: OpenAIImageModel = "gpt-image-2.5-flare"
 OPENAI_IMAGE_CREDIT_MULTIPLIERS: dict[str, int] = {
     "gpt-image-2.5-flare": 2,
     "gpt-image-2.5-sunburst": 2,

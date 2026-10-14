@@ -19,7 +19,7 @@ it('adds local images beside GPT, remembers the selection, and excludes local vi
   const reopened = renderHook(() => useImageModelChoice({projectId:'local'}));
   expect(reopened.result.current.imageModel).toBe('flux-klein');
   const masked = renderHook(() => useImageModelChoice({projectId:'local',allowLocal:false,compareByDefault:false}));
-  expect(masked.result.current.imageModel).toBe('gpt-image-2');
+  expect(masked.result.current.imageModel).toBe('gpt-image-2.5-flare'); // default engine before discovery answers
 });
 it('requests one discovered default engine unless the user explicitly selects comparison', async () => {
   vi.mocked(rendersApi.imageModels).mockResolvedValue({default_model:'gpt-image-2.5-flare',models:['gpt-image-2','gpt-image-2.5-flare','gpt-image-2.5-sunburst'].map(id=>({id,available:true}))} as Awaited<ReturnType<typeof rendersApi.imageModels>>);

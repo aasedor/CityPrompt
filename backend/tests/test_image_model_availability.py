@@ -62,7 +62,7 @@ async def test_new_model_account_prefers_flare(monkeypatch):
 async def test_listing_failure_does_not_claim_generation_is_unavailable(monkeypatch):
     mock_models(monkeypatch, [], status=403)
     result = await availability.get_image_model_availability("test")
-    assert result["default_model"] == "gpt-image-2"
+    assert result["default_model"] == "gpt-image-2.5-flare"
     assert all(entry["available"] is None for entry in result["models"])
 
 

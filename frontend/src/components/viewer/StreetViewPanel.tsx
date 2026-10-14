@@ -21,7 +21,7 @@ import { DIRECT_3D_ALLOWED_STYLES, resolveDirect3DPresentationMode, useDirect3DR
 import { collectDirect3DArchetypeReferences } from './globe/direct3dArchetypeReferences';
 import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d';
 import { getCurrentResidualLandscapeClaim } from './globe/residualLandscape';
-import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice, isLocalImageModel } from '@/config/imageModels';
+import { imageModelLabel, imageModelsForChoice, isLocalImageModel } from '@/config/imageModels';
 import { renderLocalImage } from '@/services/localImageRender';
 import { ImageModelSelect } from './ImageModelSelect';
 import { useImageModelChoice } from './useImageModelChoice';
@@ -121,7 +121,7 @@ const STREET_VIEW_STYLE_GROUPS = [
 ] as const;
 
 const STREET_VIEW_RENDER_MODELS = [
-  { model: DEFAULT_OPENAI_IMAGE_MODEL, label: imageModelLabel(DEFAULT_OPENAI_IMAGE_MODEL), imageQuality: 'auto' as const },
+  { model: 'gpt-image-2', label: imageModelLabel('gpt-image-2'), imageQuality: 'auto' as const },
   { model: 'gpt-image-2.5-flare', label: imageModelLabel('gpt-image-2.5-flare'), imageQuality: 'auto' as const },
   { model: 'gpt-image-2.5-sunburst', label: imageModelLabel('gpt-image-2.5-sunburst'), imageQuality: 'auto' as const },
 ];

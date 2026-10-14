@@ -4,7 +4,7 @@ import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pick
 import { useRenderDraft } from './useRenderDraft';
 import { ImagePresentationControls } from './ImagePresentationControls';
 import { RecoverImageAttempts } from './RecoverImageAttempts';
-import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice } from '@/config/imageModels';
+import { imageModelLabel, imageModelsForChoice } from '@/config/imageModels';
 import { ImageModelSelect } from '../ImageModelSelect';
 import { useImageModelChoice } from '../useImageModelChoice';
 import { runImageModelBatch } from '../runImageModelBatch';
@@ -80,7 +80,7 @@ const SHOW_LEGACY_CLASSIC_RENDER =
 // renders consistently weaker; GPT holds the drawn structure best). Two
 // samples of one engine give a real A/B choice; labels keep them apart.
 const COMPARE_RENDER_MODELS = [
-  { model: DEFAULT_OPENAI_IMAGE_MODEL, label: imageModelLabel(DEFAULT_OPENAI_IMAGE_MODEL) },
+  { model: 'gpt-image-2', label: imageModelLabel('gpt-image-2') },
   { model: 'gpt-image-2.5-flare', label: imageModelLabel('gpt-image-2.5-flare') },
   { model: 'gpt-image-2.5-sunburst', label: imageModelLabel('gpt-image-2.5-sunburst') },
 ];
