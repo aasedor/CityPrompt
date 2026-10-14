@@ -182,6 +182,13 @@ def _privacy(client, bucket, key):
         # The authenticated read already proved the object exists.
         if exc.response.get("Error", {}).get("Code") in {"AccessDenied", "403", "404", "NoSuchKey", "NotFound"}:
             return None
+        # R2's S3 endpoint rejects unsigned GETs with this precise authentication
+        # error instead of AccessDenied. Other 400s do not establish privacy.
+        error = exc.response.get("Error", {})
+        if (exc.response.get("ResponseMetadata", {}).get("HTTPStatusCode") == 400
+                and error.get("Code") == "InvalidArgument"
+                and error.get("Message") == "Authorization"):
+            return None
         return "privacy_unverified"
     except Exception:
         return "privacy_unverified"

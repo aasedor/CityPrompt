@@ -118,3 +118,29 @@ Original acceptance checklist (still track outstanding items above):
 Backups, transfer receipts, screenshots, and temporary verification output are
 outside Git at `D:/CityPrompt-production-update-2026-10-14/`. Original geometry
 and unrelated local work were not changed by this deployment checkpoint.
+
+## Hosted acceptance checkpoint (11:35 MDT)
+
+Frontend `775ce0c` passed the actual hosted duplex placement, move, rotation
+and reload pilot. The trial also contains a shared courtyard, a standalone
+sidewalk, a tree, and a proposed zoning overlay. Reports export successfully.
+All 59 approved private model assemblies are installed. Signed byte reads,
+GLB headers, hashes and database metadata passed for all 59. The verifier now
+recognizes R2's exact unsigned HTTP 400 / InvalidArgument / Authorization
+response as a denial; unrelated 400/500 responses remain unverified. This
+narrow change passed 37 tests and independent review. No bucket permissions
+were changed. The full public audit passed 156 choices and 514 dependencies
+with zero failures; receipts are in the external deployment evidence folder.
+
+The approved street and aerial image tests both completed and saved. Animation
+has not been submitted: preflight exposed KLING_ANIMATION_ENABLED=false despite
+the existing FAL credential. The flag is now saved and read back as true on
+API and worker; deployment and the single animation test remain pending.
+The total approved paid-test ceiling remains US$5; no additional images are
+approved by this checkpoint.
+
+A walk view showed gaps at the flattened site's terrain edge; the generated
+street image also interpreted distant context as water near the site. These
+are visual fidelity limitations still needing assessment, not passing claims.
+Google sign-in passed earlier; a final session check and animation playback
+remain before declaring the hosted acceptance complete.

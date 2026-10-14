@@ -89,6 +89,21 @@ def test_exact_runtime_binding_private_bytes_and_hash_are_verified():
     assert all(body.closed for body in private.bodies)
 
 
+@pytest.mark.parametrize("message,http,passed", [
+    ("Authorization", 400, True),
+    ("Invalid range", 400, False),
+    ("Authorization", 500, False),
+])
+def test_r2_unsigned_authorization_rejection_is_narrowly_recognized(message, http, passed):
+    denied = ClientError({"Error": {"Code": "InvalidArgument", "Message": message},
+                          "ResponseMetadata": {"HTTPStatusCode": http}}, "GetObject")
+    result = verify.verify_catalogue([expected()], [binding()], "private-test", Storage(),
+                                    Storage({"library/house.glb": denied}))[0]
+    assert (result["status"] == "verified") is passed
+    if not passed:
+        assert result["issues"] == ["privacy_unverified"]
+
+
 def test_missing_stale_and_storage_failures_are_all_collected_and_redacted():
     variants = ["missing", "stale", "storage", "corrupt", "private-row"]
     bindings = [binding(v) for v in variants[1:]]
