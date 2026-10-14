@@ -40,7 +40,8 @@ def main():
     env = browser_environment(os.environ, work / "env", work / "unused-public")
     assets = args.assets.resolve() if args.assets else work / "assets"
     if args.assets:
-        receipt = validate_packet(assets, RepositoryAssets(ROOT))
+        receipt = validate_packet(assets, RepositoryAssets(ROOT),
+                                  {"claude_five": env["VITE_CLAUDE_FIVE_TRIAL"] == "true"})
     else:
         receipt = prepare(assets, args.fetch_lfs)
     env["CITYPROMPT_PUBLIC_DIR"] = str(assets / "public")

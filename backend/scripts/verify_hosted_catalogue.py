@@ -39,12 +39,17 @@ REQUIRED_ENV = ("DATABASE_URL", "S3_ENDPOINT_URL", "S3_BUCKET_NAME", "S3_ACCESS_
 SHA256 = re.compile(r"[a-f0-9]{64}")
 
 
-def load_expected(contract_path: Path, library_path: Path) -> list[dict]:
+def load_expected(contract_path: Path, library_path: Path, additional_libraries=()) -> list[dict]:
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
     library = json.loads(library_path.read_text(encoding="utf-8"))
     if (contract.get("schema") != "cityprompt.native-model-contract@1"
             or library.get("schema") != "cityprompt.rlasm-architectural-clay-library@1"):
         raise ValueError("Unrecognized catalogue contract")
+    for path in additional_libraries:
+        extra = json.loads(Path(path).read_text(encoding="utf-8"))
+        if extra.get("schema") != "cityprompt.rlasm-architectural-clay-library@1":
+            raise ValueError("Unrecognized additional catalogue contract")
+        library["entries"].extend(extra["entries"])
     rows, seen = [], set()
     for row in contract["records"]:
         if not row.get("current"):
@@ -104,6 +109,38 @@ def _object_key(url):
     if not key or "\\" in key or any(piece in {"", ".", ".."} for piece in key.split("/")):
         return None
     return key
+
+
+def _lod_keys(row):
+    """Mirror the renderer's four levels; absent/blank values use its fallback.
+
+    This base-selection receipt has only one approved hash. Different LOD bytes
+    need their own reviewed derivative contract before they can pass here.
+    """
+    value = row.get("lod_urls")
+    if isinstance(value, str):
+        try:
+            value = json.loads(value)
+        except ValueError:
+            return None
+    if value is None:
+        return []
+    if not isinstance(value, dict):
+        return None
+    keys = []
+    for level in ("0", "1", "2", "3"):
+        url = value.get(level)
+        if url is None:
+            continue
+        if not isinstance(url, str):
+            return None
+        if not url.strip():
+            continue
+        key = _object_key(url.strip())
+        if not key:
+            return None
+        keys.append(key)
+    return keys
 
 
 def _stored_model(client, bucket, key, expected):
@@ -199,14 +236,19 @@ def verify_catalogue(expected, bindings, bucket, storage, anonymous):
             if not key:
                 issues.append("unsafe_model_url")
                 continue
-            issue = _stored_model(storage, bucket, key, wanted)
-            if issue:
-                issues.append(issue)
+            lod_keys = _lod_keys(row)
+            if lod_keys is None:
+                issues.append("unsafe_lod_url")
                 continue
-            issue = _privacy(anonymous, bucket, key)
-            if issue:
-                issues.append(issue)
-            else:
+            verified = True
+            for source_key in dict.fromkeys([key, *lod_keys]):
+                issue = _stored_model(storage, bucket, source_key, wanted)
+                if not issue:
+                    issue = _privacy(anonymous, bucket, source_key)
+                if issue:
+                    issues.append(issue)
+                    verified = False
+            if verified:
                 private_count += 1
         if matching and private_count == len(matching):
             result["private_storage"] = "verified"
@@ -228,7 +270,7 @@ async def read_bindings(url, variants=None):
     try:
         async with connection.transaction(readonly=True):
             rows = await connection.fetch(
-                "SELECT id, model_url, metadata, is_public FROM model_library "
+                "SELECT id, model_url, lod_urls, metadata, is_public FROM model_library "
                 "WHERE ($1::text[] IS NULL OR metadata->'rlasm'->>'variant_id' = ANY($1::text[]))", variants)
         return [dict(row) for row in rows]
     finally:
@@ -242,6 +284,7 @@ def main(argv=None):
     mode.add_argument("--verify-target", action="store_true", help="Read the explicitly configured DB and S3 target")
     parser.add_argument("--contract", type=Path, default=BACKEND / "app/data/native_model_contract.json")
     parser.add_argument("--library", type=Path, default=ROOT / "seed/model-library/rlasm-architectural-clay/library.json")
+    parser.add_argument("--trial-library", type=Path, default=ROOT / "seed/claude-five-trial/library.json")
     parser.add_argument("--report", type=Path)
     args = parser.parse_args(argv)
     report = {"schema": "cityprompt.hosted-catalogue-verification@1", "checked_utc": datetime.now(timezone.utc).isoformat(),
@@ -251,9 +294,10 @@ def main(argv=None):
         if args.verify_target and any(not os.environ.get(name, "").strip() for name in REQUIRED_ENV):
             report["errors"].append("target_configuration_missing")
         else:
-            expected = load_expected(args.contract, args.library)
+            expected = load_expected(args.contract, args.library, [args.trial_library])
             report["source_sha256"] = {"contract": hashlib.sha256(args.contract.read_bytes()).hexdigest(),
-                                       "library": hashlib.sha256(args.library.read_bytes()).hexdigest()}
+                                       "library": hashlib.sha256(args.library.read_bytes()).hexdigest(),
+                                       "trial_library": hashlib.sha256(args.trial_library.read_bytes()).hexdigest()}
             report["expected_count"] = len(expected)
             if args.metadata_only:
                 report["catalogue"] = [{**row, "status": "metadata_only"} for row in expected]

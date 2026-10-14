@@ -9,6 +9,7 @@ import { ReshapePanel } from './ReshapePanel';
 import { rectangleAt, rectangleDimensions } from './geometry';
 import { nativeBuildingContract } from './nativeBuildingContract';
 import library from '../../../../seed/model-library/rlasm-architectural-clay/library.json';
+import completedTrial from '../../../../docs/runtime-reviews/model-release-trial-completion-2026-10-07.json';
 
 interface Candidate {
   candidate: string;
@@ -21,7 +22,13 @@ interface Candidate {
 
 // Independent seed identities keep omitted or incorrectly wired trial models
 // from disappearing silently when the discovery registry changes.
-const candidates = (library.entries as Candidate[]).filter(entry => entry.local_trial_only);
+const candidateIds = [
+  ...completedTrial.entries.map(entry => entry.candidate),
+  'final-seniors-apartments-clay-v003', 'final-transit-pavilion-clay-v002',
+  'final-courtyard-block-clay-v006', 'final-health-centre-clay-v003', 'final-urban-grocery-clay-v004',
+];
+// Promotion must not silently remove a tested model from contract coverage.
+const candidates = (library.entries as Candidate[]).filter(entry => candidateIds.includes(entry.candidate));
 const center = [-114.04677, 51.04542];
 
 function DraftHarness({ assetId }: { assetId: string }) {
@@ -37,9 +44,10 @@ const change = (label: string, value: number) => fireEvent.change(screen.getByLa
 afterEach(cleanup);
 
 describe('release candidate native placement contracts (not browser acceptance)', () => {
-  it('covers all 19 selected local trials independently of discovery gates', () => {
-    expect(candidates).toHaveLength(19);
-    expect(new Set(candidates.map(entry => entry.candidate)).size).toBe(19);
+  it('covers the 19 completed trials and five final buildings independently of discovery and promotion gates', () => {
+    expect(candidates.map(entry => entry.candidate).sort()).toEqual([...candidateIds].sort());
+    expect(candidates).toHaveLength(24);
+    expect(new Set(candidates.map(entry => entry.candidate)).size).toBe(24);
   });
 
   describe.each(candidates)('$candidate', entry => {

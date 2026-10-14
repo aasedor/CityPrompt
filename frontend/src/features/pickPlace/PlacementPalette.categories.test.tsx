@@ -32,7 +32,7 @@ it('can search directly from the category view and reopen at categories', () => 
     onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
   fireEvent.click(screen.getByRole('button', { name: 'Buildings' }));
   fireEvent.change(screen.getByLabelText('Search objects or district code'), { target: { value: 'Side-by-side duplex' } });
-  expect(screen.getByRole('button', { name: /Side-by-side duplex.*Choose & place/ })).toBeVisible();
+  expect(screen.getByRole('button', { name: /Side-by-side duplex.*Choose & place/i })).toBeVisible();
   fireEvent.keyDown(document, { key: 'Escape' });
   fireEvent.click(screen.getByRole('button', { name: 'Buildings' }));
   expect(screen.queryByRole('article')).not.toBeInTheDocument();

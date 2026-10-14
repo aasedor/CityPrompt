@@ -1,0 +1,224 @@
+{
+  "schema": "cityprompt.scoped-browser-visual-review@1",
+  "date": "2026-10-13",
+  "reviewer": "/root",
+  "trial_author": "/root/render_catalogue_audit",
+  "independent_of_trial_author": true,
+  "review_method": "Each of the twenty saved PNGs was opened and visually inspected using view_image. This is a visual review, not independent execution of the UI steps.",
+  "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+  "status": "pass_with_scope_limits",
+  "evidence_directory": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial",
+  "scope": "Ten exact current model revisions on a flat prepared site: visible facade, ground/support contact and controlled same-camera partial occlusion only.",
+  "limitations": [
+    "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+    "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+    "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+    "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+    "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+    "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+  ],
+  "actionable_p0": 0,
+  "actionable_p1": 0,
+  "entries": [
+    {
+      "trial_id": "hotel",
+      "label": "Scottish Baronial railway hotel",
+      "variant_id": "scottish_baronial_granite_tower",
+      "model_revision": "clay-baronial-railway-hotel-clay-v006",
+      "result": "pass_with_scope_limits",
+      "observations": "Visible facade/support contact and same-camera partial occlusion remain coherent. No actionable P0/P1 defect apparent within these frames.",
+      "images": [
+        {
+          "file": "hotel-close.png",
+          "sha256": "081e30e379c697b8b0cd3cc9a863534c07ab0bc3f7c7d0aae41096c2c213a366",
+          "bytes": 560384
+        },
+        {
+          "file": "hotel-occluded.png",
+          "sha256": "bb9850fe5303790c672058a775141492efc05355c76101653556435759cf01b4",
+          "bytes": 550914
+        }
+      ]
+    },
+    {
+      "trial_id": "corner",
+      "label": "Scottish Baronial railway hotel",
+      "variant_id": "parisian-corner-with-dome-zinc-mansard",
+      "model_revision": "clay-zinc-dome-corner-block-clay-v007",
+      "result": "pass_with_scope_limits",
+      "observations": "Visible facade/support contact and same-camera partial occlusion remain coherent. No actionable P0/P1 defect apparent within these frames.",
+      "images": [
+        {
+          "file": "corner-close-zoom.png",
+          "sha256": "25f07f1d01e08b4506ab1f441bedfab06670db1ba6c2571c88d2221bc0728caa",
+          "bytes": 653319
+        },
+        {
+          "file": "corner-occluded-zoom.png",
+          "sha256": "6ba84c1360d95b7be80f308534d03b62aa191a2c28421104af27521675a235dc",
+          "bytes": 561936
+        }
+      ]
+    },
+    {
+      "trial_id": "magasin",
+      "label": "Scottish Baronial railway hotel",
+      "variant_id": "grand-magasin-belle-epoque",
+      "model_revision": "clay-grand-magasin-clay-v008",
+      "result": "pass_with_scope_limits",
+      "observations": "Visible facade/support contact and same-camera partial occlusion remain coherent. No actionable P0/P1 defect apparent within these frames.",
+      "images": [
+        {
+          "file": "magasin-close.png",
+          "sha256": "eea9cab0803782b97283efa2e1712225996e3a2c9b479146f94b46e1326c12e7",
+          "bytes": 733992
+        },
+        {
+          "file": "magasin-occluded.png",
+          "sha256": "46920d70aca7e259bf3fa3939fc8eca00483a6efd0e5ce83c725c9f3ff37280d",
+          "bytes": 551916
+        }
+      ]
+    },
+    {
+      "trial_id": "market",
+      "label": "Scottish Baronial railway hotel",
+      "variant_id": "mercat_modernista",
+      "model_revision": "clay-modernista-market-hall-clay-v007",
+      "result": "pass_with_scope_limits",
+      "observations": "Visible facade/support contact and same-camera partial occlusion remain coherent. No actionable P0/P1 defect apparent within these frames.",
+      "images": [
+        {
+          "file": "market-close.png",
+          "sha256": "cb9941ee22a0174631bfcb0239b3d1611f89ef2cb55022f99eb55899895e56e2",
+          "bytes": 675355
+        },
+        {
+          "file": "market-occluded.png",
+          "sha256": "cd0283cd0041e778078765129ff81f1a3e791736640e3fd53beb6f2bbc14da52",
+          "bytes": 547849
+        }
+      ]
+    },
+    {
+      "trial_id": "cityhall",
+      "label": "Scottish Baronial railway hotel",
+      "variant_id": "montreal_civic_city_hall",
+      "model_revision": "clay-second-empire-city-hall-clay-v010",
+      "result": "pass_with_scope_limits",
+      "observations": "Visible facade/support contact and same-camera partial occlusion remain coherent. No actionable P0/P1 defect apparent within these frames.",
+      "images": [
+        {
+          "file": "cityhall-close.png",
+          "sha256": "8b1339fc94d604d2de712d33230eedcb86cf66011093b6f03e4afbdc33302f59",
+          "bytes": 676953
+        },
+        {
+          "file": "cityhall-occluded.png",
+          "sha256": "9b2394456b35583573958220c33bba6221905462b681365a09c1337e2740d5ec",
+          "bytes": 532781
+        }
+      ]
+    },
+    {
+      "trial_id": "seniors",
+      "label": "Scottish Baronial railway hotel",
+      "variant_id": "final-seniors-apartments-v1",
+      "model_revision": "final-seniors-apartments-clay-v003",
+      "result": "pass_with_scope_limits",
+      "observations": "Visible facade/support contact and same-camera partial occlusion remain coherent. No actionable P0/P1 defect apparent within these frames.",
+      "images": [
+        {
+          "file": "seniors-close.png",
+          "sha256": "b72eb8cf9f1c10e3791c369327f32b54a69b52de0d9ba1d58cd039411abbce7f",
+          "bytes": 743732
+        },
+        {
+          "file": "seniors-occluded.png",
+          "sha256": "42e18ff270dd2ad573ae59e955e3c9178433c7b05c28d4da996eda275cf55faa",
+          "bytes": 574446
+        }
+      ]
+    },
+    {
+      "trial_id": "transit",
+      "label": "Scottish Baronial railway hotel",
+      "variant_id": "final-transit-pavilion-v1",
+      "model_revision": "final-transit-pavilion-clay-v002",
+      "result": "pass_with_scope_limits",
+      "observations": "Visible facade/support contact and same-camera partial occlusion remain coherent. No actionable P0/P1 defect apparent within these frames.",
+      "images": [
+        {
+          "file": "transit-close-zoom.png",
+          "sha256": "406ae477674f0fd06225ccf369e1b1379062ee397bb15920a90542af78bf7c26",
+          "bytes": 436773
+        },
+        {
+          "file": "transit-occluded-zoom.png",
+          "sha256": "bfcaabca3d3fd25641cb27991def4ed3900cd86e48dfbed67322b45c1d62bf56",
+          "bytes": 404392
+        }
+      ]
+    },
+    {
+      "trial_id": "courtyard",
+      "label": "Scottish Baronial railway hotel",
+      "variant_id": "final-courtyard-block-v1",
+      "model_revision": "final-courtyard-block-clay-v006",
+      "result": "pass_with_scope_limits",
+      "observations": "Visible facade/support contact and same-camera partial occlusion remain coherent. No actionable P0/P1 defect apparent within these frames.",
+      "images": [
+        {
+          "file": "courtyard-close.png",
+          "sha256": "b6beea6c4dafa7c9d61c9e59773e16803754a33ba96eac18df162342f50a85ba",
+          "bytes": 467736
+        },
+        {
+          "file": "courtyard-occluded.png",
+          "sha256": "2e91baa7a92bd51341a7af80b278130a16b3c12aa93ee63bf228b9c6a5d28a86",
+          "bytes": 431723
+        }
+      ]
+    },
+    {
+      "trial_id": "health",
+      "label": "Scottish Baronial railway hotel",
+      "variant_id": "final-health-centre-v1",
+      "model_revision": "final-health-centre-clay-v003",
+      "result": "pass_with_scope_limits",
+      "observations": "Visible facade/support contact and same-camera partial occlusion remain coherent. No actionable P0/P1 defect apparent within these frames.",
+      "images": [
+        {
+          "file": "health-close.png",
+          "sha256": "c27f1b3a70bcac43784f1b40ff290db4656b6a531a8b498cfc8e4964c21c7c2d",
+          "bytes": 498712
+        },
+        {
+          "file": "health-occluded.png",
+          "sha256": "7a62c6ce7543fe5cb2fd89e1ae95df48875a102ab9edcca120a55cc266e0eb4d",
+          "bytes": 469134
+        }
+      ]
+    },
+    {
+      "trial_id": "grocery",
+      "label": "Scottish Baronial railway hotel",
+      "variant_id": "final-urban-grocery-v1",
+      "model_revision": "final-urban-grocery-clay-v004",
+      "result": "pass_with_scope_limits",
+      "observations": "Visible facade/support contact and same-camera partial occlusion remain coherent. No actionable P0/P1 defect apparent within these frames.",
+      "images": [
+        {
+          "file": "grocery-close.png",
+          "sha256": "b4fd4d60054fb9d331550514bfd1a3e50b68ba70f6c0bc4c8fb4fca2e3155b10",
+          "bytes": 380800
+        },
+        {
+          "file": "grocery-occluded.png",
+          "sha256": "a9eddd20b6bbe94d3b4b6107a896f7de52e881e47df5b0dcf14461a828c48cc5",
+          "bytes": 355271
+        }
+      ]
+    }
+  ]
+}

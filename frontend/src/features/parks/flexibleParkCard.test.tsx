@@ -9,11 +9,11 @@ it('keeps reviewed parks and makes all four flexible parks searchable and drawab
     onPickCanonical={vi.fn()} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()}/>);
   fireEvent.click(screen.getByRole('button', { name: 'Parks' }));
   fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
-  expect(screen.getByRole('button', { name: /Conservatory botanical garden.*Choose & place/ })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /Conservatory botanical garden.*Choose & place/i })).toBeInTheDocument();
   fireEvent.change(screen.getByRole('searchbox', { name: 'Search objects or district code' }), { target: { value: 'Flexible' } });
   expect(screen.getAllByRole('article')).toHaveLength(4);
-  const pocket = screen.getByRole('button', { name: /Flexible pocket park.*Choose & draw park/ });
-  const greenway = screen.getByRole('button', { name: /Flexible linear greenway.*Choose & draw park/ });
+  const pocket = screen.getByRole('button', { name: /Flexible pocket park.*Choose & draw park/i });
+  const greenway = screen.getByRole('button', { name: /Flexible linear greenway.*Choose & draw park/i });
   expect(within(pocket).getByText('Flexible 3D · draw your outline')).toBeInTheDocument();
   expect(within(greenway).getByText('Flexible 3D · draw your outline')).toBeInTheDocument();
   fireEvent.click(greenway);

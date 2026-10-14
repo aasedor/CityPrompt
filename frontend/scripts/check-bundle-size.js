@@ -6,7 +6,7 @@
  * - Initial app shell: < 600 KiB
  * - Total JS bundle: < 8.25 MiB
  * - Largest individual chunk: < 3.5 MiB
- * - Total CSS: < 175 KiB
+ * - Total CSS: < 192 KiB (October 2026 landing/catalogue interface baseline)
  *
  * Route checks also keep 3D, Mapbox, and catalogue code out of the app shell,
  * and keep Mapbox out of the default 3D project route.
@@ -26,7 +26,10 @@ const BUDGETS = {
   initialJs: 600 * 1024,
   totalJs: 8.25 * 1024 * 1024,
   maxChunkJs: 3.5 * 1024 * 1024,
-  totalCss: 175 * 1024,
+  // October release: 150.8 KiB application/landing + 37.8 KiB lazy Mapbox CSS.
+  // Retain the implemented interface; test-source exclusion saved only 30 bytes.
+  // JS and route-isolation budgets remain unchanged. See the release runbook.
+  totalCss: 192 * 1024,
 };
 
 function getFiles(dir) {

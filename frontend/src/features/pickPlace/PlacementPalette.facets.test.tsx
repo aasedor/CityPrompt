@@ -65,7 +65,7 @@ describe('student catalogue facets',()=>{
     // A bounded synthetic registration verifies future style discovery without
     // activating a currently unreviewed Brutalist family in the real roster.
     const parent=CLASSROOM_CHOICES.find(choice=>choice.domain==='building')!;
-    const brutalist={...parent,option:{...parent.option,label:'Concrete civic hall',categoryId:'brutalism',generationTags:[]}};
+    const brutalist={...parent,id:'synthetic-brutalist',placements:parent.placements.map(asset=>({...asset,id:'synthetic-brutalist-placement'})),option:{...parent.option,label:'Concrete civic hall',categoryId:'brutalism',generationTags:[]}};
     expect(filterCanonicalChoices('building','Brutalist','',[brutalist])).toEqual([brutalist]);
   });
   it('filters streets by registered width and dispatches the original route asset',()=>{

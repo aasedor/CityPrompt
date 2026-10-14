@@ -9,7 +9,7 @@ const result = (variant: string, code: string) => matchPark(park(variant), zone(
 
 describe('park land-use screening', () => {
   it('classifies every current native and flexible layout by placement, variant and revision', () => {
-    expect(ZONING_CATALOGUE_PARKS).toHaveLength(33);
+    expect(ZONING_CATALOGUE_PARKS).toHaveLength(38);
     expect(Object.keys(PARK_PROGRAMS).sort()).toEqual(ZONING_CATALOGUE_PARKS.map(a => a.id).sort());
     for (const asset of ZONING_CATALOGUE_PARKS) {
       expect(PARK_PROGRAMS[asset.id]).toMatchObject({ variantId: asset.model.variantId, revision: asset.model.revision });
@@ -28,6 +28,16 @@ describe('park land-use screening', () => {
     }
     expect(result('wetland_rain_garden_v0', 'S-UN').status).toBe('outside');
     expect(result('urban_pocket_park_v0', 'S-FUD').status).toBe('outside');
+  });
+  it('distinguishes the new informal gardens from active sports facilities using the cited uses', () => {
+    for (const variant of ['student_prairie_picnic_grove_v1', 'student_sensory_wellness_garden_v1']) {
+      expect(result(variant, 'R-CG')).toMatchObject({ status: 'permitted', uses: [{ use: 'Park', definition: '249' }] });
+    }
+    for (const variant of ['student_neighbourhood_sports_green_v1', 'student_bicycle_pump_track_park_v1', 'student_urban_skate_plaza_v1']) {
+      expect(result(variant, 'S-SPR')).toMatchObject({ status: 'permitted', uses: [{ use: 'Outdoor Recreation Area', definition: '248' }] });
+      expect(result(variant, 'S-R').status).toBe('discretionary');
+      expect(result(variant, 'R-CG').status).toBe('outside');
+    }
   });
   it('keeps sandy beach screening under review until the operating use is established', () => {
     const match = result('student_sandy_beach_v1', 'S-SPR');

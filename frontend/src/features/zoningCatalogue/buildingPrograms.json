@@ -1340,5 +1340,76 @@
       "basis": "teaching",
       "evidence": "Original source-locked building with explicit educational occupancy."
     }
+  },
+  "scottish_baronial_granite_tower": {
+    "revision": "clay-baronial-railway-hotel-clay-v006",
+    "components": [
+      [
+        "Hotel"
+      ]
+    ],
+    "assumption": "Hotel guest accommodation and reception in the authored railway-hotel form; restaurants, bars, events and railway operations are not assumed.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact delivery in claudeFiveTrial.json and seed/claude-five-trial/library.json; declared catalogue programme, not a surveyed occupancy or development approval."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, access, parking and measured bylaw height remain site requirements."
+    ]
+  },
+  "parisian-corner-with-dome-zinc-mansard": {
+    "revision": "clay-zinc-dome-corner-block-clay-v007",
+    "components": [],
+    "assumption": "Architectural mixed-use corner-block form; the delivery establishes geometry but does not establish residential, office or retail occupancies.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact delivery in claudeFiveTrial.json and seed/claude-five-trial/library.json; declared catalogue programme, not a surveyed occupancy or development approval."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, access, parking and measured bylaw height remain site requirements."
+    ],
+    "review": "Choose the actual ground-floor and upper-floor occupancies before screening this building. A mixed-use form alone does not establish a Calgary use."
+  },
+  "grand-magasin-belle-epoque": {
+    "revision": "clay-grand-magasin-clay-v008",
+    "components": [
+      [
+        "Retail and Consumer Service"
+      ]
+    ],
+    "assumption": "Classroom department-store programme for the Grand Magasin form. Food service, entertainment and other independent tenancies require separate use checks.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact delivery in claudeFiveTrial.json and seed/claude-five-trial/library.json; declared catalogue programme, not a surveyed occupancy or development approval."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, access, parking and measured bylaw height remain site requirements."
+    ]
+  },
+  "mercat_modernista": {
+    "revision": "clay-modernista-market-hall-clay-v007",
+    "components": [],
+    "assumption": "Covered market-hall form; the delivery does not establish vendor mix, permanent versus temporary retail, food service, or event operation.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact delivery in claudeFiveTrial.json and seed/claude-five-trial/library.json; declared catalogue programme, not a surveyed occupancy or development approval."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, access, parking and measured bylaw height remain site requirements."
+    ],
+    "review": "Confirm the market operator and vendor programme before selecting the applicable uses; a market-hall appearance is not a verified retail or food-service permission."
+  },
+  "montreal_civic_city_hall": {
+    "revision": "clay-second-empire-city-hall-clay-v010",
+    "components": [],
+    "assumption": "Civic city-hall form with public-facing municipal functions; no ordinary office use is assumed.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact delivery in claudeFiveTrial.json and seed/claude-five-trial/library.json; declared catalogue programme, not a surveyed occupancy or development approval."
+    },
+    "conditions": [
+      "Changing the occupancy requires a new use check. Setbacks, density, servicing, access, parking and measured bylaw height remain site requirements."
+    ],
+    "review": "Confirm the municipal programme and applicable use classification. Public-facing civic services must not be relabelled Office solely to obtain a catalogue match."
   }
 }

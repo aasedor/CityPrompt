@@ -343,5 +343,90 @@
       ]
     ],
     "assumption": "Drawable recreational meadow garden. Natural-looking planting alone does not establish the bylaw use Natural Area."
+  },
+  "native-park:student_prairie_picnic_grove_v1--native-v1": {
+    "variantId": "student_prairie_picnic_grove_v1",
+    "revision": "21710e19c4b6368480eb761df99b29017083e1400dadadee33b9e9b7238d4b31",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Public recreational grove and picnic space. No campground, commercial food service or ticketed event operation assumed.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact nativeParks.json authored layout and contentRevision. Educational operating programme; existing cited Park (s.249) or Outdoor Recreation Area (s.248) rules supply the district screening."
+    },
+    "conditions": [
+      "Confirm public access, operator and the proposed activities. Shelters, structures, access, servicing and site conditions require separate review."
+    ]
+  },
+  "native-park:student_neighbourhood_sports_green_v1--native-v1": {
+    "variantId": "student_neighbourhood_sports_green_v1",
+    "revision": "3cd5f45789349f6367ef0dbb51a36bb2db31a8e3161dd390dbba905d8878e6b3",
+    "components": [
+      [
+        "Outdoor Recreation Area"
+      ]
+    ],
+    "assumption": "Outdoor sports grounds for active recreation; no enclosed recreation centre or spectator stadium assumed.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact nativeParks.json authored layout and contentRevision. Educational operating programme; existing cited Park (s.249) or Outdoor Recreation Area (s.248) rules supply the district screening."
+    },
+    "conditions": [
+      "Confirm public access, operator and the proposed activities. Shelters, structures, access, servicing and site conditions require separate review."
+    ]
+  },
+  "native-park:student_sensory_wellness_garden_v1--native-v1": {
+    "variantId": "student_sensory_wellness_garden_v1",
+    "revision": "6c3847fafbd9169537b4647a8dddc5e1bdc287af405ccaf9425966e817a24578",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Public sensory garden for informal recreation and rest. No health-care, therapy or care-facility operation assumed.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact nativeParks.json authored layout and contentRevision. Educational operating programme; existing cited Park (s.249) or Outdoor Recreation Area (s.248) rules supply the district screening."
+    },
+    "conditions": [
+      "Confirm public access, operator and the proposed activities. Shelters, structures, access, servicing and site conditions require separate review."
+    ]
+  },
+  "native-park:student_bicycle_pump_track_park_v1--native-v1": {
+    "variantId": "student_bicycle_pump_track_park_v1",
+    "revision": "5de7226e45bdda357d5f37707bf23c9857a544ab185ca5ddbd8171f6cd4b6e29",
+    "components": [
+      [
+        "Outdoor Recreation Area"
+      ]
+    ],
+    "assumption": "Outdoor bicycle pump track for active recreation; no motorised racing, event venue or commercial equipment rental assumed.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact nativeParks.json authored layout and contentRevision. Educational operating programme; existing cited Park (s.249) or Outdoor Recreation Area (s.248) rules supply the district screening."
+    },
+    "conditions": [
+      "Confirm public access, operator and the proposed activities. Shelters, structures, access, servicing and site conditions require separate review."
+    ]
+  },
+  "native-park:student_urban_skate_plaza_v1--native-v1": {
+    "variantId": "student_urban_skate_plaza_v1",
+    "revision": "f8f39b1991f46f3c9b5281955b8e77d415fe02a5de25787d3203cd686554acd4",
+    "components": [
+      [
+        "Outdoor Recreation Area"
+      ]
+    ],
+    "assumption": "Outdoor skateboarding facility for active recreation; no enclosed arena, spectator venue or retail operation assumed.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact nativeParks.json authored layout and contentRevision. Educational operating programme; existing cited Park (s.249) or Outdoor Recreation Area (s.248) rules supply the district screening."
+    },
+    "conditions": [
+      "Confirm public access, operator and the proposed activities. Shelters, structures, access, servicing and site conditions require separate review."
+    ]
   }
 }

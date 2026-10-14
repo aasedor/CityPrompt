@@ -1,0 +1,943 @@
+{
+  "schema": "cityprompt.independent-persisted-readback-review@1",
+  "date": "2026-10-13",
+  "reviewed_at_utc": "2026-10-14T00:55:27.147093+00:00",
+  "reviewer": "/root/render_backend_audit",
+  "trial_author": "/root/render_catalogue_audit",
+  "independent_of_trial_author": true,
+  "status": "pass_with_scope_limits",
+  "height_precision_note": "Building.height_meters is Numeric(10,2) in backend/app/models/models.py; require equality to native height rounded to two decimals. Exact instance native dimensions remain checked at 1e-6 metre tolerance.",
+  "method": "Read-only independent validation of twenty saved API readbacks against current manifest identity and native geometry; measured polygon axes with 111320 metres per latitude degree and cosine longitude correction; fetched each distinct instance model URL from loopback API and hashed response bytes.",
+  "source_manifests": [
+    {
+      "path": "seed/model-library/rlasm-architectural-clay/library.json",
+      "sha256": "4633321d19cd41389c1f7e9a1a8b7d24fb537568b3097ad1136d8d1e6bbe8090"
+    },
+    {
+      "path": "seed/claude-five-trial/library.json",
+      "sha256": "a32f4fd6b0b294dc714133665f501a24e416aa08155e2de9ae4fc4bfb387f99e"
+    }
+  ],
+  "limitations": [
+    "Saved JSON does not prove the UI actions that produced it or independently witness a reload. Reload screenshot files are bound as evidence only; UI and pixel review belong to separate reviewers.",
+    "Fresh served-byte checks certify the local API at review time, not a hosted deployment or the historical response at screenshot time.",
+    "Plot measurements use the application-style local equirectangular approximation, tolerance 0.02 metres and 0.02 degrees; prepared flat site only."
+  ],
+  "errors": [],
+  "entries": [
+    {
+      "trial_id": "cityhall",
+      "mode": "max",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-cityhall-max.json",
+      "sha256": "c8282d50ff3a2a08d6a67540906396a950a2e9ca00c317f38a570a1b29e7247b",
+      "bytes": 11164,
+      "candidate": "clay-second-empire-city-hall-clay-v010",
+      "variant_id": "montreal_civic_city_hall",
+      "expected_model_sha256": "e6cc51be3727b71a75c96ecc647c3b94ca2733558f478ed6891c046e47b5bfc1",
+      "native_dimensions_m": [
+        62.0,
+        60.0,
+        39.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 39.0,
+      "assembled_height_m": 39.0,
+      "target_plot_m": [
+        250,
+        250
+      ],
+      "measured_edges_m": [
+        250.0,
+        250.0,
+        250.0,
+        250.0
+      ],
+      "measured_rotation_degrees": 0.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "cityhall",
+      "mode": "min",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-cityhall-min.json",
+      "sha256": "e4ea19f8758af1bba835617206c55561a5c3d3371b14ff0074f005651d7998e3",
+      "bytes": 11155,
+      "candidate": "clay-second-empire-city-hall-clay-v010",
+      "variant_id": "montreal_civic_city_hall",
+      "expected_model_sha256": "e6cc51be3727b71a75c96ecc647c3b94ca2733558f478ed6891c046e47b5bfc1",
+      "native_dimensions_m": [
+        62.0,
+        60.0,
+        39.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 39.0,
+      "assembled_height_m": 39.0,
+      "target_plot_m": [
+        66.0,
+        64.0
+      ],
+      "measured_edges_m": [
+        66.0,
+        64.0,
+        66.0,
+        64.0
+      ],
+      "measured_rotation_degrees": 15.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "corner",
+      "mode": "max",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-corner-max.json",
+      "sha256": "de75dbc4f2d96c549649133b3852068a2e92ef129a3421f3dbeae123cd07a176",
+      "bytes": 10888,
+      "candidate": "clay-zinc-dome-corner-block-clay-v007",
+      "variant_id": "parisian-corner-with-dome-zinc-mansard",
+      "expected_model_sha256": "ff3718dd13d63e0380674bca3a5a1d9f07b613c9c9601fb5972d411f6fbbe179",
+      "native_dimensions_m": [
+        48.0,
+        41.0,
+        27.649999618530273
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 27.65,
+      "assembled_height_m": 27.65,
+      "target_plot_m": [
+        250,
+        250
+      ],
+      "measured_edges_m": [
+        250.0,
+        250.0,
+        250.0,
+        250.0
+      ],
+      "measured_rotation_degrees": 0.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "corner",
+      "mode": "min",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-corner-min.json",
+      "sha256": "a0aed6fee68950cfc223c27640db376699866afea50e0d7427757af4f0cf35f3",
+      "bytes": 10885,
+      "candidate": "clay-zinc-dome-corner-block-clay-v007",
+      "variant_id": "parisian-corner-with-dome-zinc-mansard",
+      "expected_model_sha256": "ff3718dd13d63e0380674bca3a5a1d9f07b613c9c9601fb5972d411f6fbbe179",
+      "native_dimensions_m": [
+        48.0,
+        41.0,
+        27.649999618530273
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 27.65,
+      "assembled_height_m": 27.65,
+      "target_plot_m": [
+        52.0,
+        45.0
+      ],
+      "measured_edges_m": [
+        52.0,
+        45.0,
+        52.0,
+        45.0
+      ],
+      "measured_rotation_degrees": 15.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "courtyard",
+      "mode": "max",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-courtyard-max.json",
+      "sha256": "4662eed38ab9202815337b05e91aa0341884e9dca2310618eecfdc76a7591b5e",
+      "bytes": 11067,
+      "candidate": "final-courtyard-block-clay-v006",
+      "variant_id": "final-courtyard-block-v1",
+      "expected_model_sha256": "4edb11725a41a638d9f31c34ce86a739f3d92088966d6ff143079e6d65c88271",
+      "native_dimensions_m": [
+        30.3799991607666,
+        26.299999237060547,
+        15.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 15.0,
+      "assembled_height_m": 15.0,
+      "target_plot_m": [
+        65,
+        65
+      ],
+      "measured_edges_m": [
+        65.0,
+        65.0,
+        65.0,
+        65.0
+      ],
+      "measured_rotation_degrees": 0.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "courtyard",
+      "mode": "min",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-courtyard-min.json",
+      "sha256": "8df1b503cb83ddb4328495fed12dafce1afec6e1714a9daac0e49dc0e05c8d2c",
+      "bytes": 11069,
+      "candidate": "final-courtyard-block-clay-v006",
+      "variant_id": "final-courtyard-block-v1",
+      "expected_model_sha256": "4edb11725a41a638d9f31c34ce86a739f3d92088966d6ff143079e6d65c88271",
+      "native_dimensions_m": [
+        30.3799991607666,
+        26.299999237060547,
+        15.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 15.0,
+      "assembled_height_m": 15.0,
+      "target_plot_m": [
+        34.4,
+        30.3
+      ],
+      "measured_edges_m": [
+        34.4,
+        30.3,
+        34.4,
+        30.3
+      ],
+      "measured_rotation_degrees": 15.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "grocery",
+      "mode": "max",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-grocery-max.json",
+      "sha256": "2753c7980de21457c81b46ba959615fd2f32fdaa2f5ca85d594ac6dcfefd9daf",
+      "bytes": 11163,
+      "candidate": "final-urban-grocery-clay-v004",
+      "variant_id": "final-urban-grocery-v1",
+      "expected_model_sha256": "3981963cf2543037cb472a7383f7a3466cdb157d416cc170e2ec06db7c46de5d",
+      "native_dimensions_m": [
+        22.84999942779541,
+        15.599999904632568,
+        7.044765472412109
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 7.04,
+      "assembled_height_m": 7.0448,
+      "target_plot_m": [
+        65,
+        65
+      ],
+      "measured_edges_m": [
+        65.0,
+        65.0,
+        65.0,
+        65.0
+      ],
+      "measured_rotation_degrees": 0.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "grocery",
+      "mode": "min",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-grocery-min.json",
+      "sha256": "4bad37825aa1d49e2186ee05eef42af06eae18d7ebb968839f788d52e8440158",
+      "bytes": 11157,
+      "candidate": "final-urban-grocery-clay-v004",
+      "variant_id": "final-urban-grocery-v1",
+      "expected_model_sha256": "3981963cf2543037cb472a7383f7a3466cdb157d416cc170e2ec06db7c46de5d",
+      "native_dimensions_m": [
+        22.84999942779541,
+        15.599999904632568,
+        7.044765472412109
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 7.04,
+      "assembled_height_m": 7.0448,
+      "target_plot_m": [
+        26.8,
+        19.6
+      ],
+      "measured_edges_m": [
+        26.8,
+        19.6,
+        26.8,
+        19.6
+      ],
+      "measured_rotation_degrees": 15.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "health",
+      "mode": "max",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-health-max.json",
+      "sha256": "518b8490c63d941b1cdfa519b1d8c1e089938eae37ed843b016be6013de28ec7",
+      "bytes": 11109,
+      "candidate": "final-health-centre-clay-v003",
+      "variant_id": "final-health-centre-v1",
+      "expected_model_sha256": "4824545b9a82581e470e73907337651db93ca0c3657a8bc8564685321af5c893",
+      "native_dimensions_m": [
+        35.18000030517578,
+        23.855000495910645,
+        9.020000457763672
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 9.02,
+      "assembled_height_m": 9.02,
+      "target_plot_m": [
+        65,
+        65
+      ],
+      "measured_edges_m": [
+        65.0,
+        65.0,
+        65.0,
+        65.0
+      ],
+      "measured_rotation_degrees": 0.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "health",
+      "mode": "min",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-health-min.json",
+      "sha256": "8de77c2a038de7bf60a34b9f39320962ff039327aa6f2a0c33335f9dc8f90b00",
+      "bytes": 11106,
+      "candidate": "final-health-centre-clay-v003",
+      "variant_id": "final-health-centre-v1",
+      "expected_model_sha256": "4824545b9a82581e470e73907337651db93ca0c3657a8bc8564685321af5c893",
+      "native_dimensions_m": [
+        35.18000030517578,
+        23.855000495910645,
+        9.020000457763672
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 9.02,
+      "assembled_height_m": 9.02,
+      "target_plot_m": [
+        39.2,
+        27.9
+      ],
+      "measured_edges_m": [
+        39.2,
+        27.9,
+        39.2,
+        27.9
+      ],
+      "measured_rotation_degrees": 15.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "hotel",
+      "mode": "max",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-hotel-max-rotated.json",
+      "sha256": "2db60cc7bf961ba79d6804d1e5e254ab6709192ca0cfa98e597c85505fe1b1ac",
+      "bytes": 6771,
+      "candidate": "clay-baronial-railway-hotel-clay-v006",
+      "variant_id": "scottish_baronial_granite_tower",
+      "expected_model_sha256": "424b00606c40c0bb455bf00d0af51fd12d0506049b065863fdc7827b4e9ffbd9",
+      "native_dimensions_m": [
+        78,
+        72,
+        42.400001525878906
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 42.4,
+      "assembled_height_m": 42.4,
+      "target_plot_m": [
+        250,
+        250
+      ],
+      "measured_edges_m": [
+        250.0,
+        250.0,
+        250.0,
+        250.0
+      ],
+      "measured_rotation_degrees": 15.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "hotel",
+      "mode": "min",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-hotel-min-rotated.json",
+      "sha256": "82ee29aba0e3a9771a3032c5af086d486cc35112f72f466bd681b7bfe2edfd5f",
+      "bytes": 6762,
+      "candidate": "clay-baronial-railway-hotel-clay-v006",
+      "variant_id": "scottish_baronial_granite_tower",
+      "expected_model_sha256": "424b00606c40c0bb455bf00d0af51fd12d0506049b065863fdc7827b4e9ffbd9",
+      "native_dimensions_m": [
+        78,
+        72,
+        42.400001525878906
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 42.4,
+      "assembled_height_m": 42.4,
+      "target_plot_m": [
+        82,
+        76
+      ],
+      "measured_edges_m": [
+        82.0,
+        76.0,
+        82.0,
+        76.0
+      ],
+      "measured_rotation_degrees": 15.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "magasin",
+      "mode": "max",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-magasin-max.json",
+      "sha256": "171377374bedcbb9cea97d1bd3af80cd59d0b14ad67cc36387d470738dd6151d",
+      "bytes": 10561,
+      "candidate": "clay-grand-magasin-clay-v008",
+      "variant_id": "grand-magasin-belle-epoque",
+      "expected_model_sha256": "fa054051b06e3596376ffbad1df78697cc53b3fbe01014021067aac490b4ad82",
+      "native_dimensions_m": [
+        60.0,
+        48.75,
+        35.349998474121094
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 35.35,
+      "assembled_height_m": 35.35,
+      "target_plot_m": [
+        250,
+        250
+      ],
+      "measured_edges_m": [
+        250.0,
+        250.0,
+        250.0,
+        250.0
+      ],
+      "measured_rotation_degrees": 0.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "magasin",
+      "mode": "min",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-magasin-min.json",
+      "sha256": "9cf2a1868a81ded8391571583df5cc334c55ac7d2244875e7dbb39266e4d6f2d",
+      "bytes": 10555,
+      "candidate": "clay-grand-magasin-clay-v008",
+      "variant_id": "grand-magasin-belle-epoque",
+      "expected_model_sha256": "fa054051b06e3596376ffbad1df78697cc53b3fbe01014021067aac490b4ad82",
+      "native_dimensions_m": [
+        60.0,
+        48.75,
+        35.349998474121094
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 35.35,
+      "assembled_height_m": 35.35,
+      "target_plot_m": [
+        64.0,
+        52.8
+      ],
+      "measured_edges_m": [
+        64.0,
+        52.8,
+        64.0,
+        52.8
+      ],
+      "measured_rotation_degrees": 15.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "market",
+      "mode": "max",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-market-max.json",
+      "sha256": "07c1cf2da78d7a4c7e1beb70e1f483c50de0ee98b318059620822cc7723a87ab",
+      "bytes": 10823,
+      "candidate": "clay-modernista-market-hall-clay-v007",
+      "variant_id": "mercat_modernista",
+      "expected_model_sha256": "8a861c3172158a552b3896fcfec89bce09eda40489db6b8f051538fd2f94e03f",
+      "native_dimensions_m": [
+        74.0,
+        74.0,
+        29.399999618530273
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 29.4,
+      "assembled_height_m": 29.4,
+      "target_plot_m": [
+        250,
+        250
+      ],
+      "measured_edges_m": [
+        250.0,
+        250.0,
+        250.0,
+        250.0
+      ],
+      "measured_rotation_degrees": 0.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "market",
+      "mode": "min",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-market-min.json",
+      "sha256": "93e27183bf10c483b84744d79a17e78fb3dcfcebd38fdb9101a8071f6a39151d",
+      "bytes": 10818,
+      "candidate": "clay-modernista-market-hall-clay-v007",
+      "variant_id": "mercat_modernista",
+      "expected_model_sha256": "8a861c3172158a552b3896fcfec89bce09eda40489db6b8f051538fd2f94e03f",
+      "native_dimensions_m": [
+        74.0,
+        74.0,
+        29.399999618530273
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 29.4,
+      "assembled_height_m": 29.4,
+      "target_plot_m": [
+        78.0,
+        78.0
+      ],
+      "measured_edges_m": [
+        78.0,
+        78.0,
+        78.0,
+        78.0
+      ],
+      "measured_rotation_degrees": 15.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "seniors",
+      "mode": "max",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-seniors-max.json",
+      "sha256": "a590c6fe1550616fe600c27ccb34500d59a653d5d525d5e3d5c1854b472ca332",
+      "bytes": 11336,
+      "candidate": "final-seniors-apartments-clay-v003",
+      "variant_id": "final-seniors-apartments-v1",
+      "expected_model_sha256": "9721947c0cf2f0ec6813c57e068fb34bd18d07ecbef15ca809b0e549d9823165",
+      "native_dimensions_m": [
+        32.36000061035156,
+        17.980000495910645,
+        18.989999771118164
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 18.99,
+      "assembled_height_m": 18.99,
+      "target_plot_m": [
+        65,
+        65
+      ],
+      "measured_edges_m": [
+        65.0,
+        65.0,
+        65.0,
+        65.0
+      ],
+      "measured_rotation_degrees": 0.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "seniors",
+      "mode": "min",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-seniors-min.json",
+      "sha256": "a9f54cacdea4aa25547c2332475cfa4b84190e074f949841009569f6a9b5812d",
+      "bytes": 11336,
+      "candidate": "final-seniors-apartments-clay-v003",
+      "variant_id": "final-seniors-apartments-v1",
+      "expected_model_sha256": "9721947c0cf2f0ec6813c57e068fb34bd18d07ecbef15ca809b0e549d9823165",
+      "native_dimensions_m": [
+        32.36000061035156,
+        17.980000495910645,
+        18.989999771118164
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 18.99,
+      "assembled_height_m": 18.99,
+      "target_plot_m": [
+        36.4,
+        22.0
+      ],
+      "measured_edges_m": [
+        36.4,
+        22.0,
+        36.4,
+        22.0
+      ],
+      "measured_rotation_degrees": 15.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "transit",
+      "mode": "max",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-transit-max.json",
+      "sha256": "01a82f4d32a5a954481376bbb3b9ea6cfedb2239757480c233dc8b22f45942df",
+      "bytes": 11232,
+      "candidate": "final-transit-pavilion-clay-v002",
+      "variant_id": "final-transit-pavilion-v1",
+      "expected_model_sha256": "2aa8ac03a0f11f193b782cc2e7de8d64a214b55e25309a07e5f519dd9798581e",
+      "native_dimensions_m": [
+        28.1299991607666,
+        13.149999618530273,
+        6.950000286102295
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 6.95,
+      "assembled_height_m": 6.95,
+      "target_plot_m": [
+        65,
+        65
+      ],
+      "measured_edges_m": [
+        65.0,
+        65.0,
+        65.0,
+        65.0
+      ],
+      "measured_rotation_degrees": 0.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    },
+    {
+      "trial_id": "transit",
+      "mode": "min",
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\readback-transit-min.json",
+      "sha256": "582e83db6fa8f6033e2c816b63f0882f84e73a2b73e5a2578ebbe5fbbe5f5afa",
+      "bytes": 11233,
+      "candidate": "final-transit-pavilion-clay-v002",
+      "variant_id": "final-transit-pavilion-v1",
+      "expected_model_sha256": "2aa8ac03a0f11f193b782cc2e7de8d64a214b55e25309a07e5f519dd9798581e",
+      "native_dimensions_m": [
+        28.1299991607666,
+        13.149999618530273,
+        6.950000286102295
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "persisted_height_m": 6.95,
+      "assembled_height_m": 6.95,
+      "target_plot_m": [
+        32.1,
+        17.1
+      ],
+      "measured_edges_m": [
+        32.1,
+        17.1,
+        32.1,
+        17.1
+      ],
+      "measured_rotation_degrees": 15.0,
+      "compiled_state": "compiled",
+      "generation_status": "idle",
+      "project_id": "c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "zone_id": "1e3d7add-7cfc-4711-8730-0ece8b5c8943",
+      "building_id": "f98d9bff-4ae6-47d0-9b62-b7d185ba1ebe"
+    }
+  ],
+  "served_models": [
+    {
+      "candidate": "clay-second-empire-city-hall-clay-v010",
+      "api_origin": "http://127.0.0.1:8012",
+      "url": "/api/v1/files/library/rlasm-architectural-clay/clay-second-empire-city-hall-clay-v010.glb",
+      "status": 200,
+      "bytes": 4419620,
+      "sha256": "e6cc51be3727b71a75c96ecc647c3b94ca2733558f478ed6891c046e47b5bfc1",
+      "matches_manifest": true
+    },
+    {
+      "candidate": "clay-zinc-dome-corner-block-clay-v007",
+      "api_origin": "http://127.0.0.1:8012",
+      "url": "/api/v1/files/library/rlasm-architectural-clay/clay-zinc-dome-corner-block-clay-v007.glb",
+      "status": 200,
+      "bytes": 3844876,
+      "sha256": "ff3718dd13d63e0380674bca3a5a1d9f07b613c9c9601fb5972d411f6fbbe179",
+      "matches_manifest": true
+    },
+    {
+      "candidate": "final-courtyard-block-clay-v006",
+      "api_origin": "http://127.0.0.1:8012",
+      "url": "/api/v1/files/library/rlasm-architectural-clay/final-courtyard-block-clay-v006.glb",
+      "status": 200,
+      "bytes": 6976484,
+      "sha256": "4edb11725a41a638d9f31c34ce86a739f3d92088966d6ff143079e6d65c88271",
+      "matches_manifest": true
+    },
+    {
+      "candidate": "final-urban-grocery-clay-v004",
+      "api_origin": "http://127.0.0.1:8012",
+      "url": "/api/v1/files/library/rlasm-architectural-clay/final-urban-grocery-clay-v004.glb",
+      "status": 200,
+      "bytes": 594640,
+      "sha256": "3981963cf2543037cb472a7383f7a3466cdb157d416cc170e2ec06db7c46de5d",
+      "matches_manifest": true
+    },
+    {
+      "candidate": "final-health-centre-clay-v003",
+      "api_origin": "http://127.0.0.1:8012",
+      "url": "/api/v1/files/library/rlasm-architectural-clay/final-health-centre-clay-v003.glb",
+      "status": 200,
+      "bytes": 2217264,
+      "sha256": "4824545b9a82581e470e73907337651db93ca0c3657a8bc8564685321af5c893",
+      "matches_manifest": true
+    },
+    {
+      "candidate": "clay-baronial-railway-hotel-clay-v006",
+      "api_origin": "http://127.0.0.1:8012",
+      "url": "/api/v1/files/library/rlasm-architectural-clay/clay-baronial-railway-hotel-clay-v006.glb",
+      "status": 200,
+      "bytes": 4172400,
+      "sha256": "424b00606c40c0bb455bf00d0af51fd12d0506049b065863fdc7827b4e9ffbd9",
+      "matches_manifest": true
+    },
+    {
+      "candidate": "clay-grand-magasin-clay-v008",
+      "api_origin": "http://127.0.0.1:8012",
+      "url": "/api/v1/files/library/rlasm-architectural-clay/clay-grand-magasin-clay-v008.glb",
+      "status": 200,
+      "bytes": 6811612,
+      "sha256": "fa054051b06e3596376ffbad1df78697cc53b3fbe01014021067aac490b4ad82",
+      "matches_manifest": true
+    },
+    {
+      "candidate": "clay-modernista-market-hall-clay-v007",
+      "api_origin": "http://127.0.0.1:8012",
+      "url": "/api/v1/files/library/rlasm-architectural-clay/clay-modernista-market-hall-clay-v007.glb",
+      "status": 200,
+      "bytes": 6719068,
+      "sha256": "8a861c3172158a552b3896fcfec89bce09eda40489db6b8f051538fd2f94e03f",
+      "matches_manifest": true
+    },
+    {
+      "candidate": "final-seniors-apartments-clay-v003",
+      "api_origin": "http://127.0.0.1:8012",
+      "url": "/api/v1/files/library/rlasm-architectural-clay/final-seniors-apartments-clay-v003.glb",
+      "status": 200,
+      "bytes": 3097336,
+      "sha256": "9721947c0cf2f0ec6813c57e068fb34bd18d07ecbef15ca809b0e549d9823165",
+      "matches_manifest": true
+    },
+    {
+      "candidate": "final-transit-pavilion-clay-v002",
+      "api_origin": "http://127.0.0.1:8012",
+      "url": "/api/v1/files/library/rlasm-architectural-clay/final-transit-pavilion-clay-v002.glb",
+      "status": 200,
+      "bytes": 234328,
+      "sha256": "2aa8ac03a0f11f193b782cc2e7de8d64a214b55e25309a07e5f519dd9798581e",
+      "matches_manifest": true
+    }
+  ],
+  "reload_evidence": [
+    {
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\cityhall-reload.png",
+      "sha256": "275fefe084b10965c919c82e01574ff70f8352a217d0c9df7c36a9a86424398c",
+      "bytes": 210683,
+      "interpretation": "Existence and digest only; not independently reviewed pixels or witnessed UI reload."
+    },
+    {
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\corner-reload.png",
+      "sha256": "091eeb214a8201cc72b75540c13bb6363cb38d90868ca47bc63102cd27d572a1",
+      "bytes": 212084,
+      "interpretation": "Existence and digest only; not independently reviewed pixels or witnessed UI reload."
+    },
+    {
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\courtyard-reload.png",
+      "sha256": "36364edcf08645a3342dcd1d47097fb28e99d0f1efb27f66abeb50684a6de1f1",
+      "bytes": 215234,
+      "interpretation": "Existence and digest only; not independently reviewed pixels or witnessed UI reload."
+    },
+    {
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\grocery-reload.png",
+      "sha256": "d8630d3b2f98cade2ec1464d830864c48f661c6a575187f547cf9e7028de755f",
+      "bytes": 216657,
+      "interpretation": "Existence and digest only; not independently reviewed pixels or witnessed UI reload."
+    },
+    {
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\health-reload.png",
+      "sha256": "5ca0b426121e897bdc13ec6522e3cabc8550213c66e7fb24a069a7f7d80c17b0",
+      "bytes": 216638,
+      "interpretation": "Existence and digest only; not independently reviewed pixels or witnessed UI reload."
+    },
+    {
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\hotel-reloaded.png",
+      "sha256": "0a6f6a5870794ecd19e6c83d7bc119332d8a4b33a15d6617efd31132ee00d394",
+      "bytes": 196487,
+      "interpretation": "Existence and digest only; not independently reviewed pixels or witnessed UI reload."
+    },
+    {
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\magasin-reload.png",
+      "sha256": "c4d2b44319eaf770240100b59e308d9e1b6ef7c80aacd15ed8c525ea20879980",
+      "bytes": 211037,
+      "interpretation": "Existence and digest only; not independently reviewed pixels or witnessed UI reload."
+    },
+    {
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\market-reload.png",
+      "sha256": "f2ba1d7048962488cb2bf224b6e7f5533e713eb4f63f14c3cc94ef738a493900",
+      "bytes": 212069,
+      "interpretation": "Existence and digest only; not independently reviewed pixels or witnessed UI reload."
+    },
+    {
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\seniors-reload.png",
+      "sha256": "8cdb5b043e31b9e9b31918a8b4d22282cee9bfa4e8e4519aeeece2ef5cc8c730",
+      "bytes": 213720,
+      "interpretation": "Existence and digest only; not independently reviewed pixels or witnessed UI reload."
+    },
+    {
+      "path": "D:\\CityPrompt-render-readiness-2026-10-13\\catalogue\\browser-trial\\transit-reload.png",
+      "sha256": "1d61090d5669a42a1599420f28098e759f48845bf9a3dde6bdb8e02daf0e5ed8",
+      "bytes": 216838,
+      "interpretation": "Existence and digest only; not independently reviewed pixels or witnessed UI reload."
+    }
+  ]
+}

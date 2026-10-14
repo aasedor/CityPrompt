@@ -7,6 +7,9 @@ const read = relative => JSON.parse(readFileSync(new URL(relative, import.meta.u
 const revisions = read('../src/data/savedModelRevisions.json');
 const root = fileURLToPath(new URL('..',import.meta.url));
 const server = await createServer({root,configFile:resolve(root,'vite.config.ts'),logLevel:'silent',mode:'test',
+  // Backend supports every authored selection, including opt-in trial cards.
+  // This is a geometry contract, not frontend activation or publication approval.
+  define:{'import.meta.env.DEV':'false','import.meta.env.PROD':'true','import.meta.env.VITE_CLAUDE_FIVE_TRIAL':JSON.stringify('true')},
   cacheDir:resolve(root,'../artifacts/model-contract-vite-cache'),server:{middlewareMode:true},
   appType:'custom',optimizeDeps:{noDiscovery:true,entries:[]}});
 let rows;

@@ -49,3 +49,12 @@ test('checks the displayed reference image as well as the runtime conditioning i
   const images=catalogueRequirements([choice],(_id,fallback)=>fallback,data)[0].checks.filter(c=>c.kind==='image').map(c=>c.url);
   assert.deepEqual(images,['/shown-reference.png','/conditioning.png']);
 });
+
+
+test('separate trial manifest retains exact repository model path and publication gate',()=>{
+ const choice={id:'trial',domain:'building',option:{id:'hotel'},placements:[{id:'trial',label:'Hotel',thumbnail:'/hotel.png',model:{variantId:'hotel-v',revision:'hotel-v006'},properties:{}}]};
+ const row={archetype_id:'hotel',variant_id:'hotel-v',candidate:'hotel-v006',local_trial_only:true,sourcePath:'seed/model-library/objects/claude-five/models/hotel.glb',model:{path:'../model-library/objects/claude-five/models/hotel.glb',sha256:'a'.repeat(64)}};
+ const result=catalogueRequirements([choice],()=>'/hotel.png',{entries:[],parks:[],streets:[],library:[row]})[0];
+ assert.equal(result.checks[1].sourcePath,row.sourcePath);
+ assert.equal(result.local_trial_only,true);
+});

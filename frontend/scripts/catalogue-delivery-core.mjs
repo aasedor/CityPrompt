@@ -85,12 +85,12 @@ export function catalogueRequirements(choices, heroImage, data) {
       checks.push(...data.kits);
     } else if (library) {
       representation = 'model_library';
-      checks.push({kind:'glb',sha256:library.model.sha256,sourcePath:'seed/model-library/rlasm-architectural-clay/'+library.model.path,variantId:library.variant_id});
+      checks.push({kind:'glb',sha256:library.model.sha256,sourcePath:library.sourcePath || 'seed/model-library/rlasm-architectural-clay/'+library.model.path,variantId:library.variant_id});
     } else if (asset.properties.validation_native_url || entry?.local_url) {
       representation = 'exact_fixture';
       checks.push({url:asset.properties.validation_native_url || entry.local_url,kind:'glb',sha256:entry?.sha256 || asset.model.revision});
     } else throw new Error('No executable representation: ' + choice.id);
-    requirements.push({id:asset.id,label:asset.label,domain:choice.domain,variantId:asset.model.variantId,representation,checks});
+    requirements.push({id:asset.id,label:asset.label,domain:choice.domain,variantId:asset.model.variantId,representation,local_trial_only:Boolean(library?.local_trial_only),checks});
   }
   return requirements;
 }

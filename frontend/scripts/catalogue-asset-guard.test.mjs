@@ -7,6 +7,30 @@ import { createServer } from 'vite';
 import { catalogueAssetGuard } from './catalogue-asset-guard.mjs';
 import { createHash } from 'node:crypto';
 
+test('repository seed fingerprints stay scoped and reject stale libraries',()=>{
+  const repo=mkdtempSync(join(tmpdir(),'cityprompt-seed-packet-'));
+  const root=join(repo,'frontend'), packet=join(repo,'packet');
+  mkdirSync(root);mkdirSync(packet);mkdirSync(join(repo,'seed/claude-five-trial'),{recursive:true});
+  const seed=join(repo,'seed/claude-five-trial/library.json');
+  writeFileSync(seed,'reviewed seed\r\n');
+  const input={root:'repository',path:'seed/claude-five-trial/library.json',sha256:createHash('sha256').update('reviewed seed\n').digest('hex')};
+  const receipt={schema:'cityprompt.catalogue-packet@1',catalogue_activation:false,sourceInputs:[input],assets:[]};
+  const save=()=>writeFileSync(join(packet,'delivery-manifest.json'),JSON.stringify(receipt));
+  const validate=()=>catalogueAssetGuard().configResolved({root,mode:'test',build:{outDir:'dist'}});
+  const prior=process.env.CITYPROMPT_CATALOGUE_PACKET;process.env.CITYPROMPT_CATALOGUE_PACKET=packet;
+  try {
+    save();assert.doesNotThrow(validate);
+    writeFileSync(seed,'changed seed');assert.throws(validate,/stale/);
+    input.path='../outside.json';save();assert.throws(validate,/repository seed path/);
+    input.path='seed/../outside.json';save();assert.throws(validate,/escapes/);
+    input.root='unrecognized';save();assert.throws(validate,/source root/);
+    delete input.root;input.path='../seed/claude-five-trial/library.json';save();assert.throws(validate,/escapes/);
+  } finally {
+    if(prior===undefined)delete process.env.CITYPROMPT_CATALOGUE_PACKET;else process.env.CITYPROMPT_CATALOGUE_PACKET=prior;
+    rmSync(repo,{recursive:true,force:true});
+  }
+});
+
 test('recovered detail catalogue refuses missing or changed delivery',async()=>{
   const root=mkdtempSync(join(tmpdir(),'cityprompt-recovered-guard-'));
   mkdirSync(join(root,'src/features/parks'),{recursive:true});

@@ -1,15 +1,77 @@
 """Exact, portable hosted-asset preparation; no provider or network calls."""
 import hashlib
+import io
 import json
 from pathlib import Path
 import tempfile
 import unittest
+import zipfile
 from unittest.mock import patch
 
 from scripts.hosted_assets import ROOT, RepositoryAssets, checked_payload, safe_target, public_requirements, write_asset, browser_environment, stamp_service_worker, validate_packet
+from scripts.hosted_assets import detail_requirements
 
 
 class HostedAssetsTests(unittest.TestCase):
+    def test_recovered_archive_serves_only_exact_locked_bytes(self):
+        sources = RepositoryAssets(ROOT)
+        url = "/park-kits/recovered-details-v1/test.glb"
+        payload = b"reviewed model"
+        digest = hashlib.sha256(payload).hexdigest()
+        sources.recovered_sources = {url: {"path": "public" + url, "sha256": digest, "bytes": len(payload)}}
+
+        def install_archive(data=payload, extra=False):
+            stream = io.BytesIO()
+            with zipfile.ZipFile(stream, "w") as archive:
+                archive.writestr("public" + url, data)
+                if extra:
+                    archive.writestr("public/unapproved.glb", b"unapproved")
+            packed = stream.getvalue()
+            sources.recovered = {"archive_path": "seed/model-library/objects/test.zip",
+                                 "archive_sha256": hashlib.sha256(packed).hexdigest(), "archive_bytes": len(packed)}
+            sources.recovered_archive = None
+            return packed
+
+        packed = install_archive()
+        with patch.object(sources, "read", return_value=packed) as read:
+            self.assertEqual(sources.public(url, digest), payload)
+            read.assert_called_once_with("seed/model-library/objects/test.zip")
+            with self.assertRaisesRegex(ValueError, "SHA-256"):
+                sources.public(url, "0" * 64)
+        packed = install_archive(b"changed model")
+        with patch.object(sources, "read", return_value=packed), self.assertRaisesRegex(ValueError, "SHA-256"):
+            sources.public(url, digest)
+        packed = install_archive(extra=True)
+        with patch.object(sources, "read", return_value=packed), self.assertRaisesRegex(ValueError, "unlisted"):
+            sources.public(url, digest)
+        packed = install_archive()
+        sources.recovered["archive_sha256"] = "0" * 64
+        with patch.object(sources, "read", return_value=packed), self.assertRaisesRegex(ValueError, "SHA-256"):
+            sources.public(url, digest)
+
+    def test_add_details_carries_every_locked_model_and_thumbnail(self):
+        rows = []
+        for name in ("detailCatalogueExtras.json", "recoveredDetails.json"):
+            rows.extend(json.loads((ROOT / "frontend/src/features/parks" / name).read_text()))
+        requirements = detail_requirements(rows)
+        self.assertEqual(len(requirements), 525)
+        for row in rows:
+            self.assertEqual(requirements[row["url"]]["sha256"], row["sha256"])
+            self.assertEqual(requirements[row["url"]]["bytes"], row["bytes"])
+            if row.get("thumbnailUrl"):
+                self.assertEqual(requirements[row["thumbnailUrl"]]["sha256"], row["thumbnailSha256"])
+        with self.assertRaisesRegex(ValueError, "Conflicting"):
+            detail_requirements([rows[0], {**rows[0], "sha256": "0" * 64}])
+
+    def test_explicit_catalogue_profile_survives_sanitized_build_environment(self):
+        source = {"VITE_GOOGLE_MAPS_API_KEY": "browser-key", "VITE_API_URL": "https://api.example.org",
+                  "VITE_CLAUDE_FIVE_TRIAL": "true"}
+        env = browser_environment(source, Path("empty-env"), Path("prepared-public"))
+        self.assertEqual(env.get("VITE_CLAUDE_FIVE_TRIAL"), "true")
+        self.assertEqual(env["NODE_ENV"], "production")
+        with self.assertRaisesRegex(ValueError, "true or false"):
+            browser_environment({**source, "VITE_CLAUDE_FIVE_TRIAL": "yes"}, Path("env"), Path("public"))
+
     def test_packet_cannot_reuse_old_hero_or_publish_unlisted_files(self):
         sources = RepositoryAssets(ROOT)
         with tempfile.TemporaryDirectory(prefix="cityprompt-stale-test-") as directory:
@@ -24,6 +86,8 @@ class HostedAssetsTests(unittest.TestCase):
                        "source_inputs": sources.fingerprint(sources.tracked), "assets": [row]}
             (assets / "assets.json").write_text(json.dumps(receipt))
             self.assertEqual(validate_packet(assets, sources), receipt)
+            with self.assertRaisesRegex(ValueError, "profile"):
+                validate_packet(assets, sources, {"claude_five": True})
             source.write_bytes(b"new approved hero at same URL")
             with self.assertRaisesRegex(ValueError, "stale"):
                 validate_packet(assets, sources)

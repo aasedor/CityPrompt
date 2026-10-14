@@ -795,6 +795,19 @@
       "current": true
     },
     {
+      "asset_id": "community_inglewood_corner_merchants",
+      "variant_id": "inglewood_deco_infill",
+      "revision": "inglewood-corner-merchants-clay-v003",
+      "dimensions_m": [
+        16.230000019073486,
+        18.229999542236328,
+        11.369999885559082
+      ],
+      "storeys": 2,
+      "fixed": true,
+      "current": true
+    },
+    {
       "asset_id": "community_log_recreation_cabin",
       "variant_id": "rec_log_cabin_vernacular",
       "revision": "log-recreation-cabin-clay-v002",
@@ -817,19 +830,6 @@
         6.170000076293945
       ],
       "storeys": 1,
-      "fixed": true,
-      "current": true
-    },
-    {
-      "asset_id": "community_inglewood_corner_merchants",
-      "variant_id": "inglewood_deco_infill",
-      "revision": "inglewood-corner-merchants-clay-v003",
-      "dimensions_m": [
-        16.230000019073486,
-        18.229999542236328,
-        11.369999885559082
-      ],
-      "storeys": 2,
       "fixed": true,
       "current": true
     },
@@ -895,6 +895,71 @@
         7.044765472412109
       ],
       "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "claude_scottish_baronial_hotel",
+      "variant_id": "scottish_baronial_granite_tower",
+      "revision": "clay-baronial-railway-hotel-clay-v006",
+      "dimensions_m": [
+        78,
+        72,
+        42.400001525878906
+      ],
+      "storeys": 5,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "claude_parisian_corner_with_dome",
+      "variant_id": "parisian-corner-with-dome-zinc-mansard",
+      "revision": "clay-zinc-dome-corner-block-clay-v007",
+      "dimensions_m": [
+        48,
+        41,
+        27.649999618530273
+      ],
+      "storeys": 6,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "claude_grand_magasin",
+      "variant_id": "grand-magasin-belle-epoque",
+      "revision": "clay-grand-magasin-clay-v008",
+      "dimensions_m": [
+        60,
+        48.75,
+        35.349998474121094
+      ],
+      "storeys": 6,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "claude_barcelona_mercat",
+      "variant_id": "mercat_modernista",
+      "revision": "clay-modernista-market-hall-clay-v007",
+      "dimensions_m": [
+        74,
+        74,
+        29.399999618530273
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "claude_montreal_second_empire_civic",
+      "variant_id": "montreal_civic_city_hall",
+      "revision": "clay-second-empire-city-hall-clay-v010",
+      "dimensions_m": [
+        62,
+        60,
+        39
+      ],
+      "storeys": 4,
       "fixed": true,
       "current": true
     },

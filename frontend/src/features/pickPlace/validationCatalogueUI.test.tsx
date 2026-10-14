@@ -3,6 +3,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { PlacementPalette } from './PlacementPalette';
 import { CANONICAL_CHOICES } from './canonicalCatalogue';
+import { cataloguePresentationFor } from './cataloguePresentation';
 
 describe('local student validation discovery',()=>{
   it('shows the current roster and selects every road across all catalogue pages',()=>{
@@ -33,7 +34,7 @@ describe('local student validation discovery',()=>{
       }
       const asset = choice.placements[0];
       expect(asset.kind).toBe('street');
-      const article = screen.getByLabelText(`Variant for ${asset.label}`).closest('article')!;
+      const article = screen.getByLabelText(`Variant for ${cataloguePresentationFor(asset.id)?.label ?? asset.label}`).closest('article')!;
       fireEvent.click(within(article).getByRole('button', { name: /Choose & draw route/ }));
       expect(onPickStreet).toHaveBeenLastCalledWith(asset);
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();

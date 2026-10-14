@@ -41,7 +41,7 @@ import sys
 from urllib.parse import urlparse
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
-from tools.rlasm_clay_library import clay_seed_objects, clay_seed_rows, load_library
+from tools.rlasm_clay_library import CLAY_ROOT, REPO_ROOT, _validate_payload, clay_seed_objects, clay_seed_rows, load_library
 
 SEED_DIR = pathlib.Path(__file__).resolve().parents[1] / "seed" / "model-library"
 ROWS_FILE = SEED_DIR / "model_library.json"
@@ -85,6 +85,8 @@ def parse_args() -> argparse.Namespace:
         help="seed only the canonical RLASM architectural-clay building collection",
     )
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--clay-library", type=pathlib.Path,
+                        help="explicit reviewed manifest under repository seed/; requires selected clay candidates")
     parser.add_argument(
         "--candidate",
         action="append",
@@ -99,6 +101,33 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def load_seed_library(manifest, *, repo_root=REPO_ROOT):
+    """Normalize a separate reviewed handoff in memory; keep canonical validation."""
+    if manifest is None:
+        return load_library(), CLAY_ROOT
+    repo_root = repo_root.resolve()
+    manifest = pathlib.Path(manifest).resolve()
+    seed_root = (repo_root / "seed").resolve()
+    if not manifest.is_relative_to(seed_root) or manifest.suffix != ".json":
+        raise ValueError("Explicit clay manifest must be a JSON file within repository seed/")
+    payload = json.loads(manifest.read_text(encoding="utf-8"))
+    roots = set()
+    for entry in payload.get("entries", []):
+        relative = str(entry["model"]["path"])
+        if ":" in relative or "\\" in relative or pathlib.PurePosixPath(relative).is_absolute():
+            raise ValueError("Explicit clay source must be a relative model path")
+        source = (manifest.parent / relative).resolve()
+        if not source.is_relative_to(seed_root) or source.suffix != ".glb" or source.parent.name != "models":
+            raise ValueError("Explicit clay source must stay within a repository seed models/ directory")
+        roots.add(source.parent.parent)
+        entry["model"]["path"] = "models/" + source.name
+    if len(roots) != 1:
+        raise ValueError("Explicit clay manifest must use one common models/ directory")
+    clay_root = roots.pop()
+    _validate_payload(payload, clay_root=clay_root, repo_root=repo_root)
+    return payload, clay_root
+
+
 def remote_hash(s3, bucket, key):
     body = s3.get_object(Bucket=bucket, Key=key)["Body"]
     digest = hashlib.sha256()
@@ -108,6 +137,40 @@ def remote_hash(s3, bucket, key):
     finally:
         body.close()
     return digest.hexdigest()
+
+
+def upload_explicit_objects(s3, bucket, objects, hashes):
+    """Refuse any conflict before uploading the bounded missing-object set."""
+    from botocore.exceptions import ClientError
+
+    missing = []
+    for path, key in objects:
+        try:
+            existing = s3.head_object(Bucket=bucket, Key=key)
+        except ClientError as exc:
+            if exc.response.get("Error", {}).get("Code") not in {"404", "NoSuchKey", "NotFound"}:
+                raise
+            missing.append((path, key))
+            continue
+        if existing["ContentLength"] != path.stat().st_size or remote_hash(s3, bucket, key) != hashes[key]:
+            raise ValueError(f"Refusing conflicting stored clay object: {key}")
+    for path, key in missing:
+        s3.upload_file(str(path), bucket, key)
+    return len(missing)
+
+
+def verify_existing_row(expected, stored):
+    metadata = stored["metadata"]
+    if isinstance(metadata, str):
+        metadata = json.loads(metadata)
+    lod_urls = stored["lod_urls"]
+    if isinstance(lod_urls, str):
+        lod_urls = json.loads(lod_urls)
+    if (stored["model_url"] != expected["model_url"] or stored["is_public"] is not True
+            or lod_urls != expected["lod_urls"]
+            or not isinstance(metadata, dict)
+            or any(metadata.get(key) != expected["metadata"].get(key) for key in ("rlasm", "lego"))):
+        raise ValueError("Refusing conflicting existing clay database binding")
 
 
 def select_candidates(payload, candidates):
@@ -128,6 +191,8 @@ def verify_install(args, payload):
         "s3", endpoint_url=args.endpoint, aws_access_key_id=args.access_key, aws_secret_access_key=args.secret_key
     )
     engine = sa.create_engine(args.database_url)
+    explicit = bool(getattr(args, "clay_library", None))
+    row_columns = "model_url, is_public, metadata" + (", lod_urls" if explicit else "")
     try:
         with engine.connect() as conn:
             for entry, row in zip(payload["entries"], clay_seed_rows(payload)):
@@ -136,7 +201,7 @@ def verify_install(args, payload):
                     raise ValueError(f"Stored GLB mismatch: {entry['candidate']}")
                 stored = (
                     conn.execute(
-                        sa.text("SELECT model_url, is_public, metadata FROM model_library WHERE id = :id"),
+                        sa.text(f"SELECT {row_columns} FROM model_library WHERE id = :id"),
                         {"id": row["id"]},
                     )
                     .mappings()
@@ -144,6 +209,8 @@ def verify_install(args, payload):
                 )
                 if not stored or stored["model_url"] != row["model_url"] or not stored["is_public"]:
                     raise ValueError(f"Missing or incorrect public binding: {entry['candidate']}")
+                if explicit:
+                    verify_existing_row(row, stored)
                 metadata = stored["metadata"]
                 if isinstance(metadata, str):
                     metadata = json.loads(metadata)
@@ -158,7 +225,7 @@ def verify_install(args, payload):
     return 0
 
 
-def upload_objects(args: argparse.Namespace, clay_payload: dict) -> int:
+def upload_objects(args: argparse.Namespace, clay_payload: dict, *, clay_root=CLAY_ROOT) -> int:
     import boto3
     import botocore
 
@@ -175,7 +242,7 @@ def upload_objects(args: argparse.Namespace, clay_payload: dict) -> int:
             if path.is_file()
         ]
     )
-    objects.extend((item.source, item.storage_key) for item in clay_seed_objects(clay_payload))
+    objects.extend((item.source, item.storage_key) for item in clay_seed_objects(clay_payload, clay_root=clay_root))
     total = sum(path.stat().st_size for path, _ in objects)
     print(f"objects : {len(objects)} files, {total / 1073741824:.2f} GB")
 
@@ -197,6 +264,13 @@ def upload_objects(args: argparse.Namespace, clay_payload: dict) -> int:
         aws_secret_access_key=args.secret_key,
         config=botocore.client.Config(signature_version="s3v4"),
     )
+    if getattr(args, "clay_library", None):
+        s3.head_bucket(Bucket=args.bucket)
+        hashes = {"library/rlasm-architectural-clay/" + pathlib.PurePosixPath(entry["model"]["path"]).name:
+                  entry["model"]["sha256"] for entry in clay_payload["entries"]}
+        sent = upload_explicit_objects(s3, args.bucket, objects, hashes)
+        print(f"   uploaded {sent} new object(s); {len(objects) - sent} exact objects already present")
+        return 0
     try:
         s3.head_bucket(Bucket=args.bucket)
     except Exception:
@@ -263,6 +337,10 @@ def insert_rows(args: argparse.Namespace, clay_payload: dict) -> int:
         for row in rows:
             rid = str(row["id"])
             if rid in present:
+                if getattr(args, "clay_library", None):
+                    stored = conn.execute(sa.text("SELECT model_url, is_public, metadata, lod_urls FROM model_library WHERE id = :id"),
+                                          {"id": rid}).mappings().one()
+                    verify_existing_row(row, stored)
                 if not args.replace:
                     skipped += 1
                     continue
@@ -287,7 +365,9 @@ def main() -> int:
         raise ValueError("--candidate and --verify require --rlasm-clay-only")
     if args.verify and (args.dry_run or args.objects_only or args.rows_only or args.replace):
         raise ValueError("--verify is a standalone read-only action")
-    clay_payload = load_library()
+    if args.clay_library and (not args.rlasm_clay_only or not args.candidate or args.replace):
+        raise ValueError("--clay-library requires --rlasm-clay-only and finite --candidate selections; --replace is forbidden")
+    clay_payload, clay_root = load_seed_library(args.clay_library)
     clay_payload = select_candidates(clay_payload, args.candidate)
     if args.local_trial:
         if (
@@ -311,7 +391,7 @@ def main() -> int:
         return verify_install(args, clay_payload)
     status = 0
     if not args.rows_only:
-        status |= upload_objects(args, clay_payload)
+        status |= upload_objects(args, clay_payload, clay_root=clay_root)
     if not args.objects_only and status == 0:
         status |= insert_rows(args, clay_payload)
     if status == 0:

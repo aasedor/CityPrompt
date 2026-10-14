@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { packCatalogue, packedCatalogue } from './packed-catalogue.mjs';
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
-for (const filename of ['buildingArchetypes.json', 'openSpaceArchetypes.json', 'streetPathArchetypes.json', 'nativeParks.json', 'nativeStreetPilots.json', 'archetypeReferenceAvailability.json', 'legoFamilySignatures.json', 'validationCatalogue.json']) {
+for (const filename of ['buildingArchetypes.json', 'openSpaceArchetypes.json', 'streetPathArchetypes.json', 'nativeParks.json', 'nativeStreetPilots.json', 'archetypeReferenceAvailability.json', 'legoFamilySignatures.json', 'validationCatalogue.json', 'buildingWalkDoors.json', 'cataloguePresentation.json', 'classroomExpansion.json', '../features/parks/detailCatalogueExtras.json', '../features/parks/recoveredDetails.json', '../features/zoningCatalogue/buildingPrograms.json', '../features/zoningCatalogue/parkPrograms.json', '../features/zoningCatalogue/districtRules.json']) {
   test(`${filename}: browser decoder preserves every catalogue field`, async () => {
     const source = readFileSync(resolve('src/data', filename), 'utf8');
     const module = packCatalogue(source).replace('three/examples/jsm/libs/fflate.module.js', inflater);
@@ -19,13 +19,25 @@ for (const filename of ['buildingArchetypes.json', 'openSpaceArchetypes.json', '
   });
 }
 
-test('only the eight catalogue data modules are packed; other plugin data is preserved', () => {
+test('only explicitly registered catalogue modules are packed; other plugin data is preserved', () => {
   const plugin = packedCatalogue();
   assert.equal(plugin.apply, 'build');
   assert.equal(plugin.enforce, 'post');
-  assert.equal(plugin.transform('', '/app/src/data/classroomExpansion.json'), null);
+  assert.equal(plugin.transform('', '/app/src/data/future-unregistered.json'), null);
   assert.equal(plugin.transform('', '/app/src/data/buildingArchetypes.json?raw'), null);
   assert.notEqual(plugin.transform('', resolve('src/data/archetypeReferenceAvailability.json')), null);
   assert.notEqual(plugin.transform('', resolve('src/data/legoFamilySignatures.json')), null);
   assert.notEqual(plugin.transform('', resolve('src/data/validationCatalogue.json')), null);
+  assert.notEqual(plugin.transform('', resolve('src/features/parks/recoveredDetails.json')), null);
+  assert.notEqual(plugin.transform('', resolve('src/features/zoningCatalogue/buildingPrograms.json')), null);
+  assert.equal(plugin.transform('', '/app/src/features/parks/recoveredDetails.json?raw'), null);
+});
+
+
+test('packing preserves signed zero, spaces and escaped quotes inside authored values', async () => {
+  const source = JSON.stringify({ label: 'two words with "quoted" detail', offset: [-1, 0] }).replace('[-1,0]', '[-1,-0]');
+  const module = packCatalogue(source).replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
+  assert.deepEqual(decoded.default, JSON.parse(source));
+  assert.ok(Object.is(decoded.default.offset[1], -0));
 });

@@ -1963,6 +1963,36 @@
       "arterial"
     ]
   },
+  "claude_scottish_baronial_hotel": {
+    "label": "Scottish Baronial Railway Hotel",
+    "description": "A grand railway hotel with a pointed entrance passage, courtyard and turreted skyline. Five levels sit beneath steep roofs and stepped gables.",
+    "styleIds": ["historical"],
+    "searchTags": ["building", "historical", "scottish", "baronial", "railway", "hotel", "courtyard", "turrets"]
+  },
+  "claude_parisian_corner_with_dome": {
+    "label": "Zinc Dome Corner Block",
+    "description": "A Parisian corner block with recessed windows, a mansard roof and a zinc dome marking the street corner.",
+    "styleIds": ["parisian"],
+    "searchTags": ["building", "parisian", "corner", "mixed_use", "zinc", "dome", "mansard"]
+  },
+  "claude_grand_magasin": {
+    "label": "Grand Magasin",
+    "description": "A Belle Époque department store with tall glazed bays, a rounded corner entrance and a glass dome above the roofline.",
+    "styleIds": ["parisian", "historical"],
+    "searchTags": ["building", "parisian", "historical", "belle_epoque", "department_store", "shops", "retail", "glass", "dome"]
+  },
+  "claude_barcelona_mercat": {
+    "label": "Modernista Market Hall",
+    "description": "A broad market hall with an arched entrance, glazed walls and repeated roof bays inspired by Barcelona's Modernista markets.",
+    "styleIds": ["historical"],
+    "searchTags": ["building", "historical", "modernista", "barcelona", "market", "hall", "shops", "glazed"]
+  },
+  "claude_montreal_second_empire_civic": {
+    "label": "Second Empire City Hall",
+    "description": "A formal city hall with a central clock tower, mansard roofs and dormer windows above symmetrical civic wings.",
+    "styleIds": ["historical", "civic_monumental"],
+    "searchTags": ["building", "historical", "civic_monumental", "second_empire", "montreal", "city_hall", "clock_tower", "mansard"]
+  },
   "calgary_skeletal_draft3_v1": {
     "label": "Skeletal Road — Surface Layout",
     "description": "60 m right of way with fixed cross-section widths, based on Calgary Street Manual Draft 3 (November 2024). Flat surface layout; ditch slopes, road crown and the interim ditch median are not modelled.",

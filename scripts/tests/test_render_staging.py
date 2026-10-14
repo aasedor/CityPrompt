@@ -52,11 +52,19 @@ class RenderStagingTests(unittest.TestCase):
     def test_static_build_has_no_private_keys_or_asset_spa_fallback(self):
         frontend = self.services["cityprompt-staging-web"]
         variables = {v["key"]: v for v in frontend["envVars"]}
-        self.assertEqual(set(variables), {"NODE_VERSION", "PYTHON_VERSION", "GIT_LFS_SKIP_SMUDGE", "VITE_API_URL", "VITE_GOOGLE_MAPS_API_KEY"})
+        self.assertEqual(set(variables), {"NODE_VERSION", "PYTHON_VERSION", "GIT_LFS_SKIP_SMUDGE", "VITE_API_URL", "VITE_GOOGLE_MAPS_API_KEY", "VITE_CLAUDE_FIVE_TRIAL"})
+        self.assertEqual(variables["VITE_CLAUDE_FIVE_TRIAL"]["value"], "true")
         self.assertIn("scripts/build_hosted_frontend.py --fetch-lfs", frontend["buildCommand"])
         self.assertNotIn("/*", {r["source"] for r in frontend["routes"]})
         self.assertIn("/projects/*", {r["source"] for r in frontend["routes"]})
         self.assertTrue(any(h["path"] == "/version.json" and h["value"] == "no-store" for h in frontend["headers"]))
+
+    def test_address_search_has_a_separate_server_maps_key(self):
+        api_vars = {v["key"]: v for v in self.services["cityprompt-staging-api"]["envVars"]}
+        self.assertEqual(api_vars.get("GOOGLE_MAPS_API_KEY"), {"key": "GOOGLE_MAPS_API_KEY", "sync": False})
+        frontend_vars = {v["key"]: v for v in self.services["cityprompt-staging-web"]["envVars"]}
+        self.assertNotIn("GOOGLE_MAPS_API_KEY", frontend_vars)
+        self.assertIs(frontend_vars["VITE_GOOGLE_MAPS_API_KEY"]["sync"], False)
 
 
 if __name__ == "__main__":

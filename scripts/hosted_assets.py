@@ -17,6 +17,8 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 LFS = b"version https://git-lfs.github.com/spec/v1"
+DETAIL_MANIFESTS = ("frontend/src/features/parks/detailCatalogueExtras.json",
+                    "frontend/src/features/parks/recoveredDetails.json")
 
 
 def stamp_service_worker(source: str, identity: bytes) -> str:
@@ -75,10 +77,24 @@ def public_requirements(report: dict) -> dict[str, dict]:
     return result
 
 
-def validate_packet(assets: Path, sources) -> dict:
+def detail_requirements(rows: list[dict]) -> dict[str, dict]:
+    """Pin the complete active Add Details catalogue, including picker captures."""
+    checks = []
+    for row in rows:
+        checks.append({"url": row["url"], "sha256": row["sha256"], "bytes": row["bytes"]})
+        if row.get("thumbnailUrl"):
+            checks.append({"url": row["thumbnailUrl"], "sha256": row["thumbnailSha256"]})
+    if any(not re.fullmatch(r"[a-f0-9]{64}", item["sha256"]) for item in checks):
+        raise ValueError("Add Details requires exact SHA-256 locks")
+    return public_requirements({"choices": [{"checks": checks}]})
+
+
+def validate_packet(assets: Path, sources, profile: dict | None = None) -> dict:
     receipt = json.loads((assets / "assets.json").read_text())
     if receipt.get("schema") != "cityprompt.hosted-assets@1" or receipt.get("catalogue_activation") is not False:
         raise ValueError("Expected a verified hosted-assets packet")
+    if profile is not None and receipt.get("catalogue_profile") != profile:
+        raise ValueError("Asset packet catalogue profile differs; prepare the requested roster")
     inputs = receipt.get("source_inputs")
     if not inputs or sources.fingerprint(inputs) != inputs:
         raise ValueError("Asset packet is stale; prepare it from the current source")
@@ -105,6 +121,9 @@ def browser_environment(source: dict, env_dir: Path, public: Path) -> dict:
         raise ValueError("VITE_API_URL must be the hosted HTTPS API origin, without /api or credentials")
     if not source.get("VITE_GOOGLE_MAPS_API_KEY", "").strip():
         raise ValueError("Set a restricted browser Maps key before building")
+    profile = source.get("VITE_CLAUDE_FIVE_TRIAL", "false")
+    if profile not in {"true", "false"}:
+        raise ValueError("VITE_CLAUDE_FIVE_TRIAL must be true or false")
     # Preserve process essentials, not server/provider keys or a developer dotenv.
     essentials = {"path", "systemroot", "windir", "temp", "tmp", "home", "userprofile", "comspec", "pathext", "ci"}
     env = {key: value for key, value in source.items() if key.lower() in essentials}
@@ -112,12 +131,15 @@ def browser_environment(source: dict, env_dir: Path, public: Path) -> dict:
         if source.get(key):
             env[key] = source[key]
     env.update(VITE_API_URL=origin, VITE_WS_URL=origin.replace("https://", "wss://", 1),
+               VITE_CLAUDE_FIVE_TRIAL=profile,
                VITE_ENV_DIR=str(env_dir.resolve()), CITYPROMPT_PUBLIC_DIR=str(public.resolve()), NODE_ENV="production")
     return env
 
 
 class RepositoryAssets:
-    metadata_paths = {"seed/validation/manifest.json", "seed/validation/supplemental-2026-10-07/manifest.json"}
+    metadata_paths = {"seed/validation/manifest.json", "seed/validation/supplemental-2026-10-07/manifest.json",
+                      "seed/model-library/rlasm-architectural-clay/library.json", "seed/claude-five-trial/library.json",
+                      "seed/recovered-details/manifest.json"}
     def __init__(self, repo: Path, fetch_lfs: bool = False):
         self.repo, self.fetch_lfs = repo.resolve(), fetch_lfs
         self.tracked = set(subprocess.check_output(["git", "ls-files", "-z"], cwd=repo, text=True).split("\0"))
@@ -129,6 +151,20 @@ class RepositoryAssets:
         self.members = {row["path"]: row for row in self.seed["files"]}
         self.by_hash = {row["sha256"]: row["path"] for row in self.seed["files"]}
         self.supplement = {row["url"]: row for row in json.loads(self.read("seed/validation/supplemental-2026-10-07/manifest.json"))["assets"]}
+        self.details = detail_requirements([row for path in DETAIL_MANIFESTS for row in json.loads(self.read(path))])
+        self.recovered = json.loads(self.read("seed/recovered-details/manifest.json"))
+        self.recovered_sources = {row["url"]: row for row in self.recovered["files"]}
+        self.recovered_archive = None
+        recovered_rows = json.loads(self.read(DETAIL_MANIFESTS[1]))
+        recovered_requirements = detail_requirements(recovered_rows)
+        if (len(self.recovered_sources) != len(self.recovered["files"])
+                or set(self.recovered_sources) != set(recovered_requirements)):
+            raise ValueError("Recovered archive must contain exactly the active reviewed details")
+        for url, item in recovered_requirements.items():
+            locked = self.recovered_sources[url]
+            if (locked["path"] != "public" + url or locked["sha256"] != item["sha256"]
+                    or ("bytes" in item and locked["bytes"] != item["bytes"])):
+                raise ValueError("Recovered archive disagrees with the active catalogue lock")
         self.park_sources = {}
         parks = json.loads(self.read("frontend/src/data/nativeParks.json"))
         for park in [*parks["layouts"], *parks.get("archivedLayouts", [])]:
@@ -186,7 +222,7 @@ class RepositoryAssets:
             subprocess.run(["git", "lfs", "fetch", "origin", "--include=" + ",".join(batch), "--exclude="], cwd=self.repo, check=True)
 
     def read(self, relative: str) -> bytes:
-        if relative not in self.tracked or not relative.startswith(("frontend/public/", "frontend/src/data/", "seed/")):
+        if relative not in self.tracked or not (relative.startswith(("frontend/public/", "frontend/src/data/", "seed/")) or relative in DETAIL_MANIFESTS):
             raise ValueError(f"Source is not a tracked runtime input: {relative}")
         path = (self.repo / relative).resolve()
         if not path.is_relative_to(self.repo):
@@ -221,6 +257,21 @@ class RepositoryAssets:
         relative = "frontend/public" + url
         if relative in self.tracked:
             return checked_payload(self.read(relative), digest)
+        if url in self.recovered_sources:
+            row = self.recovered_sources[url]
+            if self.recovered_archive is None:
+                import io
+                data = checked_payload(self.read(self.recovered["archive_path"]), self.recovered["archive_sha256"])
+                if len(data) != self.recovered["archive_bytes"]:
+                    raise ValueError("Recovered archive size differs")
+                self.recovered_archive = zipfile.ZipFile(io.BytesIO(data))
+                names = self.recovered_archive.namelist()
+                if len(names) != len(set(names)) or set(names) != {item["path"] for item in self.recovered_sources.values()}:
+                    raise ValueError("Recovered archive contains missing, duplicate or unlisted members")
+            data = checked_payload(self.recovered_archive.read(row["path"]), row["sha256"])
+            if len(data) != row["bytes"]:
+                raise ValueError("Recovered archive member size differs")
+            return checked_payload(data, digest)
         if url in self.supplement:
             row = self.supplement[url]
             return checked_payload(self.read(row["path"]), digest or row["sha256"])
@@ -245,13 +296,17 @@ def prepare(output: Path, fetch_lfs: bool = False) -> dict:
     output.mkdir(parents=True)
     sources = RepositoryAssets(ROOT, fetch_lfs)
     env = dict(os.environ)
+    env["NODE_ENV"] = "production"
+    profile = env.setdefault("VITE_CLAUDE_FIVE_TRIAL", "false")
+    if profile not in {"true", "false"}:
+        raise ValueError("VITE_CLAUDE_FIVE_TRIAL must be true or false")
     for key in ("CITYPROMPT_PUBLIC_DIR", "CITYPROMPT_CATALOGUE_PACKET", "VITE_ENV_DIR"):
         env.pop(key, None)
     report_path = output / "catalogue-metadata.json"
     subprocess.run(["node", "frontend/scripts/check-catalogue-delivery.mjs", "--metadata-only", f"--report={report_path}"], cwd=ROOT, env=env, check=True)
     report = json.loads(report_path.read_text())
     private = [check for choice in report["choices"] for check in choice["checks"] if check.get("sourcePath")]
-    required = public_requirements(report)
+    required = public_requirements({"choices": [{"checks": [*public_requirements(report).values(), *sources.details.values()]}]})
     # These small common domains include landing, people, map legends/tiles,
     # render examples, PWA files and the existing optional park surface skins.
     extra_prefixes = ("frontend/public/policy-maps/", "frontend/public/render-style-examples/",
@@ -264,6 +319,8 @@ def prepare(output: Path, fetch_lfs: bool = False) -> dict:
         tracked = "frontend/public" + url
         if tracked in sources.tracked:
             fetch_paths.add(tracked)
+        elif url in sources.recovered_sources:
+            fetch_paths.add(sources.recovered["archive_path"])
         elif url in sources.supplement:
             fetch_paths.add(sources.supplement[url]["path"])
         elif url in sources.park_sources and sources.park_sources[url]["archivePath"].startswith("seed/"):
@@ -275,12 +332,18 @@ def prepare(output: Path, fetch_lfs: bool = False) -> dict:
     for check in private:
         checked_payload(sources.read(check["sourcePath"]), check.get("sha256"))
     public = output / "public"
-    assets = [write_asset(public, url, sources.public(url, item.get("sha256"))) for url, item in sorted(required.items())]
+    assets = []
+    for url, item in sorted(required.items()):
+        data = sources.public(url, item.get("sha256"))
+        if item.get("bytes") is not None and len(data) != item["bytes"]:
+            raise ValueError(f"Asset size differs from catalogue: {url}")
+        assets.append(write_asset(public, url, data))
     # Full audit also verifies backend Model Library sources, but doesn't seed or publish them.
     env["CITYPROMPT_PUBLIC_DIR"] = str(public)
     subprocess.run(["node", "frontend/scripts/check-catalogue-delivery.mjs", f"--report={output / 'catalogue-audit.json'}"], cwd=ROOT, env=env, check=True)
     receipt = {"schema": "cityprompt.hosted-assets@1", "source_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
-               "catalogue_activation": False, "choice_count": report["choice_count"], "assets": assets,
+               "catalogue_activation": False, "catalogue_profile": {"claude_five": profile == "true"},
+               "choice_count": report["choice_count"], "assets": assets,
                "source_inputs": sources.fingerprint(fetch_paths | sources.metadata_paths | {p for p in sources.tracked if p.startswith("frontend/src/")}),
                "bytes": sum(row["bytes"] for row in assets)}
     (output / "assets.json").write_text(json.dumps(receipt, indent=2) + "\n", encoding="utf-8")

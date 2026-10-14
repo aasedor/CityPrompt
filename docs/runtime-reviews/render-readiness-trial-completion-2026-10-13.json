@@ -1,0 +1,806 @@
+{
+  "schema": "cityprompt.prepared-site-model-trial-completion@1",
+  "date": "2026-10-13",
+  "timezone": "America/Edmonton",
+  "status": "bounded_local_technical_checks_complete",
+  "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+  "scope": "Ten exact current revisions on one disposable flat prepared site; eight bounded local trial checks. No new keeper approval or hosted deployment.",
+  "authoring_provenance": "Initial hotel was an explicitly labelled API scene fixture. Subsequent nine buildings were selected and applied through ordinary Building type controls in the same disposable zone. All ten used ordinary UI minimum/maximum plot and rotation edits; every model was reloaded and seen restored. Free exports and downloads used ordinary UI. Developer camera zoom and transient foreground occluders provided controlled view fixtures. No paid generation calls; token balance remained 6460. Original user projects were untouched.",
+  "limitations": [
+    "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+    "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+    "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+    "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+    "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+    "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+  ],
+  "console": {
+    "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/final-console-scene.json",
+    "bytes": 2693,
+    "sha256": "8f8fa66fe71639dfdb53f6ebd0e41e09e7d8b9b9d7e25f265b4ec1c115814e37"
+  },
+  "instrumentation_warnings": "Ten Multiple instances of Three.js warnings from transient occluder module imports; no application errors observed. Occluder removed and camera zoom reset by final reload.",
+  "independent_visual_review": {
+    "path": "C:/Users/andre/.codex/worktrees/add-details-recovery/CityPrompt/docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json",
+    "bytes": 9678,
+    "sha256": "5e0a94f4ef0878e52f50b692b28740744f9a18a764a0667cd27b16c4de4ba697"
+  },
+  "entries": [
+    {
+      "candidate": "final-seniors-apartments-clay-v003",
+      "model_sha256": "9721947c0cf2f0ec6813c57e068fb34bd18d07ecbef15ca809b0e549d9823165",
+      "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+      "tested_at": "2026-10-13",
+      "evidence": [
+        "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+        "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_m": [
+        36.4,
+        22.0
+      ],
+      "maximum_plot_m": [
+        65,
+        65
+      ],
+      "rotation_degrees": 15,
+      "receipts": [
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-seniors-min.json",
+          "bytes": 11336,
+          "sha256": "a9f54cacdea4aa25547c2332475cfa4b84190e074f949841009569f6a9b5812d"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-seniors-max.json",
+          "bytes": 11336,
+          "sha256": "a590c6fe1550616fe600c27ccb34500d59a653d5d525d5e3d5c1854b472ca332"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/seniors-close.png",
+          "bytes": 743732,
+          "sha256": "b72eb8cf9f1c10e3791c369327f32b54a69b52de0d9ba1d58cd039411abbce7f"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/seniors-occluded.png",
+          "bytes": 574446,
+          "sha256": "42e18ff270dd2ad573ae59e955e3c9178433c7b05c28d4da996eda275cf55faa"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/seniors-reload.png",
+          "bytes": 213720,
+          "sha256": "8cdb5b043e31b9e9b31918a8b4d22282cee9bfa4e8e4519aeeece2ef5cc8c730"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/seniors-card.png",
+          "bytes": 72126,
+          "sha256": "c6a3b09e38d3e05c4c0cbfaab1681dbca91f94381bd82eddc1cbf2d26b693eb9"
+        }
+      ],
+      "prior_architectural_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/final-seniors-apartments-clay-v003.json",
+        "sha256": "c5e6f3fde8142196784ecc11af902f2547cfdceff73be7229aafdba048fd8cf7",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "limits": [
+        "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+        "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+        "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+        "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+        "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+        "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+      ]
+    },
+    {
+      "candidate": "final-transit-pavilion-clay-v002",
+      "model_sha256": "2aa8ac03a0f11f193b782cc2e7de8d64a214b55e25309a07e5f519dd9798581e",
+      "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+      "tested_at": "2026-10-13",
+      "evidence": [
+        "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+        "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_m": [
+        32.1,
+        17.1
+      ],
+      "maximum_plot_m": [
+        65,
+        65
+      ],
+      "rotation_degrees": 15,
+      "receipts": [
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-transit-min.json",
+          "bytes": 11233,
+          "sha256": "582e83db6fa8f6033e2c816b63f0882f84e73a2b73e5a2578ebbe5fbbe5f5afa"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-transit-max.json",
+          "bytes": 11232,
+          "sha256": "01a82f4d32a5a954481376bbb3b9ea6cfedb2239757480c233dc8b22f45942df"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/transit-close-zoom.png",
+          "bytes": 436773,
+          "sha256": "406ae477674f0fd06225ccf369e1b1379062ee397bb15920a90542af78bf7c26"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/transit-occluded-zoom.png",
+          "bytes": 404392,
+          "sha256": "bfcaabca3d3fd25641cb27991def4ed3900cd86e48dfbed67322b45c1d62bf56"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/transit-reload.png",
+          "bytes": 216838,
+          "sha256": "1d61090d5669a42a1599420f28098e759f48845bf9a3dde6bdb8e02daf0e5ed8"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/transit-card.png",
+          "bytes": 71166,
+          "sha256": "7c515dc0fe2377c316939c2aa747b7778788cb74ce5b7e5900e88eb31e474129"
+        }
+      ],
+      "prior_architectural_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/final-transit-pavilion-clay-v002.json",
+        "sha256": "71e8ebf18ee1589947cdfe8548fa86e4762a86c55941a5fd21ad71ee04aa0938",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "limits": [
+        "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+        "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+        "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+        "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+        "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+        "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+      ]
+    },
+    {
+      "candidate": "final-courtyard-block-clay-v006",
+      "model_sha256": "4edb11725a41a638d9f31c34ce86a739f3d92088966d6ff143079e6d65c88271",
+      "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+      "tested_at": "2026-10-13",
+      "evidence": [
+        "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+        "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_m": [
+        34.4,
+        30.3
+      ],
+      "maximum_plot_m": [
+        65,
+        65
+      ],
+      "rotation_degrees": 15,
+      "receipts": [
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-courtyard-min.json",
+          "bytes": 11069,
+          "sha256": "8df1b503cb83ddb4328495fed12dafce1afec6e1714a9daac0e49dc0e05c8d2c"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-courtyard-max.json",
+          "bytes": 11067,
+          "sha256": "4662eed38ab9202815337b05e91aa0341884e9dca2310618eecfdc76a7591b5e"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/courtyard-close.png",
+          "bytes": 467736,
+          "sha256": "b6beea6c4dafa7c9d61c9e59773e16803754a33ba96eac18df162342f50a85ba"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/courtyard-occluded.png",
+          "bytes": 431723,
+          "sha256": "2e91baa7a92bd51341a7af80b278130a16b3c12aa93ee63bf228b9c6a5d28a86"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/courtyard-reload.png",
+          "bytes": 215234,
+          "sha256": "36364edcf08645a3342dcd1d47097fb28e99d0f1efb27f66abeb50684a6de1f1"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/courtyard-card.png",
+          "bytes": 74469,
+          "sha256": "152f2592c49a78cd60457e31fcb26f18860d3c6390598715a524ac1a576343dc"
+        }
+      ],
+      "prior_architectural_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/final-courtyard-block-clay-v006.json",
+        "sha256": "66384d8f74fffb750e8c889914d97a66028dcf086c91eef645b2b40e51b8b589",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "limits": [
+        "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+        "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+        "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+        "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+        "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+        "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+      ]
+    },
+    {
+      "candidate": "final-health-centre-clay-v003",
+      "model_sha256": "4824545b9a82581e470e73907337651db93ca0c3657a8bc8564685321af5c893",
+      "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+      "tested_at": "2026-10-13",
+      "evidence": [
+        "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+        "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_m": [
+        39.2,
+        27.9
+      ],
+      "maximum_plot_m": [
+        65,
+        65
+      ],
+      "rotation_degrees": 15,
+      "receipts": [
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-health-min.json",
+          "bytes": 11106,
+          "sha256": "8de77c2a038de7bf60a34b9f39320962ff039327aa6f2a0c33335f9dc8f90b00"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-health-max.json",
+          "bytes": 11109,
+          "sha256": "518b8490c63d941b1cdfa519b1d8c1e089938eae37ed843b016be6013de28ec7"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/health-close.png",
+          "bytes": 498712,
+          "sha256": "c27f1b3a70bcac43784f1b40ff290db4656b6a531a8b498cfc8e4964c21c7c2d"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/health-occluded.png",
+          "bytes": 469134,
+          "sha256": "7a62c6ce7543fe5cb2fd89e1ae95df48875a102ab9edcca120a55cc266e0eb4d"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/health-reload.png",
+          "bytes": 216638,
+          "sha256": "5ca0b426121e897bdc13ec6522e3cabc8550213c66e7fb24a069a7f7d80c17b0"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/health-card.png",
+          "bytes": 72493,
+          "sha256": "89f1cba2f0bac4416297dde3ec8c4a8cd573e0b9759f6bf8e269d339e08a14cf"
+        }
+      ],
+      "prior_architectural_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/final-health-centre-clay-v003.json",
+        "sha256": "5ebb00edd2d6d567087f1c37754b48dd4db28aa0e59b9e185d867e3fc2895666",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "limits": [
+        "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+        "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+        "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+        "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+        "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+        "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+      ]
+    },
+    {
+      "candidate": "final-urban-grocery-clay-v004",
+      "model_sha256": "3981963cf2543037cb472a7383f7a3466cdb157d416cc170e2ec06db7c46de5d",
+      "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+      "tested_at": "2026-10-13",
+      "evidence": [
+        "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+        "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_m": [
+        26.8,
+        19.6
+      ],
+      "maximum_plot_m": [
+        65,
+        65
+      ],
+      "rotation_degrees": 15,
+      "receipts": [
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-grocery-min.json",
+          "bytes": 11157,
+          "sha256": "4bad37825aa1d49e2186ee05eef42af06eae18d7ebb968839f788d52e8440158"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-grocery-max.json",
+          "bytes": 11163,
+          "sha256": "2753c7980de21457c81b46ba959615fd2f32fdaa2f5ca85d594ac6dcfefd9daf"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/grocery-close.png",
+          "bytes": 380800,
+          "sha256": "b4fd4d60054fb9d331550514bfd1a3e50b68ba70f6c0bc4c8fb4fca2e3155b10"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/grocery-occluded.png",
+          "bytes": 355271,
+          "sha256": "a9eddd20b6bbe94d3b4b6107a896f7de52e881e47df5b0dcf14461a828c48cc5"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/grocery-reload.png",
+          "bytes": 216657,
+          "sha256": "d8630d3b2f98cade2ec1464d830864c48f661c6a575187f547cf9e7028de755f"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/grocery-card.png",
+          "bytes": 72262,
+          "sha256": "6c33ce0336241118834f1d605f9bc629f0ebe295e618d6b8d2ab9182b30d02b1"
+        }
+      ],
+      "prior_architectural_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/final-urban-grocery-clay-v004.json",
+        "sha256": "48c1c7500ec460aa6a0fd52357be95ac5a94b2c632a3a828401f7c4bc02e0621",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "limits": [
+        "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+        "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+        "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+        "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+        "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+        "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+      ]
+    },
+    {
+      "candidate": "clay-baronial-railway-hotel-clay-v006",
+      "model_sha256": "424b00606c40c0bb455bf00d0af51fd12d0506049b065863fdc7827b4e9ffbd9",
+      "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+      "tested_at": "2026-10-13",
+      "evidence": [
+        "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+        "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_m": [
+        82,
+        76
+      ],
+      "maximum_plot_m": [
+        250,
+        250
+      ],
+      "rotation_degrees": 15,
+      "receipts": [
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-hotel-min-rotated.json",
+          "bytes": 6762,
+          "sha256": "82ee29aba0e3a9771a3032c5af086d486cc35112f72f466bd681b7bfe2edfd5f"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-hotel-max-rotated.json",
+          "bytes": 6771,
+          "sha256": "2db60cc7bf961ba79d6804d1e5e254ab6709192ca0cfa98e597c85505fe1b1ac"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/hotel-close.png",
+          "bytes": 560384,
+          "sha256": "081e30e379c697b8b0cd3cc9a863534c07ab0bc3f7c7d0aae41096c2c213a366"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/hotel-occluded.png",
+          "bytes": 550914,
+          "sha256": "bb9850fe5303790c672058a775141492efc05355c76101653556435759cf01b4"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/hotel-reloaded.png",
+          "bytes": 196487,
+          "sha256": "0a6f6a5870794ecd19e6c83d7bc119332d8a4b33a15d6617efd31132ee00d394"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/hotel-card.png",
+          "bytes": 69874,
+          "sha256": "25ad04851fe2009e3145658efdede90da67065258b32be5365ec05b806c36a7e"
+        }
+      ],
+      "prior_architectural_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-baronial-railway-hotel-clay-v006.json",
+        "sha256": "2f38107d3d6cdcd54305b0134db1daa6d5c0e32391a70ab0d023cc242e535015",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "limits": [
+        "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+        "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+        "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+        "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+        "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+        "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+      ]
+    },
+    {
+      "candidate": "clay-zinc-dome-corner-block-clay-v007",
+      "model_sha256": "ff3718dd13d63e0380674bca3a5a1d9f07b613c9c9601fb5972d411f6fbbe179",
+      "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+      "tested_at": "2026-10-13",
+      "evidence": [
+        "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+        "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_m": [
+        52.0,
+        45.0
+      ],
+      "maximum_plot_m": [
+        250,
+        250
+      ],
+      "rotation_degrees": 15,
+      "receipts": [
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-corner-min.json",
+          "bytes": 10885,
+          "sha256": "a0aed6fee68950cfc223c27640db376699866afea50e0d7427757af4f0cf35f3"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-corner-max.json",
+          "bytes": 10888,
+          "sha256": "de75dbc4f2d96c549649133b3852068a2e92ef129a3421f3dbeae123cd07a176"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/corner-close-zoom.png",
+          "bytes": 653319,
+          "sha256": "25f07f1d01e08b4506ab1f441bedfab06670db1ba6c2571c88d2221bc0728caa"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/corner-occluded-zoom.png",
+          "bytes": 561936,
+          "sha256": "6ba84c1360d95b7be80f308534d03b62aa191a2c28421104af27521675a235dc"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/corner-reload.png",
+          "bytes": 212084,
+          "sha256": "091eeb214a8201cc72b75540c13bb6363cb38d90868ca47bc63102cd27d572a1"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/corner-card.png",
+          "bytes": 69757,
+          "sha256": "33c327bd57bbf135d8885f9ce8ab8ce8dab7ad287d1b6fae372824bf91b968ca"
+        }
+      ],
+      "prior_architectural_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-zinc-dome-corner-block-clay-v007.json",
+        "sha256": "d6b9262090eb3a117f364be484ed774de2cd561fc6781e5e52b007bb5ed45338",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "limits": [
+        "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+        "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+        "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+        "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+        "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+        "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+      ]
+    },
+    {
+      "candidate": "clay-grand-magasin-clay-v008",
+      "model_sha256": "fa054051b06e3596376ffbad1df78697cc53b3fbe01014021067aac490b4ad82",
+      "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+      "tested_at": "2026-10-13",
+      "evidence": [
+        "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+        "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_m": [
+        64.0,
+        52.8
+      ],
+      "maximum_plot_m": [
+        250,
+        250
+      ],
+      "rotation_degrees": 15,
+      "receipts": [
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-magasin-min.json",
+          "bytes": 10555,
+          "sha256": "9cf2a1868a81ded8391571583df5cc334c55ac7d2244875e7dbb39266e4d6f2d"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-magasin-max.json",
+          "bytes": 10561,
+          "sha256": "171377374bedcbb9cea97d1bd3af80cd59d0b14ad67cc36387d470738dd6151d"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/magasin-close.png",
+          "bytes": 733992,
+          "sha256": "eea9cab0803782b97283efa2e1712225996e3a2c9b479146f94b46e1326c12e7"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/magasin-occluded.png",
+          "bytes": 551916,
+          "sha256": "46920d70aca7e259bf3fa3939fc8eca00483a6efd0e5ce83c725c9f3ff37280d"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/magasin-reload.png",
+          "bytes": 211037,
+          "sha256": "c4d2b44319eaf770240100b59e308d9e1b6ef7c80aacd15ed8c525ea20879980"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/magasin-card.png",
+          "bytes": 72698,
+          "sha256": "62645d045d092e7156df53de98b064ef9e30672de9fe212753cd6204cc1977d2"
+        }
+      ],
+      "prior_architectural_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-grand-magasin-clay-v008.json",
+        "sha256": "1c2a8543c0a76e4d024f7fff879c49ed106f7a250a3a86387f7d56582b0111c5",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "limits": [
+        "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+        "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+        "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+        "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+        "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+        "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+      ]
+    },
+    {
+      "candidate": "clay-modernista-market-hall-clay-v007",
+      "model_sha256": "8a861c3172158a552b3896fcfec89bce09eda40489db6b8f051538fd2f94e03f",
+      "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+      "tested_at": "2026-10-13",
+      "evidence": [
+        "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+        "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_m": [
+        78.0,
+        78.0
+      ],
+      "maximum_plot_m": [
+        250,
+        250
+      ],
+      "rotation_degrees": 15,
+      "receipts": [
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-market-min.json",
+          "bytes": 10818,
+          "sha256": "93e27183bf10c483b84744d79a17e78fb3dcfcebd38fdb9101a8071f6a39151d"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-market-max.json",
+          "bytes": 10823,
+          "sha256": "07c1cf2da78d7a4c7e1beb70e1f483c50de0ee98b318059620822cc7723a87ab"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/market-close.png",
+          "bytes": 675355,
+          "sha256": "cb9941ee22a0174631bfcb0239b3d1611f89ef2cb55022f99eb55899895e56e2"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/market-occluded.png",
+          "bytes": 547849,
+          "sha256": "cd0283cd0041e778078765129ff81f1a3e791736640e3fd53beb6f2bbc14da52"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/market-reload.png",
+          "bytes": 212069,
+          "sha256": "f2ba1d7048962488cb2bf224b6e7f5533e713eb4f63f14c3cc94ef738a493900"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/market-card.png",
+          "bytes": 71615,
+          "sha256": "8438c24b93cc0e334ac3e4e167e77a6299c32438c98f495e9fb676b39dff187d"
+        }
+      ],
+      "prior_architectural_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-modernista-market-hall-clay-v007.json",
+        "sha256": "be8a4050ef09d91040ee597fac09f095f87b77e8e4aed1bb725cf6dcd069c8b2",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "limits": [
+        "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+        "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+        "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+        "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+        "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+        "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+      ]
+    },
+    {
+      "candidate": "clay-second-empire-city-hall-clay-v010",
+      "model_sha256": "e6cc51be3727b71a75c96ecc647c3b94ca2733558f478ed6891c046e47b5bfc1",
+      "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+      "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+      "tested_at": "2026-10-13",
+      "evidence": [
+        "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+        "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+      ],
+      "checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "minimum_plot_m": [
+        66.0,
+        64.0
+      ],
+      "maximum_plot_m": [
+        250,
+        250
+      ],
+      "rotation_degrees": 15,
+      "receipts": [
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-cityhall-min.json",
+          "bytes": 11155,
+          "sha256": "e4ea19f8758af1bba835617206c55561a5c3d3371b14ff0074f005651d7998e3"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-cityhall-max.json",
+          "bytes": 11164,
+          "sha256": "c8282d50ff3a2a08d6a67540906396a950a2e9ca00c317f38a570a1b29e7247b"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/cityhall-close.png",
+          "bytes": 676953,
+          "sha256": "8b1339fc94d604d2de712d33230eedcb86cf66011093b6f03e4afbdc33302f59"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/cityhall-occluded.png",
+          "bytes": 532781,
+          "sha256": "9b2394456b35583573958220c33bba6221905462b681365a09c1337e2740d5ec"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/cityhall-reload.png",
+          "bytes": 210683,
+          "sha256": "275fefe084b10965c919c82e01574ff70f8352a217d0c9df7c36a9a86424398c"
+        },
+        {
+          "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/cityhall-card.png",
+          "bytes": 68037,
+          "sha256": "50d011136aa870dd2e68111aa28a4e8aef765c28c425872543854e3b3315ae01"
+        }
+      ],
+      "prior_architectural_review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-second-empire-city-hall-clay-v010.json",
+        "sha256": "72b165e0c0ea937435cb17e8a393969c180e60990710e3d460125e1326be3af9",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "limits": [
+        "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+        "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+        "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+        "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+        "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+        "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+      ]
+    }
+  ],
+  "independent_data_review": {
+    "path": "C:/Users/andre/.codex/worktrees/add-details-recovery/CityPrompt/docs/runtime-reviews/render-readiness-independent-readback-review-2026-10-13.json",
+    "bytes": 33200,
+    "sha256": "a9ef68192dddb145f426918d0cde1a991716b8c24a6e4fe3a04429561fae9612"
+  },
+  "portable_evidence_path": "seed/model-library/objects/render-readiness-trials-2026-10-13.zip"
+}

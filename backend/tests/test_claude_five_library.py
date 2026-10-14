@@ -8,6 +8,7 @@ import uuid
 import pytest
 sys.path.insert(0, str(Path(__file__).parents[2]))
 from scripts import claude_five_library as trial
+from tools.catalogue_promotion import TRIAL_CHECKS
 from app.services.lego_assembly import descriptor_from_library_entry
 
 
@@ -48,6 +49,9 @@ def trial_package(tmp_path):
     payload = json.loads(trial.MANIFEST.read_text())
     payload['entries'] = payload['entries'][:1]
     entry = payload['entries'][0]
+    entry['local_trial_only'] = True
+    entry['activation'] = {}
+    entry['local_trial'] = {}
     filename = entry['candidate'] + '.glb'
     model = repo / 'seed/model-library/objects/claude-five/models' / filename
     model.parent.mkdir(parents=True)
@@ -74,6 +78,37 @@ def trial_package(tmp_path):
     manifest = package / 'library.json'
     manifest.write_text(json.dumps(payload))
     return SimpleNamespace(repo=repo, package=package, payload=payload, manifest=manifest, model=model, review=review)
+
+
+def test_completed_release_remains_installable_locally(trial_package):
+    p = trial_package
+    entry = p.payload['entries'][0]
+    entry['local_trial_only'] = False
+    entry['activation'] = dict(authorized_by='human_user', quote='Prepare this exact release',
+                               date='2026-10-13', model_sha256=entry['model']['sha256'])
+    entry['local_trial'] = dict(model_sha256=entry['model']['sha256'], project_url='http://localhost/projects/test',
+                              tested_by='fixture', tested_at='2026-10-13', evidence=['fixture.json'],
+                              checks=dict.fromkeys(TRIAL_CHECKS, True))
+    p.manifest.write_text(json.dumps(p.payload))
+    assert len(trial.load_bindings(manifest=p.manifest, repo=p.repo)[1]) == 1
+
+
+@pytest.mark.parametrize('missing', ['approval', 'hash', 'trial_check'])
+def test_release_state_requires_exact_activation_and_completed_trial(trial_package, missing):
+    p = trial_package
+    entry = p.payload['entries'][0]
+    entry['local_trial_only'] = False
+    entry['activation'] = dict(authorized_by='human_user', quote='Prepare this exact release',
+                               date='2026-10-13', model_sha256=entry['model']['sha256'])
+    entry['local_trial'] = dict(model_sha256=entry['model']['sha256'], project_url='http://localhost/projects/test',
+                              tested_by='fixture', tested_at='2026-10-13', evidence=['fixture.json'],
+                              checks=dict.fromkeys(TRIAL_CHECKS, True))
+    if missing == 'approval': entry['activation'] = {}
+    if missing == 'hash': entry['activation']['model_sha256'] = '0' * 64
+    if missing == 'trial_check': entry['local_trial']['checks']['save_reload'] = False
+    p.manifest.write_text(json.dumps(p.payload))
+    with pytest.raises(ValueError, match='activation and completed local trial'):
+        trial.load_bindings(manifest=p.manifest, repo=p.repo)
 
 
 def test_durable_package_defaults_to_manifest_parent_without_metadata_drift(trial_package):

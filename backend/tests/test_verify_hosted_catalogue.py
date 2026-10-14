@@ -58,12 +58,14 @@ class Storage:
         return {"Body": body}
 
 
-def test_shipped_contract_covers_all_49_library_choices_not_native_fixtures():
+def test_shipped_contract_covers_current_release_including_five_trial_buildings():
     root = Path(__file__).parents[2]
     rows = verify.load_expected(root / "backend/app/data/native_model_contract.json",
-                                root / "seed/model-library/rlasm-architectural-clay/library.json")
-    assert len(rows) == 49
-    assert len({row["asset_id"] for row in rows}) == 49
+                                root / "seed/model-library/rlasm-architectural-clay/library.json",
+                                [root / "seed/claude-five-trial/library.json"])
+    assert len(rows) == 59
+    assert sum(row["local_trial_only"] for row in rows) == 0
+    assert len({row["asset_id"] for row in rows}) == 59
     assert {"infill_duplex", "vancouverism_classic", "montreal_depanneur_modern"} <= {row["variant_id"] for row in rows}
     assert "validation_timber_sanctuary_church_glazed_gable" not in {row["asset_id"] for row in rows}
 
@@ -198,6 +200,7 @@ async def test_database_fetch_uses_read_only_transaction(monkeypatch):
     db.fetch.return_value = [binding()]
     monkeypatch.setattr(verify, "connect_database", AsyncMock(return_value=db))
     assert (await verify.read_bindings("never-printed-secret"))[0]["is_public"] is True
+    assert "lod_urls" in db.fetch.call_args.args[0]
     db.close.assert_awaited_once()
 
 
@@ -208,3 +211,38 @@ def test_target_requires_explicit_environment_and_never_echoes_errors(monkeypatc
     output = capsys.readouterr().out
     assert "target_configuration_missing" in output
     assert "Traceback" not in output
+
+
+@pytest.mark.parametrize("lod", [None, {}, {"0": ""}, {"0": None}])
+def test_absent_or_empty_lod_retains_the_renderer_model_url_fallback(lod):
+    row = {**binding(), "lod_urls": lod}
+    result = verify.verify_catalogue([expected()], [row], "private-test", Storage(), Storage(denied=True))[0]
+    assert result["status"] == "verified"
+
+
+@pytest.mark.parametrize("level", ["0", "1", "2", "3"])
+def test_every_renderable_lod_must_resolve_to_verified_private_source_bytes(level):
+    row = {**binding(), "lod_urls": json.dumps({level: "/api/v1/files/library/alternate.glb"})}
+    good = verify.verify_catalogue([expected()], [row], "private-test", Storage(), Storage(denied=True))[0]
+    assert good["status"] == "verified"
+    bad = verify.verify_catalogue([expected()], [row], "private-test",
+                                  Storage({"library/alternate.glb": GLB[:-1] + b"x"}), Storage(denied=True))[0]
+    assert bad["issues"] == ["hash_mismatch"]
+    assert bad["private_storage"] == "unverified"
+
+
+@pytest.mark.parametrize("lod", [{"0": "https://example.invalid/model.glb?secret=private"},
+                                 {"1": 42}, ["/api/v1/files/library/house.glb"], "not-json"])
+def test_unsafe_or_malformed_lod_is_reported_without_leaking_url(lod):
+    result = verify.verify_catalogue([expected()], [{**binding(), "lod_urls": lod}],
+                                     "private-test", Storage(), Storage(denied=True))[0]
+    assert result["issues"] == ["unsafe_lod_url"]
+    assert "secret=private" not in json.dumps(result)
+
+
+def test_public_alternate_lod_cannot_hide_behind_private_base_model():
+    row = {**binding(), "lod_urls": {"0": "/api/v1/files/library/public-alternate.glb"}}
+    result = verify.verify_catalogue([expected()], [row], "private-test", Storage(),
+                                     Storage({"library/house.glb": failure()}))[0]
+    assert result["issues"] == ["object_publicly_readable"]
+    assert result["private_storage"] == "unverified"

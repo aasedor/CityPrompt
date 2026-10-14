@@ -31,7 +31,7 @@
       "variant_id": "scottish_baronial_granite_tower",
       "variant_label": "Scottish Baronial railway hotel",
       "runtime_enabled": true,
-      "local_trial_only": true,
+      "local_trial_only": false,
       "native_floors": 5,
       "design_dimensions_m": {
         "width": 78,
@@ -96,6 +96,89 @@
         "width": 82,
         "depth": 76,
         "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Can you make sure everything is updated and ready to go to post on render? I want to make sure everything works well. Once it is on render, I will show it to people.",
+        "date": "2026-10-13",
+        "model_sha256": "424b00606c40c0bb455bf00d0af51fd12d0506049b065863fdc7827b4e9ffbd9",
+        "scope": "Prepare the current version for Render. No push, hosted installation, deployment, keeper approval or paid provider call is authorized by this record."
+      },
+      "local_trial": {
+        "model_sha256": "424b00606c40c0bb455bf00d0af51fd12d0506049b065863fdc7827b4e9ffbd9",
+        "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+        "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+        "tested_at": "2026-10-13",
+        "evidence": [
+          "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+          "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "minimum_plot_m": [
+          82,
+          76
+        ],
+        "maximum_plot_m": [
+          250,
+          250
+        ],
+        "rotation_degrees": 15,
+        "receipts": [
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-hotel-min-rotated.json",
+            "bytes": 6762,
+            "sha256": "82ee29aba0e3a9771a3032c5af086d486cc35112f72f466bd681b7bfe2edfd5f"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-hotel-max-rotated.json",
+            "bytes": 6771,
+            "sha256": "2db60cc7bf961ba79d6804d1e5e254ab6709192ca0cfa98e597c85505fe1b1ac"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/hotel-close.png",
+            "bytes": 560384,
+            "sha256": "081e30e379c697b8b0cd3cc9a863534c07ab0bc3f7c7d0aae41096c2c213a366"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/hotel-occluded.png",
+            "bytes": 550914,
+            "sha256": "bb9850fe5303790c672058a775141492efc05355c76101653556435759cf01b4"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/hotel-reloaded.png",
+            "bytes": 196487,
+            "sha256": "0a6f6a5870794ecd19e6c83d7bc119332d8a4b33a15d6617efd31132ee00d394"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/hotel-card.png",
+            "bytes": 69874,
+            "sha256": "25ad04851fe2009e3145658efdede90da67065258b32be5365ec05b806c36a7e"
+          }
+        ],
+        "prior_architectural_review": {
+          "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-baronial-railway-hotel-clay-v006.json",
+          "sha256": "2f38107d3d6cdcd54305b0134db1daa6d5c0e32391a70ab0d023cc242e535015",
+          "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+          "unresolved_p0": 0,
+          "unresolved_p1": 0
+        },
+        "limits": [
+          "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+          "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+          "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+          "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+          "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+          "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+        ]
       }
     },
     {
@@ -106,7 +189,7 @@
       "variant_id": "parisian-corner-with-dome-zinc-mansard",
       "variant_label": "Zinc Dome Corner Block",
       "runtime_enabled": true,
-      "local_trial_only": true,
+      "local_trial_only": false,
       "native_floors": 6,
       "design_dimensions_m": {
         "width": 48.0,
@@ -171,6 +254,89 @@
         "width": 52.0,
         "depth": 45.0,
         "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Can you make sure everything is updated and ready to go to post on render? I want to make sure everything works well. Once it is on render, I will show it to people.",
+        "date": "2026-10-13",
+        "model_sha256": "ff3718dd13d63e0380674bca3a5a1d9f07b613c9c9601fb5972d411f6fbbe179",
+        "scope": "Prepare the current version for Render. No push, hosted installation, deployment, keeper approval or paid provider call is authorized by this record."
+      },
+      "local_trial": {
+        "model_sha256": "ff3718dd13d63e0380674bca3a5a1d9f07b613c9c9601fb5972d411f6fbbe179",
+        "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+        "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+        "tested_at": "2026-10-13",
+        "evidence": [
+          "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+          "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "minimum_plot_m": [
+          52.0,
+          45.0
+        ],
+        "maximum_plot_m": [
+          250,
+          250
+        ],
+        "rotation_degrees": 15,
+        "receipts": [
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-corner-min.json",
+            "bytes": 10885,
+            "sha256": "a0aed6fee68950cfc223c27640db376699866afea50e0d7427757af4f0cf35f3"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-corner-max.json",
+            "bytes": 10888,
+            "sha256": "de75dbc4f2d96c549649133b3852068a2e92ef129a3421f3dbeae123cd07a176"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/corner-close-zoom.png",
+            "bytes": 653319,
+            "sha256": "25f07f1d01e08b4506ab1f441bedfab06670db1ba6c2571c88d2221bc0728caa"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/corner-occluded-zoom.png",
+            "bytes": 561936,
+            "sha256": "6ba84c1360d95b7be80f308534d03b62aa191a2c28421104af27521675a235dc"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/corner-reload.png",
+            "bytes": 212084,
+            "sha256": "091eeb214a8201cc72b75540c13bb6363cb38d90868ca47bc63102cd27d572a1"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/corner-card.png",
+            "bytes": 69757,
+            "sha256": "33c327bd57bbf135d8885f9ce8ab8ce8dab7ad287d1b6fae372824bf91b968ca"
+          }
+        ],
+        "prior_architectural_review": {
+          "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-zinc-dome-corner-block-clay-v007.json",
+          "sha256": "d6b9262090eb3a117f364be484ed774de2cd561fc6781e5e52b007bb5ed45338",
+          "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+          "unresolved_p0": 0,
+          "unresolved_p1": 0
+        },
+        "limits": [
+          "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+          "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+          "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+          "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+          "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+          "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+        ]
       }
     },
     {
@@ -181,7 +347,7 @@
       "variant_id": "grand-magasin-belle-epoque",
       "variant_label": "Grand Magasin",
       "runtime_enabled": true,
-      "local_trial_only": true,
+      "local_trial_only": false,
       "native_floors": 6,
       "design_dimensions_m": {
         "width": 60.0,
@@ -246,6 +412,89 @@
         "width": 64.0,
         "depth": 52.8,
         "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Can you make sure everything is updated and ready to go to post on render? I want to make sure everything works well. Once it is on render, I will show it to people.",
+        "date": "2026-10-13",
+        "model_sha256": "fa054051b06e3596376ffbad1df78697cc53b3fbe01014021067aac490b4ad82",
+        "scope": "Prepare the current version for Render. No push, hosted installation, deployment, keeper approval or paid provider call is authorized by this record."
+      },
+      "local_trial": {
+        "model_sha256": "fa054051b06e3596376ffbad1df78697cc53b3fbe01014021067aac490b4ad82",
+        "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+        "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+        "tested_at": "2026-10-13",
+        "evidence": [
+          "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+          "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "minimum_plot_m": [
+          64.0,
+          52.8
+        ],
+        "maximum_plot_m": [
+          250,
+          250
+        ],
+        "rotation_degrees": 15,
+        "receipts": [
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-magasin-min.json",
+            "bytes": 10555,
+            "sha256": "9cf2a1868a81ded8391571583df5cc334c55ac7d2244875e7dbb39266e4d6f2d"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-magasin-max.json",
+            "bytes": 10561,
+            "sha256": "171377374bedcbb9cea97d1bd3af80cd59d0b14ad67cc36387d470738dd6151d"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/magasin-close.png",
+            "bytes": 733992,
+            "sha256": "eea9cab0803782b97283efa2e1712225996e3a2c9b479146f94b46e1326c12e7"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/magasin-occluded.png",
+            "bytes": 551916,
+            "sha256": "46920d70aca7e259bf3fa3939fc8eca00483a6efd0e5ce83c725c9f3ff37280d"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/magasin-reload.png",
+            "bytes": 211037,
+            "sha256": "c4d2b44319eaf770240100b59e308d9e1b6ef7c80aacd15ed8c525ea20879980"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/magasin-card.png",
+            "bytes": 72698,
+            "sha256": "62645d045d092e7156df53de98b064ef9e30672de9fe212753cd6204cc1977d2"
+          }
+        ],
+        "prior_architectural_review": {
+          "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-grand-magasin-clay-v008.json",
+          "sha256": "1c2a8543c0a76e4d024f7fff879c49ed106f7a250a3a86387f7d56582b0111c5",
+          "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+          "unresolved_p0": 0,
+          "unresolved_p1": 0
+        },
+        "limits": [
+          "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+          "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+          "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+          "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+          "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+          "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+        ]
       }
     },
     {
@@ -256,7 +505,7 @@
       "variant_id": "mercat_modernista",
       "variant_label": "Modernista Market Hall",
       "runtime_enabled": true,
-      "local_trial_only": true,
+      "local_trial_only": false,
       "native_floors": 1,
       "design_dimensions_m": {
         "width": 74.0,
@@ -321,6 +570,89 @@
         "width": 78.0,
         "depth": 78.0,
         "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Can you make sure everything is updated and ready to go to post on render? I want to make sure everything works well. Once it is on render, I will show it to people.",
+        "date": "2026-10-13",
+        "model_sha256": "8a861c3172158a552b3896fcfec89bce09eda40489db6b8f051538fd2f94e03f",
+        "scope": "Prepare the current version for Render. No push, hosted installation, deployment, keeper approval or paid provider call is authorized by this record."
+      },
+      "local_trial": {
+        "model_sha256": "8a861c3172158a552b3896fcfec89bce09eda40489db6b8f051538fd2f94e03f",
+        "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+        "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+        "tested_at": "2026-10-13",
+        "evidence": [
+          "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+          "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "minimum_plot_m": [
+          78.0,
+          78.0
+        ],
+        "maximum_plot_m": [
+          250,
+          250
+        ],
+        "rotation_degrees": 15,
+        "receipts": [
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-market-min.json",
+            "bytes": 10818,
+            "sha256": "93e27183bf10c483b84744d79a17e78fb3dcfcebd38fdb9101a8071f6a39151d"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-market-max.json",
+            "bytes": 10823,
+            "sha256": "07c1cf2da78d7a4c7e1beb70e1f483c50de0ee98b318059620822cc7723a87ab"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/market-close.png",
+            "bytes": 675355,
+            "sha256": "cb9941ee22a0174631bfcb0239b3d1611f89ef2cb55022f99eb55899895e56e2"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/market-occluded.png",
+            "bytes": 547849,
+            "sha256": "cd0283cd0041e778078765129ff81f1a3e791736640e3fd53beb6f2bbc14da52"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/market-reload.png",
+            "bytes": 212069,
+            "sha256": "f2ba1d7048962488cb2bf224b6e7f5533e713eb4f63f14c3cc94ef738a493900"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/market-card.png",
+            "bytes": 71615,
+            "sha256": "8438c24b93cc0e334ac3e4e167e77a6299c32438c98f495e9fb676b39dff187d"
+          }
+        ],
+        "prior_architectural_review": {
+          "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-modernista-market-hall-clay-v007.json",
+          "sha256": "be8a4050ef09d91040ee597fac09f095f87b77e8e4aed1bb725cf6dcd069c8b2",
+          "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+          "unresolved_p0": 0,
+          "unresolved_p1": 0
+        },
+        "limits": [
+          "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+          "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+          "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+          "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+          "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+          "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+        ]
       }
     },
     {
@@ -331,7 +663,7 @@
       "variant_id": "montreal_civic_city_hall",
       "variant_label": "Second Empire City Hall",
       "runtime_enabled": true,
-      "local_trial_only": true,
+      "local_trial_only": false,
       "native_floors": 4,
       "design_dimensions_m": {
         "width": 62.0,
@@ -396,6 +728,89 @@
         "width": 66.0,
         "depth": 64.0,
         "max_size": 250
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Can you make sure everything is updated and ready to go to post on render? I want to make sure everything works well. Once it is on render, I will show it to people.",
+        "date": "2026-10-13",
+        "model_sha256": "e6cc51be3727b71a75c96ecc647c3b94ca2733558f478ed6891c046e47b5bfc1",
+        "scope": "Prepare the current version for Render. No push, hosted installation, deployment, keeper approval or paid provider call is authorized by this record."
+      },
+      "local_trial": {
+        "model_sha256": "e6cc51be3727b71a75c96ecc647c3b94ca2733558f478ed6891c046e47b5bfc1",
+        "project_url": "http://127.0.0.1:5184/projects/c740cbc7-508a-4c02-aefe-0acdebb93143",
+        "tested_by": "Codex render_catalogue_audit; independent scoped pixel review by root; independent persisted data review by render_backend_audit",
+        "tested_at": "2026-10-13",
+        "evidence": [
+          "docs/runtime-reviews/render-readiness-trial-completion-2026-10-13.json",
+          "docs/runtime-reviews/render-readiness-independent-browser-review-2026-10-13.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "minimum_plot_m": [
+          66.0,
+          64.0
+        ],
+        "maximum_plot_m": [
+          250,
+          250
+        ],
+        "rotation_degrees": 15,
+        "receipts": [
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-cityhall-min.json",
+            "bytes": 11155,
+            "sha256": "e4ea19f8758af1bba835617206c55561a5c3d3371b14ff0074f005651d7998e3"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/readback-cityhall-max.json",
+            "bytes": 11164,
+            "sha256": "c8282d50ff3a2a08d6a67540906396a950a2e9ca00c317f38a570a1b29e7247b"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/cityhall-close.png",
+            "bytes": 676953,
+            "sha256": "8b1339fc94d604d2de712d33230eedcb86cf66011093b6f03e4afbdc33302f59"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/cityhall-occluded.png",
+            "bytes": 532781,
+            "sha256": "9b2394456b35583573958220c33bba6221905462b681365a09c1337e2740d5ec"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/cityhall-reload.png",
+            "bytes": 210683,
+            "sha256": "275fefe084b10965c919c82e01574ff70f8352a217d0c9df7c36a9a86424398c"
+          },
+          {
+            "path": "D:/CityPrompt-render-readiness-2026-10-13/catalogue/browser-trial/cityhall-card.png",
+            "bytes": 68037,
+            "sha256": "50d011136aa870dd2e68111aa28a4e8aef765c28c425872543854e3b3315ae01"
+          }
+        ],
+        "prior_architectural_review": {
+          "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/claude-five-clay-second-empire-city-hall-clay-v010.json",
+          "sha256": "72b165e0c0ea937435cb17e8a393969c180e60990710e3d460125e1326be3af9",
+          "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+          "unresolved_p0": 0,
+          "unresolved_p1": 0
+        },
+        "limits": [
+          "These are elevated framed captures, not eye-level interior or fine glazing-optics inspections.",
+          "Several frames crop upper roof or tower details; they do not establish complete silhouette quality. Seniors uses a wider framing.",
+          "A transient synthetic foreground strip was used to test occlusion; it is not a proposed scene object.",
+          "Retain the previously approved architectural reviews for full-model fidelity, interiors, fine details and stated model limitations.",
+          "No student-laptop performance, natural-terrain support, arbitrary stretching, operable doors or repeatable floors are certified by this review.",
+          "Saved identity, native scale, min/max edits, reload and download byte checks are documented separately by the trial and readback reviewers."
+        ]
       }
     }
   ],

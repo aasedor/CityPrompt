@@ -2,7 +2,7 @@
 import { createServer } from 'vite';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { resolve, dirname } from 'node:path';
+import { resolve, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { catalogueRequirements, containedPath, inspectAsset } from './catalogue-delivery-core.mjs';
 import { gitLfsObjectRoot, parseLfsPointer, readVerifiedLfsObject } from './lfs-runtime-assets.mjs';
@@ -27,6 +27,8 @@ function readPacket(directory) {
 }
 const source = name => read(resolve(frontend,'src/data',name));
 const server = await createServer({root:frontend,configFile:resolve(frontend,'vite.config.ts'),logLevel:'silent',mode:'test',
+  // Avoid local runtime profile injection; select production catalogue explicitly.
+  define:{'import.meta.env.DEV':'false','import.meta.env.PROD':'true','import.meta.env.VITE_CLAUDE_FIVE_TRIAL':JSON.stringify(process.env.VITE_CLAUDE_FIVE_TRIAL || 'false')},
   // This SSR-only audit must never re-optimize the scripts of a live preview.
   // node_modules can be shared between worktrees, so put its cache in the
   // checkout's ignored artifact directory rather than that shared dependency tree.
@@ -54,8 +56,14 @@ const sharedKits = sharedEquipment.map(asset => {
   if (!lock?.sha256) throw new Error('Shared park equipment lacks an exact delivery lock: '+asset.id);
   return {url:asset.url,kind:'glb',sha256:lock.sha256};
 });
+const libraryPaths=['seed/model-library/rlasm-architectural-clay/library.json','seed/claude-five-trial/library.json'];
+const libraryRows=libraryPaths.flatMap(path=>read(resolve(repo,path)).entries.map(row=>{
+  const sourcePath=relative(repo,resolve(repo,dirname(path),row.model.path)).replaceAll('\\','/');
+  if(sourcePath.startsWith('../')) throw new Error('Seed model escapes repository');
+  return {...row,sourcePath};
+}));
 const data = {entries,parks:source('nativeParks.json').layouts,streets:source('nativeStreetPilots.json'),
-  library:read(resolve(repo,'seed/model-library/rlasm-architectural-clay/library.json')).entries,
+  library:libraryRows,
   kits:[...sharedKits,...starter.dependencies.filter(row=>row.location==='public'&&row.path.endsWith('.glb')&&/park-kits|landscape-pilots/.test(row.path)).map(row=>({url:'/'+row.path,kind:'glb',sha256:row.sha256}))]};
 const rows = catalogueRequirements(choices,heroImage,data);
 const savedLayoutChecks = Object.values(Object.fromEntries(data.parks.flatMap(park=>Object.values(park.assets).map(asset=>[asset.url,{url:asset.url,kind:'glb',sha256:asset.sha256}]))));
@@ -99,7 +107,7 @@ for (const row of [...rows,{checks:[...savedLayoutChecks,...rusticKitChecks,...s
   } catch(error) { results.set(key,{status:'FAIL',error:error.message}); }
 }
 const report = {schema:'cityprompt.catalogue-delivery-audit@1',checked_utc:new Date().toISOString(),scope:base||publicRoot,
-  metadata_only:metadataOnly,choice_count:rows.length,distinct_assets:results.size,
+  metadata_only:metadataOnly,publication_blockers:rows.filter(row=>row.local_trial_only).map(row=>({id:row.id,variantId:row.variantId,reason:'local_trial_only'})),choice_count:rows.length,distinct_assets:results.size,
   failures:[...results].filter(([,v])=>v.status==='FAIL').map(([asset,result])=>({asset,...result})),
   saved_layout_dependencies:savedLayoutChecks.map(check=>({...check,...results.get(check.url)})),
   saved_model_revisions:savedRevisionChecks.map(check=>({...check,...results.get(check.url)})),
@@ -109,10 +117,12 @@ if (output) writeFileSync(output,JSON.stringify(report,null,2)+'\n');
 if (packetDirectory && report.failures.length===0 && !metadataOnly) {
   const directory=resolve(packetDirectory);
   if(directory.startsWith(repo)) throw new Error('Keep generated packets outside the source tree');
-  const sources=['src/data/validationCatalogue.json','src/data/classroomExpansion.json','src/data/catalogueOctober2026.json','src/data/nativeParks.json','src/data/nativeStreetPilots.json','src/data/streetManual.json','src/data/flexibleParks.json','src/data/sharedParkEquipment.ts','src/data/neighborhoodParkV0StickerKit.json','src/data/savedModelRevisions.json','public/park-kits/shared-park-equipment-v1/kit_manifest.json','src/features/pickPlace/pickerHeroImages.ts','src/features/pickPlace/assetRegistry.ts','src/features/pickPlace/publishedBuildingAssets.ts','src/features/pickPlace/canonicalCatalogue.ts','src/features/pickPlace/catalogueClassification.ts'];
+  const sources=['src/data/claudeFiveTrial.json','src/data/validationCatalogue.json','src/data/classroomExpansion.json','src/data/catalogueOctober2026.json','src/data/nativeParks.json','src/data/nativeStreetPilots.json','src/data/streetManual.json','src/data/flexibleParks.json','src/data/sharedParkEquipment.ts','src/data/neighborhoodParkV0StickerKit.json','src/data/savedModelRevisions.json','public/park-kits/shared-park-equipment-v1/kit_manifest.json','src/features/pickPlace/pickerHeroImages.ts','src/features/pickPlace/assetRegistry.ts','src/features/pickPlace/publishedBuildingAssets.ts','src/features/pickPlace/canonicalCatalogue.ts','src/features/pickPlace/catalogueClassification.ts'];
   const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
   const normalize=file=>readFileSync(file,'utf8').replace(/\r\n?/g,'\n');
-  const receipt={schema:'cityprompt.catalogue-packet@1',catalogue_activation:false,sourceInputs:sources.map(file=>({path:file,sha256:hash(normalize(resolve(frontend,file)))})),
+  const receipt={schema:'cityprompt.catalogue-packet@1',catalogue_activation:false,sourceInputs:[
+    ...sources.map(file=>({path:file,sha256:hash(normalize(resolve(frontend,file)))})),
+    ...libraryPaths.map(file=>({root:'repository',path:file,sha256:hash(normalize(resolve(repo,file)))}))],
     assets:[...payloads].map(([url,bytes])=>({url,sha256:hash(bytes),bytes:bytes.length}))};
   for(const [url,bytes] of payloads) {
     const file=containedPath(directory,url);

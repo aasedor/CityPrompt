@@ -42,7 +42,11 @@ export function catalogueAssetGuard() {
       const receipt=JSON.parse(fs.readFileSync(path.join(directory,'delivery-manifest.json'),'utf8'));
       if(receipt.schema!=='cityprompt.catalogue-packet@1'||receipt.catalogue_activation!==false) throw new Error('Invalid local catalogue packet');
       for(const input of receipt.sourceInputs) {
-        const text=fs.readFileSync(containedPath(config.root,'/'+input.path),'utf8').replace(/\r\n?/g,'\n');
+        if(input.root!==undefined&&input.root!=='repository') throw new Error('Unknown catalogue packet source root');
+        if(input.root==='repository'&&!input.path.startsWith('seed/')) throw new Error('Expected repository seed path');
+        const inputRoot=input.root==='repository'?path.resolve(config.root,'../seed'):config.root;
+        const inputPath=input.root==='repository'?input.path.slice('seed/'.length):input.path;
+        const text=fs.readFileSync(containedPath(inputRoot,'/'+inputPath),'utf8').replace(/\r\n?/g,'\n');
         if(createHash('sha256').update(text).digest('hex')!==input.sha256) throw new Error('Catalogue packet is stale for '+input.path);
       }
       for(const asset of receipt.assets) {

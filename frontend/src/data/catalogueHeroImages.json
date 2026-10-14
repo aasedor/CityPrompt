@@ -146,5 +146,10 @@
   "calgary_collector_industrial_draft3_v1": "/archetypes/streets/calgary-collector-industrial/variant_0.png",
   "calgary_collector_high_activity_draft3_v1": "/archetypes/streets/calgary-collector-high-activity/variant_0.png",
   "calgary_arterial_high_activity_draft3_v1": "/archetypes/streets/classroom-heroes/calgary_arterial_high_activity_draft3_v1-street-v1.webp",
-  "calgary_skeletal_draft3_v1": "/archetypes/streets/classroom-heroes/calgary_skeletal_draft3_v1-street-v1.webp"
+  "calgary_skeletal_draft3_v1": "/archetypes/streets/classroom-heroes/calgary_skeletal_draft3_v1-street-v1.webp",
+  "claude_scottish_baronial_hotel": "/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0.png",
+  "claude_parisian_corner_with_dome": "/archetypes/buildings/parisian-corner-with-dome/variant_0.png",
+  "claude_grand_magasin": "/archetypes/buildings/grand-magasin/variant_0.png",
+  "claude_barcelona_mercat": "/archetypes/buildings/barcelona-mercat/variant_0.png",
+  "claude_montreal_second_empire_civic": "/archetypes/buildings/montreal-second-empire-civic/variant_0.png"
 }

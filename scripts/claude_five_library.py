@@ -15,7 +15,7 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from tools.rlasm_clay_library import _validate_payload, clay_seed_rows
-from tools.catalogue_promotion import validate_review, picker_assets
+from tools.catalogue_promotion import validate_review, picker_assets, TRIAL_CHECKS
 from scripts.classroom_model_library import synchronize
 
 MANIFEST = ROOT / 'seed/claude-five-trial/library.json'
@@ -67,8 +67,21 @@ def _model_validation_layout(payload, artifacts, *, external_override=False):
 def load_bindings(artifacts=None, manifest=MANIFEST, repo=ROOT):
     payload = json.loads(Path(manifest).read_text(encoding='utf-8'))
     entries = payload['entries']
-    if not entries or any(e['candidate'] not in ALLOWED_CANDIDATES or not e.get('local_trial_only') for e in entries):
+    if not entries or any(e['candidate'] not in ALLOWED_CANDIDATES for e in entries):
         raise ValueError('Only independently reviewed Claude local trials are enabled')
+    for entry in entries:
+        if entry.get('local_trial_only') is True:
+            continue
+        approval, trial = entry.get('activation', {}), entry.get('local_trial', {})
+        model_hash = entry['model']['sha256']
+        if (entry.get('local_trial_only') is not False
+                or approval.get('authorized_by') != 'human_user'
+                or not all(approval.get(k) for k in ('quote', 'date'))
+                or approval.get('model_sha256') != model_hash
+                or trial.get('model_sha256') != model_hash
+                or not all(trial.get(k) for k in ('project_url', 'tested_by', 'tested_at', 'evidence'))
+                or any(trial.get('checks', {}).get(k) is not True for k in TRIAL_CHECKS)):
+            raise ValueError('Published Claude models require exact activation and completed local trial')
     artifact_root = Path(artifacts).resolve() if artifacts is not None else Path(manifest).resolve().parent
     checked, clay_root = _model_validation_layout(payload, artifact_root, external_override=artifacts is not None)
     for entry in entries:
