@@ -12,6 +12,7 @@ from fastapi import HTTPException
 from sqlalchemy import select, text, update
 
 from app.core.config import get_settings
+from app.core.image_models import image_provider_key
 from app.core.security import check_project_permission
 from app.models.models import RenderAuditLog, User
 from app.models.render_attempt import RenderAttempt
@@ -57,7 +58,7 @@ async def submit_attempt(db, user, req: Direct3DRenderRequest, key: str):
         return existing
     if not settings.direct_3d_jobs_enabled or not settings.direct_3d_images_enabled:
         raise HTTPException(503, "AI image generation is paused. Exact 3D images remain available.")
-    if not settings.openai_api_key:
+    if not image_provider_key(settings, req.model):
         raise HTTPException(503, "Image generation is not configured")
     active = list((await db.scalars(select(RenderAttempt).where(RenderAttempt.status.in_(ACTIVE)))).all())
     own = next((item for item in active if item.user_id == user.id), None)

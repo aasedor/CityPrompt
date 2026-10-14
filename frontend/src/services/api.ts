@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createDirect3DAttemptClient } from './direct3DAttempts';
-import type { ImageModelAvailability, OpenAIImageModel } from '@/config/imageModels';
+import type { ImageModelAvailability, PaidImageModel } from '@/config/imageModels';
 import { isPublicReadRequest, shouldAttemptTokenRefresh } from './authRefreshPolicy';
 import { assetAccountIdentity, createAssetAccess, type AssetContext } from './assetAccess';
 import type {
@@ -1440,7 +1440,7 @@ export const rendersApi = {
   /** Isolated current-camera refinement for an already compiled 3D scene.
    * This endpoint never routes through the Classic colored-zone renderer. */
   generateDirect3D: async (request: {
-    model?: OpenAIImageModel;
+    model?: PaidImageModel;
     control_bundle_version: 2;
     park_access_snapshot?: import('@/components/viewer/globe/parkAccessConnections').ParkAccessSnapshot;
     shared_ground_snapshot?: import('@/components/viewer/globe/sharedSiteGround').SharedSiteGroundSnapshot;
@@ -1511,7 +1511,7 @@ export const rendersApi = {
   }): Promise<{
     image_base64: string;
     provider_image_base64?: string | null;
-    model: OpenAIImageModel;
+    model: PaidImageModel;
     outcome: 'accepted' | 'review_required';
     warnings: string[];
     capture_fingerprint: string;

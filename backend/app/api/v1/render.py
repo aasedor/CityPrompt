@@ -17,6 +17,7 @@ import hashlib
 import io
 import logging
 import os
+from dataclasses import dataclass
 import uuid as _uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -31,7 +32,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.schemas.render_media import SavedRenderResponse
 from app.core.config import get_settings
-from app.core.image_models import DEFAULT_OPENAI_IMAGE_MODEL, OPENAI_IMAGE_CREDIT_MULTIPLIERS
+from app.core.image_models import DEFAULT_OPENAI_IMAGE_MODEL, OPENAI_IMAGE_CREDIT_MULTIPLIERS, NANO_BANANA_MODEL
 from app.core.database import get_db
 from app.core.security import (
     require_auth,
@@ -203,6 +204,13 @@ class RenderResponse(BaseModel):
         description="Base64-encoded PNG of the rendered image.",
     )
     seed: Optional[int] = None
+    provider_image_base64: str | None = None
+
+
+@dataclass(frozen=True)
+class GeneratedRenderImage:
+    image_base64: str
+    provider_image_base64: str
 
 
 # ---------------------------------------------------------------------------
@@ -325,6 +333,7 @@ async def _save_render_audit(
 
 
 _ALLOWED_MODELS = {
+    NANO_BANANA_MODEL,
     "gemini-2.5-flash-image",
     "gemini-3-pro-image-preview",
     "gemini-3.1-flash-image",
@@ -337,6 +346,7 @@ _OPENAI_MODELS = set(OPENAI_IMAGE_CREDIT_MULTIPLIERS)
 
 # Token cost per render by model ($5 = 1000 tokens, 1 token = $0.005)
 _MODEL_TOKEN_COST: dict[str, int] = {
+    NANO_BANANA_MODEL: 25,  # Conservative application reserve; inputs/thinking are additional to image output.
     "gemini-2.5-flash-image": 8,  # ~$0.039
     "gemini-3.1-flash-image": 13,  # ~$0.067 (GA id)
     "gemini-3.1-flash-image-preview": 13,  # ~$0.067 (deprecated alias)
@@ -944,7 +954,8 @@ async def image_models(user: User = Depends(require_auth)):
 
     settings = get_settings()
     # Show the configured pause before a student prepares a costly capture.
-    return await get_image_model_availability(settings.openai_api_key if settings.direct_3d_images_enabled else "")
+    return await get_image_model_availability(settings.openai_api_key if settings.direct_3d_images_enabled else "",
+        settings.gemini_api_key if settings.direct_3d_images_enabled else "")
 
 
 @router.post("/generate", response_model=RenderResponse)
@@ -970,9 +981,26 @@ async def generate_render(
     token_cost = _MODEL_TOKEN_COST.get(render_model, _DEFAULT_TOKEN_COST)
     reservation = await _reserve_render(db, user, req, render_model, token_cost, settings.render_global_daily_token_cap)
     try:
-        image_b64 = await _generate_render_image(req, settings, render_model)
-    except Exception:
-        await _refund_render(db, user, reservation)
+        generated = await _generate_render_image(req, settings, render_model)
+        provider_original = generated.provider_image_base64 if isinstance(generated, GeneratedRenderImage) else None
+        image_b64 = generated.image_base64 if isinstance(generated, GeneratedRenderImage) else generated
+    except Exception as exc:
+        # A submitted Google request with an unknown/produced outcome must not
+        # be refunded or retried merely because delivery failed.
+        google_billing = exc.detail.get("billing_status") if isinstance(exc, HTTPException) and isinstance(exc.detail, dict) else None
+        if render_model != NANO_BANANA_MODEL or google_billing not in {"unknown", "produced"}:
+            await _refund_render(db, user, reservation)
+        if render_model == NANO_BANANA_MODEL and isinstance(exc, HTTPException) and isinstance(exc.detail, dict):
+            original = exc.detail.get("provider_image_base64")
+            if original:
+                try:
+                    await _save_render_audit(db, user, render_model, token_cost, req.image_base64, original,
+                        prompt_preview=f"[Google produced; output needs review] {req.prompt[:440]}",
+                        project_id=req.project_id, reservation=reservation)
+                except Exception:
+                    await db.rollback()
+                    logger.exception("Google image exists but original audit storage failed: %s", reservation.id)
+                await _preserve_google_original(db, req, original)
         raise
     # An image exists: optional image polish or audit storage failure must not
     # trigger a refund or another paid generation.
@@ -991,7 +1019,7 @@ async def generate_render(
             render_model,
             token_cost,
             req.image_base64,
-            image_b64,
+            provider_original or image_b64,
             prompt_preview=reservation.prompt_preview,
             project_id=req.project_id,
             reservation=reservation,
@@ -999,14 +1027,38 @@ async def generate_render(
     except Exception:
         await db.rollback()
         logger.exception("Render image produced but audit image storage failed: %s", reservation.id)
-    return RenderResponse(image_base64=image_b64, seed=req.seed, model=render_model)
+    await _preserve_google_original(db, req, provider_original)
+    return RenderResponse(image_base64=image_b64, seed=req.seed, model=render_model, provider_image_base64=provider_original)
 
 
-async def _generate_render_image(req: RenderRequest, settings, render_model: str) -> str:
+async def _preserve_google_original(db, req: RenderRequest, original: str | None):
+    if not original or not req.project_id:
+        return
+    try:
+        await persist_render_to_gallery(
+            db,
+            req.project_id,
+            SaveRenderRequest(
+                image_base64=original,
+                prompt=req.prompt,
+                model=NANO_BANANA_MODEL,
+                seed=req.seed,
+            ),
+            variant="provider_original",
+            outcome="review_required",
+        )
+    except Exception:
+        await db.rollback()
+        logger.exception("Google image exists but original gallery storage failed")
+
+
+async def _generate_render_image(req: RenderRequest, settings, render_model: str) -> str | GeneratedRenderImage:
     if _is_openai_model(render_model):
         return await _generate_openai_render(req, settings, render_model)
     if not settings.gemini_api_key and not settings.vertex_ai_project:
         raise HTTPException(status_code=503, detail="Image generation is not configured.")
+    if render_model == NANO_BANANA_MODEL:
+        req, _ = _prepare_openai_inputs(req, None)
 
     # --- Build payload ---
     parts: list[dict] = []
@@ -1161,6 +1213,46 @@ async def _generate_render_image(req: RenderRequest, settings, render_model: str
 
     prompt_text = _finish_render_prompt(req, prompt_text)
     parts.append({"text": prompt_text})
+
+    if render_model == NANO_BANANA_MODEL:
+        from app.services.nano_banana_image import (
+            generate_nano_banana_image,
+            NanoBananaProviderError,
+        )
+
+        target_size = (1536, 1024)
+        if req.image_base64:
+            with Image.open(io.BytesIO(base64.b64decode(req.image_base64))) as source:
+                target_size = source.size
+        frame_images = {
+            value
+            for value in (req.image_base64, req.semantic_guide_base64, req.mask_base64)
+            if value
+        }
+        try:
+            result = await generate_nano_banana_image(
+                settings.gemini_api_key,
+                parts,
+                target_size=target_size,
+                same_camera_images=frame_images,
+                resolution=req.image_size or "2K",
+            )
+        except NanoBananaProviderError as exc:
+            raise HTTPException(
+                502,
+                detail={
+                    "message": str(exc),
+                    "billing_status": exc.billing_status,
+                    "billed": exc.billing_status != "unproduced",
+                    "provider_image_base64": exc.provider_image_base64,
+                },
+            ) from exc
+        output = io.BytesIO()
+        result.image.save(output, format="PNG")
+        return GeneratedRenderImage(
+            base64.b64encode(output.getvalue()).decode("ascii"),
+            result.provider_image_base64,
+        )
 
     # No temperature: Gemini 3 image docs list no temperature parameter, and the
     # old guidance_scale->temperature mapping silently overrode the intended 0.0

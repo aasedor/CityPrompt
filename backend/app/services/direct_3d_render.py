@@ -26,8 +26,9 @@ from PIL import Image, ImageDraw
 
 from app.core.image_models import (
     DEFAULT_OPENAI_IMAGE_MODEL,
-    OPENAI_IMAGE_CREDIT_MULTIPLIERS,
-    OpenAIImageModel,
+    PAID_IMAGE_CREDIT_MULTIPLIERS,
+    NANO_BANANA_MODEL,
+    PaidImageModel,
 )
 from app.schemas.direct_3d_render import Direct3DRenderRequest
 from app.services.render_fidelity import RENDER_PRESERVATION_LOCK, apply_presentation_selections
@@ -365,7 +366,7 @@ def estimate_direct_3d_token_cost(
     object_id_attached: bool,
     instance_id_attached: bool = False,
     control_bundle_version: Literal[1, 2] = 1,
-    model: OpenAIImageModel = DEFAULT_OPENAI_IMAGE_MODEL,
+    model: PaidImageModel = DEFAULT_OPENAI_IMAGE_MODEL,
 ) -> int:
     """Return the conservative credit reservation for one Direct 3D edit."""
 
@@ -384,7 +385,7 @@ def estimate_direct_3d_token_cost(
         )
         + DIRECT_3D_STRUCTURAL_GUIDE_INPUT_TOKENS
     )
-    return max(DIRECT_3D_MIN_TOKEN_COST, estimated) * OPENAI_IMAGE_CREDIT_MULTIPLIERS[model]
+    return max(DIRECT_3D_MIN_TOKEN_COST, estimated) * PAID_IMAGE_CREDIT_MULTIPLIERS[model]
 
 
 def _decode_base64_payload(value: str, *, label: str) -> bytes:
@@ -3924,6 +3925,7 @@ def _same_camera_presentation_result(
     generated: Image.Image,
     common_diagnostics: dict[str, Any],
     source_locked_rlasm_ids: tuple[str, ...],
+    provider_image_base64: str | None = None,
 ) -> Direct3DServiceResult:
     """Measure a same-camera finish and preserve source-owned context/occlusion.
 
@@ -4048,13 +4050,15 @@ def _same_camera_presentation_result(
         outcome="review_required",
         warnings=tuple(warnings),
         diagnostics=diagnostics,
-        provider_image_base64=base64.b64encode(_png_bytes(generated)).decode("ascii"),
+        provider_image_base64=provider_image_base64 or base64.b64encode(_png_bytes(generated)).decode("ascii"),
     )
 
 
 class Direct3DRenderService:
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: str, *, gemini_api_key: str = ""):
         self.api_key = api_key
+        self.gemini_api_key = gemini_api_key
+        self._nano_original: str | None = None
 
     async def _call_openai(
         self,
@@ -4063,9 +4067,9 @@ class Direct3DRenderService:
         *,
         server_inventory: list[dict[str, Any]] | None = None,
     ) -> Image.Image:
-        if not self.api_key:
+        if not (self.gemini_api_key if req.model == NANO_BANANA_MODEL else self.api_key):
             raise Direct3DProviderError(
-                "OpenAI is not configured",
+                "Google is not configured" if req.model == NANO_BANANA_MODEL else "OpenAI is not configured",
                 billing_status="unproduced",
             )
 
@@ -4201,6 +4205,43 @@ class Direct3DRenderService:
             )
         )
         prompt = apply_presentation_selections(prompt, add_people=req.add_people, add_vehicles=req.add_vehicles)
+        if req.model == NANO_BANANA_MODEL:
+            from app.services.nano_banana_image import (
+                generate_nano_banana_image,
+                NanoBananaProviderError,
+            )
+
+            parts = []
+            same_camera = set()
+            for field, (filename, raw, mime) in files:
+                if field == "mask":
+                    raw = _png_bytes(capture.normalized_proposal_mask.convert("RGB"))
+                    filename = "direct-3d-proposal-mask.png (white=edit, black=keep)"
+                encoded = base64.b64encode(raw).decode("ascii")
+                parts.extend(
+                    [{"text": filename}, {"inlineData": {"mimeType": mime, "data": encoded}}]
+                )
+                if filename.startswith("direct-3d-"):
+                    same_camera.add(encoded)
+            parts.append({"text": prompt})
+            try:
+                result = await generate_nano_banana_image(
+                    self.gemini_api_key,
+                    parts,
+                    target_size=capture.normalized_beauty.size,
+                    same_camera_images=same_camera,
+                )
+            except NanoBananaProviderError as exc:
+                raise Direct3DProviderError(
+                    str(exc),
+                    billing_status=exc.billing_status,
+                    provider_status_code=exc.provider_status_code,
+                    provider_request_id=exc.provider_request_id,
+                    transport_interrupted=exc.transport_interrupted,
+                    provider_image_base64=exc.provider_image_base64,
+                ) from exc
+            self._nano_original = result.provider_image_base64
+            return result.image
         data = {
             "model": req.model,
             "prompt": prompt,
@@ -4331,6 +4372,7 @@ class Direct3DRenderService:
         server_inventory: list[dict[str, Any]] | None = None,
     ) -> Direct3DServiceResult:
         capture = capture or prepare_direct_3d_capture(req)
+        self._nano_original = None
         generated = await self._call_openai(
             req,
             capture,
@@ -4338,7 +4380,7 @@ class Direct3DRenderService:
         )
         provider_image_base64: str | None = None
         try:
-            provider_image_base64 = base64.b64encode(_png_bytes(generated)).decode("ascii")
+            provider_image_base64 = self._nano_original or base64.b64encode(_png_bytes(generated)).decode("ascii")
             common_diagnostics: dict[str, Any] = {
                 "control_bundle_version": req.control_bundle_version,
                 "processing_mode": req.presentation_mode,
@@ -4405,6 +4447,7 @@ class Direct3DRenderService:
                     generated,
                     common_diagnostics,
                     source_locked_rlasm_ids,
+                    provider_image_base64,
                 )
                 street_result.diagnostics["view_mode"] = "street"
                 return street_result
@@ -4416,6 +4459,7 @@ class Direct3DRenderService:
                     generated,
                     common_diagnostics,
                     source_locked_rlasm_ids,
+                    provider_image_base64,
                 )
 
             if DIRECT_3D_PRESENTATION_FIRST and req.presentation_mode == "reproject":

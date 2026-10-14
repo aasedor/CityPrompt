@@ -4,7 +4,7 @@ import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pick
 import { useRenderDraft } from './useRenderDraft';
 import { ImagePresentationControls } from './ImagePresentationControls';
 import { RecoverImageAttempts } from './RecoverImageAttempts';
-import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice } from '@/config/imageModels';
+import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice, imageModelUnavailable } from '@/config/imageModels';
 import { ImageModelSelect } from '../ImageModelSelect';
 import { useImageModelChoice } from '../useImageModelChoice';
 import { runImageModelBatch } from '../runImageModelBatch';
@@ -267,8 +267,8 @@ export function GlobeAIRenderPanel({
   const [directDiagnostics, setDirectDiagnostics] = useState<Direct3DRenderDiagnostics | null>(null);
   const [directFidelityPolicy, setDirectFidelityPolicy] = useState<Direct3DFidelityPolicy>(() => resolveDirect3DFidelityPolicy(selectedStyle));
   const { imageModel: directImageModel, setImageModel: setDirectImageModel, availability: imageModelAvailability } = useImageModelChoice({ compareByDefault: false, projectId });
-  const imageGenerationUnavailable = imageModelsForChoice(directImageModel).some(model => imageModelAvailability !== null
-    && !imageModelAvailability.models.some(entry => entry.id === model && entry.available !== false));
+  const imageGenerationUnavailable = imageModelsForChoice(directImageModel).some(model => imageModelUnavailable(imageModelAvailability, model)
+    || (imageModelAvailability !== null && !imageModelAvailability.models.some(entry => entry.id === model && entry.available !== false)));
   const [directReview, setDirectReview] = useState<Direct3DReview | null>(null);
   const directPreviewMetadata = useRef(new Map<string, { diagnostics: Direct3DRenderDiagnostics | null; review: Direct3DReview | null }>());
   // Development mode gate: at least one zone in the scene is backed by real
@@ -881,7 +881,7 @@ export function GlobeAIRenderPanel({
       const sourceGeometryOnly = resolveDirect3DPresentationMode(selectedStyle) === 'scene';
       const archetypeReferences = sourceGeometryOnly
         ? []
-        : await collectDirect3DArchetypeReferences(siteZones, 8, capture);
+        : await collectDirect3DArchetypeReferences(siteZones, directImageModel === 'gemini-nano-banana-2.1' ? 7 : 8, capture);
       await runImageModelBatch(directImageModel, (model) => renderDirect3D(capture, {
         model,
         style: selectedStyle,

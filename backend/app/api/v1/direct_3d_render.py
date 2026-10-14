@@ -33,6 +33,7 @@ from app.api.v1.render import (
     persist_render_to_gallery,
 )
 from app.core.config import get_settings
+from app.core.image_models import image_provider_key, NANO_BANANA_MODEL
 from app.core.database import get_db
 from app.core.security import check_project_permission, is_admin_or_above, require_auth
 from app.models.models import Building, RenderAuditLog, SiteZone, User
@@ -1613,10 +1614,10 @@ async def run_direct_3d_render(
         captured_at=datetime.now(timezone.utc).isoformat(),
     )
 
-    if not settings.openai_api_key:
+    if not image_provider_key(settings, req.model):
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Direct 3D rendering is unavailable because OpenAI is not configured.",
+            detail=f"Direct 3D rendering is unavailable because {'Google' if req.model == NANO_BANANA_MODEL else 'OpenAI'} is not configured.",
         )
 
     try:
@@ -1652,7 +1653,9 @@ async def run_direct_3d_render(
         **({"attempt": attempt} if attempt is not None else {}),
     )
     try:
-        result = await Direct3DRenderService(settings.openai_api_key).generate(
+        service = (Direct3DRenderService(settings.openai_api_key, gemini_api_key=settings.gemini_api_key)
+            if req.model == NANO_BANANA_MODEL else Direct3DRenderService(settings.openai_api_key))
+        result = await service.generate(
             req,
             capture,
             server_inventory=server_inventory,

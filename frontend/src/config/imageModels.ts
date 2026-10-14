@@ -1,4 +1,4 @@
-/** IDs shared by the Images edit API and Direct 3D. Keep legacy renders readable. */
+/** Paid and local image engines shared by the render selectors. Keep legacy renders readable. */
 // Safe fallback before account capability discovery; never silently send an
 // unavailable new model or retry a paid request with another engine.
 export const DEFAULT_OPENAI_IMAGE_MODEL = 'gpt-image-2';
@@ -10,12 +10,17 @@ export const OPENAI_IMAGE_MODELS = [
 ] as const;
 
 export type OpenAIImageModel = typeof OPENAI_IMAGE_MODELS[number]['id'] | 'gpt-image-2-2026-04-21';
+export const GOOGLE_IMAGE_MODELS = [
+  { id: 'gemini-nano-banana-2.1', label: 'Nano Banana 2.1', option: 'Nano Banana 2.1 · Google' },
+] as const;
+export type PaidImageModel = OpenAIImageModel | typeof GOOGLE_IMAGE_MODELS[number]['id'];
+export const PAID_IMAGE_MODELS = [...OPENAI_IMAGE_MODELS, ...GOOGLE_IMAGE_MODELS];
 export const LOCAL_IMAGE_MODELS = [
   { id: 'qwen-image', label: 'Qwen Image 2.1', option: 'Qwen Image 2.1 · High quality · Local · Free' },
   { id: 'flux-klein', label: 'FLUX.2 Klein 4B', option: 'FLUX.2 Klein · Fast preview · Local · Free' },
 ] as const;
 export type LocalImageModel = typeof LOCAL_IMAGE_MODELS[number]['id'];
-export type ImageEngine = OpenAIImageModel | LocalImageModel;
+export type ImageEngine = PaidImageModel | LocalImageModel;
 export function isLocalImageModel(model: string): model is LocalImageModel {
   return LOCAL_IMAGE_MODELS.some(entry => entry.id === model);
 }
@@ -32,5 +37,12 @@ export function imageModelsForChoice(choice: ImageModelChoice): ImageEngine[] {
 }
 
 export function imageModelLabel(model: string): string {
-  return [...OPENAI_IMAGE_MODELS, ...LOCAL_IMAGE_MODELS].find((entry) => entry.id === model)?.label ?? model;
+  return [...PAID_IMAGE_MODELS, ...LOCAL_IMAGE_MODELS].find((entry) => entry.id === model)?.label ?? model;
+}
+
+export function imageModelUnavailable(availability: ImageModelAvailability | null, id: string): boolean {
+  const entry = availability?.models.find(model => model.id === id);
+  // Older servers cannot route Google. Existing OpenAI listing failures keep
+  // their previous unknown-availability behavior without switching engines.
+  return id === 'gemini-nano-banana-2.1' ? !entry || entry.available === false : entry?.available === false;
 }

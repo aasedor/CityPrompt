@@ -15,7 +15,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from app.core.image_models import DEFAULT_OPENAI_IMAGE_MODEL, OpenAIImageModel
+from app.core.image_models import DEFAULT_OPENAI_IMAGE_MODEL, PaidImageModel, NANO_BANANA_MODEL
 from app.schemas.render_media import SavedRenderResponse
 from app.schemas.park_access import ParkAccessSnapshot
 from app.schemas.shared_ground import SharedGroundSnapshot
@@ -185,7 +185,7 @@ class Direct3DArchetypeReference(BaseModel):
 class Direct3DRenderRequest(BaseModel):
     """A clean 3D capture plus mode-specific presentation and design authority."""
 
-    model: OpenAIImageModel = DEFAULT_OPENAI_IMAGE_MODEL
+    model: PaidImageModel = DEFAULT_OPENAI_IMAGE_MODEL
     park_access_snapshot: ParkAccessSnapshot | None = None
     shared_ground_snapshot: SharedGroundSnapshot | None = None
 
@@ -411,6 +411,12 @@ class Direct3DRenderRequest(BaseModel):
             raise ValueError(f"style {self.style!r} requires presentation_mode='reproject'")
         if self.presentation_mode == "reproject" and not is_reproject_style:
             raise ValueError(f"style {self.style!r} requires presentation_mode='scene' or " "'source_anchored'")
+        if self.model == NANO_BANANA_MODEL and self.presentation_mode != "scene":
+            controls = 2 + int(bool(self.object_id_image_base64)) + int(bool(self.instance_id_image_base64))
+            controls += 3 if self.control_bundle_version == 2 else 0
+            controls += int(self.presentation_mode == "source_anchored")
+            if controls + len(self.archetype_references) > 14:
+                raise ValueError(f"Nano Banana allows 14 images total; keep at most {14 - controls} archetype references with these geometry controls")
         return self
 
 
@@ -652,7 +658,7 @@ class Direct3DRenderResponse(BaseModel):
     provider_original_render: SavedRenderResponse | None = None
     provider_image_base64: str | None = None
     image_base64: str
-    model: OpenAIImageModel = DEFAULT_OPENAI_IMAGE_MODEL
+    model: PaidImageModel = DEFAULT_OPENAI_IMAGE_MODEL
     outcome: Direct3DRenderOutcome = "accepted"
     warnings: list[str] = Field(default_factory=list)
     capture_fingerprint: str

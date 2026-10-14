@@ -2818,6 +2818,44 @@ class _RecordingClient:
 
 
 @pytest.mark.asyncio
+async def test_nano_banana_direct_capture_uses_google_key_and_same_geometry_controls(
+    monkeypatch,
+):
+    request = _request(model="gemini-nano-banana-2.1", presentation_mode="scene")
+    capture = prepare_direct_3d_capture(request)
+    _RecordingClient.calls = []
+    _RecordingClient.response = _FakeResponse(
+        200,
+        {
+            "status": "completed",
+            "steps": [
+                {
+                    "type": "model_output",
+                    "content": [
+                        {
+                            "type": "image",
+                            "mime_type": "image/png",
+                            "data": _png_b64(capture.normalized_beauty),
+                        }
+                    ],
+                }
+            ],
+        },
+    )
+    monkeypatch.setattr(direct_service.httpx, "AsyncClient", _RecordingClient)
+    image = await Direct3DRenderService("", gemini_api_key="google-key")._call_openai(
+        request, capture
+    )
+    assert image.size == capture.normalized_beauty.size
+    assert len(_RecordingClient.calls) == 1
+    call = _RecordingClient.calls[0]
+    assert "generativelanguage.googleapis.com" in call["url"]
+    assert call["headers"]["x-goog-api-key"] == "google-key"
+    assert "direct-3d-beauty.png" in str(call["json"]["input"])
+    assert "direct-3d-class-id.png" in str(call["json"]["input"])
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize("model", ["gpt-image-2.5-flare", "gpt-image-2.5-sunburst", "gpt-image-2"])
 async def test_provider_call_uses_explicit_size_png_alpha_mask_and_no_fidelity_parameter(monkeypatch, model):
     request = _request(model=model)
@@ -4670,6 +4708,54 @@ def test_control_bundle_v2_rejects_incomplete_geometry_controls():
     base = _request(presentation_mode="scene")
     with pytest.raises(ValidationError, match="control_bundle_version=2 requires"):
         Direct3DRenderRequest(**{**base.model_dump(), "control_bundle_version": 2})
+
+
+@pytest.mark.parametrize("mode,limit", [("reproject", 7), ("source_anchored", 6)])
+def test_google_reference_limit_accounts_for_geometry_and_edit_mask(mode, limit):
+    base = _request(
+        presentation_mode=mode,
+        style="isometric" if mode == "reproject" else "photorealistic",
+    )
+    controls = _request(presentation_mode="scene")
+    identity = [1.0 if i % 5 == 0 else 0.0 for i in range(16)]
+    fields = {
+        **base.model_dump(),
+        "model": "gemini-nano-banana-2.1",
+        "control_bundle_version": 2,
+        "object_id_image_base64": controls.object_id_image_base64,
+        "object_id_manifest": controls.object_id_manifest,
+        "instance_id_image_base64": controls.instance_id_image_base64,
+        "instance_id_manifest": controls.instance_id_manifest,
+        "depth_image_base64": base.beauty_image_base64,
+        "normal_image_base64": base.beauty_image_base64,
+        "material_id_image_base64": base.beauty_image_base64,
+        "material_id_manifest": {
+            "#020002": {
+                "material_id": "wall",
+                "label": "Wall",
+                "semantic_class": "building",
+            }
+        },
+        "camera": {
+            "projection": "perspective",
+            "projection_matrix": identity,
+            "matrix_world": identity,
+            "position": [0, 0, 10],
+            "quaternion": [0, 0, 0, 1],
+            "near": 0.1,
+            "far": 10000,
+            "fov": 50,
+            "aspect": 1,
+            "zoom": 1,
+        },
+        "archetype_references": [
+            {"image_base64": "abc", "label": f"ref{i}"} for i in range(limit)
+        ],
+    }
+    Direct3DRenderRequest(**fields)
+    fields["archetype_references"].append({"image_base64": "abc", "label": "extra"})
+    with pytest.raises(ValidationError, match="Nano Banana.*14"):
+        Direct3DRenderRequest(**fields)
 
 
 def _tee_street_zones():

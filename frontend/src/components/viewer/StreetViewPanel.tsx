@@ -21,7 +21,7 @@ import { DIRECT_3D_ALLOWED_STYLES, resolveDirect3DPresentationMode, useDirect3DR
 import { collectDirect3DArchetypeReferences } from './globe/direct3dArchetypeReferences';
 import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d';
 import { getCurrentResidualLandscapeClaim } from './globe/residualLandscape';
-import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice, isLocalImageModel } from '@/config/imageModels';
+import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice, isLocalImageModel, imageModelUnavailable } from '@/config/imageModels';
 import { renderLocalImage } from '@/services/localImageRender';
 import { ImageModelSelect } from './ImageModelSelect';
 import { useImageModelChoice } from './useImageModelChoice';
@@ -200,6 +200,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
   const [customPrompt, setCustomPrompt] = useState('');
   // A street view starts with one image call; comparisons are an explicit choice.
   const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice({ compareByDefault: false, projectId });
+  const selectedEngineUnavailable = imageModelsForChoice(imageModel).some(model => imageModelUnavailable(imageModelAvailability, model));
   const [imageProgress, setImageProgress] = useState('');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   // Real Street View / Places / satellite grounding, anchored at the pegman.
@@ -274,6 +275,10 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
 
   const handleGenerate = useCallback(async () => {
     if (!streetViewPegman?.position) return;
+    if (directStreetMode && selectedEngineUnavailable) {
+      toast.error('Your selected image engine is unavailable. Choose an available engine.');
+      return;
+    }
     if (directStreetMode && !currentSceneClaims?.length) {
       toast.error('Wait for the automatic 3D update before rendering this street view.');
       return;
@@ -507,7 +512,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, currentSceneClaims, selectedStyle, imageModel, useRealContext, includePeople, includeVehicles, customPrompt, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved]);
+  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, currentSceneClaims, selectedStyle, imageModel, useRealContext, includePeople, includeVehicles, customPrompt, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved, selectedEngineUnavailable]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl || result.error) return;
@@ -966,7 +971,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
         </button>}
         <button
           onClick={handleGenerate}
-          disabled={isGenerating || isPreviewing || needsCommunity3D}
+          disabled={isGenerating || isPreviewing || needsCommunity3D || (directStreetMode && selectedEngineUnavailable)}
           className="street-view-generate-button flex min-h-12 items-center gap-2 rounded-full px-5 py-3 text-sm font-black uppercase transition disabled:opacity-50"
         >
           {isGenerating ? (

@@ -63,7 +63,46 @@ async def test_listing_failure_does_not_claim_generation_is_unavailable(monkeypa
     mock_models(monkeypatch, [], status=403)
     result = await availability.get_image_model_availability("test")
     assert result["default_model"] == "gpt-image-2"
-    assert all(entry["available"] is None for entry in result["models"])
+    assert all(entry["available"] is None for entry in result["models"] if entry["id"].startswith("gpt-image"))
+
+
+@pytest.mark.asyncio
+async def test_google_model_is_discovered_without_an_openai_key(monkeypatch):
+    calls = []
+
+    class Client:
+        def __init__(self, **kwargs):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *args):
+            pass
+
+        async def get(self, url, **kwargs):
+            calls.append((url, kwargs))
+            return httpx.Response(
+                200,
+                json={"name": "models/gemini-nano-banana-2.1"},
+                request=httpx.Request("GET", url),
+            )
+
+    monkeypatch.setattr(availability.httpx, "AsyncClient", Client)
+    result = await availability.get_image_model_availability("", "google-key")
+    assert (
+        next(
+            item for item in result["models"] if item["id"] == "gemini-nano-banana-2.1"
+        )["available"]
+        is True
+    )
+    assert all(
+        not item["available"]
+        for item in result["models"]
+        if item["id"].startswith("gpt-image")
+    )
+    assert len(calls) == 1
+    assert calls[0][1]["headers"]["x-goog-api-key"] == "google-key"
 
 
 @pytest.mark.parametrize(
@@ -74,3 +113,36 @@ def test_selected_engine_has_explicit_routing_and_credit_reservation(model, mult
     assert render._is_openai_model(model)
     assert render._MODEL_TOKEN_COST[model] == 13 * multiplier
     assert estimate_direct_3d_token_cost(1024, 1024, object_id_attached=True, model=model) == 51 * multiplier
+
+
+@pytest.mark.asyncio
+async def test_google_revoked_key_disables_option(monkeypatch):
+    class Client:
+        def __init__(self, **kwargs):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *args):
+            pass
+
+        async def get(self, url, **kwargs):
+            return httpx.Response(
+                403,
+                json={
+                    "error": {
+                        "message": "Your API key was reported as leaked. Please use another API key."
+                    }
+                },
+                request=httpx.Request("GET", url),
+            )
+
+    monkeypatch.setattr(availability.httpx, "AsyncClient", Client)
+    result = await availability.get_image_model_availability("", "revoked-key")
+    assert (
+        next(
+            item for item in result["models"] if item["id"] == "gemini-nano-banana-2.1"
+        )["available"]
+        is False
+    )

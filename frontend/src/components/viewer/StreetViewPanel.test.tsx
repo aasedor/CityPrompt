@@ -18,17 +18,18 @@ vi.mock('react-hot-toast', () => ({ default: Object.assign(vi.fn(), { error: vi.
 import { StreetViewPanel } from './StreetViewPanel';
 
 describe('student street render', () => {
-  it('uses the captured image and selected engine once when geometry passes are unavailable', async () => {
-    mocks.imageModels.mockResolvedValue({ default_model: 'gpt-image-2.5-sunburst', models: [{ id: 'gpt-image-2.5-sunburst', available: true }] });
+  it.each(['gpt-image-2.5-sunburst','gemini-nano-banana-2.1'] as const)('uses the captured image and selected %s engine once when geometry passes are unavailable', async model => {
+    mocks.imageModels.mockResolvedValue({ default_model: 'gpt-image-2.5-sunburst', models: [{ id: model, available: true }] });
     mocks.classic.mockResolvedValue({ imageUrl: '/street-result.png', prompt: 'image-guided' });
     mocks.save.mockResolvedValue(null);
     const capture = vi.fn().mockResolvedValue({ kind: 'model3d', imageBase64: 'actual-scene-pixels', aspectRatio: '16:9' });
     render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={capture} />);
     await waitFor(() => expect(screen.getByRole('combobox', { name: 'Image engine' })).toHaveValue('gpt-image-2.5-sunburst'));
+    fireEvent.change(screen.getByRole('combobox',{name:'Image engine'}),{target:{value:model}});
     fireEvent.click(screen.getByRole('button', { name: 'Add People' }));
     fireEvent.click(screen.getByRole('button', { name: 'Render' }));
     await waitFor(() => expect(mocks.classic).toHaveBeenCalledTimes(1));
-    expect(mocks.classic.mock.calls[0][3]).toMatchObject({ model: 'gpt-image-2.5-sunburst', overrideGuideImage: 'actual-scene-pixels', guideKind: 'model3d', includePeople: true });
+    expect(mocks.classic.mock.calls[0][3]).toMatchObject({ model, overrideGuideImage: 'actual-scene-pixels', guideKind: 'model3d', includePeople: true });
     expect(mocks.direct).not.toHaveBeenCalled();
     expect(capture).toHaveBeenCalledOnce();
   });

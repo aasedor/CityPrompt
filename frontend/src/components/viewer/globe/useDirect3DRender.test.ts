@@ -487,14 +487,16 @@ describe('Direct 3D presentation adapter', () => {
     })).rejects.toThrow('Unknown Direct 3D style');
     expect(rendersApi.generateDirect3D).not.toHaveBeenCalled();
   });
-  it('sends the project draft’s persisted Sunburst engine to the mocked image request', async () => {
-    sessionStorage.setItem('cityprompt:render-draft:project-1', JSON.stringify({ imageModel: 'gpt-image-2.5-sunburst' }));
-    vi.mocked(rendersApi.imageModels).mockResolvedValue({default_model:'gpt-image-2.5-flare',models:[{id:'gpt-image-2.5-sunburst',available:true}]});
+  it.each(['gpt-image-2.5-sunburst','gemini-nano-banana-2.1'] as const)('sends the project draft’s persisted %s engine to the mocked image request', async model => {
+    sessionStorage.setItem('cityprompt:render-draft:project-1', JSON.stringify({ imageModel: model }));
+    vi.mocked(rendersApi.imageModels).mockResolvedValue({default_model:'gpt-image-2.5-flare',models:[{id:model,available:true}]});
     const { result, unmount } = renderHook(() => ({choice:useImageModelChoice({projectId:'project-1'}), renderer:useDirect3DRender()}));
     await act(async () => {
       await result.current.renderer.renderDirect3D(capture, {style:'photorealistic',projectId:'project-1',community3DClaims,model:imageModelsForChoice(result.current.choice.imageModel)[0]});
     });
-    expect(rendersApi.generateDirect3D).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({model:'gpt-image-2.5-sunburst'}));
+    expect(rendersApi.generateDirect3D).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({model,
+      control_bundle_version:2,depth_image_base64:capture.depthImageBase64,
+      normal_image_base64:capture.normalImageBase64,material_id_image_base64:capture.materialIdImageBase64}));
     unmount();sessionStorage.removeItem('cityprompt:render-draft:project-1');
   });
 

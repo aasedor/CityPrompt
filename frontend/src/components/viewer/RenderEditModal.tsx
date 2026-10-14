@@ -4,7 +4,7 @@ import { Brush, Check, Loader2, Minus, Plus, RotateCcw, Undo2, Wand2, X } from '
 import { getApiErrorMessage, rendersApi } from '@/services/api';
 import type { SavedRender } from '@/types';
 import { imageUrlToBase64 } from '@/utils/renderPersistence';
-import { imageModelLabel } from '@/config/imageModels';
+import { imageModelLabel, imageModelsForChoice, imageModelUnavailable } from '@/config/imageModels';
 import { ImageModelSelect } from './ImageModelSelect';
 import { useImageModelChoice } from './useImageModelChoice';
 import { runImageModelBatch } from './runImageModelBatch';
@@ -48,6 +48,7 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
 
   const [prompt, setPrompt] = useState('');
   const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice({ projectId, allowLocal: false });
+  const selectedEngineUnavailable = imageModelsForChoice(imageModel).some(model => imageModelUnavailable(imageModelAvailability, model));
   const [imageProgress, setImageProgress] = useState('');
   const [brushSize, setBrushSize] = useState(DEFAULT_BRUSH_SIZE);
   const [zoom, setZoom] = useState(1);
@@ -258,7 +259,7 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
   const handleSubmit = useCallback(async () => {
     const mask = maskCanvasRef.current;
     const editPrompt = prompt.trim();
-    if (!mask || !hasMask || !editPrompt || submitting) return;
+    if (!mask || !hasMask || !editPrompt || submitting || selectedEngineUnavailable) return;
 
     setSubmitting(true);
     setPreviewUrl(null);
@@ -301,9 +302,9 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
       setSubmitting(false);
       setImageProgress('');
     }
-  }, [hasMask, imageUrl, imageModel, onClose, onSaved, projectId, prompt, render.image_quality, render.prompt, render.style, submitting]);
+  }, [hasMask, imageUrl, imageModel, onClose, onSaved, projectId, prompt, render.image_quality, render.prompt, render.style, submitting, selectedEngineUnavailable]);
 
-  const canSubmit = Boolean(hasMask && prompt.trim() && imageSize && !submitting);
+  const canSubmit = Boolean(hasMask && prompt.trim() && imageSize && !submitting && !selectedEngineUnavailable);
 
   return (
     <div

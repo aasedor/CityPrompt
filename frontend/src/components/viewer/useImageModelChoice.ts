@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { rendersApi } from '@/services/api';
-import { DEFAULT_OPENAI_IMAGE_MODEL, OPENAI_IMAGE_MODELS, isLocalImageModel, type ImageModelAvailability, type ImageModelChoice } from '@/config/imageModels';
+import { DEFAULT_OPENAI_IMAGE_MODEL, PAID_IMAGE_MODELS, isLocalImageModel, type ImageModelAvailability, type ImageModelChoice } from '@/config/imageModels';
 import { comfyTrialsApi } from '@/services/comfyTrials';
 import { readStoredRenderDraft } from './renderDraftStorage';
 
@@ -10,7 +10,7 @@ export function useImageModelChoice({ compareByDefault = true, projectId, allowL
   const initial = useMemo(() => {
     try {
       const saved = readStoredRenderDraft(key).imageModel;
-      return saved === 'compare-all-three' || OPENAI_IMAGE_MODELS.some(model => model.id === saved)
+      return saved === 'compare-all-three' || PAID_IMAGE_MODELS.some(model => model.id === saved)
         || (allowLocal && import.meta.env.DEV && typeof saved === 'string' && isLocalImageModel(saved))
         || saved === 'gpt-image-2-2026-04-21' ? saved as ImageModelChoice : null;
     } catch { return null; }

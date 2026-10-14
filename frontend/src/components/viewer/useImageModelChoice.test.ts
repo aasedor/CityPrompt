@@ -7,6 +7,17 @@ import { comfyTrialsApi } from '@/services/comfyTrials';
 vi.mock('@/services/api', () => ({rendersApi:{imageModels:vi.fn()}}));
 vi.mock('@/services/comfyTrials', () => ({comfyTrialsApi:{presets:vi.fn().mockResolvedValue({presets:[]})}}));
 beforeEach(() => sessionStorage.clear());
+it('remembers an explicitly selected Google engine without changing the default engine',async()=>{
+  vi.mocked(rendersApi.imageModels).mockResolvedValue({default_model:'gpt-image-2',models:[{id:'gemini-nano-banana-2.1',available:true}]});
+  const first=renderHook(()=>useImageModelChoice({projectId:'google',compareByDefault:false}));
+  await waitFor(()=>expect(first.result.current.availability).not.toBeNull());
+  expect(first.result.current.imageModel).toBe('gpt-image-2');
+  act(()=>first.result.current.setImageModel('gemini-nano-banana-2.1'));
+  first.unmount();
+  const next=renderHook(()=>useImageModelChoice({projectId:'google',compareByDefault:false}));
+  expect(next.result.current.imageModel).toBe('gemini-nano-banana-2.1');
+  await waitFor(()=>expect(next.result.current.availability).not.toBeNull());
+});
 it('adds local images beside GPT, remembers the selection, and excludes local video', async () => {
   vi.mocked(rendersApi.imageModels).mockResolvedValue({ default_model: 'gpt-image-2', models: [{ id: 'gpt-image-2', available: true }] });
   vi.mocked(comfyTrialsApi.presets).mockResolvedValue({ credit_cost: 0, presets: [

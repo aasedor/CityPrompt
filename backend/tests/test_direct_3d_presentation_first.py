@@ -40,6 +40,26 @@ def test_presentation_first_is_the_shipped_default():
     assert direct_service.DIRECT_3D_PRESENTATION_FIRST is True
 
 
+@pytest.mark.asyncio
+@pytest.mark.parametrize("view_mode", ["aerial", "street"])
+async def test_google_original_survives_same_camera_validation(monkeypatch, view_mode):
+    request = _scene_request(presentation_mode="scene", model="gemini-nano-banana-2.1")
+    request = request.__class__(**{**request.model_dump(), "view_mode": view_mode})
+    capture = prepare_direct_3d_capture(request)
+    original = _png_b64(Image.new("RGB", (2048, 2048), "green"))
+
+    async def fake(self, req, prepared, *, server_inventory=None):
+        self._nano_original = original
+        return capture.normalized_beauty.copy()
+
+    monkeypatch.setattr(Direct3DRenderService, "_call_openai", fake)
+    result = await Direct3DRenderService("", gemini_api_key="test-key").generate(
+        request
+    )
+    assert result.provider_image_base64 == original
+    assert _decoded(result.image_base64).size == capture.normalized_beauty.size
+
+
 def _scene_request(**kwargs):
     beauty, mask, building_ids = _structured_scene()
     context, _ = _registration_context_scene()
