@@ -149,3 +149,48 @@ deletion, inspection material isolation, culling, shadows and semantic capture
 IDs in the real editor. This pilot does not establish those behaviours or
 student-laptop suitability. Both trials remain local; nothing was deployed and
 no paid renders were generated.
+
+## Extended verification before the user trial
+
+On the same local branch, the broader selection of walking, building inspection,
+door, park walking, keyboard, material and deterministic capture tests passed:
+**14 files / 144 tests**. Additional transform assertions now use a genuinely
+aliased input/output vector and cover independent placements and reparenting.
+`npm run type-check` also passed. No production behaviour changed in this
+verification follow-up.
+
+Actual browser checks in the existing field project:
+
+- Added Nordic Roof-Garden Apartments, rotated it to 30 degrees, dragged it to
+  another position, reloaded and selected it again. Position and rotation
+  persisted, with the model visible in overhead and oblique views.
+- Walked toward the moved building, inspected its entrance and transparent
+  windows, entered inspection and used Return to building entrance. This is
+  exterior-shell exploration, not a claim of collision-safe furnished interiors.
+- Walked forward, sideways and backward and dragged to turn in the mixed
+  six-building scene with decorative trees. A subsequent Balanced monitor sample
+  reported 56 fps / 18 ms, 628 calls and 2,574,190 triangles at 1420 × 1150.
+  The camera and scene differ from the earlier five-building benchmark, so these
+  counts are a regression smoke check, not an improvement comparison.
+- Free street-view 3D preview succeeded and visibly contained the same models
+  from the walking camera. No paid AI request was made; balance remained 628.
+- Deleted the temporary apartment, undid the deletion (model restored), redid
+  it and reloaded. The original five buildings remained; the temporary model
+  was gone. The final captured browser error log was empty.
+
+Production build passed with the existing local runtime profile's verified
+public directory, catalogue packet and environment. The first default build
+attempt exposed unhydrated render-example and policy-map LFS pointers; exact
+files were hydrated without changing LFS policy. The recovered-details guard
+then correctly required the existing configured public bundle. With that runtime
+configuration, catalogue/model-contract checks, recorded render-image hashes,
+12 policy maps / 724 images, TypeScript and Vite all passed. Vite retained its
+large-chunk and polygon-clipping import warnings; these are not resolved here.
+
+Evidence is in `extended-*.txt/png` in the same external directory. A compact
+build receipt and Vite manifest are retained. The temporary multi-gigabyte build
+output remains at `D:/CityPrompt-student-performance-2026-10-14/verification-build`:
+automatic approval rejected its removal with "blocked by policy" and no further
+reason. It is generated output, not source or the running app's asset directory.
+Student-laptop measurements and the real-editor batching integration are still
+outstanding. Nothing was pushed or deployed.
