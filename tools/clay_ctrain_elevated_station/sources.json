@@ -1,0 +1,64 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "calgary_ctrain_station",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "ctrain_downtown_platform",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "calgary_ctrain_station",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "ctrain_downtown_platform",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/calgary-ctrain-station/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1429334,
+      "sha256": "6f2d08e5f54d240f44b323cb48f351a17e09fec0d82067542c4660c556be08bd",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "calgary_ctrain_station",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "ctrain_downtown_platform",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/calgary-ctrain-station/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 935570,
+      "sha256": "eb69fb9869a125e60faac611fb39cecc023680bef31fafbe797965c2c88a75b5",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "calgary_ctrain_station",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "ctrain_downtown_platform",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/calgary-ctrain-station/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 862998,
+      "sha256": "526e800497081f31b210690cd53f4ae1dd1adbd8a0264463e049ed764f6b70e0",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

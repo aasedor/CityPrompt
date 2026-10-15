@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "calgary_beltline_mid_rise",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "beltline_glass_panel",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "calgary_beltline_mid_rise",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "beltline_glass_panel",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/calgary-beltline-mid-rise/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1312366,
+      "sha256": "23a51bd3bc20d6daf86740ada8823e0aad06ec1d840671229139b0d102cb34cc",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "calgary_beltline_mid_rise",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "beltline_glass_panel",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/calgary-beltline-mid-rise/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 909573,
+      "sha256": "1199b3cc90428ba32b029b7969d3a59ac8f410f9fe872131771524d6a2ff9a72",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "calgary_beltline_mid_rise",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "beltline_glass_panel",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/calgary-beltline-mid-rise/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 863281,
+      "sha256": "6773eee31ab31db0cb25f922b9eab3af743da14bb8b4ce98e210d72cfd3040b1",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

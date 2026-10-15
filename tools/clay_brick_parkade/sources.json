@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "campus_parking_structure",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "urban_infill_brick_concrete_tower",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "campus_parking_structure",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "urban_infill_brick_concrete_tower",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/campus-parking-structure/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1300542,
+      "sha256": "62d9d0e8d6f473539cc8b9e5ceb8768786bd0c54e842ff4fb888f256ad6de7fb",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "campus_parking_structure",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "urban_infill_brick_concrete_tower",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/campus-parking-structure/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 913132,
+      "sha256": "76c59fdae32da33b8cbdfd1c886469f2faa64b2c99c24c805cb188bc3f5d3645",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "campus_parking_structure",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "urban_infill_brick_concrete_tower",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/campus-parking-structure/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 775532,
+      "sha256": "4ebd4cf049da9e4b7cfa85f2cbc9fc1c65e59c6bd1c2f9ffe6d17fffc294afe2",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}
