@@ -481,7 +481,28 @@ export function resolveArchitecturalGlazingLod(
   return distanceMeters < GLAZING_NEAR_DISTANCE_METERS ? 'near' : 'far';
 }
 
-/** Clone a cached GLTF scene without sharing mutable material instances. */
+/** Standard mesh bounds follow ordinary placement/door transforms. Deformed
+ * or per-instance vertices need a different bound and retain conservative drawing. */
+function hasReliableCameraBounds(mesh: THREE.Mesh): boolean {
+  const dynamic = mesh as THREE.Mesh & { isSkinnedMesh?: boolean; isInstancedMesh?: boolean; isBatchedMesh?: boolean };
+  if (!mesh.frustumCulled || dynamic.isSkinnedMesh || dynamic.isInstancedMesh || dynamic.isBatchedMesh
+    || (mesh.geometry as THREE.InstancedBufferGeometry).isInstancedBufferGeometry
+    || Object.values(mesh.geometry.morphAttributes).some(attributes => attributes?.length)) return false;
+  const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+  if (materials.some(material => {
+    const displaced = material as THREE.MeshStandardMaterial;
+    return (material as THREE.ShaderMaterial).isShaderMaterial
+      || material.onBeforeCompile !== THREE.Material.prototype.onBeforeCompile
+      || Boolean(displaced.displacementMap);
+  })) return false;
+  if (!mesh.geometry.getAttribute('position')?.count) return false;
+  if (!mesh.geometry.boundingSphere) mesh.geometry.computeBoundingSphere();
+  const sphere = mesh.geometry.boundingSphere;
+  return Boolean(sphere && sphere.radius >= 0 && Number.isFinite(sphere.radius)
+    && sphere.center.toArray().every(Number.isFinite));
+}
+
+/** Clone a cached GLTF scene with placement-owned mutable material instances. */
 export function prepareArchitecturalClone(
   source: THREE.Object3D,
   {
@@ -493,20 +514,25 @@ export function prepareArchitecturalClone(
   }: ArchitecturalCloneOptions,
 ): THREE.Object3D {
   const clone = source.clone(true);
+  // Native PBR has no mesh-dependent glazing visibility edits. Retain its
+  // source sharing inside this placement, never across separately editable buildings.
+  // Legacy tuned/glazing materials still need a copy per mesh for paired LOD roles.
+  const nativeMaterials = new Map<THREE.Material, THREE.Material>();
   clone.traverse((object) => {
     object.renderOrder = renderOrder;
-    object.frustumCulled = false;
     const mesh = object as THREE.Mesh;
-    if (!mesh.isMesh) return;
+    if (!mesh.isMesh) { object.frustumCulled = false; return; }
+    mesh.frustumCulled = hasReliableCameraBounds(mesh);
 
     mesh.castShadow = true;
     mesh.receiveShadow = true;
     const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-    const tuned = materials.map((material) => (
-      preserveSourcePbr
-        ? material.clone()
-        : tuneMaterial(material, maxAnisotropy, restyleUntextured, ambientOcclusion)
-    ));
+    const tuned = materials.map((material) => {
+      if (!preserveSourcePbr) return tuneMaterial(material, maxAnisotropy, restyleUntextured, ambientOcclusion);
+      let owned = nativeMaterials.get(material);
+      if (!owned) { owned = material.clone(); nativeMaterials.set(material, owned); }
+      return owned;
+    });
     mesh.material = Array.isArray(mesh.material) ? tuned : tuned[0];
   });
   if (!preserveSourcePbr) setArchitecturalGlazingLod(clone, 'far');
@@ -515,10 +541,12 @@ export function prepareArchitecturalClone(
 
 /** Dispose only clone-owned materials; geometry and textures belong to the GLTF cache. */
 export function disposeArchitecturalCloneMaterials(clone: THREE.Object3D): void {
+  const owned = new Set<THREE.Material>();
   clone.traverse((object) => {
     const mesh = object as THREE.Mesh;
     if (!mesh.isMesh) return;
     const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-    materials.forEach((material) => material.dispose());
+    materials.forEach((material) => owned.add(material));
   });
+  owned.forEach(material => material.dispose());
 }

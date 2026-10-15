@@ -8,6 +8,85 @@ import {
 } from './modelMaterialQuality';
 
 describe('prepareArchitecturalClone', () => {
+  it('preserves source material sharing within one native model while isolating other placements and the cache', () => {
+    const source = new THREE.Group();
+    const material = new THREE.MeshPhysicalMaterial({ color: '#a8b8c8', transmission: .46, roughness: .17 });
+    source.add(new THREE.Mesh(new THREE.BoxGeometry(), material), new THREE.Mesh(new THREE.BoxGeometry(), [material]));
+    const first = prepareArchitecturalClone(source, { renderOrder: 150, preserveSourcePbr: true });
+    const second = prepareArchitecturalClone(source, { renderOrder: 150, preserveSourcePbr: true });
+    const owned = (first.children[0] as THREE.Mesh).material as THREE.MeshPhysicalMaterial;
+    expect(((first.children[1] as THREE.Mesh).material as THREE.Material[])[0]).toBe(owned);
+    expect(owned).not.toBe(material);
+    expect((second.children[0] as THREE.Mesh).material).not.toBe(owned);
+    expect(owned.transmission).toBe(.46); expect(owned.roughness).toBe(.17);
+    owned.opacity = .5;
+    expect(material.opacity).toBe(1);
+    expect(((second.children[0] as THREE.Mesh).material as THREE.Material).opacity).toBe(1);
+    const legacy = prepareArchitecturalClone(source, { renderOrder: 150 });
+    expect(((legacy.children[1] as THREE.Mesh).material as THREE.Material[])[0]).not.toBe((legacy.children[0] as THREE.Mesh).material);
+  });
+
+  it('disposes a shared owned material only once', () => {
+    const source = new THREE.Group(), material = new THREE.MeshStandardMaterial();
+    source.add(new THREE.Mesh(new THREE.BoxGeometry(), material), new THREE.Mesh(new THREE.BoxGeometry(), material));
+    const clone = prepareArchitecturalClone(source, { renderOrder: 150, preserveSourcePbr: true });
+    const owned = (clone.children[0] as THREE.Mesh).material as THREE.Material;
+    (clone.children[1] as THREE.Mesh).material = owned;
+    let disposals = 0; owned.addEventListener('dispose', () => {disposals += 1;});
+    disposeArchitecturalCloneMaterials(clone);
+    expect(disposals).toBe(1);
+  });
+
+  it('culls bounded static geometry outside the camera without changing source geometry or ownership', () => {
+    const source = new THREE.Group();
+    const geometry = new THREE.BoxGeometry(2, 3, 4);
+    const material = new THREE.MeshStandardMaterial();
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.userData = { component_id: 'front-door' };
+    mesh.position.z = -10;
+    source.add(mesh);
+    const clone = prepareArchitecturalClone(source, { renderOrder: 150 });
+    const placed = clone.children[0] as THREE.Mesh;
+    const camera = new THREE.PerspectiveCamera(60, 1, .1, 100);
+    camera.updateMatrixWorld(); clone.updateMatrixWorld(true);
+    const frustum = new THREE.Frustum().setFromProjectionMatrix(new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));
+    expect(placed.frustumCulled).toBe(true);
+    expect(frustum.intersectsObject(placed)).toBe(true);
+    placed.position.z = 10; clone.updateMatrixWorld(true);
+    expect(frustum.intersectsObject(placed)).toBe(false);
+    expect(placed.geometry).toBe(geometry);
+    expect(placed.userData).toEqual(mesh.userData);
+    expect(mesh.position.z).toBe(-10);
+    expect(mesh.frustumCulled).toBe(true);
+  });
+
+  it('keeps explicit no-cull and uncertain deformable/instanced geometry on the conservative path', () => {
+    const source = new THREE.Group(), material = new THREE.MeshStandardMaterial();
+    const authored = new THREE.Mesh(new THREE.BoxGeometry(), material); authored.frustumCulled = false;
+    const instanced = new THREE.InstancedMesh(new THREE.BoxGeometry(), material, 1);
+    const skinned = new THREE.SkinnedMesh(new THREE.BoxGeometry(), material);
+    const morph = new THREE.Mesh(new THREE.BoxGeometry(), material);
+    morph.geometry.morphAttributes.position = [morph.geometry.getAttribute('position').clone()];
+    source.add(authored, instanced, skinned, morph);
+    const clone = prepareArchitecturalClone(source, { renderOrder: 150 });
+    expect(clone.children.map(mesh => mesh.frustumCulled)).toEqual([false, false, false, false]);
+  });
+
+  it('does not trust empty, invalid, shader-displaced or custom-shader bounds', () => {
+    const source = new THREE.Group();
+    const empty = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial());
+    const invalid = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshStandardMaterial());
+    invalid.geometry.boundingSphere = new THREE.Sphere(new THREE.Vector3(), NaN);
+    const displaced = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshStandardMaterial({ displacementMap: new THREE.Texture(), displacementScale: 10 }));
+    const biased = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshStandardMaterial({ displacementMap: new THREE.Texture(), displacementScale: 0, displacementBias: -20 }));
+    const shader = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.ShaderMaterial());
+    const custom = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshStandardMaterial());
+    custom.material.onBeforeCompile = () => {};
+    source.add(empty, invalid, displaced, shader, custom, biased);
+    const clone = prepareArchitecturalClone(source, { renderOrder: 150, preserveSourcePbr: true });
+    expect(clone.children.map(mesh => mesh.frustumCulled)).toEqual([false, false, false, false, false, false]);
+  });
+
   it('clones cached materials and gives glass a coated architectural response', () => {
     const source = new THREE.Group();
     const sourceMaterial = new THREE.MeshPhysicalMaterial({
