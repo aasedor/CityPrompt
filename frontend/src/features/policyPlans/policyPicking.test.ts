@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 import * as THREE from 'three';
 import { zoningSurfaceGeometry } from '@/features/referenceLayers/zoningSurfaceGeometry';
 import type { Position, ZoningOverlay } from '@/features/referenceLayers/zoningLabels';
-import { pickPolicyMesh, policyInspectionAllowed } from './policyPicking';
+import { pickPolicyMesh, policyInspectionAllowed, pickEditableZoneBeforePolicy } from './policyPicking';
+import { direct3DInstanceUserData, direct3DZoneInstanceDescriptor } from '@/components/viewer/globe/direct3dCapture';
 
 function rectangle(w: number, s: number, e: number, n: number): Position[] {
   return [[w,s],[e,s],[e,n],[w,n],[w,s]];
@@ -13,6 +14,46 @@ const data: ZoningOverlay = { bounds: [-114.12,51.01,-114.116,51.012], loadedAt:
 ] };
 
 describe('policy surface picking', () => {
+  it('selects authored objects through the boundary at overhead and oblique angles', () => {
+    const scene = new THREE.Scene();
+    const zones = [{id:'site',zone_type:'site_boundary'}, {id:'house',zone_type:'building'},
+      {id:'park',zone_type:'green_space'}, {id:'street',zone_type:'road'}];
+    const boundary = new THREE.Mesh(new THREE.PlaneGeometry(100,100), new THREE.MeshBasicMaterial());
+    boundary.position.z = 4; // A prepared ground hit must not mask the authored object.
+    boundary.userData = direct3DInstanceUserData(direct3DZoneInstanceDescriptor('site','ground'));
+    scene.add(boundary);
+    for (const [id, role] of [['house','building'],['park','park'],['street','street']] as const) {
+      const group = new THREE.Group();
+      group.userData = direct3DInstanceUserData(direct3DZoneInstanceDescriptor(id,role));
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(10,10,2), new THREE.MeshBasicMaterial());
+      group.add(mesh); scene.add(group); scene.updateMatrixWorld(true);
+      for (const offset of [new THREE.Vector3(0,0,30), new THREE.Vector3(15,-20,30)]) {
+        const ray = new THREE.Raycaster(offset, offset.clone().negate().normalize());
+        expect(pickEditableZoneBeforePolicy(scene, ray, zones)).toBe(id);
+        group.visible = false;
+        expect(pickEditableZoneBeforePolicy(scene, ray, zones)).toBeNull();
+        group.visible = true;
+      }
+      scene.remove(group); mesh.geometry.dispose(); mesh.material.dispose();
+    }
+    boundary.geometry.dispose(); boundary.material.dispose();
+  });
+
+  it('ignores unowned/context meshes and chooses the nearest visible authored model', () => {
+    const scene = new THREE.Scene();
+    const zones = [{id:'near',zone_type:'building'}, {id:'far',zone_type:'building'}];
+    const meshes = ['far','near','deleted','context'].map((id,index) => {
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(4,4,2), new THREE.MeshBasicMaterial());
+      mesh.position.z=index*5;
+      if (id !== 'context') mesh.userData = direct3DInstanceUserData(direct3DZoneInstanceDescriptor(id,'building'));
+      scene.add(mesh); return mesh;
+    });
+    scene.updateMatrixWorld(true);
+    const ray = new THREE.Raycaster(new THREE.Vector3(0,0,30),new THREE.Vector3(0,0,-1));
+    expect(pickEditableZoneBeforePolicy(scene,ray,zones)).toBe('near');
+    expect(pickEditableZoneBeforePolicy(scene,ray,[])).toBeNull();
+    meshes.forEach(mesh => { mesh.geometry.dispose(); mesh.material.dispose(); });
+  });
   it('selects the displayed triangle in top and oblique views without enabling native raycasting', () => {
     const { fill } = zoningSurfaceGeometry(data, 1100);
     const mesh = new THREE.Mesh(fill, new THREE.MeshBasicMaterial({ side: THREE.DoubleSide }));

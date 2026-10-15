@@ -70,7 +70,7 @@ import { useViewerStore } from '@/store';
 import { GlobeZoningLabels } from '@/features/referenceLayers/GlobeZoningLabels';
 import { pickZoningArea, type ZoningInspectionControls } from '@/features/zoningCatalogue/zoningInspection';
 import { GlobePolicyMap, type GlobePolicyMapProps, type PolicyMapHandle } from '@/features/policyPlans/GlobePolicyMap';
-import { policyInspectionAllowed } from '@/features/policyPlans/policyPicking';
+import { policyInspectionAllowed, pickEditableZoneBeforePolicy } from '@/features/policyPlans/policyPicking';
 import { GlobeCityPolicyMaps, type GlobeCityPolicyProps, type CityPolicyMapHandle } from '@/features/policyPlans/GlobeCityPolicyMaps';
 import type { ZoningLabelsState } from '@/features/referenceLayers/useZoningLabels';
 import { GlobeReferenceLayer } from '@/features/referenceLayers/GlobeReferenceLayer';
@@ -4322,8 +4322,8 @@ export function GlobeSitePlannerMap({
 
   // Keep ref updated so onCreated closure always calls latest version
   handleCanvasClickRef.current = handleCanvasClick;
-  // Inspect in the canvas capture phase, before R3F can select the underlying
-  // site/building. Authoring, navigation drags and other picking modes win.
+  // Inspect in the canvas capture phase. Authored objects take priority over
+  // reference maps; authoring, navigation drags and other picking modes win.
   handlePolicyClickRef.current = (event: MouseEvent) => {
     if (event.button !== 0 || !policyInspectionAllowed({
       enabled: Boolean(zoningInspection || (policyMap?.enabled && policyMap.opacity > 0) || cityPolicyMaps?.layers.some(layer=>layer.enabled && layer.opacity>0)), opacity: 1, paused: interactionPaused,
@@ -4334,9 +4334,28 @@ export function GlobeSitePlannerMap({
     if (!canvas || !camera) return false;
     const rect = canvas.getBoundingClientRect();
     const x=((event.clientX-rect.left)/rect.width)*2-1, y=-((event.clientY-rect.top)/rect.height)*2+1;
+    zoningRaycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+    // Reference-map inspection runs before R3F's click handlers. Resolve the
+    // student's actual geometry first, otherwise even an elevated tower click
+    // opens the district underneath it and clears the model selection.
+    if (!zoningInspection?.editing && sceneRef.current) {
+      const detailId = detailInteraction && !detailEditing && !entrancePick
+        ? pickProjectDetail(sceneRef.current, zoningRaycaster) : null;
+      const zoneId = detailId ? null : pickEditableZoneBeforePolicy(sceneRef.current, zoningRaycaster, siteZones);
+      if (detailId || zoneId) {
+        ignoreNextCanvasClickRef.current = false;
+        markUserInteracted();
+        zoningInspection?.select(null);
+        policyMap?.clearSelection();
+        cityPolicyMaps?.clearSelection();
+        setSelectedBuildingId(siteZones.find(zone => zone.id === zoneId)?.building_id ?? null);
+        onZoneSelected(zoneId);
+        if (detailId) detailInteraction?.selectItem(detailId);
+        return true;
+      }
+    }
     const id = policyMapRef.current?.pick(x,y,camera);
     const cityMapId = id ? null : cityPolicyMapsRef.current?.pick(x,y,camera);
-    zoningRaycaster.setFromCamera(new THREE.Vector2(x, y), camera);
     const zoningHit = !id && !cityMapId && zoningInspection ? pickZoningArea(referenceOverlayGroup.current, zoningRaycaster, zoningLabels, referenceLayers) : null;
     if (!id && !cityMapId && !zoningHit) { zoningInspection?.select(null); policyMap?.clearSelection(); cityPolicyMaps?.clearSelection(); return Boolean(zoningInspection?.editing); }
     ignoreNextCanvasClickRef.current = false;
