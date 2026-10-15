@@ -88,7 +88,7 @@ async def test_google_interactions_keeps_roles_camera_frame_and_original_without
     assert body["model"] == "gemini-nano-banana-2.1"
     assert body["response_format"] == {
         "type": "image",
-        "mime_type": "image/png",
+        "mime_type": "image/jpeg",
         "aspect_ratio": "3:2",
         "image_size": "2K",
     }
@@ -135,6 +135,31 @@ async def test_unreadable_inputs_are_rejected_before_a_paid_request(monkeypatch)
         )
     assert err.value.billing_status == "unproduced"
     assert calls == []
+
+
+@pytest.mark.asyncio
+async def test_bad_request_explains_google_rejection_without_exposing_key(monkeypatch):
+    nano, calls = provider(monkeypatch, httpx.Response(400, json={"error":{"message":"Unsupported request field; credential AQ.private-test-key"}}))
+    with pytest.raises(nano.NanoBananaProviderError) as caught:
+        await nano.generate_nano_banana_image("AQ.private-test-key", [{"text":"Render"}], target_size=(512,512))
+    assert "Unsupported request field" in str(caught.value)
+    assert "AQ.private-test-key" not in str(caught.value)
+    assert caught.value.billing_status == "unproduced"
+    assert len(calls) == 1
+
+
+@pytest.mark.asyncio
+async def test_native_jpeg_preserves_decoded_original_as_lossless_png(monkeypatch):
+    image = Image.new("RGB", (256,256), (89,123,67))
+    raw = io.BytesIO()
+    image.save(raw, format="JPEG", quality=95)
+    encoded = base64.b64encode(raw.getvalue()).decode()
+    expected = png(Image.open(io.BytesIO(raw.getvalue())).convert("RGB"))
+    nano, calls = provider(monkeypatch, httpx.Response(200,json={"status":"completed","steps":[{"type":"model_output","content":[{"type":"image","mime_type":"image/jpeg","data":encoded}]}]}))
+    result = await nano.generate_nano_banana_image("google-key",[{"text":"Render"}],target_size=(256,256))
+    assert calls[0][1]["json"]["response_format"]["mime_type"] == "image/jpeg"
+    assert result.provider_image_base64 == expected
+    assert png(result.image) == expected
 
 
 @pytest.mark.asyncio

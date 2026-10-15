@@ -466,7 +466,7 @@ export function useDirect3DRender() {
         imageUrl,
         prompt,
         model: response.model,
-        imageQuality: 'high',
+        imageQuality: response.model.startsWith('gpt-image-') ? 'high' : undefined,
         savedRender: showProviderImage
           ? response.provider_original_render ?? undefined
           : response.saved_render ?? undefined,

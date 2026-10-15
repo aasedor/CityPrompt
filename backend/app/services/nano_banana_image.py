@@ -2,7 +2,8 @@
 
 Contract: https://ai.google.dev/api/interactions-api
 Image options: https://ai.google.dev/gemini-api/docs/image-generation
-Keep the untouched provider PNG separately from the viewport-aligned copy.
+Keep a canonical PNG of the decoded provider pixels separately from the
+viewport-aligned copy; the live model currently returns JPEG only.
 """
 
 from __future__ import annotations
@@ -10,6 +11,7 @@ from __future__ import annotations
 import base64
 import io
 import math
+import re
 from dataclasses import dataclass
 
 import httpx
@@ -163,7 +165,10 @@ async def generate_nano_banana_image(
         "store": False,
         "response_format": {
             "type": "image",
-            "mime_type": "image/png",
+            # Live Nano Banana 2.1 rejects PNG output (HTTP 400), despite
+            # generic guide examples. Decode JPEG once and preserve those
+            # pixels as PNG for the existing gallery/capture contract.
+            "mime_type": "image/jpeg",
             "aspect_ratio": ratio,
             "image_size": resolution,
         },
@@ -186,8 +191,15 @@ async def generate_nano_banana_image(
             transport_interrupted=True,
         ) from exc
     if response.status_code != 200:
+        detail = ""
+        try:
+            message = response.json().get("error", {}).get("message", "")
+            if isinstance(message, str):
+                detail = re.sub(r"(?:AIza|AQ\.)[A-Za-z0-9_.-]+", "[redacted]", message.replace(api_key, "[redacted]"))[:500]
+        except (ValueError, TypeError, AttributeError):
+            pass
         raise NanoBananaProviderError(
-            f"Google image generation failed (HTTP {response.status_code})",
+            f"Google image generation failed (HTTP {response.status_code})" + (f": {detail}" if detail else ""),
             billing_status=(
                 "unproduced"
                 if response.status_code in {400, 401, 403, 404, 413, 422, 429}

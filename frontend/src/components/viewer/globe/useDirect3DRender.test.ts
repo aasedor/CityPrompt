@@ -312,6 +312,17 @@ describe('Direct 3D presentation adapter', () => {
     expect(prompt).toContain('never build a new surface for them');
   });
 
+  it('does not label a Google image with OpenAI quality', async () => {
+    const model = 'gemini-nano-banana-2.1';
+    vi.mocked(rendersApi.generateDirect3D).mockResolvedValue({ ...response, model });
+    const { result } = renderHook(() => useDirect3DRender());
+    const direct = await result.current.renderDirect3D(capture, {
+      style: 'photorealistic', model, projectId: 'project-1', community3DClaims,
+    });
+    expect(direct.render.imageQuality).toBeUndefined();
+    expect(direct.render.providerLabel).toContain('Nano Banana 2.1');
+  });
+
   it.each(['photomontage', 'survey'])('keeps %s usable from a street camera without prescribing an aerial viewpoint', (style) => {
     const prompt = buildDirect3DVisualPrompt(style, 'Do not add people. Do not add vehicles.', capture);
     expect(prompt).not.toMatch(/drone photograph|aerial survey photograph/i);
