@@ -3,6 +3,7 @@ import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import type { WalkPose } from '@/components/viewer/globe/walkNavigation';
 import { buildingWalkEntrance, buildingWalkRevision } from './buildingWalking';
+import { walkModelLocal } from './walkModelTransform';
 
 type UpAxis = 'y' | 'z';
 interface Inspection {
@@ -192,15 +193,17 @@ function explorationGround(record: Inspection, point: THREE.Vector3): number {
  * This supports exploration of existing geometry; it does not invent rooms. */
 export function updateWalkBuildingInspection(zones: SiteZone[], pose: WalkPose): { zoneId: string; pose: WalkPose } | null {
   if (buildingWalkEntrance(zones, pose)) { endBuildingInspection(); return null; }
+  const worldPoint = WGS84_ELLIPSOID.getCartographicToPosition(pose.lat * Math.PI / 180, pose.lng * Math.PI / 180, pose.groundHeight, new THREE.Vector3());
+  const point = new THREE.Vector3();
   for (const record of mounted.values()) {
-    if (current(zones, record.zoneId) !== record) continue;
-    const point = new THREE.Vector3();
-    WGS84_ELLIPSOID.getCartographicToPosition(pose.lat * Math.PI / 180, pose.lng * Math.PI / 180, pose.groundHeight, point);
-    record.object.updateWorldMatrix(true, false); record.object.worldToLocal(point);
+    walkModelLocal(record.object, worldPoint, point);
     const depth = record.up === 'y' ? 'z' : 'y';
     if (point.x < record.bounds.min.x || point.x > record.bounds.max.x
       || point[depth] < record.bounds.min[depth] || point[depth] > record.bounds.max[depth]
       || point[record.up] > record.bounds.max[record.up] + 1) continue;
+    // Only nearby candidates need full revision/ownership validation. Keep the
+    // original first-valid-record rule for overlapping registrations of a zone.
+    if (current(zones, record.zoneId) !== record) continue;
     if (active !== record) {
       endBuildingInspection(); active = record;
       record.restore = showInteriorSides(record);

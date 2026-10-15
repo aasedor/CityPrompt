@@ -79,3 +79,73 @@ the deterministic input capture and its regression tests passed.
 Keep further work evidence-led: repeat this project on the affected laptop,
 measure sustained walking/turning, then target the largest measured cost.
 Do not silently simplify authored buildings or lower final render quality.
+
+## Second local trial: walking queries
+
+The walking and building-inspection queries now reject distant models using
+their existing local bounds before finding and serializing zone metadata.
+Each query converts its camera position to world coordinates once. A WeakMap
+caches inverse placement matrices, refreshing whenever the live world matrix
+changes; ancestors are updated first. Nearby candidates still validate current
+metadata on every query, including same-reference edits. No persistent zone
+revision cache or relaxed entrance/floor rules were introduced.
+
+Finite diagnostic timing on this desktop, 40 distant models and 200 queries
+with approximately 11 KB of serialized metadata per model:
+
+| Query fixture | Before | After |
+| --- | ---: | ---: |
+| Ordinary inspection shell | 116.72 ms | 5.06 ms |
+| Building walking network | 98.17 ms | 3.73 ms |
+
+These are synthetic query timings, **not whole-application frame times**.
+Regression tests assert the stable work counts instead of wall-clock timing:
+8,000 distant metadata serializations become zero; camera conversions become
+200 instead of 8,000. Timing instrumentation was removed from the final tests.
+
+Verification: seven narrow Vitest files / 70 tests passed; TypeScript passed.
+Tests cover parent movement, rotation and scale, cached matrix invalidation,
+in-place metadata edits, deletion/unmount, walking networks, inspection,
+measured doors, keyboard walking and deterministic capture. Independent code
+review found no remaining P0/P1/P2 issues.
+
+Actual local browser checks passed for walking entry, turning, movement and
+walking into the Scottish Baronial hotel's entrance passage toward its
+courtyard. Browser error log was empty. The starting-view building region
+differed from the previous full-quality view by mean RGB 0.0000411/255, confined
+to an 8 × 8 extent. No authored model, texture, material or resolution changed.
+Evidence: `query-optimized-walk.png`, `query-optimized-entrance.png` and
+`query-optimized-courtyard.png` in the external evidence directory above. The
+last image is a view toward the courtyard from the passage, not proof of
+reaching every interior route.
+
+## Separate repeated-building batching pilot
+
+Standalone local experiment at `http://127.0.0.1:5205/`, source and bundle under
+`D:/CityPrompt-student-performance-2026-10-14/instancing-pilot/` (outside Git).
+It loads the existing `clay-baronial-railway-hotel-clay-v006.glb` directly and
+compares 12 placements. Fifteen opaque parts use InstancedMesh in the grouped
+mode; the glass part stays individually rendered. Geometry and material values
+are retained. This pilot is **not integrated into the student editor**.
+
+Same camera, 1420 × 640 buffer, 30 warmup frames then 120 measured frames:
+
+| Measurement | Individual | Grouped |
+| --- | ---: | ---: |
+| Draw calls, including transmission passes | 398 | 68 |
+| Triangles submitted | 2,049,892 | 2,049,892 |
+| Mean CPU render submission | 6.49 ms | 1.33 ms |
+| Mean frame interval | 17.63 ms | 17.61 ms |
+| 95th-percentile frame interval | 18.1 ms | 18.1 ms |
+
+Drawing submissions fell substantially; FPS did not materially change on this
+desktop. CPU submission is not GPU elapsed time. Overview and close-view
+screenshots showed no visible architectural loss, but were not pixel-identical:
+mean RGB difference was 0.0655/255 and 0.0599/255 respectively across the canvas.
+Browser error log was empty. Evidence is `instancing-*.txt/png` beside the pilot.
+
+Before promoting batching, validate per-instance selection, transforms,
+deletion, inspection material isolation, culling, shadows and semantic capture
+IDs in the real editor. This pilot does not establish those behaviours or
+student-laptop suitability. Both trials remain local; nothing was deployed and
+no paid renders were generated.

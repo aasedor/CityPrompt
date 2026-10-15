@@ -3,6 +3,7 @@ import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import type { WalkPose } from '@/components/viewer/globe/walkNavigation';
 import { advanceParkWalk, parkWalkHeight, type ParkWalkingNetwork, type WalkPoint } from '@/features/parks/parkWalking';
+import { walkModelLocal } from './walkModelTransform';
 
 export interface BuildingWalkNetwork extends ParkWalkingNetwork {
   version: 2;
@@ -62,10 +63,8 @@ export function mountBuildingWalking(id: string, zone: SiteZone, object: THREE.O
 }
 
 function local(record: MountedWalk, pose: WalkPose): WalkPoint {
-  const point = new THREE.Vector3();
-  WGS84_ELLIPSOID.getCartographicToPosition(pose.lat * Math.PI / 180, pose.lng * Math.PI / 180, pose.groundHeight, point);
-  record.object.updateWorldMatrix(true, false);
-  record.object.worldToLocal(point);
+  const point = WGS84_ELLIPSOID.getCartographicToPosition(pose.lat * Math.PI / 180, pose.lng * Math.PI / 180, pose.groundHeight, new THREE.Vector3());
+  walkModelLocal(record.object, point, point);
   return [point.x, -point.z, point.y];
 }
 function world(record: MountedWalk, point: WalkPoint, heading: number): WalkPose {
@@ -79,11 +78,16 @@ function inside(n: BuildingWalkNetwork, p: WalkPoint) {
   return Math.abs(p[0] - center[0]) <= n.footprint[0] / 2 + .001 && Math.abs(p[1] - center[1]) <= n.footprint[1] / 2 + .001;
 }
 function context(zones: SiteZone[], pose: WalkPose) {
+  if (!mounted.size) return null;
+  const worldPoint = WGS84_ELLIPSOID.getCartographicToPosition(pose.lat * Math.PI / 180, pose.lng * Math.PI / 180, pose.groundHeight, new THREE.Vector3());
+  const point = new THREE.Vector3();
   for (const record of mounted.values()) {
+    walkModelLocal(record.object, worldPoint, point);
+    const p: WalkPoint = [point.x, -point.z, point.y];
+    if (!inside(record.network, p)) continue;
     const zone = zones.find(z => z.id === record.zoneId);
     if (!zone || record.revision !== buildingWalkRevision(zone)) continue;
-    const p = local(record, pose);
-    if (inside(record.network, p)) return { record, p };
+    return { record, p };
   }
   return null;
 }
