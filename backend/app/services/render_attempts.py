@@ -103,6 +103,7 @@ def response_from_evidence(evidence):
     result = evidence["result"]
     return Direct3DRenderResponse(
         image_base64=result["image_base64"], model=evidence["model"],
+        provider_image_base64=result.get("provider_image_base64"),
         outcome=result["outcome"], warnings=result["warnings"],
         capture_fingerprint=result["capture_fingerprint"], output_fingerprint=result["output_fingerprint"],
         diagnostics=result["diagnostics"],

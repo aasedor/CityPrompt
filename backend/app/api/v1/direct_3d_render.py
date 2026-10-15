@@ -1772,9 +1772,9 @@ async def run_direct_3d_render(
         logger.warning("Failed to save Direct 3D render audit log: %s", audit_exc)
 
     # The user paid for every produced image: persist all results to the
-    # project gallery, and keep the untouched provider image whenever a safety
-    # fallback replaced it (parity with pasting the capture into an external
-    # image chat). Gallery failures never block returning the render.
+    # project gallery, and keep the untouched provider image whenever alignment,
+    # resizing or a safety fallback changed it. Gallery failures never block
+    # returning the render.
     saved_render = None
     provider_original_render = None
     try:
@@ -1799,10 +1799,9 @@ async def run_direct_3d_render(
             render_diagnostics=result.diagnostics,
             render_warnings=list(result.warnings),
         )
-        if result.provider_image_base64 and strategy not in (
-            None,
-            "provider_full_scene",
-        ):
+        # Service images use the same canonical base64 encoder. A full-scene
+        # strategy can still have a different native-resolution provider image.
+        if result.provider_image_base64 and result.provider_image_base64 != result.image_base64:
             provider_original_render = await persist_render_to_gallery(
                 db,
                 req.project_id,
