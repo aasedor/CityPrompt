@@ -9,6 +9,7 @@ import math
 import re
 import uuid
 from datetime import datetime, timezone
+from types import SimpleNamespace
 
 from typing import Optional
 
@@ -26,6 +27,7 @@ from app.services.native_brt import validate_brt_properties, validate_brt_ground
 from app.services.native_tram import validate_tram_properties, validate_tram_ground, is_native_tram
 from app.services.native_specialist_streets import validate_specialist_properties, validate_specialist_ground, is_native_specialist
 from app.services.elevated_rail import validate_rail_overlap
+from app.services.community_3d_scope import community_3d_building_overlaps
 from app.services.public_road_connection import public_road_connection_fits
 from app.services.public_road_context import fetch_public_road_context
 from sqlalchemy import desc, func as sa_func, select
@@ -968,6 +970,36 @@ async def _validate_elevated_rail_neighbours(db, project_id, coordinates, proper
     validate_rail_overlap(coordinates, properties or {}, neighbours)
 
 
+async def _assert_new_catalogue_building_clear(db, project_id, zone_type, polygon, properties):
+    """Backstop stale clients and recovered drafts under the project write lock.
+
+    Request-ID reconciliation must happen first: a successful save whose reply
+    was lost is not a new placement. Imported alternatives retain their existing
+    compile-scope validation; this guard protects ordinary catalogue placement.
+    """
+    properties = properties or {}
+    if (zone_type not in ('building', 'residential') or not properties.get('pick_place_asset')
+            or properties.get('_imported_from') or properties.get('_plan_snapshot_id')
+            or properties.get('_plan_role') == 'framework_height'):
+        return
+    result = await db.execute(select(SiteZone).where(
+        SiteZone.project_id == project_id,
+        SiteZone.zone_type.in_(('building', 'residential')),
+    ))
+    candidate = SimpleNamespace(id='new-placement', zone_type=zone_type, geometry=polygon, properties=properties)
+    for neighbour in result.scalars().all():
+        props = neighbour.properties or {}
+        if (props.get('_imported_from') or props.get('_plan_snapshot_id')
+                or props.get('_plan_role') == 'framework_height'):
+            continue
+        if community_3d_building_overlaps([candidate, neighbour]):
+            label = neighbour.name or props.get('development_archetype_label') or 'another saved building'
+            raise HTTPException(status_code=422, detail=(
+                f'This placement overlaps {label}. Reload the saved plan and place it in a clear area. '
+                'Your existing buildings have not been changed.'
+            ))
+
+
 @router.get("/projects/{project_id}/road-network")
 async def get_road_network(
     project_id: uuid.UUID,
@@ -1127,6 +1159,9 @@ async def create_zone(
             properties=zone_in.properties,
         )
 
+    await _assert_new_catalogue_building_clear(
+        db, project_id, zone_in.zone_type, candidate_polygon, zone_in.properties,
+    )
     try:
         validate_brt_properties(zone_in.properties)
         validate_tram_properties(zone_in.properties)
