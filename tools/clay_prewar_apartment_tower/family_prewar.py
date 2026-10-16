@@ -34,7 +34,7 @@ PALETTE = dict(wall=(.44, .21, .16), joint=(.32, .16, .12), trim=(.14, .14, .15)
     foundation=(.42, .42, .41), glass=(.36, .44, .48), hardware=(.10, .10, .11),
     interior=(.80, .76, .68), floor=(.46, .44, .42), timber=(.40, .28, .16), blue=(.14, .22, .28),
     planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.66, .65, .62), copper=(.34, .23, .16),
-    membrane=(.24, .24, .25), stonejoint=(.62, .58, .50), asphalt=(.30, .30, .31), clay_pot=(.66, .42, .30))
+    membrane=(.24, .24, .25), grating=(.66, .67, .68), stonejoint=(.62, .58, .50), asphalt=(.30, .30, .31), clay_pot=(.66, .42, .30))
 
 
 def manifest(version):
@@ -43,7 +43,7 @@ def manifest(version):
         ('facade_close', (-4.0, -34.0, 20.0), (-4.0, Y0, 20.0), 45),
         ('architecture_close', (26.0, -26.0, 36.0), (X1, Y0, 37.0), 45),
         ('glass_close', (-1.0, -22.0, 12.0), (0.0, Y0, 13.0), 45),
-        ('entrance_marquee', (5.0, -22.0, 2.0), (0.0, Y0, 3.4), 45),
+        ('entrance_marquee', (8.0, Y0 - 13.0, 2.2), (10.6, Y0, 3.6), 35),
         ('limestone_base', (-14.0, -24.0, 3.0), (-10.0, Y0, 4.0), 45),
         ('fire_balconies', (30.0, -4.0, 20.0), (X1, 6.0, 20.0), 45),
         ('cornice_balustrade', (-24.0, -24.0, 44.0), (-12.0, Y0, ROOF), 45),
@@ -381,7 +381,6 @@ def elevation(f, lo, hi, stone_bay=None, balcony_bay=None, entrance=None, lite=F
             m.box('stone', u, -.17, z + .4, w + .02, .34, .78)
             m.box('stone', u, -.17, z + .8 + 1.95 + .2, w + .02, .34, .36)
             m.box('stone', u, -.3, z + .8 + 1.95 + .42, fw + .3, .2, .14)                      # small cornice on each head
-        m.box('stone', u + pitch / 2 + .95, -.1, (BASE_TOP + ROOF) / 2, 1.1, .2, ROOF - BASE_TOP)   # heavy stone pier toward the corner
     for k in range(int((ROOF - BASE_TOP - .4) / .62)):                                         # quoin strips at both corners
         z = BASE_TOP + .5 + k * .62 + .27
         L = 1.0 if k % 2 == 0 else .62
@@ -413,14 +412,18 @@ def elevation(f, lo, hi, stone_bay=None, balcony_bay=None, entrance=None, lite=F
 def build_faces():
     hw, hd = (X1 - X0) / 2, (Y1 - Y0) / 2
     south = C.Face((0, Y0, 0), (1, 0, 0), (0, 1, 0), 'south')
-    us = elevation(south, -hw, hw, stone_bay=4, balcony_bay=3, entrance=3)        # balconies stacked over the marquee
+    us = elevation(south, -hw, hw, stone_bay=9, balcony_bay=8, entrance=8)        # entrance group hard by the SE corner
     east = C.Face((X1, 0, 0), (0, 1, 0), (-1, 0, 0), 'east')
-    elevation(east, -hd + T, hd - T, stone_bay=None, balcony_bay=5, z_offset=.006, ext=(1.3, 1.3))
+    elevation(east, -hd + T, hd - T, stone_bay=0, balcony_bay=5, z_offset=.006, ext=(1.3, 1.3))   # stone bay at the SE corner
     north = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'north')
     elevation(north, -hw, hw, lite=True)
     west = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west')
     elevation(west, -hd + T, hd - T, balcony_bay=2, lite=True, z_offset=.006, ext=(1.3, 1.3))
-    # Corner urns on the balustrade pedestals.
+    # Corner blocks enclosing the cornice junctions, then pedestals and urns on the balustrade.
+    top = ROOF + .5
+    for x, sx in ((X0, -1), (X1, 1)):
+        for y, sy in ((Y0, -1), (Y1, 1)):
+            C.box('Cornice corner block', (x + sx * (1.32 - .45) / 2, y + sy * (1.32 - .45) / 2, top - .37), (1.77, 1.77, .88), 'stone', 'cornice', 0)
     zt = ROOF + .5 + 1.1
     for x in (X0 + .3, X1 - .3):
         for y in (Y0 + .3, Y1 - .3):
@@ -429,7 +432,7 @@ def build_faces():
             C.rod('Corner urn', (x, y, zt + .1), (x, y, zt + .6), .26, 'stone', 'balustrade', 12)
             C.rod('Corner urn lid', (x, y, zt + .6), (x, y, zt + .8), .12, 'stone', 'balustrade', 10)
     # Entrance marquee with tie rods, door lanterns.
-    ue = us[3]
+    ue = us[8]
     C.box('Entrance marquee', (ue, Y0 - 1.45, 3.85), (5.0, 2.8, .45), 'hardware', 'entrance', 0)
     C.box('Marquee name band', (ue, Y0 - 2.87, 3.85), (4.0, .04, .2), 'pale', 'entrance', 0)
     for dx in (-2.3, 2.3):
@@ -502,17 +505,27 @@ def floors_and_roof():
             qx, qy = px + nx * (reach - .1), py + ny * (reach - .1)
             C.beam('Tank pyramid seam', (px, py, zt + .04), (qx, qy, zt + .04 + 2.2 * (reach - .1) / hplan), .04, .05, 'copper', 'tank house')
     # Grating catwalk round the tank house, plant units, chimneys with clay pots.
+    zc = ROOF + .9
     for (a, b, c, d) in ((x0 - 2.2, x1 + 2.2, y0 - 2.2, y0 - .2), (x1 + .2, x1 + 2.2, y0 - .2, y1 + .2), (x0 - 2.2, x0 - .2, y0 - .2, y1 - 2.0)):
-        C.box('Catwalk grating', ((a + b) / 2, (c + d) / 2, ROOF + .45), (b - a, d - c, .06), 'hardware', 'catwalk', 0)
+        C.box('Catwalk grating', ((a + b) / 2, (c + d) / 2, zc), (b - a, d - c, .05), 'grating', 'catwalk', 0)
+        along_x = (b - a) > (d - c)
+        n = int(((b - a) if along_x else (d - c)) / .3)
+        for i in range(1, n):                                          # bearing bars give the grating its texture
+            if along_x:
+                C.box('Catwalk bar', (a + (b - a) * i / n, (c + d) / 2, zc + .03), (.03, d - c - .04, .02), 'hardware', 'catwalk', 0)
+            else:
+                C.box('Catwalk bar', ((a + b) / 2, c + (d - c) * i / n, zc + .03), (b - a - .04, .03, .02), 'hardware', 'catwalk', 0)
         for (px, py) in ((a + .1, c + .1), (b - .1, c + .1), (a + .1, d - .1), (b - .1, d - .1)):
-            C.box('Catwalk post', (px, py, ROOF + .23), (.08, .08, .44), 'hardware', 'catwalk', 0)
+            C.box('Catwalk post', (px, py, (ROOF + zc) / 2), (.1, .1, zc - ROOF), 'grating', 'catwalk', 0)
     for (ax, ay), (bx, by) in (((x0 - 2.2, y0 - 2.2), (x1 + 2.2, y0 - 2.2)), ((x1 + 2.2, y0 - 2.2), (x1 + 2.2, y1 + .2)), ((x0 - 2.2, y0 - 2.2), (x0 - 2.2, y1 - 2.0))):
-        C.beam('Catwalk rail', (ax, ay, ROOF + 1.5), (bx, by, ROOF + 1.5), .05, .05, 'hardware', 'catwalk')
-        C.beam('Catwalk rail mid', (ax, ay, ROOF + 1.0), (bx, by, ROOF + 1.0), .04, .04, 'hardware', 'catwalk')
+        C.beam('Catwalk rail', (ax, ay, zc + 1.05), (bx, by, zc + 1.05), .05, .05, 'grating', 'catwalk')
+        C.beam('Catwalk rail mid', (ax, ay, zc + .55), (bx, by, zc + .55), .04, .04, 'grating', 'catwalk')
         n = max(2, int(math.hypot(bx - ax, by - ay) / 1.6))
         for i in range(n + 1):
             x, y = ax + (bx - ax) * i / n, ay + (by - ay) * i / n
-            C.beam('Catwalk stanchion', (x, y, ROOF + .48), (x, y, ROOF + 1.5), .05, .05, 'hardware', 'catwalk')
+            C.beam('Catwalk stanchion', (x, y, zc + .02), (x, y, zc + 1.05), .05, .05, 'grating', 'catwalk')
+    for k in range(5):                                                # short stair from the roof at the west end
+        C.box('Catwalk stair tread', (x0 - 1.2, y1 - 2.0 + .3 + k * .3, ROOF + .18 * (k + 1)), (1.0, .3, .04), 'grating', 'catwalk', 0)
     for x, y, s in ((-3.2, 9.4, 1.4), (-.6, 9.4, 1.2), (2.0, 9.4, 1.4), (4.4, 9.4, 1.0)):
         C.box('Plant unit', (x, y, ROOF + s / 2), (2.2, 1.8, s), 'pale', 'roof plant', 0)
         C.rod('Plant fan', (x, y, ROOF + s), (x, y, ROOF + s + .08), .6, 'hardware', 'roof plant', 12)
