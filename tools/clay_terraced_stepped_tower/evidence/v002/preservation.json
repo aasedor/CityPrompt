@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-terraced-stepped-tower-clay-v002",
+  "glb": "clay-terraced-stepped-tower-clay-v002.glb",
+  "glb_bytes": 3864088,
+  "glb_sha256": "e6f84752e2285839e25cd25e766610ec6a3d1f6841e78eb8396083d948044c45",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "birch_court.png": 92,
+    "dark_block.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "raking_frame.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "solar_roof.png": 92,
+    "terrace_planters.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-terraced-stepped-tower-clay-v002-renders-and-glb.zip",
+  "zip_bytes": 33498126
+}

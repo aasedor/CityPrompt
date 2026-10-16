@@ -68,11 +68,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001
+## Open blockers after v002
 
-- P1: the east raking element is a slim white strut past a stepped cedar facade; the sources show a solid charcoal triangular wall with a light coping along the rake, the terraces ending against it
-- P1: the wing's court-facing west wall is punched cedar with small windows; the sources show a projecting balcony on every floor with white slab edges, black rails and full-height glazing between cedar panels
-- P1: no ground colonnade; the sources set the ground storey back behind white round columns on the west and south fronts
-- P1: the birch court is a flush lawn square and two lawn pads; the sources show a raised corten planter with dense underplanting and two planted raised beds with a paved path between
-- P1: terrace planting and furniture far too sparse; the sources show long corten planters of tall grasses and small multi-stem trees with sofas, loungers and dining sets
-- P2: see evidence/v001/independent-review.md
+- P0: the interior camera shows a flat wall, one cedar strip and an opaque black pane with no room depth
+- P1: the dark block's west face has a full window grid where the source is almost blank charcoal with one staggered column of slits; the court-facing south face has about 5 window columns against 3
+- P1: the dark block and raking wall read mid-grey, about twice the source charcoal's luminance
+- P1: every terrace repeats one full-length trough of box-prism grasses with a tree at the west end; the source has 2 to 3 discrete varied corten planters with soft grass masses and open decks with furniture (v001 finding, partly fixed)
+- P1: the court beds are bare soil with scattered shrubs and the birches sit on a strict grid (v001 finding, partly fixed)
+- P1: the dark block is about 48% too deep for its width
+- P2: see evidence/v002/independent-review.md
