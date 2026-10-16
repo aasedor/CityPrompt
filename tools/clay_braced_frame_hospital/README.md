@@ -68,7 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003
+## Open blockers after v004
 
-- P1: several entrance-canopy hanger rods end on non-structural surfaces (the signage panel, the perforated screen face, mid-pane on the atrium glass) with no visible anchor
-- P2: see evidence/v003/independent-review.md
+- P1: the atrium's diagonal mullion net runs to the pavement across the main entrance, the revolving doors behind the lattice; the source has a straight vertical-mullion storefront with a revolving door below the canopy line
+- P2: see evidence/v004/independent-review.md
