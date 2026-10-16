@@ -9,6 +9,41 @@ import { DETAIL_CATEGORIES, searchDetails } from './detailCatalogue';
 vi.mock('./detailThumbnail', () => ({ detailThumbnail: async () => 'data:image/png;base64,preview' }));
 afterEach(() => vi.unstubAllGlobals());
 describe('detail catalogue workflow', () => {
+  it('collapses the narrow catalogue after choosing an item and can reopen without cancelling placement',()=>{
+    vi.stubGlobal('matchMedia',()=>({matches:true,addEventListener:vi.fn(),removeEventListener:vi.fn()}));
+    vi.stubGlobal('IntersectionObserver',class {observe(){} disconnect(){}});
+    function Trial(){
+      const placement=useDetailPlacement({version:1,revision:0,can_edit:true,benches:[]},async next=>next);
+      return <DetailPlacementPanel placement={placement} canEdit onClose={()=>{}} onArrange={()=>{}}/>;
+    }
+    render(<Trial/>);
+    fireEvent.click(screen.getByRole('button',{name:'Browse Seating'}));
+    fireEvent.click(screen.getByRole('button',{name:'Choose Timber bench'}));
+    expect(screen.queryByLabelText('Search individual items')).not.toBeInTheDocument();
+    expect(screen.getByText('Placing: Timber bench')).toBeVisible();
+    fireEvent.click(screen.getByRole('button',{name:'Expand detail catalogue'}));
+    expect(screen.getByLabelText('Search individual items')).toBeVisible();
+    expect(screen.getByText('Placing: Timber bench')).toBeVisible();
+  });
+  it('keeps selected-item movement and deletion available in the compact sheet, with precise edits on expansion',()=>{
+    vi.stubGlobal('matchMedia',()=>({matches:true,addEventListener:vi.fn(),removeEventListener:vi.fn()}));
+    function Trial(){
+      const placement=useDetailPlacement({version:1,revision:0,can_edit:true,benches:[{id:'bench',lng:-114,lat:51,angle:15}]},async next=>next);
+      return <DetailPlacementPanel placement={placement} canEdit onClose={()=>{}} onArrange={()=>{}}/>;
+    }
+    render(<Trial/>);
+    fireEvent.click(screen.getByRole('button',{name:'Placed items (1)'}));
+    fireEvent.click(screen.getByRole('button',{name:/Timber bench.*Select to edit/}));
+    expect(screen.getByRole('button',{name:'Move item'})).toBeVisible();
+    expect(screen.getByRole('button',{name:'Delete item'})).toBeVisible();
+    expect(screen.getByRole('button',{name:'Rotate right 15°'})).toBeVisible();
+    expect(screen.queryByLabelText('Selected detail rotation')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button',{name:'Expand detail catalogue'}));
+    expect(screen.getByLabelText('Selected detail rotation')).toHaveValue(15);
+    expect(screen.getByRole('button',{name:'Place a copy'})).toBeVisible();
+    fireEvent.keyDown(screen.getByLabelText('Selected detail rotation'),{key:'Delete'});
+    expect(screen.getByRole('button',{name:'Placed items (1)'})).toBeVisible();
+  });
   it('selects hidden placed items, rotates and deletes without opening the arrangement editor', async () => {
     const saved: ProjectDetails[] = [];
     function Trial() {

@@ -25,8 +25,18 @@ function GeneratedHarness() {
   return <><PlacementControls draft={draft} onChange={setDraft} /><pre data-testid="draft">{JSON.stringify(draft)}</pre></>;
 }
 const current = () => JSON.parse(screen.getByTestId('draft').textContent!) as PlacementDraft;
-afterEach(cleanup);
+afterEach(()=>{cleanup();vi.unstubAllGlobals();});
 describe('pre-placement reshaping', () => {
+  it('keeps narrow placement compact while preserving advanced dimensions',()=>{
+    vi.stubGlobal('matchMedia',()=>({matches:true,addEventListener:vi.fn(),removeEventListener:vi.fn()}));
+    render(<VancouverHarness/>);
+    expect(screen.queryByLabelText('Placement width')).toBeNull();
+    fireEvent.click(screen.getByRole('button',{name:'Size & rotation'}));
+    fireEvent.change(screen.getByLabelText('Placement degrees'),{target:{value:'45'}});
+    fireEvent.click(screen.getByRole('button',{name:'Hide size & rotation'}));
+    expect(current().degrees).toBe(45);
+    expect(screen.queryByLabelText('Placement width')).toBeNull();
+  });
   it.each([asset, PLACE_ASSETS.find(candidate => candidate.zoneType === 'green_space')!])('rotates a $label placement with Q/E and Shift for fine control', selected => {
     function KeyboardHarness() {
       const [draft, setDraft] = useState<PlacementDraft>({ assetId: selected.id, width: selected.width, depth: selected.depth, degrees: 0 });

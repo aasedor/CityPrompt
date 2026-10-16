@@ -1,16 +1,32 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { useNarrowViewport } from '@/hooks/useNarrowViewport';
 import { createPortal } from 'react-dom';
 import { Check, FileText, HelpCircle, Layers, Loader2, RotateCw, Users, X } from 'lucide-react';
+
+export function StudioToolSheet({navigation,children}:{navigation:ReactNode;children:ReactNode}) {
+  const narrow=useNarrowViewport();
+  const [expanded,setExpanded]=useState(false);
+  const id=useId();
+  return <div className="pointer-events-auto h-full">
+    {navigation}
+    {narrow && <button type="button" aria-expanded={expanded} aria-controls={id}
+      aria-label={expanded?'Hide design tools':'Show design tools'} onClick={()=>setExpanded(value=>!value)}
+      className="mt-2 min-h-11 w-full rounded-xl border-2 border-slate-900 bg-[#fff9ec] px-3 text-sm font-bold text-slate-950 shadow-lg">
+      {expanded?'Show more map':'Open design tools'}
+    </button>}
+    <div id={id}>{(!narrow || expanded) && children}</div>
+  </div>;
+}
 
 export function StudioControls({ layersOpen, onLayers, onReport, onTeam, onHelp }: {
   layersOpen: boolean; onLayers: () => void; onReport: () => void; onTeam: () => void; onHelp: () => void;
 }) {
   const button = 'inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-3 text-sm font-semibold text-slate-900 hover:bg-lime-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900';
   return <nav aria-label="Project tools" className="flex flex-wrap gap-1 rounded-xl border border-slate-300 bg-white/95 p-1 shadow-lg backdrop-blur-sm">
-    <button type="button" className={button} onClick={onLayers} aria-expanded={layersOpen}><Layers size={17} /> Layers</button>
-    <button type="button" className={button} onClick={onReport}><FileText size={17} /> Planning report</button>
-    <button type="button" className={button} onClick={onTeam}><Users size={17} /> Share</button>
-    <button type="button" className={button} onClick={onHelp}><HelpCircle size={17} /> Help</button>
+    <button type="button" className={button} onClick={onLayers} aria-expanded={layersOpen} aria-label="Layers"><Layers size={17} /><span className="hidden sm:inline">Layers</span></button>
+    <button type="button" className={button} onClick={onReport} aria-label="Planning report"><FileText size={17} /><span className="hidden sm:inline">Planning report</span></button>
+    <button type="button" className={button} onClick={onTeam} aria-label="Share"><Users size={17} /><span className="hidden sm:inline">Share</span></button>
+    <button type="button" className={button} onClick={onHelp} aria-label="Help"><HelpCircle size={17} /><span className="hidden sm:inline">Help</span></button>
   </nav>;
 }
 

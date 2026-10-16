@@ -66,7 +66,7 @@ import { RenderEditModal } from '@/components/viewer/RenderEditModal';
 import { ZoneLegend } from '@/components/viewer/ZoneLegend';
 import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
 import { ProjectPdfDownloadButton } from './ProjectPdfDownloadButton';
-import { StudioControls, StudioDialog, StudioSaveStatus } from './StudioControls';
+import { StudioControls, StudioDialog, StudioSaveStatus, StudioToolSheet } from './StudioControls';
 import { ReadOnlyProject } from './ReadOnlyProject';
 import { StudentWorkflowNav, StudentStepPanel, studentLandscapeNeedsRefresh, studentStreetAccessNotice, type StudentStep } from './StudentWorkflow';
 import { defaultStudentStep } from './studentNavigation';
@@ -1217,10 +1217,9 @@ export function ProjectViewPage() {
         {/* Toolbar - hidden on phones during focused vertex placement. */}
         <div
           style={entrancePick ? {display:'none'} : undefined}
-          className={`pointer-events-none absolute inset-x-3 top-44 z-30 min-h-0 overflow-y-auto overscroll-contain sm:inset-x-auto sm:left-4 sm:top-28 sm:bottom-16 sm:w-64 sm:max-h-none sm:overflow-y-auto sm:pr-2 ${activeSitePlannerTool || placementDraft || (selectedZone && (assetForZone(selectedZone) || isFixedSectionStreet(selectedZone))) ? 'hidden sm:block' : 'bottom-3 max-h-[60dvh]'}`}
+          className={`pointer-events-none absolute inset-x-3 bottom-3 z-30 min-h-0 max-h-[42dvh] overflow-y-auto overscroll-contain lg:inset-x-auto lg:left-4 lg:top-28 lg:bottom-16 lg:w-64 lg:max-h-none lg:overflow-y-auto lg:pr-2 ${activeSitePlannerTool || placementDraft || showDetailCatalogue || (selectedZone && (assetForZone(selectedZone) || isFixedSectionStreet(selectedZone))) ? 'hidden lg:block' : ''}`}
         >
-          <div className="pointer-events-auto h-full">
-            <StudentWorkflowNav step={activeStudentStep} onChange={changeStudentStep} />
+          <StudioToolSheet navigation={<StudentWorkflowNav step={activeStudentStep} onChange={changeStudentStep} />}>
             {activeStudentStep !== 'design' && !showGlobeRender && !showVideoRender && <StudentStepPanel
               siteOptions={<StreetNamesControl state={streetNames} />}
               step={activeStudentStep} hasSite={Boolean(cityPromptWorkflow.activeBoundary && isPersistedZoneId(cityPromptWorkflow.activeBoundary.id))}
@@ -1306,7 +1305,7 @@ export function ProjectViewPage() {
               }
             />
             </div>
-          </div>
+          </StudioToolSheet>
         </div>
 
         <div className="absolute right-3 top-16 z-40 max-w-[calc(100vw-1.5rem)] sm:right-4 sm:top-2">

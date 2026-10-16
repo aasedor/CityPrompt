@@ -2,12 +2,15 @@ import { useCallback, useEffect, useId, useState } from 'react';
 import { placeAsset } from './catalogue';
 import type { PlacementDraft } from './GlobePlacementPreview';
 import { reviewedEntranceForAsset } from './reviewedEntrances';
+import { useNarrowViewport } from '@/hooks/useNarrowViewport';
 
 export function PlacementControls({ draft, onChange, getPreviewDegrees }: {
   draft: PlacementDraft;
   onChange: (draft: PlacementDraft) => void;
   getPreviewDegrees?: () => number | null;
 }) {
+  const narrow = useNarrowViewport();
+  const [expanded,setExpanded] = useState(false);
   const generated=draft.generatedModel;
   const asset=generated?null:placeAsset(draft.assetId);
   const entrance=asset?reviewedEntranceForAsset(asset):null;
@@ -48,6 +51,9 @@ export function PlacementControls({ draft, onChange, getPreviewDegrees }: {
   }, [draft.degrees, draft.faceStreet, draft.inputError, getPreviewDegrees, update]);
   return <div className="space-y-2 text-left" aria-keyshortcuts="Q E Shift+Q Shift+E">
     <p className="font-bold">{generated?.name??asset?.label}</p>
+    {narrow && <><p className="text-xs">{draft.width} × {draft.depth} m · {Math.round(draft.degrees)}°</p>
+      <button type="button" aria-expanded={expanded} onClick={()=>setExpanded(value=>!value)} className="min-h-11 rounded-lg border border-slate-400 px-3 text-sm">{expanded?'Hide size & rotation':'Size & rotation'}</button></>}
+    {(!narrow || expanded) && <>
     {(generated || asset?.zoneType === 'building') && <label className="flex min-h-11 items-center gap-2 text-sm">
       <input type="checkbox" checked={draft.faceStreet === true} onChange={event => onChange({ ...draft, faceStreet: event.target.checked })} />
       Face nearby street
@@ -69,5 +75,7 @@ export function PlacementControls({ draft, onChange, getPreviewDegrees }: {
     {(generated || asset?.zoneType === 'building') && <p className="text-xs text-slate-600">Buildings settle into available space beside other plots.{generated ? ' Your saved model keeps its proportions as its plot size changes.' : ''}
       {entrance && (entrance.fixedNative || (Math.abs(draft.width-entrance.plotWidthM)<.05 && Math.abs(draft.depth-entrance.plotDepthM)<.05))
         ? ' This building connects to a nearby sidewalk automatically.' : ''}</p>}
+    </>}
+    {narrow && !expanded && draft.inputError && <p role="alert" className="text-xs text-red-700">{draft.inputError}</p>}
   </div>;
 }
