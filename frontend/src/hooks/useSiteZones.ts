@@ -71,11 +71,11 @@ export function useSiteZones(projectId: string | undefined) {
     setFailedEdits((previous) => zoneId
       ? Object.fromEntries(Object.entries(previous).filter(([id]) => id !== zoneId)) : {});
   }, [projectId]);
-  const failedMessages = Object.values(failedEdits);
+  const { drafts, upsertDraft, removeDraft, discardRejectedDraft, draftsPersistOnDevice } = useZoneDrafts(projectId, userId);
+  const failedMessages = [...Object.values(failedEdits), ...drafts.flatMap(draft => draft.error ? [draft.error] : [])];
   const saveError = failedMessages.length
     ? `${failedMessages.length === 1 ? 'A drawing change was' : `${failedMessages.length} drawing changes were`} not saved. ${failedMessages[0]}`
     : null;
-  const { drafts, upsertDraft, removeDraft, discardRejectedDraft, draftsPersistOnDevice } = useZoneDrafts(projectId, userId);
   const discardableDrafts = useMemo(() => drafts.filter(isDiscardableDraft), [drafts]);
   const discardDraft = useCallback((draft: ZoneDraft): boolean => {
     const discarded = discardRejectedDraft(draft.requestId);

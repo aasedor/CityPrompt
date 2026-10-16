@@ -48,7 +48,10 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
   const [assetError, setAssetError] = useState<{projectId:string|undefined;zoneId:string;revision:string;message:string;kind:'park'|'street'}|null>(null);
   const state = useRef({ projectId, busy: false, completed: '', failed: '', force: false });
   const latest = useRef(zones);
-  latest.current = zones;
+  // Local drafts may be invalid or rejected. They remain in the editor, but
+  // must not change the persisted scene's compilation key or readiness.
+  const persistedZones = zones.filter(zone => !zone.id.startsWith('temp-'));
+  latest.current = persistedZones;
   useEffect(()=>{
     const onAssetError=(event:Event)=>{
       const detail=(event as CustomEvent<{zoneId:string;revision:string;message:string}>).detail;
@@ -60,9 +63,9 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
     window.addEventListener('cityprompt:native-street-error',onAssetError);
     return()=>{window.removeEventListener('cityprompt:native-park-error',onAssetError);window.removeEventListener('cityprompt:native-street-error',onAssetError);};
   },[projectId]);
-  const candidates = zones.filter(physicalZone);
-  const scopeZones = zones.filter(physicalScopeZone);
-  const boundary = deriveCityPromptWorkflow(zones).activeBoundary;
+  const candidates = persistedZones.filter(physicalZone);
+  const scopeZones = persistedZones.filter(physicalScopeZone);
+  const boundary = deriveCityPromptWorkflow(persistedZones).activeBoundary;
   // Every retained authored scene prepares automatically, including old/custom
   // scenes without initial compilation metadata. Permission is gated by projectId.
   const eligible = candidates.length > 0 && !visibility?.comparingPlans;
@@ -73,7 +76,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
   // metadata, stranding an otherwise identical model. Keep the full authored
   // key below for revision comparisons; only the rebuild trigger excludes it.
   const key = visibilityKey + authoredPlacementKey([...scopeZones, ...(boundary ? [boundary] : [])], false);
-  const compiled = deriveCityPromptWorkflow(zones).sceneReady;
+  const compiled = deriveCityPromptWorkflow(persistedZones).sceneReady;
   const canRefreshDetail = candidates.some(zone => getCommunity3DMeta(zone)?.generator === 'planned_massing'
     && !(zone.zone_type === 'building' && nativeBuildingUrl(zone)));
 
@@ -93,6 +96,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
           // Refresh objects from the full cache, but keep the selected scenario.
           // Hidden alternatives must never occupy or invalidate its landscape.
           const currentZones = (client.getQueryData<SiteZone[]>(['site-zones', projectId]) ?? latest.current)
+            .filter(zone => !zone.id.startsWith('temp-'))
             .filter(zone => !visibility?.hiddenLayers.has(String(zone.properties?._imported_from ?? '')));
           const sources = currentZones.filter(physicalZone);
           const scope = currentZones.filter(physicalScopeZone);
@@ -112,7 +116,8 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
             }
           }
           client.setQueryData(['site-zones', projectId], saved);
-          const savedVisible = saved.filter(zone => !visibility?.hiddenLayers.has(String(zone.properties?._imported_from ?? '')));
+          const savedVisible = saved.filter(zone => !zone.id.startsWith('temp-')
+            && !visibility?.hiddenLayers.has(String(zone.properties?._imported_from ?? '')));
           if (!deriveCityPromptWorkflow(savedVisible).sceneReady) {
             throw new Error('The saved 3D scene is not ready after its update. Review the objects, then use Retry 3D update.');
           }

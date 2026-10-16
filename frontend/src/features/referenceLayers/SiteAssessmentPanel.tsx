@@ -4,6 +4,7 @@ import { Calculator, ExternalLink } from 'lucide-react';
 import { api, getApiErrorMessage } from '@/services/api';
 import type { SiteZone } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import { zoningBounds, zoningCoverageProblem } from './zoningLabels';
 import { assessmentDollars as dollars, assessmentMapOverlay } from './assessmentMapLabel';
 
@@ -29,7 +30,9 @@ function sameBoundary(a: number[][], b: number[][]) {
 
 export function useSiteAssessment(zones: SiteZone[], projectId: string | undefined) {
   const boundary = getActiveSiteBoundary(zones);
-  const problem = zoningCoverageProblem(zoningBounds(boundary?.coordinates ?? []));
+  const problem = boundary && !isPersistedZoneId(boundary.id)
+    ? 'Save the site boundary before calculating assessment data.'
+    : zoningCoverageProblem(zoningBounds(boundary?.coordinates ?? []));
   const signature = JSON.stringify([projectId, boundary?.id, boundary?.coordinates]);
   const [showOnMap, setShowOnMap] = useState(true);
   const [requested, setRequested] = useState<string | null>(null);

@@ -26,6 +26,7 @@ export function StudioSaveStatus({ saving, draftCount, loadError, onRetry, onRel
   if (draftCount) return <div role="status" className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
     {draftCount} {draftCount === 1 ? 'drawing is' : 'drawings are'} {draftsPersistOnDevice
       ? 'kept on this device and waiting to save.' : 'kept in this tab only. Keep the tab open and save again.'}
+    {saveError && <p role="alert" className="mt-2">{saveError}</p>}
     <button onClick={onRetry} className="mt-2 flex min-h-11 items-center gap-2 font-semibold underline"><RotateCw size={16} /> Save again</button>
     {discardableCount > 0 && <button onClick={onDiscardRejected} className="mt-1 flex min-h-11 items-center font-semibold underline">
       Discard {discardableCount === 1 ? 'rejected drawing' : `${discardableCount} rejected drawings`}

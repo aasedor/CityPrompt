@@ -18,6 +18,34 @@ const boundary=(state:'compiled'|'stale'):SiteZone=>({id:'boundary',project_id:'
 const wrapper=({children}:{children:ReactNode})=><QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}>{children}</QueryClientProvider>;
 const advance=()=>act(async()=>{await vi.advanceTimersByTimeAsync(750)});
 describe('automatic placement compilation',()=>{
+  it.each([false, true])('ignores a rejected temporary boundary with saved boundary=%s', async hasSavedBoundary => {
+    const saved = [zone(0, true), ...(hasSavedBoundary ? [boundary('compiled')] : [])];
+    const draft = {...boundary('stale'), id:'temp-rejected', is_active_boundary:true,
+      coordinates:[[0,0],[4,4],[0,4],[4,0]]} as SiteZone;
+    vi.mocked(siteZonesApi.list).mockResolvedValue(saved);
+    const {result,rerender,unmount}=renderHook(({zones})=>useAutomatic3D('p',zones,false), {
+      initialProps:{zones:saved},wrapper,
+    });
+    await advance();
+    rerender({zones:[...saved,draft]});
+    await act(async()=>{await vi.advanceTimersByTimeAsync(60_000)});
+    expect(compileMixedCommunity3D).not.toHaveBeenCalled();
+    expect(result.current.status).toBe('ready');
+    unmount();
+  });
+  it('rebuilds once when a boundary draft becomes persisted',async()=>{
+    const draft={...boundary('stale'),id:'temp-boundary'};
+    const saved=zone(0,true);
+    vi.mocked(siteZonesApi.list).mockResolvedValue([saved,boundary('compiled')]);
+    const {rerender,unmount}=renderHook(({zones})=>useAutomatic3D('p',zones,false),{
+      initialProps:{zones:[saved,draft]},wrapper,
+    });
+    await advance();expect(compileMixedCommunity3D).not.toHaveBeenCalled();
+    rerender({zones:[saved,boundary('stale')]});await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
+    rerender({zones:[saved,boundary('compiled')]});await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();unmount();
+  });
   it('leaves a new site without automatic trees and respects saved opt-in after reload',async()=>{
     const bare={...boundary('compiled'),properties:{}};
     const off={...bare,properties:{community_3d_landscape_mode:'placed_objects_only'}};

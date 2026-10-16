@@ -8,10 +8,10 @@ import { SiteAssessmentPanel, useSiteAssessment, type SiteAssessment } from './S
 import { useState } from 'react';
 
 vi.mock('@/services/api', () => ({ api: { post: vi.fn(), get: vi.fn() }, getApiErrorMessage: (error: Error) => error.message }));
-const boundary = { id: 'site', zone_type: 'site_boundary', is_active_boundary: true,
+const boundary = { id: '00000000-0000-4000-8000-000000000001', zone_type: 'site_boundary', is_active_boundary: true,
   coordinates: [[-114.12, 51.01], [-114.119, 51.01], [-114.119, 51.011], [-114.12, 51.011]], properties: {} } as SiteZone;
 const result: SiteAssessment = {
-  boundary_id: 'site', roll_year: 2026, property_count: 2, partial_property_count: 1,
+  boundary_id: boundary.id, roll_year: 2026, property_count: 2, partial_property_count: 1,
   missing_value_count: 0, complete: true, full_property_assessed_total: 500000,
   area_weighted_estimate: 350000, assessed_coverage_pct: 90, details_omitted: 0,
   warnings: ['Some properties extend beyond the site.'], source_url: 'https://data.calgary.ca/4bsw-nn7w',
@@ -25,6 +25,12 @@ function setup() {
 beforeEach(() => { vi.clearAllMocks(); vi.mocked(api.get).mockResolvedValue({ data: null }); });
 
 describe('site assessments', () => {
+  it('does not look up or calculate assessments for a temporary boundary',async()=>{
+    render(setup()([{...boundary,id:'temp-rejected'}]));
+    expect(screen.getByRole('button',{name:'Calculate assessed value'})).toBeDisabled();
+    await act(async()=>{});
+    expect(api.get).not.toHaveBeenCalled();expect(api.post).not.toHaveBeenCalled();
+  });
   it('restores saved evidence in a fresh session without calculating, but hides it on unsaved edits', async () => {
     vi.mocked(api.get).mockResolvedValue({ data: { assessment: result,
       coordinates: [...boundary.coordinates, boundary.coordinates[0]].reverse() } });

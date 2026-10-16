@@ -306,6 +306,7 @@ describe('useSiteZones', () => {
     act(() => first.result.current.createZone.mutate({ zone_type: 'green_space', coordinates: [[0, 0], [0, 1], [1, 1]] }));
     await waitFor(() => expect(first.result.current.discardableDrafts).toHaveLength(1));
     expect(first.result.current.pendingDrafts[0].rejectionStatus).toBe(status);
+    expect(first.result.current.saveError).toContain(first.result.current.pendingDrafts[0].error);
     first.unmount();
 
     const reopened = renderHook(() => useSiteZones(PROJECT_ID), { wrapper });
