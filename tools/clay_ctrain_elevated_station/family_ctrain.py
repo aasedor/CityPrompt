@@ -37,7 +37,7 @@ TAIL = 18.0                                       # tail track north of the head
 EXT = 10.0                                        # level guarded deck continuing south past the platform ends
 STAIR_Y = (-44.0, -42.0)                          # street stairs at the platform south ends
 EPS = .002
-PALETTE = dict(wall=(.55, .28, .21), joint=(.40, .20, .15), trim=(.40, .42, .44),
+PALETTE = dict(wall=(.44, .21, .15), joint=(.32, .16, .11), trim=(.40, .42, .44),
     pale=(.86, .85, .82), stone=(.70, .68, .64), roof=(.72, .71, .68), sand=(.68, .66, .62),
     foundation=(.42, .42, .41), glass=(.50, .60, .64), hardware=(.30, .31, .33),
     interior=(.80, .76, .68), floor=(.46, .44, .42), timber=(.40, .28, .16), blue=(.14, .22, .28),
@@ -448,24 +448,32 @@ def tower(xa, xb, side):
     outer_x, inner_x = (xa, xb) if side == 'west' else (xb, xa)
     sgn = -1 if side == 'west' else 1
     o = C.Face((outer_x, cy + T / 2, 0), (0, -sgn, 0), (-sgn, 0, 0), f'{side} tower outer')
-    bw, bz0, bz1 = 4.0, G0 + .4, TOWER_TOP - 1.0
+    bw, bz0, bz1 = 4.0, G0, TOWER_TOP - 1.0              # the bay runs to grade: it is the station entrance
     bay = hole(f'{side} tower glazed stair bay', 0, bz0, bw, bz1 - bz0, kind='bay')
     brick_wall(o, -(TW - T) / 2, (TW - T) / 2, G0, TOWER_TOP, [bay])
     register(o, bay, -.6, 'projecting glazed bay', 'stair')
     m = Merge(o)
     d = -.65
-    m.box('glass', 0, d, (bz0 + bz1) / 2, bw - .1, .02, bz1 - bz0 - .1)
+    ze = G0 + 2.9                                        # recessed glazed entry below the first-floor band
+    m.box('glass', 0, d, (ze + bz1) / 2, bw - .1, .02, bz1 - ze - .1)
+    m.box('glass', 0, -.3, (bz0 + ze) / 2, bw - .6, .02, ze - bz0)
     for e in (-1, 1):
-        m.box('glass', e * (bw / 2 - .03), d / 2, (bz0 + bz1) / 2, .02, -d - .04, bz1 - bz0 - .1)
+        m.box('trim', e * .95, -.33, (bz0 + ze) / 2, .1, .1, ze - bz0)            # door frame
+        m.box('trim', e * (bw / 2 - .28), -.33, (bz0 + ze) / 2, .1, .1, ze - bz0)
+    m.box('trim', 0, -.33, G0 + 2.45, bw - .5, .1, .1)                             # door head
+    m.box('trim', 0, d / 2 - .06, G0 + 4.35, bw + .3, -d + .2, .3)                 # first-floor band
+    for e in (-1, 1):
+        m.box('glass', e * (bw / 2 - .03), d / 2, (ze + bz1) / 2, .02, -d - .04, bz1 - ze - .1)
         m.box('trim', e * (bw / 2 - .05), d / 2 - .02, (bz0 + bz1) / 2, .1, -d + .02, bz1 - bz0)
     for k in range(5):
-        m.box('trim', -bw / 2 + bw * k / 4, d - .04, (bz0 + bz1) / 2, .08, .1, bz1 - bz0)
+        zk = bz0 if k in (0, 4) else ze                       # inner mullions stop over the entry
+        m.box('trim', -bw / 2 + bw * k / 4, d - .04, (zk + bz1) / 2, .08, .1, bz1 - zk)
     z = bz0
     while z <= bz1 + .01:
         m.box('trim', 0, d / 2 - .02, z, bw + .02, -d + .1, .12)
         z += 3.4
     m.box('trim', 0, d / 2 - .06, bz1 + .1, bw + .3, -d + .2, .2)
-    m.box('trim', 0, d / 2 - .06, bz0 - .1, bw + .3, -d + .2, .2)
+    m.box('stone', 0, d / 2 - .06, .09, bw + .3, -d + .2, .18)                     # flush base at grade
     m.flush(f'{side} tower bay')
     i = C.Face((inner_x, cy + T / 2, 0), (0, sgn, 0), (sgn, 0, 0), f'{side} tower inner')
     brick_wall(i, -(TW - T) / 2, (TW - T) / 2, G0, TOWER_TOP, [])
@@ -572,8 +580,6 @@ def deck_and_platforms():
         for k in range(6):
             b.box('hardware', x, yd0 - .05 - (EXT - .1) * k / 5, DECK + .9, .06, .06, 1.06)
     b.box('concrete', 0, ye + .1, DECK + .45, 8.6, .2, .9)
-    b.box('signal', -2.0, ye + .6, DECK + .6, 2.0, .5, 1.0)
-    b.box('signal', 2.0, ye + .6, DECK + .6, 2.0, .5, 1.0)
     b.flush('south deck')
     for y in (yd0 - 5.0, ye + .8):
         C.box('South pier cap', (0, y, 3.9), (8.0, 1.2, 1.0), 'concrete', 'piers', 0)
