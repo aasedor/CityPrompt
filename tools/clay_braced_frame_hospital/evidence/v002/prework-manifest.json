@@ -1,0 +1,428 @@
+{
+  "candidate": "clay-braced-frame-hospital-clay-v002",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-braced-frame-hospital",
+  "variant_id": "clay-braced-frame-hospital-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "regional_hospital_medical_center/variant_0 (regional_hospital_contemporary_teaching)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 69.0,
+      "depth": 59.0,
+      "height": 40.0
+    },
+    "observed_storeys": 9,
+    "storey_programme": "two-storey brick base (outpatients, emergency), five clinical storeys, plant storey; ward block of nine storeys",
+    "plan": "clinical block 51 x 35 m at the south-west; L-shaped ward block (north bar 50 x 18 m, east leg 10 x 53 m); atrium 8 x 31 m between them opening south (top view at 0.097 m/px)",
+    "facade": "clinical block: brick base with large windows, pale panels with perforated screens over strip glazing, dark vertical signage panel, dark louvre band at the plant storey; ward block: glazing behind a steel exoskeleton of 5 m bays, ring beams every two storeys and X-braces; atrium: glass with a diagonal mullion net",
+    "levels_m": [
+      0.15,
+      5.0,
+      9.0,
+      13.0,
+      17.0,
+      21.0,
+      25.0,
+      29.0,
+      33.0,
+      37.0
+    ],
+    "roofs_m": [
+      29.0,
+      33.0,
+      33.0,
+      37.0
+    ],
+    "inferred": "storey heights and interiors are teaching assumptions; the north and west faces of the ward block are not visible in the front or oblique and repeat the visible grammar"
+  },
+  "roof_contract": {
+    "type": "flat membranes; raised canopy frame over the clinical roof; glazed atrium roof; rooftop plant",
+    "datum_m": 29.0,
+    "crowns_m": [
+      35.6,
+      37.0
+    ]
+  },
+  "identity_contract": {
+    "owner": "braced steel exoskeleton over the glazed ward block, perforated pale screens over a brick base, glass atrium with the cable-hung entrance canopy, signage panel, raised roof canopy"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: pale perforated panels, red brick base, grey steel exoskeleton, clear glass, dark louvres and signage",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 9,
+    "base": "main entrance, outpatients and emergency",
+    "clinical": "diagnostics, theatres and clinics",
+    "ward": "inpatient wards",
+    "atrium": "main hall with lifts and bridges"
+  },
+  "contact_contract": [
+    "Grade-zero slabs and sidewalks",
+    "Exoskeleton columns from the brick base to the roof ring",
+    "Atrium between the clinical and ward blocks",
+    "Entrance canopy on rods and two posts",
+    "Roof canopy on posts over the plant storey"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -119.0,
+        19.2
+      ],
+      "target": [
+        0,
+        0,
+        18.0
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        92.82000000000001,
+        -99.96,
+        80.0
+      ],
+      "target": [
+        0,
+        0,
+        18.0
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        83.3,
+        -95.2,
+        120.0
+      ],
+      "target": [
+        0,
+        0,
+        18.0
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        178.5
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 98.0
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -119.0,
+        0,
+        24.0
+      ],
+      "target": [
+        0,
+        0,
+        18.0
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        119.0,
+        0,
+        24.0
+      ],
+      "target": [
+        0,
+        0,
+        18.0
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        119.0,
+        24.0
+      ],
+      "target": [
+        0,
+        0,
+        18.0
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        83.3,
+        95.2,
+        72.0
+      ],
+      "target": [
+        0,
+        0,
+        18.0
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -14.0,
+        -46.0,
+        18.0
+      ],
+      "target": [
+        -14.0,
+        -27.0,
+        18.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        30.0,
+        -50.0,
+        20.0
+      ],
+      "target": [
+        17.0,
+        -23.0,
+        18.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        17.0,
+        -38.0,
+        10.0
+      ],
+      "target": [
+        17.0,
+        -27.8,
+        14.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "braced_frame",
+      "location": [
+        52.0,
+        -20.0,
+        24.0
+      ],
+      "target": [
+        31.0,
+        -4.0,
+        22.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "entrance_canopy",
+      "location": [
+        6.0,
+        -42.0,
+        3.0
+      ],
+      "target": [
+        17.0,
+        -28.0,
+        4.6
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_canopy",
+      "location": [
+        -46.0,
+        -46.0,
+        44.0
+      ],
+      "target": [
+        -20.0,
+        -10.0,
+        33.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_plant",
+      "location": [
+        40.0,
+        40.0,
+        50.0
+      ],
+      "target": [
+        6.0,
+        16.0,
+        37.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "brick_base",
+      "location": [
+        -28.0,
+        -40.0,
+        3.0
+      ],
+      "target": [
+        -24.0,
+        -27.0,
+        4.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        15.0,
+        -21.0,
+        1.8
+      ],
+      "target": [
+        19.0,
+        2.0,
+        10.0
+      ],
+      "lens": 60,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        -6.0,
+        60.0,
+        14.0
+      ],
+      "target": [
+        -6.0,
+        26.0,
+        16.0
+      ],
+      "lens": 45,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "braced_frame",
+    "entrance_canopy",
+    "roof_canopy",
+    "roof_plant",
+    "brick_base",
+    "interior",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1295867,
+        "sha256": "4e6289d461f2ad8bba095c0e5f7a67751234a066b022a585244f8dbb937e20a4"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 924620,
+        "sha256": "67e7bf7fa9838b5cded4c385e863aa84e4c267598b0c9bc67909edf92f2f2c8b"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 860461,
+        "sha256": "1bceac8705902772c973d29c3bca3ff7f9e0cb5a85475c4ac23336571ae1491e"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_hospital.py",
+        "sha256": "314fa4cda603bc4516fb5415c86de11eeb22b8a2c2a43db4c99d3e08652224ef"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "f3006e65fa42ef730f9e34ec5fd6df618773900dbf0f0f738fd6b7f2da3f810c"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "dd10bf00d0aa8c3603f92cbd7f8efc8698cb512e6a7507764a72a6edff8e562a"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-16T02:37:59.095990+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
