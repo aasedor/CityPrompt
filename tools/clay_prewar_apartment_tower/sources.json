@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "new_york_pre_war_apartment",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "prewar_beaux_arts_grand",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "new_york_pre_war_apartment",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "prewar_beaux_arts_grand",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/new-york-pre-war-apartment/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1588791,
+      "sha256": "a6d0d2b26c6a199980e5205c7710851b1f0caac7a9ff99d5bcf8ad1cc3caa7b5",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "new_york_pre_war_apartment",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "prewar_beaux_arts_grand",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/new-york-pre-war-apartment/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 1024116,
+      "sha256": "63bb5633dd721a9f791dbedf4894dd7dbf1d27f354318bd95660f251af21f6c1",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "new_york_pre_war_apartment",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "prewar_beaux_arts_grand",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/new-york-pre-war-apartment/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 860261,
+      "sha256": "c4c63aecf64a29cfea3c816846cb1249b39bef8a531c873145679b990e137bb2",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}
