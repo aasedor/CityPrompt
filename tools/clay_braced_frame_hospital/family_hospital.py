@@ -560,7 +560,13 @@ def atrium():
     f = C.Face(((x0 + x1) / 2, y0, 0), (1, 0, 0), (0, 1, 0), 'atrium south')
     w = x1 - x0
     xr = x1 - .3                                                       # east return clear of the ward leg's corner column
-    C.box('Atrium south glass', ((x0 + xr) / 2, y0 + .05, (G0 + ATR_TOP) / 2), (xr - x0 - .1, .03, ATR_TOP - G0), 'glass', 'atrium', 0)
+    ZS = 5.9                                                           # storefront below the canopy line, diagrid net above
+    C.box('Atrium south glass', ((x0 + xr) / 2, y0 + .05, (3.0 + ATR_TOP) / 2), (xr - x0 - .1, .03, ATR_TOP - 3.0), 'glass', 'atrium', 0)
+    drums = (x0 + 2.2, xr - 2.2)
+    edges = [x0 + .05] + [v for d in drums for v in (d - 1.15, d + 1.15)] + [xr - .05]
+    for a, c in zip(edges[::2], edges[1::2]):                          # storefront glass between the revolving doors
+        if c - a > .2:
+            C.box('Atrium storefront glass', ((a + c) / 2, y0 + .05, (G0 + 3.0) / 2), (c - a, .03, 3.0 - G0), 'glass', 'atrium', 0)
     for xx, ye in ((x0 + .05, PB[2]), (xr, LEG[2])):
         C.box('Atrium return glass', (xx, (y0 + ye) / 2, (G0 + ATR_TOP) / 2), (.03, ye - y0, ATR_TOP - G0), 'glass', 'atrium', 0)
         C.box('Atrium return mullion', (xx, (y0 + ye) / 2, (G0 + ATR_TOP) / 2), (.1, .1, ATR_TOP - G0), 'steel', 'atrium', 0)
@@ -571,7 +577,12 @@ def atrium():
     b.box('steel', x0 + .12, y0 + .1, (G0 + ATR_TOP) / 2, .24, .24, ATR_TOP - G0)
     b.box('steel', xr - .12, y0 + .1, (G0 + ATR_TOP) / 2, .24, .24, ATR_TOP - G0)
     b.box('steel', (x0 + xr) / 2, y0 + .1, ATR_TOP - .1, xr - x0 - .5, .2, .2)        # between the edge posts, set back
-    b.box('steel', (x0 + xr) / 2, y0 + .1, 3.9, xr - x0 - .5, .2, .16)
+    b.box('steel', (x0 + xr) / 2, y0 + .1, ZS, xr - x0 - .5, .2, .2)                   # canopy-line transom under the net
+    b.box('steel', (x0 + xr) / 2, y0 + .02, 3.0, xr - x0 - .5, .14, .14)                # door-head transom
+    for k in range(1, 6):                                               # straight storefront mullions
+        x = x0 + .24 + (xr - x0 - .48) * k / 6
+        if all(abs(x - d) > 1.25 for d in drums):
+            b.box('steel', x, y0 + .02, (G0 + ZS) / 2, .08, .12, ZS - G0)
     b.flush('atrium frame')
     # Diagonal mullion net on the south glass.
     step = 2.4
@@ -586,7 +597,7 @@ def atrium():
         c += step / 2
         while c < c_end:
             lo, hi = (mg - c, w - mg - c) if s > 0 else (c - w + mg, c - mg)
-            za, zb = max(0.0, lo), min(H, hi)
+            za, zb = max(ZS - G0 + .1, lo), min(H, hi)
             if zb - za > .15:
                 d = -.03 if s > 0 else -.045                             # the two sets interpenetrate as one net
                 C.beam('Atrium diagrid', f.p(u_of(c + s * za), d, G0 + za), f.p(u_of(c + s * zb), d, G0 + zb), .08, .08, 'steel', 'atrium')
@@ -596,7 +607,7 @@ def atrium():
     for c1 in fam[1]:
         for c2 in fam[-1]:
             z, q = (c2 - c1) / 2, (c1 + c2) / 2
-            if 0.0 < z < H and mg < q < w - mg:
+            if ZS - G0 + .1 < z < H and mg < q < w - mg:
                 p = f.p(u_of(q), -.05, G0 + z)
                 nb.box('steel', p[0], p[1], p[2], .16, .12, .16)            # node block at each crossing
     nb.flush('atrium diagrid nodes')
@@ -608,9 +619,10 @@ def atrium():
     for k in range(9):
         C.box('Atrium roof rib', ((x0 + x1) / 2, y0 + (y1 - y0) * k / 8, ATR_TOP + .08), (w + .1, .14, .14), 'steel', 'atrium', 0)
     C.box('Atrium west glass', (x0 + .05, (y0 + y1) / 2, (PB_TOP + ATR_TOP) / 2 + .1), (.03, y1 - y0, ATR_TOP - PB_TOP - .2), 'glass', 'atrium', 0)
-    for x in (x0 + 2.2, x1 - 2.2):
-        C.rod('Revolving door drum', (x, y0 + .9, G0), (x, y0 + .9, 2.6), 1.1, 'glass', 'atrium', 16)
-        C.rod('Revolving door canopy', (x, y0 + .9, 2.6), (x, y0 + .9, 2.8), 1.2, 'steel', 'atrium', 16)
+    for x in drums:
+        C.rod('Revolving door drum', (x, y0 + .05, G0), (x, y0 + .05, 2.8), 1.1, 'glass', 'atrium', 16)      # set in the facade line
+        C.rod('Revolving door canopy', (x, y0 + .05, 2.8), (x, y0 + .05, 3.05), 1.2, 'steel', 'atrium', 16)
+        C.rod('Revolving door post', (x, y0 + .05, G0), (x, y0 + .05, 2.8), .07, 'steel', 'atrium', 8)
     for z in (BASE_TOP + 8.0, BASE_TOP + 16.0):
         C.box('Atrium bridge', ((x0 + x1) / 2, -6.0, z - .25), (w - .02, 2.6, .5), 'concrete', 'atrium', 0)
         C.box('Atrium bridge guard', ((x0 + x1) / 2, -7.3, z + .55), (w - .04, .03, 1.1), 'glass', 'atrium', 0)
