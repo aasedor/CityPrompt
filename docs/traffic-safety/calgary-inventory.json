@@ -1,6 +1,6 @@
 {
   "schema": "cityprompt.calgary-safety-review@1",
-  "production_status": "NOT DEPLOYED",
+  "production_status": "LIVE: 10 illustrative concepts enabled",
   "assets": [
     {
       "id": "detail-calgary-speed-cushion-v1",
@@ -28,7 +28,14 @@
         "textures": 0
       },
       "application_placement": "PASS: actual UI save and reload",
-      "live_verification": "NOT TESTED"
+      "live_verification": {
+        "asset_response": "PASS: HTTP 200, valid GLB 2, exact SHA-256 and byte length",
+        "checked_at": "2026-10-16T01:00:55.015487+00:00",
+        "sha256": "4f2ed46c0f9a4d4e7e0ece79c191afdc76c9213cc693d68fda542a9f0583c3f6",
+        "application_operations": "Representative live variants only; all enabled variants verified in local browser",
+        "placement_enabled": true
+      },
+      "live": "PUBLISHED"
     },
     {
       "id": "detail-calgary-speed-cushion-pair-v1",
@@ -56,7 +63,14 @@
         "textures": 0
       },
       "application_placement": "PASS: actual UI save and reload",
-      "live_verification": "NOT TESTED"
+      "live_verification": {
+        "asset_response": "PASS: HTTP 200, valid GLB 2, exact SHA-256 and byte length",
+        "checked_at": "2026-10-16T01:00:55.015487+00:00",
+        "sha256": "5e8ee35c71b0e6faa668145f5e39b037f198db6032ecc79421a611d1dd7cdc96",
+        "application_operations": "Representative live variants only; all enabled variants verified in local browser",
+        "placement_enabled": true
+      },
+      "live": "PUBLISHED"
     },
     {
       "id": "detail-calgary-school-crossing-sign-v1",
@@ -84,7 +98,14 @@
         "textures": 0
       },
       "application_placement": "PASS: actual UI save and reload",
-      "live_verification": "NOT TESTED"
+      "live_verification": {
+        "asset_response": "PASS: HTTP 200, valid GLB 2, exact SHA-256 and byte length",
+        "checked_at": "2026-10-16T01:00:55.015487+00:00",
+        "sha256": "e9432edf6343f84e3276336dce01f5b677db17e358e6a3c7a6bb05c9f2c98246",
+        "application_operations": "Representative live variants only; all enabled variants verified in local browser",
+        "placement_enabled": true
+      },
+      "live": "PUBLISHED"
     },
     {
       "id": "detail-calgary-left-turn-calming-v1",
@@ -112,7 +133,14 @@
         "textures": 0
       },
       "application_placement": "PASS: actual UI save and reload",
-      "live_verification": "NOT TESTED"
+      "live_verification": {
+        "asset_response": "PASS: HTTP 200, valid GLB 2, exact SHA-256 and byte length",
+        "checked_at": "2026-10-16T01:00:55.015487+00:00",
+        "sha256": "4bd43dd7e21f34390787bbcafe480eff34360ebe1cf1aa6b43238d35d5a1f28f",
+        "application_operations": "Representative live variants only; all enabled variants verified in local browser",
+        "placement_enabled": true
+      },
+      "live": "PUBLISHED"
     },
     {
       "id": "detail-calgary-high-visibility-crossing-v1",
@@ -140,7 +168,14 @@
         "textures": 0
       },
       "application_placement": "PASS: actual UI save and reload",
-      "live_verification": "NOT TESTED"
+      "live_verification": {
+        "asset_response": "PASS: HTTP 200, valid GLB 2, exact SHA-256 and byte length",
+        "checked_at": "2026-10-16T01:00:55.015487+00:00",
+        "sha256": "d2170385c7923406d51b9b2493259388941f4dcffff86b7916609fbe257c9eb6",
+        "application_operations": "Representative live variants only; all enabled variants verified in local browser",
+        "placement_enabled": true
+      },
+      "live": "PUBLISHED"
     },
     {
       "id": "detail-calgary-green-bike-box-v1",
@@ -168,7 +203,14 @@
         "textures": 0
       },
       "application_placement": "PASS: actual UI save and reload",
-      "live_verification": "NOT TESTED"
+      "live_verification": {
+        "asset_response": "PASS: HTTP 200, valid GLB 2, exact SHA-256 and byte length",
+        "checked_at": "2026-10-16T01:00:55.015487+00:00",
+        "sha256": "0ca0212311be674ca48da91c94ba7dd7f781e599766d3f87417b353a7d10da79",
+        "application_operations": "Representative live variants only; all enabled variants verified in local browser",
+        "placement_enabled": true
+      },
+      "live": "PUBLISHED"
     },
     {
       "id": "detail-calgary-green-conflict-strip-v1",
@@ -196,7 +238,14 @@
         "textures": 0
       },
       "application_placement": "PASS: actual UI save and reload",
-      "live_verification": "NOT TESTED"
+      "live_verification": {
+        "asset_response": "PASS: HTTP 200, valid GLB 2, exact SHA-256 and byte length",
+        "checked_at": "2026-10-16T01:00:55.015487+00:00",
+        "sha256": "a969028d9e76dd3fb85a2423599e9eef02b1bbbab4869a52683d51a1061a0776",
+        "application_operations": "Representative live variants only; all enabled variants verified in local browser",
+        "placement_enabled": true
+      },
+      "live": "PUBLISHED"
     },
     {
       "id": "detail-calgary-bicycle-signal-v1",
@@ -224,7 +273,14 @@
         "textures": 0
       },
       "application_placement": "PASS: actual UI save and reload",
-      "live_verification": "NOT TESTED"
+      "live_verification": {
+        "asset_response": "PASS: HTTP 200, valid GLB 2, exact SHA-256 and byte length",
+        "checked_at": "2026-10-16T01:00:55.015487+00:00",
+        "sha256": "20e0eb893e8034804cc0c681eff897a66d80ae64f1e8339cb337f316693dfcbe",
+        "application_operations": "Representative live variants only; all enabled variants verified in local browser",
+        "placement_enabled": true
+      },
+      "live": "PUBLISHED"
     },
     {
       "id": "detail-calgary-traffic-diverter-v1",
@@ -252,7 +308,14 @@
         "textures": 0
       },
       "application_placement": "PASS: actual UI save and reload",
-      "live_verification": "NOT TESTED"
+      "live_verification": {
+        "asset_response": "PASS: HTTP 200, valid GLB 2, exact SHA-256 and byte length",
+        "checked_at": "2026-10-16T01:00:55.015487+00:00",
+        "sha256": "f81dea5593a0711948133c3ad6d8db3318bee44e8988ac92518d959e6b8290de",
+        "application_operations": "Representative live variants only; all enabled variants verified in local browser",
+        "placement_enabled": true
+      },
+      "live": "PUBLISHED"
     },
     {
       "id": "detail-calgary-speed-display-trailer-v1",
@@ -280,7 +343,15 @@
         "textures": 0
       },
       "application_placement": "PASS: actual UI save and reload",
-      "live_verification": "NOT TESTED"
+      "live_verification": {
+        "asset_response": "PASS: HTTP 200, valid GLB 2, exact SHA-256 and byte length",
+        "checked_at": "2026-10-16T01:00:55.015487+00:00",
+        "sha256": "da8ff136f41c42ff1ec208b6cb14a769cd4a5af5230b917f91562ce2c19f1a30",
+        "application_operations": "Representative live variants only; all enabled variants verified in local browser",
+        "placement_enabled": true
+      },
+      "live": "PUBLISHED"
     }
-  ]
+  ],
+  "deployed_frontend_commit": "f4c6a739ec383176dc5f992e06b5af42c3996217"
 }

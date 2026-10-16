@@ -1,6 +1,6 @@
 # Safety catalogue release validation â€” 2026-10-15
 
-Status: preview verified to the extent below; production promotion pending.
+Status: partial release live and representative hosted checks passed. Twelve curb bulbs remain disabled.
 
 ## Release decision
 
@@ -97,4 +97,73 @@ tests. Independent math review found no critical/important issue. Actual local
 browser placement at three stations, undo and redo pass with no console errors.
 Fresh affected suites: 23 tests, TypeScript and ESLint pass. The corrected hosted
 build passes all catalogue, asset and bundle gates (156 choices; total JS
-8,415.7 KB within 8,448 KB). Follow-up live results remain pending below.
+8,415.7 KB within 8,448 KB). Follow-up live results are recorded below.
+
+## Verified production release
+
+- Live URL: https://www.cityprompt.ca
+- Repository aasedor/CityPrompt; source branch deployment-version, feature branch
+  codex/traffic-safety-live-56. Both code commits were pushed without force.
+- Frontend commit f4c6a739ec383176dc5f992e06b5af42c3996217;
+  Render deployment dep-db8nblei0phs738an9bg, live 2026-10-15 19:00 MDT.
+- API commit ec0b3d0fa878c0a5708bec44d86585450fee8857;
+  deployment dep-db8n04ei0phs7389ff50. No backend changes in the frontend fix.
+- Public version.json matches the frontend commit. /health matches the API commit;
+  /ready reports database, Redis, storage, image worker and reference worker ready.
+  Classroom starter assets are not enabled. Hosted build reports source_dirty=true
+  after asset hydration; the build receipt is not a clean-tree claim.
+- Render production build passed: initial JS 474.9 KB; total JS 8,433.2 KB within
+  8,448 KB; CSS 188.6 KB within 192 KB. npm reported 11 dependency vulnerabilities
+  (3 moderate, 8 high); dependency remediation was not part of this asset release.
+- All 66 live model URLs return HTTP 200, valid GLB 2 containers, exact manifest
+  SHA-256 and byte lengths. All ten Calgary WebPs return HTTP 200 and exact hashes.
+- Actual signed-in picker shows all five supplied groups (4/24/8/12/8) plus ten
+  Calgary additions. All twelve curb-bulb choices remain disabled as intended.
+- Disposable live project f7d1149e-4b0b-4617-adc9-69eec401796c:
+  crosswalk, standard unlit RRFB, 6 m unlit overhead arm and TC flexpost curb were
+  placed and saved through the picker. The first cushion attempt exposed the
+  precision crash above. After the correction deployed, the same cushion position
+  saved successfully. Global undo/redo passed. Arrangement selection/deletion,
+  0.5 m east movement, 15-degree rotation and save passed. Reload retained three
+  final objects with no recovery notice. Close-up crosswalk road contact was
+  visually inspected. Closely spaced test hardware was removed using the editor
+  because its existing conservative object-clearance check blocked arrangement
+  saving. The fixture is a workflow test, not an approved traffic layout.
+- Existing project The Exchange — live student plan was loaded read-only. Its
+  buildings, parks and street geometry displayed; walking entry, movement and exit
+  passed. No scene data was edited. No console errors observed in either fresh
+  live tab; no missing-resource/CORS error observed during these checks.
+- Exact live 3D source export passed through the existing Image panel. Paid AI
+  image/video generation was not run for this release; AI semantic preservation
+  and video output remain unverified. No paid credits spent.
+
+Independent visual review inspected all 66 model captures and found no critical
+corruption, missing parts or obvious family swaps. RRFB rectangular bars remain
+visually distinct from overhead round heads and black signs/white figures.
+Raised-zebra ramp grades still need a low-angle capture to certify visually;
+metadata and the isometric image alone are not installation/clearance proof.
+Physical laptop/mobile performance and every operation on every live variant
+remain untested. Those limitations do not change the twelve-bulb placement block.
+
+Final external receipts: live-final-asset-audit.json,
+live-final-thumbnail-audit.json, live-final-health.json, live-final-ready.json,
+rollout.json. Screenshots: live-roadway-close.png, live-exact-source.png and
+live-existing-project.png. Independent contact sheets:
+visual-review-sheet-{1,2,3}.jpg. All are under the evidence directory above.
+
+## Changed-file guide
+
+- frontend/src/features/parks: catalogues, grouped selectors, support validation,
+  static geometry batching, placement/editor compatibility and focused tests.
+- frontend/src/components/viewer/globe/GlobeStreetDetailLayer.tsx: loaded road
+  triangle registration for conservative safety support.
+- backend/app: optional saved support-zone reference, preserving legacy props.
+- scripts: selective hosted assets and generated-asset checks; no LFS policy change.
+- frontend/public/street-kits: 66 reviewed GLBs under existing LFS rules and ten
+  intentional WebP previews. Source GLBs are unchanged; runtime batching is in memory.
+- docs/traffic-safety and docs/plans: inventories, evidence and rollback path.
+
+Rollback remains the pre-recorded Render history procedure. After new IDs are
+saved, keep the compatible API and use a compatibility-preserving frontend revert;
+old releases must not silently discard the newly saved detail IDs. No rollback
+was needed. This final evidence-only commit does not require another deployment.
