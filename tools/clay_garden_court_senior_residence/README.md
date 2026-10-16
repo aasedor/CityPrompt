@@ -69,10 +69,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002
+## Open blockers after v003
 
-- P1: solid black band under every copper eave between the roof edge and the cornice
-- P1: black void slots at plinth junctions (pavilion/loggia, wing corner) and a loose stub block
-- P1: octagonal garden room has no doors; the court and forecourt paths end at glass
-- P1: drive loop not connected to any street
-- P2: far-slope dormer teeth in front views; coarse coursing; faceted cream archivolts; sparse court planting; low court fountain; chair through table and no pergola slats; loggia_arcade crowded by mullions; thin side framing; no outer entrance; glass haze
+- P1: black void slot between the garden-room French doors' bottom rail and the interior floor
+- P1: an abutting loggia roof meets the pavilion wall over a second-storey window, covering its lower sash and sill
+- P2: see evidence/v003/independent-review.md
