@@ -60,3 +60,31 @@ API and worker are now Live at 585621949452fbe873be5e71aebaf713c6c39289:
 API dep-db8obvbbc2fs73bjtm40; worker dep-db8obq7f3r2c73eqroq0. The public readiness
 check passed for database, Redis, storage, image worker and reference worker.
 Frontend promotion and hosted capture verification remain pending.
+
+## Hosted checks and preview thumbnail correction
+
+Frontend d9fd4227326bad7015e609d173cbc6902ec8693b became Live in
+Render deployment dep-db8oi93l550s73el3n2g. The cache-busted public version endpoint
+matches that commit. In the isolated live fixture
+https://www.cityprompt.ca/projects/1bb8c4cb-93df-4c88-b1c4-bfa9aaea20f6,
+RRFB and continental crossing placement on Google terrain succeeded without an
+authored zone or boundary; both persisted through reload. Traffic & safety and
+Curb bulbs appear separately. The live street preview includes the RRFB and the
+Render action is enabled. No paid call was made. Screenshots:
+C:/dev-artifacts/CityPrompt/details-live-save-reload-2026-10-15.png and
+C:/dev-artifacts/CityPrompt/details-only-street-preview-live-2026-10-15.png.
+
+A closer local view also passed the initial video source capture (the earlier
+narrow-pole failure was minimum proposal coverage, not the scene inventory):
+C:/dev-artifacts/CityPrompt/details-only-video-source-local-2026-10-15.png.
+No complete video or paid image generation was tested in this correction.
+
+The live aerial source check exposed an existing CSP incompatibility in QA
+thumbnail creation: fetch(data:image/png;base64,...) is blocked by connect-src.
+The correction decodes the capture PNG into a Blob locally before createImageBitmap;
+it preserves the existing CSP, bounded thumbnails and bitmap disposal. A regression
+test reproduced the failed fetch before the correction, then passed with no fetch
+calls and four decoded/disposed thumbnails. All 31 capture tests and TypeScript
+passed; targeted ESLint passed. Hosted verification of this last correction is
+pending at this checkpoint. Flat paint may clip uneven photogrammetry; rigid
+geometry and the documented minimum visible-proposal coverage remain unchanged.

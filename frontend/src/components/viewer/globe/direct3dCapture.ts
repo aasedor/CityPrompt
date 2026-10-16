@@ -122,8 +122,14 @@ async function downscaleCapturePreview(
   source: string,
   maxLongEdge: number,
 ): Promise<string> {
-  const response = await fetch(source);
-  const blob = await response.blob();
+  // Capture passes are local PNG data URLs. Decode without a network request:
+  // production's connect-src intentionally does not allow the data: scheme.
+  const prefix = 'data:image/png;base64,';
+  if (!source.startsWith(prefix)) {
+    throw new Error('The captured preview is not a PNG data image.');
+  }
+  const bytes = Uint8Array.from(atob(source.slice(prefix.length)), character => character.charCodeAt(0));
+  const blob = new Blob([bytes], { type: 'image/png' });
   const bitmap = await createImageBitmap(blob);
   const scale = Math.min(1, maxLongEdge / Math.max(bitmap.width, bitmap.height));
   const canvas = document.createElement('canvas');
