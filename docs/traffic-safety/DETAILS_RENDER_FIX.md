@@ -88,3 +88,31 @@ calls and four decoded/disposed thumbnails. All 31 capture tests and TypeScript
 passed; targeted ESLint passed. Hosted verification of this last correction is
 pending at this checkpoint. Flat paint may clip uneven photogrammetry; rigid
 geometry and the documented minimum visible-proposal coverage remain unchanged.
+
+## Final hosted verification
+
+Frontend 32fc0a47ac0dec599ea8fb49b7a501be1e73fff9 is Live in
+Render deployment dep-db8or6e7bikc73dr0sfg. The public cache-busted version endpoint
+matches the commit. Render verified 156 catalogue choices and 514 image/model
+dependencies with zero failures; production build and bundle budgets passed.
+API readiness passed database, Redis, storage, image worker and reference worker.
+
+After full reload of the isolated live fixture, details-only aerial source capture
+passed at 2048 x 712, 0.6% landscape proposal coverage, with all four thumbnails.
+Street preview was repeated on this exact frontend, visibly includes the RRFB,
+and enables Render. Two saved details persisted; no boundary or authored zone
+was added. Distant views still fail the existing visibility threshold; close
+framing is required for small details. No paid generation was submitted.
+
+Evidence outside Git:
+- C:/dev-artifacts/CityPrompt/details-only-aerial-source-live-2026-10-15.png
+- C:/dev-artifacts/CityPrompt/details-only-street-preview-final-live-2026-10-15.png
+- C:/dev-artifacts/CityPrompt/details-only-street-preview-final-live-crop-2026-10-15.png
+
+Final thumbnail checks: 31 capture tests, TypeScript, targeted ESLint passed.
+The local reused build initially counted obsolete chunks; only obsolete generated
+JS/CSS absent from its new manifest were removed from that owned output directory.
+The current bundle passed; no source assets were removed. Render's clean build
+independently passed its budgets. Source tree is separate from ignored logs and
+external generated proof/build outputs. Rollback of this last frontend correction:
+use deployment dep-db8oi93l550s73el3n2g (d9fd42273), retaining the compatible backend.
