@@ -1,7 +1,7 @@
 # Downtown elevated CTrain station (RLASM v6.1 architectural clay)
 
 Candidate D3 of the five-building wave of 2026-10-15, chosen to fill catalogue gaps (building types
-with no clay or runtime family yet). State: **candidate under review**. Nothing here is keeper-approved,
+with no clay or runtime family yet). State: **v004 passed independent review with zero P0 and zero P1 and is the candidate** (not keeper approval). Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,7 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003
+## Open blockers after v004 (independent review PASS_ZERO_P0_P1; not keeper approval)
 
-- P1: the towers' glazed stair bays stop on a sill above the sidewalk with no first-floor band and no glazed entry; in the sources they run to grade as the station entrance
-- P2: underpass soffit only partly lifted; west skywalk lands beside the SW tower (unchanged by design); further P2s in evidence/v003/independent-review.md
+- No P0 or P1. P2 polish items (mullion stubs and specks at frame and truss nodes, converging verticals in the front, charcoal underpass soffit, slightly light brick, street position relative to the platforms, track ends reading as a terminus) are listed in evidence/v004/independent-review.md
