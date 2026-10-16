@@ -435,6 +435,8 @@ def brick_face(f, lo, hi, court=False, balcony_u=None, lite=False, skip=(), ext=
         for k, u in enumerate(us):
             if fi == 0 and any(u + .9 > a and u - .9 < c for a, c in skip):
                 continue                                         # ground bay behind a loggia that abuts this face
+            if fi == 1 and any(u + .9 > a - OV - .3 and u - .9 < c + OV + .3 for a, c in skip):
+                continue                                         # second-storey bay the loggia's roof would cover
             if balcony_u is not None and abs(u - balcony_u) < .1:
                 if fi == 0:
                     h = hole(f'{f.label} garden door', u, G0, 1.6, 2.1 + .8, kind='arched'); arched.append(h)
@@ -582,12 +584,12 @@ def hub():
             continue
         m = Merge(f)
         if k in (2, 6):              # forecourt (north) and court (south) bays: glazed French doors under a transom
-            door = hole(f'garden room french doors {k}', 0, G0, 1.9, 2.5, kind='door')
-            tran = hole(f'garden room transom {k}', 0, G0 + 2.75, w - .55, HUB_H - G0 - 3.35, kind='window')
+            door = hole(f'garden room french doors {k}', 0, G0, w - .55, 2.6, kind='door')
+            tran = hole(f'garden room transom {k}', 0, G0 + 2.85, w - .55, HUB_H - G0 - 3.45, kind='window')
             f.wall(f.label + ' carrier', -w / 2 + .12, w / 2 - .12, G0, HUB_H, depth=.22, role='trim', holes=[door, tran])
-            framed(m, f, door, cols=2, rows=1, inset=.08, occupied='garden room lounge', kind='french door')
+            framed(m, f, door, cols=4, rows=2, inset=.08, occupied='garden room lounge', kind='french door')
             framed(m, f, tran, cols=3, rows=1, inset=.08, occupied='garden room lounge', kind='transom')
-            m.box('stone', 0, -.12, G0 + .03, 2.4, .5, .06)                       # threshold step
+            m.box('stone', 0, -.01, G0 + .03, w - .3, .72, .06)                   # threshold step, through the full wall depth
         else:
             h = hole(f'garden room glazing {k}', 0, .5, w - .55, HUB_H - 1.1, kind='window')
             f.wall(f.label + ' carrier', -w / 2 + .12, w / 2 - .12, G0, HUB_H, depth=.22, role='trim', holes=[h])
