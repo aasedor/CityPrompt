@@ -584,12 +584,24 @@ def hub():
             continue
         m = Merge(f)
         if k in (2, 6):              # forecourt (north) and court (south) bays: glazed French doors under a transom
-            door = hole(f'garden room french doors {k}', 0, G0, w - .55, 2.6, kind='door')
-            tran = hole(f'garden room transom {k}', 0, G0 + 2.85, w - .55, HUB_H - G0 - 3.45, kind='window')
-            f.wall(f.label + ' carrier', -w / 2 + .12, w / 2 - .12, G0, HUB_H, depth=.22, role='trim', holes=[door, tran])
-            framed(m, f, door, cols=4, rows=2, inset=.08, occupied='garden room lounge', kind='french door')
+            dw, dh = 1.8, 2.55
+            door = hole(f'garden room french doors {k}', 0, G0, dw, dh, kind='door')
+            side = [hole(f'garden room sidelight {k} {e}', e * 1.35, .5, .44, dh - .35, kind='window') for e in (-1, 1)]
+            tran = hole(f'garden room transom {k}', 0, G0 + dh + .3, w - .55, HUB_H - G0 - dh - .9, kind='window')
+            f.wall(f.label + ' carrier', -w / 2 + .12, w / 2 - .12, G0, HUB_H, depth=.22, role='trim', holes=[door, tran] + side)
+            framed(m, f, door, cols=2, rows=1, inset=.16, occupied='garden room lounge', kind='french door')
+            for h in side:
+                framed(m, f, h, cols=1, rows=2, inset=.08, occupied='garden room lounge', kind='sidelight')
             framed(m, f, tran, cols=3, rows=1, inset=.08, occupied='garden room lounge', kind='transom')
-            m.box('stone', 0, -.01, G0 + .03, w - .3, .72, .06)                   # threshold step, through the full wall depth
+            # A pair of glazed French doors: heavy white casing, a meeting stile, kick rails, brass handles.
+            for e in (-1, 1):
+                m.box('trim', e * (dw / 2 + .09), -.07, G0 + dh / 2, .18, .14, dh + .05)
+                m.box('trim', e * dw / 4, .02, G0 + .17, dw / 2 - .1, .08, .3)
+                m.box('hardware', e * .14, -.02, G0 + 1.05, .05, .1, .22)
+            m.box('trim', 0, -.085, G0 + dh + .1, dw + .4, .17, .2)                    # head, proud of the casings
+            m.box('trim', 0, .02, G0 + dh / 2, .14, .1, dh)
+            m.box('stone', 0, -.01, G0 + .03, w - .3, .72, .06)                   # threshold through the full wall depth
+            m.box('stone', 0, -.62, .1, dw + .9, .5, .11)                         # projecting step where the path arrives
         else:
             h = hole(f'garden room glazing {k}', 0, .5, w - .55, HUB_H - 1.1, kind='window')
             f.wall(f.label + ' carrier', -w / 2 + .12, w / 2 - .12, G0, HUB_H, depth=.22, role='trim', holes=[h])
