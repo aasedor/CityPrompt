@@ -14,7 +14,7 @@ export function StudioToolSheet({navigation,children}:{navigation:ReactNode;chil
       className="mt-2 min-h-11 w-full rounded-xl border-2 border-slate-900 bg-[#fff9ec] px-3 text-sm font-bold text-slate-950 shadow-lg">
       {expanded?'Show more map':'Open design tools'}
     </button>}
-    <div id={id}>{(!narrow || expanded) && children}</div>
+    <div id={id} hidden={narrow && !expanded}>{children}</div>
   </div>;
 }
 

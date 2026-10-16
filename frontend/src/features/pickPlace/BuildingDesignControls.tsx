@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { legoAssemblyApi } from '@/features/legoAssembly/legoAssemblyApi';
+import { buildPlanRequestForItem, deriveItems } from '@/features/legoAssembly/communityCompiler';
 import { getApiErrorMessage } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import { CANONICAL_CHOICES, canonicalDrawing } from './canonicalCatalogue';
 import { canonicalBuildingAsset } from './canonicalBuildingPlacement';
-import { assetForZone, placementProperties, placementPlanRequest } from './catalogue';
-import { rectangleDimensions } from './geometry';
+import { assetForZone, placementProperties } from './catalogue';
 import { savedModelRevision } from './savedModelRevision';
 import { withStoreyMetadata } from './assetRegistry';
 import { storeyProgramHeight, storeyProgramSupports } from './buildingStoreyProgram';
@@ -115,12 +115,9 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
     if (storeyProgram?.mode === 'repeat_authored_floor' && Number(floors) !== storeyProgram.nativeStoreys) {
       pending.current=true;setChecking(true);
       try {
-        const dimensions=rectangleDimensions(zone.coordinates);
-        const request=selectedAsset?.kind === 'object' ? placementPlanRequest(
-          {...selectedAsset,properties:nextProperties},dimensions.width,dimensions.depth,zone.project_id,
-        ) : null;
-        if (!request) throw new Error('This building cannot be checked against the current model library.');
-        await legoAssemblyApi.plan({...request,target_height_m:Number(height)});
+        const item=deriveItems([{...zone,properties:nextProperties}])[0];
+        if (!item) throw new Error('This building cannot be checked against the current model library.');
+        await legoAssemblyApi.plan(buildPlanRequestForItem(item));
         if (!active.current) return;
       } catch(error) {
         if(active.current)setRuntimeError(`The building was not changed. ${getApiErrorMessage(error)}`);

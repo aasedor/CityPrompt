@@ -96,7 +96,16 @@ def load_storey_modules(path: Path) -> list[dict]:
     return [{'asset_id': f"{program['id']}:{module['role']}", 'variant_id': program['source']['variant_id'],
              'candidate': program['source']['candidate'], 'sha256': module['sha256'], 'bytes': module['bytes'],
              'dimensions_m': module['native_dimensions_m'], 'role': module['role'],
-             'storey_program_id': program['id'], 'local_trial_only': False} for module in program['modules']]
+             'storey_program_id': program['id'], 'source_model_sha256': program['source']['sha256'],
+             'expected_lego': {
+                 'enabled': True, 'family': 'vancouver-balcony-podium-tower',
+                 'min_floors': program['supported_storeys']['minimum'],
+                 'max_floors': program['supported_storeys']['maximum'],
+                 'repeatable_z': module['role'] == 'floor', 'occupied_storeys': module['occupied_storeys'],
+                 'generation_archetype_id': program['source']['variant_id'], 'allow_inset_footprint': True,
+                 'placement_contract': {'mode': 'authored_storey_program', 'continuous_resize_allowed': False,
+                                        'storey_program_id': program['id']},
+             }, 'local_trial_only': False} for module in program['modules']]
 
 
 def _optional_component(row):
@@ -247,6 +256,11 @@ def verify_catalogue(expected, bindings, bucket, storage, anonymous):
                 valid = (descriptor and descriptor.role == wanted.get('role','assembled')
                          and descriptor.source_variant_id == wanted["variant_id"]
                          and (not wanted.get('storey_program_id') or metadata['rlasm'].get('storey_program_id') == wanted['storey_program_id'])
+                         and (not wanted.get('storey_program_id') or (
+                             metadata['rlasm'].get('delivery_format') == 'architectural_clay_module_v1'
+                             and metadata['rlasm'].get('source_model_sha256') == wanted['source_model_sha256']
+                             and all(metadata.get('lego',{}).get(key) == value
+                                     for key,value in wanted['expected_lego'].items())))
                          and all(math.isclose(actual, correct, rel_tol=0, abs_tol=0.001) for actual, correct in
                                  zip((descriptor.width_m, descriptor.depth_m, descriptor.height_m), wanted["dimensions_m"])))
             except Exception:

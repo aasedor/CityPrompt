@@ -75,6 +75,25 @@ it('preserves the saved detailed tower when the current runtime cannot build its
   expect(onSave).not.toHaveBeenCalled();
 });
 
+it('preflights the saved revision and footprint so stale modules cannot authorize a height edit',async()=>{
+  const tower=placeAsset('clay_vancouver_balcony_podium_tower');
+  const properties=placementProperties(tower);
+  vi.mocked(legoAssemblyApi.plan).mockImplementation(async request=>{
+    if(request.model_revision===properties.pick_place_model_revision) throw new Error('Modules do not match saved revision');
+    return {} as never;
+  });
+  const onSave=vi.fn();
+  render(<BuildingDesignControls zone={{...zone,project_id:'project',properties}} disabled={false} onSave={onSave}/>);
+  fireEvent.change(screen.getByLabelText('Storeys'),{target:{value:'40'}});
+  fireEvent.click(screen.getByRole('button',{name:'Apply building'}));
+  await waitFor(()=>expect(legoAssemblyApi.plan).toHaveBeenCalledWith(expect.objectContaining({
+    model_revision:properties.pick_place_model_revision,project_id:'project',target_floors:40,
+    target_height_m:135.6,footprint_profile:'rectangle',footprint_local_m:expect.any(Array),
+  })));
+  expect(screen.getByRole('alert').textContent).toContain('Modules do not match saved revision');
+  expect(onSave).not.toHaveBeenCalled();
+});
+
 it('does not apply a delayed model check after the editor closes',async()=>{
   let finish!:()=>void;
   vi.mocked(legoAssemblyApi.plan).mockImplementationOnce(()=>new Promise(resolve=>{finish=()=>resolve({} as never);}));

@@ -20,8 +20,14 @@ repair installs the three exact existing modules through the finite installer.
 
 The base-selection hosted audit previously excluded optional modules. It now
 requires the three modules advertised by the Vancouver programme, checking each
-role, programme identity, dimensions, hash, storage and privacy. A complete
+role, programme identity, source version, dimensions, executable floor range,
+repeatability, occupied storeys, family/placement contract, hash, storage and privacy. A complete
 native assembly cannot satisfy a missing floor module.
+
+Height edits preflight the exact candidate zone through the same request builder
+as compilation, including saved model revision and footprint geometry. A failed
+check leaves the saved building unchanged; closing the editor prevents a delayed
+response from saving an obsolete edit.
 
 Local verification/install:
 
@@ -51,3 +57,20 @@ additive module objects/records while checking whether saved scenes use them.
 Do not delete or disable modules as an automatic rollback.
 
 No hosted writes or paid image/video generations are part of these local fixes.
+
+## Responsive tools and validation
+
+Below 1024 px, tools use compact bottom sheets with expansion for detailed
+settings. Catalogue ownership stays mounted across breakpoint changes so an
+open dialogue can close normally and release map editing. Existing editing,
+placement, selection and undo/redo logic is reused.
+
+The final relevant suites passed: 169 frontend tests (including compiler
+regressions), 274 backend tests and four installer-target tests; TypeScript and
+changed-file lint passed. Browser checks covered rejected-boundary recovery,
+valid-boundary save, detailed 17/25/40-storey towers, save/reload, detail
+place/select/rotate/move/delete/undo/copy, and 360/390/768 px layouts. Actual
+phone hardware was unavailable. The full lint command retains pre-existing
+failures in untouched files. A production bundle build passed with the shared
+hydrated public directory and `copyPublicDir:false`; duplicating that large
+directory for a full self-contained build exceeded local disk space.

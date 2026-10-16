@@ -88,13 +88,38 @@ def test_exact_runtime_binding_private_bytes_and_hash_are_verified():
     assert rows[0]["private_storage"] == "verified"
     assert all(body.closed for body in private.bodies)
 
+def module_fixture():
+    path=Path(__file__).parents[2] / 'seed/model-library/rlasm-architectural-clay/vancouverism-classic-storey-program-v001.json'
+    wanted=verify.load_storey_modules(path)[1]
+    wanted.update(sha256=DIGEST,bytes=len(GLB),dimensions_m=[10,12,6])
+    row=binding(wanted['variant_id'])
+    row['metadata']['rlasm'].update(candidate=wanted['candidate'],delivery_format='architectural_clay_module_v1',
+        storey_program_id=wanted['storey_program_id'],source_model_sha256=json.loads(path.read_text())['source']['sha256'])
+    row['metadata']['lego'].update(role='floor',repeatable_z=True,min_floors=16,max_floors=40,
+        occupied_storeys=1,family='vancouver-balcony-podium-tower',allow_inset_footprint=True,
+        placement_contract={'mode':'authored_storey_program','continuous_resize_allowed':False,
+                            'storey_program_id':wanted['storey_program_id']})
+    return wanted,row
+
+
 def test_required_authored_floor_is_verified_as_a_module_not_a_complete_building():
-    wanted={**expected(), 'role':'floor','storey_program_id':'reviewed-program'}
-    row=binding()
-    row['metadata']['rlasm'].update(delivery_format='architectural_clay_module_v1',storey_program_id='reviewed-program')
-    row['metadata']['lego'].update(role='floor',repeatable_z=True)
+    wanted,row=module_fixture()
     report=verify.verify_catalogue([wanted],[row],'private-test',Storage(),Storage(denied=True))
     assert report[0]['status']=='verified'
+
+
+@pytest.mark.parametrize('section,key,value',[
+    ('lego','repeatable_z',False),('lego','min_floors',17),('lego','max_floors',16),
+    ('lego','occupied_storeys',2),('lego','family','other-family'),
+    ('lego','generation_archetype_id','other-variant'),('lego','allow_inset_footprint',False),
+    ('lego','placement_contract',{'mode':'stretch'}),('rlasm','source_model_sha256','0'*64),
+])
+def test_module_audit_rejects_bytes_with_unusable_or_conflicting_programme_metadata(section,key,value):
+    wanted,row=module_fixture()
+    row['metadata'][section][key]=value
+    report=verify.verify_catalogue([wanted],[row],'private-test',Storage(),Storage(denied=True))[0]
+    assert report['status']=='failed'
+    assert 'invalid_runtime_binding' in report['issues']
 
 def test_required_authored_module_cannot_be_satisfied_by_only_its_native_assembly():
     wanted={**expected(), 'role':'floor','storey_program_id':'reviewed-program'}
