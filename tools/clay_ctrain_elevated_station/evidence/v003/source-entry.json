@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-ctrain-elevated-station",
+  "variant_id": "clay-ctrain-elevated-station-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "calgary_ctrain_station/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-ctrain-station/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1429334,
+      "sha256": "6f2d08e5f54d240f44b323cb48f351a17e09fec0d82067542c4660c556be08bd"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-ctrain-station/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 935570,
+      "sha256": "eb69fb9869a125e60faac611fb39cecc023680bef31fafbe797965c2c88a75b5"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-ctrain-station/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 862998,
+      "sha256": "526e800497081f31b210690cd53f4ae1dd1adbd8a0264463e049ed764f6b70e0"
+    }
+  ]
+}

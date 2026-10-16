@@ -1,0 +1,423 @@
+{
+  "candidate": "clay-ctrain-elevated-station-clay-v003",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-ctrain-elevated-station",
+  "variant_id": "clay-ctrain-elevated-station-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "calgary_ctrain_station/variant_0 (ctrain_downtown_platform)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 72.0,
+      "depth": 72.0,
+      "height": 18.6
+    },
+    "observed_storeys": 3,
+    "storey_programme": "street lobby, platform-level concourse, upper concourse with the skywalk links",
+    "plan": "36 x 26 m headhouse; twin 6 m side platforms either side of two tracks on an elevated deck running 35 m south over the east-west street and continuing level 10 m further; 20 m glazed canopies; west skywalk 22 m; east link and a 60 m north-south skywalk (top view at 0.115 m/px)",
+    "levels_m": [
+      0.15,
+      6.0,
+      10.0,
+      14.0
+    ],
+    "parapet_m": 14.8,
+    "tower_top_m": 17.6,
+    "deck_m": 5.1,
+    "platform_m": 6.0,
+    "facade": "red brick with tall punched windows; glazed top-storey band between the towers; stair towers with full-height glazed bays and pale caps",
+    "inferred": "storey heights and interiors are teaching assumptions; the neighbouring towers the skywalks reach are not part of the asset, so the skywalks end at glazed stair pavilions; the north face is not visible in any source"
+  },
+  "roof_contract": {
+    "type": "flat membrane with parapet; tower caps; shallow glazed gable canopies",
+    "datum_m": 14.0,
+    "crowns_m": [
+      14.8,
+      17.6
+    ]
+  },
+  "identity_contract": {
+    "owner": "brick headhouse with glazed stair towers and pale caps, elevated side platforms with glazed gable canopies, guideway deck on piers over the street, Plus 15 skywalks, red station pylons, light-rail train"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: red brick, grey steel frames, clear glass, pale concrete deck and piers, yellow tactile strips, red pylons, red-and-white train",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 3,
+    "ground": "street lobby with stairs and lifts",
+    "level2": "fare-paid concourse onto both platforms",
+    "level3": "upper concourse and Plus 15 links",
+    "platforms": "two side platforms with canopies, benches and pylons"
+  },
+  "contact_contract": [
+    "Grade-zero street, sidewalks and pier footings",
+    "Deck on cap beams and round piers",
+    "Canopy posts on the platform slabs",
+    "Skywalks bearing on the headhouse and on columns",
+    "Train bogies on the rails"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -28.0,
+        -26.0,
+        1.7
+      ],
+      "target": [
+        -12.0,
+        -10.0,
+        10.0
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -66.3,
+        -71.39999999999999,
+        37.2
+      ],
+      "target": [
+        0,
+        0,
+        8.370000000000001
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        59.49999999999999,
+        -68.0,
+        55.800000000000004
+      ],
+      "target": [
+        0,
+        0,
+        8.370000000000001
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        127.5
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 70.0
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -40.0,
+        -13.0,
+        24.0
+      ],
+      "target": [
+        0.0,
+        -13.0,
+        5.0
+      ],
+      "lens": 35
+    },
+    {
+      "name": "right_side",
+      "location": [
+        40.0,
+        -13.0,
+        24.0
+      ],
+      "target": [
+        0.0,
+        -13.0,
+        5.0
+      ],
+      "lens": 35
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        85.0,
+        11.16
+      ],
+      "target": [
+        0,
+        0,
+        8.370000000000001
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        59.49999999999999,
+        68.0,
+        33.480000000000004
+      ],
+      "target": [
+        0,
+        0,
+        8.370000000000001
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -30.0,
+        -26.0,
+        6.0
+      ],
+      "target": [
+        -14.75,
+        -12.0,
+        8.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -20.0,
+        -34.0,
+        14.0
+      ],
+      "target": [
+        -7.0,
+        -12.0,
+        9.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -14.0,
+        -30.0,
+        12.0
+      ],
+      "target": [
+        -7.0,
+        -24.0,
+        9.6
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "platform_canopy",
+      "location": [
+        -7.0,
+        -38.0,
+        7.7
+      ],
+      "target": [
+        -7.0,
+        -14.0,
+        7.6
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "skywalk_bridge",
+      "location": [
+        -30.0,
+        -22.0,
+        4.0
+      ],
+      "target": [
+        -28.0,
+        2.0,
+        8.2
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "street_underpass",
+      "location": [
+        -18.0,
+        -28.0,
+        1.7
+      ],
+      "target": [
+        6.0,
+        -28.0,
+        3.6
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "tower_cap",
+      "location": [
+        -30.0,
+        -30.0,
+        22.0
+      ],
+      "target": [
+        -14.75,
+        -8.75,
+        16.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "train_platform",
+      "location": [
+        4.0,
+        -40.0,
+        9.0
+      ],
+      "target": [
+        -2.0,
+        -22.0,
+        6.8
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        0.0,
+        8.0,
+        11.7
+      ],
+      "target": [
+        0.0,
+        -11.0,
+        11.2
+      ],
+      "lens": 60,
+      "whole": false
+    },
+    {
+      "name": "east_skywalk",
+      "location": [
+        48.0,
+        -30.0,
+        14.0
+      ],
+      "target": [
+        29.0,
+        -6.0,
+        8.0
+      ],
+      "lens": 45,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "platform_canopy",
+    "skywalk_bridge",
+    "street_underpass",
+    "tower_cap",
+    "train_platform",
+    "interior",
+    "east_skywalk"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-ctrain-station/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1429334,
+        "sha256": "6f2d08e5f54d240f44b323cb48f351a17e09fec0d82067542c4660c556be08bd"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-ctrain-station/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 935570,
+        "sha256": "eb69fb9869a125e60faac611fb39cecc023680bef31fafbe797965c2c88a75b5"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-ctrain-station/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 862998,
+        "sha256": "526e800497081f31b210690cd53f4ae1dd1adbd8a0264463e049ed764f6b70e0"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_ctrain.py",
+        "sha256": "98f2543b78878370f227f1975a51db245375a90ff76b7982ab8dbbc665f62f9b"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "2623c96577b7b36c8e4ef823ca8238b95b54659d8b1b2f63a1c89e6aae17d6a8"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "d509cfbbb512fdb790f9a46b785131cdc7d03aa3157f09f51dea5ad84f1484b1"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-16T02:20:03.510829+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

@@ -68,6 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 follows)
+## Open blockers after v003
 
-P1 front not the source's street-level view; P1 side views too small; P1 south ramp instead of a level deck on piers; P1 black stripe on the tower caps.
+- P1: the towers' glazed stair bays stop on a sill above the sidewalk with no first-floor band and no glazed entry; in the sources they run to grade as the station entrance
+- P2: underpass soffit only partly lifted; west skywalk lands beside the SW tower (unchanged by design); further P2s in evidence/v003/independent-review.md
