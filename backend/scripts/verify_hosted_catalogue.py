@@ -7,7 +7,7 @@ From a reviewed checkout, with DATABASE_URL and S3_* explicitly exported:
 The frontend-generated native contract identifies current selections. Candidate
 revisions resolve through the seed manifest; native SHA revisions are delivered
 by the static frontend and do not require Model Library rows. Optional authored
-storey modules/assemblies are outside this base-selection receipt.
+storey modules are also required when their finite programme is advertised.
 """
 
 from __future__ import annotations
@@ -85,6 +85,18 @@ def _metadata(row):
         except ValueError:
             return {}
     return value if isinstance(value, dict) else {}
+
+
+def load_storey_modules(path: Path) -> list[dict]:
+    program = json.loads(path.read_text(encoding='utf-8'))
+    if (program.get('schema') != 'cityprompt.authored-building-storey-program@1'
+            or {module['role'] for module in program['modules']} != {'podium','floor','roof'}
+            or len(program['modules']) != 3):
+        raise ValueError('Invalid authored storey programme')
+    return [{'asset_id': f"{program['id']}:{module['role']}", 'variant_id': program['source']['variant_id'],
+             'candidate': program['source']['candidate'], 'sha256': module['sha256'], 'bytes': module['bytes'],
+             'dimensions_m': module['native_dimensions_m'], 'role': module['role'],
+             'storey_program_id': program['id'], 'local_trial_only': False} for module in program['modules']]
 
 
 def _optional_component(row):
@@ -209,7 +221,9 @@ def verify_catalogue(expected, bindings, bucket, storage, anonymous):
         if not matching:
             issues.append("stale_binding" if related else "missing_binding")
         else:
-            matching = [row for row in matching if not _optional_component(row)]
+            role = wanted.get('role','assembled')
+            matching = [row for row in matching if (_metadata(row).get('lego',{}).get('role') == role
+                        if role != 'assembled' else not _optional_component(row))]
             if not matching:
                 issues.append("missing_assembly_binding")
             # Shared catalogue eligibility follows public complete assemblies.
@@ -230,8 +244,9 @@ def verify_catalogue(expected, bindings, bucket, storage, anonymous):
             try:
                 descriptor = descriptor_from_library_entry(SimpleNamespace(
                     id=row.get("id"), name="Catalogue verification", model_url=row.get("model_url"), metadata_=metadata))
-                valid = (descriptor and descriptor.role == "assembled"
+                valid = (descriptor and descriptor.role == wanted.get('role','assembled')
                          and descriptor.source_variant_id == wanted["variant_id"]
+                         and (not wanted.get('storey_program_id') or metadata['rlasm'].get('storey_program_id') == wanted['storey_program_id'])
                          and all(math.isclose(actual, correct, rel_tol=0, abs_tol=0.001) for actual, correct in
                                  zip((descriptor.width_m, descriptor.depth_m, descriptor.height_m), wanted["dimensions_m"])))
             except Exception:
@@ -292,6 +307,7 @@ def main(argv=None):
     parser.add_argument("--contract", type=Path, default=BACKEND / "app/data/native_model_contract.json")
     parser.add_argument("--library", type=Path, default=ROOT / "seed/model-library/rlasm-architectural-clay/library.json")
     parser.add_argument("--trial-library", type=Path, default=ROOT / "seed/claude-five-trial/library.json")
+    parser.add_argument("--storey-program", type=Path, default=ROOT / "seed/model-library/rlasm-architectural-clay/vancouverism-classic-storey-program-v001.json")
     parser.add_argument("--report", type=Path)
     args = parser.parse_args(argv)
     report = {"schema": "cityprompt.hosted-catalogue-verification@1", "checked_utc": datetime.now(timezone.utc).isoformat(),
@@ -302,9 +318,11 @@ def main(argv=None):
             report["errors"].append("target_configuration_missing")
         else:
             expected = load_expected(args.contract, args.library, [args.trial_library])
+            expected.extend(load_storey_modules(args.storey_program))
             report["source_sha256"] = {"contract": hashlib.sha256(args.contract.read_bytes()).hexdigest(),
                                        "library": hashlib.sha256(args.library.read_bytes()).hexdigest(),
-                                       "trial_library": hashlib.sha256(args.trial_library.read_bytes()).hexdigest()}
+                                       "trial_library": hashlib.sha256(args.trial_library.read_bytes()).hexdigest(),
+                                       "storey_program": hashlib.sha256(args.storey_program.read_bytes()).hexdigest()}
             report["expected_count"] = len(expected)
             if args.metadata_only:
                 report["catalogue"] = [{**row, "status": "metadata_only"} for row in expected]

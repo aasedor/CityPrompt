@@ -68,7 +68,7 @@ def family() -> list[ModuleDescriptor]:
     ]
 
 
-@pytest.mark.parametrize(("storeys", "height", "floor_modules"), [(25, 87.6, 22), (40, 135.6, 37)])
+@pytest.mark.parametrize(("storeys", "height", "floor_modules"), [(17, 62.0, 14), (25, 87.6, 22), (40, 135.6, 37)])
 def test_authored_vancouver_program_repeats_complete_floors(storeys, height, floor_modules):
     plan = plan_vertical_assembly(
         family(),
@@ -102,11 +102,12 @@ def test_maximum_footprint_does_not_change_the_40_storey_height():
     assert plan["fit"]["scale_x"] == plan["fit"]["scale_y"]
 
 
-def test_storeys_outside_the_reviewed_program_are_rejected():
+@pytest.mark.parametrize('storeys',[15,41])
+def test_storeys_outside_the_reviewed_program_are_rejected(storeys):
     with pytest.raises(AssemblyPlanningError, match="fixed at its native size and floor count"):
         plan_vertical_assembly(
             family(),
-            AssemblyRequest(52, 44, 41, archetype_id=VARIANT),
+            AssemblyRequest(52, 44, storeys, archetype_id=VARIANT),
         )
 
 

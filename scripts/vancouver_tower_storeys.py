@@ -14,6 +14,7 @@ import json
 import sys
 import uuid
 from pathlib import Path
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "seed/model-library/rlasm-architectural-clay/vancouverism-classic-storey-program-v001.json"
@@ -100,18 +101,34 @@ def load_program(root: Path = ROOT) -> tuple[dict, list[dict]]:
     return manifest, rows
 
 
-def synchronize(*, apply: bool, owner_id: uuid.UUID | None) -> list[dict]:
+def validate_program_target(settings, *, hosted=False, expected_database_host=None, expected_storage_endpoint=None):
+    """Default to loopback; hosted runs must name both exact destinations."""
+    database_host = urlsplit(settings.database_url).hostname
+    storage = settings.s3_endpoint_url.rstrip('/')
+    if hosted:
+        if not expected_database_host or not expected_storage_endpoint:
+            raise ValueError('Hosted runs require explicit database host and storage endpoint locks')
+        if database_host != expected_database_host or storage != expected_storage_endpoint.rstrip('/'):
+            raise ValueError('Configured destinations do not match the explicit target locks')
+    elif any(host not in {'127.0.0.1','localhost','::1'} for host in
+             (database_host,urlsplit(storage).hostname)):
+        raise ValueError('Local trials require loopback database and object storage')
+
+
+def synchronize(*, apply: bool, owner_id: uuid.UUID | None, hosted=False,
+                expected_database_host=None, expected_storage_endpoint=None) -> list[dict]:
     manifest, rows = load_program()
     sys.path.insert(0, str(ROOT))
     sys.path.insert(0, str(ROOT / "backend"))
     from app.core.config import get_settings
     from app.services.render_attempt_storage import _client
-    from scripts.classroom_model_library import object_matches, synchronize as sync_rows, validate_target
+    from scripts.classroom_model_library import object_matches, synchronize as sync_rows
     from sqlalchemy import create_engine
     from sqlalchemy.orm import Session
 
     settings = get_settings()
-    validate_target(settings, {}, local_trial=True)
+    validate_program_target(settings,hosted=hosted,expected_database_host=expected_database_host,
+                            expected_storage_endpoint=expected_storage_endpoint)
     dependencies = []
     for module in manifest["modules"]:
         dependencies.append({
@@ -193,14 +210,19 @@ def main() -> int:
     mode.add_argument("--verify", action="store_true")
     mode.add_argument("--install", action="store_true")
     parser.add_argument("--owner-id", type=uuid.UUID)
+    parser.add_argument("--hosted", action="store_true", help="Use an explicitly locked hosted target; does not authorize publication")
+    parser.add_argument("--expected-database-host")
+    parser.add_argument("--expected-storage-endpoint")
     args = parser.parse_args()
     if args.install and args.owner_id is None:
-        parser.error("--install requires an existing local --owner-id")
+        parser.error("--install requires an existing --owner-id")
     manifest, rows = load_program()
     if not args.verify and not args.install:
         print(f"Verified {manifest['id']} with {len(rows)} immutable modules")
         return 0
-    report = synchronize(apply=args.install, owner_id=args.owner_id)
+    report = synchronize(apply=args.install, owner_id=args.owner_id,hosted=args.hosted,
+                         expected_database_host=args.expected_database_host,
+                         expected_storage_endpoint=args.expected_storage_endpoint)
     print(json.dumps(report, indent=2))
     return int(any(row["binding"] != "verified" or row["object"] != "verified" for row in report))
 

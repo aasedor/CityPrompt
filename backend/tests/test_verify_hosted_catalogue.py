@@ -88,6 +88,19 @@ def test_exact_runtime_binding_private_bytes_and_hash_are_verified():
     assert rows[0]["private_storage"] == "verified"
     assert all(body.closed for body in private.bodies)
 
+def test_required_authored_floor_is_verified_as_a_module_not_a_complete_building():
+    wanted={**expected(), 'role':'floor','storey_program_id':'reviewed-program'}
+    row=binding()
+    row['metadata']['rlasm'].update(delivery_format='architectural_clay_module_v1',storey_program_id='reviewed-program')
+    row['metadata']['lego'].update(role='floor',repeatable_z=True)
+    report=verify.verify_catalogue([wanted],[row],'private-test',Storage(),Storage(denied=True))
+    assert report[0]['status']=='verified'
+
+def test_required_authored_module_cannot_be_satisfied_by_only_its_native_assembly():
+    wanted={**expected(), 'role':'floor','storey_program_id':'reviewed-program'}
+    report=verify.verify_catalogue([wanted],[binding()],'private-test',Storage(),Storage(denied=True))
+    assert report[0]['status']=='failed'
+
 
 @pytest.mark.parametrize("message,http,passed", [
     ("Authorization", 400, True),
