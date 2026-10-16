@@ -68,6 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (v002 follows)
+## Open blockers after v002 (v003 follows)
 
-P0 interior camera occluded; P1 stair-tower glazed bays on the wrong face and too narrow; P1 skywalk junctions too far north; P1 guideway stub ends; P1 street stairs floating; P1 framing and front role; plus the remaining P1 in evidence/v001/independent-review.md.
+P1 front not the source's street-level view; P1 side views too small; P1 south ramp instead of a level deck on piers; P1 black stripe on the tower caps.

@@ -1,0 +1,2062 @@
+{
+  "candidate": "clay-ctrain-elevated-station-clay-v002",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 482,
+    "vertices": 18657,
+    "polygons": 20682,
+    "triangles": 20682,
+    "path": "clay-ctrain-elevated-station-clay-v002-authoring.blend",
+    "bytes": 5117344,
+    "sha256": "1e1e410a1edd65ab2e09e3d06610616f042218cf01600821818e36d78d6bbe7d"
+  },
+  "runtime": {
+    "path": "clay-ctrain-elevated-station-clay-v002.glb",
+    "bytes": 1101048,
+    "sha256": "acb46c2dbcbd6dfcf775785787ea585a825c91c0561036e850a798d2a611666d",
+    "meshes": 21,
+    "materials": 21,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 21,
+    "vertices": 18657,
+    "polygons": 20682,
+    "triangles": 20682
+  },
+  "original_bounds_m": [
+    [
+      -46.0,
+      -80.0,
+      0.0
+    ],
+    [
+      34.0,
+      34.0,
+      18.700000762939453
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -46.0,
+      -80.0,
+      0.0
+    ],
+    [
+      34.0,
+      34.0,
+      18.700000762939453
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 72.0,
+    "depth": 72.0,
+    "height": 18.6
+  },
+  "native_dimensions_m": {
+    "width": 80.0,
+    "depth": 114.0,
+    "height": 18.700000762939453
+  },
+  "native_bottom_center_m": [
+    -6.0,
+    -23.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 15,
+    "joint": 12,
+    "trim": 196,
+    "pale": 18,
+    "stone": 10,
+    "sand": 4,
+    "foundation": 4,
+    "glass": 22,
+    "hardware": 43,
+    "floor": 6,
+    "timber": 17,
+    "blue": 3,
+    "planting": 9,
+    "concrete": 77,
+    "asphalt": 3,
+    "tactile": 2,
+    "signal": 2,
+    "train": 2,
+    "white": 22,
+    "rail": 14,
+    "membrane": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/platform_canopy.png",
+    "renders/skywalk_bridge.png",
+    "renders/street_underpass.png",
+    "renders/tower_cap.png",
+    "renders/train_platform.png",
+    "renders/interior.png",
+    "renders/east_skywalk.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.28144073486328125,
+      "xmax": 0.9124264121055603,
+      "ymin": 0.39774030447006226,
+      "ymax": 0.5892677307128906
+    },
+    "front_corner": {
+      "xmin": 0.2873156666755676,
+      "xmax": 0.9203146696090698,
+      "ymin": 0.23711618781089783,
+      "ymax": 0.5907440781593323
+    },
+    "aerial": {
+      "xmin": 0.0935058668255806,
+      "xmax": 0.7209395170211792,
+      "ymin": 0.12991663813591003,
+      "ymax": 0.6212761402130127
+    },
+    "top": {
+      "xmin": 0.3245428800582886,
+      "xmax": 0.6296856999397278,
+      "ymin": 0.09314288198947906,
+      "ymax": 0.6729142665863037
+    },
+    "left_side": {
+      "xmin": 0.32903674244880676,
+      "xmax": 0.9204543232917786,
+      "ymin": 0.4226864278316498,
+      "ymax": 0.5685387253761292
+    },
+    "right_side": {
+      "xmin": 0.07954569160938263,
+      "xmax": 0.6709632277488708,
+      "ymin": 0.4292198419570923,
+      "ymax": 0.5685387253761292
+    },
+    "rear": {
+      "xmin": 0.14012406766414642,
+      "xmax": 0.9091870784759521,
+      "ymin": 0.353144109249115,
+      "ymax": 0.6235653162002563
+    },
+    "rear_side": {
+      "xmin": 0.08514878153800964,
+      "xmax": 0.7948112487792969,
+      "ymin": 0.26684972643852234,
+      "ymax": 0.635575532913208
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Tracks pass through the headhouse in a trainshed under the concourse; deck abuts both faces",
+      "face_y": [
+        -11.0,
+        22.0
+      ]
+    },
+    {
+      "name": "Deck on cap beams and piers outside the street; tracks run through the headhouse to a tail track and down a ramp to grade",
+      "deck_m": [
+        4.4,
+        5.1,
+        6.0
+      ]
+    },
+    {
+      "name": "Skywalks bear on the headhouse openings and on glazed stair pavilions and columns",
+      "sky_m": [
+        6.5,
+        9.8
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "south lobby doors west",
+      "face": "headhouse south",
+      "u": -7.5,
+      "z": 0.15,
+      "width": 3.0,
+      "height": 3.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "south lobby doors east",
+      "face": "headhouse south",
+      "u": 7.5,
+      "z": 0.15,
+      "width": 3.0,
+      "height": 3.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "track portal south",
+      "face": "headhouse south",
+      "u": 0,
+      "z": 4.3999999999999995,
+      "width": 8.6,
+      "height": 5.0,
+      "kind": "track portal",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "trainshed"
+    },
+    {
+      "id": "west platform doors",
+      "face": "headhouse south",
+      "u": -7.0,
+      "z": 6.05,
+      "width": 4.2,
+      "height": 3.0,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "east platform doors",
+      "face": "headhouse south",
+      "u": 7.0,
+      "z": 6.05,
+      "width": 4.2,
+      "height": 3.0,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "upper concourse band",
+      "face": "headhouse south",
+      "u": 0,
+      "z": 10.45,
+      "width": 22.4,
+      "height": 3.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -11.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "west lobby storefront 0",
+      "face": "headhouse west",
+      "u": -9.25,
+      "z": 0.44999999999999996,
+      "width": 3.8,
+      "height": 4.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "west lobby storefront 1",
+      "face": "headhouse west",
+      "u": -3.25,
+      "z": 0.44999999999999996,
+      "width": 3.8,
+      "height": 4.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "west lobby storefront 2",
+      "face": "headhouse west",
+      "u": 2.75,
+      "z": 0.44999999999999996,
+      "width": 3.8,
+      "height": 4.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "west lobby storefront 3",
+      "face": "headhouse west",
+      "u": 8.75,
+      "z": 0.44999999999999996,
+      "width": 3.8,
+      "height": 4.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "west lobby entrance",
+      "face": "headhouse west",
+      "u": 11.75,
+      "z": 0.15,
+      "width": 2.6,
+      "height": 3.4,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "west level 2 window 1",
+      "face": "headhouse west",
+      "u": -6.25,
+      "z": 6.6,
+      "width": 1.8,
+      "height": 2.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "west level 2 window 2",
+      "face": "headhouse west",
+      "u": -2.25,
+      "z": 6.6,
+      "width": 1.8,
+      "height": 2.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "west level 2 window 3",
+      "face": "headhouse west",
+      "u": 1.75,
+      "z": 6.6,
+      "width": 1.8,
+      "height": 2.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "west level 2 window 4",
+      "face": "headhouse west",
+      "u": 5.75,
+      "z": 6.6,
+      "width": 1.8,
+      "height": 2.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "west level 2 window 5",
+      "face": "headhouse west",
+      "u": 9.75,
+      "z": 6.6,
+      "width": 1.8,
+      "height": 2.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "west skywalk opening",
+      "face": "headhouse west",
+      "u": -11.05,
+      "z": 6.5,
+      "width": 4.8,
+      "height": 3.000000000000001,
+      "kind": "skywalk opening",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "skywalk"
+    },
+    {
+      "id": "west upper band",
+      "face": "headhouse west",
+      "u": 0,
+      "z": 10.45,
+      "width": 26.3,
+      "height": 3.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "east lobby storefront 0",
+      "face": "headhouse east",
+      "u": 9.25,
+      "z": 0.44999999999999996,
+      "width": 3.8,
+      "height": 4.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "east lobby storefront 1",
+      "face": "headhouse east",
+      "u": 3.25,
+      "z": 0.44999999999999996,
+      "width": 3.8,
+      "height": 4.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "east lobby storefront 2",
+      "face": "headhouse east",
+      "u": -2.75,
+      "z": 0.44999999999999996,
+      "width": 3.8,
+      "height": 4.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "east lobby storefront 3",
+      "face": "headhouse east",
+      "u": -8.75,
+      "z": 0.44999999999999996,
+      "width": 3.8,
+      "height": 4.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "east lobby entrance",
+      "face": "headhouse east",
+      "u": -11.75,
+      "z": 0.15,
+      "width": 2.6,
+      "height": 3.4,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "east level 2 window 1",
+      "face": "headhouse east",
+      "u": 6.25,
+      "z": 6.6,
+      "width": 1.8,
+      "height": 2.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "east level 2 window 2",
+      "face": "headhouse east",
+      "u": 2.25,
+      "z": 6.6,
+      "width": 1.8,
+      "height": 2.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "east level 2 window 3",
+      "face": "headhouse east",
+      "u": -1.75,
+      "z": 6.6,
+      "width": 1.8,
+      "height": 2.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "east level 2 window 4",
+      "face": "headhouse east",
+      "u": -5.75,
+      "z": 6.6,
+      "width": 1.8,
+      "height": 2.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "east level 2 window 5",
+      "face": "headhouse east",
+      "u": -9.75,
+      "z": 6.6,
+      "width": 1.8,
+      "height": 2.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "east skywalk opening",
+      "face": "headhouse east",
+      "u": 11.95,
+      "z": 6.5,
+      "width": 3.0,
+      "height": 3.000000000000001,
+      "kind": "skywalk opening",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "skywalk"
+    },
+    {
+      "id": "east upper band",
+      "face": "headhouse east",
+      "u": 0,
+      "z": 10.45,
+      "width": 26.3,
+      "height": 3.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        18.0,
+        8.25,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "concourse"
+    },
+    {
+      "id": "north window 0-0",
+      "face": "headhouse north",
+      "u": -14.0,
+      "z": 1.3499999999999999,
+      "width": 1.8,
+      "height": 2.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "staff rooms"
+    },
+    {
+      "id": "north window 1-0",
+      "face": "headhouse north",
+      "u": -9.0,
+      "z": 1.3499999999999999,
+      "width": 1.8,
+      "height": 2.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "staff rooms"
+    },
+    {
+      "id": "north window 2-0",
+      "face": "headhouse north",
+      "u": 9.0,
+      "z": 1.3499999999999999,
+      "width": 1.8,
+      "height": 2.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "staff rooms"
+    },
+    {
+      "id": "north window 3-0",
+      "face": "headhouse north",
+      "u": 14.0,
+      "z": 1.3499999999999999,
+      "width": 1.8,
+      "height": 2.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "staff rooms"
+    },
+    {
+      "id": "north window 0-1",
+      "face": "headhouse north",
+      "u": -14.0,
+      "z": 6.7,
+      "width": 1.8,
+      "height": 2.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "staff rooms"
+    },
+    {
+      "id": "north window 1-1",
+      "face": "headhouse north",
+      "u": -9.0,
+      "z": 6.7,
+      "width": 1.8,
+      "height": 2.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "staff rooms"
+    },
+    {
+      "id": "north window 2-1",
+      "face": "headhouse north",
+      "u": 9.0,
+      "z": 6.7,
+      "width": 1.8,
+      "height": 2.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "staff rooms"
+    },
+    {
+      "id": "north window 3-1",
+      "face": "headhouse north",
+      "u": 14.0,
+      "z": 6.7,
+      "width": 1.8,
+      "height": 2.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "staff rooms"
+    },
+    {
+      "id": "track portal north",
+      "face": "headhouse north",
+      "u": 0,
+      "z": 4.3999999999999995,
+      "width": 8.6,
+      "height": 5.0,
+      "kind": "track portal",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "trainshed"
+    },
+    {
+      "id": "north upper band",
+      "face": "headhouse north",
+      "u": 0,
+      "z": 10.45,
+      "width": 34.36,
+      "height": 3.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "staff rooms"
+    },
+    {
+      "id": "west tower south slot",
+      "face": "west tower south",
+      "u": 0,
+      "z": 0.75,
+      "width": 1.0,
+      "height": 15.850000000000003,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -14.75,
+        -12.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "west tower glazed stair bay",
+      "face": "west tower outer",
+      "u": 0,
+      "z": 0.55,
+      "width": 4.0,
+      "height": 16.05,
+      "kind": "projecting glazed bay",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": -0.6,
+      "pane_inset_m": -0.563,
+      "face_origin": [
+        -18.0,
+        -8.59000015258789,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "east tower south slot",
+      "face": "east tower south",
+      "u": 0,
+      "z": 0.75,
+      "width": 1.0,
+      "height": 15.850000000000003,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        14.75,
+        -12.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "east tower glazed stair bay",
+      "face": "east tower outer",
+      "u": 0,
+      "z": 0.55,
+      "width": 4.0,
+      "height": 16.05,
+      "kind": "projecting glazed bay",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": -0.6,
+      "pane_inset_m": -0.563,
+      "face_origin": [
+        18.0,
+        -8.59000015258789,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    }
+  ],
+  "authoring_modules": {
+    "streets": [
+      "East-west street",
+      "Sidewalk north",
+      "Sidewalk north.001",
+      "Sidewalk south",
+      "Sidewalk south.001",
+      "Plaza under the deck",
+      "South plaza",
+      "South plaza.001",
+      "West street north",
+      "West street south",
+      "Signal pole",
+      "Signal arm",
+      "Signal head",
+      "Signal pole.001",
+      "Signal arm.001",
+      "Signal head.001"
+    ],
+    "road markings": [
+      "road markings white"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008"
+    ],
+    "envelope": [
+      "headhouse south carrier",
+      "headhouse west carrier",
+      "headhouse east carrier",
+      "headhouse north carrier",
+      "west tower south carrier",
+      "west tower outer carrier",
+      "west tower inner carrier",
+      "west tower north carrier",
+      "east tower south carrier",
+      "east tower outer carrier",
+      "east tower inner carrier",
+      "east tower north carrier"
+    ],
+    "brick joints": [
+      "headhouse south measured mortar courses",
+      "headhouse west measured mortar courses",
+      "headhouse east measured mortar courses",
+      "headhouse north measured mortar courses",
+      "west tower south measured mortar courses",
+      "west tower outer measured mortar courses",
+      "west tower inner measured mortar courses",
+      "west tower north measured mortar courses",
+      "east tower south measured mortar courses",
+      "east tower outer measured mortar courses",
+      "east tower inner measured mortar courses",
+      "east tower north measured mortar courses"
+    ],
+    "headhouse south glazing": [
+      "headhouse south headhouse south glazing trim",
+      "headhouse south headhouse south glazing glass",
+      "headhouse south headhouse south glazing stone"
+    ],
+    "headhouse south": [
+      "headhouse south headhouse south stone",
+      "headhouse south headhouse south trim"
+    ],
+    "headhouse west glazing": [
+      "headhouse west headhouse west glazing trim",
+      "headhouse west headhouse west glazing glass",
+      "headhouse west headhouse west glazing stone"
+    ],
+    "headhouse west": [
+      "headhouse west headhouse west stone"
+    ],
+    "headhouse east glazing": [
+      "headhouse east headhouse east glazing trim",
+      "headhouse east headhouse east glazing glass",
+      "headhouse east headhouse east glazing stone"
+    ],
+    "headhouse east": [
+      "headhouse east headhouse east stone"
+    ],
+    "headhouse north glazing": [
+      "headhouse north headhouse north glazing trim",
+      "headhouse north headhouse north glazing glass",
+      "headhouse north headhouse north glazing stone"
+    ],
+    "headhouse north": [
+      "headhouse north headhouse north stone",
+      "headhouse north headhouse north trim"
+    ],
+    "trainshed": [
+      "Trainshed deck",
+      "Trainshed wall",
+      "Trainshed wall.001",
+      "Trainshed ceiling"
+    ],
+    "headhouse": [
+      "Headhouse ground slab",
+      "Headhouse concourse slab",
+      "Headhouse concourse slab.001",
+      "Headhouse upper concourse slab",
+      "Headhouse roof slab"
+    ],
+    "roof": [
+      "Roof membrane",
+      "Rooftop unit",
+      "Roof skylight curb",
+      "Roof skylight"
+    ],
+    "lobby": [
+      "Lobby stair",
+      "Lift shaft",
+      "Lobby stair.001",
+      "Lift shaft.001"
+    ],
+    "concourse": [
+      "Fare gate",
+      "Fare gate.001",
+      "Fare gate.002",
+      "Fare gate.003",
+      "Fare gate.004",
+      "Fare gate.005",
+      "Fare gate.006",
+      "Fare gate.007"
+    ],
+    "upper concourse": [
+      "Concourse bench",
+      "Concourse bench.001",
+      "Concourse bench.002",
+      "Concourse bench.003"
+    ],
+    "west tower south glazing": [
+      "west tower south west tower south glazing trim",
+      "west tower south west tower south glazing glass"
+    ],
+    "west tower bay": [
+      "west tower outer west tower bay glass",
+      "west tower outer west tower bay trim"
+    ],
+    "towers": [
+      "west tower cornice",
+      "west tower cap",
+      "west tower hip",
+      "west tower hip top",
+      "west tower roof",
+      "west tower stone base",
+      "east tower cornice",
+      "east tower cap",
+      "east tower hip",
+      "east tower hip top",
+      "east tower roof",
+      "east tower stone base"
+    ],
+    "tower stair": [
+      "west tower stair flight",
+      "west tower stair flight.001",
+      "west tower stair flight.002",
+      "west tower stair flight.003",
+      "west tower stair flight.004",
+      "west tower stair flight.005",
+      "west tower stair flight.006",
+      "west tower stair flight.007",
+      "west tower stair flight.008",
+      "west tower stair flight.009",
+      "east tower stair flight",
+      "east tower stair flight.001",
+      "east tower stair flight.002",
+      "east tower stair flight.003",
+      "east tower stair flight.004",
+      "east tower stair flight.005",
+      "east tower stair flight.006",
+      "east tower stair flight.007",
+      "east tower stair flight.008",
+      "east tower stair flight.009"
+    ],
+    "east tower south glazing": [
+      "east tower south east tower south glazing trim",
+      "east tower south east tower south glazing glass"
+    ],
+    "east tower bay": [
+      "east tower outer east tower bay glass",
+      "east tower outer east tower bay trim"
+    ],
+    "guideway": [
+      "Guideway deck",
+      "Track bed",
+      "Tail track deck",
+      "Tail track bed",
+      "Tail track parapet",
+      "Tail track parapet.001",
+      "Tail track end wall"
+    ],
+    "platforms": [
+      "Platform -1",
+      "Platform +1",
+      "platforms tactile",
+      "platforms glass",
+      "platforms hardware",
+      "platforms timber",
+      "platforms signal",
+      "platforms white",
+      "platforms blue"
+    ],
+    "street stairs": [
+      "Street stair",
+      "Stair landing",
+      "Stair handrail",
+      "Stair rail post",
+      "Stair rail post.001",
+      "Stair rail post.002",
+      "Stair rail post.003",
+      "Stair rail post.004",
+      "Stair rail post.005",
+      "Stair handrail.001",
+      "Stair rail post.006",
+      "Stair rail post.007",
+      "Stair rail post.008",
+      "Stair rail post.009",
+      "Stair rail post.010",
+      "Stair rail post.011",
+      "Street stair.001",
+      "Stair landing.001",
+      "Stair handrail.002",
+      "Stair rail post.012",
+      "Stair rail post.013",
+      "Stair rail post.014",
+      "Stair rail post.015",
+      "Stair rail post.016",
+      "Stair rail post.017",
+      "Stair handrail.003",
+      "Stair rail post.018",
+      "Stair rail post.019",
+      "Stair rail post.020",
+      "Stair rail post.021",
+      "Stair rail post.022",
+      "Stair rail post.023"
+    ],
+    "track": [
+      "track rail",
+      "track concrete",
+      "track signal",
+      "track tactile"
+    ],
+    "piers": [
+      "Tail pier cap",
+      "Tail pier",
+      "Tail pier cap.001",
+      "Tail pier.001",
+      "Ramp pier",
+      "Pier cap beam",
+      "Guideway pier",
+      "Guideway pier.001",
+      "Pier cap beam.001",
+      "Guideway pier.002",
+      "Guideway pier.003",
+      "Pier cap beam.002",
+      "Guideway pier.004",
+      "Guideway pier.005",
+      "Pier cap beam.003",
+      "Guideway pier.006",
+      "Guideway pier.007"
+    ],
+    "guideway ramp": [
+      "Guideway ramp",
+      "Ramp track bed",
+      "Ramp parapet",
+      "Ramp parapet.001",
+      "Ramp rail",
+      "Ramp rail.001",
+      "Ramp rail.002",
+      "Ramp rail.003",
+      "Grade track bed",
+      "Grade rail",
+      "Grade rail.001",
+      "Grade rail.002",
+      "Grade rail.003"
+    ],
+    "canopies": [
+      "Canopy glazing",
+      "Canopy rafter",
+      "Canopy rafter.001",
+      "Canopy rafter.002",
+      "Canopy rafter.003",
+      "Canopy rafter.004",
+      "Canopy rafter.005",
+      "Canopy rafter.006",
+      "Canopy rafter.007",
+      "Canopy rafter.008",
+      "Canopy rafter.009",
+      "Canopy rafter.010",
+      "Canopy rafter.011",
+      "Canopy rafter.012",
+      "Canopy rafter.013",
+      "Canopy rafter.014",
+      "Canopy rafter.015",
+      "Canopy rafter.016",
+      "Canopy rafter.017",
+      "Canopy rafter.018",
+      "Canopy rafter.019",
+      "Canopy rafter.020",
+      "Canopy rafter.021",
+      "Canopy rafter.022",
+      "Canopy rafter.023",
+      "Canopy rafter.024",
+      "Canopy rafter.025",
+      "Canopy post",
+      "Canopy knee brace",
+      "Canopy knee brace.001",
+      "Canopy post.001",
+      "Canopy knee brace.002",
+      "Canopy knee brace.003",
+      "Canopy post.002",
+      "Canopy knee brace.004",
+      "Canopy knee brace.005",
+      "Canopy post.003",
+      "Canopy knee brace.006",
+      "Canopy knee brace.007",
+      "Canopy post.004",
+      "Canopy knee brace.008",
+      "Canopy knee brace.009",
+      "Canopy glazing.001",
+      "Canopy rafter.026",
+      "Canopy rafter.027",
+      "Canopy rafter.028",
+      "Canopy rafter.029",
+      "Canopy rafter.030",
+      "Canopy rafter.031",
+      "Canopy rafter.032",
+      "Canopy rafter.033",
+      "Canopy rafter.034",
+      "Canopy rafter.035",
+      "Canopy rafter.036",
+      "Canopy rafter.037",
+      "Canopy rafter.038",
+      "Canopy rafter.039",
+      "Canopy rafter.040",
+      "Canopy rafter.041",
+      "Canopy rafter.042",
+      "Canopy rafter.043",
+      "Canopy rafter.044",
+      "Canopy rafter.045",
+      "Canopy rafter.046",
+      "Canopy rafter.047",
+      "Canopy rafter.048",
+      "Canopy rafter.049",
+      "Canopy rafter.050",
+      "Canopy rafter.051",
+      "Canopy post.005",
+      "Canopy knee brace.010",
+      "Canopy knee brace.011",
+      "Canopy post.006",
+      "Canopy knee brace.012",
+      "Canopy knee brace.013",
+      "Canopy post.007",
+      "Canopy knee brace.014",
+      "Canopy knee brace.015",
+      "Canopy post.008",
+      "Canopy knee brace.016",
+      "Canopy knee brace.017",
+      "Canopy post.009",
+      "Canopy knee brace.018",
+      "Canopy knee brace.019"
+    ],
+    "canopy frame": [
+      "canopy frame trim",
+      "canopy frame trim.001"
+    ],
+    "train": [
+      "Train body lower",
+      "Train window band",
+      "Train window post",
+      "Train window post.001",
+      "Train window post.002",
+      "Train window post.003",
+      "Train window post.004",
+      "Train window post.005",
+      "Train roof",
+      "Train roof equipment",
+      "Train bogie",
+      "Train bogie.001",
+      "Train door",
+      "Train door.001",
+      "Train body lower.001",
+      "Train window band.001",
+      "Train window post.006",
+      "Train window post.007",
+      "Train window post.008",
+      "Train window post.009",
+      "Train window post.010",
+      "Train window post.011",
+      "Train roof.001",
+      "Train roof equipment.001",
+      "Train bogie.002",
+      "Train bogie.003",
+      "Train door.002",
+      "Train door.003",
+      "Train cab nose",
+      "Train cab window",
+      "Train cab nose.001",
+      "Train cab window.001",
+      "Train gangway"
+    ],
+    "skywalks": [
+      "West skywalk floor",
+      "West skywalk roof",
+      "West skywalk truss diagonal",
+      "West skywalk truss diagonal.001",
+      "West skywalk truss diagonal.002",
+      "West skywalk truss diagonal.003",
+      "West skywalk truss diagonal.004",
+      "West skywalk truss diagonal.005",
+      "West skywalk truss diagonal.006",
+      "West skywalk truss diagonal.007",
+      "West skywalk truss diagonal.008",
+      "West skywalk truss diagonal.009",
+      "West skywalk truss diagonal.010",
+      "West skywalk truss diagonal.011",
+      "West skywalk truss diagonal.012",
+      "West skywalk truss diagonal.013",
+      "West skywalk truss diagonal.014",
+      "West skywalk truss diagonal.015",
+      "West skywalk truss diagonal.016",
+      "West skywalk truss diagonal.017",
+      "West skywalk truss diagonal.018",
+      "West skywalk truss diagonal.019",
+      "West skywalk truss diagonal.020",
+      "West skywalk truss diagonal.021",
+      "West skywalk truss diagonal.022",
+      "West skywalk truss diagonal.023",
+      "West skywalk pavilion slab",
+      "West skywalk pavilion roof",
+      "West skywalk pavilion floor",
+      "West skywalk pavilion stair",
+      "East link floor",
+      "East link roof",
+      "East skywalk floor",
+      "East skywalk roof",
+      "East skywalk truss diagonal",
+      "East skywalk truss diagonal.001",
+      "East skywalk truss diagonal.002",
+      "East skywalk truss diagonal.003",
+      "East skywalk truss diagonal.004",
+      "East skywalk truss diagonal.005",
+      "East skywalk truss diagonal.006",
+      "East skywalk truss diagonal.007",
+      "East skywalk truss diagonal.008",
+      "East skywalk truss diagonal.009",
+      "East skywalk truss diagonal.010",
+      "East skywalk truss diagonal.011",
+      "East skywalk truss diagonal.012",
+      "East skywalk truss diagonal.013",
+      "East skywalk truss diagonal.014",
+      "East skywalk truss diagonal.015",
+      "East skywalk truss diagonal.016",
+      "East skywalk truss diagonal.017",
+      "East skywalk truss diagonal.018",
+      "East skywalk truss diagonal.019",
+      "East skywalk truss diagonal.020",
+      "East skywalk truss diagonal.021",
+      "East skywalk truss diagonal.022",
+      "East skywalk truss diagonal.023",
+      "East skywalk truss diagonal.024",
+      "East skywalk truss diagonal.025",
+      "East skywalk truss diagonal.026",
+      "East skywalk truss diagonal.027",
+      "East skywalk truss diagonal.028",
+      "East skywalk truss diagonal.029",
+      "East skywalk truss diagonal.030",
+      "East skywalk truss diagonal.031",
+      "East skywalk truss diagonal.032",
+      "East skywalk truss diagonal.033",
+      "East skywalk truss diagonal.034",
+      "East skywalk truss diagonal.035",
+      "East skywalk truss diagonal.036",
+      "East skywalk truss diagonal.037",
+      "East skywalk truss diagonal.038",
+      "East skywalk truss diagonal.039",
+      "East skywalk truss diagonal.040",
+      "East skywalk truss diagonal.041",
+      "East skywalk truss diagonal.042",
+      "East skywalk truss diagonal.043",
+      "East skywalk truss diagonal.044",
+      "East skywalk truss diagonal.045",
+      "East skywalk truss diagonal.046",
+      "East skywalk truss diagonal.047",
+      "East skywalk truss diagonal.048",
+      "East skywalk truss diagonal.049",
+      "East skywalk truss diagonal.050",
+      "East skywalk truss diagonal.051",
+      "East skywalk truss diagonal.052",
+      "East skywalk truss diagonal.053",
+      "East skywalk truss diagonal.054",
+      "East skywalk truss diagonal.055",
+      "East skywalk truss diagonal.056",
+      "East skywalk truss diagonal.057",
+      "East skywalk truss diagonal.058",
+      "East skywalk truss diagonal.059",
+      "East skywalk truss diagonal.060",
+      "East skywalk truss diagonal.061",
+      "East skywalk truss diagonal.062",
+      "East skywalk truss diagonal.063",
+      "East skywalk truss diagonal.064",
+      "East skywalk truss diagonal.065",
+      "East skywalk truss diagonal.066",
+      "East skywalk truss diagonal.067",
+      "East skywalk truss diagonal.068",
+      "East skywalk truss diagonal.069",
+      "East skywalk truss diagonal.070",
+      "East skywalk truss diagonal.071",
+      "East skywalk south pavilion slab",
+      "East skywalk south pavilion roof",
+      "East skywalk south pavilion floor",
+      "East skywalk south pavilion stair",
+      "East skywalk north pavilion slab",
+      "East skywalk north pavilion roof",
+      "East skywalk north pavilion floor",
+      "East skywalk north pavilion stair",
+      "East skywalk column",
+      "East skywalk column.001",
+      "East skywalk column.002"
+    ],
+    "West skywalk frame": [
+      "West skywalk frame glass",
+      "West skywalk frame trim"
+    ],
+    "West skywalk pavilion": [
+      "West skywalk pavilion wall",
+      "West skywalk pavilion glass",
+      "West skywalk pavilion trim"
+    ],
+    "East link frame": [
+      "East link frame glass",
+      "East link frame trim"
+    ],
+    "East skywalk frame": [
+      "East skywalk frame glass",
+      "East skywalk frame trim"
+    ],
+    "East skywalk south pavilion": [
+      "East skywalk south pavilion wall",
+      "East skywalk south pavilion glass",
+      "East skywalk south pavilion trim"
+    ],
+    "East skywalk north pavilion": [
+      "East skywalk north pavilion wall",
+      "East skywalk north pavilion glass",
+      "East skywalk north pavilion trim"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "platform_canopy",
+    "skywalk_bridge"
+  ],
+  "finished_utc": "2026-10-16T02:04:10.965603+00:00",
+  "delivery_and_render_seconds": 1334.5219707429999,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
