@@ -1037,7 +1037,7 @@ export function ProjectViewPage() {
   );
   const automatic3D = useAutomatic3D(project && project.permission !== 'viewer' ? id : undefined, visibleZones, isSaving,
     { hiddenLayers, comparingPlans: visiblePlanLayers.length > 1 });
-  videoCaptureSceneRef.current = { projectId: id, zones: visibleZones, buildings: visibleBuildings };
+  videoCaptureSceneRef.current = { projectId: id, zones: visibleZones, buildings: visibleBuildings, detailsRevision: renderDetailsRevision };
 
   const deleteModeledBuilding = useMutation({
     mutationFn: async (buildingId: string) => {

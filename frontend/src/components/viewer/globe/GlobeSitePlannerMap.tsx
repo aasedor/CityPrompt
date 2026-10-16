@@ -1843,7 +1843,8 @@ export function GlobeSitePlannerMap({
   // design itself ('model3d') or only existing context + overlays ('context3d').
   const streetCaptureHas3DModelsRef = useRef(false);
   streetCaptureHas3DModelsRef.current =
-    hasCompiledCommunity3D || modeledBuildingIds.size > 0 || legoBuildingIds.size > 0;
+    hasCompiledCommunity3D || modeledBuildingIds.size > 0 || legoBuildingIds.size > 0
+    || Boolean(projectBenches?.length || projectTrees?.length || projectProps?.length || projectSurfaces?.length);
   const [buildingLayerRecoveryGeneration, setBuildingLayerRecoveryGeneration] = useState(0);
   const [selectedBuildingId, setSelectedBuildingId] = useState<string | null>(null);
   const selectedBuildingIdRef = useRef<string | null>(null);

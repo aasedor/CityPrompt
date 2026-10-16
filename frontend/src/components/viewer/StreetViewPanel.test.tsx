@@ -227,4 +227,14 @@ describe('student street render', () => {
     expect(capture).not.toHaveBeenCalled();
     expect(mocks.direct).not.toHaveBeenCalled();
   });
+
+  it('renders a saved details-only street scene with its revision and no zone claims', async () => {
+    mocks.claims.mockReturnValue([]);
+    mocks.direct.mockResolvedValue({ outcome: 'accepted', render: { imageUrl: '/details.png', prompt: 'details', savedRender: { id: 'details-render' } } });
+    const bundle = { beautyImageBase64: 'details-source' };
+    render(<StreetViewPanel siteZones={[]} detailsRevision={7} projectId="project-1" globeCapture={vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: bundle })} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Render' }));
+    await waitFor(() => expect(mocks.direct).toHaveBeenCalledOnce());
+    expect(mocks.direct.mock.calls[0][1]).toMatchObject({ detailsRevision: 7, community3DClaims: [], viewMode: 'street' });
+  });
 });

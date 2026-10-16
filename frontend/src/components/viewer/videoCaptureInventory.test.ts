@@ -30,6 +30,13 @@ function fixture() {
 }
 
 describe('initial video scene completeness', () => {
+  it('captures saved details without zones and checks their mounted identity and revision', async () => {
+    const scene: VideoCaptureScene = { projectId: 'project', zones: [], buildings: [], detailsRevision: 2 };
+    const capture = { beautyImageBase64: 'details', instanceIdManifest: { '#010203': { instance_id: 'project-details', semantic_class: 'landscape' as const } } };
+    await expect(captureCompleteVideoFrame(async () => capture, () => scene)).resolves.toBe('details');
+    await expect(captureCompleteVideoFrame(async () => ({ ...capture, instanceIdManifest: {} }), () => scene)).rejects.toThrow('saved details');
+    await expect(captureCompleteVideoFrame(async () => { scene.detailsRevision = 3; return capture; }, () => scene)).rejects.toThrow('plan changed');
+  });
   it('rejects hidden buildings in a currently compiled plan before releasing the Single frame image', async () => {
     const { scene, capture } = fixture();
     capture.instanceIdManifest = Object.fromEntries(Object.entries(capture.instanceIdManifest).filter(([, instance]) => instance.semantic_class !== 'building'));

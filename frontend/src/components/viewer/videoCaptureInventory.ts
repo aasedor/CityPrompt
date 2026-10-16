@@ -6,13 +6,14 @@ export interface VideoCaptureScene {
   projectId: string | undefined;
   zones: SiteZone[];
   buildings: Building[];
+  detailsRevision?: number;
 }
 
 type InitialVideoCapture = Pick<Direct3DCaptureBundle, 'beautyImageBase64' | 'instanceIdManifest'>;
 
 function currentClaims(scene: VideoCaptureScene) {
   const claims = getCommunity3DCaptureClaims(scene.zones, scene.buildings);
-  if (!scene.projectId || !claims?.length) {
+  if (!scene.projectId || !claims || (!claims.length && scene.detailsRevision === undefined)) {
     throw new Error('Wait for the automatic 3D update before capturing your video. If it fails, use Retry 3D update.');
   }
   return claims;
@@ -20,6 +21,7 @@ function currentClaims(scene: VideoCaptureScene) {
 
 function revision(scene: VideoCaptureScene, claims: ReturnType<typeof currentClaims>): string {
   return JSON.stringify([scene.projectId,
+    scene.detailsRevision,
     claims.map((claim) => [claim.zone_id, claim.building_id, claim.source_hash, claim.representation_hash]).sort(),
     scene.zones.map((zone) => [zone.id, zone.updated_at]).sort(),
   ]);
@@ -39,6 +41,9 @@ export async function captureCompleteVideoFrame(
     throw new Error('Your plan changed while the video image was captured. Capture it again.');
   }
   const instances = Object.values(result.instanceIdManifest);
+  if (current.detailsRevision !== undefined && !instances.some(instance => instance.instance_id === 'project-details' && instance.semantic_class === 'landscape')) {
+    throw new Error('Wait for your saved details to finish loading, then capture your video again.');
+  }
   const zonesById = new Map(current.zones.map((zone) => [zone.id, zone]));
   for (const claim of currentSceneClaims) {
     const kind = resolveCommunity3DKind(zonesById.get(claim.zone_id)!);

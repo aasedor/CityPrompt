@@ -36,3 +36,27 @@ Revert frontend first if necessary; retain newer backend support for in-flight
 detail requests and all saved data. Old frontend lacks details-only rendering.
 
 Production verification is pending at this source checkpoint.
+
+## Street and video capture follow-up
+
+Street capture classification now recognizes saved details as authored 3D content,
+including projects without buildings. The video scene inventory also accepts the
+saved details revision and rejects a changed revision or missing detail identity.
+The two focused test files passed all 22 tests; TypeScript and targeted ESLint
+passed (two existing hook-dependency warnings remain). The production frontend
+build and bundle budgets passed using the previously verified asset packet.
+The React best-practices review found no new fetching, geometry duplication or
+expensive per-frame work in this follow-up.
+
+Actual local street preview succeeded with an RRFB on Google terrain and no
+boundary or authored zones. Evidence:
+C:/dev-artifacts/CityPrompt/details-only-street-preview-local-2026-10-15.png.
+The render action is enabled. No paid provider call was made. Video entry opens,
+but the latest narrow-pole overhead test was rejected by the existing minimum
+visible-proposal coverage check. A complete video/route is not verified by this
+change; the earlier "initial clean capture" wording means attempted, not passed.
+
+API and worker are now Live at 585621949452fbe873be5e71aebaf713c6c39289:
+API dep-db8obvbbc2fs73bjtm40; worker dep-db8obq7f3r2c73eqroq0. The public readiness
+check passed for database, Redis, storage, image worker and reference worker.
+Frontend promotion and hosted capture verification remain pending.
