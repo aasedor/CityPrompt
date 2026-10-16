@@ -1,0 +1,1938 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "north west south f1 window 0",
+      "face": "north west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west south f1 window 1",
+      "face": "north west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west south garden door",
+      "face": "north west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west south f1 window 4",
+      "face": "north west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west south f2 window 0",
+      "face": "north west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west south f2 window 1",
+      "face": "north west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west south f3 window 0",
+      "face": "north west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west south f3 window 1",
+      "face": "north west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west south f3 window 2",
+      "face": "north west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west south f3 window 3",
+      "face": "north west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west south f3 window 4",
+      "face": "north west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f1 window 0",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f1 window 1",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f1 window 2",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f1 window 3",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f1 window 4",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f2 window 0",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f2 window 1",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f2 window 2",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f2 window 3",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f2 window 4",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f3 window 0",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f3 window 1",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f3 window 2",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f3 window 3",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west north f3 window 4",
+      "face": "north west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f1 window 1",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f1 window 2",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f1 window 3",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f1 window 4",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f1 window 5",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f2 window 2",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f2 window 3",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f2 window 4",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f2 window 5",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f3 window 0",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f3 window 1",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f3 window 2",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f3 window 3",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f3 window 4",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west east f3 window 5",
+      "face": "north west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f1 window 0",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f1 window 1",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f1 window 2",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f1 window 3",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f1 window 4",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f1 window 5",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f2 window 0",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f2 window 1",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f2 window 2",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f2 window 3",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f2 window 4",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f2 window 5",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f3 window 0",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f3 window 1",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f3 window 2",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f3 window 3",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f3 window 4",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west west f3 window 5",
+      "face": "north west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east south f1 window 0",
+      "face": "north east south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east south f1 window 1",
+      "face": "north east south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east south garden door",
+      "face": "north east south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east south f2 window 0",
+      "face": "north east south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east south f2 window 1",
+      "face": "north east south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east south balcony door",
+      "face": "north east south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east south f3 window 0",
+      "face": "north east south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east south f3 window 1",
+      "face": "north east south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east south f3 window 2",
+      "face": "north east south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east south f3 window 3",
+      "face": "north east south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east south f3 window 4",
+      "face": "north east south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f1 window 0",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f1 window 1",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f1 window 2",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f1 window 3",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f1 window 4",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f2 window 0",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f2 window 1",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f2 window 2",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f2 window 3",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f2 window 4",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f3 window 0",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f3 window 1",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f3 window 2",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f3 window 3",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east north f3 window 4",
+      "face": "north east north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f1 window 0",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f1 window 1",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f1 window 2",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f1 window 3",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f1 window 4",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f1 window 5",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f2 window 0",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f2 window 1",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f2 window 2",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f2 window 3",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f2 window 4",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f2 window 5",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f3 window 0",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f3 window 1",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f3 window 2",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f3 window 3",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f3 window 4",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east east f3 window 5",
+      "face": "north east east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f1 window 0",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f1 window 1",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f1 window 2",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f1 window 3",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f1 window 4",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f2 window 0",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f2 window 1",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f2 window 2",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f2 window 3",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f3 window 0",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f3 window 1",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f3 window 2",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f3 window 3",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f3 window 4",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east west f3 window 5",
+      "face": "north east west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west south f1 window 0",
+      "face": "south west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west south f1 window 1",
+      "face": "south west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west south f1 window 2",
+      "face": "south west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west south f1 window 3",
+      "face": "south west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west south f2 window 0",
+      "face": "south west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west south f2 window 1",
+      "face": "south west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west south f2 window 2",
+      "face": "south west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west south f3 window 0",
+      "face": "south west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west south f3 window 1",
+      "face": "south west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west south f3 window 2",
+      "face": "south west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west south f3 window 3",
+      "face": "south west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west south f3 window 4",
+      "face": "south west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west south f3 window 5",
+      "face": "south west south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f1 window 1",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f1 window 2",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f1 window 3",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f1 window 4",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f1 window 5",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f2 window 2",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f2 window 3",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f2 window 4",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f2 window 5",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f3 window 0",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f3 window 1",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f3 window 2",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f3 window 3",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f3 window 4",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west north f3 window 5",
+      "face": "south west north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west east f1 window 0",
+      "face": "south west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west east f1 window 1",
+      "face": "south west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west east garden door",
+      "face": "south west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west east f1 window 3",
+      "face": "south west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west east f2 window 0",
+      "face": "south west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west east f2 window 1",
+      "face": "south west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west east balcony door",
+      "face": "south west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west east f2 window 3",
+      "face": "south west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west east f3 window 0",
+      "face": "south west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west east f3 window 1",
+      "face": "south west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west east f3 window 2",
+      "face": "south west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west east f3 window 3",
+      "face": "south west east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west west f1 window 0",
+      "face": "south west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west west f1 window 1",
+      "face": "south west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west west f1 window 2",
+      "face": "south west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west west f1 window 3",
+      "face": "south west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west west f2 window 0",
+      "face": "south west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west west f2 window 1",
+      "face": "south west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west west f2 window 2",
+      "face": "south west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west west f2 window 3",
+      "face": "south west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west west f3 window 0",
+      "face": "south west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west west f3 window 1",
+      "face": "south west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west west f3 window 2",
+      "face": "south west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west west f3 window 3",
+      "face": "south west west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing south f1 window 0",
+      "face": "east wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing south f1 window 1",
+      "face": "east wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing south f1 window 2",
+      "face": "east wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing south f2 window 0",
+      "face": "east wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing south f2 window 1",
+      "face": "east wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing south f2 window 2",
+      "face": "east wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing south f3 window 0",
+      "face": "east wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing south f3 window 1",
+      "face": "east wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing south f3 window 2",
+      "face": "east wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing north f1 window 0",
+      "face": "east wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing north f3 window 0",
+      "face": "east wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing north f3 window 1",
+      "face": "east wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing north f3 window 2",
+      "face": "east wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f1 window 0",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f1 window 1",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f1 window 2",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f1 window 3",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f1 window 4",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f1 window 5",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f1 window 6",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f1 window 7",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f2 window 0",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f2 window 1",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f2 window 2",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f2 window 3",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f2 window 4",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f2 window 5",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f2 window 6",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f2 window 7",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f3 window 0",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f3 window 1",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f3 window 2",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f3 window 3",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f3 window 4",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f3 window 5",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f3 window 6",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing east f3 window 7",
+      "face": "east wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f1 window 0",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f1 window 1",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f1 window 2",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f1 window 3",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west garden door",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f1 window 5",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f2 window 0",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f2 window 1",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f2 window 2",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f2 window 3",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west balcony door",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f3 window 0",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f3 window 1",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f3 window 2",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f3 window 3",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f3 window 4",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f3 window 5",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f3 window 6",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east wing west f3 window 7",
+      "face": "east wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f1 window 0",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f1 window 1",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f1 window 2",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f1 window 3",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f1 window 4",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f1 window 5",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f1 window 6",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f1 window 7",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f2 window 0",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f2 window 1",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f2 window 2",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f2 window 3",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f2 window 4",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f2 window 5",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f2 window 6",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f2 window 7",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f3 window 0",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f3 window 1",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f3 window 2",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f3 window 3",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f3 window 4",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f3 window 5",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f3 window 6",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing south f3 window 7",
+      "face": "south wing south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f1 window 0",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f1 window 1",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f1 window 2",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f1 window 3",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north garden door",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f1 window 5",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f1 window 6",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f1 window 7",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f2 window 0",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f2 window 1",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f2 window 2",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f2 window 3",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north balcony door",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f2 window 5",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f2 window 6",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f2 window 7",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f3 window 0",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f3 window 1",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f3 window 2",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f3 window 3",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f3 window 4",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f3 window 5",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f3 window 6",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing north f3 window 7",
+      "face": "south wing north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing east f3 window 0",
+      "face": "south wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing east f3 window 1",
+      "face": "south wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing east f3 window 2",
+      "face": "south wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing west f3 window 0",
+      "face": "south wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing west f3 window 1",
+      "face": "south wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south wing west f3 window 2",
+      "face": "south wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west loggia south arch 0",
+      "face": "north west loggia south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west loggia south arch 1",
+      "face": "north west loggia south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west loggia north arch 0",
+      "face": "north west loggia north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north west loggia north arch 1",
+      "face": "north west loggia north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east loggia south arch 0",
+      "face": "north east loggia south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east loggia south arch 1",
+      "face": "north east loggia south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east loggia south arch 2",
+      "face": "north east loggia south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east loggia north arch 0",
+      "face": "north east loggia north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east loggia north arch 1",
+      "face": "north east loggia north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north east loggia north arch 2",
+      "face": "north east loggia north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west loggia east arch 0",
+      "face": "west loggia east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west loggia east arch 1",
+      "face": "west loggia east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west loggia east arch 2",
+      "face": "west loggia east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west loggia east arch 3",
+      "face": "west loggia east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west loggia west arch 0",
+      "face": "west loggia west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west loggia west arch 1",
+      "face": "west loggia west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west loggia west arch 2",
+      "face": "west loggia west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west loggia west arch 3",
+      "face": "west loggia west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east loggia east arch 0",
+      "face": "east loggia east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east loggia east arch 1",
+      "face": "east loggia east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east loggia west arch 0",
+      "face": "east loggia west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east loggia west arch 1",
+      "face": "east loggia west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west link west arch 0",
+      "face": "south west link west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west link west arch 1",
+      "face": "south west link west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west link south arch 0",
+      "face": "south west link south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west link south arch 1",
+      "face": "south west link south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east link north arch 0",
+      "face": "south east link north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east link north arch 1",
+      "face": "south east link north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east link south arch 0",
+      "face": "south east link south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east link south arch 1",
+      "face": "south east link south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "garden room glazing 1",
+      "face": "garden room face 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "garden room french doors 2",
+      "face": "garden room face 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "garden room sidelight 2 -1",
+      "face": "garden room face 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "garden room sidelight 2 1",
+      "face": "garden room face 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "garden room transom 2",
+      "face": "garden room face 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "garden room glazing 3",
+      "face": "garden room face 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "garden room glazing 5",
+      "face": "garden room face 5",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "garden room french doors 6",
+      "face": "garden room face 6",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "garden room sidelight 6 -1",
+      "face": "garden room face 6",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "garden room sidelight 6 1",
+      "face": "garden room face 6",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "garden room transom 6",
+      "face": "garden room face 6",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "garden room glazing 7",
+      "face": "garden room face 7",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 # Garden-court senior residence with copper roofs (RLASM v6.1 architectural clay)
 
 Candidate D2 of the five-building wave of 2026-10-15, chosen to fill catalogue gaps (building types
-with no clay or runtime family yet). State: **candidate under review**. Nothing here is keeper-approved,
+with no clay or runtime family yet). State: **v006 passed independent review with zero P0 and zero P1 and is the candidate** (not keeper approval). Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -69,7 +69,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005
+## Open blockers after v006 (independent review PASS_ZERO_P0_P1; not keeper approval)
 
-- P1: the garden room's court face reads as fixed glazing to grade with no door frame or step; the sources show a white double French door with a transom and a stone step where the court path arrives
-- P2: see evidence/v005/independent-review.md
+- No P0 or P1. P2 polish items are listed in evidence/v006/independent-review.md
