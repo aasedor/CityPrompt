@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA } from '@/components/viewer/globe/direct3dCapture';
 import { retainResourceForDeferredDisposal } from '@/components/viewer/globe/strictModeResourceDisposal';
-import type { ZoningOverlay } from './zoningLabels';
+import type { ZoningOverlay, ZoningLabel } from './zoningLabels';
 import { GlobeZoningSurface } from './GlobeZoningSurface';
 import type { ZoningPreferences } from './zoningAppearance';
 
@@ -20,12 +20,21 @@ export function GlobeZoningLabels(props: Props) {
 }
 
 function ActiveZoningMap({ data, labels, lines, fill, fillOpacity, terrainHeight }: Props & { data: ZoningOverlay }) {
+  return <group name="zoning-label-overlay" userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
+    {(lines || fill) && <GlobeZoningSurface data={data} terrainHeight={terrainHeight} lines={lines} fill={fill} fillOpacity={fillOpacity} />}
+    {labels && <GlobeMapLabels entries={data.districts} terrainHeight={terrainHeight} name="zoning-labels" />}
+  </group>;
+}
+
+/** Shared, non-interactive cartographic lettering; never included in AI captures. */
+export function GlobeMapLabels({ entries, terrainHeight, name }: {
+  entries: Pick<ZoningLabel, 'id' | 'label' | 'anchor'>[]; terrainHeight: number; name: string;
+}) {
   const sprites = useMemo(() => {
     const group = new THREE.Group();
-    group.name = 'zoning-labels';
+    group.name = name;
     group.userData = DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA;
-    if (!data || !labels) return group;
-    for (const district of data.districts) {
+    for (const district of entries) {
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
       if (!context) continue;
@@ -54,7 +63,7 @@ function ActiveZoningMap({ data, labels, lines, fill, fillOpacity, terrainHeight
       texture.colorSpace = THREE.SRGBColorSpace;
       const material = new THREE.SpriteMaterial({ map: texture, depthTest: false, depthWrite: false, toneMapped: false });
       const sprite = new THREE.Sprite(material);
-      sprite.name = `district-label:${district.id}:${district.label}`;
+      sprite.name = `${name}:${district.id}:${district.label}`;
       sprite.userData = { widthPx: canvas.width / 2, heightPx: canvas.height / 2 };
       sprite.raycast = NO_HIT;
       sprite.renderOrder = 995;
@@ -62,7 +71,7 @@ function ActiveZoningMap({ data, labels, lines, fill, fillOpacity, terrainHeight
       group.add(sprite);
     }
     return group;
-  }, [data, labels, terrainHeight]);
+  }, [entries, terrainHeight, name]);
   useEffect(() => retainResourceForDeferredDisposal(sprites, group => {
     for (const child of group.children) {
       const material = (child as THREE.Sprite).material;
@@ -93,8 +102,5 @@ function ActiveZoningMap({ data, labels, lines, fill, fillOpacity, terrainHeight
       child.scale.set(widthPx * unitsPerPixel, heightPx * unitsPerPixel, 1);
     }
   });
-  return <group name="zoning-label-overlay" userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
-    <GlobeZoningSurface data={data} terrainHeight={terrainHeight} lines={lines} fill={fill} fillOpacity={fillOpacity} />
-    <primitive object={sprites} />
-  </group>;
+  return <primitive object={sprites} />;
 }

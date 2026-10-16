@@ -1,3 +1,4 @@
+import type { StreetNamesState } from '@/features/referenceLayers/useStreetNames';
 import { NativeParkLayer, assertNativeParksReady, waitForNativeParksReady } from '@/features/parks/NativeParkLayer';
 import {GlobeProjectBenches} from '@/features/parks/GlobeProjectBenches';
 import { DetailMapPreview, type DetailInteraction } from '@/features/parks/DetailMapPreview';
@@ -67,7 +68,7 @@ import type { Building, SiteZone, SiteZoneType, SiteZoneProperties } from '@/typ
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useViewerStore } from '@/store';
-import { GlobeZoningLabels } from '@/features/referenceLayers/GlobeZoningLabels';
+import { GlobeZoningLabels, GlobeMapLabels } from '@/features/referenceLayers/GlobeZoningLabels';
 import { pickZoningArea, type ZoningInspectionControls } from '@/features/zoningCatalogue/zoningInspection';
 import { GlobePolicyMap, type GlobePolicyMapProps, type PolicyMapHandle } from '@/features/policyPlans/GlobePolicyMap';
 import { policyInspectionAllowed, pickEditableZoneBeforePolicy } from '@/features/policyPlans/policyPicking';
@@ -1514,6 +1515,7 @@ interface GlobeSitePlannerMapProps {
   onCancelPlacement?: () => void;
   referenceLayers?: ReferenceLayer[];
   siteAssessment?: import('@/features/referenceLayers/zoningLabels').ZoningOverlay;
+  streetNames?: Pick<StreetNamesState, 'data' | 'enabled'>;
   zoningLabels?: Pick<ZoningLabelsState, 'data' | 'enabled' | 'labels' | 'lines' | 'fill' | 'fillOpacity'>;
   zoningInspection?: ZoningInspectionControls;
   policyMap?: GlobePolicyMapProps;
@@ -1631,6 +1633,7 @@ export function GlobeSitePlannerMap({
   onCancelPlacement,
   referenceLayers = [],
   siteAssessment,
+  streetNames,
   zoningLabels,
   zoningInspection,
   policyMap,
@@ -4636,6 +4639,7 @@ export function GlobeSitePlannerMap({
           <group ref={referenceOverlayGroup}><GlobeReferenceLayer layers={referenceLayers} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />
             {siteAssessment && <GlobeZoningLabels data={siteAssessment} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation}
               enabled labels lines={false} fill={false} fillOpacity={0} />}
+            {streetNames?.enabled && streetNames.data && <GlobeMapLabels name="street-names" entries={streetNames.data} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
             {zoningLabels && <GlobeZoningLabels {...zoningLabels} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
             {policyMap && <GlobePolicyMap ref={policyMapRef} {...policyMap} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
             {cityPolicyMaps && <GlobeCityPolicyMaps ref={cityPolicyMapsRef} {...cityPolicyMaps} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}

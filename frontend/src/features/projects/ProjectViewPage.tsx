@@ -1,3 +1,5 @@
+import { useStreetNames } from '@/features/referenceLayers/useStreetNames';
+import { StreetNamesControl } from '@/features/referenceLayers/StreetNamesControl';
 import { nativeParkEditProperties, nativeParkFitProblem } from '@/features/parks/nativeParkRegistry';
 import {ProjectDetailEditor,useProjectDetails} from '@/features/parks/ProjectDetailEditor';
 import { DetailPlacementPanel } from '@/features/parks/DetailPlacementPanel';
@@ -318,6 +320,7 @@ export function ProjectViewPage() {
   const exploration = useMapExploration(id, readMapCentre,
     project?.location?.longitude, project?.location?.latitude, !getActiveSiteBoundary(siteZones));
   const siteAssessment = useSiteAssessment(siteZones, id);
+  const streetNames = useStreetNames(id, siteZones, exploration);
   const zoningLabels = useZoningLabels(id, siteZones, exploration);
   const localPolicy = useLocalAreaPolicy(id, siteZones, exploration);
   const cityPolicyMaps = useCityPolicyMaps(id);
@@ -1155,7 +1158,8 @@ export function ProjectViewPage() {
             allSiteZones={siteZones}
             referenceLayers={studyMap.layer ? [...references.visibleLayers.filter(layer=>!studyMetadata(layer)),studyMap.layer] : references.visibleLayers}
             siteAssessment={siteAssessment.mapData}
-            zoningLabels={studyMap.editing ? {...zoningLabels,enabled:false} : zoningLabels}
+            streetNames={studyMap.editing ? { ...streetNames, enabled: false } : streetNames}
+              zoningLabels={studyMap.editing ? {...zoningLabels,enabled:false} : zoningLabels}
             zoningInspection={studyMap.editing
               ? { editing: true, selected: null, select: zone => studyMap.select(zone?.id ?? null) }
               : { selected: selectedZoning, select: selectZoning }}
@@ -1218,6 +1222,7 @@ export function ProjectViewPage() {
           <div className="pointer-events-auto h-full">
             <StudentWorkflowNav step={activeStudentStep} onChange={changeStudentStep} />
             {activeStudentStep !== 'design' && !showGlobeRender && !showVideoRender && <StudentStepPanel
+              siteOptions={<StreetNamesControl state={streetNames} />}
               step={activeStudentStep} hasSite={Boolean(cityPromptWorkflow.activeBoundary && isPersistedZoneId(cityPromptWorkflow.activeBoundary.id))}
               drawingSite={activeSitePlannerTool === 'site_boundary'} location={project.location?.address}
               canRender={cityPromptWorkflow.canRender} renderReason={cityPromptWorkflow.renderReason}

@@ -1,5 +1,5 @@
 import { Camera, MapPin, Pencil, Video } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { direct3DAttempts } from '@/services/api';
 import type { SiteZone } from '@/types';
 import { publicRoadConnectionFits } from '@/features/pickPlace/publicRoadConnection';
@@ -44,9 +44,9 @@ export function StudentWorkflowNav({ step, onChange }: {
   </nav>;
 }
 
-export function StudentStepPanel({ step, hasSite, drawingSite = false, location, canRender, renderReason, landscapeNeedsRefresh = false, automatic3DStatus = 'idle', automatic3DMessage = '', onSite, onDesign, onImage, onVideo, onRefreshLandscape, onRetry3D }: {
+export function StudentStepPanel({ step, hasSite, drawingSite = false, location, siteOptions, canRender, renderReason, landscapeNeedsRefresh = false, automatic3DStatus = 'idle', automatic3DMessage = '', onSite, onDesign, onImage, onVideo, onRefreshLandscape, onRetry3D }: {
   step: 'site' | 'present'; hasSite: boolean; location?: string | null;
-  drawingSite?: boolean;
+  drawingSite?: boolean; siteOptions?: ReactNode;
   canRender: boolean; renderReason: string; streetAccessNotice?: string | null; landscapeNeedsRefresh?: boolean;
   automatic3DStatus?: 'idle' | 'updating' | 'ready' | 'error'; automatic3DMessage?: string;
   onSite: () => void; onDesign: () => void; onImage: () => void; onVideo: () => void; onRefreshLandscape: () => void; onRetry3D?: () => void;
@@ -69,6 +69,7 @@ export function StudentStepPanel({ step, hasSite, drawingSite = false, location,
       {drawingSite && <p role="status" className="rounded-lg bg-lime-50 p-2 text-sm">Click at least three corners. Press Enter or double-click to finish. Esc clears this drawing.</p>}
       <button type="button" className={`${action} bg-white`} onClick={onSite}>{hasSite ? 'Review site boundary' : 'Draw site boundary'}</button>
       <button type="button" className={`${action} bg-[#c9ff3d] disabled:opacity-50`} disabled={!hasSite} onClick={onDesign}>Confirm site & design</button>
+      {siteOptions}
     </> : <>
       <h2 className="text-base font-bold">Render this view</h2>
       <p className="text-sm">Move around your community to find your view, then choose an output.</p>
