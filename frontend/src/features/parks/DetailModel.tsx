@@ -25,7 +25,7 @@ export function DetailModel({
   }, [scene]);
   return (
     <group
-      position={[0, 0, 0.084]}
+      position={[0, 0, detailAsset(asset).datumLift ?? 0.084]}
       rotation={[0, 0, yaw]}
       userData={{ semanticRole: asset, fixedMetricObject: true }}
     >

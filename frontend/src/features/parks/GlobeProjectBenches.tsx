@@ -9,6 +9,7 @@ import {
 import { useFrame } from "@react-three/fiber";
 import { TilesRendererContext } from "3d-tiles-renderer/r3f";
 import { Raycaster } from "three";
+import { Html } from '@react-three/drei';
 import type { SiteZone } from "@/types";
 import { DetailModelInstances } from "./DetailModelInstances";
 import type { DetailPlacement } from "./detailInstances";
@@ -17,6 +18,9 @@ import { authoredCameraGround } from "@/components/viewer/globe/authoredCameraGr
 import { raycastTerrainHeightAtLatLng } from "@/components/viewer/globe/GlobeZoneLayer";
 import { DIRECT_3D_CAPTURE_CONTEXT_USER_DATA } from "@/components/viewer/globe/direct3dCapture";
 import type { ProjectBench, ProjectTree, ProjectProp } from "./projectBenches";
+import { detailAsset } from './detailCatalogue';
+import { detailPlacementSupport } from './safetyPlacement';
+import { useSafetySurfaceVersion } from './safetySupport';
 
 const NO_PROPS: ProjectProp[] = [];
 const NO_TREES: ProjectTree[] = [];
@@ -48,6 +52,7 @@ export function GlobeProjectBenches({
   );
   const ground = useSharedSiteGround(),
     tiles = useContext(TilesRendererContext);
+  const surfaceVersion=useSafetySurfaceVersion();
   const [sampled, setSampled] = useState<Record<string, number>>({});
   const next = useRef(0),
     ray = useRef(new Raycaster());
@@ -76,23 +81,32 @@ export function GlobeProjectBenches({
     if (Object.keys(batch).length)
       setSampled((previous) => ({ ...previous, ...batch }));
   });
-  const batches = useMemo(() => {
+  const {batches,unsupported} = useMemo(() => {
+    // A new registered road snapshot invalidates cached support resolutions.
+    void surfaceVersion;
     const groups = new Map<string, DetailPlacement[]>();
+    const unsupported:string[]=[];
     for (const b of items) {
       const measured =
         ground.heightAt(b.lng, b.lat) ?? sampled[keyFor(b)] ?? fallbackHeight;
-      const height = authoredCameraGround(zones, b.lng, b.lat, measured);
+      const support=detailAsset(b.variant).safety?detailPlacementSupport(b.variant,b,zones.map(zone=>zone.id)):null;
+      if(support&&!support.ok){unsupported.push(b.id);continue;}
+      const height = support?.ok && support.height!==undefined ? support.height : authoredCameraGround(zones, b.lng, b.lat, measured);
       const group = groups.get(b.variant) ?? [];
       group.push({ ...b, height });
       groups.set(b.variant, group);
     }
-    return [...groups];
-  }, [items, ground, sampled, fallbackHeight, zones]);
+    return {batches:[...groups],unsupported};
+  }, [items, ground, sampled, fallbackHeight, zones, surfaceVersion]);
   return (
     <group
       name="project-details"
       userData={DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
     >
+      {unsupported.map(id=><group key={id} userData={{detailSupportUnavailable:true,streetGroundStatus:'unavailable',streetGroundZoneId:`detail:${id}`}}/>)}
+      {unsupported.length>0&&<Html fullscreen style={{pointerEvents:'none'}}><div role="alert" style={{position:'absolute',bottom:90,left:280,maxWidth:330,padding:12,background:'#fff7db',color:'#713f12',border:'1px solid #d6a643',borderRadius:10,fontSize:13}}>
+        {unsupported.length} safety {unsupported.length===1?'item needs':'items need'} a compatible level road surface. Use Add details → Arrange details to move or remove them. Their saved positions are preserved.
+      </div></Html>}
       {batches.map(([asset, placements]) => (
         <Suspense key={asset} fallback={null}>
           <DetailModelInstances asset={asset} placements={placements} />

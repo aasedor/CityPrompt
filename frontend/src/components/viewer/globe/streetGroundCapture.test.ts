@@ -2,6 +2,13 @@ import { expect, it } from 'vitest';
 import { Group } from 'three';
 import { assertStreetGroundReady, streetGroundCaptureStatus } from './streetGroundCapture';
 
+it('explains how to recover an unsupported saved safety item before capture',()=>{
+ const scene=new Group(),detail=new Group();scene.add(detail);
+ detail.userData.detailSupportUnavailable=true;
+ expect(()=>assertStreetGroundReady(scene)).toThrow(/Arrange details/);
+ scene.remove(detail);expect(()=>assertStreetGroundReady(scene)).not.toThrow();
+});
+
 it('does not export an unsaved canal opening, including when editor previews are hidden', () => {
   const scene=new Group(),draft=new Group();draft.userData.streetPreviewGround=true;scene.add(draft);
   expect(()=>assertStreetGroundReady(scene)).toThrow(/Finish or cancel/);

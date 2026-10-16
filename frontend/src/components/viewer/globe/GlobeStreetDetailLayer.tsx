@@ -1,4 +1,5 @@
 import { GlobeTreeWells } from './GlobeTreeWells';
+import { registerSafetySurface } from '@/features/parks/safetySupport';
 /**
  * GlobeStreetDetailLayer — subtle procedural 3D for road zones: raised curb
  * bands along both edges, a dashed centerline, and a parametric roundabout
@@ -674,6 +675,16 @@ function StreetRibbonDetail({
     }
     return result;
   }, [centerLngLat, centroid, halfWidth, intersectionNodes, sectionProfile, sectionScale, placementTerrain, zone.id, zone.properties?.road_native_stops, nativePilot, sharedGround.offsetAt, sharedGround.grid, sharedBlocked, nativeProblem]);
+
+  useEffect(() => {
+    if(preview || !centroid || !geometries || sharedBlocked || nativeProblem || hasAuthoredNetworkGround
+      || (nativePilot?.program?.preparedLevelOnly && !nativeStreetHasPreparedGround(preparedTerrain,Boolean(preparedSite),sharedGround.active)))return;
+    const surfaces=nativePilot?.program
+      ? geometries.nativeProgram.filter(item=>/^(asphalt|road|roadbrick|paving|concrete|sidewalk|cycle)$/.test(item.material)).map(item=>item.geometry)
+      : geometries.bands.filter(item=>!['planting','median','buffer','other'].includes(item.band.kind)).map(item=>item.geometry);
+    if(!surfaces.length)return;
+    return registerSafetySurface({id:zone.id,lng:centroid.lng,lat:centroid.lat,height:frameElevation,geometries:surfaces});
+  },[preview,centroid,geometries,sharedBlocked,nativeProblem,hasAuthoredNetworkGround,nativePilot,preparedTerrain,preparedSite,sharedGround.active,zone.id,frameElevation]);
 
   const clearOfJunction = useMemo(() => (point: {x: number; y: number}) => !centroid || !intersectionNodes.some(node =>
     node.zoneIds.includes(zone.id) && node.surfaceLayout && streetJunctionContainsPoint(node.surfaceLayout,

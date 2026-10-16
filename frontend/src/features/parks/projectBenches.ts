@@ -18,6 +18,7 @@ export interface ProjectBench {
   lng: number;
   lat: number;
   angle: number;
+  support_zone_id?: string;
 }
 export interface ProjectDetails {
   version: 1;
@@ -125,6 +126,7 @@ export const readProjectBenches = (
     id: b.id,
     point: context.fromWorld([b.lng, b.lat]),
     yaw: (b.angle * Math.PI) / 180,
+    ...(b.support_zone_id?{support_zone_id:b.support_zone_id}:{}),
   }));
 export const saveProjectBenches = (
   benches: DetailBench[],
@@ -134,6 +136,7 @@ export const saveProjectBenches = (
     const [lng, lat] = context.toWorld(b.point);
     return {
       id: b.id,
+      ...(b.support_zone_id?{support_zone_id:b.support_zone_id}:{}),
       lng: Number(lng.toFixed(10)),
       lat: Number(lat.toFixed(10)),
       angle: Number(

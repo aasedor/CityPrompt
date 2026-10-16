@@ -21,7 +21,7 @@ export function DetailModelInstances({
   placements: DetailPlacement[];
 }) {
   const model = detailAsset(asset);
-  const { scene } = useGLTF(model.url);
+  const { scene, animations } = useGLTF(model.url);
   const origin = placements[0];
   const group = useMemo(() => {
     const first = placements[0];
@@ -33,12 +33,13 @@ export function DetailModelInstances({
     ).invert();
     const result = buildDetailInstances(
       scene,
-      placements.map((p) => detailPlacementMatrix(p, inverse, model.offset)),
+      placements.map((p) => detailPlacementMatrix(p, inverse, model.offset, model.datumLift)),
+      Boolean(model.safety) && animations.length === 0,
     );
     result.userData = { ...result.userData, semanticRole: asset, fixedMetricObject: true,
       projectDetailIds: placements.map(p => p.id) };
     return result;
-  }, [scene, placements, model, asset]);
+  }, [scene, animations, placements, model, asset]);
   useEffect(() => () => disposeDetailInstances(group), [group]);
   useEffect(() => model.walkSurface
     ? registerDetailWalkSurfaces(model.walkSurface, placements, model.offset)

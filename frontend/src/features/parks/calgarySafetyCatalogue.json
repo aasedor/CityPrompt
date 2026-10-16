@@ -1,0 +1,582 @@
+[
+  {
+    "id": "detail-calgary-speed-cushion-v1",
+    "label": "Speed cushion \u00b7 concept",
+    "category": "Calgary safety additions",
+    "description": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only.",
+    "dimensions": [
+      1.8,
+      3.4,
+      0.0765
+    ],
+    "url": "/street-kits/calgary-safety-concepts-v1/speed-cushion.glb",
+    "kind": "object",
+    "color": "#c9e44a",
+    "datumLift": 0,
+    "sourceUrl": "https://www.calgary.ca/roads/safety/speed-cushion-speed-hump.html",
+    "sourceVersion": "calgary-concepts-2026-10-15-v1",
+    "sha256": "4f2ed46c0f9a4d4e7e0ece79c191afdc76c9213cc693d68fda542a9f0583c3f6",
+    "bytes": 8452,
+    "nativeBoundsZUp": [
+      [
+        -0.8999999761581421,
+        -1.7000000476837158,
+        0.0
+      ],
+      [
+        0.8999999761581421,
+        1.7000000476837158,
+        0.07649999856948853
+      ]
+    ],
+    "runtimeApproved": true,
+    "safety": {
+      "group": "Calgary safety additions",
+      "family": "Speed cushions",
+      "familyLabel": "Speed cushions",
+      "variantLabel": "Single \u00b7 1.8 \u00d7 3.4 m",
+      "sha256": "4f2ed46c0f9a4d4e7e0ece79c191afdc76c9213cc693d68fda542a9f0583c3f6",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        1.8,
+        3.4
+      ],
+      "limitation": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only.",
+      "supportBoundsXZ": [
+        -0.8999999761581421,
+        -1.7000000476837158,
+        0.8999999761581421,
+        1.7000000476837158
+      ]
+    },
+    "thumbnailUrl": "/street-kits/calgary-safety-concepts-v1/speed-cushion.webp",
+    "thumbnailSha256": "6d3e006064fc1878219e68f385dda0556c6844c35352fe99f4db736106958d8b",
+    "thumbnailProvenance": "Browser GLTFLoader + production buildDetailInstances; captured from the SHA-256-verified GLB, expansion-r2."
+  },
+  {
+    "id": "detail-calgary-speed-cushion-pair-v1",
+    "label": "Speed cushion pair \u00b7 concept",
+    "category": "Calgary safety additions",
+    "description": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only.",
+    "dimensions": [
+      4.4,
+      3.4,
+      0.0765
+    ],
+    "url": "/street-kits/calgary-safety-concepts-v1/speed-cushion-pair.glb",
+    "kind": "object",
+    "color": "#c9e44a",
+    "datumLift": 0,
+    "sourceUrl": "https://www.calgary.ca/roads/safety/speed-cushion-speed-hump.html",
+    "sourceVersion": "calgary-concepts-2026-10-15-v1",
+    "sha256": "5e8ee35c71b0e6faa668145f5e39b037f198db6032ecc79421a611d1dd7cdc96",
+    "bytes": 14960,
+    "nativeBoundsZUp": [
+      [
+        -2.200000047683716,
+        -1.7000000476837158,
+        0.0
+      ],
+      [
+        2.200000047683716,
+        1.7000000476837158,
+        0.07649999856948853
+      ]
+    ],
+    "runtimeApproved": true,
+    "safety": {
+      "group": "Calgary safety additions",
+      "family": "Speed cushions",
+      "familyLabel": "Speed cushions",
+      "variantLabel": "Pair \u00b7 0.8 m gap",
+      "sha256": "5e8ee35c71b0e6faa668145f5e39b037f198db6032ecc79421a611d1dd7cdc96",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        4.4,
+        3.4
+      ],
+      "limitation": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only.",
+      "supportBoundsXZ": [
+        -2.200000047683716,
+        -1.7000000476837158,
+        2.200000047683716,
+        1.7000000476837158
+      ]
+    },
+    "thumbnailUrl": "/street-kits/calgary-safety-concepts-v1/speed-cushion-pair.webp",
+    "thumbnailSha256": "a3c87d56b7982860d86897744436ee5d0776d3e5d6879602a6c6b81ac73c8e85",
+    "thumbnailProvenance": "Browser GLTFLoader + production buildDetailInstances; captured from the SHA-256-verified GLB, expansion-r2."
+  },
+  {
+    "id": "detail-calgary-school-crossing-sign-v1",
+    "label": "In-street school crossing sign \u00b7 concept",
+    "category": "Calgary safety additions",
+    "description": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only.",
+    "dimensions": [
+      0.48,
+      0.65,
+      1.19
+    ],
+    "url": "/street-kits/calgary-safety-concepts-v1/school-crossing-sign.glb",
+    "kind": "object",
+    "color": "#c9e44a",
+    "datumLift": 0,
+    "sourceUrl": "https://www.calgary.ca/roads/safety/elementary-schools-traffic-study.html",
+    "sourceVersion": "calgary-concepts-2026-10-15-v1",
+    "sha256": "e9432edf6343f84e3276336dce01f5b677db17e358e6a3c7a6bb05c9f2c98246",
+    "bytes": 57852,
+    "nativeBoundsZUp": [
+      [
+        -0.23999999463558197,
+        -0.32499998807907104,
+        0.0
+      ],
+      [
+        0.23999999463558197,
+        0.32499998807907104,
+        1.190000057220459
+      ]
+    ],
+    "runtimeApproved": true,
+    "safety": {
+      "group": "Calgary safety additions",
+      "family": "School crossing reminders",
+      "familyLabel": "School crossing reminders",
+      "variantLabel": "Two faces \u00b7 concept",
+      "sha256": "e9432edf6343f84e3276336dce01f5b677db17e358e6a3c7a6bb05c9f2c98246",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        0.48,
+        0.65
+      ],
+      "limitation": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only.",
+      "supportBoundsXZ": [
+        -0.23999999463558197,
+        -0.32499998807907104,
+        0.23999999463558197,
+        0.32499998807907104
+      ]
+    },
+    "thumbnailUrl": "/street-kits/calgary-safety-concepts-v1/school-crossing-sign.webp",
+    "thumbnailSha256": "fc2b8d195038343cd8250163ed68227ee4cddc0dc0d4aca278065b4da94d2a38",
+    "thumbnailProvenance": "Browser GLTFLoader + production buildDetailInstances; captured from the SHA-256-verified GLB, expansion-r2."
+  },
+  {
+    "id": "detail-calgary-left-turn-calming-v1",
+    "label": "Left-turn calming assembly \u00b7 concept",
+    "category": "Calgary safety additions",
+    "description": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only.",
+    "dimensions": [
+      0.28,
+      4.335,
+      0.9144
+    ],
+    "url": "/street-kits/calgary-safety-concepts-v1/left-turn-calming.glb",
+    "kind": "object",
+    "color": "#c9e44a",
+    "datumLift": 0,
+    "sourceUrl": "https://www.calgary.ca/roads/safety/left-turn-calming.html",
+    "sourceVersion": "calgary-concepts-2026-10-15-v1",
+    "sha256": "4bd43dd7e21f34390787bbcafe480eff34360ebe1cf1aa6b43238d35d5a1f28f",
+    "bytes": 119616,
+    "nativeBoundsZUp": [
+      [
+        -0.14000000059604645,
+        -2.234999895095825,
+        0.0
+      ],
+      [
+        0.14000000059604645,
+        2.0999999046325684,
+        0.9143999814987183
+      ]
+    ],
+    "runtimeApproved": true,
+    "safety": {
+      "group": "Calgary safety additions",
+      "family": "Left-turn calming",
+      "familyLabel": "Left-turn calming",
+      "variantLabel": "Rubber separators + yellow post",
+      "sha256": "4bd43dd7e21f34390787bbcafe480eff34360ebe1cf1aa6b43238d35d5a1f28f",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        0.28,
+        4.335
+      ],
+      "limitation": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only.",
+      "supportBoundsXZ": [
+        -0.14000000059604645,
+        -2.0999999046325684,
+        0.14000000059604645,
+        2.234999895095825
+      ]
+    },
+    "thumbnailUrl": "/street-kits/calgary-safety-concepts-v1/left-turn-calming.webp",
+    "thumbnailSha256": "db82ffe5cda00a4f672bb3fb14dcc528fd239b2b288e07d761f5ac0cbfe981d8",
+    "thumbnailProvenance": "Browser GLTFLoader + production buildDetailInstances; captured from the SHA-256-verified GLB, expansion-r2."
+  },
+  {
+    "id": "detail-calgary-high-visibility-crossing-v1",
+    "label": "High-visibility crossing sign \u00b7 concept",
+    "category": "Calgary safety additions",
+    "description": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only.",
+    "dimensions": [
+      0.76,
+      0.2354,
+      2.85
+    ],
+    "url": "/street-kits/calgary-safety-concepts-v1/high-visibility-crossing.glb",
+    "kind": "object",
+    "color": "#c9e44a",
+    "datumLift": 0,
+    "sourceUrl": "https://www.calgary.ca/roads/safety.html",
+    "sourceVersion": "calgary-concepts-2026-10-15-v1",
+    "sha256": "d2170385c7923406d51b9b2493259388941f4dcffff86b7916609fbe257c9eb6",
+    "bytes": 66112,
+    "nativeBoundsZUp": [
+      [
+        -0.3799999952316284,
+        -0.12539999186992645,
+        0.0
+      ],
+      [
+        0.3799999952316284,
+        0.10999999940395355,
+        2.8499999046325684
+      ]
+    ],
+    "runtimeApproved": true,
+    "safety": {
+      "group": "Calgary safety additions",
+      "family": "High-visibility crossing signs",
+      "familyLabel": "High-visibility crossing signs",
+      "variantLabel": "Fluorescent border \u00b7 concept",
+      "sha256": "d2170385c7923406d51b9b2493259388941f4dcffff86b7916609fbe257c9eb6",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        0.76,
+        0.2354
+      ],
+      "limitation": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only.",
+      "supportBoundsXZ": [
+        -0.3799999952316284,
+        -0.10999999940395355,
+        0.3799999952316284,
+        0.12539999186992645
+      ]
+    },
+    "thumbnailUrl": "/street-kits/calgary-safety-concepts-v1/high-visibility-crossing.webp",
+    "thumbnailSha256": "f19992fb08c3187c2e1d413df31ad5f4bdbeea650c8d1e90e50be13949f0f99d",
+    "thumbnailProvenance": "Browser GLTFLoader + production buildDetailInstances; captured from the SHA-256-verified GLB, expansion-r2."
+  },
+  {
+    "id": "detail-calgary-green-bike-box-v1",
+    "label": "Green bike box \u00b7 concept",
+    "category": "Calgary safety additions",
+    "description": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only. Paint is already 4\u20136 mm above road datum; gaps remain transparent.",
+    "dimensions": [
+      6.1,
+      3.1,
+      0.002
+    ],
+    "url": "/street-kits/calgary-safety-concepts-v1/green-bike-box.glb",
+    "kind": "object",
+    "color": "#c9e44a",
+    "datumLift": 0,
+    "sourceUrl": "https://www.calgary.ca/roads/safety/bike-signage-signals.html",
+    "sourceVersion": "calgary-concepts-2026-10-15-v1",
+    "sha256": "0ca0212311be674ca48da91c94ba7dd7f781e599766d3f87417b353a7d10da79",
+    "bytes": 8480,
+    "nativeBoundsZUp": [
+      [
+        -3.049999952316284,
+        -1.5499999523162842,
+        0.004000000189989805
+      ],
+      [
+        3.049999952316284,
+        1.5499999523162842,
+        0.006000000052154064
+      ]
+    ],
+    "runtimeApproved": true,
+    "safety": {
+      "group": "Calgary safety additions",
+      "family": "Cycling markings",
+      "familyLabel": "Cycling markings",
+      "variantLabel": "6 \u00d7 3 m \u00b7 concept",
+      "sha256": "0ca0212311be674ca48da91c94ba7dd7f781e599766d3f87417b353a7d10da79",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        6.1,
+        3.1
+      ],
+      "limitation": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only. Paint is already 4\u20136 mm above road datum; gaps remain transparent.",
+      "supportBoundsXZ": [
+        -3.049999952316284,
+        -1.5499999523162842,
+        3.049999952316284,
+        1.5499999523162842
+      ]
+    },
+    "thumbnailUrl": "/street-kits/calgary-safety-concepts-v1/green-bike-box.webp",
+    "thumbnailSha256": "12a89e542a5a7d1919f088db8ac1aa97b36051c68e4ebd089213fca2e63ff940",
+    "thumbnailProvenance": "Browser GLTFLoader + production buildDetailInstances; captured from the SHA-256-verified GLB, expansion-r2."
+  },
+  {
+    "id": "detail-calgary-green-conflict-strip-v1",
+    "label": "Green cycling conflict strip \u00b7 concept",
+    "category": "Calgary safety additions",
+    "description": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only. Paint is already 4\u20136 mm above road datum; gaps remain transparent.",
+    "dimensions": [
+      2.3,
+      5.64,
+      0.0
+    ],
+    "url": "/street-kits/calgary-safety-concepts-v1/green-conflict-strip.glb",
+    "kind": "object",
+    "color": "#c9e44a",
+    "datumLift": 0,
+    "sourceUrl": "https://www.calgary.ca/roads/safety/bike-signage-signals.html",
+    "sourceVersion": "calgary-concepts-2026-10-15-v1",
+    "sha256": "a969028d9e76dd3fb85a2423599e9eef02b1bbbab4869a52683d51a1061a0776",
+    "bytes": 3836,
+    "nativeBoundsZUp": [
+      [
+        -1.149999976158142,
+        -2.819999933242798,
+        0.004000000189989805
+      ],
+      [
+        1.149999976158142,
+        2.819999933242798,
+        0.004000000189989805
+      ]
+    ],
+    "runtimeApproved": true,
+    "safety": {
+      "group": "Calgary safety additions",
+      "family": "Cycling markings",
+      "familyLabel": "Cycling markings",
+      "variantLabel": "2 \u00d7 6 m \u00b7 dashed",
+      "sha256": "a969028d9e76dd3fb85a2423599e9eef02b1bbbab4869a52683d51a1061a0776",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        2.3,
+        6
+      ],
+      "limitation": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only. Paint is already 4\u20136 mm above road datum; gaps remain transparent.",
+      "supportBoundsXZ": [
+        -1.149999976158142,
+        -2.819999933242798,
+        1.149999976158142,
+        2.819999933242798
+      ]
+    },
+    "thumbnailUrl": "/street-kits/calgary-safety-concepts-v1/green-conflict-strip.webp",
+    "thumbnailSha256": "e5ac0afa0c397b2e6b759f9218b6d1e0472b033323482267a473eefffed69316",
+    "thumbnailProvenance": "Browser GLTFLoader + production buildDetailInstances; captured from the SHA-256-verified GLB, expansion-r2."
+  },
+  {
+    "id": "detail-calgary-bicycle-signal-v1",
+    "label": "Bicycle signal \u00b7 concept",
+    "category": "Calgary safety additions",
+    "description": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only. Static display; no detection, flashing or signal operation.",
+    "dimensions": [
+      0.43,
+      0.56,
+      3.155
+    ],
+    "url": "/street-kits/calgary-safety-concepts-v1/bicycle-signal.glb",
+    "kind": "object",
+    "color": "#c9e44a",
+    "datumLift": 0,
+    "sourceUrl": "https://www.calgary.ca/roads/safety/bike-signage-signals.html",
+    "sourceVersion": "calgary-concepts-2026-10-15-v1",
+    "sha256": "20e0eb893e8034804cc0c681eff897a66d80ae64f1e8339cb337f316693dfcbe",
+    "bytes": 280624,
+    "nativeBoundsZUp": [
+      [
+        -0.2150000035762787,
+        -0.44999998807907104,
+        0.0
+      ],
+      [
+        0.2150000035762787,
+        0.10999999940395355,
+        3.1549999713897705
+      ]
+    ],
+    "runtimeApproved": true,
+    "safety": {
+      "group": "Calgary safety additions",
+      "family": "Bicycle signals",
+      "familyLabel": "Bicycle signals",
+      "variantLabel": "Unlit \u00b7 static",
+      "sha256": "20e0eb893e8034804cc0c681eff897a66d80ae64f1e8339cb337f316693dfcbe",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        0.43,
+        0.56
+      ],
+      "limitation": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only. Static display; no detection, flashing or signal operation.",
+      "supportBoundsXZ": [
+        -0.2150000035762787,
+        -0.10999999940395355,
+        0.2150000035762787,
+        0.44999998807907104
+      ]
+    },
+    "thumbnailUrl": "/street-kits/calgary-safety-concepts-v1/bicycle-signal.webp",
+    "thumbnailSha256": "40b644ce8c038465c01757ddcd283070e458775b4209b894c6d13daf079b3fc5",
+    "thumbnailProvenance": "Browser GLTFLoader + production buildDetailInstances; captured from the SHA-256-verified GLB, expansion-r2."
+  },
+  {
+    "id": "detail-calgary-traffic-diverter-v1",
+    "label": "Planter traffic diverter \u00b7 concept",
+    "category": "Calgary safety additions",
+    "description": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only. Review emergency access, sightlines and clear passage; no simulated traffic restriction.",
+    "dimensions": [
+      5.6,
+      0.82,
+      1.103029
+    ],
+    "url": "/street-kits/calgary-safety-concepts-v1/traffic-diverter.glb",
+    "kind": "object",
+    "color": "#c9e44a",
+    "datumLift": 0,
+    "sourceUrl": "https://www.calgary.ca/planning/transportation/neighbourhood-streets-elements.html",
+    "sourceVersion": "calgary-concepts-2026-10-15-v1",
+    "sha256": "f81dea5593a0711948133c3ad6d8db3318bee44e8988ac92518d959e6b8290de",
+    "bytes": 148448,
+    "nativeBoundsZUp": [
+      [
+        -2.799999952316284,
+        -0.4099999964237213,
+        0.0
+      ],
+      [
+        2.799999952316284,
+        0.4099999964237213,
+        1.1030288934707642
+      ]
+    ],
+    "runtimeApproved": true,
+    "safety": {
+      "group": "Calgary safety additions",
+      "family": "Traffic diverters",
+      "familyLabel": "Traffic diverters",
+      "variantLabel": "Fixed assembly \u00b7 concept",
+      "sha256": "f81dea5593a0711948133c3ad6d8db3318bee44e8988ac92518d959e6b8290de",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        5.6,
+        0.82
+      ],
+      "limitation": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only. Review emergency access, sightlines and clear passage; no simulated traffic restriction.",
+      "supportBoundsXZ": [
+        -2.799999952316284,
+        -0.4099999964237213,
+        2.799999952316284,
+        0.4099999964237213
+      ]
+    },
+    "thumbnailUrl": "/street-kits/calgary-safety-concepts-v1/traffic-diverter.webp",
+    "thumbnailSha256": "e2355bfcbe20c979fd6d47ff4d1d1fcd4d5282bca0dd5312d46dce427bf8372a",
+    "thumbnailProvenance": "Browser GLTFLoader + production buildDetailInstances; captured from the SHA-256-verified GLB, expansion-r2."
+  },
+  {
+    "id": "detail-calgary-speed-display-trailer-v1",
+    "label": "Portable speed-display trailer \u00b7 concept",
+    "category": "Calgary safety additions",
+    "description": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only. Static display; no detection, flashing or signal operation.",
+    "dimensions": [
+      1.86,
+      2.775,
+      3.0765
+    ],
+    "url": "/street-kits/calgary-safety-concepts-v1/speed-display-trailer.glb",
+    "kind": "object",
+    "color": "#c9e44a",
+    "datumLift": 0,
+    "sourceUrl": "https://www.calgary.ca/planning/transportation/neighbourhood-streets-policy.html",
+    "sourceVersion": "calgary-concepts-2026-10-15-v1",
+    "sha256": "da8ff136f41c42ff1ec208b6cb14a769cd4a5af5230b917f91562ce2c19f1a30",
+    "bytes": 126164,
+    "nativeBoundsZUp": [
+      [
+        -0.9300000071525574,
+        -1.899999976158142,
+        0.0
+      ],
+      [
+        0.9300000071525574,
+        0.875,
+        3.0764999389648438
+      ]
+    ],
+    "runtimeApproved": true,
+    "safety": {
+      "group": "Calgary safety additions",
+      "family": "Speed displays",
+      "familyLabel": "Speed displays",
+      "variantLabel": "Static illustrative 30",
+      "sha256": "da8ff136f41c42ff1ec208b6cb14a769cd4a5af5230b917f91562ce2c19f1a30",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        1.86,
+        2.775
+      ],
+      "limitation": "Concept visualization; dimensions and artwork are illustrative, not approved traffic-control design. Fixed size; flat supported surface only. Static display; no detection, flashing or signal operation.",
+      "supportBoundsXZ": [
+        -0.9300000071525574,
+        -0.875,
+        0.9300000071525574,
+        1.899999976158142
+      ]
+    },
+    "thumbnailUrl": "/street-kits/calgary-safety-concepts-v1/speed-display-trailer.webp",
+    "thumbnailSha256": "6e7185c0cffe21783d9ad29bd5d5786e082d7ac91748d3b53bf5259e799d6f3c",
+    "thumbnailProvenance": "Browser GLTFLoader + production buildDetailInstances; captured from the SHA-256-verified GLB, expansion-r2."
+  }
+]

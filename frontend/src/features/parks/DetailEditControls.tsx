@@ -25,6 +25,7 @@ export function DetailEditControls({ placement }: { placement: DetailInteraction
     <div className="flex flex-wrap gap-2">
       <button disabled={placement.saving} onClick={() => placement.setMoving(!placement.moving)} className="min-h-10 rounded border px-3">{placement.moving ? 'Stop moving' : 'Move item'}</button>
       <button disabled={placement.saving} onClick={() => void placement.saveEdit()} className="min-h-10 rounded bg-lime-300 px-3">Save changes</button>
+      <button disabled={placement.saving} onClick={() => placement.choose(placement.editing!.variant)} className="min-h-10 rounded border px-3">Place a copy</button>
       <button disabled={placement.saving} onClick={() => void placement.removeItem()} className="min-h-10 rounded border px-3">Delete item</button>
       <button disabled={placement.saving} onClick={() => placement.choose(null)} className="min-h-10 rounded border px-3">Done</button>
     </div>

@@ -1,6 +1,9 @@
 import type { Object3D } from 'three';
 
 export function assertStreetGroundReady(scene: Object3D | null): void {
+  let unsupportedDetail=false;
+  scene?.traverse(object=>{if(object.userData.detailSupportUnavailable)unsupportedDetail=true;});
+  if(unsupportedDetail)throw new Error('A safety item needs a compatible level road surface. Use Add details → Arrange details to move or remove it. Its saved position is preserved.');
   let previewCutout = false;
   scene?.traverse(object => { if (object.userData.streetPreviewGround) previewCutout = true; });
   if (previewCutout) throw new Error('Finish or cancel the canal route before exporting. Its ground opening is still a drawing preview.');

@@ -1,26 +1,73 @@
 import { useEffect, useRef, useState } from 'react';
 import { detailAsset, type DetailAssetId } from './detailCatalogue';
 import type { ProjectDetails, ProjectBench } from './projectBenches';
+import { useUndoRedoStore } from '@/store/undoRedo';
+import type { DetailPose, DetailSupport } from './safetyPlacement';
+
+type ItemCollection = 'benches' | 'trees' | 'props';
+/** Compare all persisted fields, independent of JSON property insertion order. */
+function itemSnapshot(item: ProjectBench | undefined): string {
+  return JSON.stringify(item, (_key, value: unknown) => value && typeof value === 'object' && !Array.isArray(value)
+    ? Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b))) : value);
+}
 
 /** A selected item stays armed after a successful placement. Saves are serialized. */
-export function useDetailPlacement(data: ProjectDetails | undefined, save: (next: ProjectDetails) => Promise<ProjectDetails>, projectId?: string) {
+export function useDetailPlacement(data: ProjectDetails | undefined, save: (next: ProjectDetails) => Promise<ProjectDetails>, projectId?: string,
+  validate?: (id:string,pose:DetailPose)=>DetailSupport) {
   const current = useRef(data), busy = useRef(false);
+  const validation=useRef(validate); validation.current=validate;
   const scope = useRef(projectId);
+  const generation = useRef(0);
   const [selected, setSelected] = useState<DetailAssetId | null>(null);
   const [angle, setAngle] = useState(0);
   const [editing, setEditing] = useState<(ProjectBench & { variant: DetailAssetId }) | null>(null);
   const [moving, setMoving] = useState(false);
   const [saving, setSaving] = useState(false), [error, setError] = useState(''), [status, setStatus] = useState('');
+  const unavailable = () => busy.current || useUndoRedoStore.getState()._isSystemAction;
+  const record = (key: ItemCollection, before: ProjectBench | undefined, after: ProjectBench | undefined, label: string) => {
+    if (!projectId || itemSnapshot(before) === itemSnapshot(after)) return;
+    const requestScope = projectId;
+    const historyScope = useUndoRedoStore.getState().scopeVersion;
+    const itemId = (after ?? before)!.id;
+    const replay = async (expected: ProjectBench | undefined, replacement: ProjectBench | undefined) => {
+      const source = current.current;
+      if (scope.current !== requestScope || useUndoRedoStore.getState().scopeVersion !== historyScope || !source?.can_edit || busy.current)
+        throw new Error('Detail history is unavailable in this project or during a save.');
+      const items = source[key] ?? [];
+      if (itemSnapshot(items.find(i => i.id === itemId)) !== itemSnapshot(expected))
+        throw Object.assign(new Error('The item changed in another session.'), { response: { status: 409 } });
+      if(replacement && 'variant' in replacement){
+        const support=validation.current?.(String(replacement.variant),replacement);
+        if(support&&!support.ok)throw new Error(support.message);
+      }
+      const next = items.filter(i => i.id !== itemId);
+      // Preserve the item's position in its collection when possible.
+      const index = items.findIndex(i => i.id === itemId);
+      if (replacement) next.splice(index < 0 ? next.length : index, 0, replacement as typeof next[number]);
+      busy.current = true; setSaving(true); setError('');
+      try {
+        const saved = await save({ ...source, [key]: next });
+        if (scope.current !== requestScope || useUndoRedoStore.getState().scopeVersion !== historyScope) return;
+        current.current = saved;
+        setEditing(old => old?.id === itemId ? null : old);
+        setMoving(false);
+        setStatus('Detail change saved.');
+      } finally { busy.current = false; setSaving(false); }
+    };
+    useUndoRedoStore.getState().pushAction({ projectId, label,
+      undo: () => replay(after, before), redo: () => replay(before, after) });
+  };
   useEffect(() => {
     if (scope.current !== projectId) {
+      generation.current++;
       scope.current = projectId; current.current = data; setSelected(null); setEditing(null); setMoving(false); setStatus(''); setError('');
     } else if (!busy.current && data && (!current.current || data.revision >= current.current.revision)) {
       current.current = data;
     }
   }, [data, projectId]);
-  const choose = (id: DetailAssetId | null) => { if (busy.current) return; setSelected(id); setEditing(null); setMoving(false); setError(''); setStatus(''); };
+  const choose = (id: DetailAssetId | null) => { if (unavailable()) return; setSelected(id); setEditing(null); setMoving(false); setError(''); setStatus(''); };
   const selectItem = (id: string) => {
-    if (busy.current || !current.current?.can_edit) return;
+    if (unavailable() || !current.current?.can_edit) return;
     const source = current.current;
     const item = [...source.benches.map(b => ({ ...b, variant: 'timber-bench' as const })), ...(source.trees ?? []), ...(source.props ?? [])].find(b => b.id === id);
     if (!item) return;
@@ -28,43 +75,56 @@ export function useDetailPlacement(data: ProjectDetails | undefined, save: (next
   };
   const updateItem = async (position?: [number, number], remove = false) => {
     const source = current.current;
-    if (!source?.can_edit || !editing || busy.current || !Number.isFinite(angle)) return;
+    if (!source?.can_edit || !editing || unavailable() || !Number.isFinite(angle)) return;
+    const key = (['benches', 'trees', 'props'] as const).find(k => source[k]?.some(i => i.id === editing.id));
+    if (!key) return;
+    const before = source[key]?.find(i => i.id === editing.id);
+    const support = remove ? {ok:true as const} : validate?.(editing.variant,{lng:position?.[0]??editing.lng,lat:position?.[1]??editing.lat,angle}) ?? {ok:true as const};
+    if(!support.ok){setError(support.message);return;}
     const requestScope = scope.current;
+    const requestGeneration = generation.current;
     const update = <T extends ProjectBench>(items: T[]) => items.filter(i => !remove || i.id !== editing.id).map(i => i.id === editing.id
-      ? { ...i, angle: ((angle % 360) + 360) % 360, lng: position?.[0] ?? editing.lng, lat: position?.[1] ?? editing.lat } : i);
+      ? { ...i, angle: ((angle % 360) + 360) % 360, lng: position?.[0] ?? editing.lng, lat: position?.[1] ?? editing.lat,
+        ...('hostId' in support && support.hostId ? {support_zone_id:support.hostId}: {}) } : i);
     busy.current = true; setSaving(true); setError('');
     try {
       const saved = await save({ ...source, benches: update(source.benches), trees: update(source.trees ?? []), props: update(source.props ?? []) });
-      if (scope.current === requestScope) {
+      if (scope.current === requestScope && generation.current === requestGeneration) {
+        record(key, before, saved[key]?.find(i => i.id === editing.id), remove ? 'Delete detail' : 'Move or rotate detail');
         current.current = saved; setMoving(false);
         if (remove) setEditing(null);
         else setEditing({ ...editing, lng: position?.[0] ?? editing.lng, lat: position?.[1] ?? editing.lat, angle });
         setStatus(remove ? 'Item removed and saved.' : 'Item changes saved.');
       }
-    } catch { if (scope.current === requestScope) setError('Changes were not saved. Your saved items are safe; retry or cancel this edit.'); }
+    } catch { if (scope.current === requestScope && generation.current === requestGeneration) setError('Changes were not saved. Your saved items are safe; retry or cancel this edit.'); }
     finally { busy.current = false; setSaving(false); }
   };
   const place = async (position: [number, number]) => {
     if (!position.every(Number.isFinite)) return;
     if (editing) { if (moving) await updateItem(position); return; }
     const source = current.current;
-    if (!source?.can_edit || !selected || busy.current || !position.every(Number.isFinite)) return;
+    if (!source?.can_edit || !selected || unavailable() || !position.every(Number.isFinite) || !Number.isFinite(angle)) return;
     const asset = detailAsset(selected);
+    const support=validate?.(selected,{lng:position[0],lat:position[1],angle})??{ok:true as const};
+    if(!support.ok){setError(support.message);return;}
     const key = asset.kind === 'tree' ? 'trees' : asset.kind === 'bench' ? 'benches' : 'props';
     const items = source[key] ?? [];
     if (items.length >= 256) { setError('This category is full. Remove an item in Arrange details to make room.'); return; }
     const item = { id: `${asset.kind}-${crypto.randomUUID()}`, lng: position[0], lat: position[1], angle,
-      ...(asset.kind === 'bench' ? {} : { variant: selected }) };
+      ...(asset.kind === 'bench' ? {} : { variant: selected }),
+      ...('hostId' in support && support.hostId ? {support_zone_id:support.hostId}: {}) };
     const requestScope = scope.current;
+    const requestGeneration = generation.current;
     busy.current = true; setSaving(true); setError(''); setStatus('');
     try {
       const saved = await save({ ...source, [key]: [...items, item] });
-      if (scope.current === requestScope) {
+      if (scope.current === requestScope && generation.current === requestGeneration) {
+        record(key, undefined, saved[key]?.find(i => i.id === item.id), `Place ${asset.label}`);
         current.current = saved;
         setStatus(`${asset.label} placed and saved. Choose another item or place another copy.`);
       }
     } catch {
-      if (scope.current === requestScope) setError('That item was not saved. Your existing details are safe. Try placing it again; if details changed elsewhere, reopen this panel to refresh.');
+      if (scope.current === requestScope && generation.current === requestGeneration) setError('That item was not saved. Your existing details are safe. Try placing it again; if details changed elsewhere, reopen this panel to refresh.');
     } finally { busy.current = false; setSaving(false); }
   };
   return { selected, choose, angle, setAngle, saving, error, status, place, editing, selectItem, moving, setMoving,

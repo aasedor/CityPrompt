@@ -36,6 +36,7 @@ export interface DetailBench {
   /** Present only for independent project trees; absent means timber bench. */
   treeVariant?: DetailTreeVariant;
   propVariant?: DetailPropVariant;
+  support_zone_id?: string;
 }
 export interface SavedBenchDetails {
   version: 1;

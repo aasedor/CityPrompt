@@ -1,10 +1,67 @@
 import { act, renderHook } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { useUndoRedoStore } from '@/store/undoRedo';
 import { useDetailPlacement } from './useDetailPlacement';
 import type { ProjectDetails } from './projectBenches';
 
 const initial: ProjectDetails = { version: 1, revision: 4, can_edit: true, benches: [], trees: [], props: [], surfaces: [] };
 describe('persistent detail placement', () => {
+  it('refuses unsupported placement and edits while still allowing deletion',async()=>{
+    const save=vi.fn(async(data:ProjectDetails)=>({...data,revision:data.revision+1}));
+    const validate=vi.fn(()=>({ok:false as const,message:'The footprint crosses a gap.'}));
+    const data={...initial,props:[{id:'safety',lng:-114,lat:51,angle:0,variant:'calgary_delineator_illustrative_r1'}]};
+    const {result}=renderHook(()=>useDetailPlacement(data,save,'detail-project',validate));
+    act(()=>result.current.choose('calgary_delineator_illustrative_r1'));
+    await act(()=>result.current.place([-114,51]));expect(save).not.toHaveBeenCalled();
+    expect(result.current.error).toContain('gap');
+    act(()=>result.current.selectItem('safety'));
+    act(()=>result.current.setAngle(15));
+    await act(()=>result.current.saveEdit());expect(save).not.toHaveBeenCalled();
+    await act(()=>result.current.removeItem());expect(save).toHaveBeenCalledOnce();
+    expect(save.mock.calls[0][0].props).toEqual([]);
+  });
+  beforeEach(() => {
+    useUndoRedoStore.getState().setProjectScope('detail-project');
+    useUndoRedoStore.getState().clearHistory();
+  });
+  it('undoes and redoes a placement using current revisions while preserving unrelated changes', async () => {
+    const save = vi.fn(async (data: ProjectDetails) => ({ ...data, revision: data.revision + 1 }));
+    const { result, rerender } = renderHook(({ data }) => useDetailPlacement(data, save, 'detail-project'), { initialProps: { data: initial } });
+    act(() => result.current.choose('calgary_tc_curb_2750_yellow_r1'));
+    await act(() => result.current.place([-114, 51]));
+    const placed = save.mock.calls[0][0].props![0];
+    rerender({ data: { ...initial, revision: 6, props: [placed], benches: [{ id: 'other', lng: -114, lat: 51, angle: 0 }] } });
+    await act(() => useUndoRedoStore.getState().undo());
+    expect(save.mock.calls[1][0]).toMatchObject({ revision: 6, props: [], benches: [{ id: 'other' }] });
+    await act(() => useUndoRedoStore.getState().redo());
+    expect(save.mock.calls[2][0]).toMatchObject({ revision: 7, props: [placed], benches: [{ id: 'other' }] });
+  });
+  it('records move/rotation and deletion as separate reversible operations', async () => {
+    const save = vi.fn(async (data: ProjectDetails) => ({ ...data, revision: data.revision + 1 }));
+    const source = { ...initial, benches: [{ id: 'bench-a', lng: -114, lat: 51, angle: 0 }] };
+    const { result } = renderHook(() => useDetailPlacement(source, save, 'detail-project'));
+    act(() => result.current.selectItem('bench-a'));
+    act(() => { result.current.setAngle(45); result.current.setMoving(true); });
+    await act(() => result.current.place([-114.1, 51.1]));
+    await act(() => result.current.removeItem());
+    await act(() => useUndoRedoStore.getState().undo());
+    expect(save.mock.calls[2][0].benches).toEqual([{ id: 'bench-a', lng: -114.1, lat: 51.1, angle: 45 }]);
+    await act(() => useUndoRedoStore.getState().undo());
+    expect(save.mock.calls[3][0].benches).toEqual(source.benches);
+  });
+  it('retains history on a failed undo and rejects undo over a remotely edited item', async () => {
+    const save = vi.fn(async (data: ProjectDetails) => ({ ...data, revision: data.revision + 1 }));
+    const { result, rerender } = renderHook(({ data }) => useDetailPlacement(data, save, 'detail-project'), { initialProps: { data: initial } });
+    act(() => result.current.choose('timber-bench'));
+    await act(() => result.current.place([-114, 51]));
+    save.mockRejectedValueOnce(new Error('offline'));
+    await act(() => useUndoRedoStore.getState().undo());
+    expect(useUndoRedoStore.getState().undoStack).toHaveLength(1);
+    rerender({ data: { ...initial, revision: 6, benches: save.mock.calls[0][0].benches.map(b => ({ ...b, angle: 90 })) } });
+    await act(() => useUndoRedoStore.getState().undo());
+    expect(save).toHaveBeenCalledTimes(2);
+    expect(useUndoRedoStore.getState().undoStack).toHaveLength(1);
+  });
   it('selects, moves and rotates an existing item without creating a duplicate', async () => {
     const save = vi.fn(async (data: ProjectDetails) => ({ ...data, revision: data.revision + 1 }));
     const source = { ...initial, benches: [{ id: 'bench-a', lng: -114, lat: 51, angle: 0 }] };
@@ -50,5 +107,21 @@ describe('persistent detail placement', () => {
     act(() => result.current.choose('timber-bench'));
     await act(() => result.current.place([-114, 51]));
     expect(save).not.toHaveBeenCalled();
+  });
+  it('does not add stale history when returning to a project before an old save finishes', async () => {
+    let finish!: (value: ProjectDetails) => void;
+    const save = vi.fn((_next: ProjectDetails) => new Promise<ProjectDetails>(resolve => { finish = resolve; }));
+    const { result, rerender } = renderHook(({ projectId }) => useDetailPlacement(initial, save, projectId),
+      { initialProps: { projectId: 'detail-project' } });
+    act(() => result.current.choose('timber-bench'));
+    let pending!: Promise<void>;
+    act(() => { pending = result.current.place([-114, 51]); });
+    act(() => useUndoRedoStore.getState().setProjectScope('another-project'));
+    rerender({ projectId: 'another-project' });
+    act(() => useUndoRedoStore.getState().setProjectScope('detail-project'));
+    rerender({ projectId: 'detail-project' });
+    await act(async () => { finish({ ...save.mock.calls[0][0], revision: 5 }); await pending; });
+    expect(result.current.status).toBe('');
+    expect(useUndoRedoStore.getState().undoStack).toHaveLength(0);
   });
 });

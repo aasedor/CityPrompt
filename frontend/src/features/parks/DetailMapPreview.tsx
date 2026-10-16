@@ -8,6 +8,8 @@ import { authoredCameraGround } from '@/components/viewer/globe/authoredCameraGr
 import { detailAsset } from './detailCatalogue';
 import { DetailModelInstances } from './DetailModelInstances';
 import type { useDetailPlacement } from './useDetailPlacement';
+import { detailPlacementSupport } from './safetyPlacement';
+import { useSafetySurfaceVersion } from './safetySupport';
 
 export type DetailInteraction = ReturnType<typeof useDetailPlacement>;
 
@@ -18,6 +20,7 @@ export function DetailMapPreview({ interaction, zones, surfaceAt, fallbackHeight
 }) {
   const canvas = useThree(state => state.gl.domElement);
   const ground = useSharedSiteGround();
+  useSafetySurfaceVersion();
   const [hover, setHover] = useState<{ lngLat: [number, number]; height: number } | null>(null);
   const follows = Boolean(interaction.selected || interaction.moving);
   useEffect(() => {
@@ -41,7 +44,9 @@ export function DetailMapPreview({ interaction, zones, surfaceAt, fallbackHeight
   const point = follows ? hover : item ? { lngLat: [item.lng, item.lat] as [number, number], height: fallbackHeight } : null;
   if (!asset || !point) return null;
   const [lng, lat] = point.lngLat;
-  const height = authoredCameraGround(zones, lng, lat, ground.heightAt(lng, lat) ?? point.height);
+  const support=detailAsset(asset).safety?detailPlacementSupport(asset,{lng,lat,angle:interaction.angle},zones.map(zone=>zone.id)):null;
+  if(support&&!support.ok)return null;
+  const height = support?.ok&&support.height!==undefined?support.height:authoredCameraGround(zones, lng, lat, ground.heightAt(lng, lat) ?? point.height);
   const radius = Math.max(0.7, detailAsset(asset).dimensions[0] / 2);
   return <group userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
     {/* An existing edited object stays in captures; an unplaced cursor ghost does not. */}

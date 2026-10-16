@@ -10,9 +10,29 @@ from unittest.mock import patch
 
 from scripts.hosted_assets import ROOT, RepositoryAssets, checked_payload, safe_target, public_requirements, write_asset, browser_environment, stamp_service_worker, validate_packet
 from scripts.hosted_assets import detail_requirements, hydrate_source_media
+from scripts.hosted_assets import DETAIL_MANIFESTS
 
 
 class HostedAssetsTests(unittest.TestCase):
+    def test_reviewed_calgary_concepts_are_in_hosted_asset_closure(self):
+        name = 'frontend/src/features/parks/calgarySafetyCatalogue.json'
+        self.assertIn(name, DETAIL_MANIFESTS)
+        rows = json.loads((ROOT / name).read_text())
+        self.assertEqual(len(rows), 10)
+        requirements = detail_requirements(rows)
+        for row in rows:
+            self.assertEqual(requirements[row['url']]['sha256'], row['sha256'])
+
+    def test_safety_catalogue_is_part_of_the_hosted_asset_closure(self):
+        name = 'frontend/src/features/parks/trafficSafetyCatalogue.json'
+        self.assertIn(name, DETAIL_MANIFESTS)
+        rows = json.loads((ROOT / name).read_text())
+        self.assertEqual(len(rows), 56)
+        requirements = detail_requirements(rows)
+        for row in rows:
+            self.assertEqual(requirements[row['url']]['sha256'], row['sha256'])
+            self.assertEqual(requirements[row['url']]['bytes'], row['bytes'])
+
     def test_imported_source_media_hydrates_only_exact_tracked_lfs_bytes(self):
         sources = RepositoryAssets(ROOT)
         with tempfile.TemporaryDirectory(prefix="cityprompt-source-media-") as directory:

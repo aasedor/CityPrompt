@@ -1,0 +1,3828 @@
+{
+  "schema": "cityprompt.traffic-safety-review@1",
+  "production_promotion": false,
+  "evidence_date": "2026-10-15",
+  "source_folders": {
+    "TC curbs": "https://drive.google.com/drive/folders/1LNWJ-uFb6PH7l5_gT9ESzgZGu0XmKjU6",
+    "Crosswalks": "https://drive.google.com/drive/folders/1HD0RfdaShebbuyNd2eUlZTKMTy5sGk1O",
+    "RRFBs": "https://drive.google.com/drive/folders/1Wydbdmnbi_bRjll7Rd9JRpF0rToI46d_",
+    "Curb bulbs": "https://drive.google.com/drive/folders/1jwQtPcKW9Aqiq7RUdLy8SNdxBGsW-o8-",
+    "Overhead pedestrian flashers": "https://drive.google.com/drive/folders/1ZCCXqsib0qzO63DnVQGrOkwii5DwMJ6d"
+  },
+  "assets": [
+    {
+      "id": "calgary_tc_curb_2750_yellow_r1",
+      "category": "TC curbs",
+      "source_manifest": "Calgary_Traffic_Safety_GLB_Starter_Kit_r1\\Calgary_Traffic_Safety_GLB_Starter_Kit_r1\\asset_manifest.json",
+      "source_sha256": "76b210ccb373c3ef6bf5de4e00a55cc0f010c4b5b25b508c8cd215bbf8b4e14f",
+      "runtime_sha256": "76b210ccb373c3ef6bf5de4e00a55cc0f010c4b5b25b508c8cd215bbf8b4e14f",
+      "runtime_derivative": false,
+      "bytes": 60496,
+      "url": "/street-kits/traffic-safety-r1/calgary_tc_curb_2750_yellow_r1.glb",
+      "source_triangles": 988,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        2.75,
+        1.0,
+        0.15000000596046448
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "calgary_tc_curb_2750_yellow_r1",
+        "status": "PASS",
+        "bytes": 60496,
+        "loadMs": 14.900000005960464,
+        "min": [
+          -1.375,
+          0,
+          -0.5
+        ],
+        "max": [
+          1.375,
+          0.15000000596046448,
+          0.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "calgary_tc_curb_2750_yellow_r1",
+        "status": "PASS",
+        "geometryBytes": 57384,
+        "loadMs": 4.800000011920929,
+        "draws": 1,
+        "triangles": 988,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\calgary_tc_curb_2750_yellow_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "calgary_tc_curb_2750_yellow_r1",
+        "status": "PASS",
+        "geometryBytes": 57384,
+        "loadMs": 9.100000000093132,
+        "draws": 1,
+        "triangles": 988,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\calgary_tc_curb_2750_yellow_r1.png"
+    },
+    {
+      "id": "calgary_tc_curb_flexpost_r1",
+      "category": "TC curbs",
+      "source_manifest": "Calgary_Traffic_Safety_GLB_Starter_Kit_r1\\Calgary_Traffic_Safety_GLB_Starter_Kit_r1\\asset_manifest.json",
+      "source_sha256": "0121bcbd481d30a383b8105fefd65cdd8ee60d35c34d3552879e2c0ab9d505a8",
+      "runtime_sha256": "0121bcbd481d30a383b8105fefd65cdd8ee60d35c34d3552879e2c0ab9d505a8",
+      "runtime_derivative": false,
+      "bytes": 94516,
+      "url": "/street-kits/traffic-safety-r1/calgary_tc_curb_flexpost_r1.glb",
+      "source_triangles": 1540,
+      "source_materials": 4,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        2.75,
+        1.0,
+        1.0499999523162842
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "calgary_tc_curb_flexpost_r1",
+        "status": "PASS",
+        "bytes": 94516,
+        "loadMs": 6,
+        "min": [
+          -1.375,
+          0,
+          -0.5
+        ],
+        "max": [
+          1.375,
+          1.0499999895691872,
+          0.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "calgary_tc_curb_flexpost_r1",
+        "status": "PASS",
+        "geometryBytes": 85584,
+        "loadMs": 5.300000011920929,
+        "draws": 7,
+        "triangles": 1540,
+        "geometries": 7,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\calgary_tc_curb_flexpost_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "calgary_tc_curb_flexpost_r1",
+        "status": "PASS",
+        "geometryBytes": 85584,
+        "loadMs": 7,
+        "draws": 4,
+        "triangles": 1540,
+        "originalDraws": 7,
+        "repeatedDraws": 4,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 11,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\calgary_tc_curb_flexpost_r1.png"
+    },
+    {
+      "id": "calgary_delineator_illustrative_r1",
+      "category": "TC curbs",
+      "source_manifest": "Calgary_Traffic_Safety_GLB_Starter_Kit_r1\\Calgary_Traffic_Safety_GLB_Starter_Kit_r1\\asset_manifest.json",
+      "source_sha256": "93e9152206f21d3a0c721a43f6ee071d8db24c36f1bb9e5dee52adf36ccb1ba0",
+      "runtime_sha256": "93e9152206f21d3a0c721a43f6ee071d8db24c36f1bb9e5dee52adf36ccb1ba0",
+      "runtime_derivative": false,
+      "bytes": 35724,
+      "url": "/street-kits/traffic-safety-r1/calgary_delineator_illustrative_r1.glb",
+      "source_triangles": 552,
+      "source_materials": 3,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        0.18000000715255737,
+        0.18000000715255737,
+        0.9000000357627869
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "calgary_delineator_illustrative_r1",
+        "status": "PASS",
+        "bytes": 35724,
+        "loadMs": 6.5999999940395355,
+        "min": [
+          -0.09000000357627869,
+          0,
+          -0.09000000357627869
+        ],
+        "max": [
+          0.09000000357627869,
+          0.9000000134110451,
+          0.09000000357627869
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "calgary_delineator_illustrative_r1",
+        "status": "PASS",
+        "geometryBytes": 28200,
+        "loadMs": 5.299999982118607,
+        "draws": 6,
+        "triangles": 552,
+        "geometries": 6,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\calgary_delineator_illustrative_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "calgary_delineator_illustrative_r1",
+        "status": "PASS",
+        "geometryBytes": 28200,
+        "loadMs": 8,
+        "draws": 3,
+        "triangles": 552,
+        "originalDraws": 6,
+        "repeatedDraws": 3,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 9,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\calgary_delineator_illustrative_r1.png"
+    },
+    {
+      "id": "calgary_tc_curb_object_marker_r1",
+      "category": "TC curbs",
+      "source_manifest": "Calgary_Traffic_Safety_GLB_Starter_Kit_r1\\Calgary_Traffic_Safety_GLB_Starter_Kit_r1\\asset_manifest.json",
+      "source_sha256": "96b478072fcf0f39cd2da64b9f0f82d87ba0ce1122c6a844836c279810de5813",
+      "runtime_sha256": "96b478072fcf0f39cd2da64b9f0f82d87ba0ce1122c6a844836c279810de5813",
+      "runtime_derivative": false,
+      "bytes": 88592,
+      "url": "/street-kits/traffic-safety-r1/calgary_tc_curb_object_marker_r1.glb",
+      "source_triangles": 1312,
+      "source_materials": 3,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        2.75,
+        1.0,
+        1.1500000953674316
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "calgary_tc_curb_object_marker_r1",
+        "status": "PASS",
+        "bytes": 88592,
+        "loadMs": 5.9000000059604645,
+        "min": [
+          -1.375,
+          0,
+          -0.5
+        ],
+        "max": [
+          1.375,
+          1.1500000357627869,
+          0.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "calgary_tc_curb_object_marker_r1",
+        "status": "PASS",
+        "geometryBytes": 74664,
+        "loadMs": 7.699999988079071,
+        "draws": 14,
+        "triangles": 1312,
+        "geometries": 14,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\calgary_tc_curb_object_marker_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "calgary_tc_curb_object_marker_r1",
+        "status": "PASS",
+        "geometryBytes": 74664,
+        "loadMs": 7.300000000279397,
+        "draws": 4,
+        "triangles": 1312,
+        "originalDraws": 14,
+        "repeatedDraws": 4,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 18,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\calgary_tc_curb_object_marker_r1.png"
+    },
+    {
+      "id": "overhead_calgary_reach_6m_unlit_r1",
+      "category": "Overhead pedestrian flashers",
+      "source_manifest": "CityPrompt_Calgary_Overhead_Flasher_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "3aff60fcf6b09a7f76f695b1f665266ac46c2a5fb706c470c2735171f06ada36",
+      "runtime_sha256": "3aff60fcf6b09a7f76f695b1f665266ac46c2a5fb706c470c2735171f06ada36",
+      "runtime_derivative": false,
+      "bytes": 292580,
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_6m_unlit_r1.glb",
+      "source_triangles": 4136,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        6.285999804735184,
+        1.0,
+        6.799999713897705
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "overhead_calgary_reach_6m_unlit_r1",
+        "status": "PASS",
+        "bytes": 292580,
+        "loadMs": 12.199999988079071,
+        "min": [
+          -0.27000001072883606,
+          0,
+          -0.5
+        ],
+        "max": [
+          6.015999911356475,
+          6.799999833106995,
+          0.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "overhead_calgary_reach_6m_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 231576,
+        "loadMs": 7.699999988079071,
+        "draws": 78,
+        "triangles": 4136,
+        "geometries": 78,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\overhead_calgary_reach_6m_unlit_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "overhead_calgary_reach_6m_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 231576,
+        "loadMs": 18.700000000186265,
+        "draws": 9,
+        "triangles": 4136,
+        "originalDraws": 78,
+        "repeatedDraws": 9,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 87,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\overhead_calgary_reach_6m_unlit_r1.png"
+    },
+    {
+      "id": "overhead_calgary_reach_6m_amber_r1",
+      "category": "Overhead pedestrian flashers",
+      "source_manifest": "CityPrompt_Calgary_Overhead_Flasher_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "dff0ee496075aa84aca02f3a365d2af1d8c19f9dea2e74f809d0c915d1bd634d",
+      "runtime_sha256": "dff0ee496075aa84aca02f3a365d2af1d8c19f9dea2e74f809d0c915d1bd634d",
+      "runtime_derivative": false,
+      "bytes": 292956,
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_6m_amber_r1.glb",
+      "source_triangles": 4136,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        6.285999804735184,
+        1.0,
+        6.799999713897705
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "overhead_calgary_reach_6m_amber_r1",
+        "status": "PASS",
+        "bytes": 292956,
+        "loadMs": 14,
+        "min": [
+          -0.27000001072883606,
+          0,
+          -0.5
+        ],
+        "max": [
+          6.015999911356475,
+          6.799999833106995,
+          0.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "overhead_calgary_reach_6m_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 231576,
+        "loadMs": 7.800000011920929,
+        "draws": 78,
+        "triangles": 4136,
+        "geometries": 78,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\overhead_calgary_reach_6m_amber_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "overhead_calgary_reach_6m_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 231576,
+        "loadMs": 15.699999999720603,
+        "draws": 9,
+        "triangles": 4136,
+        "originalDraws": 78,
+        "repeatedDraws": 9,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 87,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\overhead_calgary_reach_6m_amber_r1.png"
+    },
+    {
+      "id": "overhead_calgary_reach_8m_unlit_r1",
+      "category": "Overhead pedestrian flashers",
+      "source_manifest": "CityPrompt_Calgary_Overhead_Flasher_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "edaa41b2d7a9331c133a1a6e425110b1cf4384a226a04e375969a9e768489d55",
+      "runtime_sha256": "edaa41b2d7a9331c133a1a6e425110b1cf4384a226a04e375969a9e768489d55",
+      "runtime_derivative": false,
+      "bytes": 292744,
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_8m_unlit_r1.glb",
+      "source_triangles": 4136,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        8.2860007584095,
+        1.0,
+        6.799999713897705
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "overhead_calgary_reach_8m_unlit_r1",
+        "status": "PASS",
+        "bytes": 292744,
+        "loadMs": 14,
+        "min": [
+          -0.27000001072883606,
+          0,
+          -0.5
+        ],
+        "max": [
+          8.016000388193634,
+          6.799999833106995,
+          0.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "overhead_calgary_reach_8m_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 231576,
+        "loadMs": 9.300000011920929,
+        "draws": 78,
+        "triangles": 4136,
+        "geometries": 78,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\overhead_calgary_reach_8m_unlit_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "overhead_calgary_reach_8m_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 231576,
+        "loadMs": 15.199999999720603,
+        "draws": 9,
+        "triangles": 4136,
+        "originalDraws": 78,
+        "repeatedDraws": 9,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 87,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\overhead_calgary_reach_8m_unlit_r1.png"
+    },
+    {
+      "id": "overhead_calgary_reach_8m_amber_r1",
+      "category": "Overhead pedestrian flashers",
+      "source_manifest": "CityPrompt_Calgary_Overhead_Flasher_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "e02ef3c2fde5790dabb046cdd78fbcbd71ebb82a0bb3542bec5392a85d509a6f",
+      "runtime_sha256": "e02ef3c2fde5790dabb046cdd78fbcbd71ebb82a0bb3542bec5392a85d509a6f",
+      "runtime_derivative": false,
+      "bytes": 292952,
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_8m_amber_r1.glb",
+      "source_triangles": 4136,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        8.2860007584095,
+        1.0,
+        6.799999713897705
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "overhead_calgary_reach_8m_amber_r1",
+        "status": "PASS",
+        "bytes": 292952,
+        "loadMs": 10.599999994039536,
+        "min": [
+          -0.27000001072883606,
+          0,
+          -0.5
+        ],
+        "max": [
+          8.016000388193634,
+          6.799999833106995,
+          0.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "overhead_calgary_reach_8m_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 231576,
+        "loadMs": 7.9000000059604645,
+        "draws": 78,
+        "triangles": 4136,
+        "geometries": 78,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\overhead_calgary_reach_8m_amber_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "overhead_calgary_reach_8m_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 231576,
+        "loadMs": 13.799999999813735,
+        "draws": 9,
+        "triangles": 4136,
+        "originalDraws": 78,
+        "repeatedDraws": 9,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 87,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\overhead_calgary_reach_8m_amber_r1.png"
+    },
+    {
+      "id": "overhead_calgary_reach_10m_unlit_r1",
+      "category": "Overhead pedestrian flashers",
+      "source_manifest": "CityPrompt_Calgary_Overhead_Flasher_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "8313ef6787c889585c23849186335c5f7615de14082ce2e8ecc4f6a1a7b61df5",
+      "runtime_sha256": "8313ef6787c889585c23849186335c5f7615de14082ce2e8ecc4f6a1a7b61df5",
+      "runtime_derivative": false,
+      "bytes": 292736,
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_10m_unlit_r1.glb",
+      "source_triangles": 4136,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        10.2860007584095,
+        1.0,
+        6.799999713897705
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "overhead_calgary_reach_10m_unlit_r1",
+        "status": "PASS",
+        "bytes": 292736,
+        "loadMs": 21.69999998807907,
+        "min": [
+          -0.27000001072883606,
+          0,
+          -0.5
+        ],
+        "max": [
+          10.016000388193634,
+          6.799999833106995,
+          0.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "overhead_calgary_reach_10m_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 231576,
+        "loadMs": 8.800000011920929,
+        "draws": 78,
+        "triangles": 4136,
+        "geometries": 78,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\overhead_calgary_reach_10m_unlit_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "overhead_calgary_reach_10m_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 231576,
+        "loadMs": 23.5,
+        "draws": 9,
+        "triangles": 4136,
+        "originalDraws": 78,
+        "repeatedDraws": 9,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 87,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\overhead_calgary_reach_10m_unlit_r1.png"
+    },
+    {
+      "id": "overhead_calgary_reach_10m_amber_r1",
+      "category": "Overhead pedestrian flashers",
+      "source_manifest": "CityPrompt_Calgary_Overhead_Flasher_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "52bb5768bf967c36922f515a675626e39a88ccb9070427154f19033cd87c24f7",
+      "runtime_sha256": "52bb5768bf967c36922f515a675626e39a88ccb9070427154f19033cd87c24f7",
+      "runtime_derivative": false,
+      "bytes": 292948,
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_10m_amber_r1.glb",
+      "source_triangles": 4136,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        10.2860007584095,
+        1.0,
+        6.799999713897705
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "overhead_calgary_reach_10m_amber_r1",
+        "status": "PASS",
+        "bytes": 292948,
+        "loadMs": 19,
+        "min": [
+          -0.27000001072883606,
+          0,
+          -0.5
+        ],
+        "max": [
+          10.016000388193634,
+          6.799999833106995,
+          0.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "overhead_calgary_reach_10m_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 231576,
+        "loadMs": 7.799999982118607,
+        "draws": 78,
+        "triangles": 4136,
+        "geometries": 78,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\overhead_calgary_reach_10m_amber_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "overhead_calgary_reach_10m_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 231576,
+        "loadMs": 18.300000000279397,
+        "draws": 9,
+        "triangles": 4136,
+        "originalDraws": 78,
+        "repeatedDraws": 9,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 87,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\overhead_calgary_reach_10m_amber_r1.png"
+    },
+    {
+      "id": "overhead_calgary_pair_18m_unlit_r1",
+      "category": "Overhead pedestrian flashers",
+      "source_manifest": "CityPrompt_Calgary_Overhead_Flasher_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "de5313257696fa779dacce2777039ee397cf9100c7ae11d3c087354a534eaa44",
+      "runtime_sha256": "de5313257696fa779dacce2777039ee397cf9100c7ae11d3c087354a534eaa44",
+      "runtime_derivative": false,
+      "bytes": 579596,
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_pair_18m_unlit_r1.glb",
+      "source_triangles": 8272,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        18.540000915527344,
+        1.0000006556510925,
+        6.799999713897705
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "overhead_calgary_pair_18m_unlit_r1",
+        "status": "PASS",
+        "bytes": 579596,
+        "loadMs": 29.5,
+        "min": [
+          -9.270000010728836,
+          0,
+          -0.5
+        ],
+        "max": [
+          9.270000034332988,
+          6.799999833106995,
+          0.5000006773515605
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "overhead_calgary_pair_18m_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 460344,
+        "loadMs": 16.30000001192093,
+        "draws": 156,
+        "triangles": 8272,
+        "geometries": 156,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\overhead_calgary_pair_18m_unlit_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "overhead_calgary_pair_18m_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 460344,
+        "loadMs": 16.100000000093132,
+        "draws": 9,
+        "triangles": 8272,
+        "originalDraws": 156,
+        "repeatedDraws": 9,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 165,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\overhead_calgary_pair_18m_unlit_r1.png"
+    },
+    {
+      "id": "overhead_calgary_pair_18m_amber_r1",
+      "category": "Overhead pedestrian flashers",
+      "source_manifest": "CityPrompt_Calgary_Overhead_Flasher_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "dff5f9f46a7052f91915a859b66430109ad0429da0abb87e46001093e2b5d895",
+      "runtime_sha256": "dff5f9f46a7052f91915a859b66430109ad0429da0abb87e46001093e2b5d895",
+      "runtime_derivative": false,
+      "bytes": 579808,
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_pair_18m_amber_r1.glb",
+      "source_triangles": 8272,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        18.540000915527344,
+        1.0000006556510925,
+        6.799999713897705
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "overhead_calgary_pair_18m_amber_r1",
+        "status": "PASS",
+        "bytes": 579808,
+        "loadMs": 15.200000017881393,
+        "min": [
+          -9.270000010728836,
+          0,
+          -0.5
+        ],
+        "max": [
+          9.270000034332988,
+          6.799999833106995,
+          0.5000006773515605
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "overhead_calgary_pair_18m_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 460344,
+        "loadMs": 15.200000017881393,
+        "draws": 156,
+        "triangles": 8272,
+        "geometries": 156,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\overhead_calgary_pair_18m_amber_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "overhead_calgary_pair_18m_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 460344,
+        "loadMs": 17.399999999906868,
+        "draws": 9,
+        "triangles": 8272,
+        "originalDraws": 156,
+        "repeatedDraws": 9,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 165,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\overhead_calgary_pair_18m_amber_r1.png"
+    },
+    {
+      "id": "rrfb_calgary_standard_unlit_r1",
+      "category": "RRFBs",
+      "source_manifest": "CityPrompt_Calgary_RRFB_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "35b243d1a8122c05060cdf3b05d78fa6c3300224121d7f167b5cb26c6c4583a4",
+      "runtime_sha256": "35b243d1a8122c05060cdf3b05d78fa6c3300224121d7f167b5cb26c6c4583a4",
+      "runtime_derivative": false,
+      "bytes": 171096,
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_standard_unlit_r1.glb",
+      "source_triangles": 2214,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        0.75,
+        0.40299998223781586,
+        4.111999988555908
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "rrfb_calgary_standard_unlit_r1",
+        "status": "PASS",
+        "bytes": 171096,
+        "loadMs": 5.800000011920929,
+        "min": [
+          -0.375,
+          0,
+          -0.2600000011918453
+        ],
+        "max": [
+          0.375,
+          4.111999946646392,
+          0.14299999736249447
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "rrfb_calgary_standard_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 132978,
+        "loadMs": 6.5,
+        "draws": 48,
+        "triangles": 2214,
+        "geometries": 48,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\rrfb_calgary_standard_unlit_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "rrfb_calgary_standard_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 132978,
+        "loadMs": 9.899999999906868,
+        "draws": 6,
+        "triangles": 2214,
+        "originalDraws": 48,
+        "repeatedDraws": 6,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 54,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\rrfb_calgary_standard_unlit_r1.png"
+    },
+    {
+      "id": "rrfb_calgary_standard_amber_r1",
+      "category": "RRFBs",
+      "source_manifest": "CityPrompt_Calgary_RRFB_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "2701888dd7639aeb04e2ed888e4a3c6fd81fde85377b6ead6d66459f67944de1",
+      "runtime_sha256": "2701888dd7639aeb04e2ed888e4a3c6fd81fde85377b6ead6d66459f67944de1",
+      "runtime_derivative": false,
+      "bytes": 171324,
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_standard_amber_r1.glb",
+      "source_triangles": 2214,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        0.75,
+        0.40299998223781586,
+        4.111999988555908
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "rrfb_calgary_standard_amber_r1",
+        "status": "PASS",
+        "bytes": 171324,
+        "loadMs": 7.9000000059604645,
+        "min": [
+          -0.375,
+          0,
+          -0.2600000011918453
+        ],
+        "max": [
+          0.375,
+          4.111999946646392,
+          0.14299999736249447
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "rrfb_calgary_standard_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 132978,
+        "loadMs": 6.5,
+        "draws": 48,
+        "triangles": 2214,
+        "geometries": 48,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\rrfb_calgary_standard_amber_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "rrfb_calgary_standard_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 132978,
+        "loadMs": 7.2000000001862645,
+        "draws": 6,
+        "triangles": 2214,
+        "originalDraws": 48,
+        "repeatedDraws": 6,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 54,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\rrfb_calgary_standard_amber_r1.png"
+    },
+    {
+      "id": "rrfb_calgary_solar_unlit_r1",
+      "category": "RRFBs",
+      "source_manifest": "CityPrompt_Calgary_RRFB_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "9247bb8d198ffe5543c1d73bec28346c270d984c19dfd79e8f09899ff2899277",
+      "runtime_sha256": "9247bb8d198ffe5543c1d73bec28346c270d984c19dfd79e8f09899ff2899277",
+      "runtime_derivative": false,
+      "bytes": 191728,
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_solar_unlit_r1.glb",
+      "source_triangles": 2418,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        0.75,
+        0.408189132809639,
+        4.458189010620117
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "rrfb_calgary_solar_unlit_r1",
+        "status": "PASS",
+        "bytes": 191728,
+        "loadMs": 15.900000005960464,
+        "min": [
+          -0.375,
+          0,
+          -0.2600000011918453
+        ],
+        "max": [
+          0.375,
+          4.460260149073982,
+          0.15026018686659276
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "rrfb_calgary_solar_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 146034,
+        "loadMs": 6.5999999940395355,
+        "draws": 57,
+        "triangles": 2418,
+        "geometries": 57,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\rrfb_calgary_solar_unlit_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "rrfb_calgary_solar_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 146034,
+        "loadMs": 16.300000000279397,
+        "draws": 7,
+        "triangles": 2418,
+        "originalDraws": 57,
+        "repeatedDraws": 7,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 64,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\rrfb_calgary_solar_unlit_r1.png"
+    },
+    {
+      "id": "rrfb_calgary_solar_amber_r1",
+      "category": "RRFBs",
+      "source_manifest": "CityPrompt_Calgary_RRFB_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "95b0c4fe84f4d910995919f0bc89db9d52eb87fbc8e2b4cc5bf75b04b6eba7e0",
+      "runtime_sha256": "95b0c4fe84f4d910995919f0bc89db9d52eb87fbc8e2b4cc5bf75b04b6eba7e0",
+      "runtime_derivative": false,
+      "bytes": 191836,
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_solar_amber_r1.glb",
+      "source_triangles": 2418,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        0.75,
+        0.408189132809639,
+        4.458189010620117
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "rrfb_calgary_solar_amber_r1",
+        "status": "PASS",
+        "bytes": 191836,
+        "loadMs": 7.9000000059604645,
+        "min": [
+          -0.375,
+          0,
+          -0.2600000011918453
+        ],
+        "max": [
+          0.375,
+          4.460260149073982,
+          0.15026018686659276
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "rrfb_calgary_solar_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 146034,
+        "loadMs": 7,
+        "draws": 57,
+        "triangles": 2418,
+        "geometries": 57,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\rrfb_calgary_solar_amber_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "rrfb_calgary_solar_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 146034,
+        "loadMs": 12.199999999720603,
+        "draws": 7,
+        "triangles": 2418,
+        "originalDraws": 57,
+        "repeatedDraws": 7,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 64,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\rrfb_calgary_solar_amber_r1.png"
+    },
+    {
+      "id": "rrfb_calgary_dualface_unlit_r1",
+      "category": "RRFBs",
+      "source_manifest": "CityPrompt_Calgary_RRFB_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "059b53ba666eb3b1bc14be21d32117ce5875d4a8f6ea5e752516608ef849f1ec",
+      "runtime_sha256": "059b53ba666eb3b1bc14be21d32117ce5875d4a8f6ea5e752516608ef849f1ec",
+      "runtime_derivative": false,
+      "bytes": 250432,
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_dualface_unlit_r1.glb",
+      "source_triangles": 3152,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        0.75,
+        0.40299998223781586,
+        4.111999988555908
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "rrfb_calgary_dualface_unlit_r1",
+        "status": "PASS",
+        "bytes": 250432,
+        "loadMs": 11.699999988079071,
+        "min": [
+          -0.37500000052453664,
+          0,
+          -0.2600000011918453
+        ],
+        "max": [
+          0.37500000052453664,
+          4.111999946646392,
+          0.14299999736249447
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "rrfb_calgary_dualface_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 191250,
+        "loadMs": 7.4000000059604645,
+        "draws": 75,
+        "triangles": 3152,
+        "geometries": 75,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\rrfb_calgary_dualface_unlit_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "rrfb_calgary_dualface_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 191250,
+        "loadMs": 11.5,
+        "draws": 6,
+        "triangles": 3152,
+        "originalDraws": 75,
+        "repeatedDraws": 6,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 81,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\rrfb_calgary_dualface_unlit_r1.png"
+    },
+    {
+      "id": "rrfb_calgary_dualface_amber_r1",
+      "category": "RRFBs",
+      "source_manifest": "CityPrompt_Calgary_RRFB_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "61f7ec4a53bb51527fb84af4127308a0facd0bb41647138235c891c671366e5d",
+      "runtime_sha256": "61f7ec4a53bb51527fb84af4127308a0facd0bb41647138235c891c671366e5d",
+      "runtime_derivative": false,
+      "bytes": 250524,
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_dualface_amber_r1.glb",
+      "source_triangles": 3152,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        0.75,
+        0.40299998223781586,
+        4.111999988555908
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "rrfb_calgary_dualface_amber_r1",
+        "status": "PASS",
+        "bytes": 250524,
+        "loadMs": 9.799999982118607,
+        "min": [
+          -0.37500000052453664,
+          0,
+          -0.2600000011918453
+        ],
+        "max": [
+          0.37500000052453664,
+          4.111999946646392,
+          0.14299999736249447
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "rrfb_calgary_dualface_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 191250,
+        "loadMs": 7.0999999940395355,
+        "draws": 75,
+        "triangles": 3152,
+        "geometries": 75,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\rrfb_calgary_dualface_amber_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "rrfb_calgary_dualface_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 191250,
+        "loadMs": 9.799999999813735,
+        "draws": 6,
+        "triangles": 3152,
+        "originalDraws": 75,
+        "repeatedDraws": 6,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 81,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\rrfb_calgary_dualface_amber_r1.png"
+    },
+    {
+      "id": "rrfb_calgary_pair_8m_unlit_r1",
+      "category": "RRFBs",
+      "source_manifest": "CityPrompt_Calgary_RRFB_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "22f84c0ca60ac89f86f541aece2325124059cfcbd30a8d2e695db5b26aa69e70",
+      "runtime_sha256": "22f84c0ca60ac89f86f541aece2325124059cfcbd30a8d2e695db5b26aa69e70",
+      "runtime_derivative": false,
+      "bytes": 496916,
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_pair_8m_unlit_r1.glb",
+      "source_triangles": 6304,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        8.75,
+        0.5199999809265137,
+        4.111999988555908
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "rrfb_calgary_pair_8m_unlit_r1",
+        "status": "PASS",
+        "bytes": 496916,
+        "loadMs": 27.299999982118607,
+        "min": [
+          -4.375000000524537,
+          0,
+          -0.2600000011918453
+        ],
+        "max": [
+          4.375000008567429,
+          4.111999946646392,
+          0.2600000087102102
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "rrfb_calgary_pair_8m_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 380754,
+        "loadMs": 10.400000005960464,
+        "draws": 150,
+        "triangles": 6304,
+        "geometries": 150,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\rrfb_calgary_pair_8m_unlit_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "rrfb_calgary_pair_8m_unlit_r1",
+        "status": "PASS",
+        "geometryBytes": 380754,
+        "loadMs": 13.799999999813735,
+        "draws": 6,
+        "triangles": 6304,
+        "originalDraws": 150,
+        "repeatedDraws": 6,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 156,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\rrfb_calgary_pair_8m_unlit_r1.png"
+    },
+    {
+      "id": "rrfb_calgary_pair_8m_amber_r1",
+      "category": "RRFBs",
+      "source_manifest": "CityPrompt_Calgary_RRFB_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "4adc5de87ba2b5a402327be9344ce8df90e96b1fcdd58191359532b1fbb85edc",
+      "runtime_sha256": "4adc5de87ba2b5a402327be9344ce8df90e96b1fcdd58191359532b1fbb85edc",
+      "runtime_derivative": false,
+      "bytes": 497012,
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_pair_8m_amber_r1.glb",
+      "source_triangles": 6304,
+      "source_materials": null,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        8.75,
+        0.5199999809265137,
+        4.111999988555908
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "rrfb_calgary_pair_8m_amber_r1",
+        "status": "PASS",
+        "bytes": 497012,
+        "loadMs": 11.700000017881393,
+        "min": [
+          -4.375000000524537,
+          0,
+          -0.2600000011918453
+        ],
+        "max": [
+          4.375000008567429,
+          4.111999946646392,
+          0.2600000087102102
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "rrfb_calgary_pair_8m_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 380754,
+        "loadMs": 9.799999982118607,
+        "draws": 150,
+        "triangles": 6304,
+        "geometries": 150,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\rrfb_calgary_pair_8m_amber_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "rrfb_calgary_pair_8m_amber_r1",
+        "status": "PASS",
+        "geometryBytes": 380754,
+        "loadMs": 17.299999999813735,
+        "draws": 6,
+        "triangles": 6304,
+        "originalDraws": 150,
+        "repeatedDraws": 6,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 156,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\rrfb_calgary_pair_8m_amber_r1.png"
+    },
+    {
+      "id": "crosswalk_parallel_white_6m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "a5d3114b948f36e9ff737a2faec6ab416091a597f4346ec85e64d2330ce08370",
+      "runtime_sha256": "a5d3114b948f36e9ff737a2faec6ab416091a597f4346ec85e64d2330ce08370",
+      "runtime_derivative": false,
+      "bytes": 1688,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_parallel_white_6m_r1.glb",
+      "source_triangles": 4,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        6.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_parallel_white_6m_r1",
+        "status": "PASS",
+        "bytes": 1688,
+        "loadMs": 4.4000000059604645,
+        "min": [
+          -3,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          3,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_parallel_white_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 216,
+        "loadMs": 5.0999999940395355,
+        "draws": 1,
+        "triangles": 4,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_parallel_white_6m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_parallel_white_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 216,
+        "loadMs": 37.10000000009313,
+        "draws": 1,
+        "triangles": 4,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_parallel_white_6m_r1.png"
+    },
+    {
+      "id": "crosswalk_parallel_white_8m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "5454b6fc6e7e46b1a1127a6b9e641e2fe798caf1dbedb979e267af4aeeb4d91b",
+      "runtime_sha256": "5454b6fc6e7e46b1a1127a6b9e641e2fe798caf1dbedb979e267af4aeeb4d91b",
+      "runtime_derivative": false,
+      "bytes": 1688,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_parallel_white_8m_r1.glb",
+      "source_triangles": 4,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        8.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_parallel_white_8m_r1",
+        "status": "PASS",
+        "bytes": 1688,
+        "loadMs": 4.699999988079071,
+        "min": [
+          -4,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          4,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_parallel_white_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 216,
+        "loadMs": 5.800000011920929,
+        "draws": 1,
+        "triangles": 4,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_parallel_white_8m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_parallel_white_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 216,
+        "loadMs": 25.100000000093132,
+        "draws": 1,
+        "triangles": 4,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_parallel_white_8m_r1.png"
+    },
+    {
+      "id": "crosswalk_parallel_white_10m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "b540828c43b01dd0545a13cb712931613589bc40b28d4a3df8f7d9257d373d89",
+      "runtime_sha256": "b540828c43b01dd0545a13cb712931613589bc40b28d4a3df8f7d9257d373d89",
+      "runtime_derivative": false,
+      "bytes": 1692,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_parallel_white_10m_r1.glb",
+      "source_triangles": 4,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        10.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_parallel_white_10m_r1",
+        "status": "PASS",
+        "bytes": 1692,
+        "loadMs": 4.4000000059604645,
+        "min": [
+          -5,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          5,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_parallel_white_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 216,
+        "loadMs": 4.5999999940395355,
+        "draws": 1,
+        "triangles": 4,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_parallel_white_10m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_parallel_white_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 216,
+        "loadMs": 6.5,
+        "draws": 1,
+        "triangles": 4,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_parallel_white_10m_r1.png"
+    },
+    {
+      "id": "crosswalk_continental_white_6m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "96e41496352379966151984f2ee6ec0a83abc523cf0d251465cbf801bc3e848b",
+      "runtime_sha256": "96e41496352379966151984f2ee6ec0a83abc523cf0d251465cbf801bc3e848b",
+      "runtime_derivative": false,
+      "bytes": 2032,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_continental_white_6m_r1.glb",
+      "source_triangles": 10,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        5.400000095367432,
+        3.0,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_continental_white_6m_r1",
+        "status": "PASS",
+        "bytes": 2032,
+        "loadMs": 9.5,
+        "min": [
+          -2.700000047683716,
+          0.004000000189989805,
+          -1.5
+        ],
+        "max": [
+          2.700000047683716,
+          0.004000000189989805,
+          1.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_continental_white_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 540,
+        "loadMs": 5.5,
+        "draws": 1,
+        "triangles": 10,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_continental_white_6m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_continental_white_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 540,
+        "loadMs": 17.300000000279397,
+        "draws": 1,
+        "triangles": 10,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_continental_white_6m_r1.png"
+    },
+    {
+      "id": "crosswalk_continental_white_8m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "be247483f018badff2c0fb10229572413f627066dd5295b45a656ff04561befd",
+      "runtime_sha256": "be247483f018badff2c0fb10229572413f627066dd5295b45a656ff04561befd",
+      "runtime_derivative": false,
+      "bytes": 2248,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_continental_white_8m_r1.glb",
+      "source_triangles": 14,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        7.800000190734863,
+        3.0,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_continental_white_8m_r1",
+        "status": "PASS",
+        "bytes": 2248,
+        "loadMs": 6.699999988079071,
+        "min": [
+          -3.9000000953674316,
+          0.004000000189989805,
+          -1.5
+        ],
+        "max": [
+          3.9000000953674316,
+          0.004000000189989805,
+          1.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_continental_white_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 756,
+        "loadMs": 6,
+        "draws": 1,
+        "triangles": 14,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_continental_white_8m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_continental_white_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 756,
+        "loadMs": 28,
+        "draws": 1,
+        "triangles": 14,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_continental_white_8m_r1.png"
+    },
+    {
+      "id": "crosswalk_continental_white_10m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "413023b5fb8af39d034671c7c4be9e1c0e96bde0336ede5ac456e3667fdbe49f",
+      "runtime_sha256": "413023b5fb8af39d034671c7c4be9e1c0e96bde0336ede5ac456e3667fdbe49f",
+      "runtime_derivative": false,
+      "bytes": 2332,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_continental_white_10m_r1.glb",
+      "source_triangles": 16,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        9.0,
+        3.0,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_continental_white_10m_r1",
+        "status": "PASS",
+        "bytes": 2332,
+        "loadMs": 6.299999982118607,
+        "min": [
+          -4.5,
+          0.004000000189989805,
+          -1.5
+        ],
+        "max": [
+          4.5,
+          0.004000000189989805,
+          1.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_continental_white_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 864,
+        "loadMs": 6.5,
+        "draws": 1,
+        "triangles": 16,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_continental_white_10m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_continental_white_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 864,
+        "loadMs": 72.20000000018626,
+        "draws": 1,
+        "triangles": 16,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_continental_white_10m_r1.png"
+    },
+    {
+      "id": "crosswalk_ladder_white_6m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "a08a56314451c52365598822524448c76af4fdd637b89c2187171b46702477f0",
+      "runtime_sha256": "a08a56314451c52365598822524448c76af4fdd637b89c2187171b46702477f0",
+      "runtime_derivative": false,
+      "bytes": 2224,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_ladder_white_6m_r1.glb",
+      "source_triangles": 14,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        6.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_ladder_white_6m_r1",
+        "status": "PASS",
+        "bytes": 2224,
+        "loadMs": 5.0999999940395355,
+        "min": [
+          -3,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          3,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_ladder_white_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 756,
+        "loadMs": 4.700000017881393,
+        "draws": 1,
+        "triangles": 14,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_ladder_white_6m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_ladder_white_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 756,
+        "loadMs": 6.900000000372529,
+        "draws": 1,
+        "triangles": 14,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_ladder_white_6m_r1.png"
+    },
+    {
+      "id": "crosswalk_ladder_white_8m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "41050319f0f0413a3a974bf15421010a09e059a27448172065ad67a7b3736451",
+      "runtime_sha256": "41050319f0f0413a3a974bf15421010a09e059a27448172065ad67a7b3736451",
+      "runtime_derivative": false,
+      "bytes": 2444,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_ladder_white_8m_r1.glb",
+      "source_triangles": 18,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        8.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_ladder_white_8m_r1",
+        "status": "PASS",
+        "bytes": 2444,
+        "loadMs": 5.0999999940395355,
+        "min": [
+          -4,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          4,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_ladder_white_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 972,
+        "loadMs": 5.199999988079071,
+        "draws": 1,
+        "triangles": 18,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_ladder_white_8m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_ladder_white_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 972,
+        "loadMs": 39.8000000002794,
+        "draws": 1,
+        "triangles": 18,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_ladder_white_8m_r1.png"
+    },
+    {
+      "id": "crosswalk_ladder_white_10m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "7c270c081cb0178407a2b28d6e59b0dc48d54b8d50b99f4900a148f28c04fc1c",
+      "runtime_sha256": "7c270c081cb0178407a2b28d6e59b0dc48d54b8d50b99f4900a148f28c04fc1c",
+      "runtime_derivative": false,
+      "bytes": 2556,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_ladder_white_10m_r1.glb",
+      "source_triangles": 20,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        10.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_ladder_white_10m_r1",
+        "status": "PASS",
+        "bytes": 2556,
+        "loadMs": 8.299999982118607,
+        "min": [
+          -5,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          5,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_ladder_white_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 1080,
+        "loadMs": 5.600000023841858,
+        "draws": 1,
+        "triangles": 20,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_ladder_white_10m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_ladder_white_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 1080,
+        "loadMs": 45.39999999990687,
+        "draws": 1,
+        "triangles": 20,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_ladder_white_10m_r1.png"
+    },
+    {
+      "id": "crosswalk_diagonal_hatch_generic_6m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "8517200429dffd39f9e7e3417d8eae217bdced07512ab6177bed78c6dfc7b64f",
+      "runtime_sha256": "8517200429dffd39f9e7e3417d8eae217bdced07512ab6177bed78c6dfc7b64f",
+      "runtime_derivative": false,
+      "bytes": 2592,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_diagonal_hatch_generic_6m_r1.glb",
+      "source_triangles": 20,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        6.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_diagonal_hatch_generic_6m_r1",
+        "status": "PASS",
+        "bytes": 2592,
+        "loadMs": 7.799999982118607,
+        "min": [
+          -3,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          3,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_diagonal_hatch_generic_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 1080,
+        "loadMs": 4.4000000059604645,
+        "draws": 1,
+        "triangles": 20,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_diagonal_hatch_generic_6m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_diagonal_hatch_generic_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 1080,
+        "loadMs": 57.10000000009313,
+        "draws": 1,
+        "triangles": 20,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_diagonal_hatch_generic_6m_r1.png"
+    },
+    {
+      "id": "crosswalk_diagonal_hatch_generic_8m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "4db91ff04082b1af0d095cee6babfc371917eacc3063ef4586e44e90d2c1dab2",
+      "runtime_sha256": "4db91ff04082b1af0d095cee6babfc371917eacc3063ef4586e44e90d2c1dab2",
+      "runtime_derivative": false,
+      "bytes": 2732,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_diagonal_hatch_generic_8m_r1.glb",
+      "source_triangles": 23,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        8.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_diagonal_hatch_generic_8m_r1",
+        "status": "PASS",
+        "bytes": 2732,
+        "loadMs": 6.100000023841858,
+        "min": [
+          -4,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          4,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_diagonal_hatch_generic_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 1218,
+        "loadMs": 4.5,
+        "draws": 1,
+        "triangles": 23,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_diagonal_hatch_generic_8m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_diagonal_hatch_generic_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 1218,
+        "loadMs": 15,
+        "draws": 1,
+        "triangles": 23,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_diagonal_hatch_generic_8m_r1.png"
+    },
+    {
+      "id": "crosswalk_diagonal_hatch_generic_10m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "a27d7d9bee2080cd7cc46df320f7f9dba2f39d57007e536043deaa6fc44e955e",
+      "runtime_sha256": "a27d7d9bee2080cd7cc46df320f7f9dba2f39d57007e536043deaa6fc44e955e",
+      "runtime_derivative": false,
+      "bytes": 2952,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_diagonal_hatch_generic_10m_r1.glb",
+      "source_triangles": 27,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        10.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_diagonal_hatch_generic_10m_r1",
+        "status": "PASS",
+        "bytes": 2952,
+        "loadMs": 5.5999999940395355,
+        "min": [
+          -5,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          5,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_diagonal_hatch_generic_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 1434,
+        "loadMs": 4.299999982118607,
+        "draws": 1,
+        "triangles": 27,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_diagonal_hatch_generic_10m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_diagonal_hatch_generic_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 1434,
+        "loadMs": 7,
+        "draws": 1,
+        "triangles": 27,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_diagonal_hatch_generic_10m_r1.png"
+    },
+    {
+      "id": "crosswalk_multiuse_elephant_feet_6m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "088ebd8b8796f175086bcf0914bb16ff58285e0cf87dc947cab871ab5a086148",
+      "runtime_sha256": "088ebd8b8796f175086bcf0914bb16ff58285e0cf87dc947cab871ab5a086148",
+      "runtime_derivative": false,
+      "bytes": 4000,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_multiuse_elephant_feet_6m_r1.glb",
+      "source_triangles": 46,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        6.0,
+        4.800000190734863,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_multiuse_elephant_feet_6m_r1",
+        "status": "PASS",
+        "bytes": 4000,
+        "loadMs": 8.099999994039536,
+        "min": [
+          -3,
+          0.004000000189989805,
+          -2.4000000953674316
+        ],
+        "max": [
+          3,
+          0.004000000189989805,
+          2.4000000953674316
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_multiuse_elephant_feet_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 2484,
+        "loadMs": 4.700000017881393,
+        "draws": 1,
+        "triangles": 46,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_multiuse_elephant_feet_6m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_multiuse_elephant_feet_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 2484,
+        "loadMs": 10.899999999906868,
+        "draws": 1,
+        "triangles": 46,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_multiuse_elephant_feet_6m_r1.png"
+    },
+    {
+      "id": "crosswalk_multiuse_elephant_feet_8m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "bfab36d888b24bd59bde4fa319ea691cec14e32cb941d6a7fd3a90ab49417ac7",
+      "runtime_sha256": "bfab36d888b24bd59bde4fa319ea691cec14e32cb941d6a7fd3a90ab49417ac7",
+      "runtime_derivative": false,
+      "bytes": 4652,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_multiuse_elephant_feet_8m_r1.glb",
+      "source_triangles": 58,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        8.0,
+        4.800000190734863,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_multiuse_elephant_feet_8m_r1",
+        "status": "PASS",
+        "bytes": 4652,
+        "loadMs": 9,
+        "min": [
+          -4,
+          0.004000000189989805,
+          -2.4000000953674316
+        ],
+        "max": [
+          4,
+          0.004000000189989805,
+          2.4000000953674316
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_multiuse_elephant_feet_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 3132,
+        "loadMs": 4.399999976158142,
+        "draws": 1,
+        "triangles": 58,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_multiuse_elephant_feet_8m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_multiuse_elephant_feet_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 3132,
+        "loadMs": 39.5,
+        "draws": 1,
+        "triangles": 58,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_multiuse_elephant_feet_8m_r1.png"
+    },
+    {
+      "id": "crosswalk_multiuse_elephant_feet_10m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "1bc1cec9ec6daded443209b5b6605f5d9e1b4e19eef71b7a74eeaf9f0972e210",
+      "runtime_sha256": "1bc1cec9ec6daded443209b5b6605f5d9e1b4e19eef71b7a74eeaf9f0972e210",
+      "runtime_derivative": false,
+      "bytes": 5412,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_multiuse_elephant_feet_10m_r1.glb",
+      "source_triangles": 72,
+      "source_materials": 1,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        10.0,
+        4.800000190734863,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_multiuse_elephant_feet_10m_r1",
+        "status": "PASS",
+        "bytes": 5412,
+        "loadMs": 11.300000011920929,
+        "min": [
+          -5,
+          0.004000000189989805,
+          -2.4000000953674316
+        ],
+        "max": [
+          5,
+          0.004000000189989805,
+          2.4000000953674316
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_multiuse_elephant_feet_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 3888,
+        "loadMs": 7.300000011920929,
+        "draws": 1,
+        "triangles": 72,
+        "geometries": 1,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_multiuse_elephant_feet_10m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_multiuse_elephant_feet_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 3888,
+        "loadMs": 14,
+        "draws": 1,
+        "triangles": 72,
+        "originalDraws": 1,
+        "repeatedDraws": 1,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 2,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_multiuse_elephant_feet_10m_r1.png"
+    },
+    {
+      "id": "crosswalk_brick_infill_concept_6m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "cf71e21005513db010e93e9231dbde26160187f22c6a3cf0138df703a6ab64ce",
+      "runtime_sha256": "cf71e21005513db010e93e9231dbde26160187f22c6a3cf0138df703a6ab64ce",
+      "runtime_derivative": false,
+      "bytes": 12656,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_brick_infill_concept_6m_r1.glb",
+      "source_triangles": 190,
+      "source_materials": 2,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        6.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_brick_infill_concept_6m_r1",
+        "status": "PASS",
+        "bytes": 12656,
+        "loadMs": 6.699999988079071,
+        "min": [
+          -3,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          3,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_brick_infill_concept_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 10260,
+        "loadMs": 4.4000000059604645,
+        "draws": 2,
+        "triangles": 190,
+        "geometries": 2,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_brick_infill_concept_6m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_brick_infill_concept_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 10260,
+        "loadMs": 44.299999999813735,
+        "draws": 2,
+        "triangles": 190,
+        "originalDraws": 2,
+        "repeatedDraws": 2,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 4,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_brick_infill_concept_6m_r1.png"
+    },
+    {
+      "id": "crosswalk_brick_infill_concept_8m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "3a7db0048aa4bc08d9eb1a3f633827747d70022a8124591fff23d74534286dc4",
+      "runtime_sha256": "3a7db0048aa4bc08d9eb1a3f633827747d70022a8124591fff23d74534286dc4",
+      "runtime_derivative": false,
+      "bytes": 15896,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_brick_infill_concept_8m_r1.glb",
+      "source_triangles": 250,
+      "source_materials": 2,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        8.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_brick_infill_concept_8m_r1",
+        "status": "PASS",
+        "bytes": 15896,
+        "loadMs": 6.0999999940395355,
+        "min": [
+          -4,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          4,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_brick_infill_concept_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 13500,
+        "loadMs": 9,
+        "draws": 2,
+        "triangles": 250,
+        "geometries": 2,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_brick_infill_concept_8m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_brick_infill_concept_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 13500,
+        "loadMs": 16.299999999813735,
+        "draws": 2,
+        "triangles": 250,
+        "originalDraws": 2,
+        "repeatedDraws": 2,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 4,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_brick_infill_concept_8m_r1.png"
+    },
+    {
+      "id": "crosswalk_brick_infill_concept_10m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "cc174a8ccc152ea2c9e430faeaa15a11b465e748af725a6ab6145f91180f380c",
+      "runtime_sha256": "cc174a8ccc152ea2c9e430faeaa15a11b465e748af725a6ab6145f91180f380c",
+      "runtime_derivative": false,
+      "bytes": 19144,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_brick_infill_concept_10m_r1.glb",
+      "source_triangles": 310,
+      "source_materials": 2,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        10.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_brick_infill_concept_10m_r1",
+        "status": "PASS",
+        "bytes": 19144,
+        "loadMs": 41.900000005960464,
+        "min": [
+          -5,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          5,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_brick_infill_concept_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 16740,
+        "loadMs": 16.5,
+        "draws": 2,
+        "triangles": 310,
+        "geometries": 2,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_brick_infill_concept_10m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_brick_infill_concept_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 16740,
+        "loadMs": 29.90000000037253,
+        "draws": 2,
+        "triangles": 310,
+        "originalDraws": 2,
+        "repeatedDraws": 2,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 4,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_brick_infill_concept_10m_r1.png"
+    },
+    {
+      "id": "crosswalk_rainbow_infill_concept_6m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "7d9a38e7672eebb606a7542329cb28e934520c75c48b226c86a7c5b792162f67",
+      "runtime_sha256": "7d9a38e7672eebb606a7542329cb28e934520c75c48b226c86a7c5b792162f67",
+      "runtime_derivative": false,
+      "bytes": 6764,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_rainbow_infill_concept_6m_r1.glb",
+      "source_triangles": 16,
+      "source_materials": 7,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        6.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_rainbow_infill_concept_6m_r1",
+        "status": "PASS",
+        "bytes": 6764,
+        "loadMs": 6.200000017881393,
+        "min": [
+          -3,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          3,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_rainbow_infill_concept_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 804,
+        "loadMs": 6.299999982118607,
+        "draws": 7,
+        "triangles": 16,
+        "geometries": 7,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_rainbow_infill_concept_6m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_rainbow_infill_concept_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 804,
+        "loadMs": 27,
+        "draws": 7,
+        "triangles": 16,
+        "originalDraws": 7,
+        "repeatedDraws": 7,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 14,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_rainbow_infill_concept_6m_r1.png"
+    },
+    {
+      "id": "crosswalk_rainbow_infill_concept_8m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "1750d3ad9bca69d54f4e6e8aa4d5338aa6c32be7f7314292174018ace0f34309",
+      "runtime_sha256": "1750d3ad9bca69d54f4e6e8aa4d5338aa6c32be7f7314292174018ace0f34309",
+      "runtime_derivative": false,
+      "bytes": 6764,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_rainbow_infill_concept_8m_r1.glb",
+      "source_triangles": 16,
+      "source_materials": 7,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        8.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_rainbow_infill_concept_8m_r1",
+        "status": "PASS",
+        "bytes": 6764,
+        "loadMs": 10.199999988079071,
+        "min": [
+          -4,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          4,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_rainbow_infill_concept_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 804,
+        "loadMs": 4.5,
+        "draws": 7,
+        "triangles": 16,
+        "geometries": 7,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_rainbow_infill_concept_8m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_rainbow_infill_concept_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 804,
+        "loadMs": 7.599999999627471,
+        "draws": 7,
+        "triangles": 16,
+        "originalDraws": 7,
+        "repeatedDraws": 7,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 14,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_rainbow_infill_concept_8m_r1.png"
+    },
+    {
+      "id": "crosswalk_rainbow_infill_concept_10m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "0f6706731a46d94086ad0426c5fd83578fbf87466292559bb1ec72651d13e888",
+      "runtime_sha256": "0f6706731a46d94086ad0426c5fd83578fbf87466292559bb1ec72651d13e888",
+      "runtime_derivative": false,
+      "bytes": 6780,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_rainbow_infill_concept_10m_r1.glb",
+      "source_triangles": 16,
+      "source_materials": 7,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        10.0,
+        3.5999999046325684,
+        0.0
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_rainbow_infill_concept_10m_r1",
+        "status": "PASS",
+        "bytes": 6780,
+        "loadMs": 5.9000000059604645,
+        "min": [
+          -5,
+          0.004000000189989805,
+          -1.7999999523162842
+        ],
+        "max": [
+          5,
+          0.004000000189989805,
+          1.7999999523162842
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_rainbow_infill_concept_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 804,
+        "loadMs": 6.600000023841858,
+        "draws": 7,
+        "triangles": 16,
+        "geometries": 7,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_rainbow_infill_concept_10m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_rainbow_infill_concept_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 804,
+        "loadMs": 16.100000000093132,
+        "draws": 7,
+        "triangles": 16,
+        "originalDraws": 7,
+        "repeatedDraws": 7,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 14,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_rainbow_infill_concept_10m_r1.png"
+    },
+    {
+      "id": "crosswalk_raised_zebra_concept_6m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "b1502bfba19df1792c2415c6007492f1693a2fd8a55600dbd4716a3c8f58ba05",
+      "runtime_sha256": "b1502bfba19df1792c2415c6007492f1693a2fd8a55600dbd4716a3c8f58ba05",
+      "runtime_derivative": false,
+      "bytes": 3532,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_raised_zebra_concept_6m_r1.glb",
+      "source_triangles": 22,
+      "source_materials": 2,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        6.0,
+        6.0,
+        0.10400000214576721
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_raised_zebra_concept_6m_r1",
+        "status": "PASS",
+        "bytes": 3532,
+        "loadMs": 4.699999988079071,
+        "min": [
+          -3,
+          0,
+          -3
+        ],
+        "max": [
+          3,
+          0.10400000214576721,
+          3
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_raised_zebra_concept_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 1188,
+        "loadMs": 4.800000011920929,
+        "draws": 2,
+        "triangles": 22,
+        "geometries": 2,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_raised_zebra_concept_6m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_raised_zebra_concept_6m_r1",
+        "status": "PASS",
+        "geometryBytes": 1188,
+        "loadMs": 21.299999999813735,
+        "draws": 2,
+        "triangles": 22,
+        "originalDraws": 2,
+        "repeatedDraws": 2,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 4,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_raised_zebra_concept_6m_r1.png"
+    },
+    {
+      "id": "crosswalk_raised_zebra_concept_8m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "2ef4169938a06cc15b6ac2f7351d4c38f075b7a82f729c3d306cedccd9a9e9e0",
+      "runtime_sha256": "2ef4169938a06cc15b6ac2f7351d4c38f075b7a82f729c3d306cedccd9a9e9e0",
+      "runtime_derivative": false,
+      "bytes": 3748,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_raised_zebra_concept_8m_r1.glb",
+      "source_triangles": 26,
+      "source_materials": 2,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        8.0,
+        6.0,
+        0.10400000214576721
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_raised_zebra_concept_8m_r1",
+        "status": "PASS",
+        "bytes": 3748,
+        "loadMs": 4.9000000059604645,
+        "min": [
+          -4,
+          0,
+          -3
+        ],
+        "max": [
+          4,
+          0.10400000214576721,
+          3
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_raised_zebra_concept_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 1404,
+        "loadMs": 5.0999999940395355,
+        "draws": 2,
+        "triangles": 26,
+        "geometries": 2,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_raised_zebra_concept_8m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_raised_zebra_concept_8m_r1",
+        "status": "PASS",
+        "geometryBytes": 1404,
+        "loadMs": 12.299999999813735,
+        "draws": 2,
+        "triangles": 26,
+        "originalDraws": 2,
+        "repeatedDraws": 2,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 4,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_raised_zebra_concept_8m_r1.png"
+    },
+    {
+      "id": "crosswalk_raised_zebra_concept_10m_r1",
+      "category": "Crosswalks",
+      "source_manifest": "CityPrompt_Crosswalk_GLB_Style_Kit_r1\\Crosswalk_GLB_Style_Kit_r1\\asset_manifest.json",
+      "source_sha256": "d6bdf6a5ccbad05a1ba7d5cdc4704b4c0d395d7b0205d0aec1698c9221f140a0",
+      "runtime_sha256": "d6bdf6a5ccbad05a1ba7d5cdc4704b4c0d395d7b0205d0aec1698c9221f140a0",
+      "runtime_derivative": false,
+      "bytes": 3836,
+      "url": "/street-kits/traffic-safety-r1/crosswalk_raised_zebra_concept_10m_r1.glb",
+      "source_triangles": 28,
+      "source_materials": 2,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        10.0,
+        6.0,
+        0.10400000214576721
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "crosswalk_raised_zebra_concept_10m_r1",
+        "status": "PASS",
+        "bytes": 3836,
+        "loadMs": 5.399999976158142,
+        "min": [
+          -5,
+          0,
+          -3
+        ],
+        "max": [
+          5,
+          0.10400000214576721,
+          3
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "crosswalk_raised_zebra_concept_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 1512,
+        "loadMs": 5.4000000059604645,
+        "draws": 2,
+        "triangles": 28,
+        "geometries": 2,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\crosswalk_raised_zebra_concept_10m_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "enabled_for_placement": true,
+      "optimized_browser_gpu": {
+        "id": "crosswalk_raised_zebra_concept_10m_r1",
+        "status": "PASS",
+        "geometryBytes": 1512,
+        "loadMs": 46.89999999990687,
+        "draws": 2,
+        "triangles": 28,
+        "originalDraws": 2,
+        "repeatedDraws": 2,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 4,
+        "textures": 0
+      },
+      "application_placement": "PASS: actual UI save and reload",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\crosswalk_raised_zebra_concept_10m_r1.png"
+    },
+    {
+      "id": "curb_bulb_midblock_small_r1",
+      "category": "Curb bulbs",
+      "source_manifest": "CityPrompt_Parametric_Curb_Bulbs_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "5a52d636a2ae234398c4d1b2b28e9188a86533e0385e015dc9a97ade537069ae",
+      "runtime_sha256": "5a52d636a2ae234398c4d1b2b28e9188a86533e0385e015dc9a97ade537069ae",
+      "runtime_derivative": false,
+      "bytes": 26164,
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_midblock_small_r1.glb",
+      "source_triangles": 524,
+      "source_materials": 3,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        6.0,
+        1.5,
+        0.15000000596046448
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "curb_bulb_midblock_small_r1",
+        "status": "PASS",
+        "bytes": 26164,
+        "loadMs": 5.0999999940395355,
+        "min": [
+          -3,
+          0,
+          0
+        ],
+        "max": [
+          3,
+          0.15000000596046448,
+          1.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "curb_bulb_midblock_small_r1",
+        "status": "PASS",
+        "geometryBytes": 22680,
+        "loadMs": 4.9000000059604645,
+        "draws": 3,
+        "triangles": 524,
+        "geometries": 3,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\curb_bulb_midblock_small_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "enabled_for_placement": false,
+      "optimized_browser_gpu": {
+        "id": "curb_bulb_midblock_small_r1",
+        "status": "PASS",
+        "geometryBytes": 22680,
+        "loadMs": 22.200000000186265,
+        "draws": 3,
+        "triangles": 524,
+        "originalDraws": 3,
+        "repeatedDraws": 3,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 6,
+        "textures": 0
+      },
+      "application_placement": "BLOCKED: sidewalk attachment and host curb replacement unfinished",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\curb_bulb_midblock_small_r1.png"
+    },
+    {
+      "id": "curb_bulb_single_left_small_r1",
+      "category": "Curb bulbs",
+      "source_manifest": "CityPrompt_Parametric_Curb_Bulbs_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "31b700012a5544f0b7b381e2716c5783ae562a249e085ac8fcb6caf02a084273",
+      "runtime_sha256": "31b700012a5544f0b7b381e2716c5783ae562a249e085ac8fcb6caf02a084273",
+      "runtime_derivative": false,
+      "bytes": 44888,
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_single_left_small_r1.glb",
+      "source_triangles": 900,
+      "source_materials": 3,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        6.0,
+        4.5,
+        0.15000000596046448
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "curb_bulb_single_left_small_r1",
+        "status": "PASS",
+        "bytes": 44888,
+        "loadMs": 6,
+        "min": [
+          0,
+          0,
+          -3
+        ],
+        "max": [
+          6,
+          0.15000000596046448,
+          1.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "curb_bulb_single_left_small_r1",
+        "status": "PASS",
+        "geometryBytes": 41376,
+        "loadMs": 5.199999988079071,
+        "draws": 3,
+        "triangles": 900,
+        "geometries": 3,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\curb_bulb_single_left_small_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "enabled_for_placement": false,
+      "optimized_browser_gpu": {
+        "id": "curb_bulb_single_left_small_r1",
+        "status": "PASS",
+        "geometryBytes": 41376,
+        "loadMs": 44.90000000037253,
+        "draws": 3,
+        "triangles": 900,
+        "originalDraws": 3,
+        "repeatedDraws": 3,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 6,
+        "textures": 0
+      },
+      "application_placement": "BLOCKED: sidewalk attachment and host curb replacement unfinished",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\curb_bulb_single_left_small_r1.png"
+    },
+    {
+      "id": "curb_bulb_single_right_small_r1",
+      "category": "Curb bulbs",
+      "source_manifest": "CityPrompt_Parametric_Curb_Bulbs_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "c0b4b9b735f1883bd6db2dcbdc8f9a74c175edde9e804bc2f7fab1020304d9d3",
+      "runtime_sha256": "c0b4b9b735f1883bd6db2dcbdc8f9a74c175edde9e804bc2f7fab1020304d9d3",
+      "runtime_derivative": false,
+      "bytes": 44872,
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_single_right_small_r1.glb",
+      "source_triangles": 900,
+      "source_materials": 3,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        6.0,
+        4.5,
+        0.15000000596046448
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "curb_bulb_single_right_small_r1",
+        "status": "PASS",
+        "bytes": 44872,
+        "loadMs": 12.700000017881393,
+        "min": [
+          -6,
+          0,
+          -3
+        ],
+        "max": [
+          0,
+          0.15000000596046448,
+          1.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "curb_bulb_single_right_small_r1",
+        "status": "PASS",
+        "geometryBytes": 41352,
+        "loadMs": 4.800000011920929,
+        "draws": 3,
+        "triangles": 900,
+        "geometries": 3,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\curb_bulb_single_right_small_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "enabled_for_placement": false,
+      "optimized_browser_gpu": {
+        "id": "curb_bulb_single_right_small_r1",
+        "status": "PASS",
+        "geometryBytes": 41352,
+        "loadMs": 56,
+        "draws": 3,
+        "triangles": 900,
+        "originalDraws": 3,
+        "repeatedDraws": 3,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 6,
+        "textures": 0
+      },
+      "application_placement": "BLOCKED: sidewalk attachment and host curb replacement unfinished",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\curb_bulb_single_right_small_r1.png"
+    },
+    {
+      "id": "curb_bulb_dual_corner_small_r1",
+      "category": "Curb bulbs",
+      "source_manifest": "CityPrompt_Parametric_Curb_Bulbs_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "7514ee2e73e2b9c3b3301c6aa6af3144b7595bdf9da3aaaba4e9106b03f11de8",
+      "runtime_sha256": "7514ee2e73e2b9c3b3301c6aa6af3144b7595bdf9da3aaaba4e9106b03f11de8",
+      "runtime_derivative": false,
+      "bytes": 55720,
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_dual_corner_small_r1.glb",
+      "source_triangles": 1132,
+      "source_materials": 3,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        7.5,
+        7.5,
+        0.15000000596046448
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "curb_bulb_dual_corner_small_r1",
+        "status": "PASS",
+        "bytes": 55720,
+        "loadMs": 6.0999999940395355,
+        "min": [
+          -6,
+          0,
+          -6
+        ],
+        "max": [
+          1.5,
+          0.15000000596046448,
+          1.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "curb_bulb_dual_corner_small_r1",
+        "status": "PASS",
+        "geometryBytes": 52200,
+        "loadMs": 6.5999999940395355,
+        "draws": 3,
+        "triangles": 1132,
+        "geometries": 3,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\curb_bulb_dual_corner_small_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "enabled_for_placement": false,
+      "optimized_browser_gpu": {
+        "id": "curb_bulb_dual_corner_small_r1",
+        "status": "PASS",
+        "geometryBytes": 52200,
+        "loadMs": 52.200000000186265,
+        "draws": 3,
+        "triangles": 1132,
+        "originalDraws": 3,
+        "repeatedDraws": 3,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 6,
+        "textures": 0
+      },
+      "application_placement": "BLOCKED: sidewalk attachment and host curb replacement unfinished",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\curb_bulb_dual_corner_small_r1.png"
+    },
+    {
+      "id": "curb_bulb_midblock_medium_r1",
+      "category": "Curb bulbs",
+      "source_manifest": "CityPrompt_Parametric_Curb_Bulbs_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "3054674563e0f4a1227fe4c95bd2da65a2d531d82ee1873254c89840a91b6e81",
+      "runtime_sha256": "3054674563e0f4a1227fe4c95bd2da65a2d531d82ee1873254c89840a91b6e81",
+      "runtime_derivative": false,
+      "bytes": 25840,
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_midblock_medium_r1.glb",
+      "source_triangles": 524,
+      "source_materials": 3,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        9.0,
+        2.0,
+        0.15000000596046448
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "curb_bulb_midblock_medium_r1",
+        "status": "PASS",
+        "bytes": 25840,
+        "loadMs": 5.300000011920929,
+        "min": [
+          -4.5,
+          0,
+          0
+        ],
+        "max": [
+          4.5,
+          0.15000000596046448,
+          2
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "curb_bulb_midblock_medium_r1",
+        "status": "PASS",
+        "geometryBytes": 22344,
+        "loadMs": 4.899999976158142,
+        "draws": 3,
+        "triangles": 524,
+        "geometries": 3,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\curb_bulb_midblock_medium_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "enabled_for_placement": false,
+      "optimized_browser_gpu": {
+        "id": "curb_bulb_midblock_medium_r1",
+        "status": "PASS",
+        "geometryBytes": 22344,
+        "loadMs": 11.100000000093132,
+        "draws": 3,
+        "triangles": 524,
+        "originalDraws": 3,
+        "repeatedDraws": 3,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 6,
+        "textures": 0
+      },
+      "application_placement": "BLOCKED: sidewalk attachment and host curb replacement unfinished",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\curb_bulb_midblock_medium_r1.png"
+    },
+    {
+      "id": "curb_bulb_single_left_medium_r1",
+      "category": "Curb bulbs",
+      "source_manifest": "CityPrompt_Parametric_Curb_Bulbs_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "107844a4475902e3cabe43cfa8aa32b27d5fa643f2cffd9ed04d0425cf9a02f7",
+      "runtime_sha256": "107844a4475902e3cabe43cfa8aa32b27d5fa643f2cffd9ed04d0425cf9a02f7",
+      "runtime_derivative": false,
+      "bytes": 45396,
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_single_left_medium_r1.glb",
+      "source_triangles": 940,
+      "source_materials": 3,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        9.0,
+        6.5,
+        0.15000000596046448
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "curb_bulb_single_left_medium_r1",
+        "status": "PASS",
+        "bytes": 45396,
+        "loadMs": 5.5999999940395355,
+        "min": [
+          0,
+          0,
+          -4.5
+        ],
+        "max": [
+          9,
+          0.15000000596046448,
+          2
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "curb_bulb_single_left_medium_r1",
+        "status": "PASS",
+        "geometryBytes": 41880,
+        "loadMs": 6.200000017881393,
+        "draws": 3,
+        "triangles": 940,
+        "geometries": 3,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\curb_bulb_single_left_medium_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "enabled_for_placement": false,
+      "optimized_browser_gpu": {
+        "id": "curb_bulb_single_left_medium_r1",
+        "status": "PASS",
+        "geometryBytes": 41880,
+        "loadMs": 24.100000000093132,
+        "draws": 3,
+        "triangles": 940,
+        "originalDraws": 3,
+        "repeatedDraws": 3,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 6,
+        "textures": 0
+      },
+      "application_placement": "BLOCKED: sidewalk attachment and host curb replacement unfinished",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\curb_bulb_single_left_medium_r1.png"
+    },
+    {
+      "id": "curb_bulb_single_right_medium_r1",
+      "category": "Curb bulbs",
+      "source_manifest": "CityPrompt_Parametric_Curb_Bulbs_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "743b4d1a56467ca25853bc3ae7b1c39d1e6f8e11886b3f5f0f4bd5cb8eb4ebb8",
+      "runtime_sha256": "743b4d1a56467ca25853bc3ae7b1c39d1e6f8e11886b3f5f0f4bd5cb8eb4ebb8",
+      "runtime_derivative": false,
+      "bytes": 45152,
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_single_right_medium_r1.glb",
+      "source_triangles": 938,
+      "source_materials": 3,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        9.0,
+        6.5,
+        0.15000000596046448
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "curb_bulb_single_right_medium_r1",
+        "status": "PASS",
+        "bytes": 45152,
+        "loadMs": 5.9000000059604645,
+        "min": [
+          -9,
+          0,
+          -4.5
+        ],
+        "max": [
+          0,
+          0.15000000596046448,
+          2
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "curb_bulb_single_right_medium_r1",
+        "status": "PASS",
+        "geometryBytes": 41628,
+        "loadMs": 4.899999976158142,
+        "draws": 3,
+        "triangles": 938,
+        "geometries": 3,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\curb_bulb_single_right_medium_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "enabled_for_placement": false,
+      "optimized_browser_gpu": {
+        "id": "curb_bulb_single_right_medium_r1",
+        "status": "PASS",
+        "geometryBytes": 41628,
+        "loadMs": 14.600000000093132,
+        "draws": 3,
+        "triangles": 938,
+        "originalDraws": 3,
+        "repeatedDraws": 3,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 6,
+        "textures": 0
+      },
+      "application_placement": "BLOCKED: sidewalk attachment and host curb replacement unfinished",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\curb_bulb_single_right_medium_r1.png"
+    },
+    {
+      "id": "curb_bulb_dual_corner_medium_r1",
+      "category": "Curb bulbs",
+      "source_manifest": "CityPrompt_Parametric_Curb_Bulbs_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "cdc33ce2a1f63b243c4b105c5c82362cfafd2804b75e91c6cbbbd7a9056f75ad",
+      "runtime_sha256": "cdc33ce2a1f63b243c4b105c5c82362cfafd2804b75e91c6cbbbd7a9056f75ad",
+      "runtime_derivative": false,
+      "bytes": 58880,
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_dual_corner_medium_r1.glb",
+      "source_triangles": 1212,
+      "source_materials": 3,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        11.0,
+        11.0,
+        0.15000000596046448
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "curb_bulb_dual_corner_medium_r1",
+        "status": "PASS",
+        "bytes": 58880,
+        "loadMs": 13.699999988079071,
+        "min": [
+          -9,
+          0,
+          -9
+        ],
+        "max": [
+          2,
+          0.15000000596046448,
+          2
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "curb_bulb_dual_corner_medium_r1",
+        "status": "PASS",
+        "geometryBytes": 55368,
+        "loadMs": 5.9000000059604645,
+        "draws": 3,
+        "triangles": 1212,
+        "geometries": 3,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\curb_bulb_dual_corner_medium_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "enabled_for_placement": false,
+      "optimized_browser_gpu": {
+        "id": "curb_bulb_dual_corner_medium_r1",
+        "status": "PASS",
+        "geometryBytes": 55368,
+        "loadMs": 21.5,
+        "draws": 3,
+        "triangles": 1212,
+        "originalDraws": 3,
+        "repeatedDraws": 3,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 6,
+        "textures": 0
+      },
+      "application_placement": "BLOCKED: sidewalk attachment and host curb replacement unfinished",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\curb_bulb_dual_corner_medium_r1.png"
+    },
+    {
+      "id": "curb_bulb_midblock_large_r1",
+      "category": "Curb bulbs",
+      "source_manifest": "CityPrompt_Parametric_Curb_Bulbs_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "08a9a5788b495c1e692211bf74ec4a26d5a7feb8e0267fc798e3096d8b1c1de0",
+      "runtime_sha256": "08a9a5788b495c1e692211bf74ec4a26d5a7feb8e0267fc798e3096d8b1c1de0",
+      "runtime_derivative": false,
+      "bytes": 25972,
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_midblock_large_r1.glb",
+      "source_triangles": 524,
+      "source_materials": 3,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        12.0,
+        2.5,
+        0.15000000596046448
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "curb_bulb_midblock_large_r1",
+        "status": "PASS",
+        "bytes": 25972,
+        "loadMs": 5.899999976158142,
+        "min": [
+          -6,
+          0,
+          0
+        ],
+        "max": [
+          6,
+          0.15000000596046448,
+          2.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "curb_bulb_midblock_large_r1",
+        "status": "PASS",
+        "geometryBytes": 22488,
+        "loadMs": 5.0999999940395355,
+        "draws": 3,
+        "triangles": 524,
+        "geometries": 3,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\curb_bulb_midblock_large_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "enabled_for_placement": false,
+      "optimized_browser_gpu": {
+        "id": "curb_bulb_midblock_large_r1",
+        "status": "PASS",
+        "geometryBytes": 22488,
+        "loadMs": 16.5,
+        "draws": 3,
+        "triangles": 524,
+        "originalDraws": 3,
+        "repeatedDraws": 3,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 6,
+        "textures": 0
+      },
+      "application_placement": "BLOCKED: sidewalk attachment and host curb replacement unfinished",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\curb_bulb_midblock_large_r1.png"
+    },
+    {
+      "id": "curb_bulb_single_left_large_r1",
+      "category": "Curb bulbs",
+      "source_manifest": "CityPrompt_Parametric_Curb_Bulbs_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "d78e00d55b65d766c2f73f9df49b90e38cc5c50043a12f2babde67e4cce2d031",
+      "runtime_sha256": "d78e00d55b65d766c2f73f9df49b90e38cc5c50043a12f2babde67e4cce2d031",
+      "runtime_derivative": false,
+      "bytes": 44100,
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_single_left_large_r1.glb",
+      "source_triangles": 896,
+      "source_materials": 3,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        12.0,
+        8.5,
+        0.15000000596046448
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "curb_bulb_single_left_large_r1",
+        "status": "PASS",
+        "bytes": 44100,
+        "loadMs": 10.700000017881393,
+        "min": [
+          0,
+          0,
+          -6
+        ],
+        "max": [
+          12,
+          0.15000000596046448,
+          2.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "curb_bulb_single_left_large_r1",
+        "status": "PASS",
+        "geometryBytes": 40584,
+        "loadMs": 4.9000000059604645,
+        "draws": 3,
+        "triangles": 896,
+        "geometries": 3,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\curb_bulb_single_left_large_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "enabled_for_placement": false,
+      "optimized_browser_gpu": {
+        "id": "curb_bulb_single_left_large_r1",
+        "status": "PASS",
+        "geometryBytes": 40584,
+        "loadMs": 23.700000000186265,
+        "draws": 3,
+        "triangles": 896,
+        "originalDraws": 3,
+        "repeatedDraws": 3,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 6,
+        "textures": 0
+      },
+      "application_placement": "BLOCKED: sidewalk attachment and host curb replacement unfinished",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\curb_bulb_single_left_large_r1.png"
+    },
+    {
+      "id": "curb_bulb_single_right_large_r1",
+      "category": "Curb bulbs",
+      "source_manifest": "CityPrompt_Parametric_Curb_Bulbs_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "235147e985726fd7f4280520609eec2f1cf0f98ae30a1069ad73ead1fd7e6c8c",
+      "runtime_sha256": "235147e985726fd7f4280520609eec2f1cf0f98ae30a1069ad73ead1fd7e6c8c",
+      "runtime_derivative": false,
+      "bytes": 44068,
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_single_right_large_r1.glb",
+      "source_triangles": 894,
+      "source_materials": 3,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        12.0,
+        8.5,
+        0.15000000596046448
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "curb_bulb_single_right_large_r1",
+        "status": "PASS",
+        "bytes": 44068,
+        "loadMs": 4.9000000059604645,
+        "min": [
+          -12,
+          0,
+          -6
+        ],
+        "max": [
+          0,
+          0.15000000596046448,
+          2.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "curb_bulb_single_right_large_r1",
+        "status": "PASS",
+        "geometryBytes": 40548,
+        "loadMs": 4.9000000059604645,
+        "draws": 3,
+        "triangles": 894,
+        "geometries": 3,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\curb_bulb_single_right_large_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "enabled_for_placement": false,
+      "optimized_browser_gpu": {
+        "id": "curb_bulb_single_right_large_r1",
+        "status": "PASS",
+        "geometryBytes": 40548,
+        "loadMs": 10.5,
+        "draws": 3,
+        "triangles": 894,
+        "originalDraws": 3,
+        "repeatedDraws": 3,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 6,
+        "textures": 0
+      },
+      "application_placement": "BLOCKED: sidewalk attachment and host curb replacement unfinished",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\curb_bulb_single_right_large_r1.png"
+    },
+    {
+      "id": "curb_bulb_dual_corner_large_r1",
+      "category": "Curb bulbs",
+      "source_manifest": "CityPrompt_Parametric_Curb_Bulbs_GLB_Kit_r1\\asset_manifest.json",
+      "source_sha256": "0461894845e5ad4d933beb55afb352825a20f9de6fd2253f4721e30d0fbffc7e",
+      "runtime_sha256": "0461894845e5ad4d933beb55afb352825a20f9de6fd2253f4721e30d0fbffc7e",
+      "runtime_derivative": false,
+      "bytes": 54980,
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_dual_corner_large_r1.glb",
+      "source_triangles": 1124,
+      "source_materials": 3,
+      "source_qa": "Offline visualization QA only; see preserved source report",
+      "dimensions_x_z_y_m": [
+        14.5,
+        14.5,
+        0.15000000596046448
+      ],
+      "pivot": "authored origin, unchanged",
+      "source_hash_check": "PASS",
+      "browser_loader_check": {
+        "id": "curb_bulb_dual_corner_large_r1",
+        "status": "PASS",
+        "bytes": 54980,
+        "loadMs": 6.5,
+        "min": [
+          -12,
+          0,
+          -12
+        ],
+        "max": [
+          2.5,
+          0.15000000596046448,
+          2.5
+        ]
+      },
+      "browser_gpu_check": {
+        "id": "curb_bulb_dual_corner_large_r1",
+        "status": "PASS",
+        "geometryBytes": 51456,
+        "loadMs": 6.299999982118607,
+        "draws": 3,
+        "triangles": 1124,
+        "geometries": 3,
+        "textures": 0
+      },
+      "screenshot": "D:\\CityPrompt-traffic-safety-2026-10-15\\gpu-captures\\curb_bulb_dual_corner_large_r1.png",
+      "application_operations": "Representative operations tested; not every operation on every variant",
+      "live": "NOT DEPLOYED",
+      "limitations": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "enabled_for_placement": false,
+      "optimized_browser_gpu": {
+        "id": "curb_bulb_dual_corner_large_r1",
+        "status": "PASS",
+        "geometryBytes": 51456,
+        "loadMs": 38.89999999990687,
+        "draws": 3,
+        "triangles": 1124,
+        "originalDraws": 3,
+        "repeatedDraws": 3,
+        "maxChannelDifference": 0,
+        "changedPixels": 0,
+        "geometries": 6,
+        "textures": 0
+      },
+      "application_placement": "BLOCKED: sidewalk attachment and host curb replacement unfinished",
+      "live_verification": "NOT TESTED",
+      "optimized_screenshot": "C:\\dev-artifacts\\CityPrompt\\traffic-safety-restart-2026-10-15\\optimized-captures\\curb_bulb_dual_corner_large_r1.png"
+    }
+  ],
+  "release_scope": {
+    "supplied_enabled": 44,
+    "supplied_disabled": 12,
+    "calgary_additions": 10,
+    "production_status": "NOT DEPLOYED"
+  }
+}

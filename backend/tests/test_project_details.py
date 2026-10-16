@@ -20,6 +20,23 @@ SITE_DETAIL_IDS = tuple(f'detail-site-{slug}' for slug in (
 ))
 
 @pytest.mark.asyncio
+async def test_safety_support_reference_survives_save_reload_and_legacy_update(monkeypatch):
+    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
+    db, row = session()
+    prop = {'id':'safety-1','lng':-114.1,'lat':51.05,'angle':15,
+            'variant':'calgary_delineator_illustrative_r1','support_zone_id':str(uuid.uuid4())}
+    saved = await endpoint.save_details(uuid.uuid4(),endpoint.DetailUpdate(expected_revision=0,benches=[],props=[prop]),SimpleNamespace(),db)
+    assert saved['props'] == [prop]
+    loaded = await endpoint.get_details(uuid.uuid4(),SimpleNamespace(),db)
+    assert loaded['props'] == [prop]
+    legacy = await endpoint.save_details(uuid.uuid4(),endpoint.DetailUpdate(expected_revision=1,benches=[]),SimpleNamespace(),db)
+    assert legacy['props'] == [prop]
+
+def test_rejects_malformed_support_reference():
+    with pytest.raises(ValidationError):
+        endpoint.Prop(id='item',lng=-114,lat=51,angle=0,variant='calgary_delineator_illustrative_r1',support_zone_id='../bad')
+
+@pytest.mark.asyncio
 async def test_paving_round_trip_and_old_clients_preserve_surfaces(monkeypatch):
     monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
     db, row = session({'keep':'unchanged'})
@@ -142,6 +159,9 @@ def test_expanded_catalogue_accepts_existing_kit_parts_and_matches_frontend():
     choices = json.loads((root / 'frontend/src/features/parks/detailCatalogueExtras.json').read_text())
     assert len(choices) == 155
     choices += json.loads((root / 'frontend/src/features/parks/recoveredDetails.json').read_text())
+    choices += json.loads((root / 'frontend/src/features/parks/trafficSafetyCatalogue.json').read_text())
+    # Local preview IDs must round-trip before their public picker gate is lifted.
+    choices += json.loads((root / 'frontend/src/features/parks/calgarySafetyCatalogue.json').read_text())
     assert set(endpoint._DETAIL_MODELS['trees']) == {'oak-0','oak-1','oak-2'} | {c['id'] for c in choices if c['kind'] == 'tree'}
     assert set(endpoint._DETAIL_MODELS['props']) == {'picnic-table-accessible','dual-stream-bin','bike-rack-three-stall','drinking-fountain-accessible','boulders','split-rail'} | {c['id'] for c in choices if c['kind'] == 'object'}
     for choice in choices:
@@ -150,6 +170,35 @@ def test_expanded_catalogue_accepts_existing_kit_parts_and_matches_frontend():
             'id': 'trial', 'lng': -114.1, 'lat': 51.05, 'angle': 15, 'variant': choice['id']
         }]})
         assert getattr(request, field)[0].variant == choice['id']
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('manifest,count', [('trafficSafetyCatalogue.json',56), ('calgarySafetyCatalogue.json',10)])
+async def test_all_safety_variants_round_trip_with_legacy_details(monkeypatch, manifest, count):
+    import json
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[2]
+    choices = json.loads((root / 'frontend/src/features/parks' / manifest).read_text())
+    assert len(choices) == count
+    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
+    legacy = {'id':'old-bench', 'lng':-114.1, 'lat':51.05, 'angle':30}
+    db, row = session({'keep': {'unchanged': True}})
+    project_id = uuid.uuid4()
+    props = [{'id':f'safety-{i}', 'lng':-114.1, 'lat':51.05, 'angle':90,
+              'variant':choice['id']} for i, choice in enumerate(choices)]
+    await endpoint.save_details(project_id, endpoint.DetailUpdate(
+        expected_revision=0, benches=[legacy], props=props), SimpleNamespace(), db)
+    loaded = await endpoint.get_details(project_id, SimpleNamespace(), db)
+    assert loaded['props'] == props
+    assert loaded['benches'] == [legacy]
+    assert row.metadata_['keep'] == {'unchanged': True}
+    # Older clients omitting props cannot accidentally erase the new items.
+    saved = await endpoint.save_details(project_id, endpoint.DetailUpdate(
+        expected_revision=1, benches=[legacy]), SimpleNamespace(), db)
+    assert saved['props'] == props
+    for field in ('scale', 'width', 'height'):
+        with pytest.raises(ValidationError):
+            endpoint.Prop(**{**props[0], field: 2})
 
 
 @pytest.mark.asyncio

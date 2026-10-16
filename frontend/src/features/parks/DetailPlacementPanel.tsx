@@ -5,11 +5,13 @@ import { detailThumbnail } from './detailThumbnail';
 import type { useDetailPlacement } from './useDetailPlacement';
 import { DetailEditControls } from './DetailEditControls';
 import { DetailCategoryTiles } from './DetailCategoryTiles';
+import { SafetyVariantCards } from './SafetyVariantCards';
 
 function Thumbnail({ asset }: { asset: DetailAsset }) {
   const root = useRef<HTMLDivElement>(null);
   const [image, setImage] = useState(''), [failed, setFailed] = useState(false);
   useEffect(() => {
+    setImage(''); setFailed(false);
     let active = true;
     const observer = new IntersectionObserver(entries => {
       if (!entries.some(e => e.isIntersecting)) return;
@@ -47,12 +49,14 @@ export function DetailPlacementPanel({ placement, canEdit, onClose, onArrange }:
         {['All', ...DETAIL_CATEGORIES].map(c => <option key={c} value={c}>{c === 'All' ? 'All individual items' : c}</option>)}
       </select>
       <p className="text-xs text-slate-600">{options.length} items · actual 3D model previews</p>
+      {options.some(a=>a.safety) && <p className="rounded border border-amber-300 bg-amber-50 p-2 text-xs">Traffic-safety kits are visualization assets, not approved construction or operational traffic-control designs. Amber is static.</p>}
       </>}
     </div>
     <div key={categoryView ? 'categories' : category} className="min-h-0 flex-1 overflow-y-auto p-3">
       {categoryView ? <DetailCategoryTiles onChoose={value => { setCategory(value); setQuery(''); setCategoryView(false); }} onBrowseAll={() => { setCategory('All'); setQuery(''); setCategoryView(false); }}/> : <>
       <div className="grid grid-cols-2 gap-3">
-        {options.map(asset => <article key={asset.id} className="overflow-hidden rounded-xl border border-slate-300 bg-white">
+        <SafetyVariantCards assets={options.filter(a=>a.safety)} selected={placement.selected} disabled={!canEdit || placement.saving} onChoose={placement.choose} thumbnail={Thumbnail}/>
+        {options.filter(asset=>!asset.safety).map(asset => <article key={asset.id} className="overflow-hidden rounded-xl border border-slate-300 bg-white">
           <button type="button" aria-label={`Choose ${asset.label}`} aria-pressed={placement.selected === asset.id} disabled={!canEdit || placement.saving}
             onClick={() => placement.choose(asset.id)} className={`w-full text-left hover:bg-lime-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px] disabled:opacity-50 ${placement.selected === asset.id ? 'bg-lime-100 ring-2 ring-inset ring-lime-600' : ''}`}>
             <Thumbnail asset={asset} />

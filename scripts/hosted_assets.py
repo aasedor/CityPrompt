@@ -18,7 +18,9 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 LFS = b"version https://git-lfs.github.com/spec/v1"
 DETAIL_MANIFESTS = ("frontend/src/features/parks/detailCatalogueExtras.json",
-                    "frontend/src/features/parks/recoveredDetails.json")
+                    "frontend/src/features/parks/recoveredDetails.json",
+                    "frontend/src/features/parks/trafficSafetyCatalogue.json",
+                    "frontend/src/features/parks/calgarySafetyCatalogue.json")
 SOURCE_MEDIA_PREFIX = "frontend/src/features/landing/media/"
 
 

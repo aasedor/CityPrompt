@@ -1,5 +1,7 @@
 import extras from "./detailCatalogueExtras.json";
 import recovered from "./recoveredDetails.json";
+import trafficSafety from "./trafficSafetyCatalogue.json";
+import calgarySafety from "./calgarySafetyCatalogue.json";
 import type { DetailWalkSurface } from "./detailWalking";
 export interface DetailAsset {
   id: string;
@@ -14,10 +16,27 @@ export interface DetailAsset {
   kind: "bench" | "tree" | "object";
   /** Translation in source Y-up coordinates, before the globe conversion. */
   offset?: readonly number[];
+  /** Defaults preserve legacy saved furniture. Safety kits have an authored datum. */
+  datumLift?: number;
+  safety?: {
+    group: string;
+    family: string;
+    familyLabel: string;
+    variantLabel: string;
+    sha256: string;
+    transforms: ['translation', 'yaw'];
+    placement: 'flat-road' | 'sidewalk-attachment';
+    nominalFootprint: readonly number[];
+    /** Source-pivot X/Z bounds, nominal painted footprint for crosswalks. */
+    supportBoundsXZ?: readonly number[];
+    limitation: string;
+  };
   /** Authored pedestrian surface only; furniture and roofs never lift the walker. */
   walkSurface?: DetailWalkSurface;
 }
-const extraModels = [...extras, ...recovered] as DetailAsset[];
+// Exact reviewed models only; new generator output cannot opt itself into release.
+const releasedCalgary = calgarySafety.filter(asset => asset.runtimeApproved);
+const extraModels = [...extras, ...recovered, ...trafficSafety, ...releasedCalgary] as DetailAsset[];
 /** Existing metric assets only. No user-provided paths or nonuniform scaling. */
 const RUSTIC = "/landscape-pilots/neighborhood-rustic-v5";
 const EQUIPMENT = "/park-kits/shared-park-equipment-v1";

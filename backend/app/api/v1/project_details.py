@@ -42,6 +42,7 @@ class Tree(Bench):
 
 class Prop(Bench):
     variant: str
+    support_zone_id: str | None = Field(default=None, pattern=r'^[\w-]{1,80}$')
 
     @field_validator('variant')
     @classmethod
@@ -105,7 +106,7 @@ def detail_data(project):
     return (project.metadata_ or {}).get('scene_details') or {'version':1,'revision':0,'benches':[]}
 
 
-@router.get('/{project_id}/details', response_model=DetailResponse)
+@router.get('/{project_id}/details', response_model=DetailResponse,response_model_exclude_none=True)
 async def get_details(project_id: uuid.UUID, user: User = Depends(require_auth), db: AsyncSession = Depends(get_db)):
     permission = await check_project_permission(project_id, user, db, required='viewer')
     project = (await db.execute(select(Project).where(Project.id == project_id))).scalar_one_or_none()
@@ -114,7 +115,7 @@ async def get_details(project_id: uuid.UUID, user: User = Depends(require_auth),
     return {**detail_data(project), 'can_edit':permission in {'owner','editor'}}
 
 
-@router.put('/{project_id}/details', response_model=DetailResponse)
+@router.put('/{project_id}/details', response_model=DetailResponse,response_model_exclude_none=True)
 async def save_details(project_id: uuid.UUID, request: DetailUpdate, user: User = Depends(require_auth), db: AsyncSession = Depends(get_db)):
     await check_project_permission(project_id, user, db, required='editor')
     project = (await db.execute(select(Project).where(Project.id == project_id).with_for_update().execution_options(populate_existing=True))).scalar_one_or_none()
@@ -126,7 +127,7 @@ async def save_details(project_id: uuid.UUID, request: DetailUpdate, user: User 
     saved = {'version':1,'revision':current['revision']+1,'benches':[bench.model_dump() for bench in request.benches]}
     saved['trees'] = ([tree.model_dump() for tree in request.trees]
                       if request.trees is not None else current.get('trees', []))
-    saved['props'] = ([prop.model_dump() for prop in request.props]
+    saved['props'] = ([prop.model_dump(exclude_none=True) for prop in request.props]
                       if request.props is not None else current.get('props', []))
     saved['surfaces'] = ([surface.model_dump(mode='json') for surface in request.surfaces]
                          if request.surfaces is not None else current.get('surfaces', []))

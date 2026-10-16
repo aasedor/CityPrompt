@@ -2,6 +2,7 @@ import { nativeParkEditProperties, nativeParkFitProblem } from '@/features/parks
 import {ProjectDetailEditor,useProjectDetails} from '@/features/parks/ProjectDetailEditor';
 import { DetailPlacementPanel } from '@/features/parks/DetailPlacementPanel';
 import { useDetailPlacement } from '@/features/parks/useDetailPlacement';
+import { detailPlacementSupport } from '@/features/parks/safetyPlacement';
 import type { ProjectDetails } from '@/features/parks/projectBenches';
 import { api } from '@/services/api';
 import { readBrowserPreference, writeBrowserPreference } from '@/utils/browserPreferences';
@@ -168,7 +169,7 @@ export function ProjectViewPage() {
     });
     queryClient.setQueryData(['project-details', id], response.data);
     return response.data;
-  }, id);
+  }, id, (asset,pose)=>detailPlacementSupport(asset,pose,siteZones.map(zone=>zone.id)));
   const closePlanningReport = useCallback(() => setShowPlanningReport(false), []);
   const references = useReferenceLayers(id);
   const transportContext = useMemo(() => existingTransport(references.layers), [references.layers]);
@@ -287,7 +288,7 @@ export function ProjectViewPage() {
   }, [globeRefs]);
 
   // Register Ctrl+Z / Ctrl+Shift+Z keyboard shortcuts for undo/redo
-  useUndoRedoKeyboard(editingBenchDetails || editingProjectDetails || showDetailCatalogue);
+  useUndoRedoKeyboard(editingBenchDetails || editingProjectDetails);
 
   // Site planner store + zone CRUD + workflow
   const {

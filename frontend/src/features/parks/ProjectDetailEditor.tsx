@@ -11,6 +11,8 @@ import {
   saveProjectDetails,
   type ProjectDetails,
 } from "./projectBenches";
+import { detailPlacementSupport } from './safetyPlacement';
+import { validateDetailEdits } from './projectDetailEdits';
 
 export function useProjectDetails(projectId?: string) {
   return useQuery({
@@ -69,11 +71,13 @@ export function ProjectDetailEditor({
       disabled={!source.can_edit}
       onClose={onClose}
       onSave={async (benches, surfaces) => {
+        const changed=saveProjectDetails(benches,context);
+        changed.props=validateDetailEdits(changed.props,source.props??[],(id,pose)=>detailPlacementSupport(id,pose,zones.map(zone=>zone.id)));
         const response = await api.put<ProjectDetails>(
           `/api/v1/projects/${project.id}/details`,
           {
             expected_revision: source.revision,
-            ...saveProjectDetails(benches, context),
+            ...changed,
             surfaces,
           },
         );

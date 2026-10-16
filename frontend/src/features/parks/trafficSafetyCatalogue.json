@@ -1,0 +1,2242 @@
+[
+  {
+    "id": "crosswalk_brick_infill_concept_10m_r1",
+    "label": "Brick infill \u00b7 concept \u00b7 10 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      10.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_brick_infill_concept_10m_r1.glb",
+    "sha256": "cc174a8ccc152ea2c9e430faeaa15a11b465e748af725a6ab6145f91180f380c",
+    "bytes": 19144,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "brick_infill_concept",
+      "familyLabel": "Brick infill \u00b7 concept",
+      "variantLabel": "10 m road span",
+      "sha256": "cc174a8ccc152ea2c9e430faeaa15a11b465e748af725a6ab6145f91180f380c",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        10,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -5.0,
+        -1.8,
+        5.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_brick_infill_concept_6m_r1",
+    "label": "Brick infill \u00b7 concept \u00b7 6 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      6.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_brick_infill_concept_6m_r1.glb",
+    "sha256": "cf71e21005513db010e93e9231dbde26160187f22c6a3cf0138df703a6ab64ce",
+    "bytes": 12656,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "brick_infill_concept",
+      "familyLabel": "Brick infill \u00b7 concept",
+      "variantLabel": "6 m road span",
+      "sha256": "cf71e21005513db010e93e9231dbde26160187f22c6a3cf0138df703a6ab64ce",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        6,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -3.0,
+        -1.8,
+        3.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_brick_infill_concept_8m_r1",
+    "label": "Brick infill \u00b7 concept \u00b7 8 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      8.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_brick_infill_concept_8m_r1.glb",
+    "sha256": "3a7db0048aa4bc08d9eb1a3f633827747d70022a8124591fff23d74534286dc4",
+    "bytes": 15896,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "brick_infill_concept",
+      "familyLabel": "Brick infill \u00b7 concept",
+      "variantLabel": "8 m road span",
+      "sha256": "3a7db0048aa4bc08d9eb1a3f633827747d70022a8124591fff23d74534286dc4",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        8,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -4.0,
+        -1.8,
+        4.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_continental_white_10m_r1",
+    "label": "Continental / zebra \u00b7 10 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      9.0,
+      3.0,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_continental_white_10m_r1.glb",
+    "sha256": "413023b5fb8af39d034671c7c4be9e1c0e96bde0336ede5ac456e3667fdbe49f",
+    "bytes": 2332,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "continental_white",
+      "familyLabel": "Continental / zebra",
+      "variantLabel": "10 m road span",
+      "sha256": "413023b5fb8af39d034671c7c4be9e1c0e96bde0336ede5ac456e3667fdbe49f",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        10,
+        3.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -5.0,
+        -1.5,
+        5.0,
+        1.5
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_continental_white_6m_r1",
+    "label": "Continental / zebra \u00b7 6 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      5.400000095367432,
+      3.0,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_continental_white_6m_r1.glb",
+    "sha256": "96e41496352379966151984f2ee6ec0a83abc523cf0d251465cbf801bc3e848b",
+    "bytes": 2032,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "continental_white",
+      "familyLabel": "Continental / zebra",
+      "variantLabel": "6 m road span",
+      "sha256": "96e41496352379966151984f2ee6ec0a83abc523cf0d251465cbf801bc3e848b",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        6,
+        3.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -3.0,
+        -1.5,
+        3.0,
+        1.5
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_continental_white_8m_r1",
+    "label": "Continental / zebra \u00b7 8 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      7.800000190734863,
+      3.0,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_continental_white_8m_r1.glb",
+    "sha256": "be247483f018badff2c0fb10229572413f627066dd5295b45a656ff04561befd",
+    "bytes": 2248,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "continental_white",
+      "familyLabel": "Continental / zebra",
+      "variantLabel": "8 m road span",
+      "sha256": "be247483f018badff2c0fb10229572413f627066dd5295b45a656ff04561befd",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        8,
+        3.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -4.0,
+        -1.5,
+        4.0,
+        1.5
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_diagonal_hatch_generic_10m_r1",
+    "label": "Diagonal hatch \u00b7 generic \u00b7 10 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      10.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_diagonal_hatch_generic_10m_r1.glb",
+    "sha256": "a27d7d9bee2080cd7cc46df320f7f9dba2f39d57007e536043deaa6fc44e955e",
+    "bytes": 2952,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "diagonal_hatch_generic",
+      "familyLabel": "Diagonal hatch \u00b7 generic",
+      "variantLabel": "10 m road span",
+      "sha256": "a27d7d9bee2080cd7cc46df320f7f9dba2f39d57007e536043deaa6fc44e955e",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        10,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -5.0,
+        -1.8,
+        5.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_diagonal_hatch_generic_6m_r1",
+    "label": "Diagonal hatch \u00b7 generic \u00b7 6 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      6.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_diagonal_hatch_generic_6m_r1.glb",
+    "sha256": "8517200429dffd39f9e7e3417d8eae217bdced07512ab6177bed78c6dfc7b64f",
+    "bytes": 2592,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "diagonal_hatch_generic",
+      "familyLabel": "Diagonal hatch \u00b7 generic",
+      "variantLabel": "6 m road span",
+      "sha256": "8517200429dffd39f9e7e3417d8eae217bdced07512ab6177bed78c6dfc7b64f",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        6,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -3.0,
+        -1.8,
+        3.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_diagonal_hatch_generic_8m_r1",
+    "label": "Diagonal hatch \u00b7 generic \u00b7 8 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      8.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_diagonal_hatch_generic_8m_r1.glb",
+    "sha256": "4db91ff04082b1af0d095cee6babfc371917eacc3063ef4586e44e90d2c1dab2",
+    "bytes": 2732,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "diagonal_hatch_generic",
+      "familyLabel": "Diagonal hatch \u00b7 generic",
+      "variantLabel": "8 m road span",
+      "sha256": "4db91ff04082b1af0d095cee6babfc371917eacc3063ef4586e44e90d2c1dab2",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        8,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -4.0,
+        -1.8,
+        4.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_ladder_white_10m_r1",
+    "label": "Ladder white \u00b7 10 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      10.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_ladder_white_10m_r1.glb",
+    "sha256": "7c270c081cb0178407a2b28d6e59b0dc48d54b8d50b99f4900a148f28c04fc1c",
+    "bytes": 2556,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "ladder_white",
+      "familyLabel": "Ladder white",
+      "variantLabel": "10 m road span",
+      "sha256": "7c270c081cb0178407a2b28d6e59b0dc48d54b8d50b99f4900a148f28c04fc1c",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        10,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -5.0,
+        -1.8,
+        5.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_ladder_white_6m_r1",
+    "label": "Ladder white \u00b7 6 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      6.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_ladder_white_6m_r1.glb",
+    "sha256": "a08a56314451c52365598822524448c76af4fdd637b89c2187171b46702477f0",
+    "bytes": 2224,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "ladder_white",
+      "familyLabel": "Ladder white",
+      "variantLabel": "6 m road span",
+      "sha256": "a08a56314451c52365598822524448c76af4fdd637b89c2187171b46702477f0",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        6,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -3.0,
+        -1.8,
+        3.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_ladder_white_8m_r1",
+    "label": "Ladder white \u00b7 8 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      8.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_ladder_white_8m_r1.glb",
+    "sha256": "41050319f0f0413a3a974bf15421010a09e059a27448172065ad67a7b3736451",
+    "bytes": 2444,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "ladder_white",
+      "familyLabel": "Ladder white",
+      "variantLabel": "8 m road span",
+      "sha256": "41050319f0f0413a3a974bf15421010a09e059a27448172065ad67a7b3736451",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        8,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -4.0,
+        -1.8,
+        4.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_multiuse_elephant_feet_10m_r1",
+    "label": "Multi-use / elephant feet \u00b7 10 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      10.0,
+      4.800000190734863,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_multiuse_elephant_feet_10m_r1.glb",
+    "sha256": "1bc1cec9ec6daded443209b5b6605f5d9e1b4e19eef71b7a74eeaf9f0972e210",
+    "bytes": 5412,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "multiuse_elephant_feet",
+      "familyLabel": "Multi-use / elephant feet",
+      "variantLabel": "10 m road span",
+      "sha256": "1bc1cec9ec6daded443209b5b6605f5d9e1b4e19eef71b7a74eeaf9f0972e210",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        10,
+        4.8
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -5.0,
+        -2.4,
+        5.0,
+        2.4
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_multiuse_elephant_feet_6m_r1",
+    "label": "Multi-use / elephant feet \u00b7 6 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      6.0,
+      4.800000190734863,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_multiuse_elephant_feet_6m_r1.glb",
+    "sha256": "088ebd8b8796f175086bcf0914bb16ff58285e0cf87dc947cab871ab5a086148",
+    "bytes": 4000,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "multiuse_elephant_feet",
+      "familyLabel": "Multi-use / elephant feet",
+      "variantLabel": "6 m road span",
+      "sha256": "088ebd8b8796f175086bcf0914bb16ff58285e0cf87dc947cab871ab5a086148",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        6,
+        4.8
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -3.0,
+        -2.4,
+        3.0,
+        2.4
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_multiuse_elephant_feet_8m_r1",
+    "label": "Multi-use / elephant feet \u00b7 8 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      8.0,
+      4.800000190734863,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_multiuse_elephant_feet_8m_r1.glb",
+    "sha256": "bfab36d888b24bd59bde4fa319ea691cec14e32cb941d6a7fd3a90ab49417ac7",
+    "bytes": 4652,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "multiuse_elephant_feet",
+      "familyLabel": "Multi-use / elephant feet",
+      "variantLabel": "8 m road span",
+      "sha256": "bfab36d888b24bd59bde4fa319ea691cec14e32cb941d6a7fd3a90ab49417ac7",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        8,
+        4.8
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -4.0,
+        -2.4,
+        4.0,
+        2.4
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_parallel_white_10m_r1",
+    "label": "Parallel white \u00b7 10 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      10.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_parallel_white_10m_r1.glb",
+    "sha256": "b540828c43b01dd0545a13cb712931613589bc40b28d4a3df8f7d9257d373d89",
+    "bytes": 1692,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "parallel_white",
+      "familyLabel": "Parallel white",
+      "variantLabel": "10 m road span",
+      "sha256": "b540828c43b01dd0545a13cb712931613589bc40b28d4a3df8f7d9257d373d89",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        10,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -5.0,
+        -1.8,
+        5.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_parallel_white_6m_r1",
+    "label": "Parallel white \u00b7 6 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      6.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_parallel_white_6m_r1.glb",
+    "sha256": "a5d3114b948f36e9ff737a2faec6ab416091a597f4346ec85e64d2330ce08370",
+    "bytes": 1688,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "parallel_white",
+      "familyLabel": "Parallel white",
+      "variantLabel": "6 m road span",
+      "sha256": "a5d3114b948f36e9ff737a2faec6ab416091a597f4346ec85e64d2330ce08370",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        6,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -3.0,
+        -1.8,
+        3.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_parallel_white_8m_r1",
+    "label": "Parallel white \u00b7 8 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      8.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_parallel_white_8m_r1.glb",
+    "sha256": "5454b6fc6e7e46b1a1127a6b9e641e2fe798caf1dbedb979e267af4aeeb4d91b",
+    "bytes": 1688,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "parallel_white",
+      "familyLabel": "Parallel white",
+      "variantLabel": "8 m road span",
+      "sha256": "5454b6fc6e7e46b1a1127a6b9e641e2fe798caf1dbedb979e267af4aeeb4d91b",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        8,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -4.0,
+        -1.8,
+        4.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_rainbow_infill_concept_10m_r1",
+    "label": "Rainbow infill \u00b7 concept \u00b7 10 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      10.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_rainbow_infill_concept_10m_r1.glb",
+    "sha256": "0f6706731a46d94086ad0426c5fd83578fbf87466292559bb1ec72651d13e888",
+    "bytes": 6780,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "rainbow_infill_concept",
+      "familyLabel": "Rainbow infill \u00b7 concept",
+      "variantLabel": "10 m road span",
+      "sha256": "0f6706731a46d94086ad0426c5fd83578fbf87466292559bb1ec72651d13e888",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        10,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -5.0,
+        -1.8,
+        5.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_rainbow_infill_concept_6m_r1",
+    "label": "Rainbow infill \u00b7 concept \u00b7 6 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      6.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_rainbow_infill_concept_6m_r1.glb",
+    "sha256": "7d9a38e7672eebb606a7542329cb28e934520c75c48b226c86a7c5b792162f67",
+    "bytes": 6764,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "rainbow_infill_concept",
+      "familyLabel": "Rainbow infill \u00b7 concept",
+      "variantLabel": "6 m road span",
+      "sha256": "7d9a38e7672eebb606a7542329cb28e934520c75c48b226c86a7c5b792162f67",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        6,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -3.0,
+        -1.8,
+        3.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_rainbow_infill_concept_8m_r1",
+    "label": "Rainbow infill \u00b7 concept \u00b7 8 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      8.0,
+      3.5999999046325684,
+      0.0
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_rainbow_infill_concept_8m_r1.glb",
+    "sha256": "1750d3ad9bca69d54f4e6e8aa4d5338aa6c32be7f7314292174018ace0f34309",
+    "bytes": 6764,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "rainbow_infill_concept",
+      "familyLabel": "Rainbow infill \u00b7 concept",
+      "variantLabel": "8 m road span",
+      "sha256": "1750d3ad9bca69d54f4e6e8aa4d5338aa6c32be7f7314292174018ace0f34309",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        8,
+        3.6
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -4.0,
+        -1.8,
+        4.0,
+        1.8
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_raised_zebra_concept_10m_r1",
+    "label": "Raised zebra table \u00b7 concept \u00b7 10 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      10.0,
+      6.0,
+      0.10400000214576721
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_raised_zebra_concept_10m_r1.glb",
+    "sha256": "d6bdf6a5ccbad05a1ba7d5cdc4704b4c0d395d7b0205d0aec1698c9221f140a0",
+    "bytes": 3836,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "raised_zebra_concept",
+      "familyLabel": "Raised zebra table \u00b7 concept",
+      "variantLabel": "10 m road span",
+      "sha256": "d6bdf6a5ccbad05a1ba7d5cdc4704b4c0d395d7b0205d0aec1698c9221f140a0",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        10,
+        6.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -5.0,
+        -3.0,
+        5.0,
+        3.0
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_raised_zebra_concept_6m_r1",
+    "label": "Raised zebra table \u00b7 concept \u00b7 6 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      6.0,
+      6.0,
+      0.10400000214576721
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_raised_zebra_concept_6m_r1.glb",
+    "sha256": "b1502bfba19df1792c2415c6007492f1693a2fd8a55600dbd4716a3c8f58ba05",
+    "bytes": 3532,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "raised_zebra_concept",
+      "familyLabel": "Raised zebra table \u00b7 concept",
+      "variantLabel": "6 m road span",
+      "sha256": "b1502bfba19df1792c2415c6007492f1693a2fd8a55600dbd4716a3c8f58ba05",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        6,
+        6.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -3.0,
+        -3.0,
+        3.0,
+        3.0
+      ]
+    }
+  },
+  {
+    "id": "crosswalk_raised_zebra_concept_8m_r1",
+    "label": "Raised zebra table \u00b7 concept \u00b7 8 m road span",
+    "category": "Crosswalks",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      8.0,
+      6.0,
+      0.10400000214576721
+    ],
+    "url": "/street-kits/traffic-safety-r1/crosswalk_raised_zebra_concept_8m_r1.glb",
+    "sha256": "2ef4169938a06cc15b6ac2f7351d4c38f075b7a82f729c3d306cedccd9a9e9e0",
+    "bytes": 3748,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Crosswalks",
+      "family": "raised_zebra_concept",
+      "familyLabel": "Raised zebra table \u00b7 concept",
+      "variantLabel": "8 m road span",
+      "sha256": "2ef4169938a06cc15b6ac2f7351d4c38f075b7a82f729c3d306cedccd9a9e9e0",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        8,
+        6.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. X spans the road, Z follows traffic. Paint offset is already built in.",
+      "supportBoundsXZ": [
+        -4.0,
+        -3.0,
+        4.0,
+        3.0
+      ]
+    }
+  },
+  {
+    "id": "curb_bulb_dual_corner_large_r1",
+    "label": "Two-leg corner \u00b7 Large \u00b7 12 m leg reach",
+    "category": "Curb bulbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      14.5,
+      14.5,
+      0.15000000596046448
+    ],
+    "url": "/street-kits/traffic-safety-r1/curb_bulb_dual_corner_large_r1.glb",
+    "sha256": "0461894845e5ad4d933beb55afb352825a20f9de6fd2253f4721e30d0fbffc7e",
+    "bytes": 54980,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Curb bulbs",
+      "family": "dual_corner",
+      "familyLabel": "Two-leg corner",
+      "variantLabel": "Large \u00b7 12 m leg reach",
+      "sha256": "0461894845e5ad4d933beb55afb352825a20f9de6fd2253f4721e30d0fbffc7e",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "sidewalk-attachment",
+      "nominalFootprint": [
+        14.5,
+        14.5
+      ],
+      "limitation": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "supportBoundsXZ": [
+        -12,
+        -12,
+        2.5,
+        2.5
+      ]
+    }
+  },
+  {
+    "id": "curb_bulb_dual_corner_medium_r1",
+    "label": "Two-leg corner \u00b7 Medium \u00b7 9 m leg reach",
+    "category": "Curb bulbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      11.0,
+      11.0,
+      0.15000000596046448
+    ],
+    "url": "/street-kits/traffic-safety-r1/curb_bulb_dual_corner_medium_r1.glb",
+    "sha256": "cdc33ce2a1f63b243c4b105c5c82362cfafd2804b75e91c6cbbbd7a9056f75ad",
+    "bytes": 58880,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Curb bulbs",
+      "family": "dual_corner",
+      "familyLabel": "Two-leg corner",
+      "variantLabel": "Medium \u00b7 9 m leg reach",
+      "sha256": "cdc33ce2a1f63b243c4b105c5c82362cfafd2804b75e91c6cbbbd7a9056f75ad",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "sidewalk-attachment",
+      "nominalFootprint": [
+        11.0,
+        11.0
+      ],
+      "limitation": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "supportBoundsXZ": [
+        -9,
+        -9,
+        2,
+        2
+      ]
+    }
+  },
+  {
+    "id": "curb_bulb_dual_corner_small_r1",
+    "label": "Two-leg corner \u00b7 Small \u00b7 6 m leg reach",
+    "category": "Curb bulbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      7.5,
+      7.5,
+      0.15000000596046448
+    ],
+    "url": "/street-kits/traffic-safety-r1/curb_bulb_dual_corner_small_r1.glb",
+    "sha256": "7514ee2e73e2b9c3b3301c6aa6af3144b7595bdf9da3aaaba4e9106b03f11de8",
+    "bytes": 55720,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Curb bulbs",
+      "family": "dual_corner",
+      "familyLabel": "Two-leg corner",
+      "variantLabel": "Small \u00b7 6 m leg reach",
+      "sha256": "7514ee2e73e2b9c3b3301c6aa6af3144b7595bdf9da3aaaba4e9106b03f11de8",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "sidewalk-attachment",
+      "nominalFootprint": [
+        7.5,
+        7.5
+      ],
+      "limitation": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "supportBoundsXZ": [
+        -6,
+        -6,
+        1.5,
+        1.5
+      ]
+    }
+  },
+  {
+    "id": "curb_bulb_midblock_large_r1",
+    "label": "Midblock \u00b7 Large \u00b7 12 m overall",
+    "category": "Curb bulbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      12.0,
+      2.5,
+      0.15000000596046448
+    ],
+    "url": "/street-kits/traffic-safety-r1/curb_bulb_midblock_large_r1.glb",
+    "sha256": "08a9a5788b495c1e692211bf74ec4a26d5a7feb8e0267fc798e3096d8b1c1de0",
+    "bytes": 25972,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Curb bulbs",
+      "family": "midblock",
+      "familyLabel": "Midblock",
+      "variantLabel": "Large \u00b7 12 m overall",
+      "sha256": "08a9a5788b495c1e692211bf74ec4a26d5a7feb8e0267fc798e3096d8b1c1de0",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "sidewalk-attachment",
+      "nominalFootprint": [
+        12.0,
+        2.5
+      ],
+      "limitation": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "supportBoundsXZ": [
+        -6,
+        0,
+        6,
+        2.5
+      ]
+    }
+  },
+  {
+    "id": "curb_bulb_midblock_medium_r1",
+    "label": "Midblock \u00b7 Medium \u00b7 9 m overall",
+    "category": "Curb bulbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      9.0,
+      2.0,
+      0.15000000596046448
+    ],
+    "url": "/street-kits/traffic-safety-r1/curb_bulb_midblock_medium_r1.glb",
+    "sha256": "3054674563e0f4a1227fe4c95bd2da65a2d531d82ee1873254c89840a91b6e81",
+    "bytes": 25840,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Curb bulbs",
+      "family": "midblock",
+      "familyLabel": "Midblock",
+      "variantLabel": "Medium \u00b7 9 m overall",
+      "sha256": "3054674563e0f4a1227fe4c95bd2da65a2d531d82ee1873254c89840a91b6e81",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "sidewalk-attachment",
+      "nominalFootprint": [
+        9.0,
+        2.0
+      ],
+      "limitation": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "supportBoundsXZ": [
+        -4.5,
+        0,
+        4.5,
+        2
+      ]
+    }
+  },
+  {
+    "id": "curb_bulb_midblock_small_r1",
+    "label": "Midblock \u00b7 Small \u00b7 6 m overall",
+    "category": "Curb bulbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      6.0,
+      1.5,
+      0.15000000596046448
+    ],
+    "url": "/street-kits/traffic-safety-r1/curb_bulb_midblock_small_r1.glb",
+    "sha256": "5a52d636a2ae234398c4d1b2b28e9188a86533e0385e015dc9a97ade537069ae",
+    "bytes": 26164,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Curb bulbs",
+      "family": "midblock",
+      "familyLabel": "Midblock",
+      "variantLabel": "Small \u00b7 6 m overall",
+      "sha256": "5a52d636a2ae234398c4d1b2b28e9188a86533e0385e015dc9a97ade537069ae",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "sidewalk-attachment",
+      "nominalFootprint": [
+        6.0,
+        1.5
+      ],
+      "limitation": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "supportBoundsXZ": [
+        -3,
+        0,
+        3,
+        1.5
+      ]
+    }
+  },
+  {
+    "id": "curb_bulb_single_left_large_r1",
+    "label": "Left single-leg corner \u00b7 Large \u00b7 12 m leg reach",
+    "category": "Curb bulbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      12.0,
+      8.5,
+      0.15000000596046448
+    ],
+    "url": "/street-kits/traffic-safety-r1/curb_bulb_single_left_large_r1.glb",
+    "sha256": "d78e00d55b65d766c2f73f9df49b90e38cc5c50043a12f2babde67e4cce2d031",
+    "bytes": 44100,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Curb bulbs",
+      "family": "single_left",
+      "familyLabel": "Left single-leg corner",
+      "variantLabel": "Large \u00b7 12 m leg reach",
+      "sha256": "d78e00d55b65d766c2f73f9df49b90e38cc5c50043a12f2babde67e4cce2d031",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "sidewalk-attachment",
+      "nominalFootprint": [
+        12.0,
+        8.5
+      ],
+      "limitation": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "supportBoundsXZ": [
+        0,
+        -6,
+        12,
+        2.5
+      ]
+    }
+  },
+  {
+    "id": "curb_bulb_single_left_medium_r1",
+    "label": "Left single-leg corner \u00b7 Medium \u00b7 9 m leg reach",
+    "category": "Curb bulbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      9.0,
+      6.5,
+      0.15000000596046448
+    ],
+    "url": "/street-kits/traffic-safety-r1/curb_bulb_single_left_medium_r1.glb",
+    "sha256": "107844a4475902e3cabe43cfa8aa32b27d5fa643f2cffd9ed04d0425cf9a02f7",
+    "bytes": 45396,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Curb bulbs",
+      "family": "single_left",
+      "familyLabel": "Left single-leg corner",
+      "variantLabel": "Medium \u00b7 9 m leg reach",
+      "sha256": "107844a4475902e3cabe43cfa8aa32b27d5fa643f2cffd9ed04d0425cf9a02f7",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "sidewalk-attachment",
+      "nominalFootprint": [
+        9.0,
+        6.5
+      ],
+      "limitation": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "supportBoundsXZ": [
+        0,
+        -4.5,
+        9,
+        2
+      ]
+    }
+  },
+  {
+    "id": "curb_bulb_single_left_small_r1",
+    "label": "Left single-leg corner \u00b7 Small \u00b7 6 m leg reach",
+    "category": "Curb bulbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      6.0,
+      4.5,
+      0.15000000596046448
+    ],
+    "url": "/street-kits/traffic-safety-r1/curb_bulb_single_left_small_r1.glb",
+    "sha256": "31b700012a5544f0b7b381e2716c5783ae562a249e085ac8fcb6caf02a084273",
+    "bytes": 44888,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Curb bulbs",
+      "family": "single_left",
+      "familyLabel": "Left single-leg corner",
+      "variantLabel": "Small \u00b7 6 m leg reach",
+      "sha256": "31b700012a5544f0b7b381e2716c5783ae562a249e085ac8fcb6caf02a084273",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "sidewalk-attachment",
+      "nominalFootprint": [
+        6.0,
+        4.5
+      ],
+      "limitation": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "supportBoundsXZ": [
+        0,
+        -3,
+        6,
+        1.5
+      ]
+    }
+  },
+  {
+    "id": "curb_bulb_single_right_large_r1",
+    "label": "Right single-leg corner \u00b7 Large \u00b7 12 m leg reach",
+    "category": "Curb bulbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      12.0,
+      8.5,
+      0.15000000596046448
+    ],
+    "url": "/street-kits/traffic-safety-r1/curb_bulb_single_right_large_r1.glb",
+    "sha256": "235147e985726fd7f4280520609eec2f1cf0f98ae30a1069ad73ead1fd7e6c8c",
+    "bytes": 44068,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Curb bulbs",
+      "family": "single_right",
+      "familyLabel": "Right single-leg corner",
+      "variantLabel": "Large \u00b7 12 m leg reach",
+      "sha256": "235147e985726fd7f4280520609eec2f1cf0f98ae30a1069ad73ead1fd7e6c8c",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "sidewalk-attachment",
+      "nominalFootprint": [
+        12.0,
+        8.5
+      ],
+      "limitation": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "supportBoundsXZ": [
+        -12,
+        -6,
+        0,
+        2.5
+      ]
+    }
+  },
+  {
+    "id": "curb_bulb_single_right_medium_r1",
+    "label": "Right single-leg corner \u00b7 Medium \u00b7 9 m leg reach",
+    "category": "Curb bulbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      9.0,
+      6.5,
+      0.15000000596046448
+    ],
+    "url": "/street-kits/traffic-safety-r1/curb_bulb_single_right_medium_r1.glb",
+    "sha256": "743b4d1a56467ca25853bc3ae7b1c39d1e6f8e11886b3f5f0f4bd5cb8eb4ebb8",
+    "bytes": 45152,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Curb bulbs",
+      "family": "single_right",
+      "familyLabel": "Right single-leg corner",
+      "variantLabel": "Medium \u00b7 9 m leg reach",
+      "sha256": "743b4d1a56467ca25853bc3ae7b1c39d1e6f8e11886b3f5f0f4bd5cb8eb4ebb8",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "sidewalk-attachment",
+      "nominalFootprint": [
+        9.0,
+        6.5
+      ],
+      "limitation": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "supportBoundsXZ": [
+        -9,
+        -4.5,
+        0,
+        2
+      ]
+    }
+  },
+  {
+    "id": "curb_bulb_single_right_small_r1",
+    "label": "Right single-leg corner \u00b7 Small \u00b7 6 m leg reach",
+    "category": "Curb bulbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      6.0,
+      4.5,
+      0.15000000596046448
+    ],
+    "url": "/street-kits/traffic-safety-r1/curb_bulb_single_right_small_r1.glb",
+    "sha256": "c0b4b9b735f1883bd6db2dcbdc8f9a74c175edde9e804bc2f7fab1020304d9d3",
+    "bytes": 44872,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Curb bulbs",
+      "family": "single_right",
+      "familyLabel": "Right single-leg corner",
+      "variantLabel": "Small \u00b7 6 m leg reach",
+      "sha256": "c0b4b9b735f1883bd6db2dcbdc8f9a74c175edde9e804bc2f7fab1020304d9d3",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "sidewalk-attachment",
+      "nominalFootprint": [
+        6.0,
+        4.5
+      ],
+      "limitation": "Requires matching sidewalk attachment and curb replacement; no ramps included. Reject ramp/access-route conflicts.",
+      "supportBoundsXZ": [
+        -6,
+        -3,
+        0,
+        1.5
+      ]
+    }
+  },
+  {
+    "id": "overhead_calgary_reach_10m_unlit_r1",
+    "label": "10 m mast arm \u00b7 Unlit",
+    "category": "Overhead pedestrian flashers",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      10.2860007584095,
+      1.0,
+      6.799999713897705
+    ],
+    "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_10m_unlit_r1.glb",
+    "sha256": "8313ef6787c889585c23849186335c5f7615de14082ce2e8ecc4f6a1a7b61df5",
+    "bytes": 292736,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Overhead pedestrian flashers",
+      "family": "overhead-10",
+      "familyLabel": "10 m mast arm",
+      "variantLabel": "Unlit",
+      "sha256": "8313ef6787c889585c23849186335c5f7615de14082ce2e8ecc4f6a1a7b61df5",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        10.2860007584095,
+        1.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -0.27000001072883606,
+        -0.5,
+        10.016000388193634,
+        0.5
+      ]
+    }
+  },
+  {
+    "id": "overhead_calgary_reach_10m_amber_r1",
+    "label": "10 m mast arm \u00b7 Static amber",
+    "category": "Overhead pedestrian flashers",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      10.2860007584095,
+      1.0,
+      6.799999713897705
+    ],
+    "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_10m_amber_r1.glb",
+    "sha256": "52bb5768bf967c36922f515a675626e39a88ccb9070427154f19033cd87c24f7",
+    "bytes": 292948,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Overhead pedestrian flashers",
+      "family": "overhead-10",
+      "familyLabel": "10 m mast arm",
+      "variantLabel": "Static amber",
+      "sha256": "52bb5768bf967c36922f515a675626e39a88ccb9070427154f19033cd87c24f7",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        10.2860007584095,
+        1.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -0.27000001072883606,
+        -0.5,
+        10.016000388193634,
+        0.5
+      ]
+    }
+  },
+  {
+    "id": "overhead_calgary_reach_6m_unlit_r1",
+    "label": "6 m mast arm \u00b7 Unlit",
+    "category": "Overhead pedestrian flashers",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      6.285999804735184,
+      1.0,
+      6.799999713897705
+    ],
+    "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_6m_unlit_r1.glb",
+    "sha256": "3aff60fcf6b09a7f76f695b1f665266ac46c2a5fb706c470c2735171f06ada36",
+    "bytes": 292580,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Overhead pedestrian flashers",
+      "family": "overhead-6",
+      "familyLabel": "6 m mast arm",
+      "variantLabel": "Unlit",
+      "sha256": "3aff60fcf6b09a7f76f695b1f665266ac46c2a5fb706c470c2735171f06ada36",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        6.285999804735184,
+        1.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -0.27000001072883606,
+        -0.5,
+        6.015999911356475,
+        0.5
+      ]
+    }
+  },
+  {
+    "id": "overhead_calgary_reach_6m_amber_r1",
+    "label": "6 m mast arm \u00b7 Static amber",
+    "category": "Overhead pedestrian flashers",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      6.285999804735184,
+      1.0,
+      6.799999713897705
+    ],
+    "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_6m_amber_r1.glb",
+    "sha256": "dff0ee496075aa84aca02f3a365d2af1d8c19f9dea2e74f809d0c915d1bd634d",
+    "bytes": 292956,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Overhead pedestrian flashers",
+      "family": "overhead-6",
+      "familyLabel": "6 m mast arm",
+      "variantLabel": "Static amber",
+      "sha256": "dff0ee496075aa84aca02f3a365d2af1d8c19f9dea2e74f809d0c915d1bd634d",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        6.285999804735184,
+        1.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -0.27000001072883606,
+        -0.5,
+        6.015999911356475,
+        0.5
+      ]
+    }
+  },
+  {
+    "id": "overhead_calgary_reach_8m_unlit_r1",
+    "label": "8 m mast arm \u00b7 Unlit",
+    "category": "Overhead pedestrian flashers",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      8.2860007584095,
+      1.0,
+      6.799999713897705
+    ],
+    "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_8m_unlit_r1.glb",
+    "sha256": "edaa41b2d7a9331c133a1a6e425110b1cf4384a226a04e375969a9e768489d55",
+    "bytes": 292744,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Overhead pedestrian flashers",
+      "family": "overhead-8",
+      "familyLabel": "8 m mast arm",
+      "variantLabel": "Unlit",
+      "sha256": "edaa41b2d7a9331c133a1a6e425110b1cf4384a226a04e375969a9e768489d55",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        8.2860007584095,
+        1.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -0.27000001072883606,
+        -0.5,
+        8.016000388193634,
+        0.5
+      ]
+    }
+  },
+  {
+    "id": "overhead_calgary_reach_8m_amber_r1",
+    "label": "8 m mast arm \u00b7 Static amber",
+    "category": "Overhead pedestrian flashers",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      8.2860007584095,
+      1.0,
+      6.799999713897705
+    ],
+    "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_8m_amber_r1.glb",
+    "sha256": "e02ef3c2fde5790dabb046cdd78fbcbd71ebb82a0bb3542bec5392a85d509a6f",
+    "bytes": 292952,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Overhead pedestrian flashers",
+      "family": "overhead-8",
+      "familyLabel": "8 m mast arm",
+      "variantLabel": "Static amber",
+      "sha256": "e02ef3c2fde5790dabb046cdd78fbcbd71ebb82a0bb3542bec5392a85d509a6f",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        8.2860007584095,
+        1.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -0.27000001072883606,
+        -0.5,
+        8.016000388193634,
+        0.5
+      ]
+    }
+  },
+  {
+    "id": "overhead_calgary_pair_18m_unlit_r1",
+    "label": "Paired overhead \u00b7 18 m centres \u00b7 Unlit",
+    "category": "Overhead pedestrian flashers",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      18.540000915527344,
+      1.0000006556510925,
+      6.799999713897705
+    ],
+    "url": "/street-kits/traffic-safety-r1/overhead_calgary_pair_18m_unlit_r1.glb",
+    "sha256": "de5313257696fa779dacce2777039ee397cf9100c7ae11d3c087354a534eaa44",
+    "bytes": 579596,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Overhead pedestrian flashers",
+      "family": "overhead-pair",
+      "familyLabel": "Paired overhead \u00b7 18 m centres",
+      "variantLabel": "Unlit",
+      "sha256": "de5313257696fa779dacce2777039ee397cf9100c7ae11d3c087354a534eaa44",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        18.540000915527344,
+        1.0000006556510925
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -9.270000010728836,
+        -0.5,
+        9.270000034332988,
+        0.5000006773515605
+      ]
+    }
+  },
+  {
+    "id": "overhead_calgary_pair_18m_amber_r1",
+    "label": "Paired overhead \u00b7 18 m centres \u00b7 Static amber",
+    "category": "Overhead pedestrian flashers",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      18.540000915527344,
+      1.0000006556510925,
+      6.799999713897705
+    ],
+    "url": "/street-kits/traffic-safety-r1/overhead_calgary_pair_18m_amber_r1.glb",
+    "sha256": "dff5f9f46a7052f91915a859b66430109ad0429da0abb87e46001093e2b5d895",
+    "bytes": 579808,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "Overhead pedestrian flashers",
+      "family": "overhead-pair",
+      "familyLabel": "Paired overhead \u00b7 18 m centres",
+      "variantLabel": "Static amber",
+      "sha256": "dff5f9f46a7052f91915a859b66430109ad0429da0abb87e46001093e2b5d895",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        18.540000915527344,
+        1.0000006556510925
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -9.270000010728836,
+        -0.5,
+        9.270000034332988,
+        0.5000006773515605
+      ]
+    }
+  },
+  {
+    "id": "rrfb_calgary_dualface_unlit_r1",
+    "label": "Dual-face pole \u00b7 Unlit",
+    "category": "RRFBs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      0.75,
+      0.40299998223781586,
+      4.111999988555908
+    ],
+    "url": "/street-kits/traffic-safety-r1/rrfb_calgary_dualface_unlit_r1.glb",
+    "sha256": "059b53ba666eb3b1bc14be21d32117ce5875d4a8f6ea5e752516608ef849f1ec",
+    "bytes": 250432,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "RRFBs",
+      "family": "dualface",
+      "familyLabel": "Dual-face pole",
+      "variantLabel": "Unlit",
+      "sha256": "059b53ba666eb3b1bc14be21d32117ce5875d4a8f6ea5e752516608ef849f1ec",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        0.75,
+        0.40299998223781586
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -0.37500000052453664,
+        -0.2600000011918453,
+        0.37500000052453664,
+        0.14299999736249447
+      ]
+    }
+  },
+  {
+    "id": "rrfb_calgary_dualface_amber_r1",
+    "label": "Dual-face pole \u00b7 Static amber",
+    "category": "RRFBs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      0.75,
+      0.40299998223781586,
+      4.111999988555908
+    ],
+    "url": "/street-kits/traffic-safety-r1/rrfb_calgary_dualface_amber_r1.glb",
+    "sha256": "61f7ec4a53bb51527fb84af4127308a0facd0bb41647138235c891c671366e5d",
+    "bytes": 250524,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "RRFBs",
+      "family": "dualface",
+      "familyLabel": "Dual-face pole",
+      "variantLabel": "Static amber",
+      "sha256": "61f7ec4a53bb51527fb84af4127308a0facd0bb41647138235c891c671366e5d",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        0.75,
+        0.40299998223781586
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -0.37500000052453664,
+        -0.2600000011918453,
+        0.37500000052453664,
+        0.14299999736249447
+      ]
+    }
+  },
+  {
+    "id": "rrfb_calgary_pair_8m_unlit_r1",
+    "label": "Paired dual-face poles \u00b7 8 m centres \u00b7 Unlit",
+    "category": "RRFBs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      8.75,
+      0.5199999809265137,
+      4.111999988555908
+    ],
+    "url": "/street-kits/traffic-safety-r1/rrfb_calgary_pair_8m_unlit_r1.glb",
+    "sha256": "22f84c0ca60ac89f86f541aece2325124059cfcbd30a8d2e695db5b26aa69e70",
+    "bytes": 496916,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "RRFBs",
+      "family": "rrfb-pair",
+      "familyLabel": "Paired dual-face poles \u00b7 8 m centres",
+      "variantLabel": "Unlit",
+      "sha256": "22f84c0ca60ac89f86f541aece2325124059cfcbd30a8d2e695db5b26aa69e70",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        8.75,
+        0.5199999809265137
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -4.375000000524537,
+        -0.2600000011918453,
+        4.375000008567429,
+        0.2600000087102102
+      ]
+    }
+  },
+  {
+    "id": "rrfb_calgary_pair_8m_amber_r1",
+    "label": "Paired dual-face poles \u00b7 8 m centres \u00b7 Static amber",
+    "category": "RRFBs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      8.75,
+      0.5199999809265137,
+      4.111999988555908
+    ],
+    "url": "/street-kits/traffic-safety-r1/rrfb_calgary_pair_8m_amber_r1.glb",
+    "sha256": "4adc5de87ba2b5a402327be9344ce8df90e96b1fcdd58191359532b1fbb85edc",
+    "bytes": 497012,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "RRFBs",
+      "family": "rrfb-pair",
+      "familyLabel": "Paired dual-face poles \u00b7 8 m centres",
+      "variantLabel": "Static amber",
+      "sha256": "4adc5de87ba2b5a402327be9344ce8df90e96b1fcdd58191359532b1fbb85edc",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        8.75,
+        0.5199999809265137
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -4.375000000524537,
+        -0.2600000011918453,
+        4.375000008567429,
+        0.2600000087102102
+      ]
+    }
+  },
+  {
+    "id": "rrfb_calgary_solar_unlit_r1",
+    "label": "Solar pole \u00b7 Unlit",
+    "category": "RRFBs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      0.75,
+      0.408189132809639,
+      4.458189010620117
+    ],
+    "url": "/street-kits/traffic-safety-r1/rrfb_calgary_solar_unlit_r1.glb",
+    "sha256": "9247bb8d198ffe5543c1d73bec28346c270d984c19dfd79e8f09899ff2899277",
+    "bytes": 191728,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "RRFBs",
+      "family": "solar",
+      "familyLabel": "Solar pole",
+      "variantLabel": "Unlit",
+      "sha256": "9247bb8d198ffe5543c1d73bec28346c270d984c19dfd79e8f09899ff2899277",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        0.75,
+        0.408189132809639
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -0.375,
+        -0.2600000011918453,
+        0.375,
+        0.15026018686659276
+      ]
+    }
+  },
+  {
+    "id": "rrfb_calgary_solar_amber_r1",
+    "label": "Solar pole \u00b7 Static amber",
+    "category": "RRFBs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      0.75,
+      0.408189132809639,
+      4.458189010620117
+    ],
+    "url": "/street-kits/traffic-safety-r1/rrfb_calgary_solar_amber_r1.glb",
+    "sha256": "95b0c4fe84f4d910995919f0bc89db9d52eb87fbc8e2b4cc5bf75b04b6eba7e0",
+    "bytes": 191836,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "RRFBs",
+      "family": "solar",
+      "familyLabel": "Solar pole",
+      "variantLabel": "Static amber",
+      "sha256": "95b0c4fe84f4d910995919f0bc89db9d52eb87fbc8e2b4cc5bf75b04b6eba7e0",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        0.75,
+        0.408189132809639
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -0.375,
+        -0.2600000011918453,
+        0.375,
+        0.15026018686659276
+      ]
+    }
+  },
+  {
+    "id": "rrfb_calgary_standard_unlit_r1",
+    "label": "Standard pole \u00b7 Unlit",
+    "category": "RRFBs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      0.75,
+      0.40299998223781586,
+      4.111999988555908
+    ],
+    "url": "/street-kits/traffic-safety-r1/rrfb_calgary_standard_unlit_r1.glb",
+    "sha256": "35b243d1a8122c05060cdf3b05d78fa6c3300224121d7f167b5cb26c6c4583a4",
+    "bytes": 171096,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "RRFBs",
+      "family": "standard",
+      "familyLabel": "Standard pole",
+      "variantLabel": "Unlit",
+      "sha256": "35b243d1a8122c05060cdf3b05d78fa6c3300224121d7f167b5cb26c6c4583a4",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        0.75,
+        0.40299998223781586
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -0.375,
+        -0.2600000011918453,
+        0.375,
+        0.14299999736249447
+      ]
+    }
+  },
+  {
+    "id": "rrfb_calgary_standard_amber_r1",
+    "label": "Standard pole \u00b7 Static amber",
+    "category": "RRFBs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      0.75,
+      0.40299998223781586,
+      4.111999988555908
+    ],
+    "url": "/street-kits/traffic-safety-r1/rrfb_calgary_standard_amber_r1.glb",
+    "sha256": "2701888dd7639aeb04e2ed888e4a3c6fd81fde85377b6ead6d66459f67944de1",
+    "bytes": 171324,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "RRFBs",
+      "family": "standard",
+      "familyLabel": "Standard pole",
+      "variantLabel": "Static amber",
+      "sha256": "2701888dd7639aeb04e2ed888e4a3c6fd81fde85377b6ead6d66459f67944de1",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        0.75,
+        0.40299998223781586
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch. Unlit or static amber only; no operational flashing. Pair spacing is pole centres, not road width.",
+      "supportBoundsXZ": [
+        -0.375,
+        -0.2600000011918453,
+        0.375,
+        0.14299999736249447
+      ]
+    }
+  },
+  {
+    "id": "calgary_tc_curb_2750_yellow_r1",
+    "label": "TC curbs & delineators \u00b7 Bare yellow curb",
+    "category": "TC curbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      2.75,
+      1.0,
+      0.15000000596046448
+    ],
+    "url": "/street-kits/traffic-safety-r1/calgary_tc_curb_2750_yellow_r1.glb",
+    "sha256": "76b210ccb373c3ef6bf5de4e00a55cc0f010c4b5b25b508c8cd215bbf8b4e14f",
+    "bytes": 60496,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "TC curbs",
+      "family": "tc-curbs",
+      "familyLabel": "TC curbs & delineators",
+      "variantLabel": "Bare yellow curb",
+      "sha256": "76b210ccb373c3ef6bf5de4e00a55cc0f010c4b5b25b508c8cd215bbf8b4e14f",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        2.75,
+        1.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch.",
+      "supportBoundsXZ": [
+        -1.375,
+        -0.5,
+        1.375,
+        0.5
+      ]
+    }
+  },
+  {
+    "id": "calgary_tc_curb_flexpost_r1",
+    "label": "TC curbs & delineators \u00b7 Flexpost curb",
+    "category": "TC curbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      2.75,
+      1.0,
+      1.0499999523162842
+    ],
+    "url": "/street-kits/traffic-safety-r1/calgary_tc_curb_flexpost_r1.glb",
+    "sha256": "0121bcbd481d30a383b8105fefd65cdd8ee60d35c34d3552879e2c0ab9d505a8",
+    "bytes": 94516,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "TC curbs",
+      "family": "tc-curbs",
+      "familyLabel": "TC curbs & delineators",
+      "variantLabel": "Flexpost curb",
+      "sha256": "0121bcbd481d30a383b8105fefd65cdd8ee60d35c34d3552879e2c0ab9d505a8",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        2.75,
+        1.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch.",
+      "supportBoundsXZ": [
+        -1.375,
+        -0.5,
+        1.375,
+        0.5
+      ]
+    }
+  },
+  {
+    "id": "calgary_tc_curb_object_marker_r1",
+    "label": "TC curbs & delineators \u00b7 Object-marker curb",
+    "category": "TC curbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      2.75,
+      1.0,
+      1.1500000953674316
+    ],
+    "url": "/street-kits/traffic-safety-r1/calgary_tc_curb_object_marker_r1.glb",
+    "sha256": "96b478072fcf0f39cd2da64b9f0f82d87ba0ce1122c6a844836c279810de5813",
+    "bytes": 88592,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "TC curbs",
+      "family": "tc-curbs",
+      "familyLabel": "TC curbs & delineators",
+      "variantLabel": "Object-marker curb",
+      "sha256": "96b478072fcf0f39cd2da64b9f0f82d87ba0ce1122c6a844836c279810de5813",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        2.75,
+        1.0
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch.",
+      "supportBoundsXZ": [
+        -1.375,
+        -0.5,
+        1.375,
+        0.5
+      ]
+    }
+  },
+  {
+    "id": "calgary_delineator_illustrative_r1",
+    "label": "TC curbs & delineators \u00b7 Standalone delineator",
+    "category": "TC curbs",
+    "description": "Visualization asset, not an approved construction or operational traffic-control design.",
+    "dimensions": [
+      0.18000000715255737,
+      0.18000000715255737,
+      0.9000000357627869
+    ],
+    "url": "/street-kits/traffic-safety-r1/calgary_delineator_illustrative_r1.glb",
+    "sha256": "93e9152206f21d3a0c721a43f6ee071d8db24c36f1bb9e5dee52adf36ccb1ba0",
+    "bytes": 35724,
+    "color": "#d9b644",
+    "kind": "object",
+    "datumLift": 0,
+    "safety": {
+      "group": "TC curbs",
+      "family": "tc-curbs",
+      "familyLabel": "TC curbs & delineators",
+      "variantLabel": "Standalone delineator",
+      "sha256": "93e9152206f21d3a0c721a43f6ee071d8db24c36f1bb9e5dee52adf36ccb1ba0",
+      "transforms": [
+        "translation",
+        "yaw"
+      ],
+      "placement": "flat-road",
+      "nominalFootprint": [
+        0.18000000715255737,
+        0.18000000715255737
+      ],
+      "limitation": "Flat supported surface only. Fixed metre geometry; rotate or select a supported size, never stretch.",
+      "supportBoundsXZ": [
+        -0.09000000357627869,
+        -0.09000000357627869,
+        0.09000000357627869,
+        0.09000000357627869
+      ]
+    }
+  }
+]

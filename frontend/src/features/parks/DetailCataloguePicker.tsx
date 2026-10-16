@@ -59,13 +59,16 @@ export function DetailCataloguePicker({
             ))}
           </select>
           <p className="text-xs">{choice.description}</p>
+          {choice.safety?.placement === 'sidewalk-attachment' && (
+            <p className="text-xs text-amber-900">Placement unavailable until matching sidewalk attachment and curb replacement are validated.</p>
+          )}
           <p className="text-xs text-slate-600">
             {choice.dimensions.map((n) => n.toFixed(1)).join(" × ")} m · width ×
             depth × height
           </p>
           <button
             className={`${control} !bg-[#c9ff3d] font-semibold`}
-            disabled={disabled || !canAdd(choice.kind)}
+            disabled={disabled || !canAdd(choice.kind) || choice.safety?.placement === 'sidewalk-attachment'}
             onClick={() => onAdd(choice.id)}
           >
             Add {choice.kind}
