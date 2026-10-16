@@ -570,8 +570,8 @@ def atrium():
     b = Batch()
     b.box('steel', x0 + .12, y0 + .1, (G0 + ATR_TOP) / 2, .24, .24, ATR_TOP - G0)
     b.box('steel', xr - .12, y0 + .1, (G0 + ATR_TOP) / 2, .24, .24, ATR_TOP - G0)
-    b.box('steel', (x0 + xr) / 2, y0 + .1, ATR_TOP - .1, xr - x0, .24, .2)
-    b.box('steel', (x0 + xr) / 2, y0 + .1, 3.9, xr - x0, .24, .16)
+    b.box('steel', (x0 + xr) / 2, y0 + .1, ATR_TOP - .1, xr - x0 - .5, .2, .2)        # between the edge posts, set back
+    b.box('steel', (x0 + xr) / 2, y0 + .1, 3.9, xr - x0 - .5, .2, .16)
     b.flush('atrium frame')
     # Diagonal mullion net on the south glass.
     step = 2.4
