@@ -314,7 +314,7 @@ def grooves(f, lo, hi, z0, z1, holes, spacing=.62, role='stonejoint'):
         C.mesh(f.label + ' rustication joints', vs, fs, role, 'limestone base')
 
 
-def balcony(m, f, u, z, w, depth=1.0, role='hardware', spacing=.13):
+def balcony(m, f, u, z, w, depth=1.0, role='hardware', spacing=.16):
     """Iron balcony: plate deck, pickets standing on the deck between a bottom rail and the top rail."""
     m.box(role, u, -depth / 2 + .02, z - .06, w, depth + .04, .12)
     for zr, s_ in ((z + .98, .05), (z + .06, .04)):
@@ -362,7 +362,7 @@ def elevation(f, lo, hi, stone_bay=None, balcony_bay=None, entrance=None, lite=F
                 holes.append(hole(f'{f.label} f{k + 3} window {i}', u, z + .8, 1.25, 1.95))
     top = ROOF + .5
     f.wall(f.label + ' brick carrier', lo, hi - EPS, BASE_TOP, top, depth=T, holes=holes)
-    G.brick_courses(f, lo + .02, hi - .02, BASE_TOP + .3, ROOF - .1, holes, spacing=.2 if not lite else .3)
+    G.brick_courses(f, lo + .02, hi - .02, BASE_TOP + .3, ROOF - .1, holes, spacing=.2 if not lite else .4)
     m = Merge(f)
     for h in holes:
         framed(m, f, h, cols=1, rows=2, inset=.14, occupied='flat', kind=h.get('kind', 'window'), lite=lite)
