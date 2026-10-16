@@ -67,3 +67,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001
+
+- P1: the east raking element is a slim white strut past a stepped cedar facade; the sources show a solid charcoal triangular wall with a light coping along the rake, the terraces ending against it
+- P1: the wing's court-facing west wall is punched cedar with small windows; the sources show a projecting balcony on every floor with white slab edges, black rails and full-height glazing between cedar panels
+- P1: no ground colonnade; the sources set the ground storey back behind white round columns on the west and south fronts
+- P1: the birch court is a flush lawn square and two lawn pads; the sources show a raised corten planter with dense underplanting and two planted raised beds with a paved path between
+- P1: terrace planting and furniture far too sparse; the sources show long corten planters of tall grasses and small multi-stem trees with sofas, loungers and dining sets
+- P2: see evidence/v001/independent-review.md

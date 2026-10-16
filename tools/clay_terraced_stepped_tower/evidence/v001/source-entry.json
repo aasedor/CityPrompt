@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-terraced-stepped-tower",
+  "variant_id": "clay-terraced-stepped-tower-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "terraced_stepped_building/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/terraced_stepped_building/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1100381,
+      "sha256": "a851d4ed4f967f01caae47980905d92368b43af8b23fde76678b28b5d03b0690"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/terraced_stepped_building/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 954134,
+      "sha256": "223c530887e06263fb2085d2459cb4bac88c899fcb313fd3344e2006744c98de"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/terraced_stepped_building/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 933191,
+      "sha256": "e29c87cc0d4ca38bdd186a1528ac5a59de8cc887a102b359936e495f62679826"
+    }
+  ]
+}
