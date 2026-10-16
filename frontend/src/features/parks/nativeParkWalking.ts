@@ -12,7 +12,7 @@ import { measuredParkWalking } from './measuredParkWalking';
 /** Opt-in: all existing parks keep their prior camera behavior. */
 function context(zones: SiteZone[], pose: WalkPose) {
   const boundary = getActiveSiteBoundary(zones);
-  if (!boundary?.properties?.community_3d_mask_existing_tiles || boundary.properties.terrain_strategy === 'landscape') return null;
+  if (boundary && (!boundary.properties?.community_3d_mask_existing_tiles || boundary.properties.terrain_strategy === 'landscape')) return null;
   for (const zone of zones) {
     const resolved = readNativePark(zone);
     if (!resolved) continue;

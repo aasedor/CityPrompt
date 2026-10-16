@@ -136,8 +136,9 @@ export function NativeParkLayer({zones,terrainHeight}:{zones:SiteZone[];terrainH
   return <>{zones.filter(hasNativePark).map(zone=>{
     const resolved=readNativePark(zone), frame=resolved?.selection.frame;
     const height=resolvePreparedSiteTerrainForZone(zone,zones,terrainHeight);
-    const supported=resolved && !nativeParkFitProblem(zone) && boundary?.properties?.terrain_strategy!=='landscape'
-      && boundary?.properties?.community_3d_mask_existing_tiles===true && height!==null && Number.isFinite(height);
+    const supported=resolved && !nativeParkFitProblem(zone)
+      && (!boundary || (boundary.properties?.terrain_strategy!=='landscape' && boundary.properties?.community_3d_mask_existing_tiles===true))
+      && height!==null && Number.isFinite(height);
     return <group key={`${zone.id}:${zone.updated_at}`} userData={{...direct3DProposalUserData('park'),...direct3DInstanceUserData(direct3DZoneInstanceDescriptor(zone.id,'park')),
       nativeParkZone:zone.id,nativeParkRevision:JSON.stringify(zone.properties?.green_space_native_layout)}}>
       <ParkBoundary zoneId={zone.id} revision={JSON.stringify(zone.properties?.green_space_native_layout ?? null)}><Suspense fallback={<group userData={{nativeParkStatus:'loading'}}/>}>

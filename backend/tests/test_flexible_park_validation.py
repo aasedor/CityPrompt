@@ -31,8 +31,9 @@ def test_flexible_park_rejects_wrong_identity_unprepared_ground_and_wrong_shape(
     shape = polygon([(0, 0), (35, 0), (35, 12), (20, 12), (20, 32), (0, 32)])
     with pytest.raises(ValueError, match='available flexible park'):
         _validate_flexible_park(shape, {**POCKET, 'green_space_selected_variant_id': 'urban_pocket_park_v3'}, PREPARED)
-    with pytest.raises(ValueError, match='Prepare a level site'):
+    with pytest.raises(ValueError, match='ground is not loaded'):
         _validate_flexible_park(shape, POCKET, None)
+    _validate_flexible_park(shape, {**POCKET, 'terrain_elevation_m': 1044.5}, None)
     with pytest.raises(ValueError, match='supported size or shape'):
         _validate_flexible_park(polygon([(0, 0), (5, 0), (5, 5), (0, 5)]), POCKET, PREPARED)
 
@@ -55,5 +56,6 @@ def test_new_programmes_preserve_irregular_outline_and_exact_recipe(key, variant
     assert recipe.planting_structure == structure
     with pytest.raises(ValueError, match='available flexible park'):
         _validate_flexible_park(shape, {**properties, 'green_space_selected_variant_id': 'urban_pocket_park_v0'}, PREPARED)
-    with pytest.raises(ValueError, match='Prepare a level site'):
+    with pytest.raises(ValueError, match='ground is not loaded'):
         _validate_flexible_park(shape, properties, None)
+    _validate_flexible_park(shape, {**properties, 'terrain_elevation_m': 1044.5}, None)

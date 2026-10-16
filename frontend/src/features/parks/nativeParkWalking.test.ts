@@ -30,6 +30,14 @@ function fixture(angle = 0, variantId = 'student_quarry_garden_v1') {
 
 describe('native park walking in saved placement frames', () => {
   beforeEach(() => { vi.mocked(verifiedScene).mockReset(); });
+  it('walks the same native levels without a site boundary, including after save/reload', () => {
+    const { zones, point } = fixture(37);
+    const park = { ...zones[1], properties: { ...zones[1].properties, terrain_elevation_m: 1103 } };
+    const standalone = JSON.parse(JSON.stringify([park])) as SiteZone[];
+    expect(nativeParkWalkStartForZone(standalone, park.id)).toEqual(nativeParkWalkStartForZone(zones, park.id));
+    expect(nativeParkWalkEntry(standalone, point(7, 2, -4.5))).toEqual(nativeParkWalkEntry(zones, point(7, 2, -4.5)));
+    expect(authoredCameraGround(standalone, point(0, -33.5).lng, point(0, -33.5).lat, 999)).toBe(1103);
+  });
   it.each([0, 37, 90, 180])('recovers to the real entrance after rotation %s', angle => {
     const { zones, point } = fixture(angle);
     const entrance = nativeParkWalkEntrance(zones, point(0, 0, -4.5, 67))!;

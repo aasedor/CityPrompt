@@ -52,7 +52,21 @@ export function resolvePreparedSiteTerrainForZone(
   fallbackTerrainHeight: number,
 ): number | null {
   const boundary = getActiveSiteBoundary(zones);
-  if (!zone || !boundary || zone.properties?.park_terrain) return null;
+  if (!zone || zone.properties?.park_terrain) return null;
+  if (!boundary) {
+    // Native/flexible parks already own a complete ground surface. Without a
+    // site boundary, prepare only this footprint at its saved picked datum.
+    // Share it with ground rendering, camera/walking and capture; never use the
+    // scene-wide fallback (which may belong to a different placed object).
+    const props = zone.properties;
+    const height = props?.terrain_elevation_m;
+    return zone.zone_type === 'green_space'
+      && (props?.green_space_native_layout != null || props?.pick_place_flexible_park != null)
+      && props?.community_3d_mask_existing_tiles !== false
+      && props?.terrain_strategy !== 'landscape'
+      && typeof height === 'number' && Number.isFinite(height)
+      ? height + (terraceOffset(zone) ?? 0) : null;
+  }
   const landscape = boundary.properties?.terrain_strategy === 'landscape';
   if (!landscape && !getPreparedSiteBoundaryIds(zones).has(boundary.id)) return null;
   if (landscape && zone.id !== boundary.id && (zone.zone_type === 'green_space' || terraceOffset(zone) === null)) return null;
