@@ -394,7 +394,7 @@ def base():
     e = C.Face((BX1, (BY0 + Y1) / 2, 0), (0, 1, 0), (-1, 0, 0), 'base east')
     hd = (Y1 - BY0) / 2
     holes_e = [hole(f'base east glazing {i}', -hd + T + 4.4 * (i + .5), G0, 3.6, BASE_TOP - .9 - G0, kind='storefront') for i in range(7)]
-    e.wall('base east carrier', -hd + T, hd, G0, BASE_TOP, depth=T, role='white', holes=holes_e)
+    e.wall('base east carrier', -hd + T, hd - T, G0, BASE_TOP, depth=T, role='white', holes=holes_e)   # north end inside the north carrier
     m = Merge(e)
     for h in holes_e:
         framed(m, e, h, cols=3, rows=2, inset=.14, occupied='bike room and cafe', kind='storefront')
