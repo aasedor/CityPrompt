@@ -1,0 +1,420 @@
+{
+  "candidate": "clay-beltline-brick-midrise-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-beltline-brick-midrise",
+  "variant_id": "clay-beltline-brick-midrise-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "calgary_beltline_mid_rise/variant_0 (beltline_glass_panel)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 30.0,
+      "depth": 33.6,
+      "height": 20.7
+    },
+    "observed_storeys": 5,
+    "storey_programme": "retail ground storey, three brick residential storeys, set-back penthouse storey",
+    "plan": "30 x 32 m upper floor plate on a corner (top view at 0.054 m/px); retail storey projects 1.6 m on the south; penthouse 23.8 x 25.5 m set back 3.0 to 4.3 m behind decked terraces",
+    "facade": "two brick wings either side of a 4.5 m recessed glazed slot over the lobby; floor-2 flats onto the retail roof behind a glass guard; projecting balconies on floors 3 and 4 (two on the west wing, one wide on the east wing, two stacks on the east face, two on the north)",
+    "ground": "storefronts between brick piers under dark sign bands: brewery taproom with patio (west), lobby under a dark canopy (middle), market wrapping the south-east corner",
+    "levels_m": [
+      0.15,
+      5.0,
+      8.1,
+      11.2,
+      14.3
+    ],
+    "parapet_m": 15.3,
+    "penthouse_top_m": 17.7,
+    "inferred": "storey height 3.1 m and interiors are teaching assumptions; the north face is not visible in any source and repeats the visible grammar; the west face is a party condition above a lower neighbour"
+  },
+  "roof_contract": {
+    "type": "flat: retail-roof terrace, decked penthouse terraces with planters and glass guard, gravel penthouse roof with paver walkways and a bulkhead",
+    "datum_m": 14.3,
+    "crowns_m": [
+      15.3,
+      17.7
+    ]
+  },
+  "identity_contract": {
+    "owner": "red-brick wings either side of the glazed slot, projecting glass-balustraded balconies, retail storey with dark sign bands, set-back dark penthouse with terraces"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: red brick with recessed courses, dark storefront frames and sign bands, clear glass, pale concrete balcony slabs with glass balustrades, dark metal parapet cap and penthouse panels, timber decks",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 5,
+    "ground": "three retail units and the residential lobby",
+    "upper": "flats around a central corridor",
+    "penthouse": "four penthouse flats on terraces",
+    "roof": "stair and lift bulkhead"
+  },
+  "contact_contract": [
+    "Grade-zero slab and sidewalks",
+    "Retail storey bearing the floor-2 terrace",
+    "Balcony slabs cast with the floor slabs",
+    "Penthouse on the brick roof slab inside the terraces",
+    "Bulkhead on the penthouse roof"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -61.199999999999996,
+        9.936
+      ],
+      "target": [
+        0,
+        0,
+        9.315
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        47.736,
+        -51.407999999999994,
+        41.4
+      ],
+      "target": [
+        0,
+        0,
+        9.315
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        42.839999999999996,
+        -48.96,
+        62.099999999999994
+      ],
+      "target": [
+        0,
+        0,
+        9.315
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        91.8
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 50.4
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -61.199999999999996,
+        0,
+        12.42
+      ],
+      "target": [
+        0,
+        0,
+        9.315
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        61.199999999999996,
+        0,
+        12.42
+      ],
+      "target": [
+        0,
+        0,
+        9.315
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        61.199999999999996,
+        12.42
+      ],
+      "target": [
+        0,
+        0,
+        9.315
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        42.839999999999996,
+        48.96,
+        37.26
+      ],
+      "target": [
+        0,
+        0,
+        9.315
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        6.0,
+        -36.0,
+        9.0
+      ],
+      "target": [
+        6.0,
+        -16.0,
+        9.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        30.0,
+        -30.0,
+        10.0
+      ],
+      "target": [
+        15.0,
+        -16.0,
+        8.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        1.0,
+        -27.0,
+        8.5
+      ],
+      "target": [
+        1.0,
+        -14.4,
+        9.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "storefront_patio",
+      "location": [
+        -6.0,
+        -30.0,
+        2.0
+      ],
+      "target": [
+        -9.0,
+        -17.6,
+        2.6
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "lobby_slot",
+      "location": [
+        1.0,
+        -26.0,
+        2.0
+      ],
+      "target": [
+        1.0,
+        -17.6,
+        3.2
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "balcony_stack",
+      "location": [
+        32.0,
+        2.0,
+        10.0
+      ],
+      "target": [
+        15.0,
+        6.0,
+        10.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "penthouse_terrace",
+      "location": [
+        -10.0,
+        -30.0,
+        24.0
+      ],
+      "target": [
+        -6.0,
+        -13.2,
+        15.8
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_bulkhead",
+      "location": [
+        24.0,
+        -26.0,
+        34.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        18.7
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -7.0,
+        -3.0,
+        9.7
+      ],
+      "target": [
+        -9.0,
+        -17.0,
+        9.299999999999999
+      ],
+      "lens": 55,
+      "whole": false
+    },
+    {
+      "name": "rear_lane",
+      "location": [
+        -6.0,
+        34.0,
+        6.0
+      ],
+      "target": [
+        0.0,
+        16.0,
+        7.0
+      ],
+      "lens": 40,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "storefront_patio",
+    "lobby_slot",
+    "balcony_stack",
+    "penthouse_terrace",
+    "roof_bulkhead",
+    "interior",
+    "rear_lane"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-beltline-mid-rise/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1312366,
+        "sha256": "23a51bd3bc20d6daf86740ada8823e0aad06ec1d840671229139b0d102cb34cc"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-beltline-mid-rise/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 909573,
+        "sha256": "1199b3cc90428ba32b029b7969d3a59ac8f410f9fe872131771524d6a2ff9a72"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-beltline-mid-rise/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 863281,
+        "sha256": "6773eee31ab31db0cb25f922b9eab3af743da14bb8b4ce98e210d72cfd3040b1"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_beltline.py",
+        "sha256": "ed78e915ffa655597072eb77f2d924fc119b29719fc33b767263c10a6381414e"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "c0ff5098305f606f7d1335e18c7039937f819e1eab3f38626d31a73fb0265478"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "f133114d14886b5910b9f112c7fa3214f261a454b36bb35e2bfeb0505178d4e2"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-15T23:24:46.955686+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

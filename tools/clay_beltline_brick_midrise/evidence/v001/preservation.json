@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-beltline-brick-midrise-clay-v001",
+  "glb": "clay-beltline-brick-midrise-clay-v001.glb",
+  "glb_bytes": 1292372,
+  "glb_sha256": "d6375b438bd85e4cc26387875ef1b0eec55ae39728f58034c7abeeb2ef0a9d75",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "balcony_stack.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "lobby_slot.png": 92,
+    "penthouse_terrace.png": 92,
+    "rear.png": 92,
+    "rear_lane.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_bulkhead.png": 92,
+    "storefront_patio.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-beltline-brick-midrise-clay-v001-renders-and-glb.zip",
+  "zip_bytes": 33076605
+}

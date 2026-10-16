@@ -1,0 +1,4066 @@
+{
+  "candidate": "clay-beltline-brick-midrise-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 428,
+    "vertices": 20382,
+    "polygons": 24164,
+    "triangles": 24164,
+    "path": "clay-beltline-brick-midrise-clay-v001-authoring.blend",
+    "bytes": 4991020,
+    "sha256": "1177cdaacb7dc0077e4c396bac406f52dc87d4606f22dd6b37a07abcc48d4d8a"
+  },
+  "runtime": {
+    "path": "clay-beltline-brick-midrise-clay-v001.glb",
+    "bytes": 1292372,
+    "sha256": "d6375b438bd85e4cc26387875ef1b0eec55ae39728f58034c7abeeb2ef0a9d75",
+    "meshes": 19,
+    "materials": 19,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 19,
+    "vertices": 20382,
+    "polygons": 24164,
+    "triangles": 24164
+  },
+  "original_bounds_m": [
+    [
+      -21.0,
+      -23.744922637939453,
+      0.0
+    ],
+    [
+      24.0,
+      22.0,
+      20.700000762939453
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -21.0,
+      -23.74492073059082,
+      0.0
+    ],
+    [
+      24.0,
+      22.0,
+      20.700000762939453
+    ]
+  ],
+  "max_roundtrip_delta_m": 1.9073486328125e-06,
+  "design_dimensions_m": {
+    "width": 30.0,
+    "depth": 33.6,
+    "height": 20.7
+  },
+  "native_dimensions_m": {
+    "width": 45.0,
+    "depth": 45.74492073059082,
+    "height": 20.700000762939453
+  },
+  "native_bottom_center_m": [
+    1.5,
+    -0.8724603652954102,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 13,
+    "joint": 9,
+    "trim": 28,
+    "pale": 27,
+    "stone": 11,
+    "sand": 2,
+    "foundation": 3,
+    "glass": 18,
+    "hardware": 74,
+    "interior": 8,
+    "floor": 12,
+    "timber": 68,
+    "blue": 2,
+    "planting": 95,
+    "concrete": 26,
+    "metal": 23,
+    "signband": 3,
+    "gravel": 1,
+    "canvas": 5
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/storefront_patio.png",
+    "renders/lobby_slot.png",
+    "renders/balcony_stack.png",
+    "renders/penthouse_terrace.png",
+    "renders/roof_bulkhead.png",
+    "renders/interior.png",
+    "renders/rear_lane.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.1599643975496292,
+      "xmax": 0.9080427289009094,
+      "ymin": 0.2834235727787018,
+      "ymax": 0.709916353225708
+    },
+    "front_corner": {
+      "xmin": 0.1621008813381195,
+      "xmax": 0.8215886950492859,
+      "ymin": 0.08462365716695786,
+      "ymax": 0.7092033624649048
+    },
+    "aerial": {
+      "xmin": 0.21922068297863007,
+      "xmax": 0.7682177424430847,
+      "ymin": 0.09496985375881195,
+      "ymax": 0.7177302241325378
+    },
+    "top": {
+      "xmin": 0.21962317824363708,
+      "xmax": 0.8204306364059448,
+      "ymin": 0.07729996740818024,
+      "ymax": 0.8916374444961548
+    },
+    "left_side": {
+      "xmin": 0.11906111240386963,
+      "xmax": 0.9038347601890564,
+      "ymin": 0.2606544494628906,
+      "ymax": 0.7142632603645325
+    },
+    "right_side": {
+      "xmin": 0.0761043056845665,
+      "xmax": 0.8809388875961304,
+      "ymin": 0.24809761345386505,
+      "ymax": 0.7175738215446472
+    },
+    "rear": {
+      "xmin": 0.08821733295917511,
+      "xmax": 0.9117830395698547,
+      "ymin": 0.22763025760650635,
+      "ymax": 0.7412137985229492
+    },
+    "rear_side": {
+      "xmin": 0.1132599487900734,
+      "xmax": 0.8608880639076233,
+      "ymin": 0.08699151873588562,
+      "ymax": 0.7142457962036133
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Retail storey projecting 1.6 m on the south bears the floor-2 terrace with glass guard and privacy screens",
+      "roof_m": 5.0
+    },
+    {
+      "name": "Brick wings on the floor-2 slab, balcony slabs cast with the floor slabs, slot glazing between the brick returns",
+      "roof_m": 14.3
+    },
+    {
+      "name": "Penthouse on the brick roof slab inside decked terraces; bulkhead on the penthouse roof",
+      "penthouse_m": [
+        14.3,
+        17.7
+      ]
+    },
+    {
+      "name": "Upper south face set 1.6 m behind the retail storey; west party condition above grade",
+      "plan_m": [
+        -15.0,
+        15.0,
+        -16.0,
+        16.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "south storefront 0",
+      "face": "south",
+      "u": -11.3,
+      "z": 0.15,
+      "width": 5.6,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -17.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "south storefront 1",
+      "face": "south",
+      "u": -5.0,
+      "z": 0.15,
+      "width": 5.4,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -17.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "south storefront 2",
+      "face": "south",
+      "u": 1.05,
+      "z": 0.15,
+      "width": 3.9,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -17.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "south storefront 3",
+      "face": "south",
+      "u": 6.4,
+      "z": 0.15,
+      "width": 4.8,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -17.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "south storefront 4",
+      "face": "south",
+      "u": 11.9,
+      "z": 0.15,
+      "width": 4.8,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -17.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "east storefront 0",
+      "face": "east",
+      "u": -13.0,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "east storefront 1",
+      "face": "east",
+      "u": -7.4,
+      "z": 0.15,
+      "width": 4.6,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "east storefront 2",
+      "face": "east",
+      "u": -1.6,
+      "z": 0.15,
+      "width": 4.6,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "east service door 3",
+      "face": "east",
+      "u": 5.0,
+      "z": 0.15,
+      "width": 1.2,
+      "height": 2.6,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": null,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "service"
+    },
+    {
+      "id": "east garage door 4",
+      "face": "east",
+      "u": 10.4,
+      "z": 0.15,
+      "width": 4.0,
+      "height": 3.4,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": null,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "service"
+    },
+    {
+      "id": "north garage door 0",
+      "face": "north",
+      "u": -10.0,
+      "z": 0.15,
+      "width": 3.8,
+      "height": 3.4,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "service"
+    },
+    {
+      "id": "north service door 1",
+      "face": "north",
+      "u": -4.0,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 2.6,
+      "kind": "service door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": null,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "service"
+    },
+    {
+      "id": "north rear window 2",
+      "face": "north",
+      "u": 2.0,
+      "z": 1.4,
+      "width": 2.4,
+      "height": 1.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "north rear window 3",
+      "face": "north",
+      "u": 8.0,
+      "z": 1.4,
+      "width": 2.4,
+      "height": 1.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "south west wing f2 bay 0 door",
+      "face": "south",
+      "u": -10.468,
+      "z": 5.05,
+      "width": 1.5,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "south west wing f2 bay 0 window",
+      "face": "south",
+      "u": -12.707999999999998,
+      "z": 5.45,
+      "width": 2.4,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "south west wing f2 bay 1 door",
+      "face": "south",
+      "u": -3.9799999999999995,
+      "z": 5.05,
+      "width": 1.5,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "south west wing f2 bay 1 window",
+      "face": "south",
+      "u": -6.38,
+      "z": 5.45,
+      "width": 2.4,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "south west wing f3 bay 0 door",
+      "face": "south",
+      "u": -10.468,
+      "z": 8.15,
+      "width": 1.5,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "south west wing f3 bay 0 window",
+      "face": "south",
+      "u": -12.707999999999998,
+      "z": 8.549999999999999,
+      "width": 2.4,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "south west wing f3 bay 1 door",
+      "face": "south",
+      "u": -3.9799999999999995,
+      "z": 8.15,
+      "width": 1.5,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "south west wing f3 bay 1 window",
+      "face": "south",
+      "u": -6.38,
+      "z": 8.549999999999999,
+      "width": 2.4,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "south west wing f4 bay 0 door",
+      "face": "south",
+      "u": -10.468,
+      "z": 11.25,
+      "width": 1.5,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "south west wing f4 bay 0 window",
+      "face": "south",
+      "u": -12.707999999999998,
+      "z": 11.649999999999999,
+      "width": 2.4,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "south west wing f4 bay 1 door",
+      "face": "south",
+      "u": -3.9799999999999995,
+      "z": 11.25,
+      "width": 1.5,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "south west wing f4 bay 1 window",
+      "face": "south",
+      "u": -6.38,
+      "z": 11.649999999999999,
+      "width": 2.4,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "south east wing f2 window 0",
+      "face": "south",
+      "u": 5.0,
+      "z": 5.45,
+      "width": 1.5,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "south east wing f2 window 1",
+      "face": "south",
+      "u": 14.1,
+      "z": 5.45,
+      "width": 1.2,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "south east wing f2 bay 0 door",
+      "face": "south",
+      "u": 11.452,
+      "z": 5.05,
+      "width": 1.5,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "south east wing f2 bay 0 window",
+      "face": "south",
+      "u": 8.812,
+      "z": 5.45,
+      "width": 2.4,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "south east wing f3 window 0",
+      "face": "south",
+      "u": 5.0,
+      "z": 8.549999999999999,
+      "width": 1.5,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "south east wing f3 window 1",
+      "face": "south",
+      "u": 14.1,
+      "z": 8.549999999999999,
+      "width": 1.2,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "south east wing f3 bay 0 door",
+      "face": "south",
+      "u": 11.452,
+      "z": 8.15,
+      "width": 1.5,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "south east wing f3 bay 0 window",
+      "face": "south",
+      "u": 8.812,
+      "z": 8.549999999999999,
+      "width": 2.4,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "south east wing f4 window 0",
+      "face": "south",
+      "u": 5.0,
+      "z": 11.649999999999999,
+      "width": 1.5,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "south east wing f4 window 1",
+      "face": "south",
+      "u": 14.1,
+      "z": 11.649999999999999,
+      "width": 1.2,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "south east wing f4 bay 0 door",
+      "face": "south",
+      "u": 11.452,
+      "z": 11.25,
+      "width": 1.5,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "south east wing f4 bay 0 window",
+      "face": "south",
+      "u": 8.812,
+      "z": 11.649999999999999,
+      "width": 2.4,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -16.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "slot glazing f2",
+      "face": "slot",
+      "u": 0,
+      "z": 5.55,
+      "width": 4.2,
+      "height": 2.5,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        1.0499999523162842,
+        -14.100000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stair and corridor"
+    },
+    {
+      "id": "slot glazing f3",
+      "face": "slot",
+      "u": 0,
+      "z": 8.65,
+      "width": 4.2,
+      "height": 2.5,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        1.0499999523162842,
+        -14.100000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stair and corridor"
+    },
+    {
+      "id": "slot glazing f4",
+      "face": "slot",
+      "u": 0,
+      "z": 11.75,
+      "width": 4.2,
+      "height": 2.5,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        1.0499999523162842,
+        -14.100000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stair and corridor"
+    },
+    {
+      "id": "slot glazing parapet",
+      "face": "slot",
+      "u": 0,
+      "z": 14.600000000000001,
+      "width": 4.2,
+      "height": 0.65,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        1.0499999523162842,
+        -14.100000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stair and corridor"
+    },
+    {
+      "id": "east east f2 window 0",
+      "face": "east",
+      "u": -12.6,
+      "z": 5.45,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f2 window 1",
+      "face": "east",
+      "u": -8.6,
+      "z": 5.45,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f2 window 2",
+      "face": "east",
+      "u": -4.6,
+      "z": 5.45,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f2 window 3",
+      "face": "east",
+      "u": 6.0,
+      "z": 5.45,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f2 window 4",
+      "face": "east",
+      "u": 14.0,
+      "z": 5.45,
+      "width": 1.2,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f2 bay 0 door",
+      "face": "east",
+      "u": 2.612,
+      "z": 5.05,
+      "width": 1.38,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "east east f2 bay 0 window",
+      "face": "east",
+      "u": 0.7720000000000001,
+      "z": 5.45,
+      "width": 2.07,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f2 bay 1 door",
+      "face": "east",
+      "u": 11.412,
+      "z": 5.05,
+      "width": 1.38,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "east east f2 bay 1 window",
+      "face": "east",
+      "u": 9.572000000000001,
+      "z": 5.45,
+      "width": 2.07,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f3 window 0",
+      "face": "east",
+      "u": -12.6,
+      "z": 8.549999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f3 window 1",
+      "face": "east",
+      "u": -8.6,
+      "z": 8.549999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f3 window 2",
+      "face": "east",
+      "u": -4.6,
+      "z": 8.549999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f3 window 3",
+      "face": "east",
+      "u": 6.0,
+      "z": 8.549999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f3 window 4",
+      "face": "east",
+      "u": 14.0,
+      "z": 8.549999999999999,
+      "width": 1.2,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f3 bay 0 door",
+      "face": "east",
+      "u": 2.612,
+      "z": 8.15,
+      "width": 1.38,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "east east f3 bay 0 window",
+      "face": "east",
+      "u": 0.7720000000000001,
+      "z": 8.549999999999999,
+      "width": 2.07,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f3 bay 1 door",
+      "face": "east",
+      "u": 11.412,
+      "z": 8.15,
+      "width": 1.38,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "east east f3 bay 1 window",
+      "face": "east",
+      "u": 9.572000000000001,
+      "z": 8.549999999999999,
+      "width": 2.07,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f4 window 0",
+      "face": "east",
+      "u": -12.6,
+      "z": 11.649999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f4 window 1",
+      "face": "east",
+      "u": -8.6,
+      "z": 11.649999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f4 window 2",
+      "face": "east",
+      "u": -4.6,
+      "z": 11.649999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f4 window 3",
+      "face": "east",
+      "u": 6.0,
+      "z": 11.649999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f4 window 4",
+      "face": "east",
+      "u": 14.0,
+      "z": 11.649999999999999,
+      "width": 1.2,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f4 bay 0 door",
+      "face": "east",
+      "u": 2.612,
+      "z": 11.25,
+      "width": 1.38,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "east east f4 bay 0 window",
+      "face": "east",
+      "u": 0.7720000000000001,
+      "z": 11.649999999999999,
+      "width": 2.07,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east east f4 bay 1 door",
+      "face": "east",
+      "u": 11.412,
+      "z": 11.25,
+      "width": 1.38,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "east east f4 bay 1 window",
+      "face": "east",
+      "u": 9.572000000000001,
+      "z": 11.649999999999999,
+      "width": 2.07,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f2 window 0",
+      "face": "north",
+      "u": -12.0,
+      "z": 5.45,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f2 window 1",
+      "face": "north",
+      "u": -2.0,
+      "z": 5.45,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f2 window 2",
+      "face": "north",
+      "u": 2.0,
+      "z": 5.45,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f2 window 3",
+      "face": "north",
+      "u": 12.0,
+      "z": 5.45,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f2 bay 0 door",
+      "face": "north",
+      "u": -5.9879999999999995,
+      "z": 5.05,
+      "width": 1.38,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "north north f2 bay 0 window",
+      "face": "north",
+      "u": -7.828,
+      "z": 5.45,
+      "width": 2.07,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f2 bay 1 door",
+      "face": "north",
+      "u": 8.012,
+      "z": 5.05,
+      "width": 1.38,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "north north f2 bay 1 window",
+      "face": "north",
+      "u": 6.172,
+      "z": 5.45,
+      "width": 2.07,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f3 window 0",
+      "face": "north",
+      "u": -12.0,
+      "z": 8.549999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f3 window 1",
+      "face": "north",
+      "u": -2.0,
+      "z": 8.549999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f3 window 2",
+      "face": "north",
+      "u": 2.0,
+      "z": 8.549999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f3 window 3",
+      "face": "north",
+      "u": 12.0,
+      "z": 8.549999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f3 bay 0 door",
+      "face": "north",
+      "u": -5.9879999999999995,
+      "z": 8.15,
+      "width": 1.38,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "north north f3 bay 0 window",
+      "face": "north",
+      "u": -7.828,
+      "z": 8.549999999999999,
+      "width": 2.07,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f3 bay 1 door",
+      "face": "north",
+      "u": 8.012,
+      "z": 8.15,
+      "width": 1.38,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "north north f3 bay 1 window",
+      "face": "north",
+      "u": 6.172,
+      "z": 8.549999999999999,
+      "width": 2.07,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f4 window 0",
+      "face": "north",
+      "u": -12.0,
+      "z": 11.649999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f4 window 1",
+      "face": "north",
+      "u": -2.0,
+      "z": 11.649999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f4 window 2",
+      "face": "north",
+      "u": 2.0,
+      "z": 11.649999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f4 window 3",
+      "face": "north",
+      "u": 12.0,
+      "z": 11.649999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f4 bay 0 door",
+      "face": "north",
+      "u": -5.9879999999999995,
+      "z": 11.25,
+      "width": 1.38,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "north north f4 bay 0 window",
+      "face": "north",
+      "u": -7.828,
+      "z": 11.649999999999999,
+      "width": 2.07,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "north north f4 bay 1 door",
+      "face": "north",
+      "u": 8.012,
+      "z": 11.25,
+      "width": 1.38,
+      "height": 2.45,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat living room"
+    },
+    {
+      "id": "north north f4 bay 1 window",
+      "face": "north",
+      "u": 6.172,
+      "z": 11.649999999999999,
+      "width": 2.07,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west f3 window 0",
+      "face": "west",
+      "u": -11.0,
+      "z": 8.549999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west f3 window 1",
+      "face": "west",
+      "u": -3.0,
+      "z": 8.549999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west f3 window 2",
+      "face": "west",
+      "u": 5.0,
+      "z": 8.549999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west f3 window 3",
+      "face": "west",
+      "u": 12.0,
+      "z": 8.549999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west f4 window 0",
+      "face": "west",
+      "u": -11.0,
+      "z": 11.649999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west f4 window 1",
+      "face": "west",
+      "u": -3.0,
+      "z": 11.649999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west f4 window 2",
+      "face": "west",
+      "u": 5.0,
+      "z": 11.649999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west f4 window 3",
+      "face": "west",
+      "u": 12.0,
+      "z": 11.649999999999999,
+      "width": 1.6,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "penthouse south glazing 0",
+      "face": "penthouse south",
+      "u": -8.5,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.10000000149011612,
+        -11.699999809265137,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    },
+    {
+      "id": "penthouse south glazing 1",
+      "face": "penthouse south",
+      "u": -4.5,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.10000000149011612,
+        -11.699999809265137,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    },
+    {
+      "id": "penthouse south glazing 2",
+      "face": "penthouse south",
+      "u": 3.5,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.10000000149011612,
+        -11.699999809265137,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    },
+    {
+      "id": "penthouse south glazing 3",
+      "face": "penthouse south",
+      "u": 7.5,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.10000000149011612,
+        -11.699999809265137,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    },
+    {
+      "id": "penthouse north glazing 0",
+      "face": "penthouse north",
+      "u": -7.0,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.10000000149011612,
+        13.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    },
+    {
+      "id": "penthouse north glazing 1",
+      "face": "penthouse north",
+      "u": -1.0,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.10000000149011612,
+        13.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    },
+    {
+      "id": "penthouse north glazing 2",
+      "face": "penthouse north",
+      "u": 5.0,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.10000000149011612,
+        13.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    },
+    {
+      "id": "penthouse east glazing 0",
+      "face": "penthouse east",
+      "u": -8.0,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        12.0,
+        1.0499999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    },
+    {
+      "id": "penthouse east glazing 1",
+      "face": "penthouse east",
+      "u": -2.0,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        12.0,
+        1.0499999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    },
+    {
+      "id": "penthouse east glazing 2",
+      "face": "penthouse east",
+      "u": 4.0,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        12.0,
+        1.0499999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    },
+    {
+      "id": "penthouse east glazing 3",
+      "face": "penthouse east",
+      "u": 9.0,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        12.0,
+        1.0499999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    },
+    {
+      "id": "penthouse west glazing 0",
+      "face": "penthouse west",
+      "u": -8.0,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -11.800000190734863,
+        1.0499999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    },
+    {
+      "id": "penthouse west glazing 1",
+      "face": "penthouse west",
+      "u": -2.0,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -11.800000190734863,
+        1.0499999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    },
+    {
+      "id": "penthouse west glazing 2",
+      "face": "penthouse west",
+      "u": 4.0,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -11.800000190734863,
+        1.0499999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    },
+    {
+      "id": "penthouse west glazing 3",
+      "face": "penthouse west",
+      "u": 9.0,
+      "z": 14.5,
+      "width": 3.0,
+      "height": 2.6,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -11.800000190734863,
+        1.0499999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "penthouse flat"
+    }
+  ],
+  "authoring_modules": {
+    "sidewalk": [
+      "South sidewalk",
+      "East sidewalk",
+      "Kerb south",
+      "Kerb east",
+      "Entrance planter",
+      "Entrance planter.001",
+      "Bike rack hoop",
+      "Bike rack hoop.001",
+      "Bike rack hoop.002",
+      "Bike rack hoop.003"
+    ],
+    "lane": [
+      "Rear lane",
+      "West neighbour lot"
+    ],
+    "patio": [
+      "Patio fence rail",
+      "Patio fence rail.001",
+      "Patio fence picket",
+      "Patio fence picket.001",
+      "Patio fence picket.002",
+      "Patio fence picket.003",
+      "Patio fence picket.004",
+      "Patio fence picket.005",
+      "Patio fence picket.006",
+      "Patio fence picket.007",
+      "Patio fence picket.008",
+      "Patio fence picket.009",
+      "Patio fence picket.010",
+      "Patio fence picket.011",
+      "Patio fence picket.012",
+      "Patio fence picket.013",
+      "Patio fence picket.014",
+      "Patio fence picket.015",
+      "Patio fence picket.016",
+      "Patio fence picket.017",
+      "Patio fence picket.018",
+      "Patio fence picket.019",
+      "Patio fence picket.020",
+      "Patio fence picket.021",
+      "Patio fence picket.022",
+      "Patio fence picket.023",
+      "Patio fence end",
+      "Patio fence end.001",
+      "Patio umbrella pole",
+      "Patio umbrella",
+      "Patio table",
+      "Patio table base",
+      "Patio umbrella pole.001",
+      "Patio umbrella.001",
+      "Patio table.001",
+      "Patio table base.001",
+      "Patio umbrella pole.002",
+      "Patio umbrella.002",
+      "Patio table.002",
+      "Patio table base.002"
+    ],
+    "garden planting": [
+      "Shrub rooted stem",
+      "Leafy shrub crown",
+      "Leafy shrub crown.001",
+      "Leafy shrub crown.002",
+      "Leafy shrub crown.003",
+      "Shrub rooted stem.001",
+      "Leafy shrub crown.004",
+      "Leafy shrub crown.005",
+      "Leafy shrub crown.006",
+      "Leafy shrub crown.007",
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Shrub rooted stem.002",
+      "Leafy shrub crown.008",
+      "Leafy shrub crown.009",
+      "Leafy shrub crown.010",
+      "Leafy shrub crown.011",
+      "Shrub rooted stem.003",
+      "Leafy shrub crown.012",
+      "Leafy shrub crown.013",
+      "Leafy shrub crown.014",
+      "Leafy shrub crown.015",
+      "Shrub rooted stem.004",
+      "Leafy shrub crown.016",
+      "Leafy shrub crown.017",
+      "Leafy shrub crown.018",
+      "Leafy shrub crown.019",
+      "Shrub rooted stem.005",
+      "Leafy shrub crown.020",
+      "Leafy shrub crown.021",
+      "Leafy shrub crown.022",
+      "Leafy shrub crown.023",
+      "Shrub rooted stem.006",
+      "Leafy shrub crown.024",
+      "Leafy shrub crown.025",
+      "Leafy shrub crown.026",
+      "Leafy shrub crown.027",
+      "Shrub rooted stem.007",
+      "Leafy shrub crown.028",
+      "Leafy shrub crown.029",
+      "Leafy shrub crown.030",
+      "Leafy shrub crown.031",
+      "Shrub rooted stem.008",
+      "Leafy shrub crown.032",
+      "Leafy shrub crown.033",
+      "Leafy shrub crown.034",
+      "Leafy shrub crown.035",
+      "Shrub rooted stem.009",
+      "Leafy shrub crown.036",
+      "Leafy shrub crown.037",
+      "Leafy shrub crown.038",
+      "Leafy shrub crown.039",
+      "Shrub rooted stem.010",
+      "Leafy shrub crown.040",
+      "Leafy shrub crown.041",
+      "Leafy shrub crown.042",
+      "Leafy shrub crown.043",
+      "Shrub rooted stem.011",
+      "Leafy shrub crown.044",
+      "Leafy shrub crown.045",
+      "Leafy shrub crown.046",
+      "Leafy shrub crown.047",
+      "Shrub rooted stem.012",
+      "Leafy shrub crown.048",
+      "Leafy shrub crown.049",
+      "Leafy shrub crown.050",
+      "Leafy shrub crown.051",
+      "Shrub rooted stem.013",
+      "Leafy shrub crown.052",
+      "Leafy shrub crown.053",
+      "Leafy shrub crown.054",
+      "Leafy shrub crown.055",
+      "Shrub rooted stem.014",
+      "Leafy shrub crown.056",
+      "Leafy shrub crown.057",
+      "Leafy shrub crown.058",
+      "Leafy shrub crown.059",
+      "Shrub rooted stem.015",
+      "Leafy shrub crown.060",
+      "Leafy shrub crown.061",
+      "Leafy shrub crown.062",
+      "Leafy shrub crown.063",
+      "Shrub rooted stem.016",
+      "Leafy shrub crown.064",
+      "Leafy shrub crown.065",
+      "Leafy shrub crown.066",
+      "Leafy shrub crown.067",
+      "Shrub rooted stem.017",
+      "Leafy shrub crown.068",
+      "Leafy shrub crown.069",
+      "Leafy shrub crown.070",
+      "Leafy shrub crown.071",
+      "Shrub rooted stem.018",
+      "Leafy shrub crown.072",
+      "Leafy shrub crown.073",
+      "Leafy shrub crown.074",
+      "Leafy shrub crown.075",
+      "Shrub rooted stem.019",
+      "Leafy shrub crown.076",
+      "Leafy shrub crown.077",
+      "Leafy shrub crown.078",
+      "Leafy shrub crown.079"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014"
+    ],
+    "envelope": [
+      "south retail carrier",
+      "east retail carrier",
+      "north retail carrier",
+      "west party wall",
+      "south west wing brick carrier",
+      "south east wing brick carrier",
+      "Slot spandrel carrier",
+      "east east brick carrier",
+      "north north brick carrier",
+      "west brick carrier",
+      "penthouse south panel carrier",
+      "penthouse north panel carrier",
+      "penthouse east panel carrier",
+      "penthouse west panel carrier"
+    ],
+    "brick joints": [
+      "south measured mortar courses",
+      "east measured mortar courses",
+      "north measured mortar courses",
+      "west measured mortar courses",
+      "south measured mortar courses.001",
+      "south measured mortar courses.002",
+      "east measured mortar courses.001",
+      "north measured mortar courses.001",
+      "west measured mortar courses.001"
+    ],
+    "retail lamps": [
+      "Gooseneck lamp",
+      "Gooseneck lamp.001",
+      "Gooseneck lamp.002",
+      "Gooseneck lamp.003",
+      "Gooseneck lamp.004",
+      "Gooseneck lamp.005",
+      "Gooseneck lamp.006",
+      "Gooseneck lamp.007",
+      "Gooseneck lamp.008",
+      "Gooseneck lamp.009",
+      "Gooseneck lamp.010",
+      "Gooseneck lamp.011",
+      "Gooseneck lamp.012",
+      "Gooseneck lamp.013",
+      "Gooseneck lamp.014",
+      "Gooseneck lamp.015"
+    ],
+    "retail storey": [
+      "south retail storey trim",
+      "south retail storey glass",
+      "south retail storey signband",
+      "south retail storey pale",
+      "south retail storey stone",
+      "east retail storey trim",
+      "east retail storey glass",
+      "east retail storey signband",
+      "east retail storey pale",
+      "east retail storey metal",
+      "east retail storey stone",
+      "north retail storey metal",
+      "north retail storey trim",
+      "north retail storey glass",
+      "north retail storey stone",
+      "Terrace parapet return",
+      "Terrace parapet return.001",
+      "Retail roof coping"
+    ],
+    "lobby": [
+      "Lobby canopy",
+      "Lobby canopy soffit light",
+      "Lobby mailbox wall"
+    ],
+    "foundation": [
+      "Ground slab"
+    ],
+    "occupied floors": [
+      "Floor 2 slab",
+      "Floor slab 3",
+      "Floor slab 3 wing",
+      "Floor slab 3 wing.001",
+      "Floor slab 4",
+      "Floor slab 4 wing",
+      "Floor slab 4 wing.001",
+      "Floor slab 5",
+      "Floor slab 5 wing",
+      "Floor slab 5 wing.001"
+    ],
+    "terrace": [
+      "Floor 2 terrace pavers",
+      "Floor 2 terrace glass guard",
+      "Floor 2 terrace guard rail",
+      "Terrace privacy screen",
+      "Terrace privacy screen.001",
+      "Terrace privacy screen.002",
+      "Terrace privacy screen.003",
+      "Terrace planter",
+      "Terrace planter.001",
+      "Terrace planter.002",
+      "Terrace planter.003"
+    ],
+    "taproom": [
+      "Taproom table",
+      "Taproom table base",
+      "Taproom table.001",
+      "Taproom table base.001",
+      "Taproom table.002",
+      "Taproom table base.002",
+      "Taproom table.003",
+      "Taproom table base.003",
+      "Taproom bar"
+    ],
+    "market": [
+      "Market shelving",
+      "Market shelving.001",
+      "Market shelving.002",
+      "Market shelving.003"
+    ],
+    "west wing": [
+      "south west wing trim",
+      "south west wing glass",
+      "south west wing stone",
+      "south west wing concrete",
+      "south west wing hardware",
+      "south west wing metal"
+    ],
+    "east wing": [
+      "south east wing trim",
+      "south east wing glass",
+      "south east wing stone",
+      "south east wing concrete",
+      "south east wing hardware",
+      "south east wing metal"
+    ],
+    "slot": [
+      "Slot brick return",
+      "Slot return cap",
+      "Slot brick return.001",
+      "Slot return cap.001"
+    ],
+    "slot curtain wall": [
+      "slot slot curtain wall glass",
+      "slot slot curtain wall trim"
+    ],
+    "stair": [
+      "Slot stair flight",
+      "Slot stair flight.001",
+      "Slot stair flight.002"
+    ],
+    "east": [
+      "east east trim",
+      "east east glass",
+      "east east stone",
+      "east east concrete",
+      "east east hardware",
+      "east east metal"
+    ],
+    "north": [
+      "north north trim",
+      "north north glass",
+      "north north stone",
+      "north north concrete",
+      "north north hardware",
+      "north north metal"
+    ],
+    "west": [
+      "west west trim",
+      "west west glass",
+      "west west stone",
+      "west west metal"
+    ],
+    "core": [
+      "Corridor core"
+    ],
+    "partitions": [
+      "Party wall"
+    ],
+    "living furniture": [
+      "Sofa grounded foot",
+      "Sofa grounded foot.001",
+      "Sofa grounded foot.002",
+      "Sofa grounded foot.003",
+      "Sofa plinth",
+      "Sofa seat",
+      "Sofa back",
+      "Sofa arm",
+      "Sofa arm.001",
+      "Coffee table",
+      "Coffee table leg",
+      "Coffee table leg.001",
+      "Coffee table leg.002",
+      "Coffee table leg.003"
+    ],
+    "office furniture": [
+      "Desk surface",
+      "Desk leg",
+      "Desk leg.001",
+      "Desk leg.002",
+      "Desk leg.003",
+      "Monitor base",
+      "Monitor stem",
+      "Monitor",
+      "Chair seat",
+      "Chair back",
+      "Chair leg",
+      "Chair leg.001",
+      "Chair leg.002",
+      "Chair leg.003"
+    ],
+    "bedroom furniture": [
+      "Bed grounded foot",
+      "Bed grounded foot.001",
+      "Bed grounded foot.002",
+      "Bed grounded foot.003",
+      "Bed frame",
+      "Mattress",
+      "Duvet",
+      "Headboard",
+      "Pillow",
+      "Pillow.001"
+    ],
+    "roof": [
+      "Roof slab"
+    ],
+    "terraces": [
+      "Terrace deck south",
+      "Terrace deck south east",
+      "Terrace deck north",
+      "Terrace deck west",
+      "Terrace deck east",
+      "Slot roof walkway",
+      "Terrace planter.004",
+      "Terrace planter.005",
+      "Terrace planter.006",
+      "Terrace planter.007",
+      "Terrace planter.008",
+      "Terrace planter.009",
+      "Terrace planter.010",
+      "Terrace planter.011",
+      "Terrace planter.012",
+      "Terrace planter.013",
+      "Terrace planter.014",
+      "Terrace planter.015",
+      "Terrace planter.016",
+      "Terrace planter.017",
+      "Terrace umbrella pole",
+      "Terrace umbrella",
+      "Terrace table",
+      "Terrace umbrella pole.001",
+      "Terrace umbrella.001",
+      "Terrace table.001",
+      "Terrace glass guard",
+      "Terrace guard rail",
+      "Terrace glass guard.001",
+      "Terrace guard rail.001",
+      "Terrace glass guard.002",
+      "Terrace guard rail.002",
+      "Terrace glass guard.003",
+      "Terrace guard rail.003"
+    ],
+    "penthouse": [
+      "penthouse south penthouse trim",
+      "penthouse south penthouse glass",
+      "penthouse south penthouse hardware",
+      "penthouse north penthouse trim",
+      "penthouse north penthouse glass",
+      "penthouse north penthouse hardware",
+      "penthouse east penthouse trim",
+      "penthouse east penthouse glass",
+      "penthouse east penthouse hardware",
+      "penthouse west penthouse trim",
+      "penthouse west penthouse glass",
+      "penthouse west penthouse hardware",
+      "Penthouse roof slab",
+      "Penthouse roof edge",
+      "Penthouse roof edge.001",
+      "Penthouse roof edge.002",
+      "Penthouse roof edge.003"
+    ],
+    "penthouse roof": [
+      "Penthouse gravel",
+      "Roof paver walkway",
+      "Roof paver walkway.001",
+      "Roof paver walkway.002",
+      "Roof paver walkway.003",
+      "Roof paver walkway.004",
+      "Roof paver walkway.005",
+      "Roof paver walkway.006",
+      "Roof paver walkway.007"
+    ],
+    "bulkhead": [
+      "Stair and lift bulkhead",
+      "Bulkhead stair wing",
+      "Bulkhead roof",
+      "Bulkhead stair wing roof",
+      "Bulkhead door"
+    ],
+    "rooftop plant": [
+      "Rooftop unit",
+      "Rooftop unit.001",
+      "Rooftop unit.002"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-16T00:10:34.820195+00:00",
+  "delivery_and_render_seconds": 2740.4018291849998,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-beltline-brick-midrise",
+  "variant_id": "clay-beltline-brick-midrise-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "calgary_beltline_mid_rise/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-beltline-mid-rise/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1312366,
+      "sha256": "23a51bd3bc20d6daf86740ada8823e0aad06ec1d840671229139b0d102cb34cc"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-beltline-mid-rise/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 909573,
+      "sha256": "1199b3cc90428ba32b029b7969d3a59ac8f410f9fe872131771524d6a2ff9a72"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-beltline-mid-rise/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 863281,
+      "sha256": "6773eee31ab31db0cb25f922b9eab3af743da14bb8b4ce98e210d72cfd3040b1"
+    }
+  ]
+}

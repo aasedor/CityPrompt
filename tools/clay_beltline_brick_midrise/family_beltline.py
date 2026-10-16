@@ -39,7 +39,7 @@ PALETTE = dict(wall=(.55, .26, .19), joint=(.40, .19, .15), trim=(.15, .16, .17)
     foundation=(.44, .44, .43), glass=(.48, .56, .60), hardware=(.18, .19, .20),
     interior=(.80, .76, .68), floor=(.46, .44, .42), timber=(.46, .31, .19), blue=(.14, .22, .28),
     planting=(.25, .42, .15), soil=(.20, .15, .09), concrete=(.70, .69, .66), metal=(.27, .28, .30),
-    signband=(.17, .17, .18), gravel=(.56, .54, .50), canvas=(.86, .84, .78))
+    signband=(.17, .17, .18), bronze=(.31, .27, .23), gravel=(.70, .62, .54), canvas=(.86, .84, .78))
 
 
 def manifest(version):
@@ -428,16 +428,17 @@ def wing(f, lo, hi, plan, stacks, label):
     m = Merge(f)
     for h in holes:
         if h.get('kind') == 'door':
-            framed(m, f, h, cols=1, rows=1, inset=.12, occupied='flat living room', kind='glazed door')
+            framed(m, f, h, cols=1, rows=1, inset=.18, occupied='flat living room', kind='glazed door')
         else:
-            framed(m, f, h, cols=2, rows=1, inset=.12, occupied='flat')
+            framed(m, f, h, cols=2, rows=1, inset=.18, occupied='flat')
             m.box('stone', h['u'], -.04, h['z'] - .05, h['w'] + .12, .14, .10)
     return holes, m
 
 
-def cap(m, lo, hi):
-    m.box('metal', (lo + hi) / 2, -.12, PARA + .06, hi - lo - 2 * EPS, T + .36, .14)
-    m.box('metal', (lo + hi) / 2, -.20, PARA - .18, hi - lo - 2 * EPS, .14, .34)
+def cap(m, lo, hi, ext=(0.0, 0.0), dz=0.0):
+    a, c = lo - ext[0], hi + ext[1]
+    m.box('metal', (a + c) / 2, -.12, PARA + .06 + dz, c - a - 2 * EPS, T + .36, .14)
+    m.box('metal', (a + c) / 2, -.20, PARA - .18 + dz, c - a - 2 * EPS, .14, .34)
 
 
 def brick_upper():
@@ -469,17 +470,17 @@ def brick_upper():
     for i in range(n + 1):
         m.box('trim', -sw / 2 + .15 + (sw - .3) * i / n, -.03, (L2 + PARA) / 2, .08, .10, PARA - L2 - .04)
     for z in LEVELS + [ROOF]:
-        m.box('trim', 0, -.04, z + .28, sw - .04, .08, .06)
+        m.box('trim', 0, -.04, z + .28, sw - .2, .08, .06)
     m.flush('slot curtain wall')
     for i, z in enumerate(LEVELS):                             # stair flights seen through the slot
-        C.beam('Slot stair flight', ((SLOT[0] + SLOT[1]) / 2 - 1.0, Y0 + SLOT_IN + T + 1.2, z + .1), ((SLOT[0] + SLOT[1]) / 2 + 1.0, Y0 + SLOT_IN + T + 1.2, z + FH / 2), 1.2, .2, 'concrete', 'stair')
+        C.box('Slot corridor back wall', ((SLOT[0] + SLOT[1]) / 2, Y0 + SLOT_IN + T + 3.2, z + FH / 2), (SLOT[1] - SLOT[0] + 1.0, .2, FH - .3), 'interior', 'corridor', 0)
         C.qa_room_light(f'Slot stair {i}', ((SLOT[0] + SLOT[1]) / 2, Y0 + SLOT_IN + T + 1.5, z + FH - .4), 50, 2.0)
     # East face: two balcony stacks on all three floors and a window rhythm.
-    holes, m = wing(east, -hd, hd, [(-12.6, 1.6), (-8.6, 1.6), (-4.6, 1.6), (6.0, 1.6), (14.0, 1.2)], [(1.6, 4.6), (10.4, 4.6)], 'east')
+    holes, m = wing(east, -hd + T, hd, [(-12.6, 1.6), (-8.6, 1.6), (-4.6, 1.6), (6.0, 1.6), (14.0, 1.2)], [(1.6, 4.6), (10.4, 4.6)], 'east')
     for u, w in ((1.6, 4.6), (10.4, 4.6)):
         for z in LEVELS:
             balcony(m, u, z, w)
-    cap(m, -hd, hd)
+    cap(m, -hd + T, hd, ext=(.5, .5), dz=.012)
     m.flush('east')
     # North face (not in any source): window rhythm and two stacks, after the visible grammar.
     holes, m = wing(north, -hw + T, hw - T, [(-12.0, 1.6), (-2.0, 1.6), (2.0, 1.6), (12.0, 1.6)], [(-7.0, 4.6), (7.0, 4.6)], 'north')
@@ -490,13 +491,13 @@ def brick_upper():
     m.flush('north')
     # West face above the lower neighbour: windows on floors 3 and 4 only.
     holes = [hole(f'west f{fi + 3} window {k}', u, z + .45, 1.6, 2.05) for fi, z in enumerate(LEVELS[1:]) for k, u in enumerate((-11.0, -3.0, 5.0, 12.0))]
-    west.wall('west brick carrier', -hd + T, hd - T - EPS, L2, PARA, depth=T, holes=holes)
-    G.brick_courses(west, -hd + T + .02, hd - T - .02, L2 + .02, PARA - .3, holes, spacing=.15)
+    west.wall('west brick carrier', -hd, hd - T - EPS, L2, PARA, depth=T, holes=holes)
+    G.brick_courses(west, -hd + .02, hd - T - .02, L2 + .02, PARA - .3, holes, spacing=.15)
     m = Merge(west)
     for h in holes:
         framed(m, west, h, cols=2, inset=.12, occupied='flat')
         m.box('stone', h['u'], -.04, h['z'] - .05, h['w'] + .12, .14, .10)
-    cap(m, -hd + T, hd - T)
+    cap(m, -hd, hd - T, ext=(.5, .5), dz=.012)
     m.flush('west')
     # Floor slabs avoid the open slot; a corridor core; flat interiors behind the south windows.
     sx0, sx1 = SLOT[0] - T, SLOT[1] + T
@@ -534,7 +535,7 @@ def penthouse_and_roof():
         A.shrub(x, Y0 + 1.0, ROOF + .8, .7)
     for x, y in ((-11.0, Y0 + 2.6), (9.0, Y0 + 2.6)):
         C.rod('Terrace umbrella pole', (x, y, zd + .1), (x, y, zd + 2.4), .03, 'hardware', 'terraces', 6)
-        C.prism('Terrace umbrella', [(x - 1.3, y - 1.3), (x + 1.3, y - 1.3), (x + 1.3, y + 1.3), (x - 1.3, y + 1.3)], 'z', zd + 2.3, zd + 2.45, 'canvas', 'terraces')
+        umbrella(x, y, zd + 2.2, 1.3)
         C.box('Terrace table', (x + .4, y, zd + .8), (1.0, 1.0, .05), 'timber', 'terraces', 0)
     for (a, b), (c, d) in ((((X0 + .15, Y0 + .15)), ((X1 - .15, Y0 + .15))), (((X1 - .15, Y0 + .15)), ((X1 - .15, Y1 - .15))),
                           (((X1 - .15, Y1 - .15)), ((X0 + .15, Y1 - .15))), (((X0 + .15, Y1 - .15)), ((X0 + .15, Y0 + .15)))):
@@ -549,7 +550,7 @@ def penthouse_and_roof():
     for f, lo, hi, units in ((ph_s, -w / 2, w / 2, (-8.5, -4.5, 3.5, 7.5)), (ph_n, -w / 2, w / 2, (-7.0, -1.0, 5.0)),
                              (ph_e, -d / 2 + T, d / 2 - T, (-8.0, -2.0, 4.0, 9.0)), (ph_w, -d / 2 + T, d / 2 - T, (-8.0, -2.0, 4.0, 9.0))):
         holes = [hole(f'{f.label} glazing {k}', u, ROOF + .2, 3.0, 2.6, kind='door') for k, u in enumerate(units)]
-        f.wall(f'{f.label} panel carrier', lo, hi - EPS, ROOF, PH_TOP, depth=.26, role='metal', holes=holes)
+        f.wall(f'{f.label} panel carrier', lo, hi - EPS, ROOF, PH_TOP, depth=.26, role='bronze', holes=holes)
         m = Merge(f)
         for h in holes:
             framed(m, f, h, cols=3, inset=.10, occupied='penthouse flat', kind='glazed door')
@@ -559,10 +560,10 @@ def penthouse_and_roof():
                 m.box('hardware', u, -.02, (ROOF + PH_TOP) / 2, .04, .04, PH_TOP - ROOF - .1)   # panel joints
         m.flush('penthouse')
     C.box('Penthouse roof slab', ((px0 + px1) / 2, (py0 + py1) / 2, PH_TOP - .12), (w - .52, d - .52, .24), 'floor', 'penthouse', 0)
-    C.box('Penthouse roof edge', ((px0 + px1) / 2, py0 - .25, PH_TOP + .12), (w + 1.0, .5, .24), 'pale', 'penthouse', 0)
-    C.box('Penthouse roof edge', ((px0 + px1) / 2, py1 + .25, PH_TOP + .12), (w + 1.0, .5, .24), 'pale', 'penthouse', 0)
-    C.box('Penthouse roof edge', (px0 - .25, (py0 + py1) / 2, PH_TOP + .12), (.5, d, .24), 'pale', 'penthouse', 0)
-    C.box('Penthouse roof edge', (px1 + .25, (py0 + py1) / 2, PH_TOP + .12), (.5, d, .24), 'pale', 'penthouse', 0)
+    C.box('Penthouse fascia', ((px0 + px1) / 2, py0 - .25, PH_TOP - .05), (w + 1.0, .5, .6), 'stone', 'penthouse', 0)
+    C.box('Penthouse fascia', ((px0 + px1) / 2, py1 + .25, PH_TOP - .05), (w + 1.0, .5, .6), 'stone', 'penthouse', 0)
+    C.box('Penthouse fascia', (px0 - .25, (py0 + py1) / 2, PH_TOP - .05), (.5, d, .6), 'stone', 'penthouse', 0)
+    C.box('Penthouse fascia', (px1 + .25, (py0 + py1) / 2, PH_TOP - .05), (.5, d, .6), 'stone', 'penthouse', 0)
     C.box('Penthouse gravel', ((px0 + px1) / 2, (py0 + py1) / 2, PH_TOP + .02), (w - .1, d - .1, .04), 'gravel', 'penthouse roof', 0)
     # Paver walkways: a ring round the bulkhead and spokes to the edge (top view).
     bx0, bx1, by0, by1 = -2.0, 4.8, -4.2, 6.3
@@ -571,16 +572,24 @@ def penthouse_and_roof():
                         (bx0 - 2.4, bx0 - 1.2, by0 - 1.2, by1 + 1.2), (bx1 + 1.2, bx1 + 2.4, by0 - 1.2, by1 + 1.2),
                         (px0 + .3, bx0 - 2.4, 0.8, 2.0), (bx1 + 2.4, px1 - .3, 0.8, 2.0), (0.6, 1.8, py0 + .3, by0 - 2.4), (0.6, 1.8, by1 + 2.4, py1 - .3)):
         C.box('Roof paver walkway', ((a + b) / 2, (c + d2) / 2, zp), (b - a, d2 - c, .03), 'pale', 'penthouse roof', 0)
-    C.box('Stair and lift bulkhead', ((bx0 + bx1) / 2 - .9, (by0 + by1) / 2, PH_TOP + 1.45), (bx1 - bx0 - 1.8, by1 - by0, 2.9), 'metal', 'bulkhead', 0)
-    C.box('Bulkhead stair wing', (bx1 - .9, by0 + 3.6, PH_TOP + 1.45), (1.8, 7.2, 2.9), 'metal', 'bulkhead', 0)
-    C.box('Bulkhead roof', ((bx0 + bx1) / 2 - .9, (by0 + by1) / 2, PH_TOP + 2.95), (bx1 - bx0 - 1.6, by1 - by0 + .2, .1), 'pale', 'bulkhead', 0)
-    C.box('Bulkhead stair wing roof', (bx1 - .9, by0 + 3.6, PH_TOP + 2.95), (2.0, 7.4, .1), 'pale', 'bulkhead', 0)
+    ny0, ny1 = by1 - 4.8, by1 - 2.4                    # L-shaped notch in the east side (top view)
+    outline = [(bx0, by0), (bx1, by0), (bx1, ny0), (bx1 - 1.8, ny0), (bx1 - 1.8, ny1), (bx1, ny1), (bx1, by1), (bx0, by1)]
+    C.prism('Stair and lift bulkhead', outline, 'z', PH_TOP + .03, PH_TOP + 2.9, 'bronze', 'bulkhead')
+    C.prism('Bulkhead roof', outline, 'z', PH_TOP + 2.9, PH_TOP + 3.0, 'pale', 'bulkhead')
+    C.box('Bulkhead notch railing', (bx1 - .9, ny0 + .02, PH_TOP + .6), (1.8, .04, 1.1), 'hardware', 'bulkhead', 0)
     C.box('Bulkhead door', (bx0 + 1.6, by0 - .02, PH_TOP + 1.1), (1.0, .06, 2.1), 'hardware', 'bulkhead', 0)
     for x, y in ((-6.0, 5.0), (3.0, -9.0), (-7.0, -6.0)):
         C.box('Rooftop unit', (x, y, PH_TOP + .5), (1.4, 1.0, .9), 'pale', 'rooftop plant', 0)
     for x in (-8.0, -1.0, 7.0):
         C.qa_room_light(f'Penthouse {x:+.0f}', (x, py0 + 3.0, PH_TOP - .5), 50, 3.0)
     C.CONTACTS.append(dict(name='Penthouse on the brick roof slab inside decked terraces; bulkhead on the penthouse roof', penthouse_m=[ROOF, PH_TOP]))
+
+
+def umbrella(x, y, z, r):
+    """Round market umbrella: a low octagonal cone."""
+    lower = [(x + r * math.cos(math.tau * k / 8), y + r * math.sin(math.tau * k / 8)) for k in range(8)]
+    upper = [(x + .08 * math.cos(math.tau * k / 8), y + .08 * math.sin(math.tau * k / 8)) for k in range(8)]
+    strip('Market umbrella', lower, upper, z, z + .45, 'canvas', 'umbrellas')
 
 
 def site():
@@ -602,13 +611,13 @@ def site():
         C.beam('Patio fence end', (x, py - 1.4, .9), (x, ys - .05, .9), .05, .05, 'hardware', 'patio')
     for x in (-12.4, -8.4, -4.4):
         C.rod('Patio umbrella pole', (x, py - .2, .015), (x, py - .2, 2.5), .03, 'hardware', 'patio', 6)
-        C.prism('Patio umbrella', [(x - 1.2, py - 1.4), (x + 1.2, py - 1.4), (x + 1.2, py + 1.0), (x - 1.2, py + 1.0)], 'z', 2.4, 2.55, 'canvas', 'patio')
+        umbrella(x, py - .2, 2.3, 1.25)
         C.box('Patio table', (x, py - .2, .74), (.9, .9, .05), 'timber', 'patio', 0)
         C.box('Patio table base', (x, py - .2, .38), (.1, .1, .72), 'hardware', 'patio', 0)
     for x in (-1.8, 4.0):
         C.box('Entrance planter', (x, ys - .5, .35), (.8, .8, .7), 'metal', 'sidewalk', 0)
         A.shrub(x, ys - .5, .7, .7)
-    for x in (-15.0, 2.0, 18.0):
+    for x in (-17.0, 8.6, 19.0):
         street_tree(x, ys - 4.6, height=7.5, spread=1.6)
     for y in (-6.0, 8.0):
         street_tree(X1 + 4.4, y, height=7.5, spread=1.6)

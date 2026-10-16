@@ -68,3 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (v002 follows)
+
+P0 black void seam at the south-east brick corner; P1 penthouse cladding cool grey instead of warm dark bronze-taupe; P1 bulkhead two boxes with a gap, not one box with an L notch; P1 floating diagonal stair slabs behind the slot glazing; P1 street tree on the lobby axis.
