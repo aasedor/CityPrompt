@@ -68,3 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (v002 follows)
+
+P1 black squares across the roof; P1 black voids at tower frame crossings; P1 bronze too pale; P1 crown patina panel missing; P1 coping corner open; P1 south-face bay variety missing; aperture audit FAIL on the hidden tower face.

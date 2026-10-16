@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-brick-parkade",
+  "variant_id": "clay-brick-parkade-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "campus_parking_structure/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/campus-parking-structure/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1300542,
+      "sha256": "62d9d0e8d6f473539cc8b9e5ceb8768786bd0c54e842ff4fb888f256ad6de7fb"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/campus-parking-structure/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 913132,
+      "sha256": "76c59fdae32da33b8cbdfd1c886469f2faa64b2c99c24c805cb188bc3f5d3645"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/campus-parking-structure/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 775532,
+      "sha256": "4ebd4cf049da9e4b7cfa85f2cbc9fc1c65e59c6bd1c2f9ffe6d17fffc294afe2"
+    }
+  ]
+}

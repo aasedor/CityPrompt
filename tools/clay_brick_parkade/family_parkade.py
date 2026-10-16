@@ -32,7 +32,7 @@ PALETTE = dict(wall=(.52, .26, .19), joint=(.38, .19, .14), trim=(.16, .17, .18)
     pale=(.80, .79, .76), stone=(.70, .68, .64), roof=(.66, .65, .62), sand=(.68, .66, .62),
     foundation=(.42, .42, .41), glass=(.46, .56, .60), hardware=(.18, .18, .19),
     interior=(.78, .76, .72), floor=(.60, .59, .56), timber=(.40, .28, .16), blue=(.20, .28, .40),
-    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.74, .72, .68), bronze=(.27, .22, .17),
+    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.74, .72, .68), bronze=(.15, .12, .09),
     patina=(.36, .56, .50), asphalt=(.30, .30, .31), white=(.90, .90, .88), metal=(.26, .27, .29),
     car_red=(.50, .14, .12), car_grey=(.56, .58, .60), car_dark=(.18, .19, .21), car_white=(.84, .84, .82))
 
@@ -318,7 +318,7 @@ class Batch:
 LEVEL_TOPS = DECKS[1:] + [ROOF]
 
 
-def deck_face(f, lo, hi, ground, lite=False, precast=True):
+def deck_face(f, lo, hi, ground, lite=False, precast=True, bays=None, solid_first=False):
     """Brick frame elevation: piers on an 8 m bay, open deck openings over precast spandrels with guard screens."""
     span = hi - lo
     n = max(1, round(span / 8.2))
@@ -333,9 +333,18 @@ def deck_face(f, lo, hi, ground, lite=False, precast=True):
             holes.append(hole(f'{f.label} vehicle opening {i}', u, G0, pitch - 2.0, 3.45 - G0, kind='vehicle'))
         elif g == 'window':
             holes.append(hole(f'{f.label} ground window {i}', u, 1.2, pitch - 1.6, 2.2))
+        kind = (bays or {}).get(i)
+        if kind == 'curtain':                                          # glazed curtain-wall bay over all decks
+            holes.append(hole(f'{f.label} curtain bay {i}', u, DECKS[0] + .3, pitch - .9, ROOF - .4 - DECKS[0] - .3, kind='curtain'))
+            continue
         for k, z in enumerate(DECKS):
             top = LEVEL_TOPS[k] - .40
-            holes.append(hole(f'{f.label} deck {k + 2} opening {i}', u, z + 1.05, pitch - .9, top - z - 1.05, kind='deck'))
+            if kind == 'ribbon':
+                holes.append(hole(f'{f.label} deck {k + 2} ribbon {i}', u, z + 1.2, pitch - .9, 1.2, kind='ribbon'))
+            elif solid_first and k == 0:
+                holes.append(hole(f'{f.label} deck 2 slot {i}', u, z + 1.2, pitch - .9, .9, kind='deck'))
+            else:
+                holes.append(hole(f'{f.label} deck {k + 2} opening {i}', u, z + 1.05, pitch - .9, top - z - 1.05, kind='deck'))
     f.wall(f'{f.label} brick frame', lo, hi - EPS, G0, PARA, depth=T, holes=holes)
     G.brick_courses(f, lo + .02, hi - .02, G0 + .02, PARA - .25, holes, spacing=.2 if not lite else .32)
     m = Merge(f)
@@ -351,12 +360,18 @@ def deck_face(f, lo, hi, ground, lite=False, precast=True):
             m.box('bronze', h['u'], -.05, h['z'] + h['h'] + .2, h['w'] + .4, .2, .4)
         elif h.get('kind') == 'storefront':
             framed(m, f, h, cols=max(2, round(h['w'] / 1.6)), rows=2, inset=.16, occupied='retail unit', kind='storefront', frame='bronze', lite=lite)
+        elif h.get('kind') == 'curtain':
+            framed(m, f, h, cols=4, rows=len(DECKS) * 2, inset=.12, occupied='stair and lobby', kind='curtain wall', frame='bronze')
+        elif h.get('kind') == 'ribbon':
+            framed(m, f, h, cols=5, rows=1, inset=.14, occupied='parking office', kind='ribbon window', frame='bronze')
         else:
             framed(m, f, h, cols=3, rows=1, inset=.16, occupied='mobility hub office', frame='bronze', lite=lite)
     # Precast spandrels between the piers (deck slab edge and upstand), a brick parapet band, a stone base.
     for i in range(n):
         u = lo + pitch * (i + .5)
         for z in DECKS + [ROOF]:
+            if (bays or {}).get(i) == 'curtain' and z != ROOF:
+                continue
             if precast:
                 m.box('concrete', u, -.05, z + .35, pitch - .9, .10, 1.4 if z != ROOF else .9)
             else:
@@ -371,7 +386,7 @@ def frame_block():
     cx = lambda a, b: (a + b) / 2
     south = C.Face((cx(SWT[1], SE[0]), Y0, 0), (1, 0, 0), (0, 1, 0), 'south')
     w = (SE[0] - SWT[1]) / 2
-    deck_face(south, -w, w, ['retail', 'retail', 'retail', 'retail', 'window'], precast=False)
+    deck_face(south, -w, w, ['retail', 'retail', 'retail', 'retail', 'window'], precast=False, bays={0: 'ribbon', 4: 'curtain'}, solid_first=True)
     east = C.Face((X1, cx(SE[3], NE[2]), 0), (0, 1, 0), (-1, 0, 0), 'east')
     d = (NE[2] - SE[3]) / 2
     deck_face(east, -d, d, ['window', 'entry', 'entry'])
@@ -389,7 +404,7 @@ def frame_block():
         b.box('concrete', 0, 0, z - .55, X1 - X0 - 2 * T - .2, .5, .4)          # spine beam
     for x in [X0 + 6.8 + 8.1 * i for i in range(6)]:
         for y in (-12.0, -4.0, 4.0, 12.0):
-            b.box('concrete', x, y, (G0 + ROOF) / 2, .6, .6, ROOF - G0)
+            b.box('concrete', x, y, (G0 + ROOF - .4) / 2, .6, .6, ROOF - .4 - G0)        # stop under the roof slab
     b.flush('decks')
     cars = Batch()
     tones = ['car_grey', 'car_dark', 'car_white', 'car_red', 'car_grey', 'car_white', 'car_dark']
@@ -472,7 +487,7 @@ def roof_deck():
     C.box('Stair well landing', ((hx0 + hx1) / 2, (hy0 + hy1) / 2, DECKS[3] - .175), (hx1 - hx0, hy1 - hy0, .35), 'floor', 'stair well', 0)
 
 
-def tower(name, box, strips, top):
+def tower(name, box, strips, top, patina_face=None):
     """Bronze-framed stair tower: faces of precast panel, glass and louvre strips, bronze band at the first deck,
     louvred crown with a patinated coping."""
     x0, x1, y0, y1 = box
@@ -511,14 +526,20 @@ def tower(name, box, strips, top):
         for e in edges:                                                      # bronze frame verticals
             m.box('bronze', e, -.08, (G0 + top) / 2, .24, .16, top - G0)
         for z in DECKS + [ROOF]:
-            m.box('bronze', (lo + hi) / 2, -.08, z, hi - lo + .2, .16, .18)
+            m.box('bronze', (lo + hi) / 2, -.13, z, hi - lo + .2, .16, .18)           # in front of the verticals, no coplanar crossings
         m.box('bronze', (lo + hi) / 2, -.45, DECKS[0] - .1, hi - lo + .5, .9, .3)   # projecting band at the first deck
         # Louvred crown above the parapet.
         n = int((top - zc - .4) / .3)
         for k in range(n):
             m.box('bronze', (lo + hi) / 2, -.02, zc + .25 + k * .3, hi - lo, .22, .07)
-        m.box('patina', (lo + hi) / 2, -.12, top + .1, hi - lo + .3, .5, .2)
+        if side == patina_face:                                                # patinated copper panel on the crown
+            m.box('patina', lo + (hi - lo) * .7, -.16, (zc + top) / 2, (hi - lo) * .5, .06, top - zc - .2)
         m.flush(name)
+    x0c, x1c, y0c, y1c = x0 - .25, x1 + .25, y0 - .25, y1 + .25            # closed patinated coping ring
+    for yy in (y0c + .25, y1c - .25):
+        C.box(name + ' coping', ((x0c + x1c) / 2, yy, top + .1), (x1c - x0c, .5, .2), 'patina', name, 0)
+    for xx in (x0c + .25, x1c - .25):
+        C.box(name + ' coping', (xx, (y0c + y1c) / 2, top + .1), (.5, y1c - y0c - 1.0, .2), 'patina', name, 0)
     C.box(name + ' crown core', ((x0 + x1) / 2, (y0 + y1) / 2, (zc + top) / 2), (x1 - x0 - 1.2, y1 - y0 - 1.2, top - zc), 'metal', name, 0)
     C.box(name + ' roof', ((x0 + x1) / 2, (y0 + y1) / 2, top + .06), (x1 - x0 - .2, y1 - y0 - .2, .12), 'pale', name, 0)
     for k in range(6):
@@ -571,8 +592,8 @@ def build():
     site()
     frame_block()
     roof_deck()
-    tower('south-east tower', SE, dict(south=('panel', 'glass', 'louvre'), east=('glass', 'louvre', 'panel'), north=('louvre', 'panel', 'panel'), west=('panel', 'panel', 'louvre')), CROWN)
-    tower('north-east tower', NE, dict(east=('panel', 'glass', 'louvre'), north=('louvre', 'glass', 'panel'), south=('panel', 'louvre', 'panel'), west=('panel', 'panel', 'panel')), CROWN - .6)
+    tower('south-east tower', SE, dict(south=('panel', 'glass', 'louvre'), east=('glass', 'louvre', 'panel'), north=('louvre', 'panel', 'panel'), west=('panel', 'panel', 'panel')), CROWN, patina_face='east')
+    tower('north-east tower', NE, dict(east=('panel', 'glass', 'louvre'), north=('louvre', 'glass', 'panel'), south=('panel', 'louvre', 'panel'), west=('panel', 'panel', 'panel')), CROWN - .6, patina_face='north')
     glass_tower()
     C.CONTACTS.append(dict(name='Stair towers founded at grade and rising through the parapet; lift overrun on the roof deck', parapet_m=PARA))
 

@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-brick-parkade-clay-v001",
+  "glb": "clay-brick-parkade-clay-v001.glb",
+  "glb_bytes": 1092012,
+  "glb_sha256": "a149c8b23342eb4ab5c3d2f5d73d72c1ee3aa358b73cbf0f4e5d851d04ff3a51",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "north_lane.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "retail_base.png": 92,
+    "right_side.png": 92,
+    "roof_deck.png": 92,
+    "stair_penthouse.png": 92,
+    "top.png": 92,
+    "tower_crown.png": 92,
+    "vehicle_entry.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-brick-parkade-clay-v001-renders-and-glb.zip",
+  "zip_bytes": 32404503
+}

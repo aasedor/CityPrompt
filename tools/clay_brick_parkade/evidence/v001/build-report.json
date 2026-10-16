@@ -1,0 +1,3057 @@
+{
+  "candidate": "clay-brick-parkade-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 209,
+    "vertices": 15601,
+    "polygons": 20440,
+    "triangles": 20440,
+    "path": "clay-brick-parkade-clay-v001-authoring.blend",
+    "bytes": 3425644,
+    "sha256": "aa13eb81a12a001f9d1ff1f7e73a05a1f912549aa3aab6d7976ac0f8c92538ec"
+  },
+  "runtime": {
+    "path": "clay-brick-parkade-clay-v001.glb",
+    "bytes": 1092012,
+    "sha256": "a149c8b23342eb4ab5c3d2f5d73d72c1ee3aa358b73cbf0f4e5d851d04ff3a51",
+    "meshes": 22,
+    "materials": 22,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 22,
+    "vertices": 15601,
+    "polygons": 20440,
+    "triangles": 20440
+  },
+  "original_bounds_m": [
+    [
+      -35.0,
+      -39.599998474121094,
+      0.0
+    ],
+    [
+      47.0,
+      34.0,
+      24.875
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -35.0,
+      -39.599998474121094,
+      0.0
+    ],
+    [
+      47.0,
+      34.0,
+      24.875
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 56.2,
+    "depth": 43.8,
+    "height": 23.0
+  },
+  "native_dimensions_m": {
+    "width": 82.0,
+    "depth": 73.5999984741211,
+    "height": 24.875
+  },
+  "native_bottom_center_m": [
+    6.0,
+    -2.799999237060547,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 5,
+    "joint": 4,
+    "trim": 2,
+    "pale": 9,
+    "stone": 4,
+    "foundation": 1,
+    "glass": 10,
+    "hardware": 44,
+    "interior": 1,
+    "floor": 6,
+    "timber": 20,
+    "planting": 15,
+    "concrete": 47,
+    "bronze": 13,
+    "patina": 8,
+    "asphalt": 2,
+    "white": 3,
+    "metal": 8,
+    "car_red": 4,
+    "car_grey": 1,
+    "car_dark": 1,
+    "car_white": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/tower_crown.png",
+    "renders/retail_base.png",
+    "renders/vehicle_entry.png",
+    "renders/roof_deck.png",
+    "renders/stair_penthouse.png",
+    "renders/interior.png",
+    "renders/north_lane.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.18379788100719452,
+      "xmax": 0.9246142506599426,
+      "ymin": 0.3719910681247711,
+      "ymax": 0.6471949815750122
+    },
+    "front_corner": {
+      "xmin": 0.11849970370531082,
+      "xmax": 0.9133391976356506,
+      "ymin": 0.12755051255226135,
+      "ymax": 0.6794580817222595
+    },
+    "aerial": {
+      "xmin": 0.17307214438915253,
+      "xmax": 0.8517296314239502,
+      "ymin": 0.09599680453538895,
+      "ymax": 0.6807389259338379
+    },
+    "top": {
+      "xmin": 0.22244495153427124,
+      "xmax": 0.8727167844772339,
+      "ymin": 0.0812884122133255,
+      "ymax": 0.8594998717308044
+    },
+    "left_side": {
+      "xmin": 0.26500266790390015,
+      "xmax": 0.9079071283340454,
+      "ymin": 0.34112849831581116,
+      "ymax": 0.6724005937576294
+    },
+    "right_side": {
+      "xmin": 0.07973123341798782,
+      "xmax": 0.8576852679252625,
+      "ymin": 0.3303760886192322,
+      "ymax": 0.6600427627563477
+    },
+    "rear": {
+      "xmin": 0.07947751879692078,
+      "xmax": 0.7309741973876953,
+      "ymin": 0.3588152825832367,
+      "ymax": 0.6513037085533142
+    },
+    "rear_side": {
+      "xmin": 0.08405785262584686,
+      "xmax": 0.7300640344619751,
+      "ymin": 0.1919611543416977,
+      "ymax": 0.668084979057312
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Decks on the brick frame and a column grid; cars on the deck slabs",
+      "decks_m": [
+        4.5,
+        7.7,
+        10.9,
+        14.1
+      ]
+    },
+    {
+      "name": "Stair towers founded at grade and rising through the parapet; lift overrun on the roof deck",
+      "parapet_m": 18.400000000000002
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "south retail bay 0",
+      "face": "south",
+      "u": -16.2,
+      "z": 0.15,
+      "width": 6.8,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "south deck 2 opening 0",
+      "face": "south",
+      "u": -16.2,
+      "z": 5.55,
+      "width": 7.199999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 3 opening 0",
+      "face": "south",
+      "u": -16.2,
+      "z": 8.75,
+      "width": 7.199999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 4 opening 0",
+      "face": "south",
+      "u": -16.2,
+      "z": 11.950000000000001,
+      "width": 7.199999999999999,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 5 opening 0",
+      "face": "south",
+      "u": -16.2,
+      "z": 15.15,
+      "width": 7.199999999999999,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south retail bay 1",
+      "face": "south",
+      "u": -8.100000000000001,
+      "z": 0.15,
+      "width": 6.8,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "south deck 2 opening 1",
+      "face": "south",
+      "u": -8.100000000000001,
+      "z": 5.55,
+      "width": 7.199999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 3 opening 1",
+      "face": "south",
+      "u": -8.100000000000001,
+      "z": 8.75,
+      "width": 7.199999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 4 opening 1",
+      "face": "south",
+      "u": -8.100000000000001,
+      "z": 11.950000000000001,
+      "width": 7.199999999999999,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 5 opening 1",
+      "face": "south",
+      "u": -8.100000000000001,
+      "z": 15.15,
+      "width": 7.199999999999999,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south retail bay 2",
+      "face": "south",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 6.8,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "south deck 2 opening 2",
+      "face": "south",
+      "u": 0.0,
+      "z": 5.55,
+      "width": 7.199999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 3 opening 2",
+      "face": "south",
+      "u": 0.0,
+      "z": 8.75,
+      "width": 7.199999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 4 opening 2",
+      "face": "south",
+      "u": 0.0,
+      "z": 11.950000000000001,
+      "width": 7.199999999999999,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 5 opening 2",
+      "face": "south",
+      "u": 0.0,
+      "z": 15.15,
+      "width": 7.199999999999999,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south retail bay 3",
+      "face": "south",
+      "u": 8.099999999999998,
+      "z": 0.15,
+      "width": 6.8,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "retail unit"
+    },
+    {
+      "id": "south deck 2 opening 3",
+      "face": "south",
+      "u": 8.099999999999998,
+      "z": 5.55,
+      "width": 7.199999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 3 opening 3",
+      "face": "south",
+      "u": 8.099999999999998,
+      "z": 8.75,
+      "width": 7.199999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 4 opening 3",
+      "face": "south",
+      "u": 8.099999999999998,
+      "z": 11.950000000000001,
+      "width": 7.199999999999999,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 5 opening 3",
+      "face": "south",
+      "u": 8.099999999999998,
+      "z": 15.15,
+      "width": 7.199999999999999,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south ground window 4",
+      "face": "south",
+      "u": 16.199999999999996,
+      "z": 1.2,
+      "width": 6.5,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "mobility hub office"
+    },
+    {
+      "id": "south deck 2 opening 4",
+      "face": "south",
+      "u": 16.199999999999996,
+      "z": 5.55,
+      "width": 7.199999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 3 opening 4",
+      "face": "south",
+      "u": 16.199999999999996,
+      "z": 8.75,
+      "width": 7.199999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 4 opening 4",
+      "face": "south",
+      "u": 16.199999999999996,
+      "z": 11.950000000000001,
+      "width": 7.199999999999999,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south deck 5 opening 4",
+      "face": "south",
+      "u": 16.199999999999996,
+      "z": 15.15,
+      "width": 7.199999999999999,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -2.25,
+        -20.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "east ground window 0",
+      "face": "east",
+      "u": -8.3,
+      "z": 1.2,
+      "width": 6.699999999999999,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "mobility hub office"
+    },
+    {
+      "id": "east deck 2 opening 0",
+      "face": "east",
+      "u": -8.3,
+      "z": 5.55,
+      "width": 7.399999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "east deck 3 opening 0",
+      "face": "east",
+      "u": -8.3,
+      "z": 8.75,
+      "width": 7.399999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "east deck 4 opening 0",
+      "face": "east",
+      "u": -8.3,
+      "z": 11.950000000000001,
+      "width": 7.399999999999999,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "east deck 5 opening 0",
+      "face": "east",
+      "u": -8.3,
+      "z": 15.15,
+      "width": 7.399999999999999,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "east vehicle opening 1",
+      "face": "east",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 6.299999999999999,
+      "height": 3.3000000000000003,
+      "kind": "vehicle entry",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "ramp"
+    },
+    {
+      "id": "east deck 2 opening 1",
+      "face": "east",
+      "u": 0.0,
+      "z": 5.55,
+      "width": 7.399999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "east deck 3 opening 1",
+      "face": "east",
+      "u": 0.0,
+      "z": 8.75,
+      "width": 7.399999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "east deck 4 opening 1",
+      "face": "east",
+      "u": 0.0,
+      "z": 11.950000000000001,
+      "width": 7.399999999999999,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "east deck 5 opening 1",
+      "face": "east",
+      "u": 0.0,
+      "z": 15.15,
+      "width": 7.399999999999999,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "east vehicle opening 2",
+      "face": "east",
+      "u": 8.299999999999997,
+      "z": 0.15,
+      "width": 6.299999999999999,
+      "height": 3.3000000000000003,
+      "kind": "vehicle entry",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "ramp"
+    },
+    {
+      "id": "east deck 2 opening 2",
+      "face": "east",
+      "u": 8.299999999999997,
+      "z": 5.55,
+      "width": 7.399999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "east deck 3 opening 2",
+      "face": "east",
+      "u": 8.299999999999997,
+      "z": 8.75,
+      "width": 7.399999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "east deck 4 opening 2",
+      "face": "east",
+      "u": 8.299999999999997,
+      "z": 11.950000000000001,
+      "width": 7.399999999999999,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "east deck 5 opening 2",
+      "face": "east",
+      "u": 8.299999999999997,
+      "z": 15.15,
+      "width": 7.399999999999999,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        27.0,
+        -0.949999988079071,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 2 opening 0",
+      "face": "north",
+      "u": -17.52,
+      "z": 5.55,
+      "width": 7.859999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 3 opening 0",
+      "face": "north",
+      "u": -17.52,
+      "z": 8.75,
+      "width": 7.859999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 4 opening 0",
+      "face": "north",
+      "u": -17.52,
+      "z": 11.950000000000001,
+      "width": 7.859999999999999,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 5 opening 0",
+      "face": "north",
+      "u": -17.52,
+      "z": 15.15,
+      "width": 7.859999999999999,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north ground window 1",
+      "face": "north",
+      "u": -8.759999999999998,
+      "z": 1.2,
+      "width": 7.16,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "mobility hub office"
+    },
+    {
+      "id": "north deck 2 opening 1",
+      "face": "north",
+      "u": -8.759999999999998,
+      "z": 5.55,
+      "width": 7.859999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 3 opening 1",
+      "face": "north",
+      "u": -8.759999999999998,
+      "z": 8.75,
+      "width": 7.859999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 4 opening 1",
+      "face": "north",
+      "u": -8.759999999999998,
+      "z": 11.950000000000001,
+      "width": 7.859999999999999,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 5 opening 1",
+      "face": "north",
+      "u": -8.759999999999998,
+      "z": 15.15,
+      "width": 7.859999999999999,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 2 opening 2",
+      "face": "north",
+      "u": 0.0,
+      "z": 5.55,
+      "width": 7.859999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 3 opening 2",
+      "face": "north",
+      "u": 0.0,
+      "z": 8.75,
+      "width": 7.859999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 4 opening 2",
+      "face": "north",
+      "u": 0.0,
+      "z": 11.950000000000001,
+      "width": 7.859999999999999,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 5 opening 2",
+      "face": "north",
+      "u": 0.0,
+      "z": 15.15,
+      "width": 7.859999999999999,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north ground window 3",
+      "face": "north",
+      "u": 8.760000000000002,
+      "z": 1.2,
+      "width": 7.16,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "mobility hub office"
+    },
+    {
+      "id": "north deck 2 opening 3",
+      "face": "north",
+      "u": 8.760000000000002,
+      "z": 5.55,
+      "width": 7.859999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 3 opening 3",
+      "face": "north",
+      "u": 8.760000000000002,
+      "z": 8.75,
+      "width": 7.859999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 4 opening 3",
+      "face": "north",
+      "u": 8.760000000000002,
+      "z": 11.950000000000001,
+      "width": 7.859999999999999,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 5 opening 3",
+      "face": "north",
+      "u": 8.760000000000002,
+      "z": 15.15,
+      "width": 7.859999999999999,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 2 opening 4",
+      "face": "north",
+      "u": 17.520000000000003,
+      "z": 5.55,
+      "width": 7.859999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 3 opening 4",
+      "face": "north",
+      "u": 17.520000000000003,
+      "z": 8.75,
+      "width": 7.859999999999999,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 4 opening 4",
+      "face": "north",
+      "u": 17.520000000000003,
+      "z": 11.950000000000001,
+      "width": 7.859999999999999,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "north deck 5 opening 4",
+      "face": "north",
+      "u": 17.520000000000003,
+      "z": 15.15,
+      "width": 7.859999999999999,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -5.099999904632568,
+        20.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 2 opening 0",
+      "face": "west",
+      "u": -13.350000000000001,
+      "z": 5.55,
+      "width": 8.0,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 3 opening 0",
+      "face": "west",
+      "u": -13.350000000000001,
+      "z": 8.75,
+      "width": 8.0,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 4 opening 0",
+      "face": "west",
+      "u": -13.350000000000001,
+      "z": 11.950000000000001,
+      "width": 8.0,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 5 opening 0",
+      "face": "west",
+      "u": -13.350000000000001,
+      "z": 15.15,
+      "width": 8.0,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west ground window 1",
+      "face": "west",
+      "u": -4.449999999999999,
+      "z": 1.2,
+      "width": 7.300000000000001,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "mobility hub office"
+    },
+    {
+      "id": "west deck 2 opening 1",
+      "face": "west",
+      "u": -4.449999999999999,
+      "z": 5.55,
+      "width": 8.0,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 3 opening 1",
+      "face": "west",
+      "u": -4.449999999999999,
+      "z": 8.75,
+      "width": 8.0,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 4 opening 1",
+      "face": "west",
+      "u": -4.449999999999999,
+      "z": 11.950000000000001,
+      "width": 8.0,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 5 opening 1",
+      "face": "west",
+      "u": -4.449999999999999,
+      "z": 15.15,
+      "width": 8.0,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 2 opening 2",
+      "face": "west",
+      "u": 4.449999999999999,
+      "z": 5.55,
+      "width": 8.0,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 3 opening 2",
+      "face": "west",
+      "u": 4.449999999999999,
+      "z": 8.75,
+      "width": 8.0,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 4 opening 2",
+      "face": "west",
+      "u": 4.449999999999999,
+      "z": 11.950000000000001,
+      "width": 8.0,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 5 opening 2",
+      "face": "west",
+      "u": 4.449999999999999,
+      "z": 15.15,
+      "width": 8.0,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 2 opening 3",
+      "face": "west",
+      "u": 13.350000000000001,
+      "z": 5.55,
+      "width": 8.0,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 3 opening 3",
+      "face": "west",
+      "u": 13.350000000000001,
+      "z": 8.75,
+      "width": 8.0,
+      "height": 1.7499999999999998,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 4 opening 3",
+      "face": "west",
+      "u": 13.350000000000001,
+      "z": 11.950000000000001,
+      "width": 8.0,
+      "height": 1.749999999999999,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "west deck 5 opening 3",
+      "face": "west",
+      "u": 13.350000000000001,
+      "z": 15.15,
+      "width": 8.0,
+      "height": 1.7500000000000024,
+      "kind": "open parking deck",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": null,
+      "pane_inset_m": null,
+      "face_origin": [
+        -27.0,
+        1.7999999523162842,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "parking deck"
+    },
+    {
+      "id": "south-east tower south glass strip",
+      "face": "south-east tower south",
+      "u": 0.0,
+      "z": 0.44999999999999996,
+      "width": 3.7,
+      "height": 17.85,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        23.0,
+        -21.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "south-east tower south louvre strip",
+      "face": "south-east tower south",
+      "u": 3.5,
+      "z": 4.9,
+      "width": 2.6999999999999997,
+      "height": 13.3,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": null,
+      "face_origin": [
+        23.0,
+        -21.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "south-east tower north louvre strip",
+      "face": "south-east tower north",
+      "u": -3.5,
+      "z": 4.9,
+      "width": 2.6999999999999997,
+      "height": 13.3,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": null,
+      "face_origin": [
+        23.0,
+        -13.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "south-east tower east glass strip",
+      "face": "south-east tower east",
+      "u": -2.5199999999999996,
+      "z": 0.44999999999999996,
+      "width": 1.8599999999999994,
+      "height": 17.85,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        28.0,
+        -17.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "south-east tower east louvre strip",
+      "face": "south-east tower east",
+      "u": -4.440892098500626e-16,
+      "z": 4.9,
+      "width": 2.579999999999999,
+      "height": 13.3,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": null,
+      "face_origin": [
+        28.0,
+        -17.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "south-east tower west louvre strip",
+      "face": "south-east tower west",
+      "u": 2.519999999999999,
+      "z": 4.9,
+      "width": 1.8600000000000003,
+      "height": 13.3,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": null,
+      "face_origin": [
+        18.0,
+        -17.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "north-east tower south louvre strip",
+      "face": "north-east tower south",
+      "u": -6.661338147750939e-16,
+      "z": 4.9,
+      "width": 4.659999999999998,
+      "height": 13.3,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": null,
+      "face_origin": [
+        23.0,
+        11.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "north-east tower north louvre strip",
+      "face": "north-east tower north",
+      "u": -4.34,
+      "z": 4.9,
+      "width": 3.419999999999999,
+      "height": 13.3,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": null,
+      "face_origin": [
+        23.0,
+        22.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "north-east tower north glass strip",
+      "face": "north-east tower north",
+      "u": -6.661338147750939e-16,
+      "z": 0.44999999999999996,
+      "width": 4.659999999999998,
+      "height": 17.85,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        23.0,
+        22.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "north-east tower east glass strip",
+      "face": "north-east tower east",
+      "u": -4.440892098500626e-16,
+      "z": 0.44999999999999996,
+      "width": 3.7399999999999984,
+      "height": 17.85,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        29.200000762939453,
+        16.950000762939453,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "north-east tower east louvre strip",
+      "face": "north-east tower east",
+      "u": 3.5349999999999984,
+      "z": 4.9,
+      "width": 2.73,
+      "height": 13.3,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": null,
+      "face_origin": [
+        29.200000762939453,
+        16.950000762939453,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "South sidewalk",
+      "East sidewalk",
+      "South street",
+      "East street"
+    ],
+    "street lines": [
+      "street lines car_red"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014"
+    ],
+    "envelope": [
+      "south brick frame",
+      "east brick frame",
+      "north brick frame",
+      "west brick frame",
+      "south-east tower south precast carrier",
+      "south-east tower north precast carrier",
+      "south-east tower east precast carrier",
+      "south-east tower west precast carrier",
+      "north-east tower south precast carrier",
+      "north-east tower north precast carrier",
+      "north-east tower east precast carrier",
+      "north-east tower west precast carrier"
+    ],
+    "brick joints": [
+      "south measured mortar courses",
+      "east measured mortar courses",
+      "north measured mortar courses",
+      "west measured mortar courses"
+    ],
+    "frame": [
+      "south frame bronze",
+      "south frame glass",
+      "south frame metal",
+      "south frame concrete",
+      "south frame stone",
+      "east frame bronze",
+      "east frame glass",
+      "east frame metal",
+      "east frame concrete",
+      "east frame stone",
+      "north frame metal",
+      "north frame bronze",
+      "north frame glass",
+      "north frame concrete",
+      "north frame stone",
+      "west frame metal",
+      "west frame bronze",
+      "west frame glass",
+      "west frame concrete",
+      "west frame stone"
+    ],
+    "decks": [
+      "Ground slab",
+      "decks floor",
+      "decks concrete"
+    ],
+    "parked cars": [
+      "parked cars car_dark",
+      "parked cars glass",
+      "parked cars car_white",
+      "parked cars car_red",
+      "parked cars car_grey"
+    ],
+    "retail": [
+      "Retail counter",
+      "Retail counter.001",
+      "Retail counter.002",
+      "Retail counter.003",
+      "Retail back wall"
+    ],
+    "entry": [
+      "Barrier post",
+      "Barrier arm",
+      "Barrier post.001",
+      "Barrier arm.001"
+    ],
+    "roof deck": [
+      "Roof deck slab",
+      "Roof deck slab.001",
+      "Roof deck slab.002",
+      "Roof deck slab.003",
+      "roof deck white",
+      "roof deck hardware",
+      "Light pole",
+      "Light head",
+      "Light pole.001",
+      "Light head.001",
+      "Light pole.002",
+      "Light head.002",
+      "Light pole.003",
+      "Light head.003",
+      "Light pole.004",
+      "Light head.004"
+    ],
+    "penthouse": [
+      "Lift overrun",
+      "Lift overrun roof",
+      "Rooftop unit",
+      "Unit fan",
+      "Rooftop unit.001",
+      "Unit fan.001",
+      "Rooftop unit.002",
+      "Unit fan.002"
+    ],
+    "overrun ribs": [
+      "overrun ribs trim"
+    ],
+    "stair well": [
+      "Stair well rail",
+      "Stair well mid rail",
+      "Stair well post",
+      "Stair well post.001",
+      "Stair well post.002",
+      "Stair well post.003",
+      "Stair well post.004",
+      "Stair well post.005",
+      "Stair well rail.001",
+      "Stair well mid rail.001",
+      "Stair well post.006",
+      "Stair well post.007",
+      "Stair well post.008",
+      "Stair well post.009",
+      "Stair well post.010",
+      "Stair well rail.002",
+      "Stair well mid rail.002",
+      "Stair well post.011",
+      "Stair well post.012",
+      "Stair well post.013",
+      "Stair well post.014",
+      "Stair well post.015",
+      "Stair well post.016",
+      "Stair well rail.003",
+      "Stair well mid rail.003",
+      "Stair well post.017",
+      "Stair well post.018",
+      "Stair well post.019",
+      "Stair well post.020",
+      "Stair well post.021",
+      "Stair flight",
+      "Stair flight.001",
+      "Stair well landing"
+    ],
+    "south-east tower": [
+      "south-east tower south south-east tower bronze",
+      "south-east tower south south-east tower glass",
+      "south-east tower south south-east tower patina",
+      "south-east tower north south-east tower bronze",
+      "south-east tower north south-east tower patina",
+      "south-east tower east south-east tower bronze",
+      "south-east tower east south-east tower glass",
+      "south-east tower east south-east tower patina",
+      "south-east tower west south-east tower bronze",
+      "south-east tower west south-east tower patina",
+      "south-east tower crown core",
+      "south-east tower roof"
+    ],
+    "south-east tower stair": [
+      "south-east tower stair flight",
+      "south-east tower stair flight.001",
+      "south-east tower stair flight.002",
+      "south-east tower stair flight.003",
+      "south-east tower stair flight.004",
+      "south-east tower stair flight.005",
+      "south-east tower stair flight.006",
+      "south-east tower stair flight.007",
+      "south-east tower stair flight.008",
+      "south-east tower stair flight.009",
+      "south-east tower stair flight.010",
+      "south-east tower stair flight.011"
+    ],
+    "north-east tower": [
+      "north-east tower south north-east tower bronze",
+      "north-east tower south north-east tower patina",
+      "north-east tower north north-east tower bronze",
+      "north-east tower north north-east tower glass",
+      "north-east tower north north-east tower patina",
+      "north-east tower east north-east tower bronze",
+      "north-east tower east north-east tower glass",
+      "north-east tower east north-east tower patina",
+      "north-east tower west north-east tower bronze",
+      "north-east tower west north-east tower patina",
+      "north-east tower crown core",
+      "north-east tower roof"
+    ],
+    "north-east tower stair": [
+      "north-east tower stair flight",
+      "north-east tower stair flight.001",
+      "north-east tower stair flight.002",
+      "north-east tower stair flight.003",
+      "north-east tower stair flight.004",
+      "north-east tower stair flight.005",
+      "north-east tower stair flight.006",
+      "north-east tower stair flight.007",
+      "north-east tower stair flight.008",
+      "north-east tower stair flight.009",
+      "north-east tower stair flight.010",
+      "north-east tower stair flight.011"
+    ],
+    "glass stair tower": [
+      "glass stair tower bronze",
+      "glass stair tower glass",
+      "glass stair tower metal",
+      "Glass tower north wall",
+      "Glass tower stair",
+      "Glass tower stair.001",
+      "Glass tower stair.002",
+      "Glass tower stair.003",
+      "Glass tower stair.004",
+      "Glass tower stair.005"
+    ]
+  },
+  "carrier_aperture_audit": "FAIL_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-16T01:01:31.440611+00:00",
+  "delivery_and_render_seconds": 3042.3529942059995,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
