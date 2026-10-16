@@ -1,9 +1,45 @@
 import type { BufferGeometry } from 'three';
 import { useSyncExternalStore } from 'react';
-import clipping from 'polygon-clipping';
 import { metersPerDegLon, METERS_PER_DEG_LAT } from '@/components/viewer/mapEngine/geoUtils';
 export interface SafetySurface { id:string; lng:number;lat:number;height:number;geometries:BufferGeometry[] }
 type Point=[number,number,number];
+type Point2=[number,number];
+const AREA_EPSILON=1e-10;
+const polygonArea=(polygon:Point2[])=>Math.abs(polygon.reduce((sum,p,i)=>{const q=polygon[(i+1)%polygon.length];return sum+p[0]*q[1]-q[0]*p[1];},0))/2;
+/** Convex half-plane clipping avoids sweep-line ring stitching at coincident
+ * Float32 road-station edges. Every output remains convex and finite. */
+function halfPlane(polygon:Point2[],a:Point,b:Point,side:number):Point2[] {
+  if(!polygon.length)return [];
+  const length=Math.hypot(b[0]-a[0],b[1]-a[1]);
+  if(length<1e-12)return polygon;
+  const distance=(p:Point2)=>side*((b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]))/length;
+  const result:Point2[]=[];
+  for(let i=0;i<polygon.length;i++){
+    const p=polygon[i],q=polygon[(i+1)%polygon.length],dp=distance(p),dq=distance(q);
+    const pin=dp>=0,qin=dq>=0;
+    if(pin)result.push(p);
+    if(pin!==qin){const t=dp/(dp-dq);result.push([p[0]+t*(q[0]-p[0]),p[1]+t*(q[1]-p[1])]);}
+  }
+  return result;
+}
+function triangleOrientation(points:Point[]){const[a,b,c]=points;return Math.sign((b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]));}
+function intersectTriangle(polygon:Point2[],points:Point[]){
+  const side=triangleOrientation(points);
+  return points.reduce((inside,a,i)=>halfPlane(inside,a,points[(i+1)%3],side),polygon);
+}
+/** Partition uncovered convex pieces instead of adding triangle areas: duplicate
+ * or overlapping road faces must never conceal a hole in the support surface. */
+function subtractTriangle(polygon:Point2[],points:Point[]):Point2[][]{
+  const outside:Point2[][]=[];const side=triangleOrientation(points);let inside=polygon;
+  for(let i=0;i<3;i++){
+    const a=points[i],b=points[(i+1)%3];
+    const piece=halfPlane(inside,a,b,-side);
+    if(polygonArea(piece)>AREA_EPSILON)outside.push(piece);
+    inside=halfPlane(inside,a,b,side);
+    if(polygonArea(inside)<=AREA_EPSILON)break;
+  }
+  return outside;
+}
 interface Triangle { points:Point[]; minX:number;maxX:number;minY:number;maxY:number }
 const surfaces=new Map<string,Omit<SafetySurface,'geometries'>&{triangles:Triangle[]}>();
 const subscribers=new Set<()=>void>();let version=0;
@@ -39,20 +75,22 @@ export function safetySurfaceSupport(pose:{lng:number;lat:number;angle:number},b
       .map(([px,pz])=>[x+c*px+s*pz,y+s*px-c*pz]);
     const xs=footprint.map(p=>p[0]),ys=footprint.map(p=>p[1]);
     const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
-    const pieces:clipping.MultiPolygon[]=[];let low=Infinity,high=-Infinity;
+    let uncovered:Point2[][]=[footprint];let low=Infinity,high=-Infinity;
     for(const t of surface.triangles){if(t.minX>maxX||t.maxX<minX||t.minY>maxY||t.maxY<minY)continue;
-      const piece=clipping.intersection([footprint],[t.points.map(p=>[p[0],p[1]] as [number,number])]);if(!piece.length)continue;
-      pieces.push(piece);const [a,b,d]=t.points;
+      const piece=intersectTriangle(footprint,t.points);if(polygonArea(piece)<=AREA_EPSILON)continue;
+      uncovered=uncovered.flatMap(polygon=>subtractTriangle(polygon,t.points));
+      // Reject pathological meshes instead of monopolizing the editor thread.
+      if(uncovered.length>4096)return fail;
+      const [a,b,d]=t.points;
       const denominator=(b[0]-a[0])*(d[1]-a[1])-(d[0]-a[0])*(b[1]-a[1]);
-      for(const polygon of piece)for(const ring of polygon)for(const p of ring){
+      for(const p of piece){
         const u=((p[0]-a[0])*(d[1]-a[1])-(d[0]-a[0])*(p[1]-a[1]))/denominator;
         const v=((b[0]-a[0])*(p[1]-a[1])-(p[0]-a[0])*(b[1]-a[1]))/denominator;
         const height=a[2]+u*(b[2]-a[2])+v*(d[2]-a[2]);low=Math.min(low,height);high=Math.max(high,height);
       }
     }
-    if(!pieces.length||high-low>.001)continue;
-    const missing=clipping.difference([footprint],...pieces);
-    const area=missing.reduce((sum,p)=>sum+p.reduce((value,ring)=>value+Math.abs(ring.reduce((a,v,i)=>{const q=ring[(i+1)%ring.length];return a+v[0]*q[1]-q[0]*v[1];},0))/2,0),0);
+    if(!Number.isFinite(low)||high-low>.001)continue;
+    const area=uncovered.reduce((sum,polygon)=>sum+polygonArea(polygon),0);
     if(area>1e-7)continue;
     return {ok:true,height:surface.height+high,hostId:id};
   }

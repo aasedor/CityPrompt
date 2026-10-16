@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { BufferGeometry, Float32BufferAttribute } from 'three';
 import { registerSafetySurface, safetySurfaceSupport } from './safetySupport';
+import { metersPerDegLon, METERS_PER_DEG_LAT } from '@/components/viewer/mapEngine/geoUtils';
+import { buildRibbonBandGeometry } from '@/components/viewer/globe/streetMesh3D';
 
 function rectangle(x0:number,y0:number,x1:number,y1:number,z=0) {
   return new BufferGeometry().setAttribute('position',new Float32BufferAttribute([
@@ -9,6 +11,24 @@ function rectangle(x0:number,y0:number,x1:number,y1:number,z=0) {
 }
 describe('authored safety surface support',()=> {
   const pose={lng:-114,lat:51,angle:0};
+  it('remains stable while a rigid cushion crosses nearly coincident lane triangles',()=> {
+    const route=Array.from({length:101},(_,i)=>({x:i-50,y:(i-50)*Math.tan(-.017417)}));
+    const bands=[[-5.5,-2],[-2,2],[2,5.5]].map(([a,b])=>buildRibbonBandGeometry(route,a,b,.1)!);
+    const remove=registerSafetySurface({id:'lanes',...pose,height:1000,geometries:bands});
+    try {
+      for(let i=0;i<500;i++) {
+        const x=-40+i*.160237;
+        const y=x*Math.tan(-.017417)+Math.sin(i)*.11;
+        const supported=safetySurfaceSupport({lng:pose.lng+x/metersPerDegLon(pose.lat),lat:pose.lat+y/METERS_PER_DEG_LAT,angle:90},[-.9,-1.7,.9,1.7],['lanes']);
+        expect(supported.ok,`cushion station ${i}`).toBe(true);
+      }
+    } finally {remove();}
+  });
+  it('does not count overlapping triangles twice when a footprint has a gap',()=> {
+    const half=rectangle(-5,-5,0,5,.1);
+    const remove=registerSafetySurface({id:'overlap',...pose,height:1000,geometries:[half,half.clone()]});
+    expect(safetySurfaceSupport(pose,[-3,-2,3,2],['overlap']).ok).toBe(false);remove();
+  });
   it('uses the rendered road surface datum and checks the complete nominal footprint',()=> {
     const remove=registerSafetySurface({id:'road',lng:-114,lat:51,height:1000,geometries:[rectangle(-10,-10,10,10,.1)]});
     const supported=safetySurfaceSupport(pose,[-3,-2,3,2],['road']);

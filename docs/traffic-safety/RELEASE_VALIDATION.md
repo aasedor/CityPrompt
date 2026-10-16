@@ -80,3 +80,21 @@ packet contains 3,584 exact assets (1,537,725,373 bytes), including all 66 new G
 and ten Calgary WebP previews. Initial JS is 474.9 KB; total JS 8,415.1 KB is within
 the existing 8,448 KB budget. Build output and logs remain outside source/ignored.
 Push and live results will be recorded separately.
+
+## Live-discovered precision correction
+
+The first rollout (ec0b3d0fa) exposed a polygon-clipping sweep-line ring-stitching
+exception during cushion positioning on densified road triangles. It interrupted
+the scene without deleting saved data. The failure was reproduced locally using
+the actual buildRibbonBandGeometry builder (101 stations, three lane bands).
+
+The support calculation now intersects convex footprints with triangles using
+half-plane clipping and subtracts each covered triangle from uncovered convex
+pieces. Duplicate/overlapping faces cannot conceal holes. Height/slope checks and
+the full-footprint requirement remain; pathological fragmentation fails closed.
+The previously failing 500-position sweep passes, as do duplicate-face/hole/slope
+tests. Independent math review found no critical/important issue. Actual local
+browser placement at three stations, undo and redo pass with no console errors.
+Fresh affected suites: 23 tests, TypeScript and ESLint pass. The corrected hosted
+build passes all catalogue, asset and bundle gates (156 choices; total JS
+8,415.7 KB within 8,448 KB). Follow-up live results remain pending below.
