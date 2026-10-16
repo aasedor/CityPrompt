@@ -1,7 +1,7 @@
 # Student residence tower with a glass roof dome (RLASM v6.1 architectural clay)
 
 Candidate E1 of the three-tower wave of 2026-10-16, chosen to add residential towers (types
-with no clay, runtime or seed-library model yet; it replaces a Vancouverism tower that already had one). State: **candidate under review**. Nothing here is keeper-approved,
+with no clay, runtime or seed-library model yet; it replaces a Vancouverism tower that already had one). State: **stopped at v003 by the rework rule; v002 (0 P0 / 4 P1, tied with v003) is the candidate**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,10 +68,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002
+## Open blockers after v003 (stopped: the same finding survived two targeted fixes)
 
-- P1: plan proportion inverted: the tower reads deeper than wide where the source's south face is about 1.27 times the west face
-- P1: roof garden too sparse (thin single-row troughs, the dome ring a strip of lawn) and the dome mid-roof instead of against the penthouse's south face
-- P1: the planted_terrace camera frames no terrace
-- P1: the front camera is a square south elevation where the source front is a south-west corner view with the blade dominant
-- P2: see evidence/v002/independent-review.md
+- P1: the dome reads as a different object: a round hemisphere in a lawn ring, where the source dome is oval with a diagonal geodesic net on a storey-high glazed drum, further east against the south screen, densely planted on its west side (roof-garden finding carried from v001 and v002)
+- P1: the penthouse is too small and low; in the source it is a full storey with doors and a parapet, about as tall as the dome, the dominant roof mass
+- P1: the lattice screen reads as a guardrail; the source screen is 1 to 1.5 storeys of triangulated see-through panels hiding the lower dome
+- P1: too many terraces (about 6 of 10 west floors against 2 to 3) and every terrace a planter box on the slab edge; the sources show recessed balconies with set-back glass and white side returns
+- P2: see evidence/v003/independent-review.md
