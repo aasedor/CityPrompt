@@ -19,7 +19,7 @@ import geometry as G
 SLUG = 'clay-ctrain-elevated-station'
 T = .32
 G0 = .15
-HX0, HX1, HY0, HY1 = -18.0, 18.0, -11.0, 15.0     # headhouse (top view at 0.115 m/px)
+HX0, HX1, HY0, HY1 = -18.0, 18.0, -11.0, 22.0     # headhouse (top view at 0.115 m/px)
 L2, L3, ROOF = 6.0, 10.0, 14.0                    # platform level, upper concourse, roof
 PARA = ROOF + .8
 TW = 6.5                                          # corner stair towers
@@ -31,19 +31,24 @@ PX = (4.0, 10.0)                                  # platform band (each side, mi
 CAN_Y = (-11.0, -35.0)                            # canopy run
 STREET = (-36.0, -20.0)                           # east-west street under the deck
 SKY_Z = (L2 + .5, L3 - .2)                        # Plus 15 skywalk floor and roof
+SKY_W = (-2.8, 5.0)                               # west skywalk centre y and width: right beside the SW tower (top view)
+SKY_E = (-3.7, 3.2)                               # east link centre y and width: right beside the SE tower
+TAIL = 12.0                                       # tail track north of the headhouse
+RAMP = 26.0                                       # guideway ramp down to grade south of the platforms
+STAIR_Y = (-44.0, -42.0)                          # street stairs at the platform south ends
 EPS = .002
 PALETTE = dict(wall=(.55, .28, .21), joint=(.40, .20, .15), trim=(.40, .42, .44),
     pale=(.86, .85, .82), stone=(.70, .68, .64), roof=(.72, .71, .68), sand=(.68, .66, .62),
     foundation=(.42, .42, .41), glass=(.50, .60, .64), hardware=(.30, .31, .33),
     interior=(.80, .76, .68), floor=(.46, .44, .42), timber=(.40, .28, .16), blue=(.14, .22, .28),
-    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.66, .65, .62), asphalt=(.30, .30, .31),
+    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.56, .55, .52), asphalt=(.30, .30, .31),
     tactile=(.86, .70, .16), signal=(.70, .10, .10), train=(.66, .12, .12), white=(.90, .90, .88),
     rail=(.36, .34, .32), membrane=(.74, .73, .70))
 
 
 def manifest(version):
     h = TOWER_TOP + 1.0
-    cams = G.camera_roster(60.0, 66.0, h, [
+    cams = G.camera_roster(44.0, 50.0, h, [
         ('facade_close', (-30.0, -26.0, 6.0), (-14.75, -12.0, 8.0), 45),
         ('architecture_close', (-20.0, -34.0, 14.0), (-7.0, -12.0, 9.0), 45),
         ('glass_close', (-14.0, -30.0, 12.0), (-7.0, -24.0, 9.6), 45),
@@ -52,8 +57,11 @@ def manifest(version):
         ('street_underpass', (-18.0, -28.0, 1.7), (6.0, -28.0, 3.6), 40),
         ('tower_cap', (-30.0, -30.0, 22.0), (-14.75, -8.75, 16.5), 45),
         ('train_platform', (4.0, -40.0, 9.0), (-2.0, -22.0, 6.8), 45),
-        ('interior', (6.0, 4.0, L2 + 1.7), (-8.0, -10.0, L2 + 1.5), 60),
+        ('interior', (0.0, 8.0, L3 + 1.7), (0.0, -11.0, L3 + 1.2), 60),
         ('east_skywalk', (48.0, -30.0, 14.0), (29.0, -6.0, 8.0), 45)])
+    for c in cams:
+        if c['name'] == 'front':
+            c['location'] = (-50.0, -34.0, 12.0); c['target'] = (-8.0, -8.0, 7.0)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -345,8 +353,8 @@ def headhouse():
     x0, x1 = HX0 + TW, HX1 - TW
     south = C.Face((0, HY0, 0), (1, 0, 0), (0, 1, 0), 'headhouse south')
     hw = (x1 - x0) / 2
-    holes = [hole('south lobby doors west', -7.0, G0, 3.6, 3.2, kind='door', rows=2), hole('south lobby doors east', 7.0, G0, 3.6, 3.2, kind='door', rows=2),
-             hole('track portal', 0, DECK, 8.4, 4.4, kind='portal'),
+    holes = [hole('south lobby doors west', -7.5, G0, 3.0, 3.2, kind='door', rows=2), hole('south lobby doors east', 7.5, G0, 3.0, 3.2, kind='door', rows=2),
+             hole('track portal south', 0, DECK - .7, 8.6, 5.0, kind='portal'),
              hole('west platform doors', -7.0, PLAT + .05, 4.2, 3.0, kind='door', rows=2), hole('east platform doors', 7.0, PLAT + .05, 4.2, 3.0, kind='door', rows=2),
              hole('upper concourse band', 0, L3 + .45, 2 * hw - .6, ROOF - L3 - .75, rows=2)]
     brick_wall(south, -hw, hw, G0, PARA, holes)
@@ -354,30 +362,26 @@ def headhouse():
     m = Merge(south)
     m.box('stone', 0, -.06, L3 + .2, 2 * hw - .02, T + .12, .32)                  # pale band under the glazed storey
     m.box('stone', 0, -.08, PARA + .05, 2 * hw - .02, T + .16, .12)
-    m.box('trim', 0, -.6, DECK + 4.55, 9.4, 1.2, .25)                            # portal lintel hood
+    m.box('trim', 0, -.6, DECK + 4.45, 9.6, 1.2, .25)                            # portal lintel hood
     m.flush('headhouse south')
-    # East and west faces from the towers to the rear, north face.
+    # East and west faces from the towers to the rear; skywalk openings right beside the towers.
     for side, xs, sgn in (('west', HX0, -1), ('east', HX1, 1)):
         f = C.Face((xs, (HY0 - 1 + TW + HY1) / 2, 0), (0, -sgn, 0), (-sgn, 0, 0), f'headhouse {side}')
         y0, y1 = HY0 - 1 + TW, HY1
         span = y1 - y0; lo, hi = -span / 2, span / 2
         def u_of(y):
             return -sgn * (y - (y0 + y1) / 2)
+        sky_y = SKY_W[0] if side == 'west' else SKY_E[0]
+        sky_w = SKY_W[1] if side == 'west' else SKY_E[1]
         hs = []
-        for k, y in enumerate((-2.5, 3.5, 9.5)):
-            if not (side == 'west' and k == 1):
-                hs.append(hole(f'{side} lobby window {k}', u_of(y), G0 + .6, 3.6, 4.2, rows=2))
-        hs.append(hole(f'{side} lobby entrance', u_of(13.0 if side == 'west' else 1.5), G0, 2.8, 3.4, kind='door', rows=2))
-        for k, y in enumerate((-2.0, 2.0, 6.0, 10.0, 14.0)):
-            if side == 'west' and abs(y - 2.0) < 3.5:
-                continue
-            if side == 'east' and abs(y - 9.0) < 3.0:
+        for k, y in enumerate((-1.0, 5.0, 11.0, 17.0)):
+            hs.append(hole(f'{side} lobby storefront {k}', u_of(y), G0 + .3, 3.8, 4.4, rows=2))
+        hs.append(hole(f'{side} lobby entrance', u_of(20.0), G0, 2.6, 3.4, kind='door', rows=2))
+        for k, y in enumerate((-2.0, 2.0, 6.0, 10.0, 14.0, 18.0)):
+            if abs(y - sky_y) < sky_w / 2 + 1.4:
                 continue
             hs.append(hole(f'{side} level 2 window {k}', u_of(y), L2 + .6, 1.8, 2.8, rows=2))
-        if side == 'west':
-            hs.append(hole('west skywalk opening', u_of(2.0), SKY_Z[0], 5.0, SKY_Z[1] - SKY_Z[0] - .3, kind='skywalk'))
-        else:
-            hs.append(hole('east skywalk opening', u_of(9.0), SKY_Z[0], 3.6, SKY_Z[1] - SKY_Z[0] - .3, kind='skywalk'))
+        hs.append(hole(f'{side} skywalk opening', u_of(sky_y), SKY_Z[0], sky_w - .2, SKY_Z[1] - SKY_Z[0] - .3, kind='skywalk'))
         hs.append(hole(f'{side} upper band', 0, L3 + .45, span - 1.2, ROOF - L3 - .75, rows=2))
         brick_wall(f, lo, hi, G0, PARA, hs)
         glaze(f, hs, 'concourse', cols_per=1.6)
@@ -387,65 +391,119 @@ def headhouse():
         m.flush(f.label)
     north = C.Face((0, HY1, 0), (-1, 0, 0), (0, -1, 0), 'headhouse north')
     hw2 = (HX1 - HX0) / 2 - T
-    hs = [hole(f'north window {k}-{j}', u, z, 1.8, 2.6) for j, z in enumerate((G0 + 1.2, L2 + .7)) for k, u in enumerate((-12.0, -6.0, 0.0, 6.0, 12.0))]
+    hs = [hole(f'north window {k}-{j}', u, z, 1.8, 2.6) for j, z in enumerate((G0 + 1.2, L2 + .7)) for k, u in enumerate((-14.0, -9.0, 9.0, 14.0))]
+    hs.append(hole('track portal north', 0, DECK - .7, 8.6, 5.0, kind='portal'))
     hs.append(hole('north upper band', 0, L3 + .45, 2 * hw2 - 1.0, ROOF - L3 - .75, rows=2))
     brick_wall(north, -hw2, hw2, G0, PARA, hs)
     glaze(north, hs, 'staff rooms')
     m = Merge(north)
     m.box('stone', 0, -.06, L3 + .2, 2 * hw2 - .02, T + .12, .32)
     m.box('stone', 0, -.08, PARA + .05, 2 * hw2 - .02, T + .16, .12)
+    m.box('trim', 0, -.6, DECK + 4.45, 9.6, 1.2, .25)
     m.flush('headhouse north')
-    # Slabs, roof and plant.
+    # The tracks pass right through the headhouse in a trainshed between concrete walls; the concourse spans over it.
+    ty0, ty1 = HY0 + T, HY1 - T
+    C.box('Trainshed deck', (0, (ty0 + ty1) / 2, (4.4 + DECK) / 2), (8.6, ty1 - ty0, DECK - 4.4), 'concrete', 'trainshed', 0)
+    for x in (-4.45, 4.45):
+        C.box('Trainshed wall', (x, (ty0 + ty1) / 2, (G0 + DECK + 4.3) / 2), (.3, ty1 - ty0, DECK + 4.3 - G0), 'concrete', 'trainshed', 0)
+    C.box('Trainshed ceiling', (0, (ty0 + ty1) / 2, DECK + 4.45), (9.2, ty1 - ty0, .3), 'concrete', 'trainshed', 0)
+    for y in (HY0 + 4.0, (HY0 + HY1) / 2, HY1 - 4.0):
+        C.qa_room_light(f'Trainshed {y:+.0f}', (0, y, DECK + 3.8), 70, 3.0)
     C.box('Headhouse ground slab', (cx, (HY0 + HY1) / 2, G0 / 2), (HX1 - HX0, HY1 - HY0, G0), 'foundation', 'headhouse', 0)
-    for z, name in ((L2, 'concourse'), (L3, 'upper concourse'), (ROOF, 'roof')):
-        C.box(f'Headhouse {name} slab', (cx, (HY0 + T + HY1 - T) / 2 + 1.0, z - .15), (HX1 - HX0 - 2 * T, HY1 - HY0 - 2 * T - 2.0, .30), 'floor', 'headhouse', 0)
-    # Platform-level slab stops behind the track portal; the trainshed bed continues inside.
-    C.box('Trainshed track bed', (0, HY0 + 3.0, DECK - .4), (8.0, 6.0 - .02, .8), 'concrete', 'trainshed', 0)
-    C.box('Trainshed back wall', (0, HY0 + 6.2, DECK + 2.2), (8.6, .3, 4.4), 'concrete', 'trainshed', 0)
+    for xa, xb in ((HX0 + T, -4.6), (4.6, HX1 - T)):
+        C.box('Headhouse concourse slab', ((xa + xb) / 2, (ty0 + ty1) / 2, L2 - .15), (xb - xa, ty1 - ty0, .30), 'floor', 'headhouse', 0)
+    for z, name in ((L3, 'upper concourse'), (ROOF, 'roof')):
+        C.box(f'Headhouse {name} slab', (cx, (ty0 + ty1) / 2, z - .15), (HX1 - HX0 - 2 * T, ty1 - ty0, .30), 'floor', 'headhouse', 0)
     C.box('Roof membrane', (cx, (HY0 + HY1) / 2, ROOF + .01), (HX1 - HX0 - 2 * T - .02, HY1 - HY0 - 2 * T - .02, .02), 'membrane', 'roof', 0)
-    C.box('Rooftop unit', (2.0, 7.0, ROOF + .7), (3.6, 2.2, 1.4), 'pale', 'roof', 0)
-    C.box('Roof skylight curb', (-4.0, 4.0, ROOF + .3), (4.4, 3.2, .6), 'pale', 'roof', 0)
-    C.box('Roof skylight', (-4.0, 4.0, ROOF + .62), (4.0, 2.8, .05), 'glass', 'roof', 0)
-    # Lobby and concourse: stairs, lifts, fare gates, lights.
-    for x in (-7.0, 7.0):
-        C.beam('Lobby stair', (x, HY0 + 3.0, G0 + .1), (x, HY0 + 11.0, L2 - .1), 2.4, .3, 'concrete', 'lobby')
-        C.box('Lift shaft', (x + 3.2, HY0 + 9.0, (G0 + ROOF) / 2), (2.2, 2.2, ROOF - G0), 'glass', 'lobby', 0)
+    C.box('Rooftop unit', (2.0, 12.0, ROOF + .7), (3.6, 2.2, 1.4), 'pale', 'roof', 0)
+    C.box('Roof skylight curb', (-5.0, 6.0, ROOF + .3), (4.4, 3.2, .6), 'pale', 'roof', 0)
+    C.box('Roof skylight', (-5.0, 6.0, ROOF + .62), (4.0, 2.8, .05), 'glass', 'roof', 0)
+    # Lobby stairs and lifts either side of the trainshed, fare gates, upper concourse seating, lights.
+    for x in (-11.0, 11.0):
+        C.beam('Lobby stair', (x, HY0 + 4.0, G0 + .1), (x, HY0 + 12.0, L2 - .1), 2.4, .3, 'concrete', 'lobby')
+        C.box('Lift shaft', (x + (2.6 if x > 0 else -2.6), HY0 + 14.0, (G0 + ROOF) / 2), (2.2, 2.2, ROOF - G0), 'glass', 'lobby', 0)
         for k in range(4):
-            C.box('Fare gate', (x - 1.5 + k * 1.0, HY0 + 2.0, L2 + .5), (.2, 1.2, 1.0), 'hardware', 'concourse', 0)
+            C.box('Fare gate', (x - 1.5 + k * 1.0, HY0 + 2.6, L2 + .5), (.2, 1.2, 1.0), 'hardware', 'concourse', 0)
+    for x in (-10.0, -4.0, 4.0, 10.0):
+        C.box('Concourse bench', (x, HY0 + 3.0, L3 + .45), (2.4, .5, .1), 'timber', 'upper concourse', 0)
     for z in (G0, L2, L3):
-        for x in (-8.0, 8.0):
+        for x in (-10.0, 10.0):
             C.qa_room_light(f'Headhouse {x:+.0f} {z:.0f}', (x, HY0 + 4.0, z + 3.0), 110, 5.0)
-    C.qa_room_light('Trainshed', (0, HY0 + 3.0, DECK + 3.8), 80, 4.0)
-    C.CONTACTS.append(dict(name='Headhouse with the deck abutting its south face; tracks enter a trainshed through the portal', face_y=HY0))
+    C.qa_room_light('Upper concourse centre', (0, HY0 + 5.0, ROOF - .6), 120, 6.0)
+    C.CONTACTS.append(dict(name='Tracks pass through the headhouse in a trainshed under the concourse; deck abuts both faces', face_y=[HY0, HY1]))
 
 
 def tower(xa, xb, side):
-    """Square brick stair tower with a full-height glazed stair bay and a pale projecting cap."""
+    """Square brick stair tower: a wide glazed stair bay projecting from its outer face between brick piers, a slot on
+    its south face, and a pale cornice cap with a low hip."""
     ya, yb = HY0 - 1.0, HY0 - 1.0 + TW
     cx, cy = (xa + xb) / 2, (ya + yb) / 2
     s = C.Face((cx, ya, 0), (1, 0, 0), (0, 1, 0), f'{side} tower south')
-    bay = [hole(f'{side} tower stair glazing', 0, G0 + .5, 2.8, TOWER_TOP - G0 - 1.4, rows=8)]
-    brick_wall(s, -TW / 2, TW / 2, G0, TOWER_TOP, bay)
-    glaze(s, bay, 'stair', cols_per=1.0, frame='trim')
+    slot = [hole(f'{side} tower south slot', 0, G0 + .6, 1.0, TOWER_TOP - G0 - 1.6, rows=6)]
+    brick_wall(s, -TW / 2, TW / 2, G0, TOWER_TOP, slot)
+    glaze(s, slot, 'stair', cols_per=1.0)
     outer_x, inner_x = (xa, xb) if side == 'west' else (xb, xa)
     sgn = -1 if side == 'west' else 1
     o = C.Face((outer_x, cy + T / 2, 0), (0, -sgn, 0), (-sgn, 0, 0), f'{side} tower outer')
-    slit = [hole(f'{side} tower slit', 0, G0 + .6, 1.0, TOWER_TOP - G0 - 1.6, rows=6)]
-    brick_wall(o, -(TW - T) / 2, (TW - T) / 2, G0, TOWER_TOP, slit)
-    glaze(o, slit, 'stair', cols_per=1.0)
+    bw, bz0, bz1 = 4.0, G0 + .4, TOWER_TOP - 1.0
+    bay = hole(f'{side} tower glazed stair bay', 0, bz0, bw, bz1 - bz0, kind='bay')
+    brick_wall(o, -(TW - T) / 2, (TW - T) / 2, G0, TOWER_TOP, [bay])
+    register(o, bay, -.6, 'projecting glazed bay', 'stair')
+    m = Merge(o)
+    d = -.65
+    m.box('glass', 0, d, (bz0 + bz1) / 2, bw - .1, .02, bz1 - bz0 - .1)
+    for e in (-1, 1):
+        m.box('glass', e * (bw / 2 - .03), d / 2, (bz0 + bz1) / 2, .02, -d - .04, bz1 - bz0 - .1)
+        m.box('trim', e * (bw / 2 - .05), d / 2 - .02, (bz0 + bz1) / 2, .1, -d + .02, bz1 - bz0)
+    for k in range(5):
+        m.box('trim', -bw / 2 + bw * k / 4, d - .04, (bz0 + bz1) / 2, .08, .1, bz1 - bz0)
+    z = bz0
+    while z <= bz1 + .01:
+        m.box('trim', 0, d / 2 - .02, z, bw + .02, -d + .1, .12)
+        z += 3.4
+    m.box('trim', 0, d / 2 - .06, bz1 + .1, bw + .3, -d + .2, .2)
+    m.box('trim', 0, d / 2 - .06, bz0 - .1, bw + .3, -d + .2, .2)
+    m.flush(f'{side} tower bay')
     i = C.Face((inner_x, cy + T / 2, 0), (0, sgn, 0), (sgn, 0, 0), f'{side} tower inner')
     brick_wall(i, -(TW - T) / 2, (TW - T) / 2, G0, TOWER_TOP, [])
     n = C.Face((cx, yb, 0), (-1, 0, 0), (0, -1, 0), f'{side} tower north')
     brick_wall(n, -TW / 2 + T, TW / 2 - T, PARA - .2, TOWER_TOP, [])
-    C.box(f'{side} tower cap', (cx, cy, TOWER_TOP + .3), (TW + 1.2, TW + 1.2, .6), 'pale', 'towers', 0)
-    C.box(f'{side} tower cap soffit', (cx, cy, TOWER_TOP - .05), (TW + .9, TW + .9, .1), 'trim', 'towers', 0)
+    C.box(f'{side} tower cornice', (cx, cy, TOWER_TOP - .1), (TW + .7, TW + .7, .3), 'pale', 'towers', 0)
+    C.box(f'{side} tower cap', (cx, cy, TOWER_TOP + .3), (TW + 1.2, TW + 1.2, .5), 'pale', 'towers', 0)
+    h = TW / 2 + .6
+    strip(f'{side} tower hip', [(cx - h, cy - h), (cx + h, cy - h), (cx + h, cy + h), (cx - h, cy + h)],
+          [(cx - 1.0, cy - 1.0), (cx + 1.0, cy - 1.0), (cx + 1.0, cy + 1.0), (cx - 1.0, cy + 1.0)], TOWER_TOP + .55, TOWER_TOP + 1.1, 'pale', 'towers')
+    C.box(f'{side} tower hip top', (cx, cy, TOWER_TOP + 1.05), (2.1, 2.1, .1), 'pale', 'towers', 0)
     C.box(f'{side} tower roof', (cx, cy, TOWER_TOP - .3), (TW - 2 * T, TW - 2 * T, .3), 'floor', 'towers', 0)
     C.box(f'{side} tower stone base', (cx, ya - .06, G0 + .3), (TW + .02, .14, .6), 'stone', 'towers', 0)
-    for k in range(5):                                                   # stair flights behind the glazing
+    for k in range(5):                                                   # stair flights behind the bay
         z = G0 + .2 + k * 3.4
-        C.beam(f'{side} tower stair flight', (cx - 1.4, ya + 1.4, z), (cx + 1.4, ya + 1.4, z + 1.7), 1.1, .2, 'concrete', 'tower stair')
-        C.beam(f'{side} tower stair flight', (cx + 1.4, ya + 2.6, z + 1.7), (cx - 1.4, ya + 2.6, z + 3.4), 1.1, .2, 'concrete', 'tower stair')
+        C.beam(f'{side} tower stair flight', (outer_x - sgn * 1.4, cy - 1.4, z), (outer_x - sgn * 1.4, cy + 1.4, z + 1.7), 1.1, .2, 'concrete', 'tower stair')
+        C.beam(f'{side} tower stair flight', (outer_x - sgn * 2.6, cy + 1.4, z + 1.7), (outer_x - sgn * 2.6, cy - 1.4, z + 3.4), 1.1, .2, 'concrete', 'tower stair')
     C.qa_room_light(f'{side} tower stair', (cx, cy, TOWER_TOP - 2.0), 90, 3.0)
+
+
+def street_stair(sgn):
+    """Solid stair from the south end of a platform down to the plaza, descending outward, with handrails on posts."""
+    xa, ya, yb = sgn * PX[1], STAIR_Y[0], STAIR_Y[1]
+    n = 20; rise = PLAT / n; run = .45
+    pts = [(0.0, PLAT)]
+    for k in range(n):
+        pts.append(((k + 1) * run, PLAT - k * rise))
+        pts.append(((k + 1) * run, PLAT - (k + 1) * rise))
+    end = n * run
+    pts += [(end - .9, 0.0), (0.4, PLAT - .55), (0.0, PLAT - .55)]
+    poly = [(xa + sgn * u, z) for u, z in pts]
+    if sgn < 0:
+        poly = poly[::-1]
+    C.prism('Street stair', poly, 'y', ya, yb, 'concrete', 'street stairs')
+    C.box('Stair landing', (xa + sgn * (end + .6), (ya + yb) / 2, .14), (1.4, yb - ya, .28), 'concrete', 'street stairs', 0)
+    for y in (ya + .06, yb - .06):
+        C.beam('Stair handrail', (xa, y, PLAT + 1.0), (xa + sgn * end, y, 1.0), .05, .05, 'hardware', 'street stairs')
+        for k in range(0, n + 1, 4):
+            x = xa + sgn * k * run
+            z = PLAT - k * rise
+            C.beam('Stair rail post', (x, y, z), (x, y, z + 1.0), .05, .05, 'hardware', 'street stairs')
 
 
 def deck_and_platforms():
@@ -459,51 +517,73 @@ def deck_and_platforms():
         px = sgn * (xa + xb) / 2
         C.box(f'Platform {sgn:+d}', (px, (yd0 + yd1) / 2, (DECK + PLAT) / 2), (xb - xa, L, PLAT - DECK), 'concrete', 'platforms', 0)
         b.box('tactile', sgn * (xa + .32), (yd0 + 1.0 + yd1) / 2, PLAT + .005, .6, L - 1.1, .03)
-        # Glass guard along the outer edge, posts every 2 m, top rail.
+        # Glass guard along the outer edge with a gap at the stair head, and across the platform end.
         gx = sgn * (xb - .08)
-        b.box('glass', gx, (yd0 + 1.0 + yd1) / 2, PLAT + .6, .02, L - 1.2, 1.0)
-        b.box('hardware', gx, (yd0 + 1.0 + yd1) / 2, PLAT + 1.12, .06, L - 1.1, .06)
-        n = int((L - 1.2) / 2.0)
-        for k in range(n + 1):
-            b.box('hardware', gx, yd0 + 1.6 + (L - 2.2) * k / n, PLAT + .58, .06, .06, 1.12)
-        # Benches, red station pylon near the south end, a stair down to the sidewalk south of the street.
+        for ga, gb in ((yd0 + .1, STAIR_Y[0] - .1), (STAIR_Y[1] + .1, yd1 - .1)):
+            b.box('glass', gx, (ga + gb) / 2, PLAT + .6, .02, gb - ga, 1.0)
+            b.box('hardware', gx, (ga + gb) / 2, PLAT + 1.12, .06, gb - ga, .06)
+            n = max(1, int((gb - ga) / 2.0))
+            for k in range(n + 1):
+                b.box('hardware', gx, ga + (gb - ga) * k / n, PLAT + .58, .06, .06, 1.12)
+        b.box('glass', px, yd0 + .08, PLAT + .6, xb - xa - .1, .02, 1.0)
+        b.box('hardware', px, yd0 + .08, PLAT + 1.12, xb - xa, .06, .06)
         for y in (-16.0, -24.0, -30.0):
             b.box('timber', sgn * (xb - 1.4), y, PLAT + .45, .5, 2.0, .08)
             b.box('hardware', sgn * (xb - 1.4), y, PLAT + .22, .4, .1, .44)
-        b.box('signal', sgn * 6.4, -40.0, PLAT + 1.7, .9, .5, 3.4)
-        b.box('white', sgn * 6.4, -40.26, PLAT + 2.7, .7, .04, 1.0)
-        b.box('blue', sgn * 6.4, -40.26, PLAT + 1.8, .7, .04, .5)
-        for k in range(29):
-            top = PLAT - (k + 1) * PLAT / 30
-            h = min(.4, top)
-            b.box('concrete', sgn * 7.6, yd0 - (k + .5) * .3, top - h / 2, 2.0, .3, h)
+        b.box('signal', sgn * 6.4, -38.0, PLAT + 1.7, .9, .5, 3.4)
+        b.box('white', sgn * 6.4, -38.26, PLAT + 2.7, .7, .04, 1.0)
+        b.box('blue', sgn * 6.4, -38.26, PLAT + 1.8, .7, .04, .5)
     b.flush('platforms')
-    # Stair stringers and guards down to the south sidewalk.
-    for sgn in (-1, 1):
-        for dx in (-1.0, 1.0):
-            C.beam('Platform stair guard', (sgn * 7.6 + dx * 1.05, DY0, PLAT + 1.0), (sgn * 7.6 + dx * 1.05, DY0 - 9.0, 1.15), .05, .05, 'hardware', 'platforms')
-    # Rails and sleepers on the two tracks, continuing into the trainshed.
+    street_stair(-1)
+    street_stair(1)
+    # Rails and sleepers on the two tracks, through the headhouse to the north tail track.
+    yr1 = HY1 + TAIL
     b = Batch()
     for tx in (-2.0, 2.0):
         for rx in (-.72, .72):
-            b.box('rail', tx + rx, (yd0 + HY0 + 5.8) / 2, DECK + .12, .08, HY0 + 5.8 - yd0 - .02, .16)
-        n = int((HY0 + 5.8 - yd0) / .9)
+            b.box('rail', tx + rx, (yd0 + yr1) / 2, DECK + .12, .08, yr1 - yd0 - .02, .16)
+        n = int((yr1 - yd0) / .9)
         for k in range(n):
             b.box('concrete', tx, yd0 + .45 + k * .9, DECK + .06, 2.4, .26, .08)
+        b.box('signal', tx, yr1 - .6, DECK + .6, 2.0, .5, 1.0)            # buffer stops on the tail track
+        b.box('tactile', tx, yr1 - .86, DECK + .7, 1.8, .02, .3)
     b.flush('track')
-    # Piers and cap beams; none in the street.
+    # North tail track on piers beyond the headhouse, guarded on both sides and across its end.
+    C.box('Tail track deck', (0, (HY1 + yr1) / 2, (4.4 + DECK) / 2), (9.0, TAIL, DECK - 4.4), 'concrete', 'guideway', 0)
+    C.box('Tail track bed', (0, (HY1 + yr1) / 2, DECK + .02), (7.96, TAIL - .02, .04), 'sand', 'guideway', 0)
+    for x in (-4.4, 4.4):
+        C.box('Tail track parapet', (x, (HY1 + yr1) / 2, DECK + .45), (.2, TAIL, .9), 'concrete', 'guideway', 0)
+    C.box('Tail track end wall', (0, yr1 - .1, DECK + .45), (8.6, .2, .9), 'concrete', 'guideway', 0)
+    for y in (HY1 + 5.0, yr1 - 1.0):
+        C.box('Tail pier cap', (0, y, 3.9), (8.0, 1.2, 1.0), 'concrete', 'piers', 0)
+        C.rod('Tail pier', (0, y, 0), (0, y, 3.42), .62, 'concrete', 'piers', 16)
+    # South: the guideway descends to grade on a ramp beyond the platforms.
+    ys, ye = yd0, yd0 - RAMP
+    C.prism('Guideway ramp', [(ye, .02), (ys, DECK), (ys, 4.4), (ye + 4.0, .02)], 'x', -4.5, 4.5, 'concrete', 'guideway ramp')
+    C.prism('Ramp track bed', [(ye, .05), (ys, DECK + .04), (ys, DECK + .0), (ye, .02)], 'x', -3.98, 3.98, 'sand', 'guideway ramp')
+    for x in (-4.4, 4.4):
+        C.prism('Ramp parapet', [(ye, .02), (ys, DECK), (ys, DECK + .9), (ye, .92)], 'x', x - .1, x + .1, 'concrete', 'guideway ramp')
+    for tx in (-2.0, 2.0):
+        for rx in (-.72, .72):
+            C.beam('Ramp rail', (tx + rx, ys, DECK + .12), (tx + rx, ye, .16), .08, .16, 'rail', 'guideway ramp')
+    C.box('Grade track bed', (0, ye - 4.0, .03), (8.0, 8.0, .06), 'sand', 'guideway ramp', 0)
+    for tx in (-2.0, 2.0):
+        for rx in (-.72, .72):
+            C.box('Grade rail', (tx + rx, ye - 4.0, .14), (.08, 8.0, .16), 'rail', 'guideway ramp', 0)
+    C.rod('Ramp pier', (0, ys - 6.0, 0), (0, ys - 6.0, DECK * (RAMP - 6.0) / RAMP - .9), .55, 'concrete', 'piers', 16)
+    # Piers and cap beams under the station deck; none in the street.
     for y in (-14.5, -19.2, -37.0, -44.0):
         C.box('Pier cap beam', (0, y, 4.4 - .5), (19.0, 1.4, 1.0), 'concrete', 'piers', 0)
         for x in (-6.0, 6.0):
             C.rod('Guideway pier', (x, y, 0), (x, y, 3.42), .62, 'concrete', 'piers', 16)
-    C.CONTACTS.append(dict(name='Deck on cap beams and round piers outside the street; platforms on the deck; canopies on posts', deck_m=[4.4, DECK, PLAT]))
+    C.CONTACTS.append(dict(name='Deck on cap beams and piers outside the street; tracks run through the headhouse to a tail track and down a ramp to grade', deck_m=[4.4, DECK, PLAT]))
 
 
 def canopy(sgn):
     """Long glazed gable canopy over one platform: steel posts on the platform centreline, ridge, eaves, rafters."""
     xc = sgn * 7.0
     xa, xb = xc - 3.7, xc + 3.7
-    ze, zr = 9.3, 10.0
+    ze, zr = 9.3, 10.65
     y0, y1 = CAN_Y[1], CAN_Y[0] - .05
     chev = [(xa, ze), (xc, zr), (xb, ze), (xb, ze - .05), (xc, zr - .05), (xa, ze - .05)]
     C.prism('Canopy glazing', chev, 'y', y0, y1, 'glass', 'canopies')
@@ -557,13 +637,15 @@ def skywalk(name, x0, x1, y0, y1, truss=True):
             if along_x:
                 xa, xb = x0 + L * k / n, x0 + L * (k + 1) / n
                 for y in (y0 - .04, y1 + .04):
+                    off = -.09 if y < (y0 + y1) / 2 else .09
                     C.beam(name + ' truss diagonal', (xa, y, za + .2), (xb, y, zb - .2), .12, .12, 'trim', 'skywalks')
-                    C.beam(name + ' truss diagonal', (xa, y, zb - .2), (xb, y, za + .2), .12, .12, 'trim', 'skywalks')
+                    C.beam(name + ' truss diagonal', (xa, y + off, zb - .2), (xb, y + off, za + .2), .12, .12, 'trim', 'skywalks')
             else:
                 ya, yb = y0 + L * k / n, y0 + L * (k + 1) / n
                 for x in (x0 - .04, x1 + .04):
+                    off = -.09 if x < (x0 + x1) / 2 else .09
                     C.beam(name + ' truss diagonal', (x, ya, za + .2), (x, yb, zb - .2), .12, .12, 'trim', 'skywalks')
-                    C.beam(name + ' truss diagonal', (x, ya, zb - .2), (x, yb, za + .2), .12, .12, 'trim', 'skywalks')
+                    C.beam(name + ' truss diagonal', (x + off, ya, zb - .2), (x + off, yb, za + .2), .12, .12, 'trim', 'skywalks')
     C.qa_room_light(name + ' light', ((x0 + x1) / 2, (y0 + y1) / 2, zb - .4), 40, 3.0)
 
 
@@ -591,10 +673,10 @@ def stair_pavilion(name, x0, x1, y0, y1):
 def train():
     """Two-car red-and-white light-rail vehicle on the west track at the west platform."""
     x = -2.0
-    z0 = DECK + .35
+    z0 = DECK + .62
     for k, (ya, yb) in enumerate(((-38.6, -26.2), (-25.9, -13.5))):
         C.box('Train body lower', (x, (ya + yb) / 2, z0 + .65), (2.64, yb - ya, 1.3), 'train', 'train', 0)
-        C.box('Train window band', (x, (ya + yb) / 2, z0 + 1.95), (2.62, yb - ya - .4, 1.3), 'glass', 'train', 0)
+        C.box('Train window band', (x, (ya + yb) / 2, z0 + 1.95), (2.62, yb - ya - .4, 1.3), 'blue', 'train', 0)
         for y in [ya + .6 + (yb - ya - 1.2) * i / 5 for i in range(6)]:
             C.box('Train window post', (x, y, z0 + 1.95), (2.66, .16, 1.3), 'white', 'train', 0)
         C.box('Train roof', (x, (ya + yb) / 2, z0 + 2.9), (2.64, yb - ya, .6), 'white', 'train', 0)
@@ -602,37 +684,38 @@ def train():
         for y in (ya + 2.0, yb - 2.0):
             C.box('Train bogie', (x, y, DECK + .3), (2.2, 2.6, .5), 'rail', 'train', 0)
         for y in ((ya + yb) / 2 - 2.6, (ya + yb) / 2 + 2.6):
-            C.box('Train door', (x + 1.33, y, z0 + 1.2), (.04, 1.3, 2.2), 'white', 'train', 0)
+            C.box('Train door', (x + 1.322, y, z0 + 1.2), (.01, 1.3, 2.2), 'white', 'train', 0)
     for y, s in ((-38.6, -1), (-13.5, 1)):
         C.prism('Train cab nose', [(y, z0), (y + s * .6, z0), (y + s * .6, z0 + 3.2), (y, z0 + 2.6)], 'x', x - 1.32, x + 1.32, 'white', 'train')
         C.box('Train cab window', (x, y + s * .35, z0 + 2.15), (2.2, .5, .9), 'glass', 'train', 0)
     C.box('Train gangway', (x, -26.05, z0 + 1.6), (2.2, .32, 2.6), 'rail', 'train', 0)
-    C.qa_room_light('Train interior', (x, -26.0, z0 + 2.4), 40, 4.0)
+    C.qa_room_light('Train interior', (x, -26.0, z0 + 2.4), 12, 4.0)
 
 
 def streets():
     sa, sb = STREET
-    C.box('East-west street', (2.5, (sa + sb) / 2, .01), (95.0, sb - sa, .02), 'asphalt', 'streets', 0)
+    C.box('East-west street', (-6.0, (sa + sb) / 2, .01), (80.0, sb - sa, .02), 'asphalt', 'streets', 0)
     for y, name in ((sb + 1.5, 'north'), (sa - 1.5, 'south')):
-        for a, c in ((-45.0, -32.0), (-22.0, 35.0), (45.0, 50.0)):
+        for a, c in ((-46.0, -32.0), (-22.0, 34.0)):
             C.box(f'Sidewalk {name}', ((a + c) / 2, y, .07), (c - a, 3.0, .14), 'concrete', 'streets', 0)
     C.box('Plaza under the deck', (0, (sb + 3.0 + HY0) / 2, .07), (36.0, HY0 - sb - 3.0, .14), 'concrete', 'streets', 0)
-    C.box('South plaza', (0, (DY0 - 12.0 + sa - 3.0) / 2, .07), (34.0, sa - 3.0 - DY0 + 12.0, .14), 'concrete', 'streets', 0)
-    for x, name in ((-27.0, 'West'), (40.0, 'East')):
-        C.box(f'{name} street north', (x, (sb + 30.0) / 2, .01), (10.0, 30.0 - sb, .02), 'asphalt', 'streets', 0)
-        C.box(f'{name} street south', (x, (sa - 60.0) / 2, .01), (10.0, sa + 60.0, .02), 'asphalt', 'streets', 0)
+    for a, c in ((-24.0, -4.6), (4.6, 24.0)):
+        C.box('South plaza', ((a + c) / 2, (DY0 - RAMP - 6.0 + sa - 3.0) / 2, .07), (c - a, sa - 3.0 - DY0 + RAMP + 6.0, .14), 'concrete', 'streets', 0)
+    for x, name in ((-27.0, 'West'),):
+        C.box(f'{name} street north', (x, (sb + 26.0) / 2, .01), (10.0, 26.0 - sb, .02), 'asphalt', 'streets', 0)
+        C.box(f'{name} street south', (x, (sa - 52.0) / 2, .01), (10.0, sa + 52.0, .02), 'asphalt', 'streets', 0)
     b = Batch()
     for k in range(10):                                          # crosswalks at the west street
         b.box('white', -31.0 + k * .9, sa + .9, .025, .5, 1.6, .02)
         b.box('white', -31.0 + k * .9, sb - .9, .025, .5, 1.6, .02)
-    for k in range(10):                                          # lane markings on the east-west street
-        b.box('white', -42.0 + k * 9.0, (sa + sb) / 2, .025, 3.0, .15, .02)
+    for k in range(8):                                           # lane markings on the east-west street
+        b.box('white', -42.0 + k * 9.5, (sa + sb) / 2, .025, 3.0, .15, .02)
     b.flush('road markings')
     for x, y in ((-21.0, sb + 1.6), (21.0, sa - 1.6)):            # traffic signals
         C.rod('Signal pole', (x, y, .14), (x, y, 6.0), .12, 'hardware', 'streets', 8)
         C.beam('Signal arm', (x, y, 5.8), (x - 5.0 if x > 0 else x + 5.0, y, 5.8), .1, .1, 'hardware', 'streets')
         C.box('Signal head', (x - 4.6 if x > 0 else x + 4.6, y, 5.3), (.35, .3, 1.0), 'hardware', 'streets', 0)
-    for x in (-40.0, -18.0, 22.0, 47.0):
+    for x in (-40.0, -13.5, 22.0):
         street_tree(x, sb + 1.6, z=.14, height=7.0, spread=1.6)
 
 
@@ -645,9 +728,11 @@ def build():
     canopy(-1)
     canopy(1)
     train()
-    skywalk('West skywalk', -38.0, HX0, -0.5, 4.5)
-    stair_pavilion('West skywalk pavilion', -44.0, -38.0, -2.0, 6.0)
-    skywalk('East link', HX1, 27.0, 7.4, 10.6, truss=False)
+    wy, ww = SKY_W
+    skywalk('West skywalk', -38.0, HX0, wy - ww / 2, wy + ww / 2)
+    stair_pavilion('West skywalk pavilion', -44.0, -38.0, wy - 4.0, wy + 4.0)
+    ey, ewd = SKY_E
+    skywalk('East link', HX1, 27.0, ey - ewd / 2, ey + ewd / 2, truss=False)
     skywalk('East skywalk', 27.0, 31.0, -40.0, 22.0)
     stair_pavilion('East skywalk south pavilion', 26.0, 32.0, -46.0, -40.0)
     stair_pavilion('East skywalk north pavilion', 26.0, 32.0, 22.0, 28.0)

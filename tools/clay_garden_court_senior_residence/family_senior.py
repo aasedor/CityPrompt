@@ -44,16 +44,16 @@ PALETTE = dict(wall=(.56, .29, .21), joint=(.42, .21, .16), trim=(.92, .90, .86)
 def manifest(version):
     h = EAVE + 4.2
     cams = G.camera_roster(74.0, 64.0, h, [
-        ('facade_close', (-22.0, -8.0, 9.0), (-22.0, 9.0, 6.0), 45),
+        ('facade_close', (-21.0, 0.0, 6.0), (-22.0, 9.0, 6.5), 40),
         ('architecture_close', (0.0, -12.0, 9.0), (0.0, 9.0, 5.0), 45),
         ('glass_close', (0.0, -2.5, 2.4), (0.0, 4.6, 2.6), 45),
-        ('loggia_arcade', (-8.0, 0.0, 2.0), (-8.0, 10.0, 2.4), 45),
+        ('loggia_arcade', (-1.5, 2.0, 2.0), (-9.0, 9.4, 2.6), 45),
         ('dormer_roof', (-2.0, 2.0, 18.0), (-14.0, 20.0, 12.0), 45),
         ('hub_cupola', (6.0, -6.0, 14.0), (0.0, 9.0, 10.0), 40),
-        ('garden_beds', (8.0, -26.0, 8.0), (5.0, -12.0, .6), 45),
-        ('pergola_terrace', (10.0, -12.0, 4.0), (17.0, -2.5, 2.0), 45),
+        ('garden_beds', (1.0, -19.0, 6.0), (6.0, -12.0, .6), 45),
+        ('pergola_terrace', (6.5, -.5, 2.2), (17.0, -2.5, 2.0), 45),
         ('interior', (2.6, 11.0, 1.7), (-1.0, 5.0, 1.6), 60),
-        ('court_view', (0.0, -21.0, 21.0), (0.0, 6.0, 3.0), 26)])
+        ('court_view', (2.0, -18.5, 15.0), (2.0, 0.0, 0.0), 24)])
     r = 74.0 * 1.7
     for c in cams:          # the locked front and oblique look north over the court from above the south wing
         if c['name'] == 'front':
@@ -367,7 +367,7 @@ def hip_roof(name, x0, x1, y0, y1, z, rise, flat=None, seams=True, dormers=(), m
         dormer(name, side, u, ex0, ex1, ey0, ey1, z, k)
 
 
-def dormer(name, side, u, ex0, ex1, ey0, ey1, z, k, w=1.7, hw=1.35, gr=.85, s_f=1.4, depth=2.6):
+def dormer(name, side, u, ex0, ex1, ey0, ey1, z, k, w=1.5, hw=1.2, gr=.7, s_f=1.3, depth=1.5):
     """Gabled copper dormer seated on a slope: pentagon prism into the roof, white gable trim, glazed sash."""
     zb = z + s_f * k - .2
     pent = [(u - w / 2, zb), (u + w / 2, zb), (u + w / 2, zb + hw), (u, zb + hw + gr), (u - w / 2, zb + hw)]
@@ -386,10 +386,9 @@ def dormer(name, side, u, ex0, ex1, ey0, ey1, z, k, w=1.7, hw=1.35, gr=.85, s_f=
         f = C.Face((xf, 0, 0), (0, 1, 0), (-sgn, 0, 0), name + ' dormer')
         uu = u
     m = Merge(f)
-    m.box('trim', uu, -.03, zb + hw * .55, w - .25, .05, hw * .9)                  # white sash surround
-    m.box('glass', uu, -.06, zb + hw * .55, w - .55, .02, hw * .7)
-    m.box('trim', uu, -.08, zb + hw * .55, .05, .03, hw * .7)
-    m.box('trim', uu, -.08, zb + hw * .55, w - .55, .03, .05)
+    m.box('trim', uu, -.03, zb + hw * .55, w - .45, .05, hw * .9)                  # white sash surround
+    m.box('glass', uu, -.06, zb + hw * .55, w - .75, .02, hw * .7)
+    m.box('trim', uu, -.08, zb + hw * .55, w - .75, .03, .05)                       # meeting rail of the double-hung sash
     m.flush('dormers')
 
 
@@ -433,17 +432,17 @@ def brick_face(f, lo, hi, court=False, balcony_u=None, lite=False, skip=()):
     for fi in range(3):
         z = G0 + fi * FH
         for k, u in enumerate(us):
-            if any(a <= u <= c for a, c in skip):
-                continue
+            if fi == 0 and any(u + .9 > a and u - .9 < c for a, c in skip):
+                continue                                         # ground bay behind a loggia that abuts this face
             if balcony_u is not None and abs(u - balcony_u) < .1:
                 if fi == 0:
-                    h = hole(f'{f.label} garden door', u, G0, 1.8, 2.5 + .9, kind='arched'); arched.append(h)
+                    h = hole(f'{f.label} garden door', u, G0, 1.6, 2.1 + .8, kind='arched'); arched.append(h)
                 elif fi == 1:
                     h = hole(f'{f.label} balcony door', u, z + .05, 1.3, 2.35, kind='door')
                 else:
-                    h = hole(f'{f.label} f3 window {k}', u, z + .85, 1.25, 1.85)
+                    h = hole(f'{f.label} f3 window {k}', u, z + .65, 1.25, 1.85)
             else:
-                h = hole(f'{f.label} f{fi + 1} window {k}', u, z + .85, 1.25, 1.85)
+                h = hole(f'{f.label} f{fi + 1} window {k}', u, z + (.65 if fi == 2 else .85), 1.25, 1.85)
             holes.append(h)
     f.wall(f'{f.label} brick carrier', lo, hi - EPS, G0, EAVE, depth=T, holes=holes)
     G.brick_courses(f, lo + .02, hi - .02, G0 + .02, EAVE - .3, holes, spacing=.2 if not lite else .3)
@@ -451,10 +450,10 @@ def brick_face(f, lo, hi, court=False, balcony_u=None, lite=False, skip=()):
     b = Batch()
     for h in holes:
         if h.get('kind') == 'arched':
-            arch_fill(b, f, h['u'], G0 + 2.5, .9, 0, T)
-            framed(m, f, dict(h, h=2.5), cols=2, rows=2, inset=.14, occupied='residents lounge', kind='garden door')
-            arch_ring(b, f, h['u'], G0 + 2.5, .9, 1.12, -.05, .02, 'stone')
-            m.box('glass', h['u'], .16, G0 + 2.5 + .35, 1.6, .01, .62)                  # fanlight behind the arch
+            arch_fill(b, f, h['u'], G0 + 2.1, .8, 0, T)
+            framed(m, f, dict(h, h=2.1), cols=2, rows=2, inset=.14, occupied='residents lounge', kind='garden door')
+            arch_ring(b, f, h['u'], G0 + 2.1, .8, 1.0, -.05, .02, 'stone')
+            m.box('glass', h['u'], .16, G0 + 2.1 + .3, 1.4, .01, .55)                   # fanlight behind the arch
         elif h.get('kind') == 'door':
             framed(m, f, h, cols=2, rows=1, inset=.14, occupied='suite', kind='balcony door')
             iron_balcony(m, f, h['u'], h['z'] - .05, 3.0, depth=.9, spacing=.16)
@@ -482,7 +481,16 @@ def block(name, box, court_sides, balcony_sides=(), lite_sides=(), flat=None, ri
         span = hi - lo
         n = max(1, int(span / BAY))
         mid = lo + span * ((n // 2) + .5) / n
-        skip = LINK_SKIPS.get((name, side), ())
+        skip = []
+        for lx0, lx1, ly0, ly1 in LINKS.values():
+            if side == 'south' and abs(ly1 - y0) < .01 and lx1 > x0 and lx0 < x1:
+                skip.append((lx0 - cx, lx1 - cx))
+            elif side == 'north' and abs(ly0 - y1) < .01 and lx1 > x0 and lx0 < x1:
+                skip.append((cx - lx1, cx - lx0))
+            elif side == 'east' and abs(lx0 - x1) < .01 and ly1 > y0 and ly0 < y1:
+                skip.append((ly0 - cy, ly1 - cy))
+            elif side == 'west' and abs(lx1 - x0) < .01 and ly1 > y0 and ly0 < y1:
+                skip.append((cy - ly1, cy - ly0))
         brick_face(f, lo, hi, court=side in court_sides, balcony_u=mid if side in balcony_sides else None, lite=side in lite_sides or side not in court_sides, skip=skip)
     for i in range(3):
         z = G0 + i * FH
@@ -494,8 +502,11 @@ def block(name, box, court_sides, balcony_sides=(), lite_sides=(), flat=None, ri
     ex0, ex1, ey0, ey1 = x0 - OV, x1 + OV, y0 - OV, y1 + OV
     run = flat if flat is not None else min(ex1 - ex0, ey1 - ey0) / 2 - .01
     ds = []
+    long_x = (ex1 - ex0) >= (ey1 - ey0)
     for side, L, origin in (('south', ex1 - ex0, ex0), ('north', ex1 - ex0, ex0), ('east', ey1 - ey0, ey0), ('west', ey1 - ey0, ey0)):
-        usable = L - 2 * (1.4 + 2.6 + 1.0)
+        if flat is None and ((side in ('east', 'west')) == long_x):
+            continue                                     # no dormers on the hip ends of a ridge roof
+        usable = L - 2 * (1.3 + 1.5 + 1.2)
         if usable < 0:
             continue
         n = max(1, int(usable / dormer_step) + 1)
@@ -536,8 +547,8 @@ def loggia(name, box, open_sides):
             arch_ring(b, f, h['u'], 2.6, r, r + .2, -.05, .02, 'stone')
             C.OPENINGS.append(dict(id=h['id'], face=f.label, u=h['u'], z=h['z'], width=h['w'], height=h['h'], kind='open arcade arch', clear_wall_cut=True,
                 carrier_depth_m=T, frame_inset_m=None, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='covered walk'))
-            m.box('stone', h['u'] - h['w'] / 2 - .17, -.04, 2.6 - .08, .34, T + .08, .16)   # impost blocks
-            m.box('stone', h['u'] + h['w'] / 2 + .17, -.04, 2.6 - .08, .34, T + .08, .16)
+            m.box('stone', h['u'] - h['w'] / 2 - .17, -.04, 2.6 - .06, .44, T + .1, .16)    # impost blocks overlapping the ring foot
+            m.box('stone', h['u'] + h['w'] / 2 + .17, -.04, 2.6 - .06, .44, T + .1, .16)
         m.box('trim', 0, -.10, LINK_EAVE - .18, hi - lo - 2 * EPS, T + .20, .22)
         m.box('stone', 0, -.04, G0 + .15, hi - lo - 2 * EPS, T + .08, .30)
         m.flush('loggias')
@@ -605,7 +616,7 @@ def hub():
         C.rod('Lounge table', (x, y, G0 + .7), (x, y, G0 + .75), .5, 'timber', 'garden room', 12)
         C.rod('Lounge table stem', (x, y, G0), (x, y, G0 + .7), .06, 'hardware', 'garden room', 6)
         A.garden_chair(x + .7, y, G0)
-    C.qa_room_light('Garden room', (cx, cy, HUB_H - .6), 120, 5.0)
+    C.qa_room_light('Garden room', (cx, cy, HUB_H - .6), 60, 5.0)
     C.CONTACTS.append(dict(name='Octagonal garden room between the north loggias, cupola on the roof ring', centre=[cx, cy]))
 
 
@@ -663,12 +674,12 @@ def garden():
     # Fenced therapy garden of raised timber beds.
     gx0, gx1, gy0, gy1 = 2.5, 9.5, -17.5, -6.5
     path_box('Therapy garden paving', gx0, gx1, gy0, gy1, .05)
-    for i, x in enumerate((4.2, 7.8)):
-        for j, y in enumerate((-15.4, -12.0, -8.6)):
-            C.box('Raised bed', (x, y, .35), (1.4, 2.4, .6), 'timber', 'therapy garden', 0)
-            C.box('Raised bed soil', (x, y, .66), (1.2, 2.2, .04), 'soil', 'therapy garden', 0)
-            for k in range(3):
-                A.shrub(x, y - .7 + k * .7, .68, .35)
+    for i, x in enumerate((4.3, 7.7)):
+        for j, y in enumerate((-16.0, -14.0, -12.0, -10.0, -8.0)):
+            C.box('Raised bed', (x, y, .35), (1.4, 1.4, .6), 'timber', 'therapy garden', 0)
+            C.box('Raised bed soil', (x, y, .66), (1.2, 1.2, .04), 'soil', 'therapy garden', 0)
+            for k in range(2):
+                A.shrub(x - .3 + k * .6, y, .68, .3 + .15 * ((i + j + k) % 3))
     picket_fence([(gx0, gy0), (gx1, gy0), (gx1, gy1), (gx0, gy1), (gx0, gy0)], gaps=((0.0 + (gx0 + gx1) / 2, gy1, .7),))
     # Timber pergola over a dining terrace (east side).
     px0, px1, py0, py1 = 13.5, 20.5, -6.5, 1.0
@@ -690,15 +701,25 @@ def garden():
         C.box('Garden bench', (x, y, .42), (1.6, .5, .08), 'timber', 'garden', 0)
     for x, y in ((6.0, 4.0), (-7.5, 2.5), (10.0, -14.0), (17.0, -14.5), (-11.0, -16.5)):
         A.small_tree(x, y, .03, 4.2, 1.6)
-    for x, y in ((-11.0, -1.0), (-24.0, 2.0), (-8.0, 6.0)):
-        street_tree(x, y, z=.03, height=11.0, spread=3.2)
+    for x, y in ((-10.0, -7.5), (-31.0, -1.0), (12.0, -11.0)):
+        street_tree(x, y, z=.03, height=9.0, spread=2.6)
     # North forecourt: circular lawn with a small fountain inside a path ring, the drive loop beyond.
     ring('Forecourt path ring', 1.0, 23.5, 6.2, 7.6, .045, 'sand')
     C.rod('Forecourt lawn', (1.0, 23.5, 0), (1.0, 23.5, .03), 6.2, 'lawn', 'forecourt', 32)
     path_box('Forecourt walk', .2, 1.8, 12.6, 15.9, .045)
     path_box('Forecourt drive walk', .2, 1.8, 31.1, 35.0, .045)
     fountain(1.0, 23.5, .7)
-    C.box('Drive loop', (1.0, 37.5, .02), (60.0, 5.0, .04), 'foundation', 'site', 0)
+    dx0, dx1, dy = -11.0, 13.0, 37.0                                   # drive loop round an elongated planted island
+    for y in (dy - 3.5, dy + 3.5):
+        C.box('Drive lane', ((dx0 + dx1) / 2, y, .02), (dx1 - dx0, 3.0, .04), 'foundation', 'site', 0)
+    annulus('Drive loop end', (dx0, dy, 0), (0, 0, 1), 2.0, 5.0, .0, .05, 'foundation', 'site', segs=24)
+    annulus('Drive loop end', (dx1, dy, 0), (0, 0, 1), 2.0, 5.0, .0, .05, 'foundation', 'site', segs=24)
+    C.box('Drive island', ((dx0 + dx1) / 2, dy, .1), (dx1 - dx0, 4.0, .2), 'lawn', 'site', 0)
+    for x in (dx0, dx1):
+        C.rod('Drive island end', (x, dy, 0), (x, dy, .19), 2.0, 'lawn', 'site', 20)
+    for x in (-6.0, 1.0, 8.0):
+        A.shrub(x, dy, .2, 1.0)
+    path_box('Forecourt cross path', -5.2, 7.2, 22.8, 24.2, .046)
     C.box('West street', (-42.0, 3.0, .02), (6.0, 82.0, .04), 'foundation', 'site', 0)
     C.box('West sidewalk', (-38.5, 3.0, .025), (1.8, 82.0, .05), 'concrete', 'site', 0)
     for y in (-28.0, -14.0, 0.0, 14.0, 28.0):

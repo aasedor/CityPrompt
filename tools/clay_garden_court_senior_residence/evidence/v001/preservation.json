@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-garden-court-senior-residence-clay-v001",
+  "glb": "clay-garden-court-senior-residence-clay-v001.glb",
+  "glb_bytes": 4180388,
+  "glb_sha256": "22034adc0316119b93097b80152075f4707e61f688d202a1e477de0669ce7e02",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "court_view.png": 92,
+    "dormer_roof.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "garden_beds.png": 92,
+    "glass_close.png": 92,
+    "hub_cupola.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "loggia_arcade.png": 92,
+    "pergola_terrace.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-garden-court-senior-residence-clay-v001-renders-and-glb.zip",
+  "zip_bytes": 32943898
+}

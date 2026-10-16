@@ -1,0 +1,246 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "south lobby doors west",
+      "face": "headhouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south lobby doors east",
+      "face": "headhouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "track portal",
+      "face": "headhouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west platform doors",
+      "face": "headhouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east platform doors",
+      "face": "headhouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "upper concourse band",
+      "face": "headhouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west lobby window 0",
+      "face": "headhouse west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west lobby window 2",
+      "face": "headhouse west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west lobby entrance",
+      "face": "headhouse west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west level 2 window 0",
+      "face": "headhouse west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west level 2 window 2",
+      "face": "headhouse west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west level 2 window 3",
+      "face": "headhouse west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west level 2 window 4",
+      "face": "headhouse west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west skywalk opening",
+      "face": "headhouse west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west upper band",
+      "face": "headhouse west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east lobby window 0",
+      "face": "headhouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east lobby window 1",
+      "face": "headhouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east lobby window 2",
+      "face": "headhouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east lobby entrance",
+      "face": "headhouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east level 2 window 0",
+      "face": "headhouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east level 2 window 1",
+      "face": "headhouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east level 2 window 2",
+      "face": "headhouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east level 2 window 4",
+      "face": "headhouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east skywalk opening",
+      "face": "headhouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east upper band",
+      "face": "headhouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 0-0",
+      "face": "headhouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 1-0",
+      "face": "headhouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 2-0",
+      "face": "headhouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 3-0",
+      "face": "headhouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 4-0",
+      "face": "headhouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 0-1",
+      "face": "headhouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 1-1",
+      "face": "headhouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 2-1",
+      "face": "headhouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 3-1",
+      "face": "headhouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north window 4-1",
+      "face": "headhouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north upper band",
+      "face": "headhouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west tower stair glazing",
+      "face": "west tower south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west tower slit",
+      "face": "west tower outer",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east tower stair glazing",
+      "face": "east tower south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east tower slit",
+      "face": "east tower outer",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

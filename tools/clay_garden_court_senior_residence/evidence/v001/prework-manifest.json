@@ -1,0 +1,417 @@
+{
+  "candidate": "clay-garden-court-senior-residence-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-garden-court-senior-residence",
+  "variant_id": "clay-garden-court-senior-residence-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "senior_living_complex/variant_0 (senior_garden_courtyard)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 74.0,
+      "depth": 64.0,
+      "height": 16.85
+    },
+    "observed_storeys": 3,
+    "storey_programme": "three residential storeys under hipped copper roofs with dormers; one-storey linking loggias; one-storey octagonal garden room",
+    "plan": "ring of five blocks round a 39 x 27 m court (top view at 0.10 m/px): north-west pavilion 19.5 x 23.5 m, north-east pavilion 18.5 x 23 m, south-west pavilion 22 x 15 m, east wing 11.5 x 32 m, south wing 31.5 x 11.5 m; six one-storey loggia links 4 to 8 m wide; octagonal garden room 10 m across on the north link",
+    "roofs": "pavilions hipped at about 34 degrees to a flat top with rooftop units; wings hipped to a ridge; gabled dormers on every slope; loggias under hipped copper roofs; garden room under an eight-sided copper roof with a glazed cupola",
+    "facade": "red brick with stone sills, white double-hung windows on a 3.6 m bay, arched garden doors with iron balconies above on the court faces",
+    "levels_m": [
+      0.15,
+      3.4499999999999997,
+      6.75
+    ],
+    "eave_m": 10.049999999999999,
+    "link_eave_m": 4.4,
+    "inferred": "storey height and interiors are teaching assumptions; the outer faces of the ring are not visible in the front or oblique and repeat the visible grammar; the front and oblique disagree on block positions, so the top view governs the plan"
+  },
+  "roof_contract": {
+    "type": "copper standing-seam hips; flat membrane tops on the pavilions",
+    "datum_m": 10.049999999999999,
+    "crowns_m": [
+      14.049999999999999,
+      11.3
+    ]
+  },
+  "identity_contract": {
+    "owner": "brick pavilions and wings with hipped copper roofs and dormers round a garden court, arched brick loggias, octagonal glazed garden room with copper roof and glass cupola, fountain, raised garden beds, pergola"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: red brick with recessed courses, copper roofs, white window frames and trim, black iron balconies and fences, brick paths, lawn and planting, timber beds and pergola",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 3,
+    "residences": "assisted-living suites off double-loaded corridors",
+    "common": "octagonal garden room (lounge and dining) on the north link; loggias as covered walks",
+    "court": "walking paths, fountain, raised therapy garden, pergola dining"
+  },
+  "contact_contract": [
+    "Grade-zero slabs, lawns and paths",
+    "Loggia links butted between the blocks",
+    "Garden room on the north link",
+    "Dormers seated on the roof slopes",
+    "Balconies bracketed off the court faces"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0.0,
+        -75.47999999999999,
+        48.449999999999996
+      ],
+      "target": [
+        0.0,
+        2.0,
+        3.0
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -25.16,
+        -75.47999999999999,
+        68.39999999999999
+      ],
+      "target": [
+        0.0,
+        0.0,
+        3.0
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        88.05999999999999,
+        -100.64,
+        42.75
+      ],
+      "target": [
+        0,
+        0,
+        6.4125000000000005
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        188.7
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 103.6
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -125.8,
+        0,
+        8.549999999999999
+      ],
+      "target": [
+        0,
+        0,
+        6.4125000000000005
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        125.8,
+        0,
+        8.549999999999999
+      ],
+      "target": [
+        0,
+        0,
+        6.4125000000000005
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        125.8,
+        8.549999999999999
+      ],
+      "target": [
+        0,
+        0,
+        6.4125000000000005
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        88.05999999999999,
+        100.64,
+        25.650000000000002
+      ],
+      "target": [
+        0,
+        0,
+        6.4125000000000005
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -22.0,
+        -8.0,
+        9.0
+      ],
+      "target": [
+        -22.0,
+        9.0,
+        6.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        0.0,
+        -12.0,
+        9.0
+      ],
+      "target": [
+        0.0,
+        9.0,
+        5.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        0.0,
+        -2.5,
+        2.4
+      ],
+      "target": [
+        0.0,
+        4.6,
+        2.6
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "loggia_arcade",
+      "location": [
+        -8.0,
+        0.0,
+        2.0
+      ],
+      "target": [
+        -8.0,
+        10.0,
+        2.4
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "dormer_roof",
+      "location": [
+        -2.0,
+        2.0,
+        18.0
+      ],
+      "target": [
+        -14.0,
+        20.0,
+        12.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "hub_cupola",
+      "location": [
+        6.0,
+        -6.0,
+        14.0
+      ],
+      "target": [
+        0.0,
+        9.0,
+        10.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "garden_beds",
+      "location": [
+        8.0,
+        -26.0,
+        8.0
+      ],
+      "target": [
+        5.0,
+        -12.0,
+        0.6
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "pergola_terrace",
+      "location": [
+        10.0,
+        -12.0,
+        4.0
+      ],
+      "target": [
+        17.0,
+        -2.5,
+        2.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        2.6,
+        11.0,
+        1.7
+      ],
+      "target": [
+        -1.0,
+        5.0,
+        1.6
+      ],
+      "lens": 60,
+      "whole": false
+    },
+    {
+      "name": "court_view",
+      "location": [
+        0.0,
+        -21.0,
+        21.0
+      ],
+      "target": [
+        0.0,
+        6.0,
+        3.0
+      ],
+      "lens": 26,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "loggia_arcade",
+    "dormer_roof",
+    "hub_cupola",
+    "garden_beds",
+    "pergola_terrace",
+    "interior",
+    "court_view"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/senior_living_complex/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1532839,
+        "sha256": "a227bca8b295ca796e24b8bc5b4b8fdf49b0551277bf0f62a7e580800a84bf66"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/senior_living_complex/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 907010,
+        "sha256": "4c73f5e4c3e4b0fdf3e86a19d291eb3ad63240d86f38b6485e75fc0c38ea5899"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/senior_living_complex/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 869994,
+        "sha256": "9cac74459ec9ee0543396e0c009d6de56e6aeab59b077002aa80f07f36f02979"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_senior.py",
+        "sha256": "e5aec53b619e5ff3cf64d371bf7a9a4e61665da23e0d84799413a923e29b5c22"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "e77772422c630bf50357f1dd4d537b3e02ee6ce08b1a0452002550c662ce7611"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "45f0da619d404f62d17615d40395ba049ceafa6a01cbd17ed1aa870e634c0c16"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-15T23:35:50.082924+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
