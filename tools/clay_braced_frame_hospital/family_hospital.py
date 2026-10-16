@@ -21,14 +21,14 @@ G0 = .15
 PB = (-38.0, 13.0, -27.0, 8.0)          # perforated clinical block (top view at 0.097 m/px)
 LEG = (21.0, 31.0, -27.0, 26.0)         # braced block, east leg
 BAR = (-29.0, 21.0, 8.0, 26.0)          # braced block, north bar
-ATR = (13.0, 21.0, -23.0, 8.0)          # glass atrium
+ATR = (13.0, 21.0, -27.8, 8.0)          # glass atrium, standing 0.8 m proud of the street faces
 BASE = [G0, 5.0]                        # brick base storeys
 BASE_TOP = 9.0
 FH = 4.0
 PB_TOP = BASE_TOP + 5 * FH              # 29.0
 PLANT_TOP = PB_TOP + 4.0
 BB_TOP = BASE_TOP + 7 * FH              # 37.0
-ATR_TOP = 31.0
+ATR_TOP = 33.0
 EXO = 1.1                               # exoskeleton stand-off
 EPS = .002
 PALETTE = dict(wall=(.55, .28, .21), joint=(.40, .20, .15), trim=(.30, .32, .34),
@@ -373,7 +373,7 @@ def perforated_face(f, lo, hi, tag, sign_u=None, plant=True):
         z = BASE_TOP + fi * FH
         for k in range(n):
             u = lo + .3 + 1.6 * (k + .5)
-            if (k * 7 + fi * 3) % 5 == 0 or (sign_u is not None and abs(u - sign_u) < 2.0):
+            if sign_u is not None and abs(u - sign_u) < 2.0:
                 continue
             m.box('pale', u, -.38, z + FH / 2, 1.5, .06, FH - .2)                       # screen panel 0.35 m proud
             m.box('hardware', u, -.2, z + FH - .3, .08, .32, .08)                       # panel bracket
@@ -431,7 +431,7 @@ def clinical_block():
         C.box('Condenser', (x, y, PLANT_TOP + .7), (2.4, 1.6, 1.4), 'pale', 'plant', 0)
         for dx in (-.6, .6):
             C.rod('Condenser fan', (x + dx, y, PLANT_TOP + 1.4), (x + dx, y, PLANT_TOP + 1.5), .5, 'hardware', 'plant', 10)
-    cx0, cx1, cy0, cy1 = x0 - .6, -4.0, y0 - .6, y1 - 1.2
+    cx0, cx1, cy0, cy1 = x0 - .6, -4.0, y0 - .6, y1 - 2.2     # clear of the bar's braced frame
     za, zb = 35.2, 37.4                                                # canopy rises toward the west (front view)
     zl = lambda x: za + (zb - za) * (cx1 - x) / (cx1 - cx0)
     C.prism('Roof canopy plate', [(cx0 + 1.6, zl(cx0 + 1.6)), (cx1 - 1.6, zl(cx1 - 1.6)), (cx1 - 1.6, zl(cx1 - 1.6) - .25), (cx0 + 1.6, zl(cx0 + 1.6) - .25)], 'y', cy0 + 1.6, cy1 - 1.6, 'pale', 'roof canopy')
@@ -468,28 +468,35 @@ def curtain_face(f, lo, hi, z0, z1, tag):
     m.flush(tag + ' curtain wall')
 
 
-def exo(f, lo, hi, ext_lo, ext_hi, draw_last, tag):
-    """Standing steel exoskeleton: columns on a 5 m bay EXO off the glass, ring beams every two storeys, X-braces."""
+def exo(f, lo, hi, ext_lo, ext_hi, tag, skip=(), z0=BASE_TOP, col_base=G0, tiers=None):
+    """Standing steel exoskeleton: columns on a 5 m bay EXO off the glass, ring beams on five even tiers, X-braces with
+    node plates. Corner columns shared with the neighbouring face are drawn once (skip holds their indices)."""
     a, c = lo - ext_lo, hi + ext_hi
     n = max(1, round((c - a) / 5.0))
     us = [a + (c - a) * i / n for i in range(n + 1)]
-    tiers = [BASE_TOP, BASE_TOP + 8.0, BASE_TOP + 16.0, BASE_TOP + 24.0, BB_TOP]
+    skip = {i % (n + 1) for i in skip}
+    if tiers is None:
+        tiers = [BASE_TOP + (BB_TOP - BASE_TOP) * k / 5 for k in range(6)]
+    tiers = [z0] + [z for z in tiers if z > z0 + 1.0]
     m = Merge(f)
     for i, u in enumerate(us):
-        if i == n and not draw_last:
+        if i in skip:
             continue
-        m.box('steel', u, -EXO, (BASE_TOP - .3 + BB_TOP + .3) / 2, .45, .45, BB_TOP - BASE_TOP + .6)
+        m.box('steel', u, -EXO, (col_base + BB_TOP + .3) / 2, .45, .45, BB_TOP + .3 - col_base)
         for z in tiers:
             m.box('steel', u, -EXO / 2, z, .2, EXO - .2, .2)                  # brackets back to the slab edge
     for z in tiers:
         m.box('steel', (a + c) / 2, -EXO, z, c - a - .46, .36, .36)
+    for k in range(len(tiers) - 1):
+        for i in range(n):
+            m.box('steel', (us[i] + us[i + 1]) / 2, -EXO, (tiers[k] + tiers[k + 1]) / 2, .5, .34, .5)   # node plate at the X crossing
     m.flush(tag + ' exoskeleton')
     for k in range(len(tiers) - 1):
         za, zb = tiers[k] + .2, tiers[k + 1] - .2
         for i in range(n):
             u0, u1 = us[i] + .25, us[i + 1] - .25
             C.beam(f'{tag} brace', f.p(u0, -EXO, za), f.p(u1, -EXO, zb), .22, .22, 'steel', 'exoskeleton')
-            C.beam(f'{tag} brace', f.p(u0, -EXO, zb), f.p(u1, -EXO, za), .22, .22, 'steel', 'exoskeleton')
+            C.beam(f'{tag} brace', f.p(u0, -EXO - .04, zb), f.p(u1, -EXO - .04, za), .22, .22, 'steel', 'exoskeleton')
 
 
 def ward_block():
@@ -500,27 +507,29 @@ def ward_block():
     fs, span = face_of('south', LEG); fs.label = 'ward south'
     brick_base(fs, -span / 2, span / 2, fs.label)
     curtain_face(fs, -span / 2, span / 2, BASE_TOP, BB_TOP, fs.label)
-    exo(fs, -span / 2, span / 2, 0.0, EXO, True, fs.label)
+    exo(fs, -span / 2, span / 2, 0.0, EXO, fs.label)
     fe, span = face_of('east', LEG); fe.label = 'ward east'
     brick_base(fe, -span / 2 + T, span / 2 - T, fe.label, entry_u=-14.0)
     curtain_face(fe, -span / 2 + T, span / 2 - T, BASE_TOP, BB_TOP, fe.label)
-    exo(fe, -span / 2, span / 2, EXO, EXO, False, fe.label)
+    exo(fe, -span / 2, span / 2, EXO, EXO, fe.label, skip=(0, -1))      # both corners belong to the south and north faces
     fn, span = face_of('north', (bx0, lx1, by1 - 1, ly1)); fn.label = 'ward north'
     brick_base(fn, -span / 2, span / 2, fn.label, entry_u=4.0)
     curtain_face(fn, -span / 2, span / 2, BASE_TOP, BB_TOP, fn.label)
-    exo(fn, -span / 2, span / 2, EXO, EXO, False, fn.label)
+    exo(fn, -span / 2, span / 2, EXO, EXO, fn.label, skip=(-1,))
     fw, span = face_of('west', BAR); fw.label = 'ward west'
     brick_base(fw, -span / 2, span / 2 - T, fw.label)
     curtain_face(fw, -span / 2, span / 2 - T, BASE_TOP, BB_TOP, fw.label)
-    exo(fw, -span / 2, span / 2, EXO, 0.0, True, fw.label)
+    exo(fw, -span / 2, span / 2, EXO, 0.0, fw.label)
     # Inner faces: leg west (south of the bar, partly behind the atrium), bar south above the clinical roof and behind the atrium.
     fi = C.Face((lx0, (ly0 + by0) / 2, 0), (0, -1, 0), (1, 0, 0), 'ward leg west')
     span = by0 - ly0
-    brick_base(fi, -span / 2 + T, span / 2, fi.label)
-    curtain_face(fi, -span / 2 + T, span / 2, BASE_TOP, BB_TOP, fi.label)
+    brick_base(fi, -span / 2 + T, span / 2 - T, fi.label)
+    curtain_face(fi, -span / 2 + T, span / 2 - T, BASE_TOP, BB_TOP, fi.label)
     fb = C.Face(((bx0 + ATR[0]) / 2, by0, 0), (1, 0, 0), (0, 1, 0), 'ward bar south')
     span = ATR[0] - bx0
     curtain_face(fb, -span / 2 + T, span / 2, PB_TOP + .05, BB_TOP, fb.label)
+    fx = C.Face(((bx0 + lx0) / 2, by0, 0), (1, 0, 0), (0, 1, 0), 'ward bar south frame')
+    exo(fx, -(lx0 - bx0) / 2, (lx0 - bx0) / 2, 0.0, 0.0, fx.label, z0=PLANT_TOP, col_base=PLANT_TOP)
     fa = C.Face(((ATR[0] + ATR[1]) / 2, by0, 0), (1, 0, 0), (0, 1, 0), 'ward atrium back')
     span = ATR[1] - ATR[0]
     curtain_face(fa, -span / 2, span / 2, G0, BB_TOP, fa.label)
@@ -550,18 +559,24 @@ def atrium():
     x0, x1, y0, y1 = ATR
     f = C.Face(((x0 + x1) / 2, y0, 0), (1, 0, 0), (0, 1, 0), 'atrium south')
     w = x1 - x0
-    C.box('Atrium south glass', ((x0 + x1) / 2, y0 + .05, (G0 + ATR_TOP) / 2), (w - .1, .03, ATR_TOP - G0), 'glass', 'atrium', 0)
+    xr = x1 - .3                                                       # east return clear of the ward leg's corner column
+    C.box('Atrium south glass', ((x0 + xr) / 2, y0 + .05, (G0 + ATR_TOP) / 2), (xr - x0 - .1, .03, ATR_TOP - G0), 'glass', 'atrium', 0)
+    for xx, ye in ((x0 + .05, PB[2]), (xr, LEG[2])):
+        C.box('Atrium return glass', (xx, (y0 + ye) / 2, (G0 + ATR_TOP) / 2), (.03, ye - y0, ATR_TOP - G0), 'glass', 'atrium', 0)
+        C.box('Atrium return mullion', (xx, (y0 + ye) / 2, (G0 + ATR_TOP) / 2), (.1, .1, ATR_TOP - G0), 'steel', 'atrium', 0)
+    C.box('Atrium closer', ((xr + x1) / 2, LEG[2] + .05, (G0 + ATR_TOP) / 2), (x1 - xr, .1, ATR_TOP - G0), 'steel', 'atrium', 0)
     C.OPENINGS.append(dict(id='atrium south glazing', face=f.label, u=0, z=G0, width=w, height=ATR_TOP - G0, kind='glass atrium', clear_wall_cut=True,
         carrier_depth_m=.1, frame_inset_m=0, pane_inset_m=.05, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='atrium hall'))
     b = Batch()
     b.box('steel', x0 + .12, y0 + .1, (G0 + ATR_TOP) / 2, .24, .24, ATR_TOP - G0)
-    b.box('steel', x1 - .12, y0 + .1, (G0 + ATR_TOP) / 2, .24, .24, ATR_TOP - G0)
-    b.box('steel', (x0 + x1) / 2, y0 + .1, ATR_TOP - .1, w, .24, .2)
-    b.box('steel', (x0 + x1) / 2, y0 + .1, 3.9, w, .24, .16)
+    b.box('steel', xr - .12, y0 + .1, (G0 + ATR_TOP) / 2, .24, .24, ATR_TOP - G0)
+    b.box('steel', (x0 + xr) / 2, y0 + .1, ATR_TOP - .1, xr - x0, .24, .2)
+    b.box('steel', (x0 + xr) / 2, y0 + .1, 3.9, xr - x0, .24, .16)
     b.flush('atrium frame')
     # Diagonal mullion net on the south glass.
     step = 2.4
     H = ATR_TOP - G0
+    w = xr - x0
     for s in (1, -1):
         c = -H if s > 0 else 0.0
         c_end = w if s > 0 else w + H
@@ -570,10 +585,14 @@ def atrium():
             lo, hi = (-c, w - c) if s > 0 else (c - w, c)
             za, zb = max(0.0, lo), min(H, hi)
             if zb - za > .15:
-                C.beam('Atrium diagrid', f.p(c + s * za - w / 2, -.03, G0 + za), f.p(c + s * zb - w / 2, -.03, G0 + zb), .08, .08, 'steel', 'atrium')
+                d = -.03 if s > 0 else -.06                              # the two directions on different planes
+                C.beam('Atrium diagrid', f.p(c + s * za - w / 2 - (x1 - xr) / 2, d, G0 + za), f.p(c + s * zb - w / 2 - (x1 - xr) / 2, d, G0 + zb), .08, .08, 'steel', 'atrium')
             c += step
     # Glass roof, west glass above the clinical roof, entrance doors, bridges, a glass lift.
+    w = x1 - x0
     C.box('Atrium roof glass', ((x0 + x1) / 2, (y0 + y1) / 2, ATR_TOP), (w, y1 - y0 - .02, .06), 'glass', 'atrium', 0)
+    for xx in (x0 + .1, x1 - .1):
+        C.box('Atrium top edge', (xx, (y0 + y1) / 2, ATR_TOP + .12), (.2, y1 - y0, .24), 'steel', 'atrium', 0)
     for k in range(9):
         C.box('Atrium roof rib', ((x0 + x1) / 2, y0 + (y1 - y0) * k / 8, ATR_TOP + .08), (w + .1, .14, .14), 'steel', 'atrium', 0)
     C.box('Atrium west glass', (x0 + .05, (y0 + y1) / 2, (PB_TOP + ATR_TOP) / 2 + .1), (.03, y1 - y0, ATR_TOP - PB_TOP - .2), 'glass', 'atrium', 0)
@@ -588,18 +607,18 @@ def atrium():
     for z in (4.0, 14.0, 24.0):
         C.qa_room_light(f'Atrium {z:.0f}', ((x0 + x1) / 2, -10.0, z), 140, 6.0)
     C.box('Reception desk', ((x0 + x1) / 2, -14.0, G0 + .55), (4.0, 1.0, 1.1), 'pale', 'atrium', 0)
-    # Entrance canopy: glass on a steel frame, hung on tension rods from the atrium and the ward leg, two posts.
-    for name, (a, c, e, g) in (('front', (9.0, 25.0, -33.0, -27.2)), ('throat', (x0 + .1, x1 - .1, -27.2, y0 - .1))):
-        C.box(f'Entrance canopy glass {name}', ((a + c) / 2, (e + g) / 2, 5.6), (c - a, g - e, .06), 'glass', 'entrance canopy', 0)
-        for yy in (e, g):
-            C.box('Entrance canopy edge', ((a + c) / 2, yy, 5.48), (c - a, .16, .18), 'steel', 'entrance canopy', 0)
-        for xx in (a, c):
-            C.box('Entrance canopy edge', (xx, (e + g) / 2, 5.48), (.16, g - e - .16, .18), 'steel', 'entrance canopy', 0)
-    for x in (10.0, 13.5, 17.0, 20.5, 24.0):
-        anchor_y = y0 + .2 if x0 < x < x1 else -27.0
-        C.rod('Canopy tension rod', (x, anchor_y - .1, 14.0), (x, -32.9, 5.62), .03, 'steel', 'entrance canopy', 6)
-    for x in (11.0, 23.0):
-        C.rod('Canopy post', (x, -32.4, .14), (x, -32.4, 5.4), .12, 'steel', 'entrance canopy', 10)
+    # Entrance canopy: glass on a steel frame in front of the atrium, hung on tension rods, two posts.
+    a, c, e, g = 7.0, 27.0, -34.6, -28.6
+    C.box('Entrance canopy glass', ((a + c) / 2, (e + g) / 2, 5.6), (c - a, g - e, .06), 'glass', 'entrance canopy', 0)
+    for yy in (e, g):
+        C.box('Entrance canopy edge', ((a + c) / 2, yy, 5.48), (c - a, .16, .18), 'steel', 'entrance canopy', 0)
+    for xx in (a, c):
+        C.box('Entrance canopy edge', (xx, (e + g) / 2, 5.48), (.16, g - e - .16, .18), 'steel', 'entrance canopy', 0)
+    for x in (8.0, 11.5, 15.0, 18.5, 22.5, 26.0):
+        anchor_y = y0 + .2 if x0 < x < xr else -27.0
+        C.rod('Canopy tension rod', (x, anchor_y - .1, 14.0), (x, e + .1, 5.62), .03, 'steel', 'entrance canopy', 6)
+    for x in (9.0, 25.0):
+        C.rod('Canopy post', (x, e + .6, .14), (x, e + .6, 5.4), .12, 'steel', 'entrance canopy', 10)
     C.CONTACTS.append(dict(name='Atrium between the clinical block and the ward leg; entrance canopy on rods and two posts', atrium=list(ATR)))
 
 
