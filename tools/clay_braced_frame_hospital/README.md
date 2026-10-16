@@ -1,7 +1,7 @@
 # Regional hospital with braced-frame ward block and glass atrium (RLASM v6.1 architectural clay)
 
 Candidate D5 of the five-building wave of 2026-10-15, chosen to fill catalogue gaps (building types
-with no clay or runtime family yet). State: **candidate under review**. Nothing here is keeper-approved,
+with no clay or runtime family yet). State: **stopped at v005 by the rework rule; v003 (0 P0 / 1 P1) is the candidate**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,7 +68,13 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004
+## Open blockers after v005 (stopped: two consecutive reviews did not lower P0 + P1)
 
-- P1: the atrium's diagonal mullion net runs to the pavement across the main entrance, the revolving doors behind the lattice; the source has a straight vertical-mullion storefront with a revolving door below the canopy line
-- P2: see evidence/v004/independent-review.md
+Open on the candidate v003 (0 P0 / 1 P1):
+- P1: several entrance-canopy hanger rods end on non-structural surfaces (fixed in v004, whose review then raised the diagonal net across the entrance; v005 fixed that and its review raised three further elements)
+
+Raised by the v005 review:
+- P1: the exoskeleton bay rhythm about twice too fine (about 6 large X-bays across the north wing in the source against 11)
+- P1: the atrium about two storeys too tall and about 30% too narrow
+- P1: exoskeleton columns run in front of brick-base windows because the window grid does not follow the column grid
+- P2: see evidence/v005/independent-review.md

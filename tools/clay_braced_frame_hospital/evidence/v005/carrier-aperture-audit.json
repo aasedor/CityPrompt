@@ -1,0 +1,1248 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "clinical south ground window 0",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south second window 0",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south ground window 1",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south second window 1",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south entrance 2",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south second window 2",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south ground window 3",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south second window 3",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south ground window 4",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south second window 4",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south ground window 5",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south second window 5",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south ground window 6",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south second window 6",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south ground window 7",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south second window 7",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south ground window 8",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south second window 8",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south ground window 9",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south second window 9",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south ground window 10",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south second window 10",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south ground window 11",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south second window 11",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south strip window f3",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south strip window f4",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south strip window f5",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south strip window f6",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical south strip window f7",
+      "face": "clinical south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west ground window 0",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west second window 0",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west ground window 1",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west second window 1",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west ground window 2",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west second window 2",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west ground window 3",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west second window 3",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west ground window 4",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west second window 4",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west ground window 5",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west second window 5",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west ground window 6",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west second window 6",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west ground window 7",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west second window 7",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west strip window f3",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west strip window f4",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west strip window f5",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west strip window f6",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical west strip window f7",
+      "face": "clinical west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east ground window 0",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east second window 0",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east ground window 1",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east second window 1",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east ground window 2",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east second window 2",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east ground window 3",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east second window 3",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east ground window 4",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east second window 4",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east ground window 5",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east second window 5",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east ground window 6",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east second window 6",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east ground window 7",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east second window 7",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east strip window f3",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east strip window f4",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east strip window f5",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east strip window f6",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical east strip window f7",
+      "face": "clinical east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical north ground window 0",
+      "face": "clinical north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical north second window 0",
+      "face": "clinical north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical north ground window 1",
+      "face": "clinical north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical north second window 1",
+      "face": "clinical north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical north strip window f3",
+      "face": "clinical north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical north strip window f4",
+      "face": "clinical north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical north strip window f5",
+      "face": "clinical north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical north strip window f6",
+      "face": "clinical north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "clinical north strip window f7",
+      "face": "clinical north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward south ground window 0",
+      "face": "ward south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward south second window 0",
+      "face": "ward south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward south ground window 1",
+      "face": "ward south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward south second window 1",
+      "face": "ward south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward south glazing f0",
+      "face": "ward south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward south glazing f1",
+      "face": "ward south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward south glazing f2",
+      "face": "ward south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward south glazing f3",
+      "face": "ward south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward south glazing f4",
+      "face": "ward south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward south glazing f5",
+      "face": "ward south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward south glazing f6",
+      "face": "ward south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east ground window 0",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east second window 0",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east ground window 1",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east second window 1",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east entrance 2",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east second window 2",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east ground window 3",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east second window 3",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east ground window 4",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east second window 4",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east ground window 5",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east second window 5",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east ground window 6",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east second window 6",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east ground window 7",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east second window 7",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east ground window 8",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east second window 8",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east ground window 9",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east second window 9",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east ground window 10",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east second window 10",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east ground window 11",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east second window 11",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east glazing f0",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east glazing f1",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east glazing f2",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east glazing f3",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east glazing f4",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east glazing f5",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward east glazing f6",
+      "face": "ward east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north ground window 0",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north second window 0",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north ground window 1",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north second window 1",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north ground window 2",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north second window 2",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north ground window 3",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north second window 3",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north ground window 4",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north second window 4",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north ground window 5",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north second window 5",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north ground window 6",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north second window 6",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north entrance 7",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north second window 7",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north ground window 8",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north second window 8",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north ground window 9",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north second window 9",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north ground window 10",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north second window 10",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north ground window 11",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north second window 11",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north ground window 12",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north second window 12",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north ground window 13",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north second window 13",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north glazing f0",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north glazing f1",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north glazing f2",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north glazing f3",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north glazing f4",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north glazing f5",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward north glazing f6",
+      "face": "ward north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west ground window 0",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west second window 0",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west ground window 1",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west second window 1",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west ground window 2",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west second window 2",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west ground window 3",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west second window 3",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west glazing f0",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west glazing f1",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west glazing f2",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west glazing f3",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west glazing f4",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west glazing f5",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward west glazing f6",
+      "face": "ward west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west ground window 0",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west second window 0",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west ground window 1",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west second window 1",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west ground window 2",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west second window 2",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west ground window 3",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west second window 3",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west ground window 4",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west second window 4",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west ground window 5",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west second window 5",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west ground window 6",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west second window 6",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west ground window 7",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west second window 7",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west glazing f0",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west glazing f1",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west glazing f2",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west glazing f3",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west glazing f4",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west glazing f5",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward leg west glazing f6",
+      "face": "ward leg west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward bar south glazing f0",
+      "face": "ward bar south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward bar south glazing f1",
+      "face": "ward bar south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward atrium back glazing f0",
+      "face": "ward atrium back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward atrium back glazing f1",
+      "face": "ward atrium back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward atrium back glazing f2",
+      "face": "ward atrium back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward atrium back glazing f3",
+      "face": "ward atrium back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward atrium back glazing f4",
+      "face": "ward atrium back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward atrium back glazing f5",
+      "face": "ward atrium back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward atrium back glazing f6",
+      "face": "ward atrium back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward atrium back glazing f7",
+      "face": "ward atrium back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ward atrium back glazing f8",
+      "face": "ward atrium back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "atrium south glazing",
+      "face": "atrium south",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
