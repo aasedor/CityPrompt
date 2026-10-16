@@ -6,8 +6,9 @@ across the north of a corner site, with narrow punched windows, a flat roof carr
 panels and two skylight boxes; against its south face an east wing that steps down toward the south
 in seven two-storey terraces. Each step face is floor-to-ceiling glazing between cedar panels with
 white slab edges and a slim balcony rail at its upper floor; each terrace is a timber deck behind a
-black steel railing with corten planters of grasses and small trees and garden furniture. A raking
-concrete frame follows the steps along the wing's east and west edges. West of the wing, at the foot
+black steel railing with corten planters of grasses and small trees and garden furniture. A solid
+charcoal raking wall with a light coping closes the wing's east side; the court-facing west side carries a
+projecting glazed balcony on every floor; the ground storey is set back behind white round columns. West of the wing, at the foot
 of the dark block, a paved garden court planted with a grove of birches.
 """
 import math
@@ -35,7 +36,7 @@ PALETTE = dict(wall=(.20, .19, .19), joint=(.13, .12, .12), trim=(.12, .12, .13)
     interior=(.80, .76, .68), floor=(.48, .46, .44), timber=(.66, .48, .30), blue=(.12, .18, .30),
     planting=(.40, .46, .18), soil=(.22, .16, .10), concrete=(.74, .73, .70), white=(.92, .92, .90),
     corten=(.52, .30, .16), deck=(.70, .56, .40), gravel=(.64, .62, .58), solar=(.12, .16, .26),
-    birch=(.88, .86, .82), asphalt=(.30, .30, .31))
+    birch=(.88, .86, .82), asphalt=(.30, .30, .31), grass=(.66, .55, .26))
 
 
 def manifest(version):
@@ -296,6 +297,24 @@ def cut_rod(owner, centre, r, z0, z1, sides=48):
 # ---- terraced stepped tower ----
 
 YS = [WY0 + j * STEP_D for j in range(STEPS + 1)]       # south edge of step j; YS[STEPS] == WY1
+SET = 1.5                                                # ground storey set back behind the colonnade
+
+
+class Batch:
+    def __init__(self):
+        self.g = {}
+
+    def box(self, role, cx, cy, cz, sx, sy, sz):
+        V, F = self.g.setdefault(role, ([], []))
+        o = len(V)
+        V.extend((cx + du * sx / 2, cy + dd * sy / 2, cz + dz * sz / 2) for dz in (-1, 1) for du, dd in ((-1, -1), (1, -1), (1, 1), (-1, 1)))
+        F.extend(tuple(o + i for i in face) for face in C.BOX_FACES)
+
+    def flush(self, module):
+        for role, (V, F) in self.g.items():
+            if F:
+                C.mesh(f'{module} {role}', V, F, role, module)
+        self.g = {}
 
 
 def glazed_band(f, lo, hi, z0, floors, tag, balcony=True):
@@ -348,23 +367,43 @@ def wing():
     cx = (WX0 + WX1) / 2
     for j in range(STEPS):
         f = C.Face((cx, YS[j], 0), (1, 0, 0), (0, 1, 0), f'step {j} south')
-        floors = [(Z[2 * j], Z[2 * j + 1]), (Z[2 * j + 1], Z[2 * j + 2])]
-        glazed_band(f, -hw + T, hw - T, Z[2 * j], floors, f.label)
-    # East and west elevations in strips that follow the steps.
-    for side, xs, sgn in (('east', WX1, 1), ('west', WX0, -1)):
-        for k in range(STEPS):
-            ya, yb = YS[k], YS[k + 1]
-            f = C.Face((xs, (ya + yb) / 2, 0), (0, sgn, 0), (-sgn, 0, 0), f'wing {side} strip {k}')
-            top = Z[2 * k + 2]
-            levels = [z for z in Z[:2 * k + 2]]
-            holes = [hole(f'{f.label} f{i} window', 0, z + .25, 2.2, (Z[i + 1] - z) - .7) for i, z in enumerate(levels)]
-            f.wall(f.label + ' cedar carrier', -(yb - ya) / 2, (yb - ya) / 2 - EPS, G0, top, depth=T, role='timber', holes=holes)
-            m = Merge(f)
-            for h in holes:
-                framed(m, f, h, cols=2, inset=.12, occupied='flat', lite=side == 'west' and k > 3)
-            for z in levels[1:] + [top]:
-                m.box('white', 0, -.08, z + .02 if z < top else z - .2, yb - ya - 2 * EPS, T + .16, .3 if z < top else .4)
-            m.flush(f.label)
+        floors = [(Z[2 * j], Z[2 * j + 1]), (Z[2 * j + 1], Z[2 * j + 2])] if j else [(Z[1], Z[2])]
+        glazed_band(f, -hw + T, hw - T, floors[0][0], floors, f.label)
+    # West (court) elevation in strips that follow the steps: full-height glazing between cedar panels, a projecting
+    # balcony with white slab edge and black rail on every floor; the ground storey is set back behind columns.
+    for k in range(STEPS):
+        ya, yb = YS[k], YS[k + 1]
+        L = yb - ya
+        f = C.Face((WX0, (ya + yb) / 2, 0), (0, -1, 0), (1, 0, 0), f'wing west strip {k}')
+        top = Z[2 * k + 2]
+        levels = Z[1:2 * k + 2]
+        holes = [hole(f'{f.label} f{i} glazing', 0, z + .12, L - 1.3, (Z[i + 2] - z) - .5, kind='window') for i, z in enumerate(levels)]
+        f.wall(f.label + ' cedar carrier', -L / 2, L / 2 - EPS, Z[1], top, depth=T, role='timber', holes=holes)
+        m = Merge(f)
+        for h in holes:
+            framed(m, f, h, cols=2, inset=.12, occupied='flat', kind='french window', frame='trim', lite=True)
+        for z in levels:
+            m.box('white', 0, -.65, z - .1, L - .12, 1.3, .2)                       # balcony slab and white edge
+            m.box('hardware', 0, -1.28, z + 1.0, L - .14, .05, .05)                 # top rail
+            m.box('hardware', 0, -1.28, z + .06, L - .14, .04, .04)                 # bottom rail
+            for q in range(5):
+                m.box('hardware', -L / 2 + .1 + (L - .2) * q / 4, -1.28, z + .53, .05, .05, .94)
+            m.box('glass', 0, -1.27, z + .53, L - .2, .02, .9)
+        m.box('white', 0, -.1, top - .2, L - 2 * EPS, T + .2, .4)
+        m.flush(f.label)
+    # Recessed glazed ground storey on the south and west fronts behind white round columns.
+    gs = C.Face(((WX0 + SET + WX1 - T) / 2, WY0 + SET, 0), (1, 0, 0), (0, 1, 0), 'wing ground south')
+    hs = (WX1 - T - WX0 - SET) / 2
+    glazed_band(gs, -hs, hs, Z[0], [(Z[0], Z[1])], gs.label, balcony=False)
+    gw = C.Face((WX0 + SET, (WY0 + SET + WY1) / 2, 0), (0, -1, 0), (1, 0, 0), 'wing ground west')
+    hd = (WY1 - WY0 - SET) / 2
+    glazed_band(gw, -hd + T, hd, Z[0], [(Z[0], Z[1])], gw.label, balcony=False)
+    for x in [WX0 + .25 + (WX1 - T - WX0 - .5) * q / 6 for q in range(7)]:
+        C.rod('Colonnade column', (x, WY0 + .2, G0), (x, WY0 + .2, Z[1]), .22, 'white', 'colonnade', 16)
+    for y in [WY0 + .25 + (WY1 - WY0 - .5) * q / 7 for q in range(1, 8)]:
+        C.rod('Colonnade column', (WX0 + .2, y, G0), (WX0 + .2, y, Z[1]), .22, 'white', 'colonnade', 16)
+    C.box('Colonnade soffit', (cx, WY0 + SET / 2 + .16, Z[1] - .2), (WX1 - WX0 - 2 * T, SET - .32, .2), 'white', 'colonnade', 0)
+    C.box('Colonnade soffit', (WX0 + SET / 2 + .16, (WY0 + SET + WY1) / 2, Z[1] - .2), (SET - .32, WY1 - WY0 - SET, .2), 'white', 'colonnade', 0)
     # Floor slabs: each covers its step and the terrace in front of it.
     for i in range(1, 2 * STEPS + 1):
         j = i // 2
@@ -376,31 +415,47 @@ def wing():
         ya, yb, zt = YS[j], YS[j + 1], Z[2 * j + 2]
         C.box(f'Terrace deck {j}', (cx, (ya + T + yb) / 2, zt + .05), (WX1 - WX0 - 2 * T - .02, yb - ya - T - .02, .1), 'deck', 'terraces', 0)
         ry = ya + .2
-        C.beam('Terrace rail', (WX0 + .2, ry, zt + 1.1), (WX1 - .2, ry, zt + 1.1), .05, .05, 'hardware', 'terraces')
-        C.beam('Terrace rail mid', (WX0 + .2, ry, zt + .55), (WX1 - .2, ry, zt + .55), .03, .03, 'hardware', 'terraces')
-        for x in (WX0 + .2, WX1 - .2):
-            C.beam('Terrace side rail', (x, ry, zt + 1.1), (x, yb, zt + 1.1), .05, .05, 'hardware', 'terraces')
+        xe = WX1 - T - .1                                                    # east end against the raking wall
+        C.beam('Terrace rail', (WX0 + .2, ry, zt + 1.1), (xe, ry, zt + 1.1), .05, .05, 'hardware', 'terraces')
+        C.beam('Terrace rail mid', (WX0 + .2, ry, zt + .55), (xe, ry, zt + .55), .03, .03, 'hardware', 'terraces')
+        C.beam('Terrace side rail', (WX0 + .2, ry, zt + 1.1), (WX0 + .2, yb, zt + 1.1), .05, .05, 'hardware', 'terraces')
+        gb = Batch()
         for i in range(17):
-            x = WX0 + .2 + (WX1 - WX0 - .4) * i / 16
-            C.beam('Terrace baluster', (x, ry, zt + .1), (x, ry, zt + 1.1), .04, .04, 'hardware', 'terraces')
-        for k, (x, w) in enumerate(((WX0 + 2.4, 3.6), (cx, 4.4), (WX1 - 2.6, 3.4))):
-            if (j + k) % 3 == 2:
-                continue
-            y = ya + 1.0 + (k % 2) * 1.2
-            C.box('Corten planter', (x, y, zt + .4), (w, 1.0, .6), 'corten', 'terraces', 0)
-            C.box('Planter grasses', (x, y, zt + .72), (w - .2, .8, .06), 'planting', 'terraces', 0)
-            for q in range(int(w / 1.2)):
-                A.shrub(x - w / 2 + .6 + q * 1.2, y, zt + .74, .7)
-            if (j + k) % 2 == 0:
-                A.small_tree(x, y, zt + .74, 2.6, 1.0)
-        C.box('Terrace table', (cx + 4.0, ya + 2.6, zt + .8), (1.6, .9, .05), 'timber', 'terraces', 0)
-        C.box('Terrace table base', (cx + 4.0, ya + 2.6, zt + .45), (.1, .1, .7), 'hardware', 'terraces', 0)
-        A.garden_chair(cx + 3.0, ya + 2.6, zt + .1); A.garden_chair(cx + 5.0, ya + 2.6, zt + .1)
-    # Raking concrete frame along the step corners, east and west, and its foot at grade.
-    for xa, xb in ((WX1, WX1 + .5), (WX0 - .5, WX0)):
-        poly = [(WY0 - .3, Z[2] + .35), (YS[STEPS - 1], Z[2 * STEPS] + .35), (YS[STEPS - 1], Z[2 * STEPS] - .55), (WY0 - .3, Z[2] - .55)]
-        C.prism('Raking frame', poly, 'x', xa, xb, 'concrete', 'raking frame')
-        C.box('Raking frame foot', ((xa + xb) / 2, WY0 - .05, (G0 + Z[2] - .5) / 2), (xb - xa, .5, Z[2] - .5 - G0), 'concrete', 'raking frame', 0)
+            x = WX0 + .2 + (xe - WX0 - .2) * i / 16
+            gb.box('hardware', x, ry, zt + .6, .04, .04, 1.0)
+        # Long corten planter along the front: tall golden grasses, multi-stem small trees.
+        pa, pb, py = WX0 + .7, xe - .6, ya + .85
+        gb.box('corten', (pa + pb) / 2, py, zt + .45, pb - pa, .9, .7)
+        gb.box('soil', (pa + pb) / 2, py, zt + .81, pb - pa - .1, .8, .02)
+        q = 0
+        x = pa + .25
+        while x < pb - .2:
+            hgt = .7 + .25 * ((q * 7) % 3)
+            gb.box('grass', x, py + (.18 if q % 2 else -.18), zt + .82 + hgt / 2, .42, .1, hgt)
+            gb.box('grass', x + .12, py, zt + .82 + hgt * .4, .1, .5, hgt * .8)
+            x += .45; q += 1
+        gb.flush(f'terrace {j} planting')
+        for tx in (pa + 2.2 + (j % 2) * 3.0, pb - 2.5 - (j % 3) * 2.0):
+            for dx, dy in ((0, 0), (.35, .2), (-.3, .15)):
+                A.small_tree(tx + dx, py + dy, zt + .82, 2.4 + .4 * ((j + int(dx * 10)) % 2), .9)
+        # Furniture: a sofa and lounger at one end, a dining set at the other.
+        A.sofa(WX0 + 3.0, ya + 2.9, zt + .1)
+        C.box('Lounger', (WX0 + 6.4, ya + 2.7, zt + .4), (.7, 1.9, .14), 'white', 'terraces', 0)
+        C.box('Lounger back', (WX0 + 6.4, ya + 3.55, zt + .62), (.7, .2, .5), 'white', 'terraces', 0)
+        dx0 = xe - 4.0
+        C.box('Terrace table', (dx0, ya + 2.8, zt + .8), (1.8, .9, .05), 'timber', 'terraces', 0)
+        C.box('Terrace table base', (dx0, ya + 2.8, zt + .45), (.1, .1, .7), 'hardware', 'terraces', 0)
+        for ddx in (-1.2, 1.2):
+            A.garden_chair(dx0 + ddx, ya + 2.8, zt + .1)
+        A.garden_chair(dx0 - .4, ya + 2.1, zt + .1); A.garden_chair(dx0 + .4, ya + 3.5, zt + .1)
+    # Solid charcoal raking wall closing the wing's east side; its top follows the step line, under a light coping.
+    zr = lambda y: Z[2] + 1.25 + (y - WY0) * (Z[2 * STEPS] - Z[2]) / (YS[STEPS - 1] - WY0)
+    xa, xb = WX1 - T, WX1 + .35
+    ztop = ROOF + .9                                                     # meets the block's parapet line
+    yh = WY0 + (ztop - zr(WY0)) * (YS[STEPS - 1] - WY0) / (Z[2 * STEPS] - Z[2])
+    C.prism('Raking wall', [(WY0, G0), (WY1, G0), (WY1, ztop), (yh, ztop), (WY0, zr(WY0))], 'x', xa, xb, 'wall', 'raking wall')
+    C.prism('Raking wall coping', [(WY0 - .05, zr(WY0) - .01), (yh, ztop - .01), (WY1, ztop - .01), (WY1, ztop + .16), (yh, ztop + .16), (WY0 - .05, zr(WY0) + .16)], 'x', xa - .05, xb + .05, 'concrete', 'raking wall')
+    C.CONTACTS.append(dict(name='Raking wall from grade to the step line on the wing east side; terraces end against it', top=[zr(WY0), ztop]))
     for j in range(STEPS):
         C.qa_room_light(f'Step {j} flats', (cx, YS[j] + 2.5, Z[2 * j + 1] - .5), 60, 5.0)
         C.qa_room_light(f'Step {j} upper', (cx, YS[j] + 2.5, Z[2 * j + 2] - .5), 60, 5.0)
@@ -452,22 +507,32 @@ def north_block():
 def court():
     x0, x1 = NB[0], WX0
     C.box('Court paving', ((x0 + x1) / 2, (WY0 + WY1) / 2, .06), (x1 - x0 - .02, WY1 - WY0, .12), 'sand', 'court', 0)
-    C.box('Birch bed', (-8.5, 0.5, .2), (8.0, 9.0, .28), 'planting', 'court', 0)
-    C.box('Birch bed kerb', (-8.5, 0.5, .16), (8.4, 9.4, .2), 'concrete', 'court', 0)
+    bx0, bx1, by0, by1 = -12.8, -4.2, -4.0, 5.0
+    C.box('Birch planter', ((bx0 + bx1) / 2, (by0 + by1) / 2, .5), (bx1 - bx0, by1 - by0, .76), 'corten', 'court', 0)
+    C.box('Birch planter soil', ((bx0 + bx1) / 2, (by0 + by1) / 2, .89), (bx1 - bx0 - .2, by1 - by0 - .2, .02), 'soil', 'court', 0)
     k = 0
     for i in range(4):
         for jj in range(4):
             x = -11.6 + i * 2.1 + (.5 if jj % 2 else 0)
             y = -3.0 + jj * 2.3
             h = 6.0 + (k % 3) * .9
-            C.rod('Birch trunk', (x, y, .34), (x, y, .34 + h * .7), .1, 'birch', 'court', 8)
-            A.foliage('Birch crown', (x, y, .34 + h * .82), (1.0, 1.0, 1.4), detail=1)
+            C.rod('Birch trunk', (x, y, .88), (x, y, .88 + h * .7), .1, 'birch', 'court', 8)
+            A.foliage('Birch crown', (x, y, .88 + h * .82), (1.0, 1.0, 1.4), detail=1)
             k += 1
-    for (a, b, c, d) in ((-13.0, -7.0, -14.0, -9.0), (-6.0, -3.0, -14.0, -9.0)):
-        C.box('Court garden bed', ((a + b) / 2, (c + d) / 2, .18), (b - a, d - c, .24), 'planting', 'court', 0)
-        A.shrub((a + b) / 2, (c + d) / 2, .3, .8)
+    for i in range(7):                                                   # dense underplanting
+        for jj in range(4):
+            A.shrub(bx0 + .7 + i * 1.2, by0 + .8 + jj * 2.4 + (.6 if i % 2 else 0), .9, .6 + .2 * ((i + jj) % 3))
+    for (a_, b_, c_, d_) in ((-13.6, -9.4, -14.5, -8.0), (-7.2, -3.4, -14.5, -8.0)):
+        C.box('Court raised bed', ((a_ + b_) / 2, (c_ + d_) / 2, .38), (b_ - a_, d_ - c_, .52), 'corten', 'court', 0)
+        C.box('Court raised bed soil', ((a_ + b_) / 2, (c_ + d_) / 2, .65), (b_ - a_ - .2, d_ - c_ - .2, .02), 'soil', 'court', 0)
+        for i in range(3):
+            for jj in range(4):
+                A.shrub(a_ + .7 + i * 1.4, c_ + .8 + jj * 1.6, .66, .7 + .25 * ((i + jj) % 3))
+    C.box('Court path', (-8.3, -11.25, .125), (2.2, 6.5, .01), 'stone', 'court', 0)
     for y in (-6.0, 6.5):
         C.box('Court bench', (-3.6, y, .45), (.5, 1.8, .08), 'timber', 'court', 0)
+        for e in (-1, 1):
+            C.box('Court bench leg', (-3.6, y + e * .8, .27), (.45, .08, .3), 'hardware', 'court', 0)
 
 
 def site():
