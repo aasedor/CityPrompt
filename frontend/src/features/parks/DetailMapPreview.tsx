@@ -1,6 +1,8 @@
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useContext, useEffect, useMemo, useState } from 'react';
 import { useThree } from '@react-three/fiber';
-import { EastNorthUpFrame } from '3d-tiles-renderer/r3f';
+import { Raycaster } from 'three';
+import { raycastTerrainHeightAtLatLng } from '@/components/viewer/globe/GlobeZoneLayer';
+import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
 import { DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA } from '@/components/viewer/globe/direct3dCapture';
 import { useSharedSiteGround } from '@/components/viewer/globe/SharedSiteGroundProvider';
@@ -20,6 +22,7 @@ export function DetailMapPreview({ interaction, zones, surfaceAt, fallbackHeight
 }) {
   const canvas = useThree(state => state.gl.domElement);
   const ground = useSharedSiteGround();
+  const tiles = useContext(TilesRendererContext);
   useSafetySurfaceVersion();
   const [hover, setHover] = useState<{ lngLat: [number, number]; height: number } | null>(null);
   const follows = Boolean(interaction.selected || interaction.moving);
@@ -40,8 +43,12 @@ export function DetailMapPreview({ interaction, zones, surfaceAt, fallbackHeight
     return () => { cancelAnimationFrame(frame); canvas.removeEventListener('pointermove', move); canvas.removeEventListener('pointerleave', leave); };
   }, [canvas, follows, surfaceAt]);
   const item = interaction.editing;
+  const itemLng = item?.lng, itemLat = item?.lat;
+  const selectedHeight = useMemo(() => itemLng !== undefined && itemLat !== undefined && tiles?.group
+    ? raycastTerrainHeightAtLatLng(itemLng, itemLat, tiles.group, new Raycaster()) : null,
+    [itemLng, itemLat, tiles]);
   const asset = interaction.selected ?? item?.variant;
-  const point = follows ? hover : item ? { lngLat: [item.lng, item.lat] as [number, number], height: fallbackHeight } : null;
+  const point = follows ? hover : item ? { lngLat: [item.lng, item.lat] as [number, number], height: selectedHeight ?? fallbackHeight } : null;
   if (!asset || !point) return null;
   const [lng, lat] = point.lngLat;
   const support=detailAsset(asset).safety?detailPlacementSupport(asset,{lng,lat,angle:interaction.angle},zones.map(zone=>zone.id)):null;
@@ -49,10 +56,10 @@ export function DetailMapPreview({ interaction, zones, surfaceAt, fallbackHeight
   const height = support?.ok&&support.height!==undefined?support.height:authoredCameraGround(zones, lng, lat, ground.heightAt(lng, lat) ?? point.height);
   const radius = Math.max(0.7, detailAsset(asset).dimensions[0] / 2);
   return <group userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
-    {/* An existing edited object stays in captures; an unplaced cursor ghost does not. */}
-    <group userData={item ? {} : DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
+    {/* Saved instances stay visible; only placement/movement needs a cursor ghost. */}
+    {follows && <group userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
       <Suspense fallback={null}><DetailModelInstances asset={asset} placements={[{ id: 'detail-preview:cursor', lng, lat, height, angle: interaction.angle }]} /></Suspense>
-    </group>
+    </group>}
     <group userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
       <EastNorthUpFrame lat={lat * Math.PI / 180} lon={lng * Math.PI / 180} height={height + 0.12}>
         <mesh raycast={() => {}} renderOrder={10000}><ringGeometry args={[radius, radius + 0.1, 40]} /><meshBasicMaterial color="#caff34" depthTest={false} depthWrite={false} side={2} /></mesh>

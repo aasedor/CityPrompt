@@ -9,6 +9,25 @@ import { DETAIL_CATEGORIES, searchDetails } from './detailCatalogue';
 vi.mock('./detailThumbnail', () => ({ detailThumbnail: async () => 'data:image/png;base64,preview' }));
 afterEach(() => vi.unstubAllGlobals());
 describe('detail catalogue workflow', () => {
+  it('selects hidden placed items, rotates and deletes without opening the arrangement editor', async () => {
+    const saved: ProjectDetails[] = [];
+    function Trial() {
+      const placement = useDetailPlacement({version:1,revision:0,can_edit:true,benches:[{id:'bench',lng:-114,lat:51,angle:0}],trees:[{id:'tree',variant:'oak-2',lng:-114,lat:51,angle:0}]}, async next => {
+        const result={...next,revision:next.revision+1}; saved.push(result); return result;
+      });
+      return <DetailPlacementPanel placement={placement} canEdit onClose={()=>{}} onArrange={()=>{}}/>;
+    }
+    render(<Trial/>);
+    fireEvent.click(screen.getByRole('button',{name:'Placed items (2)'}));
+    fireEvent.click(screen.getByRole('button',{name:/Timber bench.*Select to edit/}));
+    fireEvent.click(screen.getByRole('button',{name:'Rotate right 15°'}));
+    await waitFor(()=>expect(saved).toHaveLength(1));
+    expect(saved[0].benches[0].angle).toBe(15);
+    fireEvent.click(screen.getByRole('button',{name:'Delete item'}));
+    await waitFor(()=>expect(screen.getByRole('button',{name:'Placed items (1)'})).toBeVisible());
+    expect(saved[1].benches).toEqual([]);
+    expect(saved[1].trees?.[0].id).toBe('tree');
+  });
   it('places repeatable access pieces with rotation while the picker stays open', async () => {
     vi.stubGlobal('IntersectionObserver', class { observe() {} disconnect() {} });
     const saved: ProjectDetails[] = [];

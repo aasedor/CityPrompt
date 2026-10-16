@@ -26,29 +26,29 @@ const NO_PROPS: ProjectProp[] = [];
 const NO_TREES: ProjectTree[] = [];
 const keyFor = (bench: ProjectBench) => `${bench.id}:${bench.lng}:${bench.lat}`;
 
-/** No scene picking: editing belongs exclusively to the detail editor. */
+/** Shared instances remain visible and pickable while a detail is selected. */
 export function GlobeProjectBenches({
   benches,
   trees = NO_TREES,
   props = NO_PROPS,
   zones,
   fallbackHeight,
-  hiddenId,
+  editing,
 }: {
   benches: ProjectBench[];
   trees?: ProjectTree[];
   props?: ProjectProp[];
   zones: SiteZone[];
   fallbackHeight: number;
-  hiddenId?: string;
+  editing?: { id: string; angle: number };
 }) {
   const items = useMemo(
     () => [
       ...benches.map((b) => ({ ...b, variant: "timber-bench" as const })),
       ...trees,
       ...props,
-    ].filter(item => item.id !== hiddenId),
-    [benches, trees, props, hiddenId],
+    ],
+    [benches, trees, props],
   );
   const ground = useSharedSiteGround(),
     tiles = useContext(TilesRendererContext);
@@ -93,11 +93,11 @@ export function GlobeProjectBenches({
       if(support&&!support.ok){unsupported.push(b.id);continue;}
       const height = support?.ok && support.height!==undefined ? support.height : authoredCameraGround(zones, b.lng, b.lat, measured);
       const group = groups.get(b.variant) ?? [];
-      group.push({ ...b, height });
+      group.push({ ...b, height, angle: editing?.id === b.id ? editing.angle : b.angle });
       groups.set(b.variant, group);
     }
     return {batches:[...groups],unsupported};
-  }, [items, ground, sampled, fallbackHeight, zones, surfaceVersion]);
+  }, [items, ground, sampled, fallbackHeight, zones, surfaceVersion, editing?.id, editing?.angle]);
   return (
     <group
       name="project-details"
@@ -109,7 +109,7 @@ export function GlobeProjectBenches({
       </div></Html>}
       {batches.map(([asset, placements]) => (
         <Suspense key={asset} fallback={null}>
-          <DetailModelInstances asset={asset} placements={placements} />
+          <DetailModelInstances asset={asset} placements={placements} selectedId={editing?.id} />
         </Suspense>
       ))}
     </group>

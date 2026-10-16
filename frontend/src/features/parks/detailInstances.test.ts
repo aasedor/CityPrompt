@@ -7,6 +7,8 @@ import {
   Matrix4,
   Vector3,
   Raycaster,
+  PerspectiveCamera,
+  Vector2,
 } from "three";
 import { WGS84_ELLIPSOID } from "3d-tiles-renderer";
 import {
@@ -25,6 +27,20 @@ import {
 } from "./detailInstances";
 
 describe("batched project details", () => {
+  it('selects thin details within an eight-pixel margin, without making distant clicks hits', () => {
+    const source = new Mesh(new BoxGeometry(.08, 2, .08), new MeshStandardMaterial());
+    const details = buildDetailInstances(source, [new Matrix4()]);
+    details.userData.projectDetailIds = ['pole'];
+    details.updateMatrixWorld(true);
+    const camera = new PerspectiveCamera(60, 1, .1, 1000);
+    camera.position.set(0,0,20); camera.updateMatrixWorld(true);
+    const ray = new Raycaster();
+    ray.setFromCamera(new Vector2(.012,0),camera);
+    expect(pickProjectDetail(details,ray)).toBeNull();
+    expect(pickProjectDetail(details,ray,{camera,viewportHeight:1000})).toBe('pole');
+    ray.setFromCamera(new Vector2(.08,0),camera);
+    expect(pickProjectDetail(details,ray,{camera,viewportHeight:1000})).toBeNull();
+  });
   it("binds authored detail batches to their saved project capture identity", () => {
     const source = new Mesh(new BoxGeometry(), new MeshStandardMaterial());
     const details = buildDetailInstances(source, [new Matrix4()]);

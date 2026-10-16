@@ -73,18 +73,18 @@ export function useDetailPlacement(data: ProjectDetails | undefined, save: (next
     if (!item) return;
     setSelected(null); setEditing(item); setAngle(item.angle); setMoving(false); setError(''); setStatus('');
   };
-  const updateItem = async (position?: [number, number], remove = false) => {
+  const updateItem = async (position?: [number, number], remove = false, nextAngle = angle) => {
     const source = current.current;
-    if (!source?.can_edit || !editing || unavailable() || !Number.isFinite(angle)) return;
+    if (!source?.can_edit || !editing || unavailable() || !Number.isFinite(nextAngle)) return;
     const key = (['benches', 'trees', 'props'] as const).find(k => source[k]?.some(i => i.id === editing.id));
     if (!key) return;
     const before = source[key]?.find(i => i.id === editing.id);
-    const support = remove ? {ok:true as const} : validate?.(editing.variant,{lng:position?.[0]??editing.lng,lat:position?.[1]??editing.lat,angle}) ?? {ok:true as const};
+    const support = remove ? {ok:true as const} : validate?.(editing.variant,{lng:position?.[0]??editing.lng,lat:position?.[1]??editing.lat,angle:nextAngle}) ?? {ok:true as const};
     if(!support.ok){setError(support.message);return;}
     const requestScope = scope.current;
     const requestGeneration = generation.current;
     const update = <T extends ProjectBench>(items: T[]) => items.filter(i => !remove || i.id !== editing.id).map(i => i.id === editing.id
-      ? { ...i, angle: ((angle % 360) + 360) % 360, lng: position?.[0] ?? editing.lng, lat: position?.[1] ?? editing.lat,
+      ? { ...i, angle: ((nextAngle % 360) + 360) % 360, lng: position?.[0] ?? editing.lng, lat: position?.[1] ?? editing.lat,
         ...('hostId' in support && support.hostId ? {support_zone_id:support.hostId}: {}) } : i);
     busy.current = true; setSaving(true); setError('');
     try {
@@ -93,7 +93,8 @@ export function useDetailPlacement(data: ProjectDetails | undefined, save: (next
         record(key, before, saved[key]?.find(i => i.id === editing.id), remove ? 'Delete detail' : 'Move or rotate detail');
         current.current = saved; setMoving(false);
         if (remove) setEditing(null);
-        else setEditing({ ...editing, lng: position?.[0] ?? editing.lng, lat: position?.[1] ?? editing.lat, angle });
+        else setEditing({ ...editing, lng: position?.[0] ?? editing.lng, lat: position?.[1] ?? editing.lat, angle: ((nextAngle % 360) + 360) % 360 });
+        setAngle(((nextAngle % 360) + 360) % 360);
         setStatus(remove ? 'Item removed and saved.' : 'Item changes saved.');
       }
     } catch { if (scope.current === requestScope && generation.current === requestGeneration) setError('Changes were not saved. Your saved items are safe; retry or cancel this edit.'); }
@@ -127,6 +128,8 @@ export function useDetailPlacement(data: ProjectDetails | undefined, save: (next
       if (scope.current === requestScope && generation.current === requestGeneration) setError('That item was not saved. Your existing details are safe. Try placing it again; if details changed elsewhere, reopen this panel to refresh.');
     } finally { busy.current = false; setSaving(false); }
   };
-  return { selected, choose, angle, setAngle, saving, error, status, place, editing, selectItem, moving, setMoving,
+  const source=current.current;
+  const items=source ? [...source.benches.map(item=>({...item,variant:'timber-bench' as const})),...(source.trees??[]),...(source.props??[])] : [];
+  return { items, rotateBy:(delta:number)=>updateItem(undefined,false,angle+delta), selected, choose, angle, setAngle, saving, error, status, place, editing, selectItem, moving, setMoving,
     saveEdit: () => updateItem(), removeItem: () => updateItem(undefined, true) };
 }

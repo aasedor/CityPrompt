@@ -1,4 +1,4 @@
-import { Group, InstancedMesh, Matrix4, Mesh, type BufferGeometry, type Material, type Object3D, type Raycaster, type Intersection } from "three";
+import { Box3, Vector3, PerspectiveCamera, type Camera, Group, InstancedMesh, Matrix4, Mesh, type BufferGeometry, type Material, type Object3D, type Raycaster, type Intersection } from "three";
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { WGS84_ELLIPSOID } from "3d-tiles-renderer";
 import { DIRECT_3D_CAPTURE_CONTEXT_USER_DATA } from "@/components/viewer/globe/direct3dCapture";
@@ -56,8 +56,10 @@ function acquireStaticBatches(source: Object3D): StaticBatch[] | null {
 }
 
 /** Pick only authored detail batches; instancing keeps the exact item identity. */
-export function pickProjectDetail(root: Object3D, ray: Raycaster): string | null {
+export function pickProjectDetail(root: Object3D, ray: Raycaster, tolerance?: { camera: Camera; viewportHeight: number }): string | null {
   const candidates: { id: string; distance: number }[] = [];
+  const nearby: { id: string; distance: number }[] = [];
+  const box = new Box3(), matrix = new Matrix4(), centre = new Vector3(), hitPoint = new Vector3();
   root.traverseVisible(object => {
     const mesh = object as InstancedMesh;
     const ids = mesh.parent?.userData.projectDetailIds as (string | undefined)[] | undefined;
@@ -68,9 +70,31 @@ export function pickProjectDetail(root: Object3D, ray: Raycaster): string | null
       const id = hit.instanceId === undefined ? undefined : ids[hit.instanceId];
       if (id && !id.startsWith('detail-preview:')) candidates.push({ id, distance: hit.distance });
     }
+    // Exact triangles win. For thin poles/benches allow a small screen-space
+    // margin around each source part, never a giant whole-scene bounding box.
+    if (!tolerance || tolerance.viewportHeight <= 0) return;
+    if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
+    if (!mesh.geometry.boundingBox) return;
+    for (let i=0;i<mesh.count;i++) {
+      const id=ids[i];
+      if (!id || id.startsWith('detail-preview:')) continue;
+      mesh.getMatrixAt(i,matrix); matrix.premultiply(mesh.matrixWorld);
+      box.copy(mesh.geometry.boundingBox).applyMatrix4(matrix);
+      box.getCenter(centre).applyMatrix4(tolerance.camera.matrixWorldInverse);
+      if (centre.z >= 0) continue;
+      const unitsPerPixel = tolerance.camera instanceof PerspectiveCamera
+        ? 2 * -centre.z / tolerance.camera.projectionMatrix.elements[5] / tolerance.viewportHeight
+        : 2 / tolerance.camera.projectionMatrix.elements[5] / tolerance.viewportHeight;
+      box.expandByScalar(Math.min(.75, Math.abs(unitsPerPixel)*8));
+      if (ray.ray.intersectBox(box,hitPoint)) {
+        const distance=hitPoint.distanceTo(ray.ray.origin);
+        if (distance>=ray.near && distance<=ray.far) nearby.push({id,distance});
+      }
+    }
   });
   candidates.sort((a, b) => a.distance - b.distance);
-  return candidates[0]?.id ?? null;
+  nearby.sort((a,b)=>a.distance-b.distance);
+  return candidates[0]?.id ?? nearby[0]?.id ?? null;
 }
 
 /** Keep instance coordinates near a shared origin to avoid Earth-scale Float32 jitter. */

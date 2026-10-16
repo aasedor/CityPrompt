@@ -4104,15 +4104,15 @@ export function GlobeSitePlannerMap({
   // Canvas onPointerMissed â€” fires when click doesn't hit any R3F mesh
   // We use this + onCreated to handle globe clicks at the Canvas level
   const handleCanvasClick = useCallback((e: MouseEvent) => {
-    if (detailInteraction && !detailInteraction.selected && !detailInteraction.moving
-      && !externalInteractionPaused && !hasDrawingTool && !placementDraft && !streetViewPegman && !walkMode && !entrancePick) {
+    if (detailInteraction && !detailInteraction.moving
+      && !externalInteractionPaused && !hasDrawingTool && !placementDraft && !streetViewPegman && !walkMode && !entrancePick && !measureModeActive && !zoningInspection?.editing) {
       const canvas = canvasRef.current;
       if (canvas && cameraRef.current && sceneRef.current) {
         const rect = canvas.getBoundingClientRect();
         const ray = new THREE.Raycaster();
         ray.setFromCamera(new THREE.Vector2((e.clientX - rect.left) / rect.width * 2 - 1,
           -(e.clientY - rect.top) / rect.height * 2 + 1), cameraRef.current);
-        const id = pickProjectDetail(sceneRef.current, ray);
+        const id = pickProjectDetail(sceneRef.current, ray, {camera:cameraRef.current,viewportHeight:rect.height});
         if (id) { onZoneSelected?.(null); detailInteraction.selectItem(id); return; }
       }
     }
@@ -4279,7 +4279,7 @@ export function GlobeSitePlannerMap({
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
     requestAnimationFrame(updateCenterConnectionState);
-  }, [detailInteraction, walkMode, detailEditing, onPlaceDetail, externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, activeToolProperties, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
+  }, [zoningInspection?.editing, detailInteraction, walkMode, detailEditing, onPlaceDetail, externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, activeToolProperties, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
     if (zoningInspection?.editing) return;
@@ -4344,7 +4344,7 @@ export function GlobeSitePlannerMap({
     // opens the district underneath it and clears the model selection.
     if (!zoningInspection?.editing && sceneRef.current) {
       const detailId = detailInteraction && !detailEditing && !entrancePick
-        ? pickProjectDetail(sceneRef.current, zoningRaycaster) : null;
+        ? pickProjectDetail(sceneRef.current, zoningRaycaster, {camera,viewportHeight:rect.height}) : null;
       const zoneId = detailId ? null : pickEditableZoneBeforePolicy(sceneRef.current, zoningRaycaster, siteZones);
       if (detailId || zoneId) {
         ignoreNextCanvasClickRef.current = false;
@@ -4627,7 +4627,7 @@ export function GlobeSitePlannerMap({
           <StreetPreviewGroundProvider>
           <BuildingEntranceApproaches zones={connectedSceneZones} results={pedestrianConnections}>
           <SurveyGroundSurface visible={contextPresentation.visible === 'terrain'} />
-          {projectBenches && <GlobeProjectBenches benches={projectBenches} trees={projectTrees} props={projectProps} hiddenId={captureOverlaysHidden ? undefined : detailInteraction?.editing?.id} zones={allSiteZones} fallbackHeight={terrainElevation}/>}
+          {projectBenches && <GlobeProjectBenches benches={projectBenches} trees={projectTrees} props={projectProps} editing={!captureOverlaysHidden && detailInteraction?.editing && !detailInteraction.moving ? {id:detailInteraction.editing.id,angle:detailInteraction.angle} : undefined} zones={allSiteZones} fallbackHeight={terrainElevation}/>}
           {detailInteraction && !captureOverlaysHidden && <DetailMapPreview interaction={detailInteraction} zones={allSiteZones} surfaceAt={raycastSurfacePoint} fallbackHeight={terrainElevation} />}
           {projectSurfaces && <GlobePavingSurfaces surfaces={projectSurfaces} zones={allSiteZones} fallbackHeight={terrainElevation}/>}
           {!captureOverlaysHidden && !interactionPaused && walkMode !== 'active' && selectedZoneId && (()=>{
@@ -5136,7 +5136,7 @@ export function GlobeSitePlannerMap({
       {/* 3D Globe badge + pitch + LOD status â€” offset below back button */}
       {!walkMode && !entrancePick && !hasDrawingTool && !streetViewPegman && !measureModeActive && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 hidden max-w-[min(38rem,calc(100%-36rem))] -translate-x-1/2 rounded-xl border border-slate-300 bg-white/95 px-3 py-2 text-center text-xs font-medium text-slate-700 shadow-lg backdrop-blur-xl select-none lg:block">
-          {detailEditing ? 'Choose an item on the right · Click the map to place · Drag to pan · Scroll to zoom'
+          {detailEditing ? (detailInteraction?.moving ? 'Click the map to move this item · Esc to cancel' : detailInteraction?.editing ? 'Use Move, Rotate or Delete in the panel · Click another item to select it' : 'Choose an item to place · Click a placed item to edit · Drag to pan · Scroll to zoom')
             : siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.native_home_plot === true)
             ? 'Drag the Move handle to reposition this house | Use the reshape panel to resize or rotate | Esc to deselect'
             : siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.pick_place_asset)
