@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-student-residence-tower-clay-v001",
+  "glb": "clay-student-residence-tower-clay-v001.glb",
+  "glb_bytes": 873492,
+  "glb_sha256": "fb0f19f53080856846b63891785460fae48282c51a3d71caea2747d9040716bc",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "glazed_base.png": 92,
+    "interior.png": 92,
+    "lattice_screen.png": 92,
+    "left_side.png": 92,
+    "planted_terrace.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_dome.png": 92,
+    "slab_edges.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-student-residence-tower-clay-v001-renders-and-glb.zip",
+  "zip_bytes": 32947513
+}

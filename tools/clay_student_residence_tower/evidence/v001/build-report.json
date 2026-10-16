@@ -1,0 +1,1461 @@
+{
+  "candidate": "clay-student-residence-tower-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 526,
+    "vertices": 9234,
+    "polygons": 15188,
+    "triangles": 15188,
+    "path": "clay-student-residence-tower-clay-v001-authoring.blend",
+    "bytes": 5038488,
+    "sha256": "bb07ae57f0f8728977293f0ea5ea80bfdc48598106d606f6119bff8e426b4119"
+  },
+  "runtime": {
+    "path": "clay-student-residence-tower-clay-v001.glb",
+    "bytes": 873492,
+    "sha256": "fb0f19f53080856846b63891785460fae48282c51a3d71caea2747d9040716bc",
+    "meshes": 18,
+    "materials": 18,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 18,
+    "vertices": 9234,
+    "polygons": 15188,
+    "triangles": 15188
+  },
+  "original_bounds_m": [
+    [
+      -29.0,
+      -32.20000076293945,
+      0.0
+    ],
+    [
+      29.0,
+      15.699999809265137,
+      46.7374153137207
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -29.0,
+      -32.20000076293945,
+      0.0
+    ],
+    [
+      29.0,
+      15.699999809265137,
+      46.7374153137207
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 27.2,
+    "depth": 31.2,
+    "height": 47.65
+  },
+  "native_dimensions_m": {
+    "width": 58.0,
+    "depth": 47.90000057220459,
+    "height": 46.7374153137207
+  },
+  "native_bottom_center_m": [
+    0.0,
+    -8.250000476837158,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 1,
+    "joint": 1,
+    "trim": 26,
+    "pale": 2,
+    "sand": 3,
+    "foundation": 1,
+    "glass": 11,
+    "hardware": 3,
+    "interior": 7,
+    "floor": 12,
+    "timber": 77,
+    "blue": 2,
+    "planting": 179,
+    "concrete": 15,
+    "white": 177,
+    "asphalt": 2,
+    "membrane": 6,
+    "domeglass": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/glazed_base.png",
+    "renders/slab_edges.png",
+    "renders/planted_terrace.png",
+    "renders/roof_dome.png",
+    "renders/lattice_screen.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.14431491494178772,
+      "xmax": 0.9115853905677795,
+      "ymin": 0.07929406315088272,
+      "ymax": 0.8716766834259033
+    },
+    "front_corner": {
+      "xmin": 0.3017808794975281,
+      "xmax": 0.7681547999382019,
+      "ymin": 0.08748659491539001,
+      "ymax": 0.7621809244155884
+    },
+    "aerial": {
+      "xmin": 0.25566422939300537,
+      "xmax": 0.6514632105827332,
+      "ymin": 0.0778454914689064,
+      "ymax": 0.7520586848258972
+    },
+    "top": {
+      "xmin": 0.22413422167301178,
+      "xmax": 0.7758657932281494,
+      "ymin": 0.09159180521965027,
+      "ymax": 0.6991307139396667
+    },
+    "left_side": {
+      "xmin": 0.310451865196228,
+      "xmax": 0.8932397365570068,
+      "ymin": 0.08149661868810654,
+      "ymax": 0.8500061631202698
+    },
+    "right_side": {
+      "xmin": 0.09310350567102432,
+      "xmax": 0.6812519431114197,
+      "ymin": 0.08149664849042892,
+      "ymax": 0.8541224002838135
+    },
+    "rear": {
+      "xmin": 0.2059285193681717,
+      "xmax": 0.8969545364379883,
+      "ymin": 0.0780283585190773,
+      "ymax": 0.9185343384742737
+    },
+    "rear_side": {
+      "xmin": 0.13417799770832062,
+      "xmax": 0.7666316032409668,
+      "ymin": 0.0797886848449707,
+      "ymax": 0.8824529647827148
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Tower on the base slab; white mass at the south-west corner; dome and penthouse on the roof slab",
+      "roof_m": 41.15
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "base south glazing 0",
+      "face": "base south",
+      "u": -11.334999999999999,
+      "z": 0.15,
+      "width": 3.9,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.6000000238418579,
+        -16.200000762939453,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "study commons"
+    },
+    {
+      "id": "base south glazing 1",
+      "face": "base south",
+      "u": -6.805,
+      "z": 0.15,
+      "width": 3.9,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.6000000238418579,
+        -16.200000762939453,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "study commons"
+    },
+    {
+      "id": "base south glazing 2",
+      "face": "base south",
+      "u": -2.2749999999999986,
+      "z": 0.15,
+      "width": 3.9,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.6000000238418579,
+        -16.200000762939453,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "study commons"
+    },
+    {
+      "id": "base south glazing 3",
+      "face": "base south",
+      "u": 2.255000000000001,
+      "z": 0.15,
+      "width": 3.9,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.6000000238418579,
+        -16.200000762939453,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "study commons"
+    },
+    {
+      "id": "base south glazing 4",
+      "face": "base south",
+      "u": 6.785000000000002,
+      "z": 0.15,
+      "width": 3.9,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.6000000238418579,
+        -16.200000762939453,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "study commons"
+    },
+    {
+      "id": "base south glazing 5",
+      "face": "base south",
+      "u": 11.315000000000003,
+      "z": 0.15,
+      "width": 3.9,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.6000000238418579,
+        -16.200000762939453,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "study commons"
+    },
+    {
+      "id": "base east glazing 0",
+      "face": "base east",
+      "u": -13.099999999999998,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        14.199999809265137,
+        -0.6000000238418579,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bike room and cafe"
+    },
+    {
+      "id": "base east glazing 1",
+      "face": "base east",
+      "u": -8.7,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        14.199999809265137,
+        -0.6000000238418579,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bike room and cafe"
+    },
+    {
+      "id": "base east glazing 2",
+      "face": "base east",
+      "u": -4.299999999999999,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        14.199999809265137,
+        -0.6000000238418579,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bike room and cafe"
+    },
+    {
+      "id": "base east glazing 3",
+      "face": "base east",
+      "u": 0.1000000000000032,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        14.199999809265137,
+        -0.6000000238418579,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bike room and cafe"
+    },
+    {
+      "id": "base east glazing 4",
+      "face": "base east",
+      "u": 4.500000000000002,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        14.199999809265137,
+        -0.6000000238418579,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bike room and cafe"
+    },
+    {
+      "id": "base east glazing 5",
+      "face": "base east",
+      "u": 8.900000000000004,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        14.199999809265137,
+        -0.6000000238418579,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bike room and cafe"
+    },
+    {
+      "id": "base east glazing 6",
+      "face": "base east",
+      "u": 13.300000000000002,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        14.199999809265137,
+        -0.6000000238418579,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bike room and cafe"
+    },
+    {
+      "id": "base west glazing 0",
+      "face": "base west",
+      "u": -13.099999999999998,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -13.0,
+        -0.6000000238418579,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "study commons"
+    },
+    {
+      "id": "base west glazing 1",
+      "face": "base west",
+      "u": -8.7,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -13.0,
+        -0.6000000238418579,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "study commons"
+    },
+    {
+      "id": "base west glazing 2",
+      "face": "base west",
+      "u": -4.299999999999999,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -13.0,
+        -0.6000000238418579,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "study commons"
+    },
+    {
+      "id": "base west glazing 3",
+      "face": "base west",
+      "u": 0.1000000000000032,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -13.0,
+        -0.6000000238418579,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "study commons"
+    },
+    {
+      "id": "base west glazing 4",
+      "face": "base west",
+      "u": 4.500000000000002,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -13.0,
+        -0.6000000238418579,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "study commons"
+    },
+    {
+      "id": "base west glazing 5",
+      "face": "base west",
+      "u": 8.900000000000004,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -13.0,
+        -0.6000000238418579,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "study commons"
+    },
+    {
+      "id": "base west glazing 6",
+      "face": "base west",
+      "u": 13.300000000000002,
+      "z": 0.15,
+      "width": 3.6,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -13.0,
+        -0.6000000238418579,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "study commons"
+    },
+    {
+      "id": "tower south curtain wall",
+      "face": "tower south",
+      "u": 0.0,
+      "z": 8.25,
+      "width": 15.6,
+      "height": 32.8,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        5.0,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "student rooms"
+    },
+    {
+      "id": "tower west curtain wall",
+      "face": "tower west",
+      "u": 0.15000000000000036,
+      "z": 8.25,
+      "width": 19.3,
+      "height": 32.8,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -13.0,
+        5.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "student rooms"
+    },
+    {
+      "id": "tower east curtain wall",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 8.25,
+      "width": 29.0,
+      "height": 32.8,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        13.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "student rooms"
+    },
+    {
+      "id": "tower north curtain wall",
+      "face": "tower north",
+      "u": 0.0,
+      "z": 8.25,
+      "width": 25.6,
+      "height": 32.8,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "student rooms"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "South sidewalk",
+      "West sidewalk",
+      "South street",
+      "West street",
+      "East lot"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Shrub rooted stem",
+      "Leafy shrub crown",
+      "Leafy shrub crown.001",
+      "Leafy shrub crown.002",
+      "Leafy shrub crown.003",
+      "Shrub rooted stem.001",
+      "Leafy shrub crown.004",
+      "Leafy shrub crown.005",
+      "Leafy shrub crown.006",
+      "Leafy shrub crown.007",
+      "Shrub rooted stem.002",
+      "Leafy shrub crown.008",
+      "Leafy shrub crown.009",
+      "Leafy shrub crown.010",
+      "Leafy shrub crown.011",
+      "Shrub rooted stem.003",
+      "Leafy shrub crown.012",
+      "Leafy shrub crown.013",
+      "Leafy shrub crown.014",
+      "Leafy shrub crown.015",
+      "Shrub rooted stem.004",
+      "Leafy shrub crown.016",
+      "Leafy shrub crown.017",
+      "Leafy shrub crown.018",
+      "Leafy shrub crown.019",
+      "Shrub rooted stem.005",
+      "Leafy shrub crown.020",
+      "Leafy shrub crown.021",
+      "Leafy shrub crown.022",
+      "Leafy shrub crown.023",
+      "Shrub rooted stem.006",
+      "Leafy shrub crown.024",
+      "Leafy shrub crown.025",
+      "Leafy shrub crown.026",
+      "Leafy shrub crown.027",
+      "Shrub rooted stem.007",
+      "Leafy shrub crown.028",
+      "Leafy shrub crown.029",
+      "Leafy shrub crown.030",
+      "Leafy shrub crown.031",
+      "Shrub rooted stem.008",
+      "Leafy shrub crown.032",
+      "Leafy shrub crown.033",
+      "Leafy shrub crown.034",
+      "Leafy shrub crown.035",
+      "Shrub rooted stem.009",
+      "Leafy shrub crown.036",
+      "Leafy shrub crown.037",
+      "Leafy shrub crown.038",
+      "Leafy shrub crown.039",
+      "Shrub rooted stem.010",
+      "Leafy shrub crown.040",
+      "Leafy shrub crown.041",
+      "Leafy shrub crown.042",
+      "Leafy shrub crown.043",
+      "Shrub rooted stem.011",
+      "Leafy shrub crown.044",
+      "Leafy shrub crown.045",
+      "Leafy shrub crown.046",
+      "Leafy shrub crown.047",
+      "Shrub rooted stem.012",
+      "Leafy shrub crown.048",
+      "Leafy shrub crown.049",
+      "Leafy shrub crown.050",
+      "Leafy shrub crown.051",
+      "Shrub rooted stem.013",
+      "Leafy shrub crown.052",
+      "Leafy shrub crown.053",
+      "Leafy shrub crown.054",
+      "Leafy shrub crown.055",
+      "Shrub rooted stem.014",
+      "Leafy shrub crown.056",
+      "Leafy shrub crown.057",
+      "Leafy shrub crown.058",
+      "Leafy shrub crown.059",
+      "Shrub rooted stem.015",
+      "Leafy shrub crown.060",
+      "Leafy shrub crown.061",
+      "Leafy shrub crown.062",
+      "Leafy shrub crown.063",
+      "Shrub rooted stem.016",
+      "Leafy shrub crown.064",
+      "Leafy shrub crown.065",
+      "Leafy shrub crown.066",
+      "Leafy shrub crown.067",
+      "Shrub rooted stem.017",
+      "Leafy shrub crown.068",
+      "Leafy shrub crown.069",
+      "Leafy shrub crown.070",
+      "Leafy shrub crown.071",
+      "Shrub rooted stem.018",
+      "Leafy shrub crown.072",
+      "Leafy shrub crown.073",
+      "Leafy shrub crown.074",
+      "Leafy shrub crown.075",
+      "Shrub rooted stem.019",
+      "Leafy shrub crown.076",
+      "Leafy shrub crown.077",
+      "Leafy shrub crown.078",
+      "Leafy shrub crown.079",
+      "Shrub rooted stem.020",
+      "Leafy shrub crown.080",
+      "Leafy shrub crown.081",
+      "Leafy shrub crown.082",
+      "Leafy shrub crown.083",
+      "Shrub rooted stem.021",
+      "Leafy shrub crown.084",
+      "Leafy shrub crown.085",
+      "Leafy shrub crown.086",
+      "Leafy shrub crown.087",
+      "Shrub rooted stem.022",
+      "Leafy shrub crown.088",
+      "Leafy shrub crown.089",
+      "Leafy shrub crown.090",
+      "Leafy shrub crown.091",
+      "Shrub rooted stem.023",
+      "Leafy shrub crown.092",
+      "Leafy shrub crown.093",
+      "Leafy shrub crown.094",
+      "Leafy shrub crown.095",
+      "Shrub rooted stem.024",
+      "Leafy shrub crown.096",
+      "Leafy shrub crown.097",
+      "Leafy shrub crown.098",
+      "Leafy shrub crown.099",
+      "Shrub rooted stem.025",
+      "Leafy shrub crown.100",
+      "Leafy shrub crown.101",
+      "Leafy shrub crown.102",
+      "Leafy shrub crown.103",
+      "Shrub rooted stem.026",
+      "Leafy shrub crown.104",
+      "Leafy shrub crown.105",
+      "Leafy shrub crown.106",
+      "Leafy shrub crown.107",
+      "Shrub rooted stem.027",
+      "Leafy shrub crown.108",
+      "Leafy shrub crown.109",
+      "Leafy shrub crown.110",
+      "Leafy shrub crown.111",
+      "Shrub rooted stem.028",
+      "Leafy shrub crown.112",
+      "Leafy shrub crown.113",
+      "Leafy shrub crown.114",
+      "Leafy shrub crown.115",
+      "Shrub rooted stem.029",
+      "Leafy shrub crown.116",
+      "Leafy shrub crown.117",
+      "Leafy shrub crown.118",
+      "Leafy shrub crown.119",
+      "Shrub rooted stem.030",
+      "Leafy shrub crown.120",
+      "Leafy shrub crown.121",
+      "Leafy shrub crown.122",
+      "Leafy shrub crown.123",
+      "Shrub rooted stem.031",
+      "Leafy shrub crown.124",
+      "Leafy shrub crown.125",
+      "Leafy shrub crown.126",
+      "Leafy shrub crown.127",
+      "Shrub rooted stem.032",
+      "Leafy shrub crown.128",
+      "Leafy shrub crown.129",
+      "Leafy shrub crown.130",
+      "Leafy shrub crown.131",
+      "Shrub rooted stem.033",
+      "Leafy shrub crown.132",
+      "Leafy shrub crown.133",
+      "Leafy shrub crown.134",
+      "Leafy shrub crown.135",
+      "Shrub rooted stem.034",
+      "Leafy shrub crown.136",
+      "Leafy shrub crown.137",
+      "Leafy shrub crown.138",
+      "Leafy shrub crown.139",
+      "Shrub rooted stem.035",
+      "Leafy shrub crown.140",
+      "Leafy shrub crown.141",
+      "Leafy shrub crown.142",
+      "Leafy shrub crown.143",
+      "Shrub rooted stem.036",
+      "Leafy shrub crown.144",
+      "Leafy shrub crown.145",
+      "Leafy shrub crown.146",
+      "Leafy shrub crown.147",
+      "Shrub rooted stem.037",
+      "Leafy shrub crown.148",
+      "Leafy shrub crown.149",
+      "Leafy shrub crown.150",
+      "Leafy shrub crown.151"
+    ],
+    "envelope": [
+      "base south carrier",
+      "base east carrier",
+      "base west carrier",
+      "base north carrier",
+      "tower south spandrel carrier",
+      "tower west spandrel carrier",
+      "tower east spandrel carrier",
+      "tower north spandrel carrier"
+    ],
+    "base south": [
+      "base south base south trim",
+      "base south base south glass",
+      "base south base south white"
+    ],
+    "base east": [
+      "base east base east trim",
+      "base east base east glass",
+      "base east base east white"
+    ],
+    "base west": [
+      "base west base west trim",
+      "base west base west glass"
+    ],
+    "base": [
+      "Base column",
+      "Base column.001",
+      "Base column.002",
+      "Base column.003",
+      "Base column.004",
+      "Base column.005",
+      "Base column.006",
+      "Sloping soffit",
+      "Base slab",
+      "Base floor",
+      "Base floor.001",
+      "Base roof edge",
+      "Base roof edge.001",
+      "Library shelving",
+      "Study table",
+      "Library shelving.001",
+      "Study table.001",
+      "Library shelving.002",
+      "Study table.002"
+    ],
+    "tower south glass": [
+      "tower south tower south glass glass",
+      "tower south tower south glass trim"
+    ],
+    "slab edges": [
+      "tower south slab edge",
+      "tower south slab edge.001",
+      "tower south slab edge.002",
+      "tower south slab edge.003",
+      "tower south slab edge.004",
+      "tower south slab edge.005",
+      "tower south slab edge.006",
+      "tower south slab edge.007",
+      "tower south slab edge.008",
+      "tower south slab edge.009",
+      "tower south slab edge.010",
+      "tower west slab edge",
+      "tower west slab edge.001",
+      "tower west slab edge.002",
+      "tower west slab edge.003",
+      "tower west slab edge.004",
+      "tower west slab edge.005",
+      "tower west slab edge.006",
+      "tower west slab edge.007",
+      "tower west slab edge.008",
+      "tower west slab edge.009",
+      "tower west slab edge.010",
+      "tower east slab edge",
+      "tower east slab edge.001",
+      "tower east slab edge.002",
+      "tower east slab edge.003",
+      "tower east slab edge.004",
+      "tower east slab edge.005",
+      "tower east slab edge.006",
+      "tower east slab edge.007",
+      "tower east slab edge.008",
+      "tower east slab edge.009",
+      "tower east slab edge.010",
+      "tower north slab edge",
+      "tower north slab edge.001",
+      "tower north slab edge.002",
+      "tower north slab edge.003",
+      "tower north slab edge.004",
+      "tower north slab edge.005",
+      "tower north slab edge.006",
+      "tower north slab edge.007",
+      "tower north slab edge.008",
+      "tower north slab edge.009",
+      "tower north slab edge.010"
+    ],
+    "tower south terrace": [
+      "tower south tower south terrace white",
+      "tower south tower south terrace concrete",
+      "tower south tower south terrace planting",
+      "tower south tower south terrace white.001",
+      "tower south tower south terrace concrete.001",
+      "tower south tower south terrace planting.001",
+      "tower south tower south terrace white.002",
+      "tower south tower south terrace concrete.002",
+      "tower south tower south terrace planting.002"
+    ],
+    "tower west glass": [
+      "tower west tower west glass glass",
+      "tower west tower west glass trim"
+    ],
+    "tower west terrace": [
+      "tower west tower west terrace white",
+      "tower west tower west terrace concrete",
+      "tower west tower west terrace planting",
+      "tower west tower west terrace white.001",
+      "tower west tower west terrace concrete.001",
+      "tower west tower west terrace planting.001",
+      "tower west tower west terrace white.002",
+      "tower west tower west terrace concrete.002",
+      "tower west tower west terrace planting.002"
+    ],
+    "tower east glass": [
+      "tower east tower east glass glass",
+      "tower east tower east glass trim"
+    ],
+    "tower east terrace": [
+      "tower east tower east terrace white",
+      "tower east tower east terrace concrete",
+      "tower east tower east terrace planting"
+    ],
+    "tower north glass": [
+      "tower north tower north glass glass",
+      "tower north tower north glass trim"
+    ],
+    "white mass": [
+      "White wall mass",
+      "White mass joints"
+    ],
+    "tower floors": [
+      "Tower floor 1",
+      "Tower floor 2",
+      "Tower floor 3",
+      "Tower floor 4",
+      "Tower floor 5",
+      "Tower floor 6",
+      "Tower floor 7",
+      "Tower floor 8",
+      "Tower floor 9",
+      "Tower floor 10"
+    ],
+    "core": [
+      "Tower core"
+    ],
+    "office furniture": [
+      "Desk surface",
+      "Desk leg",
+      "Desk leg.001",
+      "Desk leg.002",
+      "Desk leg.003",
+      "Monitor base",
+      "Monitor stem",
+      "Monitor",
+      "Chair seat",
+      "Chair back",
+      "Chair leg",
+      "Chair leg.001",
+      "Chair leg.002",
+      "Chair leg.003"
+    ],
+    "bedroom furniture": [
+      "Bed grounded foot",
+      "Bed grounded foot.001",
+      "Bed grounded foot.002",
+      "Bed grounded foot.003",
+      "Bed frame",
+      "Mattress",
+      "Duvet",
+      "Headboard",
+      "Pillow",
+      "Pillow.001"
+    ],
+    "living furniture": [
+      "Sofa grounded foot",
+      "Sofa grounded foot.001",
+      "Sofa grounded foot.002",
+      "Sofa grounded foot.003",
+      "Sofa plinth",
+      "Sofa seat",
+      "Sofa back",
+      "Sofa arm",
+      "Sofa arm.001",
+      "Coffee table",
+      "Coffee table leg",
+      "Coffee table leg.001",
+      "Coffee table leg.002",
+      "Coffee table leg.003"
+    ],
+    "roof": [
+      "Roof garden paving",
+      "Roof stair"
+    ],
+    "lattice screen": [
+      "Screen glass",
+      "Screen top rail",
+      "Screen lattice",
+      "Screen lattice.001",
+      "Screen lattice.002",
+      "Screen lattice.003",
+      "Screen lattice.004",
+      "Screen lattice.005",
+      "Screen lattice.006",
+      "Screen lattice.007",
+      "Screen lattice.008",
+      "Screen lattice.009",
+      "Screen lattice.010",
+      "Screen lattice.011",
+      "Screen lattice.012",
+      "Screen lattice.013",
+      "Screen lattice.014",
+      "Screen lattice.015",
+      "Screen lattice.016",
+      "Screen lattice.017",
+      "Screen lattice.018",
+      "Screen lattice.019",
+      "Screen glass.001",
+      "Screen top rail.001",
+      "Screen lattice.020",
+      "Screen lattice.021",
+      "Screen lattice.022",
+      "Screen lattice.023",
+      "Screen lattice.024",
+      "Screen lattice.025",
+      "Screen lattice.026",
+      "Screen lattice.027",
+      "Screen lattice.028",
+      "Screen lattice.029",
+      "Screen lattice.030",
+      "Screen lattice.031",
+      "Screen lattice.032",
+      "Screen lattice.033",
+      "Screen lattice.034",
+      "Screen lattice.035",
+      "Screen lattice.036",
+      "Screen lattice.037",
+      "Screen lattice.038",
+      "Screen lattice.039",
+      "Screen lattice.040",
+      "Screen lattice.041",
+      "Screen lattice.042",
+      "Screen lattice.043",
+      "Screen glass.002",
+      "Screen top rail.002",
+      "Screen lattice.044",
+      "Screen lattice.045",
+      "Screen lattice.046",
+      "Screen lattice.047",
+      "Screen lattice.048",
+      "Screen lattice.049",
+      "Screen lattice.050",
+      "Screen lattice.051",
+      "Screen lattice.052",
+      "Screen lattice.053",
+      "Screen lattice.054",
+      "Screen lattice.055",
+      "Screen lattice.056",
+      "Screen lattice.057",
+      "Screen lattice.058",
+      "Screen lattice.059",
+      "Screen lattice.060",
+      "Screen lattice.061",
+      "Screen lattice.062",
+      "Screen lattice.063",
+      "Screen glass.003",
+      "Screen top rail.003",
+      "Screen lattice.064",
+      "Screen lattice.065",
+      "Screen lattice.066",
+      "Screen lattice.067",
+      "Screen lattice.068",
+      "Screen lattice.069",
+      "Screen lattice.070",
+      "Screen lattice.071",
+      "Screen lattice.072",
+      "Screen lattice.073",
+      "Screen lattice.074",
+      "Screen lattice.075",
+      "Screen lattice.076",
+      "Screen lattice.077",
+      "Screen lattice.078",
+      "Screen lattice.079",
+      "Screen lattice.080",
+      "Screen lattice.081",
+      "Screen lattice.082",
+      "Screen lattice.083",
+      "Screen lattice.084",
+      "Screen lattice.085",
+      "Screen lattice.086",
+      "Screen lattice.087"
+    ],
+    "dome": [
+      "Dome ring",
+      "Glass dome",
+      "Dome rib",
+      "Dome rib.001",
+      "Dome rib.002",
+      "Dome rib.003",
+      "Dome rib.004",
+      "Dome rib.005",
+      "Dome rib.006",
+      "Dome rib.007",
+      "Dome rib.008",
+      "Dome rib.009",
+      "Dome rib.010",
+      "Dome rib.011",
+      "Dome rib.012",
+      "Dome rib.013",
+      "Dome rib.014",
+      "Dome rib.015",
+      "Dome ring rib",
+      "Dome ring rib.001",
+      "Dome ring rib.002"
+    ],
+    "penthouse": [
+      "Plant penthouse",
+      "Rooftop unit",
+      "Unit fan",
+      "Rooftop unit.001",
+      "Unit fan.001",
+      "Rooftop unit.002",
+      "Unit fan.002",
+      "Duct box"
+    ],
+    "roof garden": [
+      "Roof garden planter",
+      "Roof garden planting",
+      "Roof garden planter.001",
+      "Roof garden planting.001",
+      "Roof garden planter.002",
+      "Roof garden planting.002",
+      "Roof garden planter.003",
+      "Roof garden planting.003",
+      "Roof garden planter.004",
+      "Roof garden planting.004"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-16T04:28:55.211969+00:00",
+  "delivery_and_render_seconds": 7760.936691113001,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

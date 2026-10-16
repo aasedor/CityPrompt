@@ -67,3 +67,16 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001
+
+- P0: the white wall mass is a square pier at the SW corner; in the sources it is a tapered blade filling about 75% of the west face, with the south face all glass to the corner
+- P1: the white mass is a plain box with no joints, lean, taper or curved top corner above the roof
+- P1: grey slab-edge wedges stick out of the white mass at every floor
+- P1: the east-end sloping soffit is a thin bar crossing the base glazing and columns, with black squares at the junctions
+- P1: full-height black slit at the base's north-west corner
+- P1: planted terraces are small mid-facade trays, not deep planted terraces at the slab ends and the west glass strip
+- P1: the roof garden is six isolated planters, not continuous beds along the north and east edges and round the dome
+- P1: the open roof stair beside the penthouse is missing
+- P1: a rigid box without the chamfered NE/SE roof-screen corners, the set-back west glass strip, the uneven slab-end projections or the rounded base-band corner
+- P2: see evidence/v001/independent-review.md

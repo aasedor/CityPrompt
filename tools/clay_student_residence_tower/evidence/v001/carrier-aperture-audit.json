@@ -1,0 +1,150 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "base south glazing 0",
+      "face": "base south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base south glazing 1",
+      "face": "base south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base south glazing 2",
+      "face": "base south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base south glazing 3",
+      "face": "base south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base south glazing 4",
+      "face": "base south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base south glazing 5",
+      "face": "base south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base east glazing 0",
+      "face": "base east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base east glazing 1",
+      "face": "base east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base east glazing 2",
+      "face": "base east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base east glazing 3",
+      "face": "base east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base east glazing 4",
+      "face": "base east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base east glazing 5",
+      "face": "base east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base east glazing 6",
+      "face": "base east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base west glazing 0",
+      "face": "base west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base west glazing 1",
+      "face": "base west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base west glazing 2",
+      "face": "base west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base west glazing 3",
+      "face": "base west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base west glazing 4",
+      "face": "base west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base west glazing 5",
+      "face": "base west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "base west glazing 6",
+      "face": "base west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower south curtain wall",
+      "face": "tower south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower west curtain wall",
+      "face": "tower west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower east curtain wall",
+      "face": "tower east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "tower north curtain wall",
+      "face": "tower north",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
