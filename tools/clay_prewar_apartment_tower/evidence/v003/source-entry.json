@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-prewar-apartment-tower",
+  "variant_id": "clay-prewar-apartment-tower-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "new_york_pre_war_apartment/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/new-york-pre-war-apartment/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1588791,
+      "sha256": "a6d0d2b26c6a199980e5205c7710851b1f0caac7a9ff99d5bcf8ad1cc3caa7b5"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/new-york-pre-war-apartment/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 1024116,
+      "sha256": "63bb5633dd721a9f791dbedf4894dd7dbf1d27f354318bd95660f251af21f6c1"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/new-york-pre-war-apartment/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 860261,
+      "sha256": "c4c63aecf64a29cfea3c816846cb1249b39bef8a531c873145679b990e137bb2"
+    }
+  ]
+}

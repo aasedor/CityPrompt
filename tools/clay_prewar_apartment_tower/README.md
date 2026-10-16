@@ -1,7 +1,7 @@
 # New York pre-war apartment tower (RLASM v6.1 architectural clay)
 
 Candidate E2 of the three-tower wave of 2026-10-16, chosen to add residential towers (types
-with no clay or runtime family yet). State: **candidate under review**. Nothing here is keeper-approved,
+with no clay or runtime family yet). State: **stopped at v003 by the rework rule; v003 (0 P0 / 3 P1) is the candidate**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,11 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002
+## Open blockers after v003 (stopped: the same findings survived two targeted fixes)
 
-- P1: the full-height stone pier sits over a window column, halving it on every brick storey
-- P1: the entrance group sits mid-face where the sources put it hard by the south-east corner, with a wide stone-framed bay at the corner of the east face (v001 layout finding, survived one targeted fix)
-- P1: a black slit and stepped coronas remain where the cornice meets the corner pedestal (v001 corner finding, survived one targeted fix)
-- P1: the rooftop catwalk is a near-black ring at deck level; the source has light galvanized grating raised on posts with a stair
-- P1: the entrance_marquee camera clips the marquee and door
-- P2: see evidence/v002/independent-review.md
+- P1: the south-east corner bays are solid full-height limestone piers with the quoins set back in a notch; the sources show a projecting brick corner with quoins on the outer edge and separate stone surrounds round each window (corner layout finding carried from v001 and v002)
+- P1: small stone cubes and slab stubs float or collide in that corner notch at every storey
+- P1: each cornice corner is an oversized plain stone box that stops the cornice instead of letting it wrap, and covers the adjacent top-storey window heads (cornice-corner finding carried from v001 and v002)
+- P2: see evidence/v003/independent-review.md
