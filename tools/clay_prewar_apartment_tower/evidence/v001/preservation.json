@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-prewar-apartment-tower-clay-v001",
+  "glb": "clay-prewar-apartment-tower-clay-v001.glb",
+  "glb_bytes": 3940656,
+  "glb_sha256": "162bf6430e8164dd2f10fa06273b522851d8d0711bb46bd668b46918d5aeec70",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "cornice_balustrade.png": 92,
+    "entrance_marquee.png": 92,
+    "facade_close.png": 92,
+    "fire_balconies.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "limestone_base.png": 92,
+    "rear.png": 92,
+    "rear_court.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "tank_house.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-prewar-apartment-tower-clay-v001-renders-and-glb.zip",
+  "zip_bytes": 34461905
+}

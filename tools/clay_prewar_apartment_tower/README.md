@@ -67,3 +67,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001
+
+- P1: the rooftop tank house is about 1.2 storeys where the source shows about 3; the chimneys barely clear the balustrade
+- P1: the copper pyramid has radial seams and no hips and reads salmon; the source has four flat faces with parallel seams in darker bronze-brown
+- P1: quoins stop short of the corner; black gaps where the top-storey band, cornice and corner pedestal meet
+- P1: balcony railings hover above their decks with no bottom rail
+- P1: the south-face balcony stack sits three bays west of the entrance and the stone bay is a narrow flush strip; the sources put the balconies over the marquee with a wide projecting limestone-framed bay and a heavy stone band beside it
+- P2: see evidence/v001/independent-review.md
