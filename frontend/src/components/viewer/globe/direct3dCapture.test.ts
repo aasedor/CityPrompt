@@ -591,6 +591,13 @@ describe('Direct 3D capture helpers', () => {
     expect(() => validateDirect3DMaskCoverage(0, 0, undefined, 1)).toThrow();
   });
 
+  it.each([289, 1])('accepts a visible proposal occupying only %i pixels', (pixels) => {
+    // 289 / 512² reproduces the reported 0.11% street-view capture.
+    // The same default is used by aerial capture; size is not an integrity check.
+    expect(() => validateDirect3DMaskCoverage(pixels / (512 * 512), pixels)).not.toThrow();
+    expect(() => validateDirect3DMaskCoverage(pixels / (512 * 512), pixels, 0, 1)).not.toThrow();
+  });
+
   it('exports a unique, stable semantic color manifest', () => {
     expect(DIRECT_3D_CLASS_ID_MANIFEST).toEqual({
       '#F4E04D': 'ground',

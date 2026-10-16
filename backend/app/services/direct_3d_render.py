@@ -62,7 +62,6 @@ DIRECT_3D_MIN_TOKEN_COST = 13
 _MAX_PROVIDER_PIXELS = DIRECT_3D_MAX_PROVIDER_PIXELS
 _MAX_PROVIDER_EDGE = DIRECT_3D_MAX_SOURCE_EDGE
 _EDGE_MULTIPLE = 16
-_MIN_PROPOSAL_COVERAGE = 0.0025
 _MAX_PROPOSAL_COVERAGE = 0.85
 _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_RECALL = 0.85
 _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_IOU = 0.84
@@ -619,11 +618,13 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
     proposal_values = np.asarray(proposal_mask, dtype=np.float32) / 255.0
     proposal_coverage = float(proposal_values.mean())
     maximum_proposal_coverage = 1.0 if req.presentation_mode == "scene" else _MAX_PROPOSAL_COVERAGE
-    if not (_MIN_PROPOSAL_COVERAGE <= proposal_coverage <= maximum_proposal_coverage):
+    # Camera framing is the student's choice. Even a single visible detail is
+    # valid; percentage floors reject sparse street scenes and distant views.
+    # Keep empty captures invalid and check mask/ID agreement below.
+    if not (0 < proposal_coverage <= maximum_proposal_coverage):
         raise Direct3DValidationError(
-            "Proposal coverage must be between "
-            f"{_MIN_PROPOSAL_COVERAGE:.2%} and {maximum_proposal_coverage:.0%}; "
-            f"received {proposal_coverage:.2%}"
+            "Proposal coverage must include visible proposal pixels and be at most "
+            f"{maximum_proposal_coverage:.0%}; received {proposal_coverage:.2%}"
         )
 
     if req.capture:
@@ -655,8 +656,8 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
             rgb = np.asarray(_hex_to_rgb(color), dtype=np.uint8)
             classified |= np.all(object_pixels == rgb, axis=2)
         object_id_coverage = float(classified.mean())
-        if object_id_coverage < _MIN_PROPOSAL_COVERAGE:
-            raise Direct3DValidationError("Object-ID image does not contain enough classified proposal pixels")
+        if not np.any(classified):
+            raise Direct3DValidationError("Object-ID image does not contain any classified proposal pixels")
         proposal_active = proposal_values >= 0.5
         intersection_count = int(np.count_nonzero(classified & proposal_active))
         proposal_count = int(np.count_nonzero(proposal_active))
@@ -736,8 +737,8 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
             )
 
         instance_id_coverage = float(classified_instances.mean())
-        if instance_id_coverage < _MIN_PROPOSAL_COVERAGE:
-            raise Direct3DValidationError("Instance-ID image does not contain enough classified proposal pixels")
+        if not np.any(classified_instances):
+            raise Direct3DValidationError("Instance-ID image does not contain any classified proposal pixels")
         proposal_active = proposal_values >= 0.5
         intersection_count = int(np.count_nonzero(classified_instances & proposal_active))
         proposal_count = int(np.count_nonzero(proposal_active))

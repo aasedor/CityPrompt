@@ -254,7 +254,8 @@ const DEFAULT_MAX_LONG_EDGE = 2048;
 // Keep the free client-side gate aligned with the authoritative API gate so a
 // capture that passes local QA cannot be rejected only after a paid action is
 // requested.
-const DEFAULT_MIN_MASK_COVERAGE = 0.0025;
+// Small details and distant proposals are valid at any non-zero pixel coverage.
+const DEFAULT_MIN_MASK_COVERAGE = 0;
 const DEFAULT_MAX_MASK_COVERAGE = 0.85;
 const MASK_SOLID_ALPHA = 128;
 
@@ -1211,7 +1212,7 @@ export function validateDirect3DMaskCoverage(
   minCoverage = DEFAULT_MIN_MASK_COVERAGE,
   maxCoverage = DEFAULT_MAX_MASK_COVERAGE,
 ): void {
-  if (proposalPixelCount < 16 || coverage < minCoverage) {
+  if (proposalPixelCount < 1 || coverage <= 0 || coverage < minCoverage) {
     throw new Direct3DCaptureError(
       'no_proposal_content',
       'No visible compiled 3D proposal was found in the current camera view.',

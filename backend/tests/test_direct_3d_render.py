@@ -1956,6 +1956,25 @@ def test_scene_prepare_accepts_proposal_filling_frame_but_rejects_empty_capture(
         )
 
 
+@pytest.mark.parametrize("view_mode", ["aerial", "street"])
+@pytest.mark.parametrize("side", [17, 1])
+def test_scene_prepare_accepts_small_visible_proposals(view_mode, side):
+    beauty, _ = _capture_images()
+    mask = Image.new("L", beauty.size, 0)
+    mask.paste(255, (250, 250, 250 + side, 250 + side))
+    request = _request(beauty=beauty, mask=mask, presentation_mode="scene").model_copy(
+        update={"view_mode": view_mode}
+    )
+    capture = prepare_direct_3d_capture(request)
+    expected = side ** 2 / (512 * 512)
+    assert capture.proposal_coverage == pytest.approx(expected)
+    assert capture.object_id_coverage == pytest.approx(expected)
+    assert capture.instance_id_coverage == pytest.approx(expected)
+    assert capture.object_id_proposal_recall == 1
+    assert capture.instance_id_proposal_iou == 1
+    assert np.array_equal(np.asarray(capture.source_proposal_mask), np.asarray(mask))
+
+
 def test_authoritative_prompt_includes_each_object_id_mapping_exactly_once():
     prompt = _authoritative_prompt(
         "Warm realistic materials.",

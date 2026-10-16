@@ -322,3 +322,27 @@ async def test_street_finish_cannot_relocate_hidden_facilities_into_source_conte
     assert result.diagnostics["view_mode"] == "street"
     assert result.outcome == "review_required"
     assert result.provider_image_base64 is not None
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("view_mode", ["aerial", "street"])
+async def test_sparse_scene_reaches_provider_and_returns_image(monkeypatch, view_mode):
+    """The reported 0.11% scene works through the shipped service, without paid calls."""
+    beauty, _ = _registration_context_scene()
+    mask = Image.new("L", beauty.size, 0)
+    mask.paste(255, (250, 250, 267, 267))
+    request = _request(beauty=beauty, mask=mask, presentation_mode="scene").model_copy(
+        update={"view_mode": view_mode}
+    )
+    calls = []
+
+    async def fake(self, req, prepared, *, server_inventory=None):
+        calls.append(req.view_mode)
+        assert prepared.proposal_coverage == pytest.approx(289 / (512 * 512))
+        return prepared.normalized_beauty.point(lambda v: min(255, v + 17))
+
+    monkeypatch.setattr(Direct3DRenderService, "_call_openai", fake)
+    result = await Direct3DRenderService("test-key").generate(request)
+    assert calls == [view_mode]
+    assert _decoded(result.image_base64).size == prepare_direct_3d_capture(request).normalized_beauty.size
+    Direct3DRenderDiagnostics.model_validate(result.diagnostics)
