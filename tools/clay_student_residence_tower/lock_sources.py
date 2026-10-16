@@ -9,10 +9,10 @@ from pathlib import Path
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
-ARCHETYPE = 'vancouverism_tower_podium'
-DIRECTORY = 'frontend/public/archetypes/buildings/vancouverism-tower-podium'
+ARCHETYPE = 'student_residence_tower'
+DIRECTORY = 'frontend/public/archetypes/buildings/student-residence-tower'
 VARIANT = 'variant_0'
-VARIANT_ID = 'vancouverism_classic'
+VARIANT_ID = 'contemporary_curtainwall_biophilic'
 ROLES = {'front': 'variant_0.png', 'oblique': 'variant_0_angle_60.jpg', 'top': 'variant_0_angle_90.jpg'}
 MANIFEST = Path(__file__).resolve().parent / 'sources.json'
 

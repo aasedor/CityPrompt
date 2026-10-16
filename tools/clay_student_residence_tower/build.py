@@ -20,7 +20,7 @@ for rel in ('final_five_buildings', 'catalogue_affordable_five', 'catalogue_serv
 import clay_core as C          # noqa: E402
 import geometry as G           # noqa: E402  (final_five_buildings/geometry.py)
 import assemblies as A         # noqa: E402  (catalogue_affordable_five/assemblies.py)
-import family_vancouver as family  # noqa: E402
+import family_student as family  # noqa: E402
 from lock_sources import verify     # noqa: E402
 
 SCRIPTS = [Path(C.__file__), Path(G.__file__), HERE.parent / 'final_five_buildings/contract.py', Path(A.__file__),

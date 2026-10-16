@@ -72,3 +72,12 @@ program, picker enrolment, catalogue splice and human activation.
 ## Open blockers after v001 (v002 follows)
 
 P0 black void seam at the south-east brick corner; P1 penthouse cladding cool grey instead of warm dark bronze-taupe; P1 bulkhead two boxes with a gap, not one box with an L notch; P1 floating diagonal stair slabs behind the slot glazing; P1 street tree on the lobby axis.
+
+## Stopped after v001: archetype already modelled
+
+On 2026-10-16 a duplicate check found that `calgary_beltline_mid_rise` already has a reviewed,
+runtime-enabled clay model in `seed/model-library/rlasm-architectural-clay/library.json`
+(`calgary-beltline-mid-rise-clay-v003`, variant `beltline_brick_modern` from `variant_1`). This family
+locks a different variant (`variant_0`, `beltline_glass_panel`), but both are five-storey brick corner
+mid-rises with street retail, so the work stopped at v001 to avoid duplicating a building type the
+catalogue already has. The v001 evidence and the unrendered v002 fixes stay here for reference.

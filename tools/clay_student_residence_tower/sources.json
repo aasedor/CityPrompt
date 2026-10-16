@@ -1,9 +1,9 @@
 {
   "schema": "cityprompt.rlasm.source-lock@1",
   "method": "RLASM v6.1",
-  "archetype_id": "vancouverism_tower_podium",
+  "archetype_id": "student_residence_tower",
   "variant_id": "variant_0",
-  "catalogue_variant_id": "vancouverism_classic",
+  "catalogue_variant_id": "contemporary_curtainwall_biophilic",
   "source_origin": "catalogue_reference_nomination",
   "sibling_variant_mixing_allowed": false,
   "excluded_sibling_files": [
@@ -20,42 +20,42 @@
   "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
   "records": [
     {
-      "archetype_id": "vancouverism_tower_podium",
+      "archetype_id": "student_residence_tower",
       "variant_id": "variant_0",
-      "catalogue_variant_id": "vancouverism_classic",
+      "catalogue_variant_id": "contemporary_curtainwall_biophilic",
       "role": "front",
-      "path": "frontend/public/archetypes/buildings/vancouverism-tower-podium/variant_0.png",
+      "path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0.png",
       "file": "variant_0.png",
-      "bytes": 1268249,
-      "sha256": "5a3076ec759214b506e653f4e82b7397b7c61c98ba54440629e1fbff8e502a6a",
+      "bytes": 1206622,
+      "sha256": "f71657f046d330b5756618863a8b70f768c4ed2e279f22096e5950fce259dfdc",
       "dimensions_px": [
         1024,
         768
       ]
     },
     {
-      "archetype_id": "vancouverism_tower_podium",
+      "archetype_id": "student_residence_tower",
       "variant_id": "variant_0",
-      "catalogue_variant_id": "vancouverism_classic",
+      "catalogue_variant_id": "contemporary_curtainwall_biophilic",
       "role": "oblique",
-      "path": "frontend/public/archetypes/buildings/vancouverism-tower-podium/variant_0_angle_60.jpg",
+      "path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0_angle_60.jpg",
       "file": "variant_0_angle_60.jpg",
-      "bytes": 981065,
-      "sha256": "f213a2624823eb9de7c0f5c3e70d261cc359bba3004c7fef84e7e5e21134c7b6",
+      "bytes": 930652,
+      "sha256": "d2ecf16c6ffe4b806890db42e133d903535b6747b443362f99a2a185012dc244",
       "dimensions_px": [
         1195,
         896
       ]
     },
     {
-      "archetype_id": "vancouverism_tower_podium",
+      "archetype_id": "student_residence_tower",
       "variant_id": "variant_0",
-      "catalogue_variant_id": "vancouverism_classic",
+      "catalogue_variant_id": "contemporary_curtainwall_biophilic",
       "role": "top",
-      "path": "frontend/public/archetypes/buildings/vancouverism-tower-podium/variant_0_angle_90.jpg",
+      "path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0_angle_90.jpg",
       "file": "variant_0_angle_90.jpg",
-      "bytes": 932733,
-      "sha256": "a06d2b25d445cf20678ec063d72f43099b64d78e22cb1203dcfba2816549e2ae",
+      "bytes": 876613,
+      "sha256": "0ed3c8e1b63539593ab28a714984d718c13d9f885d94a5efcb62a5c947a8be1e",
       "dimensions_px": [
         1195,
         896
