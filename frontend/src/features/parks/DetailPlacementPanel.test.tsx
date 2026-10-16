@@ -43,7 +43,7 @@ describe('detail catalogue workflow', () => {
     expect(screen.queryAllByRole('article')).toHaveLength(0);
     for (const category of DETAIL_CATEGORIES) {
       fireEvent.click(screen.getByRole('button', { name: `Browse ${category}` }));
-      const safetyFamilies: Record<string,number> = {'Calgary safety additions':8,'TC curbs':1,'Crosswalks':8,'RRFBs':4,'Curb bulbs':4,'Overhead pedestrian flashers':4};
+      const safetyFamilies: Record<string,number> = {'Traffic & safety':39,'Curb bulbs':4};
       expect(screen.getAllByRole('article')).toHaveLength(safetyFamilies[category] ?? searchDetails('', category).length);
       fireEvent.click(screen.getByRole('button', { name: 'All categories' }));
     }

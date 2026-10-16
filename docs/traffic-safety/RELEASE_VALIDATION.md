@@ -2,6 +2,33 @@
 
 Status: partial release live and representative hosted checks passed. Twelve curb bulbs remain disabled.
 
+## Surface-placement correction - 2026-10-15
+
+The user's subsequent live trial supersedes the strict road-only placement gate
+in the original evidence below. All 54 enabled safety variants now prefer an
+exact compatible authored-road datum, then fall back to the same ground/Google
+terrain placement used by existing bollards and furniture. Geometry, metre scale,
+source pivots, datum offsets and saved IDs are unchanged. Rigid assets do not
+conform to uneven surfaces; users must review ground contact. The twelve curb
+bulbs still require validated sidewalk attachment/replacement and remain disabled
+in their own Curb bulbs category.
+
+Enabled safety kits now appear in Traffic & safety alongside legacy items
+(68 total variants). Family grouping and source metadata remain; RRFB search
+returns all eight variants. Source manifests and GLBs are unchanged.
+
+Preview: regression tests first reproduced the rejection/category bugs. All 37
+focused tests across eight files subsequently passed, as did type checking,
+targeted ESLint and the complete hosted frontend build. Actual localhost:5174
+browser: standard unlit RRFBs placed and saved outside the site boundary on Google
+terrain and on the authored road. Reload retained both (seven fixture objects),
+with no console errors. Live promotion/checks are pending at this checkpoint.
+
+Rollback baseline: frontend f4c6a739ec383176dc5f992e06b5af42c3996217,
+Render dep-db8nblei0phs738an9bg; API remains ec0b3d0fa878c0a5708bec44d86585450fee8857.
+The old frontend rejects off-road safety items, so prefer a compatibility-preserving
+revert if needed; retain saved data.
+
 ## Release decision
 
 44 supplied variants and ten Calgary concept additions are enabled. All twelve

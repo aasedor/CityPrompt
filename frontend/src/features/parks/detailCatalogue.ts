@@ -36,7 +36,17 @@ export interface DetailAsset {
 }
 // Exact reviewed models only; new generator output cannot opt itself into release.
 const releasedCalgary = calgarySafety.filter(asset => asset.runtimeApproved);
-const extraModels = [...extras, ...recovered, ...trafficSafety, ...releasedCalgary] as DetailAsset[];
+// Keep source manifests and stable family/variant IDs intact; presentation uses
+// the established traffic category. Curb bulbs retain their attachment workflow.
+const safetyModels = ([...trafficSafety, ...releasedCalgary] as unknown as DetailAsset[]).map(asset => {
+  if (asset.safety!.placement === 'sidewalk-attachment') return asset;
+  const placementText = (text: string) => text
+    .replace('Flat supported surface only.', 'Place on the map like other details. Review ground contact on uneven surfaces.')
+    .replace('Fixed size; flat supported surface only.', 'Fixed size; place on the map like other details. Review ground contact on uneven surfaces.');
+  return {...asset, category: 'Traffic & safety', description: placementText(asset.description),
+    safety: {...asset.safety!, limitation: placementText(asset.safety!.limitation)}};
+});
+const extraModels = [...extras, ...recovered, ...safetyModels] as DetailAsset[];
 /** Existing metric assets only. No user-provided paths or nonuniform scaling. */
 const RUSTIC = "/landscape-pilots/neighborhood-rustic-v5";
 const EQUIPMENT = "/park-kits/shared-park-equipment-v1";
@@ -142,7 +152,7 @@ export function searchDetails(query: string, category = "All") {
     (model) =>
       (category === "All" || category === model.category) &&
       words.every((word) =>
-        `${model.label} ${model.description} ${model.category}`
+        `${model.label} ${model.description} ${model.category} ${model.safety?.group ?? ''} ${model.safety?.familyLabel ?? ''}`
           .toLowerCase()
           .includes(word),
       ),
