@@ -69,8 +69,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004
+## Open blockers after v005
 
-- P1: the north-east loggia's hipped end still runs over a second-storey window on the NE pavilion's west face (v003 finding, survived one targeted fix)
-- P1: court benches are slabs without legs, ends or backs, floating above the paving
-- P2: see evidence/v004/independent-review.md
+- P1: the garden room's court face reads as fixed glazing to grade with no door frame or step; the sources show a white double French door with a transom and a stone step where the court path arrives
+- P2: see evidence/v005/independent-review.md
