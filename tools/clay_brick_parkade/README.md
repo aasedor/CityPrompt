@@ -69,6 +69,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (v002 follows)
+## Open blockers after v002
 
-P1 black squares across the roof; P1 black voids at tower frame crossings; P1 bronze too pale; P1 crown patina panel missing; P1 coping corner open; P1 south-face bay variety missing; aperture audit FAIL on the hidden tower face.
+- P1: the two southern east-face deck bays read pale and open; in the source they are dark mullioned ribbon bands
+- P1: the south face's open-deck zone is split by two extra brick piers into three punched bays where the source has one wide brick-framed opening with recessed concrete columns and pale spandrels; the ribbon-bay spandrels are brick, not precast; the curtain-wall bay runs through deck 1 where the source has a punched window
+- P2: see evidence/v002/independent-review.md
