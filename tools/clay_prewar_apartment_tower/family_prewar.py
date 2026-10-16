@@ -543,7 +543,7 @@ def site():
     C.box('South street', (4.0, Y0 - 11.0, .01), (52.0, 10.0, .02), 'asphalt', 'site', 0)
     C.box('East street', (X1 + 10.6, 1.0, .01), (10.0, Y1 - Y0 + 2.0, .02), 'asphalt', 'site', 0)
     C.box('West lot', (X0 - 3.0, 0.5, .01), (6.0, Y1 - Y0 + 1.0, .02), 'concrete', 'site', 0)
-    for x in (-12.0, 8.0):
+    for x in (-12.0, 2.0):                                           # clear of the marquee
         street_tree(x, Y0 - 3.4, z=.14, height=8.0, spread=2.0)
     street_tree(X1 + 4.0, 8.0, z=.14, height=8.0, spread=2.0)
 
