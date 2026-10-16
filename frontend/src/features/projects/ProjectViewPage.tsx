@@ -580,12 +580,17 @@ export function ProjectViewPage() {
     }
   }, [siteZones, queryClient, id]);
 
+  const renderDetailsRevision = [projectDetails.data?.benches, projectDetails.data?.trees,
+    projectDetails.data?.props, projectDetails.data?.surfaces].some(items => Boolean(items?.length))
+    ? projectDetails.data?.revision : undefined;
+
   const cityPromptWorkflow = useMemo(
     () => deriveCityPromptWorkflow(
       visibleZones,
       savedRenders.length > 0 || savedVideos.length > 0,
+      projectDetails.data,
     ),
-    [savedRenders.length, savedVideos.length, visibleZones],
+    [savedRenders.length, savedVideos.length, visibleZones, projectDetails.data],
   );
   const streetAccessNotice = useMemo(
     () => studentStreetAccessNotice(siteZones, cityPromptWorkflow.activeBoundary),
@@ -1459,6 +1464,7 @@ export function ProjectViewPage() {
                 camera={globeRefs?.camera ?? null}
                 siteZones={globeRenderZones}
                 communitySourceZones={visibleZones}
+                detailsRevision={renderDetailsRevision}
                 buildings={visibleBuildings}
                 terrainHeight={globeRefs?.terrainHeight ?? 1045}
                 projectId={project?.id}
@@ -1489,6 +1495,7 @@ export function ProjectViewPage() {
             onBeforeCapture={prepareForVideoCapture}
             captureAerialFrame={captureVideoAerialFrame}
             captureRouteControls={captureVideoRouteControls}
+            detailsRevision={renderDetailsRevision}
             onVideoSaved={rememberSavedVideo}
             onClose={() => setShowVideoRender(false)}
           />
@@ -1520,6 +1527,7 @@ export function ProjectViewPage() {
           siteZones={visibleZones}
           projectId={project?.id}
           globeCapture={handleGlobeStreetCapture}
+          detailsRevision={renderDetailsRevision}
           buildings={visibleBuildings}
           onRenderSaved={rememberSavedRender}
           onPrepareCommunity3D={automatic3D.retry}

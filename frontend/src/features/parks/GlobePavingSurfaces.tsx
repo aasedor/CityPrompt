@@ -4,7 +4,7 @@ import { EastNorthUpFrame, TilesRendererContext } from "3d-tiles-renderer/r3f";
 import { DoubleSide, Raycaster } from "three";
 import { useSharedSiteGround } from "@/components/viewer/globe/SharedSiteGroundProvider";
 import { raycastTerrainHeightAtLatLng } from "@/components/viewer/globe/GlobeZoneLayer";
-import { DIRECT_3D_CAPTURE_CONTEXT_USER_DATA } from "@/components/viewer/globe/direct3dCapture";
+import { PROJECT_DETAILS_CAPTURE_USER_DATA } from "@/components/viewer/globe/direct3dCapture";
 import { pavingGroundHeights } from "./pavingGround";
 import { createStreetSurfaceAlbedoTexture } from "@/components/viewer/globe/streetSurfaceMaterials";
 import type { SiteZone } from "@/types";
@@ -133,7 +133,7 @@ export function GlobePavingSurfaces({
     <group
       name="project-paving"
       // Metadata-authored surfaces stay visible, but are not zone instances.
-      userData={DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
+      userData={PROJECT_DETAILS_CAPTURE_USER_DATA}
     >
       {layouts.map((p) => (
         <Surface key={p.surface.id} {...p} />

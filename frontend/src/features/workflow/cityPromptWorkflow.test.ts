@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { SiteZone } from '@/types';
 import { deriveCityPromptWorkflow } from './cityPromptWorkflow';
+import type { ProjectDetails } from '@/features/parks/projectBenches';
 
 const HASH = 'a'.repeat(64);
 
@@ -52,6 +53,24 @@ function compiledBuilding(): SiteZone {
 }
 
 describe('deriveCityPromptWorkflow', () => {
+  const details: ProjectDetails = {version:1, revision:1, can_edit:true, benches:[],
+    props:[{id:'rrfb', variant:'safety-rrfb-standard-unlit', lng:-114, lat:51, angle:0}]};
+  it('renders saved details without a building, road, park or boundary', () => {
+    const state = deriveCityPromptWorkflow([], false, details);
+    expect(state.canRender).toBe(true);
+    expect(state.currentStep).toBe(4);
+    expect(state.canGenerate3D).toBe(false);
+    expect(state.renderReason).toBe('Your scene is ready for rendering.');
+  });
+  it('does not use details to bypass stale existing zones or landscape', () => {
+    expect(deriveCityPromptWorkflow([zone('draft','building')], false, details).canRender).toBe(false);
+    expect(deriveCityPromptWorkflow([activeBoundary()], false, details).canRender).toBe(false);
+    expect(deriveCityPromptWorkflow([activeBoundary(true)], false, details).canRender).toBe(true);
+  });
+  it('keeps empty/loading details scenes disabled', () => {
+    expect(deriveCityPromptWorkflow([], false).canRender).toBe(false);
+    expect(deriveCityPromptWorkflow([], false, {...details, props:[]}).canRender).toBe(false);
+  });
   it('renders saved catalogue objects directly and asks for automatic updates while stale', () => {
     const home = compiledBuilding();
     home.properties!.pick_place_asset = 'validation_minimalist_infill_brick_monolith';

@@ -1741,7 +1741,7 @@ def _project_preflight_db(monkeypatch):
 
     monkeypatch.setattr(direct_api, "check_project_permission", AsyncMock())
     monkeypatch.setattr(direct_api, "lock_residual_landscape_project", AsyncMock())
-    monkeypatch.setattr(direct_api, "_validate_direct_3d_project_zones", lambda *_args: None)
+    monkeypatch.setattr(direct_api, "_validate_direct_3d_project_zones", lambda *_args, **_kwargs: None)
     empty_result = MagicMock()
     empty_result.scalars.return_value.all.return_value = []
     db = AsyncMock()

@@ -347,6 +347,7 @@ export function useDirect3DRender() {
       addVehicles?: boolean;
       projectId: string;
       community3DClaims: Community3DCaptureClaim[];
+      detailsRevision?: number;
       residualLandscapeClaim?: ResidualLandscapeClaim | null;
       /** 'street' marks an eye-level capture: scene presentation is forced and
        *  the server returns review_required in this first version. */
@@ -364,7 +365,7 @@ export function useDirect3DRender() {
     if (!options.projectId) {
       throw new Error('Direct 3D requires a saved project before rendering.');
     }
-    if (!options.community3DClaims.length) {
+    if (!options.community3DClaims.length && options.detailsRevision === undefined) {
       throw new Error('Direct 3D requires current per-zone scene fingerprints.');
     }
     const fidelityPolicy = options.fidelityPolicy
@@ -441,6 +442,7 @@ export function useDirect3DRender() {
       presentation_mode: presentationMode,
       project_id: options.projectId,
       community_3d_claims: options.community3DClaims,
+      details_revision: options.detailsRevision,
         park_access_snapshot: capture.parkAccessSnapshot,
         shared_ground_snapshot: capture.sharedGroundSnapshot,
       residual_landscape_claim: options.residualLandscapeClaim ?? undefined,

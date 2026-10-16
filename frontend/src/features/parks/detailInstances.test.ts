@@ -15,6 +15,7 @@ import {
   getDirect3DInstanceDescriptor,
   isExcludedFromDirect3DCapture,
   requireDirect3DInstanceDescriptor,
+  PROJECT_DETAILS_CAPTURE_USER_DATA,
 } from "@/components/viewer/globe/direct3dCapture";
 import {
   buildDetailInstances,
@@ -24,6 +25,17 @@ import {
 } from "./detailInstances";
 
 describe("batched project details", () => {
+  it("binds authored detail batches to their saved project capture identity", () => {
+    const source = new Mesh(new BoxGeometry(), new MeshStandardMaterial());
+    const details = buildDetailInstances(source, [new Matrix4()]);
+    delete details.userData.siteforgeDirect3DContextOnly;
+    const parent = new Group();
+    parent.userData = PROJECT_DETAILS_CAPTURE_USER_DATA;
+    parent.add(details);
+    expect(getDirect3DProposalRole(details.children[0])).toBe('landscape');
+    expect(getDirect3DInstanceDescriptor(details.children[0])).toEqual({ instance_id: 'project-details', semantic_class: 'landscape' });
+    disposeDetailInstances(details); source.geometry.dispose(); source.material.dispose();
+  });
   it("picks the exact placed instance and ignores cursor previews", () => {
     const source = new Mesh(new BoxGeometry(), new MeshStandardMaterial());
     const group = buildDetailInstances(source, [new Matrix4(), new Matrix4().makeTranslation(3, 0, 0)]);

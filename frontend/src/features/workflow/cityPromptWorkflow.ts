@@ -1,5 +1,6 @@
 import { CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
 import type { SiteZone } from '@/types';
+import type { ProjectDetails } from '@/features/parks/projectBenches';
 import {
   hasCommunity3DSourceFingerprint,
   hasExecutablePublicRealmRecipe,
@@ -49,6 +50,7 @@ function hasCompiledResidualLandscape(boundary: SiteZone | null): boolean {
 export function deriveCityPromptWorkflow(
   zones: SiteZone[],
   hasOutput = false,
+  details?: ProjectDetails,
 ): CityPromptWorkflowState {
   const activeBoundary = getActiveSiteBoundary(zones);
   const physicalZones = zones.filter((zone) => (
@@ -60,23 +62,25 @@ export function deriveCityPromptWorkflow(
     && hasExecutablePublicRealmRecipe(zone)
   )).length;
   const residualLandscapeReady = hasCompiledResidualLandscape(activeBoundary);
-  const allPhysicalZonesCompiled = physicalZones.length > 0
-    && compiledZoneCount === physicalZones.length;
-  const sceneReady = allPhysicalZonesCompiled
+  const hasDetails = [details?.benches, details?.trees, details?.props, details?.surfaces]
+    .some(items => Boolean(items?.length));
+  const hasSceneContent = physicalZones.length > 0 || hasDetails;
+  const allPhysicalZonesCompiled = compiledZoneCount === physicalZones.length;
+  const sceneReady = hasSceneContent && allPhysicalZonesCompiled
     && (!activeBoundary || residualLandscapeReady);
 
-  const currentStep: CityPromptWorkflowStep = physicalZones.length === 0
+  const currentStep: CityPromptWorkflowStep = !hasSceneContent
     ? activeBoundary ? 2 : 1
     : !sceneReady
       ? 3
       : 4;
 
-  const generationReason = physicalZones.length === 0
+  const generationReason = !hasSceneContent
     ? 'Draw a building, park, or street first. A site boundary is optional.'
     : sceneReady ? '3D up to date. Your scene is ready to render.' : CATALOGUE_UPDATE_GUIDANCE;
 
-  const renderReason = physicalZones.length === 0
-    ? 'Add a building, park, or street first. A site boundary is optional.'
+  const renderReason = !hasSceneContent
+    ? 'Add a building, park, street, or detail first. A site boundary is optional.'
     : !allPhysicalZonesCompiled ? CATALOGUE_UPDATE_GUIDANCE
     : activeBoundary && !residualLandscapeReady ? 'The residual landscaping updates automatically. Wait for 3D saved, or use Retry 3D update if it fails.'
     : 'Your scene is ready for rendering.';

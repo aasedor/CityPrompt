@@ -1498,6 +1498,7 @@ export const rendersApi = {
       proposal_coverage: number;
     };
     project_id: string;
+    details_revision?: number;
     community_3d_claims: Array<{
       zone_id: string;
       source_hash: string;

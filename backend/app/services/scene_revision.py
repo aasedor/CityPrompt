@@ -18,6 +18,7 @@ def _json_value(value: Any) -> dict[str, Any]:
 def compiled_scene_revision_sha256(
     community_3d_claims: Iterable[Any],
     residual_landscape_claim: Any | None,
+    details_revision: int | None = None,
 ) -> str:
     """Hash exact zone/model claims and the optional residual parcel recipe.
 
@@ -29,10 +30,12 @@ def compiled_scene_revision_sha256(
         (_json_value(claim) for claim in community_3d_claims),
         key=lambda claim: str(claim.get("zone_id", "")),
     )
-    if not claims:
+    if not claims and details_revision is None:
         raise ValueError("A compiled scene revision requires zone claims")
     identity = {
         "community_3d": claims,
         "residual_landscape": (_json_value(residual_landscape_claim) if residual_landscape_claim is not None else None),
     }
+    if details_revision is not None:
+        identity["details_revision"] = details_revision
     return hashlib.sha256(json.dumps(identity, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()

@@ -68,7 +68,8 @@ async def test_video_scene_revision_requires_compiled_scene_claims():
 async def test_video_scene_revision_is_canonical_and_skips_static_instance_binding(monkeypatch):
     calls: list[bool] = []
 
-    def validate(_request, _zones, _buildings, *, bind_capture_instances=True):
+    def validate(_request, _zones, _buildings, *, bind_capture_instances=True, project_details=None):
+        assert project_details is None
         calls.append(bind_capture_instances)
         return []
 

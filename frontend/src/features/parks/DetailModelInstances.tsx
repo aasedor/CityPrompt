@@ -36,6 +36,7 @@ export function DetailModelInstances({
       placements.map((p) => detailPlacementMatrix(p, inverse, model.offset, model.datumLift)),
       Boolean(model.safety) && animations.length === 0,
     );
+    delete result.userData.siteforgeDirect3DContextOnly;
     result.userData = { ...result.userData, semanticRole: asset, fixedMetricObject: true,
       projectDetailIds: placements.map(p => p.id) };
     return result;

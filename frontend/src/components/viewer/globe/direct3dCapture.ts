@@ -252,6 +252,11 @@ const DEFAULT_MIN_MASK_COVERAGE = 0.0025;
 const DEFAULT_MAX_MASK_COVERAGE = 0.85;
 const MASK_SOLID_ALPHA = 128;
 
+export const PROJECT_DETAILS_CAPTURE_USER_DATA = {
+  [DIRECT_3D_PROPOSAL_ROLE_KEY]: 'landscape',
+  [DIRECT_3D_INSTANCE_KEY]: {instance_id: 'project-details', semantic_class: 'landscape'},
+};
+
 export function direct3DProposalUserData(role: Direct3DProposalRole): Record<string, unknown> {
   return { [DIRECT_3D_PROPOSAL_ROLE_KEY]: role };
 }

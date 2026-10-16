@@ -145,6 +145,7 @@ interface GlobeAIRenderPanelProps {
   siteZones: SiteZone[];
   /** Persisted source zones for Community 3D compilation and Direct claims. */
   communitySourceZones?: SiteZone[];
+  detailsRevision?: number;
   /** Exact Building snapshot mounted by the globe alongside siteZones. */
   buildings: Building[];
   terrainHeight: number;
@@ -232,6 +233,7 @@ export function GlobeAIRenderPanel({
   camera,
   siteZones,
   communitySourceZones,
+  detailsRevision,
   buildings,
   terrainHeight,
   projectId,
@@ -336,7 +338,8 @@ export function GlobeAIRenderPanel({
     [buildings],
   );
   const community3DAction = resolveCommunity3DAction(communityZones, availableBuildingIds);
-  const hasCompiledCommunity = communityZones.length > 0 && community3DAction === 'rebuild';
+  const hasCompiledCommunity = communityZones.length > 0
+    ? community3DAction === 'rebuild' : detailsRevision !== undefined;
   const community3DCaptureClaims = useMemo(
     () => getCommunity3DCaptureClaims(authoritativeZones, buildings),
     [authoritativeZones, buildings],
@@ -347,8 +350,8 @@ export function GlobeAIRenderPanel({
     && communityZones.every(hasCommunity3DSourceFingerprint),
   );
   const hasCurrentResidualLandscape = useMemo(
-    () => hasCurrentResidualLandscapeRecipe(authoritativeZones),
-    [authoritativeZones],
+    () => hasCurrentResidualLandscapeRecipe(authoritativeZones, detailsRevision !== undefined),
+    [authoritativeZones, detailsRevision],
   );
   const residualLandscapeClaim = useMemo(
     () => getCurrentResidualLandscapeClaim(authoritativeZones),
@@ -891,6 +894,7 @@ export function GlobeAIRenderPanel({
         customPrompt: customPrompt.trim() || undefined,
         projectId: projectId!,
         community3DClaims: community3DCaptureClaims!,
+        detailsRevision,
         residualLandscapeClaim,
         archetypeReferences,
       }), async (direct, index) => {
@@ -936,6 +940,7 @@ export function GlobeAIRenderPanel({
     addVehicles,
     imageGenerationUnavailable,
     autoSaveGlobeRenders,
+    detailsRevision,
     captureDirect3D,
     customPrompt,
     community3DCaptureClaims,

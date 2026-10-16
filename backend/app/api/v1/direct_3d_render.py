@@ -36,7 +36,7 @@ from app.core.config import get_settings
 from app.core.image_models import image_provider_key, NANO_BANANA_MODEL
 from app.core.database import get_db
 from app.core.security import check_project_permission, is_admin_or_above, require_auth
-from app.models.models import Building, RenderAuditLog, SiteZone, User
+from app.models.models import Building, Project, RenderAuditLog, SiteZone, User
 from app.models.render_attempt import RenderAttempt
 from app.services.render_attempt_storage import write_evidence
 from app.schemas.direct_3d_render import Direct3DRenderRequest, Direct3DRenderResponse, Direct3DJunctionTopology
@@ -138,12 +138,22 @@ def _has_building_plot_landscape(zone: SiteZone, all_zones: list[SiteZone]) -> b
         return False
 
 
+async def _current_render_details(req, db):
+    if getattr(req, "details_revision", None) is None:
+        return None
+    project = (await db.execute(
+        select(Project).where(Project.id == req.project_id).execution_options(populate_existing=True)
+    )).scalar_one_or_none()
+    return (project.metadata_ or {}).get("scene_details") if project else None
+
+
 def _validate_direct_3d_project_zones(
     req: Direct3DRenderRequest,
     zones: list[SiteZone],
     available_buildings: dict[str, Building],
     *,
     bind_capture_instances: bool = True,
+    project_details: dict | None = None,
 ) -> list[dict[str, object]]:
     """Validate a paid capture against the locked, server-current parcel state.
 
@@ -157,15 +167,23 @@ def _validate_direct_3d_project_zones(
         zone for zone in zones if zone.zone_type == "site_boundary" and getattr(zone, "is_active_boundary", True)
     ]
     all_physical_zones = physical_community_3d_zones(zones)
-    if not all_physical_zones:
-        raise _direct_state_conflict("This project has no compiled building, park, or street layers to render.")
+    details_revision = getattr(req, "details_revision", None)
+    if details_revision is not None:
+        if (not project_details or project_details.get("revision") != details_revision
+            or not any(project_details.get(key) for key in ("benches", "trees", "props", "surfaces"))):
+            raise _direct_state_conflict("Saved details changed or are empty. Reload the scene before rendering.")
+    if not all_physical_zones and details_revision is None:
+        raise _direct_state_conflict("This project has no compiled layers or saved details to render.")
+    if not all_physical_zones and bind_capture_instances:
+        if not any(item.instance_id == "project-details" for item in (req.instance_id_manifest or {}).values()):
+            raise _direct_state_conflict("The capture contains no saved details. Frame your details and try again.")
 
     claims_by_zone = {str(claim.zone_id): claim for claim in req.community_3d_claims}
     try:
         physical_zones = resolve_community_3d_scope(
             all_physical_zones,
             claims_by_zone,
-        )
+        ) if all_physical_zones or claims_by_zone else []
     except Community3DScopeError:
         raise _direct_state_conflict(
             "The captured 3D layer set no longer matches this project. " "Run Generate to 3D again before rendering."
@@ -1274,6 +1292,15 @@ def _bind_instance_manifest_to_server_zones(
                     "zones. Refresh the scene before rendering."
                 )
 
+        if descriptor.instance_id == "project-details":
+            if (getattr(req, "details_revision", None) is None or zone_id is not None
+                or source_zone_ids or descriptor.building_id or descriptor.junction_topology
+                or descriptor.semantic_class != "landscape"):
+                raise _direct_state_conflict("Saved-detail capture identity is invalid. Reload the scene.")
+            server_inventory.append({"instance_id": "project-details", "semantic_class": "landscape",
+                "zone_id": None, "building_id": None, "source_zone_ids": [],
+                "design_identity": "Saved user-placed details; preserve exact shapes, materials and positions."})
+            continue
         if zone_id is None:
             is_topology_street = descriptor.semantic_class == "street" and 2 <= len(source_zone_ids) <= 4
             if descriptor.semantic_class in {"building", "park", "street"} and not is_topology_street:
@@ -1598,14 +1625,17 @@ async def run_direct_3d_render(
     buildings_result = await db.execute(select(Building).where(Building.project_id == req.project_id))
     current_buildings = list(buildings_result.scalars().all())
     current_zones = list(zones_result.scalars().all())
+    current_details = await _current_render_details(req, db)
     server_inventory = _validate_direct_3d_project_zones(
         req,
         current_zones,
         {str(building.id): building for building in current_buildings},
+        project_details=current_details,
     )
     scene_revision_sha256 = compiled_scene_revision_sha256(
         req.community_3d_claims,
         req.residual_landscape_claim,
+        req.details_revision,
     )
     source_snapshot = build_render_source_snapshot(
         req,
@@ -1613,6 +1643,8 @@ async def run_direct_3d_render(
         current_buildings,
         captured_at=datetime.now(timezone.utc).isoformat(),
     )
+    if req.details_revision is not None:
+        source_snapshot["scene_details"] = current_details
 
     if not image_provider_key(settings, req.model):
         raise HTTPException(

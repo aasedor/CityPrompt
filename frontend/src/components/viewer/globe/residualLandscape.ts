@@ -172,7 +172,7 @@ export function getResidualLandscapeRecipe(zone: SiteZone): ResidualLandscapeRec
 /** Direct 3D may spend credits only when an existing site-boundary recipe is
  * current. Boundaryless scenes need no residual parcel claim, regardless of
  * how many independently compiled physical zones they contain. */
-export function hasCurrentResidualLandscapeRecipe(zones: SiteZone[]): boolean {
+export function hasCurrentResidualLandscapeRecipe(zones: SiteZone[], hasSavedDetails = false): boolean {
   const boundaries = zones.filter((zone) => (
     zone.zone_type === 'site_boundary' && zone.is_active_boundary !== false
   ));
@@ -181,7 +181,7 @@ export function hasCurrentResidualLandscapeRecipe(zones: SiteZone[]): boolean {
       zone.zone_type !== 'site_boundary'
       && (zone.properties as Record<string, unknown> | undefined)?._plan_role !== 'framework_height'
     ));
-    return physicalZones.length > 0;
+    return physicalZones.length > 0 || hasSavedDetails;
   }
   return boundaries.length === 1 && (
     (boundaries[0].properties?.community_3d_landscape_mode === 'placed_objects_only'

@@ -172,6 +172,7 @@ function compassLabel(angle: number): string {
 interface StreetViewPanelProps {
   siteZones: SiteZone[];
   projectId?: string;
+  detailsRevision?: number;
   /** When provided, captures the globe scene from street level instead of the
    *  clay render — including the authored 3D building models when present
    *  (result.kind tells which framing the prompt should use). */
@@ -183,7 +184,7 @@ interface StreetViewPanelProps {
   onPrepareCommunity3D?: () => void;
 }
 
-export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings, onRenderSaved, onPrepareCommunity3D }: StreetViewPanelProps) {
+export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCapture, buildings, onRenderSaved, onPrepareCommunity3D }: StreetViewPanelProps) {
   const { streetViewPegman, setStreetViewAngle, setStreetViewPosition, setStreetViewActive } = useViewerStore();
   const { generateStreetView } = useStreetViewRender();
   const { renderDirect3D } = useDirect3DRender();
@@ -215,7 +216,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
     () => globeCapture ? getCommunity3DCaptureClaims(siteZones, buildings ?? []) : null,
     [globeCapture, siteZones, buildings],
   );
-  const needsCommunity3D = Boolean(directStreetMode && globeCapture && !currentSceneClaims?.length);
+  const needsCommunity3D = Boolean(directStreetMode && globeCapture && (!currentSceneClaims || (!currentSceneClaims.length && detailsRevision === undefined)));
   const previewStreetSource = async () => {
     if (!globeCapture || !streetViewPegman?.position || isPreviewing) return;
     const position = JSON.stringify(streetViewPegman.position);
@@ -279,7 +280,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
       toast.error('Your selected image engine is unavailable. Choose an available engine.');
       return;
     }
-    if (directStreetMode && !currentSceneClaims?.length) {
+    if (directStreetMode && (!currentSceneClaims || (!currentSceneClaims.length && detailsRevision === undefined))) {
       toast.error('Wait for the automatic 3D update before rendering this street view.');
       return;
     }
@@ -352,6 +353,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
             style: directStyle,
             projectId,
             community3DClaims: claims,
+            detailsRevision,
             residualLandscapeClaim: getCurrentResidualLandscapeClaim(siteZones),
             viewMode: 'street',
             archetypeReferences,
@@ -512,7 +514,7 @@ export function StreetViewPanel({ siteZones, projectId, globeCapture, buildings,
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, currentSceneClaims, selectedStyle, imageModel, useRealContext, includePeople, includeVehicles, customPrompt, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved, selectedEngineUnavailable]);
+  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, currentSceneClaims, detailsRevision, selectedStyle, imageModel, useRealContext, includePeople, includeVehicles, customPrompt, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved, selectedEngineUnavailable]);
 
   const handleDownload = useCallback(() => {
     if (!result?.imageUrl || result.error) return;

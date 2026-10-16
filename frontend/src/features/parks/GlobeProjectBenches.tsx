@@ -16,7 +16,7 @@ import type { DetailPlacement } from "./detailInstances";
 import { useSharedSiteGround } from "@/components/viewer/globe/SharedSiteGroundProvider";
 import { authoredCameraGround } from "@/components/viewer/globe/authoredCameraGround";
 import { raycastTerrainHeightAtLatLng } from "@/components/viewer/globe/GlobeZoneLayer";
-import { DIRECT_3D_CAPTURE_CONTEXT_USER_DATA } from "@/components/viewer/globe/direct3dCapture";
+import { PROJECT_DETAILS_CAPTURE_USER_DATA } from "@/components/viewer/globe/direct3dCapture";
 import type { ProjectBench, ProjectTree, ProjectProp } from "./projectBenches";
 import { detailAsset } from './detailCatalogue';
 import { detailPlacementSupport } from './safetyPlacement';
@@ -101,7 +101,7 @@ export function GlobeProjectBenches({
   return (
     <group
       name="project-details"
-      userData={DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}
+      userData={PROJECT_DETAILS_CAPTURE_USER_DATA}
     >
       {unsupported.map(id=><group key={id} userData={{detailSupportUnavailable:true,streetGroundStatus:'unavailable',streetGroundZoneId:`detail:${id}`}}/>)}
       {unsupported.length>0&&<Html fullscreen style={{pointerEvents:'none'}}><div role="alert" style={{position:'absolute',bottom:90,left:280,maxWidth:330,padding:12,background:'#fff7db',color:'#713f12',border:'1px solid #d6a643',borderRadius:10,fontSize:13}}>

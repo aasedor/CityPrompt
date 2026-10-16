@@ -258,6 +258,7 @@ interface PreparedVideoRequest {
   camera_motion: MotionId;
   duration_seconds: 8;
   scene_brief: string;
+  details_revision?: number;
   community_3d_claims: Array<{
     zone_id: string;
     source_hash: string;
@@ -271,6 +272,7 @@ interface PreparedVideoRequest {
 }
 
 interface VideoGeneratePanelProps {
+  detailsRevision?: number;
   projectId: string;
   canvas: HTMLCanvasElement | null;
   siteZones: SiteZone[];
@@ -356,6 +358,7 @@ async function captureSceneFrame(
 }
 
 export function VideoGeneratePanel({
+  detailsRevision,
   projectId,
   canvas,
   siteZones,
@@ -410,8 +413,8 @@ export function VideoGeneratePanel({
     [siteZones],
   );
   const currentSceneRevisionSignature = useMemo(
-    () => sceneClaimsSignature(community3DClaims, residualLandscapeClaim),
-    [community3DClaims, residualLandscapeClaim],
+    () => `${sceneClaimsSignature(community3DClaims, residualLandscapeClaim)}:${detailsRevision ?? ""}`,
+    [community3DClaims, residualLandscapeClaim, detailsRevision],
   );
   const routeCaptureSignature = useMemo(
     () => `${projectId}:${sourceCaptureVersion}:${renderQuality}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}`,
@@ -425,7 +428,7 @@ export function VideoGeneratePanel({
     [controlMode, currentSceneRevisionSignature, internalEnhanceQuality, motion, provider, renderQuality, routePoints, sceneContract.signature, seedanceReferenceMode],
   );
   const preparedSignature = prepared
-    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}`
+    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}:${prepared.details_revision ?? ""}`
     : null;
   const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
   const providerUsage = pilot.provider_usage[provider];
@@ -532,7 +535,7 @@ export function VideoGeneratePanel({
   const prepareLocalPreview = useCallback(async () => {
     if (!sourceFrame) throw new Error('Capture the scene before preparing a preview.');
     if (routePoints.length < 2) throw new Error('Draw a route with a start and finish.');
-    if (!community3DClaims || community3DClaims.length === 0) {
+    if (!community3DClaims || (community3DClaims.length === 0 && detailsRevision === undefined)) {
       throw new Error(isCatalogueOnlyScene(siteZones) ? CATALOGUE_UPDATE_GUIDANCE : 'The 3D scene changed. Close Video Render and update the 3D scene before trying again.');
     }
     if (!captureRouteControls) throw new Error('This 3D view cannot prepare a video preview yet.');
@@ -547,7 +550,7 @@ export function VideoGeneratePanel({
       )));
       return { ...captured, keyframesBase64: normalizedKeyframes };
     });
-  }, [sourceFrame, routePoints, community3DClaims, siteZones, captureRouteControls, prepareRoutePreview, motion, renderQuality]);
+  }, [sourceFrame, routePoints, community3DClaims, detailsRevision, siteZones, captureRouteControls, prepareRoutePreview, motion, renderQuality]);
 
   const previewLocally = useCallback(async () => {
     setError(null);
@@ -558,7 +561,7 @@ export function VideoGeneratePanel({
   const requestBody = useCallback(async (): Promise<PreparedVideoRequest> => {
     if (!sourceFrame) throw new Error('Capture the scene before validating.');
     if (routePoints.length < 2) throw new Error('Draw a route with a start and finish.');
-    if (!community3DClaims || community3DClaims.length === 0) {
+    if (!community3DClaims || (community3DClaims.length === 0 && detailsRevision === undefined)) {
       throw new Error(isCatalogueOnlyScene(siteZones) ? CATALOGUE_UPDATE_GUIDANCE : 'The 3D scene changed. Close Video Render and update the 3D scene before trying again.');
     }
     const activeControls = controlMode !== 'single_frame' ? await prepareLocalPreview() : null;
@@ -637,11 +640,12 @@ export function VideoGeneratePanel({
       duration_seconds: 8,
       scene_brief: sceneBrief,
       community_3d_claims: community3DClaims,
+      details_revision: detailsRevision,
       ...(residualLandscapeClaim ? {
         residual_landscape_claim: residualLandscapeClaim,
       } : {}),
     };
-  }, [prepareLocalPreview, community3DClaims, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones]);
+  }, [prepareLocalPreview, community3DClaims, detailsRevision, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);

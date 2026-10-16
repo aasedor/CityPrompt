@@ -169,6 +169,7 @@ class VideoPilotRequest(BaseModel):
         min_length=20,
         max_length=12_000,
     )
+    details_revision: int | None = Field(default=None, ge=0, strict=True)
     community_3d_claims: list[Direct3DCommunityZoneClaim] = Field(
         default_factory=list,
         max_length=2000,
@@ -466,7 +467,7 @@ async def _validate_video_scene_revision(
     capture. The returned digest is persisted with the durable attempt.
     """
 
-    if not req.community_3d_claims:
+    if not req.community_3d_claims and req.details_revision is None:
         raise _video_scene_conflict("Generate the current site in 3D again before Video Render.")
 
     zones_result = await db.execute(select(SiteZone).where(SiteZone.project_id == req.project_id))
@@ -476,7 +477,7 @@ async def _validate_video_scene_revision(
 
     # Import locally to keep the video module's schema/service dependencies
     # independent from the image-render router at import time.
-    from app.api.v1.direct_3d_render import _validate_direct_3d_project_zones
+    from app.api.v1.direct_3d_render import _validate_direct_3d_project_zones, _current_render_details
 
     try:
         _validate_direct_3d_project_zones(
@@ -484,6 +485,7 @@ async def _validate_video_scene_revision(
             zones,
             buildings,
             bind_capture_instances=False,
+            project_details=await _current_render_details(req, db),
         )
     except HTTPException as exc:
         if exc.status_code != status.HTTP_409_CONFLICT:
@@ -495,6 +497,7 @@ async def _validate_video_scene_revision(
     return compiled_scene_revision_sha256(
         req.community_3d_claims,
         req.residual_landscape_claim,
+        req.details_revision,
     )
 
 

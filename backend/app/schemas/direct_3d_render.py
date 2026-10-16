@@ -295,9 +295,10 @@ class Direct3DRenderRequest(BaseModel):
     # Direct 3D is explicitly project-bound: omitting this identifier would
     # bypass the locked source/boundary/model freshness checks before spend.
     project_id: uuid.UUID
+    details_revision: int | None = Field(default=None, ge=0, strict=True)
     community_3d_claims: list[Direct3DCommunityZoneClaim] = Field(
         ...,
-        min_length=1,
+        min_length=0,
         max_length=2000,
     )
     residual_landscape_claim: Direct3DResidualLandscapeClaim | None = None
@@ -403,6 +404,8 @@ class Direct3DRenderRequest(BaseModel):
             ]
             if missing:
                 raise ValueError("control_bundle_version=2 requires " + ", ".join(missing))
+        if not self.community_3d_claims and self.details_revision is None:
+            raise ValueError("Rendering requires current zone claims or a saved details revision")
         zone_ids = [claim.zone_id for claim in self.community_3d_claims]
         if len(zone_ids) != len(set(zone_ids)):
             raise ValueError("community_3d_claims may contain each zone only once")

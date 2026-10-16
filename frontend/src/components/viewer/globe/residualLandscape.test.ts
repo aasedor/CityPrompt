@@ -140,6 +140,9 @@ describe('residual landscape recipe', () => {
   });
 
   it('blocks Direct 3D when an existing boundary recipe is stale or ambiguous', () => {
+    expect(hasCurrentResidualLandscapeRecipe([])).toBe(false);
+    expect(hasCurrentResidualLandscapeRecipe([], true)).toBe(true);
+    expect(hasCurrentResidualLandscapeRecipe([withRecipe({ ...recipe, state: 'stale' })], true)).toBe(false);
     const ordinaryZone = { ...boundary, id: 'building-1', zone_type: 'building' as const };
     expect(hasCurrentResidualLandscapeRecipe([withRecipe(recipe), ordinaryZone])).toBe(true);
     expect(hasCurrentResidualLandscapeRecipe([
