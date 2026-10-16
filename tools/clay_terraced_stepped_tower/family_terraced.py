@@ -317,7 +317,7 @@ class Batch:
         self.g = {}
 
 
-def glazed_band(f, lo, hi, z0, floors, tag, balcony=True):
+def glazed_band(f, lo, hi, z0, floors, tag, balcony=True, lite=True):
     """Step face: floor-to-ceiling glazing between cedar panels, white slab edges, slim balcony on the upper floor."""
     span = hi - lo
     n = max(1, round(span / 3.8))
@@ -329,7 +329,7 @@ def glazed_band(f, lo, hi, z0, floors, tag, balcony=True):
     f.wall(f'{tag} cedar carrier', lo, hi - EPS, z0, floors[-1][1], depth=T, role='timber', holes=holes)
     m = Merge(f)
     for h in holes:
-        framed(m, f, h, cols=2, rows=1, inset=.12, occupied='flat', kind='french window', frame='trim')
+        framed(m, f, h, cols=2, rows=1, inset=.12, occupied='flat', kind='french window', frame='trim', lite=lite)
     for k, (za, zb) in enumerate(floors):
         m.box('white', (lo + hi) / 2, -.08, za + .02, span - 2 * EPS, T + .16, .3)              # white slab edge
         if balcony and k == len(floors) - 1:
@@ -354,10 +354,10 @@ def punched_face(f, lo, hi, z0, z1, levels, tag, lite=False):
             holes.append(hole(f'{tag} f{k} window {i}', u, z + .6, .9, 2.0))
             u += 2.6; i += 1
     f.wall(f'{tag} dark brick carrier', lo, hi - EPS, z0, z1, depth=T, holes=holes)
-    G.brick_courses(f, lo + .02, hi - .02, z0 + .05, z1 - .4, holes, spacing=.24 if not lite else .4)
+    G.brick_courses(f, lo + .02, hi - .02, z0 + .05, z1 - .4, holes, spacing=.5 if not lite else .6)
     m = Merge(f)
     for h in holes:
-        framed(m, f, h, cols=1, rows=1, inset=.2, occupied='flat', lite=lite)
+        framed(m, f, h, cols=1, rows=1, inset=.2, occupied='flat', lite=True)
     m.box('concrete', (lo + hi) / 2, -.06, z1 + .05, span - 2 * EPS, T + .14, .12)              # coping
     m.flush(tag)
 
@@ -381,13 +381,13 @@ def wing():
         f.wall(f.label + ' cedar carrier', -L / 2, L / 2 - EPS, Z[1], top, depth=T, role='timber', holes=holes)
         m = Merge(f)
         for h in holes:
-            framed(m, f, h, cols=2, inset=.12, occupied='flat', kind='french window', frame='trim', lite=True)
+            framed(m, f, h, cols=1, inset=.12, occupied='flat', kind='french window', frame='trim', lite=True)
         for z in levels:
             m.box('white', 0, -.65, z - .1, L - .12, 1.3, .2)                       # balcony slab and white edge
             m.box('hardware', 0, -1.28, z + 1.0, L - .14, .05, .05)                 # top rail
             m.box('hardware', 0, -1.28, z + .06, L - .14, .04, .04)                 # bottom rail
-            for q in range(5):
-                m.box('hardware', -L / 2 + .1 + (L - .2) * q / 4, -1.28, z + .53, .05, .05, .94)
+            for q in range(3):
+                m.box('hardware', -L / 2 + .1 + (L - .2) * q / 2, -1.28, z + .53, .05, .05, .94)
             m.box('glass', 0, -1.27, z + .53, L - .2, .02, .9)
         m.box('white', 0, -.1, top - .2, L - 2 * EPS, T + .2, .4)
         m.flush(f.label)
@@ -431,13 +431,11 @@ def wing():
         x = pa + .25
         while x < pb - .2:
             hgt = .7 + .25 * ((q * 7) % 3)
-            gb.box('grass', x, py + (.18 if q % 2 else -.18), zt + .82 + hgt / 2, .42, .1, hgt)
-            gb.box('grass', x + .12, py, zt + .82 + hgt * .4, .1, .5, hgt * .8)
-            x += .45; q += 1
+            gb.box('grass', x, py + (.18 if q % 2 else -.18), zt + .82 + hgt / 2, .5, .12, hgt)
+            x += .6; q += 1
         gb.flush(f'terrace {j} planting')
-        for tx in (pa + 2.2 + (j % 2) * 3.0, pb - 2.5 - (j % 3) * 2.0):
-            for dx, dy in ((0, 0), (.35, .2), (-.3, .15)):
-                A.small_tree(tx + dx, py + dy, zt + .82, 2.4 + .4 * ((j + int(dx * 10)) % 2), .9)
+        A.small_tree(pa + 2.2 + (j % 2) * 3.0, py, zt + .82, 2.8, 1.1)
+        A.shrub(pb - 2.5 - (j % 3) * 2.0, py, zt + .82, 1.4)
         # Furniture: a sofa and lounger at one end, a dining set at the other.
         A.sofa(WX0 + 3.0, ya + 2.9, zt + .1)
         C.box('Lounger', (WX0 + 6.4, ya + 2.7, zt + .4), (.7, 1.9, .14), 'white', 'terraces', 0)
@@ -519,15 +517,15 @@ def court():
             C.rod('Birch trunk', (x, y, .88), (x, y, .88 + h * .7), .1, 'birch', 'court', 8)
             A.foliage('Birch crown', (x, y, .88 + h * .82), (1.0, 1.0, 1.4), detail=1)
             k += 1
-    for i in range(7):                                                   # dense underplanting
-        for jj in range(4):
-            A.shrub(bx0 + .7 + i * 1.2, by0 + .8 + jj * 2.4 + (.6 if i % 2 else 0), .9, .6 + .2 * ((i + jj) % 3))
+    for i in range(5):                                                   # underplanting between the trunks
+        for jj in range(2):
+            A.shrub(bx0 + .9 + i * 1.7, by0 + 1.6 + jj * 5.0 + (.8 if i % 2 else 0), .9, .8 + .25 * ((i + jj) % 3))
     for (a_, b_, c_, d_) in ((-13.6, -9.4, -14.5, -8.0), (-7.2, -3.4, -14.5, -8.0)):
         C.box('Court raised bed', ((a_ + b_) / 2, (c_ + d_) / 2, .38), (b_ - a_, d_ - c_, .52), 'corten', 'court', 0)
         C.box('Court raised bed soil', ((a_ + b_) / 2, (c_ + d_) / 2, .65), (b_ - a_ - .2, d_ - c_ - .2, .02), 'soil', 'court', 0)
-        for i in range(3):
-            for jj in range(4):
-                A.shrub(a_ + .7 + i * 1.4, c_ + .8 + jj * 1.6, .66, .7 + .25 * ((i + jj) % 3))
+        for i in range(2):
+            for jj in range(3):
+                A.shrub(a_ + 1.1 + i * 2.0, c_ + 1.2 + jj * 2.1, .66, .9 + .25 * ((i + jj) % 3))
     C.box('Court path', (-8.3, -11.25, .125), (2.2, 6.5, .01), 'stone', 'court', 0)
     for y in (-6.0, 6.5):
         C.box('Court bench', (-3.6, y, .45), (.5, 1.8, .08), 'timber', 'court', 0)
