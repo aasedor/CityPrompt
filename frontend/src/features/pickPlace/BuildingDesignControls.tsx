@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { legoAssemblyApi } from '@/features/legoAssembly/legoAssemblyApi';
+import { getApiErrorMessage } from '@/services/api';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import { CANONICAL_CHOICES, canonicalDrawing } from './canonicalCatalogue';
 import { canonicalBuildingAsset } from './canonicalBuildingPlacement';
-import { assetForZone, placementProperties } from './catalogue';
+import { assetForZone, placementProperties, placementPlanRequest } from './catalogue';
+import { rectangleDimensions } from './geometry';
 import { savedModelRevision } from './savedModelRevision';
 import { withStoreyMetadata } from './assetRegistry';
 import { storeyProgramHeight, storeyProgramSupports } from './buildingStoreyProgram';
@@ -44,6 +47,11 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
   const [height, setHeight] = useState(heightText(initialHeight ?? assetForZone(zone)?.nativeDimensions?.[2]));
   const [footprintScale, setFootprintScale] = useState(String(savedProperties.building_footprint_scale ?? 1));
   const [heightEdited, setHeightEdited] = useState(false);
+  const [checking,setChecking] = useState(false);
+  const [runtimeError,setRuntimeError] = useState('');
+  const active = useRef(true);
+  const pending = useRef(false);
+  useEffect(()=>{active.current=true;return()=>{active.current=false;};},[]);
   const choice = choices.find(c => c.id === choiceId);
   const variant = choice?.option.variants?.find(v => v.id === variantId);
   const selectedAsset = choiceId === initialChoice?.id && variantId === initialVariant ? initialAsset
@@ -71,8 +79,8 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
     setFootprintScale(String(native?.kind === 'object' && native.footprintProgram ? native.footprintProgram.defaultScale : 1));
     setHeightEdited(false);
   };
-  return <form className="mb-3 space-y-2 border-b border-slate-300 pb-3" onSubmit={event => {
-    event.preventDefault(); if (!valid || !choice) return;
+  return <form className="mb-3 space-y-2 border-b border-slate-300 pb-3" onSubmit={async event => {
+    event.preventDefault(); if (!valid || !choice || disabled || pending.current) return;
     const changedType = choiceId !== initialChoice?.id || variantId !== savedProperties.development_selected_variant_id;
     const selection = { choice, variant };
     const native = choice.placements.find(a => a.kind === 'object' && a.model.variantId === variantId);
@@ -90,7 +98,7 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
       : !changedType && footprintProgram && footprintProgramSupports(footprintProgram, savedScale)
         ? savedScale
         : footprintProgram?.defaultScale;
-    onSave({ ...properties, pick_place_automatic_3d: true, native_plot_axes: true,
+    const nextProperties:SiteZoneProperties = { ...properties, pick_place_automatic_3d: true, native_plot_axes: true,
       floors: Number(floors), floor_count: Number(floors), height: Number(height), height_m: Number(height),
       floor_height: storeyProgram?.mode === 'fixed_authored_assembly' ? properties.floor_height : Number(height) / Number(floors),
       ...(footprintProgram && selectedFootprintScale != null ? {
@@ -102,8 +110,28 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
       ...(storeyProgram
         ? { development_height_override_m: storeyProgram.mode === 'fixed_authored_assembly' ? undefined : Number(height) }
         : heightEdited ? { development_height_override_m: Number(height) } : {}),
-    });
+    };
+    setRuntimeError('');
+    if (storeyProgram?.mode === 'repeat_authored_floor' && Number(floors) !== storeyProgram.nativeStoreys) {
+      pending.current=true;setChecking(true);
+      try {
+        const dimensions=rectangleDimensions(zone.coordinates);
+        const request=selectedAsset?.kind === 'object' ? placementPlanRequest(
+          {...selectedAsset,properties:nextProperties},dimensions.width,dimensions.depth,zone.project_id,
+        ) : null;
+        if (!request) throw new Error('This building cannot be checked against the current model library.');
+        await legoAssemblyApi.plan({...request,target_height_m:Number(height)});
+        if (!active.current) return;
+      } catch(error) {
+        if(active.current)setRuntimeError(`The building was not changed. ${getApiErrorMessage(error)}`);
+        return;
+      } finally {
+        pending.current=false;if(active.current)setChecking(false);
+      }
+    }
+    onSave(nextProperties);
   }}>
+    <fieldset disabled={checking} className="min-w-0 space-y-2">
     {Boolean(savedProperties.pick_place_model_revision) && !initialAsset && choiceId === initialChoice?.id && variantId === initialVariant
       && <p role="alert" className="text-xs text-amber-800">This saved model revision is unavailable. Your design is preserved. Select another building explicitly to replace it.</p>}
     <label className="block text-xs font-semibold">Find building type<input type="search" value={query} onChange={e => setQuery(e.target.value)} className={field} /></label>
@@ -143,6 +171,8 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
         ? `Choose ${storeyProgram.minStoreys}–${storeyProgram.maxStoreys} storeys. Each choice uses a complete authored house with its walls, openings and roof intact.`
         : `Choose ${storeyProgram.minStoreys}–${storeyProgram.maxStoreys} storeys. The podium and roof stay complete while authored floors repeat at full proportions.`
       : 'Your footprint stays in place. Unsupported sizes use design massing.'}</p>
-    <button disabled={disabled || !valid} className="min-h-11 w-full rounded-lg border border-slate-700 bg-lime-200 text-sm font-semibold disabled:opacity-40">Apply building</button>
+    {runtimeError && <p role="alert" className="text-xs text-amber-900">{runtimeError}</p>}
+    <button disabled={disabled || !valid || checking} className="min-h-11 w-full rounded-lg border border-slate-700 bg-lime-200 text-sm font-semibold disabled:opacity-40">{checking?'Checking detailed model…':'Apply building'}</button>
+    </fieldset>
   </form>;
 }

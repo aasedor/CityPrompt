@@ -1,9 +1,15 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import { expect, it, vi } from 'vitest';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { beforeEach, expect, it, vi } from 'vitest';
+import { legoAssemblyApi } from '@/features/legoAssembly/legoAssemblyApi';
 import type { SiteZone } from '@/types';
 import { BuildingDesignControls } from './BuildingDesignControls';
 import { placementProperties, placeAsset } from './catalogue';
 import { CANONICAL_CHOICES } from './canonicalCatalogue';
+vi.mock('@/features/legoAssembly/legoAssemblyApi',async importOriginal=>({
+  ...await importOriginal<typeof import('@/features/legoAssembly/legoAssemblyApi')>(),
+  legoAssemblyApi:{plan:vi.fn()},
+}));
+beforeEach(()=>{vi.mocked(legoAssemblyApi.plan).mockReset().mockResolvedValue({} as never);});
 
 const zone = { id: 'home', zone_type: 'building', coordinates: [[0, 0], [1, 0], [1, 1], [0, 1]],
   properties: placementProperties(placeAsset('infill_home')) } as SiteZone;
@@ -39,7 +45,7 @@ it('keeps the exact side-by-side duplex identity under a shared parent archetype
   }));
 });
 
-it('repeats authored Vancouver floors through the reviewed 16–40 storey programme', () => {
+it('repeats authored Vancouver floors through the reviewed 16–40 storey programme', async () => {
   const tower = placeAsset('clay_vancouver_balcony_podium_tower');
   const onSave = vi.fn();
   render(<BuildingDesignControls zone={{ ...zone, properties: placementProperties(tower) }} disabled={false} onSave={onSave} />);
@@ -48,14 +54,37 @@ it('repeats authored Vancouver floors through the reviewed 16–40 storey progra
   fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '25' } });
   expect((screen.getByLabelText('Height (m)') as HTMLInputElement).value).toBe('87.6');
   fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
-  expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
+  await waitFor(()=>expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
     floors: 25,
     floor_count: 25,
     height: 87.6,
     height_m: 87.6,
     development_height_override_m: 87.6,
     pick_place_asset: 'clay_vancouver_balcony_podium_tower',
-  }));
+  })));
+});
+
+it('preserves the saved detailed tower when the current runtime cannot build its requested height',async()=>{
+  vi.mocked(legoAssemblyApi.plan).mockRejectedValue(new Error('Required floor module is unavailable'));
+  const tower=placeAsset('clay_vancouver_balcony_podium_tower');
+  const onSave=vi.fn();
+  render(<BuildingDesignControls zone={{...zone,properties:placementProperties(tower)}} disabled={false} onSave={onSave}/>);
+  fireEvent.change(screen.getByLabelText('Storeys'),{target:{value:'40'}});
+  fireEvent.click(screen.getByRole('button',{name:'Apply building'}));
+  await waitFor(()=>expect(screen.getByRole('alert').textContent).toContain('Required floor module is unavailable'));
+  expect(onSave).not.toHaveBeenCalled();
+});
+
+it('does not apply a delayed model check after the editor closes',async()=>{
+  let finish!:()=>void;
+  vi.mocked(legoAssemblyApi.plan).mockImplementationOnce(()=>new Promise(resolve=>{finish=()=>resolve({} as never);}));
+  const tower=placeAsset('clay_vancouver_balcony_podium_tower');const onSave=vi.fn();
+  const view=render(<BuildingDesignControls zone={{...zone,properties:placementProperties(tower)}} disabled={false} onSave={onSave}/>);
+  fireEvent.change(screen.getByLabelText('Storeys'),{target:{value:'40'}});
+  fireEvent.click(screen.getByRole('button',{name:'Apply building'}));
+  await waitFor(()=>expect(legoAssemblyApi.plan).toHaveBeenCalledOnce());
+  view.unmount();await act(async()=>finish());
+  expect(onSave).not.toHaveBeenCalled();
 });
 
 it('does not save a Vancouver height beyond the reviewed storey programme', () => {
