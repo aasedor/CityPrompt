@@ -1,7 +1,7 @@
 # Terraced stepped residential tower (RLASM v6.1 architectural clay)
 
 Candidate E3 of the three-tower wave of 2026-10-16, chosen to add residential towers (types
-with no clay or runtime family yet). State: **candidate under review**. Nothing here is keeper-approved,
+with no clay or runtime family yet). State: **stopped at v003 by the rework rule; v001 (0 P0 / 5 P1) is the candidate, kept over v003 (2 P0 / 2 P1) because it carries no P0**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,12 +68,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002
+## Open blockers after v003 (stopped: the same findings survived two targeted fixes)
 
-- P0: the interior camera shows a flat wall, one cedar strip and an opaque black pane with no room depth
-- P1: the dark block's west face has a full window grid where the source is almost blank charcoal with one staggered column of slits; the court-facing south face has about 5 window columns against 3
-- P1: the dark block and raking wall read mid-grey, about twice the source charcoal's luminance
-- P1: every terrace repeats one full-length trough of box-prism grasses with a tree at the west end; the source has 2 to 3 discrete varied corten planters with soft grass masses and open decks with furniture (v001 finding, partly fixed)
-- P1: the court beds are bare soil with scattered shrubs and the birches sit on a strict grid (v001 finding, partly fixed)
-- P1: the dark block is about 48% too deep for its width
-- P2: see evidence/v002/independent-review.md
+- P0: the interior camera still cannot see the terrace; both panes render opaque
+- P0: the dark block's west face should be a pentagon whose north edge rakes inward over the top 40%; the render is a plain 9.5 m box, the base too shallow and the shoulder lost (introduced by fixing v002's depth finding)
+- P1: terrace planting undersized and sparse: small low troughs of identical blobs covering 10-15% of each deck; the source has large corten beds over 20-55% with grasses above the rail and birches (v001 finding, survived two targeted fixes)
+- P1: court beds a strict checkerboard of identical cushions and a regular hex of underplanting; the source is irregular shrubs with small trees (v001 finding, survived two targeted fixes)
+- P2: see evidence/v003/independent-review.md
