@@ -626,9 +626,14 @@ def atrium():
         C.box('Entrance canopy edge', ((a + c) / 2, yy, 5.48), (c - a, .16, .18), 'steel', 'entrance canopy', 0)
     for xx in (a, c):
         C.box('Entrance canopy edge', (xx, (e + g) / 2, 5.48), (.16, g - e - .16, .18), 'steel', 'entrance canopy', 0)
-    for x in (8.0, 11.5, 15.0, 18.5, 22.5, 26.0):
-        anchor_y = y0 + .2 if x0 < x < xr else -27.0
-        C.rod('Canopy tension rod', (x, anchor_y - .1, 14.0), (x, e + .1, 5.62), .03, 'steel', 'entrance canopy', 6)
+    # Hanger rods fan from anchors on structure only: the atrium's two edge posts and the ward leg's frame column.
+    leg_col = (21.0 + (LEG[1] + EXO)) / 2                              # the middle column of the ward leg's south frame
+    anchors = (((x0 + .12, y0 - .15, 14.0), (8.0, 11.5)), ((xr - .12, y0 - .15, 14.0), (15.0, 18.5)),
+               ((leg_col, LEG[2] - EXO - .25, BASE_TOP + (BB_TOP - BASE_TOP) / 5), (22.5, 26.0)))
+    for (ax, ay, az), xs in anchors:
+        C.box('Canopy rod anchor plate', (ax, ay - .02, az), (.34, .1, .34), 'steel', 'entrance canopy', 0)
+        for x in xs:
+            C.rod('Canopy tension rod', (ax, ay - .06, az), (x, e + .1, 5.62), .03, 'steel', 'entrance canopy', 6)
     for x in (9.0, 25.0):
         C.rod('Canopy post', (x, e + .6, .14), (x, e + .6, 5.4), .12, 'steel', 'entrance canopy', 10)
     C.CONTACTS.append(dict(name='Atrium between the clinical block and the ward leg; entrance canopy on rods and two posts', atrium=list(ATR)))
