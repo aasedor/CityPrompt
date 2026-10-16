@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-student-residence-tower",
+  "variant_id": "clay-student-residence-tower-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "student_residence_tower/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/student-residence-tower/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1206622,
+      "sha256": "f71657f046d330b5756618863a8b70f768c4ed2e279f22096e5950fce259dfdc"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/student-residence-tower/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 930652,
+      "sha256": "d2ecf16c6ffe4b806890db42e133d903535b6747b443362f99a2a185012dc244"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/student-residence-tower/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 876613,
+      "sha256": "0ed3c8e1b63539593ab28a714984d718c13d9f885d94a5efcb62a5c947a8be1e"
+    }
+  ]
+}
