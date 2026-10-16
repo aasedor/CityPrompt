@@ -435,8 +435,8 @@ def brick_face(f, lo, hi, court=False, balcony_u=None, lite=False, skip=(), ext=
         for k, u in enumerate(us):
             if fi == 0 and any(u + .9 > a and u - .9 < c for a, c in skip):
                 continue                                         # ground bay behind a loggia that abuts this face
-            if fi == 1 and any(u + .9 > a - OV - .3 and u - .9 < c + OV + .3 for a, c in skip):
-                continue                                         # second-storey bay the loggia's roof would cover
+            if fi == 1 and any(u + .9 > a - OV - 2.0 and u - .9 < c + OV + 2.0 for a, c in skip):
+                continue                                         # second-storey bays the loggia's hipped roof would reach
             if balcony_u is not None and abs(u - balcony_u) < .1:
                 if fi == 0:
                     h = hole(f'{f.label} garden door', u, G0, 1.6, 2.1 + .8, kind='arched'); arched.append(h)
@@ -726,7 +726,12 @@ def garden():
         A.garden_chair(x - 1.15, y, .05); A.garden_chair(x + 1.15, y, .05)
     # Benches, ornamental trees and the large shade trees on the court's west side.
     for x, y in ((-2.6, -5.0), (3.4, 2.0), (-9.0, -9.5), (12.0, -2.2)):
-        C.box('Garden bench', (x, y, .42), (1.6, .5, .08), 'timber', 'garden', 0)
+        C.box('Garden bench', (x, y, .45), (1.6, .5, .06), 'timber', 'garden', 0)
+        C.box('Garden bench back', (x, y + .23, .78), (1.6, .05, .4), 'timber', 'garden', 0)
+        for e in (-1, 1):                                                  # cast-iron ends: leg, arm and back post
+            C.box('Garden bench end', (x + e * .74, y, .24), (.06, .46, .40), 'hardware', 'garden', 0)
+            C.box('Garden bench end', (x + e * .74, y + .23, .62), (.06, .06, .76), 'hardware', 'garden', 0)
+            C.box('Garden bench arm', (x + e * .74, y, .66), (.06, .46, .05), 'hardware', 'garden', 0)
     for x, y in ((6.0, 4.0), (-7.5, 2.5), (10.0, -14.0), (17.0, -14.5), (-11.0, -16.5)):
         A.small_tree(x, y, .03, 4.2, 1.6)
     for x, y in ((-10.0, -7.5), (-31.0, -1.0), (12.0, -11.0)):
