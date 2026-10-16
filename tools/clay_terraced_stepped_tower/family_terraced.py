@@ -17,7 +17,7 @@ import assemblies as A
 import geometry as G
 
 SLUG = 'clay-terraced-stepped-tower'
-NB = (-15.0, 21.0, 10.0, 24.0)          # dark north block (top view at 0.075 m/px)
+NB = (-15.0, 21.0, 10.0, 19.5)          # dark north slab, 36 x 9.5 m (top view: depth about 0.26 of width)
 WX0, WX1 = -2.0, 21.0                   # stepped wing
 WY0, WY1 = -18.0, 10.0
 STEPS = 7
@@ -30,7 +30,7 @@ NF = 15                                 # storeys in the north block
 Z = [G0] + [G0 + GF + (i - 1) * FH for i in range(1, NF + 1)]   # floor levels; Z[NF] is the roof
 ROOF = Z[NF]
 EPS = .002
-PALETTE = dict(wall=(.20, .19, .19), joint=(.13, .12, .12), trim=(.12, .12, .13),
+PALETTE = dict(wall=(.085, .08, .08), joint=(.055, .05, .05), trim=(.12, .12, .13),
     pale=(.86, .85, .82), stone=(.74, .72, .68), roof=(.62, .60, .56), sand=(.72, .68, .60),
     foundation=(.42, .42, .41), glass=(.40, .48, .52), hardware=(.10, .10, .11),
     interior=(.80, .76, .68), floor=(.48, .46, .44), timber=(.66, .48, .30), blue=(.12, .18, .30),
@@ -48,9 +48,9 @@ def manifest(version):
         ('terrace_planters', (10.0, -30.0, 30.0), (9.5, WY0 + 3 * STEP_D, Z[8]), 45),
         ('raking_frame', (36.0, -34.0, 12.0), (WX1, -6.0, 18.0), 45),
         ('birch_court', (-22.0, -26.0, 10.0), (-8.0, -4.0, 3.0), 45),
-        ('solar_roof', (-26.0, 34.0, 62.0), (3.0, 17.0, ROOF), 45),
-        ('dark_block', (-32.0, 6.0, 26.0), (NB[0], 17.0, 26.0), 45),
-        ('interior', (12.0, WY0 + 3 * STEP_D + 2.5, Z[6] + 1.6), (6.0, WY0 + 3 * STEP_D - 2.0, Z[6] + 1.2), 60),
+        ('solar_roof', (-26.0, 30.0, 62.0), (3.0, 14.7, ROOF), 45),
+        ('dark_block', (-32.0, 4.0, 26.0), (NB[0], 14.7, 26.0), 45),
+        ('interior', (8.0, WY0 + 3 * STEP_D + 9.0, Z[6] + 1.6), (6.0, WY0 + 3 * STEP_D - 3.0, Z[6] + .9), 40),
         ('rear_north', (2.0, 46.0, 16.0), (2.0, NB[3], 18.0), 45)])
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
@@ -58,7 +58,7 @@ def manifest(version):
         source_archetype='terraced_stepped_building/variant_0 (terraced_ridgeline)',
         measurement_contract=dict(dimensions_m=dict(width=NB[1] - NB[0], depth=NB[3] - WY0, height=h),
             observed_storeys=NF, storey_programme='fifteen storeys in the dark north block; the wing steps from fourteen storeys at the block down to two at the street in seven two-storey terraces',
-            plan='north block 36 x 14 m; stepped wing 23 m wide running 28 m south from it in seven 4 m steps; birch court 13 x 28 m west of the wing (top view at 0.075 m/px)',
+            plan='north block 36 x 9.5 m; stepped wing 23 m wide running 28 m south from it in seven 4 m steps; birch court 13 x 28 m west of the wing (top view at 0.075 m/px)',
             facade='north block: dark charcoal brick with narrow punched windows in a staggered rhythm; wing: floor-to-ceiling glazing between cedar panels, white slab edges, slim balcony rail on each upper floor, raking concrete frame along the step edges',
             levels_m=Z,
             inferred='storey heights and interiors are teaching assumptions; the north face is not visible in any source and repeats the visible grammar'),
@@ -342,17 +342,20 @@ def glazed_band(f, lo, hi, z0, floors, tag, balcony=True, lite=True):
     m.flush(tag)
 
 
-def punched_face(f, lo, hi, z0, z1, levels, tag, lite=False):
-    """Dark brick with narrow punched windows in a staggered rhythm."""
+def punched_face(f, lo, hi, z0, z1, levels, tag, lite=False, cols=None, slit=.9):
+    """Dark brick with narrow punched windows in a staggered rhythm (cols: explicit window columns as face u)."""
     span = hi - lo
     holes = []
     for k, z in enumerate(levels):
         off = .9 if k % 2 else 0.0
-        u = lo + 1.2 + off
-        i = 0
-        while u < hi - 1.0:
-            holes.append(hole(f'{tag} f{k} window {i}', u, z + .6, .9, 2.0))
-            u += 2.6; i += 1
+        us = [c + (off - .45) for c in cols] if cols is not None else None
+        if us is None:
+            us = []
+            u = lo + 1.2 + off
+            while u < hi - 1.0:
+                us.append(u); u += 2.6
+        for i, u in enumerate(us):
+            holes.append(hole(f'{tag} f{k} window {i}', u, z + .6, slit, 2.0))
     f.wall(f'{tag} dark brick carrier', lo, hi - EPS, z0, z1, depth=T, holes=holes)
     G.brick_courses(f, lo + .02, hi - .02, z0 + .05, z1 - .4, holes, spacing=.5 if not lite else .6)
     m = Merge(f)
@@ -423,23 +426,24 @@ def wing():
         for i in range(17):
             x = WX0 + .2 + (xe - WX0 - .2) * i / 16
             gb.box('hardware', x, ry, zt + .6, .04, .04, 1.0)
-        # Long corten planter along the front: tall golden grasses, multi-stem small trees.
-        pa, pb, py = WX0 + .7, xe - .6, ya + .85
-        gb.box('corten', (pa + pb) / 2, py, zt + .45, pb - pa, .9, .7)
-        gb.box('soil', (pa + pb) / 2, py, zt + .81, pb - pa - .1, .8, .02)
-        q = 0
-        x = pa + .25
-        while x < pb - .2:
-            hgt = .7 + .25 * ((q * 7) % 3)
-            gb.box('grass', x, py + (.18 if q % 2 else -.18), zt + .82 + hgt / 2, .5, .12, hgt)
-            x += .6; q += 1
+        # Two or three discrete corten planters of varied size: soft golden grass masses and a multi-stem tree.
+        layouts = (((WX0 + 2.4, 3.2, 1.0), (cx + 1.0, 4.2, 1.2), (xe - 2.0, 2.6, .9)),
+                   ((WX0 + 3.4, 4.6, 1.1), (xe - 3.0, 3.6, 1.2)),
+                   ((WX0 + 1.8, 2.4, .9), (cx - 1.5, 3.0, 1.0), (xe - 2.6, 3.8, 1.3)))
+        for q, (px, pw, pd) in enumerate(layouts[j % 3]):
+            py = ya + .4 + pd / 2 + (.25 if q % 2 else 0)
+            gb.box('corten', px, py, zt + .4, pw, pd, .6)
+            n = max(2, int(pw / .9))
+            for g in range(n):
+                gx = px - pw / 2 + pw * (g + .5) / n
+                A.foliage('Grass mass', (gx, py + (.08 if g % 2 else -.08), zt + .85), (.5, pd * .45, .42 + .12 * ((g + j) % 3)), role='grass', detail=1)
+            if (q + j) % 2 == 0:
+                A.small_tree(px + pw * .25, py, zt + .7, 2.6 + .3 * (j % 2), .9)
         gb.flush(f'terrace {j} planting')
-        A.small_tree(pa + 2.2 + (j % 2) * 3.0, py, zt + .82, 2.8, 1.1)
-        A.shrub(pb - 2.5 - (j % 3) * 2.0, py, zt + .82, 1.4)
         # Furniture: a sofa and lounger at one end, a dining set at the other.
-        A.sofa(WX0 + 3.0, ya + 2.9, zt + .1)
-        C.box('Lounger', (WX0 + 6.4, ya + 2.7, zt + .4), (.7, 1.9, .14), 'white', 'terraces', 0)
-        C.box('Lounger back', (WX0 + 6.4, ya + 3.55, zt + .62), (.7, .2, .5), 'white', 'terraces', 0)
+        A.sofa(WX0 + 6.0, ya + 3.1, zt + .1)
+        C.box('Lounger', (cx + 3.4, ya + 2.9, zt + .4), (.7, 1.9, .14), 'white', 'terraces', 0)
+        C.box('Lounger back', (cx + 3.4, ya + 3.75, zt + .62), (.7, .2, .5), 'white', 'terraces', 0)
         dx0 = xe - 4.0
         C.box('Terrace table', (dx0, ya + 2.8, zt + .8), (1.8, .9, .05), 'timber', 'terraces', 0)
         C.box('Terrace table base', (dx0, ya + 2.8, zt + .45), (.1, .1, .7), 'hardware', 'terraces', 0)
@@ -465,7 +469,8 @@ def north_block():
     x0, x1, y0, y1 = NB
     top = ROOF + .9
     s_a = C.Face(((x0 + WX0) / 2, y0, 0), (1, 0, 0), (0, 1, 0), 'block south west')
-    punched_face(s_a, -(WX0 - x0) / 2, (WX0 - x0) / 2, G0, top, Z[:NF], s_a.label)
+    ha = (WX0 - x0) / 2
+    punched_face(s_a, -ha, ha, G0, top, Z[:NF], s_a.label, cols=(-ha * .55, 0.0, ha * .55))
     s_b = C.Face(((WX0 + x1 - T) / 2, y0, 0), (1, 0, 0), (0, 1, 0), 'block south above wing')
     hb = (x1 - T - WX0) / 2
     hb_holes = [hole(f'top terrace door {i}', -hb + 3.2 * (i + .5), Z[14] + .12, 2.2, FH - .55, kind='door') for i in range(int(2 * hb / 3.2))]
@@ -481,15 +486,15 @@ def north_block():
     n = C.Face(((x0 + x1) / 2, y1, 0), (-1, 0, 0), (0, -1, 0), 'block north')
     punched_face(n, -(x1 - x0) / 2 + T, (x1 - x0) / 2, G0, top, Z[:NF], n.label, lite=True)
     w = C.Face((x0, (y0 + y1) / 2, 0), (0, -1, 0), (1, 0, 0), 'block west')
-    punched_face(w, -(y1 - y0) / 2 + T, (y1 - y0) / 2 - T, G0, top, Z[:NF], w.label)
+    punched_face(w, -(y1 - y0) / 2 + T, (y1 - y0) / 2 - T, G0, top, Z[:NF], w.label, cols=(0.0,), slit=.5)   # one staggered column of slits
     for i in range(1, NF + 1):
         C.box(f'Block slab {i}', ((x0 + x1) / 2, (y0 + y1) / 2, Z[i] - .15), (x1 - x0 - 2 * T, y1 - y0 - 2 * T, .3), 'floor', 'block slabs', 0)
         if i % 2:
-            C.qa_room_light(f'Block flats {i}', ((x0 + x1) / 2, y1 - 3.0, Z[i] - .5), 50, 6.0)
+            C.qa_room_light(f'Block flats {i}', ((x0 + x1) / 2, y1 - 2.5, Z[i] - .5), 50, 6.0)
     C.box('Block ground slab', ((x0 + x1) / 2, (y0 + y1) / 2, G0 / 2), (x1 - x0, y1 - y0, G0), 'foundation', 'block slabs', 0)
     C.box('Block roof gravel', ((x0 + x1) / 2, (y0 + y1) / 2, ROOF + .02), (x1 - x0 - 2 * T - .02, y1 - y0 - 2 * T - .02, .04), 'gravel', 'roof', 0)
     # Solar arrays: tilted panel rows on low frames, two skylight boxes, a hatch.
-    for (xa, xb, yc) in ((-11.0, 18.0, 16.6), (-11.0, -4.0, 21.0), (11.0, 18.0, 21.0)):
+    for (xa, xb, yc) in ((-11.0, 18.0, 12.8), (-11.0, -4.0, 16.9), (11.0, 18.0, 16.9)):
         poly = [(yc - 1.0, ROOF + .35), (yc + 1.0, ROOF + .85), (yc + 1.0, ROOF + .80), (yc - 1.0, ROOF + .30)]
         C.prism('Solar array', poly, 'x', xa, xb, 'solar', 'solar roof')
         k = xa + 1.0
@@ -498,8 +503,8 @@ def north_block():
             k += 2.0
         for gx in [xa + 2.0 * q for q in range(1, int((xb - xa) / 2.0))]:
             C.box('Solar panel joint', (gx, yc, ROOF + .6), (.04, 2.0, .58), 'pale', 'solar roof', 0)
-    C.box('Roof skylight', (-.5, 21.0, ROOF + .4), (2.2, 1.6, .8), 'glass', 'roof', 0)
-    C.box('Roof hatch', (7.0, 21.0, ROOF + .35), (2.4, 1.6, .7), 'pale', 'roof', 0)
+    C.box('Roof skylight', (-.5, 16.9, ROOF + .4), (2.2, 1.6, .8), 'glass', 'roof', 0)
+    C.box('Roof hatch', (7.0, 16.9, ROOF + .35), (2.4, 1.6, .7), 'pale', 'roof', 0)
 
 
 def court():
@@ -511,21 +516,21 @@ def court():
     k = 0
     for i in range(4):
         for jj in range(4):
-            x = -11.6 + i * 2.1 + (.5 if jj % 2 else 0)
-            y = -3.0 + jj * 2.3
+            x = -11.6 + i * 2.1 + (.5 if jj % 2 else 0) + .45 * math.sin(k * 2.3)
+            y = -3.0 + jj * 2.3 + .5 * math.cos(k * 1.7)
             h = 6.0 + (k % 3) * .9
             C.rod('Birch trunk', (x, y, .88), (x, y, .88 + h * .7), .1, 'birch', 'court', 8)
             A.foliage('Birch crown', (x, y, .88 + h * .82), (1.0, 1.0, 1.4), detail=1)
             k += 1
-    for i in range(5):                                                   # underplanting between the trunks
-        for jj in range(2):
-            A.shrub(bx0 + .9 + i * 1.7, by0 + 1.6 + jj * 5.0 + (.8 if i % 2 else 0), .9, .8 + .25 * ((i + jj) % 3))
+    for i in range(6):                                                   # dense underplanting masses covering the soil
+        for jj in range(5):
+            A.foliage('Underplanting', (bx0 + .75 + i * 1.42, by0 + .9 + jj * 1.8 + (.5 if i % 2 else 0), 1.05), (.85, .8, .38), role='planting', detail=1)
     for (a_, b_, c_, d_) in ((-13.6, -9.4, -14.5, -8.0), (-7.2, -3.4, -14.5, -8.0)):
         C.box('Court raised bed', ((a_ + b_) / 2, (c_ + d_) / 2, .38), (b_ - a_, d_ - c_, .52), 'corten', 'court', 0)
         C.box('Court raised bed soil', ((a_ + b_) / 2, (c_ + d_) / 2, .65), (b_ - a_ - .2, d_ - c_ - .2, .02), 'soil', 'court', 0)
-        for i in range(2):
-            for jj in range(3):
-                A.shrub(a_ + 1.1 + i * 2.0, c_ + 1.2 + jj * 2.1, .66, .9 + .25 * ((i + jj) % 3))
+        for i in range(3):
+            for jj in range(4):
+                A.foliage('Bed planting', (a_ + .7 + i * 1.4, c_ + .8 + jj * 1.6, .8), (.75, .8, .32 + .1 * ((i + jj) % 3)), role='grass' if (i + jj) % 2 else 'planting', detail=1)
     C.box('Court path', (-8.3, -11.25, .125), (2.2, 6.5, .01), 'stone', 'court', 0)
     for y in (-6.0, 6.5):
         C.box('Court bench', (-3.6, y, .45), (.5, 1.8, .08), 'timber', 'court', 0)
