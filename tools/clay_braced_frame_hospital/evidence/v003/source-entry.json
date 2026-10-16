@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-braced-frame-hospital",
+  "variant_id": "clay-braced-frame-hospital-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "regional_hospital_medical_center/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1295867,
+      "sha256": "4e6289d461f2ad8bba095c0e5f7a67751234a066b022a585244f8dbb937e20a4"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 924620,
+      "sha256": "67e7bf7fa9838b5cded4c385e863aa84e4c267598b0c9bc67909edf92f2f2c8b"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 860461,
+      "sha256": "1bceac8705902772c973d29c3bca3ff7f9e0cb5a85475c4ac23336571ae1491e"
+    }
+  ]
+}

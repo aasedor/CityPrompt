@@ -68,9 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002
+## Open blockers after v003
 
-- P1: the atrium still reads as a flush infill slot; the 0.8 m projection and returns do not show at building scale (partly resolved from v001)
-- P1: pure-black void at the open north end of the clinical plant storey west of the ward bar, and a black full-height seam at the ward bar's north-west corner
-- P1: atrium diagrid members overshoot the edge frames and the two diagonal sets read as separate grilles without nodes
-- P2: see evidence/v002/independent-review.md
+- P1: several entrance-canopy hanger rods end on non-structural surfaces (the signage panel, the perforated screen face, mid-pane on the atrium glass) with no visible anchor
+- P2: see evidence/v003/independent-review.md
