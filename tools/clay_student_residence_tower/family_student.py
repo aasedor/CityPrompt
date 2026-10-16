@@ -3,8 +3,9 @@ student_residence_tower / variant_0 (contemporary_curtainwall_biophilic).
 
 Read from the pixels (the top view governs the plan): a twelve-storey tower on a corner with streets
 south and west. A two-storey glazed base between white columns under a white band, with a sloping
-white soffit at its east end; above it a solid white wall mass with horizontal joints at the south-west
-corner, and elsewhere floor-to-ceiling glass bands whose white slab edges tilt from floor to floor,
+white soffit at its east end; above it a tall white blade with horizontal joints on the west face that
+widens upward, leans out at the south and rises above the roof in a curved corner; a set-back planted glass strip
+north of it; elsewhere floor-to-ceiling glass bands whose white slab edges tilt from floor to floor,
 broken by recessed planted terraces; on the roof, behind a white steel lattice screen with glass, a
 geodesic glass dome over the study lounge, a pale plant penthouse with rooftop units, a roof garden
 and an open stair.
@@ -17,7 +18,10 @@ import geometry as G
 SLUG = 'clay-student-residence-tower'
 X0, X1, Y0, Y1 = -13.0, 13.0, -15.0, 15.0        # tower plate 26 x 30 m (top view)
 BX1, BY0 = X1 + 1.2, Y0 - 1.2                     # base projects south and east
-WM = (X0, -3.0, Y0, -5.0)                         # white wall mass at the south-west corner
+BLADE_X = (X0 - .3, X0 + 1.8)                     # white blade on the west face: outer and inner planes
+BLADE_N = (Y0 + 16.0, Y0 + 22.5)                  # its north edge at the base and at the roof (it widens upward)
+BLADE_LEAN = .9                                   # its south edge leans out past the south face by the roof
+GW = X0 + 1.85                                    # set-back west glass line (behind the blade, open north of it)
 T = .30
 G0 = .15
 BASE = [G0, 4.15]
@@ -55,7 +59,7 @@ def manifest(version):
         source_archetype='student_residence_tower/variant_0 (contemporary_curtainwall_biophilic)',
         measurement_contract=dict(dimensions_m=dict(width=BX1 - X0, depth=Y1 - BY0, height=h),
             observed_storeys=2 + N, storey_programme='two-storey glazed base (study commons, bike room, cafe), ten residence storeys, roof lounge under the dome',
-            plan='26 x 30 m tower plate; base projecting 1.2 m south and east; white wall mass 10 x 10 m at the south-west corner; dome 12 m across near the roof centre (top view)',
+            plan='26 x 30 m tower plate; base projecting 1.2 m south and east; white blade 2.1 m thick over about 75% of the west face, widening upward, with a set-back glass strip north of it; dome 12 m across near the roof centre (top view)',
             facade='white columns and band over the glazed base with a sloping white soffit at the east end; white wall mass with horizontal joints; glass bands with white slab edges tilting alternately from floor to floor; recessed planted terraces',
             levels_m=BASE + LEVELS + [ROOF],
             inferred='storey heights and interiors are teaching assumptions; the north and east faces are not visible in the front or oblique and repeat the visible grammar'),
@@ -320,40 +324,61 @@ def glass_face(f, lo, hi, z0, z1, tag, terraces=(), tilted=True):
         if abs(f.t[0]) > .5:
             xa, xb = (pa[0], pb[0]) if pa[0] < pb[0] else (pb[0], pa[0])
             ta, tb = (za, zb) if pa[0] < pb[0] else (zb, za)
-            y = pa[1]; d = -.7 if f.n[1] > 0 else .7
+            dep = (.7, 1.2, .9, 1.5, .8)[i % 5]                       # uneven slab-end projections
+            y = pa[1]; d = -dep if f.n[1] > 0 else dep
             C.prism(f'{tag} slab edge', [(xa, ta), (xb, tb), (xb, tb + .42), (xa, ta + .42)], 'y', min(y, y + d), max(y, y + d), 'white', 'slab edges')
         else:
             ya, yb = (pa[1], pb[1]) if pa[1] < pb[1] else (pb[1], pa[1])
             ta, tb = (za, zb) if pa[1] < pb[1] else (zb, za)
-            x = pa[0]; d = -.7 if f.n[0] > 0 else .7
+            dep = (.7, 1.2, .9, 1.5, .8)[i % 5]
+            x = pa[0]; d = -dep if f.n[0] > 0 else dep
             C.prism(f'{tag} slab edge', [(ya, ta), (yb, tb), (yb, tb + .42), (ya, ta + .42)], 'x', min(x, x + d), max(x, x + d), 'white', 'slab edges')
-    for (u0, u1, fl) in terraces:                                     # planted terrace boxes standing in a recess
+    for (u0, u1, fl) in terraces:                                     # deep planted terraces at the slab ends
         z = z0 + fl * FH
         m = Merge(f)
-        m.box('white', (u0 + u1) / 2, -.9, z - .1, u1 - u0, 1.8, .3)
-        m.box('concrete', (u0 + u1) / 2, -1.55, z + .45, u1 - u0, .5, .7)
-        m.box('planting', (u0 + u1) / 2, -1.55, z + .82, u1 - u0 - .1, .4, .05)
+        m.box('white', (u0 + u1) / 2, -1.25, z - .12, u1 - u0, 2.5, .34)
+        m.box('concrete', (u0 + u1) / 2, -2.2, z + .45, u1 - u0, .6, .8)
+        m.box('planting', (u0 + u1) / 2, -2.2, z + .87, u1 - u0 - .1, .5, .05)
+        m.box('glass', (u0 + u1) / 2, -2.48, z + 1.2, u1 - u0 - .1, .02, .7)
         m.flush(tag + ' terrace')
-        for q in range(int((u1 - u0) / 1.4)):
-            p = f.p(u0 + .7 + q * 1.4, -1.55, 0)
-            A.shrub(p[0], p[1], z + .84, .9)
+        for q in range(int((u1 - u0) / .9)):
+            p = f.p(u0 + .45 + q * .9, -2.2, 0)
+            A.shrub(p[0], p[1], z + .89, 1.0 + .3 * (q % 3))
+        p = f.p((u0 + u1) / 2, -1.0, 0)
+        A.small_tree(p[0], p[1], z + .05, 2.6, 1.1)
 
 
-def white_mass():
-    x0, x1, y0, y1 = WM
-    poly = [(x0 + 1.6, y0), (x1, y0), (x1, y1), (x0, y1), (x0, y0 + 1.6)]
-    C.prism('White wall mass', poly, 'z', BASE_TOP, ROOF + 1.2, 'wall', 'white mass')
+def blade_edges(z):
+    """South and north edges (y) of the white blade at height z: it leans out at the south and widens northward."""
+    zt = ROOF + 3.4 - 3.0
+    ys = Y0 - BLADE_LEAN * min(1.0, max(0.0, (z - BASE_TOP) / (zt - BASE_TOP)))
+    yn = BLADE_N[0] + (BLADE_N[1] - BLADE_N[0]) * min(1.0, max(0.0, (z - BASE_TOP) / (ROOF + 1.4 - BASE_TOP)))
+    return ys, yn
+
+
+def blade():
+    """Tall white blade on the west face: leaning south edge, widening north edge, curved top corner above the roof,
+    horizontal joints on its faces."""
+    R = 3.0
+    ys_top, zt = Y0 - BLADE_LEAN, ROOF + 3.4
+    arc = [(ys_top + R - R * math.sin(a), zt - R + R * math.cos(a)) for a in [math.pi / 2 * i / 10 for i in range(11)]]
+    poly = [(Y0, BASE_TOP), (BLADE_N[0], BASE_TOP), (BLADE_N[1], ROOF + 1.4)] + arc
+    C.prism('White blade', poly, 'x', BLADE_X[0], BLADE_X[1], 'wall', 'white blade')
     vs, fs = [], []
-    for k in range(1, int((ROOF - BASE_TOP) / (FH / 2))):
+    k = 1
+    while BASE_TOP + k * FH / 2 < ROOF + .8:
         z = BASE_TOP + k * FH / 2
-        for (ax, ay), (bx, by) in zip(poly, poly[1:] + poly[:1]):
-            if (ax, ay) in ((x1, y1),) or (bx, by) in ((x1, y1),):
-                continue
-            nx, ny = (by - ay), -(bx - ax); L = math.hypot(nx, ny); nx, ny = nx / L * .004, ny / L * .004
+        ys, yn = blade_edges(z)
+        for x in (BLADE_X[0] - .004,):
             o = len(vs)
-            vs += [(ax - nx, ay - ny, z), (bx - nx, by - ny, z), (bx - nx, by - ny, z + .03), (ax - nx, ay - ny, z + .03)]
+            vs += [(x, ys + .05, z), (x, yn - .05, z), (x, yn - .05, z + .03), (x, ys + .05, z + .03)]
             fs.append((o, o + 1, o + 2, o + 3))
-    C.mesh('White mass joints', vs, fs, 'joint', 'white mass')
+        o = len(vs)                                                     # joint returning round the south edge
+        vs += [(BLADE_X[0] + .05, ys - .004, z), (BLADE_X[1] - .05, ys - .004, z), (BLADE_X[1] - .05, ys - .004, z + .03), (BLADE_X[0] + .05, ys - .004, z + .03)]
+        fs.append((o, o + 1, o + 2, o + 3))
+        k += 1
+    C.mesh('White blade joints', vs, fs, 'joint', 'white blade')
+    C.CONTACTS.append(dict(name='White blade on the base roof, rising through the roof screen line', blade_x=list(BLADE_X), north_edge=list(BLADE_N)))
 
 
 def base():
@@ -384,11 +409,13 @@ def base():
     m.flush('base west')
     n = C.Face(((X0 + BX1) / 2, Y1, 0), (-1, 0, 0), (0, -1, 0), 'base north')
     n.wall('base north carrier', -hw, hw - EPS, G0, BASE_TOP, depth=T, role='white', holes=[])
+    xs0, zs1 = BX1 - 7.0, 5.2                                                # the band sweeps down at the east end (front view)
+    zband = lambda x: BASE_TOP - .9 if x <= xs0 else BASE_TOP - .9 + (zs1 - BASE_TOP + .9) * (x - xs0) / (BX1 - xs0)
+    C.prism('Sloping band end', [(xs0, BASE_TOP - .85), (BX1, BASE_TOP - .85), (BX1, zs1)], 'y', BY0 - .65, BY0 + .1, 'white', 'base')
     for i in range(7):                                                       # white columns before the south glazing
         x = X0 + .6 + (BX1 - X0 - 1.2) * i / 6
-        C.box('Base column', (x, BY0 - .35, (G0 + BASE_TOP - .9) / 2), (.5, .5, BASE_TOP - .9 - G0), 'white', 'base', 0)
-    # Sloping white soffit at the east end of the base (front view).
-    C.prism('Sloping soffit', [(BX1 - 7.0, BASE_TOP - .9), (BX1, 5.2), (BX1, 4.7), (BX1 - 7.0, BASE_TOP - 1.4)], 'y', BY0 - .6, BY0 + 1.0, 'white', 'base')
+        zt = zband(x) + .05
+        C.box('Base column', (x, BY0 - .35, (G0 + zt) / 2), (.5, .5, zt - G0), 'white', 'base', 0)
     C.box('Base slab', ((X0 + BX1) / 2, (BY0 + Y1) / 2, G0 / 2), (BX1 - X0, Y1 - BY0, G0), 'foundation', 'base', 0)
     for z in (BASE[1], BASE_TOP):
         C.box('Base floor', ((X0 + BX1) / 2, (BY0 + Y1) / 2, z - .15), (BX1 - X0 - 2 * T, Y1 - BY0 - 2 * T, .3), 'floor', 'base', 0)
@@ -401,37 +428,57 @@ def base():
 
 
 def tower():
-    # South: glass east of the white mass; west: glass north of it; east and north all glass.
-    s = C.Face(((WM[1] + X1) / 2, Y0, 0), (1, 0, 0), (0, 1, 0), 'tower south')
-    hs = (X1 - WM[1]) / 2
-    glass_face(s, -hs, hs, BASE_TOP, ROOF, s.label, terraces=((-hs + .5, -hs + 5.5, 1), (-hs + 9.0, -hs + 14.0, 4), (-hs + 2.0, -hs + 7.0, 7)))
-    w = C.Face((X0, (WM[3] + Y1) / 2, 0), (0, -1, 0), (1, 0, 0), 'tower west')
-    hw = (Y1 - WM[3]) / 2
-    glass_face(w, -hw + T, hw, BASE_TOP, ROOF, w.label, terraces=((hw - 5.0, hw - .5, 2), (hw - 6.0, hw - 1.5, 5), (-hw + 3.0, -hw + 8.0, 8)))
+    # South: glass from the blade to the east corner; west: set-back glass behind the blade, open north of it.
+    s = C.Face(((BLADE_X[1] + X1) / 2, Y0, 0), (1, 0, 0), (0, 1, 0), 'tower south')
+    hs = (X1 - BLADE_X[1]) / 2
+    glass_face(s, -hs, hs, BASE_TOP, ROOF, s.label, terraces=((hs - 5.5, hs - .4, 2), (hs - 5.5, hs - .4, 5), (-hs + .4, -hs + 5.0, 3), (hs - 5.5, hs - .4, 8), (-hs + .4, -hs + 5.0, 6)))
+    w = C.Face((GW, (Y0 + Y1) / 2, 0), (0, -1, 0), (1, 0, 0), 'tower west')
+    hw = (Y1 - Y0) / 2
+    glass_face(w, -hw + T, hw - T, BASE_TOP, ROOF, w.label)
     e = C.Face((X1, 0, 0), (0, 1, 0), (-1, 0, 0), 'tower east')
-    glass_face(e, Y0 + T, Y1 - T, BASE_TOP, ROOF, e.label, terraces=((-4.0, 1.0, 3),))
-    n = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'tower north')
-    glass_face(n, X0, X1, BASE_TOP, ROOF, n.label, tilted=False)
-    white_mass()
+    glass_face(e, Y0 + T, Y1 - T, BASE_TOP, ROOF, e.label, terraces=((-12.0, -7.0, 3), (7.0, 12.0, 6)))
+    n = C.Face(((GW + X1) / 2, Y1, 0), (-1, 0, 0), (0, -1, 0), 'tower north')
+    glass_face(n, -(X1 - GW) / 2, (X1 - GW) / 2, BASE_TOP, ROOF, n.label, tilted=False)
+    blade()
     for i, z in enumerate(LEVELS[1:] + [ROOF]):
-        C.box(f'Tower floor {i + 1}', (0, 0, z - .15), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .3), 'floor', 'tower floors', 0)
+        if z < ROOF:
+            C.box(f'Tower floor {i + 1}', ((GW + T + X1 - T) / 2, 0, z - .15), (X1 - T - GW - T, Y1 - Y0 - 2 * T, .3), 'floor', 'tower floors', 0)
+    C.box('Tower roof slab', ((GW + T + X1 - T) / 2, 0, ROOF - .15), (X1 - T - GW - T, Y1 - Y0 - 2 * T, .3), 'floor', 'tower floors', 0)
+    # Deep planted terraces on the set-back west strip north of the blade.
+    for fl in (1, 2, 4, 5, 7, 9):
+        z = BASE_TOP + fl * FH
+        ya = blade_edges(z + FH)[1] + .2
+        yb = Y1 - .3
+        if yb - ya < 2.0:
+            continue
+        C.box('West strip terrace', ((X0 - .3 + GW - .02) / 2, (ya + yb) / 2, z - .17), (GW - .02 - X0 + .3, yb - ya, .34), 'white', 'west terraces', 0)
+        C.box('West strip planter', (X0 + .05, (ya + yb) / 2, z + .4), (.7, yb - ya - .2, .8), 'concrete', 'west terraces', 0)
+        C.box('West strip planting', (X0 + .05, (ya + yb) / 2, z + .82), (.6, yb - ya - .3, .05), 'planting', 'west terraces', 0)
+        y = ya + .5
+        q = 0
+        while y < yb - .4:
+            A.shrub(X0 + .05, y, z + .84, 1.0 + .35 * (q % 3)); y += .9; q += 1
+        A.small_tree(X0 + 1.0, (ya + yb) / 2, z, 2.6, 1.0)
     C.box('Tower core', (2.0, 6.0, (BASE_TOP + ROOF) / 2), (8.0, 6.0, ROOF - BASE_TOP), 'concrete', 'core', 0)
     for z in LEVELS[::2]:
         C.qa_room_light(f'Rooms {z:.0f}', (5.0, Y0 + 3.0, z + FH - .5), 60, 6.0)
-        C.qa_room_light(f'Rooms west {z:.0f}', (X0 + 3.0, 6.0, z + FH - .5), 50, 5.0)
+        C.qa_room_light(f'Rooms west {z:.0f}', (GW + 3.0, 10.0, z + FH - .5), 50, 5.0)
     zf = LEVELS[4]
     A.desk(6.0, Y0 + 2.4, zf); A.bed(10.0, Y0 + 3.0, zf); A.sofa(2.0, Y0 + 2.6, zf)
 
 
 def roof():
     cx, cy, r, h = DOME
-    C.box('Roof garden paving', (0, 0, ROOF + .01), (X1 - X0 - 2 * T - .02, Y1 - Y0 - 2 * T - .02, .02), 'sand', 'roof', 0)
-    # Lattice screen with glass round the roof edge.
-    for (ax, ay), (bx, by) in (((X0 + .2, Y0 + .2), (X1 - .2, Y0 + .2)), ((X1 - .2, Y0 + .2), (X1 - .2, Y1 - .2)), ((X1 - .2, Y1 - .2), (X0 + .2, Y1 - .2)), ((X0 + .2, Y1 - .2), (X0 + .2, Y0 + .2))):
+    C.box('Roof garden paving', ((GW + T + X1 - T) / 2, 0, ROOF + .01), (X1 - T - GW - T - .02, Y1 - Y0 - 2 * T - .02, .02), 'sand', 'roof', 0)
+    # Lattice screen with glass round the roof edge, chamfered at the north-east and south-east corners, ending at the blade.
+    c = 3.0
+    path = [(BLADE_X[1] + .05, Y0 + .2), (X1 - .2 - c, Y0 + .2), (X1 - .2, Y0 + .2 + c), (X1 - .2, Y1 - .2 - c), (X1 - .2 - c, Y1 - .2),
+            (X0 + .2, Y1 - .2), (X0 + .2, BLADE_N[1] + .3)]
+    for (ax, ay), (bx, by) in zip(path, path[1:]):
         L = math.hypot(bx - ax, by - ay)
         C.beam('Screen glass', (ax, ay, ROOF + 1.2), (bx, by, ROOF + 1.2), .03, 2.2, 'glass', 'lattice screen')
         C.beam('Screen top rail', (ax, ay, ROOF + 2.35), (bx, by, ROOF + 2.35), .14, .14, 'white', 'lattice screen')
-        n = max(2, int(L / 2.4))
+        n = max(1, int(L / 2.4))
         for i in range(n):
             p0 = (ax + (bx - ax) * i / n, ay + (by - ay) * i / n)
             p1 = (ax + (bx - ax) * (i + 1) / n, ay + (by - ay) * (i + 1) / n)
@@ -454,12 +501,29 @@ def roof():
         C.box('Rooftop unit', (x, 8.6, ROOF + 3.6), (1.3, 1.0, .8), 'membrane', 'penthouse', 0)
         C.rod('Unit fan', (x, 8.6, ROOF + 4.0), (x, 8.6, ROOF + 4.06), .4, 'hardware', 'penthouse', 10)
     C.box('Duct box', (2.6, 10.6, ROOF + 3.5), (2.0, 1.4, .6), 'membrane', 'penthouse', 0)
-    for x, y, w_, d_ in ((-9.5, 10.0, 3.0, 7.0), (9.5, 8.0, 2.0, 9.0), (-9.0, -3.0, 2.0, 6.0), (10.0, -9.0, 2.0, 7.0), (-2.0, 13.6, 8.0, 1.2)):
-        C.box('Roof garden planter', (x, y, ROOF + .35), (w_, d_, .7), 'concrete', 'roof garden', 0)
-        C.box('Roof garden planting', (x, y, ROOF + .72), (w_ - .2, d_ - .2, .04), 'planting', 'roof garden', 0)
-        for q in range(max(1, int(max(w_, d_) / 2.0))):
-            A.shrub(x + (q - (max(w_, d_) / 2.0 - 1) / 2) * (2.0 if w_ > d_ else 0), y + (q - (max(w_, d_) / 2.0 - 1) / 2) * (2.0 if d_ > w_ else 0), ROOF + .74, .9)
-    C.beam('Roof stair', (-9.0, -9.0, ROOF - 2.0), (-9.0, -4.5, ROOF + .02), 1.2, .2, 'concrete', 'roof')
+    # Continuous garden beds along the north and east edges and a ring bed round the dome.
+    for name, (x0b, x1b, y0b, y1b) in (('north', (X0 + 1.0, X1 - 4.0, Y1 - 2.3, Y1 - .7)), ('east', (X1 - 2.3, X1 - .7, Y0 + 3.6, Y1 - 3.6))):
+        C.box(f'Roof bed {name}', ((x0b + x1b) / 2, (y0b + y1b) / 2, ROOF + .35), (x1b - x0b, y1b - y0b, .7), 'concrete', 'roof garden', 0)
+        C.box(f'Roof bed {name} planting', ((x0b + x1b) / 2, (y0b + y1b) / 2, ROOF + .72), (x1b - x0b - .2, y1b - y0b - .2, .04), 'planting', 'roof garden', 0)
+        L = max(x1b - x0b, y1b - y0b); along_x = (x1b - x0b) > (y1b - y0b)
+        for q in range(int(L / 1.1)):
+            t = .55 + q * 1.1
+            A.shrub(x0b + t if along_x else (x0b + x1b) / 2, (y0b + y1b) / 2 if along_x else y0b + t, ROOF + .74, .9 + .3 * (q % 3))
+    annulus('Dome ring bed', (cx, cy, ROOF), (0, 0, 1), r + .7, r + 1.9, 0, .6, 'concrete', 'roof garden', segs=32)
+    annulus('Dome ring planting', (cx, cy, ROOF + .6), (0, 0, 1), r + .8, r + 1.8, 0, .04, 'planting', 'roof garden', segs=32)
+    for q in range(14):
+        a_ = math.tau * q / 14 + .2
+        A.shrub(cx + (r + 1.3) * math.cos(a_), cy + (r + 1.3) * math.sin(a_), ROOF + .64, .8 + .3 * (q % 3))
+    # Open stair up the penthouse's west side to its roof deck, with handrails.
+    n_st, run, rise = 12, .4, 3.2 / 12
+    for k in range(n_st):
+        C.box('Roof stair tread', (-11.8 + k * run + run / 2, 7.2, ROOF + rise * (k + 1) - .05), (run + .02, 1.3, .1), 'white', 'roof stair', 0)
+    for y in (6.52, 7.88):
+        C.beam('Roof stair stringer', (-11.8, y, ROOF + .02), (-7.0, y, ROOF + 3.2), .06, .3, 'hardware', 'roof stair')
+        C.beam('Roof stair handrail', (-11.8, y, ROOF + 1.0), (-7.0, y, ROOF + 4.2), .05, .05, 'hardware', 'roof stair')
+        for k in (0, 6, 12):
+            x = -11.8 + k * run
+            C.beam('Roof stair post', (x, y, ROOF + rise * k), (x, y, ROOF + rise * k + 1.0), .05, .05, 'hardware', 'roof stair')
     C.qa_room_light('Dome lounge', (cx, cy, ROOF + 2.5), 80, 4.0)
 
 
@@ -480,7 +544,7 @@ def build():
     base()
     tower()
     roof()
-    C.CONTACTS.append(dict(name='Tower on the base slab; white mass at the south-west corner; dome and penthouse on the roof slab', roof_m=ROOF))
+    C.CONTACTS.append(dict(name='Tower on the base slab; white blade on the west face; dome and penthouse on the roof slab', roof_m=ROOF))
 
 
 LIGHT_RIG = dict(key=(-60, -70, 80), fill=(70, -30, 60), rear=(-20, 70, 70), target=(0, 0, 20.0), gain=26.0)
