@@ -58,14 +58,13 @@ export async function landscapeEdgeSamples(
   capture: Direct3DCaptureBundle,
   zone: SiteZone,
 ): Promise<LandscapeEdgeSample[]> {
-  const decode = async (data: string) =>
-    createImageBitmap(
-      await (
-        await fetch(
-          data.startsWith("data:") ? data : `data:image/png;base64,${data}`,
-        )
-      ).blob(),
-    );
+  const decode = async (data: string) => {
+    // These PNGs are already in memory. Fetching a data URL is blocked by
+    // production connect-src; decode locally, as the Direct 3D preview does.
+    const base64 = data.replace(/^data:image\/png;base64,/, "");
+    const bytes = Uint8Array.from(atob(base64), (character) => character.charCodeAt(0));
+    return createImageBitmap(new Blob([bytes], { type: "image/png" }));
+  };
   const [beauty, mask] = await Promise.all([
     decode(capture.beautyImageBase64),
     decode(capture.proposalMaskBase64),
