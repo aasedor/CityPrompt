@@ -26,14 +26,14 @@ BASE_TOP = LEVELS[2]                               # top of the two-storey limes
 ROOF = G0 + GF + 11 * FH                           # 38.65
 PARA = ROOF + 1.6
 TANK = (-4.7, 4.7, -3.2, 7.4)
-TANK_H = 5.6
+TANK_H = 9.4                                       # about three storeys (oblique)
 BAY = 3.2
 EPS = .002
 PALETTE = dict(wall=(.44, .21, .16), joint=(.32, .16, .12), trim=(.14, .14, .15),
     pale=(.84, .80, .72), stone=(.82, .78, .68), roof=(.30, .30, .31), sand=(.70, .67, .62),
     foundation=(.42, .42, .41), glass=(.36, .44, .48), hardware=(.10, .10, .11),
     interior=(.80, .76, .68), floor=(.46, .44, .42), timber=(.40, .28, .16), blue=(.14, .22, .28),
-    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.66, .65, .62), copper=(.52, .36, .30),
+    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.66, .65, .62), copper=(.34, .23, .16),
     membrane=(.24, .24, .25), stonejoint=(.62, .58, .50), asphalt=(.30, .30, .31), clay_pot=(.66, .42, .30))
 
 
@@ -47,7 +47,7 @@ def manifest(version):
         ('limestone_base', (-14.0, -24.0, 3.0), (-10.0, Y0, 4.0), 45),
         ('fire_balconies', (30.0, -4.0, 20.0), (X1, 6.0, 20.0), 45),
         ('cornice_balustrade', (-24.0, -24.0, 44.0), (-12.0, Y0, ROOF), 45),
-        ('tank_house', (20.0, -20.0, 52.0), (0.0, 2.0, ROOF + 3.0), 45),
+        ('tank_house', (22.0, -22.0, 56.0), (0.0, 2.0, ROOF + 5.0), 45),
         ('interior', (-6.0, -6.0, LEVELS[6] + 1.6), (-8.0, Y0 - 1.0, LEVELS[6] + 1.2), 55),
         ('rear_court', (-6.0, 30.0, 16.0), (-4.0, Y1, 18.0), 45)])
     for c in cams:                       # the locked front and oblique look from the south-east street corner
@@ -60,7 +60,7 @@ def manifest(version):
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=12, storey_programme='two-storey limestone base (lobby, doctors\' offices), ten brick storeys of flats',
             plan='32 x 25 m corner block, streets south and east (top view at 0.049 m/px); water-tank house 9.4 x 10.6 m on the roof north of centre',
-            facade='limestone base with rusticated joints; brick above a stone belt course; limestone quoin strips at the corners; a stacked limestone-framed bay over the entrance; dark double-hung windows on a 3.2 m bay with flat stone lintels and sills; stacked iron balconies on both street faces; deep modillion cornice and balustraded parapet with pedestals and corner urns',
+            facade='limestone base with rusticated joints; brick above a stone belt course; limestone quoin strips at the corners; the iron balconies stacked over the entrance marquee with a wide projecting limestone-framed bay and a heavy stone pier beside them; dark double-hung windows on a 3.2 m bay with flat stone lintels and sills; stacked iron balconies on both street faces; deep modillion cornice and balustraded parapet with pedestals and corner urns',
             levels_m=LEVELS + [ROOF], parapet_m=PARA,
             inferred='storey heights and interiors are teaching assumptions; the north and west faces are not visible in the front or oblique and repeat the visible grammar'),
         roof_contract=dict(type='flat dark membrane behind the balustrade; water-tank house under a copper pyramid; grating catwalk; chimneys', datum_m=ROOF, crowns_m=[PARA, ROOF + TANK_H + 2.2]),
@@ -314,15 +314,32 @@ def grooves(f, lo, hi, z0, z1, holes, spacing=.62, role='stonejoint'):
         C.mesh(f.label + ' rustication joints', vs, fs, role, 'limestone base')
 
 
-def elevation(f, lo, hi, stone_bay=None, balcony_bay=None, entrance=False, lite=False, z_offset=0.0, ext=(0.0, 0.0)):
+def balcony(m, f, u, z, w, depth=1.0, role='hardware', spacing=.13):
+    """Iron balcony: plate deck, pickets standing on the deck between a bottom rail and the top rail."""
+    m.box(role, u, -depth / 2 + .02, z - .06, w, depth + .04, .12)
+    for zr, s_ in ((z + .98, .05), (z + .06, .04)):
+        m.box(role, u, -depth + .04, zr, w, s_, s_)
+        for e in (-1, 1):
+            m.box(role, u + e * (w / 2 - .02), -depth / 2 + .02, zr, s_, depth - .04, s_)
+    n = max(4, int(w / spacing))
+    for i in range(n + 1):
+        m.box(role, u - w / 2 + .02 + (w - .04) * i / n, -depth + .04, z + .5, .03, .03, .96)
+    for e in (-1, 1):
+        for j in range(1, int(depth / spacing)):
+            m.box(role, u + e * (w / 2 - .02), -.02 - (depth - .06) * j / int(depth / spacing), z + .5, .03, .03, .96)
+
+
+def elevation(f, lo, hi, stone_bay=None, balcony_bay=None, entrance=None, lite=False, z_offset=0.0, ext=(0.0, 0.0)):
     span = hi - lo
+    wrap = T + .16 if ext[0] else 0.0                  # end faces' bands and quoins return round the corner
+    lift = .01 if ext[0] else 0.0
     n = max(1, round(span / BAY))
     pitch = span / n
     us = [lo + pitch * (i + .5) for i in range(n)]
     # Limestone base: tall ground windows (entrance door on the stone bay), second-storey windows.
     bholes = []
     for i, u in enumerate(us):
-        if entrance and i == stone_bay:
+        if entrance is not None and i == entrance:
             bholes.append(hole(f'{f.label} entrance', u, G0, 2.4, 3.3, kind='door'))
         else:
             bholes.append(hole(f'{f.label} ground window {i}', u, 1.0, 1.5, 2.9))
@@ -332,8 +349,8 @@ def elevation(f, lo, hi, stone_bay=None, balcony_bay=None, entrance=False, lite=
     m = Merge(f)
     for h in bholes:
         framed(m, f, h, cols=2, rows=2 if h['h'] > 2.5 else 2, inset=.16, occupied='lobby' if h.get('kind') == 'door' else 'offices', kind=h.get('kind', 'window'), lite=lite)
-    m.box('stone', (lo + hi) / 2, -.12, BASE_TOP + .05, span - 2 * EPS, T + .26, .42)            # belt course
-    m.box('stone', (lo + hi) / 2, -.06, G0 + .35, span - 2 * EPS, T + .14, .7)                  # water table
+    m.box('stone', (lo + hi) / 2, -.12, BASE_TOP + .05 + lift, span - 2 * EPS + 2 * wrap, T + .26, .42)   # belt course
+    m.box('stone', (lo + hi) / 2, -.06, G0 + .35 + lift, span - 2 * EPS + 2 * wrap, T + .14, .7)          # water table
     m.flush(f.label + ' base')
     # Brick storeys.
     holes = []
@@ -350,24 +367,29 @@ def elevation(f, lo, hi, stone_bay=None, balcony_bay=None, entrance=False, lite=
     for h in holes:
         framed(m, f, h, cols=1, rows=2, inset=.14, occupied='flat', kind=h.get('kind', 'window'), lite=lite)
         if h.get('kind') == 'door':
-            iron_balcony(m, f, h['u'], h['z'] - .05, 3.0, depth=1.0, role='hardware', slab='hardware', spacing=.13)
+            balcony(m, f, h['u'], h['z'] - .05, 3.0, depth=1.0)
             continue
+        if stone_bay is not None and abs(h['u'] - us[stone_bay]) < .1:
+            continue                                                                           # framed by the stone bay
         m.box('stone', h['u'], -.05, h['z'] + h['h'] + .17, h['w'] + .34, .12, .32)              # flat stone lintel
         m.box('stone', h['u'], -.05, h['z'] - .06, h['w'] + .2, .16, .12)                        # sill
-    if stone_bay is not None:                                                                  # stacked limestone bay
-        u = us[stone_bay]; w = 1.25
+    if stone_bay is not None:                                                                  # wide projecting limestone bay
+        u = us[stone_bay]; w = 1.25; fw = 2.9
         for e in (-1, 1):
-            m.box('stone', u + e * (w / 2 + .22), -.06, (BASE_TOP + ROOF) / 2, .44, .12, ROOF - BASE_TOP)
+            m.box('stone', u + e * (fw / 2 - .4), -.22, (BASE_TOP + ROOF) / 2, .8, .44, ROOF - BASE_TOP)
         for z in LEVELS[2:]:
-            m.box('stone', u, -.06, z + .4, w + .02, .12, .78)
-            m.box('stone', u, -.06, z + .8 + 1.95 + .2, w + .02, .12, .36)
-            m.box('stone', u, -.18, z + .8 + 1.95 + .42, w + 1.1, .2, .14)                       # small cornice on each head
+            m.box('stone', u, -.17, z + .4, w + .02, .34, .78)
+            m.box('stone', u, -.17, z + .8 + 1.95 + .2, w + .02, .34, .36)
+            m.box('stone', u, -.3, z + .8 + 1.95 + .42, fw + .3, .2, .14)                      # small cornice on each head
+        m.box('stone', u + pitch / 2 + .95, -.1, (BASE_TOP + ROOF) / 2, 1.1, .2, ROOF - BASE_TOP)   # heavy stone pier toward the corner
     for k in range(int((ROOF - BASE_TOP - .4) / .62)):                                         # quoin strips at both corners
         z = BASE_TOP + .5 + k * .62 + .27
         L = 1.0 if k % 2 == 0 else .62
-        m.box('stone', lo + L / 2, -.04, z, L, .08, .54)
-        m.box('stone', hi - L / 2, -.04, z, L, .08, .54)
-    m.box('stone', (lo + hi) / 2, -.06, LEVELS[-1] - .2, span - 2 * EPS, T + .14, .3)            # band under the top storey
+        if wrap:
+            L = .62 if k % 2 == 0 else 1.0                                                     # interlocks with the other face
+        m.box('stone', lo - wrap + L / 2, -.04, z, L, .08, .54)
+        m.box('stone', hi + wrap - L / 2, -.04, z, L, .08, .54)
+    m.box('stone', (lo + hi) / 2, -.06, LEVELS[-1] - .2 + lift, span - 2 * EPS + 2 * wrap, T + .14, .3)   # band under the top storey
     eave_cornice(m, lo - ext[0], hi + ext[1], top + z_offset, span_t=T, proj=1.1, role='stone', modillions=not lite)
     m.flush(f.label + ' brick')
     # Balustrade on the parapet: plinth, balusters, rail, pedestals.
@@ -391,7 +413,7 @@ def elevation(f, lo, hi, stone_bay=None, balcony_bay=None, entrance=False, lite=
 def build_faces():
     hw, hd = (X1 - X0) / 2, (Y1 - Y0) / 2
     south = C.Face((0, Y0, 0), (1, 0, 0), (0, 1, 0), 'south')
-    us = elevation(south, -hw, hw, stone_bay=5, balcony_bay=2, entrance=True)
+    us = elevation(south, -hw, hw, stone_bay=4, balcony_bay=3, entrance=3)        # balconies stacked over the marquee
     east = C.Face((X1, 0, 0), (0, 1, 0), (-1, 0, 0), 'east')
     elevation(east, -hd + T, hd - T, stone_bay=None, balcony_bay=5, z_offset=.006, ext=(1.3, 1.3))
     north = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'north')
@@ -402,11 +424,12 @@ def build_faces():
     zt = ROOF + .5 + 1.1
     for x in (X0 + .3, X1 - .3):
         for y in (Y0 + .3, Y1 - .3):
-            C.box('Corner pedestal', (x, y, zt - .45), (.7, .7, 1.0), 'stone', 'balustrade', 0)
-            C.rod('Corner urn', (x, y, zt + .05), (x, y, zt + .55), .26, 'stone', 'balustrade', 12)
-            C.rod('Corner urn lid', (x, y, zt + .55), (x, y, zt + .75), .12, 'stone', 'balustrade', 10)
+            sx, sy = (1 if x < 0 else -1), (1 if y < 0 else -1)
+            C.box('Corner pedestal', (x - sx * .05, y - sy * .05, (ROOF + .52 + zt + .1) / 2), (1.1, 1.1, zt + .1 - ROOF - .52), 'stone', 'balustrade', 0)
+            C.rod('Corner urn', (x, y, zt + .1), (x, y, zt + .6), .26, 'stone', 'balustrade', 12)
+            C.rod('Corner urn lid', (x, y, zt + .6), (x, y, zt + .8), .12, 'stone', 'balustrade', 10)
     # Entrance marquee with tie rods, door lanterns.
-    ue = us[5]
+    ue = us[3]
     C.box('Entrance marquee', (ue, Y0 - 1.45, 3.85), (5.0, 2.8, .45), 'hardware', 'entrance', 0)
     C.box('Marquee name band', (ue, Y0 - 2.87, 3.85), (4.0, .04, .2), 'pale', 'entrance', 0)
     for dx in (-2.3, 2.3):
@@ -443,11 +466,12 @@ def floors_and_roof():
                                 east=(C.Face((x1, (y0 + y1) / 2, 0), (0, 1, 0), (-1, 0, 0), 'tank east'), y1 - y0 - 2 * T),
                                 west=(C.Face((x0, (y0 + y1) / 2, 0), (0, -1, 0), (1, 0, 0), 'tank west'), y1 - y0 - 2 * T)).items():
         holes = [hole(f'{f.label} door', 0, ROOF + .05, 1.1, 2.2, kind='door')] if side == 'south' else []
+        holes += [hole(f'{f.label} window {j}', u_, ROOF + 4.2, .9, 1.6) for j, u_ in enumerate((-span / 4, span / 4))]
         f.wall(f.label + ' carrier', -span / 2, span / 2 - EPS, ROOF, zt, depth=T, holes=holes)
         G.brick_courses(f, -span / 2 + .02, span / 2 - .02, ROOF + .1, zt - .5, holes, spacing=.3)
         m = Merge(f)
         for h in holes:
-            framed(m, f, h, cols=1, rows=1, inset=.14, occupied='tank room', kind='door')
+            framed(m, f, h, cols=1, rows=1 if h.get('kind') == 'door' else 2, inset=.14, occupied='tank room', kind=h.get('kind', 'window'))
         m.box('stone', 0, -.06, zt - .25, span + .1, T + .14, .5)
         for k in range(int((TANK_H - .8) / .6)):
             L = .8 if k % 2 == 0 else .5
@@ -460,18 +484,23 @@ def floors_and_roof():
     cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
     upper = [(cx - .05, cy - .05), (cx + .05, cy - .05), (cx + .05, cy + .05), (cx - .05, cy + .05)]
     strip('Tank house pyramid', lower, upper, zt, zt + 2.2, 'copper', 'tank house')
-    vs, fs = [], []
-    for (ax, ay), (bx, by) in zip(lower, lower[1:] + lower[:1]):
-        for k in range(1, 12):
-            s = k / 12
-            px, py = ax + (bx - ax) * s, ay + (by - ay) * s
-            qx, qy = cx + (px - cx) * .06, cy + (py - cy) * .06
-            dx, dy = bx - ax, by - ay; L = math.hypot(dx, dy); tx, ty = dx / L * .03, dy / L * .03
-            o = len(vs)
-            for (x, y, z) in ((px, py, zt + .03), (qx, qy, zt + 2.2 * .94 + .03)):
-                vs += [(x - tx, y - ty, z), (x + tx, y + ty, z), (x + tx, y + ty, z + .05), (x - tx, y - ty, z + .05)]
-            fs += [(o, o + 1, o + 5, o + 4), (o + 1, o + 2, o + 6, o + 5), (o + 2, o + 3, o + 7, o + 6), (o + 3, o, o + 4, o + 7)]
-    C.mesh('Tank pyramid seams', vs, fs, 'copper', 'tank house')
+    apex = (cx, cy, zt + 2.2)
+    for (ax, ay), (bx, by) in zip(lower, lower[1:] + lower[:1]):            # hips from the corners to the apex
+        C.beam('Tank pyramid hip', (ax, ay, zt + .04), (apex[0], apex[1], apex[2] + .02), .1, .08, 'copper', 'tank house')
+        L = math.hypot(bx - ax, by - ay); tx, ty = (bx - ax) / L, (by - ay) / L
+        nx, ny = -ty, tx                                                   # inward normal of this eave (counter-clockwise loop)
+        if (cx - ax) * nx + (cy - ay) * ny < 0:
+            nx, ny = -nx, -ny
+        hplan = (cx - ax) * nx + (cy - ay) * ny                            # eave to apex in plan
+        for k in range(1, int(L / .6)):
+            s_ = L * k / int(L / .6)
+            px, py = ax + tx * s_, ay + ty * s_
+            # The seam climbs straight up the face until it meets a hip line (corner to apex).
+            reach = hplan * min(s_, L - s_) / (L / 2)
+            if reach < .3:
+                continue
+            qx, qy = px + nx * (reach - .1), py + ny * (reach - .1)
+            C.beam('Tank pyramid seam', (px, py, zt + .04), (qx, qy, zt + .04 + 2.2 * (reach - .1) / hplan), .04, .05, 'copper', 'tank house')
     # Grating catwalk round the tank house, plant units, chimneys with clay pots.
     for (a, b, c, d) in ((x0 - 2.2, x1 + 2.2, y0 - 2.2, y0 - .2), (x1 + .2, x1 + 2.2, y0 - .2, y1 + .2), (x0 - 2.2, x0 - .2, y0 - .2, y1 - 2.0)):
         C.box('Catwalk grating', ((a + b) / 2, (c + d) / 2, ROOF + .45), (b - a, d - c, .06), 'hardware', 'catwalk', 0)
@@ -487,7 +516,7 @@ def floors_and_roof():
     for x, y, s in ((-3.2, 9.4, 1.4), (-.6, 9.4, 1.2), (2.0, 9.4, 1.4), (4.4, 9.4, 1.0)):
         C.box('Plant unit', (x, y, ROOF + s / 2), (2.2, 1.8, s), 'pale', 'roof plant', 0)
         C.rod('Plant fan', (x, y, ROOF + s), (x, y, ROOF + s + .08), .6, 'hardware', 'roof plant', 12)
-    for x, y, w, d, hh, pots in ((-8.5, 11.2, 1.8, 1.0, 3.2, 3), (8.5, 11.2, 1.8, 1.0, 3.2, 3), (-8.5, -4.2, 1.0, 1.0, 2.4, 1)):
+    for x, y, w, d, hh, pots in ((-8.5, 11.2, 1.8, 1.0, 4.6, 3), (8.5, 11.2, 1.8, 1.0, 4.6, 3), (-8.5, -4.2, 1.0, 1.0, 4.0, 1)):
         C.box('Chimney stack', (x, y, ROOF + hh / 2), (w, d, hh), 'wall', 'chimneys', 0)
         C.box('Chimney cap', (x, y, ROOF + hh + .08), (w + .2, d + .2, .16), 'stone', 'chimneys', 0)
         for k in range(pots):
