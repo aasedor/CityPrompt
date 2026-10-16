@@ -32,8 +32,8 @@ PALETTE = dict(wall=(.52, .26, .19), joint=(.38, .19, .14), trim=(.16, .17, .18)
     pale=(.80, .79, .76), stone=(.70, .68, .64), roof=(.66, .65, .62), sand=(.68, .66, .62),
     foundation=(.42, .42, .41), glass=(.46, .56, .60), hardware=(.18, .18, .19),
     interior=(.78, .76, .72), floor=(.60, .59, .56), timber=(.40, .28, .16), blue=(.20, .28, .40),
-    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.74, .72, .68), bronze=(.15, .12, .09),
-    patina=(.36, .56, .50), asphalt=(.30, .30, .31), white=(.90, .90, .88), metal=(.26, .27, .29),
+    planting=(.26, .42, .16), soil=(.20, .15, .09), concrete=(.74, .72, .68), bronze=(.11, .09, .07),
+    patina=(.22, .40, .41), asphalt=(.30, .30, .31), white=(.90, .90, .88), metal=(.26, .27, .29),
     car_red=(.50, .14, .12), car_grey=(.56, .58, .60), car_dark=(.18, .19, .21), car_white=(.84, .84, .82))
 
 
@@ -318,12 +318,17 @@ class Batch:
 LEVEL_TOPS = DECKS[1:] + [ROOF]
 
 
-def deck_face(f, lo, hi, ground, lite=False, precast=True, bays=None, solid_first=False):
-    """Brick frame elevation: piers on an 8 m bay, open deck openings over precast spandrels with guard screens."""
+def deck_face(f, lo, hi, ground, lite=False, precast=True, bays=None, solid_first=False, merge=None, dark=()):
+    """Brick frame elevation: piers on an 8 m bay, open deck openings over precast spandrels with guard screens.
+    merge=(i, j): bays i..j share one wide brick-framed opening per deck with recessed concrete columns and a pale
+    upstand; dark: bays whose deck openings carry dark mullioned screens."""
     span = hi - lo
     n = max(1, round(span / 8.2))
     pitch = span / n
     holes = []
+    wide = None
+    if merge:
+        wide = (lo + pitch * (merge[0] + merge[1] + 1) / 2, (merge[1] - merge[0] + 1) * pitch - .9)
     for i in range(n):
         u = lo + pitch * (i + .5)
         g = ground[i] if i < len(ground) else 'blank'
@@ -334,12 +339,26 @@ def deck_face(f, lo, hi, ground, lite=False, precast=True, bays=None, solid_firs
         elif g == 'window':
             holes.append(hole(f'{f.label} ground window {i}', u, 1.2, pitch - 1.6, 2.2))
         kind = (bays or {}).get(i)
-        if kind == 'curtain':                                          # glazed curtain-wall bay over all decks
-            holes.append(hole(f'{f.label} curtain bay {i}', u, DECKS[0] + .3, pitch - .9, ROOF - .4 - DECKS[0] - .3, kind='curtain'))
+        if kind == 'curtain':                                          # punched window on deck 1, curtain wall above
+            holes.append(hole(f'{f.label} deck 2 window {i}', u, DECKS[0] + 1.2, pitch - 2.6, 1.6))
+            holes.append(hole(f'{f.label} curtain bay {i}', u, DECKS[1] + .3, pitch - .9, ROOF - .4 - DECKS[1] - .3, kind='curtain'))
+            continue
+        if merge and merge[0] <= i <= merge[1]:
+            if i != merge[0]:
+                continue
+            u, wd = wide
+            for k, z in enumerate(DECKS):
+                top = LEVEL_TOPS[k] - .40
+                if solid_first and k == 0:
+                    holes.append(hole(f'{f.label} deck 2 slot wide', u, z + 1.2, wd, .9, kind='deck'))
+                else:
+                    holes.append(hole(f'{f.label} deck {k + 2} opening wide', u, z + 1.05, wd, top - z - 1.05, kind='deck'))
             continue
         for k, z in enumerate(DECKS):
             top = LEVEL_TOPS[k] - .40
             if kind == 'ribbon':
+                if k == 0:
+                    continue                                           # brick band on deck 1, ribbons above
                 holes.append(hole(f'{f.label} deck {k + 2} ribbon {i}', u, z + 1.2, pitch - .9, 1.2, kind='ribbon'))
             elif solid_first and k == 0:
                 holes.append(hole(f'{f.label} deck 2 slot {i}', u, z + 1.2, pitch - .9, .9, kind='deck'))
@@ -352,6 +371,11 @@ def deck_face(f, lo, hi, ground, lite=False, precast=True, bays=None, solid_firs
         if h.get('kind') == 'deck':
             for zr in (h['z'] + .55, h['z'] + 1.15):                         # dark horizontal guard screens
                 m.box('metal', h['u'], .12, zr, h['w'] - .02, .06, .10)
+            if any(abs(h['u'] - (lo + pitch * (i + .5))) < .1 for i in dark):     # dark mullioned screen in the opening
+                m.box('bronze', h['u'], .22, h['z'] + h['h'] / 2, h['w'] - .04, .03, h['h'] - .04)
+                nm = int(h['w'] / .55)
+                for j in range(1, nm):
+                    m.box('metal', h['u'] - h['w'] / 2 + h['w'] * j / nm, .16, h['z'] + h['h'] / 2, .05, .08, h['h'] - .04)
             C.OPENINGS.append(dict(id=h['id'], face=f.label, u=h['u'], z=h['z'], width=h['w'], height=h['h'], kind='open parking deck', clear_wall_cut=True,
                 carrier_depth_m=T, frame_inset_m=None, pane_inset_m=None, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='parking deck'))
         elif h.get('kind') == 'vehicle':
@@ -369,6 +393,20 @@ def deck_face(f, lo, hi, ground, lite=False, precast=True, bays=None, solid_firs
     # Precast spandrels between the piers (deck slab edge and upstand), a brick parapet band, a stone base.
     for i in range(n):
         u = lo + pitch * (i + .5)
+        if merge and merge[0] <= i <= merge[1]:
+            if i == merge[0]:
+                wu, wd = wide
+                for z in DECKS + [ROOF]:                                # pale upstand across the whole wide opening
+                    m.box('concrete', wu, -.05, z + .5 if z != ROOF else z + .35, wd, .10, .9)
+                for k in range(merge[0] + 1, merge[1] + 1):             # recessed concrete columns at the bay lines
+                    C.box(f'{f.label} recessed column', tuple(f.p(lo + pitch * k, 1.2, (G0 + ROOF) / 2)), (.55, .55, ROOF - G0), 'concrete', 'frame', 0)
+            continue
+        if (bays or {}).get(i) == 'ribbon':                            # pale precast panels between the ribbons
+            for k in range(1, len(DECKS)):
+                za = DECKS[k] + 2.45
+                zb = (DECKS[k + 1] + 1.15) if k + 1 < len(DECKS) else ROOF + .8
+                m.box('concrete', u, -.05, (za + zb) / 2, pitch - .9, .10, zb - za)
+            continue
         for z in DECKS + [ROOF]:
             if (bays or {}).get(i) == 'curtain' and z != ROOF:
                 continue
@@ -386,10 +424,10 @@ def frame_block():
     cx = lambda a, b: (a + b) / 2
     south = C.Face((cx(SWT[1], SE[0]), Y0, 0), (1, 0, 0), (0, 1, 0), 'south')
     w = (SE[0] - SWT[1]) / 2
-    deck_face(south, -w, w, ['retail', 'retail', 'retail', 'retail', 'window'], precast=False, bays={0: 'ribbon', 4: 'curtain'}, solid_first=True)
+    deck_face(south, -w, w, ['retail', 'retail', 'retail', 'retail', 'window'], precast=False, bays={0: 'ribbon', 4: 'curtain'}, solid_first=True, merge=(1, 3))
     east = C.Face((X1, cx(SE[3], NE[2]), 0), (0, 1, 0), (-1, 0, 0), 'east')
     d = (NE[2] - SE[3]) / 2
-    deck_face(east, -d, d, ['window', 'entry', 'entry'])
+    deck_face(east, -d, d, ['window', 'entry', 'entry'], dark=(0, 1))
     north = C.Face((cx(X0, NE[0]), Y1, 0), (-1, 0, 0), (0, -1, 0), 'north')
     w = (NE[0] - X0) / 2
     deck_face(north, -w, w, ['blank', 'window', 'blank', 'window', 'blank'], lite=True)
@@ -459,7 +497,7 @@ def roof_deck():
         C.box('Light head', (x + .5, y, zt + 7.5), (1.0, .4, .15), 'hardware', 'roof deck', 0)
     # Lift overrun with vertical ribs, plant in the middle, guard rail round the open stair well.
     ox0, ox1 = -12.7, -5.3
-    C.box('Lift overrun', ((ox0 + ox1) / 2, (hy0 + hy1) / 2, zt + 2.2), (ox1 - ox0, hy1 - hy0, 4.4), 'metal', 'penthouse', 0)
+    C.box('Lift overrun', ((ox0 + ox1) / 2, (hy0 + hy1) / 2, zt + 2.2), (ox1 - ox0, hy1 - hy0, 4.4), 'bronze', 'penthouse', 0)
     C.box('Lift overrun roof', ((ox0 + ox1) / 2, (hy0 + hy1) / 2, zt + 4.45), (ox1 - ox0 + .3, hy1 - hy0 + .3, .1), 'trim', 'penthouse', 0)
     r = Batch()
     for i in range(int((ox1 - ox0) / .45)):
