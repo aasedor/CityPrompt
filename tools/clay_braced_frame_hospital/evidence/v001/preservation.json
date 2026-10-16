@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-braced-frame-hospital-clay-v001",
+  "glb": "clay-braced-frame-hospital-clay-v001.glb",
+  "glb_bytes": 3663852,
+  "glb_sha256": "1dcaeae6c37198a12ac69fb41c7af4b64e0985520f7328fe87bd1d6e40aba5ff",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "braced_frame.png": 92,
+    "brick_base.png": 92,
+    "entrance_canopy.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_canopy.png": 92,
+    "roof_plant.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-braced-frame-hospital-clay-v001-renders-and-glb.zip",
+  "zip_bytes": 35414437
+}

@@ -67,3 +67,13 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001
+
+- P1: no X-braced exoskeleton on the ward bar's south face above the clinical block and atrium (blank panel above the atrium)
+- P1: black full-height bar at the east wing's south-east corner; black seam and band at the entrance canopy junction
+- P1: black diamonds at every X-brace crossing and black dots at diagrid nodes
+- P1: three tall tiers plus a squat top tier instead of about five even near-square tiers
+- P1: atrium a hidden recess, not a projecting full-height glass volume with returns and a glass top
+- P1: open unscreened bays on a stepped offset make diagonal dark streaks across the clinical screen field
+- P2: no entrance doors under the canopy; frame ring overhangs the brick base without a cornice or columns to grade; brick tone and coursing; coarse perforation; dark interior; triple roof-vent shadows; narrow canopy; unresolved atrium/bar junction
