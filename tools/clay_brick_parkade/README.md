@@ -69,8 +69,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002
+## Open blockers after v003 (stopped: the same finding survived two targeted fixes)
 
-- P1: the two southern east-face deck bays read pale and open; in the source they are dark mullioned ribbon bands
-- P1: the south face's open-deck zone is split by two extra brick piers into three punched bays where the source has one wide brick-framed opening with recessed concrete columns and pale spandrels; the ribbon-bay spandrels are brick, not precast; the curtain-wall bay runs through deck 1 where the source has a punched window
-- P2: see evidence/v002/independent-review.md
+- P1: the south open-deck zone still reads as three stacked per-deck openings with brick bands between the decks and proud upstands, not one brick-framed void across decks 2 to 4 under a brick header with the upstands set back inside it (carried from v001 and v002)
+- P2: see evidence/v003/independent-review.md
