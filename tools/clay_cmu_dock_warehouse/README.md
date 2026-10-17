@@ -68,14 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (v002 targets every P1)
+## Open blockers after v002 (v003 targets every P1)
 
-1. P1: dock doors and shelters are square and about twice too wide (source doors are tall and narrow).
-2. P1: the block is too long and low; the shelters fill too much of the wall height.
-3. P1: the entry group and landing are shifted west, leaving too much blank wall at the south-east corner.
-4. P1: the CMU has bed joints only and reads as lap siding; head joints in running bond are missing.
-5. P1: the coping breaks at the south-east corner and leaves a notch with black specks.
-6. P1: the yellow guides are full-height stripes instead of short posts at the jamb feet.
-7. P1: the front camera mirrors the locked view (south-west instead of south-east).
-8. P1: a tree crown hides most of architecture_close.
-9. P1: the north man door reads as a window on an unreachable stoop.
+1. P1: dock doors and shelters still too tall for the wall (shelter tops about 68% of wall height against about 55%; door tops about 60% against about 43%).
+2. P1: the front camera looks almost straight at the south face; the east face is a sliver and the lower 40% of the frame is empty ground.
+3. P1: the grey cast-concrete dock base and the steel lip under each door are missing.
