@@ -25,6 +25,7 @@ export function usePavingEditor({
   onActivate,
   roads = [],
   obstacles = [],
+  initialTool,
 }: {
   surfaces: PavingSurface[];
   context: BenchContext;
@@ -33,15 +34,17 @@ export function usePavingEditor({
   onActivate: () => void;
   roads?: ParkingRoad[];
   obstacles?: number[][][];
+  initialTool?: 'parking';
 }) {
+  const startParking = initialTool === 'parking' && !locked && surfaces.length < 64;
   const [selected, setSelected] = useState<string | null>(null);
-  const [draft, setDraft] = useState<ParkPoint[] | null>(null);
+  const [draft, setDraft] = useState<ParkPoint[] | null>(startParking ? [] : null);
   const [target, setTarget] = useState<"surface" | "driveway" | number | null>(null);
   const [material, setMaterial] =
-    useState<PavingSurface["material"]>("concrete");
+    useState<PavingSurface["material"]>(startParking ? 'asphalt' : 'concrete');
   const [corner, setCorner] = useState(0);
-  const [message, setMessage] = useState("");
-  const [drawingParking, setDrawingParking] = useState(false);
+  const [message, setMessage] = useState(startParking ? 'Draw the lot outline on the plan. Use the first edge to aim the rows, then Finish parking lot.' : '');
+  const [drawingParking, setDrawingParking] = useState(startParking);
   const active = surfaces.find((s) => s.id === selected);
   const layouts = useMemo(() => new Map(surfaces.filter(s=>s.parking).map(s=>
     [s.id,parkingLayout(pavingLocalPoints(s.coordinates),s.parking!)])),[surfaces]);

@@ -6,15 +6,23 @@ import { usePavingEditor } from './PavingEditor';
 import { projectBenchContext, projectBenchFrame } from './projectBenches';
 import type { PavingSurface } from './pavingSurfaces';
 
-function Trial() {
+function Trial({initialTool}:{initialTool?:'parking'}={}) {
   const [surfaces, change] = useState<PavingSurface[]>([]);
   const context = projectBenchContext(projectBenchFrame([], []));
-  const editor = usePavingEditor({surfaces,change,context,locked:false,onActivate:()=>{}});
+  const editor = usePavingEditor({surfaces,change,context,locked:false,onActivate:()=>{},initialTool});
   return <>{editor.controls}<svg>{editor.plan}</svg>
     {[[0,0],[40,0],[40,18],[0,18],[30,18]].map(([x,y],i)=><button key={i} onClick={()=>editor.click({x,y})}>Point {i}</button>)}
     <output aria-label="Saved surface data">{JSON.stringify(surfaces)}</output></>;
 }
 describe('drawn parking controls',()=>{
+  it('starts the Streets shortcut ready to draw asphalt parking without changing saved surfaces',()=>{
+    render(<Trial initialTool="parking"/>);
+    expect(screen.getByRole('button',{name:'Finish parking lot'})).toBeDisabled();
+    expect(screen.getByLabelText('Saved surface data')).toHaveTextContent('[]');
+    for(let i=0;i<4;i++)fireEvent.click(screen.getByRole('button',{name:`Point ${i}`}));
+    fireEvent.click(screen.getByRole('button',{name:'Finish parking lot'}));
+    expect(JSON.parse(screen.getByLabelText('Saved surface data').textContent!)[0]).toMatchObject({material:'asphalt',parking:{version:1,rowAngle:0}});
+  });
   it('draws a lot, counts fixed spaces, changes direction and preserves its recipe when editing corners',()=>{
     render(<Trial/>);
     fireEvent.click(screen.getByRole('button',{name:'Draw parking lot'}));

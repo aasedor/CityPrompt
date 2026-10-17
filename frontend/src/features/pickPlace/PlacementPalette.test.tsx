@@ -5,6 +5,20 @@ import { PlacementPalette } from './PlacementPalette';
 import * as catalogue from './canonicalCatalogue';
 
 describe('student asset browsing', () => {
+  it('opens the parking drawing tool from Streets without selecting a road asset', () => {
+    const onDrawParkingLot=vi.fn(), onPickStreet=vi.fn(), onBrowseChange=vi.fn();
+    render(<PlacementPalette selected={null} onPick={vi.fn()} onPickCanonical={vi.fn()}
+      onPickStreet={onPickStreet} onDrawParkingLot={onDrawParkingLot} onBrowseChange={onBrowseChange}
+      onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button',{name:'Buildings'}));
+    expect(screen.queryByRole('button',{name:/Parking lots.*Draw parking lot/})).not.toBeInTheDocument();
+    fireEvent.click(screen.getAllByRole('button',{name:'Streets'})[1]);
+    fireEvent.click(screen.getByRole('button',{name:/Parking lots.*Draw parking lot/}));
+    expect(onDrawParkingLot).toHaveBeenCalledOnce();
+    expect(onPickStreet).not.toHaveBeenCalled();
+    expect(onBrowseChange).toHaveBeenLastCalledWith(false);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
   it('offers an explicit refresh when saved detailed models were unavailable', () => {
     const onRetry=vi.fn();
     render(<PlacementPalette onPickCanonical={vi.fn()} selected={null} onPick={vi.fn()} onCancel={vi.fn()}

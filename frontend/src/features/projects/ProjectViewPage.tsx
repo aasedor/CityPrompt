@@ -162,6 +162,7 @@ export function ProjectViewPage() {
   const [showPlanningReport, setShowPlanningReport] = useState(false);
   const [editingBenchDetails, setEditingBenchDetails] = useState(false);
   const [editingProjectDetails,setEditingProjectDetails]=useState(false);
+  const [projectDetailTool,setProjectDetailTool]=useState<'parking' | undefined>();
   const [showDetailCatalogue, setShowDetailCatalogue] = useState(false);
   const projectDetails=useProjectDetails(id);
   const detailPlacement = useDetailPlacement(projectDetails.data, async next => {
@@ -1257,6 +1258,15 @@ export function ProjectViewPage() {
               </div>} selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
                 status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry} canRefreshDetail={automatic3D.canRefreshDetail}
                 onBrowseChange={open => { setShowCatalogue(open); if (open) { setShowDetailCatalogue(false); detailPlacement.choose(null); } }}
+                onDrawParkingLot={async () => {
+                  const result = await projectDetails.refetch();
+                  if (!result.data) { toast.error('Parking lots could not load. Please try again.'); return; }
+                  if (!result.data.can_edit) { toast.error('You need edit access to draw a parking lot.'); return; }
+                  cancelPlacement(); setActiveSitePlannerTool(null); selectZone(null); setMeasureActive(false);
+                  useViewerStore.getState().setStreetViewActive(false);
+                  detailPlacement.choose(null); setShowDetailCatalogue(false);
+                  setProjectDetailTool('parking'); setEditingProjectDetails(true);
+                }}
                 onPickGenerated={model => {
                   setActiveSitePlannerTool(null); selectZone(null); setMeasureActive(false);
                   useViewerStore.getState().setStreetViewActive(false);
@@ -1343,10 +1353,10 @@ export function ProjectViewPage() {
         {showShare && <ShareModal projectId={project.id} projectName={project.name} onClose={() => setShowShare(false)} />}
         {showTour && <OnboardingTour placementMode forceShow onComplete={() => setShowTour(false)} />}
 
-        {editingProjectDetails && projectDetails.data && <ProjectDetailEditor project={project} zones={siteZones} data={projectDetails.data} onClose={()=>setEditingProjectDetails(false)}/>}
+        {editingProjectDetails && projectDetails.data && <ProjectDetailEditor project={project} zones={siteZones} data={projectDetails.data} initialTool={projectDetailTool} onClose={()=>setEditingProjectDetails(false)}/>}
         {showDetailCatalogue && <DetailPlacementPanel placement={detailPlacement} canEdit={Boolean(projectDetails.data?.can_edit)}
           onClose={() => { setShowDetailCatalogue(false); detailPlacement.choose(null); }}
-          onArrange={() => { detailPlacement.choose(null); setShowDetailCatalogue(false); setEditingProjectDetails(true); }} />}
+          onArrange={() => { detailPlacement.choose(null); setShowDetailCatalogue(false); setProjectDetailTool(undefined); setEditingProjectDetails(true); }} />}
         {/* Zone properties panel */}
         {selectedZone && !entrancePick && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <ReshapePanel key={`${selectedZone.id}:${JSON.stringify(selectedZone.coordinates)}`} zone={selectedZone} disabled={isSaving}

@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
-import { ArrowLeft, Building2, Trees, Route } from 'lucide-react';
+import { ArrowLeft, Building2, Trees, Route, ParkingSquare } from 'lucide-react';
 import type { PlaceAssetId } from './catalogue';
 import { STREET_ASSETS, type StreetAsset } from './assetRegistry';
 import { CANONICAL_CHOICES, CLASSROOM_CHOICES, UNAVAILABLE_CATALOGUE_ENTRIES, filterCanonicalChoices, preferredCatalogueVariant, type CanonicalSelection } from './canonicalCatalogue';
@@ -23,7 +23,8 @@ const classroomSummary = `${CLASSROOM_CHOICES.length} exact choices: ${classroom
 type Section = typeof sections[number]['id'];
 const filterStyle = 'min-h-11 min-w-0 rounded-lg border border-slate-400 bg-white px-3 text-sm text-slate-900';
 
-export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, canRefreshDetail, onPickStreet, activeStreetVariant, onBrowseChange, onPickCanonical, onPickGenerated, primaryAction }: {
+export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, canRefreshDetail, onPickStreet, activeStreetVariant, onBrowseChange, onPickCanonical, onPickGenerated, primaryAction, onDrawParkingLot }: {
+  onDrawParkingLot?: () => void;
   primaryAction?: ReactNode;
   selected: PlaceAssetId | null; onPick: (id: PlaceAssetId) => void; onCancel: () => void;
   status: string; message: string; onRetry: () => void; canRefreshDetail?: boolean;
@@ -127,6 +128,14 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
           </button>}
         </div>
         <div key={`${section}:${categoryView ? 'categories' : purposeId || 'all'}`} aria-label="Available objects" className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-1">
+          {section === 'street_pathway' && onDrawParkingLot && <button type="button"
+            onClick={() => { close(); onDrawParkingLot(); }}
+            className="mb-3 flex min-h-20 w-full items-center gap-4 rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-4 text-left text-slate-950 hover:bg-lime-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+            <span className="rounded-lg border-2 border-slate-900 bg-[#c9ff3d] p-3"><ParkingSquare size={26} aria-hidden="true" /></span>
+            <span className="grid gap-1"><span className="text-base font-extrabold">Parking lots</span>
+              <span className="text-sm">Draw an outline with fixed-size bays and connect it to a road.</span>
+              <span className="text-sm font-bold underline">Draw parking lot</span></span>
+          </button>}
           {categoryView ? <CatalogueCategoryTiles domain={section} choices={choices} onChoose={choosePurpose}
             onBrowseAll={() => { clearFilters(); setCategoryView(false); }}
             onGenerated={section === 'building' && onPickGenerated ? () => { clearFilters(); setGroupId('user-generated'); setCategoryView(false); } : undefined} />

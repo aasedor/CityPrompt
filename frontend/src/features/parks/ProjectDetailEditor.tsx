@@ -33,11 +33,13 @@ export function ProjectDetailEditor({
   zones,
   data,
   onClose,
+  initialTool,
 }: {
   project: Project;
   zones: SiteZone[];
   data: ProjectDetails;
   onClose: () => void;
+  initialTool?: 'parking';
 }) {
   const queryClient = useQueryClient();
   // Keep the opened revision: concurrent writes must never replace this draft silently.
@@ -66,6 +68,7 @@ export function ProjectDetailEditor({
   );
   return createPortal(
     <BenchLayoutEditor
+      initialTool={initialTool}
       title={project.name}
       context={context}
       initialBenches={readProjectDetails(source, context)}

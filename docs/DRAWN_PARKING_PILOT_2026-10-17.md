@@ -15,7 +15,9 @@ Open the local app at `http://127.0.0.1:5184`. The disposable project is
 “Drawn parking lots · local pilot”. It belongs to the existing local Animation
 browser QA account. No real user project was altered.
 
-Choose **Add details → Arrange details & custom paving → Draw parking lot**.
+Choose **Design → Streets → Parking lots → Draw parking lot**. The plan opens
+with corner placement active. The original **Add details → Arrange details &
+custom paving** route remains available for editing saved lots and other details.
 Click outline corners in the plan, then **Finish parking lot** and **Save details**.
 Select its outlined shape in the plan to edit it. Choose rows along/across the
 first edge, rotate the whole lot by 15 degrees, move its centre or individual

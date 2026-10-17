@@ -109,6 +109,7 @@ export function BenchLayoutEditor({
   contextZones = [],
   initialSurfaces = [],
   publicRoadContext,
+  initialTool,
 }: {
   context: BenchContext;
   initialBenches: DetailBench[];
@@ -122,6 +123,7 @@ export function BenchLayoutEditor({
   contextZones?: SiteZone[];
   initialSurfaces?: PavingSurface[];
   publicRoadContext?: PublicRoadContext;
+  initialTool?: 'parking';
 }) {
   const [benches, setBenches] = useState(initialBenches);
   const [surfaces, setSurfaces] = useState(initialSurfaces);
@@ -195,6 +197,7 @@ export function BenchLayoutEditor({
     setMessage("");
   };
   const paving = usePavingEditor({
+    initialTool,
     surfaces,
     context,
     locked,
@@ -388,7 +391,7 @@ export function BenchLayoutEditor({
           <div>
             <h2 id="bench-editor-title" className="text-lg font-bold">
               {independent
-                ? "Edit community details"
+                ? initialTool === 'parking' ? 'Draw parking lot' : "Edit community details"
                 : "Edit park details · benches"}
             </h2>
             <p className="text-xs">
@@ -408,9 +411,11 @@ export function BenchLayoutEditor({
           </button>
         </header>
         <p className="mb-3 text-sm">
+          {initialTool === 'parking' ? 'Click the lot corners on this plan, then Finish parking lot. Select a saved lot to move it, change its rows or connect it to a road. Save to update the 3D scene.' : <>
           Select {independent ? "an object" : "a bench"} on this plan, then drag
           it or use the move buttons. Small objects can only be edited here.
           Save to update the 3D scene.
+          </>}
         </p>
         <div className="grid min-h-0 gap-4 md:grid-cols-[minmax(0,1fr)_240px]">
           <div className="min-w-0">

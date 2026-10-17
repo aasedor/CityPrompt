@@ -7,6 +7,10 @@ user scenes, migrations, providers, LFS rules or binary assets were changed.
 
 ## Try the development
 
+To start a new lot, choose **Design → Streets → Parking lots → Draw parking
+lot**. The existing plan editor opens ready for corner placement. Saved lots
+remain editable through **Add details → Arrange details & custom paving**.
+
 Local frontend `http://127.0.0.1:5184`; API port 8012. Open
 `/projects/dd6893db-311c-470d-8023-b223b3d56eb6`, “Drawn parking lots · local pilot”,
 using the existing local Animation browser QA account. The API was guarded
@@ -192,6 +196,17 @@ Generated evidence is outside Git at
   are intentionally included in the report or receipt inventory.
 
 ## Changes and next gate
+
+Same-day Streets entry update: added a styled Parking lots card without changing
+saved recipes, catalogue IDs or placement geometry. Verified the actual browser
+shortcut, cancellation, the saved 48-space lot and 6 m connected driveway, and
+normal Add Details reopening without an unwanted parking draft. All 36 focused
+tests across six files, TypeScript and changed-file ESLint passed. Production
+code build passed (3,815 modules, 18.25 s) with existing chunk/import warnings;
+public assets were not duplicated (`copyPublicDir:false`). Independent focused
+review reported no Critical/Important findings. Screenshot:
+`C:/dev-artifacts/CityPrompt/connected-development-2026-10-17/streets-parking-card.png`.
+This navigation change remains local only.
 
 Sources: new `parkingDriveway.ts` and tests; optional driveway recipe in
 `parkingLot.ts` and backend API; road/context adapters and save validation in
