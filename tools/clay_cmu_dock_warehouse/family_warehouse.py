@@ -17,15 +17,16 @@ import assemblies as A
 import geometry as G
 
 SLUG = 'clay-cmu-dock-warehouse'
-X0, X1, Y0, Y1 = -17.0, 17.0, -13.0, 13.0       # 34 x 26 m block (top view: width about 1.3 x depth)
+X0, X1, Y0, Y1 = -15.0, 15.0, -11.5, 11.5       # 30 x 23 m block (top view: width about 1.3 x depth)
 T = .30
 G0 = .15
 FL = 1.2                                          # dock-height floor
-EAVE = 7.0                                        # top of the CMU wall
+EAVE = 8.4                                        # top of the CMU wall (about 41 block courses to the coping)
 PARA = EAVE + .4
 EPS = .002
-DOCKS = [-14.0, -9.6, -5.2, -0.8]                # dock door centres along the south face (west half)
-ENTRY = 4.6                                       # entry door centre
+DOCKS = [-11.8, -7.4, -3.0, 1.4]                 # dock door centres along the south face (west half)
+DOCK_W, DOCK_H = 2.3, 4.0                         # tall, narrow sectional doors
+ENTRY = 8.4                                       # entry door centre
 PALETTE = dict(wall=(.72, .64, .50), joint=(.62, .55, .43), trim=(.70, .72, .73),
     pale=(.88, .88, .86), stone=(.66, .65, .62), roof=(.50, .52, .54), sand=(.66, .64, .60),
     foundation=(.46, .46, .45), glass=(.38, .46, .50), hardware=(.14, .14, .15),
@@ -41,16 +42,16 @@ def manifest(version):
         ('facade_close', (-6.0, -30.0, 4.5), (-6.0, Y0, 4.0), 45),
         ('architecture_close', (24.0, -24.0, 6.0), (X1, Y0, 4.5), 45),
         ('glass_close', (ENTRY + 1.5, -22.0, 2.6), (ENTRY + 1.5, Y0, 2.8), 45),
-        ('dock_doors', (-8.0, -20.0, 2.2), (-8.0, Y0, 2.6), 45),
+        ('dock_doors', (-5.2, -20.0, 2.6), (-5.2, Y0, FL + 2.0), 45),
         ('entry_canopy', (ENTRY - 4.0, -9.0 - 9.0, 3.4), (ENTRY, Y0, 3.6), 45),
         ('roof_units', (-12.0, -18.0, 16.0), (-2.0, 2.0, EAVE), 45),
         ('east_windows', (30.0, -8.0, 4.0), (X1, -6.0, 4.0), 45),
         ('parapet_corner', (24.0, -22.0, 12.0), (X1, Y0, PARA), 40),
         ('interior', (12.0, -2.5, FL + 1.7), (-12.0, -2.5, FL + 2.0), 40),
         ('rear_north', (0.0, 34.0, 5.0), (0.0, Y1, 4.0), 45)])
-    for c in cams:                       # the locked front and oblique look from the south-west street corner
+    for c in cams:                       # the locked front looks from the street south-east of the block, at eye level
         if c['name'] == 'front':
-            c['location'] = (-30.0, -36.0, 1.7); c['target'] = (-2.0, -6.0, 3.6); c['lens'] = 30; c['whole'] = False
+            c['location'] = (16.0, -40.0, 1.7); c['target'] = (-3.0, Y0 + 2.0, 4.6); c['lens'] = 28; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -315,34 +316,67 @@ class Batch:
 def cmu_face(f, lo, hi, holes, lite=False):
     """Painted CMU carrier from grade to the parapet with horizontal block coursing and a pale metal coping."""
     f.wall(f.label + ' CMU carrier', lo, hi - EPS, 0.0, PARA, depth=T, holes=holes)
-    G.brick_courses(f, lo + .02, hi - .02, .2, PARA - .1, holes, spacing=.2 if not lite else .4)
-    m = Merge(f)
-    m.box('pale', (lo + hi) / 2, (T - .08) / 2, PARA + .03, hi - lo - 2 * EPS, T + .08, .06)        # coping, ends butting the next face's
-    m.box('pale', (lo + hi) / 2, -.05, PARA - .08, hi - lo - 2 * EPS, .04, .2)                      # coping fascia
-    return m
+    course = .2 if not lite else .4
+    G.brick_courses(f, lo + .02, hi - .02, .2, PARA - .1, holes, spacing=course)
+    cmu_heads(f, lo + .02, hi - .02, .2, PARA - .1, holes, course)
+    return Merge(f)
+
+
+def cmu_heads(f, lo, hi, z0, z1, holes, course):
+    """Recessed head joints in running bond, two blocks per course length, so the coursing reads as block, not siding."""
+    block = 2 * course
+    vs, fs = [], []
+    row = 0
+    z = z0
+    while z + course <= z1:
+        u = lo + (block / 2 if row % 2 else block)
+        while u < hi - .05:
+            if not any(h['u'] - h['w'] / 2 - .06 < u < h['u'] + h['w'] / 2 + .06 and h['z'] - .06 < z + course and z < h['z'] + h['h'] + .06 for h in holes):
+                o = len(vs)
+                vs += [f.p(u - .004, -.002, z + .006), f.p(u + .004, -.002, z + .006), f.p(u + .004, -.002, z + course), f.p(u - .004, -.002, z + course)]
+                fs.append((o, o + 1, o + 2, o + 3))
+            u += block
+        z += course; row += 1
+    if fs:
+        C.mesh(f.label + ' CMU head joints', vs, fs, 'joint', 'brick joints')
+
+
+def coping():
+    """Pale metal coping and fascia as one continuous ring round the parapet, lapped at the corners."""
+    b = Batch()
+    b.box('pale', 0, Y0 + T / 2 - .04, PARA + .03, X1 - X0 + .16, T + .08, .06)
+    b.box('pale', 0, Y1 - T / 2 + .04, PARA + .03, X1 - X0 + .16, T + .08, .06)
+    b.box('pale', X0 + T / 2 - .04, 0, PARA + .03, T + .08, Y1 - Y0 - 2 * T, .06)
+    b.box('pale', X1 - T / 2 + .04, 0, PARA + .03, T + .08, Y1 - Y0 - 2 * T, .06)
+    b.box('pale', 0, Y0 - .05, PARA - .08, X1 - X0 + .14, .04, .2)
+    b.box('pale', 0, Y1 + .05, PARA - .08, X1 - X0 + .14, .04, .2)
+    b.box('pale', X0 - .05, 0, PARA - .08, .04, Y1 - Y0 + .06, .2)
+    b.box('pale', X1 + .05, 0, PARA - .08, .04, Y1 - Y0 + .06, .2)
+    b.flush('coping')
 
 
 def south_face():
     f = C.Face((0, Y0, 0), (1, 0, 0), (0, 1, 0), 'south')
     lo, hi = X0, X1
-    holes = [hole(f'dock door {i}', u, FL, 3.0, 3.0, kind='dock') for i, u in enumerate(DOCKS)]
+    holes = [hole(f'dock door {i}', u, FL, DOCK_W, DOCK_H, kind='dock') for i, u in enumerate(DOCKS)]
     door = hole('entry door', ENTRY, FL, 1.9, 2.4, kind='door')
     win = hole('entry window', ENTRY + 3.4, FL + .85, 2.9, 1.75)
     holes += [door, win]
     m = cmu_face(f, lo, hi, holes)
     for h in holes[:4]:                                                   # loading bays
         u = h['u']
+        jx = DOCK_W / 2 + .22
         for e in (-1, 1):
-            m.box('dock', u + e * 1.72, -.18, FL + 1.55, .44, .36, 3.5)                # dark steel surround jambs
-            m.box('bumper', u + e * 1.15, -.13, FL - .28, .34, .26, .42)               # dock bumpers
-            m.box('yellow', u + e * 1.72, -.37, FL + 1.2, .06, .02, 2.2)               # yellow guide stripe on the jamb
-        m.box('dock', u, -.21, FL + 3.32, 3.92, .42, .6)                                  # header, proud of the jambs
-        m.box('dock', u, -.06, FL - .02, 2.7, .12, .1)                                    # leveller lip
-        m.box('door', u, .14, FL + 1.5, 2.98, .04, 2.98)                                  # sectional door
-        for k in range(1, 5):
-            m.box('trim', u, .115, FL + .6 * k, 2.96, .02, .03)                           # panel joints
+            m.box('dock', u + e * jx, -.18, FL + (DOCK_H + .35) / 2 - .3, .44, .36, DOCK_H + .35)   # dark steel surround jambs
+            m.box('bumper', u + e * .85, -.13, FL - .28, .34, .26, .42)                    # dock bumpers
+            m.box('yellow', u + e * (jx + .45), -.55, .65, .16, .16, 1.2)                   # short yellow guide post at the jamb foot
+        m.box('dock', u, -.21, FL + DOCK_H + .32, 2 * jx + .44, .42, .6)                    # header, proud of the jambs
+        m.box('dock', u, -.06, FL - .02, DOCK_W - .3, .12, .1)                              # leveller lip
+        m.box('door', u, .14, FL + DOCK_H / 2, DOCK_W - .02, .04, DOCK_H - .02)            # sectional door
+        for k in range(1, 6):
+            m.box('trim', u, .115, FL + DOCK_H * k / 6, DOCK_W - .04, .02, .03)            # panel joints
         for k in range(4):
-            m.box('glass', u - 1.05 + k * .7, .11, FL + 1.9, .42, .02, .22)               # row of small lites
+            m.box('glass', u - .75 + k * .5, .11, FL + DOCK_H * 3.5 / 6, .32, .02, .22)    # row of small lites
         C.OPENINGS.append(dict(id=h['id'], face=f.label, u=u, z=h['z'], width=h['w'], height=h['h'], kind='overhead dock door', clear_wall_cut=True,
             carrier_depth_m=T, frame_inset_m=.12, pane_inset_m=.14, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='warehouse'))
     framed(m, f, door, cols=2, rows=1, inset=.14, occupied='office lobby', kind='entry door')
@@ -357,7 +391,7 @@ def south_face():
         C.rod('Canopy hanger rod', f.p(ENTRY + e * 1.5, -1.38, cz + .09), f.p(ENTRY + e * 1.7, -.02, cz + 1.45), .025, 'hardware', 'entry', 6)
         C.box('Canopy rod anchor', f.p(ENTRY + e * 1.7, -.03, cz + 1.45), (.16, .06, .16), 'hardware', 'entry', 0)
     # Cast-concrete landing in front of the entry, steps down at its west end.
-    lx0, lx1 = ENTRY - 3.0, ENTRY + 5.6
+    lx0, lx1 = ENTRY - 3.0, ENTRY + 4.9                                  # ends at the office window
     C.box('Entry landing', ((lx0 + lx1) / 2, Y0 - 1.1, FL / 2), (lx1 - lx0, 2.2, FL), 'concrete', 'entry', 0)
     for k in range(4):
         top = FL - (k + 1) * FL / 5
@@ -367,7 +401,7 @@ def south_face():
 def other_faces():
     e = C.Face((X1, 0, 0), (0, 1, 0), (-1, 0, 0), 'east')
     hd = (Y1 - Y0) / 2
-    hs = [hole('east low window', -hd + 2.4, FL + .85, 1.3, 1.75)] + [hole(f'east clerestory {k}', u, 5.0, .8, 1.0) for k, u in enumerate((-4.5, 1.5))]
+    hs = [hole('east low window', -hd + 2.4, FL + .85, 1.3, 1.75)] + [hole(f'east clerestory {k}', u, 6.2, .8, 1.0) for k, u in enumerate((-4.5, 1.5))]
     m = cmu_face(e, -hd + T, hd - T, hs)
     for h in hs:
         framed(m, e, h, cols=2 if h['w'] > 1 else 1, rows=1, inset=.14, occupied='office' if h['w'] > 1 else 'warehouse')
@@ -375,14 +409,23 @@ def other_faces():
     m.flush('east')
     n = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'north')
     hw = (X1 - X0) / 2
-    hs = [hole('north service door', 6.0, FL, 1.0, 2.2, kind='door')] + [hole(f'north high window {k}', u, 5.0, .8, 1.0) for k, u in enumerate((-10.0, 0.0, 10.0))]
+    hs = [hole('north service door', 6.0, FL, 1.0, 2.2, kind='door')] + [hole(f'north high window {k}', u, 6.2, .8, 1.0) for k, u in enumerate((-10.0, 0.0, 10.0))]
     m = cmu_face(n, -hw, hw, hs, lite=True)
     for h in hs:
         framed(m, n, h, cols=1, rows=1, inset=.14, occupied='warehouse', kind=h.get('kind', 'window'), lite=True)
+    m.box('hardware', 6.0, .1, FL + 1.1, .94, .04, 2.16)                                    # solid steel door leaf
+    m.box('pale', 6.3, .07, FL + 1.05, .12, .03, .04)                                         # lever handle
     m.box('concrete', 6.0, -.9, FL / 2, 2.4, 1.8, FL)                                        # stoop at the service door
+    for k in range(4):                                                                       # steps down to the lane
+        top = FL - (k + 1) * FL / 5
+        m.box('concrete', 6.0, -1.8 - .15 - k * .3, top / 2, 1.6, .3, top)
+    for e in (-1, 1):                                                                        # handrail posts and rail
+        m.box('hardware', 6.0 + e * .75, -1.6, FL + .5, .05, .05, 1.0)
+        m.box('hardware', 6.0 + e * .75, -3.2, .55, .05, .05, 1.0)
+        C.beam('Stair handrail', n.p(6.0 + e * .75, -1.6, FL + 1.0), n.p(6.0 + e * .75, -3.2, 1.05), .05, .05, 'hardware', 'north')
     m.flush('north')
     w = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west')
-    hs = [hole(f'west high window {k}', u, 5.0, .8, 1.0) for k, u in enumerate((-5.0, 5.0))]
+    hs = [hole(f'west high window {k}', u, 6.2, .8, 1.0) for k, u in enumerate((-5.0, 5.0))]
     m = cmu_face(w, -hd + T, hd - T, hs, lite=True)
     for h in hs:
         framed(m, w, h, cols=1, rows=1, inset=.14, occupied='warehouse', lite=True)
@@ -441,7 +484,7 @@ def site():
         b.box('glass', x - .3, y, 1.45, 2.2, 1.7, .55)
         b.box('car', x - .3, y, 1.75, 2.2, 1.75, .06)
     b.flush('site')
-    for x, y in ((X0 - 3.5, Y0 - 1.0), (X1 + 2.0, Y0 - 5.5)):
+    for x, y in ((X0 - 3.5, Y0 - 1.0), (X1 + 7.0, Y1 - 2.0)):           # clear of the south-east corner views
         street_tree(x, y, z=.06, height=7.5, spread=2.0)
 
 
@@ -449,6 +492,7 @@ def build():
     site()
     south_face()
     other_faces()
+    coping()
     roof_and_interior()
     C.CONTACTS.append(dict(name='Single-storey CMU warehouse: docks along the west half of the south face, hung canopy over the entry, flat parapet roof', box=[X0, X1, Y0, Y1]))
 
