@@ -3,7 +3,7 @@ import { deflateSync } from 'node:zlib';
 
 const DATA_CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|streetPathArchetypes|nativeParks|nativeStreetPilots|archetypeReferenceAvailability|legoFamilySignatures|validationCatalogue|buildingWalkDoors|cataloguePresentation|classroomExpansion)\.json$/;
 
-const FEATURE_CATALOGUES = /\/src\/features\/(?:parks\/(?:detailCatalogueExtras|recoveredDetails)|zoningCatalogue\/(?:buildingPrograms|parkPrograms|districtRules))\.json$/;
+const FEATURE_CATALOGUES = /\/src\/features\/(?:parks\/(?:detailCatalogueExtras|recoveredDetails|trafficSafetyCatalogue)|zoningCatalogue\/(?:buildingPrograms|parkPrograms|districtRules))\.json$/;
 
 /** Retain all legacy IDs, reference paths and prompts without compiling several
  * megabytes of JSON into JavaScript object literals. Three already ships this

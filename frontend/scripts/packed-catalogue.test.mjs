@@ -7,6 +7,17 @@ import assert from 'node:assert/strict';
 import { packCatalogue, packedCatalogue } from './packed-catalogue.mjs';
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
+
+test('the production traffic-safety catalogue preserves all variants and placement contracts in a compact module', async () => {
+  const filename = resolve('src/features/parks/trafficSafetyCatalogue.json');
+  const source = readFileSync(filename, 'utf8');
+  const transformed = packedCatalogue().transform('', filename);
+  assert.notEqual(transformed, null);
+  const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
+  assert.deepEqual(decoded.default, JSON.parse(source));
+  assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * 0.55);
+});
 for (const filename of ['buildingArchetypes.json', 'openSpaceArchetypes.json', 'streetPathArchetypes.json', 'nativeParks.json', 'nativeStreetPilots.json', 'archetypeReferenceAvailability.json', 'legoFamilySignatures.json', 'validationCatalogue.json', 'buildingWalkDoors.json', 'cataloguePresentation.json', 'classroomExpansion.json', '../features/parks/detailCatalogueExtras.json', '../features/parks/recoveredDetails.json', '../features/zoningCatalogue/buildingPrograms.json', '../features/zoningCatalogue/parkPrograms.json', '../features/zoningCatalogue/districtRules.json']) {
   test(`${filename}: browser decoder preserves every catalogue field`, async () => {
     const source = readFileSync(resolve('src/data', filename), 'utf8');
