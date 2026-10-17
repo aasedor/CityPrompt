@@ -7,7 +7,7 @@ ring of raking steel V-columns; above it an exposed structural steel facade of c
 the south and west, round the south-west corner, in a band of translucent silver-white diamond ETFE
 cushions. Over the bowl a steel truss roof ring: a deep perimeter truss on the facade line, radial trusses
 falling to an inner compression ring, translucent panels between them. Inside, a continuous seating bowl
-rising from a natural-grass pitch whose long axis runs north-south.
+rising from a natural-grass pitch whose long axis follows the bowl's.
 """
 import math
 import clay_core as C
@@ -22,9 +22,9 @@ G0 = .15
 ZC = 7.0                                        # concourse level, top of the grade glazing
 ZF = 26.0                                       # top of the facade, foot of the perimeter truss
 ZT = 36.0                                       # top chord of the perimeter truss
-IX, IY, IR = 56.0, 64.0, 16.0                   # inner compression ring (roof opening)
+IX, IY, IR = 68.0, 52.0, 16.0                   # inner compression ring (roof opening)
 ZI0, ZI1 = 29.5, 33.0                           # bottom and top chords at the inner ring
-PX, PY = 34.0, 52.0                             # pitch with run-off, long axis north-south
+PX, PY = 52.0, 34.0                             # pitch with run-off, long axis east-west along the bowl
 ZB = 22.0                                       # back row of the seating bowl
 EPS = .002
 PALETTE = dict(wall=(.70, .70, .68), joint=(.60, .60, .58), trim=(.62, .64, .66),
@@ -52,14 +52,14 @@ def manifest(version):
         ('rear_north', (0.0, AY + 130.0, 30.0), (0.0, AY, 20.0), 35)])
     for c in cams:                       # the locked front looks at the south face from the street, at eye level
         if c['name'] == 'front':
-            c['location'] = (-46.0, -AY - 78.0, 1.8); c['target'] = (22.0, -AY + 18.0, 19.0); c['lens'] = 22; c['whole'] = False
+            c['location'] = (-40.0, -AY - 92.0, 1.8); c['target'] = (2.0, -AY + 14.0, 18.0); c['lens'] = 19; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='outdoor_sports_stadium/variant_0 (contemporary_steel_etfe_bowl)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=3, storey_programme='glazed concourse at grade, upper concourse behind the facade, continuous seating bowl to the back row, truss roof ring',
-            plan='192 x 160 m rounded rectangle (top view); pitch 68 x 104 m with run-off, long axis north-south; inner roof opening 112 x 128 m',
+            plan='192 x 160 m rounded rectangle (top view); pitch 104 x 68 m with run-off, long axis east-west along the bowl; stands of near-equal depth; inner roof opening 136 x 104 m',
             facade='raking steel V-columns before the grade glazing; exposed crossing steel diagonals to the roof; diamond ETFE cushion band on the south and west, round the south-west corner',
             levels_m=[G0, ZC, ZB, ZF], roof_m=dict(perimeter_truss=[ZF, ZT], inner_ring=[ZI0, ZI1]),
             inferred='tier count, concourse depth and the north and east facades are teaching assumptions; the north face is not visible in any source and repeats the exposed-steel grammar'),
@@ -382,56 +382,58 @@ def lerp_ring(a, b, f):
 
 
 def bowl():
-    """Continuous seating bowl: a stepped section lofted between the pitch edge and the back row."""
+    """Continuous seating bowl: a stepped section lofted between the pitch edge and the back row, with a stepped
+    soffit over the concourse so the raking stands read behind the open facade."""
     inner, outer = rr(PX + 6.0, PY + 6.0, 8.0), rr(AX - 9.0, AY - 9.0, R - 6.0)
     NS = 14
     z0 = 1.4
+    zk = [z0 + (ZB - z0) * k / NS for k in range(NS + 1)]
     prof = [(0.0, G0), (0.0, z0)]
     for k in range(NS):
-        f1 = (k + 1) / NS
-        za = z0 + (ZB - z0) * k / NS
-        zb = z0 + (ZB - z0) * (k + 1) / NS
-        prof += [(f1, za), (f1, zb)]
-    prof += [(1.0, ZB + 1.1), (1.0 + .02, ZB + 1.1), (1.0 + .02, ZC), (.62, G0 + 3.2), (.62, G0)]
+        prof += [((k + 1) / NS, zk[k]), ((k + 1) / NS, zk[k + 1])]
+    prof += [(1.0, ZB + 1.1), (1.02, ZB + 1.1)]
+    KC = 5                                                                # the soffit steps down to the concourse here
+    for k in range(NS - 1, KC - 1, -1):
+        prof += [((k + 1) / NS + (.02 if k == NS - 1 else 0.0), zk[k] - 1.2), (k / NS, zk[k] - 1.2)]
+    prof += [(KC / NS, G0)]
     rings = []
     for p, q in zip(inner, outer):
-        ring = []
-        for f, z in prof:
-            ring.append((p[0] + (q[0] - p[0]) * f, p[1] + (q[1] - p[1]) * f, z))
-        rings.append(ring[::-1])
+        rings.append([(p[0] + (q[0] - p[0]) * f, p[1] + (q[1] - p[1]) * f, z) for f, z in prof][::-1])
     loft('Seating bowl', rings, 'seat', 'bowl')                          # grey seat rows read as the stepped treads
     b = Batch()
-    for i in range(0, len(inner), 7):                                     # aisle stairs
+    for i in range(0, len(inner), 7):                                     # aisle steps bedded on each tread
         p, q = inner[i], outer[i]
-        b.beam('pale', (p[0], p[1], z0 + .05), (q[0] + (p[0] - q[0]) * .02, q[1] + (p[1] - q[1]) * .02, ZB + .05), 1.4, .12)
-    b.flush('bowl seats')
-    C.CONTACTS.append(dict(name='Seating bowl from the pitch edge to the back row, on the concourse structure', rows=NS, back_row_m=ZB))
+        for k in range(NS):
+            f = (k + .5) / NS
+            b.box('pale', p[0] + (q[0] - p[0]) * f, p[1] + (q[1] - p[1]) * f, zk[k] + .1, 1.3, 1.3, .2)
+    b.flush('bowl aisles')
+    C.CONTACTS.append(dict(name='Seating bowl from the pitch edge to the back row, stepped soffit over the concourse', rows=NS, back_row_m=ZB))
 
 
 def pitch():
     C.box('Pitch apron', (0, 0, .08), (2 * (PX + 6.0) + 2.0, 2 * (PY + 6.0) + 2.0, .16), 'track', 'pitch', 0)
-    n = 12
+    n = 14
     for k in range(n):
-        y = -PY + (k + .5) * 2 * PY / n
-        C.box('Pitch stripe', (0, y, .2), (2 * PX, 2 * PY / n, .08), 'pitch' if k % 2 else 'pitch2', 'pitch', 0)
+        x = -PX + (k + .5) * 2 * PX / n
+        C.box('Pitch stripe', (x, 0, .2), (2 * PX / n, 2 * PY, .08), 'pitch' if k % 2 else 'pitch2', 'pitch', 0)
     b = Batch()
     w = .14
-    for x in (-PX + 2.0, PX - 2.0):
-        b.box('line', x, 0, .25, w, 2 * PY - 4.0, .02)
-    for y in (-PY + 2.0, 0.0, PY - 2.0):
+    for y in (-PY + 2.0, PY - 2.0):
         b.box('line', 0, y, .25, 2 * PX - 4.0, w, .02)
+    for x in (-PX + 2.0, 0.0, PX - 2.0):
+        b.box('line', x, 0, .25, w, 2 * PY - 4.0, .02)
     for k in range(32):
         t0, t1 = k * math.tau / 32, (k + 1) * math.tau / 32
         b.beam('line', (9.15 * math.cos(t0), 9.15 * math.sin(t0), .25), (9.15 * math.cos(t1), 9.15 * math.sin(t1), .25), w, .02)
     for s in (-1, 1):
-        yb = s * (PY - 2.0)
-        for x0, x1, dy in ((-20.15, 20.15, 16.5), (-9.16, 9.16, 5.5)):
-            b.box('line', 0, yb - s * dy, .25, x1 - x0, w, .02)
-            for x in (x0, x1):
-                b.box('line', x, yb - s * dy / 2, .25, w, dy, .02)
-        b.box('white', 0, yb + s * .9, .26 + 2.44, 7.44, .12, .12)
-        for x in (-3.72, 3.72):
-            b.box('white', x, yb + s * .9, .26 + 1.22, .12, .12, 2.44)
+        xb = s * (PX - 2.0)
+        for y0, y1, dx in ((-20.15, 20.15, 16.5), (-9.16, 9.16, 5.5)):
+            b.box('line', xb - s * dx, 0, .25, w, y1 - y0, .02)
+            for y in (y0, y1):
+                b.box('line', xb - s * dx / 2, y, .25, dx, w, .02)
+        b.box('white', xb + s * .9, 0, .26 + 2.44, .12, 7.44, .12)
+        for y in (-3.72, 3.72):
+            b.box('white', xb + s * .9, y, .26 + 1.22, .12, .12, 2.44)
     b.flush('pitch markings')
 
 
@@ -463,25 +465,33 @@ def concourse():
 
 
 def facade():
-    """Raking V-columns at grade, crossing diagonals to the roof ring, ring beams, and the ETFE band."""
+    """Raking V-columns at grade, long diagonals crossing from the concourse ring to the roof ring, and the ETFE band."""
     ring = rr(AX, AY, R)
     n = len(ring)
     b = Batch()
     for i in range(n):
-        p, q = ring[i], ring[(i + 1) % n]
+        p, q, q2 = ring[i], ring[(i + 1) % n], ring[(i + 2) % n]
         mid = ((p[0] + q[0]) / 2, (p[1] + q[1]) / 2)
         b.beam('steel', (p[0], p[1], G0), (mid[0], mid[1], ZC), .55)            # V-columns
         b.beam('steel', (q[0], q[1], G0), (mid[0], mid[1], ZC), .55)
-        b.beam('steel', (p[0], p[1], ZC), (q[0], q[1], ZF), .5)                 # crossing diagonals
-        b.beam('steel', (q[0], q[1], ZC), (p[0], p[1], ZF), .5)
-        for z in (ZC, (ZC + ZF) / 2, ZF):
-            b.beam('steel', (p[0], p[1], z), (q[0], q[1], z), .6, .7)          # ring beams
-        b.beam('steel', off(p, 0, ZB + 1.0), off(p, -9.0, ZB + 1.0), .4)      # ties back to the bowl
-        b.box('foundation', p[0], p[1], G0 / 2 + .1, 1.0, 1.0, G0 + .2)
+        b.beam('steel', (p[0], p[1], ZC), (q2[0], q2[1], ZF), .5)              # long crossing diagonals over two bays
+        b.beam('steel', (q2[0], q2[1], ZC), (p[0], p[1], ZF), .5)
+        for z in (ZC, ZF):
+            b.beam('steel', (p[0], p[1], z), (q[0], q[1], z), .6, .7)          # concourse and roof ring beams
+        b.box('foundation', p[0], p[1], G0 / 2 + .1, 1.2, 1.2, G0 + .2)
+        b.box('steel', p[0], p[1], G0 + .35, .9, .9, .5)                       # cast nodes at every joint
+        b.box('steel', mid[0], mid[1], ZC, .95, .95, .95)
+        b.box('steel', p[0], p[1], ZC, .95, .95, .95)
+        b.box('steel', p[0], p[1], ZF, .95, .95, .95)
     b.flush('facade steel')
-    # ETFE band: south and west faces round the south-west corner.
+    # Upper concourse floors between the facade and the back of the stands.
+    outer, back = rr(AX - 1.0, AY - 1.0, R - 1.0), rr(AX - 9.0, AY - 9.0, R - 6.0)
+    for z in (14.6,):
+        rings = [[off(p, 0, z - .4), off(p, 0, z), off(q, 0, z), off(q, 0, z - .4)] for p, q in zip(back, outer)]
+        loft('Upper concourse slab', rings, 'concrete', 'concourse')
+    # ETFE band: most of the west face and the western half of the south face, round the south-west corner.
     fine = rr(AX + .6, AY + .6, R + .6, 64, 56, 24)
-    sel = [p for p in fine if p[0] < 34.0 and p[1] < 14.0 and (p[2] < -.3 or p[3] < -.3)]
+    sel = [p for p in fine if p[0] < -8.0 and p[1] < 62.0 and (p[2] < -.3 or p[3] < -.3)]
     s = [0.0]
     for p, q in zip(sel, sel[1:]):
         s.append(s[-1] + math.hypot(q[0] - p[0], q[1] - p[1]))
@@ -500,26 +510,49 @@ def facade():
     E0, E1 = ZC + 1.2, ZF - .4
     rings = [[at(t, .2, E0), at(t, .4, E0), at(t, .4, E1), at(t, .2, E1)] for t in s]
     loft('ETFE backing', rings, 'etfeback', 'etfe', closed=False)
-    a, hb = 3.0, 1.9
+    rows = 7
+    hb = (E1 - E0) / (rows + 1)                                           # diamond half-height
+    a = 1.1 * hb                                                          # half-width: diamonds about 2.2 : 1 wide
+    M = 3
     vs, fs = [], []
-    rows = int((E1 - E0) / hb) - 1
-    for r_ in range(rows + 1):
-        zc = E0 + hb + r_ * hb
+    lv, lf = [], []
+    b = Batch()
+    for r_ in range(rows + 2):
+        zc = E0 + r_ * hb
         for k in range(int(L / (2 * a)) + 2):
             tc = (2 * k + (r_ % 2)) * a
-            if tc - a < 0 or tc + a > L or zc - hb < E0 - .01 or zc + hb > E1 + .01:
+            if tc + a < 0 or tc - a > L:
                 continue
+            corners = [(tc - a, zc), (tc, zc - hb), (tc + a, zc), (tc, zc + hb)]   # left, bottom, right, top
             o = len(vs)
-            vs += [at(tc, .6, zc + hb), at(tc + a, .6, zc), at(tc, .6, zc - hb), at(tc - a, .6, zc), at(tc, 1.05, zc)]
-            fs += [(o, o + 4, o + 1), (o + 1, o + 4, o + 2), (o + 2, o + 4, o + 3), (o + 3, o + 4, o)]
-            fs += [(o, o + 1, o + 2, o + 3)]
+            for j in range(M + 1):
+                for i in range(M + 1):
+                    u, v = i / M, j / M
+                    t = (1 - u) * (1 - v) * corners[0][0] + u * (1 - v) * corners[1][0] + u * v * corners[2][0] + (1 - u) * v * corners[3][0]
+                    z = (1 - u) * (1 - v) * corners[0][1] + u * (1 - v) * corners[1][1] + u * v * corners[2][1] + (1 - u) * v * corners[3][1]
+                    t, z = min(max(t, 0.0), L), min(max(z, E0), E1)        # clamp to the band: flat, straight band edges
+                    vs.append(at(t, .6 + .42 * math.sin(math.pi * u) * math.sin(math.pi * v), z))
+            for j in range(M):
+                for i in range(M):
+                    q = o + j * (M + 1) + i
+                    fs.append((q, q + 1, q + M + 2, q + M + 1))
+            for (t0, z0_), (t1, z1_) in ((corners[0], corners[1]), (corners[1], corners[2])):   # thin frame lines on two edges
+                if E0 - .01 <= z0_ <= E1 + .01 and E0 - .01 <= z1_ <= E1 + .01 and 0 <= t0 <= L and 0 <= t1 <= L:
+                    dt, dz = t1 - t0, z1_ - z0_
+                    m_ = math.hypot(dt, dz); pt, pz = -dz / m_ * .05, dt / m_ * .05
+                    o = len(lv)
+                    lv += [at(t0 - pt, .64, z0_ - pz), at(t1 - pt, .64, z1_ - pz), at(t1 + pt, .64, z1_ + pz), at(t0 + pt, .64, z0_ + pz)]
+                    lf.append((o, o + 1, o + 2, o + 3))
     C.mesh('ETFE cushions', vs, fs, 'etfe', 'etfe')
-    b = Batch()
-    for z in (E0 - .1, E1 + .1):
+    C.mesh('ETFE frame lines', lv, lf, 'trim', 'etfe')
+    for z in (E0, E1):                                                    # edge frames
         for t0, t1 in zip(s, s[1:]):
-            b.beam('pale', at(t0, .62, z), at(t1, .62, z), .3, .3)
-    b.flush('etfe edges')
-    C.CONTACTS.append(dict(name='ETFE cushions on a backing band hung off the facade diagonals, south and west round the south-west corner', band_m=[E0, E1]))
+            b.beam('pale', at(t0, .62, z), at(t1, .62, z), .32, .32)
+    for t in (0.0, L):                                                    # end frames and returns
+        b.beam('pale', at(t, .62, E0), at(t, .62, E1), .32, .32)
+        b.beam('pale', at(t, .2, E0), at(t, .2, E1), .3, .8)
+    b.flush('etfe frames')
+    C.CONTACTS.append(dict(name='ETFE cushions on a backing band hung off the facade diagonals, west face and western south face', band_m=[E0, E1]))
 
 
 def roof():
@@ -532,53 +565,60 @@ def roof():
         b.beam('steel', (p[0], p[1], ZF + .4), (q[0], q[1], ZT), .45)             # perimeter truss webs
         b.beam('steel', (q[0], q[1], ZF + .4), (p[0], p[1], ZT), .45)
         b.beam('steel', (p[0], p[1], ZF), (p[0], p[1], ZT), .45)
+        b.box('steel', p[0], p[1], ZT, .95, .95, .95)
         pi, qi = inner[i], inner[(i + 1) % n]
         for z in (ZI0, ZI1):
             b.beam('steel', (pi[0], pi[1], z), (qi[0], qi[1], z), .8, .8)          # inner compression ring
+            b.box('steel', pi[0], pi[1], z, 1.0, 1.0, 1.0)
         b.beam('steel', (pi[0], pi[1], ZI0), (qi[0], qi[1], ZI1), .4)
         b.beam('steel', (pi[0], pi[1], ZI0), (pi[0], pi[1], ZI1), .4)
-        # Radial truss: top chord, bottom chord and a zigzag web.
+        if i % 2:
+            continue                                                           # radial trusses on every other station
         top = lambda f: (p[0] + (pi[0] - p[0]) * f, p[1] + (pi[1] - p[1]) * f, ZT + (ZI1 - ZT) * f)
         bot = lambda f: (p[0] + (pi[0] - p[0]) * f, p[1] + (pi[1] - p[1]) * f, ZF + .4 + (ZI0 - ZF - .4) * f)
-        b.beam('steel', top(0), top(1), .5, .6)
-        if i % 2:
-            continue                                                           # odd bays carry a rafter only
-        b.beam('steel', bot(0), bot(1), .4)
+        b.beam('steel', top(0), top(1), .9, .9)                                 # bold top chord, proud of the panels
+        b.beam('steel', bot(0), bot(1), .55)
         k = 5
         for j in range(k):
-            b.beam('steel', bot(j / k), top((j + 1) / k), .3)
-            b.beam('steel', top((j + 1) / k), bot((j + 1) / k), .3)
-        if i % 2 == 0:                                                         # cross bracing in the roof plane
-            pj = outer[(i + 2) % n]; pij = inner[(i + 2) % n]
-            for f0, f1 in ((0.0, .5), (.5, 1.0)):
-                a0 = (p[0] + (pi[0] - p[0]) * f0, p[1] + (pi[1] - p[1]) * f0, ZT + (ZI1 - ZT) * f0 + .4)
-                a1 = (pj[0] + (pij[0] - pj[0]) * f1, pj[1] + (pij[1] - pj[1]) * f1, ZT + (ZI1 - ZT) * f1 + .4)
-                b.beam('steel', a0, a1, .2)
-    for f in (.25, .5, .75):                                                 # purlin rings
+            b.beam('steel', bot(j / k), top((j + 1) / k), .4)
+            b.beam('steel', top((j + 1) / k), bot((j + 1) / k), .4)
+            b.box('steel', *top((j + 1) / k), .8, .8, .8)
+    for f in (.33, .67):                                                     # purlin rings, under the panels
         ring = lerp_ring(outer, inner, f)
         for i in range(n):
             p, q = ring[i], ring[(i + 1) % n]
-            z = ZT + (ZI1 - ZT) * f + .38
-            b.beam('steel', (p[0], p[1], z), (q[0], q[1], z), .22, .22)
+            z = ZT + (ZI1 - ZT) * f - .45
+            b.beam('steel', (p[0], p[1], z), (q[0], q[1], z), .3, .3)
     b.flush('roof steel')
-    strip('Roof panels', [(p[0], p[1]) for p in outer], [(p[0], p[1]) for p in inner], ZT + .5, ZI1 + .5, 'glass', 'roof')
-    C.CONTACTS.append(dict(name='Perimeter truss on the facade ring beam; radial trusses to the inner compression ring', perimeter_m=[ZF, ZT], inner_m=[ZI0, ZI1]))
+    strip('Roof panels', [(p[0], p[1]) for p in outer], [(p[0], p[1]) for p in inner], ZT - .05, ZI1 - .05, 'glass', 'roof')
+    C.CONTACTS.append(dict(name='Perimeter truss on the facade ring beam; radial trusses to the inner compression ring, panels between their chords', perimeter_m=[ZF, ZT], inner_m=[ZI0, ZI1]))
 
 
 def site():
-    C.box('Plaza', (0, 0, .03), (2 * AX + 36.0, 2 * AY + 36.0, .06), 'paving', 'site', 0)
-    C.box('South street', (0, -AY - 32.0, .01), (2 * AX + 120.0, 16.0, .02), 'asphalt', 'site', 0)
-    C.box('East street', (AX + 32.0, 0, .01), (16.0, 2 * AY + 48.0, .02), 'asphalt', 'site', 0)
-    C.box('West street', (-AX - 32.0, 0, .01), (16.0, 2 * AY + 48.0, .02), 'asphalt', 'site', 0)
+    plaza = rr(AX + 16.0, AY + 16.0, R + 16.0)
+    C.prism('Plaza', [(p[0], p[1]) for p in plaza], 'z', 0.0, .06, 'paving', 'site')
+    for name, y in (('South street', -AY - 30.0), ('North street', AY + 30.0)):
+        C.box(name, (0, y, .01), (2 * AX + 110.0, 16.0, .02), 'asphalt', 'site', 0)
+    for name, x in (('East street', AX + 30.0), ('West street', -AX - 30.0)):
+        C.box(name, (x, 0, .015), (16.0, 2 * AY + 110.0, .03), 'asphalt', 'site', 0)   # crosses over the east-west streets
     b = Batch()
     for x in range(-90, 91, 30):
-        b.box('hardware', x, -AY - 21.0, 4.0, .2, .2, 8.0)
-        b.box('hardware', x + .6, -AY - 21.0, 8.0, 1.4, .3, .2)
-    b.flush('site lighting')
+        b.box('hardware', x, -AY - 13.0, 4.0, .2, .2, 8.0)
+        b.box('hardware', x + .6, -AY - 13.0, 8.0, 1.4, .3, .2)
+    for k in range(-8, 9):                                                 # lane markings, clear of the crossings
+        x = k * 12.0
+        if abs(x) < AX + 18.0:
+            for y in (-AY - 30.0, AY + 30.0):
+                b.box('white', x, y, .025, 4.0, .16, .01)
+        y = k * 12.0
+        if abs(y) < AY + 18.0:
+            for x in (-AX - 30.0, AX + 30.0):
+                b.box('white', x, y, .035, .16, 4.0, .01)
+    b.flush('site lighting and markings')
     for x in (-110.0, -70.0, 60.0, 100.0):
-        street_tree(x, -AY - 22.5, z=.06, height=9.0, spread=2.4)
+        street_tree(x, -AY - 11.5, z=.06, height=9.0, spread=2.4)
     for y in (-60.0, 0.0, 60.0):
-        street_tree(-AX - 22.0, y, z=.06, height=9.0, spread=2.4)
+        street_tree(-AX - 11.5, y, z=.06, height=9.0, spread=2.4)
 
 
 def scale_review_scene():
