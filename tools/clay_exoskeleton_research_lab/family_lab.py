@@ -31,8 +31,8 @@ EPS = .002
 PALETTE = dict(wall=(.90, .90, .89), joint=(.80, .80, .79), trim=(.82, .84, .85),
     pale=(.88, .88, .87), stone=(.70, .70, .68), roof=(.70, .70, .68), sand=(.70, .68, .64),
     foundation=(.46, .46, .45), glass=(.52, .62, .66), hardware=(.18, .19, .20),
-    interior=(.86, .86, .84), floor=(.60, .60, .58), timber=(.50, .36, .22), blue=(.20, .40, .78),
-    green=(.30, .66, .38), yellow=(.86, .76, .20), planting=(.28, .42, .18), soil=(.22, .16, .10),
+    interior=(.86, .86, .84), floor=(.60, .60, .58), timber=(.50, .36, .22), blue=(.06, .30, .92),
+    green=(.10, .72, .26), yellow=(.98, .80, .04), planting=(.28, .42, .18), soil=(.22, .16, .10),
     concrete=(.66, .66, .64), white=(.94, .94, .93), steel=(.92, .92, .91), louvre=(.56, .58, .60),
     perf=(.80, .81, .82), asphalt=(.30, .30, .31), membrane=(.72, .72, .70), flue=(.74, .75, .76))
 
@@ -50,9 +50,11 @@ def manifest(version):
         ('stacks', (18.0, 20.0, 28.0), (3.0, 3.0, ROOF + 2.5), 45),
         ('interior', (8.0, 6.0, Z2 + 1.7), (-2.0, Y0, Z2 + 1.6), 50),
         ('rear_north', (0.0, 40.0, 12.0), (0.0, Y1, 11.0), 45)])
-    for c in cams:                       # the locked front looks from the south-west street, at eye level
+    for c in cams:                       # the locked front and oblique look from the south-east, at the exoskeleton
         if c['name'] == 'front':
-            c['location'] = (-26.0, -44.0, 1.8); c['target'] = (2.0, -4.0, 9.0); c['lens'] = 28; c['whole'] = False
+            c['location'] = (28.0, -44.0, 1.8); c['target'] = (-2.0, -4.0, 9.0); c['lens'] = 28; c['whole'] = False
+        elif c['name'] == 'front_corner':
+            lx, ly, lz = c['location']; c['location'] = (-lx, ly, lz)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -347,8 +349,8 @@ def upper_block():
     for i in range(bays):
         u = -hd + pitch * (i + .5)
         for k, (za, zb) in enumerate(zip(lv, lv[1:])):
-            if (i + k) % 2:
-                holes.append(hole(f'east louvre bay {i}-{k}', u, za + .5, pitch - 1.2, zb - za - 1.0, kind='louvre'))
+            if 0 < i < bays - 1:                                         # full-bay louvres stacked in the middle bays
+                holes.append(hole(f'east louvre bay {i}-{k}', u, za + .35, pitch - .7, zb - za - .7, kind='louvre'))
     e.wall('lab east panel carrier', -hd + T, hd - T, Z1 - .4, PARA, depth=T, role='white', holes=holes)
     m = Merge(e)
     for h in holes:
@@ -371,10 +373,13 @@ def upper_block():
     # Colour-coded services behind the glass on every lab floor; benches.
     b = Batch()
     for z in lv[:-1]:
-        for x, col in ((-8.0, 'blue'), (-3.5, 'green'), (1.0, 'blue'), (6.0, 'yellow'), (10.5, 'green')):
-            b.box(col, x, Y0 + 1.0, (z + z + 4.2) / 2, .28, .28, 4.2 - .3)
-        for y, zz, col in ((Y0 + 1.2, z + 3.4, 'blue'), (Y0 + 1.6, z + 3.1, 'green'), (Y0 + 2.0, z + 3.6, 'yellow')):
-            b.box(col, 0, y, zz, X1 - X0 - 2.0, .26, .26)
+        for x, col in ((-11.0, 'yellow'), (-8.0, 'blue'), (-3.5, 'green'), (1.0, 'blue'), (6.0, 'yellow'), (10.5, 'green')):
+            b.box(col, x, Y0 + .65, (z + z + 4.2) / 2, .46, .46, 4.2 - .3)
+        for y, zz, col in ((Y0 + .7, z + 3.5, 'blue'), (Y0 + 1.25, z + 3.0, 'green'), (Y0 + 1.8, z + 3.55, 'yellow'), (Y0 + .7, z + 1.4, 'green')):
+            b.box(col, 0, y, zz, X1 - X0 - 2.0, .4, .4)
+        for y, col in ((-6.0, 'blue'), (-1.0, 'yellow'), (4.0, 'green')):
+            b.box(col, X0 + .65, y, (z + z + 4.2) / 2, .46, .46, 4.2 - .3)
+        b.box('blue', X0 + .7, 0, z + 3.5, .4, Y1 - Y0 - 2.0, .4)
         for x in (-10.0, -5.0, 0.0, 5.0, 10.0):
             for y in (Y0 + 4.0, Y0 + 8.0):
                 b.box('white', x, y, z + .9, 3.2, 1.0, .06)
@@ -390,14 +395,22 @@ def ground_floor():
     # Recessed glazed south front between concrete walls; concrete walls round the service end.
     s = C.Face(((GX0 + X1) / 2, GY0, 0), (1, 0, 0), (0, 1, 0), 'ground south')
     hs = (X1 - GX0) / 2
-    door = hole('lobby door', -hs + 9.5, G0, 2.0, 2.6, kind='door')
-    glaze = [hole(f'lobby glazing {k}', u, G0, 3.6, Z1 - .9 - G0) for k, u in enumerate((-hs + 3.0, -hs + 13.5, -hs + 17.5))]
-    s.wall('ground south carrier', -hs, hs - EPS, G0, Z1 - .4, depth=T, role='concrete', holes=[door] + glaze)
+    nb = 6
+    bw = (2 * hs - 1.0) / nb
+    us = [-hs + .5 + bw * (k + .5) for k in range(nb)]
+    DB = 3                                                                # door bay, between the pilotis
+    door = hole('lobby door', us[DB], G0, bw - .3, 2.9, kind='door')
+    transom = hole('lobby door transom', us[DB], G0 + 3.1, bw - .3, Z1 - .6 - G0 - 3.1)
+    glaze = [hole(f'lobby glazing {k}', u, G0, bw - .3, Z1 - .6 - G0) for k, u in enumerate(us) if k != DB]
+    s.wall('ground south carrier', -hs, hs - EPS, G0, Z1 - .4, depth=T, role='concrete', holes=[door, transom] + glaze)
     m = Merge(s)
     framed(m, s, door, cols=2, rows=1, inset=.14, occupied='lobby', kind='entry door')
-    m.box('white', door['u'], -.1, G0 + 2.75, 2.6, .2, .3)
+    framed(m, s, transom, cols=2, rows=1, inset=.14, occupied='lobby')
+    for e_ in (-1, 1):                                                    # white door portal, proud of the glazing
+        m.box('white', us[DB] + e_ * (bw / 2 - .05), -.2, (G0 + Z1 - .4) / 2, .3, .4, Z1 - .4 - G0)
+    m.box('white', us[DB], -.2, G0 + 3.0, bw + .2, .4, .25)
     for h in glaze:
-        framed(m, s, h, cols=3, rows=2, inset=.14, occupied='lobby')
+        framed(m, s, h, cols=2, rows=2, inset=.14, occupied='lobby')
     m.flush('ground south')
     w = C.Face((GX0, (GY0 + Y1) / 2, 0), (0, -1, 0), (1, 0, 0), 'ground west')
     hd = (Y1 - GY0) / 2
@@ -427,10 +440,11 @@ def ground_floor():
     # Two white V-pilotis on the south front carry the slab edge.
     for xc in (-1.5, 7.5):
         for e_ in (-1, 1):
-            C.beam('V piloti', (xc, Y0 + .35, G0 + .1), (xc + e_ * 2.6, Y0 + .35, Z1 - .45), .36, .36, 'steel', 'pilotis')
+            C.beam('V piloti', (xc, Y0 + .35, G0 + .1), (xc + e_ * 2.6, Y0 + .35, Z1 - .55), .36, .36, 'steel', 'pilotis')
+            C.box('V piloti head plate', (xc + e_ * 2.6, Y0 + .35, Z1 - .51), (.9, .55, .22), 'steel', 'pilotis', 0)   # bears flat on the soffit
         C.box('V piloti shoe', (xc, Y0 + .35, G0 + .2), (.6, .5, .4), 'steel', 'pilotis', 0)
     C.qa_room_light('Lobby', (4.0, GY0 + 4.0, Z1 - 1.0), 120, 7.0)
-    for x in (-1.0, 4.0, 9.0):
+    for x in (-13.0, -11.5, -10.0):
         A.shrub(x, Y0 - 1.6, .14, .7)
 
 
@@ -454,8 +468,8 @@ def exoskeleton():
         b.box('steel', (X1 - 2.5 + xe) / 2, Y0 - EXO, z, xe - X1 + 2.5 - .42, .3, .3)
         b.box('steel', X1 - 2.5, Y0 - EXO / 2, z, .2, EXO - .1, .2)
     b.flush('exoskeleton')
-    for i in range(bays):
-        for k in range(len(lv) - 1):
+    for i in (0, bays - 1):                                               # braced white end bays; no bracing at ground level
+        for k in range(1, len(lv) - 1):
             ya, yb = ys[i] + .25, ys[i + 1] - .25
             za, zb = lv[k] + .2, lv[k + 1] - .2
             if (i + k) % 2:
@@ -472,16 +486,18 @@ def roof():
         L = max(c - a, e_ - d)
         n = int(L / 1.6)
         for k in range(n + 1):
+            if c == a and k in (0, n):
+                continue                                                   # corner posts belong to the long runs (no duplicate boxes)
             px, py = (a + (c - a) * k / n, d) if c > a else (a, d + (e_ - d) * k / n)
             b.box('steel', px, py, ROOF + SCREEN_H / 2, .12, .12, SCREEN_H)
-        if c > a:
-            b.box('perf', (a + c) / 2, d, ROOF + .2 + (SCREEN_H - .2) / 2, c - a - .1, .04, SCREEN_H - .2)      # stops short of the corner posts
+        if c > a:                                                         # long runs pass the corners, short runs butt them
+            b.box('perf', (a + c) / 2, d, ROOF + .2 + (SCREEN_H - .2) / 2, c - a + .04, .04, SCREEN_H - .2)
         else:
-            b.box('perf', a, (d + e_) / 2, ROOF + .2 + (SCREEN_H - .2) / 2, .04, e_ - d - .1, SCREEN_H - .2)
+            b.box('perf', a, (d + e_) / 2, ROOF + .2 + (SCREEN_H - .2) / 2, .04, e_ - d - .04, SCREEN_H - .2)
     b.flush('plant screen')
     # Perforation dots on the two street faces of the screen.
     vs, fs = [], []
-    for (a, c, yy, out) in ((x0 + .2, x1 - .2, y0, -1),):
+    for (a, c, yy, out) in ((x0 + .2, x1 - .2, y0, -1), (x0 + .2, x1 - .2, y1, 1)):
         n = int((c - a) / .32)
         for k in range(n):
             for r in range(8):
@@ -489,7 +505,7 @@ def roof():
                 o = len(vs)
                 vs += [(u - .07, yy + out * .025, z - .07), (u + .07, yy + out * .025, z - .07), (u + .07, yy + out * .025, z + .07), (u - .07, yy + out * .025, z + .07)]
                 fs.append((o, o + 1, o + 2, o + 3))
-    for (xx, a, c, out) in ((x1, y0 + .2, y1 - .2, 1),):
+    for (xx, a, c, out) in ((x1, y0 + .2, y1 - .2, 1), (x0, y0 + .2, y1 - .2, -1)):
         n = int((c - a) / .32)
         for k in range(n):
             for r in range(8):
@@ -527,8 +543,8 @@ def site():
     for k in range(9):
         b.box('white', X0 - 12.0 + k * 6.0, Y0 - 12.0, .025, 3.0, .14, .01)
     b.flush('road markings')
-    for x in (-12.0, -7.5, -3.0):
-        street_tree(x, Y0 - 3.0, z=.14, height=7.5, spread=2.0)
+    for x, y in ((-13.0, Y0 - 3.2), (-9.0, Y0 - 3.6), (X0 - 3.0, 4.0)):      # west, under the cantilever, clear of the pilotis
+        street_tree(x, y, z=.14, height=7.5, spread=2.0)
 
 
 def build():
