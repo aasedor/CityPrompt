@@ -1,6 +1,7 @@
 import { BufferGeometry, Float32BufferAttribute } from 'three';
 import polygonClipping from 'polygon-clipping';
-export interface ParkingRecipe { version: 1; rowAngle: number }
+import type { ParkingDriveway } from './parkingDriveway';
+export interface ParkingRecipe { version: 1; rowAngle: number; driveway?: ParkingDriveway }
 type Point = number[];
 export interface ParkingLayout { spaces: {corners:Point[]; front:'north'|'south'}[]; aisles:Point[][]; problem:string|null }
 const STALL_WIDTH = 2.7, STALL_DEPTH = 5.5, AISLE = 6, MARGIN = .5;

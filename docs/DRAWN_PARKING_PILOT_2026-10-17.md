@@ -1,5 +1,9 @@
 # Drawn parking lots: local pilot, 2026-10-17
 
+Later same-day extension: see [the driveway and real-development trial](PARKING_DRIVEWAY_TRIAL_2026-10-17.md).
+The results below describe the original checkpoint, before road connections and
+the three authorized paid tests were added.
+
 Status: implemented and locally trialled; **not published**. Branch:
 `codex/drawn-parking-pilot`, starting from
 `3e73508bfcc1caed57540713592f9653d4dc138a`.

@@ -22,6 +22,18 @@ const zone = {
   },
 } as SiteZone;
 describe("isolated bench editor", () => {
+  it('prevents saving when a later detail edit blocks a linked driveway',()=>{
+    const context=projectBenchContext(projectBenchFrame([],[]));
+    const ll=(x:number,y:number)=>context.toWorld({x,y});
+    render(<BenchLayoutEditor context={context} initialBenches={[{id:'bench',point:{x:-6,y:9},yaw:0}]}
+      initialSurfaces={[{id:'lot',material:'asphalt',coordinates:[[0,0],[40,0],[40,35],[0,35]].map(([x,y])=>ll(x,y)),
+        parking:{version:1,rowAngle:0,driveway:{version:1,source:'manual',roadPoint:ll(-9,9)}}}]}
+      title="Blocked access trial" disabled={false} onSave={vi.fn()} onClose={vi.fn()}/>);
+    fireEvent.click(screen.getByRole('button',{name:'Select bench 1'}));
+    fireEvent.click(screen.getByRole('button',{name:'Move bench east'}));
+    expect(screen.getByRole('button',{name:'Save details'})).toBeDisabled();
+    expect(screen.getByText(/driveway is blocked/)).toBeInTheDocument();
+  });
   it("draws paving beneath details, undoes removal and saves both in the same draft", async () => {
     const onSave = vi.fn().mockResolvedValue({});
     const context = projectBenchContext(projectBenchFrame([], []));

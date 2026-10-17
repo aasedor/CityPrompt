@@ -10,6 +10,7 @@ import {
 import { parkingLayout, parkingMarkingSegments } from './parkingLot';
 import { metersPerDegLon, METERS_PER_DEG_LAT } from '@/components/viewer/mapEngine/geoUtils';
 import { parkOutlineDimensions, reshapeParkOutline } from '@/features/pickPlace/parkOutline';
+import { nearestParkingRoad, parkingDriveway, parkingRoadTarget, type ParkingRoad } from './parkingDriveway';
 
 const button =
   "min-h-11 rounded-lg border border-slate-400 bg-white px-3 py-2 text-sm font-semibold disabled:opacity-40";
@@ -22,16 +23,20 @@ export function usePavingEditor({
   locked,
   change,
   onActivate,
+  roads = [],
+  obstacles = [],
 }: {
   surfaces: PavingSurface[];
   context: BenchContext;
   locked: boolean;
   change: (next: PavingSurface[]) => void;
   onActivate: () => void;
+  roads?: ParkingRoad[];
+  obstacles?: number[][][];
 }) {
   const [selected, setSelected] = useState<string | null>(null);
   const [draft, setDraft] = useState<ParkPoint[] | null>(null);
-  const [target, setTarget] = useState<"surface" | number | null>(null);
+  const [target, setTarget] = useState<"surface" | "driveway" | number | null>(null);
   const [material, setMaterial] =
     useState<PavingSurface["material"]>("concrete");
   const [corner, setCorner] = useState(0);
@@ -41,6 +46,9 @@ export function usePavingEditor({
   const layouts = useMemo(() => new Map(surfaces.filter(s=>s.parking).map(s=>
     [s.id,parkingLayout(pavingLocalPoints(s.coordinates),s.parking!)])),[surfaces]);
   const parking = active ? layouts.get(active.id) : undefined;
+  const drivewayObstacles=(id:string)=>[...obstacles,...surfaces.filter(s=>s.id!==id).map(s=>s.coordinates)];
+  const drives=useMemo(()=>new Map(surfaces.filter(s=>s.parking?.driveway).map(s=>
+    [s.id,parkingDriveway(s,roads,[...obstacles,...surfaces.filter(other=>other.id!==s.id).map(other=>other.coordinates)])])),[surfaces,roads,obstacles]);
   const armed = draft !== null || target !== null;
   const select = (id: string) => {
     onActivate();
@@ -58,7 +66,8 @@ export function usePavingEditor({
   };
   const apply = (next: PavingSurface) => {
     const problem = pavingProblem(next.coordinates) || (next.parking
-      ? parkingLayout(pavingLocalPoints(next.coordinates),next.parking).problem : null);
+      ? parkingLayout(pavingLocalPoints(next.coordinates),next.parking).problem
+        || parkingDriveway(next,roads,drivewayObstacles(next.id)).problem : null);
     if (problem) {
       setMessage(problem);
       return;
@@ -74,6 +83,10 @@ export function usePavingEditor({
       return;
     }
     if (active && target !== null) {
+      if(target==='driveway' && active.parking){
+        apply({...active,parking:{...active.parking,driveway:parkingRoadTarget(context.toWorld(p),roads)}});
+        return;
+      }
       const local = active.coordinates.map(context.fromWorld);
       const center = {
         x: local.reduce((n, v) => n + v.x, 0) / local.length,
@@ -114,7 +127,14 @@ export function usePavingEditor({
   };
   const plan = (
     <>
+      {roads.map(r=><g key={r.id} pointerEvents="none" aria-hidden="true">
+        <polygon points={points(r.coordinates.map(context.fromWorld))} fill="#9da5a8" fillOpacity={.5} stroke="#647176" strokeWidth={.2}/>
+        <text x={context.fromWorld(r.coordinates[0]).x} y={-context.fromWorld(r.coordinates[0]).y} fontSize={2} fill="#38474b">{r.label}</text>
+      </g>)}
       {surfaces.map((s, i) => <g key={s.id}>
+        {drives.get(s.id)?.coordinates.length ? <polygon pointerEvents="none" aria-hidden="true"
+          points={points(drives.get(s.id)!.coordinates.map(context.fromWorld))} fill="#51575a"
+          stroke={s.id===selected?'#b6ed18':'#7a7468'} strokeWidth={.3}/> : null}
         <polygon
           role="button"
           tabIndex={locked ? -1 : 0}
@@ -273,7 +293,25 @@ export function usePavingEditor({
               const frame=parkOutlineDimensions(active.coordinates);
               apply({...active,coordinates:reshapeParkOutline(active.coordinates,frame.width,frame.depth,frame.degrees+15)});
             }}>Rotate parking lot 15°</button>
-            <p className="text-xs text-slate-600">Local pilot: perpendicular bays on level ground. Outlines need a clear straight side aisle; split incompatible outlines into smaller lots. The clear side aisle needs a road entrance; this tool does not cut curbs or connect roads. Cars, accessible bays and islands are not included yet.</p>
+            <div className="rounded-lg border border-slate-300 bg-white p-2 space-y-2">
+              <p className="text-sm font-bold">Driveway to road</p>
+              <button className={`${button} w-full`} disabled={locked||!roads.length} onClick={()=>{
+                const link=nearestParkingRoad(active,roads,drivewayObstacles(active.id));
+                if(link)apply({...active,parking:{...active.parking!,driveway:link}});
+                else setMessage('No clear compatible road within 60 m. Move the lot or choose a road edge. Curbed streets need a supported opening.');
+              }}>Connect to nearest road</button>
+              <button className={`${button} w-full`} disabled={locked} aria-pressed={target==='driveway'}
+                onClick={()=>{setTarget('driveway');setMessage('Click the road edge on this plan. Use Expand view if needed. This is a concept connection: check the road, sidewalk and ground in 3D.');}}>Choose driveway road edge</button>
+              {target==='driveway'&&<button className={button} onClick={()=>{setTarget(null);setMessage('');}}>Cancel driveway target</button>}
+              {active.parking.driveway&&<>
+                <p className="text-xs">{drives.get(active.id)?.problem||`6 m driveway connected${active.parking.driveway.source==='authored'?'':' to an estimated road edge'}. The target stays on the road when you move the lot.`}</p>
+                <button className={button} disabled={locked} onClick={()=>{
+                  const {driveway:_removed,...recipe}=active.parking!;
+                  apply({...active,parking:recipe});
+                }}>Remove driveway</button>
+              </>}
+            </div>
+            <p className="text-xs text-slate-600">Local pilot: perpendicular bays on level ground, with a clear straight side aisle. Estimated road edges need visual review. This tool does not cut intact curbs. Cars, accessible bays and islands are not included yet.</p>
           </div>}
           <button
             className={`${button} w-full`}
@@ -338,5 +376,6 @@ export function usePavingEditor({
     click,
     reset,
     finish,
+    problem:[...drives.values()].find(d=>d.problem)?.problem??null,
   };
 }

@@ -21,6 +21,9 @@ describe('drawn parking controls',()=>{
     for(let i=0;i<4;i++)fireEvent.click(screen.getByRole('button',{name:`Point ${i}`}));
     fireEvent.click(screen.getByRole('button',{name:'Finish parking lot'}));
     expect(screen.getByText(/24 parking spaces/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button',{name:'Choose driveway road edge'}));
+    expect(screen.getByText(/Click the road edge on this plan/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button',{name:'Cancel driveway target'}));
     expect(screen.getByRole('combobox',{name:'Parking row direction'})).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText('Parking row direction'),{target:{value:'90'}});
     expect(screen.getByText(/16 parking spaces/)).toBeInTheDocument();

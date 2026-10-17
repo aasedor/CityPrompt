@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, ConfigDict, Field, model_validator, field_validator
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from shapely.geometry import Polygon
+from shapely.geometry import Point, Polygon
 
 from app.core.database import get_db
 from app.core.security import check_project_permission, require_auth
@@ -52,10 +52,28 @@ class Prop(Bench):
         return value
 
 
+class ParkingDriveway(BaseModel):
+    model_config = ConfigDict(extra='forbid', allow_inf_nan=False)
+    version: Literal[1]
+    source: Literal['manual', 'mapped', 'authored']
+    roadPoint: tuple[float, float]
+    streetId: str | None = Field(default=None, pattern=r'^[\w:./-]{1,160}$')
+
+    @model_validator(mode='after')
+    def valid_target(self):
+        x, y = self.roadPoint
+        if not (-180 <= x <= 180 and -85 <= y <= 85):
+            raise ValueError('Use a valid road edge')
+        if self.source != 'manual' and not self.streetId:
+            raise ValueError('Choose a road identity for a linked driveway')
+        return self
+
+
 class ParkingRecipe(BaseModel):
     model_config = ConfigDict(extra='forbid', allow_inf_nan=False)
     version: Literal[1]
     rowAngle: Literal[0, 90]
+    driveway: ParkingDriveway | None = None
 
 
 class PavingSurface(BaseModel):
@@ -73,6 +91,11 @@ class PavingSurface(BaseModel):
             points = [((x-x0)*sx,(y-y0)*111320) for x,y in self.coordinates]
             if Polygon(points).area > 15000:
                 raise ValueError('Split parking lots larger than 15,000 square metres')
+            if self.parking.driveway:
+                x,y = self.parking.driveway.roadPoint
+                road_point = ((x-x0)*sx,(y-y0)*111320)
+                if Polygon(points).distance(Point(road_point)) > 60:
+                    raise ValueError('Choose a road edge within 60 metres of the lot')
         return self
 
     @field_validator('coordinates')

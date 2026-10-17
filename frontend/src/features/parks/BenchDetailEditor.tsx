@@ -23,6 +23,9 @@ import { assetForZone } from "@/features/pickPlace/catalogue";
 import { DetailCataloguePicker } from "./DetailCataloguePicker";
 import { usePavingEditor } from "./PavingEditor";
 import type { PavingSurface } from "./pavingSurfaces";
+import { parkingRoads, parkingDetailFootprints } from './parkingDriveway';
+import { saveProjectDetails } from './projectBenches';
+import type { PublicRoadContext } from '@/features/pickPlace/publicRoadSuggestions';
 import { readNativePark, nativeParkFootprint } from "./nativeParkRegistry";
 import {
   detailAsset,
@@ -105,6 +108,7 @@ export function BenchLayoutEditor({
   onClose,
   contextZones = [],
   initialSurfaces = [],
+  publicRoadContext,
 }: {
   context: BenchContext;
   initialBenches: DetailBench[];
@@ -117,6 +121,7 @@ export function BenchLayoutEditor({
   onClose: () => void;
   contextZones?: SiteZone[];
   initialSurfaces?: PavingSurface[];
+  publicRoadContext?: PublicRoadContext;
 }) {
   const [benches, setBenches] = useState(initialBenches);
   const [surfaces, setSurfaces] = useState(initialSurfaces);
@@ -193,6 +198,12 @@ export function BenchLayoutEditor({
     surfaces,
     context,
     locked,
+    roads: useMemo(()=>parkingRoads(contextZones,publicRoadContext),[contextZones,publicRoadContext]),
+    obstacles: useMemo(()=>[
+      ...contextZones.filter(z=>!['site_boundary','road'].includes(z.zone_type)).map(z=>z.coordinates),
+      ...(publicRoadContext?.blockers??[]),
+      ...(()=>{const items=saveProjectDetails(benches,context);return parkingDetailFootprints(items.benches,items.trees,items.props);})(),
+    ],[contextZones,publicRoadContext,benches,context]),
     change: (next) => change(benches, next),
     onActivate: () => {
       setSelected(null);
@@ -876,14 +887,14 @@ export function BenchLayoutEditor({
             </button>
             <button className={`${button} w-full`} aria-label="Redo detail edit" disabled={locked||!future.length} onClick={redo}>Redo</button>
             <p role="status" className="text-sm text-amber-900">
-              {message ||
+              {message || paving.problem ||
                 (invalid
                   ? "An object needs a clearer position. Select and move it before saving."
                   : "")}
             </p>
             <button
               className={`${button} w-full !bg-[#c9ff3d]`}
-              disabled={locked || !dirty || !!invalid || paving.drawing}
+              disabled={locked || !dirty || !!invalid || !!paving.problem || paving.drawing}
               onClick={async () => {
                 setSaving(true);
                 setMessage("");

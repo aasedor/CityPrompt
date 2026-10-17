@@ -16,6 +16,9 @@ import {
   type PavingSurface,
 } from "./pavingSurfaces";
 import { parkingLayout, parkingMarkingGeometry } from './parkingLot';
+import { parkingDriveway, parkingRoads, parkingDetailFootprints } from './parkingDriveway';
+import type { PublicRoadContext } from '@/features/pickPlace/publicRoadSuggestions';
+import type { ProjectBench, ProjectTree, ProjectProp } from './projectBenches';
 
 const pointKey = (p: number[]) => `${p[0]}:${p[1]}`;
 function Surface({
@@ -84,20 +87,38 @@ export function GlobePavingSurfaces({
   surfaces,
   fallbackHeight,
   zones,
+  publicRoadContext,
+  benches,
+  trees,
+  props,
 }: {
   surfaces: PavingSurface[];
   fallbackHeight: number;
   zones: SiteZone[];
+  publicRoadContext?: PublicRoadContext;
+  benches?: ProjectBench[];
+  trees?: ProjectTree[];
+  props?: ProjectProp[];
 }) {
   const ground = useSharedSiteGround(),
     tiles = useContext(TilesRendererContext);
+  const renderedSurfaces=useMemo(()=>{
+    const roads=parkingRoads(zones,publicRoadContext);
+    return surfaces.flatMap(surface=>{
+      const obstacles=[...zones.filter(z=>!['site_boundary','road'].includes(z.zone_type)).map(z=>z.coordinates),
+        ...surfaces.filter(s=>s.id!==surface.id).map(s=>s.coordinates),
+        ...(publicRoadContext?.blockers??[]),...parkingDetailFootprints(benches,trees,props)];
+      const driveway=parkingDriveway(surface,roads,obstacles);
+      return driveway.coordinates.length?[surface,{id:`${surface.id}-driveway`,material:'asphalt' as const,coordinates:driveway.coordinates}]:[surface];
+    });
+  },[surfaces,zones,publicRoadContext,benches,trees,props]);
   const points = useMemo(
     () => [
       ...new Map(
-        surfaces.flatMap((s) => s.coordinates).map((p) => [pointKey(p), p]),
+        renderedSurfaces.flatMap((s) => s.coordinates).map((p) => [pointKey(p), p]),
       ).values(),
     ],
-    [surfaces],
+    [renderedSurfaces],
   );
   const [sampled, setSampled] = useState<Record<string, number>>({});
   const next = useRef(0),
@@ -128,7 +149,7 @@ export function GlobePavingSurfaces({
   });
   const layouts = useMemo(
     () =>
-      surfaces.map((surface) => ({
+      renderedSurfaces.map((surface) => ({
         surface,
         heights: pavingGroundHeights(
           surface.coordinates,
@@ -139,7 +160,7 @@ export function GlobePavingSurfaces({
             fallbackHeight,
         ),
       })),
-    [surfaces, ground, sampled, fallbackHeight, zones],
+    [renderedSurfaces, ground, sampled, fallbackHeight, zones],
   );
   return (
     <group

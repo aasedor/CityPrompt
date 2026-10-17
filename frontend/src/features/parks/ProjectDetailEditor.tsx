@@ -13,6 +13,8 @@ import {
 } from "./projectBenches";
 import { detailPlacementSupport } from './safetyPlacement';
 import { validateDetailEdits } from './projectDetailEdits';
+import { usePublicRoadContext } from '@/features/pickPlace/usePublicRoadContext';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 
 export function useProjectDetails(projectId?: string) {
   return useQuery({
@@ -40,6 +42,7 @@ export function ProjectDetailEditor({
   const queryClient = useQueryClient();
   // Keep the opened revision: concurrent writes must never replace this draft silently.
   const [source] = useState(data);
+  const publicRoads=usePublicRoadContext(getActiveSiteBoundary(zones),true);
   const [context] = useState(() =>
     projectBenchContext(
       projectBenchFrame(
@@ -68,6 +71,7 @@ export function ProjectDetailEditor({
       initialBenches={readProjectDetails(source, context)}
       initialSurfaces={source.surfaces ?? []}
       contextZones={zones}
+      publicRoadContext={publicRoads.data}
       disabled={!source.can_edit}
       onClose={onClose}
       onSave={async (benches, surfaces) => {

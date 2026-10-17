@@ -21,6 +21,20 @@ async def test_parking_recipe_round_trips_without_changing_legacy_surfaces(monke
     assert loaded.model_dump(mode='json',exclude_none=True)['surfaces'] == [PAVING,lot]
     assert row.metadata_['keep'] is True
 
+
+@pytest.mark.asyncio
+async def test_parking_driveway_round_trip_and_bad_target_rejection(monkeypatch):
+    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
+    db, _ = session()
+    driveway = {'version':1,'source':'manual','roadPoint':[-114.1001,51.0501]}
+    lot = {**PAVING,'parking':{'version':1,'rowAngle':0,'driveway':driveway}}
+    saved = await endpoint.save_details(uuid.uuid4(),endpoint.DetailUpdate(expected_revision=0,benches=[],surfaces=[lot]),SimpleNamespace(),db)
+    assert saved['surfaces'][0]['parking']['driveway'] == driveway
+    for bad in [{**driveway,'roadPoint':[999,51]}, {**driveway,'source':'authored'},
+                {**driveway,'roadPoint':[-115,51]}, {**driveway,'width':50}]:
+        with pytest.raises(ValidationError):
+            endpoint.PavingSurface(**{**PAVING,'parking':{'version':1,'rowAngle':0,'driveway':bad}})
+
 @pytest.mark.parametrize('parking',[
     {'version':2,'rowAngle':0}, {'version':1,'rowAngle':float('nan')},
     {'version':1,'rowAngle':15}, {'version':1,'rowAngle':361}, {'version':1,'rowAngle':0,'stallWidth':.1},

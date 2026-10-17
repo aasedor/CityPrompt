@@ -2774,7 +2774,8 @@ export function GlobeSitePlannerMap({
   const skipStreetSnappingRef = useRef(false);
   const publicRoadSnapSupported = supportsPublicRoadSuggestions(activeToolProperties ?? {});
   const publicRoadContext = usePublicRoadContext(getActiveSiteBoundary(allSiteZones),
-    activeSitePlannerTool === 'road' && publicRoadSnapEnabled && publicRoadSnapSupported);
+    (activeSitePlannerTool === 'road' && publicRoadSnapEnabled && publicRoadSnapSupported)
+      || Boolean(projectSurfaces?.some(s=>s.parking?.driveway?.source==='mapped')));
   useEffect(() => {
     if (activeSitePlannerTool !== 'road') { skipStreetSnappingRef.current = false; setSkipStreetSnapping(false); return; }
     const update = (event: KeyboardEvent) => { skipStreetSnappingRef.current = event.altKey; setSkipStreetSnapping(event.altKey); };
@@ -4629,7 +4630,8 @@ export function GlobeSitePlannerMap({
           <SurveyGroundSurface visible={contextPresentation.visible === 'terrain'} />
           {projectBenches && <GlobeProjectBenches benches={projectBenches} trees={projectTrees} props={projectProps} editing={!captureOverlaysHidden && detailInteraction?.editing && !detailInteraction.moving ? {id:detailInteraction.editing.id,angle:detailInteraction.angle} : undefined} zones={allSiteZones} fallbackHeight={terrainElevation}/>}
           {detailInteraction && !captureOverlaysHidden && <DetailMapPreview interaction={detailInteraction} zones={allSiteZones} surfaceAt={raycastSurfacePoint} fallbackHeight={terrainElevation} />}
-          {projectSurfaces && <GlobePavingSurfaces surfaces={projectSurfaces} zones={allSiteZones} fallbackHeight={terrainElevation}/>}
+          {projectSurfaces && <GlobePavingSurfaces surfaces={projectSurfaces} zones={allSiteZones} fallbackHeight={terrainElevation}
+            publicRoadContext={publicRoadContext.data} benches={projectBenches} trees={projectTrees} props={projectProps}/>}
           {!captureOverlaysHidden && !interactionPaused && walkMode !== 'active' && selectedZoneId && (()=>{
             const zone=siteZones.find(z=>z.id===selectedZoneId);
             return zone && hasNativePark(zone) ? <GlobeParkParcelGuide zone={zone} zones={allSiteZones} fallbackHeight={terrainElevation}/> : null;
