@@ -23,8 +23,8 @@ T = .30
 G0 = .15
 Z1 = 4.5                                        # top of the retail ground floor
 FH = 3.1                                        # residential storey height
-TX, TY = 21.0, -14.5                            # twisting tower centre over the south-east podium
-TOWER_STOREYS = 14
+TX, TY = 21.0, -13.0                            # twisting tower centre over the south-east corner block
+TOWER_STOREYS = 16
 ZTOP = Z1 + (TOWER_STOREYS - 1) * FH
 EPS = .002
 PALETTE = dict(wall=(.93, .92, .90), joint=(.84, .83, .81), trim=(.70, .72, .73),
@@ -50,14 +50,14 @@ def manifest(version):
         ('rear_north', (0.0, 70.0, 16.0), (0.0, Y1, 14.0), 45)])
     for c in cams:                       # the locked front looks at the south-west corner from the street, at eye level
         if c['name'] == 'front':
-            c['location'] = (-34.0, -62.0, 1.8); c['target'] = (8.0, -12.0, 18.0); c['lens'] = 26; c['whole'] = False
+            c['location'] = (-42.0, -68.0, 1.8); c['target'] = (4.0, -12.0, 19.0); c['lens'] = 24; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='residential_superblock/variant_0 (parametric_sculptural_white)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
-            observed_storeys=14, storey_programme='retail ground floor; apartments on eight upper floors round the court, falling to a three-storey podium at the south-east; fourteen-storey twisting tower over the podium',
-            plan='60 x 44 m rounded perimeter block (top view) round a 32 x 18 m rounded court; tower about 15 x 11 m over the south-east podium',
+            observed_storeys=16, storey_programme='retail ground floor; apartments on eight upper floors round the court, the south wing dipping to about five storeys mid-block; a sixteen-storey twisting tower rising from the nine-storey south-east corner block',
+            plan='60 x 44 m rounded perimeter block (top view) round a 32 x 18 m rounded court; twisting tower about 22 x 16 m flaring to 26 x 18 m over the south-east corner block',
             facade='white spandrel bands and piers (punched windows) on the straight street faces, thinning to sinuous projecting balcony bands over ribbon glazing round the corners; recessed retail glazing behind sculpted white piers',
             levels_m=[G0, Z1, Z1 + 8 * FH, ZTOP], storey_height_m=FH,
             inferred='storey counts round the ring, interiors and the north face are teaching assumptions; the tower loop is read from the oblique and top views'),
@@ -325,7 +325,7 @@ class Batch:
         self.g = {}
 
 
-NX, NY, NC = 24, 15, 8
+NX, NY, NC = 24, 15, 14
 
 
 def rr(ax, ay, r, nx=NX, ny=NY, nc=NC):
@@ -387,7 +387,7 @@ def runs(mask):
 
 OUT, INN = rr(AX, AY, R), rr(CX, CY, CR)
 N = len(OUT)
-STOREYS = [(-180, 9.0), (-140, 9.7), (-110, 9.0), (-82, 8.6), (-62, 5.2), (-48, 3.0), (-14, 3.0), (6, 7.0), (60, 7.4), (90, 8.0), (135, 8.4), (180, 9.0)]
+STOREYS = [(-180, 9.0), (-140, 9.7), (-112, 9.2), (-97, 7.0), (-86, 4.6), (-77, 4.6), (-66, 9.0), (0, 9.0), (60, 8.7), (90, 8.7), (135, 9.0), (180, 9.0)]
 
 
 def storeys(p):
@@ -407,14 +407,22 @@ def corner_weight(p, ax, ay, r):
     dx, dy = (ax - r) - abs(p[0]), (ay - r) - abs(p[1])
     if dx <= 0 and dy <= 0:
         return 1.0
-    return max(0.0, 1.0 - max(dx, dy) / 7.0)
+    return max(0.0, 1.0 - max(dx, dy) / 2.5)
 
 
 WO = [corner_weight(p, AX, AY, R) for p in OUT]
 
 
+TZONE = [math.hypot(p[0] - TX, p[1] - TY) < 10.5 for p in OUT]       # roof under the tower: no parapet, planters or skylights
+
+
+def lerp_pt(p, q, f, z):
+    return (p[0] + (q[0] - p[0]) * f, p[1] + (q[1] - p[1]) * f, z)
+
+
 def ring_block():
-    # Retail ground floor: recessed glazing on the street and the court, sculpted piers at the street line.
+    GO = [-.45 - .55 * w for w in WO]                                     # glass line: shallow on the street faces, deep behind balconies
+    # Retail ground floor: recessed glazing, sculpted white piers carrying arches under the first floor band.
     rings = [[off(p, -1.63, G0), off(p, -1.57, G0), off(p, -1.57, Z1 - .02), off(p, -1.63, Z1 - .02)] for p in OUT]
     loft('Retail glazing', rings, 'glass', 'ground')
     rings = [[off(p, 1.17, G0), off(p, 1.23, G0), off(p, 1.23, Z1 - .02), off(p, 1.17, Z1 - .02)] for p in INN]
@@ -423,125 +431,156 @@ def ring_block():
     for i, p in enumerate(OUT):
         b.obox('trim', p[0], p[1], p[2], p[3], .12, -1.68, -1.52, G0, Z1 - .02)
         if i % 4 == 0:
-            b.obox('white', p[0], p[1], p[2], p[3], 1.0, -1.5, .25, G0, Z1)
+            b.obox('white', p[0], p[1], p[2], p[3], 1.1, -1.5, .25, G0, Z1 - 1.0)
         q = INN[i]
         b.obox('trim', q[0], q[1], q[2], q[3], .12, 1.12, 1.28, G0, Z1 - .02)
     b.flush('ground floor')
-    # Upper glass walls between the floor bands, up to the roof line.
-    rings = [[off(p, -1.03, Z1), off(p, -.97, Z1), off(p, -.97, h), off(p, -1.03, h)] for p, h in zip(OUT, H)]
+    rings = []
+    for i, p in enumerate(OUT):
+        zb = Z1 - .06 - 1.45 * (1.0 - math.sin(math.pi * (i % 4) / 4.0))
+        rings.append([off(p, -1.5, zb), off(p, .25, zb), off(p, .25, Z1), off(p, -1.5, Z1)])
+    loft('Retail arches', rings, 'white', 'ground')
+    # Upper glass walls between the floor bands, up to the underside of the roof.
+    rings = [[off(p, g - .03, Z1), off(p, g + .03, Z1), off(p, g + .03, h - .38), off(p, g - .03, h - .38)] for p, h, g in zip(OUT, H, GO)]
     loft('Street glazing', rings, 'glass', 'upper')
-    rings = [[off(p, .97, Z1), off(p, 1.03, Z1), off(p, 1.03, h), off(p, .97, h)] for p, h in zip(INN, H)]
+    rings = [[off(p, .97, Z1), off(p, 1.03, Z1), off(p, 1.03, h - .38), off(p, .97, h - .38)] for p, h in zip(INN, H)]
     loft('Court glazing upper', rings, 'glass', 'upper')
-    # Floor bands: full-depth slabs that project as thin balconies on the corners and as deep spandrels on the
-    # straight street faces, where white piers between them leave punched windows.
+    # Floor bands: full-depth slabs that project as thin balconies with glass balustrades on the rounded corners and
+    # as solid spandrels on the straight street faces, where white piers between them leave tall punched windows.
     b = Batch()
     k = 0
     while True:
         z = Z1 + k * FH
-        mask = [z + FH <= h + .01 for h in H]
+        mask = [z + 1.1 <= h - .45 for h in H]
         if not any(mask):
             break
         for idx, closed in runs(mask):
             rings = []
             for i in idx:
-                p, q, w = OUT[i], INN[i], WO[i]
+                p, q, w, g = OUT[i], INN[i], WO[i], GO[i]
                 proj = .25 + 1.45 * w
-                t = 1.1 - .7 * w
-                rings.append([off(q, -.45, z), off(q, -.45, z + .35), off(p, -.9, z + .35), off(p, -.9, z + t), off(p, proj - .06, z + t), off(p, proj, z)])
+                t = 1.0 - .65 * w
+                rings.append([off(q, -.45, z), off(q, -.45, z + .35), off(p, g + .08, z + .35), off(p, g + .08, z + t), off(p, proj - .06, z + t), off(p, proj, z)])
             loft(f'Floor band {k}', rings, 'white', 'bands', closed=closed)
+            sub = [i for i in idx if WO[i] > .5]
+            for run, _ in runs([i in sub for i in range(N)]) if sub else []:
+                rings = [[off(OUT[i], .15 + 1.45 * WO[i], z + .35), off(OUT[i], .21 + 1.45 * WO[i], z + .35), off(OUT[i], .21 + 1.45 * WO[i], z + 1.35), off(OUT[i], .15 + 1.45 * WO[i], z + 1.35)] for i in run]
+                if len(rings) > 1:
+                    loft(f'Balcony balustrade {k}', rings, 'glass', 'bands', closed=False)
             for i in idx:
-                p, w = OUT[i], WO[i]
+                p, w, g = OUT[i], WO[i], GO[i]
                 if w == 0.0 and i % 2 == 0:
-                    b.obox('white', p[0], p[1], p[2], p[3], 1.1, -.92, .2, z + 1.1, z + FH)
+                    b.obox('white', p[0], p[1], p[2], p[3], 1.9, g - .02, .2, z + 1.0, min(z + FH, H[i] - .38))
         k += 1
     b.flush('piers')
-    # Roof: slab and the swooping white parapet band following the roof line.
+    # Roof: slab, the swooping white parapet band following the roof line, linear skylights and a glazed penthouse.
     rings = [[off(q, -.4, h - .45), off(q, -.4, h), off(p, -.9, h), off(p, -.9, h - .45)] for p, q, h in zip(OUT, INN, H)]
     loft('Roof slab', rings, 'roof', 'roof')
-    rings = [[off(p, -1.15, h - .4), off(p, .35, h - .4), off(p, .35, h + 1.1), off(p, -1.15, h + 1.1)] for p, h in zip(OUT, H)]
-    loft('Roof parapet band', rings, 'white', 'roof')
-    rings = [[off(q, -.55, h - .4), off(q, -.55, h + .9), off(q, .7, h + .9), off(q, .7, h - .4)] for q, h in zip(INN, H)]
-    loft('Court parapet band', rings, 'white', 'roof')
-    b = Batch()
-    for i in (12, 40, 52, 70, 86, 100):                                     # skylights and terrace planters on the wings
-        p, q, h = OUT[i], INN[i], H[i]
-        if h < Z1 + 6 * FH:
+    open_mask = [not z_ for z_ in TZONE]
+    for idx, closed in runs(open_mask):
+        rings = [[off(OUT[i], -1.15, H[i] - .4), off(OUT[i], .35, H[i] - .4), off(OUT[i], .35, H[i] + 1.1), off(OUT[i], -1.15, H[i] + 1.1)] for i in idx]
+        loft('Roof parapet band', rings, 'white', 'roof', closed=closed)
+        rings = [[off(INN[i], -.55, H[i] - .4), off(INN[i], -.55, H[i] + .9), off(INN[i], .7, H[i] + .9), off(INN[i], .7, H[i] - .4)] for i in idx]
+        loft('Court parapet band', rings, 'white', 'roof', closed=closed)
+    sky = [not TZONE[i] and H[i] >= Z1 + 6 * FH for i in range(N)]
+    for idx, closed in runs(sky):
+        if len(idx) < 3:
             continue
-        mx, my = (p[0] + q[0]) / 2, (p[1] + q[1]) / 2
-        b.obox('pale', mx, my, p[2], p[3], 3.2, -1.2, 1.2, h, h + .5)
-        b.obox('glass', mx, my, p[2], p[3], 2.8, -1.0, 1.0, h + .5, h + .62)
-        b.obox('planting', q[0], q[1], q[2], q[3], 4.0, -1.6, -.6, h, h + .6)
+        idx = idx[1:-1]
+        rings = []
+        for i in idx:
+            p, q, h = OUT[i], INN[i], H[i]
+            a_, c_ = lerp_pt(p, q, .44, 0), lerp_pt(p, q, .56, 0)
+            rings.append([(a_[0], a_[1], h + .02), (c_[0], c_[1], h + .02), (c_[0], c_[1], h + .45), (a_[0], a_[1], h + .45)])
+        loft('Linear skylight frame', rings, 'pale', 'roof', closed=False)
+        rings = [[(r[3][0], r[3][1], r[3][2]), (r[2][0], r[2][1], r[2][2]), (r[2][0], r[2][1], r[2][2] + .06), (r[3][0], r[3][1], r[3][2] + .06)] for r in rings]
+        loft('Linear skylight glass', rings, 'glass', 'roof', closed=False)
+    pent = [i for i, p in enumerate(OUT) if -152.0 < math.degrees(math.atan2(p[1] / AY, p[0] / AX)) < -118.0]
+    if len(pent) > 1:
+        hp = max(H[i] for i in pent)
+        rings = [[lerp_pt(OUT[i], INN[i], .3, H[i]), lerp_pt(OUT[i], INN[i], .7, H[i]), lerp_pt(OUT[i], INN[i], .7, hp + 2.8), lerp_pt(OUT[i], INN[i], .3, hp + 2.8)] for i in pent]
+        loft('Glazed penthouse', rings, 'glass', 'roof', closed=False)
+        rings = [[lerp_pt(OUT[i], INN[i], .26, hp + 2.8), lerp_pt(OUT[i], INN[i], .74, hp + 2.8), lerp_pt(OUT[i], INN[i], .74, hp + 3.15), lerp_pt(OUT[i], INN[i], .26, hp + 3.15)] for i in pent]
+        loft('Penthouse roof', rings, 'white', 'roof', closed=False)
+        C.qa_room_light('Penthouse', lerp_pt(OUT[pent[len(pent) // 2]], INN[pent[len(pent) // 2]], .5, hp + 1.8), 80, 4.0)
+    b = Batch()
+    for i in (12, 40, 52, 70, 86, 100, 116):                                # terrace planters, inside the court parapet
+        if i >= N or TZONE[i]:
+            continue
+        q, h = INN[i], H[i]
+        b.obox('planting', q[0], q[1], q[2], q[3], 3.0, .9, 1.8, h, h + .55)
     b.flush('roof terraces')
     for k in range(1, 8, 2):
         C.qa_room_light(f'Apartments west {k}', (X0 + 5.0, 0.0, Z1 + k * FH + 2.4), 120, 4.0)
         C.qa_room_light(f'Apartments south {k}', (-14.0, Y0 + 5.0, Z1 + k * FH + 2.4), 120, 4.0)
     C.qa_room_light('Retail', (-10.0, Y0 + 6.0, 3.6), 260, 8.0)
-    C.CONTACTS.append(dict(name='Ring of floor bands on the retail ground floor and sculpted piers; roof line from 9 storeys at the south-west to a 3-storey podium at the south-east', storey_height_m=FH))
+    C.CONTACTS.append(dict(name='Ring of floor bands on the retail ground floor, arches and sculpted piers; roof line from 9 storeys at the south-west dipping mid-south, 9 storeys at the south-east and east', storey_height_m=FH))
 
 
-def ellipse(rx, ry, phi, n=28):
+def ellipse(rx, ry, phi, n=36, cx=TX, cy=TY):
     c, s = math.cos(phi), math.sin(phi)
-    return [(TX + rx * math.cos(t) * c - ry * math.sin(t) * s, TY + rx * math.cos(t) * s + ry * math.sin(t) * c) for t in (k * math.tau / n for k in range(n))]
+    return [(cx + rx * math.cos(t) * c - ry * math.sin(t) * s, cy + rx * math.cos(t) * s + ry * math.sin(t) * c) for t in (k * math.tau / n for k in range(n))]
 
 
 def tower():
-    zp = Z1 + 2 * FH                                                    # the three-storey podium roof
+    zp = Z1 + 8 * FH                                                    # the roof of the nine-storey corner block
     levels = [zp + k * FH for k in range(int(round((ZTOP - zp) / FH)) + 1)]
-    span = ZTOP - zp
+    span = levels[-1] - zp
 
     def shape(z):
         f = (z - zp) / span
-        return 6.6 + 1.6 * f * f, 5.0 + 1.0 * f * f, math.radians(-10.0 + 62.0 * f)
+        return 9.6 + 3.0 * f * f, 7.2 + 1.8 * f * f, math.radians(-40.0 + 115.0 * f), TX + 1.5 * f, TY - 1.0 * f
 
-    rings = []
-    for z in [zp] + levels[1:]:
-        rx, ry, phi = shape(z)
-        rings.append([(x, y, z) for x, y in ellipse(rx * .84, ry * .84, phi)])
+    def pt(z, rs, t):
+        rx, ry, phi, cx, cy = shape(z)
+        c, s = math.cos(phi), math.sin(phi)
+        x, y = rx * rs * math.cos(t), ry * rs * math.sin(t)
+        return (cx + x * c - y * s, cy + x * s + y * c, z)
+
+    zs = [zp + span * k / (3 * (len(levels) - 1)) for k in range(3 * (len(levels) - 1) + 1)]   # finer than the floors
+    n = 36
+    rings = [[pt(z, .86, k * math.tau / n) for k in range(n)] for z in zs]
     vs = [v for r_ in rings for v in r_]
-    m, fs = len(rings[0]), []
+    fs = []
     for i in range(len(rings) - 1):
-        for j in range(m):
-            k = (j + 1) % m
-            fs.append((i * m + j, i * m + k, (i + 1) * m + k, (i + 1) * m + j))
-    fs.append(tuple(range(m - 1, -1, -1))); fs.append(tuple((len(rings) - 1) * m + j for j in range(m)))
+        for j in range(n):
+            k = (j + 1) % n
+            fs.append((i * n + j, i * n + k, (i + 1) * n + k, (i + 1) * n + j))
+    fs.append(tuple(range(n - 1, -1, -1))); fs.append(tuple((len(rings) - 1) * n + j for j in range(n)))
     C.mesh('Tower glazing', vs, fs, 'glass', 'tower')
-    for k, z in enumerate(levels):                                          # floor plates and balcony rims
-        rx, ry, phi = shape(z)
-        pts = ellipse(rx, ry, phi)
-        C.prism(f'Tower floor {k}', pts, 'z', z - .1, z + .35, 'white', 'tower')
+    for k, z in enumerate(levels):                                          # floor plates, rims just inside the blades
+        pts = [pt(z, .97, j * math.tau / n)[:2] for j in range(n)]
+        C.prism(f'Tower floor {k}', pts, 'z', z - .15, z + .45, 'white', 'tower')
         if k % 3 == 1:
-            C.qa_room_light(f'Tower {k}', (TX, TY, z + 2.3), 60, 3.0)
-    # Two white blades spiralling up the tower and an open loop over the top.
+            C.qa_room_light(f'Tower {k}', (shape(z)[3], shape(z)[4], z + 2.3), 60, 3.0)
+    # Two broad white blades spiralling up the tower, and an open twisted loop springing from their tops.
+    BW = .62
     for side in (0.0, math.pi):
         brings = []
-        for z in [zp] + levels[1:]:
-            rx, ry, phi = shape(z)
-            prof = []
-            for rs, sign in ((1.12, 1), (.86, -1)):
-                for k in range(7):
-                    t = side + (-.32 + .64 * k / 6) * sign
-                    c, s = math.cos(phi), math.sin(phi)
-                    x, y = rx * rs * math.cos(t), ry * rs * math.sin(t)
-                    prof.append((TX + x * c - y * s, TY + x * s + y * c, z))
+        for z in zs:
+            prof = [pt(z, 1.2, side - BW + 2 * BW * k / 8) for k in range(9)] + [pt(z, .99, side + BW - 2 * BW * k / 8) for k in range(9)]
             brings.append(prof)
         loft('Tower blade', brings, 'white', 'tower', closed=False)
-    rx, ry, phi = shape(ZTOP)
+    rx, ry, phi, cx, cy = shape(levels[-1])
     c, s = math.cos(phi), math.sin(phi)
-    side = (-s, c)
+    base_side = (-s, c, 0.0)
     path = []
-    for k in range(25):
-        t = math.pi * k / 24
-        r = rx * .99 * math.cos(t)
-        path.append((TX + r * c, TY + r * s, ZTOP + 7.0 * math.sin(t)))
+    R0 = rx * 1.095
+    for k in range(33):
+        t = math.pi * k / 32
+        path.append((cx + R0 * math.cos(t) * c, cy + R0 * math.cos(t) * s, levels[-1] + 9.0 * math.sin(t)))
     lrings = []
     for k, p in enumerate(path):
         a, b = path[max(0, k - 1)], path[min(len(path) - 1, k + 1)]
-        tx, ty, tz = b[0] - a[0], b[1] - a[1], b[2] - a[2]
-        L = math.sqrt(tx * tx + ty * ty + tz * tz); tx, ty, tz = tx / L, ty / L, tz / L
-        nx, ny, nz = ty * 0 - tz * side[1], tz * side[0] - tx * 0, tx * side[1] - ty * side[0]
-        lrings.append([(p[0] + side[0] * u + nx * v, p[1] + side[1] * u + ny * v, p[2] + nz * v) for u, v in ((-2.2, -.3), (2.2, -.3), (2.2, .3), (-2.2, .3))])
+        tv = [b[i] - a[i] for i in range(3)]; L = math.sqrt(sum(v * v for v in tv)); tv = [v / L for v in tv]
+        sv = list(base_side)
+        nv = [tv[1] * sv[2] - tv[2] * sv[1], tv[2] * sv[0] - tv[0] * sv[2], tv[0] * sv[1] - tv[1] * sv[0]]
+        tw = math.radians(70.0) * math.sin(math.pi * k / 32)                  # the ribbon twists about its own axis
+        sw = [sv[i] * math.cos(tw) + nv[i] * math.sin(tw) for i in range(3)]
+        nw = [nv[i] * math.cos(tw) - sv[i] * math.sin(tw) for i in range(3)]
+        lrings.append([tuple(p[i] + sw[i] * u + nw[i] * v for i in range(3)) for u, v in ((-2.6, -.35), (2.6, -.35), (2.6, .35), (-2.6, .35))])
     loft('Tower loop', lrings, 'white', 'tower', closed=False)
-    C.CONTACTS.append(dict(name='Twisting tower on the south-east podium roof; loop springing from the top of the blades', base_m=zp, top_m=ZTOP))
+    C.CONTACTS.append(dict(name='Twisting tower on the roof of the nine-storey south-east block; loop springing from the tops of the blades', base_m=zp, top_m=levels[-1]))
 
 
 def court_and_site():
