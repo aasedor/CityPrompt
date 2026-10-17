@@ -58,6 +58,32 @@ Additional external evidence: `prepared-boundary-overhead.png`,
 `prepared-boundary-scene.json`. A fresh local browser tab restored normal
 screenshots and controls; it is retained on the local project for the user.
 
+### Fresh connected-development project
+
+The user's next request was exercised from a clean project through the browser:
+**Connected development · road, parking and hall**, local project
+`c8d16205-ef09-4662-a1ba-66629a1fa8ad`. A new boundary, 90-degree Timber Community
+Hall, 6 m authored alley, 48-space asphalt lot and concrete entrance forecourt
+were drawn/placed. The earlier pilot project was preserved. The internal road
+is a separate conceptual road segment, not a public-road connection.
+
+The actual saved scene was read back from the guarded local database. Its
+driveway was derived with the current app's `parkingDriveway` and `parkingRoads`
+functions through Vite SSR, then independently intersected in metre coordinates:
+0.60 m² overlap with the road, 9.00 m² with the lot, and 0 m² outside the boundary.
+The forecourt has zero gap to the lot and to the building's approximate native
+rectangular envelope; that envelope check is not semantic door metadata.
+Browser walking across the driveway join showed continuous asphalt without
+visible sinking; the hall entrance veranda meets the forecourt. A full reload
+and reopening the plan restored 48 spaces and the connected authored road,
+with Save disabled because there were no unsaved edits. No new application
+code or paid render calls were required, and automated suites were not rerun.
+
+Evidence: `C:/dev-artifacts/CityPrompt/connected-development-2026-10-17/`, including
+`saved-scene.json`, `connection-check.json`, `reload-plan.png`,
+`driveway-walk.png`, `parking-aisle-walk.png`, `connected-final-overhead.png`
+and `connected-final-oblique.png`. The new project tab remains open locally.
+
 Choose **Add details → Arrange details & custom paving**. Select the lot in the
 plan, then **Connect to nearest road** or **Choose driveway road edge**. Use
 **Expand view** if the road is outside the initial plan frame. Road outlines are
