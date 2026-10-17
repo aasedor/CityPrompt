@@ -20,12 +20,12 @@ SLUG = 'clay-cmu-dock-warehouse'
 X0, X1, Y0, Y1 = -15.0, 15.0, -11.5, 11.5       # 30 x 23 m block (top view: width about 1.3 x depth)
 T = .30
 G0 = .15
-FL = 1.2                                          # dock-height floor
+FL = 1.0                                          # dock-height floor on a cast-concrete dock base
 EAVE = 8.4                                        # top of the CMU wall (about 41 block courses to the coping)
 PARA = EAVE + .4
 EPS = .002
 DOCKS = [-11.8, -7.4, -3.0, 1.4]                 # dock door centres along the south face (west half)
-DOCK_W, DOCK_H = 2.3, 4.0                         # tall, narrow sectional doors
+DOCK_W, DOCK_H = 1.9, 3.0                         # narrow sectional doors, tops at about 45% of the wall
 ENTRY = 8.4                                       # entry door centre
 PALETTE = dict(wall=(.72, .64, .50), joint=(.62, .55, .43), trim=(.70, .72, .73),
     pale=(.88, .88, .86), stone=(.66, .65, .62), roof=(.50, .52, .54), sand=(.66, .64, .60),
@@ -51,7 +51,7 @@ def manifest(version):
         ('rear_north', (0.0, 34.0, 5.0), (0.0, Y1, 4.0), 45)])
     for c in cams:                       # the locked front looks from the street south-east of the block, at eye level
         if c['name'] == 'front':
-            c['location'] = (16.0, -40.0, 1.7); c['target'] = (-3.0, Y0 + 2.0, 4.6); c['lens'] = 28; c['whole'] = False
+            c['location'] = (20.0, -24.5, 1.6); c['target'] = (-4.0, -7.0, 3.8); c['lens'] = 21; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -371,7 +371,7 @@ def south_face():
             m.box('bumper', u + e * .85, -.13, FL - .28, .34, .26, .42)                    # dock bumpers
             m.box('yellow', u + e * (jx + .45), -.55, .65, .16, .16, 1.2)                   # short yellow guide post at the jamb foot
         m.box('dock', u, -.21, FL + DOCK_H + .32, 2 * jx + .44, .42, .6)                    # header, proud of the jambs
-        m.box('dock', u, -.06, FL - .02, DOCK_W - .3, .12, .1)                              # leveller lip
+        m.box('dock', u, -.2, FL - .06, DOCK_W - .1, .4, .14)                               # steel dock leveller lip
         m.box('door', u, .14, FL + DOCK_H / 2, DOCK_W - .02, .04, DOCK_H - .02)            # sectional door
         for k in range(1, 6):
             m.box('trim', u, .115, FL + DOCK_H * k / 6, DOCK_W - .04, .02, .03)            # panel joints
@@ -379,6 +379,8 @@ def south_face():
             m.box('glass', u - .75 + k * .5, .11, FL + DOCK_H * 3.5 / 6, .32, .02, .22)    # row of small lites
         C.OPENINGS.append(dict(id=h['id'], face=f.label, u=u, z=h['z'], width=h['w'], height=h['h'], kind='overhead dock door', clear_wall_cut=True,
             carrier_depth_m=T, frame_inset_m=.12, pane_inset_m=.14, face_origin=list(f.o), face_tangent=list(f.t), face_inward=list(f.n), occupied_space='warehouse'))
+    x0d, x1d = DOCKS[0] - DOCK_W / 2 - 1.2, DOCKS[-1] + DOCK_W / 2 + 1.2
+    m.box('concrete', (x0d + x1d) / 2, -.06, FL / 2, x1d - x0d, .12, FL)               # cast-concrete dock base under the bays
     framed(m, f, door, cols=2, rows=1, inset=.14, occupied='office lobby', kind='entry door')
     framed(m, f, win, cols=3, rows=1, inset=.14, occupied='office')
     m.box('stone', win['u'], -.04, win['z'] - .05, win['w'] + .16, .14, .1)
