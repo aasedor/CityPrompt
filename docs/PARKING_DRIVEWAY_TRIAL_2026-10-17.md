@@ -13,7 +13,7 @@ using the existing local Animation browser QA account. The API was guarded
 against any database other than the local `cityprompt_repairs_20261004` database
 before inspecting receipts or test data.
 
-The disposable scene now contains a Timber Community Hall facing a 48-space
+The first disposable scene contained a Timber Community Hall facing a 48-space
 asphalt lot, a concrete entrance forecourt meeting its veranda and a 6 m
 driveway from the lot's clear west side aisle to the existing Google-tile road.
 The hall uses the existing fixed review model: 22.55 × 26.55 × 13.10 m native
@@ -21,6 +21,42 @@ geometry on its 27 × 31 m placement plot, rotated 90 degrees. It was not rebuil
 or stretched. The lot is approximately 40 × 35 m; stalls remain 2.7 × 5.5 m,
 with 6 m aisles. Parking quantity is a visualization trial, not a demand,
 traffic-engineering or accessible-parking assessment.
+
+### Follow-up: keep the connection inside the prepared boundary
+
+At the user's request, the same local scene was retrialled with an authored
+road inside its existing prepared boundary. The earlier Google-road driveway
+was removed through the plan editor. The existing catalogue's **Alley — No Deep
+Utilities** (`calgary_alley_draft3_v1` / `calgary_alley`), 6 m wide and approximately
+75 m long, was drawn north–south inside the west edge. **Connect to nearest road**
+then created and saved the short 6 m driveway automatically. The hall, 48-space
+lot and entrance forecourt were retained. This internal road segment is not
+connected to the public Google road; a complete external access design remains
+outside this follow-up.
+
+Results: overhead, oblique and walking-height inspections showed a continuous
+road/driveway/parking surface without the raised-strip clipping seen outside
+the boundary. Walking input was exercised along the entrance. Full browser
+reload and reopening the lot restored 48 spaces and the linked authored road;
+the editor reported a connected driveway and no unsaved edits. Local database
+readback at details revision 9 confirmed the road polygon, lot, all paving and
+road target lie inside the boundary, with the target on the road edge (within
+floating-point tolerance). The linked road ID is
+`2e136314-df36-43fd-8fae-840a32688f52`.
+
+A free exact 3D export included the internal road, driveway, parking, forecourt
+and hall. No further paid calls were made: the audit count remains three and
+the local account remains at 412 tokens. No application source changed for this
+follow-up; earlier automated checks were not rerun or represented as new tests.
+The successful prepared-ground case does not resolve arbitrary natural-terrain
+connections or the earlier AI fidelity warnings.
+
+Additional external evidence: `prepared-boundary-overhead.png`,
+`prepared-boundary-oblique.png`, `prepared-driveway-road-seam-walk.png`,
+`prepared-driveway-to-hall-walk.png`, `prepared-reload-plan.png`,
+`prepared-boundary-free-capture.png`, `prepared-boundary-receipt.json` and
+`prepared-boundary-scene.json`. A fresh local browser tab restored normal
+screenshots and controls; it is retained on the local project for the user.
 
 Choose **Add details → Arrange details & custom paving**. Select the lot in the
 plan, then **Connect to nearest road** or **Choose driveway road edge**. Use
