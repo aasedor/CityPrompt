@@ -1,0 +1,96 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "dock door 0",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dock door 1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dock door 2",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dock door 3",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "entry door",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "entry window",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east low window",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east clerestory 0",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east clerestory 1",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north service door",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north high window 0",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north high window 1",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north high window 2",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west high window 0",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west high window 1",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

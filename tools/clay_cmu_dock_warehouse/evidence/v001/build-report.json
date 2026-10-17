@@ -1,0 +1,728 @@
+{
+  "candidate": "clay-cmu-dock-warehouse-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 74,
+    "vertices": 5612,
+    "polygons": 7688,
+    "triangles": 7688,
+    "path": "clay-cmu-dock-warehouse-clay-v001-authoring.blend",
+    "bytes": 1868052,
+    "sha256": "6a20c96e8342a76ab14a65c5a37c5949d233fd1674de4ca59bd43d2f784f7d58"
+  },
+  "runtime": {
+    "path": "clay-cmu-dock-warehouse-clay-v001.glb",
+    "bytes": 432580,
+    "sha256": "dc291af42392736edaaafab57fce202420f7e2e396a6f44844a08b60b73469e3",
+    "meshes": 21,
+    "materials": 21,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 21,
+    "vertices": 5612,
+    "polygons": 7688,
+    "triangles": 7688
+  },
+  "original_bounds_m": [
+    [
+      -31.0,
+      -31.0,
+      0.0
+    ],
+    [
+      30.0,
+      15.994999885559082,
+      8.074999809265137
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -31.0,
+      -31.0,
+      0.0
+    ],
+    [
+      30.0,
+      15.994999885559082,
+      8.074999809265137
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 34.0,
+    "depth": 26.0,
+    "height": 8.6
+  },
+  "native_dimensions_m": {
+    "width": 61.0,
+    "depth": 46.99499988555908,
+    "height": 8.074999809265137
+  },
+  "native_bottom_center_m": [
+    -0.5,
+    -7.502500057220459,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 4,
+    "joint": 4,
+    "trim": 5,
+    "pale": 10,
+    "stone": 2,
+    "roof": 1,
+    "glass": 5,
+    "hardware": 5,
+    "floor": 2,
+    "timber": 9,
+    "blue": 1,
+    "planting": 6,
+    "concrete": 8,
+    "white": 2,
+    "asphalt": 3,
+    "membrane": 1,
+    "dock": 1,
+    "bumper": 1,
+    "yellow": 2,
+    "door": 1,
+    "car": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/dock_doors.png",
+    "renders/entry_canopy.png",
+    "renders/roof_units.png",
+    "renders/east_windows.png",
+    "renders/parapet_corner.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front_corner": {
+      "xmin": 0.16207313537597656,
+      "xmax": 0.9132232666015625,
+      "ymin": 0.30026230216026306,
+      "ymax": 0.5813572406768799
+    },
+    "aerial": {
+      "xmin": 0.08632700890302658,
+      "xmax": 0.8183953762054443,
+      "ymin": 0.21245761215686798,
+      "ymax": 0.610403835773468
+    },
+    "top": {
+      "xmin": 0.18535420298576355,
+      "xmax": 0.8044959306716919,
+      "ymin": 0.08047224581241608,
+      "ymax": 0.7164627909660339
+    },
+    "left_side": {
+      "xmin": 0.2812842130661011,
+      "xmax": 0.9199196100234985,
+      "ymin": 0.4181722402572632,
+      "ymax": 0.5600191354751587
+    },
+    "right_side": {
+      "xmin": 0.08008038252592087,
+      "xmax": 0.7146525382995605,
+      "ymin": 0.41930004954338074,
+      "ymax": 0.5596030950546265
+    },
+    "rear": {
+      "xmin": 0.11615323275327682,
+      "xmax": 0.9103192090988159,
+      "ymin": 0.4260796308517456,
+      "ymax": 0.565410315990448
+    },
+    "rear_side": {
+      "xmin": 0.08971421420574188,
+      "xmax": 0.813367486000061,
+      "ymin": 0.351921945810318,
+      "ymax": 0.5811045169830322
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Dock-height floor slab inside CMU walls from grade; docks open at dock height above the apron",
+      "floor_m": 1.2
+    },
+    {
+      "name": "Single-storey CMU warehouse: docks along the west half of the south face, hung canopy over the entry, flat parapet roof",
+      "box": [
+        -17.0,
+        17.0,
+        -13.0,
+        13.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "dock door 0",
+      "face": "south",
+      "u": -14.0,
+      "z": 1.2,
+      "width": 3.0,
+      "height": 3.0,
+      "kind": "overhead dock door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.14,
+      "face_origin": [
+        0.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "dock door 1",
+      "face": "south",
+      "u": -9.6,
+      "z": 1.2,
+      "width": 3.0,
+      "height": 3.0,
+      "kind": "overhead dock door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.14,
+      "face_origin": [
+        0.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "dock door 2",
+      "face": "south",
+      "u": -5.2,
+      "z": 1.2,
+      "width": 3.0,
+      "height": 3.0,
+      "kind": "overhead dock door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.14,
+      "face_origin": [
+        0.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "dock door 3",
+      "face": "south",
+      "u": -0.8,
+      "z": 1.2,
+      "width": 3.0,
+      "height": 3.0,
+      "kind": "overhead dock door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.14,
+      "face_origin": [
+        0.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "entry door",
+      "face": "south",
+      "u": 4.6,
+      "z": 1.2,
+      "width": 1.9,
+      "height": 2.4,
+      "kind": "entry door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office lobby"
+    },
+    {
+      "id": "entry window",
+      "face": "south",
+      "u": 8.0,
+      "z": 2.05,
+      "width": 2.9,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -13.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east low window",
+      "face": "east",
+      "u": -10.6,
+      "z": 2.05,
+      "width": 1.3,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east clerestory 0",
+      "face": "east",
+      "u": -4.5,
+      "z": 5.0,
+      "width": 0.8,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "east clerestory 1",
+      "face": "east",
+      "u": 1.5,
+      "z": 5.0,
+      "width": 0.8,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "north service door",
+      "face": "north",
+      "u": 6.0,
+      "z": 1.2,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        13.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "north high window 0",
+      "face": "north",
+      "u": -10.0,
+      "z": 5.0,
+      "width": 0.8,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        13.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "north high window 1",
+      "face": "north",
+      "u": 0.0,
+      "z": 5.0,
+      "width": 0.8,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        13.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "north high window 2",
+      "face": "north",
+      "u": 10.0,
+      "z": 5.0,
+      "width": 0.8,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        13.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "west high window 0",
+      "face": "west",
+      "u": -5.0,
+      "z": 5.0,
+      "width": 0.8,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "west high window 1",
+      "face": "west",
+      "u": 5.0,
+      "z": 5.0,
+      "width": 0.8,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "South apron",
+      "South street",
+      "East lane",
+      "West truck court",
+      "site white",
+      "site car",
+      "site glass"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005"
+    ],
+    "envelope": [
+      "south CMU carrier",
+      "east CMU carrier",
+      "north CMU carrier",
+      "west CMU carrier"
+    ],
+    "brick joints": [
+      "south measured mortar courses",
+      "east measured mortar courses",
+      "north measured mortar courses",
+      "west measured mortar courses"
+    ],
+    "south": [
+      "south south pale",
+      "south south dock",
+      "south south bumper",
+      "south south yellow",
+      "south south door",
+      "south south trim",
+      "south south glass",
+      "south south stone"
+    ],
+    "entry": [
+      "Entry canopy",
+      "Canopy hanger rod",
+      "Canopy rod anchor",
+      "Canopy hanger rod.001",
+      "Canopy rod anchor.001",
+      "Entry landing",
+      "Landing step",
+      "Landing step.001",
+      "Landing step.002",
+      "Landing step.003"
+    ],
+    "east": [
+      "east east pale",
+      "east east trim",
+      "east east glass",
+      "east east stone"
+    ],
+    "north": [
+      "north north pale",
+      "north north trim",
+      "north north glass",
+      "north north concrete"
+    ],
+    "west": [
+      "west west pale",
+      "west west trim",
+      "west west glass"
+    ],
+    "floor": [
+      "Ground slab"
+    ],
+    "roof": [
+      "Roof deck",
+      "Roof membrane"
+    ],
+    "roof plant": [
+      "roof plant roof",
+      "roof plant pale",
+      "roof plant hardware",
+      "roof plant trim",
+      "roof plant white",
+      "Roof pipe vent",
+      "Roof pipe vent.001",
+      "Roof pipe vent.002",
+      "Roof pipe vent.003"
+    ],
+    "racking": [
+      "racking blue",
+      "racking yellow",
+      "racking timber",
+      "racking pale"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-17T21:35:50.061140+00:00",
+  "delivery_and_render_seconds": 2482.846223291,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
