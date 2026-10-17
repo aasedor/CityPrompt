@@ -51,6 +51,11 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
   const [runtimeError,setRuntimeError] = useState('');
   const active = useRef(true);
   const pending = useRef(false);
+  // Connections and other editors can save while the model check is pending.
+  // A refetch with identical content is safe; a newer authored zone is not.
+  const zoneSnapshot = JSON.stringify([zone.id, zone.project_id, zone.updated_at, zone.zone_type, zone.coordinates, savedProperties]);
+  const latestZoneSnapshot = useRef(zoneSnapshot);
+  latestZoneSnapshot.current = zoneSnapshot;
   useEffect(()=>{active.current=true;return()=>{active.current=false;};},[]);
   const choice = choices.find(c => c.id === choiceId);
   const variant = choice?.option.variants?.find(v => v.id === variantId);
@@ -125,6 +130,10 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
       } finally {
         pending.current=false;if(active.current)setChecking(false);
       }
+    }
+    if (latestZoneSnapshot.current !== zoneSnapshot) {
+      setRuntimeError('The building changed while its model was being checked. Review it and apply again.');
+      return;
     }
     onSave(nextProperties);
   }}>

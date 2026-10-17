@@ -106,6 +106,47 @@ it('does not apply a delayed model check after the editor closes',async()=>{
   expect(onSave).not.toHaveBeenCalled();
 });
 
+it.each(['entrance', 'footprint', 'project'] as const)('does not overwrite a newer %s edit after a delayed height check', async change => {
+  let finish!: () => void;
+  vi.mocked(legoAssemblyApi.plan).mockImplementationOnce(() => new Promise(resolve => {
+    finish = () => resolve({} as never);
+  }));
+  const original = { ...zone, project_id: 'first-project', properties: placementProperties(placeAsset('clay_vancouver_balcony_podium_tower')) };
+  const onSave = vi.fn();
+  const view = render(<BuildingDesignControls zone={original} disabled={false} onSave={onSave} />);
+  fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '40' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
+  await waitFor(() => expect(legoAssemblyApi.plan).toHaveBeenCalledOnce());
+  const updated = change === 'entrance'
+    ? { ...original, properties: { ...original.properties, pedestrian_building_entrance: { edge_index: 2, fraction: 0.6 } } }
+    : change === 'footprint'
+      ? { ...original, coordinates: [[0, 0], [2, 0], [2, 1], [0, 1]] as SiteZone['coordinates'] }
+      : { ...original, project_id: 'second-project' };
+  view.rerender(<BuildingDesignControls zone={updated} disabled={false} onSave={onSave} />);
+  await act(async () => finish());
+  expect(onSave).not.toHaveBeenCalled();
+  expect(screen.getByRole('alert').textContent).toContain('apply again');
+  // An explicit retry checks the current zone and preserves its independent edit.
+  fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
+  await waitFor(() => expect(onSave).toHaveBeenCalledOnce());
+  expect(onSave.mock.calls[0][0]).toMatchObject({ floor_count: 40 });
+  if (change === 'entrance') expect(onSave.mock.calls[0][0].pedestrian_building_entrance).toEqual({ edge_index: 2, fraction: 0.6 });
+});
+
+it('allows a checked height edit after an unchanged zone is refetched', async () => {
+  let finish!: () => void;
+  vi.mocked(legoAssemblyApi.plan).mockImplementationOnce(() => new Promise(resolve => { finish = () => resolve({} as never); }));
+  const original = { ...zone, properties: placementProperties(placeAsset('clay_vancouver_balcony_podium_tower')) };
+  const onSave = vi.fn();
+  const view = render(<BuildingDesignControls zone={original} disabled={false} onSave={onSave} />);
+  fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '40' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
+  await waitFor(() => expect(legoAssemblyApi.plan).toHaveBeenCalledOnce());
+  view.rerender(<BuildingDesignControls zone={{ ...original, properties: { ...original.properties } }} disabled={false} onSave={onSave} />);
+  await act(async () => finish());
+  expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ floor_count: 40 }));
+});
+
 it('does not save a Vancouver height beyond the reviewed storey programme', () => {
   const tower = placeAsset('clay_vancouver_balcony_podium_tower');
   const onSave = vi.fn();
