@@ -10,9 +10,12 @@ import { createStreetSurfaceAlbedoTexture } from "@/components/viewer/globe/stre
 import type { SiteZone } from "@/types";
 import {
   pavingGeometry,
+  pavingHeightAt,
+  pavingLocalPoints,
   PAVING_MATERIALS,
   type PavingSurface,
 } from "./pavingSurfaces";
+import { parkingLayout, parkingMarkingGeometry } from './parkingLot';
 
 const pointKey = (p: number[]) => `${p[0]}:${p[1]}`;
 function Surface({
@@ -27,6 +30,11 @@ function Surface({
     [surface.coordinates, heights],
   );
   useEffect(() => () => geometry.dispose(), [geometry]);
+  const markings=useMemo(()=>surface.parking?parkingMarkingGeometry(
+    parkingLayout(pavingLocalPoints(surface.coordinates),surface.parking),
+    point=>pavingHeightAt(geometry,point) ?? .025,
+  ):null,[surface.parking,surface.coordinates,geometry]);
+  useEffect(()=>()=>markings?.dispose(),[markings]);
   const texture = useMemo(
     () =>
       createStreetSurfaceAlbedoTexture(
@@ -63,6 +71,10 @@ function Surface({
           polygonOffsetUnits={-2}
         />
       </mesh>
+      {markings && <mesh geometry={markings} renderOrder={104} raycast={()=>{}} receiveShadow>
+        <meshStandardMaterial color="#efeee4" roughness={.95} side={DoubleSide}
+          polygonOffset polygonOffsetFactor={-3} polygonOffsetUnits={-3}/>
+      </mesh>}
     </EastNorthUpFrame>
   );
 }

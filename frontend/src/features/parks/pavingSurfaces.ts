@@ -1,5 +1,6 @@
-import { Shape, ShapeGeometry } from "three";
+import { Shape, ShapeGeometry, type BufferGeometry } from "three";
 import { parkOutlineProblem } from "@/features/pickPlace/parkOutline";
+import type { ParkingRecipe } from './parkingLot';
 import {
   METERS_PER_DEG_LAT,
   metersPerDegLon,
@@ -14,6 +15,7 @@ export interface PavingSurface {
   id: string;
   material: keyof typeof PAVING_MATERIALS;
   coordinates: number[][];
+  parking?: ParkingRecipe;
 }
 export function pavingProblem(coordinates: number[][]): string | null {
   if (coordinates.length > 64) return "Use up to 64 corners per paved area.";
@@ -53,6 +55,20 @@ export function pavingLocalPoints(coordinates: number[][]) {
     (p[0] - lng) * metersPerDegLon(lat),
     (p[1] - lat) * METERS_PER_DEG_LAT,
   ]);
+}
+/** Barycentric height on the same triangles as the rendered paving, in ENU metres. */
+export function pavingHeightAt(geometry:BufferGeometry,[x,y]:number[]):number|null {
+  const p=geometry.getAttribute('position'),index=geometry.getIndex();
+  const count=index?.count??p.count;
+  for(let i=0;i<count;i+=3){
+    const a=index?index.getX(i):i,b=index?index.getX(i+1):i+1,c=index?index.getX(i+2):i+2;
+    const ax=p.getX(a),ay=p.getY(a),bx=p.getX(b),by=p.getY(b),cx=p.getX(c),cy=p.getY(c);
+    const d=(by-cy)*(ax-cx)+(cx-bx)*(ay-cy);
+    if(Math.abs(d)<1e-10)continue;
+    const u=((by-cy)*(x-cx)+(cx-bx)*(y-cy))/d,v=((cy-ay)*(x-cx)+(ax-cx)*(y-cy))/d,w=1-u-v;
+    if(Math.min(u,v,w)>=-1e-6)return u*p.getZ(a)+v*p.getZ(b)+w*p.getZ(c);
+  }
+  return null;
 }
 /** Flat, lightweight surface. Geometry is rebuilt on edits, never during walking. */
 export function pavingGeometry(coordinates: number[][], heights: number[]) {

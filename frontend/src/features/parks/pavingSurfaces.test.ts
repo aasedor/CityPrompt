@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { pavingGeometry, pavingProblem } from "./pavingSurfaces";
+import { pavingGeometry, pavingProblem, pavingHeightAt } from "./pavingSurfaces";
 import {
   METERS_PER_DEG_LAT,
   metersPerDegLon,
@@ -10,6 +10,13 @@ const world = (points: number[][]) =>
     51 + y / METERS_PER_DEG_LAT,
   ]);
 describe("custom paving", () => {
+  it('keeps parking paint on the triangulated paving plane',()=>{
+    const geometry=pavingGeometry(world([[0,0],[20,0],[20,10],[0,10]]),[100,100.4,100.4,100]);
+    expect(pavingHeightAt(geometry,[10,5])).toBeCloseTo(.225,4);
+    expect(pavingHeightAt(geometry,[5,8])).toBeCloseTo(.125,4);
+    expect(pavingHeightAt(geometry,[30,5])).toBeNull();
+    geometry.dispose();
+  });
   it("accepts concave paved areas and rejects crossed, degenerate and oversized outlines", () => {
     expect(
       pavingProblem(

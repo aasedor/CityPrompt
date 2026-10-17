@@ -125,6 +125,7 @@ export function BenchLayoutEditor({
   const [past, setPast] = useState<
       { benches: DetailBench[]; surfaces: PavingSurface[] }[]
     >([]),
+    [future, setFuture] = useState<{benches:DetailBench[];surfaces:PavingSurface[]}[]>([]),
     [selected, setSelected] = useState<string | null>(null);
   const [placing, setPlacing] = useState(false),
     [message, setMessage] = useState(""),
@@ -183,6 +184,7 @@ export function BenchLayoutEditor({
   }, [context, viewScale]);
   const change = (next: DetailBench[], nextSurfaces = surfaces) => {
     setPast((p) => [...p.slice(-49), { benches, surfaces }]);
+    setFuture([]);
     setBenches(next);
     setSurfaces(nextSurfaces);
     setMessage("");
@@ -202,6 +204,7 @@ export function BenchLayoutEditor({
   const undo = () => {
     const previous = past[past.length - 1];
     if (!previous) return;
+    setFuture(f=>[{benches,surfaces},...f].slice(0,50));
     setBenches(previous.benches);
     setSurfaces(previous.surfaces);
     setPast((p) => p.slice(0, -1));
@@ -209,6 +212,13 @@ export function BenchLayoutEditor({
     setPlacing(false);
     paving.reset();
     setMessage("");
+  };
+  const redo = () => {
+    const next = future[0];
+    if(!next)return;
+    setPast(p=>[...p.slice(-49),{benches,surfaces}]);
+    setBenches(next.benches);setSurfaces(next.surfaces);setFuture(f=>f.slice(1));
+    setSelected(null);setPreview(null);setPlacing(false);paving.reset();setMessage('');
   };
   const move = (candidate: DetailBench) => {
     const problem = benchPlacementProblem(candidate, benches, context);
@@ -332,7 +342,8 @@ export function BenchLayoutEditor({
           }
           if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
             e.preventDefault();
-            if (past.length) {
+            if(e.shiftKey){redo();}
+            else if (past.length) {
               undo();
             }
             return;
@@ -863,6 +874,7 @@ export function BenchLayoutEditor({
             >
               Undo
             </button>
+            <button className={`${button} w-full`} aria-label="Redo detail edit" disabled={locked||!future.length} onClick={redo}>Redo</button>
             <p role="status" className="text-sm text-amber-900">
               {message ||
                 (invalid

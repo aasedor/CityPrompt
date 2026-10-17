@@ -10,6 +10,31 @@ from app.api.v1 import project_details as endpoint
 PAVING = {'id':'paving-1', 'material':'concrete', 'coordinates':[
     [-114.1,51.05],[-114.0998,51.05],[-114.0998,51.0502],[-114.1,51.0502]]}
 
+@pytest.mark.asyncio
+async def test_parking_recipe_round_trips_without_changing_legacy_surfaces(monkeypatch):
+    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
+    db, row = session({'keep':True})
+    lot = {**PAVING, 'id':'parking-1', 'material':'asphalt', 'parking':{'version':1,'rowAngle':90}}
+    saved = await endpoint.save_details(uuid.uuid4(),endpoint.DetailUpdate(expected_revision=0,benches=[],surfaces=[PAVING,lot]),SimpleNamespace(),db)
+    assert saved['surfaces'] == [PAVING,lot]
+    loaded = endpoint.DetailResponse(**await endpoint.get_details(uuid.uuid4(),SimpleNamespace(),db))
+    assert loaded.model_dump(mode='json',exclude_none=True)['surfaces'] == [PAVING,lot]
+    assert row.metadata_['keep'] is True
+
+@pytest.mark.parametrize('parking',[
+    {'version':2,'rowAngle':0}, {'version':1,'rowAngle':float('nan')},
+    {'version':1,'rowAngle':15}, {'version':1,'rowAngle':361}, {'version':1,'rowAngle':0,'stallWidth':.1},
+])
+def test_rejects_unsupported_parking_recipes(parking):
+    with pytest.raises(ValidationError):
+        endpoint.PavingSurface(**{**PAVING,'parking':parking})
+
+def test_rejects_parking_larger_than_bounded_procedural_recipe():
+    with pytest.raises(ValidationError):
+        endpoint.PavingSurface(**{**PAVING,'coordinates':[
+            [-114.1,51.05],[-114.097,51.05],[-114.097,51.052],[-114.1,51.052]],
+            'parking':{'version':1,'rowAngle':0}})
+
 SITE_DETAIL_IDS = tuple(f'detail-site-{slug}' for slug in (
     'outdoor-stairs', 'accessible-ramp', 'modular-handrail', 'retaining-wall',
     'refuge-island', 'planted-curb-extension', 'tactile-curb-ramp',

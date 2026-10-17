@@ -52,11 +52,28 @@ class Prop(Bench):
         return value
 
 
+class ParkingRecipe(BaseModel):
+    model_config = ConfigDict(extra='forbid', allow_inf_nan=False)
+    version: Literal[1]
+    rowAngle: Literal[0, 90]
+
+
 class PavingSurface(BaseModel):
     model_config = ConfigDict(extra='forbid', allow_inf_nan=False)
     id: str = Field(pattern=r'^[\w-]{1,80}$')
     material: Literal['concrete', 'brick', 'asphalt']
     coordinates: list[tuple[float, float]] = Field(min_length=3, max_length=64)
+    parking: ParkingRecipe | None = None
+
+    @model_validator(mode='after')
+    def bounded_parking(self):
+        if self.parking is not None:
+            x0, y0 = self.coordinates[0]
+            sx = 111320 * math.cos(math.radians(y0))
+            points = [((x-x0)*sx,(y-y0)*111320) for x,y in self.coordinates]
+            if Polygon(points).area > 15000:
+                raise ValueError('Split parking lots larger than 15,000 square metres')
+        return self
 
     @field_validator('coordinates')
     @classmethod
@@ -129,7 +146,7 @@ async def save_details(project_id: uuid.UUID, request: DetailUpdate, user: User 
                       if request.trees is not None else current.get('trees', []))
     saved['props'] = ([prop.model_dump(exclude_none=True) for prop in request.props]
                       if request.props is not None else current.get('props', []))
-    saved['surfaces'] = ([surface.model_dump(mode='json') for surface in request.surfaces]
+    saved['surfaces'] = ([surface.model_dump(mode='json', exclude_none=True) for surface in request.surfaces]
                          if request.surfaces is not None else current.get('surfaces', []))
     items = [*saved['benches'], *saved['trees'], *saved['props'], *saved['surfaces']]
     if len({item['id'] for item in items}) != len(items):

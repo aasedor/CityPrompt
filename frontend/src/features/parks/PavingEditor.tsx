@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { BenchContext } from "./benchDetails";
 import type { ParkPoint } from "@/components/viewer/globe/neighborhoodParkLayout";
 import {
   PAVING_MATERIALS,
   pavingProblem,
   type PavingSurface,
+  pavingLocalPoints,
 } from "./pavingSurfaces";
+import { parkingLayout, parkingMarkingSegments } from './parkingLot';
+import { metersPerDegLon, METERS_PER_DEG_LAT } from '@/components/viewer/mapEngine/geoUtils';
+import { parkOutlineDimensions, reshapeParkOutline } from '@/features/pickPlace/parkOutline';
 
 const button =
   "min-h-11 rounded-lg border border-slate-400 bg-white px-3 py-2 text-sm font-semibold disabled:opacity-40";
@@ -32,7 +36,11 @@ export function usePavingEditor({
     useState<PavingSurface["material"]>("concrete");
   const [corner, setCorner] = useState(0);
   const [message, setMessage] = useState("");
+  const [drawingParking, setDrawingParking] = useState(false);
   const active = surfaces.find((s) => s.id === selected);
+  const layouts = useMemo(() => new Map(surfaces.filter(s=>s.parking).map(s=>
+    [s.id,parkingLayout(pavingLocalPoints(s.coordinates),s.parking!)])),[surfaces]);
+  const parking = active ? layouts.get(active.id) : undefined;
   const armed = draft !== null || target !== null;
   const select = (id: string) => {
     onActivate();
@@ -49,7 +57,8 @@ export function usePavingEditor({
     setMessage("");
   };
   const apply = (next: PavingSurface) => {
-    const problem = pavingProblem(next.coordinates);
+    const problem = pavingProblem(next.coordinates) || (next.parking
+      ? parkingLayout(pavingLocalPoints(next.coordinates),next.parking).problem : null);
     if (problem) {
       setMessage(problem);
       return;
@@ -92,7 +101,12 @@ export function usePavingEditor({
       setMessage(problem);
       return;
     }
-    const next = { id: `paving-${crypto.randomUUID()}`, material, coordinates };
+    const next:PavingSurface = { id: `paving-${crypto.randomUUID()}`, material:drawingParking?'asphalt':material, coordinates,
+      ...(drawingParking?{parking:{version:1 as const,rowAngle:0}}:{}) };
+    if(next.parking){
+      const issue=parkingLayout(pavingLocalPoints(coordinates),next.parking).problem;
+      if(issue){setMessage(issue);return;}
+    }
     change([...surfaces, next]);
     setSelected(next.id);
     setDraft(null);
@@ -100,17 +114,16 @@ export function usePavingEditor({
   };
   const plan = (
     <>
-      {surfaces.map((s, i) => (
+      {surfaces.map((s, i) => <g key={s.id}>
         <polygon
-          key={s.id}
           role="button"
           tabIndex={locked ? -1 : 0}
-          aria-label={`Select paving ${i + 1}`}
+          aria-label={`Select ${s.parking?'parking lot':'paving'} ${i + 1}`}
           aria-pressed={s.id === selected}
           points={points(s.coordinates.map(context.fromWorld))}
           fill={PAVING_MATERIALS[s.material].color}
           fillOpacity={0.8}
-          stroke={s.id === selected ? "#075985" : "#7a7468"}
+          stroke={s.id === selected ? (s.parking?'#b6ed18':"#075985") : "#7a7468"}
           strokeWidth={s.id === selected ? 0.7 : 0.2}
           onClick={() => {
             if (!locked && !armed) select(s.id);
@@ -122,7 +135,16 @@ export function usePavingEditor({
             }
           }}
         />
-      ))}
+        {s.parking && <g pointerEvents="none" aria-hidden="true">
+          {parkingMarkingSegments(layouts.get(s.id)!).map(([a,b],j)=>{
+            const local=[a,b].map(([x,y])=>context.fromWorld([
+              s.coordinates[0][0]+x/metersPerDegLon(s.coordinates[0][1]),
+              s.coordinates[0][1]+y/METERS_PER_DEG_LAT,
+            ]));
+            return <polyline key={j} points={points(local)} stroke="white" strokeWidth={.10} fill="none"/>;
+          })}
+        </g>}
+      </g>)}
       {active &&
         active.coordinates.map((p, i) => (
           <g key={i} pointerEvents="none">
@@ -160,7 +182,7 @@ export function usePavingEditor({
       aria-label="Custom paving"
       className="space-y-2 rounded-lg border border-slate-300 p-2"
     >
-      <h3 className="text-sm font-bold">Custom paving</h3>
+      <h3 className="text-sm font-bold">Parking lots & custom paving</h3>
       <p className="text-xs">
         Draw a plaza or paved area beneath your details. Follows prepared site
         ground; does not clear buildings or reshape terrain.
@@ -185,6 +207,12 @@ export function usePavingEditor({
           ))}
         </select>
       </label>
+      <button className={`${button} w-full !border-2 !border-[#232323] !bg-[#c9ff3d]`}
+        disabled={locked || surfaces.length >=64 || draft!==null}
+        onClick={()=>{
+          onActivate();setSelected(null);setTarget(null);setDraft([]);setDrawingParking(true);
+          setMessage('Draw the lot outline on the plan. Use the first edge to aim the rows, then Finish parking lot.');
+        }}>Draw parking lot</button>
       <button
         className={`${button} w-full`}
         disabled={locked || surfaces.length >= 64 || draft !== null}
@@ -193,6 +221,7 @@ export function usePavingEditor({
           setSelected(null);
           setTarget(null);
           setDraft([]);
+          setDrawingParking(false);
           setMessage(
             "Click at least three corners on the plan, then Finish paving.",
           );
@@ -210,7 +239,7 @@ export function usePavingEditor({
             disabled={locked || draft.length < 3}
             onClick={finish}
           >
-            Finish paving
+            {drawingParking?'Finish parking lot':'Finish paving'}
           </button>
           <button
             className={button}
@@ -227,8 +256,25 @@ export function usePavingEditor({
       {active && (
         <>
           <p className="text-sm font-semibold">
-            Paved area {surfaces.indexOf(active) + 1} selected
+            {active.parking?'Parking lot':'Paved area'} {surfaces.indexOf(active) + 1} selected
           </p>
+          {active.parking && <div className="space-y-2 rounded-xl border-2 border-[#232323] bg-lime-50 p-3">
+            <p className="text-lg font-bold">{parking?.spaces.length ?? 0} parking spaces</p>
+            <p className="text-xs">2.7 × 5.5 m spaces · 6 m drive aisles. Capacity changes with the outline; spaces keep their size.</p>
+            <label className="block text-xs font-semibold">Row direction
+              <select aria-label="Parking row direction"
+                value={active.parking.rowAngle} disabled={locked} className={`${button} mt-1 w-full`}
+                onChange={e=>apply({...active,parking:{...active.parking!,rowAngle:Number(e.target.value)}})}>
+                <option value={0}>Along first edge</option>
+                <option value={90}>Across first edge</option>
+              </select>
+            </label>
+            <button className={`${button} w-full`} disabled={locked} onClick={()=>{
+              const frame=parkOutlineDimensions(active.coordinates);
+              apply({...active,coordinates:reshapeParkOutline(active.coordinates,frame.width,frame.depth,frame.degrees+15)});
+            }}>Rotate parking lot 15°</button>
+            <p className="text-xs text-slate-600">Local pilot: perpendicular bays on level ground. Outlines need a clear straight side aisle; split incompatible outlines into smaller lots. The clear side aisle needs a road entrance; this tool does not cut curbs or connect roads. Cars, accessible bays and islands are not included yet.</p>
+          </div>}
           <button
             className={`${button} w-full`}
             disabled={locked}
@@ -275,7 +321,7 @@ export function usePavingEditor({
               reset();
             }}
           >
-            Remove paved area
+            {active.parking?'Remove parking lot':'Remove paved area'}
           </button>
         </>
       )}

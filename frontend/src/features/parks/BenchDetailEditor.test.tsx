@@ -76,6 +76,9 @@ describe("isolated bench editor", () => {
         screen.queryByRole("button", { name: "Select paving 1" }),
       ).not.toBeInTheDocument();
       fireEvent.click(screen.getByRole("button", { name: "Undo detail edit" }));
+      fireEvent.click(screen.getByRole("button", { name: "Redo detail edit" }));
+      expect(screen.queryByRole("button", { name: "Select paving 1" })).not.toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Undo detail edit" }));
       fireEvent.click(screen.getByRole("button", { name: "Save details" }));
       await waitFor(() => expect(onSave).toHaveBeenCalledOnce());
       expect(onSave.mock.calls[0][0]).toEqual(benches);
