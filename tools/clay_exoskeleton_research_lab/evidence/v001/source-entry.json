@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-exoskeleton-research-lab",
+  "variant_id": "clay-exoskeleton-research-lab-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "research_laboratory/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/research-laboratory/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1303211,
+      "sha256": "8aed179ffe03b5db9eb1f12fbc96db6c98f032d58dd5985408e6353e683a0539"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/research-laboratory/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 908152,
+      "sha256": "b9f323ed50f2d4534bf68b0316c04de0fc609b2d3d5dbb5dfaa796d48cd83bc1"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/research-laboratory/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 810690,
+      "sha256": "9b2377977becd24478b4219e74030768dd362e29781c9c958bcd84f32b67f2f4"
+    }
+  ]
+}
