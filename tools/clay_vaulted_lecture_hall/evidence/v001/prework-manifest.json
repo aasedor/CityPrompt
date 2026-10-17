@@ -1,0 +1,418 @@
+{
+  "candidate": "clay-vaulted-lecture-hall-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-vaulted-lecture-hall",
+  "variant_id": "clay-vaulted-lecture-hall-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "campus_lecture_hall_complex/variant_0 (parametric_vaulted_pavilion)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 35.6,
+      "depth": 34.0,
+      "height": 32.1
+    },
+    "observed_storeys": 4,
+    "storey_programme": "glazed ground-floor lobby, three storeys of lecture halls and seminar rooms in the white mass, a vaulted hall and roof terrace above",
+    "plan": "34 x 34 m block (top view); vault 30 m east-west by 23 m north-south over the middle of the roof; four angular masses in a pinwheel under its flanks and ends; fin screen on the west face",
+    "facade": "white composite panels with horizontal slot windows; tall vertical aluminium fins on the west face turning the south-west corner; full-height ground-floor glazing behind branching Y-columns",
+    "levels_m": [
+      0.6,
+      5.4,
+      17.0
+    ],
+    "vault_m": {
+      "springing": 17.6,
+      "rise": 13.5
+    },
+    "inferred": "storey heights and interiors are teaching assumptions; the north face is not visible in any source and repeats the visible grammar"
+  },
+  "roof_contract": {
+    "type": "barrel vault of pillowed membrane with glazed flanks on white arch ribs over a roof terrace with four sloped louvred masses",
+    "datum_m": 17.0,
+    "crowns_m": [
+      31.1
+    ]
+  },
+  "identity_contract": {
+    "owner": "full-width barrel vault with pillowed crown and glazed flanks, white sculpted mass, fin screen, Y-column glazed base, pinwheel louvred masses"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: white composite panel, white ribs, white membrane cushions, clear glass, aluminium fins, dark louvres, pale paving",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 4,
+    "ground": "lobby and foyer",
+    "upper": "lecture theatres and seminar rooms",
+    "vault": "multi-purpose hall and roof terrace"
+  },
+  "contact_contract": [
+    "Podium on the plaza with steps",
+    "White mass on the ground-floor core and Y-columns",
+    "Vault ribs springing from the top of the mass",
+    "Louvred masses on the roof terrace"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -16.0,
+        -56.0,
+        1.8
+      ],
+      "target": [
+        2.0,
+        -4.0,
+        14.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        50.388,
+        -54.263999999999996,
+        64.2
+      ],
+      "target": [
+        0,
+        0,
+        14.445
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        45.21999999999999,
+        -51.68,
+        96.30000000000001
+      ],
+      "target": [
+        0,
+        0,
+        14.445
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        96.89999999999999
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 53.199999999999996
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -64.6,
+        0,
+        19.26
+      ],
+      "target": [
+        0,
+        0,
+        14.445
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        64.6,
+        0,
+        19.26
+      ],
+      "target": [
+        0,
+        0,
+        14.445
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        64.6,
+        19.26
+      ],
+      "target": [
+        0,
+        0,
+        14.445
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        45.21999999999999,
+        51.68,
+        57.78
+      ],
+      "target": [
+        0,
+        0,
+        14.445
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        6.0,
+        -40.0,
+        12.0
+      ],
+      "target": [
+        6.0,
+        -17.0,
+        12.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        30.0,
+        -34.0,
+        22.0
+      ],
+      "target": [
+        8.0,
+        -17.0,
+        20.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        0.0,
+        -28.0,
+        3.0
+      ],
+      "target": [
+        0.0,
+        -15.4,
+        3.2
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "y_columns",
+      "location": [
+        -6.0,
+        -26.0,
+        2.6
+      ],
+      "target": [
+        -2.0,
+        -17.0,
+        3.6
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "fin_screen",
+      "location": [
+        -36.0,
+        -20.0,
+        10.0
+      ],
+      "target": [
+        -17.0,
+        -4.0,
+        10.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "vault_ribs",
+      "location": [
+        -6.0,
+        -44.0,
+        36.0
+      ],
+      "target": [
+        0.0,
+        -4.0,
+        25.6
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_masses",
+      "location": [
+        30.0,
+        30.0,
+        44.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        20.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "entrance_steps",
+      "location": [
+        -12.0,
+        -30.0,
+        3.0
+      ],
+      "target": [
+        -4.0,
+        -18.0,
+        1.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        8.0,
+        4.0,
+        2.3
+      ],
+      "target": [
+        -6.0,
+        -17.0,
+        3.2
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        0.0,
+        48.0,
+        14.0
+      ],
+      "target": [
+        0.0,
+        17.0,
+        14.0
+      ],
+      "lens": 45,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "y_columns",
+    "fin_screen",
+    "vault_ribs",
+    "roof_masses",
+    "entrance_steps",
+    "interior",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/campus-lecture-hall-complex/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1067159,
+        "sha256": "e7f819d374a16c2bd38925a7f3420b9939c052e8463969664f46701de5038c43"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/campus-lecture-hall-complex/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 844366,
+        "sha256": "de695961f8821855e9638918b588364fda7815e968c3815161a058360181fe60"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/campus-lecture-hall-complex/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 814790,
+        "sha256": "79552a40b97bd73194155bb3d07c51776c93690dc40fefadee6eaf524ab78611"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_lecture.py",
+        "sha256": "3e56f092128f4d5f817b45687678b49e87b53d41262bc9a1138df888439c0f3e"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "291477caca6960f7630e476c039e801fbaae3dd769520ce165b27fa7bf16b080"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "c1c74fc3f406169bfabfef906ae0332ad87842b7214569d48523cf69b79df08a"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-17T21:05:47.091827+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

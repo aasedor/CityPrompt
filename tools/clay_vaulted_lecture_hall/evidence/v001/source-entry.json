@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-vaulted-lecture-hall",
+  "variant_id": "clay-vaulted-lecture-hall-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "campus_lecture_hall_complex/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/campus-lecture-hall-complex/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1067159,
+      "sha256": "e7f819d374a16c2bd38925a7f3420b9939c052e8463969664f46701de5038c43"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/campus-lecture-hall-complex/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 844366,
+      "sha256": "de695961f8821855e9638918b588364fda7815e968c3815161a058360181fe60"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/campus-lecture-hall-complex/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 814790,
+      "sha256": "79552a40b97bd73194155bb3d07c51776c93690dc40fefadee6eaf524ab78611"
+    }
+  ]
+}

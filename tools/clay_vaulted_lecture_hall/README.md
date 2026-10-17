@@ -67,3 +67,16 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (v002 targets every P0 and P1)
+
+1. P0: the interior view is black.
+2. P0: the four louvred roof masses are small orthogonal boxes in mirrored pairs outside the vault ends; the source has a rotated pinwheel of large angular masses rising under the arch.
+3. P1: the louvred sloping faces read as staircases.
+4. P1: the vault is a full semicircle with closed flat glass ends; the source arch is flatter, springs from the outer parapet edges and has open ends.
+5. P1: the crown cushions are flat pads in a narrow band, not a pillowed membrane field.
+6. P1: the white mass is a plain box without the faceted planes, sloping soffit and deep carved slots.
+7. P1: the glazed ground floor is too squat.
+8. P1: black triangular holes at the Y-column nodes.
+9. P1: the fin-screen return at the south-west corner stops in mid-air.
+10. P1: a gap at the east end-rib foot, and the end glazing floats above the roof deck.

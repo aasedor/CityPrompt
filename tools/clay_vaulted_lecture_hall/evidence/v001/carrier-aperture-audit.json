@@ -1,0 +1,264 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "south glazing 0",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south glazing 1",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south glazing 2",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south glazing 3",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south entry 4",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south entry 5",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south glazing 6",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south glazing 7",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south glazing 8",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south glazing 9",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazing 0",
+      "face": "ground east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazing 1",
+      "face": "ground east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazing 2",
+      "face": "ground east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazing 3",
+      "face": "ground east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazing 4",
+      "face": "ground east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazing 5",
+      "face": "ground east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazing 6",
+      "face": "ground east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazing 7",
+      "face": "ground east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east glazing 8",
+      "face": "ground east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazing 0",
+      "face": "ground north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazing 1",
+      "face": "ground north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazing 2",
+      "face": "ground north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazing 3",
+      "face": "ground north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazing 4",
+      "face": "ground north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazing 5",
+      "face": "ground north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazing 6",
+      "face": "ground north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazing 7",
+      "face": "ground north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazing 8",
+      "face": "ground north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north glazing 9",
+      "face": "ground north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazing 0",
+      "face": "ground west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazing 1",
+      "face": "ground west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazing 2",
+      "face": "ground west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazing 3",
+      "face": "ground west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazing 4",
+      "face": "ground west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazing 5",
+      "face": "ground west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazing 6",
+      "face": "ground west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazing 7",
+      "face": "ground west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west glazing 8",
+      "face": "ground west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south slot upper",
+      "face": "mass south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south slot lower",
+      "face": "mass south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east slot upper",
+      "face": "mass east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east slot lower",
+      "face": "mass east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north slot",
+      "face": "mass north",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
