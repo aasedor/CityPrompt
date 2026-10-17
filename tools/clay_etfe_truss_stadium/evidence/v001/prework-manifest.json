@@ -1,0 +1,426 @@
+{
+  "candidate": "clay-etfe-truss-stadium-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-etfe-truss-stadium",
+  "variant_id": "clay-etfe-truss-stadium-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "outdoor_sports_stadium/variant_0 (contemporary_steel_etfe_bowl)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 192.0,
+      "depth": 160.0,
+      "height": 38.0
+    },
+    "observed_storeys": 3,
+    "storey_programme": "glazed concourse at grade, upper concourse behind the facade, continuous seating bowl to the back row, truss roof ring",
+    "plan": "192 x 160 m rounded rectangle (top view); pitch 68 x 104 m with run-off, long axis north-south; inner roof opening 112 x 128 m",
+    "facade": "raking steel V-columns before the grade glazing; exposed crossing steel diagonals to the roof; diamond ETFE cushion band on the south and west, round the south-west corner",
+    "levels_m": [
+      0.15,
+      7.0,
+      22.0,
+      26.0
+    ],
+    "roof_m": {
+      "perimeter_truss": [
+        26.0,
+        36.0
+      ],
+      "inner_ring": [
+        29.5,
+        33.0
+      ]
+    },
+    "inferred": "tier count, concourse depth and the north and east facades are teaching assumptions; the north face is not visible in any source and repeats the exposed-steel grammar"
+  },
+  "roof_contract": {
+    "type": "steel truss roof ring: perimeter truss, radial trusses, inner compression ring, translucent panels; open over the pitch",
+    "datum_m": 26.0,
+    "crowns_m": [
+      36.0
+    ]
+  },
+  "identity_contract": {
+    "owner": "rounded-rectangle bowl, diamond ETFE band round the south-west corner, exposed steel diagonals elsewhere, truss roof ring with an inner compression ring, seating bowl round a north-south pitch"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: silver-white ETFE cushions, dark grey structural steel, clear concourse glass, translucent roof panels, grey seats, green pitch, pale plaza paving",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 3,
+    "ground": "concourse, entrances, concessions",
+    "bowl": "continuous seating",
+    "roof": "spectator canopy"
+  },
+  "contact_contract": [
+    "Grade-zero plaza and streets",
+    "V-columns and facade diagonals founded at grade",
+    "Perimeter truss on the facade ring beam",
+    "Radial trusses spanning to the inner compression ring",
+    "Seating bowl on the concourse structure"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -46.0,
+        -158.0,
+        1.8
+      ],
+      "target": [
+        22.0,
+        -62.0,
+        19.0
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -259.896,
+        -279.888,
+        76.0
+      ],
+      "target": [
+        0,
+        0,
+        17.1
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        233.23999999999998,
+        -266.56,
+        114.0
+      ],
+      "target": [
+        0,
+        0,
+        17.1
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        499.79999999999995
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 274.4
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -333.2,
+        0,
+        22.8
+      ],
+      "target": [
+        0,
+        0,
+        17.1
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        333.2,
+        0,
+        22.8
+      ],
+      "target": [
+        0,
+        0,
+        17.1
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        333.2,
+        22.8
+      ],
+      "target": [
+        0,
+        0,
+        17.1
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        233.23999999999998,
+        266.56,
+        68.4
+      ],
+      "target": [
+        0,
+        0,
+        17.1
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -34.0,
+        -126.0,
+        14.0
+      ],
+      "target": [
+        -34.0,
+        -80.0,
+        15.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        132.0,
+        -116.0,
+        18.0
+      ],
+      "target": [
+        80.0,
+        -68.0,
+        17.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -6.0,
+        -100.0,
+        3.0
+      ],
+      "target": [
+        -6.0,
+        -77.0,
+        3.6
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "v_columns",
+      "location": [
+        24.0,
+        -98.0,
+        2.4
+      ],
+      "target": [
+        24.0,
+        -80.0,
+        4.6
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "etfe_cushions",
+      "location": [
+        -122.0,
+        -36.0,
+        15.0
+      ],
+      "target": [
+        -96.0,
+        -36.0,
+        16.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_truss",
+      "location": [
+        130.0,
+        -114.0,
+        64.0
+      ],
+      "target": [
+        72.0,
+        -60.0,
+        30.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "inner_ring",
+      "location": [
+        0.0,
+        -110.0,
+        110.0
+      ],
+      "target": [
+        0.0,
+        8.0,
+        24.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "seating_bowl",
+      "location": [
+        -30.0,
+        -16.0,
+        82.0
+      ],
+      "target": [
+        18.0,
+        14.0,
+        6.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        0.0,
+        -63.0,
+        11.0
+      ],
+      "target": [
+        0.0,
+        20.0,
+        1.0
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        0.0,
+        210.0,
+        30.0
+      ],
+      "target": [
+        0.0,
+        80.0,
+        20.0
+      ],
+      "lens": 35,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "v_columns",
+    "etfe_cushions",
+    "roof_truss",
+    "inner_ring",
+    "seating_bowl",
+    "interior",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/outdoor-sports-stadium/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1183615,
+        "sha256": "d869c63243e7959fb81d009268897ed4f7ad89174c331fa7ca156d3468c933e0"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/outdoor-sports-stadium/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 931240,
+        "sha256": "426425c0e150e48bc484796cc2a09e81f711ff24cd0b96a268a243c2bcd811be"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/outdoor-sports-stadium/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 874993,
+        "sha256": "ceb39539689661840d6497ddf24ac38094b431827fed6263d63355ce6cbadd68"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_stadium.py",
+        "sha256": "a945336cafd839192e7d994ecc5f79861c10d8ff565ac903da35c4a231847275"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "dd55dc9486af1f31dc87619ceda605fa7505a4306682c7f2daf44bf2d88801c4"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "a1a5081480fd961427d7432c87d06eb5a28ec6b65e0d77e6375e94e96238db6b"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-17T21:12:23.064170+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

@@ -67,3 +67,17 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (v002 targets every P0 and P1)
+
+1. P0: the front camera clips the south-west corner where the ETFE band wraps.
+2. P1: the pitch long axis runs across the bowl's long axis; side stands are about 2.5 times deeper than the ends (source: near-equal depth).
+3. P1: the facade reads as stacked tiers; the source has long diagonals crossing from the concourse ring to the roof ring.
+4. P1: a blank grey sheet behind the diagonals instead of concourse slabs and stepped stand undersides.
+5. P1: the ETFE cushions are hard pyramids, about 5 rows at 1.6:1 (source: soft domes with thin frames, about 7 rows at 2.2:1).
+6. P1: serrated top and bottom edges of the ETFE band with dark backing triangles; raw band ends.
+7. P1: ETFE extent: about 60% of the west face (source about 90%) and 75-80% of the south face (source 50-65%).
+8. P1: the radial roof trusses do not read under the hazy roof panels.
+9. P1: open black holes at the steel joints.
+10. P1: white aisle planks float on the seat rows and break through the back wall.
+11. P1: no north street; streets stop abruptly; plain rectangular plaza.
