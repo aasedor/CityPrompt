@@ -1,0 +1,365 @@
+{
+  "candidate": "clay-sculptural-superblock-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 157,
+    "vertices": 16232,
+    "polygons": 30268,
+    "triangles": 30268,
+    "path": "clay-sculptural-superblock-clay-v001-authoring.blend",
+    "bytes": 3294316,
+    "sha256": "4cf5a6f1b2457835d80ffda21bfad6f36fe0bdb512f45a7fa579939ccf1c2e30"
+  },
+  "runtime": {
+    "path": "clay-sculptural-superblock-clay-v001.glb",
+    "bytes": 1426456,
+    "sha256": "f083223b1e1fcf2aeead5089a950d7e15ea1e39cbfe5fc286a80e27eb178f0b1",
+    "meshes": 10,
+    "materials": 10,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 10,
+    "vertices": 16232,
+    "polygons": 30268,
+    "triangles": 30268
+  },
+  "original_bounds_m": [
+    [
+      -55.0,
+      -39.0,
+      0.0
+    ],
+    [
+      55.0,
+      37.0,
+      52.099998474121094
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -55.0,
+      -39.0,
+      0.0
+    ],
+    [
+      55.0,
+      37.0,
+      52.099998474121094
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 60.0,
+    "depth": 44.0,
+    "height": 53.800000000000004
+  },
+  "native_dimensions_m": {
+    "width": 110.0,
+    "depth": 76.0,
+    "height": 52.099998474121094
+  },
+  "native_bottom_center_m": [
+    0.0,
+    -1.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "trim": 1,
+    "pale": 1,
+    "stone": 2,
+    "roof": 1,
+    "glass": 6,
+    "timber": 64,
+    "planting": 51,
+    "white": 27,
+    "asphalt": 2,
+    "paving": 2
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/balcony_bands.png",
+    "renders/twisting_tower.png",
+    "renders/tower_loop.png",
+    "renders/courtyard.png",
+    "renders/roof_terraces.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front_corner": {
+      "xmin": 0.2247057855129242,
+      "xmax": 0.7977958917617798,
+      "ymin": 0.0823768600821495,
+      "ymax": 0.6751644015312195
+    },
+    "aerial": {
+      "xmin": 0.22726242244243622,
+      "xmax": 0.6825971603393555,
+      "ymin": 0.08969312161207199,
+      "ymax": 0.6538556814193726
+    },
+    "top": {
+      "xmin": 0.08694479614496231,
+      "xmax": 0.9130551815032959,
+      "ymin": 0.10947507619857788,
+      "ymax": 0.87049800157547
+    },
+    "left_side": {
+      "xmin": 0.1395288109779358,
+      "xmax": 0.9015651345252991,
+      "ymin": 0.11268964409828186,
+      "ymax": 0.7675198912620544
+    },
+    "right_side": {
+      "xmin": 0.09843484312295914,
+      "xmax": 0.7434046864509583,
+      "ymin": 0.11268964409828186,
+      "ymax": 0.7984891533851624
+    },
+    "rear": {
+      "xmin": 0.15572768449783325,
+      "xmax": 0.9066770672798157,
+      "ymin": 0.1898832768201828,
+      "ymax": 0.7601677775382996
+    },
+    "rear_side": {
+      "xmin": 0.07633895426988602,
+      "xmax": 0.8638771176338196,
+      "ymin": 0.07577366381883621,
+      "ymax": 0.7174314260482788
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Ring of floor bands on the retail ground floor and sculpted piers; roof line from 9 storeys at the south-west to a 3-storey podium at the south-east",
+      "storey_height_m": 3.1
+    },
+    {
+      "name": "Twisting tower on the south-east podium roof; loop springing from the top of the blades",
+      "base_m": 10.7,
+      "top_m": 44.800000000000004
+    },
+    {
+      "name": "Superblock: ring of white bands round a court, twisting looped tower at the south-east",
+      "block": [
+        -30.0,
+        30.0,
+        -22.0,
+        22.0
+      ]
+    }
+  ],
+  "opening_sections": [],
+  "authoring_modules": {
+    "court": [
+      "Court paving",
+      "Court terrace 0",
+      "Court planting 0",
+      "Court terrace 1",
+      "Court planting 1"
+    ],
+    "garden planting": [
+      "Serviceberry rooted trunk",
+      "Serviceberry branch",
+      "Serviceberry leafy crown",
+      "Serviceberry branch.001",
+      "Serviceberry leafy crown.001",
+      "Serviceberry branch.002",
+      "Serviceberry leafy crown.002",
+      "Serviceberry rooted trunk.001",
+      "Serviceberry branch.003",
+      "Serviceberry leafy crown.003",
+      "Serviceberry branch.004",
+      "Serviceberry leafy crown.004",
+      "Serviceberry branch.005",
+      "Serviceberry leafy crown.005",
+      "Serviceberry rooted trunk.002",
+      "Serviceberry branch.006",
+      "Serviceberry leafy crown.006",
+      "Serviceberry branch.007",
+      "Serviceberry leafy crown.007",
+      "Serviceberry branch.008",
+      "Serviceberry leafy crown.008",
+      "Serviceberry rooted trunk.003",
+      "Serviceberry branch.009",
+      "Serviceberry leafy crown.009",
+      "Serviceberry branch.010",
+      "Serviceberry leafy crown.010",
+      "Serviceberry branch.011",
+      "Serviceberry leafy crown.011",
+      "Serviceberry rooted trunk.004",
+      "Serviceberry branch.012",
+      "Serviceberry leafy crown.012",
+      "Serviceberry branch.013",
+      "Serviceberry leafy crown.013",
+      "Serviceberry branch.014",
+      "Serviceberry leafy crown.014",
+      "Serviceberry rooted trunk.005",
+      "Serviceberry branch.015",
+      "Serviceberry leafy crown.015",
+      "Serviceberry branch.016",
+      "Serviceberry leafy crown.016",
+      "Serviceberry branch.017",
+      "Serviceberry leafy crown.017",
+      "Serviceberry rooted trunk.006",
+      "Serviceberry branch.018",
+      "Serviceberry leafy crown.018",
+      "Serviceberry branch.019",
+      "Serviceberry leafy crown.019",
+      "Serviceberry branch.020",
+      "Serviceberry leafy crown.020",
+      "Serviceberry rooted trunk.007",
+      "Serviceberry branch.021",
+      "Serviceberry leafy crown.021",
+      "Serviceberry branch.022",
+      "Serviceberry leafy crown.022",
+      "Serviceberry branch.023",
+      "Serviceberry leafy crown.023",
+      "Serviceberry rooted trunk.008",
+      "Serviceberry branch.024",
+      "Serviceberry leafy crown.024",
+      "Serviceberry branch.025",
+      "Serviceberry leafy crown.025",
+      "Serviceberry branch.026",
+      "Serviceberry leafy crown.026",
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020"
+    ],
+    "site": [
+      "Sidewalk",
+      "South street",
+      "West street"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020"
+    ],
+    "ground": [
+      "Retail glazing",
+      "Court glazing"
+    ],
+    "ground floor": [
+      "ground floor trim",
+      "ground floor white"
+    ],
+    "upper": [
+      "Street glazing",
+      "Court glazing upper"
+    ],
+    "bands": [
+      "Floor band 0",
+      "Floor band 1",
+      "Floor band 2",
+      "Floor band 3",
+      "Floor band 4",
+      "Floor band 5",
+      "Floor band 6",
+      "Floor band 7"
+    ],
+    "piers": [
+      "piers white"
+    ],
+    "roof": [
+      "Roof slab",
+      "Roof parapet band",
+      "Court parapet band"
+    ],
+    "roof terraces": [
+      "roof terraces pale",
+      "roof terraces glass",
+      "roof terraces planting"
+    ],
+    "tower": [
+      "Tower glazing",
+      "Tower floor 0",
+      "Tower floor 1",
+      "Tower floor 2",
+      "Tower floor 3",
+      "Tower floor 4",
+      "Tower floor 5",
+      "Tower floor 6",
+      "Tower floor 7",
+      "Tower floor 8",
+      "Tower floor 9",
+      "Tower floor 10",
+      "Tower floor 11",
+      "Tower blade",
+      "Tower blade.001",
+      "Tower loop"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-17T23:12:34.150007+00:00",
+  "delivery_and_render_seconds": 6855.637980568999,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

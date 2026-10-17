@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-sculptural-superblock",
+  "variant_id": "clay-sculptural-superblock-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "residential_superblock/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/residential-superblock/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1192339,
+      "sha256": "ea93201268071dd1781238f9da163c2aa0e41b732a4b5783e488ba5dba658b4d"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/residential-superblock/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 905345,
+      "sha256": "e62b153331afdcdeb829fbf319ef33e1f7504ac5d231e2d8a7d8cf07cb89a0d8"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/residential-superblock/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 830180,
+      "sha256": "309316846fdf961b1f6286accb9b547f85484cd7efd752663bcd082a7415c71f"
+    }
+  ]
+}
