@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "mid_century_distribution_warehouse",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "cmu_dock_utilitarian",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "mid_century_distribution_warehouse",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "cmu_dock_utilitarian",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/mid-century-distribution-warehouse/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1123308,
+      "sha256": "6c9e95381c52e186218ea835b9df1da33da05de67d80dc031a949d450415183a",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "mid_century_distribution_warehouse",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "cmu_dock_utilitarian",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/mid-century-distribution-warehouse/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 777019,
+      "sha256": "1618e8e8aac9fab29fee45d6cd93ef6b9713c8b66a18df2b08a72de4f6e62dab",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "mid_century_distribution_warehouse",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "cmu_dock_utilitarian",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/mid-century-distribution-warehouse/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 778752,
+      "sha256": "c8c0dc60c289633e8d6889791628e91d3c6492c507ee501681f6b4a6290be86d",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

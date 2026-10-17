@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "outdoor_sports_stadium",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "contemporary_steel_etfe_bowl",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "outdoor_sports_stadium",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "contemporary_steel_etfe_bowl",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/outdoor-sports-stadium/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1183615,
+      "sha256": "d869c63243e7959fb81d009268897ed4f7ad89174c331fa7ca156d3468c933e0",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "outdoor_sports_stadium",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "contemporary_steel_etfe_bowl",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/outdoor-sports-stadium/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 931240,
+      "sha256": "426425c0e150e48bc484796cc2a09e81f711ff24cd0b96a268a243c2bcd811be",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "outdoor_sports_stadium",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "contemporary_steel_etfe_bowl",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/outdoor-sports-stadium/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 874993,
+      "sha256": "ceb39539689661840d6497ddf24ac38094b431827fed6263d63355ce6cbadd68",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

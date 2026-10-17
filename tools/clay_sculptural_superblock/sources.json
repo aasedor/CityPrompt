@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "residential_superblock",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "parametric_sculptural_white",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "residential_superblock",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "parametric_sculptural_white",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/residential-superblock/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1192339,
+      "sha256": "ea93201268071dd1781238f9da163c2aa0e41b732a4b5783e488ba5dba658b4d",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "residential_superblock",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "parametric_sculptural_white",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/residential-superblock/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 905345,
+      "sha256": "e62b153331afdcdeb829fbf319ef33e1f7504ac5d231e2d8a7d8cf07cb89a0d8",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "residential_superblock",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "parametric_sculptural_white",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/residential-superblock/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 830180,
+      "sha256": "309316846fdf961b1f6286accb9b547f85484cd7efd752663bcd082a7415c71f",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

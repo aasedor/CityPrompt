@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "research_laboratory",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "high_tech_exoskeleton",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "research_laboratory",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "high_tech_exoskeleton",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/research-laboratory/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1303211,
+      "sha256": "8aed179ffe03b5db9eb1f12fbc96db6c98f032d58dd5985408e6353e683a0539",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "research_laboratory",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "high_tech_exoskeleton",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/research-laboratory/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 908152,
+      "sha256": "b9f323ed50f2d4534bf68b0316c04de0fc609b2d3d5dbb5dfaa796d48cd83bc1",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "research_laboratory",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "high_tech_exoskeleton",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/research-laboratory/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 810690,
+      "sha256": "9b2377977becd24478b4219e74030768dd362e29781c9c958bcd84f32b67f2f4",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

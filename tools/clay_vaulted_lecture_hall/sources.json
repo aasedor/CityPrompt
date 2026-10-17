@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "campus_lecture_hall_complex",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "parametric_vaulted_pavilion",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "campus_lecture_hall_complex",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "parametric_vaulted_pavilion",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/campus-lecture-hall-complex/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1067159,
+      "sha256": "e7f819d374a16c2bd38925a7f3420b9939c052e8463969664f46701de5038c43",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "campus_lecture_hall_complex",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "parametric_vaulted_pavilion",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/campus-lecture-hall-complex/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 844366,
+      "sha256": "de695961f8821855e9638918b588364fda7815e968c3815161a058360181fe60",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "campus_lecture_hall_complex",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "parametric_vaulted_pavilion",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/campus-lecture-hall-complex/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 814790,
+      "sha256": "79552a40b97bd73194155bb3d07c51776c93690dc40fefadee6eaf524ab78611",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}
