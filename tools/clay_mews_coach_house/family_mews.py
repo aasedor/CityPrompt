@@ -23,12 +23,12 @@ Z1 = 3.6                                        # first floor, above the coach-d
 EAVE = 7.4
 RISE = 2.3                                      # hipped slate roof
 EPS = .002
-PALETTE = dict(wall=(.93, .93, .91), joint=(.89, .89, .87), settjoint=(.36, .35, .34), trim=(.95, .95, .94), pale=(.88, .88, .86),
+PALETTE = dict(wall=(.93, .93, .91), joint=(.89, .89, .87), settjoint=(.60, .59, .57), trim=(.95, .95, .94), pale=(.88, .88, .86),
     stone=(.74, .73, .70), roof=(.34, .36, .39), sand=(.70, .68, .64), foundation=(.14, .14, .15),
     glass=(.30, .36, .40), hardware=(.10, .10, .11), interior=(.86, .82, .76), floor=(.62, .56, .48),
     timber=(.48, .34, .22), blue=(.20, .30, .40), planting=(.30, .44, .20), soil=(.22, .16, .10),
     concrete=(.70, .69, .66), white=(.96, .96, .95), asphalt=(.28, .28, .29), door=(.56, .10, .08),
-    brick=(.70, .58, .42), pot=(.76, .42, .26), setts=(.50, .49, .47), paving=(.72, .71, .68))
+    brick=(.70, .58, .42), pot=(.76, .42, .26), setts=(.36, .35, .34), paving=(.72, .71, .68))
 
 
 def manifest(version):
@@ -410,8 +410,24 @@ def paired(m, f, h, occupied='room'):
     m.box('hardware', h['u'], -.04, h['z'] - .06, h['w'] + .14, .14, .1)
 
 
-def face_courses(f, lo, hi, holes):
-    G.brick_courses(f, lo + .02, hi - .02, G0 + .35, EAVE - .35, holes, spacing=.075)
+def face_courses(f, lo, hi, holes, heads=True, course=.08, brick=.24):
+    """Painted brick: fine bed joints and staggered head joints, cut round the openings."""
+    lo, hi, z0, z1 = lo + .02, hi - .02, G0 + .35, EAVE - .35
+    G.brick_courses(f, lo, hi, z0, z1, holes, spacing=course)
+    if not heads:
+        return
+    vs, fs = [], []
+    for row in range(int((z1 - z0) / course)):
+        zb = z0 + row * course
+        u = lo + brick + (brick / 2) * (row % 2)
+        while u < hi - .02:
+            if not any(h['u'] - h['w'] / 2 - .02 < u < h['u'] + h['w'] / 2 + .02 and h['z'] - .1 < zb + course and zb < h['z'] + h['h'] + .1 for h in holes):
+                o = len(vs)
+                vs += [f.p(u - .004, -.002, zb), f.p(u + .004, -.002, zb), f.p(u + .004, -.002, zb + course), f.p(u - .004, -.002, zb + course)]
+                fs.append((o, o + 1, o + 2, o + 3))
+            u += brick
+    if fs:
+        C.mesh(f.label + ' head joints', vs, fs, 'joint', 'brick joints')
 
 
 def south_face():
@@ -461,7 +477,7 @@ def south_face():
 def other_faces():
     e = C.Face((X1, 0, 0), (0, 1, 0), (-1, 0, 0), 'east')
     hd = (Y1 - Y0) / 2
-    hs = [hole('east ground sash', 1.4, G0 + .9, 1.0, 2.0)] + [hole(f'east upper sash {k}', u, UP, 1.0, 2.05) for k, u in enumerate((-1.4, 1.4))]
+    hs = [hole('east ground sash', 0.0, G0 + .9, 1.0, 2.0), hole('east upper sash', 0.0, UP, 1.0, 2.05)]   # one column (front, oblique)
     e.wall('east carrier', -hd + T, hd - T, 0.0, EAVE, depth=T, role='wall', holes=hs)
     face_courses(e, -hd + T, hd - T, hs)
     m = Merge(e)
@@ -475,6 +491,7 @@ def other_faces():
     hs = [hole(f'rear sash {k}', u, UP, 1.0, 1.95) for k, u in enumerate((-7.6, -4.6, -1.6, 1.6, 3.8))] + \
          [hole(f'rear ground sash {k}', u, G0 + .9, 1.0, 1.9) for k, u in enumerate((-7.6, -1.6, 3.8))] + [hole('rear door', -4.6, G0, 1.0, 2.3, kind='door')]
     n.wall('north carrier', -X1, -X0 - EPS, 0.0, EAVE, depth=T, role='wall', holes=hs)
+    face_courses(n, -X1, -X0, hs, heads=False)
     m = Merge(n)
     m.box('foundation', -(X0 + X1) / 2, -.03, .16, X1 - X0 - .02, .06, .32)
     for h in hs:
@@ -546,11 +563,24 @@ def roof_and_inside():
     C.CONTACTS.append(dict(name='Painted brick walls on a black plinth; two slate roofs between coped party upstands carrying the stacks', eave_m=EAVE))
 
 
-def setts(b, x0, x1, y0, y1, step=.14):
-    for k in range(int((x1 - x0) / step) + 1):
-        b.box('settjoint', x0 + k * step, (y0 + y1) / 2, .041, .012, y1 - y0 - .02, .004)
-    for k in range(int((y1 - y0) / step) + 1):
-        b.box('settjoint', (x0 + x1) / 2, y0 + k * step, .041, x1 - x0 - .02, .012, .004)
+def setts(b, x0, x1, y0, y1, along='x', L=.3, W=.18):
+    """Granite setts in staggered courses: continuous course joints, staggered cross joints every stone length."""
+    if along == 'x':
+        for r in range(int((y1 - y0) / W) + 1):
+            y = y0 + r * W
+            b.box('settjoint', (x0 + x1) / 2, y, .041, x1 - x0 - .02, .014, .004)
+            x = x0 + L * (.5 * (r % 2) + 1)
+            while x < x1 - .05 and r * W + W <= y1 - y0:
+                b.box('settjoint', x, y + W / 2, .041, .014, W - .01, .004)
+                x += L
+    else:
+        for r in range(int((x1 - x0) / W) + 1):
+            x = x0 + r * W
+            b.box('settjoint', x, (y0 + y1) / 2, .041, .014, y1 - y0 - .02, .004)
+            y = y0 + L * (.5 * (r % 2) + 1)
+            while y < y1 - .05 and r * W + W <= x1 - x0:
+                b.box('settjoint', x + W / 2, y, .041, W - .01, .014, .004)
+                y += L
 
 
 def site():
@@ -562,8 +592,8 @@ def site():
     C.box('Side lane setts', (X1 + 1.8 + 2.6, (yp - 7.0 + 12.0) / 2, .02), (5.2, 12.0 - yp + 7.0, .04), 'setts', 'site', 0)
     C.box('South road', ((X0 - 6.0 + X1 + 1.8) / 2, yp - 3.5, .01), (X1 + 1.8 - X0 + 6.0, 7.0, .02), 'asphalt', 'site', 0)
     b = Batch()
-    setts(b, .6, 5.1, yp, Y0)
-    setts(b, X1 + 1.8, X1 + 7.0, yp - 7.0, 12.0)
+    setts(b, .6, 5.1, yp, Y0, along='x')
+    setts(b, X1 + 1.8, X1 + 7.0, yp - 7.0, 12.0, along='x')
     for k in range(int((X1 + 1.8 - X0 + 6.0) / .9)):
         x = X0 - 6.0 + k * .9
         if not (.6 < x < 5.1):
@@ -575,7 +605,11 @@ def site():
     b.box('brick', X1 + .5, Y1 + .9, .9, .24, 1.8, 1.8)                       # garden wall stub and red side gate
     b.box('door', X1 + .5, Y1 + 2.3, 1.02, .05, 1.0, 1.8)
     b.flush('street')
-    street_tree(X0 - 2.2, Y0 - 2.4, z=.12, height=12.0, spread=1.9)
+    tx, ty = (X0 + XN) / 2, Y0 - 1.0                                          # plane tree on the pavement in front of the neighbour
+    C.rod('Plane tree trunk', (tx, ty, .12), (tx, ty, 9.2), .22, 'timber', 'street planting', 8)
+    C.rod('Plane tree limb', (tx, ty, 6.5), (tx - 1.2, ty - .6, 9.5), .1, 'timber', 'street planting', 6)
+    for i, (dx, dy, z, rx, ry, rz) in enumerate(((0, -.6, 11.6, 3.1, 2.3, 2.5), (-1.4, -.9, 10.2, 1.9, 1.6, 1.5), (1.2, -1.1, 10.4, 1.8, 1.5, 1.5), (0, -.4, 13.2, 1.9, 1.6, 1.3))):
+        A.foliage(f'Plane tree crown {i}', (tx + dx, ty + dy, z), (rx, ry, rz), detail=2)
 
 
 def build():
