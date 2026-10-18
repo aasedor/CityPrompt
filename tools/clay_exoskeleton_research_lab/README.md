@@ -68,8 +68,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (v004 targets every P1)
+## Open blockers after v004 (v005 targets every P1; a second review without a reduction stops the family at v003)
 
-1. P1: black blocks where the portal post meets its head, at the cantilever's north-west corner and on the exoskeleton column tops. Survived one targeted fix.
-2. P1: a deep white band above the top floor and a heavy frame hide the perforated roof screen in the front view; the source glass runs to a thin edge under a tall perforated crown.
-3. P1: the east louvres read from the front as narrow recessed strips with wide white margins; the steel is chunkier and the louvres lighter than the source. Survived one targeted fix.
+1. P1: a black hairline between the slab band and the angled soffit; a dark block at the cantilever's north-west corner. Survived one targeted fix.
+2. P1: black squares at every mullion/transom crossing and black caps on the screen post tops.
+3. P1: each lab floor split by a mid-height transom and framed by heavy white slab bands (source one frameless pane per storey with hairline joints).
+4. P1: the exhaust stacks barely clear the screen and are hidden in the front view.
+5. P1: the roof plant is under-scaled (penthouse, duct loop, a missing west stack cluster, a narrow south walkway).
+6. P1: the east exoskeleton has 5 bays with 3 louvre bays; the sources show 4 bays with 2.
