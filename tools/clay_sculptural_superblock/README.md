@@ -68,19 +68,14 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (v002 targets every P0 and P1)
+## Open blockers after v002 (v003 targets every P0 and P1; findings surviving again stop the family)
 
-1. P0: the tower does not twist (identical discs on one axis, one straight strap, a flat half-hoop).
-2. P0: the east wing drops from about 8 to 3 storeys beside the tower, opening the court and showing cut slab ends; the only dip in the sources is on the south face.
-3. P1: the tower is too slender and mostly glass on a 2-3 storey podium; the source rises from a broad white south-east block.
-4. P1: parts pass through each other (discs through the blade, roof band into the tower, loop foot notch).
-5. P1: the straight street faces read as an egg-crate grid instead of a white wall with tall punched windows.
-6. P1: pier stubs above the top spandrel and stair-stepped grid ends under the roof band.
-7. P1: the west face is mostly ribbon glazing; the source shows punched windows across it.
-8. P1: no glass balustrades on the curved balcony bands.
-9. P1: faceted bands and parapets.
-10. P1: flat roof with small hatches; no raised roof bands, linear skylights or glazed penthouse.
-11. P1: radial shading streaks on the roof.
-12. P1: plain rectangular retail piers instead of sculpted piers with arched openings.
-13. P1: court planters tilted or over the edge; terrace slabs ending in mid-air.
-14. P1: the front camera cuts off the south-west corner.
+1. P0: the tower reads as a top-heavy goblet with two giant solid shells, bare disc plates and a closed crown; the loop is a half-hoop on a solid plate, with no open ring in the top view. Survived one targeted fix.
+2. P1: the south roof line drops in a sharp kinked V to about storey 5-6; the source swoops smoothly to a podium-level cleft.
+3. P1: in the dip a blank sloped wedge, a windowless cut wall, slab shards in the court and terrace slabs ending in mid-air.
+4. P1: rigid rounded rectangles for plan and court; the source has a fluid perimeter, a teardrop court and a serpentine roof band.
+5. P1: the tower crown overhangs the south building line.
+6. P1: black voids at the retail pier heads; faceted arches; plain box piers.
+7. P1: pier stubs and a loose cube above the top spandrel; stair-stepped grid ends along the dip.
+8. P1: intersections (glazed bay roof into piers, slab through a blade, shell cut flat on the roof disc).
+9. P1: visible faceting on the tower shell, loop, band corners and arches.
