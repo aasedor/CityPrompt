@@ -1,0 +1,329 @@
+{
+  "candidate": "clay-etfe-truss-stadium-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 91,
+    "vertices": 41344,
+    "polygons": 63087,
+    "triangles": 63087,
+    "path": "clay-etfe-truss-stadium-clay-v003-authoring.blend",
+    "bytes": 4781332,
+    "sha256": "e48742aa68d53b3b58ec6df6eec881741834893e1be9c317824384dc53a3aa41"
+  },
+  "runtime": {
+    "path": "clay-etfe-truss-stadium-clay-v003.glb",
+    "bytes": 2906576,
+    "sha256": "3f2c022eea1daa7ce5875862ac76762c8fba14a1657ba9f1b4a1677957e5c9ab",
+    "meshes": 20,
+    "materials": 20,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 20,
+    "vertices": 41344,
+    "polygons": 63087,
+    "triangles": 63087
+  },
+  "original_bounds_m": [
+    [
+      -151.0,
+      -135.0,
+      0.0
+    ],
+    [
+      151.0,
+      135.0,
+      36.5
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -151.0,
+      -135.0,
+      0.0
+    ],
+    [
+      151.0,
+      135.0,
+      36.5
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 192.0,
+    "depth": 160.0,
+    "height": 38.0
+  },
+  "native_dimensions_m": {
+    "width": 302.0,
+    "depth": 270.0,
+    "height": 36.5
+  },
+  "native_bottom_center_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "trim": 2,
+    "pale": 3,
+    "foundation": 1,
+    "glass": 2,
+    "hardware": 2,
+    "interior": 1,
+    "timber": 28,
+    "planting": 21,
+    "concrete": 3,
+    "white": 2,
+    "asphalt": 4,
+    "steel": 2,
+    "etfe": 1,
+    "etfeback": 1,
+    "seat": 1,
+    "pitch": 7,
+    "pitch2": 7,
+    "line": 1,
+    "track": 1,
+    "paving": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/v_columns.png",
+    "renders/etfe_cushions.png",
+    "renders/roof_truss.png",
+    "renders/inner_ring.png",
+    "renders/seating_bowl.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front_corner": {
+      "xmin": 0.08920211344957352,
+      "xmax": 0.9038124680519104,
+      "ymin": 0.3231593072414398,
+      "ymax": 0.5885558128356934
+    },
+    "aerial": {
+      "xmin": 0.09195548295974731,
+      "xmax": 0.9098767638206482,
+      "ymin": 0.24425803124904633,
+      "ymax": 0.6194194555282593
+    },
+    "top": {
+      "xmin": 0.14565201103687286,
+      "xmax": 0.8543480038642883,
+      "ymin": 0.07759841531515121,
+      "ymax": 0.9224016070365906
+    },
+    "left_side": {
+      "xmin": 0.09666555374860764,
+      "xmax": 0.9033346772193909,
+      "ymin": 0.41874584555625916,
+      "ymax": 0.5656849145889282
+    },
+    "right_side": {
+      "xmin": 0.09666533768177032,
+      "xmax": 0.9033344388008118,
+      "ymin": 0.41874584555625916,
+      "ymax": 0.5656849145889282
+    },
+    "rear": {
+      "xmin": 0.08631505072116852,
+      "xmax": 0.9136852025985718,
+      "ymin": 0.42674919962882996,
+      "ymax": 0.561522901058197
+    },
+    "rear_side": {
+      "xmin": 0.07786212861537933,
+      "xmax": 0.9203439354896545,
+      "ymin": 0.3219408094882965,
+      "ymax": 0.5884160399436951
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Seating bowl from the pitch edge to the back row, stepped soffit over the concourse",
+      "rows": 14,
+      "back_row_m": 25.0
+    },
+    {
+      "name": "ETFE cushions on a backing band hung off the facade diagonals, west face and western south face",
+      "band_m": [
+        7.2,
+        25.5
+      ]
+    },
+    {
+      "name": "Perimeter truss on the facade ring beam; radial trusses to the inner compression ring, panels between their chords",
+      "perimeter_m": [
+        26.0,
+        36.0
+      ],
+      "inner_m": [
+        29.5,
+        33.0
+      ]
+    },
+    {
+      "name": "Stadium: glazed concourse, ETFE and steel facade, seating bowl, truss roof ring",
+      "block": [
+        -96.0,
+        96.0,
+        -80.0,
+        80.0
+      ]
+    }
+  ],
+  "opening_sections": [],
+  "authoring_modules": {
+    "site": [
+      "Plaza",
+      "South street",
+      "North street",
+      "East street",
+      "West street"
+    ],
+    "site lighting and markings": [
+      "site lighting and markings hardware",
+      "site lighting and markings white"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020"
+    ],
+    "pitch": [
+      "Pitch apron",
+      "Pitch stripe",
+      "Pitch stripe.001",
+      "Pitch stripe.002",
+      "Pitch stripe.003",
+      "Pitch stripe.004",
+      "Pitch stripe.005",
+      "Pitch stripe.006",
+      "Pitch stripe.007",
+      "Pitch stripe.008",
+      "Pitch stripe.009",
+      "Pitch stripe.010",
+      "Pitch stripe.011",
+      "Pitch stripe.012",
+      "Pitch stripe.013"
+    ],
+    "pitch markings": [
+      "pitch markings line",
+      "pitch markings white"
+    ],
+    "bowl": [
+      "Seating bowl"
+    ],
+    "bowl aisles": [
+      "bowl aisles pale"
+    ],
+    "concourse": [
+      "Concourse glazing",
+      "Concourse slab",
+      "Concourse back wall",
+      "Upper concourse slab"
+    ],
+    "concourse frames": [
+      "concourse frames trim",
+      "concourse frames hardware"
+    ],
+    "facade steel": [
+      "facade steel steel",
+      "facade steel foundation"
+    ],
+    "etfe": [
+      "ETFE backing",
+      "ETFE cushions",
+      "ETFE frame lines",
+      "ETFE end plates"
+    ],
+    "etfe frames": [
+      "etfe frames pale",
+      "etfe frames concrete"
+    ],
+    "roof steel": [
+      "roof steel steel"
+    ],
+    "roof": [
+      "Roof panels"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-18T01:33:59.940597+00:00",
+  "delivery_and_render_seconds": 4667.392575050999,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

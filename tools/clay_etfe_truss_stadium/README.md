@@ -1,7 +1,7 @@
 # Steel and ETFE stadium bowl with a truss roof ring (RLASM v6.1 architectural clay)
 
 Candidate F4 of wave F of 2026-10-17, one of five catalogue types with no clay, runtime or
-seed-library model yet, chosen to replace the Beltline mid-rise slot that duplicated an existing model. State: **candidate under review**. Nothing here is keeper-approved,
+seed-library model yet, chosen to replace the Beltline mid-rise slot that duplicated an existing model. State: **stopped at v003 under the rework stopping rule (0 P0 / 6 P1; best-reviewed candidate v003)**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,12 +68,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 targets every P0 and P1)
+## Open blockers after v003 (family stopped at v003 under the rework stopping rule)
 
-1. P0: the front camera still clips the rounded south-west ETFE corner.
-2. P1: ETFE cushions faceted near-square pyramids in about 5 rows on a flat band (source about 7 rows of soft 2.2:1 domes on an outward-bulging band).
-3. P1: the ETFE band floats above the concourse ring with an open dark slot; a cushion lip hangs below the frame; a black slot at the band end.
-4. P1: the exposed facade still reads as stacked tiers; diagonals too shallow (about 55-60 degrees against about 70) and not running from grade to the roof.
-5. P1: the perimeter roof truss X-braced with verticals instead of single alternating diagonals continuing the facade diagonals.
-6. P1: black holes at the steel joints remain in nine views.
-7. P1: the bowl reads hollow: sky through the corners where the stand undersides stop short; the pitch visible through the near facade because the near stands top out well below the roof.
+1. P1: black slits at the mid-height crossings of the exposed diagonals and notches at the column feet. Survived two targeted fixes (stopping rule).
+2. P1: the ETFE band's east end is ragged, with a black hairline between the end plate and the cushions.
+3. P1: the roof structure does not read in the top view (hairline radials, no visible perimeter ring, no X-bracing in the bays).
+4. P1: black holes behind the facade at the bowl corners, and the stand ends cut off.
+5. P1: the stand undersides behind the facade read as planks with black slots instead of a closed underside with raker beams.
+6. P1: the bowl still reads hollow from above; the pitch shows through the open perimeter truss and the clear roof panels, with no near-side seating visible.

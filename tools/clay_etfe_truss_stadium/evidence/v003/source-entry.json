@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-etfe-truss-stadium",
+  "variant_id": "clay-etfe-truss-stadium-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "outdoor_sports_stadium/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/outdoor-sports-stadium/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1183615,
+      "sha256": "d869c63243e7959fb81d009268897ed4f7ad89174c331fa7ca156d3468c933e0"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/outdoor-sports-stadium/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 931240,
+      "sha256": "426425c0e150e48bc484796cc2a09e81f711ff24cd0b96a268a243c2bcd811be"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/outdoor-sports-stadium/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 874993,
+      "sha256": "ceb39539689661840d6497ddf24ac38094b431827fed6263d63355ce6cbadd68"
+    }
+  ]
+}
