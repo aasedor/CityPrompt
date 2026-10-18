@@ -1,0 +1,417 @@
+{
+  "candidate": "clay-sculptural-superblock-clay-v003",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-sculptural-superblock",
+  "variant_id": "clay-sculptural-superblock-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "residential_superblock/variant_0 (parametric_sculptural_white)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 60.0,
+      "depth": 44.0,
+      "height": 60.0
+    },
+    "observed_storeys": 16,
+    "storey_programme": "retail ground floor; apartments on eight upper floors round the court, the south wing dipping to about five storeys mid-block; a sixteen-storey twisting tower rising from the nine-storey south-east corner block",
+    "plan": "60 x 44 m rounded perimeter block (top view) round a 32 x 18 m rounded court; twisting tower about 22 x 16 m flaring to 26 x 18 m over the south-east corner block",
+    "facade": "white spandrel bands and piers (punched windows) on the straight street faces, thinning to sinuous projecting balcony bands over ribbon glazing round the corners; recessed retail glazing behind sculpted white piers",
+    "levels_m": [
+      0.15,
+      4.5,
+      29.3,
+      51.0
+    ],
+    "storey_height_m": 3.1,
+    "inferred": "storey counts round the ring, interiors and the north face are teaching assumptions; the tower loop is read from the oblique and top views"
+  },
+  "roof_contract": {
+    "type": "swooping flat roof terraces behind a white parapet band, skylights; twisting tower ending in an open loop",
+    "datum_m": 29.3,
+    "crowns_m": [
+      51.0,
+      58.0
+    ]
+  },
+  "identity_contract": {
+    "owner": "fluid white perimeter block with sinuous balcony bands, swooping roof line, twisting looped tower at the south-east corner, rounded court"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: white composite bands and piers, clear and grey glass, pale paving, planted court",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 14,
+    "ground": "shops and lobbies",
+    "upper": "apartments with balconies",
+    "court": "terraced garden"
+  },
+  "contact_contract": [
+    "Grade-zero sidewalks, court and streets",
+    "Ring on the retail ground floor and sculpted piers",
+    "Tower on the south-east podium roof",
+    "Loop springing from the tower blades"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -42.0,
+        -68.0,
+        1.8
+      ],
+      "target": [
+        4.0,
+        -12.0,
+        19.0
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -84.864,
+        -91.392,
+        120.0
+      ],
+      "target": [
+        0,
+        0,
+        27.0
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        76.16,
+        -87.04,
+        180.0
+      ],
+      "target": [
+        0,
+        0,
+        27.0
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        163.2
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 89.6
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -108.8,
+        0,
+        36.0
+      ],
+      "target": [
+        0,
+        0,
+        27.0
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        108.8,
+        0,
+        36.0
+      ],
+      "target": [
+        0,
+        0,
+        27.0
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        108.8,
+        36.0
+      ],
+      "target": [
+        0,
+        0,
+        27.0
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        76.16,
+        87.04,
+        108.0
+      ],
+      "target": [
+        0,
+        0,
+        27.0
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -16.0,
+        -46.0,
+        14.0
+      ],
+      "target": [
+        -16.0,
+        -22.0,
+        14.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        44.0,
+        -40.0,
+        28.0
+      ],
+      "target": [
+        19.0,
+        -10.5,
+        28.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -8.0,
+        -34.0,
+        2.8
+      ],
+      "target": [
+        -8.0,
+        -22.0,
+        2.8
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "balcony_bands",
+      "location": [
+        -44.0,
+        -36.0,
+        18.0
+      ],
+      "target": [
+        -26.0,
+        -18.0,
+        17.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "twisting_tower",
+      "location": [
+        48.0,
+        -8.0,
+        34.0
+      ],
+      "target": [
+        19.0,
+        -10.5,
+        33.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "tower_loop",
+      "location": [
+        34.0,
+        -52.0,
+        62.0
+      ],
+      "target": [
+        19.0,
+        -10.5,
+        53.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "courtyard",
+      "location": [
+        -4.0,
+        -16.0,
+        52.0
+      ],
+      "target": [
+        0.0,
+        2.0,
+        2.0
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "roof_terraces",
+      "location": [
+        -44.0,
+        34.0,
+        50.0
+      ],
+      "target": [
+        -12.0,
+        6.0,
+        28.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -20.0,
+        -3.0,
+        15.4
+      ],
+      "target": [
+        -30.0,
+        3.0,
+        15.200000000000001
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        0.0,
+        70.0,
+        16.0
+      ],
+      "target": [
+        0.0,
+        22.0,
+        14.0
+      ],
+      "lens": 45,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "balcony_bands",
+    "twisting_tower",
+    "tower_loop",
+    "courtyard",
+    "roof_terraces",
+    "interior",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/residential-superblock/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1192339,
+        "sha256": "ea93201268071dd1781238f9da163c2aa0e41b732a4b5783e488ba5dba658b4d"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/residential-superblock/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 905345,
+        "sha256": "e62b153331afdcdeb829fbf319ef33e1f7504ac5d231e2d8a7d8cf07cb89a0d8"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/residential-superblock/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 830180,
+        "sha256": "309316846fdf961b1f6286accb9b547f85484cd7efd752663bcd082a7415c71f"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_superblock.py",
+        "sha256": "678858fe69c37d3b0b216b02ead27f6c3998999a6f585cf252d56a2b19732991"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "c54fcb8ec2fe687901e405dab3bb8351ac77f55ffced57721878f05912b7faae"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "28f6f7a91e0fd4da129dd47c1e2d3e290b031846f34b8ef28c7ba428da0600bd"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-18T01:21:21.243089+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

@@ -1,7 +1,7 @@
 # Sculptural white residential superblock with a twisting tower (RLASM v6.1 architectural clay)
 
 Candidate F5 of wave F of 2026-10-17, one of five catalogue types with no clay, runtime or
-seed-library model yet, chosen to replace the Beltline mid-rise slot that duplicated an existing model. State: **candidate under review**. Nothing here is keeper-approved,
+seed-library model yet, chosen to replace the Beltline mid-rise slot that duplicated an existing model. State: **stopped at v003 under the rework stopping rule (1 P0 / 6 P1; best-reviewed candidate v003)**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,14 +68,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 targets every P0 and P1; findings surviving again stop the family)
+## Open blockers after v003 (family stopped at v003 under the rework stopping rule)
 
-1. P0: the tower reads as a top-heavy goblet with two giant solid shells, bare disc plates and a closed crown; the loop is a half-hoop on a solid plate, with no open ring in the top view. Survived one targeted fix.
-2. P1: the south roof line drops in a sharp kinked V to about storey 5-6; the source swoops smoothly to a podium-level cleft.
-3. P1: in the dip a blank sloped wedge, a windowless cut wall, slab shards in the court and terrace slabs ending in mid-air.
-4. P1: rigid rounded rectangles for plan and court; the source has a fluid perimeter, a teardrop court and a serpentine roof band.
-5. P1: the tower crown overhangs the south building line.
-6. P1: black voids at the retail pier heads; faceted arches; plain box piers.
-7. P1: pier stubs and a loose cube above the top spandrel; stair-stepped grid ends along the dip.
-8. P1: intersections (glazed bay roof into piers, slab through a blade, shell cut flat on the roof disc).
-9. P1: visible faceting on the tower shell, loop, band corners and arches.
+1. P0: the tower crown is a near-horizontal ring around a closed dish roof; from above it is not the source's open loop. Survived two targeted fixes.
+2. P1: the tower reads as a coil spring of a few thick shallow ribbons round a glass cylinder; the source has a twisted, mostly white body with many steep narrow blades.
+3. P1: the south dip is still a pointed V at about storey 3 with a straight right side, not a smooth U swoop.
+4. P1: a blank funnel fills the cleft; a faceted pylon under the tower, bare slab ends, crumpled surfaces and a stray glass slab in the court.
+5. P1: floor bands end in stair steps along the cleft, pier stubs and a loose tab. Survived two targeted fixes.
+6. P1: retail piers read as a row of upside-down wedges butting the arches; neighbouring wedges intersect on the rounded corners.
+7. P1: a single glazed roof trench instead of an S-shaped raised band with separate skylights; the court still reads as a rounded rectangle from above.
