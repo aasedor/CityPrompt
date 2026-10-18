@@ -1,0 +1,419 @@
+{
+  "candidate": "clay-exoskeleton-research-lab-clay-v005",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-exoskeleton-research-lab",
+  "variant_id": "clay-exoskeleton-research-lab-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "research_laboratory/variant_0 (high_tech_exoskeleton)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 31.4,
+      "depth": 25.0,
+      "height": 26.2
+    },
+    "observed_storeys": 4,
+    "storey_programme": "recessed glazed ground floor (lobby, service bays), three laboratory floors, roof plant",
+    "plan": "30 x 25 m upper block (top view); the ground floor recessed 2.4 m behind V-pilotis on the south and set back 7 m at the west under a cantilever; plant screen set 3 m in from the roof edge",
+    "facade": "curtain wall with white slab bands on the south, west and north; white steel exoskeleton with alternating diagonals and grey louvre infill on the east, wrapping the south-east corner; V-pilotis at the street; angled cantilever soffit at the west",
+    "levels_m": [
+      0.15,
+      5.6,
+      9.8,
+      14.0,
+      18.2
+    ],
+    "parapet_m": 18.55,
+    "inferred": "storey heights and interiors are teaching assumptions; the north face is not visible in any source and repeats the curtain-wall grammar"
+  },
+  "roof_contract": {
+    "type": "flat roof with an edge walkway, a perforated metal plant screen, a penthouse, ducts and exhaust stacks",
+    "datum_m": 18.2,
+    "crowns_m": [
+      18.55,
+      22.0,
+      25.799999999999997
+    ]
+  },
+  "identity_contract": {
+    "owner": "glazed lab floors with coloured services behind glass, cantilever over V-pilotis, white steel exoskeleton with louvre infill, perforated rooftop plant screen with stacks"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: clear glass, white steel and slab bands, grey louvres, concrete base walls, perforated aluminium screen, blue, green and yellow ducts",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 4,
+    "ground": "lobby behind the pilotis, service bays east",
+    "labs": "open laboratories with benches and coloured service runs",
+    "roof": "air handling, exhaust stacks"
+  },
+  "contact_contract": [
+    "Grade-zero slab and sidewalks",
+    "Upper block on the ground-floor core and the V-pilotis",
+    "Exoskeleton founded at grade and tied to every slab",
+    "Plant screen, penthouse and stacks on the roof slab"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        28.0,
+        -44.0,
+        1.8
+      ],
+      "target": [
+        -2.0,
+        -4.0,
+        9.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        45.083999999999996,
+        -48.55199999999999,
+        52.4
+      ],
+      "target": [
+        0,
+        0,
+        11.79
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        40.459999999999994,
+        -46.24,
+        78.6
+      ],
+      "target": [
+        0,
+        0,
+        11.79
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        86.69999999999999
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 47.599999999999994
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -57.8,
+        0,
+        15.719999999999999
+      ],
+      "target": [
+        0,
+        0,
+        11.79
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        57.8,
+        0,
+        15.719999999999999
+      ],
+      "target": [
+        0,
+        0,
+        11.79
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        57.8,
+        15.719999999999999
+      ],
+      "target": [
+        0,
+        0,
+        11.79
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        40.459999999999994,
+        46.24,
+        47.16
+      ],
+      "target": [
+        0,
+        0,
+        11.79
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -2.0,
+        -34.0,
+        12.0
+      ],
+      "target": [
+        -2.0,
+        -12.5,
+        12.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        32.0,
+        -26.0,
+        12.0
+      ],
+      "target": [
+        15.0,
+        -4.0,
+        11.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        2.0,
+        -24.0,
+        11.5
+      ],
+      "target": [
+        2.0,
+        -12.5,
+        11.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "v_pilotis",
+      "location": [
+        2.0,
+        -22.0,
+        2.4
+      ],
+      "target": [
+        2.0,
+        -12.5,
+        3.2
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "exoskeleton",
+      "location": [
+        30.0,
+        -10.0,
+        10.0
+      ],
+      "target": [
+        15.0,
+        0.0,
+        10.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_screen",
+      "location": [
+        -20.0,
+        -24.0,
+        30.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        19.7
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "cantilever",
+      "location": [
+        -24.0,
+        -22.0,
+        3.0
+      ],
+      "target": [
+        -11.0,
+        -8.5,
+        5.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "stacks",
+      "location": [
+        18.0,
+        20.0,
+        28.0
+      ],
+      "target": [
+        3.0,
+        3.0,
+        20.7
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        8.0,
+        6.0,
+        11.5
+      ],
+      "target": [
+        -2.0,
+        -12.5,
+        11.4
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        0.0,
+        40.0,
+        12.0
+      ],
+      "target": [
+        0.0,
+        12.5,
+        11.0
+      ],
+      "lens": 45,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "v_pilotis",
+    "exoskeleton",
+    "roof_screen",
+    "cantilever",
+    "stacks",
+    "interior",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/research-laboratory/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1303211,
+        "sha256": "8aed179ffe03b5db9eb1f12fbc96db6c98f032d58dd5985408e6353e683a0539"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/research-laboratory/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 908152,
+        "sha256": "b9f323ed50f2d4534bf68b0316c04de0fc609b2d3d5dbb5dfaa796d48cd83bc1"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/research-laboratory/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 810690,
+        "sha256": "9b2377977becd24478b4219e74030768dd362e29781c9c958bcd84f32b67f2f4"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_lab.py",
+        "sha256": "97adb8f9b951b5f47c4a17da70fa68d6368b9cf07c83ebd55d5234ada8b662e0"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "45e3e9e9eadf7de7cbb47a63f43b4f373f3c471e2833a6aa788620ea5527749f"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "d087bfc79a5556987bc8cfdaef1b24777e025e2d6e6961cd3d301d2b504ed2a2"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-18T02:56:51.632019+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

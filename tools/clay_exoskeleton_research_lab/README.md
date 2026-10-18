@@ -1,7 +1,7 @@
 # Research laboratory with a white steel exoskeleton (RLASM v6.1 architectural clay)
 
 Candidate F2 of wave F of 2026-10-17, one of five catalogue types with no clay, runtime or
-seed-library model yet, chosen to replace the Beltline mid-rise slot that duplicated an existing model. State: **candidate under review**. Nothing here is keeper-approved,
+seed-library model yet, chosen to replace the Beltline mid-rise slot that duplicated an existing model. State: **stopped at v005 under the rework stopping rule (v004 and v005 did not lower v003; candidate v003, 0 P0 / 3 P1)**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,11 +68,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 targets every P1; a second review without a reduction stops the family at v003)
+## Open blockers after v005 (family stopped at v005 under the rework stopping rule; candidate v003)
 
-1. P1: a black hairline between the slab band and the angled soffit; a dark block at the cantilever's north-west corner. Survived one targeted fix.
-2. P1: black squares at every mullion/transom crossing and black caps on the screen post tops.
-3. P1: each lab floor split by a mid-height transom and framed by heavy white slab bands (source one frameless pane per storey with hairline joints).
-4. P1: the exhaust stacks barely clear the screen and are hidden in the front view.
-5. P1: the roof plant is under-scaled (penthouse, duct loop, a missing west stack cluster, a narrow south walkway).
-6. P1: the east exoskeleton has 5 bays with 3 louvre bays; the sources show 4 bays with 2.
+Open on the candidate v003 (0 P0 / 3 P1; see evidence/v003/independent-review.md):
+1. P1: black blocks at the portal post/head junction, the cantilever's north-west corner and the exoskeleton column tops.
+2. P1: a deep white band above the top floor hides the perforated roof screen in the front view.
+3. P1: the east louvres read from the front as narrow recessed strips; steel chunkier and louvres lighter than the source.
+
+v004 and v005 fixed those three (and the transoms, black crossings, stack height and bay count), but their reviews raised others: the roof plant (an oversized blank penthouse, no units or bent ducts), the cantilever at about half the source depth, the south-front rhythm (the V-pilotis too far west, an extra corner bay), and the coloured services reading as a uniform plaid. These are recorded in evidence/v004 and evidence/v005.
