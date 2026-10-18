@@ -25,7 +25,7 @@ ZT = 36.0                                       # top chord of the perimeter tru
 IX, IY, IR = 68.0, 52.0, 16.0                   # inner compression ring (roof opening)
 ZI0, ZI1 = 29.5, 33.0                           # bottom and top chords at the inner ring
 PX, PY = 52.0, 34.0                             # pitch with run-off, long axis east-west along the bowl
-ZB = 22.0                                       # back row of the seating bowl
+ZB = 25.0                                       # back row of the seating bowl, its parapet up to the roof ring
 EPS = .002
 PALETTE = dict(wall=(.70, .70, .68), joint=(.60, .60, .58), trim=(.62, .64, .66),
     pale=(.86, .86, .84), stone=(.66, .65, .62), roof=(.62, .62, .60), sand=(.70, .68, .64),
@@ -52,7 +52,7 @@ def manifest(version):
         ('rear_north', (0.0, AY + 130.0, 30.0), (0.0, AY, 20.0), 35)])
     for c in cams:                       # the locked front looks at the south face from the street, at eye level
         if c['name'] == 'front':
-            c['location'] = (-40.0, -AY - 92.0, 1.8); c['target'] = (2.0, -AY + 14.0, 18.0); c['lens'] = 19; c['whole'] = False
+            c['location'] = (-AX - 40.0, -AY - 70.0, 1.8); c['target'] = (-47.0, -51.0, 22.0); c['lens'] = 24; c['whole'] = False   # the rounded south-west ETFE corner
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -311,13 +311,14 @@ class Batch:
     def box(self, role, cx, cy, cz, sx, sy, sz):
         self._quad_box(role, [(cx + du * sx / 2, cy + dd * sy / 2, cz + dz * sz / 2) for dz in (-1, 1) for du, dd in ((-1, -1), (1, -1), (1, 1), (-1, 1))])
 
-    def beam(self, role, a, b, w, d=None):
+    def beam(self, role, a, b, w, d=None, ext=0.0):
         d = d or w
         ax = [b[i] - a[i] for i in range(3)]
         L = math.sqrt(sum(v * v for v in ax))
         if L < 1e-6:
             return
         ax = [v / L for v in ax]
+        a = [a[i] - ax[i] * ext for i in range(3)]; b = [b[i] + ax[i] * ext for i in range(3)]   # bury the ends in the joints
         ref = (0.0, 0.0, 1.0) if abs(ax[2]) < .95 else (0.0, 1.0, 0.0)
         s = (ax[1] * ref[2] - ax[2] * ref[1], ax[2] * ref[0] - ax[0] * ref[2], ax[0] * ref[1] - ax[1] * ref[0])
         n = math.sqrt(sum(v * v for v in s)); s = [v / n for v in s]
@@ -470,19 +471,13 @@ def facade():
     n = len(ring)
     b = Batch()
     for i in range(n):
-        p, q, q2 = ring[i], ring[(i + 1) % n], ring[(i + 2) % n]
-        mid = ((p[0] + q[0]) / 2, (p[1] + q[1]) / 2)
-        b.beam('steel', (p[0], p[1], G0), (mid[0], mid[1], ZC), .55)            # V-columns
-        b.beam('steel', (q[0], q[1], G0), (mid[0], mid[1], ZC), .55)
-        b.beam('steel', (p[0], p[1], ZC), (q2[0], q2[1], ZF), .5)              # long crossing diagonals over two bays
-        b.beam('steel', (q2[0], q2[1], ZC), (p[0], p[1], ZF), .5)
-        for z in (ZC, ZF):
-            b.beam('steel', (p[0], p[1], z), (q[0], q[1], z), .6, .7)          # concourse and roof ring beams
-        b.box('foundation', p[0], p[1], G0 / 2 + .1, 1.2, 1.2, G0 + .2)
-        b.box('steel', p[0], p[1], G0 + .35, .9, .9, .5)                       # cast nodes at every joint
-        b.box('steel', mid[0], mid[1], ZC, .95, .95, .95)
-        b.box('steel', p[0], p[1], ZC, .95, .95, .95)
-        b.box('steel', p[0], p[1], ZF, .95, .95, .95)
+        p, q = ring[i], ring[(i + 1) % n]
+        b.beam('steel', (p[0], p[1], G0 + .3), (q[0], q[1], ZF), .55, ext=.35)   # steep diagonals from grade to the roof ring
+        b.beam('steel', (q[0], q[1], G0 + .3), (p[0], p[1], ZF), .55, ext=.35)
+        b.beam('steel', (p[0], p[1], ZF), (q[0], q[1], ZF), .6, .7)            # roof ring beam
+        b.box('foundation', p[0], p[1], G0 / 2 + .1, 1.4, 1.4, G0 + .2)
+        b.box('steel', p[0], p[1], G0 + .55, 1.1, 1.1, .9)                     # cast nodes at every joint
+        b.box('steel', p[0], p[1], ZF, 1.15, 1.15, 1.15)
     b.flush('facade steel')
     # Upper concourse floors between the facade and the back of the stands.
     outer, back = rr(AX - 1.0, AY - 1.0, R - 1.0), rr(AX - 9.0, AY - 9.0, R - 6.0)
@@ -507,13 +502,17 @@ def facade():
         m = math.hypot(nx, ny)
         return (x + nx / m * (d - .6), y + ny / m * (d - .6), z)
 
-    E0, E1 = ZC + 1.2, ZF - .4
+    E0, E1 = ZC + .2, ZF - .5
+
+    def bow(z):                                                           # the band bows outward in section
+        return 1.8 * math.sin(math.pi * min(1.0, max(0.0, (z - E0) / (E1 - E0))))
+
     rings = [[at(t, .2, E0), at(t, .4, E0), at(t, .4, E1), at(t, .2, E1)] for t in s]
     loft('ETFE backing', rings, 'etfeback', 'etfe', closed=False)
     rows = 7
     hb = (E1 - E0) / (rows + 1)                                           # diamond half-height
-    a = 1.1 * hb                                                          # half-width: diamonds about 2.2 : 1 wide
-    M = 3
+    a = 2.2 * hb                                                          # half-width: diamonds 2.2 : 1 wide
+    M = 5
     vs, fs = [], []
     lv, lf = [], []
     b = Batch()
@@ -531,7 +530,7 @@ def facade():
                     t = (1 - u) * (1 - v) * corners[0][0] + u * (1 - v) * corners[1][0] + u * v * corners[2][0] + (1 - u) * v * corners[3][0]
                     z = (1 - u) * (1 - v) * corners[0][1] + u * (1 - v) * corners[1][1] + u * v * corners[2][1] + (1 - u) * v * corners[3][1]
                     t, z = min(max(t, 0.0), L), min(max(z, E0), E1)        # clamp to the band: flat, straight band edges
-                    vs.append(at(t, .6 + .42 * math.sin(math.pi * u) * math.sin(math.pi * v), z))
+                    vs.append(at(t, .6 + bow(z) + .55 * math.sin(math.pi * u) * math.sin(math.pi * v), z))
             for j in range(M):
                 for i in range(M):
                     q = o + j * (M + 1) + i
@@ -541,16 +540,27 @@ def facade():
                     dt, dz = t1 - t0, z1_ - z0_
                     m_ = math.hypot(dt, dz); pt, pz = -dz / m_ * .05, dt / m_ * .05
                     o = len(lv)
-                    lv += [at(t0 - pt, .64, z0_ - pz), at(t1 - pt, .64, z1_ - pz), at(t1 + pt, .64, z1_ + pz), at(t0 + pt, .64, z0_ + pz)]
+                    lv += [at(t0 - pt, .64 + bow(z0_ - pz), z0_ - pz), at(t1 - pt, .64 + bow(z1_ - pz), z1_ - pz), at(t1 + pt, .64 + bow(z1_ + pz), z1_ + pz), at(t0 + pt, .64 + bow(z0_ + pz), z0_ + pz)]
                     lf.append((o, o + 1, o + 2, o + 3))
-    C.mesh('ETFE cushions', vs, fs, 'etfe', 'etfe')
+    cush = C.mesh('ETFE cushions', vs, fs, 'etfe', 'etfe')
+    for f_ in cush.data.polygons:
+        f_.use_smooth = True                                              # soft pillows, not facets
     C.mesh('ETFE frame lines', lv, lf, 'trim', 'etfe')
-    for z in (E0, E1):                                                    # edge frames
+    for z in (E0, E1):                                                    # edge frames, the bottom one sitting on a ledge
         for t0, t1 in zip(s, s[1:]):
             b.beam('pale', at(t0, .62, z), at(t1, .62, z), .32, .32)
-    for t in (0.0, L):                                                    # end frames and returns
-        b.beam('pale', at(t, .62, E0), at(t, .62, E1), .32, .32)
-        b.beam('pale', at(t, .2, E0), at(t, .2, E1), .3, .8)
+    for t0, t1 in zip(s, s[1:]):
+        b.beam('concrete', at(t0, .1, E0 - .3), at(t1, .1, E0 - .3), 1.3, .6)
+    ev, ef = [], []
+    for t in (0.0, L):                                                    # end plates closing the bowed band, and end frames
+        zs_ = [E0 + (E1 - E0) * k / 16 for k in range(17)]
+        o = len(ev)
+        ev += [at(t, .2, z) for z in zs_] + [at(t, .62 + bow(z), z) for z in zs_]
+        for k in range(16):
+            ef.append((o + k, o + k + 1, o + 17 + k + 1, o + 17 + k))
+        for z0_, z1_ in zip(zs_, zs_[1:]):
+            b.beam('pale', at(t, .62 + bow(z0_), z0_), at(t, .62 + bow(z1_), z1_), .32, .32)
+    C.mesh('ETFE end plates', ev, ef, 'pale', 'etfe')
     b.flush('etfe frames')
     C.CONTACTS.append(dict(name='ETFE cushions on a backing band hung off the facade diagonals, west face and western south face', band_m=[E0, E1]))
 
@@ -562,10 +572,11 @@ def roof():
     for i in range(n):
         p, q = outer[i], outer[(i + 1) % n]
         b.beam('steel', (p[0], p[1], ZT), (q[0], q[1], ZT), .7, .7)                # perimeter truss top chord
-        b.beam('steel', (p[0], p[1], ZF + .4), (q[0], q[1], ZT), .45)             # perimeter truss webs
-        b.beam('steel', (q[0], q[1], ZF + .4), (p[0], p[1], ZT), .45)
-        b.beam('steel', (p[0], p[1], ZF), (p[0], p[1], ZT), .45)
-        b.box('steel', p[0], p[1], ZT, .95, .95, .95)
+        if i % 2 == 0:                                                     # perimeter truss: single alternating diagonals
+            b.beam('steel', (p[0], p[1], ZF), (q[0], q[1], ZT), .5, ext=.3)
+        else:
+            b.beam('steel', (p[0], p[1], ZT), (q[0], q[1], ZF), .5, ext=.3)
+        b.box('steel', p[0], p[1], ZT, 1.0, 1.0, 1.0)
         pi, qi = inner[i], inner[(i + 1) % n]
         for z in (ZI0, ZI1):
             b.beam('steel', (pi[0], pi[1], z), (qi[0], qi[1], z), .8, .8)          # inner compression ring
@@ -580,8 +591,8 @@ def roof():
         b.beam('steel', bot(0), bot(1), .55)
         k = 5
         for j in range(k):
-            b.beam('steel', bot(j / k), top((j + 1) / k), .4)
-            b.beam('steel', top((j + 1) / k), bot((j + 1) / k), .4)
+            b.beam('steel', bot(j / k), top((j + 1) / k), .4, ext=.25)
+            b.beam('steel', top((j + 1) / k), bot((j + 1) / k), .4, ext=.25)
             b.box('steel', *top((j + 1) / k), .8, .8, .8)
     for f in (.33, .67):                                                     # purlin rings, under the panels
         ring = lerp_ring(outer, inner, f)
