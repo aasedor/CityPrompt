@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-cmu-dock-warehouse",
+  "variant_id": "clay-cmu-dock-warehouse-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "mid_century_distribution_warehouse/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/mid-century-distribution-warehouse/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1123308,
+      "sha256": "6c9e95381c52e186218ea835b9df1da33da05de67d80dc031a949d450415183a"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/mid-century-distribution-warehouse/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 777019,
+      "sha256": "1618e8e8aac9fab29fee45d6cd93ef6b9713c8b66a18df2b08a72de4f6e62dab"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/mid-century-distribution-warehouse/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 778752,
+      "sha256": "c8c0dc60c289633e8d6889791628e91d3c6492c507ee501681f6b4a6290be86d"
+    }
+  ]
+}

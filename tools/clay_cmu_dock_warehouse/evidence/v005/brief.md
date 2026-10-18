@@ -1,0 +1,31 @@
+You are the independent holistic reviewer for one RLASM v6.1 architectural-clay candidate.
+You did not build it. You have no relationship with the builder. Be adversarial and specific.
+
+Candidate directory: /tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/dev-artifacts/CityPrompt/wh/v005
+- Locked sources (the only truth): sources/front.png, sources/oblique.jpg, sources/top.jpg
+- Renders: renders/*.png (18 views; whole-envelope: front, front_corner, aerial, top, left_side, right_side, rear, rear_side;
+  details: facade_close, architecture_close, glass_close, dock_doors, entry_canopy, roof_units, east_windows, parapet_corner, interior, rear_north)
+- Phone boards: boards/*.png
+
+Rules (from the method):
+- Judge only rendered pixels against locked source pixels. Ignore metadata, counts, hashes and the builder's notes as proof.
+- The building is a single-storey mid-century distribution warehouse on a corner with the street south and a parking lane east (the top view governs the plan): a block of painted beige concrete masonry units with horizontal coursing, about 1.3 times as wide as deep, on a dock-height floor; four raised loading bays along the west half of the south face, each an overhead sectional door with a row of small lites inside a dark steel surround, black dock bumpers and yellow guide posts; east of them a glazed aluminium entry door and sidelight under a flat concrete canopy hung on two rods, a wide aluminium window beside it and a long cast-concrete landing with steps at its west end; punched windows on the east face (one low near the south corner, two high clerestories); a flat parapet with a thin pale metal coping round a grey membrane roof with two rooftop units, small vent domes and pipe vents. The north and west faces are not visible in the front or oblique; judge faces that no source shows only for coherence with the visible grammar, not for fidelity.
+- This is clay: untextured source-palette colours. Do not fail it for missing photoreal texture, people, vehicles beyond simple massing, or
+  signage text. Do fail it for wrong geometry, wrong rhythm, missing or extra storeys, missing identity elements (beige CMU box with coursing, four raised loading bays in dark surrounds with bumpers and guides, rod-hung entry canopy over the concrete landing, flat parapet roof with rooftop units),
+  openings without visible depth/returns, floating or intersecting parts, elements that read as a different building, or an invalid camera
+  (target occluded, asset clipped, nothing legible).
+- Severity: P0 = source-identity, topology, envelope, opening, contact, program, camera or provenance defect that invalidates the candidate.
+  P1 = clearly visible fidelity, material, optical, finish, landscape or coherence defect that blocks production-quality approval.
+  P2 = polish only.
+
+Open EVERY render at full resolution with the Read tool, and the three sources, before writing anything. Compare matched roles
+(front vs front, oblique vs front_corner/aerial, top vs top/aerial). Then inspect every detail view for contact and depth.
+
+Write your review to /tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/dev-artifacts/CityPrompt/wh/v005/review/independent-review.md as markdown with exactly these sections:
+1. Verdict: one of PASS_ZERO_P0_P1 / VISUAL_REWORK_REQUIRED, with one sentence.
+2. Findings table: | # | severity | view(s) | symptom (what the pixels show) | likely cause | finite fix |  (list every P0 and P1; P2s briefly)
+3. Source conformance checklist: silhouette, height and proportions, CMU coursing, dock bays (doors, lites, surrounds, bumpers, guides, dock height), entry (door, sidelight, canopy, rods, window), landing and steps, east windows, parapet and coping, roof (membrane, units, domes, vents), apron and site, materials hierarchy. Mark each conforms / deviates / not visible, with the view you used.
+4. Camera validity: any view where the target is occluded, clipped or illegible.
+Do not modify any file other than /tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/dev-artifacts/CityPrompt/wh/v005/review/independent-review.md. Do not run the build.
+
+This is version 5. The v004 independent review found: P0 the landing steps standing in front of bay 4's east jamb and guide post, blocking the bay (dock band to 68% of the face against about 62%); P1 no wall between the bays and the entry, the canopy touching the bay 4 shelter (gap about 8% of the face against about 15%); P1 front_corner taken from the south-west at about 37% fill while the locked oblique is the south-east corner at about 90% fill. The builder claims: 3.65 m shelters 0.2 m apart spanning about 11.5% to 62% of the face; the entry moved east so about 1.25 m of clear wall stands between the last shelter and the landing steps and about 15% of the face lies between the shelters and the door; a close, elevated south-east front_corner camera. Verify each in the pixels and record for each v004 finding whether it is resolved; also confirm the earlier resolved findings (shelter rhythm, front camera, door height, dock base, coping, head joints, guide posts, rear door) have not regressed.
