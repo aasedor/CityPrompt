@@ -19,12 +19,12 @@ import geometry as G
 
 SLUG = 'clay-amsterdam-canal-warehouse'
 X0, X1, Y0, Y1 = -10.0, 10.0, -8.0, 8.0        # 20 m quay front, 16 m deep
-XM = -2.0                                       # wall line between the west (8 m) and east (12 m) sections
+XM = -0.5                                       # wall line between the west (9.5 m) and east (10.5 m) sections
 T = .40
 G0 = .0
 FL = [0.0, 4.2, 7.2, 10.2]                      # ground floor and three upper floors
-EAVE = 13.2
-SLOPE = 1.15                                    # both roofs share one pitch, so the valley sits on XM at the eave
+EAVE = 11.6                                     # the top loading doors straddle it into the gables
+SLOPE = 1.0                                     # both roofs share one pitch, so the valley sits on XM at the eave
 XRW, XRE = (X0 + XM) / 2, (XM + X1) / 2
 RW, RE = EAVE + SLOPE * (XM - X0) / 2, EAVE + SLOPE * (X1 - XM) / 2
 PAR = .35                                       # gable parapet above the roof plane
@@ -45,7 +45,7 @@ def manifest(version):
         ('architecture_close', (16.0, -18.0, 14.0), (X1, Y0, 13.0), 45),
         ('glass_close', (1.0, -15.0, 8.7), (1.0, Y0, 8.7), 45),
         ('loading_doors', (6.5, -16.0, 9.0), (4.0, Y0, 9.0), 40),
-        ('arched_doors', (-2.0, -15.0, 2.2), (-1.0, Y0, 2.2), 40),
+        ('arched_doors', (XRE + 1.6, -15.0, 2.2), (XRE, Y0, 2.0), 40),
         ('gable_tops', (-1.0, -20.0, 22.0), (0.0, Y0, 17.5), 45),
         ('east_side', (26.0, 2.0, 7.0), (X1, 0.0, 7.0), 45),
         ('roof_deck', (-14.0, -12.0, 34.0), (0.0, 1.0, EAVE + 4.0), 40),
@@ -54,15 +54,17 @@ def manifest(version):
     for c in cams:                       # the locked front and oblique look from the south-east
         if c['name'] == 'front':
             c['location'] = (18.0, -26.0, 1.6); c['target'] = (-1.0, -6.0, 9.5); c['lens'] = 26; c['whole'] = False
-        elif c['name'] == 'front_corner':
-            lx, ly, lz = c['location']; c['location'] = (-lx, ly, lz)
+        elif c['name'] == 'front_corner':                                      # the locked oblique, from high in the south-east
+            c['location'] = (26.0, -34.0, 26.0); c['target'] = (0.0, -1.0, 7.0); c['lens'] = 35; c['whole'] = False
+        elif c['name'] == 'aerial':
+            c['location'] = (22.0, -27.0, 36.0); c['target'] = (0.0, 0.0, 6.0); c['lens'] = 35; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='amsterdam_canal_warehouse/variant_0 (canal_warehouse_spice)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=4, storey_programme='ground-floor cart bays and four storeys of storage lofts under the gables',
-            plan='20 x 16 m corner warehouse (top view): an 8 m west and a 12 m east section, quay south, street east',
+            plan='20 x 16 m corner warehouse (top view): a 9.5 m west and a 10.5 m east section, a 3.5 m quay south, a 4 m street east',
             facade='red-brown brick; twin coped street gables with shoulder piers, pinnacles and hoist beams; green loading doors and shutters over arched cart doors; segmental windows; iron anchors',
             levels_m=FL + [EAVE], roof_m=dict(eave=EAVE, ridges=[RW, RE]),
             inferred='interiors and the north face are teaching assumptions; the rear gables repeat the front outline without openings'),
@@ -433,16 +435,16 @@ def anchors(m, us, z, s=.4):
         m.box('hardware', u, -.03, z, .07, .04, s)
 
 
-def window(m, f, h, rise=.18, occupied='loft', lite=False):
-    framed(m, f, h, cols=2, rows=3, inset=.14, occupied=occupied, lite=lite)
+def window(m, f, h, rise=.18, occupied='loft', lite=False, ring=.26):
+    framed(m, f, h, cols=2, rows=3 if h['h'] > 1 else 1, inset=.14, occupied=occupied, lite=lite)
     m.box('stone', h['u'], -.04, h['z'] - .06, h['w'] + .14, .14, .1)
-    arch_head(f, h, rise)
+    arch_head(f, h, rise, ring=ring)
 
 
 def loading_bay(m, f, h):
     """Green glazed loading door (solid lower panels) with board shutters folded back flat either side."""
     framed(m, f, h, cols=2, rows=3, inset=.14, occupied='loft', frame='green')
-    m.box('green', h['u'], .14, h['z'] + .45, h['w'] - .1, .04, .8)
+    m.box('green', h['u'], .1, h['z'] + .45, h['w'] - .1, .04, .8)                     # solid lower panels in front of the glass
     m.box('stone', h['u'], -.04, h['z'] - .06, h['w'] + .14, .14, .1)
     for s in (-1, 1):
         cu = h['u'] + s * (h['w'] / 2 + .12 + h['w'] / 4)
@@ -470,13 +472,31 @@ def section_holes(cu, hw, wu, door_w, door_h):
     door = hole(f'cart door {cu:+.0f}', cu, 0.0, door_w, door_h, kind='door')
     gw = [hole(f'ground window {cu + s * wu:+.1f}', cu + s * wu, .95, 1.15, 2.2) for s in (-1, 1)]
     bays = [hole(f'loading door {cu:+.0f} f{k}', cu, FL[k] + .45, 1.3, 2.35, kind='loading door') for k in (1, 2, 3)]
-    ups = [hole(f'window {cu + s * wu:+.1f} f{k}', cu + s * wu, FL[k] + .75, .85, 1.5) for k in (1, 2, 3) for s in (-1, 1)]
+    ups = [hole(f'window {cu + s * wu:+.1f} f{k}', cu + s * wu, FL[k] + .75, .85, 1.5) for k in (1, 2) for s in (-1, 1)]
     return door, gw, bays, ups
 
 
-def gable_outline(z_off=PAR):
-    """M-shaped outline of the twin gables above the eave, in (x, z), clockwise from the west foot."""
-    return [(X0, EAVE), (X0, EAVE + z_off), (XRW, RW + z_off), (XM, EAVE + z_off), (XRE, RE + z_off), (X1, EAVE + z_off), (X1, EAVE)]
+PANEL = 1.0                                      # half-width of the gable panel round each top loading door
+PANEL_H = 1.9
+
+
+def split_top(h):
+    """The top loading door straddles the eave: its lower part is cut in the wall, its upper part in a gable panel."""
+    lo = hole(h['id'] + ' below eave', h['u'], h['z'], h['w'], EAVE - h['z'])
+    hi = hole(h['id'] + ' above eave', h['u'], EAVE, h['w'], h['z'] + h['h'] - EAVE)
+    return lo, hi
+
+
+def gable_outline(z_off=PAR, notches=False):
+    """M-shaped outline of the twin gables above the eave, in (x, z), clockwise from the west foot; with notches,
+    the bottom edge steps up round the two loading-door panels."""
+    top = [(X0, EAVE), (X0, EAVE + z_off), (XRW, RW + z_off), (XM, EAVE + z_off), (XRE, RE + z_off), (X1, EAVE + z_off), (X1, EAVE)]
+    if not notches:
+        return top
+    bottom = []
+    for xc in (XRE, XRW):
+        bottom += [(xc + PANEL, EAVE), (xc + PANEL, EAVE + PANEL_H), (xc - PANEL, EAVE + PANEL_H), (xc - PANEL, EAVE)]
+    return top + bottom
 
 
 def rear_outline(z_off=PAR):
@@ -504,9 +524,13 @@ def south_face():
     f = C.Face((0, Y0, 0), (1, 0, 0), (0, 1, 0), 'south')
     dw, gw_w, bays_w, ups_w = section_holes(XRW, 4.0, 2.4, 1.9, 3.3)
     de, gw_e, bays_e, ups_e = section_holes(XRE, 6.0, 3.0, 2.5, 3.6)
-    holes = [dw, de] + gw_w + gw_e + bays_w + bays_e + ups_w + ups_e
+    tops = [split_top(bays_w[2]), split_top(bays_e[2])]
+    holes = [dw, de] + gw_w + gw_e + bays_w[:2] + bays_e[:2] + [t[0] for t in tops] + ups_w + ups_e
     f.wall('south carrier', X0, X1 - EPS, 0.0, EAVE, depth=T, role='wall', holes=holes)
     G.brick_courses(f, X0 + .02, X1 - .02, .55, EAVE - .02, holes, spacing=.2)
+    for xc, (lo, hi) in zip((XRW, XRE), tops):
+        f.wall(f'gable panel {xc:+.0f}', xc - PANEL, xc + PANEL - EPS, EAVE, EAVE + PANEL_H, depth=T, role='wall', holes=[hi])
+        G.brick_courses(f, xc - PANEL + .02, xc + PANEL - .02, EAVE + .02, EAVE + PANEL_H - .02, [hi], spacing=.2)
     m = Merge(f)
     m.box('foundation', 0, -.03, .26, X1 - X0 - .02, .06, .52)
     cart_door(m, f, dw, .95)
@@ -516,11 +540,11 @@ def south_face():
     for h in bays_w + bays_e:
         loading_bay(m, f, h)
     for k in (1, 2, 3):
-        anchors(m, (X0 + .9, XRW - 1.7, XRW + 1.7, XM - .5, XM + .6, XRE - 2.0, XRE + 2.0, X1 - .9), FL[k] - .05)
+        anchors(m, (X0 + .9, XRW - 1.75, XRW + 1.75, XM - .5, XM + .6, XRE - 1.75, XRE + 1.75, X1 - .9), FL[k] - .05)
     anchors(m, (X0 + .9, XM - .5, XM + .6, X1 - .9), EAVE - .5)
     m.box('hardware', XM, -.09, EAVE / 2 + .3, .12, .12, EAVE - .4)                          # downpipe from the valley
     m.flush('south')
-    C.prism('South gables', gable_outline(), 'y', Y0, Y0 + T, 'wall', 'gables')
+    C.prism('South gables', gable_outline(notches=True), 'y', Y0, Y0 + T, 'wall', 'gables')
     b = Batch()
     gable_dressing(b, Y0 + T / 2)
     b.flush('south gables')
@@ -530,7 +554,8 @@ def side_and_rear():
     hd = (Y1 - Y0) / 2
     e = C.Face((X1, 0, 0), (0, 1, 0), (-1, 0, 0), 'east')
     bays = (-6.0, -4.0, -2.0, 0.0, 2.0, 4.0, 6.0)
-    ups = [hole(f'east window f{k} {i}', u, FL[k] + .8, .8, 1.45) for k in (1, 2, 3) for i, u in enumerate(bays)]
+    ups = [hole(f'east window f{k} {i}', u, FL[k] + .8, .8, 1.45) for k in (1, 2) for i, u in enumerate(bays)] + \
+          [hole(f'east window f3 {i}', u, FL[3] + .05, .7, .6) for i, u in enumerate(bays)]
     gd = [hole('east door', 0.0, 0.0, 1.2, 2.7, kind='door')]
     gw = [hole(f'east ground window {i}', u, .95, 1.0, 2.2) for i, u in enumerate(bays) if u != 0.0]
     hs = ups + gd + gw
@@ -539,28 +564,34 @@ def side_and_rear():
     m = Merge(e)
     m.box('foundation', 0, -.03, .26, 2 * hd - 2 * T - .02, .06, .52)
     for h in ups + gw:
-        window(m, e, h, rise=.16 if h['h'] < 2 else .3, occupied='dispatch' if h['z'] < 4 else 'loft')
+        window(m, e, h, rise=.12 if h['h'] < 1 else (.16 if h['h'] < 2 else .3), occupied='dispatch' if h['z'] < 4 else 'loft', ring=.2 if h['h'] < 1 else .26)
     m.box('timber', 0.0, .16, 1.35, 1.18, .06, 2.68)
     register(e, gd[0], .14, 'side door', 'dispatch')
     arch_head(e, gd[0], .35)
     for k in (1, 2, 3):
         anchors(m, (-7.0, -5.0, -3.0, -1.0, 1.0, 3.0, 5.0, 7.0), FL[k] - .05)
-    m.box('white', 0.0, -.175, EAVE - .55, 2 * hd + .1, .33, .4)                              # timber cornice tucked under the eave
+    m.box('white', 0.0, -.155, EAVE - .5, 2 * hd + .1, .28, .4)                               # timber cornice tucked under the eave
     m.flush('east')
     w = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west party')
     w.wall('west party wall', -hd + T, hd - T, 0.0, EAVE, depth=T, role='wall', holes=[])
     n = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'north')
-    hs = [hole(f'rear window f{k} {i}', u, FL[k] + .8, .8, 1.45) for k in (1, 2, 3) for i, u in enumerate((-7.0, -4.0, -1.0, 2.5, 5.5, 8.0))] + \
+    us = (-7.0, -4.0, -1.0, 2.5, 5.5, 8.0)
+    hs = [hole(f'rear window f{k} {i}', u, FL[k] + .8, .8, 1.45) for k in (1, 2) for i, u in enumerate(us)] + \
+         [hole(f'rear window f3 {i}', u, FL[3] + .05, .7, .6) for i, u in enumerate(us)] + \
          [hole(f'rear ground window {i}', u, .95, 1.0, 2.0) for i, u in enumerate((-7.0, -1.0, 5.5))] + [hole('rear door', 2.5, 0.0, 1.8, 3.0, kind='door')]
     n.wall('north carrier', -X1, -X0 - EPS, 0.0, EAVE, depth=T, role='wall', holes=hs)
+    G.brick_courses(n, -X1 + .02, -X0 - .02, .55, EAVE - .02, hs, spacing=.2)
     m = Merge(n)
+    for k in (1, 2, 3):
+        anchors(m, (-8.5, -5.5, -2.5, 1.0, 4.0, 6.8, 9.2), FL[k] - .05)
     m.box('foundation', 0, -.03, .26, X1 - X0 - .02, .06, .52)
     for h in hs:
         if h.get('kind') == 'door':
             m.box('timber', h['u'], .16, h['h'] / 2, h['w'] - .02, .06, h['h'] - .02)
             register(n, h, .14, 'rear cart door', 'dispatch')
+            arch_head(n, h, .9, ring=.32)
         else:
-            framed(m, n, h, cols=2, rows=3, inset=.14, occupied='loft', lite=True)
+            window(m, n, h, rise=.12 if h['h'] < 1 else (.16 if h['h'] < 1.8 else .3), occupied='loft', ring=.2 if h['h'] < 1 else .26)
     m.flush('north')
     C.prism('North gables', rear_outline(), 'y', Y1 - T, Y1, 'wall', 'gables')
     b = Batch()
@@ -581,8 +612,8 @@ def roof_and_inside():
     # Behind the valley the inner slopes give way to a flat deck; a hipped plate climbs from the valley to it.
     yv, ys = Y0 + T + 1.2, Y0 + T + 1.2 + (RW - EAVE) / SLOPE
     xd = XRE - (RE - RW) / SLOPE
-    zt = RW - .03
-    vs = [(XRW, ys, zt), (xd, ys, zt), (XM, yv, EAVE), (XRW, ys, zt - .16), (xd, ys, zt - .16), (XM, yv + .14, EAVE - .1)]
+    zt = RW + .01                                                                             # the hip plate and deck stand just proud of the slopes
+    vs = [(XRW, ys, zt), (xd, ys, zt), (XM, yv, EAVE + .04), (XRW, ys, zt - .2), (xd, ys, zt - .2), (XM, yv + .14, EAVE - .1)]
     C.mesh('Valley hip', vs, [(0, 2, 1), (3, 4, 5), (0, 1, 4, 3), (1, 2, 5, 4), (2, 0, 3, 5)], 'roof', 'roof')
     C.box('Roof deck', ((XRW + xd) / 2, (ys + y1) / 2, zt - .1), (xd - XRW, y1 - ys, .2), 'membrane', 'roof', 0)
     b = Batch()
@@ -591,9 +622,10 @@ def roof_and_inside():
         b.box('hardware', XRW + 2.5, y, zt + .54, .62, .62, .08)
     b.box('pale', XRW + 2.2, 6.3, zt + .2, 1.6, 1.0, .4)                                       # rear roof light
     b.box('glass', XRW + 2.2, 6.3, zt + .42, 1.4, .8, .05)
-    for (cx, cy) in ((XRW - 1.0, Y0 + 3.0), (XM + 1.4, Y0 + 3.2), (XRE + 1.5, 4.5)):
+    for (cx, cy) in ((XRW - 1.0, Y0 + 3.0), (XRE + 1.5, 4.5)):
         zr = (RW if cx < XM else RE) - abs(cx - (XRW if cx < XM else XRE)) * SLOPE
         chimney(b, cx, cy, zr - .4, zr + 1.3, w=.8, d=.6, pots=0)
+    chimney(b, XRW + 1.2, 3.6, zt - .05, zt + 1.4, w=.8, d=.6, pots=0)                       # a stack standing on the deck
     # East-slope dormer: a white body facing east with a glazed front and a small pitched cap.
     dx, dy = X1 - 2.0, 1.5
     zf = EAVE + 2.0 * SLOPE
@@ -615,35 +647,38 @@ def roof_and_inside():
 
 
 def site():
-    C.box('Quay paving', (-6.0, Y0 - 3.6, .02), (48.0, 7.2, .04), 'paving', 'site', 0)
-    C.box('East street', (X1 + 4.0, 10.0, .02), (8.0, 36.0, .04), 'setts', 'site', 0)
-    C.box('South canal', (1.0, Y0 - 16.0, .005), (62.0, 16.6, .01), 'water', 'site', 0)
-    C.box('East canal', (X1 + 15.5, 6.5, .005), (14.4, 45.0, .01), 'water', 'site', 0)
+    QD, ES = 3.5, 4.0                                                                        # quay depth and street width (top view)
+    xe = X1 + ES                                                                             # the east quay line
+    C.box('Quay paving', ((X0 - 14.0 + xe) / 2, Y0 - QD / 2, .02), (xe - X0 + 14.0, QD, .04), 'paving', 'site', 0)
+    C.box('East street', (X1 + ES / 2, (Y0 + Y1 + 14.0) / 2, .02), (ES, Y1 + 14.0 - Y0, .04), 'setts', 'site', 0)
+    yc = Y0 - QD - .5                                                                        # south canal edge
+    C.box('South canal', ((X0 - 14.0 + xe + .5) / 2, yc - 7.0, .005), (xe + .5 - X0 + 14.0, 14.0, .01), 'water', 'site', 0)
+    C.box('East canal', (xe + .5 + 7.0, (yc - 14.0 + Y1 + 14.0) / 2, .005), (14.0, Y1 + 14.0 - yc + 14.0, .01), 'water', 'site', 0)
     b = Batch()
-    b.box('brick', -5.75, Y0 - 7.45, .3, 48.5, .5, .56)                                     # low brick quay parapets, meeting at the canal corner
-    b.box('stone', -5.75, Y0 - 7.45, .62, 48.6, .62, .1)
-    b.box('brick', X1 + 8.25, 6.25, .3, .5, 43.9, .56)
-    b.box('stone', X1 + 8.25, 6.31, .62, .62, 44.0, .1)
-    for k in range(-40, 32):
-        b.box('joint', k * .75, Y0 - 3.6, .042, .02, 7.1, .004)
-    for k in range(0, 48):
-        b.box('joint', X1 + 4.0, Y0 + .4 + k * .75, .042, 7.9, .02, .004)
-    b.box('hardware', X0 - 1.5, Y0 - 5.8, 1.8, .12, .12, 3.6)                                # lamp standard
-    b.box('hardware', X0 - 1.5, Y0 - 5.8, 3.85, .32, .32, .5)
-    b.box('timber', X1 + 12.0, 6.0, .45, 2.6, 13.0, .8)                                     # moored barge
-    b.box('hardware', X1 + 12.0, 8.5, 1.2, 2.0, 4.5, .9)
+    b.box('brick', (X0 - 14.0 + xe + .5) / 2, Y0 - QD - .25, .3, xe + .5 - X0 + 14.0, .5, .56)  # low brick quay parapets that butt at the corner
+    b.box('stone', (X0 - 14.0 + xe + .56) / 2, Y0 - QD - .25, .63, xe + .56 - X0 + 14.0, .62, .1)
+    b.box('brick', xe + .25, (Y0 - QD + Y1 + 14.0) / 2, .3, .5, Y1 + 14.0 - Y0 + QD, .56)
+    b.box('stone', xe + .25, (Y0 - QD + .06 + Y1 + 14.0) / 2, .63, .62, Y1 + 14.0 - Y0 + QD - .06, .1)
+    for k in range(int((xe - X0 + 14.0) / .75)):
+        b.box('joint', X0 - 14.0 + .375 + k * .75, Y0 - QD / 2, .042, .02, QD - .02, .004)
+    for k in range(int((Y1 + 14.0 - Y0) / .75)):
+        b.box('joint', X1 + ES / 2, Y0 + .375 + k * .75, .042, ES - .02, .02, .004)
+    b.box('hardware', X0 - 1.5, Y0 - 2.8, 1.8, .12, .12, 3.6)                                # lamp standard
+    b.box('hardware', X0 - 1.5, Y0 - 2.8, 3.85, .32, .32, .5)
+    b.box('timber', xe + 6.0, 6.0, .45, 2.6, 13.0, .8)                                      # moored barge
+    b.box('hardware', xe + 6.0, 8.5, 1.2, 2.0, 4.5, .9)
     b.flush('quay')
-    street_tree(X0 - 7.0, Y0 - 2.6, z=.04, height=9.0, spread=2.8)
+    street_tree(X0 - 5.0, Y0 - 1.9, z=.04, height=9.0, spread=2.4)
     # The attached gabled canal house to the west, as context: set back 10 cm, its east wall buried in ours.
     nx0, nx1 = X0 - 6.4, X0 + .15
-    C.box('Neighbour house', ((nx0 + nx1) / 2, Y0 + 5.6, 6.0), (nx1 - nx0, 11.0, 12.0), 'neighbour', 'context', 0)
-    C.prism('Neighbour gable', [(nx0, 12.0), (nx1, 12.0), ((nx0 + nx1) / 2, 15.6)], 'y', Y0 + .1, Y0 + 11.0, 'neighbour', 'context')
+    C.box('Neighbour house', ((nx0 + nx1) / 2, Y0 + 5.6, 5.25), (nx1 - nx0, 11.0, 10.5), 'neighbour', 'context', 0)
+    C.prism('Neighbour gable', [(nx0, 10.5), (nx1, 10.5), ((nx0 + nx1) / 2, 14.0)], 'y', Y0 + .1, Y0 + 11.0, 'neighbour', 'context')
     b = Batch()
-    for k in range(4):
+    for k in range(3):
         for u in (nx0 + 1.4, nx0 + 3.2, nx0 + 5.0):
             b.box('glass', u, Y0 + .08, 1.2 + k * 2.9 + .8, .9, .04, 1.5)
             b.box('white', u, Y0 + .07, 1.2 + k * 2.9 + .02, 1.1, .06, .1)
-    b.box('glass', (nx0 + nx1) / 2, Y0 + .08, 13.0, .8, .04, 1.1)
+    b.box('glass', (nx0 + nx1) / 2, Y0 + .08, 11.6, .8, .04, 1.1)
     b.flush('neighbour')
 
 
