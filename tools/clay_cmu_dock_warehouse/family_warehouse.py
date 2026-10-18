@@ -406,7 +406,7 @@ def south_face():
 def other_faces():
     e = C.Face((X1, 0, 0), (0, 1, 0), (-1, 0, 0), 'east')
     hd = (Y1 - Y0) / 2
-    hs = [hole('east low window', -hd + 2.4, FL + .85, 1.3, 1.75)] + [hole(f'east clerestory {k}', u, 6.2, .8, 1.0) for k, u in enumerate((-4.5, 1.5))]
+    hs = [hole('east low window', -hd + 2.4, FL + .85, 1.3, 1.75)] + [hole(f'east clerestory {k}', u, 6.2, .8, 1.0) for k, u in enumerate((-4.5, 1.5, 7.5))]   # three, as in the oblique
     m = cmu_face(e, -hd + T, hd - T, hs)
     for h in hs:
         framed(m, e, h, cols=2 if h['w'] > 1 else 1, rows=1, inset=.14, occupied='office' if h['w'] > 1 else 'warehouse')
