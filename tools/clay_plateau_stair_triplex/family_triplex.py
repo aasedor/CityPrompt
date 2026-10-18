@@ -40,7 +40,7 @@ def manifest(version):
     cams = G.camera_roster(X1 - X0 + 3.0, Y1 - Y0 + 3.0, h, [
         ('facade_close', (0.0, -16.0, 4.6), (0.0, Y0, 4.6), 45),
         ('architecture_close', (8.0, -12.0, 8.4), (X1 - 1.0, Y0, 8.2), 45),
-        ('glass_close', (-3.1, -10.0, 4.0), (-3.1, Y0, 4.0), 45),
+        ('glass_close', (-3.1, Y0 - 5.5, F2 + 1.4), (-3.1, Y0, F2 + 1.4), 45),
         ('iron_stair', (5.0, -13.0, 2.8), (-.6, Y0 - 2.4, 2.6), 40),
         ('balcony_canopy', (3.5, -9.5, 5.6), (0.0, Y0, 5.8), 40),
         ('cornice_parapet', (3.0, -10.0, 10.5), (0.0, Y0, 8.6), 40),
@@ -51,8 +51,18 @@ def manifest(version):
     for c in cams:                       # the locked front and oblique look from the south-east
         if c['name'] == 'front':
             c['location'] = (7.0, -16.5, 1.6); c['target'] = (-.4, -6.5, 4.4); c['lens'] = 26; c['whole'] = False
-        elif c['name'] == 'front_corner':
-            lx, ly, lz = c['location']; c['location'] = (-lx, ly, lz)
+        elif c['name'] == 'front_corner':                                      # the locked oblique: close and high from the south-east
+            c.update(location=(14.0, -19.0, 15.0), target=(0.0, -2.5, 4.0), lens=35, whole=False)
+        elif c['name'] == 'aerial':
+            c.update(location=(9.0, -15.0, 26.0), target=(0.0, -1.0, 3.0), lens=35, whole=False)
+        elif c['name'] == 'left_side':                                        # over the attached neighbour, from the north-west
+            c.update(location=(-15.0, 17.0, 13.0), target=(0.0, 1.0, 4.5), lens=35, whole=False)
+        elif c['name'] == 'right_side':
+            c.update(location=(22.0, -1.0, 5.0), target=(X1, 0.0, 4.2), lens=35, whole=False)
+        elif c['name'] == 'rear':
+            c.update(location=(0.0, Y1 + 18.0, 5.0), target=(0.0, Y1, 4.5), lens=35, whole=False)
+        elif c['name'] == 'rear_side':
+            c.update(location=(15.0, 19.0, 12.0), target=(0.0, 1.0, 4.0), lens=35, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -413,6 +423,44 @@ def fence(b, a, c, height=1.05, spacing=.14):
         b.box('hardware', px, py, (.2 + top) / 2, .025 if i % 12 else .06, .025 if i % 12 else .06, top - .2)
 
 
+CZ, RC, RISE_C = 8.15, 1.9, .7                  # cornice top, half-width and rise of the raised middle run
+
+
+def cornice_run(m, lo, hi, z, wrap=(False, False)):
+    """Bed mould, modillions, corona and cymatium between lo and hi; a wrapped end runs on by each band's
+    projection so the corner square is closed by this run and the return can start on the corner line."""
+    for d, t, zc, h in ((-.10, T + .2, z - .62, .26), (-.29, T + .62, z - .13, .26), (-.29, T + .52, z + .03, .06)):
+        p = -(d - t / 2)
+        a = lo - (p if wrap[0] else 0.0)
+        c = hi + (p if wrap[1] else 0.0)
+        m.box('stone', (a + c) / 2, d, zc, c - a, t, h)
+    n = max(1, int((hi - lo) / .7))
+    for i in range(n):
+        m.box('stone', lo + .35 + (hi - lo - .7) * i / max(1, n - 1), -.34, z - .32, .22, .6, .3)
+
+
+def console(m, u, z):
+    """Scroll console under the cornice: three stepped blocks and a rolled foot."""
+    for d, t, z0, z1 in ((-.3, .6, z - .78, z - .5), (-.22, .44, z - 1.02, z - .78), (-.14, .28, z - 1.24, z - 1.02)):
+        m.box('stone', u, d, (z0 + z1) / 2, .2, t, z1 - z0)
+    m.box('stone', u, -.24, z - 1.24, .2, .16, .16)
+
+
+def disc_y(b, role, cx, cz, r, y0, y1, n=12):
+    """Disc on a south-facing wall: an n-gon in x/z extruded along y."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V)
+    for y in (y0, y1):
+        for i in range(n):
+            a = 2 * math.pi * i / n
+            V.append((cx + r * math.cos(a), y, cz + r * 1.15 * math.sin(a)))
+    F.append(tuple(o + i for i in range(n)))
+    F.append(tuple(o + n + i for i in range(n - 1, -1, -1)))
+    for i in range(n):
+        j = (i + 1) % n
+        F.append((o + i, o + j, o + n + j, o + n + i))
+
+
 def front_face():
     f = C.Face((0, Y0, 0), (1, 0, 0), (0, 1, 0), 'south')
     pg = hole('ground porch', 0.0, F1, 2 * PW, 3.9 - F1)
@@ -431,19 +479,24 @@ def front_face():
         framed(m, f, h, cols=2, rows=1, inset=.13, occupied='basement')
     for s in (-1, 1):                                                                       # stone pilasters framing the porch
         m.box('quoin', s * (PW + .16), -.05, 3.85, .32, .1, 7.7)
-    eave_cornice(m, X0 - .1, X1 + .1, 8.15, span_t=T, proj=.62, role='stone')
-    for s in (-1, 1):                                                                       # paired consoles at the porch line
-        for k in (-1, 1):
-            m.box('stone', s * (PW + .16) + k * .14, -.36, 7.42, .16, .62, .55)
-    # Raised central parapet with a cornice cap and a cartouche.
-    m.box('wall', 0.0, T / 2, PAR + .35, 3.8, T, .7)
-    m.box('stone', 0.0, -.08, PAR + .74, 4.1, T + .3, .14)
-    m.box('quoin', 0.0, -.06, PAR + .3, 1.0, .12, .55)
-    m.box('quoin', 0.0, -.08, PAR + .66, .5, .12, .22)
-    for s in (-1, 1):
-        m.box('quoin', s * .7, -.05, PAR + .2, .4, .1, .22)
-    m.box('stone', 0.0, -.04, PAR - .05, X1 - X0 - .1, .1, .1)                               # parapet coping band
+    # Bracketed cornice in three runs, the middle one breaking upward in the wall plane; the east run wraps the corner.
+    cornice_run(m, X0 - .1, -RC, CZ, wrap=(False, False))
+    cornice_run(m, -RC, RC, CZ + RISE_C, wrap=(False, False))
+    cornice_run(m, RC, X1, CZ, wrap=(False, True))
+    m.box('wall', 0.0, T / 2, PAR + RISE_C / 2, 2 * RC, T, RISE_C)                             # the raised parapet, in the wall plane
+    m.box('stone', 0.0, -.05, PAR - .05, X1 - X0 - .1, .1, .1)                                # parapet coping bands
+    m.box('stone', 0.0, -.05, PAR + RISE_C - .05, 2 * RC, .1, .1)
+    for s in (-1, 1):                                                                       # paired scroll consoles beside the canopy
+        for k in (0, 1):
+            console(m, s * (PW + .5 + .26 * k), CZ)
     m.flush('south')
+    b = Batch()
+    disc_y(b, 'quoin', 0.0, PAR + .25, .34, Y0 - .1, Y0 + .02, 14)                          # cartouche: oval shield and scrolls
+    disc_y(b, 'stone', 0.0, PAR + .25, .24, Y0 - .16, Y0 - .09, 14)
+    for s in (-1, 1):
+        disc_y(b, 'quoin', s * .62, PAR + .22, .17, Y0 - .08, Y0 + .02, 10)
+        b.beam('quoin', (s * .3, Y0 - .05, PAR + .1), (s * .9, Y0 - .05, PAR + .45), .12, .1)
+    b.flush('cartouche')
     b = Batch()
     for k in range(int(PAR / .45)):                                                         # long-and-short quoins wrapping both corners
         L = .6 if k % 2 == 0 else .38
@@ -481,20 +534,25 @@ def porch():
         top = F1 - .2 * (k + 1) + .02
         b.box('stone', .85, Y0 - .4 - .14 - .28 * k, top / 2, 1.5, .28, top)
     b.box('stone', 0.0, (Y0 - .9 + Y0 + PD) / 2, F2 - .11, 2 * PW + .2, PD + .9, .22)        # upper balcony slab
-    b.box('stone', 0.0, (Y0 + T + Y0 + PD) / 2, 7.33, 2 * PW, PD - T, .26)                  # porch ceiling
-    b.box('stone', 0.0, Y0 - .45, 7.4, 2 * PW + .5, 1.2, .2)                                # canopy slab
-    b.box('stone', 0.0, Y0 - 1.06, 7.47, 2 * PW + .6, .1, .38)                              # canopy fascia
+    b.box('stone', 0.0, (Y0 + T + Y0 + PD) / 2, 7.33, 2 * PW, PD - T, .26)                  # porch ceiling (soffit at 7.2)
+    b.box('stone', 0.0, Y0 - .525, 7.31, 2 * PW + .5, 1.05, .22)                            # canopy slab, one soffit plane with it
+    b.box('stone', 0.0, Y0 - 1.06, 7.33, 2 * PW + .6, .1, .34)                              # canopy fascia
     for s in (-1, 1):
-        b.box('stone', s * (PW + .28), Y0 - .5, 7.47, .1, 1.12, .38)
-    # Iron: canopy columns with lattice panels and brackets, balcony and porch railings.
+        b.box('stone', s * (PW + .28), Y0 - .53, 7.33, .1, 1.06, .34)
+    # Iron: open lattice canopy columns (two uprights with crossed diagonals) and brackets clear of the soffit.
     for s in (-1, 1):
         x = s * (PW + .02)
-        b.box('hardware', x, Y0 - .95, (F2 + 7.3) / 2, .1, .1, 7.3 - F2)
-        b.box('hardware', x, Y0 - .95, (F2 + 7.3) / 2 + .2, .025, .32, 7.3 - F2 - 1.2)
-        for z in range(9):
-            zz = F2 + .8 + z * .2
-            b.beam('hardware', (x, Y0 - 1.1, zz), (x, Y0 - .8, zz + .2), .02, .02)
-        b.beam('hardware', (x, Y0 - .95, 6.6), (x - s * .5, Y0 - .95, 7.3), .05, .05)
+        ya, yb = Y0 - 1.07, Y0 - .83
+        for y in (ya, yb):
+            b.box('hardware', x, y, (F2 + 7.2) / 2, .045, .045, 7.2 - F2)
+        n = int((7.2 - F2 - .3) / .3)
+        for i in range(n):
+            z = F2 + .15 + i * .3
+            b.beam('hardware', (x, ya, z), (x, yb, z + .3), .022, .022)
+            b.beam('hardware', (x, yb, z), (x, ya, z + .3), .025, .022)
+        for z in (F2 + .03, 7.17):
+            b.box('hardware', x, (ya + yb) / 2, z, .12, .34, .06)
+        b.beam('hardware', (x, Y0 - .95, 6.45), (x - s * .5, Y0 - .95, 7.15), .035, .035)
     rail(b, [(-PW - .05, Y0 - .85), (-1.5, Y0 - .85)], F2)
     rail(b, [(-.5, Y0 - .85), (PW + .05, Y0 - .85)], F2)
     for s in (-1, 1):
@@ -573,7 +631,7 @@ def side_and_rear():
     for h in bs:
         framed(m, e, h, cols=2, rows=1, inset=.13, occupied='basement')
     m.box('stone', 0.0, -.06, 8.2, 2 * hd - 2 * T + .1, .2, .12)                              # coping
-    m.box('stone', -hd + .3, -.3, 7.9, 1.6, .6, .45)                                      # cornice return round the corner
+    cornice_run(m, -hd, -hd + 1.4, CZ, wrap=(False, False))                                  # cornice return round the corner
     m.flush('east')
     w = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west party')
     w.wall('west party wall', -hd + T, hd - T, 0.0, 8.2, depth=T, role='brick', holes=[])
