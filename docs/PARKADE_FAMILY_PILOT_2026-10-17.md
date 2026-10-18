@@ -1,5 +1,10 @@
 # Five parkades — original-design local pilot, 2026-10-17
 
+> Historical one-model checkpoint. The finite five-model local trial is now
+> complete; see [the current local-trial report](PARKADE_FAMILY_LOCAL_TRIAL_2026-10-17.md).
+> Statements below about pending models and catalogue wiring describe this
+> earlier checkpoint, not the final trial.
+
 Branch: `codex/parkade-family-pilot`, based on the saved parking-lot checkpoint
 `0ff598dfe`. Existing parking lots, scenes and production are unchanged.
 

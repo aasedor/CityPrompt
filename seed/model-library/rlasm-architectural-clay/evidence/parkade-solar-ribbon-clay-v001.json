@@ -1,0 +1,194 @@
+{
+  "candidate": "parkade-solar-ribbon-clay-v001",
+  "model_sha256": "cd48038284941410a484f2114a9d35f3103c04f7c8fc1c051ae7cc94ce28eec1",
+  "reviewer": "independent parkade_source_review agent; no model authorship",
+  "date": "2026-10-17 America/Edmonton",
+  "method": "RLASM v6.1 architectural-clay profile",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_model_pass",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "p0_findings": [],
+  "p1_findings": [],
+  "keeper_approved": false,
+  "source_authority": "Original dimensioned solar-cad-sources-v001; metric front/top/section govern, oblique schematic",
+  "findings": [
+    "Opened all 15 full-resolution exact-GLB reimport renders and all three phone boards; compared against all four source drawings previously inspected at source gate. Current copied source hashes match provenance.",
+    "Five authored deck levels, broad six-metre structure, two continuous glazed stair towers and recessed stairs match source intent. No exterior opaque side-beam belts through glazed tower returns seen.",
+    "Ribbon fins terminate on visible continuous rails, with supported frame, parking decks, guards and rear ramp piers. Roof has distinct physical PV modules, canopy frame and ground-bearing posts; EV pedestals and cables are physical illustrative geometry.",
+    "Rear same-direction ramps, landing seams, door bridges, ground datum and core/stair contacts remain coherent across baseline and contact views. No new floating component or closed route observed.",
+    "Canopy support coordinates independently inspected in family_solar.py: beams seated on posts; roof/top separation 2.45 m with beams below canopy. This is visual design evidence, not certified clearance or energy performance."
+  ],
+  "byte_checks": {
+    "meshes": 11,
+    "bytes": 2116728,
+    "copied_source_hashes_match": true,
+    "textures": 0,
+    "glb_version": 2,
+    "sha256_verified": true,
+    "materials": 11,
+    "glb_magic": "glTF",
+    "images": 0
+  },
+  "supporting_audit": {
+    "status": "PASS",
+    "checks": 153,
+    "failed": 0,
+    "scope": "Builder sparse exact-GLB rays, supporting rather than exhaustive collision/engineering proof"
+  },
+  "delivery_contract": {
+    "levels": 5,
+    "triangles_reported": 39360,
+    "scale": "Fixed native assembly",
+    "native_dimensions_m": [
+      66,
+      36,
+      16.100000381
+    ]
+  },
+  "limitations": [
+    "Architectural-clay MODEL pass only; not textured keeper, structural, fire/egress, accessibility or engineering approval.",
+    "No operational EV, energy-yield, parking-capacity or vehicle swept-path certification.",
+    "Fixed authored levels only; arbitrary stretching and repeatable-floor metadata are unvalidated.",
+    "CityPrompt catalogue/renderer/placement/selection/edit/delete/undo/save/reload/AI capture and representative laptop/mobile performance remain untested by this reviewer.",
+    "Runtime activation, publication and deployment are separate gates. A later pixel defect reopens review."
+  ],
+  "inspected_files": [
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1592127,
+      "sha256": "b1e1465daf35495dd1f915a45e6f70d5441ce6f421b364e54bb212afad8e0533"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1371652,
+      "sha256": "937a487e64d7ef20c80a6b9bbad3ff79d2183aa0f75c7068958cee64a1a1293d"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1587886,
+      "sha256": "a625833318f67afcfb42dea938228bbd0a71c79e85c5037a7798852ed6a13aa3"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1596705,
+      "sha256": "11be8df963810b1bf057e71987b03486d3a76f2b13a749e8a907e625edeb7081"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1449417,
+      "sha256": "eabc6859d95a33c9056537df70a974ea245b68bbf840235f38bebfa681b311b1"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1603986,
+      "sha256": "53c8f1b1d2d9ddd5bc66083f2078e017e592e55f8636e1aed742605bec2ed682"
+    },
+    {
+      "path": "renders/landing_seam.png",
+      "bytes": 1402180,
+      "sha256": "35e9eb82a5e7529f7b4f8d051f15b9345726cf6a203bdec3c4bd373eb7c89bc8"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1435995,
+      "sha256": "d08c829b0d3fae70a679abe65e4667ffc138d16fc2024ef555174df072f771e1"
+    },
+    {
+      "path": "renders/ramp_headroom.png",
+      "bytes": 1380011,
+      "sha256": "d17c68ac7d03e9941ef34280e4f4876e4cbc2098933d4be8611859da44356892"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1477667,
+      "sha256": "7246d291c864a1262474a8dee6413f071ea75a3fd7b74e75d438068c661181cb"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1459296,
+      "sha256": "788a2a2442186053ce682cf8dcf472738977b1766a577c1844ed4367cb237153"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1428957,
+      "sha256": "3e7fc288fd2833ff56e7b80f73a0b0378695c93b08f554ec23588fee1236e919"
+    },
+    {
+      "path": "renders/signature_close.png",
+      "bytes": 1477533,
+      "sha256": "c61c61cdbb601e301e9aa6064bd1359ec024c083499c4e7996d03dc9ff5386cf"
+    },
+    {
+      "path": "renders/stair_contact.png",
+      "bytes": 1455601,
+      "sha256": "3bb8f05b8be5e214437bd135f846993f63bc8d74dacdbf54bb1bd8efc12f1cc6"
+    },
+    {
+      "path": "renders/top.png",
+      "bytes": 1321460,
+      "sha256": "97ea39a443737224e7ab26d4e551d3b89666a8ebe84d40fae859ab6b588e59ea"
+    },
+    {
+      "path": "boards/front-phone.png",
+      "bytes": 733297,
+      "sha256": "df06fef944a6465eb4ac9048fd15d36d4cf3098070788fe9cfdd20d02dbac862"
+    },
+    {
+      "path": "boards/oblique-phone.png",
+      "bytes": 915968,
+      "sha256": "70175f84c6414af810c9c560e7e5ecbd8368bd409f0b6b7c69584f9576d93e59"
+    },
+    {
+      "path": "boards/top-phone.png",
+      "bytes": 638161,
+      "sha256": "3e04631d5cc4b88d1b99f7a8ff02c28a09ebe1cd085bdc7860074133a3a50477"
+    },
+    {
+      "path": "sources/front.png",
+      "bytes": 50270,
+      "sha256": "6491749c6c74e46eec01c15bafa87f03a2e7a0ced257cd0c7dbcc618700b646a"
+    },
+    {
+      "path": "sources/oblique.png",
+      "bytes": 60026,
+      "sha256": "c027018cd304f2bdf14f5c8718171a58c77cfef8841665afc1bfb3190be45936"
+    },
+    {
+      "path": "sources/ramp_section.png",
+      "bytes": 62028,
+      "sha256": "06f281fce7eb61b76bf06da98d7bff981fe4f7d80ca95659baee8caea893d1f0"
+    },
+    {
+      "path": "sources/top.png",
+      "bytes": 40553,
+      "sha256": "5475b82a76de8dd6b51b820ecd243fd84544b11a0c382fa9ecc7dbce6497478d"
+    },
+    {
+      "path": "build-report.json",
+      "bytes": 132719,
+      "sha256": "27d65712a74ae46008422e184ea4ecc0f790e296eda728cbb651805906905cbb"
+    },
+    {
+      "path": "evidence/actual-glb-audit.json",
+      "bytes": 40079,
+      "sha256": "70516b80757dca8f1b65241747e62b6f26709aeadda9846d36fa1c304e6fb78f"
+    },
+    {
+      "path": "scripts/generation-provenance.json",
+      "bytes": 1065,
+      "sha256": "f48456830f24124d36cb4545209baca21d2cc0bfeeffbe5d34e876232c611952"
+    },
+    {
+      "path": "scripts/family_solar.py",
+      "bytes": 2298,
+      "sha256": "4e5ac769e443c9df1c865e5e7632b2426783728302073a81b20566a439b10991"
+    },
+    {
+      "path": "parkade-solar-ribbon-clay-v001.glb",
+      "bytes": 2116728,
+      "sha256": "cd48038284941410a484f2114a9d35f3103c04f7c8fc1c051ae7cc94ce28eec1"
+    }
+  ]
+}

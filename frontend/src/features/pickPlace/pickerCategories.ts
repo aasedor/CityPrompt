@@ -10,6 +10,7 @@ export const PICKER_CATEGORIES = [
   { id: 'workplaces', domain: 'building', label: 'Shops & workplaces', groups: ['shops', 'offices', 'hotels'] },
   { id: 'civic', domain: 'building', label: 'Civic & culture', groups: ['civic'] },
   { id: 'industry', domain: 'building', label: 'Industry & infrastructure', groups: ['industry', 'indoor_food', 'infrastructure', 'building_other'] },
+  { id: 'parkades', domain: 'building', label: 'Parkades', groups: ['parkades'] },
   { id: 'gardens', domain: 'park_plaza', label: 'Gardens', groups: ['gardens'] },
   { id: 'play-sport', domain: 'park_plaza', label: 'Play & sport', groups: ['play_sport'] },
   { id: 'community-parks', domain: 'park_plaza', label: 'Community parks', groups: ['small_park', 'neighbourhood', 'regional', 'space_other'] },

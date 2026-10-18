@@ -3,8 +3,33 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { PlacementPalette } from './PlacementPalette';
 import * as catalogue from './canonicalCatalogue';
+import { PARKADE_TRIAL_ASSETS } from './assetRegistry';
 
 describe('student asset browsing', () => {
+  it('opens the same five native building parkades from Buildings and the Streets shortcut', () => {
+    const onPick=vi.fn(), onPickStreet=vi.fn(), onDrawParkingLot=vi.fn();
+    render(<PlacementPalette selected={null} onPick={onPick} onPickCanonical={vi.fn()}
+      onPickStreet={onPickStreet} onDrawParkingLot={onDrawParkingLot}
+      onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button',{name:'Buildings'}));
+    fireEvent.click(screen.getByRole('button',{name:'Browse Parkades'}));
+    expect(screen.getAllByRole('article')).toHaveLength(5);
+    for (const asset of PARKADE_TRIAL_ASSETS) {
+      expect(screen.getByRole('button',{name:new RegExp(`${asset.label}.*Choose & place`)})).toBeInTheDocument();
+    }
+    fireEvent.change(screen.getByLabelText('Search objects or district code'),{target:{value:'old search'}});
+    fireEvent.click(screen.getAllByRole('button',{name:'Streets'})[1]);
+    expect(screen.getByRole('button',{name:/Parking lots.*Draw parking lot/})).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button',{name:'Browse parkade buildings'}));
+    expect(screen.getAllByRole('button',{name:'Buildings'})[1]).toHaveAttribute('aria-pressed','true');
+    expect(screen.getByLabelText('Search objects or district code')).toHaveValue('');
+    expect(screen.getAllByRole('article')).toHaveLength(5);
+    const asset=PARKADE_TRIAL_ASSETS[0];
+    fireEvent.click(screen.getByRole('button',{name:new RegExp(`${asset.label}.*Choose & place`)}));
+    expect(onPick).toHaveBeenCalledWith(asset.id);
+    expect(onPickStreet).not.toHaveBeenCalled();
+    expect(onDrawParkingLot).not.toHaveBeenCalled();
+  });
   it('opens the parking drawing tool from Streets without selecting a road asset', () => {
     const onDrawParkingLot=vi.fn(), onPickStreet=vi.fn(), onBrowseChange=vi.fn();
     render(<PlacementPalette selected={null} onPick={vi.fn()} onPickCanonical={vi.fn()}

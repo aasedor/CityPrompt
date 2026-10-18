@@ -1,0 +1,201 @@
+{
+  "candidate": "parkade-green-terraces-clay-v003",
+  "model_sha256": "156255fec5bf208f8230b2ac636c90df9a37c9985c60805dc0122a738b941e44",
+  "reviewer": "independent parkade_source_review agent; no model authorship",
+  "date": "2026-10-17 America/Edmonton",
+  "method": "RLASM v6.1 architectural-clay profile",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_model_pass",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "p0_findings": [],
+  "p1_findings": [],
+  "keeper_approved": false,
+  "source_authority": "Original dimensioned green-cad-sources-v002 with prospective green-mount-correction-v001.json; front/top/section govern, oblique schematic",
+  "resolved_prior_findings": [
+    {
+      "id": "green-v002-dangling-lower-bracket-anchor",
+      "resolution": "Each diagonal anchor now terminates inside a vertical steel plate that overlaps back ledger and real front beam. Plate is visible in fresh facade close and full oblique evidence; source constructor independently inspected. v002 remains failed and immutable.",
+      "severity": "P1"
+    }
+  ],
+  "findings": [
+    "Opened all 15 full-resolution fresh exact-GLB reimport renders and all three phone boards, including complete baseline regression beyond the repaired bracket close. All four copied source hashes match reviewed sources.",
+    "Four-level 60 x 36 m frame, 60 x 40 m occupied planting envelope, stepped planted terraces, rooted climbers and reserved roof garden match original dimensional source. Front door cores and vehicle entrance stay visible and unobstructed.",
+    "Fresh facade close shows supported diagonal brackets with vertical mounting plates rather than dangling lower feet. Mount plates span relative z -1.0 to -0.1 m, overlap the back ledger and beam, while ledges contain real soil and rooted plant geometry. This is visual contact closure, not structural capacity certification.",
+    "Roof garden occupies its reserved footprint, with rooted plants, seated benches, supported pergola, open central paths and north/south gate gaps. Parking markings and wider driving aisles remain outside garden bounds.",
+    "Ground contact, continuous core glass, real stairs, door bridges, rear ramp structure and supported guards remain coherent across all sides and dedicated contact/headroom cameras. No new P0/P1 issue observed."
+  ],
+  "byte_checks": {
+    "copied_source_hashes_match": true,
+    "glb_magic": "glTF",
+    "bytes": 4757064,
+    "meshes": 12,
+    "textures": 0,
+    "sha256_verified": true,
+    "glb_version": 2,
+    "images": 0,
+    "materials": 12
+  },
+  "supporting_audit": {
+    "checks": 111,
+    "status": "PASS",
+    "failed": 0,
+    "scope": "Builder sparse exact-GLB rays, supporting rather than exhaustive collision/engineering proof; bracket contact additionally inspected visually and in the copied constructor"
+  },
+  "delivery_contract": {
+    "native_dimensions_m": [
+      60,
+      40,
+      12.800000191
+    ],
+    "scale": "Fixed native assembly including planting projections",
+    "levels": 4,
+    "triangles_reported": 77572
+  },
+  "limitations": [
+    "Architectural-clay MODEL pass only; not textured keeper, structural, fire/egress, accessibility or engineering approval.",
+    "No structural planter loading, irrigation, horticultural performance, parking-capacity or vehicle swept-path certification.",
+    "Fixed authored levels only; arbitrary stretching and repeatable-floor metadata are unvalidated.",
+    "CityPrompt catalogue/renderer/placement/selection/edit/delete/undo/save/reload/AI capture and representative laptop/mobile performance remain untested by this reviewer.",
+    "Runtime activation, publication and deployment are separate gates. A later pixel defect reopens review."
+  ],
+  "inspected_files": [
+    {
+      "sha256": "bb7d82d857cc71e52f36ed3761e375e02b0b7e570271c63f2b6fe69a5023e3fd",
+      "path": "renders/aerial.png",
+      "bytes": 1522971
+    },
+    {
+      "sha256": "636a2e366424cdf76c2a6eab4aa9932019d968430cf520cb7d5b4c0d320798d7",
+      "path": "renders/architecture_close.png",
+      "bytes": 1363268
+    },
+    {
+      "sha256": "52e5df102e76dc9016b307d3a475d849918548a79d921e7fc76bf30a45ae2316",
+      "path": "renders/facade_close.png",
+      "bytes": 1571927
+    },
+    {
+      "sha256": "6cd837f7914a6e841169be4f7b29b7c066a2c8e9c9975213a56905f1f96afa52",
+      "path": "renders/front_corner.png",
+      "bytes": 1503165
+    },
+    {
+      "sha256": "33a7a098d30c3f67a5ab325e901b82efd560d1fd68b714b881880a8311a9358e",
+      "path": "renders/front.png",
+      "bytes": 1400105
+    },
+    {
+      "sha256": "54198b158f62caa3bb018aa39ef5d7dcd7396caa47633c170f089e2b13b4450b",
+      "path": "renders/glass_close.png",
+      "bytes": 1589017
+    },
+    {
+      "sha256": "d15936425d7058eb7cb0c94ba5a7eb11622f907eb3ecd201c29dfb87e00336d5",
+      "path": "renders/landing_seam.png",
+      "bytes": 1388322
+    },
+    {
+      "sha256": "925c4e189d218113aa427c1e4d1cc7a5e8f68ca3b5cbf7b139b1ab371d7bd7c6",
+      "path": "renders/left_side.png",
+      "bytes": 1397525
+    },
+    {
+      "sha256": "f1031aa88e41f39e261231b6509299ec7a8c71fe9c42773264e30d375e01115e",
+      "path": "renders/ramp_headroom.png",
+      "bytes": 1379569
+    },
+    {
+      "sha256": "d4dbd3d610f63d3e94cebff9ae78ad20e386a61424c064fa94c60d00bbbfd249",
+      "path": "renders/rear_side.png",
+      "bytes": 1457725
+    },
+    {
+      "sha256": "02c9b8b46edf476c1c64bfcdd50f5097de8070be08f292721e3f4b1ce6004ff1",
+      "path": "renders/rear.png",
+      "bytes": 1421548
+    },
+    {
+      "sha256": "8b0b62a01d252683e440497f2ea2ca553af17b2cac1a93d9e74c36c451aed98e",
+      "path": "renders/right_side.png",
+      "bytes": 1399057
+    },
+    {
+      "sha256": "cfa85aa30828e6fdeb633c2d776184a434dad908bb6beb1742aa12334bcc7370",
+      "path": "renders/signature_close.png",
+      "bytes": 1610662
+    },
+    {
+      "sha256": "fc1c7f2f4b471edf6b780b45e3dd7a3074feb9833ee666f2daf458a3787da4df",
+      "path": "renders/stair_contact.png",
+      "bytes": 1451360
+    },
+    {
+      "sha256": "4f5cf0781422de49db1a05aea9eeef1e047bb69cd8ab5640012c55fbf0716552",
+      "path": "renders/top.png",
+      "bytes": 1347901
+    },
+    {
+      "sha256": "a57a4d73bf31d52b7832a997a07765c7b612d26edbd46afab72710304cc84d1e",
+      "path": "boards/front-phone.png",
+      "bytes": 737060
+    },
+    {
+      "sha256": "5670d8989b36e15211ada71db4b0c35f1706bd292a45a0958ce52b3233bb02a6",
+      "path": "boards/oblique-phone.png",
+      "bytes": 865206
+    },
+    {
+      "sha256": "122397c4153080ccfbd9e216647a830520c8d7a0f8ce8d708a467a8e32d4d9db",
+      "path": "boards/top-phone.png",
+      "bytes": 682649
+    },
+    {
+      "sha256": "b7a7664fc6e19e98405c320ca19be3c9561c80fa1b32ba6014b534bf0d2de6d9",
+      "path": "sources/front.png",
+      "bytes": 53270
+    },
+    {
+      "sha256": "fb9d3a1ec6f7b9c954b5efc8bbb8da351a64eaf4fc458efdcacfc527a69dabd3",
+      "path": "sources/oblique.png",
+      "bytes": 61584
+    },
+    {
+      "sha256": "aa3501e412111196869a35f69ce790f7879128db2291bfd55f4b726cf48a9afd",
+      "path": "sources/ramp_section.png",
+      "bytes": 60640
+    },
+    {
+      "sha256": "d809ee8f7301314c40dcc605ab599f6708d227dcb82a0cece36db36b6af0bd0c",
+      "path": "sources/top.png",
+      "bytes": 50938
+    },
+    {
+      "sha256": "296213caf15cb978e19c824b6e89366d1ef30552387ad4a2907ea7df53cf4601",
+      "path": "build-report.json",
+      "bytes": 311650
+    },
+    {
+      "sha256": "98690b6db1fba18c13b80a87c373848a81345a9000562de420ccb4872f5d1f70",
+      "path": "evidence/actual-glb-audit.json",
+      "bytes": 29125
+    },
+    {
+      "sha256": "a0d4d082910b833e903167e62b3299e29a0e2e05e22cce2dfe46b8b2af5b59d3",
+      "path": "scripts/generation-provenance.json",
+      "bytes": 1412
+    },
+    {
+      "sha256": "02b4be7518b891ef2ecde8a24e7c9d5dc27b9f15abe9b7a224d3316731039270",
+      "path": "scripts/family_green.py",
+      "bytes": 8893
+    },
+    {
+      "sha256": "156255fec5bf208f8230b2ac636c90df9a37c9985c60805dc0122a738b941e44",
+      "path": "parkade-green-terraces-clay-v003.glb",
+      "bytes": 4757064
+    }
+  ]
+}

@@ -1,0 +1,361 @@
+{
+  "candidate": "parkade-classic-concrete-clay-v005",
+  "model_sha256": "e1333f02e199e5c59408667a36c488f7ad6e38737ebd7735977f7f51ec9484d3",
+  "reviewer": "independent parkade_source_review agent; no participation in model construction",
+  "date": "2026-10-17 America/Edmonton",
+  "method": "RLASM v6.1 architectural-clay delivery profile",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_model_pass",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "p0_findings": [],
+  "p1_findings": [],
+  "keeper_approved": false,
+  "textured_keeper_approval": false,
+  "scope": "Holistic visual model review of exact v005 GLB reimport evidence against current original metric CAD sources: envelope, topology, every elevation, openings, optics, parking/stair/ramp program, supports, contacts, cameras and three phone comparisons. Full regression, not a fix-only closure. CityPrompt integration and application readiness are outside this review.",
+  "inspected_pixel_counts": {
+    "source_images": 4,
+    "exact_glb_model_images": 15,
+    "phone_comparisons": 3
+  },
+  "source_authority": "classic-cad-sources-v003 original design authority, with front/top governing coordinates and supplemental rear circulation section governing ramp topology. Archived AI studies remain aesthetic-only. Previous failed sources/candidates are not relabelled or approved by this result.",
+  "holistic_findings": [
+    {
+      "category": "identity and ratios",
+      "result": "pass",
+      "evidence": [
+        "sources/front.png",
+        "sources/top.png",
+        "renders/front.png",
+        "renders/top.png",
+        "boards/front-phone.png",
+        "boards/top-phone.png"
+      ],
+      "finding": "Low/wide native envelope, eight principal front bays, four parking levels including open roof, and two front glazed stair cores are compatible with the exact current metric design. This is a revised original-design variant, not a claim of exact fidelity to the superseded AI triptych."
+    },
+    {
+      "category": "complete envelope and elevations",
+      "result": "pass",
+      "evidence": [
+        "renders/front_corner.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/aerial.png"
+      ],
+      "finding": "Front, both sides, rear and rooftop are coherently constructed open parking architecture, with no blank secondary carriers, detached roof caps or obvious below-grade envelope. Ground contact is seated in whole views."
+    },
+    {
+      "category": "glazing and stair program",
+      "result": "pass",
+      "evidence": [
+        "renders/glass_close.png",
+        "renders/stair_contact.png",
+        "renders/left_side.png",
+        "renders/right_side.png"
+      ],
+      "finding": "Transparent blue-grey clay reveals real stair flights, return flights, landings and handrails. Continuous slender-framed glass now wraps the core fronts and outer returns. The opaque return belts from v004 are absent; side beam ends terminate behind the core rather than through optical panes."
+    },
+    {
+      "category": "landing contact and access intent",
+      "result": "pass_at_concept_visual_scope",
+      "evidence": [
+        "renders/landing_seam.png",
+        "renders/stair_contact.png",
+        "renders/glass_close.png"
+      ],
+      "finding": "Recessed landings and bounded inner doorway bridges visibly join the main deck; the optical exterior is separately owned. Guard and frame ownership is legible. This does not certify accessible thresholds, emergency egress or runtime walk collision."
+    },
+    {
+      "category": "rear ramp topology and load paths",
+      "result": "pass_at_concept_visual_scope",
+      "evidence": [
+        "sources/ramp_section.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/ramp_headroom.png",
+        "renders/ramp_supports.png"
+      ],
+      "finding": "Three same-direction parallel ramps link successive levels with end landings; the main decks exclude the continuous rear well. Sloped guards and edge girders follow ramp geometry; intermediate piers visibly continue to grade/frame outside the lane. No obvious alternating-ramp collision or unsupported detached horizontal guard remains."
+    },
+    {
+      "category": "parking and wayfinding program",
+      "result": "pass",
+      "evidence": [
+        "renders/top.png",
+        "renders/architecture_close.png",
+        "renders/facade_close.png",
+        "renders/front.png"
+      ],
+      "finding": "Bays, aisles, arrows, open vehicle entrance, yellow entrance protection, readable entrance identity at inspection resolution, P signs, roof lights and separate stair access communicate a parkade. Interior structure and bay depth remain visible under neutral proof lighting."
+    },
+    {
+      "category": "materials and optics",
+      "result": "pass_for_architectural_clay",
+      "evidence": [
+        "renders/glass_close.png",
+        "renders/facade_close.png",
+        "renders/architecture_close.png"
+      ],
+      "finding": "Untextured semantic clay preserves distinct concrete, steel, glazing, marking, safety-yellow and sign roles. The glass reveals occupied depth and stairs rather than an empty shell or opaque image plane. Textured PBR fidelity is not claimed."
+    },
+    {
+      "category": "visibility, cameras and phone regression",
+      "result": "pass",
+      "evidence": [
+        "boards/front-phone.png",
+        "boards/oblique-phone.png",
+        "boards/top-phone.png",
+        "renders/architecture_close.png",
+        "renders/landing_seam.png",
+        "renders/ramp_supports.png"
+      ],
+      "finding": "Every supplied full-resolution baseline/contact image and phone board was opened. Whole-building cameras retain visible margins; neutral interior lighting resolves earlier underexposure. Oblique comparison is on the corresponding corner. The schematic CAD axonometric remains a design diagram, with exact coordinates delegated to front/top as disclosed."
+    }
+  ],
+  "previous_blocker_closure": [
+    {
+      "id": "P0_SOURCE_HIERARCHY",
+      "status": "closed_for_current_revised_original_design",
+      "reason": "Current metric CAD source authority explicitly resolves proportions and cadence prospectively; old failed model remains immutable."
+    },
+    {
+      "id": "P1_TOWER_GLAZING_HIERARCHY",
+      "status": "closed",
+      "reason": "Front and outer-return concrete belts removed; continuous optical core and recessed landings are visually proved."
+    },
+    {
+      "id": "P1_ENTRANCE_IDENTITY",
+      "status": "closed_at_clay_scope",
+      "reason": "Vehicle sign/entrance protection and pedestrian core are distinguishable in the current design."
+    },
+    {
+      "id": "P1_RAMP_LOAD_PATH",
+      "status": "closed_at_visual_credibility_scope",
+      "reason": "Pitched edge girders and grounded intermediate supports are visibly present outside the intended lane."
+    },
+    {
+      "id": "P1_CONTACT_AND_COMPARISON_EVIDENCE",
+      "status": "closed",
+      "reason": "Neutral interior proof, landing seam and ramp support close views plus matched phone boards provided."
+    },
+    {
+      "id": "P1_OUTER_CORE_SIDE_BEAM",
+      "status": "closed",
+      "reason": "Both side views and glass/stair close views show uninterrupted core returns with beam ends behind the core. Supporting six outer-return normal-ray checks pass against the exact successor GLB."
+    }
+  ],
+  "independent_byte_checks": {
+    "magic": "glTF",
+    "version": 2,
+    "bytes": 961992,
+    "meshes": 7,
+    "materials": 7,
+    "images": 0,
+    "textures": 0,
+    "sha256_matches": true,
+    "source_png_hashes_match_provenance": true
+  },
+  "supporting_audit": {
+    "checks": 111,
+    "failed": 0,
+    "reported_minimum_ramp_headroom_m": 3.1499994941379716,
+    "interpretation": "Supporting sparse exact-GLB surface rays, including return-glass clearance, stair/deck and ramp/landing contacts. These do not override pixels and do not certify complete collisions or engineering adequacy."
+  },
+  "delivery_contract": {
+    "native_dimensions_m": [
+      60,
+      36,
+      12.8
+    ],
+    "storeys": 4,
+    "scale": "fixed native size only",
+    "geometry": "exact approved v005 bytes only",
+    "triangles_reported": 18120,
+    "runtime_integration_tested_by_reviewer": false
+  },
+  "nonblocking_polish": [
+    "Whole-building and phone views necessarily reduce small entrance text readability; retain close previews for detailed inspection.",
+    "CAD axonometric is schematic and its fill order is imperfect; front/top/section are explicit metric authorities. It is not a substitute for the complete GLB reimport evidence."
+  ],
+  "remaining_limitations": [
+    "Architectural-clay model review only. No textured keeper status, structural engineering, building-code, accessibility, fire/egress or vehicle swept-path certification.",
+    "Four authored levels at native fixed dimensions; no arbitrary stretching, alternate floor counts or repeatable-floor metadata approved.",
+    "No moving doors, animated vehicles, traffic simulation or operational parking-control functionality reviewed or promised.",
+    "CityPrompt catalogue, actual app renderer/placement/grounding, selection/move/rotate/delete, undo/redo, save/reload, deterministic AI capture and student laptop/mobile performance remain untested by this reviewer.",
+    "Human runtime activation, publication, asset-storage and production deployment gates remain separate. This review does not authorize push or deployment.",
+    "Any later evidence of a defect reopens this exact-byte review; preserve the reviewed package and failed predecessor lineage."
+  ],
+  "inspected_files": [
+    {
+      "path": "build-report.json",
+      "bytes": 64915,
+      "sha256": "a59f08d11ed52f71b7d0d0ade7c488b6222404906399ba8fa76512ef18136ebd",
+      "inspection": "Relevant record fields read directly; metadata not used as visual substitute"
+    },
+    {
+      "path": "evidence/circulation-audit.json",
+      "bytes": 25777,
+      "sha256": "941ab92436551576cc3c0f4aaf6cde3928149424a5d5854699279ba801498a2a",
+      "inspection": "Relevant record fields read directly; metadata not used as visual substitute"
+    },
+    {
+      "path": "sources/front.png",
+      "bytes": 49697,
+      "sha256": "4905a00c2ebd68cec5f67bf2a6f43fcd460acc2eb1c1bde02a25ef909a949f2e",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "sources/oblique.png",
+      "bytes": 63828,
+      "sha256": "e6cca8f14f9211d32dd1325dc9cafd5f1ef338b5b1eda4ded74d2248b52d86f8",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "sources/top.png",
+      "bytes": 46852,
+      "sha256": "936bbdae038f73ec98f8576732150060a26e73d7bcb72c7d18e1dc8ac9e0572c",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "sources/ramp_section.png",
+      "bytes": 77726,
+      "sha256": "4ea694ab68a07d4574487d61f6bf862d6dab6fcec35c1e7bded90d89e5b65552",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "scripts/generation-provenance.json",
+      "bytes": 1906,
+      "sha256": "f02f15b64f9aa4ec42285c5ea8deb2ec9d8b0a523aae2e8a5f5c489397ca639b",
+      "inspection": "Relevant record fields read directly; metadata not used as visual substitute"
+    },
+    {
+      "path": "scripts/source-review.json",
+      "bytes": 6110,
+      "sha256": "37bdf4a61409a5736192214d128be5c25de966d69a02b0ee14289b55440d1c53",
+      "inspection": "Relevant record fields read directly; metadata not used as visual substitute"
+    },
+    {
+      "path": "scripts/build.py",
+      "bytes": 14163,
+      "sha256": "5478a33f9fa4ed7af4b5a5027630b36f0c09b1f2582667522a1b13b2b3eeb17c",
+      "inspection": "Relevant core/bridge references inspected as supporting evidence"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1374535,
+      "sha256": "45d6822f1258f9ec684125fe4ea555e615901101796be135ddfd7d7efc174894",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1502234,
+      "sha256": "e5111841bfcc651f9793d4f5ae03ad517faee19c9b2a4b71037bbe42e5826c4d",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1491942,
+      "sha256": "b544bdc2a49456ac214a17d4cd33a4641bfc4247b659295cc524ee6a5cfe33ba",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "renders/top.png",
+      "bytes": 1277570,
+      "sha256": "3ac91732eec7a2a36eb9b31f1e5e5def9fb33a24e547cc7336d29e9e992a51e0",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1402587,
+      "sha256": "9ff2f104f7b9d47ad07948cbbdeb1aee3f6de6eb9086d1eafe6d193bdff292ee",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1395294,
+      "sha256": "5629f3c3bdd1ebd3dbe88da2f94c4415297eb0aaace3625a0ace9ce19b88d206",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1408515,
+      "sha256": "6f14f5aa584b0083086194c5f88ab0552e4c3768eb363d5c3cc1ed23fc7e0f95",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1438721,
+      "sha256": "de475d345dc3570249d30f00ca8caa1821ece50107c9064cf6b87775a7aa45df",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1494962,
+      "sha256": "3768ff206f97bce6f23466a82df4e423f0f17f35c0e0ef4999a0bd169dc5835f",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1354572,
+      "sha256": "eb5b855e888d8b7bd2a0822ae8a45f7111f9f4adae14fe76526cce877d314141",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1580797,
+      "sha256": "30349e096264b8d854b54a5f41014b1ed8f1f33d58fd9a0da179175964d4113d",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "renders/stair_contact.png",
+      "bytes": 1451714,
+      "sha256": "cc22847a8ddfbe7c1729aac2501603a4e28a803643c14b373307dfecdace74ef",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "renders/landing_seam.png",
+      "bytes": 1387327,
+      "sha256": "1fc350c5baf72a33a6a2df2caebf8b3ec65c8aed4026edb7ec1aa552ff1ab4d9",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "renders/ramp_headroom.png",
+      "bytes": 1387091,
+      "sha256": "42926206eb70d5019ddc4878c110872192b141bfd65ae8dd930c9b22db1d99cd",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "renders/ramp_supports.png",
+      "bytes": 1650717,
+      "sha256": "47f513320712a4294a4c8427c1bc011258334115480c93adbb2dcd2dd204c40e",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "boards/front-phone.png",
+      "bytes": 685384,
+      "sha256": "660d57b4aa08c17b1e9b114e776f49e372e655a133672ecb3cf82daa5e99940f",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "boards/oblique-phone.png",
+      "bytes": 865743,
+      "sha256": "5f5d1d261be2d427ad6c7203a19655690e203c160ca99e89e381325b26c1e1c6",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "boards/top-phone.png",
+      "bytes": 623581,
+      "sha256": "a0d189a7f044a3d723ba757d70d96e807987016600160b4a38aa02e365e207a9",
+      "inspection": "Pixels opened directly at original resolution"
+    },
+    {
+      "path": "parkade-classic-concrete-clay-v005.glb",
+      "bytes": 961992,
+      "sha256": "e1333f02e199e5c59408667a36c488f7ad6e38737ebd7735977f7f51ec9484d3",
+      "inspection": "Actual GLB bytes hashed and JSON chunk parsed; geometry reviewed through complete exact-GLB reimport renders"
+    }
+  ]
+}

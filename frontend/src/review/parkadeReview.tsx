@@ -7,9 +7,9 @@ import { Box3, BufferGeometry, Mesh, Vector3 } from 'three';
 import {
   prepareArchitecturalClone, disposeArchitecturalCloneMaterials,
 } from '../components/viewer/globe/modelMaterialQuality';
-
-const URL='/models/parkade-pilot/parkade-classic-concrete-clay-v005.glb';
-const START=performance.now();
+import trial from '../data/parkadeFamilyTrial.json';
+const MODELS=trial.assets.map(asset=>({id:asset.id,label:asset.label,url:`/models/parkade-pilot/${asset.model.revision}.glb`,levels:asset.properties.floor_count}));
+let START=performance.now();
 const VIEWS={
   Oblique: {position:[65,38,75],target:[0,5,0]},
   Front: {position:[0,8,80],target:[0,6,0]},
@@ -18,9 +18,8 @@ const VIEWS={
   Stairs: {position:[35,7,30],target:[27.5,5,14.5]},
 } satisfies Record<string,{position:number[];target:number[]}>;
 type View=keyof typeof VIEWS;
-
-function Model({x,z,onReady}:{x:number;z:number;onReady:(text:string)=>void}) {
-  const {scene}=useGLTF(URL);
+function Model({x,z,url,onReady}:{x:number;z:number;url:string;onReady:(text:string)=>void}) {
+  const {scene}=useGLTF(url);
   const {gl}=useThree();
   const model=useMemo(()=>{
     return prepareArchitecturalClone(scene,{renderOrder:0,maxAnisotropy:gl.capabilities.getMaxAnisotropy(),
@@ -40,11 +39,10 @@ function Model({x,z,onReady}:{x:number;z:number;onReady:(text:string)=>void}) {
   },[model,onReady,x,z]);
   return <primitive object={model} position={[x,0,z]} dispose={null}/>;
 }
-
-function Scene({view,copies,onReady,onStats}:{view:View;copies:number;onReady:(text:string)=>void;onStats:(text:string)=>void}) {
+function Scene({view,copies,url,onReady,onStats}:{view:View;copies:number;url:string;onReady:(text:string)=>void;onStats:(text:string)=>void}) {
   const {camera,gl}=useThree();
   const timings=useRef<number[]>([]);const elapsed=useRef(0);
-  const center=useMemo(()=>copies===1?new Vector3():new Vector3(140,0,copies===20?69:0),[copies]);
+  const center=useMemo(()=>copies===1?new Vector3():new Vector3(140,0,copies===20?84:0),[copies]);
   const target=useMemo(()=>new Vector3().fromArray(VIEWS[view].target).add(center),[view,center]);
   useEffect(()=>{
     const scale=copies===1?1:copies===5?4.0:4.8;
@@ -69,23 +67,25 @@ function Scene({view,copies,onReady,onStats}:{view:View;copies:number;onReady:(t
     <directionalLight position={[50,35,-40]} intensity={.5}/>
     <mesh receiveShadow rotation={[-Math.PI/2,0,0]} position={[0,-.015,0]}><planeGeometry args={[800,800]}/><meshStandardMaterial color="#b9b9a8" roughness={1}/></mesh>
     <Suspense fallback={<Html center>Loading exact GLB…</Html>}>
-      {Array.from({length:copies},(_,i)=><Model key={i} x={(i%5)*70} z={Math.floor(i/5)*46} onReady={onReady}/>)}
+      {Array.from({length:copies},(_,i)=><Model key={`${url}:${i}`} url={url} x={(i%5)*70} z={Math.floor(i/5)*56} onReady={onReady}/>)}
     </Suspense>
     <OrbitControls key={`${view}:${copies}`} makeDefault target={target} maxPolarAngle={Math.PI/2-.01}/>
   </>;
 }
-
 function Review(){
+  const [modelId,setModelId]=useState(MODELS[0]?.id??'');
+  const current=MODELS.find(model=>model.id===modelId)??MODELS[0];
   const [view,setView]=useState<View>('Oblique');const [copies,setCopies]=useState(1);
   const [ready,setReady]=useState('Loading model…');const [stats,setStats]=useState('Sampling browser frames…');
   return <main style={{height:'100%',display:'grid',gridTemplateRows:'auto 1fr auto'}}>
     <header style={{padding:'12px 18px',borderBottom:'2px solid #151515',display:'flex',gap:14,alignItems:'center',flexWrap:'wrap'}}>
-      <div><strong>CLASSIC CONCRETE PARKADE</strong><div style={{fontSize:12,marginTop:4}}>Local pilot · 4 parking levels · fixed size · not enabled in the student catalogue</div></div>
+      <div><strong>{current?.label??'Parkade family review'}</strong><div style={{fontSize:12,marginTop:4}}>Local pilot · {current?.levels} parking levels · fixed size · DEV catalogue trial · not published</div></div>
+      <label>Model <select aria-label="Parkade design" value={modelId} onChange={e=>{START=performance.now();setReady('Loading model...');setModelId(e.target.value);}}>{MODELS.map(model=><option key={model.id} value={model.id}>{model.label}</option>)}</select></label>
       <nav aria-label="Review cameras" style={{display:'flex',gap:6,flexWrap:'wrap'}}>{(Object.keys(VIEWS) as View[]).map(name=><button key={name} aria-pressed={view===name} onClick={()=>setView(name)}>{name}</button>)}</nav>
       <label>Copies <select aria-label="Number of parkade copies" value={copies} onChange={e=>setCopies(Number(e.target.value))}>{[1,5,20].map(n=><option key={n} value={n}>{n}</option>)}</select></label>
     </header>
     <Canvas shadows camera={{position:[65,38,75],fov:45,near:.1,far:1500}} dpr={1} gl={{preserveDrawingBuffer:true}}>
-      <Scene view={view} copies={copies} onReady={setReady} onStats={setStats}/>
+      <Scene key={current?.id} url={current?.url??''} view={view} copies={copies} onReady={setReady} onStats={setStats}/>
     </Canvas>
     <footer style={{padding:'10px 18px',borderTop:'2px solid #151515',fontSize:12,lineHeight:1.7}}>
       <div role="status">{ready}</div><div aria-label="Measured renderer statistics">{stats}</div>
@@ -93,7 +93,6 @@ function Review(){
     </footer>
   </main>;
 }
-
 if(import.meta.env.DEV){
   const root=createRoot(document.getElementById('root')!);
   if(import.meta.hot)import.meta.hot.dispose(()=>root.unmount());

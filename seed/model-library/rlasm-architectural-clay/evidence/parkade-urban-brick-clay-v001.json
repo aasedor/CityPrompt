@@ -1,0 +1,191 @@
+{
+  "candidate": "parkade-urban-brick-clay-v001",
+  "model_sha256": "e2edf36be628ba4af69e1dad4f9c4a851d03c4c927ab929db698bff05d299f3e",
+  "reviewer": "independent parkade_source_review agent; no model authorship",
+  "date": "2026-10-17 America/Edmonton",
+  "method": "RLASM v6.1 architectural-clay profile",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_model_pass",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "p0_findings": [],
+  "p1_findings": [],
+  "keeper_approved": false,
+  "source_authority": "brick-cad-sources-v001 original metric drawings/design contract; schematic axonometric subordinate to front/top/section",
+  "findings": [
+    "All 15 full-resolution model images and three phone boards were directly inspected. Source four images were directly inspected at the preceding source gate; current enrolled bytes exactly match those source records.",
+    "The native 54 m width, five levels, approximately 16.1 m core caps, six-metre structural cadence and two front cores match the current metric authority. Actual delivered depth is 36.0209999 m due to projecting front lettering; use measured bounds for native plot compatibility.",
+    "Warm brick-faced piers and horizontal masonry bands remain distinct from the concrete frame; recessed permeable metal fins/rails retain true geometric gaps, supports and parking depth. This is source-palette architectural clay with geometric joints, not a textured masonry keeper.",
+    "Glazed cores reveal real return stair flights, intermediate/full landings and handrails; no opaque side beam crosses their returns. Recessed inner doorway/landing joins are visible in landing_seam and stair_contact.",
+    "A seated metal pedestrian canopy shelters the right-core entrance; vehicle portal/signage remains between structural piers. No unsupported canopy or blocked entrance is visible.",
+    "Front, both sides, rear and rooftop are complete open architecture. Rear parallel ramps and end landings have visible edge girders and grounded supports; no obvious detached guards or alternate-slope collisions.",
+    "Grade contact is seated. Neutral interior proof shows main-deck columns/beams/markings and travel depth; exterior cameras retain safe margins.",
+    "Roof parking, light masts, guardrails and plane openings are consistent with the source plan. Three phone boards preserve the intended hierarchy."
+  ],
+  "byte_checks": {
+    "source_hashes_match": true,
+    "magic": "glTF",
+    "version": 2,
+    "materials": 9,
+    "meshes": 9,
+    "bytes": 1789284,
+    "images": 0,
+    "textures": 0
+  },
+  "supporting_audit": {
+    "checks": 153,
+    "limitation": "Sparse exact-GLB geometry probes; not complete collision, engineering, access or swept-path proof.",
+    "failed": 0,
+    "reported_minimum_ramp_headroom_m": 3.1499988555908214
+  },
+  "delivery_contract": {
+    "native_dimensions_m": [
+      54,
+      36.020999908447266,
+      16.100000381469727
+    ],
+    "triangles_reported": 33644,
+    "levels": 5,
+    "scale": "fixed native size"
+  },
+  "limitations": [
+    "Architectural-clay MODEL pass only, not textured keeper, engineering or building-code approval.",
+    "No structural, fire/egress, accessibility, parking capacity, operational hardware or swept-path certification.",
+    "Fixed authored five levels; no arbitrary stretching or repeatable-floor metadata.",
+    "CityPrompt catalogue/renderer/placement/selection/edit/delete/undo/save/reload/AI capture and representative laptop/mobile performance remain untested by this reviewer.",
+    "Runtime activation, storage/publication and deployment gates remain separate. Any later pixel defect reopens this exact-byte review."
+  ],
+  "inspected_files": [
+    {
+      "bytes": 1651262,
+      "sha256": "2fbdd77aca61e88b0f1c0ebea0aea6096975a0f320fd9e9161105b31587de428",
+      "path": "renders/aerial.png"
+    },
+    {
+      "bytes": 1357353,
+      "sha256": "eb928c87b38688cf636e3f535579409e90b95e2949024860cc4fb3a75de6277d",
+      "path": "renders/architecture_close.png"
+    },
+    {
+      "bytes": 1626723,
+      "sha256": "9eb2708aa5cfc11809e5222cc1574527898d4733c24a1aa58495b5e07fedf672",
+      "path": "renders/facade_close.png"
+    },
+    {
+      "bytes": 1625660,
+      "sha256": "92255a4c6a103146f1e0d0d60b959f0b8c2a7fa8522a6d209fb11835c8687403",
+      "path": "renders/front_corner.png"
+    },
+    {
+      "bytes": 1481383,
+      "sha256": "69c77ce331f8731de0c5d2cc6b7c786d57e96009a7bad4a83b9820f332ec9ab8",
+      "path": "renders/front.png"
+    },
+    {
+      "bytes": 1602293,
+      "sha256": "d7ae72c02eda0849cb6b20d06a98c0a61628a6d48d6c317297dca7368b146481",
+      "path": "renders/glass_close.png"
+    },
+    {
+      "bytes": 1384717,
+      "sha256": "21667a3e6f7678c5f0342e6abdceb28a92402f0daf121fb69198388d238c25a1",
+      "path": "renders/landing_seam.png"
+    },
+    {
+      "bytes": 1466668,
+      "sha256": "6498b9ef8633a0b91639e273b7cc9487ee463ddfb54350fbf8a29ef858a5874c",
+      "path": "renders/left_side.png"
+    },
+    {
+      "bytes": 1371514,
+      "sha256": "abb8d9875103e09dded8397f8aca30be4692806614f700cacfa498a17be26090",
+      "path": "renders/ramp_headroom.png"
+    },
+    {
+      "bytes": 1540329,
+      "sha256": "c61f271bd7e86925d2cd52a7639de80a861ae331b5af44a9e668506675049ca7",
+      "path": "renders/rear_side.png"
+    },
+    {
+      "bytes": 1488920,
+      "sha256": "68cde836539223c5b445f1c33673b5bc8547eb2f738bf88e77f92482ecabe2b1",
+      "path": "renders/rear.png"
+    },
+    {
+      "bytes": 1461739,
+      "sha256": "6598ef1bbaea9bd4ac4c4f957627152ca5535cdbe3bfd5868db946a68b33a3ba",
+      "path": "renders/right_side.png"
+    },
+    {
+      "bytes": 1473662,
+      "sha256": "817d7dce3df43a5472044ba31da7a16eb61236b6d05d6fd60cbd34416b2c3ecd",
+      "path": "renders/signature_close.png"
+    },
+    {
+      "bytes": 1463614,
+      "sha256": "b479ff91a30262adc8c727940d167af36c60fdba42dd1910eac6ca3baafeafcf",
+      "path": "renders/stair_contact.png"
+    },
+    {
+      "bytes": 1274175,
+      "sha256": "567fac69f4d01c55b447a86c73a0d3509b023f7a2dd95522a15a1e90c84b21b8",
+      "path": "renders/top.png"
+    },
+    {
+      "bytes": 755371,
+      "sha256": "cb6f5841561a97d7f0f094f77d1d13600842dd2da0a2e2c6e8292fc44c49383e",
+      "path": "boards/front-phone.png"
+    },
+    {
+      "bytes": 902721,
+      "sha256": "37848e06247369e07470d7557ab04c5e7a16a9e9c863fc30c12c29e4cf24c4bf",
+      "path": "boards/oblique-phone.png"
+    },
+    {
+      "bytes": 605708,
+      "sha256": "d017f38179ea54e3525094f1e5495c0051abbf1145678218c2e7a68096472ab1",
+      "path": "boards/top-phone.png"
+    },
+    {
+      "bytes": 48535,
+      "sha256": "4d700724d3620d23969add8a9be26782556b2bd67f8a15b285edc156a2ce3439",
+      "path": "sources/front.png"
+    },
+    {
+      "bytes": 54863,
+      "sha256": "6783ad26feee1f5bb3427d126a96d69fc7ce69863a3f03c20e959e9899def550",
+      "path": "sources/oblique.png"
+    },
+    {
+      "bytes": 61886,
+      "sha256": "4444dac95b1b39596b7c7457a87fd89cf71f2f121363b49a17d95fa925fb8a84",
+      "path": "sources/ramp_section.png"
+    },
+    {
+      "bytes": 39122,
+      "sha256": "4de92cf56df1c58db791c4cd7a58d2f89b4666eb77038bc22fb49a64c8f5c587",
+      "path": "sources/top.png"
+    },
+    {
+      "bytes": 111207,
+      "sha256": "2c009ccbad39a556b608925e783629305eca99cd50b13ab8f66d718f5fd21394",
+      "path": "build-report.json"
+    },
+    {
+      "bytes": 40338,
+      "sha256": "8e72614e42975d57ebe18686f2bcf02809add6ad5c79943e5e69496abaa9f842",
+      "path": "evidence/actual-glb-audit.json"
+    },
+    {
+      "bytes": 1065,
+      "sha256": "2ef6de850995631f2197c073b3e3b61fb266dcb61a60f24da79a1ca6e4a27082",
+      "path": "scripts/generation-provenance.json"
+    },
+    {
+      "bytes": 1789284,
+      "sha256": "e2edf36be628ba4af69e1dad4f9c4a851d03c4c927ab929db698bff05d299f3e",
+      "path": "parkade-urban-brick-clay-v001.glb"
+    }
+  ]
+}

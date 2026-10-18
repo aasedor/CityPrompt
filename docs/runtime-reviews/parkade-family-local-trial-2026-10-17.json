@@ -1,0 +1,614 @@
+{
+  "models": [
+    {
+      "label": "Classic Concrete Parkade",
+      "candidate": "parkade-classic-concrete-clay-v005",
+      "variant": "classic-concrete-v1",
+      "source_folder": "classic-clay-v005",
+      "source_records": [
+        {
+          "role": "front",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\classic-cad-sources-v003\\front.png",
+          "path": "sources/front.png",
+          "bytes": 49697,
+          "sha256": "4905a00c2ebd68cec5f67bf2a6f43fcd460acc2eb1c1bde02a25ef909a949f2e"
+        },
+        {
+          "role": "oblique",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\classic-cad-sources-v003\\oblique.png",
+          "path": "sources/oblique.png",
+          "bytes": 63828,
+          "sha256": "e6cca8f14f9211d32dd1325dc9cafd5f1ef338b5b1eda4ded74d2248b52d86f8"
+        },
+        {
+          "role": "top",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\classic-cad-sources-v003\\top.png",
+          "path": "sources/top.png",
+          "bytes": 46852,
+          "sha256": "936bbdae038f73ec98f8576732150060a26e73d7bcb72c7d18e1dc8ac9e0572c"
+        },
+        {
+          "role": "ramp_section",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\classic-cad-sources-v003\\ramp_section.png",
+          "path": "sources/ramp_section.png",
+          "bytes": 77726,
+          "sha256": "4ea694ab68a07d4574487d61f6bf862d6dab6fcec35c1e7bded90d89e5b65552"
+        }
+      ],
+      "model_sha256": "e1333f02e199e5c59408667a36c488f7ad6e38737ebd7735977f7f51ec9484d3",
+      "runtime_copy_sha256": "e1333f02e199e5c59408667a36c488f7ad6e38737ebd7735977f7f51ec9484d3",
+      "runtime_bytes": 961992,
+      "dimensions_m": {
+        "width": 60.0,
+        "depth": 36.0,
+        "height": 12.800000190734863
+      },
+      "triangles": 18120,
+      "materials": 7,
+      "textures": 0,
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/parkade-classic-concrete-clay-v005.json",
+        "sha256": "72ee8e470275c73a4ccac0fc21734f82f11b1999080af2474efd59ef72390afc",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "preview_http": {
+        "url": "http://127.0.0.1:5184/models/parkade-pilot/parkade-classic-concrete-clay-v005.glb",
+        "status": 200,
+        "loopback_transfer_ms": 8.33,
+        "cold_network": false
+      },
+      "browser_cost": [
+        {
+          "label": "Classic Concrete Parkade",
+          "copies": 1,
+          "utc": "2026-10-18T01:18:37.274Z",
+          "draw_calls": 17,
+          "renderer_triangles_including_extra_passes": 37588,
+          "frame_interval_median_ms": 17.5,
+          "frame_interval_p95_ms": 18.2,
+          "geometry_attributes_and_index_kib": 930,
+          "warm_first_model_ready_ms": 1.0,
+          "cached_geometry_count": 17,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        },
+        {
+          "label": "Classic Concrete Parkade",
+          "copies": 5,
+          "utc": "2026-10-18T01:18:39.369Z",
+          "draw_calls": 77,
+          "renderer_triangles_including_extra_passes": 187924,
+          "frame_interval_median_ms": 17.5,
+          "frame_interval_p95_ms": 18.2,
+          "geometry_attributes_and_index_kib": 930,
+          "warm_first_model_ready_ms": 1.0,
+          "cached_geometry_count": 17,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        },
+        {
+          "label": "Classic Concrete Parkade",
+          "copies": 20,
+          "utc": "2026-10-18T01:18:41.419Z",
+          "draw_calls": 302,
+          "renderer_triangles_including_extra_passes": 751684,
+          "frame_interval_median_ms": 17.5,
+          "frame_interval_p95_ms": 18.3,
+          "geometry_attributes_and_index_kib": 930,
+          "warm_first_model_ready_ms": 1.0,
+          "cached_geometry_count": 17,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        }
+      ]
+    },
+    {
+      "label": "Urban Brick Parkade",
+      "candidate": "parkade-urban-brick-clay-v001",
+      "variant": "brick-v1",
+      "source_folder": "brick-clay-v001",
+      "source_records": [
+        {
+          "role": "front",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\brick-cad-sources-v001\\front.png",
+          "path": "sources/front.png",
+          "bytes": 48535,
+          "sha256": "4d700724d3620d23969add8a9be26782556b2bd67f8a15b285edc156a2ce3439"
+        },
+        {
+          "role": "top",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\brick-cad-sources-v001\\top.png",
+          "path": "sources/top.png",
+          "bytes": 39122,
+          "sha256": "4de92cf56df1c58db791c4cd7a58d2f89b4666eb77038bc22fb49a64c8f5c587"
+        },
+        {
+          "role": "oblique",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\brick-cad-sources-v001\\oblique.png",
+          "path": "sources/oblique.png",
+          "bytes": 54863,
+          "sha256": "6783ad26feee1f5bb3427d126a96d69fc7ce69863a3f03c20e959e9899def550"
+        },
+        {
+          "role": "ramp_section",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\brick-cad-sources-v001\\ramp_section.png",
+          "path": "sources/ramp_section.png",
+          "bytes": 61886,
+          "sha256": "4444dac95b1b39596b7c7457a87fd89cf71f2f121363b49a17d95fa925fb8a84"
+        }
+      ],
+      "model_sha256": "e2edf36be628ba4af69e1dad4f9c4a851d03c4c927ab929db698bff05d299f3e",
+      "runtime_copy_sha256": "e2edf36be628ba4af69e1dad4f9c4a851d03c4c927ab929db698bff05d299f3e",
+      "runtime_bytes": 1789284,
+      "dimensions_m": {
+        "width": 54.0,
+        "depth": 36.020999908447266,
+        "height": 16.100000381469727
+      },
+      "triangles": 33644,
+      "materials": 9,
+      "textures": 0,
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/parkade-urban-brick-clay-v001.json",
+        "sha256": "b2e64a3b5927f8ae2f02e5f909d360b5363fb545805569e33e169b3cab400e74",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "preview_http": {
+        "url": "http://127.0.0.1:5184/models/parkade-pilot/parkade-urban-brick-clay-v001.glb",
+        "status": 200,
+        "loopback_transfer_ms": 29.92,
+        "cold_network": false
+      },
+      "browser_cost": [
+        {
+          "label": "Urban Brick Parkade",
+          "copies": 1,
+          "utc": "2026-10-18T01:18:43.737Z",
+          "draw_calls": 21,
+          "renderer_triangles_including_extra_passes": 68972,
+          "frame_interval_median_ms": 17.4,
+          "frame_interval_p95_ms": 20.8,
+          "geometry_attributes_and_index_kib": 1736,
+          "warm_first_model_ready_ms": 4.0,
+          "cached_geometry_count": 17,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        },
+        {
+          "label": "Urban Brick Parkade",
+          "copies": 5,
+          "utc": "2026-10-18T01:18:45.802Z",
+          "draw_calls": 97,
+          "renderer_triangles_including_extra_passes": 344844,
+          "frame_interval_median_ms": 17.6,
+          "frame_interval_p95_ms": 20.5,
+          "geometry_attributes_and_index_kib": 1736,
+          "warm_first_model_ready_ms": 4.0,
+          "cached_geometry_count": 17,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        },
+        {
+          "label": "Urban Brick Parkade",
+          "copies": 20,
+          "utc": "2026-10-18T01:18:47.939Z",
+          "draw_calls": 382,
+          "renderer_triangles_including_extra_passes": 1379364,
+          "frame_interval_median_ms": 17.4,
+          "frame_interval_p95_ms": 21.1,
+          "geometry_attributes_and_index_kib": 1736,
+          "warm_first_model_ready_ms": 4.0,
+          "cached_geometry_count": 17,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        }
+      ]
+    },
+    {
+      "label": "Green Terraces Parkade",
+      "candidate": "parkade-green-terraces-clay-v003",
+      "variant": "green-v1",
+      "source_folder": "green-clay-v003",
+      "source_records": [
+        {
+          "role": "front",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\green-cad-sources-v002\\front.png",
+          "path": "sources/front.png",
+          "bytes": 53270,
+          "sha256": "b7a7664fc6e19e98405c320ca19be3c9561c80fa1b32ba6014b534bf0d2de6d9"
+        },
+        {
+          "role": "top",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\green-cad-sources-v002\\top.png",
+          "path": "sources/top.png",
+          "bytes": 50938,
+          "sha256": "d809ee8f7301314c40dcc605ab599f6708d227dcb82a0cece36db36b6af0bd0c"
+        },
+        {
+          "role": "oblique",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\green-cad-sources-v002\\oblique.png",
+          "path": "sources/oblique.png",
+          "bytes": 61584,
+          "sha256": "fb9d3a1ec6f7b9c954b5efc8bbb8da351a64eaf4fc458efdcacfc527a69dabd3"
+        },
+        {
+          "role": "ramp_section",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\green-cad-sources-v002\\ramp_section.png",
+          "path": "sources/ramp_section.png",
+          "bytes": 60640,
+          "sha256": "aa3501e412111196869a35f69ce790f7879128db2291bfd55f4b726cf48a9afd"
+        }
+      ],
+      "model_sha256": "156255fec5bf208f8230b2ac636c90df9a37c9985c60805dc0122a738b941e44",
+      "runtime_copy_sha256": "156255fec5bf208f8230b2ac636c90df9a37c9985c60805dc0122a738b941e44",
+      "runtime_bytes": 4757064,
+      "dimensions_m": {
+        "width": 60.0,
+        "depth": 40.0,
+        "height": 12.800000190734863
+      },
+      "triangles": 77572,
+      "materials": 12,
+      "textures": 0,
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/parkade-green-terraces-clay-v003.json",
+        "sha256": "88ac1c22151114177d467d9af7865b60a058a923651c5c2b92ab3905c885820c",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "preview_http": {
+        "url": "http://127.0.0.1:5184/models/parkade-pilot/parkade-green-terraces-clay-v003.glb",
+        "status": 200,
+        "loopback_transfer_ms": 29.18,
+        "cold_network": false
+      },
+      "browser_cost": [
+        {
+          "label": "Green Terraces Parkade",
+          "copies": 1,
+          "utc": "2026-10-18T01:18:50.409Z",
+          "draw_calls": 27,
+          "renderer_triangles_including_extra_passes": 156492,
+          "frame_interval_median_ms": 17.4,
+          "frame_interval_p95_ms": 18.2,
+          "geometry_attributes_and_index_kib": 4631,
+          "warm_first_model_ready_ms": 49.0,
+          "cached_geometry_count": 29,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        },
+        {
+          "label": "Green Terraces Parkade",
+          "copies": 5,
+          "utc": "2026-10-18T01:18:52.475Z",
+          "draw_calls": 127,
+          "renderer_triangles_including_extra_passes": 782444,
+          "frame_interval_median_ms": 17.5,
+          "frame_interval_p95_ms": 18.2,
+          "geometry_attributes_and_index_kib": 4631,
+          "warm_first_model_ready_ms": 49.0,
+          "cached_geometry_count": 29,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        },
+        {
+          "label": "Green Terraces Parkade",
+          "copies": 20,
+          "utc": "2026-10-18T01:18:54.622Z",
+          "draw_calls": 502,
+          "renderer_triangles_including_extra_passes": 3129764,
+          "frame_interval_median_ms": 17.6,
+          "frame_interval_p95_ms": 18.2,
+          "geometry_attributes_and_index_kib": 4631,
+          "warm_first_model_ready_ms": 49.0,
+          "cached_geometry_count": 29,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        }
+      ]
+    },
+    {
+      "label": "Solar Ribbon Parkade",
+      "candidate": "parkade-solar-ribbon-clay-v001",
+      "variant": "solar-v1",
+      "source_folder": "solar-clay-v001",
+      "source_records": [
+        {
+          "role": "front",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\solar-cad-sources-v001\\front.png",
+          "path": "sources/front.png",
+          "bytes": 50270,
+          "sha256": "6491749c6c74e46eec01c15bafa87f03a2e7a0ced257cd0c7dbcc618700b646a"
+        },
+        {
+          "role": "top",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\solar-cad-sources-v001\\top.png",
+          "path": "sources/top.png",
+          "bytes": 40553,
+          "sha256": "5475b82a76de8dd6b51b820ecd243fd84544b11a0c382fa9ecc7dbce6497478d"
+        },
+        {
+          "role": "oblique",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\solar-cad-sources-v001\\oblique.png",
+          "path": "sources/oblique.png",
+          "bytes": 60026,
+          "sha256": "c027018cd304f2bdf14f5c8718171a58c77cfef8841665afc1bfb3190be45936"
+        },
+        {
+          "role": "ramp_section",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\solar-cad-sources-v001\\ramp_section.png",
+          "path": "sources/ramp_section.png",
+          "bytes": 62028,
+          "sha256": "06f281fce7eb61b76bf06da98d7bff981fe4f7d80ca95659baee8caea893d1f0"
+        }
+      ],
+      "model_sha256": "cd48038284941410a484f2114a9d35f3103c04f7c8fc1c051ae7cc94ce28eec1",
+      "runtime_copy_sha256": "cd48038284941410a484f2114a9d35f3103c04f7c8fc1c051ae7cc94ce28eec1",
+      "runtime_bytes": 2116728,
+      "dimensions_m": {
+        "width": 66.0,
+        "depth": 36.0,
+        "height": 16.100000381469727
+      },
+      "triangles": 39360,
+      "materials": 11,
+      "textures": 0,
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/parkade-solar-ribbon-clay-v001.json",
+        "sha256": "94a85aea718b34063646a79a921258d215336a816e513ef84dffc5b57114f0b4",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "preview_http": {
+        "url": "http://127.0.0.1:5184/models/parkade-pilot/parkade-solar-ribbon-clay-v001.glb",
+        "status": 200,
+        "loopback_transfer_ms": 7.1,
+        "cold_network": false
+      },
+      "browser_cost": [
+        {
+          "label": "Solar Ribbon Parkade",
+          "copies": 1,
+          "utc": "2026-10-18T01:18:57.074Z",
+          "draw_calls": 25,
+          "renderer_triangles_including_extra_passes": 80404,
+          "frame_interval_median_ms": 17.5,
+          "frame_interval_p95_ms": 20.5,
+          "geometry_attributes_and_index_kib": 2053,
+          "warm_first_model_ready_ms": 37.0,
+          "cached_geometry_count": 40,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        },
+        {
+          "label": "Solar Ribbon Parkade",
+          "copies": 5,
+          "utc": "2026-10-18T01:18:59.128Z",
+          "draw_calls": 117,
+          "renderer_triangles_including_extra_passes": 402004,
+          "frame_interval_median_ms": 17.9,
+          "frame_interval_p95_ms": 20.4,
+          "geometry_attributes_and_index_kib": 2053,
+          "warm_first_model_ready_ms": 37.0,
+          "cached_geometry_count": 40,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        },
+        {
+          "label": "Solar Ribbon Parkade",
+          "copies": 20,
+          "utc": "2026-10-18T01:19:01.300Z",
+          "draw_calls": 462,
+          "renderer_triangles_including_extra_passes": 1608004,
+          "frame_interval_median_ms": 17.5,
+          "frame_interval_p95_ms": 19.6,
+          "geometry_attributes_and_index_kib": 2053,
+          "warm_first_model_ready_ms": 37.0,
+          "cached_geometry_count": 40,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        }
+      ]
+    },
+    {
+      "label": "Mobility Courtyard Parkade",
+      "candidate": "parkade-mobility-courtyard-clay-v002",
+      "variant": "courtyard-v1",
+      "source_folder": "courtyard-clay-v002",
+      "source_records": [
+        {
+          "role": "front",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\courtyard-cad-sources-v001\\front.png",
+          "path": "sources/front.png",
+          "bytes": 70481,
+          "sha256": "76a4d5e576e4d06cc745299381a503e47901d295d47441793c9d76a24fbeb995"
+        },
+        {
+          "role": "oblique",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\courtyard-cad-sources-v001\\oblique.png",
+          "path": "sources/oblique.png",
+          "bytes": 78950,
+          "sha256": "80d0afd078dc80c6a63a1aed2f4fe1f8919b925764adb18ca35c0983e9b0be64"
+        },
+        {
+          "role": "top",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\courtyard-cad-sources-v001\\top.png",
+          "path": "sources/top.png",
+          "bytes": 64130,
+          "sha256": "0023b792027f8b8cec01fd62f7f7e61f2208f8580e22ba550003110b83863847"
+        },
+        {
+          "role": "ramp_section",
+          "original_path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\courtyard-cad-sources-v001\\ramp_section.png",
+          "path": "sources/ramp_section.png",
+          "bytes": 78419,
+          "sha256": "0d2328daec972fefd48114477bd575c123bfde9b98da1418bc0462aa5f056586"
+        }
+      ],
+      "model_sha256": "9ad01dae33db93a02308a354e4f1330277a2e54d6382eb35373de098ab9c1c86",
+      "runtime_copy_sha256": "9ad01dae33db93a02308a354e4f1330277a2e54d6382eb35373de098ab9c1c86",
+      "runtime_bytes": 1820900,
+      "dimensions_m": {
+        "width": 64.0,
+        "depth": 48.0,
+        "height": 12.800000190734863
+      },
+      "triangles": 35204,
+      "materials": 13,
+      "textures": 0,
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/parkade-mobility-courtyard-clay-v002.json",
+        "sha256": "5d4dd04bdffc73d200d5ec1fc6810496a8a763e2547bb25aad0c0bac01e9622f",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "preview_http": {
+        "url": "http://127.0.0.1:5184/models/parkade-pilot/parkade-mobility-courtyard-clay-v002.glb",
+        "status": 200,
+        "loopback_transfer_ms": 10.25,
+        "cold_network": false
+      },
+      "browser_cost": [
+        {
+          "label": "Mobility Courtyard Parkade",
+          "copies": 1,
+          "utc": "2026-10-18T01:19:03.651Z",
+          "draw_calls": 29,
+          "renderer_triangles_including_extra_passes": 71792,
+          "frame_interval_median_ms": 17.4,
+          "frame_interval_p95_ms": 18.3,
+          "geometry_attributes_and_index_kib": 1762,
+          "warm_first_model_ready_ms": 37.0,
+          "cached_geometry_count": 53,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        },
+        {
+          "label": "Mobility Courtyard Parkade",
+          "copies": 5,
+          "utc": "2026-10-18T01:19:05.705Z",
+          "draw_calls": 137,
+          "renderer_triangles_including_extra_passes": 358944,
+          "frame_interval_median_ms": 17.5,
+          "frame_interval_p95_ms": 18.2,
+          "geometry_attributes_and_index_kib": 1762,
+          "warm_first_model_ready_ms": 37.0,
+          "cached_geometry_count": 53,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        },
+        {
+          "label": "Mobility Courtyard Parkade",
+          "copies": 20,
+          "utc": "2026-10-18T01:19:07.861Z",
+          "draw_calls": 542,
+          "renderer_triangles_including_extra_passes": 1435764,
+          "frame_interval_median_ms": 17.4,
+          "frame_interval_p95_ms": 18.2,
+          "geometry_attributes_and_index_kib": 1762,
+          "warm_first_model_ready_ms": 37.0,
+          "cached_geometry_count": 53,
+          "renderer_texture_count_including_buffers": 2,
+          "render_buffer": [
+            1280,
+            569
+          ],
+          "dpr": 1
+        }
+      ]
+    }
+  ],
+  "scope": "Local native architectural-clay trial; not published. Source GLBs copied unchanged; no texture files.",
+  "schema": "cityprompt.parkade-local-trial-review@1",
+  "branch": "codex/parkade-family-pilot",
+  "parking_parent_commit": "0ff598dfe",
+  "production_published": false,
+  "measured_hardware": {
+    "gpu": "RTX 5060",
+    "cpu": "i5-14400F",
+    "target_student_laptop_tested": false,
+    "mobile_tested": false,
+    "total_gpu_memory_measured": false,
+    "cold_network_tested": false
+  },
+  "executed_checks": {
+    "python_tests_passed": 271,
+    "final_vitest_tests_passed": 54,
+    "final_vitest_matching_files": 5,
+    "type_check": "passed",
+    "narrow_eslint": "passed",
+    "production_build": "passed_with_hydrated_public_profile",
+    "actual_glb_probe_count": 643,
+    "local_db_object_verification": "all_five_passed",
+    "local_http_valid_exact_hash": "all_five_passed",
+    "ordinary_placement_move_rotate_delete_undo": "all_five_passed",
+    "redo": "Classic Concrete tested",
+    "reload_exact_bindings": "all_five_passed",
+    "capture": "free exact 3D view only",
+    "paid_ai_render_tested": false
+  },
+  "evidence_root": "C:/dev-artifacts/CityPrompt/parkade-family-2026-10-17"
+}

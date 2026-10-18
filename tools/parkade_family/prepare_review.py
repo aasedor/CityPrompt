@@ -12,7 +12,7 @@ def main():
             raise FileExistsError('Reviewed evidence is immutable; use a new candidate or evidence directory')
     for role,render in [('front','front'),('oblique','front_corner'),('top','top')]:
         board=Image.new('RGB',(1080,1920),'#f6f3ea');draw=ImageDraw.Draw(board)
-        draw.text((30,25),f'CLASSIC CONCRETE / {role.upper()}',font=font,fill='black')
+        draw.text((30,25),f'{a.candidate.name.upper()} / {role.upper()}',font=font,fill='black')
         draw.text((30,80),'Original design reference',font=font,fill='black')
         with Image.open(a.candidate/'sources'/(role+'.png')) as src:
             tile=ImageOps.contain(src,(1020,800));board.paste(tile,((1080-tile.width)//2,140+(800-tile.height)//2))
