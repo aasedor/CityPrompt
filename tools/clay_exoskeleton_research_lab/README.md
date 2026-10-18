@@ -68,9 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 targets every P1)
+## Open blockers after v003 (v004 targets every P1)
 
-1. P1: the middle east bays have vertical slats in small inset panels with wide white margins; the source has horizontal blades filling each bay.
-2. P1: the roof screen is perforated only on its outer faces; the far runs read as a plain parapet from above.
-3. P1: the entrance portal sits inside the east V-piloti; a leg crosses the doorway and the head runs into the other leg.
-4. P1: a black block where the portal post meets its head, and a black triangle at the foot of the west V.
+1. P1: black blocks where the portal post meets its head, at the cantilever's north-west corner and on the exoskeleton column tops. Survived one targeted fix.
+2. P1: a deep white band above the top floor and a heavy frame hide the perforated roof screen in the front view; the source glass runs to a thin edge under a tall perforated crown.
+3. P1: the east louvres read from the front as narrow recessed strips with wide white margins; the steel is chunkier and the louvres lighter than the source. Survived one targeted fix.
