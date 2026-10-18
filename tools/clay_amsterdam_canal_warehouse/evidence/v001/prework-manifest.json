@@ -1,0 +1,424 @@
+{
+  "candidate": "clay-amsterdam-canal-warehouse-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-amsterdam-canal-warehouse",
+  "variant_id": "clay-amsterdam-canal-warehouse-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "amsterdam_canal_warehouse/variant_0 (canal_warehouse_spice)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 20.0,
+      "depth": 16.0,
+      "height": 22.05
+    },
+    "observed_storeys": 4,
+    "storey_programme": "ground-floor cart bays and four storeys of storage lofts under the gables",
+    "plan": "20 x 16 m corner warehouse (top view): an 8 m west and a 12 m east section, quay south, street east",
+    "facade": "red-brown brick; twin coped street gables with shoulder piers, pinnacles and hoist beams; green loading doors and shutters over arched cart doors; segmental windows; iron anchors",
+    "levels_m": [
+      0.0,
+      4.2,
+      7.2,
+      10.2,
+      13.2
+    ],
+    "roof_m": {
+      "eave": 13.2,
+      "ridges": [
+        17.799999999999997,
+        20.099999999999998
+      ]
+    },
+    "inferred": "interiors and the north face are teaching assumptions; the rear gables repeat the front outline without openings"
+  },
+  "roof_contract": {
+    "type": "two parallel gabled roofs behind coped gables, a flat vented deck between the ridges at the rear, a dormer and chimneys",
+    "datum_m": 13.2,
+    "crowns_m": [
+      17.799999999999997,
+      20.099999999999998
+    ]
+  },
+  "identity_contract": {
+    "owner": "twin-gabled brick canal warehouse with green shuttered loading-door stacks over arched cart doors, coped gables with hoist beams, on a canal quay"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: red-brown brick with pale joints, darker arch rings, green doors and shutters, dark frames, stone sills, copings and springers, dark roof tiles",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 4,
+    "ground": "cart bays and dispatch",
+    "upper": "storage lofts",
+    "attic": "hoist lofts under the gables"
+  },
+  "contact_contract": [
+    "Grade-zero quay paving, street setts and canal",
+    "Brick walls from grade on a plinth",
+    "Coped gables on the quay wall",
+    "Roofs between the gables"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        18.0,
+        -26.0,
+        1.6
+      ],
+      "target": [
+        -1.0,
+        -6.0,
+        9.5
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        30.498,
+        -32.844,
+        44.1
+      ],
+      "target": [
+        0,
+        0,
+        9.922500000000001
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        27.37,
+        -31.28,
+        66.15
+      ],
+      "target": [
+        0,
+        0,
+        9.922500000000001
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        58.650000000000006
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 32.199999999999996
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -39.1,
+        0,
+        13.23
+      ],
+      "target": [
+        0,
+        0,
+        9.922500000000001
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        39.1,
+        0,
+        13.23
+      ],
+      "target": [
+        0,
+        0,
+        9.922500000000001
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        39.1,
+        13.23
+      ],
+      "target": [
+        0,
+        0,
+        9.922500000000001
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        27.37,
+        31.28,
+        39.690000000000005
+      ],
+      "target": [
+        0,
+        0,
+        9.922500000000001
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        4.0,
+        -26.0,
+        7.5
+      ],
+      "target": [
+        4.0,
+        -8.0,
+        7.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        16.0,
+        -18.0,
+        14.0
+      ],
+      "target": [
+        10.0,
+        -8.0,
+        13.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        1.0,
+        -15.0,
+        8.7
+      ],
+      "target": [
+        1.0,
+        -8.0,
+        8.7
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "loading_doors",
+      "location": [
+        6.5,
+        -16.0,
+        9.0
+      ],
+      "target": [
+        4.0,
+        -8.0,
+        9.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "arched_doors",
+      "location": [
+        -2.0,
+        -15.0,
+        2.2
+      ],
+      "target": [
+        -1.0,
+        -8.0,
+        2.2
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "gable_tops",
+      "location": [
+        -1.0,
+        -20.0,
+        22.0
+      ],
+      "target": [
+        0.0,
+        -8.0,
+        17.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "east_side",
+      "location": [
+        26.0,
+        2.0,
+        7.0
+      ],
+      "target": [
+        10.0,
+        0.0,
+        7.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_deck",
+      "location": [
+        -14.0,
+        -12.0,
+        34.0
+      ],
+      "target": [
+        0.0,
+        1.0,
+        17.2
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        6.5,
+        4.0,
+        5.800000000000001
+      ],
+      "target": [
+        3.0,
+        -8.0,
+        5.800000000000001
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        0.0,
+        34.0,
+        9.0
+      ],
+      "target": [
+        0.0,
+        8.0,
+        9.0
+      ],
+      "lens": 45,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "loading_doors",
+    "arched_doors",
+    "gable_tops",
+    "east_side",
+    "roof_deck",
+    "interior",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/amsterdam-canal-warehouse/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1458012,
+        "sha256": "313bbdcdc234d7774bd81399c4e1ff3377df2cfabcec399d08b3912f8aecfd24"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/amsterdam-canal-warehouse/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 968518,
+        "sha256": "df416c6ee276cc79ade1515381dcf3d336e9a5c5fa3bdee3c588b4a376f5c12a"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/amsterdam-canal-warehouse/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 899962,
+        "sha256": "a7565bc91fbc31759821dc59003bf072c11dd6d167f393f354a92dd3e284a86a"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_canalwh.py",
+        "sha256": "70e1b44b235fa8199ed18625b865c4affc9db61efa4c7f2ce16c1f3c34eff1cf"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "9b6c7e591ed9de080c98e1fb6abbf1af789207193569fe2c15d5dc9a08ce7dfe"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "976c011da329401e31934697809ef1bcf560f588208c572c53b9cf54f0a3e57a"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-18T20:58:55.774817+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

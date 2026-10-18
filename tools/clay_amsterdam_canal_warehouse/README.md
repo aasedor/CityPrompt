@@ -67,3 +67,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (first build; the review drives v002)
+
+P1 gable composition (top door should straddle the eave, no top-floor flanking windows, lower gables); west section too narrow; quay and street too deep; black canal joint and floating streaks; valley roof cracks and cut chimney; north face grammar; glass artefacts; arched_doors camera misses the doors; oblique and aerial framed too wide

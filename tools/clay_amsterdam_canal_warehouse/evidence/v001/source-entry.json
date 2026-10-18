@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-amsterdam-canal-warehouse",
+  "variant_id": "clay-amsterdam-canal-warehouse-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "amsterdam_canal_warehouse/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/amsterdam-canal-warehouse/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1458012,
+      "sha256": "313bbdcdc234d7774bd81399c4e1ff3377df2cfabcec399d08b3912f8aecfd24"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/amsterdam-canal-warehouse/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 968518,
+      "sha256": "df416c6ee276cc79ade1515381dcf3d336e9a5c5fa3bdee3c588b4a376f5c12a"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/amsterdam-canal-warehouse/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 899962,
+      "sha256": "a7565bc91fbc31759821dc59003bf072c11dd6d167f393f354a92dd3e284a86a"
+    }
+  ]
+}
