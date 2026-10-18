@@ -350,14 +350,14 @@ def upper_block():
         u = -hd + pitch * (i + .5)
         for k, (za, zb) in enumerate(zip(lv, lv[1:])):
             if 0 < i < bays - 1:                                         # full-bay louvres stacked in the middle bays
-                holes.append(hole(f'east louvre bay {i}-{k}', u, za + .35, pitch - .7, zb - za - .7, kind='louvre'))
+                holes.append(hole(f'east louvre bay {i}-{k}', u, za + .25, pitch - .42, zb - za - .5, kind='louvre'))
     e.wall('lab east panel carrier', -hd + T, hd - T, Z1 - .4, PARA, depth=T, role='white', holes=holes)
     m = Merge(e)
     for h in holes:
         m.box('louvre', h['u'], .2, h['z'] + h['h'] / 2, h['w'] - .02, .04, h['h'] - .02)       # backing
-        nl = int(h['w'] / .22)
-        for k in range(nl + 1):
-            m.box('louvre', h['u'] - h['w'] / 2 + .05 + (h['w'] - .1) * k / nl, .09, h['z'] + h['h'] / 2, .04, .18, h['h'] - .04)
+        nl = int(h['h'] / .24)
+        for k in range(nl):                                               # horizontal blades filling the bay
+            m.box('louvre', h['u'], .1, h['z'] + .12 + (h['h'] - .24) * k / max(1, nl - 1), h['w'] - .04, .2, .07)
         register(e, h, .1, 'louvre screen', 'plant and stair')
     for z in lv[1:-1]:
         m.box('white', 0, -.04, z - .2, 2 * hd - 2 * T - .02, .1, .4)
@@ -398,7 +398,7 @@ def ground_floor():
     nb = 6
     bw = (2 * hs - 1.0) / nb
     us = [-hs + .5 + bw * (k + .5) for k in range(nb)]
-    DB = 3                                                                # door bay, between the pilotis
+    DB = 2                                                                # door bay, free between the two V-pilotis
     door = hole('lobby door', us[DB], G0, bw - .3, 2.9, kind='door')
     transom = hole('lobby door transom', us[DB], G0 + 3.1, bw - .3, Z1 - .6 - G0 - 3.1)
     glaze = [hole(f'lobby glazing {k}', u, G0, bw - .3, Z1 - .6 - G0) for k, u in enumerate(us) if k != DB]
@@ -408,7 +408,7 @@ def ground_floor():
     framed(m, s, transom, cols=2, rows=1, inset=.14, occupied='lobby')
     for e_ in (-1, 1):                                                    # white door portal, proud of the glazing
         m.box('white', us[DB] + e_ * (bw / 2 - .05), -.2, (G0 + Z1 - .4) / 2, .3, .4, Z1 - .4 - G0)
-    m.box('white', us[DB], -.2, G0 + 3.0, bw + .2, .4, .25)
+    m.box('white', us[DB], -.26, G0 + 3.0, bw + .2, .52, .25)                 # head proud of the posts
     for h in glaze:
         framed(m, s, h, cols=2, rows=2, inset=.14, occupied='lobby')
     m.flush('ground south')
@@ -438,9 +438,10 @@ def ground_floor():
     C.box('Arcade paving', ((X0 + X1) / 2, (Y0 + GY0) / 2, .06), (X1 - X0, GY0 - Y0, .12), 'sand', 'ground', 0)
     C.box('Cantilever paving', ((X0 + GX0) / 2, (GY0 + Y1) / 2, .06), (GX0 - X0, Y1 - GY0, .12), 'sand', 'ground', 0)
     # Two white V-pilotis on the south front carry the slab edge.
-    for xc in (-1.5, 7.5):
+    for xc in (-3.8, 7.2):                                                # either side of the door bay
         for e_ in (-1, 1):
-            C.beam('V piloti', (xc, Y0 + .35, G0 + .1), (xc + e_ * 2.6, Y0 + .35, Z1 - .55), .36, .36, 'steel', 'pilotis')
+            yl = Y0 + .35 + e_ * .03                                      # legs offset so their faces never coincide
+            C.beam('V piloti', (xc, yl, G0 + .1), (xc + e_ * 2.6, yl, Z1 - .55), .36, .36, 'steel', 'pilotis')
             C.box('V piloti head plate', (xc + e_ * 2.6, Y0 + .35, Z1 - .51), (.9, .55, .22), 'steel', 'pilotis', 0)   # bears flat on the soffit
         C.box('V piloti shoe', (xc, Y0 + .35, G0 + .2), (.6, .5, .4), 'steel', 'pilotis', 0)
     C.qa_room_light('Lobby', (4.0, GY0 + 4.0, Z1 - 1.0), 120, 7.0)
@@ -497,7 +498,7 @@ def roof():
     b.flush('plant screen')
     # Perforation dots on the two street faces of the screen.
     vs, fs = [], []
-    for (a, c, yy, out) in ((x0 + .2, x1 - .2, y0, -1), (x0 + .2, x1 - .2, y1, 1)):
+    for (a, c, yy, out) in ((x0 + .2, x1 - .2, y0, -1), (x0 + .2, x1 - .2, y1, 1), (x0 + .2, x1 - .2, y0, 1), (x0 + .2, x1 - .2, y1, -1)):   # both faces
         n = int((c - a) / .32)
         for k in range(n):
             for r in range(8):
@@ -505,7 +506,7 @@ def roof():
                 o = len(vs)
                 vs += [(u - .07, yy + out * .025, z - .07), (u + .07, yy + out * .025, z - .07), (u + .07, yy + out * .025, z + .07), (u - .07, yy + out * .025, z + .07)]
                 fs.append((o, o + 1, o + 2, o + 3))
-    for (xx, a, c, out) in ((x1, y0 + .2, y1 - .2, 1), (x0, y0 + .2, y1 - .2, -1)):
+    for (xx, a, c, out) in ((x1, y0 + .2, y1 - .2, 1), (x0, y0 + .2, y1 - .2, -1), (x1, y0 + .2, y1 - .2, -1), (x0, y0 + .2, y1 - .2, 1)):
         n = int((c - a) / .32)
         for k in range(n):
             for r in range(8):
