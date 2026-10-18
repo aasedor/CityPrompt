@@ -26,7 +26,7 @@ MR = 2.6                                        # mansard rise above EAVE + .3
 MRUN = 1.2                                      # mansard slope run from the wall line
 BAYS = (-4.2, -2.1, 0.0, 2.1, 4.2)
 EPS = .002
-PALETTE = dict(wall=(.52, .42, .29), joint=(.68, .62, .52), rubbed=(.55, .37, .26), trim=(.94, .94, .92),
+PALETTE = dict(wall=(.52, .42, .29), joint=(.68, .62, .52), rubbed=(.60, .48, .34), trim=(.94, .94, .92),
     pale=(.88, .88, .86), stone=(.84, .82, .76), roof=(.33, .36, .40), lead=(.42, .44, .46), sand=(.66, .62, .56),
     foundation=(.50, .42, .32), glass=(.22, .26, .29), hardware=(.07, .07, .08), interior=(.84, .80, .74),
     floor=(.58, .48, .38), timber=(.46, .34, .22), door=(.08, .09, .10), planting=(.30, .46, .20),
@@ -51,8 +51,12 @@ def manifest(version):
     for c in cams:                       # the locked front and oblique look from the south-east
         if c['name'] == 'front':
             c['location'] = (6.5, -15.0, 1.6); c['target'] = (-.5, -4.5, 6.8); c['lens'] = 24; c['whole'] = False
-        elif c['name'] == 'front_corner':
-            lx, ly, lz = c['location']; c['location'] = (-lx, ly, lz)
+        elif c['name'] == 'front_corner':                                      # the locked oblique: close and high from the south-east
+            c.update(location=(17.0, -24.0, 20.0), target=(0.0, -1.0, 6.5), lens=35, whole=False)
+        elif c['name'] == 'aerial':
+            c.update(location=(12.0, -18.0, 30.0), target=(0.0, 0.0, 6.0), lens=35, whole=False)
+        elif c['name'] == 'left_side':                                        # over the lower neighbour, from the north-west
+            c.update(location=(-24.0, 14.0, 18.0), target=(0.0, 0.0, 7.0), lens=35, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -395,12 +399,24 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 ZM = EAVE + .3 + MR                             # top of the mansard, the flat lead roof
 
 
+ARCH = Batch()                                  # gauged flat arches, flushed once per elevation
+
+
+def flat_arch(f, h, rise=.34, splay=.16):
+    """Gauged flat arch: a flush splayed trapezoid of rubbed brick seated on the opening head, 5 mm proud."""
+    top = h['z'] + h['h']
+    pts = []
+    for z, half in ((top, h['w'] / 2), (top + rise, h['w'] / 2 + splay)):
+        pts += [f.p(h['u'] - half, -.005, z), f.p(h['u'] + half, -.005, z), f.p(h['u'] + half, 0.0, z), f.p(h['u'] - half, 0.0, z)]
+    ARCH._hex('rubbed', pts)
+
+
 def sash(m, f, h, occupied='room', lite=False):
-    """Six-over-six (or nine-over-nine when tall) white sash, stone sill, gauged brick flat arch over."""
-    framed(m, f, h, cols=3, rows=4 if h['h'] < 2.2 else 6, inset=.12, occupied=occupied, lite=lite)
+    """Six-over-six white sash, stone sill, gauged brick flat arch over."""
+    framed(m, f, h, cols=3, rows=4, inset=.12, occupied=occupied, lite=lite)
     m.box('trim', h['u'], .09, h['z'] + h['h'] / 2, h['w'] - .1, .1, .07)                    # meeting rail
     m.box('stone', h['u'], -.04, h['z'] - .06, h['w'] + .16, .14, .1)
-    m.box('rubbed', h['u'], -.03, h['z'] + h['h'] + .175, h['w'] + .3, .06, .34)
+    flat_arch(f, h)
 
 
 def south_face():
@@ -434,7 +450,7 @@ def south_face():
     m.box('stone', 0.0, -.08, 3.4, 2.1, .16, .3)                                             # frieze
     m.box('stone', 0.0, -.3, F1 - .02, 2.4, .6, .14)                                          # cornice and balconette slab
     framed(m, f, french, cols=2, rows=5, inset=.12, occupied='drawing room', kind='french window')
-    m.box('rubbed', 0.0, -.03, french['z'] + french['h'] + .175, french['w'] + .3, .06, .34)
+    flat_arch(f, french)
     for s in (-1, 1):
         m.box('hardware', s * 1.1, -.55, F1 + .5, .04, .5, .04)
     m.box('hardware', 0.0, -.58, F1 + 1.0, 2.24, .04, .045)
@@ -442,13 +458,14 @@ def south_face():
     for i in range(23):
         m.box('hardware', -1.1 + 2.2 * i / 22, -.58, F1 + .57, .018, .018, .86)
     m.flush('south')
+    ARCH.flush('south arches')
     b = Batch()
     b.box('stone', 0.0, Y0 - .3, G0 / 2, 1.9, .6, G0)                                          # door step
     b.box('stone', 0.0, Y0 - .55, G0 / 4, 2.1, .3, G0 / 2)
     b.flush('door step')
 
 
-def side_parapet(name, xa, xb):
+def side_parapet(name, xa, xb, stacks):
     """Side wall above the eave: follows the mansard up and runs flat to the rear, stone coping on top."""
     pts = [(Y0 + T, EAVE), (Y0 + T, EAVE + .45), (Y0 + MRUN + .1, ZM + .35), (Y1 - T, ZM + .35), (Y1 - T, EAVE)]
     C.prism(name, pts, 'x', xa, xb, 'wall', 'parapets')
@@ -458,26 +475,31 @@ def side_parapet(name, xa, xb):
     b.box('stone', xm, (Y0 + MRUN + .1 + Y1 - T) / 2, ZM + .41, T + .1, Y1 - T - Y0 - MRUN - .1 + .02, .12)
     # A long stack astride the parapet with a row of clay pots along it.
     xs = xm + (.03 - .44 + T / 2 if xa > 0 else .44 - .03 - T / 2)                     # outer face 3 cm proud of the side wall
-    b.box('brick', xs, .3, ZM + .825, .88, 2.6, 1.75)
-    b.box('stone', xs, .3, ZM + 1.76, 1.0, 2.72, .12)
-    for k in range(5):
-        b.box('pot', xs, .3 - 1.04 + .52 * k, ZM + 2.12, .2, .2, .6)
+    for yc, L, pots in stacks:                                                               # long stacks with rows of pots (top view)
+        b.box('brick', xs, yc, ZM + .825, .88, L, 1.75)
+        b.box('stone', xs, yc, ZM + 1.76, 1.0, L + .12, .12)
+        for k in range(pots):
+            b.box('pot', xs, yc - L / 2 + L * (k + .5) / pots, ZM + 2.12, .2, .2, .6)
     b.flush(name)
 
 
 def side_and_rear():
     hd = (Y1 - Y0) / 2
     e = C.Face((X1, 0, 0), (0, 1, 0), (-1, 0, 0), 'east')
-    hs = [hole(f'east sash f{k} {i}', u, z, .95, hh) for k, (z, hh) in enumerate(((1.0, 2.0), (F1 + .45, 2.2), (F2 + .55, 1.6))) for i, u in enumerate((-2.2, 1.8))]
+    hs = [hole(f'east sash f{k}', .6, z, .7, hh) for k, (z, hh) in enumerate(((1.0, 2.0), (F1 + .45, 2.2), (F2 + .55, 1.6)))]  # one column of narrow sashes
     e.wall('east carrier', -hd + T, hd - T, 0.0, EAVE, depth=T, role='wall', holes=hs)
     G.brick_courses(e, -hd + T + .02, hd - T - .02, .55, EAVE - .02, hs, spacing=.16)
     m = Merge(e)
     m.box('brick', 0.0, -.03, .26, 2 * hd - 2 * T + .02, .06, .52)
     m.box('stone', 0.0, -.05, F1 - .12, 2 * hd - 2 * T + .02, .1, .2)
     for h in hs:
-        sash(m, e, h)
+        framed(m, e, h, cols=2, rows=4, inset=.12, occupied='stair')
+        m.box('trim', h['u'], .09, h['z'] + h['h'] / 2, h['w'] - .1, .1, .07)
+        m.box('stone', h['u'], -.04, h['z'] - .06, h['w'] + .16, .14, .1)
+        flat_arch(e, h, splay=.12)
     m.box('hardware', -hd + T + .25, -.07, EAVE / 2, .11, .11, EAVE)                         # downpipe at the front corner
     m.flush('east')
+    ARCH.flush('east arches')
     w = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west')
     hs = [hole(f'west sash f{k}', 1.5, z, .95, hh) for k, (z, hh) in enumerate(((F1 + .45, 2.2), (F2 + .55, 1.6)))]
     w.wall('west carrier', -hd + T, hd - T, 0.0, EAVE, depth=T, role='wall', holes=hs)
@@ -486,42 +508,46 @@ def side_and_rear():
     for h in hs:
         sash(m, w, h, lite=True)
     m.flush('west')
-    side_parapet('East parapet', X1 - T, X1)
-    side_parapet('West parapet', X0, X0 + T)
+    ARCH.flush('west arches')
+    side_parapet('East parapet', X1 - T, X1, [(-1.5, 3.4, 5)])
+    side_parapet('West parapet', X0, X0 + T, [(-1.2, 3.1, 4), (2.6, 3.1, 4)])
     n = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'north')
-    hs = [hole(f'rear sash f{k} {i}', u, z, 1.0, hh) for k, (z, hh) in enumerate(((1.0, 2.0), (F1 + .45, 2.3), (F2 + .55, 1.7), (EAVE + .55, 1.4))) for i, u in enumerate((-2.1, 2.1))]
+    # Rear: the east column clears the low extension, the west column the hipped wing (rear faces u = -x).
+    hs = [hole(f'rear sash east f{k}', -2.1, z, 1.0, hh) for k, (z, hh) in enumerate(((F1 + .45, 2.3), (F2 + .55, 1.7), (EAVE + .55, 1.4)))] + \
+         [hole(f'rear sash west f{k}', 2.1, z, 1.0, hh) for k, (z, hh) in enumerate(((F2 + .55, 1.7), (EAVE + .55, 1.4)))]
     n.wall('north carrier', -X1, -X0 - EPS, 0.0, ZM + .35, depth=T, role='wall', holes=hs)
+    G.brick_courses(n, -X1 + .02, -X0 - .02, .55, ZM + .3, hs, spacing=.32)
     m = Merge(n)
     for h in hs:
-        sash(m, n, h, lite=True)
+        sash(m, n, h)
     m.box('stone', 0.0, T / 2 - .03, ZM + .41, X1 - X0 + .1, T + .16, .12)
     m.flush('north')
+    ARCH.flush('north arches')
 
 
 def roof_and_inside():
     x0, x1 = X0 + T + .01, X1 - T - .01
     strip('Slate mansard', [(x0, Y0 + T + .02), (x1, Y0 + T + .02)], [(x1, Y0 + MRUN + .1), (x0, Y0 + MRUN + .1)][::-1],
           EAVE + .3, ZM, 'roof', 'roof', closed=False)
-    C.box('Lead flat', ((x0 + x1) / 2, (Y0 + MRUN + .1 + Y1 - T) / 2, ZM - .1), (x1 - x0, Y1 - T - Y0 - MRUN - .1, .2), 'lead', 'roof', 0)
+    # Upper roof: two shallow slate planes meeting at a mid-depth ridge, then a narrow lead strip at the rear.
+    ya, yr, yb = Y0 + MRUN + .1, .4, Y1 - 1.6
+    plate_x('Upper slate front', (ya, ZM), (yr, ZM + .28), x0, x1)
+    plate_x('Upper slate rear', (yr, ZM + .28), (yb, ZM), x0, x1)
+    C.box('Rear lead strip', ((x0 + x1) / 2, (yb + Y1 - T) / 2, ZM - .1), (x1 - x0, Y1 - T - yb, .2), 'lead', 'roof', 0)
     b = Batch()
-    for k in range(9):                                                                       # lead rolls on the flat
-        b.box('lead', x0 + (x1 - x0) * (k + .5) / 9, (Y0 + MRUN + .1 + Y1 - T) / 2, ZM + .03, .06, Y1 - T - Y0 - MRUN - .2, .06)
-    b.box('pale', -2.6, 2.6, ZM + .18, 1.2, 1.6, .36)                                         # skylight upstand and glazing
-    b.box('glass', -2.6, 2.6, ZM + .38, 1.0, 1.4, .05)
-    b.flush('lead roof')
+    b.box('pale', -2.6, (yb + Y1 - T) / 2, ZM + .14, 1.4, .9, .28)                            # rooflight on the lead strip, west half
+    b.box('glass', -2.6, (yb + Y1 - T) / 2 - .02, ZM + .3, 1.2, .7, .04)
+    b.beam('stone', (x0, yr, ZM + .3), (x1, yr, ZM + .3), .16, .08)                            # ridge capping
+    b.flush('upper roof')
     for u in BAYS:                                                                           # five dormers on the mansard slope
         dormer(u)
-    # Small two-storey rear wing with a hipped roof, at the west end of the rear.
+    # Rear: a two-storey hipped wing on the west half, a one-storey parapeted extension across the east half.
     wx0, wx1, wy1 = X0 + .4, X0 + 4.6, Y1 + 2.8
-    C.box('Rear wing', ((wx0 + wx1) / 2, (Y1 + wy1) / 2 - .05, 3.6), (wx1 - wx0, wy1 - Y1 + .1, 7.2), 'wall', 'rear wing', 0)
+    rear_block('Rear wing', wx0, wx1, Y1, wy1, 7.0, [(1.0, 2.0), (F1 + .4, 2.1)])
     strip('Rear wing roof', [(wx0 - .25, Y1 - .05), (wx1 + .25, Y1 - .05), (wx1 + .25, wy1 + .25), (wx0 - .25, wy1 + .25)],
           [((wx0 + wx1) / 2 - .6, Y1 + 1.4), ((wx0 + wx1) / 2 + .6, Y1 + 1.4), ((wx0 + wx1) / 2 + .6, Y1 + 1.41), ((wx0 + wx1) / 2 - .6, Y1 + 1.41)],
-          7.2 - .15, 8.9, 'roof', 'rear wing')
-    b = Batch()
-    for z in (1.0, F1 + .4):
-        b.box('glass', (wx0 + wx1) / 2, wy1 + .02, z + 1.0, 1.0, .04, 1.9)
-        b.box('trim', (wx0 + wx1) / 2, wy1 + .03, z - .05, 1.2, .08, .1)
-    b.flush('rear wing')
+          7.0 - .15, 7.9, 'roof', 'rear wing')
+    rear_block('Rear extension', wx1, X1, Y1, Y1 + 2.6, 3.6, [(1.0, 2.0)], parapet=True)
     for z in (F1, F2, EAVE):
         C.box(f'Floor {z:.1f}', (0, 0, z - .12), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .24), 'floor', 'inside', 0)
     C.box('Ground floor', (0, 0, G0 - .1), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .2), 'floor', 'inside', 0)
@@ -533,15 +559,44 @@ def roof_and_inside():
     C.CONTACTS.append(dict(name='Brick walls from grade on a plinth; mansard behind the parapet; stacks astride the side parapets', eave_m=EAVE))
 
 
+def plate_x(name, a, c, x0, x1, t=.16, role='roof', module='roof'):
+    """Closed sloped plate from (y, z) a to (y, z) c, extruded along x; its ends are thin faces."""
+    vs = []
+    for (y, z) in (a, c):
+        for x in (x0, x1):
+            vs += [(x, y, z), (x, y, z - t)]
+    fs = [(0, 2, 6, 4), (1, 5, 7, 3), (0, 1, 3, 2), (4, 6, 7, 5), (0, 4, 5, 1), (2, 3, 7, 6)]
+    return C.mesh(name, vs, fs, role, module)
+
+
+def rear_block(name, xa, xb, ya, yb, h, wins, parapet=False):
+    """Rear wing or extension: a north wall with real cuts (white sashes, sills, flat arches) backed by a solid."""
+    f = C.Face((0, yb, 0), (-1, 0, 0), (0, -1, 0), name)
+    um = -(xa + xb) / 2
+    hs = [hole(f'{name} window {k}', um, z, .95, hh) for k, (z, hh) in enumerate(wins)]
+    f.wall(f'{name} wall', -xb, -xa - EPS, 0.0, h, depth=T, role='wall', holes=hs)
+    G.brick_courses(f, -xb + .02, -xa - .02, .55, h - .05, hs, spacing=.32)
+    m = Merge(f)
+    for hh in hs:
+        sash(m, f, hh)
+    if parapet:
+        m.box('stone', um, T / 2 - .03, h + .05, xb - xa + .06, T + .12, .1)
+    m.flush(name)
+    ARCH.flush(f'{name} arches')
+    C.box(f'{name} body', ((xa + xb) / 2, (ya - .1 + yb - T) / 2, h / 2), (xb - xa, yb - T - ya + .1, h), 'wall', 'rear', 0)
+    if parapet:
+        C.box(f'{name} lead', ((xa + xb) / 2, (ya + yb - T) / 2, h - .25), (xb - xa - .4, yb - T - ya - .2, .1), 'lead', 'rear', 0)
+
+
 def dormer(u):
-    w = .95
+    w = .85
     yf = Y0 + .55
     zb, zt = EAVE + .62, EAVE + 2.05
     b = Batch()
     for s in (-1, 1):                                                                        # slate cheeks
         b.box('roof', u + s * (w / 2 + .08), (yf + Y0 + MRUN + .5) / 2, (zb + zt) / 2, .16, Y0 + MRUN + .5 - yf, zt - zb)
     b.box('trim', u, yf + .06, zb + .07, w, .2, .14)                                          # sill
-    b.box('trim', u, yf + .06, zt - .08, w + .32, .2, .16)                                    # head
+    b.box('trim', u, yf + .06, zt - .08, w + .1, .2, .16)                                     # head
     for s in (-1, 1):
         b.box('trim', u + s * (w / 2 - .035), yf + .1, (zb + zt) / 2, .07, .08, zt - zb - .1)
     b.box('trim', u, yf + .1, (zb + zt) / 2 + .1, w - .1, .07, .05)
@@ -549,8 +604,7 @@ def dormer(u):
     b.box('glass', u, yf + .17, (zb + zt) / 2, w - .04, .01, zt - zb - .2)
     b.box('interior', u, (yf + .25 + Y0 + MRUN + .5) / 2, (zb + zt) / 2, w, Y0 + MRUN + .5 - yf - .25, zt - zb - .2)
     b.flush(f'dormer {u:+.1f}')
-    C.prism(f'Dormer cap {u:+.1f}', [(u - w / 2 - .22, zt), (u + w / 2 + .22, zt), (u, zt + .45)], 'y', yf - .06, Y0 + MRUN + .5, 'roof', 'dormers')
-    C.prism(f'Dormer pediment {u:+.1f}', [(u - w / 2 - .25, zt - .02), (u + w / 2 + .25, zt - .02), (u, zt + .47)], 'y', yf - .1, yf - .04, 'trim', 'dormers')
+    C.prism(f'Dormer lead top {u:+.1f}', [(yf - .12, zt), (Y0 + MRUN + .5, zt), (Y0 + MRUN + .5, zt + .2), (yf - .12, zt + .1)], 'x', u - w / 2 - .24, u + w / 2 + .24, 'lead', 'dormers')
 
 
 def site():
@@ -572,18 +626,39 @@ def site():
     b.box('pale', X1 + .9, Y0 - 3.2, 4.65, .3, .3, .3)
     b.flush('street')
     street_tree(X0 - 3.0, Y0 - 3.0, z=.12, height=11.0, spread=3.2)
-    # The lower stuccoed terrace beyond the gate, as context.
-    nx0, nx1 = X0 - 16.0, X0 - 2.5
-    C.box('Neighbour terrace', ((nx0 + nx1) / 2, Y0 + 5.5, 6.25), (nx1 - nx0, 9.0, 12.5), 'neighbour', 'context', 0)
+    # The lower Georgian terrace beyond the gate, as context: stucco ground storey, stock brick, slate roof, dormers, stacks.
+    nx0, nx1, ny0, ny1 = X0 - 16.0, X0 - 2.5, Y0 + 1.0, Y0 + 10.0
+    ne = 9.0
+    f = C.Face((0, ny0, 0), (1, 0, 0), (0, 1, 0), 'neighbour front')
+    us = [nx0 + 1.2 + i * 2.2 for i in range(6)]
+    lower = [hole(f'neighbour ground {i}', u, .9, .9, 2.0) for i, u in enumerate(us) if i != 2] + [hole('neighbour door', us[2], .3, 1.0, 2.5, kind='door')]
+    upper = [hole(f'neighbour f{k} {i}', u, z, .9, hh) for k, (z, hh) in enumerate(((F1 + .4, 2.1), (F2 + .1, 1.5))) for i, u in enumerate(us)]
+    f.wall('neighbour stucco storey', nx0, nx1 - EPS, 0.0, 3.8, depth=.3, role='stucco', holes=lower)
+    f.wall('neighbour brick storeys', nx0, nx1 - EPS, 3.8, ne, depth=.3, role='neighbour', holes=upper)
+    m = Merge(f)
+    for h in lower + upper:
+        if h.get('kind') == 'door':
+            m.box('door', h['u'], .16, h['z'] + h['h'] / 2, h['w'] - .02, .05, h['h'] - .02)
+            register(f, h, .14, 'neighbour door', 'context')
+        else:
+            framed(m, f, h, cols=3, rows=4, inset=.12, occupied='context', lite=True)
+    m.box('stone', (nx0 + nx1) / 2, -.06, ne - .1, nx1 - nx0 + .1, .14, .2)
+    m.flush('neighbour front')
+    C.box('Neighbour body', ((nx0 + nx1) / 2, (ny0 + .3 + ny1) / 2, ne / 2), (nx1 - nx0, ny1 - ny0 - .3, ne), 'neighbour', 'context', 0)
+    pitched_roof('Neighbour slate roof', nx0, nx1, ny0, ny1, ne, 2.6, hip_w=True, hip_e=True, axis='x', ov=.2, role='roof', module='context')
     b = Batch()
-    b.box('stucco', (nx0 + nx1) / 2, Y0 + .96, 1.9, nx1 - nx0 + .04, .1, 3.8)
-    for k, z in enumerate((1.0, F1 + .3, F2 + .4, 10.6)):
-        for i in range(6):
-            u = nx0 + 1.2 + i * 2.2
-            b.box('glass', u, Y0 + .88, z + .9, .9, .04, 1.7 if k < 3 else 1.2)
-            b.box('white', u, Y0 + .86, z - .05, 1.1, .06, .1)
-    b.box('stone', (nx0 + nx1) / 2, Y0 + .9, 12.4, nx1 - nx0, .3, .2)
-    b.flush('neighbour')
+    for u in us[1:5]:
+        yd = ny0 + 1.0
+        zd = ne + 2.6 * (1.0 / ((ny1 - ny0) / 2))
+        b.box('roof', u, yd + .6, zd + .45, 1.0, 1.4, .9)
+        b.box('trim', u, yd - .12, zd + .45, .8, .04, .7)
+        b.box('glass', u, yd - .15, zd + .45, .6, .02, .55)
+        b.box('lead', u, yd + .55, zd + .96, 1.2, 1.6, .12)
+    for x in (nx0 + 4.4, nx0 + 8.8):
+        b.box('brick', x, (ny0 + ny1) / 2, ne + 2.6 + .3, .8, 2.4, 1.4)
+        for k in range(4):
+            b.box('pot', x, (ny0 + ny1) / 2 - .9 + .6 * k, ne + 2.6 + 1.25, .2, .2, .5)
+    b.flush('neighbour roof')
 
 
 def build():
