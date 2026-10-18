@@ -21,9 +21,9 @@ X0, X1, Y0, Y1 = -15.0, 15.0, -12.5, 12.5      # 30 x 25 m upper block (top view
 T = .30
 G0 = .15
 Z1, Z2, Z3, ROOF = 5.6, 9.8, 14.0, 18.2        # ground floor, three lab floors, roof
-PARA = ROOF + .9
-SCREEN = (X0 + 3.0, X1 - 3.0, Y0 + 3.0, Y1 - 3.0)   # perforated plant screen set back from the edges
-SCREEN_H = 3.2
+PARA = ROOF + .35                               # thin parapet: the glass runs nearly to the roof edge
+SCREEN = (X0 + 1.4, X1 - 1.4, Y0 + 1.4, Y1 - 1.4)   # tall perforated plant screen close behind the edge walkway
+SCREEN_H = 3.8
 GX0 = X0 + 7.0                                  # ground floor starts east of the cantilever
 GY0 = Y0 + 2.4                                  # recessed south ground-floor glazing
 EXO = .7                                        # exoskeleton stand-off on the east face
@@ -33,7 +33,7 @@ PALETTE = dict(wall=(.90, .90, .89), joint=(.80, .80, .79), trim=(.82, .84, .85)
     foundation=(.46, .46, .45), glass=(.52, .62, .66), hardware=(.18, .19, .20),
     interior=(.86, .86, .84), floor=(.60, .60, .58), timber=(.50, .36, .22), blue=(.06, .30, .92),
     green=(.10, .72, .26), yellow=(.98, .80, .04), planting=(.28, .42, .18), soil=(.22, .16, .10),
-    concrete=(.66, .66, .64), white=(.94, .94, .93), steel=(.92, .92, .91), louvre=(.56, .58, .60),
+    concrete=(.66, .66, .64), white=(.94, .94, .93), steel=(.92, .92, .91), louvre=(.40, .42, .44),
     perf=(.80, .81, .82), asphalt=(.30, .30, .31), membrane=(.72, .72, .70), flue=(.74, .75, .76))
 
 
@@ -319,7 +319,7 @@ class Batch:
 def curtain(f, lo, hi, levels, tag, lite=False):
     """Curtain wall over the lab floors: a band hole per floor in a white spandrel carrier, glass, mullions every 1.5 m."""
     holes = [hole(f'{tag} glazing f{i}', (lo + hi) / 2, za + .3, hi - lo - .3, zb - za - .6, kind='band') for i, (za, zb) in enumerate(zip(levels, levels[1:]))]
-    f.wall(f'{tag} spandrel carrier', lo, hi - EPS, levels[0], levels[-1] + .9, depth=T, role='white', holes=holes)
+    f.wall(f'{tag} spandrel carrier', lo, hi - EPS, levels[0], PARA, depth=T, role='white', holes=holes)
     m = Merge(f)
     for h in holes:
         m.box('glass', h['u'], .12, h['z'] + h['h'] / 2, h['w'] - .02, .012, h['h'] - .02)
@@ -350,24 +350,24 @@ def upper_block():
         u = -hd + pitch * (i + .5)
         for k, (za, zb) in enumerate(zip(lv, lv[1:])):
             if 0 < i < bays - 1:                                         # full-bay louvres stacked in the middle bays
-                holes.append(hole(f'east louvre bay {i}-{k}', u, za + .25, pitch - .42, zb - za - .5, kind='louvre'))
+                holes.append(hole(f'east louvre bay {i}-{k}', u, za + .18, pitch - .3, zb - za - .36, kind='louvre'))
     e.wall('lab east panel carrier', -hd + T, hd - T, Z1 - .4, PARA, depth=T, role='white', holes=holes)
     m = Merge(e)
     for h in holes:
-        m.box('louvre', h['u'], .2, h['z'] + h['h'] / 2, h['w'] - .02, .04, h['h'] - .02)       # backing
+        m.box('louvre', h['u'], .12, h['z'] + h['h'] / 2, h['w'] - .02, .04, h['h'] - .02)      # backing
         nl = int(h['h'] / .24)
         for k in range(nl):                                               # horizontal blades filling the bay
-            m.box('louvre', h['u'], .1, h['z'] + .12 + (h['h'] - .24) * k / max(1, nl - 1), h['w'] - .04, .2, .07)
+            m.box('louvre', h['u'], -.02, h['z'] + .12 + (h['h'] - .24) * k / max(1, nl - 1), h['w'] - .04, .24, .07)   # blades flush with the face
         register(e, h, .1, 'louvre screen', 'plant and stair')
     for z in lv[1:-1]:
-        m.box('white', 0, -.04, z - .2, 2 * hd - 2 * T - .02, .1, .4)
+        m.box('steel', 0, -.04, z - .15, 2 * hd - 2 * T - .02, .1, .26)
     m.flush('lab east')
     for z in (Z2, Z3, ROOF):
         C.box('Lab floor slab', (0, 0, z - .15), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .3), 'floor', 'lab floors', 0)
     C.box('Lab first floor slab', (0, 0, Z1 - .2), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .4), 'floor', 'lab floors', 0)
     C.box('Roof membrane', (0, 0, ROOF + .01), (X1 - X0 - 2 * T - .02, Y1 - Y0 - 2 * T - .02, .02), 'membrane', 'roof', 0)
     # Angled cantilever soffit under the west end, and the white slab edge band along the street fronts.
-    C.prism('Cantilever soffit', [(X0, Z1 - .4), (GX0, Z1 - .4), (GX0, Z1 - 2.0)], 'y', Y0 + .02, Y1 - .02, 'white', 'cantilever')
+    C.prism('Cantilever soffit', [(X0 + .02, Z1 - .42), (GX0, Z1 - .42), (GX0, Z1 - 2.0)], 'y', Y0 + .05, Y1 - .05, 'white', 'cantilever')
     C.box('Street slab edge', (0, Y0 - .06, Z1 - .2), (X1 - X0, .12, .4), 'white', 'lab floors', 0)
     C.box('West slab edge', (X0 - .06, 0, Z1 - .2), (.12, Y1 - Y0 - .02, .4), 'white', 'lab floors', 0)
     # Colour-coded services behind the glass on every lab floor; benches.
@@ -407,8 +407,10 @@ def ground_floor():
     framed(m, s, door, cols=2, rows=1, inset=.14, occupied='lobby', kind='entry door')
     framed(m, s, transom, cols=2, rows=1, inset=.14, occupied='lobby')
     for e_ in (-1, 1):                                                    # white door portal, proud of the glazing
-        m.box('white', us[DB] + e_ * (bw / 2 - .05), -.2, (G0 + Z1 - .4) / 2, .3, .4, Z1 - .4 - G0)
-    m.box('white', us[DB], -.26, G0 + 3.0, bw + .2, .52, .25)                 # head proud of the posts
+        x_ = us[DB] + e_ * (bw / 2 - .05)
+        m.box('white', x_, -.22, (G0 + G0 + 2.875) / 2, .3, .4, 2.875)             # posts stop under the head and resume above it
+        m.box('white', x_, -.22, (G0 + 3.125 + Z1 - .4) / 2, .3, .4, Z1 - .4 - G0 - 3.125)
+    m.box('white', us[DB], -.26, G0 + 3.0, bw + .2, .48, .25)                 # head proud of the posts
     for h in glaze:
         framed(m, s, h, cols=2, rows=2, inset=.14, occupied='lobby')
     m.flush('ground south')
@@ -457,16 +459,16 @@ def exoskeleton():
     lv = [G0, Z1, Z2, Z3, ROOF]
     b = Batch()
     for i, y in enumerate(ys):
-        b.box('steel', xe, y, (G0 + PARA) / 2, .42, .42, PARA - G0)
+        b.box('steel', xe, y, (G0 + PARA + .2) / 2, .3, .3, PARA + .2 - G0)          # slender columns capped above the top beam
         for z in lv[1:]:
             if i:
-                b.box('steel', (X1 + xe) / 2 + .05, y, z, EXO - .1, .2, .2)                 # tie back to the slab edge
-    for z in lv[1:] + [PARA - .15]:
-        b.box('steel', xe, (Y0 - EXO + Y1) / 2, z, .3, Y1 - Y0 + EXO - .42, .3)
+                b.box('steel', (X1 + xe) / 2 + .05, y, z, EXO - .1, .14, .14)               # tie back to the slab edge
+    for z in lv[1:] + [PARA - .11]:
+        b.box('steel', xe, (Y0 - EXO + Y1) / 2, z, .22, Y1 - Y0 + EXO - .42, .22)
     # Corner bay on the south face: a column at the south-east corner line of the curtain wall.
-    b.box('steel', X1 - 2.5, Y0 - EXO, (G0 + PARA) / 2, .42, .42, PARA - G0)
+    b.box('steel', X1 - 2.5, Y0 - EXO, (G0 + PARA + .2) / 2, .3, .3, PARA + .2 - G0)
     for z in lv[1:]:
-        b.box('steel', (X1 - 2.5 + xe) / 2, Y0 - EXO, z, xe - X1 + 2.5 - .42, .3, .3)
+        b.box('steel', (X1 - 2.5 + xe) / 2, Y0 - EXO, z, xe - X1 + 2.5 - .3, .22, .22)
         b.box('steel', X1 - 2.5, Y0 - EXO / 2, z, .2, EXO - .1, .2)
     b.flush('exoskeleton')
     for i in (0, bays - 1):                                               # braced white end bays; no bracing at ground level
@@ -475,7 +477,7 @@ def exoskeleton():
             za, zb = lv[k] + .2, lv[k + 1] - .2
             if (i + k) % 2:
                 ya, yb = yb, ya
-            C.beam('Exoskeleton diagonal', (xe, ya, za), (xe, yb, zb), .22, .22, 'steel', 'exoskeleton')
+            C.beam('Exoskeleton diagonal', (xe, ya, za), (xe, yb, zb), .16, .16, 'steel', 'exoskeleton')
     C.CONTACTS.append(dict(name='Exoskeleton columns founded at grade, tied back to every slab edge, wrapping the south-east corner', standoff_m=EXO))
 
 
