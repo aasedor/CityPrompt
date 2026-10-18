@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "london_mews_house",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "london-mews-house-original-stable",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "london_mews_house",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "london-mews-house-original-stable",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/london-mews-house/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1447859,
+      "sha256": "8032e120df23417ef56d938d6ad1d832ba7fae7078241007eb56544166344a2d",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "london_mews_house",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "london-mews-house-original-stable",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/london-mews-house/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 1041599,
+      "sha256": "4514710e2328d10f443c0dbab37d3168d62e654d3d8f9e8146a9d30c54ac47c5",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "london_mews_house",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "london-mews-house-original-stable",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/london-mews-house/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 957191,
+      "sha256": "3a78fd0666cc8add5c001e2a9dac28e24e94f53780da2f260663ff3c0b803b5e",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

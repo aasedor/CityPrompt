@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "stepped_terraced_plaza",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "stepped_terraced_plaza_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "stepped_terraced_plaza",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "stepped_terraced_plaza_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/openspaces/stepped-terraced-plaza/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1223732,
+      "sha256": "ebc35d2d3930e520d789cf54d6ee47d3033d62604efb2b69fc0a71a2a4849025",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "stepped_terraced_plaza",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "stepped_terraced_plaza_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/openspaces/stepped-terraced-plaza/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 809953,
+      "sha256": "4b491e5419a8e2631744fa423c3f589ec099fb38c71ce242ed4a3a40c353039c",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "stepped_terraced_plaza",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "stepped_terraced_plaza_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/openspaces/stepped-terraced-plaza/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 802638,
+      "sha256": "dd114f5db2320dc9c89d43959d2c9c2c637c730a16bd0c3b10128e8a3a12c772",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

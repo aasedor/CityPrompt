@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "regency_stucco_terrace",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "regency-stucco-terrace-nash",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "regency_stucco_terrace",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "regency-stucco-terrace-nash",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/regency-stucco-terrace/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1326016,
+      "sha256": "7d8afe037a358b9216ad4955ee68a8afd4b3b5344b205ab941e2207ecc028074",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "regency_stucco_terrace",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "regency-stucco-terrace-nash",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/regency-stucco-terrace/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 940787,
+      "sha256": "58577ff931e7766baf78a204664d20417ef45002fd11446fecf3ea470c5b24be",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "regency_stucco_terrace",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "regency-stucco-terrace-nash",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/regency-stucco-terrace/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 886252,
+      "sha256": "15d256fb8ee3b91b77996995f0e0ce7394e521275432f14d6e500e6fecc83139",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

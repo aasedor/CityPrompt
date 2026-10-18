@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "outdoor_ice_rink",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "outdoor_ice_rink_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "outdoor_ice_rink",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "outdoor_ice_rink_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1338889,
+      "sha256": "9e5324878de2acef40874eaec1ef46ee98b23a122f52831167f13695dc7387e9",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "outdoor_ice_rink",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "outdoor_ice_rink_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 1024487,
+      "sha256": "851b6b96ca92b4f945038a748a5e5bf5672c1e4ac364196056c330020a19171d",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "outdoor_ice_rink",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "outdoor_ice_rink_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 950215,
+      "sha256": "5bf50ae904d4c38b0e5d1711cad9f60e5c6c92c525712d2628c246d87d3784fb",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

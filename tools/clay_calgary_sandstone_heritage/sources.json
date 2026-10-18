@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "calgary_sandstone_heritage",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "sandstone_romanesque_revival",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "calgary_sandstone_heritage",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "sandstone_romanesque_revival",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1406587,
+      "sha256": "629de326189254e092f55158bcf48ffa15404aef28ac7e6fc9f98272e322027d",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "calgary_sandstone_heritage",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "sandstone_romanesque_revival",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 955727,
+      "sha256": "2fdc718649d51b41c15b269b0aa3adc38d994e44a985905a776fa122d68de8c6",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "calgary_sandstone_heritage",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "sandstone_romanesque_revival",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 860843,
+      "sha256": "c73923f39bcfd440a6df2b7384cf9b15a0ffea08f6a2558600eabc1a5ec3539d",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

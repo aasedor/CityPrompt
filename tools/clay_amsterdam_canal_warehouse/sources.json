@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "amsterdam_canal_warehouse",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "canal_warehouse_spice",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "amsterdam_canal_warehouse",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "canal_warehouse_spice",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/amsterdam-canal-warehouse/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1458012,
+      "sha256": "313bbdcdc234d7774bd81399c4e1ff3377df2cfabcec399d08b3912f8aecfd24",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "amsterdam_canal_warehouse",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "canal_warehouse_spice",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/amsterdam-canal-warehouse/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 968518,
+      "sha256": "df416c6ee276cc79ade1515381dcf3d336e9a5c5fa3bdee3c588b4a376f5c12a",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "amsterdam_canal_warehouse",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "canal_warehouse_spice",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/amsterdam-canal-warehouse/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 899962,
+      "sha256": "a7565bc91fbc31759821dc59003bf072c11dd6d167f393f354a92dd3e284a86a",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

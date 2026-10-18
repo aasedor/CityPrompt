@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "georgian_terrace_house",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "georgian-terrace-house-early",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "georgian_terrace_house",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "georgian-terrace-house-early",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/georgian-terrace-house/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1696238,
+      "sha256": "0d0bfcc66e8b46e7f9661847041281ae2534dcd1b7fcd884f1c5c1dda044349d",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "georgian_terrace_house",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "georgian-terrace-house-early",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/georgian-terrace-house/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 1024378,
+      "sha256": "84d22818aebfd4b452116091b643aad181a18141f0311cbbd7cd714ea75ddb89",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "georgian_terrace_house",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "georgian-terrace-house-early",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/georgian-terrace-house/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 918332,
+      "sha256": "292db9f5bda226c3b59dd2ca9c2d828ee9be3b50f0852f11fb5fbbf70c6c82de",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}
