@@ -1,7 +1,7 @@
 # Mid-century CMU distribution warehouse with loading docks (RLASM v6.1 architectural clay)
 
 Candidate F1 of wave F of 2026-10-17, one of five catalogue types with no clay, runtime or
-seed-library model yet, chosen to replace the Beltline mid-rise slot that duplicated an existing model. State: **candidate under review**. Nothing here is keeper-approved,
+seed-library model yet, chosen to replace the Beltline mid-rise slot that duplicated an existing model. State: **PASS_ZERO_P0_P1 at v006 (independent review; not keeper-approved)**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,6 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 targets the P1)
+## Open blockers after v006 (passed)
 
-1. P1: the locked oblique shows three high windows on the east face; the render has two, leaving the north 40% of the face blank.
+None. The v006 independent review returned PASS_ZERO_P0_P1 (7 P2 polish notes remain: dock door lites, gaps between surrounds, canopy ribs, entry window lights, east window bars, front framing, low east window position). This is not keeper approval.
