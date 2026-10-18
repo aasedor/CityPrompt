@@ -67,3 +67,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (first build; the review drives v002)
+
+P0 an extra upper storey against the sources; left_side camera blocked by the west context box. P1 salmon brick reading as siding; coarse sashes; anchors; door and transom; door surround height; black stoop side; stoop rails; gable-roof void and gutter overrun; missing east cornice; east window schedule; entrance_stoop and stepped_gable framing
