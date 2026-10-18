@@ -68,8 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 targets every P1)
+## Open blockers after v003 (v004 targets both P1s)
 
-1. P1: dock doors and shelters still too tall for the wall (shelter tops about 68% of wall height against about 55%; door tops about 60% against about 43%).
-2. P1: the front camera looks almost straight at the south face; the east face is a sliver and the lower 40% of the frame is empty ground.
-3. P1: the grey cast-concrete dock base and the steel lip under each door are missing.
+1. P1: the dock shelters are too narrow and too far apart (gaps about 55% of a shelter width against about 7-18%; each shelter about 9% of the face against 13%).
+2. P1: the front camera is too close to the south-east corner and aimed down (horizon about 54% down against 73%; the bays fill 17% of the frame width against 31%).
