@@ -22,7 +22,7 @@ T = .30
 G0 = .15
 Z1, Z2, Z3, ROOF = 5.6, 9.8, 14.0, 18.2        # ground floor, three lab floors, roof
 PARA = ROOF + .35                               # thin parapet: the glass runs nearly to the roof edge
-SCREEN = (X0 + 1.4, X1 - 1.4, Y0 + 1.4, Y1 - 1.4)   # tall perforated plant screen close behind the edge walkway
+SCREEN = (X0 + 1.4, X1 - 1.4, Y0 + 2.8, Y1 - 1.4)   # tall perforated plant screen behind the edge walkway (wider on the south)
 SCREEN_H = 3.8
 GX0 = X0 + 7.0                                  # ground floor starts east of the cantilever
 GY0 = Y0 + 2.4                                  # recessed south ground-floor glazing
@@ -38,7 +38,7 @@ PALETTE = dict(wall=(.90, .90, .89), joint=(.80, .80, .79), trim=(.82, .84, .85)
 
 
 def manifest(version):
-    h = ROOF + SCREEN_H + 2.0
+    h = ROOF + 8.0                                 # stacks stand well above the screen
     cams = G.camera_roster(X1 - X0 + 4.0, Y1 - Y0 + 4.0, h, [
         ('facade_close', (-2.0, -34.0, 12.0), (-2.0, Y0, 12.0), 45),
         ('architecture_close', (32.0, -26.0, 12.0), (X1, -4.0, 11.0), 45),
@@ -65,7 +65,7 @@ def manifest(version):
             facade='curtain wall with white slab bands on the south, west and north; white steel exoskeleton with alternating diagonals and grey louvre infill on the east, wrapping the south-east corner; V-pilotis at the street; angled cantilever soffit at the west',
             levels_m=[G0, Z1, Z2, Z3, ROOF], parapet_m=PARA,
             inferred='storey heights and interiors are teaching assumptions; the north face is not visible in any source and repeats the curtain-wall grammar'),
-        roof_contract=dict(type='flat roof with an edge walkway, a perforated metal plant screen, a penthouse, ducts and exhaust stacks', datum_m=ROOF, crowns_m=[PARA, ROOF + SCREEN_H, ROOF + 5.0]),
+        roof_contract=dict(type='flat roof with an edge walkway, a perforated metal plant screen, a penthouse, ducts and exhaust stacks', datum_m=ROOF, crowns_m=[PARA, ROOF + SCREEN_H, ROOF + 7.6]),
         identity_contract=dict(owner='glazed lab floors with coloured services behind glass, cantilever over V-pilotis, white steel exoskeleton with louvre infill, perforated rooftop plant screen with stacks'),
         material_contract=dict(profile='source-palette clay: clear glass, white steel and slab bands, grey louvres, concrete base walls, perforated aluminium screen, blue, green and yellow ducts', textured_keeper=False),
         programme_contract=dict(storeys=4, ground='lobby behind the pilotis, service bays east', labs='open laboratories with benches and coloured service runs', roof='air handling, exhaust stacks'),
@@ -318,7 +318,7 @@ class Batch:
 
 def curtain(f, lo, hi, levels, tag, lite=False):
     """Curtain wall over the lab floors: a band hole per floor in a white spandrel carrier, glass, mullions every 1.5 m."""
-    holes = [hole(f'{tag} glazing f{i}', (lo + hi) / 2, za + .3, hi - lo - .3, zb - za - .6, kind='band') for i, (za, zb) in enumerate(zip(levels, levels[1:]))]
+    holes = [hole(f'{tag} glazing f{i}', (lo + hi) / 2, za + .12, hi - lo - .3, zb - za - .24, kind='band') for i, (za, zb) in enumerate(zip(levels, levels[1:]))]   # one pane per storey, hairline floor joints
     f.wall(f'{tag} spandrel carrier', lo, hi - EPS, levels[0], PARA, depth=T, role='white', holes=holes)
     m = Merge(f)
     for h in holes:
@@ -327,7 +327,6 @@ def curtain(f, lo, hi, levels, tag, lite=False):
         n = max(1, round(h['w'] / (1.5 if not lite else 3.0)))
         for k in range(1, n):
             m.box('trim', h['u'] - h['w'] / 2 + h['w'] * k / n, .07, h['z'] + h['h'] / 2, .06, .08, h['h'])
-        m.box('trim', h['u'], .07, h['z'] + h['h'] * .5, h['w'] - .02, .08, .05)
     m.flush(tag)
     return holes
 
@@ -343,7 +342,7 @@ def upper_block():
     curtain(n, -(X1 - X0) / 2, (X1 - X0) / 2, lv, n.label, lite=True)
     # East: white panels and grey vertical louvre infill behind the exoskeleton.
     e = C.Face((X1, 0, 0), (0, 1, 0), (-1, 0, 0), 'lab east')
-    bays = 5
+    bays = 4
     pitch = (Y1 - Y0) / bays
     holes = []
     for i in range(bays):
@@ -364,10 +363,10 @@ def upper_block():
     m.flush('lab east')
     for z in (Z2, Z3, ROOF):
         C.box('Lab floor slab', (0, 0, z - .15), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .3), 'floor', 'lab floors', 0)
-    C.box('Lab first floor slab', (0, 0, Z1 - .2), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .4), 'floor', 'lab floors', 0)
+    C.box('Lab first floor slab', ((X0 + X1 - T) / 2, 0, Z1 - .2), (X1 - T - X0, Y1 - Y0, .4), 'floor', 'lab floors', 0)   # out to the faces: no gap at the corners
     C.box('Roof membrane', (0, 0, ROOF + .01), (X1 - X0 - 2 * T - .02, Y1 - Y0 - 2 * T - .02, .02), 'membrane', 'roof', 0)
     # Angled cantilever soffit under the west end, and the white slab edge band along the street fronts.
-    C.prism('Cantilever soffit', [(X0 + .02, Z1 - .42), (GX0, Z1 - .42), (GX0, Z1 - 2.0)], 'y', Y0 + .05, Y1 - .05, 'white', 'cantilever')
+    C.prism('Cantilever soffit', [(X0 + .02, Z1 - .38), (GX0, Z1 - .38), (GX0, Z1 - 2.0)], 'y', Y0 + .05, Y1 - .05, 'white', 'cantilever')   # bedded into the slab
     C.box('Street slab edge', (0, Y0 - .06, Z1 - .2), (X1 - X0, .12, .4), 'white', 'lab floors', 0)
     C.box('West slab edge', (X0 - .06, 0, Z1 - .2), (.12, Y1 - Y0 - .02, .4), 'white', 'lab floors', 0)
     # Colour-coded services behind the glass on every lab floor; benches.
@@ -454,7 +453,7 @@ def ground_floor():
 def exoskeleton():
     """White steel exoskeleton on the east face, wrapping the south-east corner: columns, floor beams, alternating diagonals."""
     xe = X1 + EXO
-    bays = 5
+    bays = 4
     ys = [Y0 - EXO] + [Y0 + (Y1 - Y0) * i / bays for i in range(1, bays + 1)]     # the first column turns the south-east corner
     lv = [G0, Z1, Z2, Z3, ROOF]
     b = Batch()
@@ -492,7 +491,7 @@ def roof():
             if c == a and k in (0, n):
                 continue                                                   # corner posts belong to the long runs (no duplicate boxes)
             px, py = (a + (c - a) * k / n, d) if c > a else (a, d + (e_ - d) * k / n)
-            b.box('steel', px, py, ROOF + SCREEN_H / 2, .12, .12, SCREEN_H)
+            b.box('steel', px, py, ROOF + (SCREEN_H + .08) / 2, .12, .12, SCREEN_H + .08)   # posts stand proud of the panels
         if c > a:                                                         # long runs pass the corners, short runs butt them
             b.box('perf', (a + c) / 2, d, ROOF + .2 + (SCREEN_H - .2) / 2, c - a + .04, .04, SCREEN_H - .2)
         else:
@@ -518,18 +517,18 @@ def roof():
                 fs.append((o, o + 1, o + 2, o + 3))
     C.mesh('Plant screen perforations', vs, fs, 'hardware', 'plant screen')
     b = Batch()
-    b.box('pale', 0.0, 1.0, ROOF + 1.2, 12.0, 9.0, 2.4)                                   # penthouse
-    for x, y in ((-3.5, -1.0), (2.0, -1.0), (4.0, 3.5)):
+    b.box('pale', 0.0, 1.0, ROOF + 1.2, 19.0, 12.0, 2.4)                                  # penthouse, about 70 x 54% of the screened area
+    for x, y in ((-6.0, -2.0), (-1.5, -2.0), (3.0, -2.0), (-4.0, 4.0), (1.0, 4.0), (6.0, 4.0)):
         b.box('white', x, y, ROOF + 2.6, 1.6, 1.4, .4)
-    for (cx, cy, sx, sy) in ((-8.5, 6.6, 6.0, 1.2), (2.0, 6.8, 9.0, 1.2), (8.6, 0.0, 1.2, 9.0), (-8.6, -1.0, 1.2, 7.0), (-1.0, -6.8, 10.0, 1.2)):
-        b.box('pale', cx, cy, ROOF + .7, sx, sy, 1.2)                                         # duct runs and air handlers
+    for (cx, cy, sx, sy) in ((0.0, -7.0, 21.8, 1.0), (0.0, 8.4, 21.8, 1.0), (-10.4, .7, 1.0, 14.4), (10.4, .7, 1.0, 14.4)):
+        b.box('pale', cx, cy, ROOF + .7, sx, sy, 1.2)                                         # a continuous duct loop round the penthouse
     b.flush('roof plant')
-    for (gx, gy, axis) in ((-6.5, 7.6, 'x'), (9.6, 3.8, 'y'), (2.0, -8.4, 'x')):
+    for (gx, gy, axis) in ((-6.5, 9.4, 'x'), (11.8, 3.8, 'y'), (2.0, -8.6, 'x'), (-11.8, 0.0, 'y')):   # four clusters of three
         for k in range(3):
             x = gx + (k - 1) * 1.1 if axis == 'x' else gx
             y = gy if axis == 'x' else gy + (k - 1) * 1.1
-            C.rod('Exhaust stack', (x, y, ROOF), (x, y, ROOF + 4.8), .38, 'flue', 'stacks', 16)
-            C.rod('Exhaust stack cap', (x, y, ROOF + 4.8), (x, y, ROOF + 4.9), .42, 'hardware', 'stacks', 16)
+            C.rod('Exhaust stack', (x, y, ROOF), (x, y, ROOF + 7.5), .38, 'flue', 'stacks', 16)       # well above the screen
+            C.rod('Exhaust stack cap', (x, y, ROOF + 7.5), (x, y, ROOF + 7.6), .42, 'hardware', 'stacks', 16)
     # Parapet with a pale coping on the outer edge.
     for (cx, cy, sx, sy) in ((0, Y0 + T / 2 - .01, X1 - X0 + .04, T + .02), (0, Y1 - T / 2 + .01, X1 - X0 + .04, T + .02),
                              (X0 + T / 2 - .01, 0, T + .02, Y1 - Y0 - 2 * T), (X1 - T / 2 + .01, 0, T + .02, Y1 - Y0 - 2 * T)):
