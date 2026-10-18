@@ -1,0 +1,4971 @@
+{
+  "candidate": "clay-regency-stucco-terrace-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 135,
+    "vertices": 36252,
+    "polygons": 55402,
+    "triangles": 55402,
+    "path": "clay-regency-stucco-terrace-clay-v001-authoring.blend",
+    "bytes": 4776404,
+    "sha256": "215d4f153da5e82a5a1fde43b76f79fe1e129b6ebf863dfef0e76f46fa71542f"
+  },
+  "runtime": {
+    "path": "clay-regency-stucco-terrace-clay-v001.glb",
+    "bytes": 2932464,
+    "sha256": "3b97d5fabfcc6629ed5ccb3ac6e5aabc911be2eb2896d17a453f04b321e588d4",
+    "meshes": 24,
+    "materials": 24,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 24,
+    "vertices": 36252,
+    "polygons": 55402,
+    "triangles": 55402
+  },
+  "original_bounds_m": [
+    [
+      -40.0,
+      -32.20000076293945,
+      0.0
+    ],
+    [
+      40.0,
+      29.899999618530273,
+      18.670000076293945
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -40.0,
+      -32.20000076293945,
+      0.0
+    ],
+    [
+      40.0,
+      29.899999618530273,
+      18.670000076293945
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 40.0,
+    "depth": 34.0,
+    "height": 18.599999999999998
+  },
+  "native_dimensions_m": {
+    "width": 80.0,
+    "depth": 62.10000038146973,
+    "height": 18.670000076293945
+  },
+  "native_bottom_center_m": [
+    0.0,
+    -1.1500005722045898,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 10,
+    "joint": 7,
+    "stone": 14,
+    "trim": 8,
+    "pale": 1,
+    "roof": 2,
+    "lead": 9,
+    "foundation": 3,
+    "glass": 8,
+    "hardware": 4,
+    "interior": 1,
+    "floor": 9,
+    "timber": 12,
+    "door": 3,
+    "planting": 9,
+    "concrete": 1,
+    "white": 6,
+    "asphalt": 3,
+    "brick": 6,
+    "pot": 3,
+    "paving": 3,
+    "area": 1,
+    "neighbour": 6,
+    "nroof": 6
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/porch_balcony.png",
+    "renders/giant_order.png",
+    "renders/end_pediment.png",
+    "renders/mansard_dormers.png",
+    "renders/east_side.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front_corner": {
+      "xmin": 0.12025689333677292,
+      "xmax": 0.9165104627609253,
+      "ymin": 0.12683387100696564,
+      "ymax": 0.6623649001121521
+    },
+    "aerial": {
+      "xmin": 0.12673668563365936,
+      "xmax": 0.8336500525474548,
+      "ymin": 0.08002448081970215,
+      "ymax": 0.690522313117981
+    },
+    "top": {
+      "xmin": 0.10819677263498306,
+      "xmax": 0.8918032050132751,
+      "ymin": 0.07946451753377914,
+      "ymax": 0.8904972076416016
+    },
+    "left_side": {
+      "xmin": 0.15983057022094727,
+      "xmax": 0.9046281576156616,
+      "ymin": 0.3343049883842468,
+      "ymax": 0.6340364217758179
+    },
+    "right_side": {
+      "xmin": 0.09537181258201599,
+      "xmax": 0.8401694297790527,
+      "ymin": 0.3343049883842468,
+      "ymax": 0.631554365158081
+    },
+    "rear": {
+      "xmin": 0.07658492773771286,
+      "xmax": 0.9234153628349304,
+      "ymin": 0.3453795313835144,
+      "ymax": 0.6293871402740479
+    },
+    "rear_side": {
+      "xmin": 0.09035486727952957,
+      "xmax": 0.8522440195083618,
+      "ymin": 0.2040395885705948,
+      "ymax": 0.6548130512237549
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Stucco walls from grade; order and entablature on the walls; mansard on the deck behind the balustrade",
+      "cornice_m": 13.0
+    },
+    {
+      "name": "Regency palace-front terrace block on three streets with terrace houses north",
+      "box": [
+        -20.0,
+        20.0,
+        -17.0,
+        17.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "south ground -18",
+      "face": "south",
+      "u": -18.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south first -18",
+      "face": "south",
+      "u": -18.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south second -18",
+      "face": "south",
+      "u": -18.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south ground -15",
+      "face": "south",
+      "u": -15.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south first -15",
+      "face": "south",
+      "u": -15.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south second -15",
+      "face": "south",
+      "u": -15.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south door -12",
+      "face": "south",
+      "u": -12.0,
+      "z": 0.6,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "entry door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south fanlight -12",
+      "face": "south",
+      "u": -12.0,
+      "z": 3.6,
+      "width": 1.4,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south first -12",
+      "face": "south",
+      "u": -12.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south second -12",
+      "face": "south",
+      "u": -12.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south ground -9",
+      "face": "south",
+      "u": -9.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south first -9",
+      "face": "south",
+      "u": -9.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south second -9",
+      "face": "south",
+      "u": -9.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south ground -6",
+      "face": "south",
+      "u": -6.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south first -6",
+      "face": "south",
+      "u": -6.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south second -6",
+      "face": "south",
+      "u": -6.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south ground -3",
+      "face": "south",
+      "u": -3.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south first -3",
+      "face": "south",
+      "u": -3.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south second -3",
+      "face": "south",
+      "u": -3.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south door +0",
+      "face": "south",
+      "u": 0.0,
+      "z": 0.6,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "entry door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south fanlight +0",
+      "face": "south",
+      "u": 0.0,
+      "z": 3.6,
+      "width": 1.4,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south first +0",
+      "face": "south",
+      "u": 0.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south second +0",
+      "face": "south",
+      "u": 0.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south ground +3",
+      "face": "south",
+      "u": 3.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south first +3",
+      "face": "south",
+      "u": 3.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south second +3",
+      "face": "south",
+      "u": 3.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south ground +6",
+      "face": "south",
+      "u": 6.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south first +6",
+      "face": "south",
+      "u": 6.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south second +6",
+      "face": "south",
+      "u": 6.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south ground +9",
+      "face": "south",
+      "u": 9.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south first +9",
+      "face": "south",
+      "u": 9.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south second +9",
+      "face": "south",
+      "u": 9.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south door +12",
+      "face": "south",
+      "u": 12.0,
+      "z": 0.6,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "entry door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south fanlight +12",
+      "face": "south",
+      "u": 12.0,
+      "z": 3.6,
+      "width": 1.4,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south first +12",
+      "face": "south",
+      "u": 12.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south second +12",
+      "face": "south",
+      "u": 12.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south ground +15",
+      "face": "south",
+      "u": 15.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south first +15",
+      "face": "south",
+      "u": 15.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south second +15",
+      "face": "south",
+      "u": 15.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south ground +18",
+      "face": "south",
+      "u": 18.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south first +18",
+      "face": "south",
+      "u": 18.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "south second +18",
+      "face": "south",
+      "u": 18.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east ground -15",
+      "face": "east",
+      "u": -15.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east first -15",
+      "face": "east",
+      "u": -15.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east second -15",
+      "face": "east",
+      "u": -15.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east ground -12",
+      "face": "east",
+      "u": -12.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east first -12",
+      "face": "east",
+      "u": -12.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east second -12",
+      "face": "east",
+      "u": -12.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east ground -9",
+      "face": "east",
+      "u": -9.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east first -9",
+      "face": "east",
+      "u": -9.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east second -9",
+      "face": "east",
+      "u": -9.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east ground -6",
+      "face": "east",
+      "u": -6.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east first -6",
+      "face": "east",
+      "u": -6.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east second -6",
+      "face": "east",
+      "u": -6.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east ground -3",
+      "face": "east",
+      "u": -3.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east first -3",
+      "face": "east",
+      "u": -3.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east second -3",
+      "face": "east",
+      "u": -3.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east door +0",
+      "face": "east",
+      "u": 0.0,
+      "z": 0.6,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "entry door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east fanlight +0",
+      "face": "east",
+      "u": 0.0,
+      "z": 3.6,
+      "width": 1.4,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east first +0",
+      "face": "east",
+      "u": 0.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east second +0",
+      "face": "east",
+      "u": 0.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east ground +3",
+      "face": "east",
+      "u": 3.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east first +3",
+      "face": "east",
+      "u": 3.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east second +3",
+      "face": "east",
+      "u": 3.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east ground +6",
+      "face": "east",
+      "u": 6.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east first +6",
+      "face": "east",
+      "u": 6.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east second +6",
+      "face": "east",
+      "u": 6.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east ground +9",
+      "face": "east",
+      "u": 9.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east first +9",
+      "face": "east",
+      "u": 9.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east second +9",
+      "face": "east",
+      "u": 9.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east ground +12",
+      "face": "east",
+      "u": 12.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east first +12",
+      "face": "east",
+      "u": 12.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east second +12",
+      "face": "east",
+      "u": 12.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east ground +15",
+      "face": "east",
+      "u": 15.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east first +15",
+      "face": "east",
+      "u": 15.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east second +15",
+      "face": "east",
+      "u": 15.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west ground -15",
+      "face": "west",
+      "u": -15.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west first -15",
+      "face": "west",
+      "u": -15.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west second -15",
+      "face": "west",
+      "u": -15.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west ground -12",
+      "face": "west",
+      "u": -12.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west first -12",
+      "face": "west",
+      "u": -12.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west second -12",
+      "face": "west",
+      "u": -12.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west ground -9",
+      "face": "west",
+      "u": -9.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west first -9",
+      "face": "west",
+      "u": -9.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west second -9",
+      "face": "west",
+      "u": -9.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west ground -6",
+      "face": "west",
+      "u": -6.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west first -6",
+      "face": "west",
+      "u": -6.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west second -6",
+      "face": "west",
+      "u": -6.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west ground -3",
+      "face": "west",
+      "u": -3.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west first -3",
+      "face": "west",
+      "u": -3.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west second -3",
+      "face": "west",
+      "u": -3.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west door -0",
+      "face": "west",
+      "u": -0.0,
+      "z": 0.6,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "entry door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west fanlight -0",
+      "face": "west",
+      "u": -0.0,
+      "z": 3.6,
+      "width": 1.4,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west first -0",
+      "face": "west",
+      "u": -0.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "french window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west second -0",
+      "face": "west",
+      "u": -0.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west ground +3",
+      "face": "west",
+      "u": 3.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west first +3",
+      "face": "west",
+      "u": 3.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west second +3",
+      "face": "west",
+      "u": 3.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west ground +6",
+      "face": "west",
+      "u": 6.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west first +6",
+      "face": "west",
+      "u": 6.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west second +6",
+      "face": "west",
+      "u": 6.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west ground +9",
+      "face": "west",
+      "u": 9.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west first +9",
+      "face": "west",
+      "u": 9.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west second +9",
+      "face": "west",
+      "u": 9.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west ground +12",
+      "face": "west",
+      "u": 12.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west first +12",
+      "face": "west",
+      "u": 12.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west second +12",
+      "face": "west",
+      "u": 12.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west ground +15",
+      "face": "west",
+      "u": 15.0,
+      "z": 1.1,
+      "width": 1.3,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west first +15",
+      "face": "west",
+      "u": 15.0,
+      "z": 5.15,
+      "width": 1.3,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west second +15",
+      "face": "west",
+      "u": 15.0,
+      "z": 8.899999999999999,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -20.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court south 0 f0",
+      "face": "court south",
+      "u": -3.6000000000000005,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court south 0 f1",
+      "face": "court south",
+      "u": -3.6000000000000005,
+      "z": 5.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court south 0 f2",
+      "face": "court south",
+      "u": -3.6000000000000005,
+      "z": 8.899999999999999,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court south 0 f3",
+      "face": "court south",
+      "u": -3.6000000000000005,
+      "z": 13.6,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court south 1 f0",
+      "face": "court south",
+      "u": 8.881784197001252e-16,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court south 1 f1",
+      "face": "court south",
+      "u": 8.881784197001252e-16,
+      "z": 5.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court south 1 f2",
+      "face": "court south",
+      "u": 8.881784197001252e-16,
+      "z": 8.899999999999999,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court south 1 f3",
+      "face": "court south",
+      "u": 8.881784197001252e-16,
+      "z": 13.6,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court south 2 f0",
+      "face": "court south",
+      "u": 3.5999999999999996,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court south 2 f1",
+      "face": "court south",
+      "u": 3.5999999999999996,
+      "z": 5.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court south 2 f2",
+      "face": "court south",
+      "u": 3.5999999999999996,
+      "z": 8.899999999999999,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court south 2 f3",
+      "face": "court south",
+      "u": 3.5999999999999996,
+      "z": 13.6,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court north 0 f0",
+      "face": "court north",
+      "u": -3.6000000000000005,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court north 0 f1",
+      "face": "court north",
+      "u": -3.6000000000000005,
+      "z": 5.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court north 0 f2",
+      "face": "court north",
+      "u": -3.6000000000000005,
+      "z": 8.899999999999999,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court north 0 f3",
+      "face": "court north",
+      "u": -3.6000000000000005,
+      "z": 13.6,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court north 1 f0",
+      "face": "court north",
+      "u": 8.881784197001252e-16,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court north 1 f1",
+      "face": "court north",
+      "u": 8.881784197001252e-16,
+      "z": 5.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court north 1 f2",
+      "face": "court north",
+      "u": 8.881784197001252e-16,
+      "z": 8.899999999999999,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court north 1 f3",
+      "face": "court north",
+      "u": 8.881784197001252e-16,
+      "z": 13.6,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court north 2 f0",
+      "face": "court north",
+      "u": 3.5999999999999996,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court north 2 f1",
+      "face": "court north",
+      "u": 3.5999999999999996,
+      "z": 5.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court north 2 f2",
+      "face": "court north",
+      "u": 3.5999999999999996,
+      "z": 8.899999999999999,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court north 2 f3",
+      "face": "court north",
+      "u": 3.5999999999999996,
+      "z": 13.6,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court west 0 f0",
+      "face": "court west",
+      "u": -2.0,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court west 0 f1",
+      "face": "court west",
+      "u": -2.0,
+      "z": 5.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court west 0 f2",
+      "face": "court west",
+      "u": -2.0,
+      "z": 8.899999999999999,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court west 0 f3",
+      "face": "court west",
+      "u": -2.0,
+      "z": 13.6,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court west 1 f0",
+      "face": "court west",
+      "u": 2.0,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court west 1 f1",
+      "face": "court west",
+      "u": 2.0,
+      "z": 5.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court west 1 f2",
+      "face": "court west",
+      "u": 2.0,
+      "z": 8.899999999999999,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court west 1 f3",
+      "face": "court west",
+      "u": 2.0,
+      "z": 13.6,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court west 2 f0",
+      "face": "court west",
+      "u": 6.0,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court west 2 f1",
+      "face": "court west",
+      "u": 6.0,
+      "z": 5.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court west 2 f2",
+      "face": "court west",
+      "u": 6.0,
+      "z": 8.899999999999999,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court west 2 f3",
+      "face": "court west",
+      "u": 6.0,
+      "z": 13.6,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court east 0 f0",
+      "face": "court east",
+      "u": -6.0,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court east 0 f1",
+      "face": "court east",
+      "u": -6.0,
+      "z": 5.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court east 0 f2",
+      "face": "court east",
+      "u": -6.0,
+      "z": 8.899999999999999,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court east 0 f3",
+      "face": "court east",
+      "u": -6.0,
+      "z": 13.6,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court east 1 f0",
+      "face": "court east",
+      "u": -2.0,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court east 1 f1",
+      "face": "court east",
+      "u": -2.0,
+      "z": 5.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court east 1 f2",
+      "face": "court east",
+      "u": -2.0,
+      "z": 8.899999999999999,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court east 1 f3",
+      "face": "court east",
+      "u": -2.0,
+      "z": 13.6,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court east 2 f0",
+      "face": "court east",
+      "u": 2.0,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court east 2 f1",
+      "face": "court east",
+      "u": 2.0,
+      "z": 5.2,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court east 2 f2",
+      "face": "court east",
+      "u": 2.0,
+      "z": 8.899999999999999,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "court east 2 f3",
+      "face": "court east",
+      "u": 2.0,
+      "z": 13.6,
+      "width": 1.1,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    }
+  ],
+  "authoring_modules": {
+    "envelope": [
+      "south carrier",
+      "east carrier",
+      "west carrier",
+      "north party wall",
+      "court south wall",
+      "court north wall",
+      "court west wall",
+      "court east wall"
+    ],
+    "brick joints": [
+      "south measured mortar courses",
+      "east measured mortar courses",
+      "west measured mortar courses"
+    ],
+    "south": [
+      "south south foundation",
+      "south south stone",
+      "south south trim",
+      "south south glass",
+      "south south hardware",
+      "south south door"
+    ],
+    "south order": [
+      "south order stone",
+      "south order joint"
+    ],
+    "east": [
+      "east east foundation",
+      "east east stone",
+      "east east trim",
+      "east east glass",
+      "east east hardware",
+      "east east door"
+    ],
+    "east order": [
+      "east order stone",
+      "east order joint"
+    ],
+    "west": [
+      "west west foundation",
+      "west west stone",
+      "west west trim",
+      "west west glass",
+      "west west hardware",
+      "west west door"
+    ],
+    "west order": [
+      "west order stone",
+      "west order joint"
+    ],
+    "porches": [
+      "porches stone"
+    ],
+    "balustrade": [
+      "balustrade stone"
+    ],
+    "pediment": [
+      "Pediment +1",
+      "Pediment -1"
+    ],
+    "pediment +1": [
+      "pediment +1 stone"
+    ],
+    "pediment -1": [
+      "pediment -1 stone"
+    ],
+    "site": [
+      "South pavement",
+      "East pavement",
+      "West pavement",
+      "South road",
+      "East road",
+      "West road"
+    ],
+    "areas and street": [
+      "areas and street area",
+      "areas and street hardware",
+      "areas and street stone",
+      "areas and street joint",
+      "areas and street pale"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008"
+    ],
+    "context": [
+      "Terrace house 0",
+      "Terrace roof 0",
+      "Terrace stack 0",
+      "Terrace house 1",
+      "Terrace roof 1",
+      "Terrace stack 1",
+      "Terrace house 2",
+      "Terrace roof 2",
+      "Terrace stack 2",
+      "Terrace house 3",
+      "Terrace roof 3",
+      "Terrace stack 3",
+      "Terrace house 4",
+      "Terrace roof 4",
+      "Terrace stack 4",
+      "Terrace house 5",
+      "Terrace roof 5",
+      "Terrace stack 5"
+    ],
+    "roof": [
+      "Roof deck south",
+      "Roof deck north",
+      "Roof deck west",
+      "Roof deck east",
+      "Slate mansard",
+      "Lead flat south",
+      "Lead flat north",
+      "Lead flat west",
+      "Lead flat east"
+    ],
+    "court south": [
+      "court south court south trim",
+      "court south court south glass"
+    ],
+    "court north": [
+      "court north court north trim",
+      "court north court north glass"
+    ],
+    "court west": [
+      "court west court west trim",
+      "court west court west glass"
+    ],
+    "court east": [
+      "court east court east trim",
+      "court east court east glass"
+    ],
+    "court": [
+      "Court paving"
+    ],
+    "dormers": [
+      "dormers roof",
+      "dormers trim",
+      "dormers glass",
+      "dormers interior",
+      "dormers lead"
+    ],
+    "party fins": [
+      "Party fin -14",
+      "Party fin -2",
+      "Party fin +8"
+    ],
+    "stack -14": [
+      "stack -14 white",
+      "stack -14 stone",
+      "stack -14 pot"
+    ],
+    "stack -2": [
+      "stack -2 white",
+      "stack -2 stone",
+      "stack -2 pot"
+    ],
+    "stack +8": [
+      "stack +8 white",
+      "stack +8 stone",
+      "stack +8 pot"
+    ],
+    "inside": [
+      "Floor west 0.6",
+      "Floor east 0.6",
+      "Floor south 0.6",
+      "Floor west 4.4",
+      "Floor east 4.4",
+      "Floor south 4.4",
+      "Floor west 8.2",
+      "Floor east 8.2",
+      "Floor south 8.2"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-18T23:21:51.895907+00:00",
+  "delivery_and_render_seconds": 4574.1820087450005,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

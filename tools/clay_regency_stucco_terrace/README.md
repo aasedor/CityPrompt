@@ -67,3 +67,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (first build; the review drives v002)
+
+P0 facade programme rotated 90 degrees against the locked top view and oblique (pediment belongs on the south, porches, fins and dense dormers on the east and west). P1 mansard too low with a large flat top and no inner court slopes; capitals read Tuscan; porch columns read square; no porch under the pediment; open balustrade and coping corners; windowless terrace-house context with roof gaps; rustication too faint

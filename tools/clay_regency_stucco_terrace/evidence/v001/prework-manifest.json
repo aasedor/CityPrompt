@@ -1,0 +1,421 @@
+{
+  "candidate": "clay-regency-stucco-terrace-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-regency-stucco-terrace",
+  "variant_id": "clay-regency-stucco-terrace-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "regency_stucco_terrace/variant_0 (regency-stucco-terrace-nash)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 40.0,
+      "depth": 34.0,
+      "height": 18.599999999999998
+    },
+    "observed_storeys": 4,
+    "storey_programme": "rusticated ground floor over a basement, first and second floors in the giant order, a mansard attic",
+    "plan": "40 x 34 m block round a light court (top view), streets south, east and west, terrace houses north",
+    "facade": "cream stucco; channelled ground storey; giant engaged Corinthian order; entablature and balustrade; three paired-column porches with balconies; end pediments; iron balconettes",
+    "levels_m": [
+      0.6,
+      4.4,
+      8.2,
+      11.6,
+      13.0
+    ],
+    "roof_m": {
+      "cornice": 13.0,
+      "mansard_top": 16.4
+    },
+    "inferred": "interiors, the light court and the north party wall are teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "steep slate mansard behind the balustrade with dormers and party-wall fins with stacks, a flat lead top round the light court",
+    "datum_m": 13.0,
+    "crowns_m": [
+      16.4
+    ]
+  },
+  "identity_contract": {
+    "owner": "cream stucco palace-front terrace with a giant Corinthian order, balustraded parapet, porches carrying balconies, end pediments and a slate mansard"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: cream stucco with channelled joints, pale stone dressings, black iron, grey slate, lead, brick terrace context",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 4,
+    "ground": "entrance halls and dining rooms",
+    "first": "drawing rooms",
+    "second": "bedrooms",
+    "attic": "bedrooms in the mansard"
+  },
+  "contact_contract": [
+    "Grade-zero pavements, areas and roads",
+    "Stucco walls from grade",
+    "Order and entablature on the walls",
+    "Mansard on the roof deck behind the balustrade"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        27.0,
+        -35.0,
+        1.6
+      ],
+      "target": [
+        7.0,
+        -14.0,
+        9.0
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -57.018,
+        -61.403999999999996,
+        37.199999999999996
+      ],
+      "target": [
+        0,
+        0,
+        8.37
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        51.169999999999995,
+        -58.48,
+        55.8
+      ],
+      "target": [
+        0,
+        0,
+        8.37
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        109.64999999999999
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 60.199999999999996
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -73.1,
+        0,
+        11.159999999999998
+      ],
+      "target": [
+        0,
+        0,
+        8.37
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        73.1,
+        0,
+        11.159999999999998
+      ],
+      "target": [
+        0,
+        0,
+        8.37
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        73.1,
+        11.159999999999998
+      ],
+      "target": [
+        0,
+        0,
+        8.37
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        51.169999999999995,
+        58.48,
+        33.48
+      ],
+      "target": [
+        0,
+        0,
+        8.37
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        0.0,
+        -44.0,
+        7.5
+      ],
+      "target": [
+        0.0,
+        -17.0,
+        7.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        30.0,
+        -30.0,
+        15.0
+      ],
+      "target": [
+        20.0,
+        -17.0,
+        12.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -3.0,
+        -26.0,
+        7.0
+      ],
+      "target": [
+        -3.0,
+        -17.0,
+        7.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "porch_balcony",
+      "location": [
+        5.5,
+        -26.0,
+        3.5
+      ],
+      "target": [
+        0.0,
+        -18.0,
+        3.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "giant_order",
+      "location": [
+        12.0,
+        -26.0,
+        12.0
+      ],
+      "target": [
+        8.0,
+        -17.0,
+        11.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "end_pediment",
+      "location": [
+        40.0,
+        -6.0,
+        14.0
+      ],
+      "target": [
+        20.0,
+        0.0,
+        13.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "mansard_dormers",
+      "location": [
+        6.0,
+        -34.0,
+        22.0
+      ],
+      "target": [
+        2.0,
+        -15.0,
+        14.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "east_side",
+      "location": [
+        55.0,
+        0.0,
+        8.0
+      ],
+      "target": [
+        20.0,
+        0.0,
+        8.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -1.0,
+        -11.5,
+        6.0
+      ],
+      "target": [
+        -4.5,
+        -17.0,
+        6.4
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        0.0,
+        60.0,
+        26.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        12.0
+      ],
+      "lens": 45,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "porch_balcony",
+    "giant_order",
+    "end_pediment",
+    "mansard_dormers",
+    "east_side",
+    "interior",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/regency-stucco-terrace/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1326016,
+        "sha256": "7d8afe037a358b9216ad4955ee68a8afd4b3b5344b205ab941e2207ecc028074"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/regency-stucco-terrace/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 940787,
+        "sha256": "58577ff931e7766baf78a204664d20417ef45002fd11446fecf3ea470c5b24be"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/regency-stucco-terrace/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 886252,
+        "sha256": "15d256fb8ee3b91b77996995f0e0ce7394e521275432f14d6e500e6fecc83139"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_regency.py",
+        "sha256": "8f2262ca5d204c92f758d39a11a1495f9bef953943f65de979c1b412d24c13c4"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "2d07bb0a423f68d5c4035396382b3eace93fe84f2055aeaab96a662c4b366f1b"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "e6df51bb61c9644eb17d51ca336b4a41983003e42dc3060eb7218c004d5da070"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-18T22:05:32.265650+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
