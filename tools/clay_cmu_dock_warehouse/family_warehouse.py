@@ -24,10 +24,10 @@ FL = 1.0                                          # dock-height floor on a cast-
 EAVE = 8.4                                        # top of the CMU wall (about 41 block courses to the coping)
 PARA = EAVE + .4
 EPS = .002
-DOCKS = [-9.45, -5.15, -0.85, 3.45]              # dock door centres: shelters almost touching, 12% to 68% of the face from the west
+DOCKS = [-9.725, -5.875, -2.025, 1.825]          # dock door centres: shelters almost touching, 11.5% to 62% of the face from the west
 DOCK_W, DOCK_H = 2.2, 3.0                         # sectional doors, tops at about 45% of the wall
-JAMB = .85                                        # broad dark shelter jambs: shelters about 3.9 m wide
-ENTRY = 8.4                                       # entry door centre
+JAMB = .725                                       # broad dark shelter jambs: shelters about 3.65 m wide, 0.2 m apart
+ENTRY = 9.1                                       # entry door centre
 PALETTE = dict(wall=(.72, .64, .50), joint=(.62, .55, .43), trim=(.70, .72, .73),
     pale=(.88, .88, .86), stone=(.66, .65, .62), roof=(.50, .52, .54), sand=(.66, .64, .60),
     foundation=(.46, .46, .45), glass=(.38, .46, .50), hardware=(.14, .14, .15),
@@ -53,6 +53,8 @@ def manifest(version):
     for c in cams:                       # the locked front looks from the street south-east of the block, at eye level
         if c['name'] == 'front':
             c['location'] = (25.0, -38.0, 1.5); c['target'] = (-2.0, -6.0, 8.6); c['lens'] = 34; c['whole'] = False
+        elif c['name'] == 'front_corner':                              # the locked oblique looks from the south-east
+            c['location'] = (27.0, -31.0, 22.0); c['target'] = (0.0, -1.0, 2.5); c['lens'] = 30; c['whole'] = False   # close, as in the oblique
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
