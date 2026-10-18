@@ -68,7 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (v004 targets both P1s)
+## Open blockers after v004 (v005 targets every finding; a second review without a reduction stops the family at v003)
 
-1. P1: the dock shelters are too narrow and too far apart (gaps about 55% of a shelter width against about 7-18%; each shelter about 9% of the face against 13%).
-2. P1: the front camera is too close to the south-east corner and aimed down (horizon about 54% down against 73%; the bays fill 17% of the frame width against 31%).
+1. P0: the landing steps stand in front of bay 4's east jamb and guide post, blocking the bay (the dock band now runs to 68% of the face against about 62%; the landing was not moved).
+2. P1: no wall between the bays and the entry; the canopy touches the bay 4 shelter (gap about 8% of the face against about 15%).
+3. P1: front_corner is taken from the south-west at about 37% fill; the locked oblique is the south-east corner at about 90% fill.

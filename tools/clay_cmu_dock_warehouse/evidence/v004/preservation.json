@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-cmu-dock-warehouse-clay-v004",
+  "glb": "clay-cmu-dock-warehouse-clay-v004.glb",
+  "glb_bytes": 1112736,
+  "glb_sha256": "3d1c3578d41fee654fbe4cee31bf8e42557a0c567a91dca9e757647d9d55de14",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "dock_doors.png": 92,
+    "east_windows.png": 92,
+    "entry_canopy.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "parapet_corner.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_units.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-cmu-dock-warehouse-clay-v004-renders-and-glb.zip",
+  "zip_bytes": 30307786
+}
