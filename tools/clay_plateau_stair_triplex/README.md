@@ -67,3 +67,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (first build; the review drives v002)
+
+P1 solid canopy columns without lattice; column strut through the soffit and a dark soffit slit; oversized cornice return and parapet seams; plain consoles, set-back raised parapet and loose cartouche; left_side hidden by the neighbour; whole-envelope views framed too wide; glass_close centred on blank wall
