@@ -24,8 +24,9 @@ FL = 1.0                                          # dock-height floor on a cast-
 EAVE = 8.4                                        # top of the CMU wall (about 41 block courses to the coping)
 PARA = EAVE + .4
 EPS = .002
-DOCKS = [-11.8, -7.4, -3.0, 1.4]                 # dock door centres along the south face (west half)
-DOCK_W, DOCK_H = 1.9, 3.0                         # narrow sectional doors, tops at about 45% of the wall
+DOCKS = [-9.45, -5.15, -0.85, 3.45]              # dock door centres: shelters almost touching, 12% to 68% of the face from the west
+DOCK_W, DOCK_H = 2.2, 3.0                         # sectional doors, tops at about 45% of the wall
+JAMB = .85                                        # broad dark shelter jambs: shelters about 3.9 m wide
 ENTRY = 8.4                                       # entry door centre
 PALETTE = dict(wall=(.72, .64, .50), joint=(.62, .55, .43), trim=(.70, .72, .73),
     pale=(.88, .88, .86), stone=(.66, .65, .62), roof=(.50, .52, .54), sand=(.66, .64, .60),
@@ -51,7 +52,7 @@ def manifest(version):
         ('rear_north', (0.0, 34.0, 5.0), (0.0, Y1, 4.0), 45)])
     for c in cams:                       # the locked front looks from the street south-east of the block, at eye level
         if c['name'] == 'front':
-            c['location'] = (20.0, -24.5, 1.6); c['target'] = (-4.0, -7.0, 3.8); c['lens'] = 21; c['whole'] = False
+            c['location'] = (25.0, -38.0, 1.5); c['target'] = (-2.0, -6.0, 8.6); c['lens'] = 34; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -365,12 +366,12 @@ def south_face():
     m = cmu_face(f, lo, hi, holes)
     for h in holes[:4]:                                                   # loading bays
         u = h['u']
-        jx = DOCK_W / 2 + .22
+        jx = DOCK_W / 2 + JAMB / 2
         for e in (-1, 1):
-            m.box('dock', u + e * jx, -.18, FL + (DOCK_H + .35) / 2 - .3, .44, .36, DOCK_H + .35)   # dark steel surround jambs
+            m.box('dock', u + e * jx, -.18, FL + (DOCK_H + .35) / 2 - .3, JAMB, .36, DOCK_H + .35)   # dark steel surround jambs
             m.box('bumper', u + e * .85, -.13, FL - .28, .34, .26, .42)                    # dock bumpers
-            m.box('yellow', u + e * (jx + .45), -.55, .65, .16, .16, 1.2)                   # short yellow guide post at the jamb foot
-        m.box('dock', u, -.21, FL + DOCK_H + .32, 2 * jx + .44, .42, .6)                    # header, proud of the jambs
+            m.box('yellow', u + e * (jx - .2), -.55, .65, .16, .16, 1.2)                   # short yellow guide post at the jamb foot
+        m.box('dock', u, -.21, FL + DOCK_H + .32, 2 * jx + JAMB, .42, .6)                    # header, proud of the jambs
         m.box('dock', u, -.2, FL - .06, DOCK_W - .1, .4, .14)                               # steel dock leveller lip
         m.box('door', u, .14, FL + DOCK_H / 2, DOCK_W - .02, .04, DOCK_H - .02)            # sectional door
         for k in range(1, 6):
