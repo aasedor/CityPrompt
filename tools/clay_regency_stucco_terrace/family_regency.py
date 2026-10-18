@@ -51,7 +51,7 @@ def manifest(version):
         ('rear_north', (0.0, 60.0, 26.0), (0.0, 0.0, 12.0), 45)])
     for c in cams:                       # the locked front looks from the south-east; the oblique from the south-west
         if c['name'] == 'front':
-            c['location'] = (30.0, -44.0, 1.6); c['target'] = (8.0, -12.0, 9.0); c['lens'] = 24; c['whole'] = False
+            c['location'] = (27.0, -35.0, 1.6); c['target'] = (7.0, -14.0, 9.0); c['lens'] = 24; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,

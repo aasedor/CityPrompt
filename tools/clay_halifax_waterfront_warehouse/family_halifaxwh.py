@@ -25,7 +25,7 @@ FRIEZE = 10.0
 CORN = 11.15                                    # top of the copper cornice
 PAR = 11.8                                      # parapet top
 EPS = .002
-PALETTE = dict(wall=(.47, .25, .18), joint=(.50, .48, .45), stone=(.68, .66, .62), arch=(.68, .66, .62),
+PALETTE = dict(wall=(.42, .21, .15), joint=(.50, .48, .45), stone=(.68, .66, .62), arch=(.68, .66, .62),
     copper=(.42, .58, .52), frame=(.15, .25, .20), trim=(.15, .25, .20), pale=(.86, .86, .84),
     roof=(.42, .40, .38), sand=(.62, .58, .52), foundation=(.56, .54, .50), glass=(.20, .24, .26),
     hardware=(.07, .07, .08), interior=(.82, .78, .72), floor=(.56, .46, .36), timber=(.46, .34, .22),
@@ -49,7 +49,7 @@ def manifest(version):
         ('rear_north', (0.0, 32.0, 7.0), (0.0, Y1, 7.0), 45)])
     for c in cams:                       # the locked front and oblique look from the south-east
         if c['name'] == 'front':
-            c['location'] = (16.0, -22.5, 1.6); c['target'] = (-1.0, -8.5, 6.5); c['lens'] = 24; c['whole'] = False
+            c['location'] = (19.0, -24.0, 1.6); c['target'] = (2.5, -8.5, 6.5); c['lens'] = 24; c['whole'] = False
         elif c['name'] == 'front_corner':
             lx, ly, lz = c['location']; c['location'] = (-lx, ly, lz)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
