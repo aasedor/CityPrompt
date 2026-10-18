@@ -68,15 +68,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (v002 targets every P0 and P1)
+## Open blockers after v002 (v003 targets every P0 and P1; the two surviving findings stop the family if they survive again)
 
-1. P0: the interior view is black.
-2. P0: the four louvred roof masses are small orthogonal boxes in mirrored pairs outside the vault ends; the source has a rotated pinwheel of large angular masses rising under the arch.
-3. P1: the louvred sloping faces read as staircases.
-4. P1: the vault is a full semicircle with closed flat glass ends; the source arch is flatter, springs from the outer parapet edges and has open ends.
-5. P1: the crown cushions are flat pads in a narrow band, not a pillowed membrane field.
-6. P1: the white mass is a plain box without the faceted planes, sloping soffit and deep carved slots.
-7. P1: the glazed ground floor is too squat.
-8. P1: black triangular holes at the Y-column nodes.
-9. P1: the fin-screen return at the south-west corner stops in mid-air.
-10. P1: a gap at the east end-rib foot, and the end glazing floats above the roof deck.
+1. P0: the four roof masses still do not read as a pinwheel in the top view (each about 15% of the roof width against 25-30%, only two rotated, small tabs past the vault ends; source four large masses rotated the same way out to the roof corners). Survived one targeted fix.
+2. P1: the white mass is still a plain extruded box with a flat soffit (no faceted planes); the slots are punched rectangles, not carved scoops. Survived one targeted fix.
+3. P1: the end-arch rims are straight box segments that kink, with black triangular gaps, and are 2-3 times heavier than the source rib.
+4. P1: the fin screen returns as 8 widely spaced bars over about 20% of the south face; the source carries the dense rhythm over about half of it.
+5. P1: the vault soffit seen through the open ends is a blank grey shell without the rib grid.
