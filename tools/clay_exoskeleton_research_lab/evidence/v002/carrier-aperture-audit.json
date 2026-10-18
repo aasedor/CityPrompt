@@ -1,0 +1,174 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "lobby door",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lobby door transom",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lobby glazing 0",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lobby glazing 1",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lobby glazing 2",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lobby glazing 4",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lobby glazing 5",
+      "face": "ground south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ground north door",
+      "face": "ground north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "service door 0",
+      "face": "ground east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "service door 1",
+      "face": "ground east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lab south glazing f0",
+      "face": "lab south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lab south glazing f1",
+      "face": "lab south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lab south glazing f2",
+      "face": "lab south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lab west glazing f0",
+      "face": "lab west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lab west glazing f1",
+      "face": "lab west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lab west glazing f2",
+      "face": "lab west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lab north glazing f0",
+      "face": "lab north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lab north glazing f1",
+      "face": "lab north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "lab north glazing f2",
+      "face": "lab north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east louvre bay 1-0",
+      "face": "lab east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east louvre bay 1-1",
+      "face": "lab east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east louvre bay 1-2",
+      "face": "lab east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east louvre bay 2-0",
+      "face": "lab east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east louvre bay 2-1",
+      "face": "lab east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east louvre bay 2-2",
+      "face": "lab east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east louvre bay 3-0",
+      "face": "lab east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east louvre bay 3-1",
+      "face": "lab east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east louvre bay 3-2",
+      "face": "lab east",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

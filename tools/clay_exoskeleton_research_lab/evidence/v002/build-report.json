@@ -1,0 +1,1186 @@
+{
+  "candidate": "clay-exoskeleton-research-lab-clay-v002",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 126,
+    "vertices": 15312,
+    "polygons": 15084,
+    "triangles": 15084,
+    "path": "clay-exoskeleton-research-lab-clay-v002-authoring.blend",
+    "bytes": 2670816,
+    "sha256": "fe8581a76965c7222d6e5a50d2bef8ab44b9c2116c65093a190cfe111c378d77"
+  },
+  "runtime": {
+    "path": "clay-exoskeleton-research-lab-clay-v002.glb",
+    "bytes": 810008,
+    "sha256": "c8e7a55f31fd446c52b2602bdbf2b9ff3c3e8d3ac7ad01010e40cc173758436e",
+    "meshes": 21,
+    "materials": 21,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 21,
+    "vertices": 15312,
+    "polygons": 15084,
+    "triangles": 15084
+  },
+  "original_bounds_m": [
+    [
+      -28.5,
+      -29.5,
+      0.0
+    ],
+    [
+      32.0,
+      12.710000038146973,
+      23.100000381469727
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -28.5,
+      -29.5,
+      0.0
+    ],
+    [
+      32.0,
+      12.710000038146973,
+      23.100000381469727
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 31.4,
+    "depth": 25.0,
+    "height": 23.4
+  },
+  "native_dimensions_m": {
+    "width": 60.5,
+    "depth": 42.21000003814697,
+    "height": 23.100000381469727
+  },
+  "native_bottom_center_m": [
+    1.75,
+    -8.394999980926514,
+    0.0
+  ],
+  "source_components_by_role": {
+    "trim": 5,
+    "pale": 6,
+    "sand": 4,
+    "foundation": 1,
+    "glass": 5,
+    "hardware": 11,
+    "interior": 1,
+    "floor": 4,
+    "timber": 15,
+    "blue": 1,
+    "green": 1,
+    "yellow": 1,
+    "planting": 21,
+    "concrete": 5,
+    "white": 12,
+    "steel": 18,
+    "louvre": 2,
+    "perf": 1,
+    "asphalt": 2,
+    "membrane": 1,
+    "flue": 9
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/v_pilotis.png",
+    "renders/exoskeleton.png",
+    "renders/roof_screen.png",
+    "renders/cantilever.png",
+    "renders/stacks.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front_corner": {
+      "xmin": 0.16896657645702362,
+      "xmax": 0.7670146226882935,
+      "ymin": 0.09015573561191559,
+      "ymax": 0.677757740020752
+    },
+    "aerial": {
+      "xmin": 0.21082165837287903,
+      "xmax": 0.7313066124916077,
+      "ymin": 0.0825943574309349,
+      "ymax": 0.6842612624168396
+    },
+    "top": {
+      "xmin": 0.20394167304039001,
+      "xmax": 0.8324163556098938,
+      "ymin": 0.09140487015247345,
+      "ymax": 0.6760421991348267
+    },
+    "left_side": {
+      "xmin": 0.33906126022338867,
+      "xmax": 0.9236807227134705,
+      "ymin": 0.26486194133758545,
+      "ymax": 0.6950010061264038
+    },
+    "right_side": {
+      "xmin": 0.08361481875181198,
+      "xmax": 0.6747298836708069,
+      "ymin": 0.2656920850276947,
+      "ymax": 0.6871362924575806
+    },
+    "rear": {
+      "xmin": 0.09491121768951416,
+      "xmax": 0.7838619947433472,
+      "ymin": 0.30367186665534973,
+      "ymax": 0.7044530510902405
+    },
+    "rear_side": {
+      "xmin": 0.08604633063077927,
+      "xmax": 0.6981920599937439,
+      "ymin": 0.14363491535186768,
+      "ymax": 0.7067810297012329
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Upper block on the ground floor and pilotis, cantilevering west over the street front",
+      "soffit_m": 5.6
+    },
+    {
+      "name": "Exoskeleton columns founded at grade, tied back to every slab edge, wrapping the south-east corner",
+      "standoff_m": 0.7
+    },
+    {
+      "name": "Plant screen, penthouse, ducts and stacks on the roof slab, set back from the edge walkway",
+      "screen": [
+        -12.0,
+        12.0,
+        -9.5,
+        9.5
+      ]
+    },
+    {
+      "name": "Four-storey lab block: glazed lab floors cantilevered over V-pilotis, east exoskeleton, rooftop plant screen",
+      "block": [
+        -15.0,
+        15.0,
+        -12.5,
+        12.5
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "lobby door",
+      "face": "ground south",
+      "u": 1.8333333333333321,
+      "z": 0.15,
+      "width": 3.3666666666666667,
+      "height": 2.9,
+      "kind": "entry door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        3.5,
+        -10.100000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "lobby door transom",
+      "face": "ground south",
+      "u": 1.8333333333333321,
+      "z": 3.25,
+      "width": 3.3666666666666667,
+      "height": 1.7499999999999996,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        3.5,
+        -10.100000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "lobby glazing 0",
+      "face": "ground south",
+      "u": -9.166666666666666,
+      "z": 0.15,
+      "width": 3.3666666666666667,
+      "height": 4.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        3.5,
+        -10.100000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "lobby glazing 1",
+      "face": "ground south",
+      "u": -5.5,
+      "z": 0.15,
+      "width": 3.3666666666666667,
+      "height": 4.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        3.5,
+        -10.100000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "lobby glazing 2",
+      "face": "ground south",
+      "u": -1.833333333333334,
+      "z": 0.15,
+      "width": 3.3666666666666667,
+      "height": 4.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        3.5,
+        -10.100000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "lobby glazing 4",
+      "face": "ground south",
+      "u": 5.5,
+      "z": 0.15,
+      "width": 3.3666666666666667,
+      "height": 4.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        3.5,
+        -10.100000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "lobby glazing 5",
+      "face": "ground south",
+      "u": 9.166666666666664,
+      "z": 0.15,
+      "width": 3.3666666666666667,
+      "height": 4.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        3.5,
+        -10.100000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground north door",
+      "face": "ground north",
+      "u": -5.5,
+      "z": 0.15,
+      "width": 1.8,
+      "height": 2.5,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        3.5,
+        12.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "service door 0",
+      "face": "ground east",
+      "u": -7.300000000000001,
+      "z": 0.15,
+      "width": 3.4,
+      "height": 3.6,
+      "kind": "roller shutter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        1.2000000476837158,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "service bay"
+    },
+    {
+      "id": "service door 1",
+      "face": "ground east",
+      "u": -2.3000000000000007,
+      "z": 0.15,
+      "width": 3.4,
+      "height": 3.6,
+      "kind": "roller shutter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.0,
+        1.2000000476837158,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "service bay"
+    },
+    {
+      "id": "lab south glazing f0",
+      "face": "lab south",
+      "u": 0.0,
+      "z": 5.8999999999999995,
+      "width": 29.7,
+      "height": 3.600000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        -12.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "laboratory"
+    },
+    {
+      "id": "lab south glazing f1",
+      "face": "lab south",
+      "u": 0.0,
+      "z": 10.100000000000001,
+      "width": 29.7,
+      "height": 3.599999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        -12.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "laboratory"
+    },
+    {
+      "id": "lab south glazing f2",
+      "face": "lab south",
+      "u": 0.0,
+      "z": 14.3,
+      "width": 29.7,
+      "height": 3.599999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        -12.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "laboratory"
+    },
+    {
+      "id": "lab west glazing f0",
+      "face": "lab west",
+      "u": 0.0,
+      "z": 5.8999999999999995,
+      "width": 24.099999999999998,
+      "height": 3.600000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "laboratory"
+    },
+    {
+      "id": "lab west glazing f1",
+      "face": "lab west",
+      "u": 0.0,
+      "z": 10.100000000000001,
+      "width": 24.099999999999998,
+      "height": 3.599999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "laboratory"
+    },
+    {
+      "id": "lab west glazing f2",
+      "face": "lab west",
+      "u": 0.0,
+      "z": 14.3,
+      "width": 24.099999999999998,
+      "height": 3.599999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "laboratory"
+    },
+    {
+      "id": "lab north glazing f0",
+      "face": "lab north",
+      "u": 0.0,
+      "z": 5.8999999999999995,
+      "width": 29.7,
+      "height": 3.600000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        12.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "laboratory"
+    },
+    {
+      "id": "lab north glazing f1",
+      "face": "lab north",
+      "u": 0.0,
+      "z": 10.100000000000001,
+      "width": 29.7,
+      "height": 3.599999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        12.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "laboratory"
+    },
+    {
+      "id": "lab north glazing f2",
+      "face": "lab north",
+      "u": 0.0,
+      "z": 14.3,
+      "width": 29.7,
+      "height": 3.599999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        12.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "laboratory"
+    },
+    {
+      "id": "east louvre bay 1-0",
+      "face": "lab east",
+      "u": -5.0,
+      "z": 5.949999999999999,
+      "width": 4.3,
+      "height": 3.500000000000001,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "plant and stair"
+    },
+    {
+      "id": "east louvre bay 1-1",
+      "face": "lab east",
+      "u": -5.0,
+      "z": 10.15,
+      "width": 4.3,
+      "height": 3.499999999999999,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "plant and stair"
+    },
+    {
+      "id": "east louvre bay 1-2",
+      "face": "lab east",
+      "u": -5.0,
+      "z": 14.35,
+      "width": 4.3,
+      "height": 3.499999999999999,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "plant and stair"
+    },
+    {
+      "id": "east louvre bay 2-0",
+      "face": "lab east",
+      "u": 0.0,
+      "z": 5.949999999999999,
+      "width": 4.3,
+      "height": 3.500000000000001,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "plant and stair"
+    },
+    {
+      "id": "east louvre bay 2-1",
+      "face": "lab east",
+      "u": 0.0,
+      "z": 10.15,
+      "width": 4.3,
+      "height": 3.499999999999999,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "plant and stair"
+    },
+    {
+      "id": "east louvre bay 2-2",
+      "face": "lab east",
+      "u": 0.0,
+      "z": 14.35,
+      "width": 4.3,
+      "height": 3.499999999999999,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "plant and stair"
+    },
+    {
+      "id": "east louvre bay 3-0",
+      "face": "lab east",
+      "u": 5.0,
+      "z": 5.949999999999999,
+      "width": 4.3,
+      "height": 3.500000000000001,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "plant and stair"
+    },
+    {
+      "id": "east louvre bay 3-1",
+      "face": "lab east",
+      "u": 5.0,
+      "z": 10.15,
+      "width": 4.3,
+      "height": 3.499999999999999,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "plant and stair"
+    },
+    {
+      "id": "east louvre bay 3-2",
+      "face": "lab east",
+      "u": 5.0,
+      "z": 14.35,
+      "width": 4.3,
+      "height": 3.499999999999999,
+      "kind": "louvre screen",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "plant and stair"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "South sidewalk",
+      "East sidewalk",
+      "South street",
+      "East street"
+    ],
+    "road markings": [
+      "road markings white"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Shrub rooted stem",
+      "Leafy shrub crown",
+      "Leafy shrub crown.001",
+      "Leafy shrub crown.002",
+      "Leafy shrub crown.003",
+      "Shrub rooted stem.001",
+      "Leafy shrub crown.004",
+      "Leafy shrub crown.005",
+      "Leafy shrub crown.006",
+      "Leafy shrub crown.007",
+      "Shrub rooted stem.002",
+      "Leafy shrub crown.008",
+      "Leafy shrub crown.009",
+      "Leafy shrub crown.010",
+      "Leafy shrub crown.011"
+    ],
+    "envelope": [
+      "ground south carrier",
+      "ground west carrier",
+      "ground north carrier",
+      "ground east carrier",
+      "lab south spandrel carrier",
+      "lab west spandrel carrier",
+      "lab north spandrel carrier",
+      "lab east panel carrier"
+    ],
+    "ground south": [
+      "ground south ground south trim",
+      "ground south ground south glass",
+      "ground south ground south white"
+    ],
+    "ground north": [
+      "ground north ground north trim",
+      "ground north ground north glass"
+    ],
+    "ground east": [
+      "ground east ground east louvre",
+      "ground east ground east hardware"
+    ],
+    "ground": [
+      "Ground slab",
+      "Ground core",
+      "Arcade paving",
+      "Cantilever paving"
+    ],
+    "pilotis": [
+      "V piloti",
+      "V piloti head plate",
+      "V piloti.001",
+      "V piloti head plate.001",
+      "V piloti shoe",
+      "V piloti.002",
+      "V piloti head plate.002",
+      "V piloti.003",
+      "V piloti head plate.003",
+      "V piloti shoe.001"
+    ],
+    "lab south": [
+      "lab south lab south glass",
+      "lab south lab south trim"
+    ],
+    "lab west": [
+      "lab west lab west glass",
+      "lab west lab west trim"
+    ],
+    "lab north": [
+      "lab north lab north glass",
+      "lab north lab north trim"
+    ],
+    "lab east": [
+      "lab east lab east louvre",
+      "lab east lab east white"
+    ],
+    "lab floors": [
+      "Lab floor slab",
+      "Lab floor slab.001",
+      "Lab floor slab.002",
+      "Lab first floor slab",
+      "Street slab edge",
+      "West slab edge"
+    ],
+    "roof": [
+      "Roof membrane",
+      "Parapet coping",
+      "Parapet coping.001",
+      "Parapet coping.002",
+      "Parapet coping.003"
+    ],
+    "cantilever": [
+      "Cantilever soffit"
+    ],
+    "lab services": [
+      "lab services yellow",
+      "lab services blue",
+      "lab services green",
+      "lab services white",
+      "lab services interior",
+      "lab services pale"
+    ],
+    "exoskeleton": [
+      "exoskeleton steel",
+      "Exoskeleton diagonal",
+      "Exoskeleton diagonal.001",
+      "Exoskeleton diagonal.002",
+      "Exoskeleton diagonal.003",
+      "Exoskeleton diagonal.004",
+      "Exoskeleton diagonal.005"
+    ],
+    "plant screen": [
+      "plant screen steel",
+      "plant screen perf",
+      "Plant screen perforations"
+    ],
+    "roof plant": [
+      "roof plant pale",
+      "roof plant white"
+    ],
+    "stacks": [
+      "Exhaust stack",
+      "Exhaust stack cap",
+      "Exhaust stack.001",
+      "Exhaust stack cap.001",
+      "Exhaust stack.002",
+      "Exhaust stack cap.002",
+      "Exhaust stack.003",
+      "Exhaust stack cap.003",
+      "Exhaust stack.004",
+      "Exhaust stack cap.004",
+      "Exhaust stack.005",
+      "Exhaust stack cap.005",
+      "Exhaust stack.006",
+      "Exhaust stack cap.006",
+      "Exhaust stack.007",
+      "Exhaust stack cap.007",
+      "Exhaust stack.008",
+      "Exhaust stack cap.008"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-18T00:02:55.548081+00:00",
+  "delivery_and_render_seconds": 5428.577774591,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

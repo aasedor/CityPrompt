@@ -68,14 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (v002 targets every P0 and P1)
+## Open blockers after v002 (v003 targets every P1)
 
-1. P0: front and front_corner look from the south-west; the source looks from the south-east, at the east exoskeleton.
-2. P1: east infill is a checkerboard of inset louvres with a diagonal in every bay; the source stacks full-bay louvres in the middle bays and braces white panels only in the end bays.
-3. P1: ground-floor diagonals cross in front of the east service doors.
-4. P1: the recessed south ground floor is a solid wall with punched windows instead of a full-height glazed lobby with a door portal.
-5. P1: the roof screen is perforated only on its south and east runs.
-6. P1: the coloured services behind the glass are faint.
-7. P1: the piloti heads leave a wedge gap under the soffit.
-8. P1: black vertical bars at the roof-screen corners.
-9. P1: trees hide the V-pilotis and the entrance.
+1. P1: the middle east bays have vertical slats in small inset panels with wide white margins; the source has horizontal blades filling each bay.
+2. P1: the roof screen is perforated only on its outer faces; the far runs read as a plain parapet from above.
+3. P1: the entrance portal sits inside the east V-piloti; a leg crosses the doorway and the head runs into the other leg.
+4. P1: a black block where the portal post meets its head, and a black triangle at the foot of the west V.
