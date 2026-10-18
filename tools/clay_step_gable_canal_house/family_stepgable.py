@@ -17,18 +17,19 @@ SLUG = 'clay-step-gable-canal-house'
 X0, X1, Y0, Y1 = -3.3, 3.3, -6.0, 6.0          # 6.6 m wide, 12 m deep
 T = .36
 G0 = .15
-Z1 = 3.6                                        # ground floor (raised over a half-basement)
-FH = 3.0
-EAVE = Z1 + 3 * FH                              # top of the side walls, foot of the stepped gable
+Z1 = .9                                         # raised ground floor up the stoop, over a half-basement
+F1 = 5.1                                        # first floor
+FH = 3.6
+EAVE = F1 + 2 * FH                              # top of the side walls, foot of the stepped gable
 STEPS = 4                                       # crow steps each side above the first gable tier
 TIER0 = 1.6                                     # first gable tier (holds the gable window)
 STEP_H, STEP_RUN = 1.0, .62
 EPS = .002
-PALETTE = dict(wall=(.52, .29, .21), joint=(.70, .62, .55), trim=(.95, .95, .93), pale=(.88, .88, .86),
+PALETTE = dict(wall=(.31, .15, .10), joint=(.37, .23, .18), band=(.27, .13, .09), trim=(.95, .95, .93), pale=(.88, .88, .86),
     stone=(.80, .78, .72), roof=(.22, .23, .25), sand=(.62, .52, .44), foundation=(.36, .30, .27),
     glass=(.26, .30, .33), hardware=(.08, .08, .09), interior=(.84, .78, .70), floor=(.58, .48, .38),
     timber=(.46, .32, .20), blue=(.20, .30, .40), planting=(.32, .46, .20), soil=(.22, .16, .10),
-    concrete=(.66, .64, .60), white=(.96, .96, .95), asphalt=(.30, .30, .31), door=(.32, .17, .10),
+    concrete=(.66, .64, .60), white=(.96, .96, .95), asphalt=(.30, .30, .31), door=(.22, .10, .06),
     brick=(.55, .32, .24), pot=(.62, .34, .22), setts=(.48, .40, .36), paving=(.60, .52, .46))
 
 
@@ -38,12 +39,12 @@ def manifest(version):
         ('facade_close', (0.0, -20.0, 8.0), (0.0, Y0, 8.0), 45),
         ('architecture_close', (8.0, -14.0, 14.0), (X1, Y0, 13.5), 45),
         ('glass_close', (0.0, -9.0, 8.1), (0.0, Y0, 8.1), 45),
-        ('stepped_gable', (2.0, -13.0, 16.0), (0.0, Y0, 15.4), 40),
-        ('entrance_stoop', (2.5, -6.0, 1.6), (-0.2, Y0 - .8, 1.6), 40),
-        ('wall_anchors', (6.0, -9.0, 9.0), (1.0, Y0, 8.2), 45),
-        ('east_side', (13.0, -2.0, 7.0), (X1, 0.0, 7.0), 40),
+        ('stepped_gable', (2.0, -19.0, EAVE + 3.0), (0.0, Y0, EAVE + 3.0), 40),
+        ('entrance_stoop', (2.0, Y0 - 7.5, 2.0), (0.0, Y0, 2.3), 35),
+        ('wall_anchors', (6.0, -9.0, F1 + 1.0), (1.0, Y0, F1 + .5), 45),
+        ('east_side', (15.0, -1.0, 7.0), (X1, 0.0, 7.0), 45),
         ('roof_chimney', (-9.0, -12.0, 24.0), (0.5, 0.0, EAVE + 3.0), 40),
-        ('interior', (2.0, 4.0, Z1 + FH + 1.6), (-.6, Y0, Z1 + FH + 1.6), 40),
+        ('interior', (2.0, 4.0, F1 + 1.6), (-.6, Y0, F1 + 1.6), 40),
         ('rear_north', (0.0, 22.0, 9.0), (0.0, Y1, 9.0), 45)])
     for c in cams:                       # the locked front and oblique look from the south-east
         if c['name'] == 'front':
@@ -55,15 +56,15 @@ def manifest(version):
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='amsterdam_step_gable_house/variant_0 (step_gable_gothic)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
-            observed_storeys=5, storey_programme='raised ground floor over a half-basement, three upper floors, a gable attic',
+            observed_storeys=4, storey_programme='raised ground floor over a half-basement, two upper floors, a gable attic',
             plan='6.6 x 12 m narrow-front house (top view), ridge running back from the street, alley east',
-            facade='dark red-brown brick; three bays of white small-paned sashes; a crow-stepped gable with one window; iron anchors; a stoop to the door',
-            levels_m=[G0, Z1, Z1 + FH, Z1 + 2 * FH, EAVE], gable_m=dict(foot=EAVE, steps=STEPS + 1),
+            facade='dark red-brown brick; a door between two tall ground windows; two floors of three white small-paned sashes; a crow-stepped gable with one window; iron anchors; a stoop to the door',
+            levels_m=[G0, Z1, F1, F1 + FH, EAVE], gable_m=dict(foot=EAVE, steps=STEPS + 1),
             inferred='interiors and the rear are teaching assumptions; the rear gable repeats the front grammar'),
         roof_contract=dict(type='steep dark tiled roof between stepped gables, a brick chimney on the east slope', datum_m=EAVE, crowns_m=[EAVE + TIER0 + STEPS * STEP_H]),
         identity_contract=dict(owner='narrow dark-brick canal house with a crow-stepped street gable, white small-paned sashes, wall anchors and a stoop'),
         material_contract=dict(profile='source-palette clay: dark red-brown brick with pale joints, white sash frames, stone stoop and step copings, black anchors and lamp, dark roof tiles', textured_keeper=False),
-        programme_contract=dict(storeys=5, ground='hall and front room up the stoop', upper='rooms', attic='store under the gable'),
+        programme_contract=dict(storeys=4, ground='hall and front room up the stoop', upper='rooms', attic='store under the gable'),
         contact_contract=['Grade-zero brick paving and stoop', 'Brick walls from grade', 'Stepped gable on the front wall', 'Roof between the gables'],
         runtime_contract=dict(scale='fixed_native_only', installation='not installed', review='NOT TESTED'),
         camera_roster=cams, mandatory_review_views=[c['name'] for c in cams])
@@ -390,9 +391,9 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 # ---- Amsterdam step-gable canal house ----
 
 def gable_tiers():
-    """(z0, z1, half-width) of each gable tier above the eaves: a tall first tier, then the crow steps."""
+    """(z0, z1, half-width) of each gable tier above the eaves: a full-width first tier, then the crow steps."""
     hw = (X1 - X0) / 2
-    tiers = [(EAVE, EAVE + TIER0, hw - STEP_RUN * .5)]
+    tiers = [(EAVE, EAVE + TIER0, hw)]
     for k in range(STEPS):
         z0 = EAVE + TIER0 + k * STEP_H
         tiers.append((z0, z0 + STEP_H, hw - STEP_RUN * (k + 1.5)))
@@ -400,23 +401,35 @@ def gable_tiers():
 
 
 def anchors(m, us, z):
+    """Vertical wrought-iron wall anchors with a short cross pin."""
     for u in us:
-        m.box('hardware', u, -.03, z, .5, .04, .07)
-        m.box('hardware', u, -.03, z, .07, .04, .35)
+        m.box('hardware', u, -.03, z, .07, .04, .55)
+
+
+def slope_plate(name, a, c, y0, y1, t=.18, role='roof', module='roof'):
+    """A closed sloped roof plate from eave point a to ridge point c (x, z), between y0 and y1; ends are thin faces."""
+    vs = []
+    for (x, z) in (a, c):
+        for y in (y0, y1):
+            vs += [(x, y, z), (x, y, z - t)]
+    # 0:a y0 top 1:a y0 bot 2:a y1 top 3:a y1 bot 4:c y0 top 5:c y0 bot 6:c y1 top 7:c y1 bot
+    fs = [(0, 2, 6, 4), (1, 5, 7, 3), (0, 1, 3, 2), (4, 6, 7, 5), (0, 4, 5, 1), (2, 3, 7, 6)]
+    return C.mesh(name, vs, fs, role, module)
 
 
 def gable(f, front=True):
     """Crow-stepped gable on a street face: brick tiers, stone copings on each step, the gable window."""
     tiers = gable_tiers()
     for k, (z0, z1, hw) in enumerate(tiers):
-        holes = [hole(f'{f.label} gable window', 0.0, z0 + .25, 1.0, 1.1)] if k == 0 else []
+        holes = [hole(f'{f.label} gable window', 0.0, z0 + .2, 1.0, 1.3)] if k == 0 else []
         f.wall(f'{f.label} gable tier {k}', -hw, hw - EPS, z0, z1, depth=T, role='wall', holes=holes)
-        G.brick_courses(f, -hw + .02, hw - .02, z0 + .02, z1 - .02, holes, spacing=.2 if front else .4)
+        G.brick_courses(f, -hw + .02, hw - .02, z0 + .02, z1 - .02, holes, spacing=.1 if front else .4)
         m = Merge(f)
         if holes:
-            framed(m, f, holes[0], cols=2, rows=2, inset=.12, occupied='attic', lite=not front)
+            framed(m, f, holes[0], cols=2, rows=3, inset=.12, occupied='attic', lite=not front)
+            m.box('stone', 0.0, -.04, z0 + .14, 1.14, .14, .1)
         for s in (-1, 1):                                                      # stone coping on each step
-            m.box('stone', s * (hw - .2), (T - .1) / 2 - .05, z1 + .06, .5 + (.12 if k else 0), T + .1, .12)
+            m.box('stone', s * (hw - .22), (T - .1) / 2 - .05, z1 + .06, .48 + (.08 * (k % 2)), T + .1 + .02 * (k % 2), .12)
         m.flush(f'{f.label} gable {k}')
     zt = tiers[-1][1]
     C.box(f'{f.label} gable pinnacle', (f.p(0, T / 2, zt + .45)), (.7, T, .9), 'wall', 'gable', 0)
@@ -425,62 +438,106 @@ def gable(f, front=True):
 
 def south_face():
     f = C.Face((0, Y0, 0), (1, 0, 0), (0, 1, 0), 'south')
-    door = hole('front door', -.3, Z1 - 2.45, 1.05, 2.25, kind='door')
-    transom = hole('door transom', -.3, Z1 - .05, 1.05, .45)
-    gw = [hole('ground window west', -2.1, Z1 - 2.25, .95, 2.0), hole('ground window east', 1.9, Z1 - 2.25, 1.0, 2.05)]
-    ups = [hole(f'sash f{k} {i}', u, Z1 + k * FH + .55, 1.0, 1.85) for k in range(3) for i, u in enumerate((-2.0, 0.0, 2.0))]
-    holes = [door, transom] + gw + ups
+    door = hole('front door', 0.0, Z1, 1.0, 2.35, kind='door')
+    transom = hole('door transom', 0.0, Z1 + 2.47, 1.0, .6)
+    gw = [hole(f'ground window {s:+d}', s * 1.95, Z1 + .55, 1.05, 2.9) for s in (-1, 1)]
+    base = [hole(f'basement window {s:+d}', s * 1.95, .1, .8, .5) for s in (-1, 1)]
+    ups = [hole(f'sash f{k} {i}', u, F1 + k * FH + .5, 1.0, 2.25) for k in range(2) for i, u in enumerate((-2.0, 0.0, 2.0))]
+    holes = [door, transom] + gw + base + ups
     f.wall('south carrier', X0, X1 - EPS, 0.0, EAVE, depth=T, role='wall', holes=holes)
-    G.brick_courses(f, X0 + .02, X1 - .02, .45, EAVE - .02, holes, spacing=.2)
+    G.brick_courses(f, X0 + .02, X1 - .02, .7, EAVE - .02, holes, spacing=.1)
     m = Merge(f)
-    m.box('foundation', 0, -.03, .22, X1 - X0 - .02, .06, .44)
-    for h in gw + ups:
-        framed(m, f, h, cols=2, rows=3, inset=.12, occupied='room')
-        m.box('stone', h['u'], -.04, h['z'] - .05, h['w'] + .12, .12, .08)              # sill
+    m.box('foundation', 0, -.03, .05, X1 - X0 - .02, .06, .1)
+    for z in (F1 - .2, F1 + FH - .2):                                        # brick string courses at the floor lines
+        m.box('band', 0, -.03, z, X1 - X0 + .02, .06, .18)
+    for h in gw:
+        framed(m, f, h, cols=3, rows=6, inset=.12, occupied='room')
+        m.box('trim', h['u'], .1, h['z'] + h['h'] * .62, h['w'] - .1, .1, .08)
+        m.box('stone', h['u'], -.04, h['z'] - .06, h['w'] + .12, .12, .1)
+    for h in ups:
+        framed(m, f, h, cols=3, rows=4, inset=.12, occupied='room')
+        m.box('trim', h['u'], .1, h['z'] + h['h'] / 2, h['w'] - .1, .1, .08)
+        m.box('stone', h['u'], -.04, h['z'] - .06, h['w'] + .12, .12, .1)
+    for h in base:
+        framed(m, f, h, cols=2, rows=1, inset=.12, occupied='basement')
+    # Dark mahogany panelled door, diamond-glazed transom, white surround.
     m.box('door', door['u'], .16, door['z'] + door['h'] / 2, door['w'] - .02, .06, door['h'] - .02)
-    for zz in (.55, 1.5):
-        m.box('hardware', door['u'], .125, door['z'] + zz, door['w'] - .32, .012, .6)
+    for zz in (.35, 1.0, 1.7):
+        for s in (-1, 1):
+            m.box('door', door['u'] + s * .22, .125, door['z'] + zz + .2, .32, .012, .5)
+    m.box('hardware', door['u'] + .3, .12, door['z'] + 1.05, .05, .03, .05)
     register(f, door, .14, 'entry door', 'hall')
-    framed(m, f, transom, cols=2, rows=1, inset=.12, occupied='hall')
+    framed(m, f, transom, cols=1, rows=1, inset=.12, occupied='hall')
+    tz, th = transom['z'] + .07, transom['h'] - .14
+    b = Batch()
+    for a, c in (((-.43, 0), (0, .5)), ((0, .5), (.43, 0)), ((.43, 0), (0, -.5)), ((0, -.5), (-.43, 0))):
+        p0 = f.p(a[0], .1, tz + th / 2 + a[1] * th)
+        p1 = f.p(c[0], .1, tz + th / 2 + c[1] * th)
+        b.beam('white', p0, p1, .035, .035)
+    b.flush('transom diamond')
     for s in (-1, 1):                                                          # white door surround
-        m.box('trim', door['u'] + s * (door['w'] / 2 + .08), -.04, Z1 - 1.2, .16, .1, 2.75)
-    m.box('trim', door['u'], -.05, Z1 + .5, door['w'] + .44, .12, .16)
-    for k in range(4):
-        anchors(m, (-1.0, 1.0), Z1 + k * FH - .1)
+        m.box('white', door['u'] + s * (door['w'] / 2 + .08), -.04, Z1 + 1.55, .16, .1, 3.1)
+    m.box('white', door['u'], -.06, Z1 + 3.18, door['w'] + .5, .14, .16)
+    for z in (F1 - .55, F1 + FH - .55, EAVE - .45):
+        anchors(m, (-2.95, -1.0, 1.0, 2.95), z)
     m.flush('south')
     gable(f)
-    # Stone stoop: three steps and a landing up to the raised ground floor, iron rails.
+    # Stone stoop: steps that butt (no overlapping solids), a landing at the door, iron rails with newels.
     b = Batch()
-    for k in range(4):                                                         # steps run back to the wall; the top one is the landing
-        top = (k + 1) * (Z1 - 2.45) / 4
-        front = Y0 - 1.6 + k * .32
-        b.box('stone', door['u'], (front + Y0) / 2, top / 2, 1.9, Y0 - front, top)
+    n = 4
+    rise = Z1 / (n + 1)
+    run = .32
+    land = .6
+    b.box('stone', door['u'], Y0 - land / 2, Z1 / 2, 1.9, land, Z1)
+    for k in range(n):
+        y_hi = Y0 - land - k * run
+        top = Z1 - rise * (k + 1)
+        b.box('stone', door['u'], y_hi - run / 2, top / 2, 1.9, run, top)
+    y_foot = Y0 - land - n * run
     for s in (-1, 1):
-        b.beam('hardware', (door['u'] + s * .9, Y0 - 1.5, 1.0), (door['u'] + s * .9, Y0 - .1, 1.95), .05)
-        b.box('hardware', door['u'] + s * .9, Y0 - 1.5, .55, .05, .05, .9)
+        x = door['u'] + s * .9
+        b.box('hardware', x, y_foot + .1, .5, .06, .06, 1.0)                   # newel at the foot
+        b.box('hardware', x, Y0 - .1, (Z1 + Z1 + .95) / 2, .06, .06, .95)        # post at the wall
+        b.beam('hardware', (x, y_foot + .1, 1.0), (x, Y0 - .05, Z1 + .95), .05, .05)
+        b.beam('hardware', (x, y_foot + .1, .55), (x, Y0 - .05, Z1 + .5), .03, .03)
     b.flush('stoop')
 
 
 def side_and_rear():
     hd = (Y1 - Y0) / 2
-    for label, x, tang, inw, wins in (('east', X1, (0, 1, 0), (-1, 0, 0), (-3.5, 1.5)), ('west', X0, (0, -1, 0), (1, 0, 0), (-1.5,))):
-        f = C.Face((x, 0, 0), tang, inw, label)
-        hs = [hole(f'{label} window f{k} {i}', u, Z1 + k * FH + .7, .75, 1.2) for k in range(3) for i, u in enumerate(wins)]
-        f.wall(f'{label} carrier', -hd + T, hd - T, 0.0, EAVE, depth=T, role='wall', holes=hs)
-        G.brick_courses(f, -hd + T + .02, hd - T - .02, .45, EAVE - .02, hs, spacing=.2 if label == 'east' else .4)
-        m = Merge(f)
-        m.box('foundation', 0, -.03, .22, 2 * hd - 2 * T - .02, .06, .44)
-        for h in hs:
-            framed(m, f, h, cols=2, rows=2, inset=.12, occupied='room', lite=label == 'west')
-        for k in range(4):
-            anchors(m, (-4.0, 0.0, 4.0), Z1 + k * FH - .1)
-        m.flush(label)
+    e = C.Face((X1, 0, 0), (0, 1, 0), (-1, 0, 0), 'east')
+    hs = [hole(f'east window f{k}', -2.5, F1 + k * FH + .9, .7, 1.1) for k in range(2)] + \
+         [hole(f'east ground window {i}', u, Z1 + .7, .85, 2.5) for i, u in enumerate((1.4, 3.8))] + [hole('east vent', 3.8, .12, .5, .35)]
+    e.wall('east carrier', -hd + T, hd - T, 0.0, EAVE, depth=T, role='wall', holes=hs)
+    G.brick_courses(e, -hd + T + .02, hd - T - .02, .7, EAVE - .02, hs, spacing=.1)
+    m = Merge(e)
+    m.box('foundation', 0, -.03, .05, 2 * hd - 2 * T - .02, .06, .1)
+    for h in hs:
+        framed(m, e, h, cols=2, rows=1 if h['h'] < .5 else (4 if h['h'] > 2 else 2), inset=.12, occupied='room')
+        if h['h'] > .5:
+            m.box('stone', h['u'], -.04, h['z'] - .06, h['w'] + .12, .12, .1)
+    for z in (F1 - .55, F1 + FH - .55, EAVE - .45):
+        anchors(m, (-4.5, -1.0, 2.5, 5.2), z)
+    m.box('hardware', hd - T - .3, -.07, EAVE / 2, .1, .1, EAVE - .2)            # downpipe
+    m.flush('east')
+    w = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west')
+    hs = [hole(f'west window f{k}', 1.5, F1 + k * FH + .9, .7, 1.1) for k in range(2)] + [hole('west ground window', -2.0, Z1 + .7, .85, 2.5)]
+    w.wall('west carrier', -hd + T, hd - T, 0.0, EAVE, depth=T, role='wall', holes=hs)
+    G.brick_courses(w, -hd + T + .02, hd - T - .02, .7, EAVE - .02, hs, spacing=.2)
+    m = Merge(w)
+    m.box('foundation', 0, -.03, .3, 2 * hd - 2 * T - .02, .06, .6)
+    for h in hs:
+        framed(m, w, h, cols=2, rows=2, inset=.12, occupied='room', lite=True)
+    for z in (F1 - .55, F1 + FH - .55, EAVE - .45):
+        anchors(m, (-4.5, -1.0, 2.5, 5.2), z)
+    m.flush('west')
     n = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'north')
-    hs = [hole(f'rear sash f{k} {i}', u, Z1 + k * FH + .55, 1.0, 1.7) for k in range(3) for i, u in enumerate((-1.6, 1.6))] + [hole('rear door', 0.0, Z1 - 2.45, 1.0, 2.2, kind='door')]
+    hs = [hole(f'rear sash f{k} {i}', u, F1 + k * FH + .5, 1.0, 2.0) for k in range(2) for i, u in enumerate((-1.6, 1.6))] + \
+         [hole('rear door', 0.0, Z1, 1.0, 2.3, kind='door')]
     n.wall('north carrier', X0, X1 - EPS, 0.0, EAVE, depth=T, role='wall', holes=hs)
     m = Merge(n)
     for h in hs:
-        framed(m, n, h, cols=2, rows=3, inset=.12, occupied='room', kind=h.get('kind', 'window'), lite=True)
+        framed(m, n, h, cols=3, rows=4, inset=.12, occupied='room', kind=h.get('kind', 'window'), lite=True)
     m.flush('north')
     gable(n, front=False)
 
@@ -491,21 +548,22 @@ def roof_and_inside():
     ov = .3
     y0, y1 = Y0 + T + .01, Y1 - T - .01
     slope = rise / hw
-    lower = [(X0 - ov, y0), (X1 + ov, y0), (X1 + ov, y1), (X0 - ov, y1)]
-    upper = [(0.0, y0), (0.0, y0), (0.0, y1), (0.0, y1)]
-    strip('Tiled roof', lower, upper, EAVE - ov * slope, EAVE + rise, 'roof', 'roof')
+    for s in (-1, 1):
+        slope_plate(f'Tiled roof {"west" if s < 0 else "east"}', (s * (hw + ov), EAVE - ov * slope), (0.0, EAVE + rise), y0, y1)
     b = Batch()
-    for (x, s) in ((X0 - .2, -1), (X1 + .2, 1)):                               # gutters along the side eaves
-        b.box('hardware', x, 0.0, EAVE - ov * slope + .02, .16, Y1 - Y0 - .1, .14)
+    for x in (X0 - .22, X1 + .22):                                             # gutters between the gables only
+        b.box('hardware', x, 0.0, EAVE - ov * slope + .02, .16, y1 - y0 - .1, .14)
+    for s in (-1, 1):                                                          # white eave cornice boards
+        b.box('white', s * (hw + .08), 0.0, EAVE - .6, .14, y1 - y0 - .1, .4)
     chimney(b, 1.3, 2.0, EAVE + rise * (1 - 1.3 / hw) - .3, EAVE + rise * (1 - 1.3 / hw) + 1.8, w=.8, d=.6, pots=1)
     b.flush('roof furniture')
-    for k in range(1, 4):
-        C.box('Floor', (0, 0, Z1 + (k - 1) * FH - .12), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .24), 'floor', 'inside', 0)
+    for z in (Z1, F1, F1 + FH):
+        C.box(f'Floor {z:.1f}', (0, 0, z - .12), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .24), 'floor', 'inside', 0)
     C.box('Attic floor', (0, 0, EAVE - .12), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .24), 'floor', 'inside', 0)
-    for k in range(3):
-        C.qa_room_light(f'Front room {k}', (0, Y0 + 2.2, Z1 + k * FH + 2.2), 40, 2.4)
-    C.qa_room_light('Hall', (0, Y0 + 2.0, Z1 - 1.0), 30, 2.0)
-    C.CONTACTS.append(dict(name='Brick walls from grade; stepped gables on the street and rear walls; roof between them', eave_m=EAVE))
+    for z in (Z1, F1, F1 + FH):
+        C.qa_room_light(f'Front room {z:.0f}', (0, Y0 + 2.2, z + 2.2), 40, 2.4)
+    C.qa_room_light('Attic', (0, Y0 + 1.5, EAVE + 1.0), 20, 1.4)
+    C.CONTACTS.append(dict(name='Brick walls from grade; stepped gables on the street and rear walls; roof plates between them', eave_m=EAVE))
 
 
 def site():
@@ -517,9 +575,7 @@ def site():
     b.box('hardware', -5.2, Y0 - 1.6, 1.8, .12, .12, 3.6)                    # lamp standard
     b.box('hardware', -5.2, Y0 - 1.6, 3.85, .32, .32, .5)
     b.flush('street')
-    street_tree(-7.5, Y0 - 3.0, z=.04, height=8.0, spread=2.4)
-    for x in (-9.5,):                                                          # the neighbouring house to the west, as context
-        C.box('Neighbour block', (x, 0.0, 6.0), (4.6, 12.0, 12.0), 'brick', 'context', 0)
+    street_tree(-8.0, Y0 - 3.0, z=.04, height=9.0, spread=2.4)
 
 
 def build():
@@ -530,4 +586,4 @@ def build():
     C.CONTACTS.append(dict(name='Narrow step-gable canal house on a brick-paved street, alley east', box=[X0, X1, Y0, Y1]))
 
 
-LIGHT_RIG = dict(key=(-30, -45, 40), fill=(40, -20, 30), rear=(-15, 35, 30), target=(0, 0, 8.0), gain=5.0)
+LIGHT_RIG = dict(key=(-30, -45, 40), fill=(40, -20, 30), rear=(-15, 35, 30), target=(0, 0, 8.0), gain=4.0)
