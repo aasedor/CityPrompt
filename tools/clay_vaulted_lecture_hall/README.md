@@ -1,7 +1,7 @@
 # Campus lecture hall under a pillowed barrel vault (RLASM v6.1 architectural clay)
 
 Candidate F3 of wave F of 2026-10-17, one of five catalogue types with no clay, runtime or
-seed-library model yet, chosen to replace the Beltline mid-rise slot that duplicated an existing model. State: **candidate under review**. Nothing here is keeper-approved,
+seed-library model yet, chosen to replace the Beltline mid-rise slot that duplicated an existing model. State: **stopped at v003 under the rework stopping rule (0 P0 / 6 P1; v003 kept as the candidate because it has no P0)**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,10 +68,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 targets every P0 and P1; the two surviving findings stop the family if they survive again)
+## Open blockers after v003 (family stopped at v003 under the rework stopping rule)
 
-1. P0: the four roof masses still do not read as a pinwheel in the top view (each about 15% of the roof width against 25-30%, only two rotated, small tabs past the vault ends; source four large masses rotated the same way out to the roof corners). Survived one targeted fix.
-2. P1: the white mass is still a plain extruded box with a flat soffit (no faceted planes); the slots are punched rectangles, not carved scoops. Survived one targeted fix.
-3. P1: the end-arch rims are straight box segments that kink, with black triangular gaps, and are 2-3 times heavier than the source rib.
-4. P1: the fin screen returns as 8 widely spaced bars over about 20% of the south face; the source carries the dense rhythm over about half of it.
-5. P1: the vault soffit seen through the open ends is a blank grey shell without the rib grid.
+1. P1: roof masses only partly fixed: tilted about 15 degrees against about 40, two-thirds hidden under a vault spanning the full width (source about 60%), reading as thin louvre strips from above. Survived two targeted fixes.
+2. P1: the front view shows no dark louvred faces under the arch, only a plain white block.
+3. P1: the louvred faces are warped and clash with the vault rim and glass flank.
+4. P1: the white mass is still a flat box; the facets barely read and the soffit slopes only 2-3 degrees. Survived two targeted fixes.
+5. P1: a black band along the soffit line across the south face.
+6. P1: front_corner and aerial look from the south-east; the source oblique looks from the south-west, and the building fills only about 30% of the frame.

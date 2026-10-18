@@ -1,0 +1,1831 @@
+{
+  "candidate": "clay-vaulted-lecture-hall-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 288,
+    "vertices": 13737,
+    "polygons": 23190,
+    "triangles": 23190,
+    "path": "clay-vaulted-lecture-hall-clay-v003-authoring.blend",
+    "bytes": 3872836,
+    "sha256": "ecdff5dda0b9f44a4d8a8905238f468663ffba455291d70996e742feb4bac27b"
+  },
+  "runtime": {
+    "path": "clay-vaulted-lecture-hall-clay-v003.glb",
+    "bytes": 1210444,
+    "sha256": "527538f6e290866f7a3880f0112cc5b44a6f82f778bbbeb60be70a38f8f829dd",
+    "meshes": 17,
+    "materials": 17,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 17,
+    "vertices": 13737,
+    "polygons": 23190,
+    "triangles": 23190
+  },
+  "original_bounds_m": [
+    [
+      -37.0,
+      -35.0,
+      0.0
+    ],
+    [
+      37.0,
+      21.0,
+      30.15312385559082
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -37.0,
+      -35.0,
+      0.0
+    ],
+    [
+      37.0,
+      21.0,
+      30.15312385559082
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 35.6,
+    "depth": 34.0,
+    "height": 30.6
+  },
+  "native_dimensions_m": {
+    "width": 74.0,
+    "depth": 56.0,
+    "height": 30.15312385559082
+  },
+  "native_bottom_center_m": [
+    0.0,
+    -7.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 10,
+    "joint": 4,
+    "trim": 11,
+    "stone": 4,
+    "roof": 1,
+    "sand": 1,
+    "glass": 7,
+    "hardware": 1,
+    "floor": 2,
+    "timber": 26,
+    "planting": 54,
+    "white": 116,
+    "membrane": 2,
+    "fin": 41,
+    "louvre": 4,
+    "asphalt": 2,
+    "vglass": 2
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/y_columns.png",
+    "renders/fin_screen.png",
+    "renders/vault_ribs.png",
+    "renders/roof_masses.png",
+    "renders/entrance_steps.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front_corner": {
+      "xmin": 0.17825956642627716,
+      "xmax": 0.6928391456604004,
+      "ymin": 0.0966469794511795,
+      "ymax": 0.6717327833175659
+    },
+    "aerial": {
+      "xmin": 0.20465806126594543,
+      "xmax": 0.6760202050209045,
+      "ymin": 0.08090807497501373,
+      "ymax": 0.667503297328949
+    },
+    "top": {
+      "xmin": 0.17091119289398193,
+      "xmax": 0.8290888071060181,
+      "ymin": 0.08493304997682571,
+      "ymax": 0.7490401864051819
+    },
+    "left_side": {
+      "xmin": 0.25586241483688354,
+      "xmax": 0.9203960299491882,
+      "ymin": 0.23803281784057617,
+      "ymax": 0.7035003304481506
+    },
+    "right_side": {
+      "xmin": 0.07960397750139236,
+      "xmax": 0.7152371406555176,
+      "ymin": 0.23803281784057617,
+      "ymax": 0.7035003304481506
+    },
+    "rear": {
+      "xmin": 0.17167675495147705,
+      "xmax": 0.9077715277671814,
+      "ymin": 0.24918249249458313,
+      "ymax": 0.7400199770927429
+    },
+    "rear_side": {
+      "xmin": 0.08734361827373505,
+      "xmax": 0.8076502084732056,
+      "ymin": 0.1500042825937271,
+      "ymax": 0.7223912477493286
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "White mass on the lobby core and Y-columns over recessed double-height glazing; podium with steps on the plaza",
+      "recess_m": 1.6
+    },
+    {
+      "name": "Fin screen standing on the podium, on rails tied back to the white mass",
+      "face": "west"
+    },
+    {
+      "name": "Four angular masses in a rotated pinwheel on the roof terrace, kept clear under the vault"
+    },
+    {
+      "name": "Vault ribs spring from beams on the outer parapet edges; ends open",
+      "springing_m": 17.6
+    },
+    {
+      "name": "Lecture hall: white mass over glazed base, fin screen, barrel vault with louvred masses beneath",
+      "block": [
+        -17.0,
+        17.0,
+        -17.0,
+        17.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "south glazing 0",
+      "face": "ground south",
+      "u": -13.86,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "south glazing 1",
+      "face": "ground south",
+      "u": -10.780000000000001,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "south glazing 2",
+      "face": "ground south",
+      "u": -7.7,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "south glazing 3",
+      "face": "ground south",
+      "u": -4.619999999999999,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "south entry 4",
+      "face": "ground south",
+      "u": -1.540000000000001,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 3.0,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "south entry transom 4",
+      "face": "ground south",
+      "u": -1.540000000000001,
+      "z": 3.85,
+      "width": 2.7800000000000002,
+      "height": 2.8500000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "south entry 5",
+      "face": "ground south",
+      "u": 1.540000000000001,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 3.0,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "south entry transom 5",
+      "face": "ground south",
+      "u": 1.540000000000001,
+      "z": 3.85,
+      "width": 2.7800000000000002,
+      "height": 2.8500000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "south glazing 6",
+      "face": "ground south",
+      "u": 4.619999999999999,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "south glazing 7",
+      "face": "ground south",
+      "u": 7.700000000000001,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "south glazing 8",
+      "face": "ground south",
+      "u": 10.78,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "south glazing 9",
+      "face": "ground south",
+      "u": 13.860000000000001,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "east glazing 0",
+      "face": "ground east",
+      "u": -13.422222222222222,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "east glazing 1",
+      "face": "ground east",
+      "u": -10.066666666666666,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "east glazing 2",
+      "face": "ground east",
+      "u": -6.71111111111111,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "east glazing 3",
+      "face": "ground east",
+      "u": -3.3555555555555543,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "east glazing 4",
+      "face": "ground east",
+      "u": 0.0,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "east glazing 5",
+      "face": "ground east",
+      "u": 3.355555555555556,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "east glazing 6",
+      "face": "ground east",
+      "u": 6.71111111111111,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "east glazing 7",
+      "face": "ground east",
+      "u": 10.066666666666668,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "east glazing 8",
+      "face": "ground east",
+      "u": 13.422222222222222,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "north glazing 0",
+      "face": "ground north",
+      "u": -13.86,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "north glazing 1",
+      "face": "ground north",
+      "u": -10.780000000000001,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "north glazing 2",
+      "face": "ground north",
+      "u": -7.7,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "north glazing 3",
+      "face": "ground north",
+      "u": -4.619999999999999,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "north glazing 4",
+      "face": "ground north",
+      "u": -1.540000000000001,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "north glazing 5",
+      "face": "ground north",
+      "u": 1.540000000000001,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "north glazing 6",
+      "face": "ground north",
+      "u": 4.619999999999999,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "north glazing 7",
+      "face": "ground north",
+      "u": 7.700000000000001,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "north glazing 8",
+      "face": "ground north",
+      "u": 10.78,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "north glazing 9",
+      "face": "ground north",
+      "u": 13.860000000000001,
+      "z": 0.6,
+      "width": 2.7800000000000002,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "west glazing 0",
+      "face": "ground west",
+      "u": -13.422222222222222,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "west glazing 1",
+      "face": "ground west",
+      "u": -10.066666666666666,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "west glazing 2",
+      "face": "ground west",
+      "u": -6.71111111111111,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "west glazing 3",
+      "face": "ground west",
+      "u": -3.3555555555555543,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "west glazing 4",
+      "face": "ground west",
+      "u": 0.0,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "west glazing 5",
+      "face": "ground west",
+      "u": 3.355555555555556,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "west glazing 6",
+      "face": "ground west",
+      "u": 6.71111111111111,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "west glazing 7",
+      "face": "ground west",
+      "u": 10.066666666666668,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "west glazing 8",
+      "face": "ground west",
+      "u": 13.422222222222222,
+      "z": 0.6,
+      "width": 3.055555555555556,
+      "height": 6.1000000000000005,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -15.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "south slot upper",
+      "face": "mass south",
+      "u": 8.5,
+      "z": 13.2,
+      "width": 7.0,
+      "height": 1.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.62,
+      "pane_inset_m": 0.657,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "seminar room"
+    },
+    {
+      "id": "south slot lower",
+      "face": "mass south",
+      "u": 8.5,
+      "z": 8.6,
+      "width": 7.0,
+      "height": 1.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.62,
+      "pane_inset_m": 0.657,
+      "face_origin": [
+        0.0,
+        -17.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "seminar room"
+    },
+    {
+      "id": "east slot upper",
+      "face": "mass east",
+      "u": -4.0,
+      "z": 13.2,
+      "width": 8.0,
+      "height": 1.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.62,
+      "pane_inset_m": 0.657,
+      "face_origin": [
+        17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "seminar room"
+    },
+    {
+      "id": "east slot lower",
+      "face": "mass east",
+      "u": -4.0,
+      "z": 8.6,
+      "width": 8.0,
+      "height": 1.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.62,
+      "pane_inset_m": 0.657,
+      "face_origin": [
+        17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "seminar room"
+    },
+    {
+      "id": "north slot",
+      "face": "mass north",
+      "u": 0.0,
+      "z": 13.2,
+      "width": 10.0,
+      "height": 1.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.62,
+      "pane_inset_m": 0.657,
+      "face_origin": [
+        0.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "seminar room"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "Plaza",
+      "South street",
+      "West street",
+      "Planter bed",
+      "Planter bed.001"
+    ],
+    "garden planting": [
+      "Shrub rooted stem",
+      "Leafy shrub crown",
+      "Leafy shrub crown.001",
+      "Leafy shrub crown.002",
+      "Leafy shrub crown.003",
+      "Shrub rooted stem.001",
+      "Leafy shrub crown.004",
+      "Leafy shrub crown.005",
+      "Leafy shrub crown.006",
+      "Leafy shrub crown.007",
+      "Shrub rooted stem.002",
+      "Leafy shrub crown.008",
+      "Leafy shrub crown.009",
+      "Leafy shrub crown.010",
+      "Leafy shrub crown.011",
+      "Shrub rooted stem.003",
+      "Leafy shrub crown.012",
+      "Leafy shrub crown.013",
+      "Leafy shrub crown.014",
+      "Leafy shrub crown.015",
+      "Shrub rooted stem.004",
+      "Leafy shrub crown.016",
+      "Leafy shrub crown.017",
+      "Leafy shrub crown.018",
+      "Leafy shrub crown.019",
+      "Shrub rooted stem.005",
+      "Leafy shrub crown.020",
+      "Leafy shrub crown.021",
+      "Leafy shrub crown.022",
+      "Leafy shrub crown.023",
+      "Shrub rooted stem.006",
+      "Leafy shrub crown.024",
+      "Leafy shrub crown.025",
+      "Leafy shrub crown.026",
+      "Leafy shrub crown.027",
+      "Shrub rooted stem.007",
+      "Leafy shrub crown.028",
+      "Leafy shrub crown.029",
+      "Leafy shrub crown.030",
+      "Leafy shrub crown.031",
+      "Shrub rooted stem.008",
+      "Leafy shrub crown.032",
+      "Leafy shrub crown.033",
+      "Leafy shrub crown.034",
+      "Leafy shrub crown.035",
+      "Shrub rooted stem.009",
+      "Leafy shrub crown.036",
+      "Leafy shrub crown.037",
+      "Leafy shrub crown.038",
+      "Leafy shrub crown.039",
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011"
+    ],
+    "envelope": [
+      "south ground carrier",
+      "east ground carrier",
+      "north ground carrier",
+      "west ground carrier",
+      "mass south white carrier",
+      "mass east white carrier",
+      "mass north white carrier",
+      "mass west white carrier"
+    ],
+    "ground south": [
+      "ground south ground south trim",
+      "ground south ground south glass"
+    ],
+    "ground east": [
+      "ground east ground east trim",
+      "ground east ground east glass"
+    ],
+    "ground north": [
+      "ground north ground north trim",
+      "ground north ground north glass"
+    ],
+    "ground west": [
+      "ground west ground west trim",
+      "ground west ground west glass"
+    ],
+    "columns": [
+      "Y column trunk",
+      "Y column node",
+      "Y column branch",
+      "Y column branch.001",
+      "Y column trunk.001",
+      "Y column node.001",
+      "Y column branch.002",
+      "Y column branch.003",
+      "Y column trunk.002",
+      "Y column node.002",
+      "Y column branch.004",
+      "Y column branch.005",
+      "Y column trunk.003",
+      "Y column node.003",
+      "Y column branch.006",
+      "Y column branch.007",
+      "Y column trunk.004",
+      "Y column node.004",
+      "Y column branch.008",
+      "Y column branch.009",
+      "Y column trunk.005",
+      "Y column node.005",
+      "Y column branch.010",
+      "Y column branch.011",
+      "Y column trunk.006",
+      "Y column node.006",
+      "Y column branch.012",
+      "Y column branch.013"
+    ],
+    "podium": [
+      "Podium",
+      "Podium step",
+      "Podium step.001",
+      "Podium step.002"
+    ],
+    "lobby": [
+      "Lobby core",
+      "Lobby stair"
+    ],
+    "mass south": [
+      "mass south mass south joint",
+      "mass south mass south white",
+      "mass south mass south trim",
+      "mass south mass south glass"
+    ],
+    "mass east": [
+      "mass east mass east joint",
+      "mass east mass east white",
+      "mass east mass east trim",
+      "mass east mass east glass"
+    ],
+    "mass north": [
+      "mass north mass north joint",
+      "mass north mass north white",
+      "mass north mass north trim",
+      "mass north mass north glass"
+    ],
+    "mass west": [
+      "mass west mass west joint"
+    ],
+    "mass": [
+      "Mass soffit",
+      "Mass soffit outer",
+      "Roof terrace",
+      "Roof terrace paving",
+      "Mass floor",
+      "Mass facet south",
+      "Mass facet east",
+      "Mass soffit sloping up to the south-west"
+    ],
+    "fin screen": [
+      "fin screen fin",
+      "fin screen hardware"
+    ],
+    "roof masses": [
+      "Roof mass 0",
+      "Roof mass louvre panel 0",
+      "Louvre blade line",
+      "Louvre blade line.001",
+      "Louvre blade line.002",
+      "Louvre blade line.003",
+      "Louvre blade line.004",
+      "Louvre blade line.005",
+      "Louvre blade line.006",
+      "Louvre blade line.007",
+      "Louvre blade line.008",
+      "Louvre blade line.009",
+      "Roof mass 1",
+      "Roof mass louvre panel 1",
+      "Louvre blade line.010",
+      "Louvre blade line.011",
+      "Louvre blade line.012",
+      "Louvre blade line.013",
+      "Louvre blade line.014",
+      "Louvre blade line.015",
+      "Louvre blade line.016",
+      "Louvre blade line.017",
+      "Louvre blade line.018",
+      "Louvre blade line.019",
+      "Roof mass 2",
+      "Roof mass louvre panel 2",
+      "Louvre blade line.020",
+      "Louvre blade line.021",
+      "Louvre blade line.022",
+      "Louvre blade line.023",
+      "Louvre blade line.024",
+      "Louvre blade line.025",
+      "Louvre blade line.026",
+      "Louvre blade line.027",
+      "Louvre blade line.028",
+      "Louvre blade line.029",
+      "Roof mass 3",
+      "Roof mass louvre panel 3",
+      "Louvre blade line.030",
+      "Louvre blade line.031",
+      "Louvre blade line.032",
+      "Louvre blade line.033",
+      "Louvre blade line.034",
+      "Louvre blade line.035",
+      "Louvre blade line.036",
+      "Louvre blade line.037",
+      "Louvre blade line.038",
+      "Louvre blade line.039"
+    ],
+    "vault": [
+      "Vault membrane crown",
+      "Vault membrane cushions",
+      "Vault glazed flank",
+      "Vault glazed flank.001"
+    ],
+    "vault ribs": [
+      "Vault end rib",
+      "Vault rib under the shell",
+      "Vault rib foot",
+      "Vault rib foot.001",
+      "Vault arch rib",
+      "Vault rib under the shell.001",
+      "Vault rib foot.002",
+      "Vault rib foot.003",
+      "Vault arch rib.001",
+      "Vault rib under the shell.002",
+      "Vault rib foot.004",
+      "Vault rib foot.005",
+      "Vault arch rib.002",
+      "Vault rib under the shell.003",
+      "Vault rib foot.006",
+      "Vault rib foot.007",
+      "Vault arch rib.003",
+      "Vault rib under the shell.004",
+      "Vault rib foot.008",
+      "Vault rib foot.009",
+      "Vault arch rib.004",
+      "Vault rib under the shell.005",
+      "Vault rib foot.010",
+      "Vault rib foot.011",
+      "Vault arch rib.005",
+      "Vault rib under the shell.006",
+      "Vault rib foot.012",
+      "Vault rib foot.013",
+      "Vault arch rib.006",
+      "Vault rib under the shell.007",
+      "Vault rib foot.014",
+      "Vault rib foot.015",
+      "Vault end rib.001",
+      "Vault rib under the shell.008",
+      "Vault rib foot.016",
+      "Vault rib foot.017",
+      "Vault longitudinal rib",
+      "Vault longitudinal rib under the shell",
+      "Vault longitudinal rib.001",
+      "Vault longitudinal rib under the shell.001",
+      "Vault longitudinal rib.002",
+      "Vault longitudinal rib under the shell.002",
+      "Vault longitudinal rib.003",
+      "Vault longitudinal rib under the shell.003",
+      "Vault longitudinal rib.004",
+      "Vault longitudinal rib under the shell.004",
+      "Vault longitudinal rib.005",
+      "Vault longitudinal rib under the shell.005",
+      "Vault longitudinal rib.006",
+      "Vault longitudinal rib under the shell.006",
+      "Vault longitudinal rib.007",
+      "Vault longitudinal rib under the shell.007",
+      "Vault longitudinal rib.008",
+      "Vault longitudinal rib under the shell.008",
+      "Vault longitudinal rib.009",
+      "Vault longitudinal rib under the shell.009",
+      "Vault longitudinal rib.010",
+      "Vault longitudinal rib under the shell.010",
+      "Vault longitudinal rib.011",
+      "Vault longitudinal rib under the shell.011",
+      "Vault longitudinal rib.012",
+      "Vault longitudinal rib under the shell.012",
+      "Vault longitudinal rib.013",
+      "Vault longitudinal rib under the shell.013",
+      "Vault longitudinal rib.014",
+      "Vault longitudinal rib under the shell.014",
+      "Vault longitudinal rib.015",
+      "Vault longitudinal rib under the shell.015",
+      "Vault longitudinal rib.016",
+      "Vault longitudinal rib under the shell.016",
+      "Vault longitudinal rib.017",
+      "Vault longitudinal rib under the shell.017",
+      "Vault longitudinal rib.018",
+      "Vault longitudinal rib under the shell.018",
+      "Vault longitudinal rib.019",
+      "Vault longitudinal rib under the shell.019",
+      "Vault longitudinal rib.020",
+      "Vault longitudinal rib under the shell.020",
+      "Vault springing beam",
+      "Vault springing beam.001"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-18T01:48:26.578591+00:00",
+  "delivery_and_render_seconds": 5312.453971344001,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
