@@ -25,7 +25,7 @@ ZT = 17.0                                       # top of the white mass, roof te
 ZS = ZT + .6                                    # vault springing on beams over the outer parapet edges
 VH = 12.0                                       # vault rise (semi-elliptic, flatter than a half-circle)
 XV = X1 - .35                                   # vault half-span east-west, on the springing beams at the parapet edges
-VY = (-12.5, 12.5)                              # vault length north-south; open ends
+VY = (-11.5, 11.5)                              # vault length north-south; open ends, the roof corners left clear
 CROWN = 11.0                                    # half-width of the membrane crown; glazed flanks outside it
 REC = 1.6                                       # ground-floor glazing recessed under the mass
 EPS = .002
@@ -317,6 +317,21 @@ class Batch:
         self.g = {}
 
 
+def loft(name, rings, role, module, closed=True):
+    """Loft a closed profile (list of 3D points) carried along a sequence of rings."""
+    n, m = len(rings), len(rings[0])
+    vs = [v for ring in rings for v in ring]
+    fs = []
+    for i in range(n if closed else n - 1):
+        a, b = i * m, ((i + 1) % n) * m
+        for j in range(m):
+            k = (j + 1) % m
+            fs.append((a + j, b + j, b + k, a + k))
+    if not closed:
+        fs.append(tuple(range(m - 1, -1, -1))); fs.append(tuple((n - 1) * m + j for j in range(m)))
+    return C.mesh(name, vs, fs, role, module)
+
+
 def vz(x):
     """Height of the vault surface over x (east-west section): a semi-ellipse springing at the parapet edges."""
     s = max(0.0, 1.0 - (x / XV) ** 2)
@@ -392,20 +407,28 @@ def vault():
             xs = xs[::-1]
         shell('Vault glazed flank', xs, ys, 'vglass', 'vault', t=.05)
     # Rib grid: arch ribs across at every y station (heavy at the open ends), straight ribs along at every x station.
-    def arch(y, w, d, name):
-        n = 32
-        pts = [(-XV + 2 * XV * k / n) for k in range(n + 1)]
-        for a, c in zip(pts, pts[1:]):
-            C.beam(name, (a, y, vz(a) + d / 2 - .05), (c, y, vz(c) + d / 2 - .05), w, d, 'white', 'vault ribs')
+    def arch(y, w, d0, d1, name):
+        """Arch rib swept along the vault normal: continuous, no kinks or gaps between segments."""
+        n = 64
+        rings = []
+        for k in range(n + 1):
+            x = -XV + 2 * XV * k / n
+            nx_, nz_ = vnormal(x)
+            z = vz(x)
+            rings.append([(x + nx_ * dd, y + yy, z + nz_ * dd) for dd, yy in ((d0, -w / 2), (d0, w / 2), (d1, w / 2), (d1, -w / 2))])
+        loft(name, rings, 'white', 'vault ribs', closed=False)
     for j, y in enumerate(ys):
         end = j in (0, ny)
-        arch(y, .7 if end else .22, .9 if end else .26, 'Vault end rib' if end else 'Vault arch rib')
+        arch(y, .36 if end else .2, -.05, .5 if end else .24, 'Vault end rib' if end else 'Vault arch rib')
+        arch(y, .3 if end else .16, -.6 if end else -.42, -.15, 'Vault rib under the shell')   # the grid read from below
         for x in (-XV, XV):                                               # rib feet bedded on the springing beams
             C.box('Vault rib foot', (x, y, ZS + .45), (.75, (.9 if end else .45), .9), 'white', 'vault ribs', 0)
     for x in sorted(set([round(v, 3) for v in xc + flank])):
         if abs(abs(x) - XV) < .01:
             continue
         C.beam('Vault longitudinal rib', (x, ya, vz(x) + .08), (x, yb, vz(x) + .08), .18, .24, 'white', 'vault ribs')
+        nx_, nz_ = vnormal(x)
+        C.beam('Vault longitudinal rib under the shell', (x - nx_ * .3, ya, vz(x) - nz_ * .3), (x - nx_ * .3, yb, vz(x) - nz_ * .3), .14, .24, 'white', 'vault ribs')
     for x in (-XV, XV):                                                   # springing beams on the parapet edges
         C.box('Vault springing beam', (x, 0, ZT + .3), (.7, yb - ya + 1.4, .6), 'white', 'vault ribs', 0)
     C.CONTACTS.append(dict(name='Vault ribs spring from beams on the outer parapet edges; ends open', springing_m=ZS))
@@ -452,13 +475,23 @@ def white_mass():
         y = Y0 + .5 + k * .75
         dz = .4 * math.sin(k * .45)
         b.box('fin', X0 - .75, y, (G0 + ZT + dz) / 2, .9, .14, ZT + dz - G0)
-    for k in range(0, 9):
+    for k in range(0, 23):                                                # the dense rhythm carried over half the south face
         x = X0 - .25 + k * .75
-        b.box('fin', x, Y0 - .75, (G0 + ZT) / 2, .14, .9, ZT - G0)
+        b.box('fin', x, Y0 - .95, (G0 + ZT) / 2, .14, .9, ZT - G0)
     for z in (Z1 - .3, ZT - .4):                                          # fin rails, meeting at the corner and tied back
         b.box('hardware', X0 - .45, (Y0 - .52 + Y1 - .3) / 2, z, .14, Y1 - .3 - (Y0 - .52), .12)
-        b.box('hardware', (X0 - .38 + X0 + 6.2) / 2, Y0 - .45, z, X0 + 6.2 - (X0 - .38), .14, .12)
+        b.box('hardware', (X0 - .38 + X0 + 16.6) / 2, Y0 - .45, z, X0 + 16.6 - (X0 - .38), .14, .12)
     b.flush('fin screen')
+    # Faceted planes: canted panels leaning out from the upper south and east faces, and a soffit that slopes up
+    # toward the south-west corner over the recessed glazing.
+    C.prism('Mass facet south', [(Y0 + .05, 11.4), (Y0 + .05, ZT), (Y0 - .5, ZT)], 'x', X0 + 1.0, -1.5, 'wall', 'mass')
+    C.prism('Mass facet east', [(X1 - .05, 11.4), (X1 - .05, ZT), (X1 + .9, ZT)], 'y', 2.0, Y1 - 1.5, 'wall', 'mass')
+    vs = []
+    for x, drop in ((X0 + .01, .05), (X1 - .01, 1.9)):
+        for y in (Y0 + .01, Y0 + REC - .02):
+            vs += [(x, y, Z1 - drop), (x, y, Z1 - .01)]
+    fs = [(0, 2, 6, 4), (1, 5, 7, 3), (0, 1, 3, 2), (4, 6, 7, 5), (0, 4, 5, 1), (2, 3, 7, 6)]
+    C.mesh('Mass soffit sloping up to the south-west', vs, fs, 'wall', 'mass')
     C.CONTACTS.append(dict(name='Fin screen standing on the podium, on rails tied back to the white mass', face='west'))
 
 
@@ -466,10 +499,12 @@ def louvred_masses():
     """Four large angular white masses in a rotated pinwheel on the roof terrace, rising inward under the vault; each
     sloping face a dark louvre panel in a white frame, with light vertical louvre lines."""
     b = Batch()
-    for i, (cx, cy) in enumerate(((-8.0, -11.6), (8.5, -11.6), (8.0, 11.6), (-8.5, 11.6))):   # astride the open vault ends
-        th = math.atan2(-cy, -cx) + math.radians(28.0)
+    for i in range(4):                                                  # a true pinwheel: each mass the last turned 90 degrees
+        q = i * math.pi / 2
+        cx, cy = 10.8 * math.cos(q) + 10.8 * math.sin(q), 10.8 * math.sin(q) - 10.8 * math.cos(q)
+        th = q + math.radians(18.0)
         cu, su = math.cos(th), math.sin(th)
-        L, W = 7.0, 6.0
+        L, W = 9.0, 6.0
         lo_z, hi_z = ZT + 2.2, ZT + 8.4
 
         def P(u, v):
