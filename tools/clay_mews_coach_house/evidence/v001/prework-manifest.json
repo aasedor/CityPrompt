@@ -1,0 +1,417 @@
+{
+  "candidate": "clay-mews-coach-house-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-mews-coach-house",
+  "variant_id": "clay-mews-coach-house-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "london_mews_house/variant_0 (london-mews-house-original-stable)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 13.8,
+      "depth": 7.4,
+      "height": 9.700000000000001
+    },
+    "observed_storeys": 2,
+    "storey_programme": "coach house and hall on the ground floor, living rooms above; the attached neighbour the same",
+    "plan": "8.6 x 7.4 m end house and a 5.2 m attached neighbour (top view); hipped at the corner end, party gable west",
+    "facade": "painted white brick on a black plinth; red boarded coach door with glazed transom; panelled front door with fanlight; six-over-six sashes",
+    "levels_m": [
+      0.15,
+      3.05,
+      6.0
+    ],
+    "roof_m": {
+      "eave": 6.0,
+      "ridge": 8.3
+    },
+    "inferred": "interiors and the rear face are teaching assumptions; the rear repeats the visible grammar"
+  },
+  "roof_contract": {
+    "type": "slate roof hipped at the corner end with chimney stacks and two rear skylights",
+    "datum_m": 6.0,
+    "crowns_m": [
+      8.3
+    ]
+  },
+  "identity_contract": {
+    "owner": "white-painted brick mews house with red coach-house door, sash windows, hipped slate roof and chimney pots on a cobbled mews"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: white paint, black plinth and gutter, red boarded door, grey slate, stock-brick stacks with orange pots, granite setts",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 2,
+    "ground": "coach house (garage) and hall",
+    "upper": "living rooms"
+  },
+  "contact_contract": [
+    "Grade-zero setts and pavements",
+    "Walls on a black plinth",
+    "Roof on the eaves band",
+    "Stacks on the party walls"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        13.5,
+        -13.5,
+        1.6
+      ],
+      "target": [
+        1.0,
+        -2.0,
+        3.6
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        22.2768,
+        -23.990399999999998,
+        19.400000000000002
+      ],
+      "target": [
+        0,
+        0,
+        4.365
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        19.991999999999997,
+        -22.848,
+        29.1
+      ],
+      "target": [
+        0,
+        0,
+        4.365
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        42.839999999999996
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 23.52
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -28.56,
+        0,
+        5.82
+      ],
+      "target": [
+        0,
+        0,
+        4.365
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        28.56,
+        0,
+        5.82
+      ],
+      "target": [
+        0,
+        0,
+        4.365
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        28.56,
+        5.82
+      ],
+      "target": [
+        0,
+        0,
+        4.365
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        19.991999999999997,
+        22.848,
+        17.46
+      ],
+      "target": [
+        0,
+        0,
+        4.365
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        3.0,
+        -14.0,
+        3.2
+      ],
+      "target": [
+        3.0,
+        -3.7,
+        3.2
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        14.0,
+        -10.0,
+        6.0
+      ],
+      "target": [
+        8.6,
+        -3.7,
+        5.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        3.4,
+        -6.5,
+        4.6
+      ],
+      "target": [
+        3.4,
+        -3.7,
+        4.4
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "coach_door",
+      "location": [
+        2.6,
+        -8.0,
+        1.8
+      ],
+      "target": [
+        2.6,
+        -3.7,
+        1.8
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "front_door",
+      "location": [
+        6.0,
+        -5.5,
+        1.5
+      ],
+      "target": [
+        5.9,
+        -3.7,
+        1.6
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "roof_chimneys",
+      "location": [
+        2.0,
+        -16.0,
+        14.0
+      ],
+      "target": [
+        2.0,
+        0.0,
+        7.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "east_side",
+      "location": [
+        17.0,
+        2.0,
+        3.5
+      ],
+      "target": [
+        8.6,
+        0.0,
+        3.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "eaves_corner",
+      "location": [
+        11.5,
+        -7.5,
+        7.5
+      ],
+      "target": [
+        8.6,
+        -3.7,
+        6.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        6.6,
+        2.6,
+        4.65
+      ],
+      "target": [
+        2.0,
+        -3.7,
+        4.55
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        2.0,
+        16.0,
+        4.0
+      ],
+      "target": [
+        2.0,
+        3.7,
+        4.0
+      ],
+      "lens": 45,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "coach_door",
+    "front_door",
+    "roof_chimneys",
+    "east_side",
+    "eaves_corner",
+    "interior",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/london-mews-house/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1447859,
+        "sha256": "8032e120df23417ef56d938d6ad1d832ba7fae7078241007eb56544166344a2d"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/london-mews-house/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 1041599,
+        "sha256": "4514710e2328d10f443c0dbab37d3168d62e654d3d8f9e8146a9d30c54ac47c5"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/london-mews-house/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 957191,
+        "sha256": "3a78fd0666cc8add5c001e2a9dac28e24e94f53780da2f260663ff3c0b803b5e"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_mews.py",
+        "sha256": "a5262cb97e99c9c41f0849d5f3f2892b356167932b7031d62c3c5410e460f5fd"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "9ca1297eca37e7476ac6b0358636b05ec26b69fdc05509b5a9445c9d17ad84a1"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "0a3b8e58c08d4be29ca9276d3dcfe524fe278113b31048a0bfa5fac82a833b60"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-18T20:32:41.388026+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
