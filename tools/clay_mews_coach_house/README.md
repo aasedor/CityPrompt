@@ -68,6 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (first build; the review drives v002)
+## Open blockers after v002 (P0+P1 fell from 8 to 4; the best so far, so v002 is the candidate)
 
-P0 open west party gable renders black; coach transom on the first-floor line with no wall band. P1 three-over-three sashes; south rhythm; walls read as siding; no coped party gables; mews tiles not setts; tree canopy into the roof
+P1 apron and lane read as square tiles, not staggered setts; walls still read as boarding (no head joints); tree west of the model and too small; an extra east upper window
