@@ -48,7 +48,7 @@ def manifest(version):
         ('gables_pinnacles', (30.0, -48.0, 24.0), (17.5, Y0, 19.0), 40),
         ('east_side', (80.0, 0.0, 12.0), (X1, 0.0, 12.0), 45),
         ('roofs_court', (-30.0, -40.0, 60.0), (0.0, 2.0, 16.0), 40),
-        ('interior', (-4.0, -H + 5.0, F2 + 1.6), (-10.0, -H, F2 + 2.0), 40),
+        ('interior', (-4.2, -H + 3.2, F2 + 1.7), (-4.2, -H, F2 + 2.0), 50),
         ('rear_north', (0.0, 80.0, 14.0), (0.0, Y1, 14.0), 45)])
     for c in cams:                       # the locked front and oblique look from the south-east
         if c['name'] == 'front':
@@ -626,7 +626,10 @@ def outer_walls():
         for side, (a, c) in (('w', (plo, -H + PW - PP / 2)), ('e', (H - PW + PP / 2, -plo))):
             uc = -pc if side == 'w' else pc
             portal = uc if (label == 'south' and side == 'w') else None
-            segment(f'{label} pavilion {side}', org(H + PP), t, n, a, c, T + PP, [uc - 4.4, uc, uc + 4.4], portal=portal,
+            # On the east and west faces the corner 2.6 m belongs to the south or north wall's end, so only the inner
+            # side bay is set there; the north and south faces carry both side bays.
+            bays = [uc - 4.4, uc, uc + 4.4] if wraps else [uc, uc - (4.4 if uc > 0 else -4.4)]
+            segment(f'{label} pavilion {side}', org(H + PP), t, n, a, c, T + PP, bays, portal=portal,
                     ends=(corner, 0.0) if side == 'w' else (0.0, corner), group=uc, arc_n=3)
             gable(f'{label} gable {side}', org(H + PP), t, n, uc)
         lo, hi = -H + PW - PP / 2, H - PW + PP / 2
@@ -637,6 +640,7 @@ def outer_walls():
             segment(f'{label} wing', org(H), t, n, lo, hi, T, [-8.4, -4.2, 0.0, 4.2, 8.4])
             gable(f'{label} mid gable', org(H), t, n, 0.0, run=RUN[label])                  # the mid-front gabled pavilion
     porch()
+    tower_porch()
 
 
 def porch():
@@ -725,6 +729,37 @@ def roofs():
         for z in (BASE, F2, F3):
             C.qa_room_light(f'Room {x:+.0f} {y:+.0f} {z:.0f}', (x, y, z + 2.3), 70, 3.0)
     C.CONTACTS.append(dict(name='Sandstone walls from grade; roofs on the eave cornices; tower from grade through the east wing', eave_m=EAVE))
+
+
+def tower_porch():
+    """The arched entrance porch at the foot of the clock tower (oblique source): a block standing forward of the
+    tower portal with an arched passage, colonnettes, steps and a balustraded balcony on top."""
+    dp, top = 2.4, 5.4
+    f = C.Face((TX1 + dp, 0, 0), (0, 1, 0), (-1, 0, 0), 'tower porch')
+    h = hole('tower porch arch', 0.0, 0.0, 3.0, 4.2, kind='door')
+    f.wall('tower porch block', -2.4, 2.4 - EPS, 0.0, top, depth=dp, role='wall', holes=[h])
+    G.brick_courses(f, -2.38, 2.38, .1, top - .1, [h], spacing=.5)
+    register(f, h, 0.0, 'tower porch arch', 'entrance porch')
+    arch_head(f, h, 1.5, ring=.5, dep=dp)
+    m = Merge(f)
+    colonnettes(m, [-1.95, 1.95], .3, 2.65)
+    m.box('stone', 0.0, -.1, top - .25, 4.8, .2, .5)
+    m.flush('tower porch')
+    C.box('Tower porch landing', (TX1 + dp / 2, 0.0, .2), (dp, 2.98, .4), 'stone', 'porch', 0)
+    b = Batch()
+    for k in range(3):                                                          # steps up to the passage
+        b.box('stone', TX1 + dp + .15 + .3 * k, 0.0, (.4 - .13 * k) / 2, .3, 3.4 + .4 * k, .4 - .13 * k)
+    b.box('stone', TX1 + dp - .125, 0.0, top + .9, .25, 4.8, .16)               # balcony: front rail, plinth, balusters
+    b.box('stone', TX1 + dp - .125, 0.0, top + .08, .25, 4.8, .16)
+    for i in range(12):
+        b.box('stone', TX1 + dp - .125, -2.2 + 4.4 * i / 11, top + .49, .12, .12, .66)
+    for s_ in (-1, 1):
+        y = s_ * 2.275
+        b.box('stone', TX1 + (dp - .25) / 2, y, top + .9, dp - .25, .25, .16)
+        b.box('stone', TX1 + (dp - .25) / 2, y, top + .08, dp - .25, .25, .16)
+        for i in range(5):
+            b.box('stone', TX1 + .25 + (dp - .6) * i / 4, y, top + .49, .12, .12, .66)
+    b.flush('tower porch balcony')
 
 
 def tower():
