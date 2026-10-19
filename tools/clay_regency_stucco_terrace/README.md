@@ -68,6 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 reworks it)
+## Open blockers after v005 (v006 reworks these two; a second non-improving review or a second failed court fix stops the family)
 
-- P1 #1: the roof round the light court is one plain slate surface falling into the court like a funnel; the locked top and oblique show an inner mansard with four large dormer boxes (two each on the west and east inner slopes), rooflights on the north and south inner slopes and a ribbed lead band.
+- P1 #1: slate and lead are the wrong way round: about three quarters of the visible roof is pale standing-seam lead with slate only as thin steep strips; the sources show broad slate on the outer and inner slopes with lead only as a narrow ribbed ridge band (source slate about 13% outside and 12% inside of block width with lead about 8%; render slate about 3% and 4% with lead about 25%).
+- P1 #2: the inner court is still under-scaled: inner dormers about 1.3-1.5x street size on a steep strip about 4% of block width; the source has large lead-topped box dormers (2.5-4x street size) on broad inner slate slopes with the cream court walls and windows showing below (the v004 court finding, surviving one targeted fix).
