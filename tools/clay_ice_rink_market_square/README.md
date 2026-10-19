@@ -77,9 +77,9 @@ NOT TESTED. The model sits on a level base. Shared terrain registration is not a
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 reworks these four)
+## Open blockers after v003 (v004 reworks these four; a second non-improving review stops the family)
 
-- P1 #1: neighbouring chalets stand eave to eave; long-row roofs overlap like shingles and each short row of four reads as one slab from above; the source shows separate huts with cobbled gaps and visible ridges.
-- P1 #2: the tree is a smooth cone with sparse flat plank branches, a spiky bottle brush and a 12-spoke pinwheel from above with soil between the spokes, not a dense fir (the v001 tree finding, surviving one targeted fix).
-- P1 #3: left_side, right_side, rear and rear_north crop the upper third of the tree and the star; near stall roofs fill 20-25% of each frame.
-- P1 #4: the front camera stands mid-rink with the tree dead centre and about 45% empty ice; the source's right-hand foreground of boards, garlanded handrail and east chalets is missing; the skating aid is clipped.
+- P1 #1: every bauble and light on the tree is a cube, reading as dice or gift boxes, some overlapping, far sparser than the source's dense round baubles and warm lights.
+- P1 #2: in front the garland hangs only on the outer face of the boards so the handrail looks bare from the ice, and the east chalets show only as small gable tips at the right edge (the v002 front-view finding, surviving one targeted fix).
+- P1 #3: in aerial the near south-east town front and roof hide the near long row of six chalets, one short-row chalet and about a third of the rink.
+- P1 #4: the west town front has only two rows of windows and about two storeys of blank wall above them, filling the left third of front and showing in right_side.

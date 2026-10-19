@@ -1,0 +1,1202 @@
+{
+  "candidate": "clay-ice-rink-market-square-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 308,
+    "vertices": 72056,
+    "polygons": 62404,
+    "triangles": 62404,
+    "path": "clay-ice-rink-market-square-clay-v003-authoring.blend",
+    "bytes": 6824504,
+    "sha256": "607aa1ec2798236683e80562560c9ae47c6abd20bee35e748d7296c26ba41eee"
+  },
+  "runtime": {
+    "path": "clay-ice-rink-market-square-clay-v003.glb",
+    "bytes": 3512456,
+    "sha256": "fa5539a90c11eeb835232d5090b1841ea52637fa22e6676af7465314b37a6aff",
+    "meshes": 26,
+    "materials": 26,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 26,
+    "vertices": 72056,
+    "polygons": 62404,
+    "triangles": 62404
+  },
+  "original_bounds_m": [
+    [
+      -30.100000381469727,
+      -50.29999923706055,
+      0.0
+    ],
+    [
+      30.100000381469727,
+      35.79999923706055,
+      18.5
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -30.100000381469727,
+      -50.29999923706055,
+      0.0
+    ],
+    [
+      30.100000381469727,
+      35.79999923706055,
+      18.5
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 34.0,
+    "depth": 47.0,
+    "height": 15.5
+  },
+  "native_dimensions_m": {
+    "width": 60.20000076293945,
+    "depth": 86.0999984741211,
+    "height": 18.5
+  },
+  "native_bottom_center_m": [
+    0.0,
+    -7.25,
+    0.0
+  ],
+  "source_components_by_role": {
+    "ice": 1,
+    "white": 3,
+    "glass": 2,
+    "hardware": 3,
+    "deck": 1,
+    "timber": 26,
+    "hut": 80,
+    "snow": 40,
+    "planting": 21,
+    "tree": 1,
+    "tree2": 1,
+    "flower": 22,
+    "gold": 2,
+    "pale": 23,
+    "counter": 21,
+    "interior": 20,
+    "setts": 1,
+    "joint": 2,
+    "facade": 2,
+    "facade2": 1,
+    "facade3": 1,
+    "troof": 4,
+    "dark": 5,
+    "trim": 4,
+    "floor": 20,
+    "orange": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/christmas_tree.png",
+    "renders/market_chalets.png",
+    "renders/dasher_boards.png",
+    "renders/ice_surface.png",
+    "renders/square_aerial.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front_corner": {
+      "xmin": 0.23642170429229736,
+      "xmax": 0.9166688919067383,
+      "ymin": 0.07594472914934158,
+      "ymax": 0.7656987309455872
+    },
+    "aerial": {
+      "xmin": 0.07898437976837158,
+      "xmax": 0.8115924596786499,
+      "ymin": 0.15796469151973724,
+      "ymax": 0.7151493430137634
+    },
+    "top": {
+      "xmin": 0.3163168430328369,
+      "xmax": 0.6836831569671631,
+      "ymin": 0.09073030203580856,
+      "ymax": 0.7912893891334534
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Ice rink with tree island and market chalets on a cobbled square",
+      "box": [
+        -17.0,
+        17.0,
+        -23.5,
+        23.5
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "North chalet 0 counter",
+      "face": "North chalet 0",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.2,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -7.949999809265137,
+        19.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "South chalet 0 counter",
+      "face": "South chalet 0",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.2,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -7.949999809265137,
+        -19.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "North chalet 1 counter",
+      "face": "North chalet 1",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.2,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -2.6500000953674316,
+        19.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "South chalet 1 counter",
+      "face": "South chalet 1",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.2,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -2.6500000953674316,
+        -19.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "North chalet 2 counter",
+      "face": "North chalet 2",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.2,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        2.6500000953674316,
+        19.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "South chalet 2 counter",
+      "face": "South chalet 2",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.2,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        2.6500000953674316,
+        -19.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "North chalet 3 counter",
+      "face": "North chalet 3",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.2,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        7.949999809265137,
+        19.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "South chalet 3 counter",
+      "face": "South chalet 3",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.2,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        7.949999809265137,
+        -19.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "West chalet 0 counter",
+      "face": "West chalet 0",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.8000000000000003,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -13.300000190734863,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "East chalet 0 counter",
+      "face": "East chalet 0",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.8000000000000003,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        13.300000190734863,
+        -15.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "West chalet 1 counter",
+      "face": "West chalet 1",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.8000000000000003,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -13.300000190734863,
+        -9.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "East chalet 1 counter",
+      "face": "East chalet 1",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.8000000000000003,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        13.300000190734863,
+        -9.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "West chalet 2 counter",
+      "face": "West chalet 2",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.8000000000000003,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -13.300000190734863,
+        -3.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "East chalet 2 counter",
+      "face": "East chalet 2",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.8000000000000003,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        13.300000190734863,
+        -3.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "West chalet 3 counter",
+      "face": "West chalet 3",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.8000000000000003,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -13.300000190734863,
+        3.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "East chalet 3 counter",
+      "face": "East chalet 3",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.8000000000000003,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        13.300000190734863,
+        3.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "West chalet 4 counter",
+      "face": "West chalet 4",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.8000000000000003,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -13.300000190734863,
+        9.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "East chalet 4 counter",
+      "face": "East chalet 4",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.8000000000000003,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        13.300000190734863,
+        9.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "West chalet 5 counter",
+      "face": "West chalet 5",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.8000000000000003,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -13.300000190734863,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    },
+    {
+      "id": "East chalet 5 counter",
+      "face": "East chalet 5",
+      "u": 0.0,
+      "z": 1.0,
+      "width": 2.8000000000000003,
+      "height": 1.15,
+      "kind": "stall counter",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        13.300000190734863,
+        15.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stall"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "Square setts"
+    ],
+    "square furniture": [
+      "square furniture joint",
+      "square furniture hardware",
+      "square furniture pale"
+    ],
+    "context": [
+      "North front",
+      "North front roof",
+      "West front",
+      "West front roof",
+      "East front",
+      "East front roof",
+      "South front",
+      "South front roof"
+    ],
+    "North front windows": [
+      "North front windows dark",
+      "North front windows trim",
+      "North front windows timber"
+    ],
+    "West front windows": [
+      "West front windows dark",
+      "West front windows trim",
+      "West front windows timber"
+    ],
+    "East front windows": [
+      "East front windows dark",
+      "East front windows trim",
+      "East front windows timber"
+    ],
+    "South front windows": [
+      "South front windows dark",
+      "South front windows trim",
+      "South front windows timber"
+    ],
+    "rink": [
+      "Timber deck",
+      "Ice"
+    ],
+    "boards": [
+      "boards joint",
+      "boards white",
+      "boards glass",
+      "boards timber",
+      "boards hardware",
+      "boards planting",
+      "boards flower",
+      "boards pale"
+    ],
+    "tree island": [
+      "Tree star",
+      "tree island white",
+      "tree island glass",
+      "tree island tree2",
+      "tree island timber",
+      "tree island tree",
+      "tree island flower",
+      "tree island pale",
+      "tree island gold"
+    ],
+    "benches and aids": [
+      "benches and aids counter",
+      "benches and aids hardware",
+      "benches and aids dark",
+      "benches and aids white",
+      "benches and aids orange"
+    ],
+    "envelope": [
+      "North chalet 0 front",
+      "South chalet 0 front",
+      "North chalet 1 front",
+      "South chalet 1 front",
+      "North chalet 2 front",
+      "South chalet 2 front",
+      "North chalet 3 front",
+      "South chalet 3 front",
+      "West chalet 0 front",
+      "East chalet 0 front",
+      "West chalet 1 front",
+      "East chalet 1 front",
+      "West chalet 2 front",
+      "East chalet 2 front",
+      "West chalet 3 front",
+      "East chalet 3 front",
+      "West chalet 4 front",
+      "East chalet 4 front",
+      "West chalet 5 front",
+      "East chalet 5 front"
+    ],
+    "North chalet 0": [
+      "North chalet 0 North chalet 0 counter",
+      "North chalet 0 North chalet 0 hut",
+      "North chalet 0 North chalet 0 interior",
+      "North chalet 0 North chalet 0 floor"
+    ],
+    "North chalet 0 walls": [
+      "North chalet 0 walls hut"
+    ],
+    "chalets": [
+      "North chalet 0 gable",
+      "North chalet 0 roof -1",
+      "North chalet 0 roof +1",
+      "South chalet 0 gable",
+      "South chalet 0 roof -1",
+      "South chalet 0 roof +1",
+      "North chalet 1 gable",
+      "North chalet 1 roof -1",
+      "North chalet 1 roof +1",
+      "South chalet 1 gable",
+      "South chalet 1 roof -1",
+      "South chalet 1 roof +1",
+      "North chalet 2 gable",
+      "North chalet 2 roof -1",
+      "North chalet 2 roof +1",
+      "South chalet 2 gable",
+      "South chalet 2 roof -1",
+      "South chalet 2 roof +1",
+      "North chalet 3 gable",
+      "North chalet 3 roof -1",
+      "North chalet 3 roof +1",
+      "South chalet 3 gable",
+      "South chalet 3 roof -1",
+      "South chalet 3 roof +1",
+      "West chalet 0 gable",
+      "West chalet 0 roof -1",
+      "West chalet 0 roof +1",
+      "East chalet 0 gable",
+      "East chalet 0 roof -1",
+      "East chalet 0 roof +1",
+      "West chalet 1 gable",
+      "West chalet 1 roof -1",
+      "West chalet 1 roof +1",
+      "East chalet 1 gable",
+      "East chalet 1 roof -1",
+      "East chalet 1 roof +1",
+      "West chalet 2 gable",
+      "West chalet 2 roof -1",
+      "West chalet 2 roof +1",
+      "East chalet 2 gable",
+      "East chalet 2 roof -1",
+      "East chalet 2 roof +1",
+      "West chalet 3 gable",
+      "West chalet 3 roof -1",
+      "West chalet 3 roof +1",
+      "East chalet 3 gable",
+      "East chalet 3 roof -1",
+      "East chalet 3 roof +1",
+      "West chalet 4 gable",
+      "West chalet 4 roof -1",
+      "West chalet 4 roof +1",
+      "East chalet 4 gable",
+      "East chalet 4 roof -1",
+      "East chalet 4 roof +1",
+      "West chalet 5 gable",
+      "West chalet 5 roof -1",
+      "West chalet 5 roof +1",
+      "East chalet 5 gable",
+      "East chalet 5 roof -1",
+      "East chalet 5 roof +1"
+    ],
+    "North chalet 0 garlands": [
+      "North chalet 0 garlands planting",
+      "North chalet 0 garlands pale",
+      "North chalet 0 garlands flower",
+      "North chalet 0 garlands timber"
+    ],
+    "South chalet 0": [
+      "South chalet 0 South chalet 0 counter",
+      "South chalet 0 South chalet 0 hut",
+      "South chalet 0 South chalet 0 interior",
+      "South chalet 0 South chalet 0 floor"
+    ],
+    "South chalet 0 walls": [
+      "South chalet 0 walls hut"
+    ],
+    "South chalet 0 garlands": [
+      "South chalet 0 garlands planting",
+      "South chalet 0 garlands pale",
+      "South chalet 0 garlands flower",
+      "South chalet 0 garlands timber"
+    ],
+    "North chalet 1": [
+      "North chalet 1 North chalet 1 counter",
+      "North chalet 1 North chalet 1 hut",
+      "North chalet 1 North chalet 1 interior",
+      "North chalet 1 North chalet 1 floor"
+    ],
+    "North chalet 1 walls": [
+      "North chalet 1 walls hut"
+    ],
+    "North chalet 1 garlands": [
+      "North chalet 1 garlands planting",
+      "North chalet 1 garlands pale",
+      "North chalet 1 garlands flower",
+      "North chalet 1 garlands timber"
+    ],
+    "South chalet 1": [
+      "South chalet 1 South chalet 1 counter",
+      "South chalet 1 South chalet 1 hut",
+      "South chalet 1 South chalet 1 interior",
+      "South chalet 1 South chalet 1 floor"
+    ],
+    "South chalet 1 walls": [
+      "South chalet 1 walls hut"
+    ],
+    "South chalet 1 garlands": [
+      "South chalet 1 garlands planting",
+      "South chalet 1 garlands pale",
+      "South chalet 1 garlands flower",
+      "South chalet 1 garlands timber"
+    ],
+    "North chalet 2": [
+      "North chalet 2 North chalet 2 counter",
+      "North chalet 2 North chalet 2 hut",
+      "North chalet 2 North chalet 2 interior",
+      "North chalet 2 North chalet 2 floor"
+    ],
+    "North chalet 2 walls": [
+      "North chalet 2 walls hut"
+    ],
+    "North chalet 2 garlands": [
+      "North chalet 2 garlands planting",
+      "North chalet 2 garlands pale",
+      "North chalet 2 garlands flower",
+      "North chalet 2 garlands timber"
+    ],
+    "South chalet 2": [
+      "South chalet 2 South chalet 2 counter",
+      "South chalet 2 South chalet 2 hut",
+      "South chalet 2 South chalet 2 interior",
+      "South chalet 2 South chalet 2 floor"
+    ],
+    "South chalet 2 walls": [
+      "South chalet 2 walls hut"
+    ],
+    "South chalet 2 garlands": [
+      "South chalet 2 garlands planting",
+      "South chalet 2 garlands pale",
+      "South chalet 2 garlands flower",
+      "South chalet 2 garlands timber"
+    ],
+    "North chalet 3": [
+      "North chalet 3 North chalet 3 counter",
+      "North chalet 3 North chalet 3 hut",
+      "North chalet 3 North chalet 3 interior",
+      "North chalet 3 North chalet 3 floor"
+    ],
+    "North chalet 3 walls": [
+      "North chalet 3 walls hut"
+    ],
+    "North chalet 3 garlands": [
+      "North chalet 3 garlands planting",
+      "North chalet 3 garlands pale",
+      "North chalet 3 garlands flower",
+      "North chalet 3 garlands timber"
+    ],
+    "South chalet 3": [
+      "South chalet 3 South chalet 3 counter",
+      "South chalet 3 South chalet 3 hut",
+      "South chalet 3 South chalet 3 interior",
+      "South chalet 3 South chalet 3 floor"
+    ],
+    "South chalet 3 walls": [
+      "South chalet 3 walls hut"
+    ],
+    "South chalet 3 garlands": [
+      "South chalet 3 garlands planting",
+      "South chalet 3 garlands pale",
+      "South chalet 3 garlands flower",
+      "South chalet 3 garlands timber"
+    ],
+    "West chalet 0": [
+      "West chalet 0 West chalet 0 counter",
+      "West chalet 0 West chalet 0 hut",
+      "West chalet 0 West chalet 0 interior",
+      "West chalet 0 West chalet 0 floor"
+    ],
+    "West chalet 0 walls": [
+      "West chalet 0 walls hut"
+    ],
+    "West chalet 0 garlands": [
+      "West chalet 0 garlands planting",
+      "West chalet 0 garlands pale",
+      "West chalet 0 garlands flower",
+      "West chalet 0 garlands timber"
+    ],
+    "East chalet 0": [
+      "East chalet 0 East chalet 0 counter",
+      "East chalet 0 East chalet 0 hut",
+      "East chalet 0 East chalet 0 interior",
+      "East chalet 0 East chalet 0 floor"
+    ],
+    "East chalet 0 walls": [
+      "East chalet 0 walls hut"
+    ],
+    "East chalet 0 garlands": [
+      "East chalet 0 garlands planting",
+      "East chalet 0 garlands pale",
+      "East chalet 0 garlands flower",
+      "East chalet 0 garlands timber"
+    ],
+    "West chalet 1": [
+      "West chalet 1 West chalet 1 counter",
+      "West chalet 1 West chalet 1 hut",
+      "West chalet 1 West chalet 1 interior",
+      "West chalet 1 West chalet 1 floor"
+    ],
+    "West chalet 1 walls": [
+      "West chalet 1 walls hut"
+    ],
+    "West chalet 1 garlands": [
+      "West chalet 1 garlands planting",
+      "West chalet 1 garlands pale",
+      "West chalet 1 garlands flower",
+      "West chalet 1 garlands timber"
+    ],
+    "East chalet 1": [
+      "East chalet 1 East chalet 1 counter",
+      "East chalet 1 East chalet 1 hut",
+      "East chalet 1 East chalet 1 interior",
+      "East chalet 1 East chalet 1 floor"
+    ],
+    "East chalet 1 walls": [
+      "East chalet 1 walls hut"
+    ],
+    "East chalet 1 garlands": [
+      "East chalet 1 garlands planting",
+      "East chalet 1 garlands pale",
+      "East chalet 1 garlands flower",
+      "East chalet 1 garlands timber"
+    ],
+    "West chalet 2": [
+      "West chalet 2 West chalet 2 counter",
+      "West chalet 2 West chalet 2 hut",
+      "West chalet 2 West chalet 2 interior",
+      "West chalet 2 West chalet 2 floor"
+    ],
+    "West chalet 2 walls": [
+      "West chalet 2 walls hut"
+    ],
+    "West chalet 2 garlands": [
+      "West chalet 2 garlands planting",
+      "West chalet 2 garlands pale",
+      "West chalet 2 garlands flower",
+      "West chalet 2 garlands timber"
+    ],
+    "East chalet 2": [
+      "East chalet 2 East chalet 2 counter",
+      "East chalet 2 East chalet 2 hut",
+      "East chalet 2 East chalet 2 interior",
+      "East chalet 2 East chalet 2 floor"
+    ],
+    "East chalet 2 walls": [
+      "East chalet 2 walls hut"
+    ],
+    "East chalet 2 garlands": [
+      "East chalet 2 garlands planting",
+      "East chalet 2 garlands pale",
+      "East chalet 2 garlands flower",
+      "East chalet 2 garlands timber"
+    ],
+    "West chalet 3": [
+      "West chalet 3 West chalet 3 counter",
+      "West chalet 3 West chalet 3 hut",
+      "West chalet 3 West chalet 3 interior",
+      "West chalet 3 West chalet 3 floor"
+    ],
+    "West chalet 3 walls": [
+      "West chalet 3 walls hut"
+    ],
+    "West chalet 3 garlands": [
+      "West chalet 3 garlands planting",
+      "West chalet 3 garlands pale",
+      "West chalet 3 garlands flower",
+      "West chalet 3 garlands timber"
+    ],
+    "East chalet 3": [
+      "East chalet 3 East chalet 3 counter",
+      "East chalet 3 East chalet 3 hut",
+      "East chalet 3 East chalet 3 interior",
+      "East chalet 3 East chalet 3 floor"
+    ],
+    "East chalet 3 walls": [
+      "East chalet 3 walls hut"
+    ],
+    "East chalet 3 garlands": [
+      "East chalet 3 garlands planting",
+      "East chalet 3 garlands pale",
+      "East chalet 3 garlands flower",
+      "East chalet 3 garlands timber"
+    ],
+    "West chalet 4": [
+      "West chalet 4 West chalet 4 counter",
+      "West chalet 4 West chalet 4 hut",
+      "West chalet 4 West chalet 4 interior",
+      "West chalet 4 West chalet 4 floor"
+    ],
+    "West chalet 4 walls": [
+      "West chalet 4 walls hut"
+    ],
+    "West chalet 4 garlands": [
+      "West chalet 4 garlands planting",
+      "West chalet 4 garlands pale",
+      "West chalet 4 garlands flower",
+      "West chalet 4 garlands timber"
+    ],
+    "East chalet 4": [
+      "East chalet 4 East chalet 4 counter",
+      "East chalet 4 East chalet 4 hut",
+      "East chalet 4 East chalet 4 interior",
+      "East chalet 4 East chalet 4 floor"
+    ],
+    "East chalet 4 walls": [
+      "East chalet 4 walls hut"
+    ],
+    "East chalet 4 garlands": [
+      "East chalet 4 garlands planting",
+      "East chalet 4 garlands pale",
+      "East chalet 4 garlands flower",
+      "East chalet 4 garlands timber"
+    ],
+    "West chalet 5": [
+      "West chalet 5 West chalet 5 counter",
+      "West chalet 5 West chalet 5 hut",
+      "West chalet 5 West chalet 5 interior",
+      "West chalet 5 West chalet 5 floor"
+    ],
+    "West chalet 5 walls": [
+      "West chalet 5 walls hut"
+    ],
+    "West chalet 5 garlands": [
+      "West chalet 5 garlands planting",
+      "West chalet 5 garlands pale",
+      "West chalet 5 garlands flower",
+      "West chalet 5 garlands timber"
+    ],
+    "East chalet 5": [
+      "East chalet 5 East chalet 5 counter",
+      "East chalet 5 East chalet 5 hut",
+      "East chalet 5 East chalet 5 interior",
+      "East chalet 5 East chalet 5 floor"
+    ],
+    "East chalet 5 walls": [
+      "East chalet 5 walls hut"
+    ],
+    "East chalet 5 garlands": [
+      "East chalet 5 garlands planting",
+      "East chalet 5 garlands pale",
+      "East chalet 5 garlands flower",
+      "East chalet 5 garlands timber"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-19T17:34:41.278497+00:00",
+  "delivery_and_render_seconds": 8952.909031782998,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
