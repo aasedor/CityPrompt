@@ -60,6 +60,7 @@ def manifest(version):
             c.update(location=(42.0, Y0 - 30.0, 48.0), target=(2.0, -4.0, 4.0), lens=32, whole=False)
         elif c['name'] == 'top':                 # the locked top is a steep oblique from the south-west
             c.update(location=(-8.0, -16.0, 36.0), target=(6.0, 10.0, 2.0), lens=30, whole=False)
+            c.pop('ortho_scale', None)                                           # a perspective, like the locked top
         elif c['name'] == 'left_side':           # over the west terraces, which would hide the viaduct from the ground
             c.update(location=(-48.0, -6.0, 30.0), target=(0.0, 0.0, 5.0), lens=32, whole=False)
         elif c['name'] == 'right_side':
@@ -654,10 +655,10 @@ def terraces():
         b = Batch()
         x0, x1 = (FAR, FAR + 9.0) if sgn > 0 else (-22.0, -13.0)
         h = 8.4
-        C.box(f'{side} terrace', ((x0 + x1) / 2, (ya + yb) / 2, h / 2), (x1 - x0, yb - ya, h), role, 'context', 0)
+        C.box(f'{side} terrace', ((x0 + x1) / 2, (ya + yb) / 2, h / 2), (x1 - x0, yb - ya + .5, h), role, 'context', 0)   # runs under the roof overhang
         pitched_roof(f'{side} terrace roof', x0, x1, ya, yb, h, 2.6, hip_w=False, hip_e=False, axis='y', ov=.25, role='roof', module='context')
-        for yg in (ya + .15, yb - .15):                                                       # gable end walls under the roof plate
-            gable_wall(f'{side} terrace gable {yg:+.0f}', yg, x0, x1, h - .01, 2.5, axis='y', t=.3, role=role, module='context')
+        for yg in (ya - .11, yb + .11):                                                       # gable end walls 1 cm proud of the roof ends
+            C.prism(f'{side} terrace gable {yg:+.0f}', [(x0 - .25, h - .15), (x1 + .25, h - .15), ((x0 + x1) / 2, h + 2.58)], 'y', yg - .15, yg + .15, role, 'context')
         for i in range(n):
             y0, y1 = ya + i * 5.6, ya + (i + 1) * 5.6
             if i:

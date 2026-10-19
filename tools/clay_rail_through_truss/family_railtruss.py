@@ -58,6 +58,7 @@ def manifest(version):
             c.update(location=(48.0, Y0 - 12.0, 56.0), target=(0.0, -6.0, 6.0), lens=30, whole=False)
         elif c['name'] == 'top':                 # the locked top is a steep oblique from the south-west
             c.update(location=(-20.0, Y0 + 2.0, 78.0), target=(4.0, -6.0, 4.0), lens=30, whole=False)
+            c.pop('ortho_scale', None)                                           # a perspective, like the locked top
         elif c['name'] == 'left_side':
             c.update(location=(-30.0, 4.0, 42.0), target=(0.0, 0.0, 8.0), lens=30, whole=False)
         elif c['name'] == 'right_side':
