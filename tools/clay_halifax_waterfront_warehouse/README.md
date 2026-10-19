@@ -68,8 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (v004 reworks these three)
+## Open blockers after v004 (v005 reworks it)
 
-- P1 #1: the back of the south copper cornice's south-west end, where it runs past the west wall above the neighbour, is open: black slots between corona, frieze and bracket layers in left_side (same class as the v002 north-east cornice end, surviving one targeted fix).
-- P1 #2: the west neighbour now runs deeper than the warehouse; the locked top view has it stopping about 28% of the warehouse depth short of the north wall.
-- P1 #3: a rectangular recess shows outside the archivolt at both shoulders of the large arched window in the middle south bay (wall cut larger than the arched head).
+- P1 #1: the east elevation's window counts differ from the sources: front and oblique show pair / triplet / pair upstairs over shop glazing / triplet / pair on the ground; the render has pair / pair / pair upstairs over shop glazing / triplet / triplet (middle east bay missing an upper arch, north bay with an extra ground arch).
