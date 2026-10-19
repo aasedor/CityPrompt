@@ -68,11 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (v002 reworks these six)
+## Open blockers after v002 (v003 reworks these three)
 
-1. P0: the ramp's ground landing is never shown; ramp_landing shows only the rising mid-ramp and every other view loses the ramp still raised.
-2. P1: the ring's outer edge kerb or bottom rail runs straight across the ramp entrance, a raised bar between ramp and ring.
-3. P1: both ring balustrades are open bar fences; the source shows glazed infill panels, and glass_close shows no glass.
-4. P1: the front camera sits on the near deck at rail height, losing the near arc fascia, column and ramp the source front shows.
-5. P1: the pylon tip leaves the top edge of every whole-envelope view; front_corner also cuts the cable collar.
-6. P1: the gable triangles of the context houses render pure black (missing faces or inverted normals).
+- P1 #1: the cables stop at the top of the inner deck kerb while their anchor blocks hang lower on the fascia with bare fascia between; the cables don't land on their anchors and the blocks float.
+- P1 #2: every pitched context house still has a solid black slot along the gable base or eave (the v001 black-gable finding, partly fixed, surviving one targeted fix).
+- P1 #3: the ramp deck has the ring's red finish and dashed centre line; the sources show a pale grey-beige concrete ramp with a solid white centre line.
