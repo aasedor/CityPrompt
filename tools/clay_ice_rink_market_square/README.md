@@ -76,3 +76,19 @@ NOT TESTED. The model sits on a level base. Shared terrain registration is not a
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (the v002 rework targets all thirteen)
+
+- P0 #1: dozens of ornament cubes float clear of the tree's foliage.
+- P0 #2: the interior camera is inside geometry (uniform beige).
+- P0 #3: the rear_north camera shows nothing legible (uniform grey).
+- P0 #4: left_side, right_side and rear show only the context blocks' blank rear walls.
+- P1 #5: the chalets face the ice with their eaves; the source is gable-to-ice.
+- P1 #6: the chalet garland is one square bar; no gable garlands, wreath or bows.
+- P1 #7: the dasher boards have no opaque white board on the skating side and a white cap instead of a timber handrail with a garland.
+- P1 #8: the tree is stacked cone tiers reading as a pagoda, not a dense fir.
+- P1 #9: the tree island sits about 36% of the rink length from the north end; the source has it about 47%.
+- P1 #10: the square is too large; the context blocks stand about four chalet depths away where the source shows a narrow lane.
+- P1 #11: the paving is light-grey tile, not dark cobbles, close in tone to the ice.
+- P1 #12: the town-front windows are flat dark rectangles with no recess, sill or frame, and there are no doors.
+- P1 #13: rear_side is mostly hidden behind the context blocks.

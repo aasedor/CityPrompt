@@ -1,0 +1,81 @@
+# Independent holistic review: clay-ice-rink-market-square v001 (RLASM v6.1)
+
+Reviewer: independent, adversarial. Evidence: rendered pixels only (18 renders, 4 phone boards) against locked `sources/front.png`, `sources/oblique.jpg` and `sources/top.jpg`. I ignored builder metadata, counts and notes. Zoomed crops (new folder, nothing existing overwritten): `/tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/indrev-rink-v001-crops/`.
+
+## 1. Verdict
+
+**VISUAL_REWORK_REQUIRED.** The plan reads correctly at a glance: a rounded N-S rink, 4/4/6/6 chalets, a deck and a tree island. But dozens of tree ornaments float in mid-air on the main identity element. Two detail cameras render nothing, and three whole-envelope cameras show only blank backs of context blocks. The chalets also face the ice eave-on, not gable-on, and the dasher boards have no opaque board on the skating face.
+
+Counts: P0 = 4, P1 = 9, P2 = 8
+
+## 2. Findings
+
+| # | severity | view(s) | symptom (what the pixels show) | likely cause | finite fix |
+|---|---|---|---|---|---|
+| 1 | P0 | christmas_tree, front, facade_close, ice_surface, square_aerial, front_corner | Dozens of red/gold/white ornament cubes hang clear of the foliage silhouette. Examples: christmas_tree (545,320), (520,470), (455,695), (440,785), (1010,768), (1065,1010); front (600,350), (575,500), (550,595). They float up to about one ornament-row off the cone and outside its outline. Floating parts on the hero element. | Ornaments are placed on a cylinder or at the tier's maximum radius, not projected onto each frustum's surface at that height. The radius is not reduced with the cone taper, and the tier shelves make it worse. | Place each ornament at r = r_tier(z) − ½·ornament size on the actual cone surface of its tier, with a small inward embed. Reject any ornament whose centre lies outside the silhouette at its z. Re-render christmas_tree and front to confirm that every ornament touches the foliage. |
+| 2 | P0 | interior | The whole frame is flat beige (sampled about RGB 205,190,170). No geometry edge or object is legible. The camera is inside or against a solid (likely a context-building wall or a chalet body) and shows nothing. | The camera origin for "interior" sits inside a mesh, or its near clip is beyond the target. Because this is an open space, "interior" has no valid target in its current form. | Redefine "interior" as a pedestrian eye-level view (≈1.6 m) from the deck between the chalets and the boards, aimed at a chalet counter and the rink. Check that the camera origin lies outside all meshes. |
+| 3 | P0 | rear_north | The whole frame is flat mid-grey with no edges. The camera faces a wall or the ground plane at point-blank range, so the target is not visible. | The camera is placed behind or inside the north context block (or it looks down into the paving), and nothing in the scene is framed. | Place rear_north north of the rink, inside the square (south of the north block's façade), looking south across the tree island to the south chalet row. Verify that the tree, boards and chalets fill the frame. |
+| 4 | P0 | left_side, right_side, rear (also phone-03, phone-04) | Each whole-envelope elevation shows only the blank rear wall of one context slab (terracotta west block, cream east block, cream north block). The rink, boards, tree, chalets and deck are 100% occluded. These three required views give no evidence of the asset. | Elevation cameras were set outside the square at ground height. The context ring is continuous and taller than everything inside. | Raise each elevation camera to see over the context (about 25–35 m, 20–30° down), or hide or cut the context block on the camera side for elevation renders. Each view must show the full rink outline and its chalet row. |
+| 5 | P1 | front, front_corner, glass_close, dasher_boards, market_chalets, square_aerial, top | All 20 chalets face the ice with an **eave** (ridge parallel to the rink edge), with gable ends at the sides. In the source (top: N/S rows ridge N-S, E/W rows ridge E-W; front: back row and right row gable pediments with wreath and bow facing the ice), every chalet is **gable-fronted to the ice**. The sawtooth gable rhythm around the rink is lost: the front back row reads as a flat line of eaves, not two pediments with wreaths. | The chalet component's local axes are rotated 90°, so the counter is placed on the long eave wall instead of the gable wall. | Rotate the chalet module 90° about Z so the ridge is perpendicular to the rink edge. Move the counter, awning and bow to the gable wall facing the ice. Keep the 4/4/6/6 count and spacing. |
+| 6 | P1 | architecture_close, market_chalets, glass_close, dasher_boards | The "garland" is a single straight, square-section green box along one eave, which reads as a painted fascia beam. The gable rakes have no garland, there is no swag or bulk, and there is no wreath disc in the gable. The only "bow" is one red cube on the roof slope. The source has full evergreen garlands with lights and red bows along both gable rakes and the counter, plus a round wreath/clock disc in each gable. | A garland has been modelled as a prism on one edge only. | Run a lumpy garland (chain of low-poly spheres or an irregular tube, about 0.25 m) along both gable rakes and the counter head. Put a red bow at the apex and add a disc wreath in the gable. Use source dark-green with red bauble points. |
+| 7 | P1 | glass_close, dasher_boards, front (left boards), ice_surface | From the skating side, the clear glass runs down to the ice. The deck planks behind are visible through the bottom of the panels, so no opaque white dasher board is legible (crop `glass_board_base.png`). There is a white cap band above the glass and charcoal posts, but no timber handrail and no garland on the deck side. The source front shows a white board, glass above it, thin posts, and a wide timber handrail with an evergreen garland and red baubles. From outside (square_aerial crop `sq_boards_sw.png`) a white band does show, which suggests that the ice top sits at the board's top or the board is modelled only on the deck side. | Board height and ice-surface elevation conflict: the ice slab is raised to the board top, or the board sits outside and below the ice. The rail is modelled as a white cap, not timber. | Put the ice top at deck level (or a few cm above). Model an opaque white board about 1.0–1.1 m high on the ice side with a thin kick, and put glass above it. Replace the white cap with a dark-timber handrail on the deck side and run a garland under it. Re-render glass_close and dasher_boards. |
+| 8 | P1 | christmas_tree, front, facade_close, ice_surface | The tree is a stack of 5 separate faceted frusta with flat horizontal shelves and visible undersides at each tier. It reads as a pagoda or stacked lampshades, not the dense, continuous conical fir in the source front and oblique. | Tier frusta with a large step-in radius, no overlap and no drooping edge. | Use one continuous cone (or tiers that overlap ≥ 40% with a downward droop, so no shelf underside shows). Taper to the same height/base ratio as the source, about 2.6:1. |
+| 9 | P1 | top, square_aerial, front_corner | The tree island centre sits about 36% of the rink length from the north end (top render: island y≈485 in rink y 345–738). In the source top, it is about 47% (just north of centre: y≈440 in 178–728). The island is shifted north by about 12% of the rink length, which changes the plan and the front view's depth. | The island offset is set to a fixed metre value or a fraction that is too large. | Set the island centre offset to about 0.03 × rink length north of centre and re-check against top.jpg. |
+| 10 | P1 | top, front_corner, aerial, square_aerial | The context façades stand far from the market. In the top view, the chalet ring spans about 56% of the façade-to-façade width (render 370/658 px), against about 80% in the source top (595/750 px). The source oblique shows a narrow street lane (≈1–1.5 chalet depths) between the chalets and the west/east façades; the render has an empty plaza about 4 chalet depths wide on every side. The square reads as a vast forecourt, not a tight old-town square. | The context blocks are placed at a fixed square extent, not measured from the source plan. | Move the west and east blocks in so the façade-to-chalet gap is about 1–1.5 chalet depths (west) and about 2 (east), and pull the north block in. Re-fit to top.jpg. |
+| 11 | P1 | front_corner (`fc_paving.png`), aerial, facade_close, square_aerial | The square paving is light grey with a regular ~1 m square grid (and parallel lines at grazing angle in facade_close). It reads as large tiles or decking, not cobbles or setts. Its tone is close to the ice and snow, which weakens the material hierarchy. The source paving is dark grey-brown setts, clearly darker than the deck and much darker than the ice. | A generic tile grid material and a light-grey base colour. | Darken the paving to the source sett colour, about RGB 70–80/65–75/60–65. Use a small sett module (≈0.12–0.15 m) or a staggered fine-joint pattern that reads at aerial scale. Keep the deck a distinctly warmer dark timber. |
+| 12 | P1 | architecture_close, facade_close, christmas_tree, glass_close, square_aerial | Context windows are flat charcoal rectangles on the wall plane. They have no reveal, sill, frame or return, and the ground floors have no doors or shopfronts, so the openings have no visible depth. | Windows are drawn as coplanar dark quads or decals. | Recess each window about 0.15–0.2 m with lit reveal returns and a thin sill. Add ground-floor doors and shop openings on the square-facing façades. |
+| 13 | P1 | rear_side | Most of the square is hidden behind the two southern context blocks. Only the tree top, one chalet and a sliver of ice show through the gap between the blocks, so the rink, boards and chalet rows are not legible. | The camera is too low and too far out, outside the context ring. | Raise the camera or swing it to look over a lower roof, so the full rink outline and at least two chalet rows are visible. |
+| 14 | P2 | top, front_corner | All four north-row chalets are square to the rink. The source NE corner chalet is turned about 30–40° to fill the corner. | Uniform row placement. | Rotate the NE corner chalet as in top.jpg. |
+| 15 | P2 | front, christmas_tree | The tree-top star is a flat yellow slab, not a star. | A placeholder box. | Use a 5-point extruded star of about 1 m. |
+| 16 | P2 | christmas_tree, front | The baubles are cubes, and there are no warm light points. The source tree is covered in fairy lights and round baubles. | A cube primitive. | Use low-poly spheres and add small warm emissive-colour light points (clay palette). |
+| 17 | P2 | front, ice_surface | The penguin skating aid is a rectangular block (charcoal box, white belly panel, orange plate). In front it is clipped by the right frame edge at x≈1420–1440. | A box primitive; the framing is off. | Use a rounded body, head and beak form with a handle. Reframe front so it is not cut by the edge, or keep it fully out of frame. |
+| 18 | P2 | front, front_corner, aerial, rear | The context is three monolithic slabs, each in a single colour, with a uniform window grid and no dormers or plot rhythm. The source has narrow plots in varied colours with dormered roofs and a pedimented north building. The rear and end faces are blank. | Simplified context. | Split each block into 4–6 plots with colour variation, add a dormer row, and add a pediment to the north centre. |
+| 19 | P2 | architecture_close, market_chalets | The awning plank lies on top of the green eave bar and roof edge, overlapping them, and is not hung beneath the eave. | Awning Z is set at eave height. | Drop the awning below the eave line and attach it with brackets. |
+| 20 | P2 | architecture_close, market_chalets | The fairy-light dashes lie flat on the snow roof plane, not along a garland. | Lights are scattered on the roof surface. | Put the lights on the garland path. |
+| 21 | P2 | front, front_corner, aerial, phone-01 | The front camera sits on the rink centreline with about half the frame empty ice. The source front is offset left, with the right-side boards, rail and chalets in the near field. front_corner and aerial look from SW/SE, while the source oblique looks due north from the south. | Generic camera presets. | Match the front camera to the source (closer to the east boards, yaw slightly right). Add or retarget an oblique from due south at about 45°. |
+
+## 3. Source conformance checklist
+
+| Item | Status | View used |
+|---|---|---|
+| Plan: rounded-rectangle rink, long axis N-S | conforms | top, square_aerial |
+| Plan proportions: rink aspect (render ≈1.55 vs source ≈1.47) | conforms | top vs top.jpg |
+| Plan proportions: square and context extent | deviates (#10) | top vs top.jpg |
+| Ice surface (flat, pale, rounded corners) | conforms | ice_surface, top |
+| Dasher boards: opaque white board (skating face) | deviates (#7) | glass_close, dasher_boards |
+| Dasher boards: clear glass panels | conforms | glass_close, sq crop |
+| Dasher boards: posts | conforms (charcoal, a little heavy) | dasher_boards |
+| Dasher boards: rail (timber handrail with garland) | deviates (#7) | glass_close vs front.png right |
+| Timber deck round the boards | conforms (dark timber, legible) | top, square_aerial |
+| Tree island: ring wall | conforms | square_aerial crop `sq_tree_island.png` |
+| Tree island: glass ring | conforms | ice_surface, sq crop |
+| Tree island: position (just north of centre) | deviates (#9) | top |
+| Tree: form | deviates (#8) | christmas_tree |
+| Tree: ornaments | deviates (#1 floating, #16 cubes, no lights) | christmas_tree, front |
+| Tree: star | deviates (#15) | front |
+| Chalets: count 4/4/6/6 | conforms | top, square_aerial |
+| Chalets: arrangement (ring, NE corner turned) | deviates, P2 (#14) | top vs top.jpg |
+| Chalets: orientation (gable to ice) | deviates (#5) | front, square_aerial, glass_close |
+| Chalets: dark-timber walls | conforms | market_chalets |
+| Chalets: counters facing ice, recessed with returns | conforms (hatch recessed, counter shelf, side jambs visible) | architecture_close, market_chalets |
+| Chalets: awnings | deviates, P2 (#19) | architecture_close |
+| Chalets: snowy pitched roofs | conforms | market_chalets, square_aerial |
+| Chalets: garlands, bows, wreaths | deviates (#6) | architecture_close, market_chalets |
+| Benches by the ice | conforms (two timber benches, SW) | dasher_boards, top |
+| Skating aid (penguin) | deviates, P2 (#17) | ice_surface |
+| Setts / cobbled square | deviates (#11) | front_corner crop `fc_paving.png` |
+| Lamps | conforms (four simple post lamps) | front_corner, square_aerial |
+| Town fronts: presence on W, N and E | conforms | aerial, top |
+| Town fronts: openings with depth | deviates (#12) | architecture_close, facade_close |
+| Town fronts: plot rhythm, dormers, colour | deviates, P2 (#18) | front_corner |
+| Materials hierarchy (ice > deck > setts by value; timber vs snow vs green) | deviates (paving too light, #11; garland reads as fascia, #6) | front_corner, aerial |
+
+## 4. Camera validity
+
+- **interior**: invalid. The frame is uniform beige, so nothing is legible and the camera is embedded in geometry (#2).
+- **rear_north**: invalid. The frame is uniform grey, so nothing is legible (#3).
+- **left_side, right_side, rear**: invalid for the asset. Context backs occlude the target completely, so no rink, boards, tree or chalet is visible (#4).
+- **rear_side**: partially occluded. Only the tree top, one chalet and a sliver of ice are visible, so the target is not legible (#13).
+- **front**: valid. The tree, tree island, boards and north chalets are legible. The penguin is clipped at the right edge (P2, #17), and about half the frame is empty ice (P2, #21).
+- **front_corner, aerial, top, square_aerial, ice_surface**: valid and legible. In front_corner and aerial the target fills only about 25% of the frame.
+- **facade_close, architecture_close, glass_close, christmas_tree, market_chalets, dasher_boards**: valid and legible. christmas_tree crops the tree top and base, but the ornament defect is still clearly legible.
