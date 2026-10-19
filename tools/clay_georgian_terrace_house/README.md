@@ -1,7 +1,7 @@
 # Georgian terrace house with a slate mansard (RLASM v6.1 architectural clay)
 
 Candidate G5 of wave G of 2026-10-18, one of ten catalogue types that have quality reference images but
-no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **candidate under review**. Nothing here is keeper-approved,
+no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **stopped at v005 by the stopping rule (two consecutive non-improving reviews); v003 is the candidate**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,6 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 reworks it; a second non-improving review or a second failed fix stops the family)
+## Open blockers after v005 (stopped)
 
-- P1 #1: the glazed lantern on the east rear extension has opaque white glazing-bar fins, end frames standing clear of the sloping glass ends and nearly invisible glass; it reads as an open white crate obliquely and as an undersized grid box with no hip lines from above, where the locked top shows a dark long hipped glazed roof filling almost the whole area inside the stone rim (the v003 rear-range finding, surviving one targeted fix).
+- P1 #1: an open pure-black slot about 0.15 m wide where the east rear extension meets the north-east corner of the main house's east wall, from the extension coping to the ground (east_side, right_side, front_corner, aerial, rear_side).
+- The v004 lantern finding is fixed in the pixels.
+- Stopped by the stopping rule: two consecutive reviews (v004, v005) did not lower P0+P1 below v003; v003 remains the candidate. Nothing here is keeper-approved.
