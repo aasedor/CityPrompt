@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-rail-through-truss",
+  "variant_id": "clay-rail-through-truss-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "rail_transit_viaduct/variant_2",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/rail-transit-viaduct/variant_2.png",
+      "path": "sources/front.png",
+      "bytes": 1216789,
+      "sha256": "05a81c56f62e11f4d84f294e68dff98c7cdfd1de3ac48fbf4a8ab2577ea2f3a3"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/rail-transit-viaduct/variant_2_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 979102,
+      "sha256": "51e2f92755b168526514ef5b9a9a3e77c5fb74bb1ca8cb2d99b6c71686872c20"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/rail-transit-viaduct/variant_2_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 940258,
+      "sha256": "16ea61c389702f0a896217bfa3da3d53bedaf3274a580e4da9615e59273703cb"
+    }
+  ]
+}
