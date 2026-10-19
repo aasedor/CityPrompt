@@ -2,13 +2,15 @@
 urban_pedestrian_footbridge / variant_0 (Weathering Steel Truss).
 
 Read from the pixels (the top view governs the plan): a rust-orange Cor-Ten Warren-truss footbridge in two straight
-spans that meet at a bend, forming a V in plan with its apex at the north, beside a pale-roofed brick building on
-the west side of a wide four-lane city street. One span crosses the street south-east to a landing on the far side;
-the other runs south-west over the low ground beside the street. Each span is a pair of Warren trusses with bold
-diagonals, a full top chord with cross ties and top bracing, a deck of perforated rust-brown plate, and grey
-cable-mesh infill with a slim handrail along both inner faces. The spans land on brick stair towers; the apex
-platform stands on two steel columns on the west sidewalk with a third tower behind it. Red-brick warehouses, a
-glazed office block, street trees, a bus and cars as context.
+arms mitred into one sharp V (included angle about 92 degrees), its apex at the north beside the corner of a
+pale-roofed brick building on the west sidewalk of a wide city street. The crossing arm leaves the apex about 70
+degrees to the street axis to a landing on the far side; the land arm runs about 22 degrees off the street axis,
+south-south-west along the kerb. Each arm is a pair of Warren trusses with bold diagonals and a deep fascia bottom
+chord; the chords of both arms run to one outer and one inner corner node. Overhead, one transverse tie and one
+diagonal per bay zig-zag along each arm, with members radiating from the outer apex node. The deck is rust-brown
+plate; a fine diamond stainless cable net hangs from slim posts and a dark handrail inside both trusses. The arms land
+on brick stair towers and one steel pier carries the outer apex node. Red-brick warehouses, a glazed office block,
+street trees, a bus and cars as context.
 """
 import math
 import clay_core as C
@@ -16,18 +18,19 @@ import assemblies as A
 import geometry as G
 
 SLUG = 'clay-weathering-steel-footbridge'
-X0, X1, Y0, Y1 = -36.0, 20.0, -24.0, 14.0      # the two spans, the apex and the three towers
+X0, X1, Y0, Y1 = -30.0, 23.0, -32.0, 10.0      # the two arms, the apex and the two towers
 RX = 9.0                                        # half-width of the carriageway (four lanes)
 SW = 5.0                                        # sidewalks
 ZD = 7.0                                        # deck top
 HT = 3.4                                        # truss height to the top chord centre line
 HW = 2.0                                        # truss centre lines either side of the deck axis
 APEX = (-11.5, 4.0)
-QA = (15.5, -18.5)                              # east landing (across the street)
-QB = (-35.0, -19.0)                             # west landing
+AA, AB = math.radians(70.0), math.radians(22.0)     # crossing arm 70 degrees to the street axis, land arm 22 degrees off it
+QA = (APEX[0] + 30.0 * math.sin(AA), APEX[1] - 30.0 * math.cos(AA))      # east landing (across the street)
+QB = (APEX[0] - 32.0 * math.sin(AB), APEX[1] - 32.0 * math.cos(AB))      # south-west landing
 T = .3
 EPS = .002
-PALETTE = dict(rust=(.62, .27, .10), deck=(.42, .22, .12), mesh=(.48, .48, .47), hardware=(.30, .30, .31),
+PALETTE = dict(rust=(.62, .27, .10), deck=(.42, .22, .12), mesh=(.70, .70, .68), hardware=(.30, .30, .31),
     brick=(.55, .28, .20), wall=(.55, .28, .20), trim=(.80, .78, .74), glass=(.34, .44, .48), pale=(.80, .79, .76),
     concrete=(.70, .69, .66), asphalt=(.24, .24, .25), sand=(.62, .60, .56), white=(.95, .95, .93), yellow=(.86, .70, .20),
     planting=(.30, .44, .20), tree=(.28, .44, .18), timber=(.42, .30, .20), soil=(.30, .25, .18), interior=(.84, .80, .74),
@@ -43,6 +46,8 @@ def unit(a, b):
 
 UA = unit(APEX, QA)
 UB = unit(APEX, QB)
+BIS = ((UA[0] + UB[0]) / math.hypot(UA[0] + UB[0], UA[1] + UB[1]), (UA[1] + UB[1]) / math.hypot(UA[0] + UB[0], UA[1] + UB[1]))   # into the V
+TANH = math.tan(math.acos(UA[0] * UB[0] + UA[1] * UB[1]) / 2)        # tangent of the half included angle
 
 
 def along(p, u, s, v=0.0, z=0.0):
@@ -54,42 +59,42 @@ def manifest(version):
     h = ZD + HT + 4.4
     a, ua = APEX, UA
     cams = G.camera_roster(X1 - X0, Y1 - Y0, h, [
-        ('facade_close', (11.0, -2.0, 1.7), along(a, ua, 17.0, 0.0, ZD + 1.5), 35),
-        ('architecture_close', (-1.0, -1.0, ZD + 3.5), (APEX[0], APEX[1], ZD + 1.5), 35),
+        ('facade_close', along(a, ua, 14.0, 9.0, 1.7), along(a, ua, 17.0, 0.0, ZD + 1.2), 35),
+        ('architecture_close', (APEX[0] + BIS[0] * 12.0, APEX[1] + BIS[1] * 12.0, ZD + 2.0), (APEX[0], APEX[1], ZD + 1.5), 35),
         ('glass_close', along(a, ua, 12.0, -1.0, ZD + 1.5), along(a, ua, 14.0, 1.8, ZD + .8), 35),
         ('truss_node', along(a, ua, 8.0, 6.0, ZD + 4.6), along(a, ua, 10.0, 2.0, ZD + 3.0), 40),
         ('mesh_infill', along(a, ua, 20.0, -1.0, ZD + 1.5), along(a, ua, 22.0, 1.75, ZD + .7), 35),
         ('deck_walk', along(a, ua, 4.5, 0.0, ZD + 1.6), along(a, ua, 30.0, 0.0, ZD + 1.2), 28),
         ('landing_stair', along(QA, ua, -7.0, 5.0, ZD + 1.0), (QA[0], QA[1], ZD + .5), 35),
-        ('road_under', (2.0, -18.0, 1.6), (2.0, -6.0, ZD), 28),
+        ('road_under', (2.0, -18.0, 1.6), (2.0, -1.0, ZD), 28),
         ('top_chord', along(a, ua, 15.0, 3.0, ZD + 9.0), along(a, ua, 18.0, 0.0, ZD + HT), 35),
         ('rear_north', (-2.0, 22.0, 15.0), (-6.0, -4.0, ZD), 32)])
     for c in cams:
         if c['name'] == 'front':                                              # the locked front: from inside the V, square to the east span
-            c.update(location=along(a, ua, 17.0, -11.0, ZD + 2.5), target=along(a, ua, 17.0, 0.0, ZD + 1.6), lens=24, whole=False)
+            c.update(location=along(a, ua, 14.0, -10.0, ZD + 2.4), target=along(a, ua, 19.0, 0.0, ZD + 1.6), lens=24, whole=False)
         elif c['name'] == 'front_corner':                                     # the locked oblique: high in the south, the apex beyond
-            c.update(location=(-12.0, -40.0, 26.0), target=(-10.0, 0.0, ZD), lens=32, whole=False)
+            c.update(location=(-12.0, -40.0, 26.0), target=(-8.0, -4.0, ZD), lens=32, whole=False)
         elif c['name'] == 'aerial':
             c.update(location=(30.0, -40.0, 34.0), target=(-4.0, -6.0, ZD), lens=32, whole=False)
         elif c['name'] == 'top':
-            c.update(location=(-8.0, -6.0, 90.0), target=(-8.0, -5.999, 0.0), ortho_scale=62.0, whole=False)
+            c.update(location=(-3.0, -10.0, 90.0), target=(-3.0, -9.999, 0.0), ortho_scale=60.0, whole=False)
         elif c['name'] == 'left_side':
-            c.update(location=(-60.0, -2.0, 14.0), target=(-10.0, -6.0, ZD), lens=30, whole=False)
+            c.update(location=(-72.0, -4.0, 40.0), target=(-4.0, -8.0, ZD), lens=30, whole=False)
         elif c['name'] == 'right_side':
-            c.update(location=(45.0, -8.0, 14.0), target=(0.0, -6.0, ZD), lens=30, whole=False)
+            c.update(location=(50.0, -22.0, 22.0), target=(-4.0, -6.0, ZD), lens=30, whole=False)
         elif c['name'] == 'rear':
-            c.update(location=(-6.0, 40.0, 26.0), target=(-6.0, -6.0, ZD), lens=30, whole=False)
+            c.update(location=(4.0, 40.0, 30.0), target=(-6.0, -8.0, ZD), lens=30, whole=False)
         elif c['name'] == 'rear_side':
-            c.update(location=(-24.0, 40.0, 34.0), target=(-6.0, -6.0, ZD), lens=30, whole=False)
+            c.update(location=(-24.0, 40.0, 40.0), target=(-6.0, -6.0, ZD), lens=30, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='urban_pedestrian_footbridge/variant_0 (Weathering Steel Truss)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=0, storey_programme='street option: a two-span truss footbridge over a city street; the blocks are context',
-            plan='two straight Warren-truss spans of about 33 and 35 m meeting at a bend (a V in plan, apex north, top view); the east span crosses a 28 m street with sidewalks',
+            plan='two straight Warren-truss arms of about 30 and 32 m mitred into one sharp V (included angle about 92 degrees, apex north, top view); the crossing arm is about 70 degrees to the 28 m street, the land arm about 22 degrees off it along the west kerb',
             section_m=dict(carriageway=[-RX, RX], sidewalks=SW, deck_top=ZD, truss_height=HT, truss_lines=[-HW, HW]),
-            facade='rust-orange Cor-Ten Warren trusses with bold diagonals, top chords with cross ties and bracing, perforated rust-brown deck, grey cable-mesh infill and handrail, brick stair towers, steel apex columns',
+            facade='rust-orange Cor-Ten Warren trusses with bold diagonals, top chords with cross ties and bracing, deep fascia bottom chords, zig-zag top bracing radiating from the apex node, rust-brown plate deck, fine diamond stainless cable net on slim posts with a dark handrail, brick stair towers, one steel pier under the outer apex node',
             levels_m=[0.0, ZD, ZD + HT], inferred='the tower interiors, the far streets and the blocks are context'),
         roof_contract=dict(type='open truss, no roof; flat roofs on the towers and blocks', datum_m=ZD, crowns_m=[ZD + HT + .3]),
         identity_contract=dict(owner='rust-orange Cor-Ten Warren truss footbridge with mesh infill over a road between brick buildings'),
@@ -97,7 +102,7 @@ def manifest(version):
         programme_contract=dict(storeys=0, ground='a footbridge over the street; the street, sidewalks and towers beneath'),
         street_contract=dict(kind='fixed_native_section', width_m=2 * (RX + SW), axis='y', junction_finish='concrete',
                              bands=['sidewalk', 'carriageway', 'sidewalk']),
-        contact_contract=['Street and sidewalks at grade', 'Spans on the towers and the apex columns', 'Towers from grade'],
+        contact_contract=['Street and sidewalks at grade', 'Arms on the towers and the apex pier', 'Towers and pier from grade'],
         runtime_contract=dict(scale='fixed_native_only', installation='not installed', review='NOT TESTED'),
         camera_roster=cams, mandatory_review_views=[c['name'] for c in cams])
 # ---- shared clay helpers (copied into each wave C family; kept identical) ----
@@ -420,106 +425,141 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
         b.box(pot, px, y, z1 + .12 + .25, .18, .18, .5)
 # ---- Weathering-steel truss footbridge ----
 
-START = 3.2                                     # each span starts this far from the apex point
+ZB = ZD - .25                                   # deep fascia bottom chord centre (ZD - .56 to ZD + .06)
+ARMS = {}
 
 
-def hull(pts):
-    """Convex hull, counter-clockwise (monotone chain)."""
-    pts = sorted(set(pts))
-    def cross(o, a, b):
-        return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
-    lo, up = [], []
-    for p in pts:
-        while len(lo) >= 2 and cross(lo[-2], lo[-1], p) <= 0:
-            lo.pop()
-        lo.append(p)
-    for p in reversed(pts):
-        while len(up) >= 2 and cross(up[-2], up[-1], p) <= 0:
-            up.pop()
-        up.append(p)
-    return lo[:-1] + up[:-1]
+def inner_sign(u):
+    """+1 when the left of u faces into the V, else -1."""
+    return 1.0 if (-u[1]) * BIS[0] + u[0] * BIS[1] > 0 else -1.0
 
 
-def span(name, u):
-    """One straight span: two Warren trusses, top ties and bracing, floor beams, deck, mesh infill and handrails."""
-    S = along(APEX, u, START)
-    Q = QA if u is UA else QB
-    L = math.hypot(Q[0] - S[0], Q[1] - S[1])
-    n = max(4, round(L / 3.6))
-    pl = L / n
-    P = lambda s, v, z: along(S, u, s, v, z)
+def corner(m, z=0.0):
+    """The mitre point of the two lines offset m into the V (m < 0: outside the V) at height z; it lies on the bisector."""
+    k = m / math.sin(math.atan(TANH))
+    return (APEX[0] + BIS[0] * k, APEX[1] + BIS[1] * k, z)
+
+
+def arm(u, Q):
+    """Panel geometry of one arm: the inner truss line starts at the inner corner node, the outer one at the outer
+    node; whole Warren panels run from the inner node to the tower face, so every bay closes on a node."""
+    L = math.hypot(Q[0] - APEX[0], Q[1] - APEX[1])
+    s0 = HW / TANH
+    n = max(4, round((L - s0) / 3.6))
+    pl = (L - s0) / n
+    return dict(u=u, L=L, s0=s0, n=n, pl=pl, sg=inner_sign(u),
+                bot=[s0 + k * pl for k in range(n + 1)], top=[s0 + (k + .5) * pl for k in range(n)])
+
+
+def ribbon(vs, fs, p, q, w):
+    """Flat strand from p to q, w wide, in the vertical plane of the strand's truss line."""
+    dz = q[2] - p[2]
+    dh = math.hypot(q[0] - p[0], q[1] - p[1])
+    L = math.hypot(dh, dz) or 1.0
+    hx, hy = ((q[0] - p[0]) / dh, (q[1] - p[1]) / dh) if dh > 1e-9 else (0.0, 0.0)
+    ou, oz = -dz / L * w / 2, dh / L * w / 2                                   # in-plane normal to the strand
+    o = len(vs)
+    vs += [(p[0] - hx * ou, p[1] - hy * ou, p[2] - oz), (q[0] - hx * ou, q[1] - hy * ou, q[2] - oz),
+           (q[0] + hx * ou, q[1] + hy * ou, q[2] + oz), (p[0] + hx * ou, p[1] + hy * ou, p[2] + oz)]
+    fs.append((o, o + 1, o + 2, o + 3))
+
+
+def cable_net(vs, fs, u, v, sa, sb, z0, z1, cell=.08, w=.007):
+    """Fine diamond-weave stainless cable net between sa and sb along the truss line at offset v."""
+    h = z1 - z0
+    for sgn in (1, -1):
+        c = sa - h if sgn > 0 else sa
+        cend = sb if sgn > 0 else sb + h
+        while c <= cend:
+            # strand: s = c + sgn * t, z = z0 + t, clipped to sa <= s <= sb, 0 <= t <= h
+            t0, t1 = 0.0, h
+            if sgn > 0:
+                t0, t1 = max(t0, sa - c), min(t1, sb - c)
+            else:
+                t0, t1 = max(t0, c - sb), min(t1, c - sa)
+            if t1 - t0 > .02:
+                ribbon(vs, fs, along(APEX, u, c + sgn * t0, v, z0 + t0), along(APEX, u, c + sgn * t1, v, z0 + t1), w)
+            c += cell
+
+
+def span(name, u, Q):
+    """One straight arm: two Warren trusses with deep fascia bottom chords, overhead ties with one diagonal per bay,
+    floor beams, deck plate, diamond cable net on slim posts and a handrail inside both trusses."""
+    g = arm(u, Q)
+    ARMS[name] = g
+    L, s0, n, sg, bot, top = g['L'], g['s0'], g['n'], g['sg'], g['bot'], g['top']
+    P = lambda s, v, z: along(APEX, u, s, v, z)
     b = Batch()
-    for side in (-1, 1):
-        v = side * HW
-        b.beam('rust', P(0.0, v, ZD - .15), P(L, v, ZD - .15), .4, .45)                             # bottom chord
-        b.beam('rust', P(pl * .5, v, ZD + HT), P(L - pl * .5, v, ZD + HT), .4, .42, ext=.2)          # top chord
-        for i in range(n):                                                                       # Warren diagonals
-            b.beam('rust', P(pl * i, v, ZD + .05), P(pl * (i + .5), v, ZD + HT - .1), .3, .3)
-            b.beam('rust', P(pl * (i + .5), v, ZD + HT - .1), P(pl * (i + 1), v, ZD + .05), .3, .3)
-        # Grey cable mesh and a slim handrail along the inner face.
-        vi = side * (HW - .3)
-        k = int(L / .22)
-        for j in range(k + 1):
-            b.beam('mesh', P(L * j / k, vi, ZD + .02), P(L * j / k, vi, ZD + 1.38), .016, .016)
-        for z in (ZD + .35, ZD + .7, ZD + 1.05):
-            b.beam('mesh', P(0.0, vi, z), P(L, vi, z), .014, .014)
-        b.beam('hardware', P(0.0, vi, ZD + 1.42), P(L, vi, ZD + 1.42), .06, .06)
-    for i in range(n):                                                                           # top ties and bracing
-        b.beam('rust', P(pl * (i + .5), -HW, ZD + HT), P(pl * (i + .5), HW, ZD + HT), .26, .3)
-        if i < n - 1:
-            b.beam('rust', P(pl * (i + .5), -HW, ZD + HT + .02), P(pl * (i + 1.5), HW, ZD + HT + .02), .14, .14)
-            b.beam('rust', P(pl * (i + .5), HW, ZD + HT + .04), P(pl * (i + 1.5), -HW, ZD + HT + .04), .14, .14)
-    for i in range(n + 1):                                                                       # floor beams under the deck
-        b.beam('rust', P(pl * i, -HW, ZD - .32), P(pl * i, HW, ZD - .32), .24, .3)
-    b.beam('deck', P(0.0, 0.0, ZD - .05), P(L, 0.0, ZD - .05), 2 * (HW - .2), .1)                # perforated deck plate
-    for j in range(int(L / .5)):
-        b.beam('joint', P(.25 + j * .5, -(HW - .22), ZD + .002), P(.25 + j * .5, HW - .22, ZD + .002), .02, .004)
+    zt = ZD + HT
+    for inner in (True, False):
+        v = sg * HW if inner else -sg * HW
+        ss = s0 if inner else -s0                                            # the line starts on its corner node
+        b.beam('rust', P(ss, v, ZB), P(L + .15, v, ZB), .3, .62)                                   # deep fascia bottom chord, seated in the tower
+        b.beam('rust', P(ss, v, zt), P(L, v, zt), .4, .42)                                         # top chord to the corner node
+        b.beam('rust', P(L, v, ZB - .25), P(L, v, zt + .2), .38, .38)                               # end post at the tower
+        for k in range(n):                                                                         # Warren diagonals
+            b.beam('rust', P(bot[k], v, ZD + .05), P(top[k], v, zt - .1), .3, .3)
+            b.beam('rust', P(top[k], v, zt - .1), P(bot[k + 1], v, ZD + .05), .3, .3)
+        if not inner:                                                                              # the outer corner panel
+            b.beam('rust', P(-s0, v, zt - .1), P(bot[0], v, ZD + .05), .3, .3)
+        out = 1.0 if v > 0 else -1.0                                                               # bolt-hole row on the fascia
+        k = int((L - ss) / .45)
+        for j in range(1, k):
+            s = ss + j * .45
+            b.beam('hardware', P(s, v + out * .14, ZB - .12), P(s, v + out * .17, ZB - .12), .07, .07)
+    for s in top + [L]:                                                                            # overhead transverse ties
+        b.beam('rust', P(s, -HW, zt), P(s, HW, zt), .26, .3)
+    ties = top + [L]
+    for k in range(len(ties) - 1):                                                                 # one diagonal per bay, zig-zag
+        va, vb = (sg * HW, -sg * HW) if k % 2 == 0 else (-sg * HW, sg * HW)
+        b.beam('rust', P(ties[k], va, zt + .03), P(ties[k + 1], vb, zt + .03), .16, .16)
+    for s in bot:                                                                                  # floor beams under the deck
+        b.beam('rust', P(s, -HW, ZD - .32), P(s, HW, ZD - .32), .24, .3)
     b.flush(name)
+    # Deck plate, mitred into the V: one quad per arm meeting the other on the bisector.
+    m = HW - .1
+    sm = m / TANH
+    poly = [P(-sm, -sg * m, 0)[:2], P(L, -sg * m, 0)[:2], P(L, sg * m, 0)[:2], P(sm, sg * m, 0)[:2]]
+    area = sum(poly[i][0] * poly[(i + 1) % 4][1] - poly[(i + 1) % 4][0] * poly[i][1] for i in range(4))
+    C.prism(f'{name} deck', poly if area > 0 else poly[::-1], 'z', ZD - .1, ZD, 'deck', 'deck')
+    b = Batch()
+    for s in bot[1:-1]:                                                                            # plate joints at the panel points
+        b.beam('joint', P(s, -m + .02, ZD + .002), P(s, m - .02, ZD + .002), .02, .004)
+    b.flush(f'{name} deck joints')
+    # Cable net, slim posts, a bottom cable and the dark handrail, inside both trusses.
+    vs, fs = [], []
+    b = Batch()
+    for inner in (True, False):
+        mi = (HW - .3) if inner else -(HW - .3)
+        vi = sg * mi
+        sa = mi / TANH
+        cable_net(vs, fs, u, vi, sa, L, ZD + .06, ZD + 1.36)
+        b.beam('mesh', P(sa, vi, ZD + .06), P(L, vi, ZD + .06), .02, .02)
+        npst = max(2, round((L - sa) / 1.6))
+        for j in range(1, npst + 1):
+            s = sa + (L - sa) * j / npst
+            b.beam('mesh', P(s, vi, ZD), P(s, vi, ZD + 1.4), .04, .04)
+        b.beam('hardware', P(sa, vi, ZD + 1.42), P(L, vi, ZD + 1.42), .06, .06)
+    C.mesh(f'{name} cable net', vs, fs, 'mesh', 'mesh')
+    b.flush(f'{name} rails')
 
 
 def apex():
-    """The bend: a deck platform joining the two spans, edge beams, posts and a top frame, mesh and rails on the free
-    edges, two steel columns to the sidewalk, and the third stair tower behind it."""
-    ends = []
-    for u in (UA, UB):
-        S = along(APEX, u, START)
-        ends += [along(S, u, 0.0, HW + .2)[:2], along(S, u, 0.0, -HW - .2)[:2]]
-    dx, dy = UA[0] + UB[0], UA[1] + UB[1]
-    dl = math.hypot(dx, dy)
-    dirn = (dx / dl, dy / dl)
-    O = (APEX[0] - dirn[0] * 2.4, APEX[1] - dirn[1] * 2.4)
-    tw = [(O[0] - dirn[1] * s * 1.7, O[1] + dirn[0] * s * 1.7) for s in (-1, 1)]       # a flat edge where the tower door opens
-    poly = hull(ends + tw)
-    C.prism('Apex deck', poly, 'z', ZD - .1, ZD, 'deck', 'apex')
-    junction = {frozenset(ends[0:2]), frozenset(ends[2:4]), frozenset(tw)}
+    """The bend: the chords of both arms meet on one outer and one inner corner node. The outer node carries a corner
+    post that runs down to grade as the single steel pier; overhead, a tie joins the two nodes and members radiate from
+    the outer node to the first top-chord node of each inner truss."""
+    zt = ZD + HT
+    po, pi = corner(-HW), corner(HW)
     b = Batch()
-    for i in range(len(poly)):
-        p, q = poly[i], poly[(i + 1) % len(poly)]
-        b.box('rust', p[0], p[1], (ZD - .4 + ZD + HT + .2) / 2, .36, .36, HT + .6)                 # posts at the corners
-        b.beam('rust', (p[0], p[1], ZD + HT), (q[0], q[1], ZD + HT), .3, .34)                        # top frame
-        if frozenset((p, q)) in junction:
-            continue
-        b.beam('rust', (p[0], p[1], ZD - .15), (q[0], q[1], ZD - .15), .32, .4)                      # edge beam
-        L = math.hypot(q[0] - p[0], q[1] - p[1])
-        ux, uy = (q[0] - p[0]) / L, (q[1] - p[1]) / L
-        cx, cy = APEX
-        nx, ny = -uy, ux
-        if (cx - p[0]) * nx + (cy - p[1]) * ny < 0:
-            nx, ny = -nx, -ny                                                                    # inward normal
-        a = (p[0] + nx * .3, p[1] + ny * .3)
-        c = (q[0] + nx * .3, q[1] + ny * .3)
-        k = int(L / .22)
-        for j in range(k + 1):
-            x, y = a[0] + (c[0] - a[0]) * j / k, a[1] + (c[1] - a[1]) * j / k
-            b.beam('mesh', (x, y, ZD + .02), (x, y, ZD + 1.38), .016, .016)
-        b.beam('hardware', (a[0], a[1], ZD + 1.42), (c[0], c[1], ZD + 1.42), .06, .06)
-        b.beam('rust', (p[0], p[1], ZD + .1), (q[0], q[1], ZD + HT - .1), .26, .26)                  # a diagonal in each free face
-    for u in (UA, UB):                                                                           # columns to the sidewalk
-        c = along(APEX, u, 1.6)
-        b.box('rust', c[0], c[1], (ZD - .1) / 2, .5, .5, ZD - .1)
-        b.box('concrete', c[0], c[1], .15, 1.0, 1.0, .3)
+    b.box('rust', po[0], po[1], (zt + .2) / 2, .55, .55, zt + .2)                                  # outer node post and pier
+    b.box('concrete', po[0], po[1], .15, 1.1, 1.1, .3)
+    b.box('rust', pi[0], pi[1], (ZB - .31 + zt + .2) / 2, .5, .5, zt + .2 - (ZB - .31))           # inner node post
+    b.beam('rust', (po[0], po[1], zt), (pi[0], pi[1], zt), .26, .3)                                # overhead apex tie
+    b.beam('rust', (po[0], po[1], ZD - .32), (pi[0], pi[1], ZD - .32), .24, .3)                    # apex floor beam
+    for g in ARMS.values():
+        q = along(APEX, g['u'], g['top'][0], g['sg'] * HW, zt + .03)
+        b.beam('rust', (po[0], po[1], zt + .03), q, .16, .16)                                      # radiating overhead members
     b.flush('apex')
-    tower('Apex tower', O, (-dirn[0], -dirn[1]))
 
 
 def tower(name, Q, u):
@@ -619,16 +659,16 @@ def block(name, x0, x1, y0, y1, h, faces, role='brick', roof='roof', glazed=Fals
 
 def build():
     street()
-    span('East span', UA)
-    span('West span', UB)
+    span('Crossing arm', UA, QA)
+    span('Land arm', UB, QB)
     apex()
     tower('East tower', QA, UA)
     tower('West tower', QB, UB)
-    block('Pale-roofed warehouse', -42.0, -15.0, 9.5, 34.0, 15.0, ['s', 'e'], roof='pale')
-    block('West warehouse', -66.0, -44.0, -36.0, -6.0, 14.0, ['e', 'n'])
+    block('Pale-roofed warehouse', -42.0, -14.2, 7.6, 34.0, 15.0, ['s', 'e'], roof='pale')     # the apex at its corner
+    block('West warehouse', -58.0, -32.0, -50.0, -16.0, 10.0, ['e', 'n'])
     block('South-east block', 18.5, 46.0, -48.0, -26.0, 12.0, ['w', 'n'], roof='pale')
     block('Glass office', 18.0, 44.0, 6.0, 34.0, 24.0, [], glazed=True)
-    C.CONTACTS.append(dict(name='Two-span Cor-Ten truss footbridge over a city street: spans on brick towers and apex columns', box=[X0, X1, Y0, Y1]))
+    C.CONTACTS.append(dict(name='V-plan Cor-Ten truss footbridge over a city street: arms on brick towers and one apex pier', box=[X0, X1, Y0, Y1]))
 
 
 LIGHT_RIG = dict(key=(30, -45, 45), fill=(-40, -25, 30), rear=(-20, 40, 30), target=(-6.0, -6.0, ZD), gain=3.2)
