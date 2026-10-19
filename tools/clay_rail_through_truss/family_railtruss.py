@@ -521,7 +521,7 @@ def deck_arches(b):
         c0, c1 = COLS[1 + k], COLS[2 + k]
         ya, yb = c0 + .05, c1 - .05
         for x in (-CX, CX):
-            ym, zm, rt = plate_rib(b, x, ya, yb, SPRING, CROWN, n=28)
+            ym, zm, rt = plate_rib(b, x, ya, yb, SPRING, CROWN, n=22, rivet_pitch=1.6)
             n = 12
             nodes = []                                                                           # (y, z on the rib extrados)
             for i in range(n + 1):
