@@ -68,10 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (the v004 rework targets all four; a second non-improving review stops the family)
+## Open blockers after v004 (v005 reworks these three)
 
-- P1 #1: the upper sashes on the south face (end house and neighbour) have flat heads; the source shows segmental-arched heads.
-- P1 #2: at the south-east hip corner the gutters stop short on both faces and the hip tile drops into the gap; the source wraps the gutter and eaves band round the corner.
-- P1 #3: the two rooflights sit on the end house's rear slope; the top and front sources put them on the neighbour's south slope, west of the party-wall stack.
-- P1 #4: the neighbour's hipped rear back-wing (top source) is missing.
-- All four v002 P1s are resolved in the pixels.
+1. P1: the upper south sash heads are now tall round arches (rise about 0.31 of span, source about 0.11) with glazing cut to the curve; they must be rectangular six-over-six sashes under a shallow flush arch.
+2. P1: the neighbour's back wing is about 40% of the bay width (source about 70%), pushed against the west party wall instead of centred, and its roof stays under the main rear eaves (source ridge climbs to mid-slope with two valleys).
+3. P1: the back-wing windows are flat pale-grey panels with no frame, bars, sill or reveal.
