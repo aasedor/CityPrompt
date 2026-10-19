@@ -42,15 +42,15 @@ def manifest(version):
         ('arch_spandrel', (-19.5, -31.0, 5.0), (-19.5, -HW, 6.0), 40),
         ('cutwater_pier', (-3.0, -25.0, 3.0), (-9.75, -10.6, 3.5), 40),
         ('balustrade', (-3.0, -7.6, 12.8), (8.0, -8.65, 11.8), 40),
-        ('lamp_standard', (14.0, -5.0, 13.6), (9.75, -9.1, 14.8), 40),
+        ('lamp_standard', (16.0, -4.0, 14.0), (9.75, -9.15, 15.4), 35),
         ('roadway_deck', (-25.0, 0.5, 14.0), (10.0, 0.0, 11.0), 35),
         ('river_underside', (-19.5, -27.0, 1.6), (-19.5, 0.0, 5.0), 35),
         ('rear_north', (22.0, 42.0, 7.0), (0.0, HW, 6.0), 35)])
     for c in cams:
         if c['name'] == 'front':                     # the locked front: on the quay at the east end, south side, looking west
-            c.update(location=(31.5, -12.8, DECK + .15 + 1.6), target=(-6.0, -8.6, 8.8), lens=24, whole=False)
+            c.update(location=(28.9, -12.6, DECK + .15 + 2.6), target=(-10.0, -8.4, 6.0), lens=24, whole=False)
         elif c['name'] == 'front_corner':            # the locked oblique: high over the west bank, along the bridge, arches on the right
-            c.update(location=(-52.0, -26.0, 34.0), target=(12.0, 2.0, 8.0), lens=30, whole=False)
+            c.update(location=(-38.0, -17.0, 30.0), target=(12.0, 2.0, 6.0), lens=30, whole=False)
         elif c['name'] == 'aerial':
             c.update(location=(48.0, -62.0, 52.0), target=(0.0, 0.0, 8.0), lens=30, whole=False)
         elif c['name'] == 'top':

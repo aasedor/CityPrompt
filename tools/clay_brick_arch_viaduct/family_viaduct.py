@@ -59,7 +59,7 @@ def manifest(version):
         elif c['name'] == 'aerial':
             c.update(location=(42.0, Y0 - 30.0, 48.0), target=(2.0, -4.0, 4.0), lens=32, whole=False)
         elif c['name'] == 'top':                 # the locked top is a steep oblique from the south-west
-            c.update(location=(-13.0, -24.0, 44.0), target=(6.0, 6.0, 2.0), lens=30, whole=False)
+            c.update(location=(-8.0, -16.0, 36.0), target=(6.0, 10.0, 2.0), lens=30, whole=False)
         elif c['name'] == 'left_side':           # over the west terraces, which would hide the viaduct from the ground
             c.update(location=(-48.0, -6.0, 30.0), target=(0.0, 0.0, 5.0), lens=32, whole=False)
         elif c['name'] == 'right_side':
@@ -656,6 +656,8 @@ def terraces():
         h = 8.4
         C.box(f'{side} terrace', ((x0 + x1) / 2, (ya + yb) / 2, h / 2), (x1 - x0, yb - ya, h), role, 'context', 0)
         pitched_roof(f'{side} terrace roof', x0, x1, ya, yb, h, 2.6, hip_w=False, hip_e=False, axis='y', ov=.25, role='roof', module='context')
+        for yg in (ya + .15, yb - .15):                                                       # gable end walls under the roof plate
+            gable_wall(f'{side} terrace gable {yg:+.0f}', yg, x0, x1, h - .01, 2.5, axis='y', t=.3, role=role, module='context')
         for i in range(n):
             y0, y1 = ya + i * 5.6, ya + (i + 1) * 5.6
             if i:

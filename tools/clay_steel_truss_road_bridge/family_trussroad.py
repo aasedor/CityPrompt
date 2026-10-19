@@ -47,14 +47,14 @@ def manifest(version):
         ('abutment', (-14.0, -4.0, 2.4), (-7.0, -QY + .4, 3.0), 35),
         ('roadway_inside', (1.8, -16.0, DECK + 1.6), (0.0, 12.0, DECK + 3.0), 28),
         ('river_underside', (15.0, 0.5, 1.4), (0.0, 0.0, 3.8), 35),
-        ('rear_north', (-13.0, 36.0, 9.0), (0.0, QY, 8.0), 35)])
+        ('rear_north', (15.0, 21.0, 9.0), (0.0, QY, 8.0), 35)])
     for c in cams:
         if c['name'] == 'front':                     # the locked front: on the east sidewalk at the south end, looking north-west into the portal
-            c.update(location=(8.4, -23.0, DECK + .15 + 1.6), target=(-1.5, 2.0, DECK + 4.5), lens=24, whole=False)
+            c.update(location=(8.6, -15.6, DECK + .15 + 1.6), target=(-3.0, 6.0, DECK + 4.2), lens=24, whole=False)
         elif c['name'] == 'front_corner':            # the locked oblique: high over the south-west quay, the span receding north-east
-            c.update(location=(-15.0, -36.0, 24.0), target=(2.0, 4.0, 7.0), lens=30, whole=False)
+            c.update(location=(-10.0, -33.0, 22.0), target=(3.0, 4.0, 7.0), lens=30, whole=False)
         elif c['name'] == 'aerial':
-            c.update(location=(40.0, -46.0, 40.0), target=(0.0, 0.0, 6.0), lens=30, whole=False)
+            c.update(location=(44.0, -10.0, 34.0), target=(0.0, 0.0, 6.0), lens=30, whole=False)
         elif c['name'] == 'top':
             c.update(location=(0.0, 0.0, 100.0), target=(0.0, .001, 0.0), ortho_scale=68.0, whole=False)
         elif c['name'] == 'left_side':               # the west truss elevation from over the river
@@ -64,7 +64,7 @@ def manifest(version):
         elif c['name'] == 'rear':                    # along the street from the north
             c.update(location=(1.0, 50.0, DECK + 2.5), target=(0.0, 0.0, DECK + 4.5), lens=35, whole=False)
         elif c['name'] == 'rear_side':
-            c.update(location=(32.0, 40.0, 24.0), target=(0.0, 0.0, 6.0), lens=35, whole=False)
+            c.update(location=(34.0, 18.0, 22.0), target=(0.0, 0.0, 6.0), lens=35, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -458,9 +458,10 @@ def truss(xt):
             pairs = [(node(xt, i + 1, True), node(xt, i, False))]
         else:
             pairs = [(node(xt, i, True), node(xt, i + 1, False)), (node(xt, i + 1, True), node(xt, i, False))]
-        for a, c in pairs:
+        for k, (a, c) in enumerate(pairs):                                               # counters sit outside the mains: no shared planes
+            off, wd = (.12, .07) if k == 0 else (.24, .06)
             for s in (-1, 1):
-                b.beam('steel', (a[0] + s * .12, a[1], a[2]), (c[0] + s * .12, c[1], c[2]), .07, .3)
+                b.beam('steel', (a[0] + s * off, a[1], a[2]), (c[0] + s * off, c[1], c[2]), wd, .3 if k == 0 else .26)
     for i in range(NP + 1):                                                               # gusset plates and rivet rows
         for top in (False, True):
             if top and i in (0, NP):
@@ -487,9 +488,10 @@ def bracing():
         if 1 < i < NP - 1:
             for s in (-1, 1):                                                              # knee braces at the verticals
                 b.beam('steel', (s * XT, y, ZT - 1.7), (s * (XT - 1.7), y, ZT - .26), .18, .14)
-    for i in range(1, NP - 1):                                                           # X laterals
+    for i in range(1, NP - 1):                                                           # X laterals, one bar above the other where they cross
         for s in (-1, 1):
-            b.beam('steel2', (-XT * s, YN[i], ZT - .12), (XT * s, YN[i + 1], ZT - .12), .14, .12)
+            z = ZT - .1 if s > 0 else ZT - .26
+            b.beam('steel2', (-XT * s, YN[i], z), (XT * s, YN[i + 1], z), .14, .12)
     for i0, i1 in ((0, 1), (NP, NP - 1)):                                                # portals in the end-post plane
         def at(x, t):
             return (x, YN[i0] + (YN[i1] - YN[i0]) * t, ZB + (ZT - ZB) * t)
@@ -608,7 +610,7 @@ def quays_and_abutments():
 def warehouses():
     """Brick warehouses round the bridge as context: a face towards the river with real cuts, a body behind."""
     for name, x0, x1, ya, yb, h in (('NW warehouse', -52.0, -16.0, 22.0, 48.0, 16.0), ('NE warehouse', 16.0, 46.0, 24.0, 44.0, 11.5),
-                                     ('SW warehouse', -48.0, -16.0, -48.0, -24.0, 18.5), ('SE warehouse', 16.0, 52.0, -50.0, -24.0, 13.0)):
+                                     ('SW warehouse', -54.0, -24.0, -50.0, -26.0, 18.5), ('SE warehouse', 16.0, 52.0, -50.0, -24.0, 13.0)):
         south = ya > 0
         yf = ya if south else yb
         if south:
