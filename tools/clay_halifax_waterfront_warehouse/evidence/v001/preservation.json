@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-halifax-waterfront-warehouse-clay-v001",
+  "glb": "clay-halifax-waterfront-warehouse-clay-v001.glb",
+  "glb_bytes": 568340,
+  "glb_sha256": "88c338a3503ce5086bd9daee859bc42cee8a73f487e6f788dbeff4d013fb4888",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "arched_windows.png": 92,
+    "architecture_close.png": 92,
+    "copper_cornice.png": 92,
+    "east_side.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "granite_piers.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_chimneys.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-halifax-waterfront-warehouse-clay-v001-renders-and-glb.zip",
+  "zip_bytes": 31417520
+}
