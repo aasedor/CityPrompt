@@ -402,7 +402,7 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 
 # ---- Halifax waterfront warehouse ----
 
-def arch_head(f, h, rise, ring=.26, segs=16, ring_role='arch'):
+def arch_head(f, h, rise, ring=.26, segs=16, ring_role='arch', course=None):
     """Segmental or round head on a rectangular cut: brick spandrel infill filling the cut's corners above the curve
     flush with the wall face (exactly the cut's width and height, so no recess reads at the shoulders), and a proud
     ring over it."""
@@ -422,6 +422,22 @@ def arch_head(f, h, rise, ring=.26, segs=16, ring_role='arch'):
     n = 4 * (len(pts) - 1)
     fs += [(0, 1, 3, 2), (n, n + 2, n + 3, n + 1)]
     C.mesh(f'{h["id"]} spandrel', vs, fs, 'wall', 'arches')
+    if course:                                              # carry the wall's mortar courses across the spandrel corners
+        z0, sp = course
+        vs, fs = [], []
+        k = math.ceil((top - rise - z0) / sp)
+        while z0 + k * sp < top - .006:
+            z = z0 + k * sp
+            dz = z + .003 - cz
+            half = math.sqrt(max(0.0, R * R - dz * dz)) if abs(dz) < R else 0.0
+            for a, c in ((u - w / 2, u - half - .02), (u + half + .02, u + w / 2)):
+                if c - a > .02:
+                    o = len(vs)
+                    vs += [f.p(a, -.002, z), f.p(c, -.002, z), f.p(c, -.002, z + .006), f.p(a, -.002, z + .006)]
+                    fs.append((o, o + 1, o + 2, o + 3))
+            k += 1
+        if fs:
+            C.mesh(f'{h["id"]} spandrel courses', vs, fs, 'joint', 'brick joints')
     vs, fs = [], []
     for (pu, pz) in arc:
         r = math.hypot(pu - u, pz - cz)
@@ -489,11 +505,11 @@ def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, pi
         else:
             framed(m, f, g, cols=2, rows=3, inset=.16, occupied='warehouse', frame='frame')
             m.box('stone', g['u'], -.05, g['z'] - .07, g['w'] + .2, .14, .12)
-            arch_head(f, g, g['w'] / 2, ring=.2 if g['w'] < 1 else .24)
+            arch_head(f, g, g['w'] / 2, ring=.2 if g['w'] < 1 else .24, course=(G0 + .05, .16))
     for h in uppers:
         framed(m, f, h, cols=2, rows=4, inset=.16, occupied='loft', frame='frame')
         m.box('stone', h['u'], -.06, h['z'] - .08, h['w'] + .34, .16, .14)
-        arch_head(f, h, h['w'] / 2, ring=.3)
+        arch_head(f, h, h['w'] / 2, ring=.3, course=(G0 + .05, .16))
         m.box('stone', h['u'], -.06, h['z'] + h['h'] + .15, .3, .14, .42)                       # keystone
         for s in (-1, 1):                                                                     # granite impost blocks at the springing
             m.box('stone', h['u'] + s * (h['w'] / 2 + .17), -.05, h['z'] + h['h'] - h['w'] / 2 - .08, .36, .1, .2)
