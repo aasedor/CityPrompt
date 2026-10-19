@@ -68,9 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (v004 reworks these four)
+## Open blockers after v004 (v005 reworks it)
 
-- P1 #1: front still hides the mansard, dormers and fins behind the balustrade; the camera is near ground level and too close, about 35% sky, the south face runs off the right edge (the v002 front finding, partly fixed, surviving one targeted fix).
-- P1 #2: the lower mansard is about 30-40 degrees and too deep, reading as a low hipped roof; dormers become long tunnel boxes where the sources show a steep slate band with short dormers.
-- P1 #3: solid black squares at every crossing of a voussoir strip and the rustication channel over every ground-floor window (new black-void defect).
-- P1 #4: every Corinthian capital shows a dark gap between bell and abacus (floating abacus); the leaves are splayed stick blocks reading as a crown.
+- P1 #1: the roof round the light court is one plain slate surface falling into the court like a funnel; the locked top and oblique show an inner mansard with four large dormer boxes (two each on the west and east inner slopes), rooflights on the north and south inner slopes and a ribbed lead band.
