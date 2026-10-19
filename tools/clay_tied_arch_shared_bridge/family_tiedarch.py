@@ -37,7 +37,7 @@ PALETTE = dict(water=(.14, .20, .22), arch=(.64, .68, .72), steel=(.48, .52, .56
 def manifest(version):
     h = ZQ + RISE + 1.0
     cams = G.camera_roster(X1 - X0 + 6.0, Y1 - Y0 + 20.0, h, [
-        ('facade_close', (2.0, -32.0, 3.6), (0.0, 0.0, ZQ + 3.6), 30),
+        ('facade_close', (2.0, -21.0, 3.0), (0.0, 0.0, ZQ + 3.4), 26),
         ('architecture_close', (-7.0, -17.0, ZQ + 13.0), (0.0, -4.0, ZQ + RISE - 1.0), 35),
         ('glass_close', (-8.0, -3.6, ZQ + 1.6), (-3.5, -6.2, ZQ + .8), 40),
         ('arch_springing', (-29.0, -13.0, ZQ + 2.4), (-L / 2, -HW, ZQ + 1.2), 40),
@@ -57,13 +57,13 @@ def manifest(version):
         elif c['name'] == 'top':
             c.update(location=(0.0, -2.0, 90.0), target=(0.0, -1.999, 0.0), ortho_scale=62.0, whole=False)
         elif c['name'] == 'left_side':
-            c.update(location=(-62.0, 10.0, 12.0), target=(0.0, 0.0, ZQ + 4.0), lens=35, whole=False)
+            c.update(location=(-62.0, -2.0, 15.0), target=(0.0, 0.0, ZQ + 4.0), lens=35, whole=False)
         elif c['name'] == 'right_side':
             c.update(location=(62.0, -10.0, 12.0), target=(0.0, 0.0, ZQ + 4.0), lens=35, whole=False)
         elif c['name'] == 'rear':
             c.update(location=(4.0, 46.0, 9.0), target=(0.0, 0.0, ZQ + 4.0), lens=35, whole=False)
         elif c['name'] == 'rear_side':
-            c.update(location=(36.0, 42.0, 24.0), target=(0.0, 0.0, ZQ + 3.0), lens=35, whole=False)
+            c.update(location=(10.0, 50.0, 34.0), target=(0.0, 0.0, ZQ + 3.0), lens=35, whole=False)   # over the canal, clear of the blocks
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
