@@ -1,0 +1,3097 @@
+{
+  "candidate": "clay-stepped-terraced-plaza-clay-v002",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 342,
+    "vertices": 21421,
+    "polygons": 36010,
+    "triangles": 36010,
+    "path": "clay-stepped-terraced-plaza-clay-v002-authoring.blend",
+    "bytes": 4946064,
+    "sha256": "46f5bc8f145faf668b1c541939fc0fa30e10d0e5af7c0d6e709ba1b6c71f24fd"
+  },
+  "runtime": {
+    "path": "clay-stepped-terraced-plaza-clay-v002.glb",
+    "bytes": 2062992,
+    "sha256": "388ec5f77b6b589d8369ad3d391d98f485bd64280dae7e6fdae72e5a6856295e",
+    "meshes": 16,
+    "materials": 16,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 16,
+    "vertices": 21421,
+    "polygons": 36010,
+    "triangles": 36010
+  },
+  "original_bounds_m": [
+    [
+      -23.989999771118164,
+      -36.0,
+      0.0
+    ],
+    [
+      20.0,
+      38.0,
+      17.100000381469727
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -23.989999771118164,
+      -36.0,
+      0.0
+    ],
+    [
+      20.0,
+      38.0,
+      17.100000381469727
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 20.0,
+    "depth": 52.0,
+    "height": 15.8
+  },
+  "native_dimensions_m": {
+    "width": 43.989999771118164,
+    "depth": 74.0,
+    "height": 17.100000381469727
+  },
+  "native_bottom_center_m": [
+    -1.994999885559082,
+    1.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 43,
+    "white": 80,
+    "stone": 34,
+    "paving": 2,
+    "joint": 1,
+    "blue": 38,
+    "glass": 36,
+    "hardware": 2,
+    "pot": 1,
+    "planting": 1,
+    "flower": 1,
+    "bougain": 66,
+    "timber": 3,
+    "floor": 16,
+    "roof": 16,
+    "dome": 2
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/central_stair.png",
+    "renders/seating_terraces.png",
+    "renders/parapet_pots.png",
+    "renders/side_stair.png",
+    "renders/chapel_top.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front_corner": {
+      "xmin": 0.12011688202619553,
+      "xmax": 0.7839685678482056,
+      "ymin": 0.08911483734846115,
+      "ymax": 0.8065119981765747
+    },
+    "aerial": {
+      "xmin": 0.08083423972129822,
+      "xmax": 0.7890385389328003,
+      "ymin": 0.13405168056488037,
+      "ymax": 0.7145620584487915
+    },
+    "top": {
+      "xmin": 0.2991736829280853,
+      "xmax": 0.6674250364303589,
+      "ymin": 0.09817995876073837,
+      "ymax": 0.924143373966217
+    },
+    "left_side": {
+      "xmin": 0.09358661621809006,
+      "xmax": 0.9151264429092407,
+      "ymin": 0.37826910614967346,
+      "ymax": 0.636622965335846
+    },
+    "right_side": {
+      "xmin": 0.08487357199192047,
+      "xmax": 0.9067211747169495,
+      "ymin": 0.38357049226760864,
+      "ymax": 0.6293140053749084
+    },
+    "rear": {
+      "xmin": 0.18606622517108917,
+      "xmax": 0.8390902876853943,
+      "ymin": 0.26029691100120544,
+      "ymax": 0.7465485334396362
+    },
+    "rear_side": {
+      "xmin": 0.13346239924430847,
+      "xmax": 0.906055748462677,
+      "ymin": 0.24641700088977814,
+      "ymax": 0.6036549210548401
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Terrace and stair solids from grade; stone plates on every tread and platform"
+    },
+    {
+      "name": "Cycladic stair-plaza climbing north between white houses",
+      "box": [
+        -10.0,
+        10.0,
+        -26.0,
+        26.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "west house 2 door",
+      "face": "west house 2",
+      "u": -9.75,
+      "z": 3.3000000000000003,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "house door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 2 window -1",
+      "face": "west house 2",
+      "u": -11.65,
+      "z": 4.2,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 2 window +1",
+      "face": "west house 2",
+      "u": -7.85,
+      "z": 4.2,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 2 rear window 0",
+      "face": "west house 2 rear",
+      "u": 8.45,
+      "z": 4.300000000000001,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -16.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 2 rear window 1",
+      "face": "west house 2 rear",
+      "u": 11.05,
+      "z": 4.300000000000001,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -16.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 3 door",
+      "face": "west house 3",
+      "u": -3.25,
+      "z": 4.4,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "house door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 3 window -1",
+      "face": "west house 3",
+      "u": -5.15,
+      "z": 5.300000000000001,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 3 window +1",
+      "face": "west house 3",
+      "u": -1.35,
+      "z": 5.300000000000001,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 3 rear window 0",
+      "face": "west house 3 rear",
+      "u": 1.95,
+      "z": 5.4,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -17.299999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 3 rear window 1",
+      "face": "west house 3 rear",
+      "u": 4.55,
+      "z": 5.4,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -17.299999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 4 door",
+      "face": "west house 4",
+      "u": 3.25,
+      "z": 5.5,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "house door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 4 window -1",
+      "face": "west house 4",
+      "u": 1.35,
+      "z": 6.4,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 4 window +1",
+      "face": "west house 4",
+      "u": 5.15,
+      "z": 6.4,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 4 rear window 0",
+      "face": "west house 4 rear",
+      "u": -4.55,
+      "z": 6.5,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -16.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 4 rear window 1",
+      "face": "west house 4 rear",
+      "u": -1.95,
+      "z": 6.5,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -16.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 5 door",
+      "face": "west house 5",
+      "u": 9.75,
+      "z": 6.6000000000000005,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "house door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 5 window -1",
+      "face": "west house 5",
+      "u": 7.85,
+      "z": 7.500000000000001,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 5 window +1",
+      "face": "west house 5",
+      "u": 11.65,
+      "z": 7.500000000000001,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 5 rear window 0",
+      "face": "west house 5 rear",
+      "u": -11.05,
+      "z": 7.6000000000000005,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -17.299999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 5 rear window 1",
+      "face": "west house 5 rear",
+      "u": -8.45,
+      "z": 7.6000000000000005,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -17.299999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 6 door",
+      "face": "west house 6",
+      "u": 16.25,
+      "z": 7.700000000000001,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "house door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 6 window -1",
+      "face": "west house 6",
+      "u": 14.35,
+      "z": 8.600000000000001,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 6 window +1",
+      "face": "west house 6",
+      "u": 18.15,
+      "z": 8.600000000000001,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 6 rear window 0",
+      "face": "west house 6 rear",
+      "u": -17.55,
+      "z": 8.700000000000001,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -16.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 6 rear window 1",
+      "face": "west house 6 rear",
+      "u": -14.95,
+      "z": 8.700000000000001,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -16.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 7 door",
+      "face": "west house 7",
+      "u": 22.75,
+      "z": 8.8,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "house door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 7 window -1",
+      "face": "west house 7",
+      "u": 20.85,
+      "z": 9.700000000000001,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 7 window +1",
+      "face": "west house 7",
+      "u": 24.65,
+      "z": 9.700000000000001,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 7 rear window 0",
+      "face": "west house 7 rear",
+      "u": -24.05,
+      "z": 9.8,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -17.299999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 7 rear window 1",
+      "face": "west house 7 rear",
+      "u": -21.45,
+      "z": 9.8,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -17.299999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 1 door",
+      "face": "west house 1",
+      "u": -16.25,
+      "z": 2.2,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "house door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -14.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 1 window -1",
+      "face": "west house 1",
+      "u": -18.15,
+      "z": 3.1,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -14.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 1 window +1",
+      "face": "west house 1",
+      "u": -14.35,
+      "z": 3.1,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -14.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 1 rear window 0",
+      "face": "west house 1 rear",
+      "u": 14.95,
+      "z": 3.2,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west house 1 rear window 1",
+      "face": "west house 1 rear",
+      "u": 17.55,
+      "z": 3.2,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -21.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west corner house door",
+      "face": "west corner house",
+      "u": -22.75,
+      "z": 0.04,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "house door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -14.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west corner house window -1",
+      "face": "west corner house",
+      "u": -24.65,
+      "z": 0.9400000000000001,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -14.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west corner house window +1",
+      "face": "west corner house",
+      "u": -20.85,
+      "z": 0.9400000000000001,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -14.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west corner house rear window 0",
+      "face": "west corner house rear",
+      "u": 21.45,
+      "z": 1.04,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -21.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "west corner house rear window 1",
+      "face": "west corner house rear",
+      "u": 24.05,
+      "z": 1.04,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -21.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 0 window 0",
+      "face": "east house 0",
+      "u": 21.15,
+      "z": 2.1,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 0 window 1",
+      "face": "east house 0",
+      "u": 24.35,
+      "z": 2.1,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 0 rear window 0",
+      "face": "east house 0 rear",
+      "u": -24.05,
+      "z": 2.1,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        17.299999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 0 rear window 1",
+      "face": "east house 0 rear",
+      "u": -21.45,
+      "z": 2.1,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        17.299999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 1 window 0",
+      "face": "east house 1",
+      "u": 14.65,
+      "z": 3.2,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 1 window 1",
+      "face": "east house 1",
+      "u": 17.85,
+      "z": 3.2,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 1 rear window 0",
+      "face": "east house 1 rear",
+      "u": -17.55,
+      "z": 3.2,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        16.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 1 rear window 1",
+      "face": "east house 1 rear",
+      "u": -14.95,
+      "z": 3.2,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        16.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 2 window 0",
+      "face": "east house 2",
+      "u": 8.15,
+      "z": 4.300000000000001,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 2 window 1",
+      "face": "east house 2",
+      "u": 11.35,
+      "z": 4.300000000000001,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 2 rear window 0",
+      "face": "east house 2 rear",
+      "u": -11.05,
+      "z": 4.300000000000001,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        17.299999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 2 rear window 1",
+      "face": "east house 2 rear",
+      "u": -8.45,
+      "z": 4.300000000000001,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        17.299999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 3 window 0",
+      "face": "east house 3",
+      "u": 1.65,
+      "z": 5.4,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 3 window 1",
+      "face": "east house 3",
+      "u": 4.85,
+      "z": 5.4,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 3 rear window 0",
+      "face": "east house 3 rear",
+      "u": -4.55,
+      "z": 5.4,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        16.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 3 rear window 1",
+      "face": "east house 3 rear",
+      "u": -1.95,
+      "z": 5.4,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        16.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 4 window 0",
+      "face": "east house 4",
+      "u": -4.85,
+      "z": 6.5,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 4 window 1",
+      "face": "east house 4",
+      "u": -1.65,
+      "z": 6.5,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 4 rear window 0",
+      "face": "east house 4 rear",
+      "u": 1.95,
+      "z": 6.5,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        17.299999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 4 rear window 1",
+      "face": "east house 4 rear",
+      "u": 4.55,
+      "z": 6.5,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        17.299999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 5 window 0",
+      "face": "east house 5",
+      "u": -11.35,
+      "z": 7.6000000000000005,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 5 window 1",
+      "face": "east house 5",
+      "u": -8.15,
+      "z": 7.6000000000000005,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 5 rear window 0",
+      "face": "east house 5 rear",
+      "u": 8.45,
+      "z": 7.6000000000000005,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        16.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 5 rear window 1",
+      "face": "east house 5 rear",
+      "u": 11.05,
+      "z": 7.6000000000000005,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        16.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 6 window 0",
+      "face": "east house 6",
+      "u": -17.85,
+      "z": 8.700000000000001,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 6 window 1",
+      "face": "east house 6",
+      "u": -14.65,
+      "z": 8.700000000000001,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 6 rear window 0",
+      "face": "east house 6 rear",
+      "u": 14.95,
+      "z": 8.700000000000001,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        17.299999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 6 rear window 1",
+      "face": "east house 6 rear",
+      "u": 17.55,
+      "z": 8.700000000000001,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        17.299999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 7 window 0",
+      "face": "east house 7",
+      "u": -24.35,
+      "z": 9.8,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 7 window 1",
+      "face": "east house 7",
+      "u": -21.15,
+      "z": 9.8,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 7 rear window 0",
+      "face": "east house 7 rear",
+      "u": 21.45,
+      "z": 9.8,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        16.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "east house 7 rear window 1",
+      "face": "east house 7 rear",
+      "u": 24.05,
+      "z": 9.8,
+      "width": 0.8,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        16.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "chapel door",
+      "face": "chapel south",
+      "u": -6.0,
+      "z": 8.8,
+      "width": 1.1,
+      "height": 2.5,
+      "kind": "chapel door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "chapel"
+    },
+    {
+      "id": "chapel window -1",
+      "face": "chapel south",
+      "u": -7.8,
+      "z": 10.4,
+      "width": 0.6,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "chapel"
+    },
+    {
+      "id": "chapel window +1",
+      "face": "chapel south",
+      "u": -4.2,
+      "z": 10.4,
+      "width": 0.6,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "chapel"
+    },
+    {
+      "id": "chapel east window 0",
+      "face": "chapel east",
+      "u": 28.0,
+      "z": 10.4,
+      "width": 0.6,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -3.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "chapel"
+    },
+    {
+      "id": "chapel east window 1",
+      "face": "chapel east",
+      "u": 30.0,
+      "z": 10.4,
+      "width": 0.6,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -3.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "chapel"
+    },
+    {
+      "id": "belfry door",
+      "face": "belfry south",
+      "u": 13.0,
+      "z": 0.0,
+      "width": 1.0,
+      "height": 2.3,
+      "kind": "belfry door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -31.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "belfry"
+    },
+    {
+      "id": "Top house 1 door",
+      "face": "Top house 1",
+      "u": 1.44,
+      "z": 8.8,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "house door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        31.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "Top house 1 window",
+      "face": "Top house 1",
+      "u": 3.15,
+      "z": 9.700000000000001,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        31.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "Top house 1 upper window",
+      "face": "Top house 1",
+      "u": 2.25,
+      "z": 12.4,
+      "width": 0.9,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        31.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "Top house 2 door",
+      "face": "Top house 2",
+      "u": 6.26,
+      "z": 8.8,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "house door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        31.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "Top house 2 window",
+      "face": "Top house 2",
+      "u": 8.35,
+      "z": 9.700000000000001,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        31.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    },
+    {
+      "id": "Top house 2 upper window",
+      "face": "Top house 2",
+      "u": 7.25,
+      "z": 11.600000000000001,
+      "width": 0.9,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        31.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "house"
+    }
+  ],
+  "authoring_modules": {
+    "stair plaza": [
+      "stair plaza white",
+      "stair plaza stone"
+    ],
+    "handrails": [
+      "handrails hardware"
+    ],
+    "site": [
+      "Lower plaza",
+      "West lane paving"
+    ],
+    "pots": [
+      "pots joint",
+      "pots pot",
+      "pots planting",
+      "pots flower",
+      "pots white",
+      "pots stone"
+    ],
+    "west stair": [
+      "West stair step 0",
+      "West stair tread 0",
+      "West stair step 1",
+      "West stair tread 1",
+      "West stair step 2",
+      "West stair tread 2",
+      "West stair step 3",
+      "West stair tread 3",
+      "West stair step 4",
+      "West stair tread 4",
+      "West stair step 5",
+      "West stair tread 5",
+      "West stair step 6",
+      "West stair tread 6",
+      "West stair step 7",
+      "West stair tread 7",
+      "West stair step 8",
+      "West stair tread 8",
+      "West stair step 9",
+      "West stair tread 9",
+      "West stair step 10",
+      "West stair tread 10",
+      "West stair step 11",
+      "West stair tread 11",
+      "West stair step 12",
+      "West stair tread 12",
+      "West stair step 13",
+      "West stair tread 13",
+      "West stair step 14",
+      "West stair tread 14",
+      "West stair step 15",
+      "West stair tread 15"
+    ],
+    "west stair landing": [
+      "west stair landing white",
+      "west stair landing stone"
+    ],
+    "envelope": [
+      "west house 2 facade",
+      "west house 2 rear wall",
+      "west house 3 facade",
+      "west house 3 rear wall",
+      "west house 4 facade",
+      "west house 4 rear wall",
+      "west house 5 facade",
+      "west house 5 rear wall",
+      "west house 6 facade",
+      "west house 6 rear wall",
+      "west house 7 facade",
+      "west house 7 rear wall",
+      "west house 1 facade",
+      "west house 1 rear wall",
+      "west corner house facade",
+      "west corner house rear wall",
+      "east house 0 facade",
+      "east house 0 rear wall",
+      "east house 1 facade",
+      "east house 1 rear wall",
+      "east house 2 facade",
+      "east house 2 rear wall",
+      "east house 3 facade",
+      "east house 3 rear wall",
+      "east house 4 facade",
+      "east house 4 rear wall",
+      "east house 5 facade",
+      "east house 5 rear wall",
+      "east house 6 facade",
+      "east house 6 rear wall",
+      "east house 7 facade",
+      "east house 7 rear wall",
+      "chapel south wall",
+      "chapel east wall",
+      "belfry south wall",
+      "Top house 1 front",
+      "Top house 2 front"
+    ],
+    "west house 2": [
+      "west house 2 west house 2 blue",
+      "west house 2 west house 2 glass",
+      "west house 2 west house 2 white"
+    ],
+    "west house 2 rear": [
+      "west house 2 rear west house 2 rear blue",
+      "west house 2 rear west house 2 rear glass",
+      "west house 2 rear west house 2 rear stone"
+    ],
+    "houses": [
+      "west house 2 base",
+      "west house 2 roof",
+      "west house 3 base",
+      "west house 3 roof",
+      "west house 4 base",
+      "west house 4 roof",
+      "west house 5 base",
+      "west house 5 roof",
+      "west house 6 base",
+      "west house 6 roof",
+      "west house 7 base",
+      "west house 7 roof",
+      "west house 1 base",
+      "west house 1 roof",
+      "west corner house base",
+      "west corner house roof",
+      "east house 0 base",
+      "east house 0 roof",
+      "east house 1 base",
+      "east house 1 roof",
+      "east house 2 base",
+      "east house 2 roof",
+      "east house 3 base",
+      "east house 3 roof",
+      "east house 4 base",
+      "east house 4 roof",
+      "east house 5 base",
+      "east house 5 roof",
+      "east house 6 base",
+      "east house 6 roof",
+      "east house 7 base",
+      "east house 7 roof",
+      "Top house 1 body",
+      "Top house 2 body"
+    ],
+    "west house 2 room": [
+      "west house 2 room white",
+      "west house 2 room floor"
+    ],
+    "west house 3": [
+      "west house 3 west house 3 blue",
+      "west house 3 west house 3 glass",
+      "west house 3 west house 3 white"
+    ],
+    "west house 3 rear": [
+      "west house 3 rear west house 3 rear blue",
+      "west house 3 rear west house 3 rear glass",
+      "west house 3 rear west house 3 rear stone"
+    ],
+    "west house 3 room": [
+      "west house 3 room white",
+      "west house 3 room floor"
+    ],
+    "west house 4": [
+      "west house 4 west house 4 blue",
+      "west house 4 west house 4 glass",
+      "west house 4 west house 4 white"
+    ],
+    "west house 4 rear": [
+      "west house 4 rear west house 4 rear blue",
+      "west house 4 rear west house 4 rear glass",
+      "west house 4 rear west house 4 rear stone"
+    ],
+    "west house 4 room": [
+      "west house 4 room white",
+      "west house 4 room floor"
+    ],
+    "west house 5": [
+      "west house 5 west house 5 blue",
+      "west house 5 west house 5 glass",
+      "west house 5 west house 5 white"
+    ],
+    "west house 5 rear": [
+      "west house 5 rear west house 5 rear blue",
+      "west house 5 rear west house 5 rear glass",
+      "west house 5 rear west house 5 rear stone"
+    ],
+    "west house 5 room": [
+      "west house 5 room white",
+      "west house 5 room floor"
+    ],
+    "west house 6": [
+      "west house 6 west house 6 blue",
+      "west house 6 west house 6 glass",
+      "west house 6 west house 6 white"
+    ],
+    "west house 6 rear": [
+      "west house 6 rear west house 6 rear blue",
+      "west house 6 rear west house 6 rear glass",
+      "west house 6 rear west house 6 rear stone"
+    ],
+    "west house 6 room": [
+      "west house 6 room white",
+      "west house 6 room floor"
+    ],
+    "west house 7": [
+      "west house 7 west house 7 blue",
+      "west house 7 west house 7 glass",
+      "west house 7 west house 7 white"
+    ],
+    "west house 7 rear": [
+      "west house 7 rear west house 7 rear blue",
+      "west house 7 rear west house 7 rear glass",
+      "west house 7 rear west house 7 rear stone"
+    ],
+    "west house 7 room": [
+      "west house 7 room white",
+      "west house 7 room floor"
+    ],
+    "west house 1": [
+      "west house 1 west house 1 blue",
+      "west house 1 west house 1 glass",
+      "west house 1 west house 1 white"
+    ],
+    "west house 1 rear": [
+      "west house 1 rear west house 1 rear blue",
+      "west house 1 rear west house 1 rear glass",
+      "west house 1 rear west house 1 rear stone"
+    ],
+    "west house 1 room": [
+      "west house 1 room white",
+      "west house 1 room floor"
+    ],
+    "west corner house": [
+      "west corner house west corner house blue",
+      "west corner house west corner house glass",
+      "west corner house west corner house white"
+    ],
+    "west corner house rear": [
+      "west corner house rear west corner house rear blue",
+      "west corner house rear west corner house rear glass"
+    ],
+    "west corner house room": [
+      "west corner house room white",
+      "west corner house room floor"
+    ],
+    "east house 0": [
+      "east house 0 east house 0 blue",
+      "east house 0 east house 0 glass",
+      "east house 0 east house 0 white"
+    ],
+    "east house 0 rear": [
+      "east house 0 rear east house 0 rear blue",
+      "east house 0 rear east house 0 rear glass",
+      "east house 0 rear east house 0 rear stone"
+    ],
+    "east house 0 room": [
+      "east house 0 room white",
+      "east house 0 room floor"
+    ],
+    "east house 1": [
+      "east house 1 east house 1 blue",
+      "east house 1 east house 1 glass",
+      "east house 1 east house 1 white"
+    ],
+    "east house 1 rear": [
+      "east house 1 rear east house 1 rear blue",
+      "east house 1 rear east house 1 rear glass",
+      "east house 1 rear east house 1 rear stone"
+    ],
+    "east house 1 room": [
+      "east house 1 room white",
+      "east house 1 room floor"
+    ],
+    "east house 2": [
+      "east house 2 east house 2 blue",
+      "east house 2 east house 2 glass",
+      "east house 2 east house 2 white"
+    ],
+    "east house 2 rear": [
+      "east house 2 rear east house 2 rear blue",
+      "east house 2 rear east house 2 rear glass",
+      "east house 2 rear east house 2 rear stone"
+    ],
+    "east house 2 room": [
+      "east house 2 room white",
+      "east house 2 room floor"
+    ],
+    "east house 3": [
+      "east house 3 east house 3 blue",
+      "east house 3 east house 3 glass",
+      "east house 3 east house 3 white"
+    ],
+    "east house 3 rear": [
+      "east house 3 rear east house 3 rear blue",
+      "east house 3 rear east house 3 rear glass",
+      "east house 3 rear east house 3 rear stone"
+    ],
+    "east house 3 room": [
+      "east house 3 room white",
+      "east house 3 room floor"
+    ],
+    "east house 4": [
+      "east house 4 east house 4 blue",
+      "east house 4 east house 4 glass",
+      "east house 4 east house 4 white"
+    ],
+    "east house 4 rear": [
+      "east house 4 rear east house 4 rear blue",
+      "east house 4 rear east house 4 rear glass",
+      "east house 4 rear east house 4 rear stone"
+    ],
+    "east house 4 room": [
+      "east house 4 room white",
+      "east house 4 room floor"
+    ],
+    "east house 5": [
+      "east house 5 east house 5 blue",
+      "east house 5 east house 5 glass",
+      "east house 5 east house 5 white"
+    ],
+    "east house 5 rear": [
+      "east house 5 rear east house 5 rear blue",
+      "east house 5 rear east house 5 rear glass",
+      "east house 5 rear east house 5 rear stone"
+    ],
+    "east house 5 room": [
+      "east house 5 room white",
+      "east house 5 room floor"
+    ],
+    "east house 6": [
+      "east house 6 east house 6 blue",
+      "east house 6 east house 6 glass",
+      "east house 6 east house 6 white"
+    ],
+    "east house 6 rear": [
+      "east house 6 rear east house 6 rear blue",
+      "east house 6 rear east house 6 rear glass",
+      "east house 6 rear east house 6 rear stone"
+    ],
+    "east house 6 room": [
+      "east house 6 room white",
+      "east house 6 room floor"
+    ],
+    "east house 7": [
+      "east house 7 east house 7 blue",
+      "east house 7 east house 7 glass",
+      "east house 7 east house 7 white"
+    ],
+    "east house 7 rear": [
+      "east house 7 rear east house 7 rear blue",
+      "east house 7 rear east house 7 rear glass",
+      "east house 7 rear east house 7 rear stone"
+    ],
+    "east house 7 room": [
+      "east house 7 room white",
+      "east house 7 room floor"
+    ],
+    "house details": [
+      "house details blue",
+      "house details white",
+      "house details timber"
+    ],
+    "planting": [
+      "Bougainvillea trunk",
+      "Bougainvillea trunk upper"
+    ],
+    "garden planting": [
+      "Bougainvillea 0",
+      "Bougainvillea 1",
+      "Bougainvillea 2",
+      "Bougainvillea 3",
+      "Bougainvillea 4",
+      "Bougainvillea 5",
+      "Bougainvillea 6",
+      "Bougainvillea 7",
+      "Bougainvillea 8",
+      "Bougainvillea 9",
+      "Bougainvillea 10",
+      "Bougainvillea 11",
+      "Bougainvillea 12",
+      "Bougainvillea 13",
+      "Bougainvillea 14",
+      "Bougainvillea 15",
+      "Bougainvillea 16",
+      "Bougainvillea 17",
+      "Bougainvillea 18",
+      "Bougainvillea 19",
+      "Bougainvillea 20",
+      "Bougainvillea 21",
+      "Bougainvillea 22",
+      "Bougainvillea 23",
+      "Bougainvillea 24",
+      "Bougainvillea 25",
+      "Bougainvillea 26",
+      "Bougainvillea 27",
+      "Bougainvillea 28",
+      "Bougainvillea 29",
+      "Bougainvillea 30",
+      "Bougainvillea 31",
+      "Bougainvillea 32",
+      "Bougainvillea 33",
+      "Bougainvillea 34",
+      "Bougainvillea 35",
+      "Bougainvillea 36",
+      "Bougainvillea 37",
+      "Bougainvillea 38",
+      "Bougainvillea 39",
+      "Bougainvillea 40",
+      "Bougainvillea 41",
+      "Bougainvillea 42",
+      "Bougainvillea 43",
+      "Bougainvillea 44",
+      "Bougainvillea 45",
+      "Bougainvillea 46",
+      "Bougainvillea 47",
+      "Bougainvillea 48",
+      "Bougainvillea 49",
+      "Bougainvillea 50",
+      "Bougainvillea 51",
+      "Parapet bougainvillea 0",
+      "Parapet bougainvillea 1",
+      "Parapet bougainvillea 2",
+      "Parapet bougainvillea 3",
+      "Parapet bougainvillea 4",
+      "Parapet bougainvillea 5",
+      "Parapet bougainvillea 6",
+      "Parapet bougainvillea 7",
+      "Parapet bougainvillea 8",
+      "Parapet bougainvillea 9",
+      "Parapet bougainvillea 10",
+      "Parapet bougainvillea 11",
+      "Parapet bougainvillea 12",
+      "Parapet bougainvillea 13"
+    ],
+    "arches": [
+      "chapel door spandrel",
+      "chapel door arch ring",
+      "chapel window -1 spandrel",
+      "chapel window -1 arch ring",
+      "chapel window +1 spandrel",
+      "chapel window +1 arch ring",
+      "chapel east window 0 spandrel",
+      "chapel east window 0 arch ring",
+      "chapel east window 1 spandrel",
+      "chapel east window 1 arch ring",
+      "belfry door spandrel",
+      "belfry door arch ring"
+    ],
+    "chapel south": [
+      "chapel south chapel south blue",
+      "chapel south chapel south glass"
+    ],
+    "chapel east": [
+      "chapel east chapel east blue",
+      "chapel east chapel east glass"
+    ],
+    "chapel": [
+      "Chapel nave",
+      "chapel white",
+      "Chapel dome"
+    ],
+    "belfry south": [
+      "belfry south belfry south blue"
+    ],
+    "belfry": [
+      "Belfry base",
+      "belfry white",
+      "belfry hardware",
+      "Belfry cupola"
+    ],
+    "Top house 1": [
+      "Top house 1 Top house 1 blue",
+      "Top house 1 Top house 1 glass"
+    ],
+    "Top house 2": [
+      "Top house 2 Top house 2 blue",
+      "Top house 2 Top house 2 glass"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-19T04:09:01.332642+00:00",
+  "delivery_and_render_seconds": 2448.401782282999,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
