@@ -68,6 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (first build; the review drives v002)
+## Open blockers after v002 (the v003 rework targets both)
 
-P0 left_side hidden by the neighbour box. P1 pedimented dormers (source flat lead tops); black dormer notches; proud salmon flat arches; 9-over-9 first-floor sashes; east wall window schedule; two short stacks instead of three long ones; flat metal upper roof (source slate planes to a ridge, rear lead strip); missing east rear extension; rear wing roof through a rear window and blank wing windows; neighbour a modern flat box
+- P1 #1: all five dormer sashes are broken: the upper sash has no bars, the lower has no glass or bottom rail, two stub bars hang from the meeting rail, the sill floats, and the openings are square where the source has portrait sashes.
+- P1 #2: the main block is too deep in plan: about 0.83 deep to 1 wide in the top view where the locked top is about 0.65.
+- Every v001 finding is resolved in the pixels, including the left_side P0.
