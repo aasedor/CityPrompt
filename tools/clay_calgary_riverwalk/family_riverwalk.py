@@ -19,7 +19,7 @@ WATER, BANK, PLANT, RAIL, PROM, EDGE, BLD = -17.0, -11.0, -5.0, -4.7, 1.3, 4.6, 
 ZP = 1.2                                        # promenade level above the river surface
 T = .3
 EPS = .002
-PALETTE = dict(water=(.20, .48, .50), riprap=(.27, .27, .26), rock=(.40, .40, .39), rock2=(.34, .34, .33), rock3=(.46, .45, .43),
+PALETTE = dict(water=(.20, .48, .50), riprap=(.15, .15, .14), rock=(.23, .23, .22), rock2=(.19, .19, .18), rock3=(.28, .27, .26),
     soil=(.30, .25, .18), grass=(.50, .52, .26), grass2=(.62, .58, .30), stonewall=(.52, .49, .44), planting=(.30, .44, .20), tree=(.28, .44, .18), timber=(.46, .34, .22),
     concrete=(.78, .76, .72), joint=(.62, .60, .56), stone=(.70, .64, .54), gabion=(.58, .55, .50),
     hardware=(.36, .26, .18), rail=(.40, .30, .20), bench=(.52, .38, .24), red=(.70, .12, .12),
@@ -418,16 +418,15 @@ def lump(b, role, cx, cy, cz, rx, ry, rz, jitter=.18):
 
 
 def tuft(b, role, x, y, z, h, r):
-    """A clump of grass: a narrow five-sided cone."""
+    """A clump of grass: a narrow four-sided cone standing open on the ground or soil it rises from."""
     V, F = b.g.setdefault(role, ([], []))
     o = len(V)
-    for i in range(5):
-        a = 2 * math.pi * i / 5 + RNG.uniform(0, 1)
+    for i in range(4):
+        a = 2 * math.pi * i / 4 + RNG.uniform(0, 1)
         V.append((x + r * math.cos(a), y + r * math.sin(a), z))
     V.append((x + RNG.uniform(-.1, .1), y + RNG.uniform(-.1, .1), z + h))
-    F.append(tuple(o + i for i in range(4, -1, -1)))
-    for i in range(5):
-        F.append((o + i, o + (i + 1) % 5, o + 5))
+    for i in range(4):
+        F.append((o + i, o + (i + 1) % 4, o + 4))
 
 
 def cottonwood(x, y, z, h=13.0, s=1.0, lean=(.3, .2)):
@@ -450,19 +449,19 @@ def river_and_bank():
     C.prism('Rip-rap bank', [(WATER, 0.0), (BANK, 0.0), (BANK, ZP - .12), (WATER, .03)], 'y', Y0 - 2.0, Y1 + 2.0, 'riprap', 'bank')   # a solid wedge from grade
     b = Batch()
     # Packed rounded boulders in three greys, covering the slope from the waterline to the top of the bank.
-    for row in range(16):
-        x = WATER + .25 + row * (BANK - WATER - .5) / 15
+    for row in range(7):
+        x = WATER + .3 + row * (BANK - WATER - .6) / 6
         y = Y0 - 1.8 + RNG.uniform(0, .5)
         while y < Y1 + 1.8:
-            r = RNG.uniform(.28, .46)
+            r = RNG.uniform(.55, .8)
             xx = x + RNG.uniform(-.15, .15)
             if not (LAND[0] - .6 < y < LAND[1] + .6 and xx > BANK - 1.4):
                 lump(b, RNG.choice(('rock', 'rock2', 'rock3')), xx, y, max(bank_z(xx) + r * .28, r * .75 * 1.1), r * 1.2, r * RNG.uniform(.9, 1.3), r * .75)
-            y += r * 1.55
+            y += r * 1.6
     b.flush('rip-rap boulders')
     # Riparian strip: soil berm butting the promenade base, a continuous undulating grass cover, dense tufts and shrubs.
     C.box('Riparian soil', ((BANK + RAIL - .15) / 2, 0.0, (ZP - .1) / 2), (RAIL - .15 - BANK, Y1 - Y0 + 4.0, ZP - .1), 'soil', 'riparian', 0)
-    nx, ny = 14, 160
+    nx, ny = 8, 56
     for part, (ya, yb) in enumerate(((Y0 - 2.0, LAND[0] - .1), (LAND[1] + .1, Y1 + 2.0))):
         vs, fs = [], []
         n_y = max(4, int(ny * (yb - ya) / (Y1 - Y0 + 4.0)))
@@ -486,13 +485,13 @@ def river_and_bank():
             fs += [((j + 1) * k, o + (j + 1) * k, o + j * k, j * k), (j * k + nx, o + j * k + nx, o + (j + 1) * k + nx, (j + 1) * k + nx)]
         C.mesh(f'Riparian grass cover {part}', vs, fs, 'grass', 'riparian')
     b = Batch()
-    for i in range(1500):                                                            # dense native grass clumps, green and gold
+    for i in range(900):                                                            # dense native grass clumps, green and gold
         x = RNG.uniform(BANK + .15, RAIL - .35)
         y = RNG.uniform(Y0 - 1.8, Y1 + 1.8)
         if LAND[0] - .2 < y < LAND[1] + .2:
             continue
         tuft(b, 'grass2' if i % 3 == 0 else ('planting' if i % 3 == 1 else 'grass'), x, y, ZP + .05, RNG.uniform(.55, 1.15), RNG.uniform(.12, .22))
-    for i in range(170):                                                             # shrub masses at varied heights
+    for i in range(140):                                                             # shrub masses at varied heights
         x = RNG.uniform(BANK + .6, RAIL - .9)
         y = RNG.uniform(Y0 - 1.2, Y1 + 1.2)
         if LAND[0] - 1.0 < y < LAND[1] + 1.0:
@@ -506,12 +505,12 @@ def river_and_bank():
     # Far bank: a wooded bank with its own stone edge where the bridge lands.
     C.box('Far bank', (-68.0, 0.0, .5), (24.0, Y1 - Y0 + 16.0, 1.0), 'grass', 'far bank', 0)
     b = Batch()
-    for i in range(160):
+    for i in range(50):
         y = RNG.uniform(Y0 - 6.0, Y1 + 6.0)
         r = RNG.uniform(.3, .45)
         lump(b, RNG.choice(('rock', 'rock2', 'rock3')), -56.0 + RNG.uniform(-.4, .2), y, max(r * .4, r * .7 * 1.1), r, r * 1.2, r * .7)
     b.flush('far bank stones')
-    for i, y in enumerate((-32.0, -24.0, -16.0, -8.0, 2.0, 10.0, 18.0, 34.0, 40.0)):
+    for i, y in enumerate((-30.0, -17.0, -5.0, 9.0, 17.0, 38.0)):
         cottonwood(-60.0 - (i % 3) * 3.5, y, 1.0, h=12.0 + (i % 2) * 2.0, s=1.1, lean=((.3, .2), (-.3, .1), (.1, -.3))[i % 3])
 
 
@@ -559,13 +558,13 @@ def coursed(b, x0, x1, y0, y1, z0, z1, role='stonewall', face_x=None):
 def gabion(b, x0, x1, y0, y1, z0, z1):
     """A gabion wall: grey stone fill behind a steel mesh of wires on the promenade face and the top."""
     b.box('gabion', (x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2, x1 - x0, y1 - y0, z1 - z0)
-    for k in range(int((y1 - y0) / .25) + 1):
-        y = min(y1 - .01, y0 + .01 + k * .25)
+    for k in range(int((y1 - y0) / .4) + 1):
+        y = min(y1 - .01, y0 + .01 + k * .4)
         b.box('hardware', x0 - .012, y, (z0 + z1) / 2, .012, .014, z1 - z0)
-    for k in range(int((z1 - z0) / .25) + 1):
-        z = min(z1 - .01, z0 + .01 + k * .25)
+    for k in range(int((z1 - z0) / .3) + 1):
+        z = min(z1 - .01, z0 + .01 + k * .3)
         b.box('hardware', x0 - .012, (y0 + y1) / 2, z, .012, y1 - y0, .014)
-    for k in range(int((y1 - y0) / .5) + 1):
+    for k in range(int((y1 - y0) / .8) + 1):
         b.box('hardware', (x0 + x1) / 2, min(y1 - .01, y0 + .01 + k * .5), z1 + .007, x1 - x0, .014, .012)
 
 
@@ -584,7 +583,7 @@ def building_edge():
             else:
                 gabion(b, xa, xb, y, y + L, ZP, ZP + .6)
             b.box('soil', (xa + xb) / 2, y + L / 2, ZP + .61, xb - xa - .2, L - .2, .04)
-            for j in range(int(L * 6)):                                                     # grasses and shrubs in the planter
+            for j in range(int(L * 4)):                                                     # grasses and shrubs in the planter
                 tuft(b, 'grass2' if j % 2 else 'planting', RNG.uniform(xa + .2, xb - .2), RNG.uniform(y + .2, y + L - .2), ZP + .62, RNG.uniform(.4, .8), .12)
             for j in range(3):
                 lump(b, 'planting', xa + .3 + j * (xb - xa - .6) / 2, y + L * (j + .5) / 3, ZP + .95, .45, .55, .4, .25)
@@ -647,7 +646,6 @@ def blocks():
                 yy = y0 + 1.5 + j * 3.0
                 b.box('trim', xb1 + .03, yy, z + .9, .06, 1.8, 2.0)
                 b.box('glass', xb1 + .065, yy, z + .9, .02, 1.5, 1.7)
-                b.box('trim', xb1 + .09, yy, z - .08, .1, 1.9, .08)
         for ye, sgn in ((y0, -1), (y1, 1)):                                                 # and on both end faces
             for k in range(nf):
                 z = ZP + .9 + k * 3.0
@@ -655,7 +653,6 @@ def blocks():
                     xx = xb0 + 2.0 + j * 4.0
                     b.box('trim', xx, ye + sgn * .03, z + .9, 1.8, .06, 2.0)
                     b.box('glass', xx, ye + sgn * .065, z + .9, 1.5, .02, 1.7)
-                    b.box('trim', xx, ye + sgn * .09, z - .08, 1.9, .1, .08)
         b.box('trim', (xb0 + xb1) / 2, (y0 + y1) / 2, top + .1, 12.2, y1 - y0 + .2, .2)
         b.flush(f'{name} rear and ends')
         C.box(f'{name} plinth fill', ((EDGE + BLD + 1.5) / 2, (y0 + y1) / 2, (ZP - .03) / 2), (BLD + 1.5 - EDGE, y1 - y0, ZP - .03), 'stone', 'blocks', 0)
@@ -669,10 +666,10 @@ def peace_bridge():
     """The red helical-truss Peace Bridge: a lens-shaped tube with pointed ends over a shallow arched deck, a white roof
     skin over the top, crossing the river in one span from a pad on the far bank to a stone abutment and landing that
     meet the promenade through the opening in the river rail."""
-    xa, xb = -56.4, BANK - .8                       # truss ends: the far-bank pad and the near abutment face
-    za, zb, rise = 1.08, ZP, 1.7
+    xa, xb = -56.4, BANK + 2.0                      # truss ends: the far-bank pad and across the abutment onto the landing
+    za, zb, rise = 1.11, ZP + .03, 1.7               # deck ends stand 3 cm proud of the pads
     H, W = 4.8, BW
-    N = 44
+    N = 32
 
     def deck(t):
         return za + (zb - za) * t + rise * math.sin(math.pi * t)
@@ -688,7 +685,7 @@ def peace_bridge():
         t0, t1 = i / N, (i + 1) / N
         b.beam('white', (xa + (xb - xa) * t0, YC, deck(t0) - .22), (xa + (xb - xa) * t1, YC, deck(t1) - .22), W - .4 + .01 * (i % 2), .44, ext=.01)
         b.beam('red', (xa + (xb - xa) * t0, YC - 1.3, deck(t0) + .003), (xa + (xb - xa) * t1, YC - 1.3, deck(t1) + .003), 1.4, .006)   # red cycle lane
-    K = 8
+    K = 7
     for i in range(N):                                                                     # two opposed helices over the deck: a diamond lattice
         t0, t1 = i / N, (i + 1) / N
         for k in range(K):
@@ -696,7 +693,6 @@ def peace_bridge():
             b.beam('red', ring(t0, a0), ring(t1, a1), .16, .16)
             b.beam('red', ring(t0, a1), ring(t1, a0), .15, .15)
     for s in (0.0, math.pi):                                                               # edge chords along both sides of the deck
-        b.beam('red', ring(0, s), ring(1, s), .02, .02)
         for i in range(N):
             b.beam('red', ring(i / N, s), ring((i + 1) / N, s), .24, .24)
     for t in (0.0, 1.0):                                                                   # closed ends: an end ring arch
@@ -709,7 +705,7 @@ def peace_bridge():
     for i in range(N + 1):
         t = i / N
         for j in range(M + 1):
-            a = math.pi * (.28 + .44 * j / M)
+            a = math.pi * (.2 + .6 * j / M)
             x, y, z = ring(t, a)
             zc = deck(t) + .02
             for f in (.94, .91):
