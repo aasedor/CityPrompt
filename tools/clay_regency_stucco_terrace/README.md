@@ -68,8 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (the v003 rework targets both)
+## Open blockers after v003 (v004 reworks these four)
 
-- P1 #1: black voids where the coping meets the corner pedestals on every porch balcony and at the main parapet corners (the v001 open-corner finding, surviving one targeted fix).
-- P1 #2: the front render does not match the source front: too low and close, the mansard, dormers and fins hidden, a street tree over the corner order, the pediment end dominating instead of the long porch front.
-- The v001 P0 and the other P1s are resolved in the pixels.
+- P1 #1: front still hides the mansard, dormers and fins behind the balustrade; the camera is near ground level and too close, about 35% sky, the south face runs off the right edge (the v002 front finding, partly fixed, surviving one targeted fix).
+- P1 #2: the lower mansard is about 30-40 degrees and too deep, reading as a low hipped roof; dormers become long tunnel boxes where the sources show a steep slate band with short dormers.
+- P1 #3: solid black squares at every crossing of a voussoir strip and the rustication channel over every ground-floor window (new black-void defect).
+- P1 #4: every Corinthian capital shows a dark gap between bell and abacus (floating abacus); the leaves are splayed stick blocks reading as a crown.
