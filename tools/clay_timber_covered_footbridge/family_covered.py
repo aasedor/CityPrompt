@@ -49,9 +49,9 @@ def manifest(version):
         ('rear_north', (4.0, 22.0, ZD + 4.0), (0.0, 0.0, ZD + 1.5), 35)])
     for c in cams:                       # the locked front stands on the west promenade, south of the bridge
         if c['name'] == 'front':
-            c.update(location=(-19.0, -9.5, ZD + 1.7), target=(-6.0, -.5, ZD + 2.0), lens=24, whole=False)
+            c.update(location=(-16.8, -6.8, ZD + 1.7), target=(-4.0, 0.0, ZD + 2.3), lens=22, whole=False)
         elif c['name'] == 'front_corner':                                      # the locked oblique: high in the south-west
-            c.update(location=(-22.0, -21.0, 18.0), target=(2.0, 2.0, ZD + 1.0), lens=30, whole=False)
+            c.update(location=(-13.0, -23.0, 17.0), target=(2.0, 2.0, ZD + 1.0), lens=30, whole=False)
         elif c['name'] == 'aerial':
             c.update(location=(22.0, -26.0, 24.0), target=(0.0, 0.0, ZD), lens=32, whole=False)
         elif c['name'] == 'top':

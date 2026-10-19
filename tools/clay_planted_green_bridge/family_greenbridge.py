@@ -2,7 +2,7 @@
 landscape_park_pedestrian_bridge / variant_2 (Planted Green Bridge).
 
 Read from the pixels (the top view governs the plan): a straight, level pedestrian bridge running north-south
-across a river between planted banks. A pale central path about 4 m wide runs between two deep planting beds of
+across a river between planted banks. A pale central path about 3.6 m wide runs between two deep planting beds of
 grasses, shrubs, lavender, red flowers and small trees, each bed edged by a low steel rail with bollard lights on
 the path side and a timber-capped steel picket railing on a weathering-steel edge beam on the outer side. Near
 mid-river two elongated hexagonal viewing pods project from the beds, one each side, planted and railed, their
@@ -17,7 +17,7 @@ import geometry as G
 SLUG = 'clay-planted-green-bridge'
 X0, X1, Y0, Y1 = -16.0, 16.0, -40.0, 40.0      # deck with its pods (32 m) and an 80 m run across the river
 ZD = 6.0                                        # path level above the water surface
-PW = 2.0                                        # half-width of the central path
+PW = 1.8                                        # half-width of the central path (3.6 m, top view)
 DW = 6.95                                       # half-width of the planted deck to the edge beams
 RN, RS = 10.25, -10.0                           # north and south water lines
 ZB = 2.2                                        # bank level
@@ -69,7 +69,7 @@ def manifest(version):
         source_archetype='landscape_park_pedestrian_bridge/variant_2 (Planted Green Bridge)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=0, storey_programme='street option: a level planted pedestrian bridge over a river; the banks, trees and blocks are context',
-            plan='14 m deck (4 m path between two planting beds) on an 80 m run across a 20 m river (top view), two hexagonal planted viewing pods projecting 8.5 m each side near mid-river',
+            plan='14 m deck (3.6 m path between two planting beds) on an 80 m run across a 20 m river (top view), two hexagonal planted viewing pods projecting 8.5 m each side near mid-river',
             section_m=dict(path=[-PW, PW], planting_beds=[PW, DW], edge_beams=[DW, DW + .3], deck_level=ZD, water=0.0, banks=ZB),
             facade='pale path, dense beds of grasses, shrubs, lavender, red flowers and small trees, low steel inner rails with bollard lights, timber-capped picket railings on weathering-steel edge beams, rusted pod fascias, concrete cross-heads and round columns',
             levels_m=[0.0, ZB, ZD], inferred='the deck structure under the planting, the far banks and the blocks are teaching assumptions; the bridge is shown as a section cut at both ends'),
@@ -425,7 +425,7 @@ def blob(b, role, cx, cy, cz, rx, ry, rz, j=.12):
     F.extend(tuple(o + i for i in f) for f in ICO_F)
 
 
-def tuft(b, role, cx, cy, z0, h, r, n=5):
+def tuft(b, role, cx, cy, z0, h, r, n=4):
     """A clump of grass or a flower spike: a narrow leaning cone."""
     V, F = b.g.setdefault(role, ([], []))
     o = len(V)
@@ -452,7 +452,7 @@ def cyl(b, role, cx, cy, z0, z1, r, n=14):
         F.append((o + i, o + j, o + n + j, o + n + i))
 
 
-def railing(b, pts, z, post=1.6, picket=.2):
+def railing(b, pts, z, post=1.6, picket=.25):
     """Steel picket railing with a timber cap along a polyline at base level z."""
     for (ax, ay), (cx, cy) in zip(pts, pts[1:]):
         L = math.hypot(cx - ax, cy - ay)
@@ -499,12 +499,12 @@ def river_and_banks():
     C.prism('South bank', [(RS, 0.0), (RS - 2.6, ZB), (-70.0, ZB), (-70.0, 0.0)], 'x', -70.0, 70.0, 'grass', 'banks')
     b = Batch()
     for side, y0, y1 in ((1, RN, RN + 2.6), (-1, RS, RS - 2.6)):                              # rip-rap boulders on both slopes
-        for i in range(260):
+        for i in range(110):
             x = RNG.uniform(-69.0, 69.0)
             f = RNG.random()
             y = y0 + (y1 - y0) * f
             z = ZB * f
-            r = RNG.uniform(.35, .7)
+            r = RNG.uniform(.45, .9)
             blob(b, 'rock', x, y, z + .05, r * 1.3, r, r * .7, j=.2)
     b.flush('rip-rap')
     b = Batch()
@@ -530,17 +530,17 @@ def river_and_banks():
 def tree(b, x, y, z, h=9.0, s=1.0):
     """Broadleaf tree: a trunk and a rounded crown of overlapping masses."""
     b.box('timber', x, y, z + h * .28, .35 * s, .35 * s, h * .56)
-    for dx, dy, dz, r in ((0, 0, .7, 2.8), (-1.5, .6, .62, 2.0), (1.4, -.7, .6, 2.1), (.4, 1.3, .66, 1.9), (-.3, -1.2, .82, 1.8)):
+    for dx, dy, dz, r in ((0, 0, .7, 2.8), (-1.5, .6, .62, 2.0), (1.4, -.7, .6, 2.1), (.1, .2, .84, 1.9)):
         blob(b, 'tree', x + dx * s, y + dy * s, z + h * dz, r * s, r * s, r * .85 * s)
 
 
 def bank_planting():
     b = Batch()
-    for cx, cy, n, sx, sy in ((-34.0, 22.0, 14, 18.0, 9.0), (34.0, 16.0, 8, 12.0, 4.0), (-36.0, -18.0, 10, 16.0, 5.0),
-                              (32.0, -22.0, 12, 16.0, 8.0), (-14.0, 26.0, 5, 6.0, 6.0), (14.0, -26.0, 4, 6.0, 5.0)):
+    for cx, cy, n, sx, sy in ((-34.0, 22.0, 9, 18.0, 9.0), (34.0, 16.0, 5, 12.0, 4.0), (-36.0, -18.0, 7, 16.0, 5.0),
+                              (32.0, -22.0, 8, 16.0, 8.0), (-14.0, 26.0, 4, 6.0, 6.0), (14.0, -26.0, 3, 6.0, 5.0)):
         for i in range(n):
             tree(b, cx + RNG.uniform(-sx, sx), cy + RNG.uniform(-sy, sy), ZB, RNG.uniform(7.5, 11.0), RNG.uniform(.85, 1.15))
-    for i in range(70):                                                                       # shrubs along the water's edge
+    for i in range(36):                                                                       # shrubs along the water's edge
         x = RNG.choice((-1, 1)) * RNG.uniform(9.0, 60.0)
         y = RNG.choice((RN + 2.9, RS - 2.9))
         blob(b, 'shrub', x, y, ZB + .5, 1.1, .8, .8)
@@ -562,8 +562,8 @@ def deck():
     for s in (-1, 1):
         b.box('steel', s * (PW + .04), 0.0, 6.03, .08, Y1 - Y0, .38)                           # path-side curbs
         b.box('planting', s * (DW + PW + .08) / 2, 0.0, 5.995, DW - PW - .08, Y1 - Y0, .31)     # bed soil, top 6.15
-        for y0, y1 in ((Y0, -3.5), (10.0, Y1)):                                               # weathering-steel edge beams, open at the pod
-            b.box('corten', s * (DW + .15), (y0 + y1) / 2, 5.725, .3, y1 - y0, 1.45)
+        for y0, y1 in ((Y0, -3.4), (9.92, Y1)):                                               # weathering-steel edge beams, open at the pod,
+            b.box('corten', s * (DW + .15), (y0 + y1) / 2, 5.725, .3, y1 - y0, 1.45)        # their ends buried in the pod fascia
         b.box('steel', s * 4.5, 0.0, 4.6, .4, Y1 - Y0, 1.2)                                     # main girders 4.0..5.2
     for k in range(int((Y1 - Y0) / 5.0) + 1):
         b.box('steel', 0.0, Y0 + k * 5.0 if k * 5.0 < Y1 - Y0 else Y1 - .2, 4.75, 8.6, .3, .9)
@@ -634,21 +634,22 @@ def planting():
             if 4.0 < y < 6.0:
                 y += 2.0
                 continue
-            x = s * RNG.uniform(PW + .9, DW - .7)
-            blob(b, 'shrub', x, y, zs + .35, RNG.uniform(.6, .95), RNG.uniform(.6, .95), RNG.uniform(.45, .7))
-            for k in range(3):                                                                # grasses
-                tuft(b, RNG.choice(('grass', 'straw', 'grass')), s * RNG.uniform(PW + .5, DW - .3), y + RNG.uniform(-.7, .7),
-                     zs, RNG.uniform(.7, 1.3), RNG.uniform(.18, .3))
-            if RNG.random() < .7:                                                             # lavender drifts
-                lx = s * RNG.uniform(PW + .5, DW - .5)
+            blob(b, 'planting', s * (PW + DW) / 2 + RNG.uniform(-.4, .4), y, zs + .05, 2.4, 1.1, .32, j=.18)    # low groundcover over the soil
+            x = s * RNG.uniform(PW + 1.6, DW - .9)
+            blob(b, RNG.choice(('shrub', 'tree', 'shrub')), x, y + RNG.uniform(-.3, .3), zs + .45, RNG.uniform(.75, 1.1), RNG.uniform(.7, 1.0), RNG.uniform(.55, .8))
+            for k in range(2):                                                                # tall grasses lining the path
+                tuft(b, RNG.choice(('grass', 'straw')), s * RNG.uniform(PW + .4, PW + 1.1), y + RNG.uniform(-.6, .6), zs, RNG.uniform(.8, 1.3), RNG.uniform(.14, .22))
+            tuft(b, 'grass', s * RNG.uniform(DW - 1.2, DW - .4), y + RNG.uniform(-.6, .6), zs, RNG.uniform(.7, 1.1), .18)
+            if RNG.random() < .6:                                                             # lavender drifts
+                lx, ly = s * RNG.uniform(PW + .5, DW - .6), y + RNG.uniform(-.4, .4)
+                blob(b, 'lavender', lx, ly, zs + .38, .45, .4, .32, j=.2)
+                tuft(b, 'lavender', lx + .2, ly, zs, .75, .12)
+            if RNG.random() < .5:                                                             # red flowers over a green mound
+                fx, fy = s * RNG.uniform(PW + .6, DW - .6), y + RNG.uniform(-.5, .5)
+                blob(b, 'planting', fx, fy, zs + .3, .5, .5, .35)
                 for k in range(3):
-                    tuft(b, 'lavender', lx + RNG.uniform(-.3, .3), y + RNG.uniform(-.4, .4), zs, RNG.uniform(.5, .8), .16)
-            if RNG.random() < .5:                                                             # red flowers
-                fx, fy = s * RNG.uniform(PW + .6, DW - .5), y + RNG.uniform(-.6, .6)
-                for k in range(4):
-                    blob(b, 'flower', fx + RNG.uniform(-.3, .3), fy + RNG.uniform(-.3, .3), zs + RNG.uniform(.5, .8), .09, .09, .08, j=.05)
-                blob(b, 'planting', fx, fy, zs + .25, .45, .45, .3)
-            y += RNG.uniform(1.2, 1.7)
+                    blob(b, 'flower', fx + RNG.uniform(-.3, .3), fy + RNG.uniform(-.3, .3), zs + RNG.uniform(.55, .75), .1, .1, .08, j=.05)
+            y += RNG.uniform(1.3, 1.7)
         for y in (-30.0, -17.0, 15.0, 26.0, 36.0):                                            # small trees in the beds
             tree(b, s * 4.6, y + RNG.uniform(-1, 1), zs, RNG.uniform(4.5, 6.0), .55)
     for s in (-1, 1):                                                                         # the pods: a planted mound inside the walk
