@@ -22,7 +22,7 @@ EPS = .002
 T = .3
 PALETTE = dict(ice=(.86, .90, .93), white=(.95, .95, .94), glass=(.62, .70, .74), hardware=(.10, .10, .11),
     deck=(.30, .22, .16), timber=(.32, .21, .14), hut=(.30, .20, .13), snow=(.94, .95, .96), roof=(.94, .95, .96),
-    planting=(.12, .30, .16), tree=(.10, .26, .14), flower=(.76, .10, .10), gold=(.86, .70, .30), pale=(.98, .92, .70),
+    planting=(.12, .30, .16), tree=(.10, .26, .14), tree2=(.07, .21, .11), flower=(.76, .10, .10), gold=(.86, .70, .30), pale=(.98, .92, .70),
     counter=(.46, .32, .20), interior=(.80, .56, .34), setts=(.20, .19, .18), joint=(.31, .30, .28), stone=(.72, .70, .66),
     wall=(.80, .74, .62), facade=(.80, .74, .62), facade2=(.62, .34, .26), facade3=(.84, .82, .78), troof=(.56, .26, .18),
     dark=(.12, .12, .13), trim=(.94, .94, .92), sand=(.66, .60, .50), concrete=(.70, .69, .66), asphalt=(.30, .30, .31),
@@ -32,7 +32,7 @@ PALETTE = dict(ice=(.86, .90, .93), white=(.95, .95, .94), glass=(.62, .70, .74)
 def manifest(version):
     h = 15.5
     cams = G.camera_roster(X1 - X0 + 6.0, Y1 - Y0 + 6.0, h, [
-        ('facade_close', (0.0, -40.0, 3.0), (0.0, Y0, 2.0), 45),
+        ('facade_close', (3.0, -33.0, 5.5), (0.0, -21.6, 2.8), 40),
         ('architecture_close', (-9.0, -12.0, 4.0), (-15.0, -9.0, 2.0), 40),
         ('glass_close', (6.0, -12.0, 1.6), (RX, -6.0, .8), 40),
         ('christmas_tree', (0.0, -9.0, 4.0), (TREE[0], TREE[1], 6.0), 40),
@@ -41,18 +41,18 @@ def manifest(version):
         ('ice_surface', (0.0, -22.0, 8.0), (0.0, 0.0, 0.0), 40),
         ('square_aerial', (-30.0, -40.0, 34.0), (0.0, 0.0, 2.0), 40),
         ('interior', (-16.2, -3.6, 1.6), (-12.0, -2.6, 1.3), 50),
-        ('rear_north', (6.0, 26.6, 7.0), (0.0, 8.0, 2.0), 45)])
-    for c in cams:                       # the locked front stands on the ice at the south end, looking north
+        ('rear_north', (8.0, 28.8, 11.5), (0.0, 4.0, 5.5), 28)])
+    for c in cams:                       # the locked front stands on the ice by the east boards at the south end, looking NNW
         if c['name'] == 'front':
-            c['location'] = (-2.5, -15.5, 1.6); c['target'] = (1.0, 6.0, 4.0); c['lens'] = 24; c['whole'] = False
+            c['location'] = (10.2, -12.5, 1.75); c['target'] = (-3.4, 14.2, 5.95); c['lens'] = 20; c['whole'] = False
         elif c['name'] == 'front_corner':                                      # the locked oblique looks north-east from high in the south-west
             c['location'] = (-24.0, -50.0, 36.0); c['target'] = (1.0, 2.0, 1.0); c['lens'] = 35
-        elif c['name'] == 'left_side':                                         # side and rear views stand in the lanes, above the stalls
-            c.update(location=(-20.6, -2.0, 9.0), target=(0.0, 0.0, 1.0), lens=28, whole=False)
+        elif c['name'] == 'left_side':                                         # side and rear views stand high in the lanes, the near roofs below the frame
+            c.update(location=(-23.0, -4.0, 14.0), target=(0.0, 1.0, 5.5), lens=24, whole=False)
         elif c['name'] == 'right_side':
-            c.update(location=(20.6, 2.0, 9.0), target=(0.0, 0.0, 1.0), lens=28, whole=False)
+            c.update(location=(23.0, 4.0, 14.0), target=(0.0, 1.0, 5.5), lens=24, whole=False)
         elif c['name'] == 'rear':
-            c.update(location=(2.0, 26.6, 9.0), target=(0.0, 0.0, 1.0), lens=28, whole=False)
+            c.update(location=(2.0, 28.8, 13.0), target=(0.0, 1.0, 5.5), lens=24, whole=False)
         elif c['name'] == 'rear_side':
             c.update(location=(19.5, 25.5, 14.0), target=(0.0, 0.0, 1.0), lens=30, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -452,47 +452,19 @@ def ice_and_boards():
             px, py = ax + (cx - ax) * (i + .5) / k + nx * .26, ay + (cy - ay) * (i + .5) / k + ny * .26
             b.box('pale' if i % 2 else 'flower', px, py, 1.4 if i % 2 else 1.3, .07 if i % 2 else .12, .07 if i % 2 else .12, .07 if i % 2 else .12)
     b.flush('boards')
-    # Tree island: white ring wall, glass ring, the tree in tiers with ornaments and a star.
+    # Tree island: white ring wall, glass ring, a dense layered fir with ornaments, lights and a star.
     b = Batch()
     tx, ty = TREE
-    ring = [(tx + 3.4 * math.cos(2 * math.pi * i / 24), ty + 3.4 * math.sin(2 * math.pi * i / 24)) for i in range(25)]
+    RI = 3.9                                                                     # island ring radius (top view: about 0.35 of the rink width)
+    ring = [(tx + RI * math.cos(2 * math.pi * i / 28), ty + RI * math.sin(2 * math.pi * i / 28)) for i in range(29)]
     for k, ((ax, ay), (cx, cy)) in enumerate(zip(ring, ring[1:])):
         w = .3 + .01 * (k % 2)                                                   # alternate widths: no shared planes at joints
         b.beam('white', (ax, ay, ICE + .225), (cx, cy, ICE + .225), w, .45, ext=.04)
         b.beam('glass', (ax, ay, ICE + .75), (cx, cy, ICE + .75), .03, .6, ext=.0)
         b.beam('white', (ax, ay, ICE + 1.08), (cx, cy, ICE + 1.08), .08 + .01 * (k % 2), .06, ext=.02)
-    ngon(b, 'soil', tx, ty, ICE, ICE + .4, 3.25, 24)
-    ngon(b, 'timber', tx, ty, ICE + .5, ICE + 1.6, .3, 8)
-    # A dense fir: one tall faceted cone with a second, slightly narrower one turned half a facet so the boughs
-    # read as a broken surface; ornaments and lights sit on the facets (centres just inside the surface).
-    NF, z0, z1, r0 = 18, ICE + 1.3, ICE + 13.9, 2.9
-    ngon(b, 'tree', tx, ty, z0, z1, r0, NF, cone=True)
-    V, F = b.g.setdefault('tree', ([], []))
-    o = len(V)
-    for i in range(NF):
-        a = 2 * math.pi * i / NF
-        V.append((tx + r0 * .97 * math.cos(a), ty + r0 * .97 * math.sin(a), z0 + .45))
-    V.append((tx, ty, z1 - .3))
-    F.append(tuple(o + i for i in range(NF - 1, -1, -1)))
-    for i in range(NF):
-        F.append((o + i, o + (i + 1) % NF, o + NF))
-    ap = math.cos(math.pi / NF)
-    for k in range(150):                                                        # bough tips sloping out and down from the surface
-        f = (k + .5) / 150
-        z = z0 + .3 + f * (z1 - z0 - 1.2)
-        rz = r0 * (1 - (z - z0) / (z1 - z0)) * ap
-        a = 2 * math.pi * ((k * 5) % NF) / NF + math.pi / NF + (.12 if k % 2 else -.12)
-        L = .55 + .35 * (1 - f)
-        b.beam('tree', (tx + (rz - .3) * math.cos(a), ty + (rz - .3) * math.sin(a), z + .25),
-               (tx + (rz + L) * math.cos(a), ty + (rz + L) * math.sin(a), z - .35), .42 * (1.2 - f), .16, ext=0.0)
-    for k in range(96):
-        f = (k + .5) / 96
-        z = z0 + .5 + f * (z1 - z0 - 1.6)
-        rz = r0 * (1 - (z - z0) / (z1 - z0)) * ap                                              # apothem of the outer cone at z
-        a = 2 * math.pi * ((k * 7) % NF) / NF + math.pi / NF                                    # facet centre of the outer cone
-        role, sz = (('flower', .24), ('gold', .22), ('pale', .1))[k % 3]
-        b.box(role, tx + (rz - .02) * math.cos(a), ty + (rz - .02) * math.sin(a), z, sz, sz, sz)
-    b.box('gold', tx, ty, z1 + .25, .2, .7, .7)
+    ngon(b, 'tree2', tx, ty, ICE, ICE + .4, RI - .15, 28)                    # planter bed under the boughs
+    ngon(b, 'timber', tx, ty, ICE + .3, ICE + 1.9, .32, 8)
+    fir(b, tx, ty)
     b.flush('tree island')
     # Benches at the south-west of the ice; a penguin skating aid.
     b = Batch()
@@ -500,11 +472,85 @@ def ice_and_boards():
         b.box('counter', x, -RY + 3.0, ICE + .45, 1.6, .4, .06)
         for s in (-1, 1):
             b.box('hardware', x + s * .7, -RY + 3.0, ICE + .22, .05, .35, .44)
-    b.box('dark', 4.5, -9.0, ICE + .45, .45, .4, .9)
-    b.box('white', 4.5, -9.22, ICE + .45, .3, .05, .6)
-    b.box('orange', 4.5, -9.3, ICE + .82, .1, .16, .06)
-    b.box('orange', 4.5, -9.0, ICE + .02, .7, .5, .04)
+    px, py = 7.5, -5.5                                                           # penguin skating aid ahead of the east boards
+    ngon(b, 'dark', px, py, ICE + .04, ICE + .78, .26, 10)                      # rounded body
+    ngon(b, 'dark', px, py, ICE + .74, ICE + 1.02, .19, 10)                     # head
+    b.box('white', px, py - .24, ICE + .45, .3, .06, .56)                       # belly
+    b.box('orange', px, py - .27, ICE + .92, .1, .14, .06)                      # beak
+    b.box('orange', px, py, ICE + .02, .7, .5, .04)                             # feet and runner
+    for sx in (-1, 1):                                                          # handle bar on two posts
+        b.box('hardware', px + sx * .28, py + .25, ICE + .9, .04, .04, .7)
+    b.box('hardware', px, py + .25, ICE + 1.25, .6, .05, .05)
     b.flush('benches and aids')
+
+
+def fir(b, tx, ty):
+    """A dense fir of thirteen overlapping drooping skirts: each skirt rises from a serrated ring of bough tips
+    (tips jittered in reach and droop) to a collar round the trunk, with an underside back to the trunk; the
+    next skirt up starts below the collar of the one beneath, so no trunk or soil shows from the side or above.
+    Baubles and lights are seated proud of the bough tips, some baubles hang from the tips; a star tops it."""
+    NT, zb0, top = 13, ICE + 1.05, ICE + 13.9
+    orn = []
+    for i in range(NT):
+        f = i / (NT - 1)
+        ro = .45 + 3.05 * (1 - f) ** 1.05                                        # reach of the tips
+        zb = zb0 + i * .9                                                       # tip level
+        h = .85 + .45 * ro                                                      # skirt height, tips to collar
+        ri = .2 + .1 * ro                                                       # collar radius
+        nt = max(8, int(2 * math.pi * ro / .5))                                 # bough tips round the skirt
+        m = 2 * nt
+        rot = i * .61
+        role = 'tree' if i % 2 == 0 else 'tree2'
+        V, F = b.g.setdefault(role, ([], []))
+        o = len(V)
+        rings = []
+        for j in range(m):
+            a = rot + 2 * math.pi * j / m
+            tip = j % 2 == 0
+            jit = math.sin(j * 2.37 + i * 1.71)
+            r = ro * (1 + .07 * jit) if tip else ro * (.93 if i == 0 else .86)
+            z = zb - .14 * abs(math.sin(j * 1.31 + i)) if tip else zb + .3 + .1 * h
+            rm = .6 * r
+            zm = zb + h * (1 - (rm - ri) / max(.01, r - ri)) + .1 * h           # drooping profile: fuller near the trunk
+            rings.append((a, r, z, rm, zm, tip))
+        for (a, r, z, rm, zm, tip) in rings:                                    # collar, mid, tips, underside
+            ca, sa = math.cos(a), math.sin(a)
+            V.append((tx + ri * ca, ty + ri * sa, zb + h))
+            V.append((tx + rm * ca, ty + rm * sa, zm))
+            V.append((tx + r * ca, ty + r * sa, z))
+            V.append((tx + .5 * r * ca, ty + .5 * r * sa, zb + .22 * h))
+            if tip:
+                orn.append((tx, ty, a, r, z, rm, zm, i))
+        V.append((tx, ty, zb + h + .05)); V.append((tx, ty, zb + .35 * h))
+        c_top, c_bot = o + 4 * m, o + 4 * m + 1
+        for j in range(m):
+            k, n = o + 4 * j, o + 4 * ((j + 1) % m)
+            F.append((k, n, c_top))
+            F.append((k + 1, n + 1, n, k))
+            F.append((k + 2, n + 2, n + 1, k + 1))
+            F.append((k + 3, n + 3, n + 2, k + 2))
+            F.append((c_bot, n + 3, k + 3))
+    z_sp = zb0 + (NT - 1) * .9 + .6
+    ngon(b, 'tree', tx, ty, z_sp, top, .42, 9, cone=True)                      # leader
+    for q, (x0, y0, a, r, z, rm, zm, i) in enumerate(orn):
+        ca, sa = math.cos(a), math.sin(a)
+        rr = .8 * r                                                             # on the upper face of the bough, near the tip
+        zz = zm + (z - zm) * (rr - rm) / max(.01, r - rm)
+        kind = q % 4
+        if kind == 0:
+            b.box('flower', x0 + rr * ca, y0 + rr * sa, zz + .1, .22, .22, .22)
+        elif kind == 1:
+            b.box('pale', x0 + rr * ca, y0 + rr * sa, zz + .06, .1, .1, .1)
+        elif kind == 2:
+            b.box('gold', x0 + .97 * r * ca, y0 + .97 * r * sa, z - .1, .2, .2, .2)          # hanging from the tip
+        else:
+            b.box('pale', x0 + .94 * r * ca, y0 + .94 * r * sa, z + .05, .09, .09, .09)
+    pts = []
+    for k in range(10):                                                         # five-point star, face to the south
+        a = math.pi / 2 + math.pi * k / 5
+        rr = .55 if k % 2 == 0 else .22
+        pts.append((tx + rr * math.cos(a), top + .5 + rr * math.sin(a)))
+    C.prism('Tree star', pts, 'y', ty - .06, ty + .06, 'gold', 'tree island')
 
 
 def plate(name, axis, eave, ridge, lo, hi, t=.14, role='snow', module='chalets'):
@@ -556,58 +602,79 @@ def chalet(name, cx, cy, facing, width=4.4, depth=3.6):
         for s in (-1, 1):
             plate(f'{name} roof {s:+d}', 'y', (cx + s * half, zeave), (cx, H0 + rise + .02), cy - depth / 2 - ov, cy + depth / 2 + ov)
     b = Batch()
-    d = depth / 2 + .1                                                           # garland plane just in front of the gable wall
+    d = depth / 2 + .1                                                           # wreath plane just in front of the gable wall
     P = lambda u, z: (cx + fx * d + tx * u, cy + fy * d + ty * u, z)
     top = H0 + rise * .92 - .12
+    zr = H0 + rise + .02
+    under = lambda u: zr + (zeave - zr) * abs(u) / half - .14                  # underside of the snow plate
+    dg = depth / 2 + ov - .1                                                     # rake garland hung under the front edge of the roof
+    Q = lambda u, z: (cx + fx * dg + tx * u, cy + fy * dg + ty * u, z)
     for s in (-1, 1):
-        b.beam('planting', P(s * (width / 2 + .1), H0 - .05), P(0.0, top), .16, .16, ext=.05)
-        for i in range(1, 6):
-            u = s * (width / 2 + .1) * (1 - i / 6)
-            z = H0 - .05 + (top - H0 + .05) * i / 6
-            b.box('pale', *P(u, z - .12), .07, .07, .07)
+        u0, u1 = s * (half - .15), s * .12
+        b.beam('planting', Q(u0, under(u0) - .1), Q(u1, under(u1) - .1), .16, .16, ext=0.0)
+        for i in range(1, 7):
+            u = u0 + (u1 - u0) * i / 7
+            b.box('pale', *Q(u, under(u) - .22), .07, .07, .07)
     wz = H0 + .42
     for i in range(10):                                                          # wreath in the gable
         a0, a1 = 2 * math.pi * i / 10, 2 * math.pi * (i + 1) / 10
         b.beam('planting', P(.28 * math.cos(a0), wz + .28 * math.sin(a0)), P(.28 * math.cos(a1), wz + .28 * math.sin(a1)), .1 + .012 * (i % 2), .1 + .012 * (i % 2), ext=0.0)
     b.box('flower', *P(0.0, wz - .3), .16, .16, .16)
-    bx, by, bz = P(0.0, top + .14)
-    b.box('flower', bx, by, bz, .34 if abs(tx) > .5 else .12, .12 if abs(tx) > .5 else .34, .22)    # bow at the apex
-    b.beam('planting', P(-(width / 2 - .6), 2.05), P(width / 2 - .6, 2.05), .14, .14)               # garland over the counter
+    bx, by, bz = Q(0.0, under(0.0) - .14)
+    b.box('flower', bx, by, bz, .34 if abs(tx) > .5 else .14, .14 if abs(tx) > .5 else .34, .2)     # bow at the apex
+    da = depth / 2 + .93                                                         # garland along the awning's front edge
+    b.beam('planting', (cx + fx * da - tx * (width / 2 - .75), cy + fy * da - ty * (width / 2 - .75), 2.1),
+           (cx + fx * da + tx * (width / 2 - .75), cy + fy * da + ty * (width / 2 - .75), 2.1), .14, .14)
+    L = depth + 2 * ov                                                           # dark timber ridge board: the ridge reads from above
+    b.beam('timber', (cx - fx * L / 2, cy - fy * L / 2, zr + .02), (cx + fx * L / 2, cy + fy * L / 2, zr + .02), .14, .1)
     b.flush(f'{name} garlands')
     C.qa_room_light(f'{name} light', (cx - fx * .6, cy - fy * .6, 2.0), 20, 1.0)
 
 
 def chalets():
-    for i, x in enumerate((-7.5, -2.5, 2.5, 7.5)):
-        chalet(f'North chalet {i}', x, DY + 2.1, (0, -1))
-        chalet(f'South chalet {i}', x, -DY - 2.1, (0, 1))
+    # Free-standing huts: roof widths 4.3 m and 4.9 m on 5.3 m and 6.0 m centres leave about 1 m of setts between eaves.
+    for i, x in enumerate((-7.95, -2.65, 2.65, 7.95)):
+        chalet(f'North chalet {i}', x, DY + 2.1, (0, -1), width=3.6)
+        chalet(f'South chalet {i}', x, -DY - 2.1, (0, 1), width=3.6)
     for i, y in enumerate((-15.0, -9.0, -3.0, 3.0, 9.0, 15.0)):
-        chalet(f'West chalet {i}', -DX - 2.1, y, (1, 0), width=5.0)
-        chalet(f'East chalet {i}', DX + 2.1, y, (-1, 0), width=5.0)
+        chalet(f'West chalet {i}', -DX - 2.1, y, (1, 0), width=4.2)
+        chalet(f'East chalet {i}', DX + 2.1, y, (-1, 0), width=4.2)
 
 
-FW, FN = 24.3, 30.5                                                            # context fronts: a narrow lane round the market
+FW, FN, FS = 26.8, 32.5, -47.0                                                 # context fronts: lanes about 6 m wide round the market
 
 
 def square():
-    C.box('Square setts', (0, -3.0, .02), (2 * FW, 66.0, .04), 'setts', 'site', 0)
+    ys0, ys1 = FS + 3.0, FN - 3.0
+    C.box('Square setts', (0, (ys0 + ys1) / 2, .02), (2 * FW, ys1 - ys0, .04), 'setts', 'site', 0)
     b = Batch()
-    for k in range(int(66.0 / .35)):                                            # coursed cobbles: bed joints across the square
-        y = -36.0 + .175 + k * .35
-        if abs(y) > DY + .05:
-            b.box('joint', 0.0, y, .041, 2 * FW - .1, .03, .004)
-        else:
-            for sx in (-1, 1):
-                b.box('joint', sx * (DX + FW) / 2, y, .041, FW - DX - .1, .03, .004)
+    V, Fj = b.g.setdefault('joint', ([], []))
+
+    def quad(x0, y0, x1, y1):
+        o = len(V)
+        V.extend([(x0, y0, .041), (x1, y0, .041), (x1, y1, .041), (x0, y1, .041)])
+        Fj.append((o, o + 1, o + 2, o + 3))
+    CW, SL = .35, .6                                                             # sett course width and length
+    for k in range(int((ys1 - ys0) / CW)):                                      # coursed setts: bed joints and staggered cross joints
+        y = ys0 + k * CW
+        spans = [(-FW + 3.05, FW - 3.05)] if abs(y + CW / 2) > DY + .05 else [(-FW + 3.05, -DX - .05), (DX + .05, FW - 3.05)]
+        for (xa, xb) in spans:
+            quad(xa, y + CW - .015, xb, y + CW + .015)
+            x = xa + (SL / 2) * (k % 2) + SL
+            while x < xb - .1:
+                quad(x - .014, y + .02, x + .014, y + CW - .02)
+                x += SL
     for x, y in ((-DX - 4.2, -DY - 4.2), (DX + 4.2, -DY - 4.2), (-DX - 4.2, DY + 4.2), (DX + 4.2, DY + 4.2)):
         b.box('hardware', x, y, 2.2, .14, .14, 4.4)
         b.box('pale', x, y, 4.6, .36, .36, .4)
         b.box('hardware', x, y, 4.85, .46, .46, .1)
     b.flush('square furniture')
     # Old town fronts close round the square, as context: framed windows with sills, ground-floor doors.
+    yl = (FS + 3.0 + FN - 3.0) / 2
     for name, cx, cy, sx, sy, h, role, facing in (('North front', 0.0, FN, 2 * FW + 6.0, 6.0, 15.0, 'facade3', (0, -1)),
-                                                 ('West front', -FW, -3.0, 6.0, 60.0, 11.0, 'facade2', (1, 0)),
-                                                 ('East front', FW, -3.0, 6.0, 60.0, 14.0, 'facade', (-1, 0))):
+                                                 ('West front', -FW, yl, 6.0, FN - FS - 6.0, 11.0, 'facade2', (1, 0)),
+                                                 ('East front', FW, yl, 6.0, FN - FS - 6.0, 14.0, 'facade', (-1, 0)),
+                                                 ('South front', 0.0, FS, 2 * FW + 6.0, 6.0, 12.5, 'facade', (0, 1))):
         C.box(name, (cx, cy, h / 2), (sx, sy, h), role, 'context', 0)
         if facing[1]:
             C.prism(f'{name} roof', [(cy - sy / 2 - .3, h), (cy + sy / 2 + .3, h), (cy, h + 3.5)], 'x', cx - sx / 2, cx + sx / 2, 'troof', 'context')
@@ -634,7 +701,7 @@ def square():
                     continue
                 put('dark', u, .01, zz + .9, 1.0, .02, 1.6)
                 for sgn in (-1, 1):
-                    put('trim', u + sgn * .56, .05, zz + .9, .12, .1, 1.84)
+                    put('trim', u + sgn * .56, .05, zz + .9, .12, .1, 1.6)                # jambs stop under the head: no shared faces
                 put('trim', u, .05, zz + 1.76, 1.24, .1, .12)
                 put('trim', u, .09, zz + .03, 1.36, .18, .1)                   # sill
         b.flush(f'{name} windows')
