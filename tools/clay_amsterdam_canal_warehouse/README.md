@@ -68,6 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (first build; the review drives v002)
+## Open blockers after v002 (the v003 rework targets all four)
 
-P1 gable composition (top door should straddle the eave, no top-floor flanking windows, lower gables); west section too narrow; quay and street too deep; black canal joint and floating streaks; valley roof cracks and cut chimney; north face grammar; glass artefacts; arched_doors camera misses the doors; oblique and aerial framed too wide
+- P1 #1: a fourth row of attic windows on the east and north walls under the cornice; the sources show two upper rows and blank brick with anchors.
+- P1 #2: the stone plinth runs across both cart doors and the east side door, so the leaves stop above the paving.
+- P1 #3: the south and east canals join into one L of water round the corner; the top source shows the south canal ending in a curved parapet and the street paved across the corner.
+- P1 #4: the hip plate between the gables reads as a warped sheet lifted off the slopes, with step lines and a floating lip (the v001 valley cracks changed in form).

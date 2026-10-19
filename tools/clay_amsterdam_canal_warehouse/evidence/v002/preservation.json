@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-amsterdam-canal-warehouse-clay-v002",
+  "glb": "clay-amsterdam-canal-warehouse-clay-v002.glb",
+  "glb_bytes": 1288680,
+  "glb_sha256": "33eaa77e7b95552e7c508fb6133f2661af52011501b05b4c54f848e13d65afa2",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "arched_doors.png": 92,
+    "architecture_close.png": 92,
+    "east_side.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "gable_tops.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "loading_doors.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_deck.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-amsterdam-canal-warehouse-clay-v002-renders-and-glb.zip",
+  "zip_bytes": 32760047
+}
