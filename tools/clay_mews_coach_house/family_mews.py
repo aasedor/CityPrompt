@@ -391,7 +391,7 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 UP = Z1 + .7                                    # upper sill line
 
 
-def arch_head(f, h, rise, ring=.26, segs=10, ring_role='arch'):
+def arch_head(f, h, rise, ring=.26, segs=10, ring_role='arch', spandrel=True):
     """Segmental or round head on a rectangular cut: brick spandrel infill above the curve (set 1 cm back so it
     never shares a plane with the wall face) and a proud brick ring of headers over it."""
     u, w, top = h['u'], h['w'], h['z'] + h['h']
@@ -409,7 +409,8 @@ def arch_head(f, h, rise, ring=.26, segs=10, ring_role='arch'):
         fs += [(a, b, b + 1, a + 1), (a + 2, a + 3, b + 3, b + 2), (a, a + 2, b + 2, b), (a + 1, b + 1, b + 3, a + 3)]
     n = 4 * (len(pts) - 1)
     fs += [(0, 1, 3, 2), (n, n + 2, n + 3, n + 1)]
-    C.mesh(f'{h["id"]} spandrel', vs, fs, 'wall', 'arches')
+    if spandrel:
+        C.mesh(f'{h["id"]} spandrel', vs, fs, 'wall', 'arches')
     vs, fs = [], []
     for (pu, pz) in arc:
         r = math.hypot(pu - u, pz - cz)
@@ -443,9 +444,9 @@ def paired(m, f, h, occupied='room'):
     m.box('hardware', h['u'], -.04, h['z'] - .06, h['w'] + .14, .14, .1)
 
 
-def face_courses(f, lo, hi, holes, heads=True, course=.08, brick=.24):
+def face_courses(f, lo, hi, holes, heads=True, course=.08, brick=.24, top=None):
     """Painted brick: fine bed joints and staggered head joints, cut round the openings."""
-    lo, hi, z0, z1 = lo + .02, hi - .02, G0 + .35, EAVE - .35
+    lo, hi, z0, z1 = lo + .02, hi - .02, G0 + .35, (top or EAVE) - .35
     G.brick_courses(f, lo, hi, z0, z1, holes, spacing=course)
     if not heads:
         return
@@ -503,8 +504,9 @@ def south_face():
     for h in ups + [nb[2], nb[4], nb[5]]:
         sash(m, f, h)
     paired(m, f, nb[3])
-    for h in [pair] + ups + [nb[4], nb[5]]:                                                  # segmental heads on the upper sashes
-        arch_head(f, h, .2, ring=.14, segs=8, ring_role='trim')
+    for h in [pair] + ups + [nb[4], nb[5]]:     # rectangular sashes under a shallow flush gauged arch (rise 0.1 of span), brick tympanum
+        r = .1 * h['w']
+        arch_head(f, dict(h, h=h['h'] + r), r, ring=.12, segs=8, ring_role='trim', spandrel=False)
     m.box('hardware', XN - .35, -.06, EAVE / 2, .1, .1, EAVE - .2)                              # downpipe by the party wall
     m.flush('south')
 
@@ -523,8 +525,8 @@ def other_faces():
     m.box('hardware', -hd + .5, -.06, EAVE / 2, .1, .1, EAVE - .2)
     m.flush('east')
     n = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'north')
-    hs = [hole(f'rear sash {k}', u, UP, 1.0, 1.95) for k, u in enumerate((-7.6, -4.6, -1.6, 1.6, 3.8))] + \
-         [hole(f'rear ground sash {k}', u, G0 + .9, 1.0, 1.9) for k, u in enumerate((-7.6, -1.6, 3.8))] + [hole('rear door', -4.6, G0, 1.0, 2.3, kind='door')]
+    hs = [hole(f'rear sash {k}', u, UP, 1.0, 1.95) for k, u in enumerate((-7.6, -4.6, -1.6))] + \
+         [hole(f'rear ground sash {k}', u, G0 + .9, 1.0, 1.9) for k, u in enumerate((-7.6, -1.6))] + [hole('rear door', -4.6, G0, 1.0, 2.3, kind='door')]
     n.wall('north carrier', -X1, -X0 - EPS, 0.0, EAVE, depth=T, role='wall', holes=hs)
     face_courses(n, -X1, -X0, hs, heads=False)
     m = Merge(n)
@@ -565,7 +567,8 @@ def roof_and_inside():
     zg = EAVE - ov * slope + .02
     b.box('hardware', (X0 + X1 + .37) / 2, Y0 - .3, zg, X1 + .37 - X0, .14, .12)                # gutters, run on round the corner
     b.box('hardware', X1 + .3, (Y0 - .23 + Y1 + .37) / 2, zg, .14, Y1 - Y0 + .6, .12)
-    b.box('hardware', (X0 + X1) / 2, Y1 + .3, zg, X1 - X0, .14, .12)
+    for ga, gb in ((X0, -5.6 - .35), (-1.0 + .35, X1)):                        # rear gutter, broken by the back wing
+        b.box('hardware', (ga + gb) / 2, Y1 + .3, zg, gb - ga, .14, .12)
     b.flush('eaves')
     # Two independent slate roofs between the party walls: the corner house hipped at the east end.
     xe = XN + .2
@@ -587,16 +590,37 @@ def roof_and_inside():
     b.beam('pot', (xe, 0.0, EAVE + RISE + .04), (X1 - hd, 0.0, EAVE + RISE + .04), .14, .08)
     b.beam('pot', (X0 + .2, 0.0, EAVE + RISE + .04), (XN - .2, 0.0, EAVE + RISE + .04), .14, .08)
     b.flush('roof furniture')
-    # The neighbour's hipped rear back-wing: a narrow two-storey wing on the west side, its ridge running north
-    # out from under the main rear eaves to a hipped end.
-    wx0, wx1, wy1, we = X0 + .05, X0 + 2.15, Y1 + 3.2, 5.4
-    C.box('Neighbour back wing', ((wx0 + wx1) / 2, (Y1 - .01 + wy1) / 2, we / 2), (wx1 - wx0, wy1 - Y1 + .01, we), 'wall', 'context', 0)
-    pitched_roof('Neighbour back wing roof', wx0, wx1, Y1 - 1.0, wy1, we, 1.2, hip_w=False, hip_e=True, axis='y', ov=.25)
+    # The neighbour's hipped rear back-wing: a hollow two-storey wing about 70% of the bay wide, centred on it, its
+    # ridge climbing out of the main rear slope at mid-height (two valleys) and running north to a hipped end.
+    wx0, wx1, wy1, we, wr, ov = -5.6, -1.0, Y1 + 3.2, 6.4, 2.15, .25
+    wn = C.Face((0, wy1, 0), (-1, 0, 0), (0, -1, 0), 'wing north')
+    nh = [hole('wing north ground sash', 3.3, G0 + .9, .95, 1.8), hole('wing north upper sash', 3.3, Z1 + .5, .95, 1.75)]
+    wn.wall('wing north carrier', -wx1, -wx0, 0.0, we, depth=T, role='wall', holes=nh)
+    we_ = C.Face((wx1, 0, 0), (0, 1, 0), (-1, 0, 0), 'wing east')
+    eh = [hole('wing east ground sash', Y1 + 1.55, G0 + .9, .95, 1.8), hole('wing east upper sash', Y1 + 1.55, Z1 + .5, .95, 1.75)]
+    we_.wall('wing east carrier', Y1 - .01, wy1 - T, 0.0, we, depth=T, role='wall', holes=eh)
+    ww = C.Face((wx0, 0, 0), (0, -1, 0), (1, 0, 0), 'wing west')
+    ww.wall('wing west carrier', -(wy1 - T), -(Y1 - .01), 0.0, we, depth=T, role='wall', holes=[])
+    for f, lo, hi, hs in ((wn, -wx1, -wx0, nh), (we_, Y1, wy1 - T, eh)):
+        face_courses(f, lo, hi, hs, heads=False, top=we)
+        m = Merge(f)
+        m.box('foundation', (lo + hi) / 2, -.03, .16, hi - lo - .02, .06, .32)
+        for h in hs:
+            sash(m, f, h)
+        m.flush(f.label)
+    C.box('Wing first floor', ((wx0 + wx1) / 2, (Y1 + wy1 - T) / 2, Z1 - .12), (wx1 - wx0 - 2 * T, wy1 - Y1 - T, .24), 'floor', 'inside', 0)
+    C.box('Wing ceiling', ((wx0 + wx1) / 2, (Y1 + wy1 - T) / 2, we - .12), (wx1 - wx0 - 2 * T + .02, wy1 - Y1 - T + .02, .24), 'floor', 'inside', 0)
+    half = (wx1 - wx0) / 2
+    yr = hd * (1 - (we + wr - EAVE) / RISE)             # where the wing ridge meets the main rear slope
+    pitched_roof('Neighbour back wing roof', wx0, wx1, yr + ov, wy1, we, wr, hip_w=False, hip_e=True, axis='y', ov=ov)
     b = Batch()
-    for z in (1.2, 3.6):
-        b.box('trim', wx1 + .02, Y1 + 1.7, z + .65, .04, .9, 1.4)
-        b.box('glass', wx1 + .045, Y1 + 1.7, z + .65, .02, .74, 1.24)
-    b.box('hardware', (wx0 + wx1) / 2, wy1 + .3, we - .2, wx1 - wx0 + .5, .12, .1)
+    xm, zr, ze = (wx0 + wx1) / 2, we + wr, we - ov * wr / half
+    b.beam('pot', (xm, yr, zr + .04), (xm, wy1 - half, zr + .04), .14, .08)
+    for s in (-1, 1):
+        b.beam('pot', (xm, wy1 - half, zr + .03), (xm + s * (half + ov), wy1 + ov, ze + .03), .12, .08)
+        b.box('hardware', xm + s * (half + ov + .05), (Y1 + .45 + wy1 + ov) / 2, ze - .02, .14, wy1 + ov - Y1 - .45, .12)
+    b.box('hardware', xm, wy1 + ov + .05, ze - .02, wx1 - wx0 + 2 * ov + .2, .14, .12)
+    b.box('hardware', wx1 + ov + .05, wy1 + ov + .05, ze / 2, .1, .1, ze - .1)          # downpipe
     b.flush('neighbour back wing')
     C.box('Ground floor slab', ((X0 + X1) / 2, 0, G0 / 2 + .05), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, G0 + .1), 'floor', 'inside', 0)
     C.box('First floor', ((X0 + X1) / 2, 0, Z1 - .12), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .24), 'floor', 'inside', 0)
