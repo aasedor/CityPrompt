@@ -63,6 +63,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Hydrate and verify exact backend binary fixtures
+        run: |
+          python -m pytest ../scripts/tests/test_backend_test_assets.py -q
+          python ../scripts/backend_test_assets.py --fetch-lfs
+
       - name: Migrate test database
         env:
           DATABASE_URL: postgresql+asyncpg://testuser:testpass@localhost:5432/test_db

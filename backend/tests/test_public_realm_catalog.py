@@ -41,7 +41,7 @@ def test_backend_public_realm_trust_index_matches_all_frontend_parents_and_varia
     assert generated["street"] == streets
     assert len(generated["park"]) == 132
     assert sum(map(len, generated["park"].values())) == 522
-    assert len(generated["street"]) == 117
+    assert len(generated["street"]) == 118
     assert sum(map(len, generated["street"].values())) == sum(map(len, streets.values()))
 
 

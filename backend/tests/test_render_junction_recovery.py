@@ -15,7 +15,7 @@ from tests.test_direct_3d_render import (
 
 @pytest.mark.parametrize("arms", [3, 4])
 def test_registered_narrow_pathways_form_render_junctions(arms):
-    tested = 0
+    tested = set()
     for capability in native_street_runtime_capabilities():
         selection = capability.selections[0]
         width = selection.compatibility.nominal_row_width_m
@@ -37,8 +37,13 @@ def test_registered_narrow_pathways_form_render_junctions(arms):
         # Geometry eligibility still requires a real, unchanged catalogue recipe.
         streets[0].properties["public_realm_lego"]["component_set_ids"] = ["invented"]
         assert not api._street_supports_v1_four_way_junction(streets[0])
-        tested += 1
-    assert tested == 5
+        tested.add(selection.variant_id)
+    assert tested == {
+        "asphalt_shared_path_v1", "brick_courtyard_path_v1",
+        "concrete_neighbourhood_walk_v1", "garden_gravel_path_v1",
+        "timber_garden_walk_v1", "standalone_narrow_sidewalk_v1",
+        "standalone_neighbourhood_sidewalk_v1", "standalone_urban_sidewalk_v1",
+    }
 
 
 @pytest.mark.parametrize("explicit_topology", [False, True])

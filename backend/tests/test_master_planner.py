@@ -461,7 +461,7 @@ def test_lego_validation_preserves_known_family_pending_public_realm_identity():
     assert validated.open_space.central_park_archetype_id == "london_garden_square"
     assert validated.open_space.water_archetype_id == "pond_lake"
     assert validated.public_realm == PublicRealmPlan(
-        spine_street_variant_id="haussmann_boulevard_v2",
+        spine_street_variant_id="student_grand_haussmann_boulevard_v1",
         local_street_variant_id="london_terrace_street_v1",
         central_park_variant_id="london_garden_square_v3",
         pocket_park_variant_id="urban_pocket_park_v0",
@@ -477,7 +477,7 @@ def test_lego_validation_preserves_known_family_pending_public_realm_identity():
         lego_catalog=_lego_catalog(),
     )
     assert palette.public_realm_variants == {
-        "spine": "haussmann_boulevard_v2",
+        "spine": "student_grand_haussmann_boulevard_v1",
         "local": "london_terrace_street_v1",
         "central": "london_garden_square_v3",
         "pocket": "urban_pocket_park_v0",

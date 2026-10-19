@@ -610,7 +610,6 @@ def test_single_reviewed_local_street_variants_use_honest_appearance(
     [
         "yield_street",
         "woonerf_shared_street",
-        "calgary_local",
         "green_alley",
         "toronto_laneway",
     ],
@@ -620,6 +619,16 @@ def test_unbuilt_street_visual_variants_are_not_advertised(archetype_id):
     assert catalog.variants_by_archetype[archetype_id] == (f"{archetype_id}_v0",)
     with pytest.raises(PublicRealmPlanningError) as raised:
         plan_public_realm_recipe(_street_request(archetype_id, 10, variant_id=f"{archetype_id}_v1"))
+    assert raised.value.code == "family_incompatible"
+
+
+def test_calgary_local_advertises_only_its_built_draft_manual_and_legacy_variants():
+    catalog = build_public_realm_capability_catalog()
+    assert catalog.variants_by_archetype["calgary_local"] == (
+        "calgary_local_draft3_v1", "calgary_local_manual_v1", "calgary_local_v0",
+    )
+    with pytest.raises(PublicRealmPlanningError) as raised:
+        plan_public_realm_recipe(_street_request("calgary_local", 10, variant_id="calgary_local_v1"))
     assert raised.value.code == "family_incompatible"
 
 
