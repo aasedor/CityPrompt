@@ -1,0 +1,68 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "rail_transit_viaduct",
+  "variant_id": "variant_2",
+  "catalogue_variant_id": "rail_transit_viaduct_v2",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_0.png",
+    "variant_0.webp",
+    "variant_0_angle_60.jpg",
+    "variant_0_angle_90.jpg",
+    "variant_1.png",
+    "variant_1.webp",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_3.png",
+    "variant_3.webp",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "rail_transit_viaduct",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "rail_transit_viaduct_v2",
+      "role": "front",
+      "path": "frontend/public/archetypes/streets/rail-transit-viaduct/variant_2.png",
+      "file": "variant_2.png",
+      "bytes": 1216789,
+      "sha256": "05a81c56f62e11f4d84f294e68dff98c7cdfd1de3ac48fbf4a8ab2577ea2f3a3",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "rail_transit_viaduct",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "rail_transit_viaduct_v2",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/streets/rail-transit-viaduct/variant_2_angle_60.jpg",
+      "file": "variant_2_angle_60.jpg",
+      "bytes": 979102,
+      "sha256": "51e2f92755b168526514ef5b9a9a3e77c5fb74bb1ca8cb2d99b6c71686872c20",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "rail_transit_viaduct",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "rail_transit_viaduct_v2",
+      "role": "top",
+      "path": "frontend/public/archetypes/streets/rail-transit-viaduct/variant_2_angle_90.jpg",
+      "file": "variant_2_angle_90.jpg",
+      "bytes": 940258,
+      "sha256": "16ea61c389702f0a896217bfa3da3d53bedaf3274a580e4da9615e59273703cb",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "urban_pedestrian_footbridge",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "urban_pedestrian_footbridge_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1.webp",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2.webp",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3.webp",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "urban_pedestrian_footbridge",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "urban_pedestrian_footbridge_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/streets/urban-pedestrian-footbridge/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1431655,
+      "sha256": "05d426a55b9f63d2a0d997eec0745e2ebccd4e75359d3948939861600d75b3a7",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "urban_pedestrian_footbridge",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "urban_pedestrian_footbridge_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/streets/urban-pedestrian-footbridge/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 946369,
+      "sha256": "d914f7e6fcafd8c85e5787177727ff9754d537dce5d283dc3655f1051ed54b87",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "urban_pedestrian_footbridge",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "urban_pedestrian_footbridge_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/streets/urban-pedestrian-footbridge/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 927790,
+      "sha256": "182aba8a25be70fb6924b4c6b92467fc0dd26ba3710bbabed8ebbbe74c092771",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

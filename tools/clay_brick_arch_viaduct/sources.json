@@ -1,0 +1,68 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "rail_transit_viaduct",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "rail_transit_viaduct_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1.webp",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2.webp",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3.webp",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "rail_transit_viaduct",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "rail_transit_viaduct_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/streets/rail-transit-viaduct/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1547636,
+      "sha256": "fcc775ae4c2424d122d676e73fe85a22e3b005555b817af3dd1e3dab89db94b2",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "rail_transit_viaduct",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "rail_transit_viaduct_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/streets/rail-transit-viaduct/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 1013551,
+      "sha256": "9cad3a89d960bd52e68bd37959276050df2070a6b1c3b0a8a8abdb66dc07af8b",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "rail_transit_viaduct",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "rail_transit_viaduct_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/streets/rail-transit-viaduct/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 1036148,
+      "sha256": "4b0e146b6f318bf564879069c598ae42ded2cb5d162e50ee7431edef952facf7",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

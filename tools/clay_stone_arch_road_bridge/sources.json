@@ -1,0 +1,68 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "urban_vehicular_bridge",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "urban_vehicular_bridge_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1.webp",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2.webp",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3.webp",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "urban_vehicular_bridge",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "urban_vehicular_bridge_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/streets/urban-vehicular-bridge/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1312745,
+      "sha256": "73a50019577d60995e107a2e5e936e2381819fc33b81d39b0d38c99c7aaf79a8",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "urban_vehicular_bridge",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "urban_vehicular_bridge_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/streets/urban-vehicular-bridge/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 901141,
+      "sha256": "5ec846317e5ee14f4966b1a940f2abbff9fb313f58bf0c0eac48c941182af535",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "urban_vehicular_bridge",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "urban_vehicular_bridge_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/streets/urban-vehicular-bridge/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 813607,
+      "sha256": "21fb51dbea07f7ed8f6cbca5141985c088bb033db2665499b2ac5b9f85f6e041",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

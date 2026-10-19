@@ -1,0 +1,68 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "dedicated_cycle_bridge",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "dedicated_cycle_bridge_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1.webp",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2.webp",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3.webp",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "dedicated_cycle_bridge",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "dedicated_cycle_bridge_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/streets/dedicated-cycle-bridge/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1373407,
+      "sha256": "ed500b98870febb7f8a37e5d373a1c02c2c241e57ef0a3f1a14b68ddc6111cdd",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "dedicated_cycle_bridge",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "dedicated_cycle_bridge_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/streets/dedicated-cycle-bridge/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 946422,
+      "sha256": "8b344d31bea1746079351d97177d8f16274af70d744e7254919598bdc4013f1d",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "dedicated_cycle_bridge",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "dedicated_cycle_bridge_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/streets/dedicated-cycle-bridge/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 908066,
+      "sha256": "06f41b7b82df87fd95ab4e2f5d5f4323237c3c379cd01603a5a71cf8c1001541",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}
