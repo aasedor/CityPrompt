@@ -68,10 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (v002 reworks these five)
+## Open blockers after v002 (v003 reworks these two; a second failed fix of either stops the family)
 
-1. P1: each span arch is a double-chord trussed ring with the lattice inside; the source shows a solid riveted plate rib with an open post-and-N-diagonal lattice in the spandrel above.
-2. P1: full-height X-bracing in every cross-frame between the paired columns down to the pedestals; the sources show none, and it blocks the open footway under the deck.
-3. P1: the train has no window openings; the window band is a flat painted stripe and the doors are flat raised plates.
-4. P1: solid black voids where the through-arch truss and the deck end meet the end cap beam in front_corner.
-5. P1: the arch crown does not sit on the deck: a dark slit between arch top and girder, with rib segments poking into the girder.
+- P1 #1: the spandrel lattice is reduced to one post and one diagonal at each haunch, and the rib crown runs into and laps over the deck girder; the source front shows a deep continuous lattice of posts and N/V diagonals over the whole spandrel, including over the crown at about half the rise (the v001 arch finding, surviving one targeted fix).
+- P1 #2: every car end shows a full-height solid black strip where side meets end (open seam or exposed core); the silver skin does not wrap the corner (the v001 train finding, surviving one targeted fix).

@@ -1,0 +1,302 @@
+{
+  "candidate": "clay-rail-through-truss-clay-v002",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 133,
+    "vertices": 43056,
+    "polygons": 64760,
+    "triangles": 64760,
+    "path": "clay-rail-through-truss-clay-v002-authoring.blend",
+    "bytes": 5141772,
+    "sha256": "53441837fde43a4c42591f11471393fe8390f9545ced80b7b1c9236e2bca23a7"
+  },
+  "runtime": {
+    "path": "clay-rail-through-truss-clay-v002.glb",
+    "bytes": 3547604,
+    "sha256": "ab9e198e5373417bf62ea00b1e6547091ca8ba9f2e7808f49bcfc3d654b86289",
+    "meshes": 21,
+    "materials": 21,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 21,
+    "vertices": 43056,
+    "polygons": 64760,
+    "triangles": 64760
+  },
+  "original_bounds_m": [
+    [
+      -33.02000045776367,
+      -66.0199966430664,
+      0.0
+    ],
+    [
+      40.02000045776367,
+      66.0199966430664,
+      19.85258674621582
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -33.02000045776367,
+      -66.0199966430664,
+      0.0
+    ],
+    [
+      40.02000045776367,
+      66.0199966430664,
+      19.85258674621582
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 9.2,
+    "depth": 120.0,
+    "height": 20.05
+  },
+  "native_dimensions_m": {
+    "width": 73.04000091552734,
+    "depth": 132.0399932861328,
+    "height": 19.85258674621582
+  },
+  "native_bottom_center_m": [
+    3.5,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "steel": 1,
+    "plate": 2,
+    "rivet": 1,
+    "concrete": 1,
+    "paving": 2,
+    "joint": 1,
+    "red": 1,
+    "asphalt": 1,
+    "white": 1,
+    "stone": 8,
+    "timber": 45,
+    "hardware": 2,
+    "silver": 1,
+    "dark": 1,
+    "glass": 7,
+    "pale": 7,
+    "brick": 4,
+    "brick2": 2,
+    "trim": 6,
+    "roof": 6,
+    "planting": 33
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/arch_span.png",
+    "renders/column_base.png",
+    "renders/lattice_detail.png",
+    "renders/track_deck.png",
+    "renders/train_cars.png",
+    "renders/street_under.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Concrete pedestals from grade, steel columns on them; deck arches and the bowstring on the columns; girders, deck, sleepers and rails above",
+      "box": [
+        -4.6,
+        4.6,
+        -60.0,
+        60.0
+      ]
+    }
+  ],
+  "opening_sections": [],
+  "authoring_modules": {
+    "viaduct steel": [
+      "viaduct steel concrete",
+      "viaduct steel plate",
+      "viaduct steel steel",
+      "viaduct steel rivet",
+      "viaduct steel timber",
+      "viaduct steel hardware"
+    ],
+    "train": [
+      "train dark",
+      "train silver",
+      "train pale",
+      "train glass",
+      "train hardware",
+      "train plate"
+    ],
+    "street": [
+      "Promenade paving",
+      "East kerb",
+      "Cycle lane",
+      "Road",
+      "Road kerb",
+      "Sidewalk"
+    ],
+    "street markings": [
+      "street markings joint",
+      "street markings white"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020",
+      "Street tree trunk.007",
+      "Street tree branch.021",
+      "Street tree branch.022",
+      "Street tree branch.023",
+      "Street tree trunk.008",
+      "Street tree branch.024",
+      "Street tree branch.025",
+      "Street tree branch.026",
+      "Street tree trunk.009",
+      "Street tree branch.027",
+      "Street tree branch.028",
+      "Street tree branch.029",
+      "Street tree trunk.010",
+      "Street tree branch.030",
+      "Street tree branch.031",
+      "Street tree branch.032"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023",
+      "Street tree crown.024",
+      "Street tree crown.025",
+      "Street tree crown.026",
+      "Street tree crown.027",
+      "Street tree crown.028",
+      "Street tree crown.029",
+      "Street tree crown.030",
+      "Street tree crown.031",
+      "Street tree crown.032"
+    ],
+    "context": [
+      "West block 0",
+      "West block 1",
+      "West block 2",
+      "East block 0",
+      "East block 1",
+      "East block 2"
+    ],
+    "West block 0 details": [
+      "West block 0 details roof",
+      "West block 0 details trim",
+      "West block 0 details pale",
+      "West block 0 details glass",
+      "West block 0 details stone"
+    ],
+    "West block 1 details": [
+      "West block 1 details roof",
+      "West block 1 details trim",
+      "West block 1 details pale",
+      "West block 1 details glass",
+      "West block 1 details stone"
+    ],
+    "West block 2 details": [
+      "West block 2 details roof",
+      "West block 2 details trim",
+      "West block 2 details pale",
+      "West block 2 details glass",
+      "West block 2 details stone"
+    ],
+    "East block 0 details": [
+      "East block 0 details roof",
+      "East block 0 details trim",
+      "East block 0 details pale",
+      "East block 0 details glass",
+      "East block 0 details stone"
+    ],
+    "East block 1 details": [
+      "East block 1 details roof",
+      "East block 1 details trim",
+      "East block 1 details pale",
+      "East block 1 details glass",
+      "East block 1 details stone"
+    ],
+    "East block 2 details": [
+      "East block 2 details roof",
+      "East block 2 details trim",
+      "East block 2 details pale",
+      "East block 2 details glass",
+      "East block 2 details stone"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-19T19:51:32.826951+00:00",
+  "delivery_and_render_seconds": 5484.765502489994,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
