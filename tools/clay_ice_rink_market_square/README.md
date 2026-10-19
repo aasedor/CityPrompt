@@ -77,18 +77,9 @@ NOT TESTED. The model sits on a level base. Shared terrain registration is not a
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (the v002 rework targets all thirteen)
+## Open blockers after v002 (v003 reworks these four)
 
-- P0 #1: dozens of ornament cubes float clear of the tree's foliage.
-- P0 #2: the interior camera is inside geometry (uniform beige).
-- P0 #3: the rear_north camera shows nothing legible (uniform grey).
-- P0 #4: left_side, right_side and rear show only the context blocks' blank rear walls.
-- P1 #5: the chalets face the ice with their eaves; the source is gable-to-ice.
-- P1 #6: the chalet garland is one square bar; no gable garlands, wreath or bows.
-- P1 #7: the dasher boards have no opaque white board on the skating side and a white cap instead of a timber handrail with a garland.
-- P1 #8: the tree is stacked cone tiers reading as a pagoda, not a dense fir.
-- P1 #9: the tree island sits about 36% of the rink length from the north end; the source has it about 47%.
-- P1 #10: the square is too large; the context blocks stand about four chalet depths away where the source shows a narrow lane.
-- P1 #11: the paving is light-grey tile, not dark cobbles, close in tone to the ice.
-- P1 #12: the town-front windows are flat dark rectangles with no recess, sill or frame, and there are no doors.
-- P1 #13: rear_side is mostly hidden behind the context blocks.
+- P1 #1: neighbouring chalets stand eave to eave; long-row roofs overlap like shingles and each short row of four reads as one slab from above; the source shows separate huts with cobbled gaps and visible ridges.
+- P1 #2: the tree is a smooth cone with sparse flat plank branches, a spiky bottle brush and a 12-spoke pinwheel from above with soil between the spokes, not a dense fir (the v001 tree finding, surviving one targeted fix).
+- P1 #3: left_side, right_side, rear and rear_north crop the upper third of the tree and the star; near stall roofs fill 20-25% of each frame.
+- P1 #4: the front camera stands mid-rink with the tree dead centre and about 45% empty ice; the source's right-hand foreground of boards, garlanded handrail and east chalets is missing; the skating aid is clipped.
