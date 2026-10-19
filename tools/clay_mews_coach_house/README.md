@@ -68,8 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 reworks these three)
+## Open blockers after v005 (v006 reworks these three; a second non-improving review stops the family)
 
-1. P1: the upper south sash heads are now tall round arches (rise about 0.31 of span, source about 0.11) with glazing cut to the curve; they must be rectangular six-over-six sashes under a shallow flush arch.
-2. P1: the neighbour's back wing is about 40% of the bay width (source about 70%), pushed against the west party wall instead of centred, and its roof stays under the main rear eaves (source ridge climbs to mid-slope with two valleys).
-3. P1: the back-wing windows are flat pale-grey panels with no frame, bars, sill or reveal.
+- P1 #1: every party wall carries the same short square stack with three stubby square pots; the sources show one long stack on the end/neighbour party wall with two clusters of tall round clay pots (5 and 4), and no stack on the neighbour's west party wall.
+- P1 #2: the rear-wing downpipes drop from the end of the gutter overhang and stand clear of the wall with sky behind; a horizontal stub near one pipe foot connects to nothing.
+- P1 #3: a short beige wall panel and a red door leaf stand alone on the east pavement at the rear corner (no jamb or head, enclosing nothing); the oblique source shows a continuous garden wall with the red door set into it.
+- Note: the v005 brief carried no previous-version context; the v004 findings are absent from the new findings list.
