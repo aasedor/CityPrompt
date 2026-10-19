@@ -19,12 +19,13 @@ SLUG = 'clay-brick-arch-viaduct'
 NA, SPAN, PIER, END = 10, 6.0, 2.2, 3.0          # detailed arches, clear span, pier width, near end abutment (along y)
 NE = 10                                          # plainer arches carrying the run on past the far cameras
 LEN = 2 * END + NA * SPAN + (NA - 1) * PIER       # 85.8 m detailed run
-YE = -LEN / 2 + END + (NA + NE) * (SPAN + PIER) - PIER / 2   # the run is cut mid-pier far beyond the rear cameras
+YE = -LEN / 2 + END + (NA + NE) * (SPAN + PIER) - PIER / 2   # end of the arched run with shop and plain infill
+YF = YE + 520.0                                  # the plain run carries on to a far cut buried in a belt of city blocks
 VX = 5.0                                         # half-width of the viaduct (outer faces at x = +-VX)
 TW = 1.0                                         # face wall (arch ring) depth
 SPRING, CROWN = 4.2, 7.2                         # springing and crown of the arches
 DECK, PAR = 8.4, 9.8                             # deck top (under the ballast) and parapet top
-PAVE, STREET, FAR = 10.0, 17.0, 19.5              # east pavement edge, street east edge, far pavement edge (x)
+PAVE, STREET, FAR = 10.0, 17.0, 21.3              # east pavement edge, street east edge, far (terrace-side) pavement edge (x)
 X0, X1, Y0, Y1 = -VX, VX, -LEN / 2, LEN / 2
 T = .3
 EPS = .002
@@ -77,10 +78,10 @@ def manifest(version):
         source_archetype='rail_transit_viaduct/variant_0 (Victorian Brick Arch Viaduct)',
         measurement_contract=dict(dimensions_m=dict(width=2 * VX, depth=LEN, height=h),
             observed_storeys=0, storey_programme='street option: a rail viaduct with shop units in its arches; terraces are context',
-            plan=f'{2 * VX:.0f} m wide brick viaduct, {YE - Y0:.0f} m modelled run of {NA + NE} arches (top view), cut at the near end and running on at the far end, a 5 m flagged pavement and a 7 m cobbled street on its east side',
+            plan=f'{2 * VX:.0f} m wide brick viaduct, {YE - Y0:.0f} m modelled run of {NA + NE} arches (top view) carried on plainly to {YF - Y0:.0f} m into a belt of city blocks, cut at the near end, a 5 m flagged pavement, a 7 m cobbled street and a 4 m tree-lined far pavement on its east side',
             facade='red-brown brick arches and piers with pilasters, stone impost band, string course and coping; glazed timber shopfronts with fascia signs; blind arches on the west',
             section_m=dict(viaduct=[-VX, VX], pavement=[VX, PAVE], street=[PAVE, STREET], far_pavement=[STREET, FAR]),
-            levels_m=[0.0, SPRING, CROWN, DECK, PAR], inferred='the run is cut at the near end and runs on beyond the far cameras; the shop interiors and the west gardens are assumptions'),
+            levels_m=[0.0, SPRING, CROWN, DECK, PAR], inferred='the run is cut at the near end and runs on far beyond every camera into context blocks; the shop interiors, the west gardens and the context rows are assumptions'),
         roof_contract=dict(type='open street option; ballasted twin-track deck inside the parapets', datum_m=DECK, crowns_m=[PAR]),
         identity_contract=dict(owner='long brick arch viaduct with pilastered piers, glazed shopfronts in the arches, coped parapet, twin tracks and a train on top, cobbled street alongside'),
         material_contract=dict(profile='source-palette clay: red-brown brick with joints, pale stone dressings, dark timber shopfronts and fascias, grey shutters, ballast and timber sleepers, red-and-white train, grey setts and pale flags', textured_keeper=False),
@@ -646,7 +647,40 @@ def body_and_deck():
             b.box('timber', xt, y, zs + .08, 2.5, .24, .16)
         for s in (-1, 1):
             b.box('hardware', xt + s * .72, (YA + YE) / 2, zs + .24, .07, YE - YA - .1, .16)
+            b.box('hardware', xt + s * .72, (YE - .05 + YF) / 2, zs + .24, .07, YF - YE + .05, .16)
     b.flush('tracks')
+    far_run()
+
+
+def far_run():
+    """The run carried on plainly from YE to the far cut YF (inside the city belt): solid body and parapets, the
+    deck courses, ballast and rails, and each arch as a dark arch-headed recess plate with a brick ring."""
+    b = Batch()
+    ym, L = (YE + YF) / 2, YF - YE
+    b.box('wall', 0.0, ym, DECK / 2, 2 * VX, L, DECK)
+    for s in (-1, 1):
+        b.box('wall', s * (VX - TW / 2), ym, (DECK + PAR) / 2, TW, L, PAR - DECK)
+        b.box('stone', s * (VX - (TW - .12) / 2), ym, PAR + .07, TW + .12, L, .14)               # coping, as the near run
+        b.box('stone', s * (VX + .12), ym, DECK - .1, .24, L, .24)                                # deck string course
+    b.flush('far run')
+    for xt in (-1.8, 1.8):
+        ballast_bed(xt, YE, YF)
+    vs = {'dark': ([], []), 'arch': ([], [])}
+    n = int((YF - YE - PIER) / PITCH)
+    for k in range(n):
+        yc = YE + PIER / 2 + SPAN / 2 + k * PITCH
+        for s in (-1, 1):
+            for role, r, off in (('arch', SPAN / 2 + .45, .012), ('dark', SPAN / 2, .024)):
+                V, F = vs[role]
+                o = len(V)
+                x = s * (VX + off)
+                pts = [(yc + r, 0.0)] + [(yc + r * math.cos(math.pi * i / 12), SPRING + r * math.sin(math.pi * i / 12)) for i in range(13)] + [(yc - r, 0.0)]
+                if role == 'arch':
+                    pts = [(yc + r, SPRING)] + pts[1:-1] + [(yc - r, SPRING)]
+                V.extend((x, y, z) for y, z in pts)
+                F.append(tuple(range(o, o + len(pts))) if s > 0 else tuple(range(o + len(pts) - 1, o - 1, -1)))
+    for role, (V, F) in vs.items():
+        C.mesh(f'Far run arches {role}', V, F, role, 'far run')
 
 
 def train():
@@ -701,8 +735,8 @@ def sett_joints(x0, x1, ya, yb, ydet):
 
 def street():
     b = Batch()
-    ya, yb = Y0 - 8.0, YE
-    C.box('Context ground', (0.0, (Y0 - 70.0 + YE) / 2, .002), (220.0, YE - Y0 + 70.0, .004), 'ground', 'site', 0)
+    ya, yb = Y0 - 8.0, YF
+    C.box('Context ground', (0.0, (Y0 + YF) / 2, .002), (6000.0, 6000.0, .004), 'ground', 'site', 0)
     C.box('Flagged pavement', ((VX + PAVE) / 2, (ya + yb) / 2, .07), (PAVE - VX, yb - ya, .14), 'paving', 'street', 0)
     C.box('Kerb', (PAVE + .1, (ya + yb) / 2, .07), (.2, yb - ya, .14), 'stone', 'street', 0)
     C.box('Cobbled street', ((PAVE + .2 + STREET) / 2, (ya + yb) / 2, .03), (STREET - PAVE - .2, yb - ya, .06), 'setts', 'street', 0)
@@ -711,12 +745,12 @@ def street():
     C.box('West gardens', ((-VX - 27.0) / 2, (ya + yb) / 2, .03), (27.0 - VX, yb - ya, .06), 'grass', 'gardens', 0)
     # Gutter channel: three courses of setts laid along each kerb, then the staggered field between them.
     gl, gr = PAVE + .2, STREET
-    sett_joints(gl + .66, gr - .66, ya, yb, Y1 - 8.0)
+    sett_joints(gl + .66, gr - .66, ya, YE, Y1 - 8.0)
     for x in (gl + .22, gl + .44, gl + .66, gr - .22, gr - .44, gr - .66):
         b.box('settjoint', x, (ya + yb) / 2, .061, .03, yb - ya - .02, .004)
     vs, fs = [], []
     y = ya + .3
-    while y < yb - .2:                                                                     # flag courses, flat quads
+    while y < YE - .2:                                                                     # flag courses, flat quads (detailed run)
         for xa, xb in ((VX + .01, PAVE - .01), (STREET + .21, FAR - .01)):
             o = len(vs)
             vs += [(xa, y - .015, .1415), (xb, y - .015, .1415), (xb, y + .015, .1415), (xa, y + .015, .1415)]
@@ -725,7 +759,7 @@ def street():
     C.mesh('Flag joints', vs, fs, 'settjoint', 'street')
     for x in (VX + 1.6, VX + 3.3):
         b.box('settjoint', x, (ya + yb) / 2, .141, .03, yb - ya - .02, .004)
-    for k in range(int((yb - ya) / 3.2)):                                                  # bollards at the kerb
+    for k in range(int((YE - ya) / 3.2)):                                                  # bollards at the kerb
         b.box('hardware', PAVE - .35, ya + 1.6 + k * 3.2, .14 + .5, .14, .14, 1.0)
         b.box('hardware', PAVE - .35, ya + 1.6 + k * 3.2, 1.17, .2, .2, .06)
     for i in (3, 4):                                                                       # cafe tables in front of two arches
@@ -738,7 +772,7 @@ def street():
     # West gardens: a brick boundary wall behind the terrace yards and a few garden trees.
     b.box('terrace2', -20.0, (ya + yb) / 2, .8, .25, yb - ya, 1.6)                          # yard boundary wall
     b.box('stone', -20.0, (ya + yb) / 2, 1.65, .33, yb - ya, .1)
-    for k in range(1, int((yb - ya) / 5.6)):
+    for k in range(1, int((YE - ya) / 5.6)):
         b.box('terrace2', -23.5, ya + k * 5.6, .6, 7.0, .14, 1.2)                           # low walls between the yards
     b.flush('street furniture')
     for i in (2, 3, 5, 6, 8):                                                              # planters with shrubs by the piers
@@ -747,8 +781,13 @@ def street():
         b.box('pot', VX + .9, y, .14 + .35, .7, .7, .7)
         b.flush(f'planter {i}')
         A.foliage(f'Planter shrub {i}', (VX + .9, y, 1.3), (.5, .5, .55), role='planting', detail=2)
-    for y in (-33.0, -21.0, 2.5, 22.0, 42.0, 64.0, 90.0):                                     # street trees near the kerb, clear of every facade and close camera
-        street_tree(PAVE - .8, y, z=.14, height=8.0, spread=1.9)
+    # Street trees in pits on the far (terrace-side) pavement, irregularly spaced as in the oblique and top sources
+    # (four in the matched frame), crowns kept about 1.7 m clear of the terrace face; the arcade side has none.
+    b = Batch()
+    for y in (-24.6, -4.1, 32.8, 49.2, 83.0, 104.0, 141.0):
+        b.box('soil', STREET + .75, y, .143, 1.0, 1.0, .006)
+        street_tree(STREET + .75, y, z=.14, height=8.4, spread=1.3)
+    b.flush('tree pits')
     for y in (-30.0, 2.0, 36.0, 74.0):                                                    # garden trees in the west yards
         street_tree(-9.0, y, z=.06, height=7.0, spread=1.6)
 
@@ -756,8 +795,8 @@ def street():
 def terraces():
     """Brick terrace houses as context: slate roofs, chimneys on the party walls, framed sash windows."""
     for side, sgn, role, x0, x1 in (('East', 1, 'terrace', FAR, FAR + 9.0), ('West', -1, 'terrace2', -36.0, -27.0)):
-        ya, yb = Y0 - 8.0, YE
-        n = int((yb - ya) / 5.6)
+        ya, yb = Y0 - 8.0, YF
+        n = int((YE + 60.0 - ya) / 5.6)
         b = Batch()
         h = 8.4
         C.box(f'{side} terrace', ((x0 + x1) / 2, (ya + yb) / 2, h / 2), (x1 - x0, yb - ya + .5, h), role, 'context', 0)   # runs under the roof overhang
@@ -784,10 +823,60 @@ def terraces():
         b.flush(f'{side} terrace windows')
 
 
+def gable_block(b, role, x0, x1, y0, y1, h, rise, axis):
+    """Context block: a box with a gabled roof prism (ridge along axis) merged into the batch."""
+    b.box(role, (x0 + x1) / 2, (y0 + y1) / 2, h / 2, x1 - x0, y1 - y0, h)
+    V, F = b.g.setdefault('roof', ([], []))
+    o = len(V)
+    if axis == 'y':
+        xm = (x0 + x1) / 2
+        V.extend([(x0 - .2, y0, h), (x1 + .2, y0, h), (xm, y0, h + rise), (x0 - .2, y1, h), (x1 + .2, y1, h), (xm, y1, h + rise)])
+    else:
+        ym = (y0 + y1) / 2
+        V.extend([(x0, y1 + .2, h), (x0, y0 - .2, h), (x0, ym, h + rise), (x1, y1 + .2, h), (x1, y0 - .2, h), (x1, ym, h + rise)])
+    F.extend([(o, o + 2, o + 1), (o + 3, o + 4, o + 5), (o, o + 1, o + 4, o + 3), (o + 1, o + 2, o + 5, o + 4), (o + 2, o, o + 3, o + 5)])
+
+
+def context():
+    """City context so no scene end shows in any camera: a flagged forecourt at the near end wall, a cobbled cross
+    street and terrace rows to the south, parallel terrace rows behind both terraces, and a belt of blocks across
+    the far end of the run that buries the far cut of the viaduct, street and terraces."""
+    C.box('Near end forecourt', (0.0, Y0 - 4.0, .07), (2 * VX, 8.0, .14), 'paving', 'street', 0)
+    C.box('Cross street', (0.0, Y0 - 13.5, .03), (800.0, 11.0, .06), 'setts', 'street', 0)
+    C.box('Cross street pavement', (0.0, Y0 - 20.25, .07), (800.0, 2.5, .14), 'paving', 'street', 0)
+    b = Batch()
+    roles = ('terrace', 'terrace2')
+    for k, (x0, h) in enumerate(((FAR + 13.0, 11.0), (FAR + 26.0, 9.6), (FAR + 39.0, 13.0), (FAR + 55.0, 10.4), (FAR + 71.0, 12.0))):
+        for s, xa in ((1, x0), (-1, -36.0 - 4.0 - 13.0 * k - 9.0 - 3.0 * (k > 2))):        # east rows and west rows
+            y = Y0 - 8.0
+            j = 0
+            while y < YF:
+                seg = 54.0 + 9.0 * ((j + k) % 3)
+                gable_block(b, roles[(j + k + (s < 0)) % 2], xa, xa + 9.0, y, min(y + seg, YF + 6.0), h, 2.6, 'y')
+                y += seg + 6.0
+                j += 1
+    for k, (yc, h) in enumerate(((Y0 - 26.5, 9.0), (Y0 - 43.5, 11.0), (Y0 - 60.5, 9.6), (Y0 - 79.5, 12.4))):  # south rows across the cross street
+        x, j = -180.0 + 17.0 * k, 0
+        while x < 180.0:
+            seg = 50.0 + 8.0 * ((j + k) % 3)
+            gable_block(b, roles[(j + k) % 2], x, x + seg, yc - 4.5, yc + 4.5, h, 2.6, 'x')
+            x += seg + 6.0
+            j += 1
+    gable_block(b, 'terrace2', -120.0, 120.0, YF - 6.0, YF + 12.0, 20.0, 4.0, 'x')           # the belt: one long block over the cut
+    for k, (yc, h) in enumerate(((YF + 30.0, 15.0), (YF + 52.0, 24.0), (YF + 76.0, 17.0))):
+        x, j = -150.0 - 13.0 * k, 0
+        while x < 150.0:
+            seg = 44.0 + 10.0 * ((j + k) % 3)
+            gable_block(b, roles[(j + k) % 2], x, x + seg, yc - 7.0, yc + 7.0, h + 3.0 * ((j * 7 + k) % 3), 3.0, 'x')
+            x += seg + 5.0
+            j += 1
+    b.flush('context city')
+
+
 def build():
-    for ob in C.bpy.data.objects:                       # the run carries on far past the default clip distance
+    for ob in C.bpy.data.objects:                       # the run and its context carry on far past the default clip distance
         if ob.type == 'CAMERA':
-            ob.data.clip_end = 900.0
+            ob.data.clip_end = 9000.0
     east_face()
     west_face()
     end_wall('south end', Y0, 1)
@@ -795,6 +884,7 @@ def build():
     train()
     street()
     terraces()
+    context()
     C.CONTACTS.append(dict(name='Brick viaduct from grade: piers, face walls and the near end wall; deck on the arches; ballast and tracks on the deck; shopfronts in the arches', box=[X0, X1, Y0, YE]))
 
 
