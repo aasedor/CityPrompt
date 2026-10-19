@@ -44,7 +44,9 @@ def manifest(version):
         ('rear_north', (8.0, 28.8, 11.5), (0.0, 4.0, 5.5), 28)])
     for c in cams:                       # the locked front stands on the ice by the east boards at the south end, looking NNW
         if c['name'] == 'front':
-            c['location'] = (10.2, -12.5, 1.75); c['target'] = (-3.4, 14.2, 5.95); c['lens'] = 20; c['whole'] = False
+            c['location'] = (9.0, -14.0, 2.2); c['target'] = (7.6, 14.0, 3.9); c['lens'] = 20; c['whole'] = False
+        elif c['name'] == 'aerial':                                            # steep enough that the near frontage clears the near chalet row
+            c.update(location=(34.0, -42.0, 70.0), target=(0.0, -1.0, 0.0), lens=42)
         elif c['name'] == 'front_corner':                                      # the locked oblique looks north-east from high in the south-west
             c['location'] = (-24.0, -50.0, 36.0); c['target'] = (1.0, 2.0, 1.0); c['lens'] = 35
         elif c['name'] == 'left_side':                                         # side and rear views stand high in the lanes, the near roofs below the frame
@@ -444,14 +446,21 @@ def ice_and_boards():
         for i in range(n):
             px, py = ax + (cx - ax) * i / n, ay + (cy - ay) * i / n
             b.box('hardware', px, py, 1.35, .06, .06, .62)
-        # Garland hung on the deck side of the boards, under the handrail, with lights and red baubles.
+        # Lush garland laid along the top of the handrail, reading from the ice and the deck, with red baubles
+        # and warm lights on both faces.
         nx, ny = (cy - ay) / L, -(cx - ax) / L                                                    # outward normal (ring is counter-clockwise)
-        b.beam('planting', (ax + nx * .16, ay + ny * .16, 1.48), (cx + nx * .16, cy + ny * .16, 1.48), .16, .2, ext=.05)
-        k = max(1, int(L / .7))
+        b.beam('planting', (ax, ay, 1.86), (cx, cy, 1.86), .34 + .01 * (j % 2), .24, ext=.06)
+        k = max(1, int(L / .55))
         for i in range(k):
-            px, py = ax + (cx - ax) * (i + .5) / k + nx * .26, ay + (cy - ay) * (i + .5) / k + ny * .26
-            b.box('pale' if i % 2 else 'flower', px, py, 1.4 if i % 2 else 1.3, .07 if i % 2 else .12, .07 if i % 2 else .12, .07 if i % 2 else .12)
+            px, py = ax + (cx - ax) * (i + .5) / k, ay + (cy - ay) * (i + .5) / k
+            s = -1 if i % 2 else 1                                                                # alternate ice and deck faces
+            if i % 3 == 2:
+                RAIL_LIGHTS.append((px + s * nx * .19, py + s * ny * .19, 1.95))
+            else:
+                RAIL_BAUBLES.append((px + s * nx * .2, py + s * ny * .2, 1.8))
     b.flush('boards')
+    balls('Handrail garland baubles', 'flower', RAIL_BAUBLES, .075, 6, 4)
+    balls('Handrail garland lights', 'pale', RAIL_LIGHTS, .04, 4, 2)
     # Tree island: white ring wall, glass ring, a dense layered fir with ornaments, lights and a star.
     b = Batch()
     tx, ty = TREE
@@ -482,6 +491,39 @@ def ice_and_boards():
         b.box('hardware', px + sx * .28, py + .25, ICE + .9, .04, .04, .7)
     b.box('hardware', px, py + .25, ICE + 1.25, .6, .05, .05)
     b.flush('benches and aids')
+
+
+RAIL_BAUBLES, RAIL_LIGHTS = [], []
+
+
+def balls(name, role, centres, r, seg, rings, small=(), rs=None):
+    """One smooth-shaded mesh of low-poly UV spheres (seg x rings); centres listed in small get radius rs."""
+    if not centres:
+        return
+    small = set(small)
+    V, F = [], []
+    for (x, y, z) in centres:
+        rad = rs if (rs and (x, y, z) in small) else r
+        o = len(V)
+        V.append((x, y, z + rad))
+        for k in range(1, rings):
+            ph = math.pi * k / rings
+            for j in range(seg):
+                th = 2 * math.pi * j / seg
+                V.append((x + rad * math.sin(ph) * math.cos(th), y + rad * math.sin(ph) * math.sin(th), z + rad * math.cos(ph)))
+        V.append((x, y, z - rad))
+        last = o + 1 + (rings - 1) * seg
+        for j in range(seg):
+            jn = (j + 1) % seg
+            F.append((o, o + 1 + j, o + 1 + jn))
+            for k in range(rings - 2):
+                a, b_ = o + 1 + k * seg, o + 1 + (k + 1) * seg
+                F.append((a + j, b_ + j, b_ + jn, a + jn))
+            c = o + 1 + (rings - 2) * seg
+            F.append((c + jn, c + j, last))
+    obj = C.mesh(name, V, F, role, 'tree island')
+    for f in obj.data.polygons:
+        f.use_smooth = True
 
 
 def fir(b, tx, ty):
@@ -532,19 +574,18 @@ def fir(b, tx, ty):
             F.append((c_bot, n + 3, k + 3))
     z_sp = zb0 + (NT - 1) * .9 + .6
     ngon(b, 'tree', tx, ty, z_sp, top, .42, 9, cone=True)                      # leader
+    red, gold, lights = [], [], []
     for q, (x0, y0, a, r, z, rm, zm, i) in enumerate(orn):
         ca, sa = math.cos(a), math.sin(a)
-        rr = .8 * r                                                             # on the upper face of the bough, near the tip
-        zz = zm + (z - zm) * (rr - rm) / max(.01, r - rm)
-        kind = q % 4
-        if kind == 0:
-            b.box('flower', x0 + rr * ca, y0 + rr * sa, zz + .1, .22, .22, .22)
-        elif kind == 1:
-            b.box('pale', x0 + rr * ca, y0 + rr * sa, zz + .06, .1, .1, .1)
-        elif kind == 2:
-            b.box('gold', x0 + .97 * r * ca, y0 + .97 * r * sa, z - .1, .2, .2, .2)          # hanging from the tip
-        else:
-            b.box('pale', x0 + .94 * r * ca, y0 + .94 * r * sa, z + .05, .09, .09, .09)
+        lights.append((x0 + 1.01 * r * ca, y0 + 1.01 * r * sa, z + .05))          # a warm light on every bough tip
+        if q % 3 == 2:
+            continue
+        br = .15 if i < 9 else .11                                              # round bauble hung just under the tip
+        rr = .93 * r
+        (red if (q + i) % 2 else gold).append((x0 + rr * ca, y0 + rr * sa, z - .1 - br))
+    balls('Tree baubles red', 'flower', red, .15, 8, 5, small=[p for p in red if p[2] > zb0 + 8.6], rs=.11)
+    balls('Tree baubles gold', 'gold', gold, .15, 8, 5, small=[p for p in gold if p[2] > zb0 + 8.6], rs=.11)
+    balls('Tree lights', 'pale', lights, .055, 4, 2)
     pts = []
     for k in range(10):                                                         # five-point star, face to the south
         a = math.pi / 2 + math.pi * k / 5
@@ -695,7 +736,7 @@ def square():
             if i % 4 == 1:                                                       # a door every fourth bay
                 put('timber', u, .03, 1.3, 1.2, .06, 2.6)
                 put('trim', u, .05, 2.7, 1.5, .1, .14)
-            for zl in range(int((h - 2) / 3.2)):
+            for zl in range(int((h - 3.3) / 3.2) + 1):              # window rows up to the eaves on every front
                 zz = 1.4 + zl * 3.2
                 if zl == 0 and i % 4 == 1:
                     continue
