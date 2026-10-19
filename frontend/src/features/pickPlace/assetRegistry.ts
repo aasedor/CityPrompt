@@ -292,10 +292,16 @@ export const FINAL_FIVE_BUILDING_ASSETS = CATALOGUE_BUILDING_ASSETS.filter(asset
 // Local trial packages are not automatically published by a production build.
 export const CLAUDE_FIVE_TRIAL_ASSETS = (import.meta.env.DEV || import.meta.env.VITE_CLAUDE_FIVE_TRIAL === 'true')
   ? claudeFiveTrial.assets as unknown as PlaceAsset[] : [];
-// These local trials have no production environment override.
+/** Human-approved publication keeps every saved pilot ID and exact revision. */
+export const PARKADE_BUILDING_ASSETS = CATALOGUE_BUILDING_ASSETS.filter(asset =>
+  asset.readiness === 'ready' && parkadeFamilyTrial.assets.some(entry =>
+    entry.id === asset.id && entry.model.variantId === asset.model.variantId
+    && entry.model.revision === asset.model.revision));
+// Retain discovery for an unpublished local pilot without duplicating a release.
 export const PARKADE_TRIAL_ASSETS: PlaceAsset[] = import.meta.env.DEV
-  ? parkadeFamilyTrial.assets as unknown as PlaceAsset[] : [];
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_TRIAL_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
+  ? (parkadeFamilyTrial.assets as unknown as PlaceAsset[]).filter(asset =>
+    !PARKADE_BUILDING_ASSETS.some(published => published.id === asset.id)) : [];
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
   // Exact local validation buildings already declare their delivered GLB.
   // Keep that binding reproducible rather than depending on an unrelated
   // developer database having a matching Model Library row.

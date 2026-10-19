@@ -1,24 +1,24 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { CANONICAL_CHOICES, filterCanonicalChoices } from './canonicalCatalogue';
-import { PARKADE_TRIAL_ASSETS } from './assetRegistry';
+import { PARKADE_BUILDING_ASSETS } from './assetRegistry';
 import { placeAsset, placementPlanRequest } from './catalogue';
 import { storeyProgramSupports } from './buildingStoreyProgram';
 import { pickerCategory } from './pickerCategories';
 import { reviewedAssetClassification } from './catalogueClassification';
 import manifest from '../../../../seed/parkade-family-trial/library.json';
 
-describe('development parkade trials', () => {
+describe('published reviewed parkades', () => {
   afterEach(() => { vi.unstubAllEnvs(); vi.resetModules(); });
 
   it('binds five building cards to their exact reviewed native assemblies', () => {
-    expect(PARKADE_TRIAL_ASSETS).toHaveLength(5);
+    expect(PARKADE_BUILDING_ASSETS).toHaveLength(5);
     expect(manifest.entries).toHaveLength(5);
-    expect(new Set(PARKADE_TRIAL_ASSETS.map(asset => asset.model.variantId))).toEqual(new Set([
+    expect(new Set(PARKADE_BUILDING_ASSETS.map(asset => asset.model.variantId))).toEqual(new Set([
       'classic-concrete-v1', 'brick-v1', 'green-v1', 'solar-v1', 'courtyard-v1',
     ]));
     for (const entry of manifest.entries) {
       const asset = placeAsset(entry.picker.id);
-      expect(asset).toMatchObject({ kind:'object', zoneType:'building', readiness:'pilot', reshapeMode:'fixed_native',
+      expect(asset).toMatchObject({ kind:'object', zoneType:'building', readiness:'ready', reshapeMode:'fixed_native',
         model:{ variantId:entry.variant_id, revision:entry.candidate, method:'RLASM 6.1' },
         calgaryGuide:{ groupId:'parkades' }, properties:{ native_plot_axes:true,
           development_archetype_id:entry.archetype_id, development_selected_variant_id:entry.variant_id,
@@ -44,14 +44,16 @@ describe('development parkade trials', () => {
     expect(filterCanonicalChoices('street_pathway','','parkades')).toHaveLength(0);
   });
 
-  it('does not expose parkades in production even with a trial environment flag', async () => {
+  it('exposes each stable saved ID once in production without trial flags', async () => {
     vi.stubEnv('DEV',false);
-    vi.stubEnv('VITE_PARKADE_FAMILY_TRIAL','true');
     vi.resetModules();
     const registry=await import('./assetRegistry');
     const catalogue=await import('./canonicalCatalogue');
-    expect(registry.PARKADE_TRIAL_ASSETS).toEqual([]);
-    expect(registry.CATALOGUE_ASSETS.some(asset => asset.calgaryGuide.groupId==='parkades')).toBe(false);
-    expect(catalogue.CANONICAL_CHOICES.some(choice => choice.option.calgaryGuide?.groupId==='parkades')).toBe(false);
+    expect(registry.PARKADE_BUILDING_ASSETS).toHaveLength(5);
+    expect(registry.CATALOGUE_ASSETS.filter(asset => asset.calgaryGuide.groupId==='parkades')).toHaveLength(5);
+    expect(catalogue.filterCanonicalChoices('building','','parkades')).toHaveLength(5);
+    for(const entry of manifest.entries) {
+      expect(registry.CATALOGUE_ASSETS.filter(asset=>asset.id===entry.picker.id)).toHaveLength(1);
+    }
   });
 });

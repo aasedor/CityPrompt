@@ -272,9 +272,9 @@ def prepare(root: Path, package: Path, *, apply: bool = False, trial_only: bool 
     output = picker_source(payload)
     validate_integration(payload, root)
     for dest in (model_rel, review_rel):
-        if (root / dest).exists() and (
-            pending is None or digest(root / dest) != digest(source if dest == model_rel else review)
-        ):
+        # Audited originals may already be staged by a local-only pilot. Reuse
+        # only byte-identical files; identity conflicts were rejected above.
+        if (root / dest).exists() and digest(root / dest) != digest(source if dest == model_rel else review):
             raise ValueError(f"Refusing to overwrite {dest}")
     # Validate only the new GLB/source references here; check() validated existing ones.
     with tempfile.TemporaryDirectory(prefix="cityprompt-promotion-") as temporary:
@@ -292,7 +292,8 @@ def prepare(root: Path, package: Path, *, apply: bool = False, trial_only: bool 
         try:
             for dest, src in ((model_rel, source), (review_rel, review)):
                 (root / dest).parent.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(src, root / dest)
+                if not (root / dest).exists():
+                    shutil.copyfile(src, root / dest)
             (root / LIBRARY).write_text(encoded(payload), encoding="utf-8", newline="\n")
             (root / PICKER).write_text(output, encoding="utf-8", newline="\n")
         except Exception:

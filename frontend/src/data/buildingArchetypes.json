@@ -38483,6 +38483,271 @@
           "maxFloors": 1
         }
       ]
+    },
+    {
+      "id": "parkade-classic-concrete",
+      "title": "Classic Concrete Parkade",
+      "buildingSubcategory": "Parkades",
+      "developmentType": "mobility_infrastructure",
+      "aestheticCategory": "original_parkade",
+      "description": "Open concrete decks, horizontal steel guards, two front glazed stair towers. Original fixed native architectural-clay concept. No structural, accessibility, capacity or traffic-engineering certification.",
+      "generationTags": [
+        "parkade",
+        "parking garage",
+        "structured parking",
+        "conventional"
+      ],
+      "styleProfile": {
+        "materials": [
+          "concrete",
+          "steel",
+          "transparent core glass"
+        ],
+        "facadeRhythm": "Open concrete decks, horizontal steel guards, two front glazed stair towers.",
+        "roofForm": "Open roof parking with authored signature features",
+        "windowStyle": "Transparent stair-core glazing; permeable deck guards",
+        "massing": "60 by 36 m native envelope, 4 fixed parking levels"
+      },
+      "prompt": {
+        "subject": "Classic Concrete Parkade",
+        "details": [
+          "Open concrete decks, horizontal steel guards, two front glazed stair towers.",
+          "Preserve exact fixed deck count, open rear ramps, glazed stair cores and native geometry. Do not invent enclosed floors."
+        ]
+      },
+      "suggestedWidth_m": 64,
+      "suggestedDepth_m": 40,
+      "minWidth_m": 63,
+      "maxWidth_m": 200,
+      "minDepth_m": 39,
+      "maxDepth_m": 200,
+      "suggestedFloorHeight": 3.3,
+      "minFloors": 4,
+      "maxFloors": 4,
+      "thumbnailUrl": "/archetypes/buildings/parkade-classic-concrete/front.png",
+      "variants": [
+        {
+          "id": "classic-concrete-v1",
+          "label": "Classic Concrete Parkade",
+          "description": "Open concrete decks, horizontal steel guards, two front glazed stair towers. Fixed native assembly.",
+          "thumbnailUrl": "/archetypes/buildings/parkade-classic-concrete/front.png",
+          "minFloors": 4,
+          "maxFloors": 4,
+          "suggestedFloorHeight": 3.3
+        }
+      ]
+    },
+    {
+      "id": "parkade-urban-brick",
+      "title": "Urban Brick Parkade",
+      "buildingSubcategory": "Parkades",
+      "developmentType": "mobility_infrastructure",
+      "aestheticCategory": "original_parkade",
+      "description": "Brick piers, recessed metal ventilation screens, sheltered pedestrian entrance. Original fixed native architectural-clay concept. No structural, accessibility, capacity or traffic-engineering certification.",
+      "generationTags": [
+        "parkade",
+        "parking garage",
+        "structured parking",
+        "conventional"
+      ],
+      "styleProfile": {
+        "materials": [
+          "concrete",
+          "steel",
+          "transparent core glass"
+        ],
+        "facadeRhythm": "Brick piers, recessed metal ventilation screens, sheltered pedestrian entrance.",
+        "roofForm": "Open roof parking with authored signature features",
+        "windowStyle": "Transparent stair-core glazing; permeable deck guards",
+        "massing": "54 by 36 m native envelope, 5 fixed parking levels"
+      },
+      "prompt": {
+        "subject": "Urban Brick Parkade",
+        "details": [
+          "Brick piers, recessed metal ventilation screens, sheltered pedestrian entrance.",
+          "Preserve exact fixed deck count, open rear ramps, glazed stair cores and native geometry. Do not invent enclosed floors."
+        ]
+      },
+      "suggestedWidth_m": 58,
+      "suggestedDepth_m": 40.1,
+      "minWidth_m": 57,
+      "maxWidth_m": 200,
+      "minDepth_m": 39,
+      "maxDepth_m": 200,
+      "suggestedFloorHeight": 3.3,
+      "minFloors": 5,
+      "maxFloors": 5,
+      "thumbnailUrl": "/archetypes/buildings/parkade-urban-brick/front.png",
+      "variants": [
+        {
+          "id": "brick-v1",
+          "label": "Urban Brick Parkade",
+          "description": "Brick piers, recessed metal ventilation screens, sheltered pedestrian entrance. Fixed native assembly.",
+          "thumbnailUrl": "/archetypes/buildings/parkade-urban-brick/front.png",
+          "minFloors": 5,
+          "maxFloors": 5,
+          "suggestedFloorHeight": 3.3
+        }
+      ]
+    },
+    {
+      "id": "parkade-green-terraces",
+      "title": "Green Terraces Parkade",
+      "buildingSubcategory": "Parkades",
+      "developmentType": "mobility_infrastructure",
+      "aestheticCategory": "original_parkade",
+      "description": "Stepped planted edges, climbing screens and a separate rooftop garden. Original fixed native architectural-clay concept. No structural, accessibility, capacity or traffic-engineering certification.",
+      "generationTags": [
+        "parkade",
+        "parking garage",
+        "structured parking",
+        "innovative"
+      ],
+      "styleProfile": {
+        "materials": [
+          "concrete",
+          "steel",
+          "transparent core glass"
+        ],
+        "facadeRhythm": "Stepped planted edges, climbing screens and a separate rooftop garden.",
+        "roofForm": "Open roof parking with authored signature features",
+        "windowStyle": "Transparent stair-core glazing; permeable deck guards",
+        "massing": "60 by 40 m native envelope, 4 fixed parking levels"
+      },
+      "prompt": {
+        "subject": "Green Terraces Parkade",
+        "details": [
+          "Stepped planted edges, climbing screens and a separate rooftop garden.",
+          "Preserve exact fixed deck count, open rear ramps, glazed stair cores and native geometry. Do not invent enclosed floors."
+        ]
+      },
+      "suggestedWidth_m": 64,
+      "suggestedDepth_m": 44,
+      "minWidth_m": 63,
+      "maxWidth_m": 200,
+      "minDepth_m": 43,
+      "maxDepth_m": 200,
+      "suggestedFloorHeight": 3.3,
+      "minFloors": 4,
+      "maxFloors": 4,
+      "thumbnailUrl": "/archetypes/buildings/parkade-green-terraces/front.png",
+      "variants": [
+        {
+          "id": "green-v1",
+          "label": "Green Terraces Parkade",
+          "description": "Stepped planted edges, climbing screens and a separate rooftop garden. Fixed native assembly.",
+          "thumbnailUrl": "/archetypes/buildings/parkade-green-terraces/front.png",
+          "minFloors": 4,
+          "maxFloors": 4,
+          "suggestedFloorHeight": 3.3
+        }
+      ]
+    },
+    {
+      "id": "parkade-solar-ribbon",
+      "title": "Solar Ribbon Parkade",
+      "buildingSubcategory": "Parkades",
+      "developmentType": "mobility_infrastructure",
+      "aestheticCategory": "original_parkade",
+      "description": "Sculptural metal fins, solar roof canopy and marked EV bays. Original fixed native architectural-clay concept. No structural, accessibility, capacity or traffic-engineering certification.",
+      "generationTags": [
+        "parkade",
+        "parking garage",
+        "structured parking",
+        "innovative"
+      ],
+      "styleProfile": {
+        "materials": [
+          "concrete",
+          "steel",
+          "transparent core glass"
+        ],
+        "facadeRhythm": "Sculptural metal fins, solar roof canopy and marked EV bays.",
+        "roofForm": "Open roof parking with authored signature features",
+        "windowStyle": "Transparent stair-core glazing; permeable deck guards",
+        "massing": "66 by 36 m native envelope, 5 fixed parking levels"
+      },
+      "prompt": {
+        "subject": "Solar Ribbon Parkade",
+        "details": [
+          "Sculptural metal fins, solar roof canopy and marked EV bays.",
+          "Preserve exact fixed deck count, open rear ramps, glazed stair cores and native geometry. Do not invent enclosed floors."
+        ]
+      },
+      "suggestedWidth_m": 70,
+      "suggestedDepth_m": 40,
+      "minWidth_m": 69,
+      "maxWidth_m": 200,
+      "minDepth_m": 39,
+      "maxDepth_m": 200,
+      "suggestedFloorHeight": 3.3,
+      "minFloors": 5,
+      "maxFloors": 5,
+      "thumbnailUrl": "/archetypes/buildings/parkade-solar-ribbon/front.png",
+      "variants": [
+        {
+          "id": "solar-v1",
+          "label": "Solar Ribbon Parkade",
+          "description": "Sculptural metal fins, solar roof canopy and marked EV bays. Fixed native assembly.",
+          "thumbnailUrl": "/archetypes/buildings/parkade-solar-ribbon/front.png",
+          "minFloors": 5,
+          "maxFloors": 5,
+          "suggestedFloorHeight": 3.3
+        }
+      ]
+    },
+    {
+      "id": "parkade-mobility-courtyard",
+      "title": "Mobility Courtyard Parkade",
+      "buildingSubcategory": "Parkades",
+      "developmentType": "mobility_infrastructure",
+      "aestheticCategory": "original_parkade",
+      "description": "Open central court, colourful screens, bicycle hub and street-facing cafe. Original fixed native architectural-clay concept. No structural, accessibility, capacity or traffic-engineering certification.",
+      "generationTags": [
+        "parkade",
+        "parking garage",
+        "structured parking",
+        "innovative"
+      ],
+      "styleProfile": {
+        "materials": [
+          "concrete",
+          "steel",
+          "transparent core glass"
+        ],
+        "facadeRhythm": "Open central court, colourful screens, bicycle hub and street-facing cafe.",
+        "roofForm": "Open roof parking with authored signature features",
+        "windowStyle": "Transparent stair-core glazing; permeable deck guards",
+        "massing": "64 by 48 m native envelope, 4 fixed parking levels"
+      },
+      "prompt": {
+        "subject": "Mobility Courtyard Parkade",
+        "details": [
+          "Open central court, colourful screens, bicycle hub and street-facing cafe.",
+          "Preserve exact fixed deck count, open rear ramps, glazed stair cores and native geometry. Do not invent enclosed floors."
+        ]
+      },
+      "suggestedWidth_m": 68,
+      "suggestedDepth_m": 52,
+      "minWidth_m": 67,
+      "maxWidth_m": 200,
+      "minDepth_m": 51,
+      "maxDepth_m": 200,
+      "suggestedFloorHeight": 3.3,
+      "minFloors": 4,
+      "maxFloors": 4,
+      "thumbnailUrl": "/archetypes/buildings/parkade-mobility-courtyard/front.png",
+      "variants": [
+        {
+          "id": "courtyard-v1",
+          "label": "Mobility Courtyard Parkade",
+          "description": "Open central court, colourful screens, bicycle hub and street-facing cafe. Fixed native assembly.",
+          "thumbnailUrl": "/archetypes/buildings/parkade-mobility-courtyard/front.png",
+          "minFloors": 4,
+          "maxFloors": 4,
+          "suggestedFloorHeight": 3.3
+        }
+      ]
     }
   ]
 }

@@ -129,6 +129,30 @@ def test_preserves_source_family_underscore_identity(package):
     assert check(root)['entries'][-1]['candidate'] == review['candidate']
 
 
+def test_promotes_pre_staged_identical_bytes_without_replacing_them(package):
+    root, path = package
+    for relative, source in (("models/test-new-v001.glb", "new.glb"),
+                             ("evidence/test-new-v001.json", "review.json")):
+        dest = root / LIBRARY.parent / relative
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(path.parent / source, dest)
+    prepare(root, path, apply=True)
+    assert len(check(root)['entries']) == 2
+
+
+@pytest.mark.parametrize('relative', ['models/test-new-v001.glb', 'evidence/test-new-v001.json'])
+def test_pre_staged_conflicting_bytes_are_never_overwritten(package, relative):
+    root, path = package
+    dest = root / LIBRARY.parent / relative
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_bytes(b'preserved conflicting bytes')
+    before = (root / LIBRARY).read_bytes()
+    with pytest.raises(ValueError, match='Refusing to overwrite'):
+        prepare(root, path, apply=True)
+    assert dest.read_bytes() == b'preserved conflicting bytes'
+    assert (root / LIBRARY).read_bytes() == before
+
+
 @pytest.mark.parametrize('candidate', ['../escape', 'family/escape', 'C:\\escape', 'family..v001'])
 def test_candidate_paths_cannot_escape_package(package, candidate):
     root, path = package
