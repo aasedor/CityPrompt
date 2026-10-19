@@ -16,7 +16,7 @@ import assemblies as A
 import geometry as G
 
 SLUG = 'clay-georgian-terrace-house'
-X0, X1, Y0, Y1 = -5.5, 5.5, -4.5, 4.5          # 11 m, five bays; 9 m deep
+X0, X1, Y0, Y1 = -5.5, 5.5, -3.6, 3.6          # 11 m, five bays; 7.2 m deep (top view, about 0.65 of the width)
 T = .35
 G0 = .3
 F1 = 3.8                                        # first floor (piano nobile)
@@ -46,11 +46,11 @@ def manifest(version):
         ('chimney_stacks', (12.0, -10.0, 19.0), (X1, 0.0, EAVE + 3.5), 40),
         ('east_side', (17.0, 0.0, 6.0), (X1, 0.0, 6.0), 45),
         ('roof_lead', (-9.0, -10.0, 24.0), (0.0, .8, EAVE + 2.5), 40),
-        ('interior', (2.5, 3.0, F1 + 1.6), (-1.5, Y0, F1 + 1.8), 40),
+        ('interior', (2.5, 2.4, F1 + 1.6), (-1.5, Y0, F1 + 1.8), 40),
         ('rear_north', (0.0, 24.0, 6.5), (0.0, Y1, 6.5), 45)])
     for c in cams:                       # the locked front and oblique look from the south-east
         if c['name'] == 'front':
-            c['location'] = (6.5, -15.0, 1.6); c['target'] = (-.5, -4.5, 6.8); c['lens'] = 24; c['whole'] = False
+            c['location'] = (6.5, -15.0, 1.6); c['target'] = (-.5, Y0, 6.8); c['lens'] = 24; c['whole'] = False
         elif c['name'] == 'front_corner':                                      # the locked oblique: close and high from the south-east
             c.update(location=(17.0, -24.0, 20.0), target=(0.0, -1.0, 6.5), lens=35, whole=False)
         elif c['name'] == 'aerial':
@@ -63,7 +63,7 @@ def manifest(version):
         source_archetype='georgian_terrace_house/variant_0 (georgian-terrace-house-early)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=4, storey_programme='three brick storeys (ground, piano nobile, second floor) and a mansard attic',
-            plan='11 x 9 m five-bay end-of-terrace house (top view), a side passage east, a small hipped rear wing',
+            plan='11 x 7.2 m five-bay end-of-terrace house (top view), a side passage east, a small hipped rear wing',
             facade='yellow-brown stock brick; six-over-six sashes under gauged flat arches; tall first-floor windows; stone doorcase with balconette; string course; coped parapet; slate mansard with five dormers',
             levels_m=[G0, F1, F2, EAVE], roof_m=dict(parapet=EAVE + .45, mansard_top=EAVE + .3 + MR),
             inferred='interiors, the rear face and the rear wing are teaching assumptions'),
@@ -509,8 +509,8 @@ def side_and_rear():
         sash(m, w, h, lite=True)
     m.flush('west')
     ARCH.flush('west arches')
-    side_parapet('East parapet', X1 - T, X1, [(-1.5, 3.4, 5)])
-    side_parapet('West parapet', X0, X0 + T, [(-1.2, 3.1, 4), (2.6, 3.1, 4)])
+    side_parapet('East parapet', X1 - T, X1, [(Y0 + 3.0, 3.4, 5)])
+    side_parapet('West parapet', X0, X0 + T, [(-.75, 2.4, 3), (2.2, 2.4, 3)])
     n = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'north')
     # Rear: the east column clears the low extension, the west column the hipped wing (rear faces u = -x).
     hs = [hole(f'rear sash east f{k}', -2.1, z, 1.0, hh) for k, (z, hh) in enumerate(((F1 + .45, 2.3), (F2 + .55, 1.7), (EAVE + .55, 1.4)))] + \
@@ -530,7 +530,7 @@ def roof_and_inside():
     strip('Slate mansard', [(x0, Y0 + T + .02), (x1, Y0 + T + .02)], [(x1, Y0 + MRUN + .1), (x0, Y0 + MRUN + .1)][::-1],
           EAVE + .3, ZM, 'roof', 'roof', closed=False)
     # Upper roof: two shallow slate planes meeting at a mid-depth ridge, then a narrow lead strip at the rear.
-    ya, yr, yb = Y0 + MRUN + .1, .4, Y1 - 1.6
+    ya, yr, yb = Y0 + MRUN + .1, -.1, Y1 - 1.6
     plate_x('Upper slate front', (ya, ZM), (yr, ZM + .28), x0, x1)
     plate_x('Upper slate rear', (yr, ZM + .28), (yb, ZM), x0, x1)
     C.box('Rear lead strip', ((x0 + x1) / 2, (yb + Y1 - T) / 2, ZM - .1), (x1 - x0, Y1 - T - yb, .2), 'lead', 'roof', 0)
@@ -589,22 +589,31 @@ def rear_block(name, xa, xb, ya, yb, h, wins, parapet=False):
 
 
 def dormer(u):
-    w = .85
-    yf = Y0 + .55
-    zb, zt = EAVE + .62, EAVE + 2.05
+    """Flat lead-topped dormer standing clear of the mansard: a portrait two-over-two sash with a full frame, a sill
+    on an apron of slate, slate cheeks running back into the slope."""
+    w = .75
+    yf = Y0 + .40                                                                            # front plane, just behind the parapet
+    zb, zt = EAVE + .9, EAVE + 2.45
+    yb = Y0 + MRUN + .5
+    H = zt - zb
+    zm = zb + H / 2
     b = Batch()
     for s in (-1, 1):                                                                        # slate cheeks
-        b.box('roof', u + s * (w / 2 + .08), (yf + Y0 + MRUN + .5) / 2, (zb + zt) / 2, .16, Y0 + MRUN + .5 - yf, zt - zb)
-    b.box('trim', u, yf + .06, zb + .07, w, .2, .14)                                          # sill
-    b.box('trim', u, yf + .06, zt - .08, w + .1, .2, .16)                                     # head
-    for s in (-1, 1):
-        b.box('trim', u + s * (w / 2 - .035), yf + .1, (zb + zt) / 2, .07, .08, zt - zb - .1)
-    b.box('trim', u, yf + .1, (zb + zt) / 2 + .1, w - .1, .07, .05)
-    b.box('trim', u, yf + .1, (zb + zt) / 2 - .25, .04, .07, zt - zb - .6)
-    b.box('glass', u, yf + .17, (zb + zt) / 2, w - .04, .01, zt - zb - .2)
-    b.box('interior', u, (yf + .25 + Y0 + MRUN + .5) / 2, (zb + zt) / 2, w, Y0 + MRUN + .5 - yf - .25, zt - zb - .2)
+        b.box('roof', u + s * (w / 2 + .08), (yf + yb) / 2, (zb - .1 + zt) / 2, .16, yb - yf, zt - zb + .1)
+    b.box('roof', u, (yf + yf + .5) / 2, (EAVE + .35 + zb - .09) / 2, w + .32, .5, zb - .09 - EAVE - .35)   # slate apron under the sill
+    b.box('trim', u, yf + .02, zb - .0475, w + .16, .2, .105)                                     # sill
+    for s in (-1, 1):                                                                        # frame posts
+        b.box('trim', u + s * (w / 2 - .035), yf + .08, zm, .07, .08, H)
+    for z in (zb + .035, zt - .035):                                                         # bottom and head rails
+        b.box('trim', u, yf + .08, z, w - .14, .08, .07)
+    b.box('trim', u, yf + .075, zm, w - .14, .09, .06)                                        # meeting rail
+    b.box('trim', u, yf + .085, zm, .035, .06, H - .14)                                       # one vertical bar through both sashes
+    for z in (zb + H / 4, zb + 3 * H / 4):                                                   # one horizontal bar in each sash
+        b.box('trim', u, yf + .085, z, w - .14, .06, .035)
+    b.box('glass', u, yf + .13, zm, w - .1, .01, H - .1)
+    b.box('interior', u, (yf + .14 + yb) / 2, zm, w, yb - yf - .14, H - .05)
     b.flush(f'dormer {u:+.1f}')
-    C.prism(f'Dormer lead top {u:+.1f}', [(yf - .12, zt), (Y0 + MRUN + .5, zt), (Y0 + MRUN + .5, zt + .2), (yf - .12, zt + .1)], 'x', u - w / 2 - .24, u + w / 2 + .24, 'lead', 'dormers')
+    C.prism(f'Dormer lead top {u:+.1f}', [(yf - .12, zt), (yb, zt), (yb, zt + .2), (yf - .12, zt + .1)], 'x', u - w / 2 - .24, u + w / 2 + .24, 'lead', 'dormers')
 
 
 def site():
