@@ -22,7 +22,7 @@ EPS = .002
 PALETTE = dict(water=(.20, .48, .50), riprap=(.15, .15, .14), rock=(.23, .23, .22), rock2=(.19, .19, .18), rock3=(.28, .27, .26),
     soil=(.30, .25, .18), grass=(.50, .52, .26), grass2=(.62, .58, .30), stonewall=(.52, .49, .44), planting=(.30, .44, .20), tree=(.28, .44, .18), timber=(.46, .34, .22),
     concrete=(.78, .76, .72), joint=(.62, .60, .56), stone=(.70, .64, .54), gabion=(.58, .55, .50),
-    hardware=(.36, .26, .18), rail=(.40, .30, .20), bench=(.52, .38, .24), red=(.70, .12, .12),
+    hardware=(.36, .26, .18), rail=(.29, .21, .12), bench=(.52, .38, .24), red=(.70, .12, .12),
     wall=(.80, .74, .62), brick=(.80, .74, .62), trim=(.92, .92, .90), glass=(.24, .30, .34), pale=(.88, .88, .86),
     interior=(.84, .80, .74), floor=(.58, .48, .38), sand=(.70, .66, .58), asphalt=(.30, .30, .31), white=(.95, .95, .93),
     roof=(.66, .66, .64), blue=(.20, .30, .40), pot=(.60, .34, .22))
@@ -54,6 +54,8 @@ def manifest(version):
             c.update(location=(-36.0, -4.0, 10.0), target=(-4.0, 0.0, 2.0), lens=30, whole=False)
         elif c['name'] == 'rear':                                              # from the north along the section
             c.update(location=(-5.0, Y1 + 20.0, 9.0), target=(-5.0, Y1 - 8.0, 1.5), lens=28, whole=False)
+        elif c['name'] == 'right_side':                                        # raised three-quarter from over the river, looking up the section to the bridge
+            c.update(location=(-44.0, -24.0, 25.0), target=(-3.0, 8.0, 1.0), lens=26, whole=False)
         elif c['name'] == 'rear_side':
             c.update(location=(-30.0, Y1 + 14.0, 15.0), target=(-5.0, 12.0, 1.5), lens=30, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -607,6 +609,19 @@ def building_edge():
         C.rod('Edge tree trunk', ((PROM + EDGE) / 2, y, ZP), ((PROM + EDGE) / 2, y, ZP + 2.6), .1, 'timber', 'trees', 6)
 
 
+def rw_framed(m, f, h, inset=.14, occupied='flat', kind='window'):
+    """Light frame plate, pane and a cross of glazing bars; the mullion stops either side of the transom and sits 8 mm
+    behind it, so the two bars never overlap or share a plane at the crossing (the v002 black-square defect)."""
+    u, z, w, hh = h['u'], h['z'], h['w'], h['h']
+    zt = z + hh * .55
+    m.box('trim', u, inset + .06, z + hh / 2, w - .01, .08, hh - .01)
+    m.box('glass', u, inset + .01, z + hh / 2, w - .03, .009, hh - .03)
+    m.box('trim', u, inset - .014, zt, w - .02, .036, .05)                                 # transom, clear of the pane
+    for za, zb in ((z + .01, zt - .025), (zt + .025, z + hh - .01)):                       # mullion in two pieces
+        m.box('trim', u, inset - .006, (za + zb) / 2, .05, .02, zb - za)
+    register(f, h, inset, kind, occupied)
+
+
 def blocks():
     """Pale-brick mid-rise apartment blocks: a west face with real cuts and balconies, a body behind with a window grid on
     its rear and end faces, patios at grade."""
@@ -628,7 +643,7 @@ def blocks():
         G.brick_courses(f, lo + .02, hi - .02, ZP + .1, top - .1, hs, spacing=.6)
         m = Merge(f)
         for h in hs:
-            framed(m, f, h, cols=2, rows=1 if h['h'] < 2 else 2, inset=.14, occupied='flat', kind='door' if h.get('kind') else 'window', lite=True)
+            rw_framed(m, f, h, inset=.14, occupied='flat', kind='door' if h.get('kind') else 'window')
         for k in range(1, nf):                                                              # balconies with glass rails on alternate bays
             z = ZP + k * 3.0 + .1
             for j in range(0, n, 2):
