@@ -68,6 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (v004 reworks it)
+## Open blockers after v004 (v005 reworks these two; a second non-improving review stops the family)
 
-- P1 #1: the clock tower is too short and squat: in right_side its top cornice sits below the corner-pyramid finials and the clocks below the pavilion apexes; about 1.3x the pavilion height against about 2x in the source front; the spire is a broad four-sided pyramid (height:base about 1.0) where the source has a slender octagonal or conical spire (1.4-1.8).
+- P1 #1: on all four corner pavilions the giant round arches sit one storey too high (third floor under the eave, tall rectangular lights below, paired rectangles on the first floor); the sources show the giant arcade rising from above the basement (rectangular first floor, round-arched second floor) with a full-width small-arch arcade across the third floor.
+- P1 #2: no street trees on the north and west sidewalks; the top source shows about two trees on each of the four sidewalks.
