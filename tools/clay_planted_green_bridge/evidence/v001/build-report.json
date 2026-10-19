@@ -1,0 +1,220 @@
+{
+  "candidate": "clay-planted-green-bridge-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 46,
+    "vertices": 26021,
+    "polygons": 40886,
+    "triangles": 40886,
+    "path": "clay-planted-green-bridge-clay-v001-authoring.blend",
+    "bytes": 3355144,
+    "sha256": "9be2a041c5f13b50002268615ae74c9e81edfaa0456bf3ef9813e6363dd0cbfb"
+  },
+  "runtime": {
+    "path": "clay-planted-green-bridge-clay-v001.glb",
+    "bytes": 2725664,
+    "sha256": "2c81a1811583aff061281a6344f4114cf84b9465f0d771ad3b36c40fd7dcfac8",
+    "meshes": 20,
+    "materials": 20,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 20,
+    "vertices": 26021,
+    "polygons": 40886,
+    "triangles": 40886
+  },
+  "original_bounds_m": [
+    [
+      -70.0,
+      -70.0,
+      0.0
+    ],
+    [
+      70.0,
+      70.0,
+      40.189998626708984
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -70.0,
+      -70.0,
+      0.0
+    ],
+    [
+      70.0,
+      70.0,
+      40.189998626708984
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 32.0,
+    "depth": 80.0,
+    "height": 14.0
+  },
+  "native_dimensions_m": {
+    "width": 140.0,
+    "depth": 140.0,
+    "height": 40.189998626708984
+  },
+  "native_bottom_center_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "water": 1,
+    "rock": 1,
+    "grass": 3,
+    "planting": 4,
+    "shrub": 2,
+    "tree": 2,
+    "lavender": 1,
+    "flower": 1,
+    "straw": 1,
+    "timber": 5,
+    "corten": 3,
+    "steel": 3,
+    "rail": 4,
+    "concrete": 4,
+    "path": 4,
+    "asphalt": 1,
+    "white": 1,
+    "brick": 1,
+    "dark": 2,
+    "pale": 2
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/planting_bed.png",
+    "renders/central_path.png",
+    "renders/viewing_pod.png",
+    "renders/pier_column.png",
+    "renders/rail_bollard.png",
+    "renders/water_under.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Planted bridge: path between beds on a girder deck, pods on cross-heads and columns in the river, banks with paths",
+      "box": [
+        -16.0,
+        16.0,
+        -40.0,
+        40.0
+      ]
+    }
+  ],
+  "opening_sections": [],
+  "authoring_modules": {
+    "river": [
+      "River"
+    ],
+    "banks": [
+      "North bank",
+      "South bank"
+    ],
+    "rip-rap": [
+      "rip-rap rock"
+    ],
+    "bank paths": [
+      "bank paths asphalt",
+      "bank paths rail",
+      "bank paths white",
+      "bank paths dark",
+      "bank paths pale"
+    ],
+    "bank trees": [
+      "bank trees timber",
+      "bank trees tree",
+      "bank trees shrub"
+    ],
+    "context blocks": [
+      "context blocks brick",
+      "context blocks dark"
+    ],
+    "deck": [
+      "deck concrete",
+      "deck path",
+      "deck steel",
+      "deck planting",
+      "deck corten"
+    ],
+    "pod paths": [
+      "pod paths path"
+    ],
+    "supports": [
+      "supports concrete"
+    ],
+    "railings": [
+      "railings timber",
+      "railings rail",
+      "railings pale"
+    ],
+    "pods": [
+      "Pod slab -1",
+      "Pod walk -1",
+      "Pod bed -1",
+      "Pod frame -1",
+      "Pod slab +1",
+      "Pod walk +1",
+      "Pod bed +1",
+      "Pod frame +1"
+    ],
+    "pod fascia -1": [
+      "pod fascia -1 corten"
+    ],
+    "pod railing -1": [
+      "pod railing -1 timber",
+      "pod railing -1 rail"
+    ],
+    "pod fascia +1": [
+      "pod fascia +1 corten"
+    ],
+    "pod railing +1": [
+      "pod railing +1 timber",
+      "pod railing +1 rail"
+    ],
+    "planting": [
+      "planting planting",
+      "planting shrub",
+      "planting straw",
+      "planting grass",
+      "planting lavender",
+      "planting flower",
+      "planting tree",
+      "planting timber"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-19T13:08:33.137485+00:00",
+  "delivery_and_render_seconds": 6309.880089528,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
