@@ -68,16 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (v002 reworks these eleven)
+## Open blockers after v002 (v003 reworks these four)
 
-1. P0: the front view clips the bridge: one pier and about 1.5 of 3 arches in frame; second pier, third arch, near abutment and curved approach out of frame.
-2. P1: front_corner cuts off the near abutment and curved approach wall.
-3. P1: the plan is mirror-symmetric with at-grade crossings; the source has the east quay road under a fourth land arch, a curved north-east quay and a narrower upstream river.
-4. P1: the splayed approach walls are pedestal-sized stubs instead of large curved quadrant walls.
-5. P1: the curved approach wall overhangs the quay face and its open underside shows as a black saw-tooth with a loose wedge.
-6. P1: a see-through black slit at every pier where the arch jamb meets the cutwater.
-7. P1: plain utility lamps instead of ornate lamps with moulded base, scroll arms and domed lanterns.
-8. P1: the scene visibly ends; the river stops against a grey plane and a quay block end is exposed.
-9. P1: cool grey stone and teal water against warm sandstone and dark olive water; stone, quay and paving hard to tell apart.
-10. P1: two foreground trees hide the near arch, pier and abutment in rear_side.
-11. P1: left_side and right_side show the bridge under 8% of the frame height and are near-identical mirrors.
+- P1 #1: both west quadrant corners are doubled: the swept quay coping cuts through the quadrant balustrade, balusters poke under and past the slab, two concentric barriers where the source has one.
+- P1 #2: the lamp scroll arms and volutes are chains of box segments with black gaps at every joint.
+- P1 #3: every pier panel frame has black void squares at all four corners.
+- P1 #4: rear_side clips the east end: east abutment, quadrant and end lamp off the left edge, land arch at the frame edge.

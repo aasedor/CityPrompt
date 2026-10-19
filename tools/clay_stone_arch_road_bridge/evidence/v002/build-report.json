@@ -1,0 +1,4207 @@
+{
+  "candidate": "clay-stone-arch-road-bridge-clay-v002",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 402,
+    "vertices": 44260,
+    "polygons": 70948,
+    "triangles": 70948,
+    "path": "clay-stone-arch-road-bridge-clay-v002-authoring.blend",
+    "bytes": 7130984,
+    "sha256": "4842a91a794ac58ed88afbb6323b803f25c19c859f7695f3296671f9591121e2"
+  },
+  "runtime": {
+    "path": "clay-stone-arch-road-bridge-clay-v002.glb",
+    "bytes": 3882272,
+    "sha256": "5a802c4ddb8a741c03c1a3593c9b18fc7c517ec312c39e5b3988974b2552c4e0",
+    "meshes": 23,
+    "materials": 23,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 23,
+    "vertices": 44260,
+    "polygons": 70948,
+    "triangles": 70948
+  },
+  "original_bounds_m": [
+    [
+      -2400.0,
+      -2400.030029296875,
+      0.0
+    ],
+    [
+      2400.0,
+      2400.030029296875,
+      33.150001525878906
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -2400.0,
+      -2400.030029296875,
+      0.0
+    ],
+    [
+      2400.0,
+      2400.030029296875,
+      33.150001525878906
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 68.5,
+    "depth": 18.0,
+    "height": 18.0
+  },
+  "native_dimensions_m": {
+    "width": 4800.0,
+    "depth": 4800.06005859375,
+    "height": 33.150001525878906
+  },
+  "native_bottom_center_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "water": 1,
+    "stone": 32,
+    "arch": 23,
+    "joint": 9,
+    "quay": 3,
+    "asphalt": 4,
+    "white": 4,
+    "paving": 8,
+    "kerb": 1,
+    "hardware": 10,
+    "pale": 20,
+    "glass": 6,
+    "wall": 13,
+    "facade2": 13,
+    "brick": 5,
+    "roof": 156,
+    "red": 1,
+    "van": 1,
+    "car": 2,
+    "dark": 9,
+    "trim": 4,
+    "planting": 33,
+    "timber": 44
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/arch_spandrel.png",
+    "renders/cutwater_pier.png",
+    "renders/balustrade.png",
+    "renders/lamp_standard.png",
+    "renders/roadway_deck.png",
+    "renders/river_underside.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Stone road bridge: three river arches between the high west quay and the east river pier, a land arch over the low east quay road; piers and cutwaters from the water, quadrant walls on curved abutment corners, deck on the spandrels",
+      "box": [
+        -27.5,
+        41.0,
+        -9.0,
+        9.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "Block W north window 0 0",
+      "face": "Block W north",
+      "u": 15.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 0 1",
+      "face": "Block W north",
+      "u": 18.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 0 2",
+      "face": "Block W north",
+      "u": 21.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 0 3",
+      "face": "Block W north",
+      "u": 24.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 0 4",
+      "face": "Block W north",
+      "u": 27.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 0 5",
+      "face": "Block W north",
+      "u": 30.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 0 6",
+      "face": "Block W north",
+      "u": 33.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 0 7",
+      "face": "Block W north",
+      "u": 36.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 0 8",
+      "face": "Block W north",
+      "u": 39.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 1 0",
+      "face": "Block W north",
+      "u": 15.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 1 1",
+      "face": "Block W north",
+      "u": 18.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 1 2",
+      "face": "Block W north",
+      "u": 21.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 1 3",
+      "face": "Block W north",
+      "u": 24.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 1 4",
+      "face": "Block W north",
+      "u": 27.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 1 5",
+      "face": "Block W north",
+      "u": 30.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 1 6",
+      "face": "Block W north",
+      "u": 33.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 1 7",
+      "face": "Block W north",
+      "u": 36.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 1 8",
+      "face": "Block W north",
+      "u": 39.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 2 0",
+      "face": "Block W north",
+      "u": 15.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 2 1",
+      "face": "Block W north",
+      "u": 18.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 2 2",
+      "face": "Block W north",
+      "u": 21.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 2 3",
+      "face": "Block W north",
+      "u": 24.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 2 4",
+      "face": "Block W north",
+      "u": 27.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 2 5",
+      "face": "Block W north",
+      "u": 30.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 2 6",
+      "face": "Block W north",
+      "u": 33.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 2 7",
+      "face": "Block W north",
+      "u": 36.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W north window 2 8",
+      "face": "Block W north",
+      "u": 39.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 0 0",
+      "face": "Block W south",
+      "u": -43.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 0 1",
+      "face": "Block W south",
+      "u": -40.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 0 2",
+      "face": "Block W south",
+      "u": -37.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 0 3",
+      "face": "Block W south",
+      "u": -34.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 0 4",
+      "face": "Block W south",
+      "u": -31.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 0 5",
+      "face": "Block W south",
+      "u": -28.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 0 6",
+      "face": "Block W south",
+      "u": -25.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 0 7",
+      "face": "Block W south",
+      "u": -22.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 0 8",
+      "face": "Block W south",
+      "u": -19.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 1 0",
+      "face": "Block W south",
+      "u": -43.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 1 1",
+      "face": "Block W south",
+      "u": -40.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 1 2",
+      "face": "Block W south",
+      "u": -37.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 1 3",
+      "face": "Block W south",
+      "u": -34.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 1 4",
+      "face": "Block W south",
+      "u": -31.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 1 5",
+      "face": "Block W south",
+      "u": -28.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 1 6",
+      "face": "Block W south",
+      "u": -25.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 1 7",
+      "face": "Block W south",
+      "u": -22.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 1 8",
+      "face": "Block W south",
+      "u": -19.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 2 0",
+      "face": "Block W south",
+      "u": -43.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 2 1",
+      "face": "Block W south",
+      "u": -40.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 2 2",
+      "face": "Block W south",
+      "u": -37.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 2 3",
+      "face": "Block W south",
+      "u": -34.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 2 4",
+      "face": "Block W south",
+      "u": -31.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 2 5",
+      "face": "Block W south",
+      "u": -28.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 2 6",
+      "face": "Block W south",
+      "u": -25.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 2 7",
+      "face": "Block W south",
+      "u": -22.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 2 8",
+      "face": "Block W south",
+      "u": -19.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 3 0",
+      "face": "Block W south",
+      "u": -43.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 3 1",
+      "face": "Block W south",
+      "u": -40.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 3 2",
+      "face": "Block W south",
+      "u": -37.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 3 3",
+      "face": "Block W south",
+      "u": -34.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 3 4",
+      "face": "Block W south",
+      "u": -31.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 3 5",
+      "face": "Block W south",
+      "u": -28.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 3 6",
+      "face": "Block W south",
+      "u": -25.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 3 7",
+      "face": "Block W south",
+      "u": -22.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block W south window 3 8",
+      "face": "Block W south",
+      "u": -19.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -54.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 0 0",
+      "face": "Block E south",
+      "u": 15.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 0 1",
+      "face": "Block E south",
+      "u": 18.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 0 2",
+      "face": "Block E south",
+      "u": 21.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 0 3",
+      "face": "Block E south",
+      "u": 24.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 0 4",
+      "face": "Block E south",
+      "u": 27.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 0 5",
+      "face": "Block E south",
+      "u": 30.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 0 6",
+      "face": "Block E south",
+      "u": 33.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 0 7",
+      "face": "Block E south",
+      "u": 36.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 0 8",
+      "face": "Block E south",
+      "u": 39.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 1 0",
+      "face": "Block E south",
+      "u": 15.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 1 1",
+      "face": "Block E south",
+      "u": 18.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 1 2",
+      "face": "Block E south",
+      "u": 21.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 1 3",
+      "face": "Block E south",
+      "u": 24.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 1 4",
+      "face": "Block E south",
+      "u": 27.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 1 5",
+      "face": "Block E south",
+      "u": 30.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 1 6",
+      "face": "Block E south",
+      "u": 33.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 1 7",
+      "face": "Block E south",
+      "u": 36.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 1 8",
+      "face": "Block E south",
+      "u": 39.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 2 0",
+      "face": "Block E south",
+      "u": 15.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 2 1",
+      "face": "Block E south",
+      "u": 18.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 2 2",
+      "face": "Block E south",
+      "u": 21.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 2 3",
+      "face": "Block E south",
+      "u": 24.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 2 4",
+      "face": "Block E south",
+      "u": 27.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 2 5",
+      "face": "Block E south",
+      "u": 30.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 2 6",
+      "face": "Block E south",
+      "u": 33.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 2 7",
+      "face": "Block E south",
+      "u": 36.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 2 8",
+      "face": "Block E south",
+      "u": 39.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 3 0",
+      "face": "Block E south",
+      "u": 15.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 3 1",
+      "face": "Block E south",
+      "u": 18.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 3 2",
+      "face": "Block E south",
+      "u": 21.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 3 3",
+      "face": "Block E south",
+      "u": 24.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 3 4",
+      "face": "Block E south",
+      "u": 27.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 3 5",
+      "face": "Block E south",
+      "u": 30.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 3 6",
+      "face": "Block E south",
+      "u": 33.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 3 7",
+      "face": "Block E south",
+      "u": 36.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E south window 3 8",
+      "face": "Block E south",
+      "u": 39.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 0 0",
+      "face": "Block E north",
+      "u": -42.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 0 1",
+      "face": "Block E north",
+      "u": -39.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 0 2",
+      "face": "Block E north",
+      "u": -36.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 0 3",
+      "face": "Block E north",
+      "u": -33.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 0 4",
+      "face": "Block E north",
+      "u": -30.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 0 5",
+      "face": "Block E north",
+      "u": -27.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 0 6",
+      "face": "Block E north",
+      "u": -24.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 0 7",
+      "face": "Block E north",
+      "u": -21.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 1 0",
+      "face": "Block E north",
+      "u": -42.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 1 1",
+      "face": "Block E north",
+      "u": -39.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 1 2",
+      "face": "Block E north",
+      "u": -36.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 1 3",
+      "face": "Block E north",
+      "u": -33.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 1 4",
+      "face": "Block E north",
+      "u": -30.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 1 5",
+      "face": "Block E north",
+      "u": -27.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 1 6",
+      "face": "Block E north",
+      "u": -24.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 1 7",
+      "face": "Block E north",
+      "u": -21.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 2 0",
+      "face": "Block E north",
+      "u": -42.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 2 1",
+      "face": "Block E north",
+      "u": -39.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 2 2",
+      "face": "Block E north",
+      "u": -36.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 2 3",
+      "face": "Block E north",
+      "u": -33.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 2 4",
+      "face": "Block E north",
+      "u": -30.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 2 5",
+      "face": "Block E north",
+      "u": -27.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 2 6",
+      "face": "Block E north",
+      "u": -24.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block E north window 2 7",
+      "face": "Block E north",
+      "u": -21.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "River",
+      "West bank",
+      "West bank asphalt",
+      "West apron -1",
+      "West apron +1",
+      "Low east quay",
+      "Low quay parapet",
+      "Low quay parapet coping",
+      "Low quay parapet.001",
+      "Low quay parapet coping.001",
+      "Low quay edge paving",
+      "Low quay road",
+      "Low quay footway",
+      "East bank",
+      "East bank asphalt",
+      "East plots -1",
+      "East plots +1",
+      "Retaining wall parapet",
+      "Retaining wall parapet coping"
+    ],
+    "west bank": [
+      "west bank paving",
+      "west bank white",
+      "west bank joint"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020",
+      "Street tree trunk.007",
+      "Street tree branch.021",
+      "Street tree branch.022",
+      "Street tree branch.023",
+      "Street tree trunk.008",
+      "Street tree branch.024",
+      "Street tree branch.025",
+      "Street tree branch.026",
+      "Street tree trunk.009",
+      "Street tree branch.027",
+      "Street tree branch.028",
+      "Street tree branch.029",
+      "Street tree trunk.010",
+      "Street tree branch.030",
+      "Street tree branch.031",
+      "Street tree branch.032"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023",
+      "Street tree crown.024",
+      "Street tree crown.025",
+      "Street tree crown.026",
+      "Street tree crown.027",
+      "Street tree crown.028",
+      "Street tree crown.029",
+      "Street tree crown.030",
+      "Street tree crown.031",
+      "Street tree crown.032"
+    ],
+    "low quay": [
+      "low quay white",
+      "low quay car",
+      "low quay glass"
+    ],
+    "east bank": [
+      "east bank white",
+      "east bank joint"
+    ],
+    "bridge": [
+      "Bridge body",
+      "Cutwater 0 -1",
+      "Cutwater hood 0 -1",
+      "Pier refuge 0 -1",
+      "Pier refuge cap 0 -1",
+      "Cutwater 0 +1",
+      "Cutwater hood 0 +1",
+      "Pier refuge 0 +1",
+      "Pier refuge cap 0 +1",
+      "Cutwater 1 -1",
+      "Cutwater hood 1 -1",
+      "Pier refuge 1 -1",
+      "Pier refuge cap 1 -1",
+      "Cutwater 1 +1",
+      "Cutwater hood 1 +1",
+      "Pier refuge 1 +1",
+      "Pier refuge cap 1 +1",
+      "Pier refuge 2 -1",
+      "Pier refuge cap 2 -1",
+      "Pier refuge 2 +1",
+      "Pier refuge cap 2 +1",
+      "Quadrant plinth",
+      "Quadrant rail",
+      "Quadrant plinth.001",
+      "Quadrant rail.001",
+      "Quadrant plinth.002",
+      "Quadrant rail.002",
+      "Quadrant plinth.003",
+      "Quadrant rail.003"
+    ],
+    "arch rings": [
+      "arch rings stone",
+      "arch rings arch"
+    ],
+    "ashlar": [
+      "ashlar joint"
+    ],
+    "pier pilaster 0 -1": [
+      "pier pilaster 0 -1 stone",
+      "pier pilaster 0 -1 arch",
+      "pier pilaster 0 -1 joint"
+    ],
+    "pier pilaster 0 +1": [
+      "pier pilaster 0 +1 stone",
+      "pier pilaster 0 +1 arch",
+      "pier pilaster 0 +1 joint"
+    ],
+    "pier pilaster 1 -1": [
+      "pier pilaster 1 -1 stone",
+      "pier pilaster 1 -1 arch",
+      "pier pilaster 1 -1 joint"
+    ],
+    "pier pilaster 1 +1": [
+      "pier pilaster 1 +1 stone",
+      "pier pilaster 1 +1 arch",
+      "pier pilaster 1 +1 joint"
+    ],
+    "pier pilaster 2 -1": [
+      "pier pilaster 2 -1 stone",
+      "pier pilaster 2 -1 arch",
+      "pier pilaster 2 -1 joint"
+    ],
+    "pier pilaster 2 +1": [
+      "pier pilaster 2 +1 stone",
+      "pier pilaster 2 +1 arch",
+      "pier pilaster 2 +1 joint"
+    ],
+    "cornice": [
+      "cornice stone",
+      "cornice arch"
+    ],
+    "deck": [
+      "Carriageway",
+      "deck paving",
+      "deck kerb",
+      "deck white"
+    ],
+    "balustrades": [
+      "balustrades stone",
+      "balustrades arch"
+    ],
+    "lamps": [
+      "Lamp pier -12 -1 lantern glass -1",
+      "Lamp pier -12 -1 lantern glass +1",
+      "Lamp pier -12 +1 lantern glass -1",
+      "Lamp pier -12 +1 lantern glass +1",
+      "Lamp pier +8 -1 lantern glass -1",
+      "Lamp pier +8 -1 lantern glass +1",
+      "Lamp pier +8 +1 lantern glass -1",
+      "Lamp pier +8 +1 lantern glass +1",
+      "Lamp pier +28 -1 lantern glass -1",
+      "Lamp pier +28 -1 lantern glass +1",
+      "Lamp pier +28 +1 lantern glass -1",
+      "Lamp pier +28 +1 lantern glass +1",
+      "Lamp end -28 -1 lantern glass -1",
+      "Lamp end -28 -1 lantern glass +1",
+      "Lamp end -28 +1 lantern glass -1",
+      "Lamp end -28 +1 lantern glass +1",
+      "Lamp end +41 -1 lantern glass -1",
+      "Lamp end +41 -1 lantern glass +1",
+      "Lamp end +41 +1 lantern glass -1",
+      "Lamp end +41 +1 lantern glass +1"
+    ],
+    "Lamp pier -12 -1": [
+      "Lamp pier -12 -1 hardware"
+    ],
+    "Lamp pier -12 +1": [
+      "Lamp pier -12 +1 hardware"
+    ],
+    "Lamp pier +8 -1": [
+      "Lamp pier +8 -1 hardware"
+    ],
+    "Lamp pier +8 +1": [
+      "Lamp pier +8 +1 hardware"
+    ],
+    "Lamp pier +28 -1": [
+      "Lamp pier +28 -1 hardware"
+    ],
+    "Lamp pier +28 +1": [
+      "Lamp pier +28 +1 hardware"
+    ],
+    "Lamp end -28 -1": [
+      "Lamp end -28 -1 hardware"
+    ],
+    "Lamp end -28 +1": [
+      "Lamp end -28 +1 hardware"
+    ],
+    "Lamp end +41 -1": [
+      "Lamp end +41 -1 hardware"
+    ],
+    "Lamp end +41 +1": [
+      "Lamp end +41 +1 hardware"
+    ],
+    "quadrants and quay parapets": [
+      "quadrants and quay parapets stone",
+      "quadrants and quay parapets arch"
+    ],
+    "envelope": [
+      "Block W north river face",
+      "Block W south river face",
+      "Block E south river face",
+      "Block E north river face"
+    ],
+    "Block W north": [
+      "Block W north Block W north trim",
+      "Block W north Block W north glass"
+    ],
+    "context": [
+      "Block W north body",
+      "Block W north roof",
+      "Block W south body",
+      "Block W south roof",
+      "Block E south body",
+      "Block E south roof",
+      "Block E north body",
+      "Block E north roof",
+      "Block W -1 0 body",
+      "Block W -1 0 roof",
+      "Block E -1 0 body",
+      "Block E -1 0 roof",
+      "Block W -1 1 body",
+      "Block W -1 1 roof",
+      "Block E -1 1 body",
+      "Block E -1 1 roof",
+      "Block W -1 2 body",
+      "Block W -1 2 roof",
+      "Block E -1 2 body",
+      "Block E -1 2 roof",
+      "Block W -1 3 body",
+      "Block W -1 3 roof",
+      "Block E -1 3 body",
+      "Block E -1 3 roof",
+      "Block W -1 4 body",
+      "Block W -1 4 roof",
+      "Block E -1 4 body",
+      "Block E -1 4 roof",
+      "Block W +1 0 body",
+      "Block W +1 0 roof",
+      "Block E +1 0 body",
+      "Block E +1 0 roof",
+      "Block W +1 1 body",
+      "Block W +1 1 roof",
+      "Block E +1 1 body",
+      "Block E +1 1 roof",
+      "Block W +1 2 body",
+      "Block W +1 2 roof",
+      "Block E +1 2 body",
+      "Block E +1 2 roof",
+      "Block W +1 3 body",
+      "Block W +1 3 roof",
+      "Block E +1 3 body",
+      "Block E +1 3 roof",
+      "Block W +1 4 body",
+      "Block W +1 4 roof",
+      "Block E +1 4 body",
+      "Block E +1 4 roof",
+      "Town roof -1 0 0 -1",
+      "Town roof -1 0 0 +1",
+      "Town roof -1 0 1 -1",
+      "Town roof -1 0 1 +1",
+      "Town roof -1 0 2 -1",
+      "Town roof -1 0 2 +1",
+      "Town roof -1 0 3 -1",
+      "Town roof -1 0 3 +1",
+      "Town roof -1 0 4 -1",
+      "Town roof -1 0 4 +1",
+      "Town roof -1 0 5 -1",
+      "Town roof -1 0 5 +1",
+      "Town roof -1 0 6 -1",
+      "Town roof -1 0 6 +1",
+      "Town roof -1 0 7 -1",
+      "Town roof -1 0 7 +1",
+      "Town roof -1 0 8 -1",
+      "Town roof -1 0 8 +1",
+      "Town roof -1 0 9 -1",
+      "Town roof -1 0 9 +1",
+      "Town roof -1 0 10 -1",
+      "Town roof -1 0 10 +1",
+      "Town roof -1 1 0 -1",
+      "Town roof -1 1 0 +1",
+      "Town roof -1 1 1 -1",
+      "Town roof -1 1 1 +1",
+      "Town roof -1 1 2 -1",
+      "Town roof -1 1 2 +1",
+      "Town roof -1 1 3 -1",
+      "Town roof -1 1 3 +1",
+      "Town roof -1 1 4 -1",
+      "Town roof -1 1 4 +1",
+      "Town roof -1 1 5 -1",
+      "Town roof -1 1 5 +1",
+      "Town roof -1 1 6 -1",
+      "Town roof -1 1 6 +1",
+      "Town roof -1 1 7 -1",
+      "Town roof -1 1 7 +1",
+      "Town roof -1 1 8 -1",
+      "Town roof -1 1 8 +1",
+      "Town roof -1 1 9 -1",
+      "Town roof -1 1 9 +1",
+      "Town roof -1 1 10 -1",
+      "Town roof -1 1 10 +1",
+      "Town roof -1 2 0 -1",
+      "Town roof -1 2 0 +1",
+      "Town roof -1 2 1 -1",
+      "Town roof -1 2 1 +1",
+      "Town roof -1 2 2 -1",
+      "Town roof -1 2 2 +1",
+      "Town roof -1 2 3 -1",
+      "Town roof -1 2 3 +1",
+      "Town roof -1 2 4 -1",
+      "Town roof -1 2 4 +1",
+      "Town roof -1 2 5 -1",
+      "Town roof -1 2 5 +1",
+      "Town roof -1 2 6 -1",
+      "Town roof -1 2 6 +1",
+      "Town roof -1 2 7 -1",
+      "Town roof -1 2 7 +1",
+      "Town roof -1 2 8 -1",
+      "Town roof -1 2 8 +1",
+      "Town roof -1 2 9 -1",
+      "Town roof -1 2 9 +1",
+      "Town roof -1 2 10 -1",
+      "Town roof -1 2 10 +1",
+      "Town roof +1 0 0 -1",
+      "Town roof +1 0 0 +1",
+      "Town roof +1 0 1 -1",
+      "Town roof +1 0 1 +1",
+      "Town roof +1 0 2 -1",
+      "Town roof +1 0 2 +1",
+      "Town roof +1 0 3 -1",
+      "Town roof +1 0 3 +1",
+      "Town roof +1 0 4 -1",
+      "Town roof +1 0 4 +1",
+      "Town roof +1 0 5 -1",
+      "Town roof +1 0 5 +1",
+      "Town roof +1 0 6 -1",
+      "Town roof +1 0 6 +1",
+      "Town roof +1 0 7 -1",
+      "Town roof +1 0 7 +1",
+      "Town roof +1 0 8 -1",
+      "Town roof +1 0 8 +1",
+      "Town roof +1 0 9 -1",
+      "Town roof +1 0 9 +1",
+      "Town roof +1 0 10 -1",
+      "Town roof +1 0 10 +1",
+      "Town roof +1 1 0 -1",
+      "Town roof +1 1 0 +1",
+      "Town roof +1 1 1 -1",
+      "Town roof +1 1 1 +1",
+      "Town roof +1 1 2 -1",
+      "Town roof +1 1 2 +1",
+      "Town roof +1 1 3 -1",
+      "Town roof +1 1 3 +1",
+      "Town roof +1 1 4 -1",
+      "Town roof +1 1 4 +1",
+      "Town roof +1 1 5 -1",
+      "Town roof +1 1 5 +1",
+      "Town roof +1 1 6 -1",
+      "Town roof +1 1 6 +1",
+      "Town roof +1 1 7 -1",
+      "Town roof +1 1 7 +1",
+      "Town roof +1 1 8 -1",
+      "Town roof +1 1 8 +1",
+      "Town roof +1 1 9 -1",
+      "Town roof +1 1 9 +1",
+      "Town roof +1 1 10 -1",
+      "Town roof +1 1 10 +1",
+      "Town roof +1 2 0 -1",
+      "Town roof +1 2 0 +1",
+      "Town roof +1 2 1 -1",
+      "Town roof +1 2 1 +1",
+      "Town roof +1 2 2 -1",
+      "Town roof +1 2 2 +1",
+      "Town roof +1 2 3 -1",
+      "Town roof +1 2 3 +1",
+      "Town roof +1 2 4 -1",
+      "Town roof +1 2 4 +1",
+      "Town roof +1 2 5 -1",
+      "Town roof +1 2 5 +1",
+      "Town roof +1 2 6 -1",
+      "Town roof +1 2 6 +1",
+      "Town roof +1 2 7 -1",
+      "Town roof +1 2 7 +1",
+      "Town roof +1 2 8 -1",
+      "Town roof +1 2 8 +1",
+      "Town roof +1 2 9 -1",
+      "Town roof +1 2 9 +1",
+      "Town roof +1 2 10 -1",
+      "Town roof +1 2 10 +1"
+    ],
+    "Block W south": [
+      "Block W south Block W south trim",
+      "Block W south Block W south glass"
+    ],
+    "Block E south": [
+      "Block E south Block E south trim",
+      "Block E south Block E south glass"
+    ],
+    "Block E north": [
+      "Block E north Block E north trim",
+      "Block E north Block E north glass"
+    ],
+    "Block W -1 0 windows": [
+      "Block W -1 0 windows dark"
+    ],
+    "Block E -1 0 windows": [
+      "Block E -1 0 windows dark"
+    ],
+    "Block W -1 1 windows": [
+      "Block W -1 1 windows dark"
+    ],
+    "Block E -1 1 windows": [
+      "Block E -1 1 windows dark"
+    ],
+    "Block W +1 0 windows": [
+      "Block W +1 0 windows dark"
+    ],
+    "Block E +1 0 windows": [
+      "Block E +1 0 windows dark"
+    ],
+    "Block W +1 1 windows": [
+      "Block W +1 1 windows dark"
+    ],
+    "Block E +1 1 windows": [
+      "Block E +1 1 windows dark"
+    ],
+    "town massing": [
+      "town massing wall",
+      "town massing facade2",
+      "town massing brick"
+    ],
+    "vehicles": [
+      "vehicles red",
+      "vehicles glass",
+      "vehicles dark",
+      "vehicles car",
+      "vehicles van"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-19T19:38:31.633832+00:00",
+  "delivery_and_render_seconds": 9716.615054390997,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
