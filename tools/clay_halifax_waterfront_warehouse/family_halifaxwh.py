@@ -20,17 +20,18 @@ SLUG = 'clay-halifax-waterfront-warehouse'
 X0, X1, Y0, Y1 = -12.1, 12.1, -8.5, 8.5        # 24.2 m south front, 17 m east side
 T = .45
 G0 = .5                                         # granite plinth and ground floor
+STEP = .3                                       # granite entrance step
 BELT0, BELT1 = 4.9, 5.8                         # granite belt entablature
 FRIEZE = 10.0
 CORN = 11.15                                    # top of the copper cornice
 PAR = 11.8                                      # parapet top
 EPS = .002
-PALETTE = dict(wall=(.42, .21, .15), joint=(.50, .48, .45), stone=(.68, .66, .62), arch=(.68, .66, .62),
+PALETTE = dict(wall=(.42, .21, .15), joint=(.50, .48, .45), stone=(.70, .67, .60), arch=(.70, .67, .60),
     copper=(.42, .58, .52), frame=(.15, .25, .20), trim=(.15, .25, .20), pale=(.86, .86, .84),
     roof=(.42, .40, .38), sand=(.62, .58, .52), foundation=(.56, .54, .50), glass=(.20, .24, .26),
     hardware=(.07, .07, .08), interior=(.82, .78, .72), floor=(.56, .46, .36), timber=(.46, .34, .22),
     planting=(.30, .44, .20), soil=(.22, .16, .10), concrete=(.70, .69, .66), white=(.95, .95, .93),
-    asphalt=(.28, .28, .29), brick=(.46, .26, .19), pot=(.60, .34, .22), neighbour=(.42, .27, .21),
+    asphalt=(.28, .28, .29), brick=(.46, .26, .19), pot=(.60, .34, .22), neighbour=(.42, .27, .21), membrane=(.50, .50, .49),
     blue=(.20, .30, .40))
 
 
@@ -51,7 +52,17 @@ def manifest(version):
         if c['name'] == 'front':
             c['location'] = (19.0, -24.0, 1.6); c['target'] = (2.5, -8.5, 6.5); c['lens'] = 24; c['whole'] = False
         elif c['name'] == 'front_corner':
-            lx, ly, lz = c['location']; c['location'] = (-lx, ly, lz)
+            c.update(location=(24.0, -36.0, 28.0), target=(0.0, -1.0, 5.0), lens=35, whole=False)   # the locked oblique, high in the south-east
+        elif c['name'] == 'left_side':                                         # high from the north-west, over the neighbour's roof
+            c.update(location=(-30.0, 26.0, 22.0), target=(0.0, 0.0, 6.0), lens=35, whole=False)
+        elif c['name'] == 'right_side':
+            c.update(location=(36.0, 0.0, 7.0), target=(X1, 0.0, 6.0), lens=35, whole=False)
+        elif c['name'] == 'rear':
+            c.update(location=(0.0, 38.0, 8.0), target=(0.0, Y1, 6.0), lens=35, whole=False)
+        elif c['name'] == 'rear_side':
+            c.update(location=(30.0, 32.0, 18.0), target=(0.0, 0.0, 6.0), lens=35, whole=False)
+        elif c['name'] == 'aerial':
+            c.update(location=(26.0, -32.0, 34.0), target=(0.0, 0.0, 5.0), lens=35, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -433,11 +444,17 @@ def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, pi
     holes, uppers, grounds = [], [], []
     for bay in bays:
         u, w, kind = bay['u'], bay['w'], bay['ground']
-        if kind in ('glass', 'door'):
-            g = hole(f'{label} shopfront {u:+.1f}', u, G0 + .05, w - .3, BELT0 - G0 - .25, kind='door' if kind == 'door' else 'shopfront')
-        else:
-            g = hole(f'{label} ground arch {u:+.1f}', u, 1.0, 1.4, 2.9)
-        grounds.append((g, kind)); holes.append(g)
+        if kind == 'glass':
+            gs = [(hole(f'{label} shopfront {u:+.1f}', u, G0 + .05, w - .3, BELT0 - G0 - .25, kind='shopfront'), 'glass')]
+        elif kind == 'door':                              # the entrance: a glazed double door on a granite step between sidelights
+            gs = [(hole(f'{label} entrance {u:+.1f}', u, STEP, 2.2, BELT0 - .25 - STEP, kind='door'), 'door')] + \
+                 [(hole(f'{label} sidelight {u + s * 1.8:+.1f}', u + s * 1.8, G0 + .05, 1.1, BELT0 - G0 - .25, kind='shopfront'), 'side') for s in (-1, 1)]
+        elif kind == 'pair':                              # two shop lights divided by a brick pier
+            gs = [(hole(f'{label} shop light {u + s * .95:+.1f}', u + s * .95, G0 + .05, 1.5, BELT0 - G0 - .25, kind='shopfront'), 'side') for s in (-1, 1)]
+        else:                                             # tall narrow arched windows in brick
+            gs = [(hole(f'{label} ground arch {u + du:+.1f}', u + du, .95, .75, BELT0 - .4 - .95), 'arch') for du in (-1.2, 0.0, 1.2)]
+        for g, k in gs:
+            grounds.append((g, k)); holes.append(g)
         for du, ww, hh in bay['upper']:
             h = hole(f'{label} arch {u + du:+.1f}', u + du, BELT1 + .55, ww, hh)
             uppers.append(h); holes.append(h)
@@ -449,18 +466,29 @@ def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, pi
         p = -(d - t / 2)
         a, c = (lo - p, hi + p) if wrap else (corner_lo, corner_hi)
         m.box(role, (a + c) / 2, d, z, c - a, t, h)
-    band('stone', -.1, .2, G0 / 2, G0)                                                       # granite plinth
+    pa, pc = (lo - .2, hi + .2) if wrap else (corner_lo, corner_hi)                          # granite plinth, broken at the entrance
+    cuts = sorted((g['u'] - g['w'] / 2, g['u'] + g['w'] / 2) for g, k in grounds if k == 'door')
+    for c0, c1 in cuts + [(pc, pc)]:
+        if c0 - pa > .05:
+            m.box('stone', (pa + c0) / 2, -.1, G0 / 2, c0 - pa, .2, G0)
+        pa = c1
     for g, kind in grounds:
-        if kind in ('glass', 'door'):
-            framed(m, f, g, cols=3 if kind == 'glass' else 2, rows=1, inset=.16, occupied='shop', kind='shopfront' if kind == 'glass' else 'door', frame='frame')
+        if kind in ('glass', 'side'):
+            framed(m, f, g, cols=3 if kind == 'glass' else 1, rows=1, inset=.16, occupied='shop', kind='shopfront', frame='frame')
             m.box('frame', g['u'], .14, g['z'] + g['h'] - .9, g['w'] - .1, .1, .09)            # transom bar
             m.box('frame', g['u'], .1, g['z'] + .25, g['w'] - .1, .14, .5)                     # stall riser
-            if kind == 'door':
-                m.box('frame', g['u'], .14, g['z'] + 1.5, .1, .1, 3.0)
+        elif kind == 'door':
+            framed(m, f, g, cols=2, rows=1, inset=.16, occupied='shop', kind='door', frame='frame')
+            m.box('frame', g['u'], .14, g['z'] + 3.15, g['w'] - .1, .1, .1)                    # transom bar over the leaves
+            m.box('frame', g['u'], .12, g['z'] + .5, g['w'] - .12, .08, .9)                    # panelled lower leaves
+            m.box('frame', g['u'], .14, g['z'] + 1.6, .1, .1, 3.1)                             # meeting stiles
+            m.box('stone', g['u'], -.25, (.11 + STEP) / 2, g['w'] + .6, .5, STEP - .11)         # granite step
+            for s in (-1, 1):                                                                 # frame posts between door and sidelights
+                m.box('frame', g['u'] + s * 1.175, -.02, (STEP + BELT0 - .25) / 2, .17, .06, BELT0 - .25 - STEP)
         else:
             framed(m, f, g, cols=2, rows=3, inset=.16, occupied='warehouse', frame='frame')
             m.box('stone', g['u'], -.05, g['z'] - .07, g['w'] + .2, .14, .12)
-            arch_head(f, g, g['w'] / 2, ring=.24)
+            arch_head(f, g, g['w'] / 2, ring=.2 if g['w'] < 1 else .24)
     for h in uppers:
         framed(m, f, h, cols=2, rows=4, inset=.16, occupied='loft', frame='frame')
         m.box('stone', h['u'], -.06, h['z'] - .08, h['w'] + .34, .16, .14)
@@ -469,12 +497,17 @@ def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, pi
     band('stone', -.18, .36, BELT0 + .3, .6)                                                  # belt entablature
     band('stone', -.24, .48, BELT1 - .15, .3)
     band('stone', -.08, .16, BELT1 + .4, .14)                                                 # sill course
-    band('copper', -.12, .24, FRIEZE + .3, .6)                                                # cornice: frieze, corona, cymatium
+    # Copper entablature: a frieze band, a bed moulding, modillions between the piers, corona and cymatium;
+    # over every pier a pair of scrolled consoles carries a forward break of the cornice.
+    band('copper', -.08, .16, FRIEZE + .22, .44)
+    band('copper', -.16, .32, FRIEZE + .49, .1)
     band('copper', -.48, .96, CORN - .25, .3)
     band('copper', -.54, 1.08, CORN - .05, .1)
-    n = int((hi - lo) / .9)
+    n = int((hi - lo) / .75)
     for i in range(n):
-        m.box('copper', lo + .45 + (hi - lo - .9) * i / max(1, n - 1), -.4, FRIEZE + .55, .14, .76, .5)
+        u = lo + .375 + (hi - lo - .75) * i / max(1, n - 1)
+        if all(abs(u - pu) > pw / 2 + .25 for pu, pw, _ in piers):
+            m.box('copper', u, -.36, FRIEZE + .645, .16, .72, .22)
     ca, cc = (lo - .15, hi + .15) if wrap else (corner_lo + .55, corner_hi - .55)
     m.box('copper', (ca + cc) / 2, T / 2 - .05, PAR + .05, cc - ca, T + .2, .1)                 # parapet coping
     for u, w, raised in piers:
@@ -491,6 +524,24 @@ def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, pi
             if not (BELT0 - .1 < .3 + k * .55 < BELT1 + .1):
                 m.box('joint', (a + c) / 2, -.252, .3 + k * .55, c - a + .004, .012, .03)
         m.box('stone', (a + c) / 2, -.2, FRIEZE - .15, c - a + .1, .4, .3)                      # pier cap under the frieze
+        for s in (-1, 1):                                                                     # paired consoles
+            cu = u + s * (w / 2 - .2)
+            m.box('copper', cu, -.33, FRIEZE + .375, .22, .66, .77)
+            m.box('copper', cu, -.22, FRIEZE - .2275, .18, .44, .445)
+        ra, rc = a - .15, c + .15                                                             # cornice break over the pier
+        if wrap and c >= hi + .2:
+            ra, rc = ra, hi + 1.2
+        if wrap and a <= lo - .2:
+            ra = lo - 1.2
+        if not wrap:
+            ra, rc = max(ra, corner_lo), min(rc, corner_hi)
+        m.box('copper', (ra + rc) / 2, -.6, CORN - .225, rc - ra, 1.2, .29)
+        ca2, cc2 = ra - .06, rc + (.12 if wrap and c >= hi + .2 else .06)
+        if wrap and a <= lo - .2:
+            ca2 = lo - 1.32
+        if not wrap:
+            ca2, cc2 = max(ca2, corner_lo), min(cc2, corner_hi)
+        m.box('copper', (ca2 + cc2) / 2, -.66, CORN + .07, cc2 - ca2, 1.32, .1)
         if raised:
             m.box('wall', u, T / 2, PAR + .4, w, T, .7)
             m.box('copper', u, T / 2 - .05, PAR + .8, w + .14, T + .2, .1)
@@ -501,15 +552,15 @@ def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, pi
 def build_faces():
     hd = (Y1 - Y0) / 2
     sp = [(X0 + .7, 1.4, True), (-3.1, 1.2, True), (3.1, 1.2, True), (X1 - .7, 1.4, True)]
-    sb = [dict(u=-7.2, w=7.0, ground='glass', upper=[(-2.0, 1.1, 3.0), (0.0, 1.1, 3.0), (2.0, 1.1, 3.0)]),
-          dict(u=0.0, w=5.0, ground='door', upper=[(0.0, 2.4, 3.3)]),
-          dict(u=7.2, w=7.0, ground='glass', upper=[(-1.6, 1.4, 3.2), (1.6, 1.4, 3.2)])]
+    sb = [dict(u=-7.2, w=7.0, ground='glass', upper=[(-2.0, 1.1, 2.55), (0.0, 1.1, 2.55), (2.0, 1.1, 2.55)]),
+          dict(u=0.0, w=5.0, ground='door', upper=[(0.0, 2.4, 2.85)]),
+          dict(u=7.2, w=7.0, ground='glass', upper=[(-1.6, 1.4, 2.75), (1.6, 1.4, 2.75)])]
     street_face('south', (0, Y0, 0), (1, 0, 0), (0, 1, 0), X0, X1, X0, X1, sp, sb, True)
     # East side: the south corner pier is the south front's; the bays start behind it.
     ep = [(Y0 + .7, 1.4, False), (-2.55, 1.1, True), (2.55, 1.1, True), (Y1 - .7, 1.4, False)]
-    eb = [dict(u=-5.1, w=4.0, ground='glass', upper=[(-.95, 1.1, 3.1), (.95, 1.1, 3.1)]),
-          dict(u=0.0, w=4.0, ground='arch', upper=[(-.95, 1.1, 3.1), (.95, 1.1, 3.1)]),
-          dict(u=5.1, w=4.0, ground='arch', upper=[(-.95, 1.1, 3.1), (.95, 1.1, 3.1)])]
+    eb = [dict(u=-5.1, w=4.0, ground='pair', upper=[(-.7, 1.0, 2.65), (.75, 1.0, 2.65)]),         # bay 1 clear of the corner pier
+          dict(u=0.0, w=4.0, ground='arches', upper=[(-.9, 1.05, 2.65), (.9, 1.05, 2.65)]),
+          dict(u=5.1, w=4.0, ground='arches', upper=[(-.9, 1.05, 2.65), (.9, 1.05, 2.65)])]
     street_face('east', (X1, 0, 0), (0, 1, 0), (-1, 0, 0), -hd + T, hd - T, Y0, Y1, ep[1:], eb, False)
     # The east face's south corner pier: a return of the south corner pier, butting it on the corner line.
     b = Batch()
@@ -518,11 +569,17 @@ def build_faces():
     for k in range(int(FRIEZE / .55)):
         if not (BELT0 - .1 < .3 + k * .55 < BELT1 + .1):
             b.box('joint', X1 + .252, Y0 + .7, .3 + k * .55, .012, 1.404, .03)
+    b.box('copper', X1 + .33, Y0 + 1.2, FRIEZE + .375, .66, .22, .77)                         # east consoles of the corner pier
+    b.box('copper', X1 + .22, Y0 + 1.2, FRIEZE - .2275, .44, .18, .445)
+    b.box('copper', X1 + .33, Y0 + .2, FRIEZE + .375, .66, .22, .77)
+    b.box('copper', X1 + .22, Y0 + .2, FRIEZE - .2275, .44, .18, .445)
+    b.box('copper', X1 + .6, (Y0 + Y0 + 1.55) / 2, CORN - .225, 1.2, 1.55, .29)                 # the cornice break turning the corner
+    b.box('copper', X1 + .66, (Y0 + Y0 + 1.61) / 2, CORN + .07, 1.32, 1.61, .1)
     b.box('wall', X1 - T / 2, (Y0 + T + Y0 + 1.4) / 2, PAR + .4, T, 1.4 - T, .7)
     b.box('copper', X1 - T / 2 + .05, (Y0 + .525 + Y0 + 1.47) / 2, PAR + .8, T + .2, .945, .1)
-    b.box('wall', 0.0, Y0 + T / 2, PAR + .5, 5.0, T, 1.0)                                    # raised panel over the middle bay
-    b.box('copper', 0.0, Y0 + T / 2 - .05, PAR + 1.05, 5.0, T + .2, .1)
-    b.box('stone', 0.0, Y0 - .03, PAR + .5, 3.2, .06, .5)
+    b.box('stone', 0.0, Y0 + T / 2 - .03, PAR + .6, 5.0, T + .06, 1.2)                         # granite-faced raised panel over the middle bay
+    b.box('copper', 0.0, Y0 + T / 2 - .05, PAR + 1.25, 5.2, T + .2, .1)
+    b.box('stone', 0.0, Y0 - .1, PAR + .55, 3.2, .06, .55)
     b.flush('east corner pier')
     w = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west party')
     w.wall('west party wall', -hd + T, hd - T, 0.0, PAR, depth=T, role='wall', holes=[])
@@ -557,15 +614,23 @@ def roof_and_inside():
 
 
 def site():
-    C.box('South sidewalk', (2.0, Y0 - 2.2, .06), (44.0, 4.4, .12), 'concrete', 'site', 0)
-    C.box('East sidewalk', (X1 + 2.2, 4.0, .06), (4.4, 25.0, .12), 'concrete', 'site', 0)
-    C.box('South street', (2.0, Y0 - 9.4, .01), (60.0, 10.0, .02), 'asphalt', 'site', 0)
-    C.box('East street', (X1 + 9.4, 3.0, .01), (10.0, 23.0, .02), 'asphalt', 'site', 0)
+    SW, R = 4.4, 2.5                                                                         # sidewalk width and curb-return radius
+    xc, yc = X1 + SW - R, Y0 - SW + R                                                        # the curb return's centre
+    arc = [(xc + R * math.cos(-math.pi / 2 + math.pi / 2 * i / 10), yc + R * math.sin(-math.pi / 2 + math.pi / 2 * i / 10)) for i in range(11)]
+    C.prism('Corner sidewalks', [(-20.0, Y0 - SW)] + arc + [(X1 + SW, Y1 + 12.0), (X1, Y1 + 12.0), (X1, Y0), (-20.0, Y0)], 'z', 0.0, .12, 'concrete', 'site')
+    C.box('South street', (2.0, Y0 - SW - 5.0, .01), (60.0, 10.0, .02), 'asphalt', 'site', 0)
+    C.box('East street', ((xc + X1 + SW + 10.0) / 2, (Y0 - SW + Y1 + 12.0) / 2, .01), (X1 + SW + 10.0 - xc, Y1 + 12.0 - Y0 + SW, .02), 'asphalt', 'site', 0)
     b = Batch()
-    for k in range(-20, 30):
-        b.box('joint', k * 1.5, Y0 - 2.2, .121, .02, 4.38, .004)
-    for k in range(0, 16):
-        b.box('joint', X1 + 2.2, Y0 + .75 + k * 1.5, .121, 4.38, .02, .004)
+    for k in range(-13, 18):
+        if k * 1.5 < xc - .2:
+            b.box('joint', k * 1.5, Y0 - SW / 2, .121, .02, SW - .02, .004)
+    for k in range(0, 19):
+        b.box('joint', X1 + SW / 2, Y0 + .75 + k * 1.5, .121, SW - .02, .02, .004)
+    for k in range(9):                                                                      # crossing over the side street
+        b.box('white', X1 + SW + .7 + k * 1.1, Y0 - SW / 2, .022, .5, 3.0, .008)
+    b.box('hardware', X0 + 2.0, Y0 - 3.7, 2.2, .14, .14, 4.4)                                  # second lamp, south-west
+    b.box('pale', X0 + 2.0, Y0 - 3.7, 4.6, .34, .34, .4)
+    b.box('hardware', X0 + 2.0, Y0 - 3.7, 4.85, .44, .44, .1)
     b.box('hardware', X1 + 3.7, 2.0, 2.2, .14, .14, 4.4)                                       # lamp standard
     b.box('pale', X1 + 3.7, 2.0, 4.6, .34, .34, .4)
     b.box('hardware', X1 + 3.7, 2.0, 4.85, .44, .44, .1)
@@ -581,6 +646,7 @@ def site():
         for u in (nx0 + 1.5, nx0 + 4.0, nx0 + 6.5):
             b.box('glass', u, Y0 + .38, z + 1.2, 1.2, .04, 2.2 if z < 1 else 1.9)
     b.box('stone', (nx0 + nx1) / 2, Y0 + .25, 10.2, nx1 - nx0 - .3, .4, .4)
+    b.box('membrane', (nx0 + nx1 - .3) / 2, (Y0 + .45 + Y1 - .05) / 2, 10.525, nx1 - nx0 - .5, Y1 - Y0 - .5, .07)          # grey membrane roof
     b.flush('neighbour')
 
 
