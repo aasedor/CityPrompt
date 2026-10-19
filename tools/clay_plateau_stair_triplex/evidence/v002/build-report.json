@@ -1,0 +1,962 @@
+{
+  "candidate": "clay-plateau-stair-triplex-clay-v002",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 74,
+    "vertices": 7197,
+    "polygons": 10484,
+    "triangles": 10484,
+    "path": "clay-plateau-stair-triplex-clay-v002-authoring.blend",
+    "bytes": 1983844,
+    "sha256": "d4ee9df6ae8b6624a3a0629a37793f34b4c4ac9f23c90bdf1759eab228976248"
+  },
+  "runtime": {
+    "path": "clay-plateau-stair-triplex-clay-v002.glb",
+    "bytes": 581752,
+    "sha256": "30c6ce1fde540dfa9fca17a427167fca31864032996b12a7a56ebdfb19b4082f",
+    "meshes": 20,
+    "materials": 20,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 20,
+    "vertices": 7197,
+    "polygons": 10484,
+    "triangles": 10484
+  },
+  "original_bounds_m": [
+    [
+      -36.0099983215332,
+      -21.700000762939453,
+      0.0
+    ],
+    [
+      40.5099983215332,
+      19.0,
+      9.300000190734863
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -36.0099983215332,
+      -21.700000762939453,
+      0.0
+    ],
+    [
+      40.5099983215332,
+      19.0,
+      9.300000190734863
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 9.0,
+    "depth": 13.0,
+    "height": 10.0
+  },
+  "native_dimensions_m": {
+    "width": 76.5199966430664,
+    "depth": 40.70000076293945,
+    "height": 9.300000190734863
+  },
+  "native_bottom_center_m": [
+    2.25,
+    -1.3500003814697266,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 4,
+    "joint": 3,
+    "brick": 4,
+    "quoin": 5,
+    "trim": 4,
+    "pale": 2,
+    "stone": 7,
+    "roof": 1,
+    "foundation": 2,
+    "glass": 6,
+    "hardware": 5,
+    "floor": 6,
+    "timber": 9,
+    "red": 1,
+    "green": 1,
+    "planting": 6,
+    "lawn": 2,
+    "concrete": 3,
+    "asphalt": 2,
+    "neighbour": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/iron_stair.png",
+    "renders/balcony_canopy.png",
+    "renders/cornice_parapet.png",
+    "renders/east_side.png",
+    "renders/roof_skylights.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "top": {
+      "xmin": 0.12387040257453918,
+      "xmax": 0.9231327176094055,
+      "ymin": 0.19778716564178467,
+      "ymax": 0.7646102905273438
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Stone front and brick side walls from grade; bracketed cornice on the front wall; flat roof inside the parapets",
+      "roof_m": 7.8
+    },
+    {
+      "name": "Corner Plateau plex with exterior iron stair, front yard and attached neighbour west",
+      "box": [
+        -4.5,
+        4.5,
+        -6.5,
+        6.5
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "front window -1 f0",
+      "face": "south",
+      "u": -3.1,
+      "z": 1.45,
+      "width": 1.35,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        -6.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "front window +1 f0",
+      "face": "south",
+      "u": 3.1,
+      "z": 1.45,
+      "width": 1.35,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        -6.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "front window -1 f1",
+      "face": "south",
+      "u": -3.1,
+      "z": 4.85,
+      "width": 1.35,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        -6.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "front window +1 f1",
+      "face": "south",
+      "u": 3.1,
+      "z": 4.85,
+      "width": 1.35,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        -6.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "basement window -1",
+      "face": "south",
+      "u": -3.1,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        -6.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "basement window +1",
+      "face": "south",
+      "u": 3.1,
+      "z": 0.15,
+      "width": 1.1,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        -6.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "lower flat door",
+      "face": "porch",
+      "u": 0.65,
+      "z": 1.02,
+      "width": 1.0,
+      "height": 2.35,
+      "kind": "lower flat door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lower flat"
+    },
+    {
+      "id": "porch window",
+      "face": "porch",
+      "u": -0.85,
+      "z": 1.55,
+      "width": 0.9,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lower flat"
+    },
+    {
+      "id": "upper flat door -1",
+      "face": "porch",
+      "u": -0.6,
+      "z": 4.5,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper flat"
+    },
+    {
+      "id": "upper flat door +1",
+      "face": "porch",
+      "u": 0.6,
+      "z": 4.5,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper flat"
+    },
+    {
+      "id": "east window f0 0",
+      "face": "east",
+      "u": -3.6,
+      "z": 1.5,
+      "width": 0.85,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        4.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east window f0 1",
+      "face": "east",
+      "u": 0.0,
+      "z": 1.5,
+      "width": 0.85,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        4.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east window f0 2",
+      "face": "east",
+      "u": 3.6,
+      "z": 1.5,
+      "width": 0.85,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        4.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east window f1 0",
+      "face": "east",
+      "u": -3.6,
+      "z": 4.92,
+      "width": 0.85,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        4.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east window f1 1",
+      "face": "east",
+      "u": 0.0,
+      "z": 4.92,
+      "width": 0.85,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        4.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east window f1 2",
+      "face": "east",
+      "u": 3.6,
+      "z": 4.92,
+      "width": 0.85,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        4.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east basement window 0",
+      "face": "east",
+      "u": -3.6,
+      "z": 0.15,
+      "width": 0.8,
+      "height": 0.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        4.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east basement window 1",
+      "face": "east",
+      "u": 3.6,
+      "z": 0.15,
+      "width": 0.8,
+      "height": 0.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        4.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "rear window f0 0",
+      "face": "north",
+      "u": -2.6,
+      "z": 1.5,
+      "width": 0.9,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        6.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "rear window f0 1",
+      "face": "north",
+      "u": 2.6,
+      "z": 1.5,
+      "width": 0.9,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        6.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "rear window f1 0",
+      "face": "north",
+      "u": -2.6,
+      "z": 4.92,
+      "width": 0.9,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        6.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "rear window f1 1",
+      "face": "north",
+      "u": 2.6,
+      "z": 4.92,
+      "width": 0.9,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        6.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "rear door f0",
+      "face": "north",
+      "u": 0.0,
+      "z": 1.02,
+      "width": 0.9,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        6.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "rear door f1",
+      "face": "north",
+      "u": 0.0,
+      "z": 4.5,
+      "width": 0.9,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.35,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        6.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "Front yard paving",
+      "Front lawn west",
+      "Front lawn east",
+      "South sidewalk",
+      "East sidewalk",
+      "South street",
+      "East lane"
+    ],
+    "fence and sidewalks": [
+      "fence and sidewalks stone",
+      "fence and sidewalks hardware",
+      "fence and sidewalks joint"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005"
+    ],
+    "context": [
+      "Neighbour plex"
+    ],
+    "neighbour": [
+      "neighbour glass",
+      "neighbour pale",
+      "neighbour stone"
+    ],
+    "envelope": [
+      "south carrier",
+      "porch back wall",
+      "east carrier",
+      "west party wall",
+      "north carrier"
+    ],
+    "brick joints": [
+      "south measured mortar courses",
+      "east measured mortar courses"
+    ],
+    "south": [
+      "south south foundation",
+      "south south trim",
+      "south south glass",
+      "south south quoin",
+      "south south stone",
+      "south south wall"
+    ],
+    "cartouche": [
+      "cartouche quoin",
+      "cartouche stone"
+    ],
+    "quoins": [
+      "quoins quoin"
+    ],
+    "porch": [
+      "porch porch green",
+      "porch porch glass",
+      "porch porch trim",
+      "porch porch quoin",
+      "porch porch red",
+      "porch wall",
+      "porch stone",
+      "porch hardware"
+    ],
+    "iron stair": [
+      "iron stair hardware"
+    ],
+    "east": [
+      "east east foundation",
+      "east east trim",
+      "east east glass",
+      "east east quoin",
+      "east east stone"
+    ],
+    "north": [
+      "north north trim",
+      "north north glass",
+      "north north stone"
+    ],
+    "rear galleries": [
+      "rear galleries timber",
+      "rear galleries hardware"
+    ],
+    "roof": [
+      "Roof deck"
+    ],
+    "roof furniture": [
+      "roof furniture pale",
+      "roof furniture glass",
+      "roof furniture hardware",
+      "roof furniture brick"
+    ],
+    "inside": [
+      "Floor 1.0",
+      "Bay floor 1.0 -1",
+      "Bay floor 1.0 +1",
+      "Floor 4.5",
+      "Bay floor 4.5 -1",
+      "Bay floor 4.5 +1"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-18T23:35:46.820322+00:00",
+  "delivery_and_render_seconds": 3175.710168873,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
