@@ -67,3 +67,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (the v002 rework targets all six)
+
+- P0 #1: the south front has no entrance; the middle bay is a shop window like the others instead of the double door.
+- P1 #2: the entablature lacks the frieze band, the paired consoles over the piers and the cornice breaks; the keystones butt into the cornice.
+- P1 #3: the first east upper window by the corner is half buried in the granite corner pier.
+- P1 #4: the east ground-floor rhythm is wrong: bay 1 needs two shop windows split by a pier, bays 2-3 several tall narrow arched windows.
+- P1 #5: the side street does not meet the main street (no curb return); the east sidewalk ends abruptly.
+- P1 #6: left_side shows only the neighbour's blank wall.
