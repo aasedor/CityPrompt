@@ -68,9 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (the v003 rework targets all three)
+## Open blockers after v003 (v004 reworks it)
 
-- P0 #1: the outer bays of the east and west faces of all four corner pavilions are filled with stone (the openings fall in the corner 2.6 m that belongs to the perpendicular wall); the builder's aperture audit fails on the same 20 openings.
-- P1 #2: the projecting arched entrance porch with a balustraded balcony at the foot of the clock tower is missing; the render has a flush door.
-- P1 #3: the interior view shows the openings of the opposite wall as blind recesses with solid backs.
-- All ten v001 findings are resolved in the pixels.
+- P1 #1: the clock tower is too short and squat: in right_side its top cornice sits below the corner-pyramid finials and the clocks below the pavilion apexes; about 1.3x the pavilion height against about 2x in the source front; the spire is a broad four-sided pyramid (height:base about 1.0) where the source has a slender octagonal or conical spire (1.4-1.8).

@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-calgary-sandstone-heritage-clay-v003",
+  "glb": "clay-calgary-sandstone-heritage-clay-v003.glb",
+  "glb_bytes": 3910356,
+  "glb_sha256": "4de044b2d522b7d5948d80b9962ebdc64764b7fc6b0ba3fd16febf1773b4418e",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "clock_tower.png": 92,
+    "east_side.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "gables_pinnacles.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "portal_arch.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roofs_court.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-calgary-sandstone-heritage-clay-v003-renders-and-glb.zip",
+  "zip_bytes": 33661322
+}
