@@ -1,7 +1,7 @@
 # Amsterdam twin-gabled canal warehouse (RLASM v6.1 architectural clay)
 
 Candidate G3 of wave G of 2026-10-18, one of ten catalogue types that have quality reference images but
-no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **candidate under review**. Nothing here is keeper-approved,
+no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **stopped at v003 by the rework stopping rule (the valley and hip-plate finding survived two targeted fixes); v003 is the candidate with 0 P0 and 3 P1**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,9 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (the v003 rework targets all four)
+## Open blockers after v003 (family stopped at v003 by the stopping rule; v003 stays the candidate)
 
-- P1 #1: a fourth row of attic windows on the east and north walls under the cornice; the sources show two upper rows and blank brick with anchors.
-- P1 #2: the stone plinth runs across both cart doors and the east side door, so the leaves stop above the paving.
-- P1 #3: the south and east canals join into one L of water round the corner; the top source shows the south canal ending in a curved parapet and the street paved across the corner.
-- P1 #4: the hip plate between the gables reads as a warped sheet lifted off the slopes, with step lines and a floating lip (the v001 valley cracks changed in form).
+- P1 #1: a tan strip still shows in the front valley; the inner slopes and the hip plate apex stop short of it, leaving an open channel behind the valley pier cap (the v001/v002 valley finding, surviving its second targeted fix).
+- P1 #2: the white coping on the curved end of the south canal parapet shows black triangular gaps between unmitred segments.
+- P1 #3: the roof deck sits level with the west ridge and fills about 95% of the span between the ridges; the sources show a sunken deck about 56% of the span with the inner slopes alongside it and a short tiled ridge and chimney between the hip plate and the deck.
+- Resolved in the pixels: the attic window rows, the plinth across the doors, the canal layout.
