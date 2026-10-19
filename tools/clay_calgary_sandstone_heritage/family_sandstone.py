@@ -27,7 +27,7 @@ EAVE = 15.0
 RIDGE = 21.5
 CX0, CX1, CY0, CY1 = -7.0, 7.0, -5.0, 8.0      # light court
 TX0, TX1, TY0, TY1 = 17.0, 25.0, -4.0, 4.0     # clock tower, projecting 3 m from the east wing
-TTOP, SPIRE = 26.0, 36.5
+TTOP, SPIRE = 36.5, 48.7                         # tower crown above every pavilion pyramid; slender octagonal spire
 EPS = .002
 PALETTE = dict(wall=(.54, .42, .25), joint=(.40, .31, .19), stone=(.63, .52, .34), arch=(.61, .50, .32),
     trim=(.20, .18, .16), frame=(.20, .18, .16), pale=(.88, .86, .82), roof=(.11, .105, .10), membrane=(.36, .34, .32), copper=(.64, .38, .28),
@@ -43,7 +43,7 @@ def manifest(version):
         ('facade_close', (-4.0, -60.0, 9.0), (-4.0, Y0, 9.0), 45),
         ('architecture_close', (36.0, -40.0, 20.0), (H, -H, 18.0), 45),
         ('glass_close', (-6.3, -36.0, 8.5), (-6.3, -H, 8.5), 45),
-        ('clock_tower', (54.0, -14.0, 24.0), (TX1, 0.0, 26.0), 40),
+        ('clock_tower', (62.0, -18.0, 34.0), (TX1, 0.0, 37.0), 40),
         ('portal_arch', (-11.0, -42.0, 3.2), (-17.5, Y0 - 2.5, 3.2), 40),
         ('gables_pinnacles', (30.0, -48.0, 24.0), (17.5, Y0, 19.0), 40),
         ('east_side', (80.0, 0.0, 12.0), (X1, 0.0, 12.0), 45),
@@ -54,7 +54,7 @@ def manifest(version):
         if c['name'] == 'front':
             c['location'] = (36.0, -52.0, 1.6); c['target'] = (8.0, -16.0, 15.0); c['lens'] = 26; c['whole'] = False
         elif c['name'] == 'front_corner':
-            c.update(location=(50.0, -64.0, 62.0), target=(0.0, 0.0, 8.0), lens=35, whole=False)   # the locked oblique: high over the south-east corner
+            c.update(location=(54.0, -70.0, 66.0), target=(0.0, 0.0, 11.0), lens=35, whole=False)   # the locked oblique: high over the south-east corner
         elif c['name'] == 'top':
             c.update(location=(0.0, 0.0, 120.0), target=(0.0, .001, 0.0), ortho_scale=66.0, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -763,7 +763,13 @@ def tower_porch():
 
 
 def tower():
+    """Square clock tower about twice the pavilion height (source front): a tall shaft with stacked lancets, the clock
+    stage wholly above the pavilion pyramids, a five-arch belfry over it and a slender octagonal copper spire between
+    four corner turrets."""
     xc = (TX0 + TX1) / 2
+    ZS = TTOP - 7.0                         # clock-stage string course (29.5, above the pavilion apexes)
+    ZC = ZS + 1.9                           # clock centres
+    ZB = ZS + 3.4                           # belfry sills
     walls = (('tower east', (TX1, 0, 0), (0, 1, 0), (-1, 0, 0), TY0, TY1, 0.0, 0.0),
              ('tower south', (0, TY0, 0), (1, 0, 0), (0, 1, 0), TX0, TX1 - .8, 0.0, xc),
              ('tower north', (0, TY1, 0), (-1, 0, 0), (0, -1, 0), -(TX1 - .8), -TX0, 0.0, -xc),
@@ -771,12 +777,16 @@ def tower():
     b = Batch()
     for label, o, t, n, lo, hi, z0, uc in walls:
         f = C.Face(o, t, n, label)
-        hs = [hole(f'{label} belfry {s:+d}', uc + s * 1.35, 23.0, .75, 1.9) for s in (-1, 0, 1)]
+        hs = [hole(f'{label} belfry {s:+d}', uc + s * 1.15, ZB, .6, 1.9) for s in (-2, -1, 0, 1, 2)]
         if label == 'tower east':
             hs += [hole('tower portal', uc, 0.0, 3.0, 4.2, kind='door'), hole('tower window 1', uc, 7.0, 1.3, 2.8),
                    hole('tower window 2', uc, 11.0, 1.1, 2.4)] + [hole(f'tower lancet {s:+d}', uc + s * .75, 14.8, .75, 3.8) for s in (-1, 1)]
+            hs += [hole(f'tower upper lancet {k}', uc + (k - 1.5) * .8, 20.0, .55, 4.4) for k in range(4)]   # tall clustered lancets
+            hs += [hole(f'tower top lancet {s:+d}', uc + s * .75, 25.4, .6, 2.4) for s in (-1, 1)]
+        elif label != 'tower west':
+            hs += [hole(f'{label} upper lancet {s:+d}', uc + s * .75, 22.0, .6, 3.6) for s in (-1, 1)]
         f.wall(f'{label} wall', lo, hi - EPS, z0, TTOP, depth=.8, role='wall', holes=hs)
-        G.brick_courses(f, lo + .02, hi - .02, z0 + .1, TTOP - .1, hs, spacing=.5)
+        G.brick_courses(f, lo + .02, hi - .02, z0 + .1, TTOP - .1, hs, spacing=.8)
         m = Merge(f)
         for h in hs:
             if h.get('kind') == 'door':
@@ -785,23 +795,27 @@ def tower():
                 arch_head(f, h, 1.5, ring=.5, dep=.8)
             else:
                 framed(m, f, h, cols=2 if h['w'] > 1 else 1, rows=4, inset=.18, occupied='tower', frame='frame')
-                arch_head(f, h, h['w'] / 2, ring=.22, dep=.8)
+                arch_head(f, h, h['w'] / 2, ring=.2 if h['w'] < .7 else .22, dep=.8)
         m.box('stone', (lo + hi) / 2, -.12, TTOP - .3, hi - lo, .24, .6)                         # crown cornice
-        m.box('stone', (lo + hi) / 2, -.1, 19.5, hi - lo, .2, .3)                                # clock-stage string course
+        m.box('stone', (lo + hi) / 2, -.1, ZS, hi - lo, .2, .3)                                  # clock-stage string course
+        m.box('stone', (lo + hi) / 2, -.1, ZB - .15, hi - lo, .2, .25)                           # belfry sill course
+        m.box('stone', (lo + hi) / 2, -.08, 19.45, hi - lo, .16, .25)                            # shaft string course
         m.flush(label)
         out = (-n[0], -n[1])
-        disc(b, 'stone', f.p(uc, 0.0, 21.4), out, 1.35, .06)
-        disc(b, 'clock', f.p(uc, -.06, 21.4), out, 1.15, .06)
+        disc(b, 'stone', f.p(uc, 0.0, ZC), out, 1.35, .06)
+        disc(b, 'clock', f.p(uc, -.06, ZC), out, 1.15, .06)
         for ang, r in ((math.radians(60), .9), (math.radians(-30), .65)):                         # hands
-            b.beam('hardware', f.p(uc, -.15, 21.4), f.p(uc + r * math.cos(ang), -.15, 21.4 + r * math.sin(ang)), .06, .03)
+            b.beam('hardware', f.p(uc, -.15, ZC), f.p(uc + r * math.cos(ang), -.15, ZC + r * math.sin(ang)), .06, .03)
     for x in (TX0, TX1):                                                                         # corner turrets with copper caps
         for y in (TY0, TY1):
-            cyl(b, 'wall', x, y, 19.0, TTOP + .8, .75, 14)
-            b.box('stone', x, y, 18.8, 1.2, 1.2, .4)
+            cyl(b, 'wall', x, y, ZS - .5, TTOP + .8, .75, 14)
+            b.box('stone', x, y, ZS - .7, 1.2, 1.2, .4)
             cyl(b, 'stone', x, y, TTOP + .8, TTOP + 1.05, .9, 14)
-            cone(b, 'copper', x, y, TTOP + 1.05, TTOP + 4.6, .9, 14)
-    cone(b, 'copper', xc, 0.0, TTOP + .2, SPIRE, 4.6, 8)
+            cone(b, 'copper', x, y, TTOP + 1.05, TTOP + 5.2, .9, 14)
     b.box('stone', xc, 0.0, TTOP + .05, 8.9, 8.9, .3)
+    cyl(b, 'stone', xc, 0.0, TTOP + .2, TTOP + .7, 3.75, 8)                                     # octagonal spire base
+    cone(b, 'copper', xc, 0.0, TTOP + .7, SPIRE, 3.6, 8)                                         # slender octagonal spire (h:base ~1.7)
+    cyl(b, 'copper', xc, 0.0, SPIRE - .2, SPIRE + .6, .08, 6)                                     # finial
     b.flush('tower crown')
 
 
