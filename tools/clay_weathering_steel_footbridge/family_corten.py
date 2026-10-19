@@ -546,19 +546,22 @@ def span(name, u, Q):
 
 def apex():
     """The bend: the chords of both arms meet on one outer and one inner corner node. The outer node carries a corner
-    post that runs down to grade as the single steel pier; overhead, a tie joins the two nodes and members radiate from
-    the outer node to the first top-chord node of each inner truss."""
+    post that runs down to grade as the single steel pier. Overhead, as in the sources, a collar tie crosses the corner
+    between the first top-chord node of each outer truss, and two struts rise from the inner corner node to those same
+    nodes: a triangle with a crossbar, with no members fanning from the outer apex."""
     zt = ZD + HT
     po, pi = corner(-HW), corner(HW)
     b = Batch()
-    b.box('rust', po[0], po[1], (zt + .2) / 2, .55, .55, zt + .2)                                  # outer node post and pier
+    b.box('rust', po[0], po[1], (zt + .26) / 2, .55, .55, zt + .26)                                # outer node post and pier
+    b.box('rust', po[0], po[1], zt + .29, .63, .63, .06)                                           # post cap
     b.box('concrete', po[0], po[1], .15, 1.1, 1.1, .3)
-    b.box('rust', pi[0], pi[1], (ZB - .31 + zt + .2) / 2, .5, .5, zt + .2 - (ZB - .31))           # inner node post
-    b.beam('rust', (po[0], po[1], zt), (pi[0], pi[1], zt), .26, .3)                                # overhead apex tie
+    b.box('rust', pi[0], pi[1], (ZB - .31 + zt + .26) / 2, .5, .5, zt + .26 - (ZB - .31))         # inner node post
+    b.box('rust', pi[0], pi[1], zt + .29, .58, .58, .06)                                           # post cap
     b.beam('rust', (po[0], po[1], ZD - .32), (pi[0], pi[1], ZD - .32), .24, .3)                    # apex floor beam
-    for g in ARMS.values():
-        q = along(APEX, g['u'], g['top'][0], g['sg'] * HW, zt + .03)
-        b.beam('rust', (po[0], po[1], zt + .03), q, .16, .16)                                      # radiating overhead members
+    ends = [along(APEX, g['u'], g['top'][0], -g['sg'] * HW, zt) for g in ARMS.values()]          # first outer top-chord nodes
+    b.beam('rust', ends[0], ends[1], .26, .3)                                                      # collar tie across the corner
+    for q in ends:
+        b.beam('rust', (pi[0], pi[1], zt + .03), (q[0], q[1], zt + .03), .2, .2)                  # struts from the inner node
     b.flush('apex')
 
 

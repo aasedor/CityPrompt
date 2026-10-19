@@ -78,7 +78,7 @@ def manifest(version):
         elif c['name'] == 'rear':                    # the north elevation from over the narrower upstream river
             c.update(location=(6.0, 70.0, 9.0), target=(6.0, HW, 6.0), lens=22, whole=False)
         elif c['name'] == 'rear_side':
-            c.update(location=(36.0, 52.0, 28.0), target=(2.0, 0.0, 6.0), lens=28, whole=False)
+            c.update(location=(62.0, 78.0, 34.0), target=(7.0, 0.0, 5.0), lens=26, whole=False)   # whole bridge, east abutment to west, inside the frame
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -500,6 +500,38 @@ def lathe(b, role, cx, cy, z0, profile, n=10, phase=0.0):
         F.append(tuple(rings[-1]))
 
 
+def tube(b, role, pts, r, n=8):
+    """One smooth swept tube into a Batch: a circle of radius r carried along a 3D polyline with parallel-transport
+    frames, capped at both ends, so a curved arm or scroll is a single seamless solid (no box-chain joints)."""
+    V, F = b.g.setdefault(role, ([], []))
+    def sub(a, c): return [a[i] - c[i] for i in range(3)]
+    def nrm(a):
+        L = math.sqrt(sum(x * x for x in a)) or 1.0
+        return [x / L for x in a]
+    def cross(a, c): return [a[1] * c[2] - a[2] * c[1], a[2] * c[0] - a[0] * c[2], a[0] * c[1] - a[1] * c[0]]
+    def dot(a, c): return sum(a[i] * c[i] for i in range(3))
+    tans = []
+    for i in range(len(pts)):
+        a, c = pts[max(0, i - 1)], pts[min(len(pts) - 1, i + 1)]
+        tans.append(nrm(sub(c, a)))
+    ref = [0.0, 0.0, 1.0] if abs(tans[0][2]) < .9 else [1.0, 0.0, 0.0]
+    N = nrm(cross(cross(tans[0], ref), tans[0]))
+    rings = []
+    for i, p in enumerate(pts):
+        t = tans[i]
+        N = nrm(sub(N, [t[k] * dot(N, t) for k in range(3)]))
+        B = cross(t, N)
+        idx = []
+        for j in range(n):
+            a = 2 * math.pi * j / n
+            idx.append(len(V)); V.append(tuple(p[k] + r * (math.cos(a) * N[k] + math.sin(a) * B[k]) for k in range(3)))
+        rings.append(idx)
+    for lo, hi in zip(rings, rings[1:]):
+        F.extend((lo[j], lo[(j + 1) % n], hi[(j + 1) % n], hi[j]) for j in range(n))
+    F.append(tuple(reversed(rings[0])))
+    F.append(tuple(rings[-1]))
+
+
 def bridge_body():
     """One stone mass from the west abutment to the east abutment: its outline in x-z is the deck underside, the three
     semicircular river intrados, the pier shafts down to the water, the east river pier and the land arch over the low
@@ -602,10 +634,10 @@ def cutwaters():
             b.box('stone', xm, s * 9.4, (z0 + 10.70) / 2, PIER - .7, 1.2, 10.70 - z0)                  # pilaster buttress (top under the corona)
             b.box('arch', xm, s * 9.42, ZC + 1.9, PIER - .5, 1.28, .22)                                # impost band on it
             zp0, zp1 = ZC + 2.15, 10.1                                                                 # recessed panel: a raised frame round a darker field
-            for u in (-1, 1):
-                b.box('arch', xm + u * (PIER - 1.2) / 2, s * 10.03, (zp0 + zp1) / 2, .14, .06, zp1 - zp0)
-            for zz in (zp0, zp1):
-                b.box('arch', xm, s * 10.03, zz, PIER - 1.06, .06, .14)
+            for u in (-1, 1):                                                                          # stiles between the rails, 1 cm shallower
+                b.box('arch', xm + u * (PIER - 1.2) / 2, s * 10.025, (zp0 + zp1) / 2, .14, .05, zp1 - zp0 - .12)
+            for zz in (zp0, zp1):                                                                     # rails run full width over the stile ends
+                b.box('arch', xm, s * 10.035, zz, PIER - 1.06, .07, .14)
             b.box('joint', xm, s * 10.005, (zp0 + zp1) / 2, PIER - 1.3, .01, zp1 - zp0 - .14)
             b.flush(f'pier pilaster {i} {s:+d}')
             C.box(f'Pier refuge {i} {s:+d}', (xm, s * 9.15, (10.70 + 12.5) / 2), (2.0, 1.7, 12.5 - 10.70), 'stone', 'bridge', 0)
@@ -691,14 +723,12 @@ def lamp(name, x, y, z0, big=False):
     zA = z0 + 3.12 * k
     for sgn in (-1, 1):
         lx = x + sgn * .64 * k
-        pts = [(x + sgn * .64 * k * math.sin(t * math.pi / 2), zA + .62 * k * (1 - math.cos(t * math.pi / 2))) for t in [i / 6 for i in range(7)]]
-        for (ax, az), (bx, bz) in zip(pts, pts[1:]):
-            b.beam('hardware', (ax, y, az), (bx, y, bz), .05 * k, .06 * k, ext=.02)
-        cx, cz = x + sgn * .26 * k, zA - .12 * k                       # volute under the arm
-        sp = [(cx + sgn * (.15 - .1 * t) * k * math.cos(math.pi / 2 + 4.2 * t), cz + (.15 - .1 * t) * k * math.sin(math.pi / 2 + 4.2 * t)) for t in [i / 5 for i in range(6)]]
-        b.beam('hardware', (x + sgn * .06, y, zA + .02), (sp[0][0], y, sp[0][1]), .04 * k, .05 * k, ext=.02)
-        for (ax, az), (bx, bz) in zip(sp, sp[1:]):
-            b.beam('hardware', (ax, y, az), (bx, y, bz), .04 * k, .05 * k, ext=.015)
+        # C-scroll arm: one smooth swept tube from inside the shaft up to the lantern seat (no box-chain joints)
+        arm = [(x + sgn * .64 * k * math.sin(t * math.pi / 2), y, zA + .62 * k * (1 - math.cos(t * math.pi / 2))) for t in [i / 14 for i in range(15)]]
+        tube(b, 'hardware', [(x, y, zA)] + arm[1:] + [(lx, y, zA + .66 * k)], .03 * k)
+        cx, cz = x + sgn * .26 * k, zA - .12 * k                       # volute under the arm: one swept spiral from the shaft
+        sp = [(cx + sgn * (.15 - .1 * t) * k * math.cos(math.pi / 2 + 4.2 * t), y, cz + (.15 - .1 * t) * k * math.sin(math.pi / 2 + 4.2 * t)) for t in [i / 14 for i in range(15)]]
+        tube(b, 'hardware', [(x, y, zA + .03 * k), (x + sgn * .13 * k, y, zA + .035 * k)] + sp, .022 * k, n=7)
         zl = zA + .62 * k                                              # lantern: bottom drop, frame rings, glass, posts, dome, finial
         lathe(b, 'hardware', lx, y, zl, [(0.0, -.12 * k), (.08 * k, -.04 * k), (.21 * k, 0.0), (.21 * k, .06 * k)], n=6, phase=math.pi / 6)
         lathe(b, 'hardware', lx, y, zl, [(.23 * k, .62 * k), (.23 * k, .68 * k), (.20 * k, .74 * k), (.15 * k, .82 * k), (.08 * k, .88 * k),
@@ -733,8 +763,8 @@ def sector(name, cx, cy, r0, r1, a0, a1, z0, z1, role, n=16):
 def quadrant(b, cx, cy, rp, a0, a1, n=12):
     """Quadrant balustrade on a solid plinth along an arc (the parapet line), rail on top; plinth and rail are each
     one swept solid so no seams show."""
-    sector('Quadrant plinth', cx, cy, rp - .26, rp + .26, a0, a1, 10.96, 11.36, 'stone')
-    sector('Quadrant rail', cx, cy, rp - .29, rp + .29, a0, a1, 12.06, 12.24, 'stone')
+    sector('Quadrant plinth', cx, cy, rp - .24, rp + .24, a0, a1, 10.96, 11.36, 'stone')
+    sector('Quadrant rail', cx, cy, rp - .24, rp + .24, a0, a1, 12.06, 12.22, 'stone')
     L = rp * abs(a1 - a0)
     m = int(L / .32)
     pts = arc_pts(cx, cy, rp, a0 + (a1 - a0) * .5 / m, a1 - (a1 - a0) * .5 / m, m - 1)
@@ -764,6 +794,11 @@ def corners():
         for x in (-QX, XA):                                                     # end pedestals
             b.box('stone', x, sy * 8.66, (DECK - .04 + 12.45) / 2, .9, .9, 12.45 - DECK + .04)
             b.box('arch', x, sy * 8.66, 12.51, 1.06, 1.06, .12)
+        # Tangent pedestals: each quadrant balustrade ends on a pedestal where the solid coped quay parapet begins,
+        # so a corner reads as one barrier (bridge pedestal, quadrant balustrade, pedestal, solid parapet).
+        for px, py in ((QW - .26, sy * (8.66 + RPW)), (XA + RPE, sy * (8.66 + RPE))):
+            b.box('stone', px, py, (DECK - .04 + 12.45) / 2, .9, .9, 12.45 - DECK + .04)
+            b.box('arch', px, py, 12.51, 1.06, 1.06, .12)
         # The coped quay parapet along the west quay and along the top of the east retaining wall.
         yq = sy * (8.66 + RPW)
         parapet_line(b, [(QW - .26, yq), (QW - .26, sy * LONG)])
