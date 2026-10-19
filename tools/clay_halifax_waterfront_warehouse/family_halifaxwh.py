@@ -469,7 +469,8 @@ def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, pi
         elif kind == 'pair':                              # two shop lights divided by a brick pier
             gs = [(hole(f'{label} shop light {u + s * .95:+.1f}', u + s * .95, G0 + .05, 1.5, BELT0 - G0 - .25, kind='shopfront'), 'side') for s in (-1, 1)]
         else:                                             # tall narrow arched windows in brick
-            gs = [(hole(f'{label} ground arch {u + du:+.1f}', u + du, .95, .75, BELT0 - .4 - .95), 'arch') for du in (-1.2, 0.0, 1.2)]
+            gw = bay.get('gw', .75)                       # a triplet by default; bay['gdu'] sets other counts (east bay 3 is a pair)
+            gs = [(hole(f'{label} ground arch {u + du:+.1f}', u + du, .95, gw, BELT0 - .4 - .95), 'arch') for du in bay.get('gdu', (-1.2, 0.0, 1.2))]
         for g, k in gs:
             grounds.append((g, k)); holes.append(g)
         for du, ww, hh in bay['upper']:
@@ -509,10 +510,11 @@ def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, pi
     for h in uppers:
         framed(m, f, h, cols=2, rows=4, inset=.16, occupied='loft', frame='frame')
         m.box('stone', h['u'], -.06, h['z'] - .08, h['w'] + .34, .16, .14)
-        arch_head(f, h, h['w'] / 2, ring=.3, course=(G0 + .05, .16))
-        m.box('stone', h['u'], -.06, h['z'] + h['h'] + .15, .3, .14, .42)                       # keystone
+        ring = .3 if h['w'] >= 1 else .16                                                   # slimmer archivolts on the narrow triplet lights
+        arch_head(f, h, h['w'] / 2, ring=ring, course=(G0 + .05, .16))
+        m.box('stone', h['u'], -.06, h['z'] + h['h'] + ring / 2, ring, .14, ring * 1.4)        # keystone
         for s in (-1, 1):                                                                     # granite impost blocks at the springing
-            m.box('stone', h['u'] + s * (h['w'] / 2 + .17), -.05, h['z'] + h['h'] - h['w'] / 2 - .08, .36, .1, .2)
+            m.box('stone', h['u'] + s * (h['w'] / 2 + ring * .57), -.05, h['z'] + h['h'] - h['w'] / 2 - .08, ring * 1.2, .1, .2)
     band('stone', -.18, .36, BELT0 + .3, .6)                                                  # belt entablature
     band('stone', -.24, .48, BELT1 - .15, .3)
     band('stone', -.08, .16, BELT1 + .4, .14)                                                 # sill course
@@ -585,8 +587,8 @@ def build_faces():
     # East side: the south corner pier is the south front's; the bays start behind it.
     ep = [(Y0 + .7, 1.4, False), (-2.55, 1.1, True), (2.55, 1.1, True), (Y1 - .7, 1.4, False)]
     eb = [dict(u=-5.1, w=4.0, ground='pair', upper=[(-.85, 1.0, 2.65), (.85, 1.0, 2.65)]),        # bay 1: archivolts clear of each other and of the corner pier
-          dict(u=0.0, w=4.0, ground='arches', upper=[(-.9, 1.05, 2.65), (.9, 1.05, 2.65)]),
-          dict(u=5.1, w=4.0, ground='arches', upper=[(-.9, 1.05, 2.65), (.9, 1.05, 2.65)])]
+          dict(u=0.0, w=4.0, ground='arches', upper=[(-1.2, .8, 2.55), (0.0, .8, 2.55), (1.2, .8, 2.55)]),   # bay 2: triplet over triplet
+          dict(u=5.1, w=4.0, ground='arches', gdu=(-.9, .9), gw=.85, upper=[(-.9, 1.05, 2.65), (.9, 1.05, 2.65)])]   # bay 3: pair over pair
     street_face('east', (X1, 0, 0), (0, 1, 0), (-1, 0, 0), -hd + T, hd - T, Y0, Y1, ep[1:], eb, False, wrap_hi=True)
     # The east bands return 1.4 m along the north wall, butting the east bands' wrapped ends at the corner line.
     nf = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'north return')
