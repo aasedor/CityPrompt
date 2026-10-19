@@ -23,13 +23,14 @@ G0 = .6                                         # raised ground floor over the b
 F1, F2 = 4.4, 8.2
 ENT = 11.6                                      # foot of the entablature (top of the capitals)
 CORN = 13.0                                     # top of the cornice and of the walls
-MSET, MTOP = 1.2, 18.0                           # mansard setback and ridge (the mansard rises to a ridge ring round the court)
+MSET, MTOP = 1.2, 18.2                           # mansard setback and ridge (the mansard rises to a ridge ring round the court)
+BI, BRK = 2.5, 17.2                             # steep slate band (about 73 degrees) up to the break, then a shallow lead slope
 RX, RY0, RY1 = 11.0, -9.0, 12.0                 # ridge ring
 CX0, CX1, CY0, CY1 = -5.0, 5.0, -4.0, 8.0      # light court
 BAY = 3.0
 EPS = .002
 PALETTE = dict(wall=(.86, .82, .72), joint=(.70, .66, .57), stone=(.90, .87, .78), trim=(.95, .94, .90),
-    pale=(.88, .88, .86), roof=(.36, .39, .44), lead=(.46, .48, .50), sand=(.70, .66, .58), foundation=(.66, .62, .54),
+    pale=(.88, .88, .86), roof=(.36, .39, .44), lead=(.58, .59, .60), sand=(.70, .66, .58), foundation=(.66, .62, .54),
     glass=(.20, .23, .26), hardware=(.06, .06, .07), interior=(.84, .80, .74), floor=(.58, .48, .38),
     timber=(.46, .34, .22), door=(.10, .11, .12), planting=(.30, .46, .20), soil=(.22, .16, .10),
     concrete=(.70, .69, .66), white=(.95, .95, .93), asphalt=(.27, .27, .28), brick=(.54, .42, .30),
@@ -52,7 +53,7 @@ def manifest(version):
         ('rear_north', (0.0, 60.0, 26.0), (0.0, 0.0, 12.0), 45)])
     for c in cams:                       # the locked front looks from the south-west, the oblique from the south-east (top view)
         if c['name'] == 'front':
-            c.update(location=(-46.0, -30.0, 1.7), target=(-18.0, -3.0, 9.5), lens=28, whole=False)   # the locked front: the long west porch front receding left, the south end right
+            c.update(location=(-50.0, -42.0, 1.7), target=(-18.6, -14.1, 7.6), lens=42, whole=False)   # the locked front: the long west porch front receding left, the south end right
         elif c['name'] == 'front_corner':
             c.update(location=(40.0, -46.0, 34.0), target=(2.0, -2.0, 7.0), lens=35, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -410,25 +411,68 @@ def cyl(b, role, cx, cy, z0, z1, r, n=12):
 
 
 
+def cone(b, role, cx, cy, z0, z1, r0, r1, n=12):
+    """Upright n-gon frustum (radius r0 at z0, r1 at z1) added to a Batch."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V)
+    for z, r in ((z0, r0), (z1, r1)):
+        for i in range(n):
+            a = 2 * math.pi * (i + .5) / n
+            V.append((cx + r * math.cos(a), cy + r * math.sin(a), z))
+    F.append(tuple(o + i for i in range(n - 1, -1, -1)))
+    F.append(tuple(o + n + i for i in range(n)))
+    for i in range(n):
+        j = (i + 1) % n
+        F.append((o + i, o + j, o + n + j, o + n + i))
+
+
+def leaf(b, cx, cy, a, spine, t=.06):
+    """Acanthus leaf hugging the bell: a tapered plate along a spine of (radius, z, width) stations, its tip curling
+    out; the inner face sits just inside the bell so the leaf never floats."""
+    V, F = b.g.setdefault('stone', ([], []))
+    o = len(V)
+    ca, sa = math.cos(a), math.sin(a)
+    tx, ty = -sa, ca
+    for r, z, w in spine:
+        for dr in (-t, 0.0):
+            for s_ in (-1, 1):
+                V.append((cx + (r + dr) * ca + s_ * w / 2 * tx, cy + (r + dr) * sa + s_ * w / 2 * ty, z))
+    for i in range(len(spine) - 1):
+        a0, a1 = o + 4 * i, o + 4 * (i + 1)                     # station verts: inner-, inner+, outer-, outer+
+        F.extend([(a0 + 2, a0 + 3, a1 + 3, a1 + 2), (a0 + 1, a0, a1, a1 + 1), (a0, a0 + 2, a1 + 2, a1), (a0 + 3, a0 + 1, a1 + 1, a1 + 3)])
+    e = o + 4 * (len(spine) - 1)
+    F.extend([(o, o + 1, o + 3, o + 2), (e + 2, e + 3, e + 1, e)])
+
+
 def giant_column(b, x, y, nx, ny):
-    """Engaged fluted Corinthian column on the wall face (outward normal nx, ny): base, shaft, a flaring bell with two
-    rows of acanthus leaves, corner volutes and a concave-cornered abacus."""
+    """Engaged fluted Corinthian column on the wall face (outward normal nx, ny): base, shaft, a closed bell flaring up
+    to the abacus soffit, two tiers of acanthus leaves clinging to it, four diagonal corner volutes under the abacus
+    horns and a concave-cornered abacus resting on the bell."""
     cx, cy = x + nx * .25, y + ny * .25
+    an = math.atan2(ny, nx)
     z0 = F1 + .35
     cyl(b, 'stone', cx, cy, z0, z0 + .26, .5, 12)                                             # base
-    cyl(b, 'stone', cx, cy, z0 + .26, ENT - .78, .38, 12)
+    cyl(b, 'stone', cx, cy, z0 + .26, ENT - .86, .38, 12)
     for k in range(5):                                                                       # flutes on the visible half
         a = math.atan2(ny, nx) + math.radians(-60 + 30 * k)
-        b.box('joint', cx + .375 * math.cos(a), cy + .375 * math.sin(a), (z0 + .5 + ENT - .9) / 2, .035, .035, ENT - .9 - z0 - .5)
-    cyl(b, 'stone', cx, cy, ENT - .78, ENT - .26, .42, 12)                                    # bell
-    for row, (z, r) in enumerate(((ENT - .66, .44), (ENT - .42, .5))):                       # two rows of acanthus leaves
-        for i in range(6):
-            a = 2 * math.pi * (i + .5 * row) / 6
-            b.beam('stone', (cx + (r - .08) * math.cos(a), cy + (r - .08) * math.sin(a), z - .12),
-                   (cx + (r + .06) * math.cos(a), cy + (r + .06) * math.sin(a), z + .12), .12, .06)
-    for sx in (-1, 1):                                                                       # corner volutes
-        for sy in (-1, 1):
-            b.box('stone', cx + sx * .44, cy + sy * .44, ENT - .24, .2, .2, .2)
+        b.box('joint', cx + .375 * math.cos(a), cy + .375 * math.sin(a), (z0 + .5 + ENT - .98) / 2, .035, .035, ENT - .98 - z0 - .5)
+    cyl(b, 'stone', cx, cy, ENT - .86, ENT - .8, .43, 12)                                     # astragal
+    cone(b, 'stone', cx, cy, ENT - .8, ENT - .19, .38, .5, 12)                                # bell, closed, up into the abacus
+    for row, (za, zb, w) in enumerate(((ENT - .8, ENT - .52, .26), (ENT - .7, ENT - .36, .22))):   # two tiers of acanthus
+        for i in range(8):
+            a = 2 * math.pi * (i + .5 * row) / 8
+            if math.cos(a - an) < -.05:                                                      # the back half is inside the wall
+                continue
+            rb = .38 + .12 * (za - ENT + .8) / .61 + .03
+            rt = .38 + .12 * (zb - ENT + .8) / .61 + .05
+            leaf(b, cx, cy, a, [(rb, za, w), (rt, zb, w * .8), (rt + .1, zb + .07, w * .45)])
+    for i in range(4):                                                                       # diagonal corner volutes (front pair)
+        a = math.pi / 4 + i * math.pi / 2
+        if math.cos(a - an) < 0:
+            continue
+        ca, sa = math.cos(a), math.sin(a)
+        b.beam('stone', (cx + .44 * ca, cy + .44 * sa, ENT - .46), (cx + .66 * ca, cy + .66 * sa, ENT - .24), .12, .12)
+        b.box('stone', cx + .68 * ca, cy + .68 * sa, ENT - .27, .16, .16, .16)
     b.box('stone', cx, cy, ENT - .1, 1.12, 1.12, .2)                                          # abacus
     for sx in (-1, 1):
         b.box('wall', cx + sx * .56, cy, ENT - .1, .06, .5, .21)                                # concave faces read as notches
@@ -441,9 +485,11 @@ def rusticate(f, lo, hi, holes):
         o = len(vs)
         vs.extend([f.p(a, d, za), f.p(c, d, za), f.p(c, d, zc), f.p(a, d, zc)])
         fs.append((o, o + 1, o + 2, o + 3))
+    fans = [dict(h, u=h['u'], w=h['w'] + .5, z=h['z'], h=h['h'] + .54) for h in holes
+            if not (h['z'] > F1 or h.get('kind') == 'door' or 'fanlight' in h['id'])]          # no channel through a voussoir fan
     z = .45
     while z < F1 - .2:
-        for a, c in G.subtract_openings(lo + .02, hi - .02, z, z + .06, holes):
+        for a, c in G.subtract_openings(lo + .02, hi - .02, z, z + .06, holes + fans):
             quad(a, c, z, z + .06)
         z += .45
     for h in holes:
@@ -535,7 +581,7 @@ def balustrade(b, a, c, z, posts, ends=(True, True), end_w=.62):
     (ax, ay), (cx, cy) = a, c
     L = math.hypot(cx - ax, cy - ay)
     ux, uy = (cx - ax) / L, (cy - ay) / L
-    b.beam('stone', (ax, ay, z + .1), (cx, cy, z + .1), .5, .2)
+    b.beam('stone', (ax, ay, z + .08), (cx, cy, z + .08), .5, .24)                           # plinth, seated .04 into the slab
     b.beam('stone', (ax, ay, z + .93), (cx, cy, z + .93), .48, .14)
     ends = (ends, ends) if isinstance(ends, bool) else ends
     caps = [p for p, e in ((0.0, ends[0]), (L, ends[1])) if e]
@@ -546,10 +592,10 @@ def balustrade(b, a, c, z, posts, ends=(True, True), end_w=.62):
             continue
         b.box('stone', ax + ux * t, ay + uy * t, z + .53, .14, .14, .66)
     for p in posts:                                                                          # pedestals rise past the rail top
-        b.box('stone', ax + ux * p, ay + uy * p, z + .54, .62, .62, 1.08)
+        b.box('stone', ax + ux * p, ay + uy * p, z + .52, .62, .62, 1.12)
         b.box('stone', ax + ux * p, ay + uy * p, z + 1.12, .7, .7, .08)
     for p in caps:                                                                           # corner pedestals bury the rail crossings
-        b.box('stone', ax + ux * p, ay + uy * p, z + .54, end_w, end_w, 1.08)
+        b.box('stone', ax + ux * p, ay + uy * p, z + .52, end_w, end_w, 1.12)
         b.box('stone', ax + ux * p, ay + uy * p, z + 1.12, end_w + .08, end_w + .08, .08)
 
 
@@ -581,12 +627,12 @@ def porch(b, f, u):
     balustrade(b, (c2[0], c2[1]), (c3[0], c3[1]), F1 + .1, [], ends=(True, True), end_w=.66)
 
 
-def dormer(b, p, nx, ny, tx, ty, dep=5.0):
+def dormer(b, p, nx, ny, tx, ty, dep=1.3):
     """Dormer standing on the mansard slope; p is the world point of its front face foot on the slope line."""
     w, h = 1.1, 1.55
     def at(u, d, z):
         return (p[0] + tx * u - nx * d, p[1] + ty * u - ny * d, z)
-    z0 = CORN + .55
+    z0 = CORN + 1.35
     for s in (-1, 1):
         c = at(s * (w / 2 + .08), dep / 2, z0 + h / 2)
         b.box('roof', c[0], c[1], c[2], .16 if tx else dep, dep if tx else .16, h)
@@ -634,12 +680,17 @@ def roof_and_court():
     C.box('Roof deck east', ((CX1 + X1 - T) / 2, (CY0 + CY1) / 2, CORN - .12), (X1 - T - CX1, CY1 - CY0, .2), 'lead', 'roof', 0)
     a = MSET
     ridge = [(-RX, RY0), (RX, RY0), (RX, RY1), (-RX, RY1)]
-    strip('Slate mansard', [(X0 + a, Y0 + a), (X1 - a, Y0 + a), (X1 - a, Y1 - a), (X0 + a, Y1 - a)], ridge, CORN + .02, MTOP, 'roof', 'roof')
+    brk = [(X0 + BI, Y0 + BI), (X1 - BI, Y0 + BI), (X1 - BI, Y1 - BI), (X0 + BI, Y1 - BI)]
+    strip('Slate mansard', [(X0 + a, Y0 + a), (X1 - a, Y0 + a), (X1 - a, Y1 - a), (X0 + a, Y1 - a)], brk, CORN + .02, BRK, 'roof', 'roof')
+    e = BI - .1                                                                              # shallow lead upper slope over the break
+    strip('Lead upper slope', [(X0 + e, Y0 + e), (X1 - e, Y0 + e), (X1 - e, Y1 - e), (X0 + e, Y1 - e)], ridge, BRK + .03, MTOP, 'lead', 'roof')
     ov = .3
     strip('Court slopes', [(CX0 + ov, CY0 + ov), (CX1 - ov, CY0 + ov), (CX1 - ov, CY1 - ov), (CX0 + ov, CY1 - ov)], ridge, CORN + .9, MTOP, 'roof', 'roof')
     b = Batch()
     for (xa, ya), (xc, yc) in zip(ridge, ridge[1:] + ridge[:1]):                              # lead ridge rolls
         b.beam('lead', (xa, ya, MTOP + .03), (xc, yc, MTOP + .03), .16, .1, ext=.06)
+    for (xa, ya), (xc, yc) in zip(brk, brk[1:] + brk[:1]):                                    # lead curb roll at the break
+        b.beam('lead', (xa, ya, BRK + .06), (xc, yc, BRK + .06), .2, .14, ext=.1)
     b.flush('ridge')
     # Light court: plain stucco walls with lite windows up to the foot of the court slopes.
     for label, o, t, n, lo, hi in (('court south', (0, CY0, 0), (-1, 0, 0), (0, -1, 0), -CX1 - .4, -CX0 + .4),
@@ -658,28 +709,30 @@ def roof_and_court():
     C.box('Court paving', ((CX0 + CX1) / 2, (CY0 + CY1) / 2, .02), (CX1 - CX0 + .8, CY1 - CY0 + .8, .04), 'concrete', 'court', 0)
     # Dormers: dense on the east and west mansards, every other bay on the south away from the pediment.
     b = Batch()
-    for i in range(0, 13, 2):
+    DF = a + 1.35 * (BI - a) / (BRK - CORN) + .05                                           # dormer fronts on the steep slope
+    for i in range(13):
         x = X0 + 2.0 + BAY * i
-        if 6.0 < abs(x) < X1 - a - 1.2:
-            dormer(b, (x, Y0 + a + .55), 0, -1, 1, 0)
+        if 6.5 < abs(x) < X1 - BI:
+            dormer(b, (x, Y0 + DF), 0, -1, 1, 0)
     fins_y = [-10.5, -1.5, 7.5]
-    for xd, nx in ((X1 - a - .55, 1), (X0 + a + .55, -1)):
+    for xd, nx in ((X1 - DF, 1), (X0 + DF, -1)):
         for i in range(11):
             y = Y0 + 2.0 + BAY * i
-            if abs(y) < Y1 - a - 1.2 and all(abs(y - fy) > 1.0 for fy in fins_y):
+            if abs(y) < Y1 - BI - .6 and all(abs(y - fy) > 1.0 for fy in fins_y):
                 dormer(b, (xd, y), nx, 0, 0, 1)
     b.flush('dormers')
     # White party-wall fins with stacks running up the east and west mansards.
     for s in (1, -1):
-        xw = s * (X1 - .6)
+        xw = s * (X1 - 1.0)                                                                   # short white fins up the steep slate band
         for y in fins_y:
-            pts = [(xw, CORN), (xw, CORN + 1.3), (s * RX, MTOP + .35), (s * (RX - 1.2), MTOP + .35), (s * (RX - 1.2), CORN)]
+            pts = [(xw, CORN), (xw, CORN + .5), (s * (X1 - BI + .2), BRK + .35), (s * (X1 - BI - 1.4), BRK + .35), (s * (X1 - BI - 1.4), CORN)]
             C.prism(f'Party fin {s:+d} {y:+.0f}', [(x, z) for x, z in pts], 'y', y - .22, y + .22, 'white', 'party fins')
             b = Batch()
-            b.box('white', s * (RX - .6), y, MTOP + 1.0, 1.1, 1.2, 1.3)
-            b.box('stone', s * (RX - .6), y, MTOP + 1.71, 1.22, 1.32, .12)
+            xs = s * (X1 - BI - .7)
+            b.box('white', xs, y, BRK + .35 + .65, 1.1, 1.2, 1.3)
+            b.box('stone', xs, y, BRK + 1.36, 1.22, 1.32, .12)
             for k in range(3):
-                b.box('pot', s * (RX - .6), y - .4 + .4 * k, MTOP + 2.02, .2, .2, .5)
+                b.box('pot', xs, y - .4 + .4 * k, BRK + 1.67, .2, .2, .5)
             b.flush(f'stack {s:+d} {y:+.0f}')
     for z in (G0, F1, F2):
         C.box(f'Floor west {z:.1f}', ((X0 + T + CX0 - .4) / 2, (CY0 - .4 + Y1 - T) / 2, z - .12), (CX0 - .4 - X0 - T, Y1 - T - CY0 + .4, .24), 'floor', 'inside', 0)
@@ -729,7 +782,7 @@ def site():
         b.box('pale', x, Y0 - 4.6, 4.95, .34, .34, .4)
         b.box('hardware', x, Y0 - 4.6, 5.2, .44, .44, .1)
     b.flush('areas and street')
-    for x, y in ((X0 - 4.4, -2.0), (X0 - 4.4, 10.0), (15.0, Y0 - 4.4)):                       # trees along the long west front, clear of the corner
+    for x, y in ((X0 - 4.4, -2.0), (X0 - 4.4, 10.0), (X1 + 4.4, 13.0)):                       # trees along the long west front, clear of the corner
         street_tree(x, y, z=.12, height=10.0, spread=3.0)
     # Brick terrace houses against the north party wall, as context: one roof, party stacks, windowed rear and ends.
     hx0, hx1, hy1 = X0 + .1, X1 - .1, Y1 + 12.9
