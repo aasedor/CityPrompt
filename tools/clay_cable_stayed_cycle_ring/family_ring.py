@@ -22,14 +22,15 @@ GD = 1.1                                        # box-girder depth below the sur
 COLLAR, MAST = 48.0, 60.0                       # cable collar and mast top
 RAMP_A = math.radians(-122.0)                   # where the ramp leaves the ring (top view: south-west, heading south)
 RAMP_L = 58.0                                   # ramp length down to the street
+YE = -math.sqrt(R_OUT ** 2 - ((R_IN + R_OUT) / 2 * math.cos(RAMP_A)) ** 2) - 3.0 - RAMP_L   # the ramp foot
 X0, X1, Y0, Y1 = -R_OUT, R_OUT, -R_OUT - RAMP_L, R_OUT
 T = .3
 EPS = .002
-PALETTE = dict(white=(.92, .92, .90), red=(.62, .30, .26), rail=(.90, .90, .88), cable=(.85, .85, .84),
+PALETTE = dict(white=(.92, .92, .90), red=(.50, .30, .23), rail=(.90, .90, .88), cable=(.85, .85, .84),
     steel=(.82, .83, .84), concrete=(.66, .65, .62), asphalt=(.26, .26, .27), lane=(.94, .94, .92),
-    cycle=(.58, .30, .26), paving=(.62, .58, .54), grass=(.40, .50, .26), planting=(.30, .44, .20), tree=(.28, .44, .18),
+    cycle=(.50, .31, .24), paving=(.62, .58, .54), grass=(.40, .50, .26), planting=(.30, .44, .20), tree=(.28, .44, .18),
     timber=(.42, .32, .22), soil=(.30, .25, .18), brick=(.55, .32, .24), brick2=(.62, .40, .30), roof=(.30, .28, .27),
-    trim=(.90, .89, .86), glass=(.24, .30, .34), dark=(.14, .15, .16), hardware=(.18, .18, .19), pale=(.88, .88, .86),
+    trim=(.90, .89, .86), glass=(.80, .86, .88), dark=(.14, .15, .16), hardware=(.18, .18, .19), pale=(.88, .88, .86),
     interior=(.84, .80, .74), floor=(.58, .48, .38), stone=(.70, .68, .64), joint=(.52, .50, .47), sand=(.70, .66, .58),
     wall=(.80, .74, .62), blue=(.20, .30, .40), pot=(.60, .34, .22))
 
@@ -42,33 +43,27 @@ def manifest(version):
         ('architecture_close', (-14.0, -8.0, 9.5), (-27.0, -14.6, 6.0), 40),
         ('glass_close', (RM * math.cos(math.radians(160)), RM * math.sin(math.radians(160)), DZ + 1.6),
                         (RM * math.cos(math.radians(130)), RM * math.sin(math.radians(130)), DZ + 1.0), 40),
-        ('pylon_head', (16.0, -24.0, 47.0), (0.0, 0.0, 49.5), 60),
+        ('pylon_head', (14.0, -22.0, 50.0), (0.0, 0.0, 53.0), 40),
         ('cable_fan', (-6.0, -44.0, 12.0), (0.0, 0.0, 30.0), 28),
         ('ring_deck', (RM * math.cos(math.radians(205)), RM * math.sin(math.radians(205)), DZ + 1.7),
                       (RM * math.cos(math.radians(170)), RM * math.sin(math.radians(170)), DZ + .8), 30),
-        ('ramp_landing', (R_OUT * math.cos(RAMP_A) + 9.0, R_OUT * math.sin(RAMP_A) - RAMP_L - 4.0, 1.7),
-                         (R_OUT * math.cos(RAMP_A), R_OUT * math.sin(RAMP_A) - RAMP_L * .5, 3.5), 35),
+        ('ramp_landing', (RM * math.cos(RAMP_A) + 9.0, YE - 12.0, 2.2), (RM * math.cos(RAMP_A), YE + 10.0, 1.6), 28),
         ('column_support', (RM * math.cos(math.radians(15)) + 9.0, RM * math.sin(math.radians(15)) - 7.0, 1.7),
                            (RM * math.cos(math.radians(15)), RM * math.sin(math.radians(15)), 4.0), 35),
         ('intersection_under', (0.0, -22.0, 1.7), (0.0, 22.0, 6.0), 26),
-        ('rear_north', (6.0, 96.0, 24.0), (0.0, 0.0, 9.0), 35)])
-    for c in cams:                       # the locked front stands by the ramp at deck height, looking east across the ring
-        if c['name'] == 'front':
-            c.update(location=(-41.0, -11.0, 10.4), target=(0.0, 2.0, 15.0), lens=26, whole=False)
-        elif c['name'] == 'front_corner':                                      # the locked oblique, higher, from the south-west
-            c.update(location=(-62.0, -30.0, 24.0), target=(0.0, 2.0, 12.0), lens=24, whole=False)
-        elif c['name'] == 'aerial':
-            c.update(location=(-70.0, -80.0, 70.0), target=(0.0, -10.0, 6.0), lens=30, whole=False)
-        elif c['name'] == 'top':
-            c.update(location=(0.0, -4.0, 140.0), target=(0.0, -3.999, 0.0), ortho_scale=96.0, whole=False)
-        elif c['name'] == 'left_side':
-            c.update(location=(-100.0, 6.0, 22.0), target=(0.0, 0.0, 10.0), lens=30, whole=False)
-        elif c['name'] == 'right_side':
-            c.update(location=(100.0, -6.0, 22.0), target=(0.0, 0.0, 10.0), lens=30, whole=False)
-        elif c['name'] == 'rear':
-            c.update(location=(-8.0, 100.0, 20.0), target=(0.0, 0.0, 10.0), lens=30, whole=False)
-        elif c['name'] == 'rear_side':
-            c.update(location=(78.0, 80.0, 40.0), target=(0.0, 0.0, 8.0), lens=30, whole=False)
+        ('rear_north', (20.0, 90.0, 9.0), (0.0, 0.0, 20.0), 24)])
+    views = dict(                        # the locked front stands outside the ring by the ramp, a little above the deck
+        front=dict(location=(-74.0, -40.0, 13.0), target=(0.0, 0.0, 18.0), lens=24),
+        front_corner=dict(location=(-95.0, -62.0, 40.0), target=(0.0, -8.0, 22.0), lens=26),   # the locked oblique, higher
+        aerial=dict(location=(-120.0, -160.0, 110.0), target=(0.0, -28.0, 14.0), lens=30),       # ring, pylon top and ramp foot
+        top=dict(location=(0.0, -29.0, 160.0), target=(0.0, -28.999, 0.0), ortho_scale=186.0),
+        left_side=dict(location=(-130.0, 6.0, 26.0), target=(0.0, 0.0, 22.0), lens=30),
+        right_side=dict(location=(130.0, -6.0, 26.0), target=(0.0, 0.0, 22.0), lens=30),
+        rear=dict(location=(-8.0, 130.0, 26.0), target=(0.0, 0.0, 22.0), lens=30),
+        rear_side=dict(location=(100.0, 100.0, 48.0), target=(0.0, 0.0, 22.0), lens=30))
+    for c in cams:
+        if c['name'] in views:
+            c.update(whole=False, **views[c['name']])
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -421,6 +416,18 @@ def ring_loft(name, prof, role, module='ring'):
     loft(name, rings, role, module, closed=True)
 
 
+def arc_loft(name, prof, role, a0, a1, n, module='ring'):
+    """Loft an (r, z) profile along an open arc from angle a0 to a1, capped at both ends."""
+    rings = [[at(r, a0 + (a1 - a0) * i / (n - 1), z) for r, z in prof] for i in range(n)]
+    loft(name, rings, role, module, closed=False)
+
+
+def gap_angles(r, half=2.35):
+    """Angles on the south half where the ramp opening (x = xr +- half) cuts a circle of radius r."""
+    xr = RM * math.cos(RAMP_A)
+    return -math.acos((xr - half) / r), -math.acos((xr + half) / r)
+
+
 def tube(name, pts, role, module, n=16):
     """Closed tapered tube through (z, r) stations on the vertical axis at the origin."""
     rings = [[(r * math.cos(2 * math.pi * j / n), r * math.sin(2 * math.pi * j / n), z) for j in range(n)] for z, r in pts]
@@ -451,8 +458,11 @@ def ramp_z(y):
 def deck():
     ring_loft('Ring girder', [(R_IN, DZ - .06), (R_OUT, DZ - .06), (R_OUT - .4, DZ - GD), (R_IN + .4, DZ - GD)], 'white')
     ring_loft('Ring cycle surface', [(R_IN + .14, DZ - .09), (R_OUT - .14, DZ - .09), (R_OUT - .14, DZ), (R_IN + .14, DZ)], 'red')
-    for nm, r0, r1 in (('inner', R_IN, R_IN + .15), ('outer', R_OUT - .15, R_OUT)):
-        ring_loft(f'Ring {nm} kerb', [(r0, DZ - .07), (r1, DZ - .07), (r1, DZ + .12), (r0, DZ + .12)], 'white')
+    ring_loft('Ring inner kerb', [(R_IN, DZ - .07), (R_IN + .15, DZ - .07), (R_IN + .15, DZ + .12), (R_IN, DZ + .12)], 'white')
+    # The outer kerb stops either side of the ramp mouth so the red deck runs flush from the ring onto the ramp.
+    ga, gb = gap_angles(R_OUT - .07)                                          # ga west (more negative) of gb
+    r0, r1 = R_OUT - .15, R_OUT
+    arc_loft('Ring outer kerb', [(r0, DZ - .07), (r1, DZ - .07), (r1, DZ + .12), (r0, DZ + .12)], 'white', gb, ga + 2 * math.pi, 92)
     b = Batch()
     for i in range(64):                                                      # white dashed markings on the red surface
         a0 = 2 * math.pi * i / 64
@@ -476,8 +486,10 @@ def railings():
             if r > RM and (gap(p) or gap(q)):
                 continue
             b.box('rail', p[0], p[1], DZ + .12 + .54, .07, .07, 1.08)
-            for z, w in ((1.18, .07), (.66, .04), (.30, .04)):
+            for z, w in ((1.18, .07), (.16, .04)):                            # top rail and a low shoe rail
                 b.beam('rail', (p[0], p[1], DZ + z), (q[0], q[1], DZ + z), w, w)
+            if not (r > RM and (gap(p) or gap(q))):                             # glazed infill panel between the posts
+                b.beam('glass', (p[0], p[1], DZ + .66), (q[0], q[1], DZ + .66), .025, .9)
     for s in (-1, 1):                                                        # ramp railings, from the ring edge to the foot
         x = xr + s * 2.2
         y = -math.sqrt(R_OUT * R_OUT - x * x) - .05
@@ -499,6 +511,14 @@ def ramp():
     C.prism('Ramp girder', poly, 'x', xr - 2.3, xr + 2.3, 'white', 'ramp')
     top = [(ys, DZ - .06), (yf, DZ - .06), (ye, .06), (ye, .1), (yf, DZ - .01), (ys, DZ - .01)]
     C.prism('Ramp cycle surface', top, 'x', xr - 2.12, xr + 2.12, 'red', 'ramp')
+    # The foot: the ramp lands on a red apron that joins the cycle path along the north-south road.
+    C.box('Ramp landing apron', ((xr - 2.6 - 11.0) / 2, ye - 1.6, .045), (-11.0 - (xr - 2.6), 5.0, .09), 'cycle', 'ramp', 0)
+    b = Batch()
+    for s_ in (-1, 1):                                                       # white kerb lines round the apron
+        b.box('white', (xr - 2.6 - 11.0) / 2, ye - 1.6 + s_ * 2.45, .095, -11.0 - (xr - 2.6), .1, .012)
+    for i in range(4):                                                       # give-way block dashes where it meets the path
+        b.box('lane', -11.4, ye - 3.4 + i * 1.2, .097, .4, .4, .006)
+    b.flush('ramp landing')
     b = Batch()
     for y in (yf - 10.0, yf - 22.0, yf - 34.0):                              # ramp columns
         zt = ramp_z(y) - D + .02
@@ -510,26 +530,28 @@ def ramp():
 def pylon_and_cables():
     disc('Pylon island', 0.0, 0.0, 0.0, .22, 3.4, 'concrete', 'pylon')
     disc('Pylon island kerb', 0.0, 0.0, 0.0, .26, 3.6, 'white', 'pylon', 32)
-    tube('Pylon mast', [(.2, .78), (COLLAR - 2.0, .55), (COLLAR + 3.0, .42), (MAST, .2)], 'steel', 'pylon')
+    tube('Pylon mast', [(.2, .78), (COLLAR - 2.0, .55), (COLLAR + 3.0, .5), (MAST - .3, .46), (MAST, .3)], 'steel', 'pylon')
     disc('Pylon base', 0.0, 0.0, .2, 1.4, 1.15, 'steel', 'pylon', 24)
-    disc('Cable collar', 0.0, 0.0, COLLAR - .9, COLLAR + .9, .95, 'steel', 'pylon', 24)
+    tube('Cable spreader', [(COLLAR - 1.8, .54), (COLLAR + .4, 1.18), (COLLAR + .9, 1.18)], 'steel', 'pylon', 24)   # downward-flaring cone
     b = Batch()
     n = 30
     for i in range(n):
         a = 2 * math.pi * (i + .5) / n
-        b.beam('cable', at(.85, a, COLLAR), at(R_IN + .25, a, DZ - .35), .07, .07)
+        b.beam('cable', at(1.0, a, COLLAR), at(R_IN + .25, a, DZ - .35), .07, .07)
         b.box('steel', *at(R_IN + .05, a, DZ - .5), .3, .3, .5)                 # anchor bracket on the inner girder face
     b.flush('cables')
 
 
 def columns():
-    b = Batch()
-    for deg in (40.0, 140.0, 215.0, 320.0):
-        x, y, _ = at(RM, math.radians(deg), 0.0)
+    for deg in (40.0, 140.0, 215.0, 320.0):                                  # concrete blades widening towards the deck
+        a = math.radians(deg)
+        x, y, _ = at(RM, a, 0.0)
         zt = DZ - GD + .05
-        b.box('concrete', x, y, zt / 2, 1.5, 1.5, zt)
-        b.box('concrete', x, y, zt - .2, 2.2, 2.2, .4)                         # bearing head
-    b.flush('ring columns')
+        rad, tan = (math.cos(a), math.sin(a)), (-math.sin(a), math.cos(a))
+        rings = []
+        for z, hr, ht in ((0.0, .55, .7), (zt, .55, 1.6)):
+            rings.append([(x + rad[0] * u * hr + tan[0] * v * ht, y + rad[1] * u * hr + tan[1] * v * ht, z) for u, v in ((-1, -1), (1, -1), (1, 1), (-1, 1))])
+        loft(f'Ring column {deg:.0f}', rings, 'concrete', 'ring columns', closed=False)
 
 
 def street():
@@ -557,9 +579,12 @@ def street():
     for s in (-1, 1):                                                        # stop lines, zebra and dotted crossings
         b.box('lane', s * 2.75, s * -12.6, .033, 5.5, .35, .006)
         b.box('lane', s * -12.4, s * -3.0, .033, .35, 6.0, .006)
-        for i in range(10):
-            b.box('lane', -9.0 + i * 2.0, s * 18.0, .033, .9, 3.2, .006)
-            b.box('lane', s * 19.0, -10.0 + i * 2.2, .033, 3.2, .9, .006)
+        C.box(f'NS cycle crossing {s:+d}', (0.0, s * 18.0, .031), (21.6, 2.6, .006), 'cycle', 'street', 0)
+        C.box(f'EW cycle crossing {s:+d}', (s * 19.0, 0.0, .031), (2.6, 23.6, .006), 'cycle', 'street', 0)
+        for i in range(22):                                                   # block-dash edges of the cycle crossings
+            for e in (-1, 1):
+                b.box('lane', -10.5 + i * 1.0, s * 18.0 + e * 1.45, .033, .45, .45, .006)
+                b.box('lane', s * 19.0 + e * 1.45, -11.5 + i * 1.09, .033, .45, .45, .006)
         for i in range(14):
             b.box('lane', s * 11.2, -10.4 + i * 1.6, .053, .4, .4, .006)
     b.flush('road markings')
@@ -597,8 +622,10 @@ def context():
         b.flush(f'{name} windows')
     houses = (('Houses north-west', -76.0, -40.0, 36.0, 46.0), ('Houses south-west', -78.0, -44.0, -54.0, -44.0), ('Houses north', -34.0, -20.0, 40.0, 50.0))
     for name, x0, x1, y0, y1 in houses:
-        C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, 3.2), (x1 - x0, y1 - y0, 6.4), 'brick2', 'context', 0)
+        C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, 3.2), (x1 - x0 + .6, y1 - y0, 6.4), 'brick2', 'context', 0)   # gable walls flush with the verges
         pitched_roof(f'{name} roof', x0, x1, y0, y1, 6.4, 3.4, hip_w=False, hip_e=False, axis='x', ov=.3, role='roof', module='context')
+        for ga, gb in ((x0 - .32, x0), (x1, x1 + .32)):                        # brick gable triangles over the dark roof-plate ends
+            C.prism(f'{name} gable {ga:.0f}', [(y0, 6.38), (y1, 6.38), ((y0 + y1) / 2, 6.38 + 3.4)], 'x', ga, gb, 'brick2', 'context')
         b = Batch()
         face = y0 if y0 > 0 else y1
         windows(b, face, 'y', x0, x1, -.4, 2, -1 if y0 > 0 else 1)
