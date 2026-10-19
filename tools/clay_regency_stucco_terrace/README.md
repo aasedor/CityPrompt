@@ -68,6 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (first build; the review drives v002)
+## Open blockers after v002 (the v003 rework targets both)
 
-P0 facade programme rotated 90 degrees against the locked top view and oblique (pediment belongs on the south, porches, fins and dense dormers on the east and west). P1 mansard too low with a large flat top and no inner court slopes; capitals read Tuscan; porch columns read square; no porch under the pediment; open balustrade and coping corners; windowless terrace-house context with roof gaps; rustication too faint
+- P1 #1: black voids where the coping meets the corner pedestals on every porch balcony and at the main parapet corners (the v001 open-corner finding, surviving one targeted fix).
+- P1 #2: the front render does not match the source front: too low and close, the mansard, dormers and fins hidden, a street tree over the corner order, the pediment end dominating instead of the long porch front.
+- The v001 P0 and the other P1s are resolved in the pixels.

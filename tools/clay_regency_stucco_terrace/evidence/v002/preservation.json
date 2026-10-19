@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-regency-stucco-terrace-clay-v002",
+  "glb": "clay-regency-stucco-terrace-clay-v002.glb",
+  "glb_bytes": 3514404,
+  "glb_sha256": "6f1f6fb28886f7cce3348b4d5db8c9099988f645ab66358944a4de34642f2ade",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "east_side.png": 92,
+    "end_pediment.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "giant_order.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "mansard_dormers.png": 92,
+    "porch_balcony.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-regency-stucco-terrace-clay-v002-renders-and-glb.zip",
+  "zip_bytes": 33560932
+}

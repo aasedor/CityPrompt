@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-regency-stucco-terrace",
+  "variant_id": "clay-regency-stucco-terrace-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "regency_stucco_terrace/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/regency-stucco-terrace/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1326016,
+      "sha256": "7d8afe037a358b9216ad4955ee68a8afd4b3b5344b205ab941e2207ecc028074"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/regency-stucco-terrace/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 940787,
+      "sha256": "58577ff931e7766baf78a204664d20417ef45002fd11446fecf3ea470c5b24be"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/regency-stucco-terrace/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 886252,
+      "sha256": "15d256fb8ee3b91b77996995f0e0ce7394e521275432f14d6e500e6fecc83139"
+    }
+  ]
+}
