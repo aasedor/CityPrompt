@@ -24,11 +24,12 @@ X0, X1, Y0, Y1 = -XR - .3, XR + .3, -L / 2 - .5, L / 2 + .5
 DECK = 5.0                                      # road surface and quay level above the water
 HT = 7.5                                        # top chord above the bottom chord
 T = .3
+SW = .15                                        # sidewalk above the road
 EPS = .002
-PALETTE = dict(steel=(.44, .20, .12), steel2=(.36, .16, .10), gusset=(.40, .18, .11), water=(.08, .10, .10),
+PALETTE = dict(steel=(.54, .25, .12), steel2=(.44, .20, .10), gusset=(.48, .22, .11), cabin=(.22, .23, .24), water=(.08, .10, .10),
     concrete=(.72, .71, .68), quay=(.60, .59, .56), brick=(.50, .25, .18), joint=(.62, .58, .52), asphalt=(.24, .24, .25),
     white=(.92, .92, .90), yellow=(.82, .66, .16), paving=(.70, .68, .64), glass=(.20, .24, .27), dark=(.10, .10, .11),
-    hardware=(.13, .14, .14), trim=(.80, .78, .74), wall=(.52, .27, .19), roof=(.50, .50, .50), interior=(.84, .80, .74),
+    hardware=(.13, .14, .14), trim=(.80, .78, .74), wall=(.34, .20, .16), roof=(.50, .50, .50), interior=(.84, .80, .74),
     floor=(.58, .48, .38), planting=(.30, .44, .20), tree=(.28, .44, .18), timber=(.46, .34, .22), soil=(.22, .16, .10),
     car=(.42, .40, .36), car2=(.62, .60, .58), bus=(.86, .86, .84), pale=(.88, .88, .86), sand=(.70, .66, .58),
     blue=(.20, .30, .40), pot=(.60, .34, .22), stone=(.70, .68, .63))
@@ -49,10 +50,10 @@ def manifest(version):
         ('river_underside', (15.0, 0.5, 1.4), (0.0, 0.0, 3.8), 35),
         ('rear_north', (15.0, 21.0, 9.0), (0.0, QY, 8.0), 35)])
     for c in cams:
-        if c['name'] == 'front':                     # the locked front: on the east sidewalk at the south end, looking north-west into the portal
-            c.update(location=(8.6, -15.6, DECK + .15 + 1.6), target=(-3.0, 6.0, DECK + 4.2), lens=24, whole=False)
+        if c['name'] == 'front':                     # the locked front: at the south-east quay corner outside the railing, looking north-west past the end post
+            c.update(location=(11.5, -20.0, DECK + SW + 2.6), target=(-3.0, -5.0, DECK + 4.0), lens=19, whole=False)
         elif c['name'] == 'front_corner':            # the locked oblique: high over the south-west quay, the span receding north-east
-            c.update(location=(-10.0, -33.0, 22.0), target=(3.0, 4.0, 7.0), lens=30, whole=False)
+            c.update(location=(-10.0, -33.0, 22.0), target=(3.0, 4.0, 6.2), lens=28, whole=False)
         elif c['name'] == 'aerial':
             c.update(location=(44.0, -10.0, 34.0), target=(0.0, 0.0, 6.0), lens=30, whole=False)
         elif c['name'] == 'top':
@@ -411,7 +412,6 @@ ZB = DECK + .15                                                            # bot
 ZT = ZB + HT                                                               # top chord centre
 YN = [-L / 2 + i * P for i in range(NP + 1)]                               # panel points along y
 BANK = 60.0
-SW = .15                                                                   # sidewalk above the road
 
 
 def node(x, i, top):
@@ -441,57 +441,66 @@ def laced(b, a, c, w, d, n=None, role='steel'):
 
 
 def truss(xt):
-    """One Pratt truss: bottom chord, top chord, inclined end posts, laced verticals, double-bar diagonals with
-    counters in the middle panel, gusset plates on both faces at every panel point."""
+    """One Pratt truss: bottom chord, top chord, inclined end posts, plain hip verticals, laced verticals,
+    double-bar main diagonals, slender flat-bar counters in every interior panel except the one beside each hip
+    vertical, gusset plates on both faces at every panel point."""
     b = Batch()
     b.beam('steel', (xt, YN[0] - .3, ZB), (xt, YN[-1] + .3, ZB), .5, .6)                     # bottom chord
     b.beam('steel', node(xt, 1, True), node(xt, NP - 1, True), .58, .62)                      # top chord
     for i0, i1 in ((0, 1), (NP, NP - 1)):                                                   # inclined end posts
         b.beam('steel', node(xt, i0, False), node(xt, i1, True), .62, .6, ext=.25)
     for i in range(1, NP):
-        laced(b, (xt, YN[i], ZB + .3), (xt, YN[i], ZT - .31), .36, .34)
-    mid = NP // 2
-    for i in range(1, NP - 1):                                                            # Pratt diagonals: down towards mid-span
-        if i < mid:
-            pairs = [(node(xt, i, True), node(xt, i + 1, False))]
-        elif i > mid:
-            pairs = [(node(xt, i + 1, True), node(xt, i, False))]
+        if i in (1, NP - 1):                                                              # hip verticals: plain hangers
+            b.beam('steel', (xt, YN[i], ZB + .3), (xt, YN[i], ZT - .31), .3, .3)
         else:
-            pairs = [(node(xt, i, True), node(xt, i + 1, False)), (node(xt, i + 1, True), node(xt, i, False))]
+            laced(b, (xt, YN[i], ZB + .3), (xt, YN[i], ZT - .31), .36, .34)
+    mid = NP / 2
+    for i in range(1, NP - 1):                                                            # Pratt mains: down towards mid-span
+        main = (node(xt, i, True), node(xt, i + 1, False)) if i + .5 < mid else (node(xt, i + 1, True), node(xt, i, False))
+        pairs = [main]
+        if 1 < i < NP - 2:                                                                # counters in every interior panel but the hip panels
+            counter = (node(xt, i + 1, True), node(xt, i, False)) if i + .5 < mid else (node(xt, i, True), node(xt, i + 1, False))
+            if i + .5 == mid:
+                counter = (node(xt, i, True), node(xt, i + 1, False))
+            pairs.append(counter)
         for k, (a, c) in enumerate(pairs):                                               # counters sit outside the mains: no shared planes
-            off, wd = (.12, .07) if k == 0 else (.24, .06)
+            off, wd, dp = (.12, .07, .3) if k == 0 else (.24, .04, .14)
             for s in (-1, 1):
-                b.beam('steel', (a[0] + s * off, a[1], a[2]), (c[0] + s * off, c[1], c[2]), wd, .3 if k == 0 else .26)
+                b.beam('steel', (a[0] + s * off, a[1], a[2]), (c[0] + s * off, c[1], c[2]), wd, dp)
     for i in range(NP + 1):                                                               # gusset plates and rivet rows
         for top in (False, True):
             if top and i in (0, NP):
                 continue
             z = ZT if top else ZB
+            zc, hz = (ZT - .3, 1.18) if top else (ZB + .25, 1.1)                          # top plates hang below the chord top
             for s in (-1, 1):
-                b.box('gusset', xt + s * .335, YN[i], z + (-.1 if top else .25), .04, 1.15, 1.1)
+                b.box('gusset', xt + s * .335, YN[i], zc, .04, 1.15, hz)
                 for r in range(3):
-                    b.box('hardware', xt + s * .355, YN[i] - .4 + .4 * r, z + (-.1 if top else .25) + .35, .012, .06, .06)
+                    for zz in (zc - .3, zc + .2):
+                        b.box('steel', xt + s * .362, YN[i] - .4 + .4 * r, zz, .014, .05, .05)
     b.flush(f'truss {xt:+.0f}')
 
 
 def bracing():
-    """Latticed top struts with knee braces, X laterals in the top chord plane, latticed portals at both ends."""
+    """Latticed top struts at the hip verticals and the thirds of the top chord, three long X-bays of laterals with
+    centre plates, knee braces at the hip struts, latticed portals at both ends (the top view's rhythm)."""
     b = Batch()
-    for i in range(1, NP):
-        y = YN[i]
+    ys = [YN[1] + (YN[NP - 1] - YN[1]) * k / 3 for k in range(4)]
+    for k, y in enumerate(ys):
         for dz in (.24, -.24):
             b.beam('steel', (-XT, y, ZT + dz), (XT, y, ZT + dz), .26, .1)
         n = 24
         for j in range(n):
             x0, x1 = -XT + 2 * XT * j / n, -XT + 2 * XT * (j + 1) / n
             b.beam('steel2', (x0, y, ZT + (-.24 if j % 2 == 0 else .24)), (x1, y, ZT + (.24 if j % 2 == 0 else -.24)), .2, .04)
-        if 1 < i < NP - 1:
-            for s in (-1, 1):                                                              # knee braces at the verticals
+        if k in (0, 3):
+            for s in (-1, 1):                                                              # knee braces at the hip verticals
                 b.beam('steel', (s * XT, y, ZT - 1.7), (s * (XT - 1.7), y, ZT - .26), .18, .14)
-    for i in range(1, NP - 1):                                                           # X laterals, one bar above the other where they cross
+    for k in range(3):                                                                   # X laterals, one bar above the other where they cross
         for s in (-1, 1):
             z = ZT - .1 if s > 0 else ZT - .26
-            b.beam('steel2', (-XT * s, YN[i], z), (XT * s, YN[i + 1], z), .14, .12)
+            b.beam('steel2', (-XT * s, ys[k], z), (XT * s, ys[k + 1], z), .16, .12)
+        b.box('gusset', 0.0, (ys[k] + ys[k + 1]) / 2, ZT - .18, .7, .7, .3)                # rosette plate at the crossing
     for i0, i1 in ((0, 1), (NP, NP - 1)):                                                # portals in the end-post plane
         def at(x, t):
             return (x, YN[i0] + (YN[i1] - YN[i0]) * t, ZB + (ZT - ZB) * t)
@@ -524,10 +533,12 @@ def deck():
         b.box('concrete', s * (XT + .3 + XR) / 2 + s * .06, 0.0, DECK - .04 + (SW + .04) / 2, XR - XT - .18, 2 * QY, SW + .04)   # sidewalk
         b.box('concrete', s * 6.31, 0.0, DECK - .04 + .1, .24, 2 * QY, .2)                         # kerb by the truss
     lines(b, -QY, QY)
+    for sy in (-1, 1):                                                                    # flush expansion joints at the quays
+        b.box('hardware', 0.0, sy * (QY - .04), DECK + .002, 12.3, .08, .006)
     b.flush('deck')
     b = Batch()
-    for s in (-1, 1):
-        railing(b, s * XR, -(QY + .3), QY + .3)
+    for s in (-1, 1):                                                                     # the sidewalk railings run on along the approaches
+        railing(b, s * XR, -(QY + 7.0), QY + 7.0)
     b.flush('railings')
 
 
@@ -573,7 +584,12 @@ def quays_and_abutments():
         for z in (1.2, 2.4, 3.6):
             for sx in (-1, 1):
                 b.box('joint', sx * (10.4 + BANK) / 2, q - sy * .002, z, BANK - 10.4, .008, .03)
-        b.box('concrete', 0.0, q + sy * .25, DECK + SW / 2, 2 * BANK, .5, SW + .02)                 # quay edge kerb
+        for sx in (-1, 1):                                                                   # stepped brick wing pilasters at the bridge ends
+            for k, (xa, dep) in enumerate(((10.6, .5), (12.0, .3))):
+                b.box('brick', sx * (xa + .6), q - sy * dep / 2, (DECK - .04) / 2, 1.2, dep, DECK - .04)
+        for sx in (-1, 1):                                                                   # quay coping, stopping at the bridge
+            b.box('brick', sx * (XR + .35 + BANK) / 2, q + sy * .25, DECK + SW / 2, BANK - XR - .35, .5, SW + .02)
+        b.box('white', -sy * 2.85, sy * (QY + 1.6), DECK + .003, 5.3, .4, .006)                 # painted stop line, incoming lane
         b.flush(f'bank {sy:+d}')
         b = Batch()
         for sx in (-1, 1):
@@ -646,19 +662,20 @@ def street():
 
     def car(x, y, role, ln=4.5):
         b.box(role, x, y, DECK + .7, 1.8, ln, .8)
-        b.box('glass', x, y - .2, DECK + 1.4, 1.6, ln * .5, .6)
+        b.box('cabin', x, y - .2, DECK + 1.4, 1.6, ln * .5, .6)
         for dy in (-ln / 2 + .8, ln / 2 - .8):
             for s in (-1, 1):
                 b.box('dark', x + s * .75, y + dy, DECK + .35, .3, .8, .7)
-    car(-3.0, -6.0, 'car')
-    car(-3.0, 5.0, 'car2')
-    car(3.0, 30.0, 'car')
-    b.box('bus', -3.0, 26.0, DECK + 1.8, 2.5, 12.0, 2.9)                                         # a bus on the north approach
+    car(-3.0, -9.0, 'car')
+    car(3.0, -3.0, 'car2')
+    car(-3.0, -44.0, 'car')
+    yb = -34.0                                                                                  # a bus waiting on the south approach
+    b.box('bus', 3.0, yb, DECK + 1.8, 2.5, 12.0, 2.9)
     for s in (-1, 1):
-        b.box('glass', -3.0 + s * 1.26, 26.0, DECK + 2.3, .03, 11.0, 1.0)
+        b.box('cabin', 3.0 + s * 1.26, yb, DECK + 2.3, .03, 11.0, 1.0)
     for dy in (-4.5, 4.5):
         for s in (-1, 1):
-            b.box('dark', -3.0 + s * 1.0, 26.0 + dy, DECK + .4, .3, .9, .8)
+            b.box('dark', 3.0 + s * 1.0, yb + dy, DECK + .4, .3, .9, .8)
     b.flush('traffic')
 
 
