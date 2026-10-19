@@ -42,6 +42,24 @@ Workspace alternative: for a Shared Drive, create a service account, share the f
 its email as Editor, and store its JSON key as the `GDRIVE_SERVICE_ACCOUNT_JSON` secret
 instead of the three OAuth secrets.
 
+## Phone-only setup (no local Python)
+
+The refresh token can also be minted in a browser with Google's OAuth Playground:
+
+1. In the Cloud console, create the OAuth client as type **Web application** (not Desktop) and add
+   `https://developers.google.com/oauthplayground` under **Authorized redirect URIs**.
+2. Open https://developers.google.com/oauthplayground, tap the gear icon, tick **Use your own OAuth
+   credentials** and paste the client id and secret.
+3. In Step 1 type the scope `https://www.googleapis.com/auth/drive.file`, tap **Authorize APIs**,
+   sign in and allow. In Step 2 tap **Exchange authorization code for tokens** and copy the
+   **Refresh token**.
+4. Store the three secrets as above. Publish the consent screen to **In production** first, or the
+   token expires after seven days.
+
+With the `drive.file` scope the token cannot see a folder you made by hand in Drive. When the
+target folder is not reachable the sync creates (and afterwards reuses) its own folder,
+`CityPrompt clay buildings`, in My Drive, so `GDRIVE_FOLDER_ID` can be left unset.
+
 ## Running it locally
 
 ```

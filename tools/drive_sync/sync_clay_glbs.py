@@ -36,7 +36,8 @@ FOLDER_MIME = 'application/vnd.google-apps.folder'
 API = 'https://www.googleapis.com/drive/v3'
 UPLOAD = 'https://www.googleapis.com/upload/drive/v3'
 SCOPE = 'https://www.googleapis.com/auth/drive.file'
-DEFAULT_FOLDER_ID = '1CEqRJ4pZ5IuR-C6LQM0x_XKmTfA9Cx2U'   # snapshots/CityPrompt-clay-buildings-2026-10-10
+DEFAULT_FOLDER_ID = '1CEqRJ4pZ5IuR-C6LQM0x_XKmTfA9Cx2U'
+AUTO_FOLDER_NAME = 'CityPrompt clay buildings'   # created in My Drive when the target folder is not reachable   # snapshots/CityPrompt-clay-buildings-2026-10-10
 
 
 def sha256(path):
@@ -155,6 +156,12 @@ class Drive:
                 sys.exit(f'Drive API {r.status_code}: {r.text[:400]}')
             return r.json() if r.text else {}
 
+    def accessible(self, file_id):
+        if file_id in ('', 'auto'):
+            return False
+        r = self.s.get(f'{API}/files/{file_id}', params=dict(fields='id', supportsAllDrives='true'), timeout=60)
+        return r.status_code == 200
+
     def find(self, name, parent):
         q = f"name = '{name}' and '{parent}' in parents and trashed = false"
         return self.call('GET', f'{API}/files', params=dict(q=q, fields='files(id,name,appProperties)', supportsAllDrives='true', includeItemsFromAllDrives='true')).get('files', [])
@@ -181,6 +188,11 @@ def sync(args):
     items = plan(args)
     folder_id = args.folder_id or os.environ.get('GDRIVE_FOLDER_ID') or DEFAULT_FOLDER_ID
     d = Drive(token())
+    if not d.accessible(folder_id):
+        # The drive.file scope only reaches files this app created, so a folder made by hand in the
+        # Drive UI is invisible to it. Fall back to (or create) the app's own folder in My Drive.
+        print(f'Folder {folder_id} is not reachable with this token; using "{AUTO_FOLDER_NAME}" in My Drive instead.')
+        folder_id = d.folder(AUTO_FOLDER_NAME, 'root')
     uploaded, unchanged = [], []
     for it in items:
         sub = d.folder(it['family'], folder_id)
