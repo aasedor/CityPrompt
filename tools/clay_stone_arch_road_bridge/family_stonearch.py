@@ -712,6 +712,7 @@ def lamp(name, x, y, z0, big=False):
     arms with volutes, hexagonal glazed lanterns with corner posts, domed caps and finials, and a central finial."""
     k = 1.15 if big else 1.0
     b = Batch()
+    tb = Batch()                                                       # arms and volutes: smooth-shaded swept tubes
     lathe(b, 'hardware', x, y, z0, [(.30 * k, 0), (.30 * k, .10), (.25 * k, .15), (.25 * k, .26), (.20 * k, .33), (.15 * k, .55),
                                     (.19 * k, .60), (.19 * k, .68), (.13 * k, .76), (.11 * k, .82), (0.0, .82)], n=8)
     shaft = [(.105, .80), (.105, .84, 1), (.10, 1.52, 1)]
@@ -724,11 +725,11 @@ def lamp(name, x, y, z0, big=False):
     for sgn in (-1, 1):
         lx = x + sgn * .64 * k
         # C-scroll arm: one smooth swept tube from inside the shaft up to the lantern seat (no box-chain joints)
-        arm = [(x + sgn * .64 * k * math.sin(t * math.pi / 2), y, zA + .62 * k * (1 - math.cos(t * math.pi / 2))) for t in [i / 14 for i in range(15)]]
-        tube(b, 'hardware', [(x, y, zA)] + arm[1:] + [(lx, y, zA + .66 * k)], .03 * k)
+        arm = [(x + sgn * .64 * k * math.sin(t * math.pi / 2), y, zA + .62 * k * (1 - math.cos(t * math.pi / 2))) for t in [i / 12 for i in range(13)]]
+        tube(tb, 'hardware', [(x, y, zA)] + arm[1:] + [(lx, y, zA + .66 * k)], .03 * k)
         cx, cz = x + sgn * .26 * k, zA - .12 * k                       # volute under the arm: one swept spiral from the shaft
-        sp = [(cx + sgn * (.15 - .1 * t) * k * math.cos(math.pi / 2 + 4.2 * t), y, cz + (.15 - .1 * t) * k * math.sin(math.pi / 2 + 4.2 * t)) for t in [i / 14 for i in range(15)]]
-        tube(b, 'hardware', [(x, y, zA + .03 * k), (x + sgn * .13 * k, y, zA + .035 * k)] + sp, .022 * k, n=7)
+        sp = [(cx + sgn * (.15 - .1 * t) * k * math.cos(math.pi / 2 + 4.2 * t), y, cz + (.15 - .1 * t) * k * math.sin(math.pi / 2 + 4.2 * t)) for t in [i / 12 for i in range(13)]]
+        tube(tb, 'hardware', [(x, y, zA + .03 * k), (x + sgn * .13 * k, y, zA + .035 * k)] + sp, .022 * k, n=7)
         zl = zA + .62 * k                                              # lantern: bottom drop, frame rings, glass, posts, dome, finial
         lathe(b, 'hardware', lx, y, zl, [(0.0, -.12 * k), (.08 * k, -.04 * k), (.21 * k, 0.0), (.21 * k, .06 * k)], n=6, phase=math.pi / 6)
         lathe(b, 'hardware', lx, y, zl, [(.23 * k, .62 * k), (.23 * k, .68 * k), (.20 * k, .74 * k), (.15 * k, .82 * k), (.08 * k, .88 * k),
@@ -740,6 +741,10 @@ def lamp(name, x, y, z0, big=False):
         hexg = [(lx + .175 * k * math.cos(math.pi / 6 + j * math.pi / 3), y + .175 * k * math.sin(math.pi / 6 + j * math.pi / 3)) for j in range(6)]
         C.prism(f'{name} lantern glass {sgn:+d}', hexg, 'z', zl + .06 * k, zl + .62 * k, 'pale', 'lamps')
     b.flush(name)
+    V, F = tb.g['hardware']
+    obj = C.mesh(f'{name} scrolls', V, F, 'hardware', 'lamps')
+    for poly in obj.data.polygons:
+        poly.use_smooth = True
 
 
 def lamps():

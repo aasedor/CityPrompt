@@ -23,8 +23,9 @@ SP = (Y1 - Y0 - BOW) / SPANS                     # 15 m spans
 CX = 3.8                                         # the two planes of columns, ribs and girders (x = +-CX)
 GB, GT, DT = 11.8, 12.8, 13.05                   # plate girder bottom and top, deck top
 RIB, FL = .70, .05                               # solid plate rib depth and flange plate thickness
-PED, SPRING = 1.6, 6.0                           # pedestal top, arch springing (rib centre line)
-CROWN = GB - .05 - (FL - .02) - RIB / 2                 # rib centre line at the crown: the extrados flange meets the girder flange
+PED, SPRING = 1.6, 4.0                           # pedestal top, arch springing (rib centre line), low on the columns
+RISE = 5.3                                       # rib rise: a near-semicircle on the 15 m span
+CROWN = SPRING + RISE                            # rib centre line at the crown, about 0.4 x rise below the girder: a full spandrel lattice runs over it
 TSPRING = 8.1                                    # springing of the transverse portal arches between paired columns
 TX = 1.9                                         # track centres at x = +-TX
 EAST_STRIP, LANE, ROAD, WALK = 6.6, 9.0, 19.0, 23.0   # east kerb lines (x)
@@ -48,7 +49,7 @@ def manifest(version):
         ('glass_close', (7.5, -8.0, 15.4), (-TX, -14.0, 15.4), 40),
         ('arch_span', (19.0, 7.5, 4.0), (CX, 7.5, 7.5), 40),
         ('column_base', (7.5, -5.0, 1.7), (CX, 0.0, 2.6), 40),
-        ('lattice_detail', (9.5, 27.0, 9.6), (CX, 22.5, 10.0), 40),
+        ('lattice_detail', (9.5, 27.0, 9.6), (CX, 22.5, 10.4), 40),
         ('track_deck', (2.6, 2.0, 16.0), (TX, 40.0, DT + .2), 40),
         ('train_cars', (6.0, -4.0, 16.6), (-TX, -12.0, 15.2), 40),
         ('street_under', (5.5, 42.0, 1.7), (-1.0, 10.0, 6.5), 35),
@@ -513,34 +514,32 @@ def columns(b):
 
 
 def deck_arches(b):
-    """Deck arches: a solid riveted plate rib in each plane, springing low from the columns, with an open spandrel
-    lattice of vertical posts and N-diagonals up to the plate girder and a seat block under the girder at the crown."""
+    """Deck arches: a solid riveted plate rib in each plane, springing low from the columns, its crown well below the
+    plate girder, and a deep continuous open spandrel lattice over the whole span: evenly spaced vertical posts (one on
+    the crown) with V-diagonals rising from gusseted nodes on the rib to the girder, as in the source front."""
     for k in range(SPANS):
         c0, c1 = COLS[1 + k], COLS[2 + k]
         ya, yb = c0 + .05, c1 - .05
         for x in (-CX, CX):
-            ym, zm, rt = plate_rib(b, x, ya, yb, SPRING, CROWN)
-            zc = zm + rt                                                                         # extrados flange top at the crown
-            b.box('plate', x, ym, (zc - .1 + GB + .02) / 2, .62, 1.6, GB + .12 - zc)             # crown seat block
-            n = 8
-            posts = []
-            for i in range(1, n):
+            ym, zm, rt = plate_rib(b, x, ya, yb, SPRING, CROWN, n=28)
+            n = 12
+            nodes = []                                                                           # (y, z on the rib extrados)
+            for i in range(n + 1):
                 y = c0 + .55 + (c1 - c0 - 1.1) * i / n
-                if abs(y - ym) < .9:
+                nodes.append((y, extrados_z(ym, zm, rt, y) - .01))
+            for i, (y, zt) in enumerate(nodes):
+                if i in (0, n):
                     continue
-                zt = extrados_z(ym, zm, rt, y) - .01
-                posts.append((y, zt))
                 b.box('steel', x, y, (zt + GB - .04) / 2, .34, .30, GB - .04 - zt)             # vertical post
                 for sd in (-1, 1):
                     b.box('plate', x + sd * .2, y, GB - .32, .04, .62, .5)                       # gusset at the girder
-            left = [p for p in posts if p[0] < ym]
-            right = [p for p in posts if p[0] > ym]
-            nodes_l = [(c0 + .55, SPRING + .6)] + left
-            for (y0, z0), (y1, z1) in zip(nodes_l, nodes_l[1:]):                               # N-diagonals, falling to the crown
-                b.beam('steel', (x, y0, GB - .12), (x, y1, z1 + .08), .26, .22)
-            nodes_r = right + [(c1 - .55, SPRING + .6)]
-            for (y0, z0), (y1, z1) in zip(nodes_r, nodes_r[1:]):
-                b.beam('steel', (x, y0, z0 + .08), (x, y1, GB - .12), .26, .22)
+                    b.box('plate', x + sd * .21, y, zt + .26, .04, .66 if i % 2 == 0 else .5, .52)  # gusset on the rib
+            for i in range(n):                                                                   # V-diagonals: up from every even rib node
+                (y0, z0), (y1, z1) = nodes[i], nodes[i + 1]
+                if i % 2 == 0:
+                    b.beam('steel', (x, y0, z0 + .1), (x, y1, GB - .14), .24, .20)
+                else:
+                    b.beam('steel', (x, y0, GB - .14), (x, y1, z1 + .1), .24, .20)
 
 
 def bowstring(b):
@@ -651,18 +650,20 @@ def train():
                 b.box('silver', xt + sd * 1.45, (p0 + p1) / 2, zb + .05, .1, p1 - p0, .1)        # threshold
         for ye, sd in ((y0, -1), (y1, 1)):                                                       # end skins
             cab = k == 0 and ye == y0
-            yy = ye + sd * -.05
+            yy = ye + sd * -.055                                                                 # outer face 5 mm inside the side-skin ends
+            for s2 in (-1, 1):                                                                   # corner posts wrap the side/end corner
+                b.box('silver', xt + s2 * 1.45, ye - sd * .06, (zb + zt - .12) / 2, .14, .14, zt - .12 - zb)
             if cab:                                                                              # cab end: inset windscreen and headlights
-                b.box('silver', xt, yy, (zb + zw0) / 2, 3.0, .1, zw0 - zb)
-                b.box('silver', xt, yy, (zw1 + zt - .12) / 2, 3.0, .1, zt - .12 - zw1)
+                b.box('silver', xt, yy, (zb + zw0) / 2, 2.8, .1, zw0 - zb)
+                b.box('silver', xt, yy, (zw1 + zt - .12) / 2, 2.8, .1, zt - .12 - zw1)
                 for s2 in (-1, 1):
-                    b.box('silver', xt + s2 * 1.3, yy, (zw0 + zw1) / 2, .4, .1, zw1 - zw0)
+                    b.box('silver', xt + s2 * 1.25, yy, (zw0 + zw1) / 2, .3, .1, zw1 - zw0)
                 b.box('glass', xt, ye + .06, (zw0 + zw1) / 2, 2.22, .02, zw1 - zw0 + .02)
                 for s2 in (-1, 1):
                     b.box('dark', xt + s2 * 1.0, ye - .01, zb + .55, .38, .02, .26)
                     b.box('pale', xt + s2 * 1.0, ye - .025, zb + .55, .3, .02, .18)
             else:
-                b.box('silver', xt, yy, (zb + zt - .12) / 2, 3.0, .1, zt - .12 - zb)
+                b.box('silver', xt, yy, (zb + zt - .12) / 2, 2.8, .1, zt - .12 - zb)
                 b.box('dark', xt, ye + sd * .02, (zb + zt) / 2 - .2, 1.0, .03, 2.0)               # gangway door
         y = y1 + .8
     b.flush('train')
