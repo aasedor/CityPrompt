@@ -1,0 +1,288 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "neighbour ground 0",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour ground 1",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour ground 3",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour ground 4",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour ground 5",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour door",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour f0 0",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour f0 1",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour f0 2",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour f0 3",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour f0 4",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour f0 5",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour f1 0",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour f1 1",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour f1 2",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour f1 3",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour f1 4",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "neighbour f1 5",
+      "face": "neighbour front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ground sash -4.2",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ground sash -2.1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ground sash +2.1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ground sash +4.2",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "first sash -4.2",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "first sash -2.1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "first sash +2.1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "first sash +4.2",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "second sash -4.2",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "second sash -2.1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "second sash +0.0",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "second sash +2.1",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "second sash +4.2",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front door",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "fanlight",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "french window",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east sash f0",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east sash f1",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east sash f2",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west sash f0",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west sash f1",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear sash east f0",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear sash east f1",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear sash east f2",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear sash west f0",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear sash west f1",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Rear wing window 0",
+      "face": "Rear wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Rear wing window 1",
+      "face": "Rear wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Rear extension window 0",
+      "face": "Rear extension",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

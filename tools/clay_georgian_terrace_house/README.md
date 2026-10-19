@@ -68,8 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (the v003 rework targets both)
+## Open blockers after v003 (the v004 rework targets it)
 
-- P1 #1: all five dormer sashes are broken: the upper sash has no bars, the lower has no glass or bottom rail, two stub bars hang from the meeting rail, the sill floats, and the openings are square where the source has portrait sashes.
-- P1 #2: the main block is too deep in plan: about 0.83 deep to 1 wide in the top view where the locked top is about 0.65.
-- Every v001 finding is resolved in the pixels, including the left_side P0.
+- P1 #1: the rear range does not match the locked top: the east rear extension's flat roof is brick-coloured with no rooflight, reading as an open yard, where the source shows a grey roof inside a stone rim with a long hipped glazed lantern; the hipped rear wing has overhanging eaves where the source encloses its roof in a coped parapet.
+- Both v002 findings are resolved in the pixels.
