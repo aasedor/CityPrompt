@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-swooping-cycle-flyover",
+  "variant_id": "clay-swooping-cycle-flyover-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "dedicated_cycle_bridge/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/dedicated-cycle-bridge/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1373407,
+      "sha256": "ed500b98870febb7f8a37e5d373a1c02c2c241e57ef0a3f1a14b68ddc6111cdd"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/dedicated-cycle-bridge/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 946422,
+      "sha256": "8b344d31bea1746079351d97177d8f16274af70d744e7254919598bdc4013f1d"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/dedicated-cycle-bridge/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 908066,
+      "sha256": "06f41b7b82df87fd95ab4e2f5d5f4323237c3c379cd01603a5a71cf8c1001541"
+    }
+  ]
+}

@@ -68,13 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (v002 reworks these eight)
+## Open blockers after v002 (v003 reworks these three)
 
-1. P0: no view shows the deck reaching the ground; in left_side the far end stops as a squared box at full deck height on Y-columns.
-2. P0: landing_ramp misses its subject; the deck leaves the frame still about 3 m up and about 40% of the frame is empty ground.
-3. P1: the deck is about half the source width against the street (about 0.6 of a lane against 1.4); it reads as a narrow footbridge.
-4. P1: the parapets are an open picket fence with a chunky top rail; the source reads as a dense, near-solid orange screen.
-5. P1: Y-columns stand in traffic lanes, one in a zebra crossing.
-6. P1: the Y-columns are square boxes with arm blocks notching through the shaft top; the source columns are slender, rounded and tapered with a smooth fork.
-7. P1: the other end curls over and drops almost vertically within one deck width instead of ramping.
-8. P1: at the far end both parapets sweep up into horn tips above the deck line with no deck under them.
+- P1 #1: from outside the parapet and fascia are one plain orange slab from cap to soffit, with no bars and no screen/fascia split, reading as a deep box girder (about 0.45 of the clear height against about 0.35 in the source).
+- P1 #2: where each Y-arm meets the soffit there is a crisp dark ring or flat disc; the arms read as open cut tubes in sockets, not blended into the deck.
+- P1 #3: the folded-sheet parapet leaks at its seams: black triangular holes where the sheet meets the cap, a sawtooth bottom edge at the deck, and a faceted curved cap.
