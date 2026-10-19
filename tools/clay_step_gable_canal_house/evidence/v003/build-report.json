@@ -1,0 +1,1066 @@
+{
+  "candidate": "clay-step-gable-canal-house-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 83,
+    "vertices": 46052,
+    "polygons": 26826,
+    "triangles": 26826,
+    "path": "clay-step-gable-canal-house-clay-v003-authoring.blend",
+    "bytes": 3377904,
+    "sha256": "e9563c0ba791eb808493dd4dc2338f229523a2abe01d0d2f6c6efc4bdb6eddbd"
+  },
+  "runtime": {
+    "path": "clay-step-gable-canal-house-clay-v003.glb",
+    "bytes": 1465984,
+    "sha256": "efd6cc1d96e52ea8419897e73f82936ccaf024cb30ed657c1b0e31a84ad14e1a",
+    "meshes": 18,
+    "materials": 18,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 18,
+    "vertices": 46052,
+    "polygons": 26826,
+    "triangles": 26826
+  },
+  "original_bounds_m": [
+    [
+      -15.0,
+      -20.0,
+      0.0
+    ],
+    [
+      15.0,
+      14.0,
+      19.420000076293945
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -15.0,
+      -20.0,
+      0.0
+    ],
+    [
+      15.0,
+      14.0,
+      19.420000076293945
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 6.6,
+    "depth": 12.0,
+    "height": 18.9
+  },
+  "native_dimensions_m": {
+    "width": 30.0,
+    "depth": 34.0,
+    "height": 19.420000076293945
+  },
+  "native_bottom_center_m": [
+    0.0,
+    -3.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 11,
+    "joint": 18,
+    "band": 1,
+    "trim": 6,
+    "stone": 11,
+    "roof": 2,
+    "foundation": 4,
+    "glass": 6,
+    "hardware": 7,
+    "floor": 4,
+    "timber": 1,
+    "planting": 3,
+    "white": 3,
+    "door": 2,
+    "brick": 1,
+    "pot": 1,
+    "setts": 1,
+    "paving": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/stepped_gable.png",
+    "renders/entrance_stoop.png",
+    "renders/wall_anchors.png",
+    "renders/east_side.png",
+    "renders/roof_chimney.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "top": {
+      "xmin": 0.26233533024787903,
+      "xmax": 0.7376646995544434,
+      "ymin": 0.07748500257730484,
+      "ymax": 0.7957605123519897
+    },
+    "left_side": {
+      "xmin": 0.2712979018688202,
+      "xmax": 0.9113234877586365,
+      "ymin": 0.22277572751045227,
+      "ymax": 0.7518602013587952
+    },
+    "right_side": {
+      "xmin": 0.08867649734020233,
+      "xmax": 0.7596367597579956,
+      "ymin": 0.22277572751045227,
+      "ymax": 0.7518602013587952
+    },
+    "rear": {
+      "xmin": 0.17227140069007874,
+      "xmax": 0.8277288675308228,
+      "ymin": 0.08348565548658371,
+      "ymax": 0.8766334056854248
+    },
+    "rear_side": {
+      "xmin": 0.11507739126682281,
+      "xmax": 0.6235296130180359,
+      "ymin": 0.08136263489723206,
+      "ymax": 0.7825363278388977
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Brick walls from grade; stepped gables on the street and rear walls; roof plates between them",
+      "eave_m": 12.3
+    },
+    {
+      "name": "Narrow step-gable canal house on a brick-paved street, alley east",
+      "box": [
+        -3.3,
+        3.3,
+        -6.0,
+        6.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "ground window -1",
+      "face": "south",
+      "u": -1.95,
+      "z": 1.4500000000000002,
+      "width": 1.05,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "ground window +1",
+      "face": "south",
+      "u": 1.95,
+      "z": 1.4500000000000002,
+      "width": 1.05,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "sash f0 0",
+      "face": "south",
+      "u": -2.0,
+      "z": 5.6,
+      "width": 1.0,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "sash f0 1",
+      "face": "south",
+      "u": 0.0,
+      "z": 5.6,
+      "width": 1.0,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "sash f0 2",
+      "face": "south",
+      "u": 2.0,
+      "z": 5.6,
+      "width": 1.0,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "sash f1 0",
+      "face": "south",
+      "u": -2.0,
+      "z": 9.2,
+      "width": 1.0,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "sash f1 1",
+      "face": "south",
+      "u": 0.0,
+      "z": 9.2,
+      "width": 1.0,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "sash f1 2",
+      "face": "south",
+      "u": 2.0,
+      "z": 9.2,
+      "width": 1.0,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "basement window -1",
+      "face": "south",
+      "u": -1.95,
+      "z": 0.1,
+      "width": 0.8,
+      "height": 0.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "basement window +1",
+      "face": "south",
+      "u": 1.95,
+      "z": 0.1,
+      "width": 0.8,
+      "height": 0.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "front door",
+      "face": "south",
+      "u": 0.0,
+      "z": 0.9,
+      "width": 1.0,
+      "height": 2.35,
+      "kind": "entry door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "door transom",
+      "face": "south",
+      "u": 0.0,
+      "z": 3.37,
+      "width": 1.0,
+      "height": 0.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south gable window",
+      "face": "south",
+      "u": 0.0,
+      "z": 12.5,
+      "width": 1.0,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "attic"
+    },
+    {
+      "id": "east window f0",
+      "face": "east",
+      "u": 1.4,
+      "z": 6.0,
+      "width": 0.7,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        3.299999952316284,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east window f1",
+      "face": "east",
+      "u": 1.4,
+      "z": 9.6,
+      "width": 0.7,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        3.299999952316284,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east ground window 0",
+      "face": "east",
+      "u": 1.4,
+      "z": 1.6,
+      "width": 0.85,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        3.299999952316284,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east ground window 1",
+      "face": "east",
+      "u": 3.8,
+      "z": 1.6,
+      "width": 0.85,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        3.299999952316284,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east vent",
+      "face": "east",
+      "u": 3.8,
+      "z": 0.12,
+      "width": 0.5,
+      "height": 0.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        3.299999952316284,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west window f0",
+      "face": "west",
+      "u": 1.5,
+      "z": 6.0,
+      "width": 0.7,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -3.299999952316284,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west window f1",
+      "face": "west",
+      "u": 1.5,
+      "z": 9.6,
+      "width": 0.7,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -3.299999952316284,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west ground window",
+      "face": "west",
+      "u": -2.0,
+      "z": 1.6,
+      "width": 0.85,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -3.299999952316284,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "rear sash f0 0",
+      "face": "north",
+      "u": -1.6,
+      "z": 5.6,
+      "width": 1.0,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "rear sash f0 1",
+      "face": "north",
+      "u": 1.6,
+      "z": 5.6,
+      "width": 1.0,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "rear sash f1 0",
+      "face": "north",
+      "u": -1.6,
+      "z": 9.2,
+      "width": 1.0,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "rear sash f1 1",
+      "face": "north",
+      "u": 1.6,
+      "z": 9.2,
+      "width": 1.0,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "rear door",
+      "face": "north",
+      "u": 0.0,
+      "z": 0.9,
+      "width": 1.0,
+      "height": 2.3,
+      "kind": "rear door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.36,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "Street paving",
+      "East alley"
+    ],
+    "street": [
+      "street joint",
+      "street hardware"
+    ],
+    "street planting": [
+      "Street tree trunk"
+    ],
+    "garden planting": [
+      "Street tree crown 0",
+      "Street tree crown 1",
+      "Street tree crown 2"
+    ],
+    "envelope": [
+      "south carrier",
+      "south gable tier 0",
+      "south gable tier 1",
+      "south gable tier 2",
+      "south gable tier 3",
+      "south gable tier 4",
+      "east carrier",
+      "west carrier",
+      "north carrier"
+    ],
+    "brick joints": [
+      "south measured mortar courses",
+      "south head joints",
+      "south measured mortar courses.001",
+      "south head joints.001",
+      "south measured mortar courses.002",
+      "south head joints.002",
+      "south measured mortar courses.003",
+      "south head joints.003",
+      "south measured mortar courses.004",
+      "south head joints.004",
+      "south measured mortar courses.005",
+      "south head joints.005",
+      "east measured mortar courses",
+      "east head joints",
+      "west measured mortar courses",
+      "north measured mortar courses",
+      "north head joints"
+    ],
+    "transom diamond": [
+      "transom diamond white"
+    ],
+    "south": [
+      "south south foundation",
+      "south south band",
+      "south south trim",
+      "south south glass",
+      "south south stone",
+      "south south door",
+      "south south hardware",
+      "south south white"
+    ],
+    "south gable 0": [
+      "south south gable 0 trim",
+      "south south gable 0 glass",
+      "south south gable 0 stone"
+    ],
+    "south gable 1": [
+      "south south gable 1 stone"
+    ],
+    "south gable 2": [
+      "south south gable 2 stone"
+    ],
+    "south gable 3": [
+      "south south gable 3 stone"
+    ],
+    "south gable 4": [
+      "south south gable 4 stone"
+    ],
+    "gable": [
+      "south gable pinnacle",
+      "south pinnacle cap",
+      "Rear gable"
+    ],
+    "stoop": [
+      "stoop stone",
+      "stoop hardware"
+    ],
+    "east": [
+      "east east foundation",
+      "east east trim",
+      "east east glass",
+      "east east stone",
+      "east east hardware"
+    ],
+    "west": [
+      "west west foundation",
+      "west west trim",
+      "west west glass",
+      "west west hardware"
+    ],
+    "north": [
+      "north north foundation",
+      "north north trim",
+      "north north glass",
+      "north north stone",
+      "north north door",
+      "north north hardware"
+    ],
+    "rear gable": [
+      "rear gable stone",
+      "rear gable brick",
+      "rear gable pot"
+    ],
+    "north gable": [
+      "north gable north gable trim",
+      "north gable north gable glass"
+    ],
+    "roof": [
+      "Tiled roof west",
+      "Tiled roof east"
+    ],
+    "roof furniture": [
+      "roof furniture hardware",
+      "roof furniture white"
+    ],
+    "inside": [
+      "Floor 0.9",
+      "Floor 5.1",
+      "Floor 8.7",
+      "Attic floor"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side"
+  ],
+  "finished_utc": "2026-10-19T02:48:53.864358+00:00",
+  "delivery_and_render_seconds": 3798.60907394,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

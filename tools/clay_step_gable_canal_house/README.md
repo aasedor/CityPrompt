@@ -1,7 +1,7 @@
 # Amsterdam step-gable canal house (RLASM v6.1 architectural clay)
 
 Candidate G2 of wave G of 2026-10-18, one of ten catalogue types that have quality reference images but
-no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **candidate under review**. Nothing here is keeper-approved,
+no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **stopped at v003 by the rework stopping rule (the brick-siding finding survived two targeted fixes); v003 is the candidate with 0 P0 and 5 P1**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,6 +68,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (P0+P1 fell from 14 to 8; the best so far, so v002 is the candidate)
+## Open blockers after v003 (family stopped at v003 by the stopping rule; v003 stays the candidate)
 
-P1 brick still reads as siding (no head joints); roof lighter than the brick; rear gable should be plain raked with the chimney at its apex; small east windows should stack over the rear tall window; north face grammar; front_corner and aerial too wide; glass_close crops the sash; short umbrella street tree
+- P1 #1: the west wall still reads as siding (bed joints only) - the v001/v002 brick finding, surviving its second targeted fix.
+- P1 #2: the three west windows are flush grey glass with a thin cross, no white frame, sill or reveal.
+- P1 #3: the rear gable triangle and a band under the eaves are smooth and lighter than the jointed wall below, reading as render.
+- P1 #4: two full-width dark-brown bands project across the street facade at the floor lines; the source has only anchors and brick arches.
+- P1 #5: the aerial view clips the chimney cap and pots.
+- Six of the eight v002 findings are resolved in the pixels.

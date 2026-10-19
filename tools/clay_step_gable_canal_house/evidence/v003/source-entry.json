@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-step-gable-canal-house",
+  "variant_id": "clay-step-gable-canal-house-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "amsterdam_step_gable_house/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/amsterdam-step-gable-house/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1403581,
+      "sha256": "1ebb96b3a30b4e30e7c5ae755066c9f7ede2f2484c920f4de4e6668415f5d030"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/amsterdam-step-gable-house/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 904563,
+      "sha256": "a14df8d73530f0cd8aadb476e39f729261d4d7ca0087ae082a808910e5886da3"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/amsterdam-step-gable-house/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 902196,
+      "sha256": "e7b1f8dedf3da424dec157d6d62127501cf15d431831dfcae74c199fd45e2a17"
+    }
+  ]
+}
