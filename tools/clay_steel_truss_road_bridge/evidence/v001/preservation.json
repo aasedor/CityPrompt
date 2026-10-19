@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-steel-truss-road-bridge-clay-v001",
+  "glb": "clay-steel-truss-road-bridge-clay-v001.glb",
+  "glb_bytes": 3118308,
+  "glb_sha256": "ab486ee9be56adcfffc55ab8d240add6817e28859c6d0ca36f9a15accfb46af1",
+  "jpeg_qualities": {
+    "abutment.png": 92,
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "deck_sidewalk.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "left_side.png": 92,
+    "portal_frame.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "river_underside.png": 92,
+    "roadway_inside.png": 92,
+    "top.png": 92,
+    "truss_panel.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-steel-truss-road-bridge-clay-v001-renders-and-glb.zip",
+  "zip_bytes": 36364600
+}

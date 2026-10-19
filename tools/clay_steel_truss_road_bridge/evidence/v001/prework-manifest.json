@@ -1,0 +1,467 @@
+{
+  "candidate": "clay-steel-truss-road-bridge-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-steel-truss-road-bridge",
+  "variant_id": "clay-steel-truss-road-bridge-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "urban_vehicular_bridge/variant_1 (Industrial Steel Truss)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 19.400000000000002,
+      "depth": 35.0,
+      "height": 13.5
+    },
+    "observed_storeys": 0,
+    "storey_programme": "bridge: a two-lane street with sidewalks over a river; quays and warehouses are context",
+    "plan": "34 m single-span through truss (top view) over a 29 m river between concrete quays, trusses 13 m apart, sidewalks outside them",
+    "section_m": {
+      "carriageway": [
+        -6.2,
+        6.2
+      ],
+      "trusses": [
+        -6.5,
+        6.5
+      ],
+      "sidewalks": [
+        [
+          -9.4,
+          -6.8
+        ],
+        [
+          6.8,
+          9.4
+        ]
+      ],
+      "railings": [
+        -9.4,
+        9.4
+      ]
+    },
+    "facade": "two rust-red riveted Pratt trusses of seven panels with inclined end posts, laced verticals, gusset plates, latticed top struts and X laterals, latticed portals with knee braces",
+    "levels_m": [
+      0.0,
+      5.0,
+      12.65
+    ],
+    "inferred": "the river bed, foundations and the warehouses are context; member sizes are teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "open truss over the road; flat roofs on the context warehouses",
+    "datum_m": 5.0,
+    "crowns_m": [
+      13.5
+    ]
+  },
+  "identity_contract": {
+    "owner": "rust-red riveted through-truss with portal frames and overhead bracing over a two-lane road, outside sidewalks with rails, brick abutments"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: rust-red steel with darker gussets, grey asphalt with yellow and white lines, pale concrete sidewalks and quays, red-brown brick, dark river water",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 0,
+    "ground": "two traffic lanes, two sidewalks"
+  },
+  "street_contract": {
+    "kind": "fixed_native_section",
+    "width_m": 19.400000000000002,
+    "axis": "y",
+    "junction_finish": "asphalt",
+    "bands": [
+      "railing",
+      "sidewalk",
+      "truss",
+      "carriageway",
+      "truss",
+      "sidewalk",
+      "railing"
+    ]
+  },
+  "contact_contract": [
+    "River surface at grade zero",
+    "Abutments from the water at the quays",
+    "Trusses bearing on the abutments",
+    "Deck between and beside the trusses"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        8.6,
+        -15.6,
+        6.75
+      ],
+      "target": [
+        -3.0,
+        6.0,
+        9.2
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -10.0,
+        -33.0,
+        22.0
+      ],
+      "target": [
+        3.0,
+        4.0,
+        7.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        44.0,
+        -10.0,
+        34.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        6.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        0.0,
+        0.0,
+        100.0
+      ],
+      "target": [
+        0.0,
+        0.001,
+        0.0
+      ],
+      "ortho_scale": 68.0,
+      "whole": false
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -46.0,
+        -2.0,
+        9.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        8.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        46.0,
+        2.0,
+        9.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        8.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        1.0,
+        50.0,
+        7.5
+      ],
+      "target": [
+        0.0,
+        0.0,
+        9.5
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        34.0,
+        18.0,
+        22.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        6.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -24.0,
+        -3.0,
+        8.5
+      ],
+      "target": [
+        -6.5,
+        0.0,
+        8.8
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -12.0,
+        -25.0,
+        12.0
+      ],
+      "target": [
+        -6.5,
+        -14.0,
+        10.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -10.5,
+        -6.5,
+        12.450000000000001
+      ],
+      "target": [
+        -6.5,
+        -7.2857142857142865,
+        12.25
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "portal_frame",
+      "location": [
+        0.0,
+        -31.0,
+        7.5
+      ],
+      "target": [
+        0.0,
+        -14.0,
+        10.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "truss_panel",
+      "location": [
+        -16.0,
+        3.0,
+        7.5
+      ],
+      "target": [
+        -6.5,
+        1.5,
+        8.2
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "deck_sidewalk",
+      "location": [
+        8.1,
+        -12.0,
+        6.75
+      ],
+      "target": [
+        8.1,
+        10.0,
+        5.9
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "abutment",
+      "location": [
+        -14.0,
+        -4.0,
+        2.4
+      ],
+      "target": [
+        -7.0,
+        -14.1,
+        3.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "roadway_inside",
+      "location": [
+        1.8,
+        -16.0,
+        6.6
+      ],
+      "target": [
+        0.0,
+        12.0,
+        8.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "river_underside",
+      "location": [
+        15.0,
+        0.5,
+        1.4
+      ],
+      "target": [
+        0.0,
+        0.0,
+        3.8
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        15.0,
+        21.0,
+        9.0
+      ],
+      "target": [
+        0.0,
+        14.5,
+        8.0
+      ],
+      "lens": 35,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "portal_frame",
+    "truss_panel",
+    "deck_sidewalk",
+    "abutment",
+    "roadway_inside",
+    "river_underside",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-vehicular-bridge/variant_1.png",
+        "path": "sources/front.png",
+        "bytes": 1315817,
+        "sha256": "42e7507fd4b69a758111c3a44c39ba6afa0778da2e4cc621ea51cd60b207cfa6"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-vehicular-bridge/variant_1_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 889183,
+        "sha256": "247267bf4c6d098fda547e4398e677027dae92bf612b0a2aeb7404c2e0dd1583"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-vehicular-bridge/variant_1_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 787029,
+        "sha256": "8d82128556f9ac84de655656a93c944438f04e701a9506f176f62b7755927e13"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_0.png",
+      "variant_0.webp",
+      "variant_0_angle_60.jpg",
+      "variant_0_angle_90.jpg",
+      "variant_2.png",
+      "variant_2.webp",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3.webp",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_trussroad.py",
+        "sha256": "44fad131dd4db81431b5edd9482c2e74e8e7a4300e0338b35706682829eb17c9"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "ceb00bd43a0189004cafeac62f11b69c43d1c1e9644cbb52a9f48c5196703130"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "e5d3b148be36966465288bdc733f12b024ff3adc84c9280f3db9cb3984afbaa1"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-19T07:47:48.220531+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

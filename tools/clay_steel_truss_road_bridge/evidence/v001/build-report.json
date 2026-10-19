@@ -1,0 +1,3774 @@
+{
+  "candidate": "clay-steel-truss-road-bridge-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 160,
+    "vertices": 39385,
+    "polygons": 57710,
+    "triangles": 57710,
+    "path": "clay-steel-truss-road-bridge-clay-v001-authoring.blend",
+    "bytes": 5026244,
+    "sha256": "5b19bce4df4c912df075aab117a8f87fda4e126bb7dc5492b000681c307e1ecb"
+  },
+  "runtime": {
+    "path": "clay-steel-truss-road-bridge-clay-v001.glb",
+    "bytes": 3118308,
+    "sha256": "ab486ee9be56adcfffc55ab8d240add6817e28859c6d0ca36f9a15accfb46af1",
+    "meshes": 23,
+    "materials": 23,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 23,
+    "vertices": 39385,
+    "polygons": 57710,
+    "triangles": 57710
+  },
+  "original_bounds_m": [
+    [
+      -60.04999923706055,
+      -60.0,
+      0.0
+    ],
+    [
+      60.0,
+      60.0,
+      23.75
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -60.04999923706055,
+      -60.0,
+      0.0
+    ],
+    [
+      60.0,
+      60.0,
+      23.75
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 19.400000000000002,
+    "depth": 35.0,
+    "height": 13.5
+  },
+  "native_dimensions_m": {
+    "width": 120.04999923706055,
+    "depth": 120.0,
+    "height": 23.75
+  },
+  "native_bottom_center_m": [
+    -0.024999618530273438,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "steel": 6,
+    "steel2": 6,
+    "gusset": 2,
+    "water": 1,
+    "concrete": 6,
+    "quay": 2,
+    "brick": 2,
+    "joint": 8,
+    "asphalt": 3,
+    "white": 3,
+    "yellow": 3,
+    "paving": 2,
+    "glass": 5,
+    "dark": 5,
+    "hardware": 3,
+    "wall": 8,
+    "roof": 4,
+    "planting": 36,
+    "timber": 48,
+    "car": 1,
+    "car2": 1,
+    "bus": 1,
+    "stone": 4
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/portal_frame.png",
+    "renders/truss_panel.png",
+    "renders/deck_sidewalk.png",
+    "renders/abutment.png",
+    "renders/roadway_inside.png",
+    "renders/river_underside.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Single-span through-truss bridge on brick abutments at the quays; deck between and beside the trusses",
+      "box": [
+        -9.700000000000001,
+        9.700000000000001,
+        -17.5,
+        17.5
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "NW warehouse window 0 0",
+      "face": "NW warehouse",
+      "u": -50.0,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 0 1",
+      "face": "NW warehouse",
+      "u": -46.8,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 0 2",
+      "face": "NW warehouse",
+      "u": -43.6,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 0 3",
+      "face": "NW warehouse",
+      "u": -40.4,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 0 4",
+      "face": "NW warehouse",
+      "u": -37.2,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 0 5",
+      "face": "NW warehouse",
+      "u": -34.0,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 0 6",
+      "face": "NW warehouse",
+      "u": -30.799999999999997,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 0 7",
+      "face": "NW warehouse",
+      "u": -27.599999999999998,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 0 8",
+      "face": "NW warehouse",
+      "u": -24.4,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 0 9",
+      "face": "NW warehouse",
+      "u": -21.2,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 1 0",
+      "face": "NW warehouse",
+      "u": -50.0,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 1 1",
+      "face": "NW warehouse",
+      "u": -46.8,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 1 2",
+      "face": "NW warehouse",
+      "u": -43.6,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 1 3",
+      "face": "NW warehouse",
+      "u": -40.4,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 1 4",
+      "face": "NW warehouse",
+      "u": -37.2,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 1 5",
+      "face": "NW warehouse",
+      "u": -34.0,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 1 6",
+      "face": "NW warehouse",
+      "u": -30.799999999999997,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 1 7",
+      "face": "NW warehouse",
+      "u": -27.599999999999998,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 1 8",
+      "face": "NW warehouse",
+      "u": -24.4,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 1 9",
+      "face": "NW warehouse",
+      "u": -21.2,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 2 0",
+      "face": "NW warehouse",
+      "u": -50.0,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 2 1",
+      "face": "NW warehouse",
+      "u": -46.8,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 2 2",
+      "face": "NW warehouse",
+      "u": -43.6,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 2 3",
+      "face": "NW warehouse",
+      "u": -40.4,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 2 4",
+      "face": "NW warehouse",
+      "u": -37.2,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 2 5",
+      "face": "NW warehouse",
+      "u": -34.0,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 2 6",
+      "face": "NW warehouse",
+      "u": -30.799999999999997,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 2 7",
+      "face": "NW warehouse",
+      "u": -27.599999999999998,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 2 8",
+      "face": "NW warehouse",
+      "u": -24.4,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 2 9",
+      "face": "NW warehouse",
+      "u": -21.2,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 3 0",
+      "face": "NW warehouse",
+      "u": -50.0,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 3 1",
+      "face": "NW warehouse",
+      "u": -46.8,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 3 2",
+      "face": "NW warehouse",
+      "u": -43.6,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 3 3",
+      "face": "NW warehouse",
+      "u": -40.4,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 3 4",
+      "face": "NW warehouse",
+      "u": -37.2,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 3 5",
+      "face": "NW warehouse",
+      "u": -34.0,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 3 6",
+      "face": "NW warehouse",
+      "u": -30.799999999999997,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 3 7",
+      "face": "NW warehouse",
+      "u": -27.599999999999998,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 3 8",
+      "face": "NW warehouse",
+      "u": -24.4,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NW warehouse window 3 9",
+      "face": "NW warehouse",
+      "u": -21.2,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 0 0",
+      "face": "NE warehouse",
+      "u": 18.0,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 0 1",
+      "face": "NE warehouse",
+      "u": 21.2,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 0 2",
+      "face": "NE warehouse",
+      "u": 24.4,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 0 3",
+      "face": "NE warehouse",
+      "u": 27.6,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 0 4",
+      "face": "NE warehouse",
+      "u": 30.8,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 0 5",
+      "face": "NE warehouse",
+      "u": 34.0,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 0 6",
+      "face": "NE warehouse",
+      "u": 37.2,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 0 7",
+      "face": "NE warehouse",
+      "u": 40.400000000000006,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 1 0",
+      "face": "NE warehouse",
+      "u": 18.0,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 1 1",
+      "face": "NE warehouse",
+      "u": 21.2,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 1 2",
+      "face": "NE warehouse",
+      "u": 24.4,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 1 3",
+      "face": "NE warehouse",
+      "u": 27.6,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 1 4",
+      "face": "NE warehouse",
+      "u": 30.8,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 1 5",
+      "face": "NE warehouse",
+      "u": 34.0,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 1 6",
+      "face": "NE warehouse",
+      "u": 37.2,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "NE warehouse window 1 7",
+      "face": "NE warehouse",
+      "u": 40.400000000000006,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 0 0",
+      "face": "SW warehouse",
+      "u": 26.0,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 0 1",
+      "face": "SW warehouse",
+      "u": 29.2,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 0 2",
+      "face": "SW warehouse",
+      "u": 32.4,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 0 3",
+      "face": "SW warehouse",
+      "u": 35.6,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 0 4",
+      "face": "SW warehouse",
+      "u": 38.8,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 0 5",
+      "face": "SW warehouse",
+      "u": 42.0,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 0 6",
+      "face": "SW warehouse",
+      "u": 45.2,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 0 7",
+      "face": "SW warehouse",
+      "u": 48.400000000000006,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 1 0",
+      "face": "SW warehouse",
+      "u": 26.0,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 1 1",
+      "face": "SW warehouse",
+      "u": 29.2,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 1 2",
+      "face": "SW warehouse",
+      "u": 32.4,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 1 3",
+      "face": "SW warehouse",
+      "u": 35.6,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 1 4",
+      "face": "SW warehouse",
+      "u": 38.8,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 1 5",
+      "face": "SW warehouse",
+      "u": 42.0,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 1 6",
+      "face": "SW warehouse",
+      "u": 45.2,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 1 7",
+      "face": "SW warehouse",
+      "u": 48.400000000000006,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 2 0",
+      "face": "SW warehouse",
+      "u": 26.0,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 2 1",
+      "face": "SW warehouse",
+      "u": 29.2,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 2 2",
+      "face": "SW warehouse",
+      "u": 32.4,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 2 3",
+      "face": "SW warehouse",
+      "u": 35.6,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 2 4",
+      "face": "SW warehouse",
+      "u": 38.8,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 2 5",
+      "face": "SW warehouse",
+      "u": 42.0,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 2 6",
+      "face": "SW warehouse",
+      "u": 45.2,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 2 7",
+      "face": "SW warehouse",
+      "u": 48.400000000000006,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 3 0",
+      "face": "SW warehouse",
+      "u": 26.0,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 3 1",
+      "face": "SW warehouse",
+      "u": 29.2,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 3 2",
+      "face": "SW warehouse",
+      "u": 32.4,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 3 3",
+      "face": "SW warehouse",
+      "u": 35.6,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 3 4",
+      "face": "SW warehouse",
+      "u": 38.8,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 3 5",
+      "face": "SW warehouse",
+      "u": 42.0,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 3 6",
+      "face": "SW warehouse",
+      "u": 45.2,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SW warehouse window 3 7",
+      "face": "SW warehouse",
+      "u": 48.400000000000006,
+      "z": 17.05,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 0 0",
+      "face": "SE warehouse",
+      "u": -50.0,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 0 1",
+      "face": "SE warehouse",
+      "u": -46.8,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 0 2",
+      "face": "SE warehouse",
+      "u": -43.6,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 0 3",
+      "face": "SE warehouse",
+      "u": -40.4,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 0 4",
+      "face": "SE warehouse",
+      "u": -37.2,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 0 5",
+      "face": "SE warehouse",
+      "u": -34.0,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 0 6",
+      "face": "SE warehouse",
+      "u": -30.799999999999997,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 0 7",
+      "face": "SE warehouse",
+      "u": -27.599999999999998,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 0 8",
+      "face": "SE warehouse",
+      "u": -24.4,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 0 9",
+      "face": "SE warehouse",
+      "u": -21.2,
+      "z": 6.25,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 1 0",
+      "face": "SE warehouse",
+      "u": -50.0,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 1 1",
+      "face": "SE warehouse",
+      "u": -46.8,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 1 2",
+      "face": "SE warehouse",
+      "u": -43.6,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 1 3",
+      "face": "SE warehouse",
+      "u": -40.4,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 1 4",
+      "face": "SE warehouse",
+      "u": -37.2,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 1 5",
+      "face": "SE warehouse",
+      "u": -34.0,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 1 6",
+      "face": "SE warehouse",
+      "u": -30.799999999999997,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 1 7",
+      "face": "SE warehouse",
+      "u": -27.599999999999998,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 1 8",
+      "face": "SE warehouse",
+      "u": -24.4,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 1 9",
+      "face": "SE warehouse",
+      "u": -21.2,
+      "z": 9.85,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 2 0",
+      "face": "SE warehouse",
+      "u": -50.0,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 2 1",
+      "face": "SE warehouse",
+      "u": -46.8,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 2 2",
+      "face": "SE warehouse",
+      "u": -43.6,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 2 3",
+      "face": "SE warehouse",
+      "u": -40.4,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 2 4",
+      "face": "SE warehouse",
+      "u": -37.2,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 2 5",
+      "face": "SE warehouse",
+      "u": -34.0,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 2 6",
+      "face": "SE warehouse",
+      "u": -30.799999999999997,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 2 7",
+      "face": "SE warehouse",
+      "u": -27.599999999999998,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 2 8",
+      "face": "SE warehouse",
+      "u": -24.4,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "SE warehouse window 2 9",
+      "face": "SE warehouse",
+      "u": -21.2,
+      "z": 13.45,
+      "width": 1.8,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "River",
+      "Bank -1",
+      "Bank road -1",
+      "Bank +1",
+      "Bank road +1"
+    ],
+    "bank -1": [
+      "bank -1 paving",
+      "bank -1 yellow",
+      "bank -1 white",
+      "bank -1 joint",
+      "bank -1 concrete"
+    ],
+    "quay railing -1": [
+      "quay railing -1 steel"
+    ],
+    "abutments": [
+      "Abutment -1",
+      "Abutment cap -1",
+      "Abutment +1",
+      "Abutment cap +1"
+    ],
+    "abutment -1 brickwork": [
+      "abutment -1 brickwork joint",
+      "abutment -1 brickwork steel2"
+    ],
+    "bank +1": [
+      "bank +1 paving",
+      "bank +1 yellow",
+      "bank +1 white",
+      "bank +1 joint",
+      "bank +1 concrete"
+    ],
+    "quay railing +1": [
+      "quay railing +1 steel"
+    ],
+    "abutment +1 brickwork": [
+      "abutment +1 brickwork joint",
+      "abutment +1 brickwork steel2"
+    ],
+    "deck": [
+      "Deck slab",
+      "Bridge road",
+      "deck steel2",
+      "deck concrete",
+      "deck yellow",
+      "deck white"
+    ],
+    "railings": [
+      "railings steel"
+    ],
+    "truss -6": [
+      "truss -6 steel",
+      "truss -6 steel2",
+      "truss -6 gusset",
+      "truss -6 hardware"
+    ],
+    "truss +6": [
+      "truss +6 steel",
+      "truss +6 steel2",
+      "truss +6 gusset",
+      "truss +6 hardware"
+    ],
+    "bracing": [
+      "bracing steel",
+      "bracing steel2",
+      "bracing hardware"
+    ],
+    "envelope": [
+      "NW warehouse river face",
+      "NE warehouse river face",
+      "SW warehouse river face",
+      "SE warehouse river face"
+    ],
+    "brick joints": [
+      "NW warehouse measured mortar courses",
+      "NE warehouse measured mortar courses",
+      "SW warehouse measured mortar courses",
+      "SE warehouse measured mortar courses"
+    ],
+    "NW warehouse": [
+      "NW warehouse NW warehouse dark",
+      "NW warehouse NW warehouse glass",
+      "NW warehouse NW warehouse stone"
+    ],
+    "context": [
+      "NW warehouse body",
+      "NW warehouse roof",
+      "NE warehouse body",
+      "NE warehouse roof",
+      "SW warehouse body",
+      "SW warehouse roof",
+      "SE warehouse body",
+      "SE warehouse roof"
+    ],
+    "NE warehouse": [
+      "NE warehouse NE warehouse dark",
+      "NE warehouse NE warehouse glass",
+      "NE warehouse NE warehouse stone"
+    ],
+    "SW warehouse": [
+      "SW warehouse SW warehouse dark",
+      "SW warehouse SW warehouse glass",
+      "SW warehouse SW warehouse stone"
+    ],
+    "SE warehouse": [
+      "SE warehouse SE warehouse dark",
+      "SE warehouse SE warehouse glass",
+      "SE warehouse SE warehouse stone"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020",
+      "Street tree trunk.007",
+      "Street tree branch.021",
+      "Street tree branch.022",
+      "Street tree branch.023",
+      "Street tree trunk.008",
+      "Street tree branch.024",
+      "Street tree branch.025",
+      "Street tree branch.026",
+      "Street tree trunk.009",
+      "Street tree branch.027",
+      "Street tree branch.028",
+      "Street tree branch.029",
+      "Street tree trunk.010",
+      "Street tree branch.030",
+      "Street tree branch.031",
+      "Street tree branch.032",
+      "Street tree trunk.011",
+      "Street tree branch.033",
+      "Street tree branch.034",
+      "Street tree branch.035"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023",
+      "Street tree crown.024",
+      "Street tree crown.025",
+      "Street tree crown.026",
+      "Street tree crown.027",
+      "Street tree crown.028",
+      "Street tree crown.029",
+      "Street tree crown.030",
+      "Street tree crown.031",
+      "Street tree crown.032",
+      "Street tree crown.033",
+      "Street tree crown.034",
+      "Street tree crown.035"
+    ],
+    "traffic": [
+      "traffic car",
+      "traffic glass",
+      "traffic dark",
+      "traffic car2",
+      "traffic bus"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-19T09:16:27.426497+00:00",
+  "delivery_and_render_seconds": 5280.299503824001,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

@@ -67,3 +67,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (v002 reworks these five)
+
+1. P0: the front camera stands inside the portal bay; the top chord and struts are cut off and the inclined end post, portal, abutment and river are out of frame.
+2. P1: only the centre panel has crossed diagonals; the sources show crossed diagonals in every interior panel except the one next to each hip vertical.
+3. P1: the overhead bracing has 5 short flat X-bays between 6 struts; the top source has 3 long near-square X-bays between 4 struts.
+4. P1: a raised light-grey concrete bar crosses the whole road at each end, river side of the end-post feet; the source shows only a painted stop line.
+5. P1: in rear the bus hides most of the right truss and its end-post foot.
