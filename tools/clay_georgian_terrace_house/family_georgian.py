@@ -28,7 +28,7 @@ BAYS = (-4.2, -2.1, 0.0, 2.1, 4.2)
 EPS = .002
 PALETTE = dict(wall=(.52, .42, .29), joint=(.68, .62, .52), rubbed=(.60, .48, .34), trim=(.94, .94, .92),
     pale=(.88, .88, .86), stone=(.84, .82, .76), roof=(.33, .36, .40), lead=(.42, .44, .46), sand=(.66, .62, .56),
-    foundation=(.50, .42, .32), glass=(.22, .26, .29), hardware=(.07, .07, .08), interior=(.84, .80, .74),
+    foundation=(.50, .42, .32), glass=(.22, .26, .29), skylight=(.15, .19, .24), hardware=(.07, .07, .08), interior=(.84, .80, .74),
     floor=(.58, .48, .38), timber=(.46, .34, .22), door=(.08, .09, .10), planting=(.30, .46, .20),
     soil=(.22, .16, .10), concrete=(.70, .69, .66), white=(.95, .95, .93), asphalt=(.28, .28, .29),
     brick=(.50, .40, .28), pot=(.70, .38, .24), paving=(.66, .64, .60), neighbour=(.64, .56, .42),
@@ -602,13 +602,48 @@ def rear_block(name, xa, xb, ya, yb, h, wins, parapet=False):
         for x in (xa + .15, xb - .15):
             b.box('stone', x, (ya + yb - T) / 2, h + .1, .3, yb - T - ya, .2)
         b.box('stone', (xa + xb) / 2, ya + .15, h + .1, xb - xa - .6, .3, .2)
-        lx0, lx1, ly = xa + .8, xb - .8, (ya + yb - T) / 2
-        b.box('pale', (lx0 + lx1) / 2, ly, h + .2, lx1 - lx0, 1.1, .3)                           # lantern upstand
-        for i in range(int((lx1 - lx0) / .6) + 1):
-            b.box('pale', lx0 + .05 + i * (lx1 - lx0 - .1) / int((lx1 - lx0) / .6), ly, h + .55, .05, 1.0, .5)
-        b.flush(f'{name} rim and lantern')
-        strip(f'{name} lantern glass', [(lx0, ly - .5), (lx1, ly - .5), (lx1, ly + .5), (lx0, ly + .5)],
-              [(lx0 + .5, ly - .01), (lx1 - .5, ly - .01), (lx1 - .5, ly + .01), (lx0 + .5, ly + .01)], h + .35, h + .85, 'glass', 'rear')
+        b.flush(f'{name} rim')
+        lantern(name, xa + .45, xb - .45, ya + .42, yb - T - .12, h)
+
+
+def lantern(name, x0, x1, y0, y1, h):
+    """Long hipped glazed lantern filling the rim (top view): one closed hipped solid of dark glazing on a low lead
+    kerb, slim lead glazing bars lying on the glass planes, lead hip and ridge rolls."""
+    hy, ly, rise = (y1 - y0) / 2, (y0 + y1) / 2, .75
+    zb, zr = h + .235, h + .235 + rise
+    b = Batch()
+    b.box('lead', (x0 + x1) / 2, ly, h + .15, x1 - x0 + .1, y1 - y0 + .1, .18)                  # kerb upstand
+    b.flush(f'{name} lantern kerb')
+    rx0, rx1 = x0 + hy, x1 - hy
+    vs = [(x0, y0, zb), (x1, y0, zb), (x1, y1, zb), (x0, y1, zb), (rx0, ly, zr), (rx1, ly, zr)]
+    fs = [(0, 1, 5, 4), (2, 3, 4, 5), (1, 2, 5), (3, 0, 4), (3, 2, 1, 0)]
+    C.mesh(f'{name} lantern glazing', vs, fs, 'skylight', 'rear')
+    b = Batch()
+    o = .03                                                       # bars sit just proud of the glass
+    def on(x, y):                                                 # point on the hipped surface, lifted by o
+        d = min(x - x0, x1 - x, hy - abs(y - ly))
+        return (x, y, zb + rise * min(1.0, d / hy) + o)
+    n = max(2, int(round((rx1 - rx0) / .55)))
+    for i in range(n + 1):                                        # common rafters on both long slopes
+        x = rx0 + (rx1 - rx0) * i / n
+        for ye in (y0, y1):
+            b.beam('lead', (x, ye, zb + o), (x, ly, zr + o), .04, .035)
+    for k in (1, 2):                                              # jack rafters into the hips
+        t = hy * k / 3
+        for xe, sx in ((x0, 1), (x1, -1)):
+            for ye, sy in ((y0, 1), (y1, -1)):
+                b.beam('lead', (xe + sx * t, ye, zb + o), on(xe + sx * t, ye + sy * t), .04, .035)   # on the long slope
+                b.beam('lead', (xe, ye + sy * t, zb + o), on(xe + sx * t, ye + sy * t), .04, .035)   # on the hip end
+    for xe, sx in ((x0, 1), (x1, -1)):                            # centre rafter on each hip end
+        b.beam('lead', (xe, ly, zb + o), (xe + sx * hy, ly, zr + o), .04, .035)
+    for (xe, ye, xr) in ((x0, y0, rx0), (x0, y1, rx0), (x1, y0, rx1), (x1, y1, rx1)):
+        b.beam('lead', (xe, ye, zb + .04), (xr, ly, zr + .04), .08, .06)                          # hip rolls
+    b.beam('lead', (rx0, ly, zr + .045), (rx1, ly, zr + .045), .1, .07)                          # ridge roll
+    b.box('lead', (x0 + x1) / 2, y0 - .005, zb + .02, x1 - x0 + .04, .05, .05)                   # eave bars
+    b.box('lead', (x0 + x1) / 2, y1 + .005, zb + .02, x1 - x0 + .04, .05, .05)
+    b.box('lead', x0 - .005, ly, zb + .02, .05, y1 - y0 + .04, .05)
+    b.box('lead', x1 + .005, ly, zb + .02, .05, y1 - y0 + .04, .05)
+    b.flush(f'{name} lantern bars')
 
 
 def dormer(u):
