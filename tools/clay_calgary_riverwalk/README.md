@@ -75,3 +75,15 @@ section's runtime footprint.
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (the v002 rework targets all nine)
+
+- P0 #1: the Peace Bridge does not land on the promenade: its deck and truss stop inside the planting against a continuous river rail, with no abutment, landing or rail opening, and open bar stubs at the truss ends.
+- P1 #2: the bridge is a constant-section box with a flat deck at bank level; the sources show a tube with pointed tapered ends, a shallow arched deck and a white roof.
+- P1 #3: band widths wrong: rip-rap about 0.5x and the riparian strip about 0.65x the promenade width, where the top source shows both about 1x.
+- P1 #4: the rip-rap is sparse near-white angular cubes brighter than the promenade, not packed rounded grey boulders.
+- P1 #5: the riparian strip is mostly bare soil with sparse stick grasses and lone shrubs; the sources show dense grass and shrub cover.
+- P1 #6: the building-edge planters are smooth beige boxes of green cubes; the gabion walls and the building-side bronze rail are missing.
+- P1 #7: the rear and end facades of the three blocks are blank.
+- P1 #8: an open slot runs between the promenade slab and the riparian bed; the rail posts sit on the slab edge.
+- P1 #9: the rear, left_side and rear_side cameras show the asset too small.
