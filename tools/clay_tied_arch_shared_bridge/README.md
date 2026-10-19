@@ -1,7 +1,7 @@
 # Tied-arch shared cycle and pedestrian bridge (RLASM v6.1 architectural clay)
 
 Candidate H9 of wave H (bridges) of 2026-10-19, one of the ten bridge variants the user chose from the
-street and path catalogue; a street or path option, not a building. State: **candidate under review**. Nothing here is keeper-approved,
+street and path catalogue; a street or path option, not a building. State: **stopped at v003 by the stopping rule (the plan-skew finding survived two targeted fixes); v003 is the candidate**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,7 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 reworks these two; a second failed skew fix stops the family)
+## Open blockers after v003 (stopped)
 
-- P1 #1: the bridge is rotated 13 degrees as a plain rectangle, so both deck ends stay square to the axis instead of parallel to the quays; the ends overrun the copings by about 3-6 m, the four springing plinths sit at different setbacks and no distinct wedge landing shows (the v001 skew finding, surviving one targeted fix).
-- P1 #2: rear cuts off both near-arch springings and the west deck end, rear_north loses the west end; no elevation shows the full span with both abutments.
+- P1 #1: the plan skew does not match the source top: the render is a 13-degree parallelogram, but the source skews about 6 degrees at the west end and its east deck end runs about 6 degrees the opposite way along an angled landing pier (the v001 skew finding, surviving two targeted fixes).
+- Stopped by the stopping rule; v003 is the candidate. Nothing here is keeper-approved.
