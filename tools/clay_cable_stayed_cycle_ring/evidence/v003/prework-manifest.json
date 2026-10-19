@@ -1,0 +1,451 @@
+{
+  "candidate": "clay-cable-stayed-cycle-ring-clay-v003",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-cable-stayed-cycle-ring",
+  "variant_id": "clay-cable-stayed-cycle-ring-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "dedicated_cycle_bridge/variant_1 (Cable-Stayed Ring Bridge)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 72.0,
+      "depth": 130.0,
+      "height": 60.0
+    },
+    "observed_storeys": 0,
+    "storey_programme": "bridge: a circular cycle and footbridge over a road intersection",
+    "plan": "72 m ring (top view), a 5.4 m deck, one straight ramp leaving the south-west of the ring and running south",
+    "section_m": {
+      "deck": [
+        30.6,
+        36.0
+      ],
+      "deck_level": 6.6,
+      "girder_depth": 1.1,
+      "collar": 48.0,
+      "mast": 60.0
+    },
+    "facade": "red cycle surface with white dashed markings, white railings on both edges, white box girder, radial steel cables, a slender steel pylon, concrete columns",
+    "levels_m": [
+      0.0,
+      6.6,
+      48.0,
+      60.0
+    ],
+    "inferred": "the corner plots and their houses are simplified context; ramp length is an assumption"
+  },
+  "roof_contract": {
+    "type": "open bridge deck; no roof",
+    "datum_m": 6.6,
+    "crowns_m": [
+      60.0
+    ]
+  },
+  "identity_contract": {
+    "owner": "circular red cycle ring hung by radial cables from a single tall central pylon over a road intersection, white railings, a ramp"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: red cycle surface, white girder and railings, pale steel pylon and cables, grey concrete columns, dark asphalt with white markings, red cycle paths, brick context",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 0,
+    "ground": "road intersection, cycle paths and footways",
+    "deck": "cycling and walking round the ring"
+  },
+  "street_contract": {
+    "kind": "fixed_native_section",
+    "width_m": 5.399999999999999,
+    "axis": "ring",
+    "junction_finish": "ramp",
+    "bands": [
+      "inner railing",
+      "cycle deck",
+      "outer railing"
+    ]
+  },
+  "contact_contract": [
+    "Roads and plots at grade",
+    "Columns and pylon island from grade",
+    "Ring deck on its columns and cables",
+    "Ramp from the ring down to the street"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -74.0,
+        -40.0,
+        13.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        18.0
+      ],
+      "whole": false,
+      "lens": 24
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -95.0,
+        -62.0,
+        40.0
+      ],
+      "target": [
+        0.0,
+        -8.0,
+        22.0
+      ],
+      "whole": false,
+      "lens": 26
+    },
+    {
+      "name": "aerial",
+      "location": [
+        -120.0,
+        -160.0,
+        110.0
+      ],
+      "target": [
+        0.0,
+        -28.0,
+        14.0
+      ],
+      "whole": false,
+      "lens": 30
+    },
+    {
+      "name": "top",
+      "location": [
+        0.0,
+        -29.0,
+        160.0
+      ],
+      "target": [
+        0.0,
+        -28.999,
+        0.0
+      ],
+      "ortho_scale": 186.0,
+      "whole": false
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -130.0,
+        6.0,
+        26.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        22.0
+      ],
+      "whole": false,
+      "lens": 30
+    },
+    {
+      "name": "right_side",
+      "location": [
+        130.0,
+        -6.0,
+        26.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        22.0
+      ],
+      "whole": false,
+      "lens": 30
+    },
+    {
+      "name": "rear",
+      "location": [
+        -8.0,
+        130.0,
+        26.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        22.0
+      ],
+      "whole": false,
+      "lens": 30
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        100.0,
+        100.0,
+        48.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        22.0
+      ],
+      "whole": false,
+      "lens": 30
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -44.0,
+        20.0,
+        3.4
+      ],
+      "target": [
+        -30.0,
+        12.0,
+        5.6
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -14.0,
+        -8.0,
+        9.5
+      ],
+      "target": [
+        -27.0,
+        -14.6,
+        6.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -31.291764272170745,
+        11.389270772744773,
+        8.2
+      ],
+      "target": [
+        -21.404827402561757,
+        25.509279955861967,
+        7.6
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "pylon_head",
+      "location": [
+        14.0,
+        -22.0,
+        50.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        53.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "cable_fan",
+      "location": [
+        -6.0,
+        -44.0,
+        12.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        30.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "ring_deck",
+      "location": [
+        -30.180049308320445,
+        -14.073188115965285,
+        8.299999999999999
+      ],
+      "target": [
+        -32.79409817530652,
+        5.782484316308778,
+        7.3999999999999995
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "ramp_landing",
+      "location": [
+        -8.64631149896572,
+        -104.37845902018564,
+        2.2
+      ],
+      "target": [
+        -17.64631149896572,
+        -82.37845902018564,
+        1.6
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "column_support",
+      "location": [
+        41.16533001542597,
+        1.6186742019139402,
+        1.7
+      ],
+      "target": [
+        32.16533001542597,
+        8.61867420191394,
+        4.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "intersection_under",
+      "location": [
+        0.0,
+        -22.0,
+        1.7
+      ],
+      "target": [
+        0.0,
+        22.0,
+        6.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        20.0,
+        90.0,
+        9.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        20.0
+      ],
+      "lens": 24,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "pylon_head",
+    "cable_fan",
+    "ring_deck",
+    "ramp_landing",
+    "column_support",
+    "intersection_under",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/dedicated-cycle-bridge/variant_1.png",
+        "path": "sources/front.png",
+        "bytes": 1220653,
+        "sha256": "c3bbebd85c5bc1553088d0d23ee5ad838facb5ddcd1c6b1ddf693fbb7e775f66"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/dedicated-cycle-bridge/variant_1_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 804750,
+        "sha256": "59f81bdf60ace7b32434fb0703cab30e853fd8059286d69e5af81ac63c07f871"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/dedicated-cycle-bridge/variant_1_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 890788,
+        "sha256": "2eed66a8bdfc962bde816849d85952476850b7579a82361c24dc3578fef2a0a5"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_0.png",
+      "variant_0.webp",
+      "variant_0_angle_60.jpg",
+      "variant_0_angle_90.jpg",
+      "variant_2.png",
+      "variant_2.webp",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3.webp",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_ring.py",
+        "sha256": "e104014ae25faaf032ee65983b5bb8e96cc45b8b85024e003ed6f2efc7801308"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "8d4bd454bf81c3f59d89e7aa473aa14eda5961cf986b2bb1c31eb88021b12fd7"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "e31e600fa5b5dfad293246f6a72fcedfb82ba829fb5bc457b4c60020df8c9af2"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-19T19:03:14.348048+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

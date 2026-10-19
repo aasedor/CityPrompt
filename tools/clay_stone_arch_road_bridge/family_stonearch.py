@@ -78,7 +78,7 @@ def manifest(version):
         elif c['name'] == 'rear':                    # the north elevation from over the narrower upstream river
             c.update(location=(6.0, 70.0, 9.0), target=(6.0, HW, 6.0), lens=22, whole=False)
         elif c['name'] == 'rear_side':
-            c.update(location=(62.0, 78.0, 34.0), target=(7.0, 0.0, 5.0), lens=26, whole=False)   # whole bridge, east abutment to west, inside the frame
+            c.update(location=(20.0, 70.0, 30.0), target=(7.0, 0.0, 5.0), lens=24, whole=False)   # over the low east quay: the whole bridge, east abutment to west, inside the frame
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,

@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-cable-stayed-cycle-ring",
+  "variant_id": "clay-cable-stayed-cycle-ring-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "dedicated_cycle_bridge/variant_1",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/dedicated-cycle-bridge/variant_1.png",
+      "path": "sources/front.png",
+      "bytes": 1220653,
+      "sha256": "c3bbebd85c5bc1553088d0d23ee5ad838facb5ddcd1c6b1ddf693fbb7e775f66"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/dedicated-cycle-bridge/variant_1_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 804750,
+      "sha256": "59f81bdf60ace7b32434fb0703cab30e853fd8059286d69e5af81ac63c07f871"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/dedicated-cycle-bridge/variant_1_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 890788,
+      "sha256": "2eed66a8bdfc962bde816849d85952476850b7579a82361c24dc3578fef2a0a5"
+    }
+  ]
+}

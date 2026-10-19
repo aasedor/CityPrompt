@@ -1,7 +1,7 @@
 # Cable-stayed circular cycle bridge (RLASM v6.1 architectural clay)
 
 Candidate H5 of wave H (bridges) of 2026-10-19, one of the ten bridge variants the user chose from the
-street and path catalogue; a street or path option, not a building. State: **candidate under review**. Nothing here is keeper-approved,
+street and path catalogue; a street or path option, not a building. State: **stopped at v003 by the stopping rule (independent review PASS_ZERO_P0_P1); v003 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,8 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 reworks these three)
+## Open blockers after v003 (stopped)
 
-- P1 #1: the cables stop at the top of the inner deck kerb while their anchor blocks hang lower on the fascia with bare fascia between; the cables don't land on their anchors and the blocks float.
-- P1 #2: every pitched context house still has a solid black slot along the gable base or eave (the v001 black-gable finding, partly fixed, surviving one targeted fix).
-- P1 #3: the ramp deck has the ring's red finish and dashed centre line; the sources show a pale grey-beige concrete ramp with a solid white centre line.
+- No P0 or P1 findings remain. Nine P2 refinements are listed in evidence/v003/independent-review.md (among them: the ramp centre line is faint and covers only the upper ~55% of the ramp, contrary to the builder note).
+- This is an independent RLASM review result only; it is not keeper approval, runtime integration or catalogue enrolment.
