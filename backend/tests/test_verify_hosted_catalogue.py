@@ -58,14 +58,19 @@ class Storage:
         return {"Body": body}
 
 
-def test_shipped_contract_covers_current_release_including_five_trial_buildings():
+def test_shipped_contract_covers_current_release_including_published_parkades():
     root = Path(__file__).parents[2]
     rows = verify.load_expected(root / "backend/app/data/native_model_contract.json",
                                 root / "seed/model-library/rlasm-architectural-clay/library.json",
                                 [root / "seed/claude-five-trial/library.json"])
-    assert len(rows) == 59
+    assert len(rows) == 64
     assert sum(row["local_trial_only"] for row in rows) == 0
-    assert len({row["asset_id"] for row in rows}) == 59
+    assert len({row["asset_id"] for row in rows}) == 64
+    parkades = json.loads((root / "seed/model-library/rlasm-architectural-clay/parkades-release-v001.json").read_text())
+    wanted = {entry["candidate"]: entry["model"]["sha256"] for entry in parkades["entries"]}
+    actual = {row["candidate"]: row["sha256"] for row in rows if row["candidate"] in wanted}
+    assert len(wanted) == 5
+    assert actual == wanted
     assert {"infill_duplex", "vancouverism_classic", "montreal_depanneur_modern"} <= {row["variant_id"] for row in rows}
     assert "validation_timber_sanctuary_church_glazed_gable" not in {row["asset_id"] for row in rows}
 
