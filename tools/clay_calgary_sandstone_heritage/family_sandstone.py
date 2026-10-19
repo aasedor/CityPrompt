@@ -478,15 +478,15 @@ def disc(b, role, centre, normal, r, t=.08, n=24):
 def window_set(m, f, h, kind):
     if kind == 'tall':                                                               # two-storey arcaded pavilion bay
         framed(m, f, h, cols=2, rows=6, inset=.18, occupied='office', frame='frame')
-        arch_head(f, h, h['w'] / 2, ring=.3)
+        arch_head(f, h, h['w'] / 2, ring=.3, segs=8)
         m.box('stone', h['u'], -.06, h['z'] - .07, h['w'] + .3, .16, .14)
-        m.box('stone', h['u'], .1, F3 + .1, h['w'] - .02, .16, .7)                       # carved spandrel panel at the floor line
+        m.box('stone', h['u'], .1, F2 + .1, h['w'] - .02, .16, .7)                       # carved spandrel panel at the floor line
     elif kind == 'arc':                                                              # one light of a third-floor arcade
         framed(m, f, h, cols=1, rows=3, inset=.18, occupied='office', frame='frame')
-        arch_head(f, h, h['w'] / 2, ring=.1)
+        arch_head(f, h, h['w'] / 2, ring=.1, segs=6)
     elif kind == 'arch':
         framed(m, f, h, cols=2, rows=4, inset=.18, occupied='office', frame='frame')
-        arch_head(f, h, h['w'] / 2, ring=.3)
+        arch_head(f, h, h['w'] / 2, ring=.3, segs=8)
         m.box('stone', h['u'], -.06, h['z'] - .07, h['w'] + .3, .16, .14)
     elif kind == 'pair':
         framed(m, f, h, cols=2, rows=3, inset=.18, occupied='office', frame='frame')
@@ -498,6 +498,7 @@ def window_set(m, f, h, kind):
 
 
 ARC_W, ARC_P = .66, .9                                                              # arcade light width and pitch
+TALL_TOP = F3 - .45                                                                 # crown of the giant arcade, under the third-floor slab
 
 
 def colonnettes(m, us, z0, z1):
@@ -518,17 +519,24 @@ def segment(label, origin, tangent, inward, lo, hi, depth, bays, portal=None, en
             holes.append(hole(f'{label} portal', u, 0.0, 3.4, 4.6, kind='door')); kinds.append('portal')
         else:
             holes.append(hole(f'{label} basement {u:+.1f}', u, .5, 1.0, .9)); kinds.append('base')
-            holes.append(hole(f'{label} first {u:+.1f}', u, F1 + .7, 2.0, 2.3)); kinds.append('pair')
-        if group is not None and abs(u - group) < .1:                                  # three tall arches through two storeys
+            if not (group is not None and abs(u - group) < .1):
+                holes.append(hole(f'{label} first {u:+.1f}', u, F1 + .7, 2.0, 2.3)); kinds.append('pair')
+        if group is not None and abs(u - group) < .1:
+            # The pavilion's giant arcade: three lights rising from the first floor (above the portal: from the second)
+            # to round heads on the second floor, then a continuous small-arch arcade across the third floor.
+            tz = F2 + .6 if portal is not None and abs(u - portal) < .1 else F1 + .7
             for du in (-1.9, 0.0, 1.9):
-                holes.append(hole(f'{label} tall {u + du:+.1f}', u + du, F2 + .6, 1.2, F3 + 2.8 - F2 - .6)); kinds.append('tall')
+                holes.append(hole(f'{label} tall {u + du:+.1f}', u + du, tz, 1.2, TALL_TOP - tz)); kinds.append('tall')
+            for i in range(5):
+                du = (i - 2) * ARC_P
+                holes.append(hole(f'{label} third {u + du:+.1f}', u + du, F3 + .7, ARC_W, 2.3)); kinds.append('arc')
         else:
             holes.append(hole(f'{label} second {u:+.1f}', u, F2 + .6, 1.5, 3.4)); kinds.append('arch')
             for i in range(arc_n):                                                     # a continuous arcade of small lights
                 du = (i - (arc_n - 1) / 2) * ARC_P
                 holes.append(hole(f'{label} third {u + du:+.1f}', u + du, F3 + .7, ARC_W, 2.3)); kinds.append('arc')
     f.wall(f'{label} carrier', lo, hi - EPS, 0.0, EAVE, depth=depth, role='wall', holes=holes)
-    G.brick_courses(f, lo + .02, hi - .02, .1, EAVE - .1, holes, spacing=.5)
+    G.brick_courses(f, lo + .02, hi - .02, .1, EAVE - .1, holes, spacing=.6 if label.startswith(('north', 'west')) else .5)
     m = Merge(f)
     for z, hh, d in ((BASE - .1, .3, .2), (F2 + .35, .22, .14), (F3 + .3, .22, .14), (EAVE - .35, .7, .4)):
         a = lo - (d if ends[0] < 0 else ends[0])
@@ -547,7 +555,11 @@ def segment(label, origin, tangent, inward, lo, hi, depth, bays, portal=None, en
             window_set(m, f, h, k)
     for u in bays:
         if group is not None and abs(u - group) < .1:
-            colonnettes(m, [u - .95, u + .95], F2 + .5, F3 + 2.8 - .6)
+            tz = F2 + .6 if portal is not None and abs(u - portal) < .1 else F1 + .7
+            colonnettes(m, [u - .95, u + .95], tz - .1, TALL_TOP - .6)
+            span = 4 * ARC_P + ARC_W
+            m.box('stone', u, -.06, F3 + .63, span + .3, .16, .14)                          # arcade sill
+            colonnettes(m, [u + (i - 1.5) * ARC_P for i in range(4)], F3 + .7, F3 + .7 + 2.3 - ARC_W / 2 - .01)
         else:
             span = (arc_n - 1) * ARC_P + ARC_W
             m.box('stone', u, -.06, F3 + .63, span + .3, .16, .14)                          # arcade sill
@@ -834,6 +846,10 @@ def site():
         street_tree(x, Y0 - 4.2, z=.12, height=10.0, spread=2.8)
     for y in (-18.0, 14.0):
         street_tree(X1 + 4.2, y, z=.12, height=10.0, spread=2.8)
+    for x in (-12.5, 12.5):                                                         # north sidewalk, flanking the cross gable
+        street_tree(x, Y1 + 4.2, z=.12, height=10.0, spread=2.8)
+    for y in (-12.5, 12.5):                                                         # west sidewalk, flanking the cross gable
+        street_tree(X0 - 4.2, y, z=.12, height=10.0, spread=2.8)
 
 
 def build():
