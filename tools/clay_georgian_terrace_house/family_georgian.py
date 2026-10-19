@@ -544,9 +544,20 @@ def roof_and_inside():
     # Rear: a two-storey hipped wing on the west half, a one-storey parapeted extension across the east half.
     wx0, wx1, wy1 = X0 + .4, X0 + 4.6, Y1 + 2.8
     rear_block('Rear wing', wx0, wx1, Y1, wy1, 7.0, [(1.0, 2.0), (F1 + .4, 2.1)])
-    strip('Rear wing roof', [(wx0 - .25, Y1 - .05), (wx1 + .25, Y1 - .05), (wx1 + .25, wy1 + .25), (wx0 - .25, wy1 + .25)],
-          [((wx0 + wx1) / 2 - .6, Y1 + 1.4), ((wx0 + wx1) / 2 + .6, Y1 + 1.4), ((wx0 + wx1) / 2 + .6, Y1 + 1.41), ((wx0 + wx1) / 2 - .6, Y1 + 1.41)],
-          7.0 - .15, 7.9, 'roof', 'rear wing')
+    # The wing's hipped slate roof sits inside a coped brick parapet (top view), hipped to the north.
+    b = Batch()
+    pt = .3
+    b.box('wall', (wx0 + wx1) / 2, wy1 - pt / 2, 7.3, wx1 - wx0, pt, .6)                       # north parapet
+    for x in (wx0 + pt / 2, wx1 - pt / 2):
+        b.box('wall', x, (Y1 + wy1 - pt) / 2, 7.3, pt, wy1 - pt - Y1, .6)                       # side parapets
+    b.box('stone', (wx0 + wx1) / 2, wy1 - pt / 2, 7.65, wx1 - wx0 + .1, pt + .1, .1)
+    for x in (wx0 + pt / 2, wx1 - pt / 2):
+        b.box('stone', x, (Y1 + wy1 - pt - .05) / 2, 7.65, pt + .1, wy1 - pt - .05 - Y1, .1)
+    b.flush('rear wing parapet')
+    hw = (wx1 - wx0 - 2 * pt) / 2
+    xm = (wx0 + wx1) / 2
+    strip('Rear wing roof', [(wx0 + pt, Y1 + .02), (wx1 - pt, Y1 + .02), (wx1 - pt, wy1 - pt), (wx0 + pt, wy1 - pt)],
+          [(xm - .01, Y1 + .02), (xm + .01, Y1 + .02), (xm + .01, wy1 - pt - hw), (xm - .01, wy1 - pt - hw)], 7.0, 7.0 + hw * .7, 'roof', 'rear wing')
     rear_block('Rear extension', wx1, X1, Y1, Y1 + 2.6, 3.6, [(1.0, 2.0)], parapet=True)
     for z in (F1, F2, EAVE):
         C.box(f'Floor {z:.1f}', (0, 0, z - .12), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .24), 'floor', 'inside', 0)
@@ -585,7 +596,19 @@ def rear_block(name, xa, xb, ya, yb, h, wins, parapet=False):
     ARCH.flush(f'{name} arches')
     C.box(f'{name} body', ((xa + xb) / 2, (ya - .1 + yb - T) / 2, h / 2), (xb - xa, yb - T - ya + .1, h), 'wall', 'rear', 0)
     if parapet:
-        C.box(f'{name} lead', ((xa + xb) / 2, (ya + yb - T) / 2, h - .25), (xb - xa - .4, yb - T - ya - .2, .1), 'lead', 'rear', 0)
+        # A grey lead roof inside a stone rim, with a long hipped glazed lantern (top view).
+        b = Batch()
+        b.box('lead', (xa + xb) / 2, (ya + yb - T) / 2, h + .03, xb - xa - .5, yb - T - ya - .3, .06)
+        for x in (xa + .15, xb - .15):
+            b.box('stone', x, (ya + yb - T) / 2, h + .1, .3, yb - T - ya, .2)
+        b.box('stone', (xa + xb) / 2, ya + .15, h + .1, xb - xa - .6, .3, .2)
+        lx0, lx1, ly = xa + .8, xb - .8, (ya + yb - T) / 2
+        b.box('pale', (lx0 + lx1) / 2, ly, h + .2, lx1 - lx0, 1.1, .3)                           # lantern upstand
+        for i in range(int((lx1 - lx0) / .6) + 1):
+            b.box('pale', lx0 + .05 + i * (lx1 - lx0 - .1) / int((lx1 - lx0) / .6), ly, h + .55, .05, 1.0, .5)
+        b.flush(f'{name} rim and lantern')
+        strip(f'{name} lantern glass', [(lx0, ly - .5), (lx1, ly - .5), (lx1, ly + .5), (lx0, ly + .5)],
+              [(lx0 + .5, ly - .01), (lx1 - .5, ly - .01), (lx1 - .5, ly + .01), (lx0 + .5, ly + .01)], h + .35, h + .85, 'glass', 'rear')
 
 
 def dormer(u):
