@@ -16,14 +16,14 @@ import geometry as G
 
 SLUG = 'clay-swooping-cycle-flyover'
 DZ = 6.2                                        # deck surface over the junction
-DW = 4.0                                        # deck between the parapets
+DW = 6.2                                        # deck between the parapets (about 1.4 traffic lanes)
 PH = 1.25                                       # parapet height above the surface
-X0, X1, Y0, Y1 = -140.0, 140.0, -30.0, 16.0     # the ribbon's plan extent (top view)
+X0, X1, Y0, Y1 = -225.0, 225.0, -30.0, 16.0     # the ribbon's plan extent with its ramps and at-grade paths
 ROAD_Y0, ROAD_Y1 = -17.0, 6.0                   # the east-west road
 NS_X0, NS_X1 = -22.0, -8.0                      # the north-south street
 T = .3
 EPS = .002
-PALETTE = dict(orange=(.86, .36, .10), deck=(.30, .30, .31), lane=(.94, .94, .92), under=(.74, .73, .70),
+PALETTE = dict(orange=(.94, .31, .08), deck=(.30, .30, .31), lane=(.94, .94, .92), under=(.74, .73, .70),
     concrete=(.72, .71, .68), asphalt=(.25, .25, .26), paving=(.60, .57, .54), kerb=(.70, .69, .66),
     grass=(.38, .48, .24), planting=(.30, .44, .20), tree=(.28, .44, .18), timber=(.42, .32, .22), soil=(.30, .25, .18),
     brick=(.52, .30, .22), brick2=(.60, .36, .26), roof=(.24, .24, .26), tile=(.70, .34, .20), trim=(.90, .89, .86),
@@ -38,12 +38,12 @@ def manifest(version):
         ('facade_close', (4.0, -31.5, 2.4), (14.0, -21.0, 5.4), 40),
         ('architecture_close', (-2.0, -30.0, 9.5), (8.0, -14.0, 6.0), 40),
         ('glass_close', (22.0, -27.5, DZ + 1.6), (34.0, -25.0, DZ + .9), 40),
-        ('y_column', (16.0, -31.5, 1.8), (21.0, -24.0, 4.0), 40),
+        ('y_column', (11.0, -30.5, 1.8), (15.5, -19.2, 4.0), 40),
         ('ramp_curve', (50.0, -31.0, 14.0), (14.0, -14.0, DZ), 32),
         ('parapet_panel', (-8.0, 8.0, DZ + 1.8), (-20.0, 14.0, DZ + .8), 40),
         ('deck_surface', (2.0, 1.0, DZ + 1.7), (-14.0, 13.0, DZ + .6), 34),
         ('street_under', (-15.0, -12.0, 1.7), (-15.0, 14.0, 5.5), 30),
-        ('landing_ramp', (-118.0, -34.0, 2.0), (-112.0, -18.0, 1.5), 40),
+        ('landing_ramp', (-197.0, -33.0, 2.4), (-168.0, -23.0, 2.0), 30),
         ('rear_north', (-15.0, 46.0, 18.0), (-6.0, 2.0, 6.0), 35)])
     for c in cams:                       # the locked front rides the east bend, looking west along the ribbon
         if c['name'] == 'front':
@@ -55,23 +55,23 @@ def manifest(version):
         elif c['name'] == 'top':
             c.update(location=(0.0, -4.0, 160.0), target=(0.0, -3.999, 0.0), ortho_scale=200.0, whole=False)
         elif c['name'] == 'left_side':
-            c.update(location=(-160.0, -6.0, 40.0), target=(-30.0, -4.0, 4.0), lens=35, whole=False)   # down the east-west road, clear of the blocks
+            c.update(location=(-252.0, -4.0, 34.0), target=(-60.0, -8.0, 4.0), lens=35, whole=False)   # down the east-west road, clear of the blocks
         elif c['name'] == 'right_side':
-            c.update(location=(150.0, -40.0, 30.0), target=(40.0, -5.0, 4.0), lens=35, whole=False)
+            c.update(location=(252.0, -30.0, 30.0), target=(60.0, 0.0, 4.0), lens=35, whole=False)
         elif c['name'] == 'rear':
             c.update(location=(-15.0, 95.0, 30.0), target=(-8.0, 0.0, 5.0), lens=30, whole=False)      # down the north-south street
         elif c['name'] == 'rear_side':
-            c.update(location=(110.0, 28.0, 44.0), target=(10.0, -6.0, 4.0), lens=30, whole=False)
+            c.update(location=(170.0, 46.0, 46.0), target=(0.0, -6.0, 4.0), lens=28, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='dedicated_cycle_bridge/variant_0 (Elevated Swooping Flyover)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=DZ + PH),
             observed_storeys=0, storey_programme='bridge: an elevated cycle ribbon swooping over a street junction',
-            plan='an S-shaped ribbon about 190 m across the junction (top view) in two broad bends, ramps down at both ends',
+            plan='an S-shaped ribbon about 160 m across the junction (top view) in two broad bends, then 100 m ramps at about 6% down to at-grade cycle paths at both ends',
             section_m=dict(deck_width=DW, deck_level=DZ, parapet_height=PH),
-            facade='dark deck with a white dashed centre line, tall orange slatted parapets with a flat orange handrail, pale underside, slender concrete Y-columns',
-            levels_m=[0.0, DZ, DZ + PH], inferred='the ramp ends beyond the junction and the corner blocks are simplified context'),
+            facade='dark deck with a white dashed centre line, tall near-solid orange parapet screens with close slats on the inner face and a slim cap, pale underside, slender round tapered concrete Y-columns in the median and on the footways',
+            levels_m=[0.0, DZ, DZ + PH], inferred='the ramps and at-grade paths beyond the junction (outside the sources) and the corner blocks are simplified context'),
         roof_contract=dict(type='open bridge deck; no roof', datum_m=DZ, crowns_m=[DZ + PH]),
         identity_contract=dict(owner='sinuous orange-parapeted cycle ribbon on Y-columns swooping in S-curves over a street junction'),
         material_contract=dict(profile='source-palette clay: bright orange parapets and handrail, dark deck with white marking, pale underside and concrete columns, dark asphalt, pale footways, planted medians, brick context', textured_keeper=False),
@@ -401,13 +401,20 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
         b.box(pot, px, y, z1 + .12 + .25, .18, .18, .5)
 # ---- Swooping cycle flyover ----
 
-CTRL = [(-160.0, -19.0), (-140.0, -19.0), (-95.0, -18.0), (-71.0, -11.0), (-48.0, 2.0), (-27.0, 12.0), (-11.0, 12.5), (0.0, 3.0),
-        (13.0, -17.0), (29.0, -25.0), (48.0, -21.0), (63.0, -8.0), (80.0, 2.0), (98.0, 7.0), (120.0, 10.0), (140.0, 10.0), (160.0, 10.0)]
+# Centre line (top view): the S over the junction, then long straight approaches that ramp down to at-grade cycle
+# paths on the south footway (west) and the north footway (east).
+CTRL = [(-270.0, -25.0), (-225.0, -25.0), (-180.0, -25.0), (-135.0, -23.5), (-100.0, -19.5), (-71.0, -11.0), (-48.0, 2.0),
+        (-27.0, 12.0), (-11.0, 12.5), (0.0, 3.0), (13.0, -17.0), (29.0, -25.0), (48.0, -21.0), (63.0, -8.0), (80.0, 2.0),
+        (98.0, 7.0), (120.0, 10.0), (150.0, 10.0), (185.0, 10.0), (225.0, 10.0), (270.0, 10.0)]
+XA, XB = -78.0, 84.0                            # the deck is level at DZ between these x
+LR = 100.0                                      # ramp length along the ribbon (about 6% average gradient)
+ZF = .06                                        # path surface at grade
+GX = 225.0                                      # half-length of the street scene
+TREES = ((-60.0, -9.0), (-90.0, -9.0), (-130.0, -9.0), (30.0, -9.0), (100.0, -9.0), (140.0, -9.0), (-34.0, 9.5), (-56.0, 9.5),
+         (8.0, 9.5), (-4.0, -22.0), (60.0, -24.0), (-26.0, -26.0), (-44.0, -27.0), (110.0, 14.0), (35.0, 9.5), (-120.0, 12.0))
 
 
-def path(step=1.6):
-    """Catmull-Rom centre line through the control points (top view), sampled about every `step` metres, with the
-    deck level: level over the junction, ramping to grade beyond x = +-90."""
+def _centre(step=1.4):
     raw = []
     for i in range(1, len(CTRL) - 2):
         p0, p1, p2, p3 = CTRL[i - 1], CTRL[i], CTRL[i + 1], CTRL[i + 2]
@@ -418,85 +425,183 @@ def path(step=1.6):
             t2, t3 = t * t, t * t * t
             raw.append(tuple(.5 * ((2 * p1[j]) + (-p0[j] + p2[j]) * t + (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * t2
                                    + (-p0[j] + 3 * p1[j] - 3 * p2[j] + p3[j]) * t3) for j in (0, 1)))
-    raw.append(CTRL[-3])
+    raw.append(CTRL[-2])
+    return [p for p in raw if abs(p[0]) <= GX - 2.0]
+
+
+def path():
+    """Centre line samples (x, y, z, left normal x, left normal y, arc length): level at DZ over the junction, ramping
+    down over LR metres of ribbon at each end to the at-grade path, with 10 m vertical curves at the knees."""
+    raw = _centre()
+    s = [0.0]
+    for i in range(1, len(raw)):
+        s.append(s[-1] + math.hypot(raw[i][0] - raw[i - 1][0], raw[i][1] - raw[i - 1][1]))
+    sa = next(s[i] for i, p in enumerate(raw) if p[0] >= XA)
+    sb = next(s[i] for i in range(len(raw) - 1, -1, -1) if raw[i][0] <= XB)
+    zr = [ZF + (DZ - ZF) * min(1.0, max(0.0, 1 - (sa - si) / LR if si < sa else 1 - (si - sb) / LR if si > sb else 1.0)) for si in s]
+    z = []
+    for i, si in enumerate(s):                                                # box filter = parabolic knees
+        acc = [zr[j] for j in range(max(0, i - 12), min(len(s), i + 13)) if abs(s[j] - si) <= 5.0]
+        z.append(sum(acc) / len(acc))
     out = []
     for i, (x, y) in enumerate(raw):
         a = raw[max(0, i - 1)]; b = raw[min(len(raw) - 1, i + 1)]
         tx, ty = b[0] - a[0], b[1] - a[1]
         L = math.hypot(tx, ty); tx, ty = tx / L, ty / L
-        ax = abs(x)
-        z = DZ if ax <= 88.0 else max(.12, DZ - (DZ - .12) * (ax - 88.0) / 46.0)
-        out.append((x, y, z, -ty, tx))                                          # point, deck level, left normal
+        out.append((x, y, max(ZF, z[i]), -ty, tx, s[i]))
     return out
+
+
+def split(P):
+    """The raised ribbon (from the last at-grade sample at the west foot to the first at the east foot) and the two
+    at-grade path runs beyond the feet."""
+    up = [i for i, p in enumerate(P) if p[2] > ZF + .004]
+    i0, i1 = max(0, up[0] - 1), min(len(P) - 1, up[-1] + 1)
+    return P[i0:i1 + 1], P[:i0 + 1], P[i1:]
 
 
 def ribbon(name, P, lo, hi, z_lo, z_hi, role, module, floor=0.0):
     """Loft a rectangle across the ribbon from offset lo to hi (left normal) and from z+z_lo to z+z_hi, clamped
     at grade so no vertex goes below it."""
     rings = []
-    for x, y, z, nx, ny in P:
+    for x, y, z, nx, ny, _ in P:
         zb = max(floor, z + z_lo); zt = max(zb + .02, z + z_hi)
         rings.append([(x + nx * lo, y + ny * lo, zb), (x + nx * hi, y + ny * hi, zb), (x + nx * hi, y + ny * hi, zt), (x + nx * lo, y + ny * lo, zt)])
     loft(name, rings, role, module, closed=False)
 
 
-def flyover():
-    P = path()
+def resample(P, d):
+    """Points every d metres of arc length along P, linearly interpolated."""
+    out, j = [], 0
+    s = P[0][5]
+    while s <= P[-1][5]:
+        while P[j + 1][5] < s:
+            j += 1
+        a, b = P[j], P[j + 1]
+        t = (s - a[5]) / max(1e-6, b[5] - a[5])
+        out.append(tuple(a[k] + (b[k] - a[k]) * t for k in range(6)))
+        s += d
+    return out
+
+
+def free_ground(x, y):
+    """A column foot may stand in the planted median or on a footway, never in a traffic lane, the north-south
+    street or a crossing, nor on a street tree."""
+    if any(math.hypot(x - tx, y - ty) < 2.6 for tx, ty in TREES):
+        return False
+    median = -10.1 < y < -7.9 and (x < -41.0 or x > -3.0)
+    foot = (ROAD_Y1 + .9 < y < 16.5 or -32.5 < y < ROAD_Y0 - .9) and not (NS_X0 - 1.2 < x < NS_X1 + 1.2)
+    return median or foot
+
+
+def columns():
+    """Column stations: (foot x, foot y, deck z, centre x, centre y, normal x, normal y, foot offset). Greedy along
+    the ribbon, 14-34 m apart, each foot on free ground somewhere under the deck."""
+    P, _, _ = split(path())
     h = DW / 2
-    ribbon('Deck girder', P, -h - .14, h + .14, -.85, -.04, 'under', 'deck')
-    ribbon('Deck surface', P, -h, h, -.08, 0.0, 'deck', 'deck')
-    for s, nm in ((-1, 'south'), (1, 'north')):
-        a, b = (-h - .14, -h + .02) if s < 0 else (h - .02, h + .14)
-        ribbon(f'Parapet kerb {nm}', P, a, b, -.06, .22, 'orange', 'parapets')
-        ribbon(f'Parapet handrail {nm}', P, a - (.06 if s < 0 else 0), b + (.06 if s > 0 else 0), PH - .08, PH, 'orange', 'parapets')
-        ribbon(f'Parapet fascia {nm}', P, (a - .03) if s < 0 else (b - .01), (a + .01) if s < 0 else (b + .03), -.8, -.07, 'orange', 'parapets')
-    # Close vertical slats between kerb and handrail, and the white dashed centre line.
-    b = Batch()
-    acc = 0.0
-    for i in range(1, len(P)):
-        x0, y0, z0, nx0, ny0 = P[i - 1]
-        x1, y1, z1, nx1, ny1 = P[i]
-        seg = math.hypot(x1 - x0, y1 - y0)
-        k = 0
-        while acc + k * .32 < seg:
-            t = (acc + k * .32) / seg
-            x, y, z = x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, z0 + (z1 - z0) * t
-            nx, ny = nx0 + (nx1 - nx0) * t, ny0 + (ny1 - ny0) * t
-            for s in (-1, 1):
-                off = s * (h + .06)
-                b.box('orange', x + nx * off, y + ny * off, z + .22 + (PH - .3) / 2, .07, .07, PH - .3)
-            k += 1
-        acc = (acc + k * .32) - seg
-        if i % 3 == 0:
-            b.beam('lane', (x0, y0, z0 + .006), (x0 + (x1 - x0) * .7, y0 + (y1 - y0) * .7, z0 + (z1 - z0) * .7 + .006), .12, .01)
-    b.flush('slats and markings')
-    # Slender concrete Y-columns under the deck, about every 15 m where it is high.
-    b = Batch()
-    last = -99.0
-    for i, (x, y, z, nx, ny) in enumerate(P):
-        if z < 3.5 or x - last < 15.0:
+    out, last = [], -1e9
+    for x, y, z, nx, ny, s in resample(P, 1.0):
+        if z < 1.3 or s - last < 14.0:
             continue
-        last = x
-        stem = z - 2.6
-        b.box('concrete', x, y, stem / 2, .62, .62, stem)
-        b.box('concrete', x, y, .1, 1.1, 1.1, .2)
+        for o in sorted([(-h + .8) + k * (DW - 1.6) / 10 for k in range(11)], key=abs):
+            fx, fy = x + nx * o, y + ny * o
+            if free_ground(fx, fy):
+                out.append((fx, fy, z, x, y, nx, ny, o)); last = s
+                break
+    return out
+
+
+def tapered(V, F, p0, p1, r0, r1, segs=12):
+    """A round tapered rod from p0 (radius r0) to p1 (radius r1), capped, appended to one mesh."""
+    ax = [p1[i] - p0[i] for i in range(3)]
+    L = math.sqrt(sum(v * v for v in ax)); ax = [v / L for v in ax]
+    ref = (0.0, 0.0, 1.0) if abs(ax[2]) < .95 else (1.0, 0.0, 0.0)
+    u = (ax[1] * ref[2] - ax[2] * ref[1], ax[2] * ref[0] - ax[0] * ref[2], ax[0] * ref[1] - ax[1] * ref[0])
+    n = math.sqrt(sum(v * v for v in u)); u = [v / n for v in u]
+    w = (ax[1] * u[2] - ax[2] * u[1], ax[2] * u[0] - ax[0] * u[2], ax[0] * u[1] - ax[1] * u[0])
+    o = len(V)
+    for p, r in ((p0, r0), (p1, r1)):
+        for k in range(segs):
+            a = 2 * math.pi * k / segs
+            V.append(tuple(p[i] + r * (math.cos(a) * u[i] + math.sin(a) * w[i]) for i in range(3)))
+    for k in range(segs):
+        k2 = (k + 1) % segs
+        F.append((o + k, o + k2, o + segs + k2, o + segs + k))
+    F.append(tuple(o + k for k in range(segs - 1, -1, -1))); F.append(tuple(o + segs + k for k in range(segs)))
+
+
+def corrugated(name, P, off_back, off_front, z0, z1, d=.12):
+    """Close vertical slats read as a folded orange sheet on the inner face of a parapet."""
+    V, F = [], []
+    for k, (x, y, z, nx, ny, _) in enumerate(resample(P, d)):
+        o = off_front if k % 2 else off_back
+        V += [(x + nx * o, y + ny * o, z + z0), (x + nx * o, y + ny * o, z + z1)]
+        if k:
+            a = 2 * (k - 1)
+            F.append((a, a + 2, a + 3, a + 1))
+    C.mesh(name, V, F, 'orange', 'parapets')
+
+
+def flyover():
+    P, west, east = split(path())
+    h = DW / 2
+    ribbon('Deck girder', P, -h - .07, h + .07, -.80, -.04, 'under', 'deck')
+    ribbon('Deck surface', P, -h - .06, h + .06, -.08, 0.0, 'deck', 'deck')
+    for s, nm in ((-1, 'south'), (1, 'north')):
+        back, out = s * (h + .05), s * (h + .13)
+        lo, hi = (out, back) if s < 0 else (back, out)
+        ribbon(f'Parapet screen {nm}', P, lo, hi, -.83, PH - .06, 'orange', 'parapets')                 # one orange skin from fascia to cap
+        ribbon(f'Parapet cap {nm}', P, lo - (.02 if s < 0 else .025), hi + (.025 if s < 0 else .02), PH - .07, PH, 'orange', 'parapets')
+        corrugated(f'Parapet slats {nm}', P, back, s * (h + .015), .02, PH - .07)
+    # Dashed white centre line on the deck and on the at-grade paths: 2 m dashes every 5 m.
+    b = Batch()
+    for run in (P, west, east):
+        if len(run) < 2:
+            continue
+        pts = resample(run, 1.0)
+        for i in range(0, len(pts) - 2, 5):
+            a, c = pts[i], pts[i + 2]
+            b.beam('lane', (a[0], a[1], a[2] + .006), (c[0], c[1], c[2] + .006), .14, .012)
+    b.flush('centre line')
+    # At-grade cycle paths beyond the ramp feet, with low kerbs.
+    for nm, run in (('west', west), ('east', east)):
+        if len(run) < 2:
+            continue
+        ribbon(f'Cycle path {nm}', run, -h - .06, h + .06, -.04, 0.0, 'deck', 'deck', floor=.0)
         for s in (-1, 1):
-            b.beam('concrete', (x, y, stem - .3), (x + nx * s * 1.35, y + ny * s * 1.35, z - .8), .42, .42)
-    b.flush('y columns')
+            lo, hi = sorted((s * (h + .06), s * (h + .3)))
+            ribbon(f'Cycle path kerb {nm} {s:+d}', run, lo, hi, -.04, .06, 'kerb', 'deck', floor=.0)
+    # Slender round Y-columns: a tapered shaft splitting into two tapered arms seated in the soffit; short round posts
+    # where the ramp is low. Every foot stands in the median or on a footway.
+    V, F = [], []
+    for fx, fy, z, x, y, nx, ny, o in columns():
+        soffit = z - .80
+        if soffit < 2.4:
+            tapered(V, F, (fx, fy, 0.0), (fx, fy, soffit + .08), .34, .26)
+            continue
+        zf = soffit - min(2.3, .45 * soffit)
+        tapered(V, F, (fx, fy, 0.0), (fx, fy, zf + .25), .42, .31, 16)
+        for side in (-1, 1):
+            oa = max(-DW / 2 + .5, min(DW / 2 - .5, o + side * 1.7))
+            tapered(V, F, (fx, fy, zf), (x + nx * oa, y + ny * oa, soffit + .1), .26, .34, 14)
+    C.mesh('Y-columns', V, F, 'concrete', 'columns')
 
 
 def streets():
-    C.box('Ground', (0.0, -8.0, .01), (320.0, 220.0, .02), 'paving', 'site', 0)
-    C.box('East-west road', (0.0, (ROAD_Y0 + ROAD_Y1) / 2, .02), (320.0, ROAD_Y1 - ROAD_Y0, .04), 'asphalt', 'site', 0)
+    C.box('Ground', (0.0, -8.0, .01), (2 * GX, 220.0, .02), 'paving', 'site', 0)
+    C.box('East-west road', (0.0, (ROAD_Y0 + ROAD_Y1) / 2, .02), (2 * GX, ROAD_Y1 - ROAD_Y0, .04), 'asphalt', 'site', 0)
     for y0, y1 in ((ROAD_Y1, 110.0), (-120.0, ROAD_Y0)):
         C.box(f'North-south street {y0:+.0f}', ((NS_X0 + NS_X1) / 2, (y0 + y1) / 2, .02), (NS_X1 - NS_X0, y1 - y0, .04), 'asphalt', 'site', 0)
     b = Batch()
-    for x0, x1 in ((-160.0, -40.0), (-4.0, 160.0)):                            # planted median beds on the east-west road
+    for x0, x1 in ((-GX, -40.0), (-4.0, GX)):                                 # planted median beds on the east-west road
         b.box('kerb', (x0 + x1) / 2, -9.0, .08, x1 - x0, 2.6, .16)
         b.box('planting', (x0 + x1) / 2, -9.0, .22, x1 - x0 - .3, 2.2, .14)
-    for k in range(-50, 51):                                                  # lane lines
+    for x0, x1 in ((-36.0, -26.0), (40.0, 58.0), (118.0, 134.0)):              # low shrub masses on the median under the ribbon
+        for k in range(int((x1 - x0) / 2.2)):
+            b.box('tree', x0 + 1.1 + k * 2.2, -9.0 + (.25 if k % 2 else -.25), .55, 1.8, 1.5, .7)
+    for k in range(-70, 71):                                                  # lane lines
         x = k * 3.2
-        if not (NS_X0 - 1 < x < NS_X1 + 1):
+        if not (NS_X0 - 1 < x < NS_X1 + 1) and abs(x) < GX - 1:
             for y in (-13.0, -4.0, 1.5):
                 b.box('lane', x, y, .043, 1.6, .14, .006)
     for k in range(-34, 35):
@@ -509,8 +614,10 @@ def streets():
     for i in range(10):
         b.box('lane', 72.0, ROAD_Y0 + 1.4 + i * 2.2, .043, 3.0, .9, .006)
     b.flush('road markings')
-    for x, y in ((-60.0, -9.0), (-90.0, -9.0), (30.0, -9.0), (100.0, -9.0), (-34.0, 9.5), (-56.0, 9.5), (8.0, 9.5), (-4.0, -22.0), (60.0, -24.0), (-26.0, -26.0)):
-        street_tree(x, y, z=.04, height=9.0, spread=2.4)
+    P = path()
+    for x, y in TREES:                                                        # no street tree grows through the ribbon
+        if all(math.hypot(x - p[0], y - p[1]) > DW / 2 + 3.0 for p in P):
+            street_tree(x, y, z=.04, height=9.0, spread=2.4)
 
 
 def context():
