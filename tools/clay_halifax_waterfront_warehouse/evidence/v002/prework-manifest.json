@@ -1,0 +1,431 @@
+{
+  "candidate": "clay-halifax-waterfront-warehouse-clay-v002",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-halifax-waterfront-warehouse",
+  "variant_id": "clay-halifax-waterfront-warehouse-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "halifax_waterfront_warehouse/variant_0 (warehouse_privateers_wharf)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 24.2,
+      "depth": 17.0,
+      "height": 13.4
+    },
+    "observed_storeys": 2,
+    "storey_programme": "tall shop and warehouse floor, an upper loft floor",
+    "plan": "24.2 x 17 m corner block (top view), a neighbour attached west",
+    "facade": "red brick bays between rusticated granite piers; shopfront glazing and entrance; granite belt; round-arched upper windows with archivolts; verdigris copper bracketed cornice; parapet with raised blocks",
+    "levels_m": [
+      0.5,
+      5.8,
+      10.0,
+      11.15,
+      11.8
+    ],
+    "roof_m": {
+      "flat": 11.15,
+      "parapet": 11.8
+    },
+    "inferred": "interiors, the north wall and the west party wall are teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "flat membrane roof inside a brick parapet with copper coping and raised blocks, brick chimneys on the rear parapet",
+    "datum_m": 11.15,
+    "crowns_m": [
+      12.600000000000001
+    ]
+  },
+  "identity_contract": {
+    "owner": "two-storey Italianate brick-and-granite warehouse with round-arched upper windows, shopfront ground floor and a deep verdigris copper cornice"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: red brick, grey granite with channelled joints, verdigris copper, dark-green frames, membrane roof",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 2,
+    "ground": "shops and the entrance hall",
+    "upper": "open loft offices"
+  },
+  "contact_contract": [
+    "Grade-zero sidewalks and roads",
+    "Granite piers and brick walls from grade",
+    "Copper cornice on the walls",
+    "Roof inside the parapet"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        19.0,
+        -24.0,
+        1.6
+      ],
+      "target": [
+        2.5,
+        -8.5,
+        6.5
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        24.0,
+        -36.0,
+        28.0
+      ],
+      "target": [
+        0.0,
+        -1.0,
+        5.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        26.0,
+        -32.0,
+        34.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        5.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        69.35999999999999
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 38.08
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -30.0,
+        26.0,
+        22.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        6.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        36.0,
+        0.0,
+        7.0
+      ],
+      "target": [
+        12.1,
+        0.0,
+        6.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        0.0,
+        38.0,
+        8.0
+      ],
+      "target": [
+        0.0,
+        8.5,
+        6.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        30.0,
+        32.0,
+        18.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        6.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        0.0,
+        -30.0,
+        6.0
+      ],
+      "target": [
+        0.0,
+        -8.5,
+        6.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        18.0,
+        -20.0,
+        12.0
+      ],
+      "target": [
+        12.1,
+        -8.5,
+        10.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -7.2,
+        -16.0,
+        2.8
+      ],
+      "target": [
+        -7.2,
+        -8.5,
+        2.8
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "arched_windows",
+      "location": [
+        0.0,
+        -16.0,
+        8.4
+      ],
+      "target": [
+        0.0,
+        -8.5,
+        8.4
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "copper_cornice",
+      "location": [
+        14.0,
+        -15.0,
+        13.5
+      ],
+      "target": [
+        9.0,
+        -8.5,
+        11.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "granite_piers",
+      "location": [
+        16.0,
+        -14.0,
+        3.0
+      ],
+      "target": [
+        12.1,
+        -8.5,
+        3.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "east_side",
+      "location": [
+        30.0,
+        0.0,
+        6.0
+      ],
+      "target": [
+        12.1,
+        0.0,
+        6.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_chimneys",
+      "location": [
+        -10.0,
+        -16.0,
+        24.0
+      ],
+      "target": [
+        0.0,
+        2.0,
+        11.8
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        3.0,
+        5.0,
+        2.2
+      ],
+      "target": [
+        -3.0,
+        -8.5,
+        2.6
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        0.0,
+        32.0,
+        7.0
+      ],
+      "target": [
+        0.0,
+        8.5,
+        7.0
+      ],
+      "lens": 45,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "arched_windows",
+    "copper_cornice",
+    "granite_piers",
+    "east_side",
+    "roof_chimneys",
+    "interior",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1280609,
+        "sha256": "ad42ba20d97281337b2a501af57cee64418b3df0486b3fa6c881cd317ef4784c"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 918623,
+        "sha256": "9b2a732476ea85a955d4047463bf7ea34dfed211e8e0f69fdd5b6b9c1ee49efb"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 818721,
+        "sha256": "721b8ef5aff6c9e45b9f1bd0beb6df81219675471aece32fc4826f219a1bcdf3"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_halifaxwh.py",
+        "sha256": "9d63fe3f20362a5b7e05179ac40eb6854c2e7df07a7c1009c18fa496beba0e4f"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "c734e78594dd8da3068ad05d11e98cfbb6a4df890543beab1545017cffbc4a82"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "5b8b18fa736ef4c21650d24ba5876b5c82b24c8bb3d29846c4cc66b082c3502c"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-19T03:01:22.553264+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

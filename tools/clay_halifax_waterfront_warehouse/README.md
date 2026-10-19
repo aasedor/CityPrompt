@@ -68,11 +68,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (the v002 rework targets all six)
+## Open blockers after v002 (the v003 rework targets all four)
 
-- P0 #1: the south front has no entrance; the middle bay is a shop window like the others instead of the double door.
-- P1 #2: the entablature lacks the frieze band, the paired consoles over the piers and the cornice breaks; the keystones butt into the cornice.
-- P1 #3: the first east upper window by the corner is half buried in the granite corner pier.
-- P1 #4: the east ground-floor rhythm is wrong: bay 1 needs two shop windows split by a pier, bays 2-3 several tall narrow arched windows.
-- P1 #5: the side street does not meet the main street (no curb return); the east sidewalk ends abruptly.
-- P1 #6: left_side shows only the neighbour's blank wall.
+- P1 #1: the two upper arched windows in east bay 1 overlap their archivolts, with a black triangular void between them.
+- P1 #2: a black slot runs between the south-east corner pier cap and the copper frieze and cornice soffit.
+- P1 #3: the east copper cornice ends open and black at the north end, and the belt course and plinth show black slots against the north wall.
+- P1 #4: a black slit runs full height between the north wall and the attached west neighbour.
+- The v001 P0 and all five v001 P1s are resolved in the pixels.
