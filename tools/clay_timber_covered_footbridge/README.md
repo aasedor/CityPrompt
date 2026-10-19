@@ -1,7 +1,7 @@
 # Timber covered footbridge (RLASM v6.1 architectural clay)
 
 Candidate H6 of wave H (bridges) of 2026-10-19, one of the ten bridge variants the user chose from the
-street and path catalogue; a street or path option, not a building. State: **candidate under review**. Nothing here is keeper-approved,
+street and path catalogue; a street or path option, not a building. State: **stopped at v003 by the stopping rule (the side-wall end-bay finding survived two targeted fixes); v002 is the candidate**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,6 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 reworks it; a second failed fix stops the family)
+## Open blockers after v003 (stopped)
 
-- P1 #1: the side walls show 10 narrow bays per side, with a louvre-only bay at each end followed by an open bay carrying the long diagonal; the sources show 6 equal bays, each end bay with full-height louvres and the one long diagonal laid over them, and 4 open knee-braced interior bays (the v001 side-bracing finding, surviving one targeted fix).
+- P1 #1: all four end bays are louvred to full height with the diagonal over the louvres; the sources show the louvres stopping on the diagonal, with the triangle below open and the glass balustrade running through (the side-wall end-bay finding, surviving two targeted fixes).
+- P1 #2: in front_corner and aerial the glass balustrade reads as a solid light-grey parapet with no deck visible through it; the source shows near-invisible glass.
+- Stopped by the stopping rule; v002 remains the candidate. Nothing here is keeper-approved.
