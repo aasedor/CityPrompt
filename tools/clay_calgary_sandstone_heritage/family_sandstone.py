@@ -56,7 +56,7 @@ def manifest(version):
         elif c['name'] == 'front_corner':
             c.update(location=(54.0, -70.0, 66.0), target=(0.0, 0.0, 11.0), lens=35, whole=False)   # the locked oblique: high over the south-east corner
         elif c['name'] == 'top':
-            c.update(location=(0.0, 0.0, 120.0), target=(0.0, .001, 0.0), ortho_scale=66.0, whole=False)
+            c.update(location=(0.0, 0.0, 120.0), target=(0.0, .001, 0.0), ortho_scale=78.0, whole=False)   # all four sidewalks in frame
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
