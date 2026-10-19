@@ -68,6 +68,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (P0+P1 fell from 8 to 4; the best so far, so v002 is the candidate)
+## Open blockers after v003 (the v004 rework targets all four; a second non-improving review stops the family)
 
-P1 apron and lane read as square tiles, not staggered setts; walls still read as boarding (no head joints); tree west of the model and too small; an extra east upper window
+- P1 #1: the upper sashes on the south face (end house and neighbour) have flat heads; the source shows segmental-arched heads.
+- P1 #2: at the south-east hip corner the gutters stop short on both faces and the hip tile drops into the gap; the source wraps the gutter and eaves band round the corner.
+- P1 #3: the two rooflights sit on the end house's rear slope; the top and front sources put them on the neighbour's south slope, west of the party-wall stack.
+- P1 #4: the neighbour's hipped rear back-wing (top source) is missing.
+- All four v002 P1s are resolved in the pixels.
