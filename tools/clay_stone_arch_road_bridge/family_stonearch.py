@@ -34,8 +34,8 @@ ZC = 7.0                                        # top of the cutwaters
 HW = 8.9                                        # half-width of the spandrel faces
 T = .3
 EPS = .002
-PALETTE = dict(water=(.030, .036, .026), stone=(.95, .43, .145), arch=(1.0, .52, .19), joint=(.52, .25, .085),
-    quay=(.50, .37, .21), asphalt=(.25, .25, .26), white=(.92, .92, .90), paving=(.45, .46, .48), kerb=(.62, .62, .62),
+PALETTE = dict(water=(.050, .058, .040), stone=(.86, .56, .29), arch=(.94, .66, .37), joint=(.50, .32, .16),
+    quay=(.47, .42, .35), asphalt=(.25, .25, .26), white=(.92, .92, .90), paving=(.45, .46, .48), kerb=(.62, .62, .62),
     hardware=(.13, .15, .14), pale=(.96, .88, .62), glass=(.20, .24, .27), wall=(.84, .74, .58), facade2=(.86, .81, .71),
     brick=(.64, .40, .30), roof=(.68, .34, .20), red=(.72, .10, .10), van=(.42, .38, .26), car=(.16, .17, .19),
     dark=(.10, .10, .11), interior=(.84, .80, .74), floor=(.58, .48, .38), trim=(.92, .91, .88), planting=(.30, .44, .20),
@@ -43,8 +43,8 @@ PALETTE = dict(water=(.030, .036, .026), stone=(.95, .43, .145), arch=(1.0, .52,
     blue=(.20, .30, .40), pot=(.60, .34, .22))
 
 
-FRONT_CAM = (-38.5, 21.0, 15.2)
-FRONT_TARGET = (-6.0, 6.0, 6.5)
+FRONT_CAM = (-35.0, 17.8, 14.3)
+FRONT_TARGET = (-14.0, 7.0, 8.6)
 
 
 def manifest(version):
@@ -66,13 +66,13 @@ def manifest(version):
             c.update(location=FRONT_CAM, target=FRONT_TARGET, lens=20, whole=False)
         elif c['name'] == 'front_corner':            # the locked oblique: high over the west bank, along the bridge, arches on the
             # right, the near south-west quadrant wall and apron in the lower third, the land arch at the far end
-            c.update(location=(-62.0, -21.0, 36.0), target=(4.0, -2.0, 4.0), lens=26, whole=False)
+            c.update(location=(-50.0, -27.0, 32.0), target=(8.0, 0.0, 3.0), lens=26, whole=False)
         elif c['name'] == 'aerial':
             c.update(location=(54.0, -70.0, 50.0), target=(6.0, 0.0, 4.0), lens=28, whole=False)
         elif c['name'] == 'top':
             c.update(location=(6.0, 0.0, 160.0), target=(6.0, .001, 0.0), ortho_scale=130.0, whole=False)
         elif c['name'] == 'left_side':               # lateral view of the west abutment and quay junction from the river
-            c.update(location=(-12.0, -36.0, 3.0), target=(-29.0, -10.5, 6.5), lens=26, whole=False)
+            c.update(location=(-4.0, -34.0, 4.5), target=(-27.0, -10.0, 6.0), lens=26, whole=False)
         elif c['name'] == 'right_side':              # lateral view of the land arch, east pier and abutment from the low east quay road
             c.update(location=(35.5, -40.0, ZL + 1.7), target=(35.0, 0.0, 6.5), lens=24, whole=False)
         elif c['name'] == 'rear':                    # the north elevation from over the narrower upstream river
@@ -681,13 +681,13 @@ def lamp(name, x, y, z0, big=False):
     k = 1.15 if big else 1.0
     b = Batch()
     lathe(b, 'hardware', x, y, z0, [(.30 * k, 0), (.30 * k, .10), (.25 * k, .15), (.25 * k, .26), (.20 * k, .33), (.15 * k, .55),
-                                    (.19 * k, .60), (.19 * k, .68), (.13 * k, .76), (.11 * k, .82), (0.0, .82)], n=10)
+                                    (.19 * k, .60), (.19 * k, .68), (.13 * k, .76), (.11 * k, .82), (0.0, .82)], n=8)
     shaft = [(.105, .80), (.105, .84, 1), (.10, 1.52, 1)]
     for h, top in ((1.55, 2.32), (2.35, 2.92)):
         shaft += [(.10, h), (.135, h + .03), (.135, h + .10), (.10, h + .13), (.10, h + .16, 1), (.095, top, 1)]
     shaft += [(.095, 2.95), (.145, 3.0), (.145, 3.14), (.10, 3.2), (.075, 3.26), (.07, 4.12), (.11, 4.16), (.11, 4.26), (.075, 4.31),
               (.045, 4.5), (.06, 4.58), (.03, 4.66), (0.0, 4.82)]
-    lathe(b, 'hardware', x, y, z0, [(p[0] * k, p[1] * k) + tuple(p[2:]) for p in shaft], n=12)
+    lathe(b, 'hardware', x, y, z0, [(p[0] * k, p[1] * k) + tuple(p[2:]) for p in shaft], n=10)
     zA = z0 + 3.12 * k
     for sgn in (-1, 1):
         lx = x + sgn * .64 * k
@@ -695,7 +695,7 @@ def lamp(name, x, y, z0, big=False):
         for (ax, az), (bx, bz) in zip(pts, pts[1:]):
             b.beam('hardware', (ax, y, az), (bx, y, bz), .05 * k, .06 * k, ext=.02)
         cx, cz = x + sgn * .26 * k, zA - .12 * k                       # volute under the arm
-        sp = [(cx + sgn * (.15 - .1 * t) * k * math.cos(math.pi / 2 + 4.2 * t), cz + (.15 - .1 * t) * k * math.sin(math.pi / 2 + 4.2 * t)) for t in [i / 7 for i in range(8)]]
+        sp = [(cx + sgn * (.15 - .1 * t) * k * math.cos(math.pi / 2 + 4.2 * t), cz + (.15 - .1 * t) * k * math.sin(math.pi / 2 + 4.2 * t)) for t in [i / 5 for i in range(6)]]
         b.beam('hardware', (x + sgn * .06, y, zA + .02), (sp[0][0], y, sp[0][1]), .04 * k, .05 * k, ext=.02)
         for (ax, az), (bx, bz) in zip(sp, sp[1:]):
             b.beam('hardware', (ax, y, az), (bx, y, bz), .04 * k, .05 * k, ext=.015)
@@ -725,12 +725,16 @@ def arc_pts(cx, cy, r, a0, a1, n):
     return [(cx + r * math.cos(a0 + (a1 - a0) * i / n), cy + r * math.sin(a0 + (a1 - a0) * i / n)) for i in range(n + 1)]
 
 
+def sector(name, cx, cy, r0, r1, a0, a1, z0, z1, role, n=16):
+    """A curved band (annular sector) extruded vertically: one seamless solid, no overlapping segments."""
+    C.prism(name, arc_pts(cx, cy, r0, a0, a1, n) + list(reversed(arc_pts(cx, cy, r1, a0, a1, n))), 'z', z0, z1, role, 'bridge')
+
+
 def quadrant(b, cx, cy, rp, a0, a1, n=12):
-    """Quadrant balustrade on a solid plinth along an arc (the parapet line), coping on top."""
-    path = arc_pts(cx, cy, rp, a0, a1, n)
-    for (ax, ay), (bx, by) in zip(path, path[1:]):
-        b.beam('stone', (ax, ay, 11.16), (bx, by, 11.16), .52, .4, ext=.03)
-        b.beam('stone', (ax, ay, 12.15), (bx, by, 12.15), .58, .18, ext=.03)
+    """Quadrant balustrade on a solid plinth along an arc (the parapet line), rail on top; plinth and rail are each
+    one swept solid so no seams show."""
+    sector('Quadrant plinth', cx, cy, rp - .26, rp + .26, a0, a1, 10.96, 11.36, 'stone')
+    sector('Quadrant rail', cx, cy, rp - .29, rp + .29, a0, a1, 12.06, 12.24, 'stone')
     L = rp * abs(a1 - a0)
     m = int(L / .32)
     pts = arc_pts(cx, cy, rp, a0 + (a1 - a0) * .5 / m, a1 - (a1 - a0) * .5 / m, m - 1)
@@ -766,8 +770,10 @@ def corners():
         ye = sy * (8.66 + RPE)
         if sy < 0:
             parapet_line(b, [(RW + .26, ye), (RW + .26, -LONG)])
-        else:
-            parapet_line(b, [(xw(y) + .26, y) for y in ys_north(ye, LONG)])
+        else:                                                                   # the curved run: two seamless swept solids
+            ys = ys_north(ye, LONG, 1.5)
+            C.prism('Retaining wall parapet', [(xw(y) + .01, y) for y in ys] + [(xw(y) + .51, y) for y in reversed(ys)], 'z', FOOT - .02, FOOT + .84, 'stone', 'site')
+            C.prism('Retaining wall parapet coping', [(xw(y) - .05, y) for y in ys] + [(xw(y) + .57, y) for y in reversed(ys)], 'z', FOOT + .84, FOOT + .96, 'arch', 'site')
     b.flush('quadrants and quay parapets')
 
 
@@ -792,10 +798,10 @@ def west_bank():
         for sy in (-1, 1):
             ya, yb = sorted((sy * (8.66 + RPW), sy * LONG))
             b.box('joint', QW - .002, (ya + yb) / 2, z, .008, yb - ya, .03)
-    for y in [-300.0 + 3.0 * k for k in range(201)]:
+    for y in [-150.0 + 3.0 * k for k in range(101)]:
         if abs(y) > 8.66 + RPW + .5:
             b.box('joint', QW - .002, y, DECK / 2, .008, .03, DECK - .2)
-    marks(b, -LONG / 4, QW - 19.0)
+    marks(b, -250.0, QW - 19.0)
     b.flush('west bank')
     for sy in (-1, 1):                                                                                      # apron round each quadrant
         poly = [(QW - 5.0, sy * 6.0), (-QX, sy * 6.0)] + arc_pts(-QX, sy * (8.66 + RPW), RPW - .26, -sy * math.pi / 2, -sy * math.pi, 12) + [(QW - 5.0, sy * (8.66 + RPW))]
@@ -827,13 +833,13 @@ def low_quay():
     band('Low quay road', QUAY_T, ROAD_T, ZL - .04, ZL, 'asphalt', [-LONG] + north)
     band('Low quay footway', ROAD_T, LOW_W + .5, ZL - .04, ZL + .12, 'paving', [-LONG] + north)
     b = Batch()
-    for y in [-300.0 + 6.0 * k for k in range(100)]:                                                       # centre line dashes
+    for y in [-150.0 + 6.0 * k for k in range(50)]:                                                        # centre line dashes
         if abs(y) > HW + 3:
             b.box('white', xq(y) + (QUAY_T + ROAD_T) / 2, y, ZL + .003, .12, 3.0, .006)
     for k in range(7):                                                                                      # zebra south of the bridge
         b.box('white', xq(-20) + QUAY_T + .5 + k * .9, -20.0, ZL + .003, .5, 3.0, .006)
-    b.box('car', xq(-26) + 6.0, -26.0, ZL + .7, 1.8, 4.5, .8)                                               # a car on the low quay road
-    b.box('glass', xq(-26) + 6.0, -26.2, ZL + 1.4, 1.6, 2.4, .6)
+    b.box('car', xq(-62) + 9.0, -62.0, ZL + .7, 1.8, 4.5, .8)                                               # a car on the low quay road
+    b.box('glass', xq(-62) + 9.0, -62.2, ZL + 1.4, 1.6, 2.4, .6)
     b.flush('low quay')
     for y in (-48.0, -64.0, -80.0):
         street_tree(RW - 1.6, y, z=ZL + .12, height=8.5, spread=2.2)
@@ -854,7 +860,7 @@ def east_bank():
             poly = [(XA, 6.0)] + arc_pts(XA, 8.66 + RPE, RPE - .26, -math.pi / 2, 0.0, 9) + [(xw(y), y) for y in north[1:]] + [(LONG, LONG), (LONG, 6.0)]
         C.prism(f'East plots {sy:+d}', poly, 'z', DECK - .04, FOOT, 'paving', 'site')
     b = Batch()
-    marks(b, XA, LONG / 4)
+    marks(b, XA, 250.0)
     for z in [ZL + .9 * k for k in range(1, 9)]:                                                           # coursed retaining wall
         b.box('joint', RW - .002, (-LONG - 8.66 - RPE) / 2, z, .008, LONG - 8.66 - RPE, .03)
         ys = ys_north(8.66 + RPE, 120.0, 3.0)
@@ -908,14 +914,14 @@ def town():
         for i, y0 in enumerate([(60.0 if sy > 0 else 53.0) + 40.0 * k for k in range(5)]):
             ya, yb = sorted((sy * y0, sy * (y0 + 32.0)))
             h = 12.0 + (i * 7 + (3 if sy > 0 else 0)) % 7
-            block(f'Block W {sy:+d} {i}', QW - 22.0, -1, ya, yb, h, roles[i % 5], detail=False)
+            block(f'Block W {sy:+d} {i}', QW - 22.0, -1, ya, yb, h, roles[i % 5], windows=i < 2, detail=False)
             xe = xw(y0) + 8.0 if sy > 0 else RW + 8.0
-            block(f'Block E {sy:+d} {i}', xe, 1, ya, yb, h + 1.0, roles[(i + 2) % 5], detail=False)
+            block(f'Block E {sy:+d} {i}', xe, 1, ya, yb, h + 1.0, roles[(i + 2) % 5], windows=i < 2, detail=False)
     b = Batch()
     for sx in (-1, 1):
-        for row in range(4):
-            xf = (QW - 60.0 - 36.0 * row) if sx < 0 else (RW + 44.0 + 36.0 * row)
-            for k in range(13):
+        for row in range(3):
+            xf = (QW - 60.0 - 40.0 * row) if sx < 0 else (RW + 44.0 + 40.0 * row)
+            for k in range(11):
                 for sy in (-1, 1):
                     ya, yb = sorted((sy * (14.0 + 38.0 * k), sy * (44.0 + 38.0 * k)))
                     hgt = 10.0 + ((row * 5 + k * 3 + (2 if sy > 0 else 0)) % 9)
