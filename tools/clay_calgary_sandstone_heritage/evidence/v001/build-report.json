@@ -1,0 +1,9052 @@
+{
+  "candidate": "clay-calgary-sandstone-heritage-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 512,
+    "vertices": 45769,
+    "polygons": 70722,
+    "triangles": 70722,
+    "path": "clay-calgary-sandstone-heritage-clay-v001-authoring.blend",
+    "bytes": 7642544,
+    "sha256": "fec68fcc259780e6b92aa8da6a92303b9dbe181f5d28ffc2da72866914926c4b"
+  },
+  "runtime": {
+    "path": "clay-calgary-sandstone-heritage-clay-v001.glb",
+    "bytes": 3364948,
+    "sha256": "05ed3f5213d7c95075a1f1b2684576d96d96939f6635da58d4d5947bdfa76ecc",
+    "meshes": 15,
+    "materials": 15,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 15,
+    "vertices": 45769,
+    "polygons": 70722,
+    "triangles": 70722
+  },
+  "original_bounds_m": [
+    [
+      -44.0099983215332,
+      -40.79999923706055,
+      0.0
+    ],
+    [
+      44.0099983215332,
+      40.79999923706055,
+      36.5
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -44.0099983215332,
+      -40.79999923706055,
+      0.0
+    ],
+    [
+      44.0099983215332,
+      40.79999923706055,
+      36.5
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 45.6,
+    "depth": 45.6,
+    "height": 37.3
+  },
+  "native_dimensions_m": {
+    "width": 88.0199966430664,
+    "depth": 81.5999984741211,
+    "height": 36.5
+  },
+  "native_bottom_center_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 177,
+    "joint": 18,
+    "stone": 26,
+    "arch": 147,
+    "frame": 29,
+    "roof": 14,
+    "copper": 5,
+    "glass": 29,
+    "hardware": 1,
+    "floor": 12,
+    "timber": 26,
+    "clock": 1,
+    "planting": 18,
+    "concrete": 5,
+    "asphalt": 4
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/clock_tower.png",
+    "renders/portal_arch.png",
+    "renders/gables_pinnacles.png",
+    "renders/east_side.png",
+    "renders/roofs_court.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front_corner": {
+      "xmin": 0.16944833099842072,
+      "xmax": 0.8258376121520996,
+      "ymin": 0.08230240643024445,
+      "ymax": 0.6476975083351135
+    },
+    "aerial": {
+      "xmin": 0.206475630402565,
+      "xmax": 0.7882267236709595,
+      "ymin": 0.08119430392980576,
+      "ymax": 0.6832716464996338
+    },
+    "top": {
+      "xmin": 0.16577208042144775,
+      "xmax": 0.8342279195785522,
+      "ymin": 0.08686663210391998,
+      "ymax": 0.9131333827972412
+    },
+    "left_side": {
+      "xmin": 0.08876536041498184,
+      "xmax": 0.9112349152565002,
+      "ymin": 0.23054057359695435,
+      "ymax": 0.7005678415298462
+    },
+    "right_side": {
+      "xmin": 0.08876509219408035,
+      "xmax": 0.9112346172332764,
+      "ymin": 0.23054057359695435,
+      "ymax": 0.7188704013824463
+    },
+    "rear": {
+      "xmin": 0.08876539766788483,
+      "xmax": 0.9112349152565002,
+      "ymin": 0.23789682984352112,
+      "ymax": 0.7086632251739502
+    },
+    "rear_side": {
+      "xmin": 0.1749347299337387,
+      "xmax": 0.8337531685829163,
+      "ymin": 0.08928202092647552,
+      "ymax": 0.644675612449646
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Sandstone walls from grade; roofs on the eave cornices; tower from grade through the east wing",
+      "eave_m": 15.0
+    },
+    {
+      "name": "Romanesque sandstone civic block with a clock tower on a city block",
+      "box": [
+        -22.8,
+        22.8,
+        -22.8,
+        22.8
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "south pavilion w basement -20.0",
+      "face": "south pavilion w",
+      "u": -20.0,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "south pavilion w first -20.0",
+      "face": "south pavilion w",
+      "u": -20.0,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion w second -20.0",
+      "face": "south pavilion w",
+      "u": -20.0,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion w third -20.6",
+      "face": "south pavilion w",
+      "u": -20.62,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion w third -19.4",
+      "face": "south pavilion w",
+      "u": -19.38,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion w portal",
+      "face": "south pavilion w",
+      "u": -16.4,
+      "z": 0.0,
+      "width": 3.4,
+      "height": 4.6,
+      "kind": "portal",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 1.0999999999999999,
+      "pane_inset_m": 1.1369999999999998,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "entrance hall"
+    },
+    {
+      "id": "south pavilion w second -16.4",
+      "face": "south pavilion w",
+      "u": -16.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion w third -17.0",
+      "face": "south pavilion w",
+      "u": -17.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion w third -15.8",
+      "face": "south pavilion w",
+      "u": -15.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion w basement -12.8",
+      "face": "south pavilion w",
+      "u": -12.799999999999999,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "south pavilion w first -12.8",
+      "face": "south pavilion w",
+      "u": -12.799999999999999,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion w second -12.8",
+      "face": "south pavilion w",
+      "u": -12.799999999999999,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion w third -13.4",
+      "face": "south pavilion w",
+      "u": -13.419999999999998,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion w third -12.2",
+      "face": "south pavilion w",
+      "u": -12.18,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion e basement +12.8",
+      "face": "south pavilion e",
+      "u": 12.799999999999999,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "south pavilion e first +12.8",
+      "face": "south pavilion e",
+      "u": 12.799999999999999,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion e second +12.8",
+      "face": "south pavilion e",
+      "u": 12.799999999999999,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion e third +12.2",
+      "face": "south pavilion e",
+      "u": 12.18,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion e third +13.4",
+      "face": "south pavilion e",
+      "u": 13.419999999999998,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion e basement +16.4",
+      "face": "south pavilion e",
+      "u": 16.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "south pavilion e first +16.4",
+      "face": "south pavilion e",
+      "u": 16.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion e second +16.4",
+      "face": "south pavilion e",
+      "u": 16.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion e third +15.8",
+      "face": "south pavilion e",
+      "u": 15.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion e third +17.0",
+      "face": "south pavilion e",
+      "u": 17.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion e basement +20.0",
+      "face": "south pavilion e",
+      "u": 20.0,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "south pavilion e first +20.0",
+      "face": "south pavilion e",
+      "u": 20.0,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion e second +20.0",
+      "face": "south pavilion e",
+      "u": 20.0,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion e third +19.4",
+      "face": "south pavilion e",
+      "u": 19.38,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south pavilion e third +20.6",
+      "face": "south pavilion e",
+      "u": 20.62,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing basement -8.4",
+      "face": "south wing",
+      "u": -8.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "south wing first -8.4",
+      "face": "south wing",
+      "u": -8.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing second -8.4",
+      "face": "south wing",
+      "u": -8.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing third -9.0",
+      "face": "south wing",
+      "u": -9.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing third -7.8",
+      "face": "south wing",
+      "u": -7.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing basement -4.2",
+      "face": "south wing",
+      "u": -4.2,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "south wing first -4.2",
+      "face": "south wing",
+      "u": -4.2,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing second -4.2",
+      "face": "south wing",
+      "u": -4.2,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing third -4.8",
+      "face": "south wing",
+      "u": -4.82,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing third -3.6",
+      "face": "south wing",
+      "u": -3.58,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing basement +0.0",
+      "face": "south wing",
+      "u": 0.0,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "south wing first +0.0",
+      "face": "south wing",
+      "u": 0.0,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing second +0.0",
+      "face": "south wing",
+      "u": 0.0,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing third -0.6",
+      "face": "south wing",
+      "u": -0.62,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing third +0.6",
+      "face": "south wing",
+      "u": 0.62,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing basement +4.2",
+      "face": "south wing",
+      "u": 4.2,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "south wing first +4.2",
+      "face": "south wing",
+      "u": 4.2,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing second +4.2",
+      "face": "south wing",
+      "u": 4.2,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing third +3.6",
+      "face": "south wing",
+      "u": 3.58,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing third +4.8",
+      "face": "south wing",
+      "u": 4.82,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing basement +8.4",
+      "face": "south wing",
+      "u": 8.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "south wing first +8.4",
+      "face": "south wing",
+      "u": 8.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing second +8.4",
+      "face": "south wing",
+      "u": 8.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing third +7.8",
+      "face": "south wing",
+      "u": 7.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south wing third +9.0",
+      "face": "south wing",
+      "u": 9.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -22.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion w basement -20.0",
+      "face": "east pavilion w",
+      "u": -20.0,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "east pavilion w first -20.0",
+      "face": "east pavilion w",
+      "u": -20.0,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion w second -20.0",
+      "face": "east pavilion w",
+      "u": -20.0,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion w third -20.6",
+      "face": "east pavilion w",
+      "u": -20.62,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion w third -19.4",
+      "face": "east pavilion w",
+      "u": -19.38,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion w basement -16.4",
+      "face": "east pavilion w",
+      "u": -16.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "east pavilion w first -16.4",
+      "face": "east pavilion w",
+      "u": -16.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion w second -16.4",
+      "face": "east pavilion w",
+      "u": -16.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion w third -17.0",
+      "face": "east pavilion w",
+      "u": -17.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion w third -15.8",
+      "face": "east pavilion w",
+      "u": -15.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion w basement -12.8",
+      "face": "east pavilion w",
+      "u": -12.799999999999999,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "east pavilion w first -12.8",
+      "face": "east pavilion w",
+      "u": -12.799999999999999,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion w second -12.8",
+      "face": "east pavilion w",
+      "u": -12.799999999999999,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion w third -13.4",
+      "face": "east pavilion w",
+      "u": -13.419999999999998,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion w third -12.2",
+      "face": "east pavilion w",
+      "u": -12.18,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion e basement +12.8",
+      "face": "east pavilion e",
+      "u": 12.799999999999999,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "east pavilion e first +12.8",
+      "face": "east pavilion e",
+      "u": 12.799999999999999,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion e second +12.8",
+      "face": "east pavilion e",
+      "u": 12.799999999999999,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion e third +12.2",
+      "face": "east pavilion e",
+      "u": 12.18,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion e third +13.4",
+      "face": "east pavilion e",
+      "u": 13.419999999999998,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion e basement +16.4",
+      "face": "east pavilion e",
+      "u": 16.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "east pavilion e first +16.4",
+      "face": "east pavilion e",
+      "u": 16.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion e second +16.4",
+      "face": "east pavilion e",
+      "u": 16.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion e third +15.8",
+      "face": "east pavilion e",
+      "u": 15.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion e third +17.0",
+      "face": "east pavilion e",
+      "u": 17.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion e basement +20.0",
+      "face": "east pavilion e",
+      "u": 20.0,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "east pavilion e first +20.0",
+      "face": "east pavilion e",
+      "u": 20.0,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion e second +20.0",
+      "face": "east pavilion e",
+      "u": 20.0,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion e third +19.4",
+      "face": "east pavilion e",
+      "u": 19.38,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east pavilion e third +20.6",
+      "face": "east pavilion e",
+      "u": 20.62,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing south basement -8.4",
+      "face": "east wing south",
+      "u": -8.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "east wing south first -8.4",
+      "face": "east wing south",
+      "u": -8.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing south second -8.4",
+      "face": "east wing south",
+      "u": -8.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing south third -9.0",
+      "face": "east wing south",
+      "u": -9.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing south third -7.8",
+      "face": "east wing south",
+      "u": -7.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing south basement -5.6",
+      "face": "east wing south",
+      "u": -5.6,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "east wing south first -5.6",
+      "face": "east wing south",
+      "u": -5.6,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing south second -5.6",
+      "face": "east wing south",
+      "u": -5.6,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing south third -6.2",
+      "face": "east wing south",
+      "u": -6.22,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing south third -5.0",
+      "face": "east wing south",
+      "u": -4.9799999999999995,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing north basement +5.6",
+      "face": "east wing north",
+      "u": 5.6,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "east wing north first +5.6",
+      "face": "east wing north",
+      "u": 5.6,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing north second +5.6",
+      "face": "east wing north",
+      "u": 5.6,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing north third +5.0",
+      "face": "east wing north",
+      "u": 4.9799999999999995,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing north third +6.2",
+      "face": "east wing north",
+      "u": 6.22,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing north basement +8.4",
+      "face": "east wing north",
+      "u": 8.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "east wing north first +8.4",
+      "face": "east wing north",
+      "u": 8.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing north second +8.4",
+      "face": "east wing north",
+      "u": 8.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing north third +7.8",
+      "face": "east wing north",
+      "u": 7.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east wing north third +9.0",
+      "face": "east wing north",
+      "u": 9.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion w basement -20.0",
+      "face": "north pavilion w",
+      "u": -20.0,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "north pavilion w first -20.0",
+      "face": "north pavilion w",
+      "u": -20.0,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion w second -20.0",
+      "face": "north pavilion w",
+      "u": -20.0,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion w third -20.6",
+      "face": "north pavilion w",
+      "u": -20.62,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion w third -19.4",
+      "face": "north pavilion w",
+      "u": -19.38,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion w basement -16.4",
+      "face": "north pavilion w",
+      "u": -16.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "north pavilion w first -16.4",
+      "face": "north pavilion w",
+      "u": -16.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion w second -16.4",
+      "face": "north pavilion w",
+      "u": -16.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion w third -17.0",
+      "face": "north pavilion w",
+      "u": -17.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion w third -15.8",
+      "face": "north pavilion w",
+      "u": -15.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion w basement -12.8",
+      "face": "north pavilion w",
+      "u": -12.799999999999999,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "north pavilion w first -12.8",
+      "face": "north pavilion w",
+      "u": -12.799999999999999,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion w second -12.8",
+      "face": "north pavilion w",
+      "u": -12.799999999999999,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion w third -13.4",
+      "face": "north pavilion w",
+      "u": -13.419999999999998,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion w third -12.2",
+      "face": "north pavilion w",
+      "u": -12.18,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion e basement +12.8",
+      "face": "north pavilion e",
+      "u": 12.799999999999999,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "north pavilion e first +12.8",
+      "face": "north pavilion e",
+      "u": 12.799999999999999,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion e second +12.8",
+      "face": "north pavilion e",
+      "u": 12.799999999999999,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion e third +12.2",
+      "face": "north pavilion e",
+      "u": 12.18,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion e third +13.4",
+      "face": "north pavilion e",
+      "u": 13.419999999999998,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion e basement +16.4",
+      "face": "north pavilion e",
+      "u": 16.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "north pavilion e first +16.4",
+      "face": "north pavilion e",
+      "u": 16.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion e second +16.4",
+      "face": "north pavilion e",
+      "u": 16.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion e third +15.8",
+      "face": "north pavilion e",
+      "u": 15.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion e third +17.0",
+      "face": "north pavilion e",
+      "u": 17.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion e basement +20.0",
+      "face": "north pavilion e",
+      "u": 20.0,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "north pavilion e first +20.0",
+      "face": "north pavilion e",
+      "u": 20.0,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion e second +20.0",
+      "face": "north pavilion e",
+      "u": 20.0,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion e third +19.4",
+      "face": "north pavilion e",
+      "u": 19.38,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north pavilion e third +20.6",
+      "face": "north pavilion e",
+      "u": 20.62,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing basement -8.4",
+      "face": "north wing",
+      "u": -8.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "north wing first -8.4",
+      "face": "north wing",
+      "u": -8.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing second -8.4",
+      "face": "north wing",
+      "u": -8.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing third -9.0",
+      "face": "north wing",
+      "u": -9.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing third -7.8",
+      "face": "north wing",
+      "u": -7.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing basement -4.2",
+      "face": "north wing",
+      "u": -4.2,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "north wing first -4.2",
+      "face": "north wing",
+      "u": -4.2,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing second -4.2",
+      "face": "north wing",
+      "u": -4.2,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing third -4.8",
+      "face": "north wing",
+      "u": -4.82,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing third -3.6",
+      "face": "north wing",
+      "u": -3.58,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing basement +0.0",
+      "face": "north wing",
+      "u": 0.0,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "north wing first +0.0",
+      "face": "north wing",
+      "u": 0.0,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing second +0.0",
+      "face": "north wing",
+      "u": 0.0,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing third -0.6",
+      "face": "north wing",
+      "u": -0.62,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing third +0.6",
+      "face": "north wing",
+      "u": 0.62,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing basement +4.2",
+      "face": "north wing",
+      "u": 4.2,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "north wing first +4.2",
+      "face": "north wing",
+      "u": 4.2,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing second +4.2",
+      "face": "north wing",
+      "u": 4.2,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing third +3.6",
+      "face": "north wing",
+      "u": 3.58,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing third +4.8",
+      "face": "north wing",
+      "u": 4.82,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing basement +8.4",
+      "face": "north wing",
+      "u": 8.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "north wing first +8.4",
+      "face": "north wing",
+      "u": 8.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing second +8.4",
+      "face": "north wing",
+      "u": 8.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing third +7.8",
+      "face": "north wing",
+      "u": 7.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north wing third +9.0",
+      "face": "north wing",
+      "u": 9.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        22.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion w basement -20.0",
+      "face": "west pavilion w",
+      "u": -20.0,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "west pavilion w first -20.0",
+      "face": "west pavilion w",
+      "u": -20.0,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion w second -20.0",
+      "face": "west pavilion w",
+      "u": -20.0,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion w third -20.6",
+      "face": "west pavilion w",
+      "u": -20.62,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion w third -19.4",
+      "face": "west pavilion w",
+      "u": -19.38,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion w basement -16.4",
+      "face": "west pavilion w",
+      "u": -16.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "west pavilion w first -16.4",
+      "face": "west pavilion w",
+      "u": -16.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion w second -16.4",
+      "face": "west pavilion w",
+      "u": -16.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion w third -17.0",
+      "face": "west pavilion w",
+      "u": -17.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion w third -15.8",
+      "face": "west pavilion w",
+      "u": -15.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion w basement -12.8",
+      "face": "west pavilion w",
+      "u": -12.799999999999999,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "west pavilion w first -12.8",
+      "face": "west pavilion w",
+      "u": -12.799999999999999,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion w second -12.8",
+      "face": "west pavilion w",
+      "u": -12.799999999999999,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion w third -13.4",
+      "face": "west pavilion w",
+      "u": -13.419999999999998,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion w third -12.2",
+      "face": "west pavilion w",
+      "u": -12.18,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion e basement +12.8",
+      "face": "west pavilion e",
+      "u": 12.799999999999999,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "west pavilion e first +12.8",
+      "face": "west pavilion e",
+      "u": 12.799999999999999,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion e second +12.8",
+      "face": "west pavilion e",
+      "u": 12.799999999999999,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion e third +12.2",
+      "face": "west pavilion e",
+      "u": 12.18,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion e third +13.4",
+      "face": "west pavilion e",
+      "u": 13.419999999999998,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion e basement +16.4",
+      "face": "west pavilion e",
+      "u": 16.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "west pavilion e first +16.4",
+      "face": "west pavilion e",
+      "u": 16.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion e second +16.4",
+      "face": "west pavilion e",
+      "u": 16.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion e third +15.8",
+      "face": "west pavilion e",
+      "u": 15.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion e third +17.0",
+      "face": "west pavilion e",
+      "u": 17.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion e basement +20.0",
+      "face": "west pavilion e",
+      "u": 20.0,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "west pavilion e first +20.0",
+      "face": "west pavilion e",
+      "u": 20.0,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion e second +20.0",
+      "face": "west pavilion e",
+      "u": 20.0,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion e third +19.4",
+      "face": "west pavilion e",
+      "u": 19.38,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west pavilion e third +20.6",
+      "face": "west pavilion e",
+      "u": 20.62,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.799999237060547,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing basement -8.4",
+      "face": "west wing",
+      "u": -8.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "west wing first -8.4",
+      "face": "west wing",
+      "u": -8.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing second -8.4",
+      "face": "west wing",
+      "u": -8.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing third -9.0",
+      "face": "west wing",
+      "u": -9.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing third -7.8",
+      "face": "west wing",
+      "u": -7.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing basement -4.2",
+      "face": "west wing",
+      "u": -4.2,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "west wing first -4.2",
+      "face": "west wing",
+      "u": -4.2,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing second -4.2",
+      "face": "west wing",
+      "u": -4.2,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing third -4.8",
+      "face": "west wing",
+      "u": -4.82,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing third -3.6",
+      "face": "west wing",
+      "u": -3.58,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing basement +0.0",
+      "face": "west wing",
+      "u": 0.0,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "west wing first +0.0",
+      "face": "west wing",
+      "u": 0.0,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing second +0.0",
+      "face": "west wing",
+      "u": 0.0,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing third -0.6",
+      "face": "west wing",
+      "u": -0.62,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing third +0.6",
+      "face": "west wing",
+      "u": 0.62,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing basement +4.2",
+      "face": "west wing",
+      "u": 4.2,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "west wing first +4.2",
+      "face": "west wing",
+      "u": 4.2,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing second +4.2",
+      "face": "west wing",
+      "u": 4.2,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing third +3.6",
+      "face": "west wing",
+      "u": 3.58,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing third +4.8",
+      "face": "west wing",
+      "u": 4.82,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing basement +8.4",
+      "face": "west wing",
+      "u": 8.4,
+      "z": 0.5,
+      "width": 1.0,
+      "height": 0.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "archive"
+    },
+    {
+      "id": "west wing first +8.4",
+      "face": "west wing",
+      "u": 8.4,
+      "z": 2.7,
+      "width": 2.0,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing second +8.4",
+      "face": "west wing",
+      "u": 8.4,
+      "z": 6.6,
+      "width": 1.5,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing third +7.8",
+      "face": "west wing",
+      "u": 7.78,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west wing third +9.0",
+      "face": "west wing",
+      "u": 9.02,
+      "z": 11.1,
+      "width": 0.8,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -22.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 0 f0",
+      "face": "court south",
+      "u": -6.0,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 0 f1",
+      "face": "court south",
+      "u": -6.0,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 0 f2",
+      "face": "court south",
+      "u": -6.0,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 1 f0",
+      "face": "court south",
+      "u": -3.0,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 1 f1",
+      "face": "court south",
+      "u": -3.0,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 1 f2",
+      "face": "court south",
+      "u": -3.0,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 2 f0",
+      "face": "court south",
+      "u": 0.0,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 2 f1",
+      "face": "court south",
+      "u": 0.0,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 2 f2",
+      "face": "court south",
+      "u": 0.0,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 3 f0",
+      "face": "court south",
+      "u": 3.0,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 3 f1",
+      "face": "court south",
+      "u": 3.0,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 3 f2",
+      "face": "court south",
+      "u": 3.0,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 4 f0",
+      "face": "court south",
+      "u": 6.0,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 4 f1",
+      "face": "court south",
+      "u": 6.0,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court south 4 f2",
+      "face": "court south",
+      "u": 6.0,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 0 f0",
+      "face": "court north",
+      "u": -6.0,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 0 f1",
+      "face": "court north",
+      "u": -6.0,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 0 f2",
+      "face": "court north",
+      "u": -6.0,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 1 f0",
+      "face": "court north",
+      "u": -3.0,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 1 f1",
+      "face": "court north",
+      "u": -3.0,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 1 f2",
+      "face": "court north",
+      "u": -3.0,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 2 f0",
+      "face": "court north",
+      "u": 0.0,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 2 f1",
+      "face": "court north",
+      "u": 0.0,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 2 f2",
+      "face": "court north",
+      "u": 0.0,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 3 f0",
+      "face": "court north",
+      "u": 3.0,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 3 f1",
+      "face": "court north",
+      "u": 3.0,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 3 f2",
+      "face": "court north",
+      "u": 3.0,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 4 f0",
+      "face": "court north",
+      "u": 6.0,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 4 f1",
+      "face": "court north",
+      "u": 6.0,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court north 4 f2",
+      "face": "court north",
+      "u": 6.0,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court west 0 f0",
+      "face": "court west",
+      "u": -3.375,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court west 0 f1",
+      "face": "court west",
+      "u": -3.375,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court west 0 f2",
+      "face": "court west",
+      "u": -3.375,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court west 1 f0",
+      "face": "court west",
+      "u": -0.125,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court west 1 f1",
+      "face": "court west",
+      "u": -0.125,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court west 1 f2",
+      "face": "court west",
+      "u": -0.125,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court west 2 f0",
+      "face": "court west",
+      "u": 3.125,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court west 2 f1",
+      "face": "court west",
+      "u": 3.125,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court west 2 f2",
+      "face": "court west",
+      "u": 3.125,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court west 3 f0",
+      "face": "court west",
+      "u": 6.375,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court west 3 f1",
+      "face": "court west",
+      "u": 6.375,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court west 3 f2",
+      "face": "court west",
+      "u": 6.375,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court east 0 f0",
+      "face": "court east",
+      "u": -6.375,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court east 0 f1",
+      "face": "court east",
+      "u": -6.375,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court east 0 f2",
+      "face": "court east",
+      "u": -6.375,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court east 1 f0",
+      "face": "court east",
+      "u": -3.125,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court east 1 f1",
+      "face": "court east",
+      "u": -3.125,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court east 1 f2",
+      "face": "court east",
+      "u": -3.125,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court east 2 f0",
+      "face": "court east",
+      "u": 0.125,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court east 2 f1",
+      "face": "court east",
+      "u": 0.125,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court east 2 f2",
+      "face": "court east",
+      "u": 0.125,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court east 3 f0",
+      "face": "court east",
+      "u": 3.375,
+      "z": 2.7,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court east 3 f1",
+      "face": "court east",
+      "u": 3.375,
+      "z": 6.8,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "court east 3 f2",
+      "face": "court east",
+      "u": 3.375,
+      "z": 11.200000000000001,
+      "width": 1.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        7.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "tower east belfry -1",
+      "face": "tower east",
+      "u": -1.35,
+      "z": 23.0,
+      "width": 0.75,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        25.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower east belfry +0",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 23.0,
+      "width": 0.75,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        25.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower east belfry +1",
+      "face": "tower east",
+      "u": 1.35,
+      "z": 23.0,
+      "width": 0.75,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        25.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower portal",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 0.0,
+      "width": 3.0,
+      "height": 4.2,
+      "kind": "tower portal",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.5,
+      "pane_inset_m": 0.537,
+      "face_origin": [
+        25.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "tower hall"
+    },
+    {
+      "id": "tower window 1",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 7.0,
+      "width": 1.3,
+      "height": 2.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        25.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower window 2",
+      "face": "tower east",
+      "u": 0.0,
+      "z": 11.0,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        25.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower lancet -1",
+      "face": "tower east",
+      "u": -0.75,
+      "z": 14.8,
+      "width": 0.75,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        25.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower lancet +1",
+      "face": "tower east",
+      "u": 0.75,
+      "z": 14.8,
+      "width": 0.75,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        25.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower south belfry -1",
+      "face": "tower south",
+      "u": 19.65,
+      "z": 23.0,
+      "width": 0.75,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower south belfry +0",
+      "face": "tower south",
+      "u": 21.0,
+      "z": 23.0,
+      "width": 0.75,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower south belfry +1",
+      "face": "tower south",
+      "u": 22.35,
+      "z": 23.0,
+      "width": 0.75,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower north belfry -1",
+      "face": "tower north",
+      "u": -22.35,
+      "z": 23.0,
+      "width": 0.75,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower north belfry +0",
+      "face": "tower north",
+      "u": -21.0,
+      "z": 23.0,
+      "width": 0.75,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower north belfry +1",
+      "face": "tower north",
+      "u": -19.65,
+      "z": 23.0,
+      "width": 0.75,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        4.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower west belfry -1",
+      "face": "tower west",
+      "u": -1.35,
+      "z": 23.0,
+      "width": 0.75,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower west belfry +0",
+      "face": "tower west",
+      "u": 0.0,
+      "z": 23.0,
+      "width": 0.75,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    },
+    {
+      "id": "tower west belfry +1",
+      "face": "tower west",
+      "u": 1.35,
+      "z": 23.0,
+      "width": 0.75,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.6,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "tower"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "South sidewalk",
+      "North sidewalk",
+      "East sidewalk",
+      "West sidewalk",
+      "South street",
+      "North street",
+      "East street",
+      "West street"
+    ],
+    "sidewalk joints": [
+      "sidewalk joints joint"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017"
+    ],
+    "envelope": [
+      "south pavilion w carrier",
+      "south pavilion e carrier",
+      "south wing carrier",
+      "east pavilion w carrier",
+      "east pavilion e carrier",
+      "east wing south carrier",
+      "east wing north carrier",
+      "north pavilion w carrier",
+      "north pavilion e carrier",
+      "north wing carrier",
+      "west pavilion w carrier",
+      "west pavilion e carrier",
+      "west wing carrier",
+      "court south wall",
+      "court north wall",
+      "court west wall",
+      "court east wall",
+      "tower east wall",
+      "tower south wall",
+      "tower north wall",
+      "tower west wall"
+    ],
+    "brick joints": [
+      "south pavilion w measured mortar courses",
+      "south pavilion e measured mortar courses",
+      "south wing measured mortar courses",
+      "east pavilion w measured mortar courses",
+      "east pavilion e measured mortar courses",
+      "east wing south measured mortar courses",
+      "east wing north measured mortar courses",
+      "north pavilion w measured mortar courses",
+      "north pavilion e measured mortar courses",
+      "north wing measured mortar courses",
+      "west pavilion w measured mortar courses",
+      "west pavilion e measured mortar courses",
+      "west wing measured mortar courses",
+      "tower east measured mortar courses",
+      "tower south measured mortar courses",
+      "tower north measured mortar courses",
+      "tower west measured mortar courses"
+    ],
+    "arches": [
+      "south pavilion w second -20.0 spandrel",
+      "south pavilion w second -20.0 arch ring",
+      "south pavilion w third -20.6 spandrel",
+      "south pavilion w third -20.6 arch ring",
+      "south pavilion w third -19.4 spandrel",
+      "south pavilion w third -19.4 arch ring",
+      "south pavilion w portal spandrel",
+      "south pavilion w portal arch ring",
+      "south pavilion w second -16.4 spandrel",
+      "south pavilion w second -16.4 arch ring",
+      "south pavilion w third -17.0 spandrel",
+      "south pavilion w third -17.0 arch ring",
+      "south pavilion w third -15.8 spandrel",
+      "south pavilion w third -15.8 arch ring",
+      "south pavilion w second -12.8 spandrel",
+      "south pavilion w second -12.8 arch ring",
+      "south pavilion w third -13.4 spandrel",
+      "south pavilion w third -13.4 arch ring",
+      "south pavilion w third -12.2 spandrel",
+      "south pavilion w third -12.2 arch ring",
+      "south pavilion e second +12.8 spandrel",
+      "south pavilion e second +12.8 arch ring",
+      "south pavilion e third +12.2 spandrel",
+      "south pavilion e third +12.2 arch ring",
+      "south pavilion e third +13.4 spandrel",
+      "south pavilion e third +13.4 arch ring",
+      "south pavilion e second +16.4 spandrel",
+      "south pavilion e second +16.4 arch ring",
+      "south pavilion e third +15.8 spandrel",
+      "south pavilion e third +15.8 arch ring",
+      "south pavilion e third +17.0 spandrel",
+      "south pavilion e third +17.0 arch ring",
+      "south pavilion e second +20.0 spandrel",
+      "south pavilion e second +20.0 arch ring",
+      "south pavilion e third +19.4 spandrel",
+      "south pavilion e third +19.4 arch ring",
+      "south pavilion e third +20.6 spandrel",
+      "south pavilion e third +20.6 arch ring",
+      "south wing second -8.4 spandrel",
+      "south wing second -8.4 arch ring",
+      "south wing third -9.0 spandrel",
+      "south wing third -9.0 arch ring",
+      "south wing third -7.8 spandrel",
+      "south wing third -7.8 arch ring",
+      "south wing second -4.2 spandrel",
+      "south wing second -4.2 arch ring",
+      "south wing third -4.8 spandrel",
+      "south wing third -4.8 arch ring",
+      "south wing third -3.6 spandrel",
+      "south wing third -3.6 arch ring",
+      "south wing second +0.0 spandrel",
+      "south wing second +0.0 arch ring",
+      "south wing third -0.6 spandrel",
+      "south wing third -0.6 arch ring",
+      "south wing third +0.6 spandrel",
+      "south wing third +0.6 arch ring",
+      "south wing second +4.2 spandrel",
+      "south wing second +4.2 arch ring",
+      "south wing third +3.6 spandrel",
+      "south wing third +3.6 arch ring",
+      "south wing third +4.8 spandrel",
+      "south wing third +4.8 arch ring",
+      "south wing second +8.4 spandrel",
+      "south wing second +8.4 arch ring",
+      "south wing third +7.8 spandrel",
+      "south wing third +7.8 arch ring",
+      "south wing third +9.0 spandrel",
+      "south wing third +9.0 arch ring",
+      "east pavilion w second -20.0 spandrel",
+      "east pavilion w second -20.0 arch ring",
+      "east pavilion w third -20.6 spandrel",
+      "east pavilion w third -20.6 arch ring",
+      "east pavilion w third -19.4 spandrel",
+      "east pavilion w third -19.4 arch ring",
+      "east pavilion w second -16.4 spandrel",
+      "east pavilion w second -16.4 arch ring",
+      "east pavilion w third -17.0 spandrel",
+      "east pavilion w third -17.0 arch ring",
+      "east pavilion w third -15.8 spandrel",
+      "east pavilion w third -15.8 arch ring",
+      "east pavilion w second -12.8 spandrel",
+      "east pavilion w second -12.8 arch ring",
+      "east pavilion w third -13.4 spandrel",
+      "east pavilion w third -13.4 arch ring",
+      "east pavilion w third -12.2 spandrel",
+      "east pavilion w third -12.2 arch ring",
+      "east pavilion e second +12.8 spandrel",
+      "east pavilion e second +12.8 arch ring",
+      "east pavilion e third +12.2 spandrel",
+      "east pavilion e third +12.2 arch ring",
+      "east pavilion e third +13.4 spandrel",
+      "east pavilion e third +13.4 arch ring",
+      "east pavilion e second +16.4 spandrel",
+      "east pavilion e second +16.4 arch ring",
+      "east pavilion e third +15.8 spandrel",
+      "east pavilion e third +15.8 arch ring",
+      "east pavilion e third +17.0 spandrel",
+      "east pavilion e third +17.0 arch ring",
+      "east pavilion e second +20.0 spandrel",
+      "east pavilion e second +20.0 arch ring",
+      "east pavilion e third +19.4 spandrel",
+      "east pavilion e third +19.4 arch ring",
+      "east pavilion e third +20.6 spandrel",
+      "east pavilion e third +20.6 arch ring",
+      "east wing south second -8.4 spandrel",
+      "east wing south second -8.4 arch ring",
+      "east wing south third -9.0 spandrel",
+      "east wing south third -9.0 arch ring",
+      "east wing south third -7.8 spandrel",
+      "east wing south third -7.8 arch ring",
+      "east wing south second -5.6 spandrel",
+      "east wing south second -5.6 arch ring",
+      "east wing south third -6.2 spandrel",
+      "east wing south third -6.2 arch ring",
+      "east wing south third -5.0 spandrel",
+      "east wing south third -5.0 arch ring",
+      "east wing north second +5.6 spandrel",
+      "east wing north second +5.6 arch ring",
+      "east wing north third +5.0 spandrel",
+      "east wing north third +5.0 arch ring",
+      "east wing north third +6.2 spandrel",
+      "east wing north third +6.2 arch ring",
+      "east wing north second +8.4 spandrel",
+      "east wing north second +8.4 arch ring",
+      "east wing north third +7.8 spandrel",
+      "east wing north third +7.8 arch ring",
+      "east wing north third +9.0 spandrel",
+      "east wing north third +9.0 arch ring",
+      "north pavilion w second -20.0 spandrel",
+      "north pavilion w second -20.0 arch ring",
+      "north pavilion w third -20.6 spandrel",
+      "north pavilion w third -20.6 arch ring",
+      "north pavilion w third -19.4 spandrel",
+      "north pavilion w third -19.4 arch ring",
+      "north pavilion w second -16.4 spandrel",
+      "north pavilion w second -16.4 arch ring",
+      "north pavilion w third -17.0 spandrel",
+      "north pavilion w third -17.0 arch ring",
+      "north pavilion w third -15.8 spandrel",
+      "north pavilion w third -15.8 arch ring",
+      "north pavilion w second -12.8 spandrel",
+      "north pavilion w second -12.8 arch ring",
+      "north pavilion w third -13.4 spandrel",
+      "north pavilion w third -13.4 arch ring",
+      "north pavilion w third -12.2 spandrel",
+      "north pavilion w third -12.2 arch ring",
+      "north pavilion e second +12.8 spandrel",
+      "north pavilion e second +12.8 arch ring",
+      "north pavilion e third +12.2 spandrel",
+      "north pavilion e third +12.2 arch ring",
+      "north pavilion e third +13.4 spandrel",
+      "north pavilion e third +13.4 arch ring",
+      "north pavilion e second +16.4 spandrel",
+      "north pavilion e second +16.4 arch ring",
+      "north pavilion e third +15.8 spandrel",
+      "north pavilion e third +15.8 arch ring",
+      "north pavilion e third +17.0 spandrel",
+      "north pavilion e third +17.0 arch ring",
+      "north pavilion e second +20.0 spandrel",
+      "north pavilion e second +20.0 arch ring",
+      "north pavilion e third +19.4 spandrel",
+      "north pavilion e third +19.4 arch ring",
+      "north pavilion e third +20.6 spandrel",
+      "north pavilion e third +20.6 arch ring",
+      "north wing second -8.4 spandrel",
+      "north wing second -8.4 arch ring",
+      "north wing third -9.0 spandrel",
+      "north wing third -9.0 arch ring",
+      "north wing third -7.8 spandrel",
+      "north wing third -7.8 arch ring",
+      "north wing second -4.2 spandrel",
+      "north wing second -4.2 arch ring",
+      "north wing third -4.8 spandrel",
+      "north wing third -4.8 arch ring",
+      "north wing third -3.6 spandrel",
+      "north wing third -3.6 arch ring",
+      "north wing second +0.0 spandrel",
+      "north wing second +0.0 arch ring",
+      "north wing third -0.6 spandrel",
+      "north wing third -0.6 arch ring",
+      "north wing third +0.6 spandrel",
+      "north wing third +0.6 arch ring",
+      "north wing second +4.2 spandrel",
+      "north wing second +4.2 arch ring",
+      "north wing third +3.6 spandrel",
+      "north wing third +3.6 arch ring",
+      "north wing third +4.8 spandrel",
+      "north wing third +4.8 arch ring",
+      "north wing second +8.4 spandrel",
+      "north wing second +8.4 arch ring",
+      "north wing third +7.8 spandrel",
+      "north wing third +7.8 arch ring",
+      "north wing third +9.0 spandrel",
+      "north wing third +9.0 arch ring",
+      "west pavilion w second -20.0 spandrel",
+      "west pavilion w second -20.0 arch ring",
+      "west pavilion w third -20.6 spandrel",
+      "west pavilion w third -20.6 arch ring",
+      "west pavilion w third -19.4 spandrel",
+      "west pavilion w third -19.4 arch ring",
+      "west pavilion w second -16.4 spandrel",
+      "west pavilion w second -16.4 arch ring",
+      "west pavilion w third -17.0 spandrel",
+      "west pavilion w third -17.0 arch ring",
+      "west pavilion w third -15.8 spandrel",
+      "west pavilion w third -15.8 arch ring",
+      "west pavilion w second -12.8 spandrel",
+      "west pavilion w second -12.8 arch ring",
+      "west pavilion w third -13.4 spandrel",
+      "west pavilion w third -13.4 arch ring",
+      "west pavilion w third -12.2 spandrel",
+      "west pavilion w third -12.2 arch ring",
+      "west pavilion e second +12.8 spandrel",
+      "west pavilion e second +12.8 arch ring",
+      "west pavilion e third +12.2 spandrel",
+      "west pavilion e third +12.2 arch ring",
+      "west pavilion e third +13.4 spandrel",
+      "west pavilion e third +13.4 arch ring",
+      "west pavilion e second +16.4 spandrel",
+      "west pavilion e second +16.4 arch ring",
+      "west pavilion e third +15.8 spandrel",
+      "west pavilion e third +15.8 arch ring",
+      "west pavilion e third +17.0 spandrel",
+      "west pavilion e third +17.0 arch ring",
+      "west pavilion e second +20.0 spandrel",
+      "west pavilion e second +20.0 arch ring",
+      "west pavilion e third +19.4 spandrel",
+      "west pavilion e third +19.4 arch ring",
+      "west pavilion e third +20.6 spandrel",
+      "west pavilion e third +20.6 arch ring",
+      "west wing second -8.4 spandrel",
+      "west wing second -8.4 arch ring",
+      "west wing third -9.0 spandrel",
+      "west wing third -9.0 arch ring",
+      "west wing third -7.8 spandrel",
+      "west wing third -7.8 arch ring",
+      "west wing second -4.2 spandrel",
+      "west wing second -4.2 arch ring",
+      "west wing third -4.8 spandrel",
+      "west wing third -4.8 arch ring",
+      "west wing third -3.6 spandrel",
+      "west wing third -3.6 arch ring",
+      "west wing second +0.0 spandrel",
+      "west wing second +0.0 arch ring",
+      "west wing third -0.6 spandrel",
+      "west wing third -0.6 arch ring",
+      "west wing third +0.6 spandrel",
+      "west wing third +0.6 arch ring",
+      "west wing second +4.2 spandrel",
+      "west wing second +4.2 arch ring",
+      "west wing third +3.6 spandrel",
+      "west wing third +3.6 arch ring",
+      "west wing third +4.8 spandrel",
+      "west wing third +4.8 arch ring",
+      "west wing second +8.4 spandrel",
+      "west wing second +8.4 arch ring",
+      "west wing third +7.8 spandrel",
+      "west wing third +7.8 arch ring",
+      "west wing third +9.0 spandrel",
+      "west wing third +9.0 arch ring",
+      "tower east belfry -1 spandrel",
+      "tower east belfry -1 arch ring",
+      "tower east belfry +0 spandrel",
+      "tower east belfry +0 arch ring",
+      "tower east belfry +1 spandrel",
+      "tower east belfry +1 arch ring",
+      "tower portal spandrel",
+      "tower portal arch ring",
+      "tower window 1 spandrel",
+      "tower window 1 arch ring",
+      "tower window 2 spandrel",
+      "tower window 2 arch ring",
+      "tower lancet -1 spandrel",
+      "tower lancet -1 arch ring",
+      "tower lancet +1 spandrel",
+      "tower lancet +1 arch ring",
+      "tower south belfry -1 spandrel",
+      "tower south belfry -1 arch ring",
+      "tower south belfry +0 spandrel",
+      "tower south belfry +0 arch ring",
+      "tower south belfry +1 spandrel",
+      "tower south belfry +1 arch ring",
+      "tower north belfry -1 spandrel",
+      "tower north belfry -1 arch ring",
+      "tower north belfry +0 spandrel",
+      "tower north belfry +0 arch ring",
+      "tower north belfry +1 spandrel",
+      "tower north belfry +1 arch ring",
+      "tower west belfry -1 spandrel",
+      "tower west belfry -1 arch ring",
+      "tower west belfry +0 spandrel",
+      "tower west belfry +0 arch ring",
+      "tower west belfry +1 spandrel",
+      "tower west belfry +1 arch ring"
+    ],
+    "south pavilion w": [
+      "south pavilion w south pavilion w stone",
+      "south pavilion w south pavilion w frame",
+      "south pavilion w south pavilion w glass",
+      "south pavilion w south pavilion w timber"
+    ],
+    "gables": [
+      "south gable w wall",
+      "south gable e wall",
+      "east gable w wall",
+      "east gable e wall",
+      "north gable w wall",
+      "north gable e wall",
+      "west gable w wall",
+      "west gable e wall"
+    ],
+    "south gable w": [
+      "south gable w stone",
+      "south gable w frame",
+      "south gable w glass"
+    ],
+    "roof": [
+      "south gable w cross roof",
+      "south gable e cross roof",
+      "east gable w cross roof",
+      "east gable e cross roof",
+      "north gable w cross roof",
+      "north gable e cross roof",
+      "west gable w cross roof",
+      "west gable e cross roof",
+      "Wing roofs outer",
+      "Wing roofs inner",
+      "Pavilion pyramid -1-1",
+      "Pavilion pyramid -1+1",
+      "Pavilion pyramid +1-1",
+      "Pavilion pyramid +1+1"
+    ],
+    "south pavilion e": [
+      "south pavilion e south pavilion e stone",
+      "south pavilion e south pavilion e frame",
+      "south pavilion e south pavilion e glass"
+    ],
+    "south gable e": [
+      "south gable e stone",
+      "south gable e frame",
+      "south gable e glass"
+    ],
+    "south wing": [
+      "south wing south wing stone",
+      "south wing south wing frame",
+      "south wing south wing glass"
+    ],
+    "east pavilion w": [
+      "east pavilion w east pavilion w stone",
+      "east pavilion w east pavilion w frame",
+      "east pavilion w east pavilion w glass"
+    ],
+    "east gable w": [
+      "east gable w stone",
+      "east gable w frame",
+      "east gable w glass"
+    ],
+    "east pavilion e": [
+      "east pavilion e east pavilion e stone",
+      "east pavilion e east pavilion e frame",
+      "east pavilion e east pavilion e glass"
+    ],
+    "east gable e": [
+      "east gable e stone",
+      "east gable e frame",
+      "east gable e glass"
+    ],
+    "east wing south": [
+      "east wing south east wing south stone",
+      "east wing south east wing south frame",
+      "east wing south east wing south glass"
+    ],
+    "east wing north": [
+      "east wing north east wing north stone",
+      "east wing north east wing north frame",
+      "east wing north east wing north glass"
+    ],
+    "north pavilion w": [
+      "north pavilion w north pavilion w stone",
+      "north pavilion w north pavilion w frame",
+      "north pavilion w north pavilion w glass"
+    ],
+    "north gable w": [
+      "north gable w stone",
+      "north gable w frame",
+      "north gable w glass"
+    ],
+    "north pavilion e": [
+      "north pavilion e north pavilion e stone",
+      "north pavilion e north pavilion e frame",
+      "north pavilion e north pavilion e glass"
+    ],
+    "north gable e": [
+      "north gable e stone",
+      "north gable e frame",
+      "north gable e glass"
+    ],
+    "north wing": [
+      "north wing north wing stone",
+      "north wing north wing frame",
+      "north wing north wing glass"
+    ],
+    "west pavilion w": [
+      "west pavilion w west pavilion w stone",
+      "west pavilion w west pavilion w frame",
+      "west pavilion w west pavilion w glass"
+    ],
+    "west gable w": [
+      "west gable w stone",
+      "west gable w frame",
+      "west gable w glass"
+    ],
+    "west pavilion e": [
+      "west pavilion e west pavilion e stone",
+      "west pavilion e west pavilion e frame",
+      "west pavilion e west pavilion e glass"
+    ],
+    "west gable e": [
+      "west gable e stone",
+      "west gable e frame",
+      "west gable e glass"
+    ],
+    "west wing": [
+      "west wing west wing stone",
+      "west wing west wing frame",
+      "west wing west wing glass"
+    ],
+    "court south": [
+      "court south court south frame",
+      "court south court south glass"
+    ],
+    "court north": [
+      "court north court north frame",
+      "court north court north glass"
+    ],
+    "court west": [
+      "court west court west frame",
+      "court west court west glass"
+    ],
+    "court east": [
+      "court east court east frame",
+      "court east court east glass"
+    ],
+    "court": [
+      "Court paving"
+    ],
+    "finial -1-1": [
+      "finial -1-1 copper"
+    ],
+    "finial -1+1": [
+      "finial -1+1 copper"
+    ],
+    "finial +1-1": [
+      "finial +1-1 copper"
+    ],
+    "finial +1+1": [
+      "finial +1+1 copper"
+    ],
+    "inside": [
+      "Floor south 2",
+      "Floor north 2",
+      "Floor west 2",
+      "Floor east 2",
+      "Floor south 6",
+      "Floor north 6",
+      "Floor west 6",
+      "Floor east 6",
+      "Floor south 10",
+      "Floor north 10",
+      "Floor west 10",
+      "Floor east 10"
+    ],
+    "tower east": [
+      "tower east tower east frame",
+      "tower east tower east glass",
+      "tower east tower east timber",
+      "tower east tower east stone"
+    ],
+    "tower south": [
+      "tower south tower south frame",
+      "tower south tower south glass",
+      "tower south tower south stone"
+    ],
+    "tower north": [
+      "tower north tower north frame",
+      "tower north tower north glass",
+      "tower north tower north stone"
+    ],
+    "tower west": [
+      "tower west tower west frame",
+      "tower west tower west glass",
+      "tower west tower west stone"
+    ],
+    "tower crown": [
+      "tower crown stone",
+      "tower crown clock",
+      "tower crown hardware",
+      "tower crown wall",
+      "tower crown copper"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-19T01:06:39.337417+00:00",
+  "delivery_and_render_seconds": 8797.537568032,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
