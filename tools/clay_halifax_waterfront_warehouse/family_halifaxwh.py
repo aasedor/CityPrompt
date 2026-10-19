@@ -437,7 +437,7 @@ def arch_head(f, h, rise, ring=.26, segs=10, ring_role='arch'):
 
 
 
-def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, piers, bays, wrap):
+def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, piers, bays, wrap, wrap_hi=False):
     """A street front: carrier, granite piers, shopfronts or arched ground windows, arched upper windows,
     belt and copper cornice bands that reach the outer corner lines (the south front wraps the corner square)."""
     f = C.Face(origin, tangent, inward, label)
@@ -464,9 +464,9 @@ def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, pi
 
     def band(role, d, t, z, h):
         p = -(d - t / 2)
-        a, c = (lo - p, hi + p) if wrap else (corner_lo, corner_hi)
+        a, c = (lo - p, hi + p) if wrap else (corner_lo, corner_hi + (p if wrap_hi else 0.0))      # wrap_hi: runs on round the far corner
         m.box(role, (a + c) / 2, d, z, c - a, t, h)
-    pa, pc = (lo - .2, hi + .2) if wrap else (corner_lo, corner_hi)                          # granite plinth, broken at the entrance
+    pa, pc = (lo - .2, hi + .2) if wrap else (corner_lo, corner_hi + (.2 if wrap_hi else 0.0))                          # granite plinth, broken at the entrance
     cuts = sorted((g['u'] - g['w'] / 2, g['u'] + g['w'] / 2) for g, k in grounds if k == 'door')
     for c0, c1 in cuts + [(pc, pc)]:
         if c0 - pa > .05:
@@ -524,6 +524,7 @@ def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, pi
             if not (BELT0 - .1 < .3 + k * .55 < BELT1 + .1):
                 m.box('joint', (a + c) / 2, -.252, .3 + k * .55, c - a + .004, .012, .03)
         m.box('stone', (a + c) / 2, -.2, FRIEZE - .15, c - a + .1, .4, .3)                      # pier cap under the frieze
+        m.box('copper', (a + c) / 2, -.2, FRIEZE + .375, c - a + .1, .4, .75)                   # frieze breaking forward over the pier
         for s in (-1, 1):                                                                     # paired consoles
             cu = u + s * (w / 2 - .2)
             m.box('copper', cu, -.33, FRIEZE + .375, .22, .66, .77)
@@ -558,10 +559,18 @@ def build_faces():
     street_face('south', (0, Y0, 0), (1, 0, 0), (0, 1, 0), X0, X1, X0, X1, sp, sb, True)
     # East side: the south corner pier is the south front's; the bays start behind it.
     ep = [(Y0 + .7, 1.4, False), (-2.55, 1.1, True), (2.55, 1.1, True), (Y1 - .7, 1.4, False)]
-    eb = [dict(u=-5.1, w=4.0, ground='pair', upper=[(-.7, 1.0, 2.65), (.75, 1.0, 2.65)]),         # bay 1 clear of the corner pier
+    eb = [dict(u=-5.1, w=4.0, ground='pair', upper=[(-.85, 1.0, 2.65), (.85, 1.0, 2.65)]),        # bay 1: archivolts clear of each other and of the corner pier
           dict(u=0.0, w=4.0, ground='arches', upper=[(-.9, 1.05, 2.65), (.9, 1.05, 2.65)]),
           dict(u=5.1, w=4.0, ground='arches', upper=[(-.9, 1.05, 2.65), (.9, 1.05, 2.65)])]
-    street_face('east', (X1, 0, 0), (0, 1, 0), (-1, 0, 0), -hd + T, hd - T, Y0, Y1, ep[1:], eb, False)
+    street_face('east', (X1, 0, 0), (0, 1, 0), (-1, 0, 0), -hd + T, hd - T, Y0, Y1, ep[1:], eb, False, wrap_hi=True)
+    # The east bands return 1.4 m along the north wall, butting the east bands' wrapped ends at the corner line.
+    nf = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'north return')
+    m = Merge(nf)
+    for role, d, t, z, h in (('stone', -.1, .2, G0 / 2, G0), ('stone', -.18, .36, BELT0 + .3, .6), ('stone', -.24, .48, BELT1 - .15, .3),
+                             ('stone', -.08, .16, BELT1 + .4, .14), ('copper', -.08, .16, FRIEZE + .22, .44), ('copper', -.16, .32, FRIEZE + .49, .1),
+                             ('copper', -.48, .96, CORN - .25, .3), ('copper', -.54, 1.08, CORN - .05, .1)):
+        m.box(role, -X1 + .7, d, z, 1.4, t, h)
+    m.flush('north return')
     # The east face's south corner pier: a return of the south corner pier, butting it on the corner line.
     b = Batch()
     b.box('stone', X1 + .125, Y0 + .7, FRIEZE / 2, .25, 1.4, FRIEZE)
@@ -569,6 +578,7 @@ def build_faces():
     for k in range(int(FRIEZE / .55)):
         if not (BELT0 - .1 < .3 + k * .55 < BELT1 + .1):
             b.box('joint', X1 + .252, Y0 + .7, .3 + k * .55, .012, 1.404, .03)
+    b.box('copper', X1 + .2, (Y0 - .39 + Y0 + 1.45) / 2, FRIEZE + .375, .4, 1.84, .75)          # frieze break over the corner pier, east face and corner
     b.box('copper', X1 + .33, Y0 + 1.2, FRIEZE + .375, .66, .22, .77)                         # east consoles of the corner pier
     b.box('copper', X1 + .22, Y0 + 1.2, FRIEZE - .2275, .44, .18, .445)
     b.box('copper', X1 + .33, Y0 + .2, FRIEZE + .375, .66, .22, .77)
@@ -640,13 +650,13 @@ def site():
     street_tree(X1 + 3.4, 6.5, z=.12, height=8.0, spread=2.4)
     # The brick neighbour attached to the west, as context: its east wall buried in ours.
     nx0, nx1 = X0 - 10.0, X0 + .15
-    C.box('Neighbour block', ((nx0 + nx1) / 2, (Y0 + .4 + Y1) / 2, 5.25), (nx1 - nx0, Y1 - Y0 - .4, 10.5), 'neighbour', 'context', 0)
+    C.box('Neighbour block', ((nx0 + nx1) / 2, (Y0 + .4 + Y1 + .6) / 2, 5.25), (nx1 - nx0, Y1 + .6 - Y0 - .4, 10.5), 'neighbour', 'context', 0)   # deeper than the warehouse
     b = Batch()
     for z in (.6, 4.4, 7.6):
         for u in (nx0 + 1.5, nx0 + 4.0, nx0 + 6.5):
             b.box('glass', u, Y0 + .38, z + 1.2, 1.2, .04, 2.2 if z < 1 else 1.9)
     b.box('stone', (nx0 + nx1) / 2, Y0 + .25, 10.2, nx1 - nx0 - .3, .4, .4)
-    b.box('membrane', (nx0 + nx1 - .3) / 2, (Y0 + .45 + Y1 - .05) / 2, 10.525, nx1 - nx0 - .5, Y1 - Y0 - .5, .07)          # grey membrane roof
+    b.box('membrane', (nx0 + nx1 - .3) / 2, (Y0 + .45 + Y1 + .55) / 2, 10.525, nx1 - nx0 - .5, Y1 + .1 - Y0 - .5 + .4, .07)          # grey membrane roof
     b.flush('neighbour')
 
 
