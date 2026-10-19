@@ -46,13 +46,13 @@ def manifest(version):
         ('clock_tower', (62.0, -18.0, 34.0), (TX1, 0.0, 37.0), 40),
         ('portal_arch', (-11.0, -42.0, 3.2), (-17.5, Y0 - 2.5, 3.2), 40),
         ('gables_pinnacles', (30.0, -48.0, 24.0), (17.5, Y0, 19.0), 40),
-        ('east_side', (80.0, 0.0, 12.0), (X1, 0.0, 12.0), 45),
+        ('east_side', (100.0, 0.0, 20.0), (X1, 0.0, 22.0), 40),
         ('roofs_court', (-30.0, -40.0, 60.0), (0.0, 2.0, 16.0), 40),
         ('interior', (-4.2, -H + 3.2, F2 + 1.7), (-4.2, -H, F2 + 2.0), 50),
         ('rear_north', (0.0, 80.0, 14.0), (0.0, Y1, 14.0), 45)])
     for c in cams:                       # the locked front and oblique look from the south-east
         if c['name'] == 'front':
-            c['location'] = (36.0, -52.0, 1.6); c['target'] = (8.0, -16.0, 15.0); c['lens'] = 26; c['whole'] = False
+            c['location'] = (36.0, -52.0, 1.6); c['target'] = (8.0, -16.0, 17.5); c['lens'] = 26; c['whole'] = False
         elif c['name'] == 'front_corner':
             c.update(location=(54.0, -70.0, 66.0), target=(0.0, 0.0, 11.0), lens=35, whole=False)   # the locked oblique: high over the south-east corner
         elif c['name'] == 'top':
@@ -782,7 +782,6 @@ def tower():
             hs += [hole('tower portal', uc, 0.0, 3.0, 4.2, kind='door'), hole('tower window 1', uc, 7.0, 1.3, 2.8),
                    hole('tower window 2', uc, 11.0, 1.1, 2.4)] + [hole(f'tower lancet {s:+d}', uc + s * .75, 14.8, .75, 3.8) for s in (-1, 1)]
             hs += [hole(f'tower upper lancet {k}', uc + (k - 1.5) * .8, 20.0, .55, 4.4) for k in range(4)]   # tall clustered lancets
-            hs += [hole(f'tower top lancet {s:+d}', uc + s * .75, 25.4, .6, 2.4) for s in (-1, 1)]
         elif label != 'tower west':
             hs += [hole(f'{label} upper lancet {s:+d}', uc + s * .75, 22.0, .6, 3.6) for s in (-1, 1)]
         f.wall(f'{label} wall', lo, hi - EPS, z0, TTOP, depth=.8, role='wall', holes=hs)
@@ -794,8 +793,9 @@ def tower():
                 register(f, h, .5, 'tower portal', 'tower hall')
                 arch_head(f, h, 1.5, ring=.5, dep=.8)
             else:
-                framed(m, f, h, cols=2 if h['w'] > 1 else 1, rows=4, inset=.18, occupied='tower', frame='frame')
-                arch_head(f, h, h['w'] / 2, ring=.2 if h['w'] < .7 else .22, dep=.8)
+                small = h['w'] < .7
+                framed(m, f, h, cols=2 if h['w'] > 1 else 1, rows=2 if small else 4, inset=.18, occupied='tower', frame='frame')
+                arch_head(f, h, h['w'] / 2, ring=.2 if small else .22, segs=6 if small else 10, dep=.8)
         m.box('stone', (lo + hi) / 2, -.12, TTOP - .3, hi - lo, .24, .6)                         # crown cornice
         m.box('stone', (lo + hi) / 2, -.1, ZS, hi - lo, .2, .3)                                  # clock-stage string course
         m.box('stone', (lo + hi) / 2, -.1, ZB - .15, hi - lo, .2, .25)                           # belfry sill course
