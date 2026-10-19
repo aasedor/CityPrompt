@@ -1,7 +1,7 @@
 # Montreal Plateau triplex with an exterior iron stair (RLASM v6.1 architectural clay)
 
 Candidate G4 of wave G of 2026-10-18, one of ten catalogue types that have quality reference images but
-no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **candidate under review**. Nothing here is keeper-approved,
+no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **stopped at v003 by the rework stopping rule (the cornice-return and console findings each survived two targeted fixes); v003 is the candidate with 0 P0 and 5 P1**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,6 +68,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (P0+P1 fell from 7 to 6; the best so far, so v002 is the candidate)
+## Open blockers after v003 (family stopped at v003 by the stopping rule; v003 stays the candidate)
 
-P1 cornice return still stacked slabs with black slits; open end face on the raised cornice; raised parapet set back with a loose cartouche; cube consoles hanging to the window heads; top view framed too wide; interior porch walls short of the ceiling
+- P1 #1: the facade is one flat plane; the sources show the side bays slightly forward of a recessed centre with the cornice breaking back over it.
+- P1 #2: the south-east cornice return still reads as stacked slabs with a near-black slot at the corner (the v001/v002 finding, surviving its second targeted fix).
+- P1 #3: the consoles still read as stacked cubes, the middle block running into the right-bay window lintel (surviving its second targeted fix).
+- P1 #4: both ends of the canopy fascia show black open holes.
+- P1 #5: a black slot at grade under the west quoined pier where the plex meets the neighbour.
+- Resolved in the pixels: the raised-cornice hole, the raised parapet (now a flush capped attic with the cartouche), the top-view framing and the porch walls.

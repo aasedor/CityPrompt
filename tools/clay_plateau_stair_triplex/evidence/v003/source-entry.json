@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-plateau-stair-triplex",
+  "variant_id": "clay-plateau-stair-triplex-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "montreal_plateau_triplex/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/montreal-plateau-triplex/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1503222,
+      "sha256": "9aacc94e700b988b010df9e3a3f6f18b27d4900f83d656abc8d2e3609737a3ba"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/montreal-plateau-triplex/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 980168,
+      "sha256": "a7c48e6e87f9f4f6698693df114ce3c299c0dbac2b587380cbd77e161d8acc6a"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/montreal-plateau-triplex/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 899704,
+      "sha256": "b8ba5cedeae63a937f0761c157078363cc79ea580af019682fff575b1e2afb8e"
+    }
+  ]
+}
