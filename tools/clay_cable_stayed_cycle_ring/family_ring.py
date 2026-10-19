@@ -32,7 +32,7 @@ PALETTE = dict(white=(.92, .92, .90), red=(.50, .30, .23), rail=(.90, .90, .88),
     timber=(.42, .32, .22), soil=(.30, .25, .18), brick=(.55, .32, .24), brick2=(.62, .40, .30), roof=(.30, .28, .27),
     trim=(.90, .89, .86), glass=(.80, .86, .88), dark=(.14, .15, .16), hardware=(.18, .18, .19), pale=(.88, .88, .86),
     interior=(.84, .80, .74), floor=(.58, .48, .38), stone=(.70, .68, .64), joint=(.52, .50, .47), sand=(.70, .66, .58),
-    wall=(.80, .74, .62), blue=(.20, .30, .40), pot=(.60, .34, .22))
+    wall=(.80, .74, .62), blue=(.20, .30, .40), pot=(.60, .34, .22), rampdeck=(.74, .71, .65))
 
 
 def manifest(version):
@@ -469,9 +469,9 @@ def deck():
         a1 = a0 + 2 * math.pi / 64 * .45
         b.beam('lane', at(RM, a0, DZ + .006), at(RM, a1, DZ + .006), .12, .01)
     xr, ys, yf, ye = ramp_line()
-    for i in range(int((yf - ye) / 3.0)):                                    # and down the ramp
-        y0 = yf - 1.0 - i * 3.0
-        b.beam('lane', (xr, y0, ramp_z(y0) + .006), (xr, y0 - 1.3, ramp_z(y0 - 1.3) + .006), .12, .01)
+    yr0 = -math.sqrt(R_OUT * R_OUT - xr * xr)                                # a solid white centre line down the grey ramp
+    b.beam('lane', (xr, yr0, ramp_z(yr0) + .006), (xr, yf, ramp_z(yf) + .006), .12, .01)
+    b.beam('lane', (xr, yf, ramp_z(yf) + .006), (xr, ye + .3, ramp_z(ye + .3) + .006), .12, .01)
     b.flush('deck markings')
 
 
@@ -510,7 +510,7 @@ def ramp():
     poly = [(ys, DZ - .03), (yf, DZ - .03), (ye, .05), (ye, 0.0), (yb, 0.0), (yf, DZ - .03 - D), (ys, DZ - .03 - D)]
     C.prism('Ramp girder', poly, 'x', xr - 2.3, xr + 2.3, 'white', 'ramp')
     top = [(ys, DZ - .06), (yf, DZ - .06), (ye, .06), (ye, .1), (yf, DZ - .01), (ys, DZ - .01)]
-    C.prism('Ramp cycle surface', top, 'x', xr - 2.12, xr + 2.12, 'red', 'ramp')
+    C.prism('Ramp concrete surface', top, 'x', xr - 2.12, xr + 2.12, 'rampdeck', 'ramp')
     # The foot: the ramp lands on a red apron that joins the cycle path along the north-south road.
     C.box('Ramp landing apron', ((xr - 2.6 - 11.0) / 2, ye - 1.6, .045), (-11.0 - (xr - 2.6), 5.0, .09), 'cycle', 'ramp', 0)
     b = Batch()
@@ -532,13 +532,13 @@ def pylon_and_cables():
     disc('Pylon island kerb', 0.0, 0.0, 0.0, .26, 3.6, 'white', 'pylon', 32)
     tube('Pylon mast', [(.2, .78), (COLLAR - 2.0, .55), (COLLAR + 3.0, .5), (MAST - .3, .46), (MAST, .3)], 'steel', 'pylon')
     disc('Pylon base', 0.0, 0.0, .2, 1.4, 1.15, 'steel', 'pylon', 24)
-    tube('Cable spreader', [(COLLAR - 1.8, .54), (COLLAR + .4, 1.18), (COLLAR + .9, 1.18)], 'steel', 'pylon', 24)   # downward-flaring cone
+    tube('Cable spreader', [(COLLAR - .6, 1.25), (COLLAR - .3, 1.25), (COLLAR + 2.0, .52)], 'steel', 'pylon', 24)   # cone flaring downward to the cable ring
     b = Batch()
     n = 30
     for i in range(n):
         a = 2 * math.pi * (i + .5) / n
-        b.beam('cable', at(1.0, a, COLLAR), at(R_IN + .25, a, DZ - .35), .07, .07)
-        b.box('steel', *at(R_IN + .05, a, DZ - .5), .3, .3, .5)                 # anchor bracket on the inner girder face
+        b.beam('cable', at(1.0, a, COLLAR), at(R_IN + .05, a, DZ - .3), .07, .07)
+        b.box('steel', *at(R_IN + .03, a, DZ - .3), .34, .34, .4)               # anchor block on the inner fascia; the cable ends inside it
     b.flush('cables')
 
 
@@ -622,10 +622,17 @@ def context():
         b.flush(f'{name} windows')
     houses = (('Houses north-west', -76.0, -40.0, 36.0, 46.0), ('Houses south-west', -78.0, -44.0, -54.0, -44.0), ('Houses north', -34.0, -20.0, 40.0, 50.0))
     for name, x0, x1, y0, y1 in houses:
-        C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, 3.2), (x1 - x0 + .6, y1 - y0, 6.4), 'brick2', 'context', 0)   # gable walls flush with the verges
-        pitched_roof(f'{name} roof', x0, x1, y0, y1, 6.4, 3.4, hip_w=False, hip_e=False, axis='x', ov=.3, role='roof', module='context')
-        for ga, gb in ((x0 - .32, x0), (x1, x1 + .32)):                        # brick gable triangles over the dark roof-plate ends
-            C.prism(f'{name} gable {ga:.0f}', [(y0, 6.38), (y1, 6.38), ((y0 + y1) / 2, 6.38 + 3.4)], 'x', ga, gb, 'brick2', 'context')
+        # One closed brick solid with the gable triangles built in, under one closed slate prism sunk 3 cm onto it:
+        # no plates, no open edges, so no dark slot can open at the gable base or the eaves.
+        ym, rise, ov, t = (y0 + y1) / 2, 3.4, .35, .2
+        sl = rise / ((y1 - y0) / 2)
+        C.prism(f'{name}', [(y0, 0.0), (y1, 0.0), (y1, 6.4), (ym, 6.4 + rise), (y0, 6.4)], 'x', x0 - .3, x1 + .3, 'brick2', 'context')
+        zl, zr = 6.37 - ov * sl, 6.37 + rise
+        roof = [(y0 - ov, zl), (y0 - ov, zl + t), (ym, zr + t / math.cos(math.atan(sl))), (y1 + ov, zl + t), (y1 + ov, zl), (ym, zr)]
+        if sum(roof[i][0] * roof[(i + 1) % 6][1] - roof[(i + 1) % 6][0] * roof[i][1] for i in range(6)) < 0:
+            roof = roof[::-1]                                                  # counter-clockwise in (y, z), as the body
+        C.prism(f'{name} roof', roof, 'x', x0 - .55, x1 + .55, 'roof', 'context')
+        C.box(f'{name} ridge', ((x0 + x1) / 2, ym, zr + t / math.cos(math.atan(sl)) + .04), (x1 - x0 + 1.1, .22, .1), 'joint', 'context', 0)
         b = Batch()
         face = y0 if y0 > 0 else y1
         windows(b, face, 'y', x0, x1, -.4, 2, -1 if y0 > 0 else 1)
