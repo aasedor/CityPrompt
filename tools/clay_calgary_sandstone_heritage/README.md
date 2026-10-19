@@ -68,15 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (the v002 rework targets all ten)
+## Open blockers after v002 (the v003 rework targets all three)
 
-- P1 #1: the roof is one plain ring of hips; the mid-front gabled pavilions (N, S, W), the four court-side cross hips and the light-court terrace are missing, and the wing hips swallow the corner pyramids.
-- P1 #2: the corner pavilions are almost flush with the wings (about 1% of the block width against 4-5% in the source).
-- P1 #3: the slate is pale cool grey where the source is dark warm slate.
-- P1 #4: the third-floor arcades are separate pairs of arched windows instead of continuous runs of 4-6 small arches on colonnettes.
-- P1 #5: the pavilions have evenly spaced punched windows instead of grouped two-storey arcaded bays with multi-ring voussoirs.
-- P1 #6: the SW portal is a shallow faceted arch cut flush, with no projecting porch, colonnettes, steps or balcony.
-- P1 #7: the SW portal and the tower door have rectangular leaves under open arch heads, showing the hollow interior.
-- P1 #8: a black void sits between the hood moulds of every paired arched window.
-- P1 #9: the gable rake copings stop short of the cornice and shoulder blocks, leaving dark voids.
-- P1 #10: a smeared shading crease where the wing hips meet the far corner pavilion.
+- P0 #1: the outer bays of the east and west faces of all four corner pavilions are filled with stone (the openings fall in the corner 2.6 m that belongs to the perpendicular wall); the builder's aperture audit fails on the same 20 openings.
+- P1 #2: the projecting arched entrance porch with a balustraded balcony at the foot of the clock tower is missing; the render has a flush door.
+- P1 #3: the interior view shows the openings of the opposite wall as blind recesses with solid backs.
+- All ten v001 findings are resolved in the pixels.
