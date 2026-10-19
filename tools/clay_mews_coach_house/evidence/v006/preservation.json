@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-mews-coach-house-clay-v006",
+  "glb": "clay-mews-coach-house-clay-v006.glb",
+  "glb_bytes": 2708724,
+  "glb_sha256": "619b1fd4b87a680b7011624299ded7ac38ddd72a82d6e93eb00b69879f5de893",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "coach_door.png": 92,
+    "east_side.png": 92,
+    "eaves_corner.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "front_door.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_chimneys.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-mews-coach-house-clay-v006-renders-and-glb.zip",
+  "zip_bytes": 32986441
+}

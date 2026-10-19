@@ -1,7 +1,7 @@
 # London mews coach house (RLASM v6.1 architectural clay)
 
 Candidate G1 of wave G of 2026-10-18, one of ten catalogue types that have quality reference images but
-no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **candidate under review**. Nothing here is keeper-approved,
+no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **stopped at v006 by the stopping rule (independent review PASS_ZERO_P0_P1); v006 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,9 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 reworks these three; a second non-improving review stops the family)
+## Open blockers after v006 (stopped)
 
-- P1 #1: every party wall carries the same short square stack with three stubby square pots; the sources show one long stack on the end/neighbour party wall with two clusters of tall round clay pots (5 and 4), and no stack on the neighbour's west party wall.
-- P1 #2: the rear-wing downpipes drop from the end of the gutter overhang and stand clear of the wall with sky behind; a horizontal stub near one pipe foot connects to nothing.
-- P1 #3: a short beige wall panel and a red door leaf stand alone on the east pavement at the rear corner (no jamb or head, enclosing nothing); the oblique source shows a continuous garden wall with the red door set into it.
-- Note: the v005 brief carried no previous-version context; the v004 findings are absent from the new findings list.
+- No P0 or P1 findings remain. Twelve P2 refinements are listed in evidence/v006/independent-review.md.
+- This is an independent RLASM review result only; it is not keeper approval, runtime integration or catalogue enrolment.
