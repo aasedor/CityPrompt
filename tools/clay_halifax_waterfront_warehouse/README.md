@@ -68,10 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (the v003 rework targets all four)
+## Open blockers after v003 (v004 reworks these three)
 
-- P1 #1: the two upper arched windows in east bay 1 overlap their archivolts, with a black triangular void between them.
-- P1 #2: a black slot runs between the south-east corner pier cap and the copper frieze and cornice soffit.
-- P1 #3: the east copper cornice ends open and black at the north end, and the belt course and plinth show black slots against the north wall.
-- P1 #4: a black slit runs full height between the north wall and the attached west neighbour.
-- The v001 P0 and all five v001 P1s are resolved in the pixels.
+- P1 #1: the back of the south copper cornice's south-west end, where it runs past the west wall above the neighbour, is open: black slots between corona, frieze and bracket layers in left_side (same class as the v002 north-east cornice end, surviving one targeted fix).
+- P1 #2: the west neighbour now runs deeper than the warehouse; the locked top view has it stopping about 28% of the warehouse depth short of the north wall.
+- P1 #3: a rectangular recess shows outside the archivolt at both shoulders of the large arched window in the middle south bay (wall cut larger than the arched head).

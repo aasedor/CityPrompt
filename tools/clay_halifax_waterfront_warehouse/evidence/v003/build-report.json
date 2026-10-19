@@ -1,0 +1,1242 @@
+{
+  "candidate": "clay-halifax-waterfront-warehouse-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 97,
+    "vertices": 9960,
+    "polygons": 13463,
+    "triangles": 13463,
+    "path": "clay-halifax-waterfront-warehouse-clay-v003-authoring.blend",
+    "bytes": 2296900,
+    "sha256": "a454e05cfd2520b1d24b97e15c637b1a1588db400050e786e5f36809e06fe100"
+  },
+  "runtime": {
+    "path": "clay-halifax-waterfront-warehouse-clay-v003.glb",
+    "bytes": 695052,
+    "sha256": "54a4a248cbfa69156c2f3cc0704d8ae61cfb6c9394d9b4448bf2d2d251e5fb7b",
+    "meshes": 20,
+    "materials": 20,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 20,
+    "vertices": 9960,
+    "polygons": 13463,
+    "triangles": 13463
+  },
+  "original_bounds_m": [
+    [
+      -28.0,
+      -22.899999618530273,
+      0.0
+    ],
+    [
+      32.0,
+      20.5,
+      13.300000190734863
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -28.0,
+      -22.899999618530273,
+      0.0
+    ],
+    [
+      32.0,
+      20.5,
+      13.300000190734863
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 24.2,
+    "depth": 17.0,
+    "height": 13.4
+  },
+  "native_dimensions_m": {
+    "width": 60.0,
+    "depth": 43.39999961853027,
+    "height": 13.300000190734863
+  },
+  "native_bottom_center_m": [
+    2.0,
+    -1.1999998092651367,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 25,
+    "joint": 6,
+    "stone": 7,
+    "arch": 18,
+    "copper": 5,
+    "frame": 3,
+    "pale": 2,
+    "roof": 1,
+    "glass": 4,
+    "hardware": 2,
+    "floor": 2,
+    "timber": 8,
+    "planting": 6,
+    "soil": 1,
+    "concrete": 1,
+    "white": 1,
+    "asphalt": 2,
+    "brick": 1,
+    "neighbour": 1,
+    "membrane": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/arched_windows.png",
+    "renders/copper_cornice.png",
+    "renders/granite_piers.png",
+    "renders/east_side.png",
+    "renders/roof_chimneys.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "top": {
+      "xmin": 0.13641957938671112,
+      "xmax": 0.9155204892158508,
+      "ymin": 0.10352423042058945,
+      "ymax": 0.8549237251281738
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Granite piers and brick walls from grade; copper cornice on the walls; flat roof inside the parapet",
+      "cornice_m": 11.15
+    },
+    {
+      "name": "Two-storey Italianate corner warehouse with a neighbour attached west",
+      "box": [
+        -12.1,
+        12.1,
+        -8.5,
+        8.5
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "south shopfront -7.2",
+      "face": "south",
+      "u": -7.2,
+      "z": 0.55,
+      "width": 6.7,
+      "height": 4.15,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -8.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "south entrance +0.0",
+      "face": "south",
+      "u": 0.0,
+      "z": 0.3,
+      "width": 2.2,
+      "height": 4.3500000000000005,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -8.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "south sidelight -1.8",
+      "face": "south",
+      "u": -1.8,
+      "z": 0.55,
+      "width": 1.1,
+      "height": 4.15,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -8.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "south sidelight +1.8",
+      "face": "south",
+      "u": 1.8,
+      "z": 0.55,
+      "width": 1.1,
+      "height": 4.15,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -8.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "south shopfront +7.2",
+      "face": "south",
+      "u": 7.2,
+      "z": 0.55,
+      "width": 6.7,
+      "height": 4.15,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -8.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "south arch -9.2",
+      "face": "south",
+      "u": -9.2,
+      "z": 6.35,
+      "width": 1.1,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -8.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "south arch -7.2",
+      "face": "south",
+      "u": -7.2,
+      "z": 6.35,
+      "width": 1.1,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -8.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "south arch -5.2",
+      "face": "south",
+      "u": -5.2,
+      "z": 6.35,
+      "width": 1.1,
+      "height": 2.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -8.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "south arch +0.0",
+      "face": "south",
+      "u": 0.0,
+      "z": 6.35,
+      "width": 2.4,
+      "height": 2.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -8.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "south arch +5.6",
+      "face": "south",
+      "u": 5.6,
+      "z": 6.35,
+      "width": 1.4,
+      "height": 2.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -8.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "south arch +8.8",
+      "face": "south",
+      "u": 8.8,
+      "z": 6.35,
+      "width": 1.4,
+      "height": 2.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -8.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "east shop light -6.0",
+      "face": "east",
+      "u": -6.05,
+      "z": 0.55,
+      "width": 1.5,
+      "height": 4.15,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "east shop light -4.1",
+      "face": "east",
+      "u": -4.1499999999999995,
+      "z": 0.55,
+      "width": 1.5,
+      "height": 4.15,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "east ground arch -1.2",
+      "face": "east",
+      "u": -1.2,
+      "z": 0.95,
+      "width": 0.75,
+      "height": 3.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "east ground arch +0.0",
+      "face": "east",
+      "u": 0.0,
+      "z": 0.95,
+      "width": 0.75,
+      "height": 3.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "east ground arch +1.2",
+      "face": "east",
+      "u": 1.2,
+      "z": 0.95,
+      "width": 0.75,
+      "height": 3.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "east ground arch +3.9",
+      "face": "east",
+      "u": 3.8999999999999995,
+      "z": 0.95,
+      "width": 0.75,
+      "height": 3.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "east ground arch +5.1",
+      "face": "east",
+      "u": 5.1,
+      "z": 0.95,
+      "width": 0.75,
+      "height": 3.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "east ground arch +6.3",
+      "face": "east",
+      "u": 6.3,
+      "z": 0.95,
+      "width": 0.75,
+      "height": 3.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "warehouse"
+    },
+    {
+      "id": "east arch -5.9",
+      "face": "east",
+      "u": -5.949999999999999,
+      "z": 6.35,
+      "width": 1.0,
+      "height": 2.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "east arch -4.2",
+      "face": "east",
+      "u": -4.25,
+      "z": 6.35,
+      "width": 1.0,
+      "height": 2.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "east arch -0.9",
+      "face": "east",
+      "u": -0.9,
+      "z": 6.35,
+      "width": 1.05,
+      "height": 2.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "east arch +0.9",
+      "face": "east",
+      "u": 0.9,
+      "z": 6.35,
+      "width": 1.05,
+      "height": 2.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "east arch +4.2",
+      "face": "east",
+      "u": 4.199999999999999,
+      "z": 6.35,
+      "width": 1.05,
+      "height": 2.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "east arch +6.0",
+      "face": "east",
+      "u": 6.0,
+      "z": 6.35,
+      "width": 1.05,
+      "height": 2.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        12.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "rear window 0 f0",
+      "face": "north",
+      "u": -8.0,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "rear window 1 f0",
+      "face": "north",
+      "u": -2.5,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "rear window 2 f0",
+      "face": "north",
+      "u": 3.0,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "rear window 3 f0",
+      "face": "north",
+      "u": 8.5,
+      "z": 1.2,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "rear window 0 f1",
+      "face": "north",
+      "u": -8.0,
+      "z": 6.6,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "rear window 1 f1",
+      "face": "north",
+      "u": -2.5,
+      "z": 6.6,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "rear window 2 f1",
+      "face": "north",
+      "u": 3.0,
+      "z": 6.6,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    },
+    {
+      "id": "rear window 3 f1",
+      "face": "north",
+      "u": 8.5,
+      "z": 6.6,
+      "width": 1.1,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.45,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loft"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "Corner sidewalks",
+      "South street",
+      "East street"
+    ],
+    "street": [
+      "street joint",
+      "street white",
+      "street hardware",
+      "street pale",
+      "street soil"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005"
+    ],
+    "context": [
+      "Neighbour block"
+    ],
+    "neighbour": [
+      "neighbour glass",
+      "neighbour stone",
+      "neighbour membrane"
+    ],
+    "envelope": [
+      "south carrier",
+      "east carrier",
+      "west party wall",
+      "north carrier"
+    ],
+    "brick joints": [
+      "south measured mortar courses",
+      "east measured mortar courses"
+    ],
+    "arches": [
+      "south arch -9.2 spandrel",
+      "south arch -9.2 arch ring",
+      "south arch -7.2 spandrel",
+      "south arch -7.2 arch ring",
+      "south arch -5.2 spandrel",
+      "south arch -5.2 arch ring",
+      "south arch +0.0 spandrel",
+      "south arch +0.0 arch ring",
+      "south arch +5.6 spandrel",
+      "south arch +5.6 arch ring",
+      "south arch +8.8 spandrel",
+      "south arch +8.8 arch ring",
+      "east ground arch -1.2 spandrel",
+      "east ground arch -1.2 arch ring",
+      "east ground arch +0.0 spandrel",
+      "east ground arch +0.0 arch ring",
+      "east ground arch +1.2 spandrel",
+      "east ground arch +1.2 arch ring",
+      "east ground arch +3.9 spandrel",
+      "east ground arch +3.9 arch ring",
+      "east ground arch +5.1 spandrel",
+      "east ground arch +5.1 arch ring",
+      "east ground arch +6.3 spandrel",
+      "east ground arch +6.3 arch ring",
+      "east arch -5.9 spandrel",
+      "east arch -5.9 arch ring",
+      "east arch -4.2 spandrel",
+      "east arch -4.2 arch ring",
+      "east arch -0.9 spandrel",
+      "east arch -0.9 arch ring",
+      "east arch +0.9 spandrel",
+      "east arch +0.9 arch ring",
+      "east arch +4.2 spandrel",
+      "east arch +4.2 arch ring",
+      "east arch +6.0 spandrel",
+      "east arch +6.0 arch ring"
+    ],
+    "south": [
+      "south south stone",
+      "south south frame",
+      "south south glass",
+      "south south copper",
+      "south south joint",
+      "south south wall"
+    ],
+    "east": [
+      "east east stone",
+      "east east frame",
+      "east east glass",
+      "east east copper",
+      "east east joint",
+      "east east wall"
+    ],
+    "north return": [
+      "north return north return stone",
+      "north return north return copper"
+    ],
+    "east corner pier": [
+      "east corner pier stone",
+      "east corner pier joint",
+      "east corner pier copper",
+      "east corner pier wall"
+    ],
+    "north": [
+      "north north frame",
+      "north north glass",
+      "north north stone",
+      "north north copper"
+    ],
+    "roof": [
+      "Roof membrane"
+    ],
+    "roof furniture": [
+      "roof furniture brick",
+      "roof furniture stone",
+      "roof furniture pale",
+      "roof furniture hardware"
+    ],
+    "inside": [
+      "Ground floor",
+      "Loft floor"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-19T13:15:05.217330+00:00",
+  "delivery_and_render_seconds": 6671.179403386996,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
