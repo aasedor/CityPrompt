@@ -76,3 +76,18 @@ NOT TESTED. The model sits on a level base. Shared terrain registration is not a
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (the v002 rework targets all twelve)
+
+- P0 #1: the side_stair camera is inside geometry (fully black).
+- P0 #2: the bougainvillea passes through the house wall into the interior and into the east parapet pier.
+- P0 #3: the chapel door, chapel windows and belfry door are flat blue panels on the wall, no recess.
+- P1 #4: the central and east stairs have short flights with landings twice as long; treads cover about a third of the length.
+- P1 #5: the low white parapet on the lowest west terrace and the diagonal west stair (source top) are missing.
+- P1 #6: the bougainvillea is a few floating magenta blobs with no trunk or draped canopy.
+- P1 #7: each geranium pot reads as a box on a stool (oversized slab, box foliage).
+- P1 #8: the chapel has no arched openings; the belfry is a solid shaft, not an open arched bell stage.
+- P1 #9: black hairline gaps between paving slabs show the void underneath.
+- P1 #10: the two blocks at the head of the stair are blank on the faces looking down it.
+- P1 #11: from outside the house rows and hillside base merge into one blank stepped wall.
+- P1 #12: the interior is almost black, with unframed openings.

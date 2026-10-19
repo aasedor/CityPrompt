@@ -1,0 +1,420 @@
+{
+  "candidate": "clay-stepped-terraced-plaza-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-stepped-terraced-plaza",
+  "variant_id": "clay-stepped-terraced-plaza-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "stepped_terraced_plaza/variant_0 (stepped_terraced_plaza_v0)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 20.0,
+      "depth": 52.0,
+      "height": 15.8
+    },
+    "observed_storeys": 0,
+    "storey_programme": "open space: eight terraces climbing 8.8 m, flanked by one-storey houses",
+    "plan": "20 x 52 m stair-plaza strip (top view): central stair, west and east terraces, east parapet and side stair, a lower plaza",
+    "facade": "white-rendered risers and parapets, stone-paved platforms and treads, metal handrails, terracotta pots with geraniums, white houses with blue doors",
+    "levels_m": [
+      0.0,
+      1.1,
+      2.2,
+      3.3000000000000003,
+      4.4,
+      5.5,
+      6.6000000000000005,
+      7.700000000000001,
+      8.8
+    ],
+    "inferred": "the hillside below grade is not modelled: the terraces stand as solids on a level base; house interiors are assumptions"
+  },
+  "roof_contract": {
+    "type": "open space; flat white roofs on the flanking houses, a blue chapel dome and belfry cupola",
+    "datum_m": 0.0,
+    "crowns_m": [
+      8.8
+    ]
+  },
+  "identity_contract": {
+    "owner": "white Cycladic stair-plaza: central handrailed stair between terraced seating platforms, parapet with geranium pots, blue-trimmed white houses, chapel dome and belfry"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: white render, warm stone paving and treads, blue doors and frames, terracotta pots, red geraniums, magenta bougainvillea, blue domes",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 0,
+    "ground": "stair, seating terraces, landings",
+    "edges": "houses, a chapel, a belfry"
+  },
+  "contact_contract": [
+    "Grade-zero lower plaza",
+    "Terrace solids from grade",
+    "Stair landings flush with the terraces",
+    "Houses on the terrace levels"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        2.5,
+        -35.0,
+        1.7
+      ],
+      "target": [
+        -0.5,
+        -12.0,
+        5.0
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        6.0,
+        -60.0,
+        30.0
+      ],
+      "target": [
+        0.0,
+        -2.0,
+        3.0
+      ],
+      "lens": 35
+    },
+    {
+      "name": "aerial",
+      "location": [
+        71.39999999999999,
+        -81.60000000000001,
+        47.400000000000006
+      ],
+      "target": [
+        0,
+        0,
+        7.11
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        153.0
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 84.0
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -102.0,
+        0,
+        9.48
+      ],
+      "target": [
+        0,
+        0,
+        7.11
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        102.0,
+        0,
+        9.48
+      ],
+      "target": [
+        0,
+        0,
+        7.11
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        102.0,
+        9.48
+      ],
+      "target": [
+        0,
+        0,
+        7.11
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        71.39999999999999,
+        81.60000000000001,
+        28.44
+      ],
+      "target": [
+        0,
+        0,
+        7.11
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        0.0,
+        -36.0,
+        3.0
+      ],
+      "target": [
+        0.0,
+        -16.0,
+        3.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -6.0,
+        -20.0,
+        4.5
+      ],
+      "target": [
+        -11.0,
+        -13.0,
+        3.4
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -5.5,
+        -17.0,
+        3.8000000000000003
+      ],
+      "target": [
+        -10.0,
+        -15.5,
+        3.6
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "central_stair",
+      "location": [
+        0.0,
+        -29.0,
+        2.2
+      ],
+      "target": [
+        0.0,
+        -14.0,
+        3.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "seating_terraces",
+      "location": [
+        -7.0,
+        -21.0,
+        3.6
+      ],
+      "target": [
+        -3.0,
+        -12.0,
+        2.4
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "parapet_pots",
+      "location": [
+        5.0,
+        -17.0,
+        4.4
+      ],
+      "target": [
+        8.0,
+        -10.0,
+        3.6
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "side_stair",
+      "location": [
+        12.5,
+        -30.0,
+        3.0
+      ],
+      "target": [
+        9.2,
+        -14.0,
+        3.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "chapel_top",
+      "location": [
+        2.0,
+        20.0,
+        11.8
+      ],
+      "target": [
+        -9.0,
+        30.0,
+        12.3
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -12.0,
+        -13.0,
+        3.8000000000000003
+      ],
+      "target": [
+        -10.0,
+        -17.0,
+        3.6
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        0.0,
+        52.0,
+        16.8
+      ],
+      "target": [
+        0.0,
+        20.0,
+        8.8
+      ],
+      "lens": 45,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "central_stair",
+    "seating_terraces",
+    "parapet_pots",
+    "side_stair",
+    "chapel_top",
+    "interior",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/stepped-terraced-plaza/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1223732,
+        "sha256": "ebc35d2d3930e520d789cf54d6ee47d3033d62604efb2b69fc0a71a2a4849025"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/stepped-terraced-plaza/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 809953,
+        "sha256": "4b491e5419a8e2631744fa423c3f589ec099fb38c71ce242ed4a3a40c353039c"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/stepped-terraced-plaza/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 802638,
+        "sha256": "dd114f5db2320dc9c89d43959d2c9c2c637c730a16bd0c3b10128e8a3a12c772"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_steps.py",
+        "sha256": "e8027b3843c651d1a0d42fd4146445bc97005ddadee80ea276b6510574ffd6f3"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "91bb00153b274e3b6cb1a2dfc1d07ecc7e38b40512d25e263564858184fb93a5"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "4f4334b49498418ed852cfdee0369a6f74f4f3fa7a06bc5c3aa4518f5d70431e"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-19T01:45:34.297196+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

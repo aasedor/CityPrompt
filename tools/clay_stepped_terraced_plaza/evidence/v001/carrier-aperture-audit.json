@@ -1,0 +1,228 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "west house 1 door",
+      "face": "west house 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 1 window -1",
+      "face": "west house 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 1 window +1",
+      "face": "west house 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 2 door",
+      "face": "west house 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 2 window -1",
+      "face": "west house 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 2 window +1",
+      "face": "west house 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 3 door",
+      "face": "west house 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 3 window -1",
+      "face": "west house 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 3 window +1",
+      "face": "west house 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 4 door",
+      "face": "west house 4",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 4 window -1",
+      "face": "west house 4",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 4 window +1",
+      "face": "west house 4",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 5 door",
+      "face": "west house 5",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 5 window -1",
+      "face": "west house 5",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 5 window +1",
+      "face": "west house 5",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 6 door",
+      "face": "west house 6",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 6 window -1",
+      "face": "west house 6",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 6 window +1",
+      "face": "west house 6",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 7 door",
+      "face": "west house 7",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 7 window -1",
+      "face": "west house 7",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 7 window +1",
+      "face": "west house 7",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 0 window 0",
+      "face": "east house 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 0 window 1",
+      "face": "east house 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 1 window 0",
+      "face": "east house 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 1 window 1",
+      "face": "east house 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 2 window 0",
+      "face": "east house 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 2 window 1",
+      "face": "east house 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 3 window 0",
+      "face": "east house 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 3 window 1",
+      "face": "east house 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 4 window 0",
+      "face": "east house 4",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 4 window 1",
+      "face": "east house 4",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 5 window 0",
+      "face": "east house 5",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 5 window 1",
+      "face": "east house 5",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 6 window 0",
+      "face": "east house 6",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 6 window 1",
+      "face": "east house 6",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 7 window 0",
+      "face": "east house 7",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 7 window 1",
+      "face": "east house 7",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
