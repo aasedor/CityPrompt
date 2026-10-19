@@ -52,7 +52,7 @@ def manifest(version):
         ('rear_north', (0.0, 60.0, 26.0), (0.0, 0.0, 12.0), 45)])
     for c in cams:                       # the locked front looks from the south-west, the oblique from the south-east (top view)
         if c['name'] == 'front':
-            c.update(location=(-31.0, -32.0, 1.6), target=(-10.0, -10.0, 9.0), lens=22, whole=False)
+            c.update(location=(-46.0, -30.0, 1.7), target=(-18.0, -3.0, 9.5), lens=28, whole=False)   # the locked front: the long west porch front receding left, the south end right
         elif c['name'] == 'front_corner':
             c.update(location=(40.0, -46.0, 34.0), target=(2.0, -2.0, 7.0), lens=35, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -545,10 +545,12 @@ def balustrade(b, a, c, z, posts, ends=(True, True), end_w=.62):
         if any(abs(t - p) < .45 for p in list(posts) + [0.0, L]):
             continue
         b.box('stone', ax + ux * t, ay + uy * t, z + .53, .14, .14, .66)
-    for p in posts:
-        b.box('stone', ax + ux * p, ay + uy * p, z + .5, .62, .62, .84)
-    for p in caps:                                                                           # corner pedestals close the joints
-        b.box('stone', ax + ux * p, ay + uy * p, z + .52, end_w, end_w, .88)
+    for p in posts:                                                                          # pedestals rise past the rail top
+        b.box('stone', ax + ux * p, ay + uy * p, z + .54, .62, .62, 1.08)
+        b.box('stone', ax + ux * p, ay + uy * p, z + 1.12, .7, .7, .08)
+    for p in caps:                                                                           # corner pedestals bury the rail crossings
+        b.box('stone', ax + ux * p, ay + uy * p, z + .54, end_w, end_w, 1.08)
+        b.box('stone', ax + ux * p, ay + uy * p, z + 1.12, end_w + .08, end_w + .08, .08)
 
 
 def porch(b, f, u):
@@ -727,8 +729,8 @@ def site():
         b.box('pale', x, Y0 - 4.6, 4.95, .34, .34, .4)
         b.box('hardware', x, Y0 - 4.6, 5.2, .44, .44, .1)
     b.flush('areas and street')
-    for x in (-24.0, -9.0, 15.0):
-        street_tree(x, Y0 - 4.4, z=.12, height=10.0, spread=3.0)
+    for x, y in ((X0 - 4.4, -2.0), (X0 - 4.4, 10.0), (15.0, Y0 - 4.4)):                       # trees along the long west front, clear of the corner
+        street_tree(x, y, z=.12, height=10.0, spread=3.0)
     # Brick terrace houses against the north party wall, as context: one roof, party stacks, windowed rear and ends.
     hx0, hx1, hy1 = X0 + .1, X1 - .1, Y1 + 12.9
     C.box('Terrace houses', ((hx0 + hx1) / 2, (Y1 - .1 + hy1) / 2, 6.0), (hx1 - hx0, hy1 - Y1 + .1, 12.0), 'neighbour', 'context', 0)
