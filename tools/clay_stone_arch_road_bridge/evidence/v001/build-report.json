@@ -1,0 +1,4583 @@
+{
+  "candidate": "clay-stone-arch-road-bridge-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 184,
+    "vertices": 24257,
+    "polygons": 37850,
+    "triangles": 37850,
+    "path": "clay-stone-arch-road-bridge-clay-v001-authoring.blend",
+    "bytes": 4088112,
+    "sha256": "39b622fedc340947dce75817b42a5ac408d409cc9d53bca3eb65ea13e16e77b4"
+  },
+  "runtime": {
+    "path": "clay-stone-arch-road-bridge-clay-v001.glb",
+    "bytes": 2006860,
+    "sha256": "ce9a7042ea757d503f4f9790d40056d766935aa339dfd983a7b39f19172e3f62",
+    "meshes": 22,
+    "materials": 22,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 22,
+    "vertices": 24257,
+    "polygons": 37850,
+    "triangles": 37850
+  },
+  "original_bounds_m": [
+    [
+      -75.0,
+      -60.0,
+      0.0
+    ],
+    [
+      75.0,
+      60.0,
+      31.149999618530273
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -75.0,
+      -60.0,
+      0.0
+    ],
+    [
+      75.0,
+      60.0,
+      31.149999618530273
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 55.0,
+    "depth": 18.0,
+    "height": 18.0
+  },
+  "native_dimensions_m": {
+    "width": 150.0,
+    "depth": 120.0,
+    "height": 31.149999618530273
+  },
+  "native_bottom_center_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "water": 1,
+    "stone": 22,
+    "arch": 21,
+    "joint": 7,
+    "quay": 6,
+    "asphalt": 3,
+    "white": 3,
+    "paving": 11,
+    "kerb": 1,
+    "hardware": 16,
+    "pale": 8,
+    "glass": 5,
+    "wall": 4,
+    "facade2": 4,
+    "roof": 4,
+    "red": 1,
+    "van": 1,
+    "car": 1,
+    "dark": 5,
+    "trim": 4,
+    "planting": 24,
+    "timber": 32
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/arch_spandrel.png",
+    "renders/cutwater_pier.png",
+    "renders/balustrade.png",
+    "renders/lamp_standard.png",
+    "renders/roadway_deck.png",
+    "renders/river_underside.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Three-arch stone road bridge between high quays: piers and cutwaters from the water, arches springing from piers and quays, deck on the spandrels",
+      "box": [
+        -27.5,
+        27.5,
+        -9.0,
+        9.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "Block -10 window 0 0",
+      "face": "Block -10",
+      "u": 14.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 0 1",
+      "face": "Block -10",
+      "u": 17.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 0 2",
+      "face": "Block -10",
+      "u": 20.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 0 3",
+      "face": "Block -10",
+      "u": 23.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 0 4",
+      "face": "Block -10",
+      "u": 26.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 0 5",
+      "face": "Block -10",
+      "u": 29.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 0 6",
+      "face": "Block -10",
+      "u": 32.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 0 7",
+      "face": "Block -10",
+      "u": 35.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 0 8",
+      "face": "Block -10",
+      "u": 38.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 1 0",
+      "face": "Block -10",
+      "u": 14.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 1 1",
+      "face": "Block -10",
+      "u": 17.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 1 2",
+      "face": "Block -10",
+      "u": 20.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 1 3",
+      "face": "Block -10",
+      "u": 23.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 1 4",
+      "face": "Block -10",
+      "u": 26.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 1 5",
+      "face": "Block -10",
+      "u": 29.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 1 6",
+      "face": "Block -10",
+      "u": 32.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 1 7",
+      "face": "Block -10",
+      "u": 35.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 1 8",
+      "face": "Block -10",
+      "u": 38.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 2 0",
+      "face": "Block -10",
+      "u": 14.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 2 1",
+      "face": "Block -10",
+      "u": 17.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 2 2",
+      "face": "Block -10",
+      "u": 20.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 2 3",
+      "face": "Block -10",
+      "u": 23.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 2 4",
+      "face": "Block -10",
+      "u": 26.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 2 5",
+      "face": "Block -10",
+      "u": 29.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 2 6",
+      "face": "Block -10",
+      "u": 32.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 2 7",
+      "face": "Block -10",
+      "u": 35.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 2 8",
+      "face": "Block -10",
+      "u": 38.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 3 0",
+      "face": "Block -10",
+      "u": 14.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 3 1",
+      "face": "Block -10",
+      "u": 17.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 3 2",
+      "face": "Block -10",
+      "u": 20.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 3 3",
+      "face": "Block -10",
+      "u": 23.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 3 4",
+      "face": "Block -10",
+      "u": 26.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 3 5",
+      "face": "Block -10",
+      "u": 29.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 3 6",
+      "face": "Block -10",
+      "u": 32.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 3 7",
+      "face": "Block -10",
+      "u": 35.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -10 window 3 8",
+      "face": "Block -10",
+      "u": 38.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 0 0",
+      "face": "Block -11",
+      "u": -42.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 0 1",
+      "face": "Block -11",
+      "u": -39.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 0 2",
+      "face": "Block -11",
+      "u": -36.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 0 3",
+      "face": "Block -11",
+      "u": -33.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 0 4",
+      "face": "Block -11",
+      "u": -30.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 0 5",
+      "face": "Block -11",
+      "u": -27.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 0 6",
+      "face": "Block -11",
+      "u": -24.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 0 7",
+      "face": "Block -11",
+      "u": -21.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 0 8",
+      "face": "Block -11",
+      "u": -18.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 1 0",
+      "face": "Block -11",
+      "u": -42.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 1 1",
+      "face": "Block -11",
+      "u": -39.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 1 2",
+      "face": "Block -11",
+      "u": -36.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 1 3",
+      "face": "Block -11",
+      "u": -33.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 1 4",
+      "face": "Block -11",
+      "u": -30.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 1 5",
+      "face": "Block -11",
+      "u": -27.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 1 6",
+      "face": "Block -11",
+      "u": -24.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 1 7",
+      "face": "Block -11",
+      "u": -21.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 1 8",
+      "face": "Block -11",
+      "u": -18.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 2 0",
+      "face": "Block -11",
+      "u": -42.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 2 1",
+      "face": "Block -11",
+      "u": -39.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 2 2",
+      "face": "Block -11",
+      "u": -36.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 2 3",
+      "face": "Block -11",
+      "u": -33.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 2 4",
+      "face": "Block -11",
+      "u": -30.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 2 5",
+      "face": "Block -11",
+      "u": -27.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 2 6",
+      "face": "Block -11",
+      "u": -24.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 2 7",
+      "face": "Block -11",
+      "u": -21.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 2 8",
+      "face": "Block -11",
+      "u": -18.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 3 0",
+      "face": "Block -11",
+      "u": -42.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 3 1",
+      "face": "Block -11",
+      "u": -39.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 3 2",
+      "face": "Block -11",
+      "u": -36.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 3 3",
+      "face": "Block -11",
+      "u": -33.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 3 4",
+      "face": "Block -11",
+      "u": -30.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 3 5",
+      "face": "Block -11",
+      "u": -27.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 3 6",
+      "face": "Block -11",
+      "u": -24.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 3 7",
+      "face": "Block -11",
+      "u": -21.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block -11 window 3 8",
+      "face": "Block -11",
+      "u": -18.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 0 0",
+      "face": "Block +10",
+      "u": -42.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 0 1",
+      "face": "Block +10",
+      "u": -39.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 0 2",
+      "face": "Block +10",
+      "u": -36.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 0 3",
+      "face": "Block +10",
+      "u": -33.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 0 4",
+      "face": "Block +10",
+      "u": -30.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 0 5",
+      "face": "Block +10",
+      "u": -27.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 0 6",
+      "face": "Block +10",
+      "u": -24.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 0 7",
+      "face": "Block +10",
+      "u": -21.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 0 8",
+      "face": "Block +10",
+      "u": -18.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 1 0",
+      "face": "Block +10",
+      "u": -42.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 1 1",
+      "face": "Block +10",
+      "u": -39.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 1 2",
+      "face": "Block +10",
+      "u": -36.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 1 3",
+      "face": "Block +10",
+      "u": -33.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 1 4",
+      "face": "Block +10",
+      "u": -30.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 1 5",
+      "face": "Block +10",
+      "u": -27.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 1 6",
+      "face": "Block +10",
+      "u": -24.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 1 7",
+      "face": "Block +10",
+      "u": -21.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 1 8",
+      "face": "Block +10",
+      "u": -18.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 2 0",
+      "face": "Block +10",
+      "u": -42.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 2 1",
+      "face": "Block +10",
+      "u": -39.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 2 2",
+      "face": "Block +10",
+      "u": -36.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 2 3",
+      "face": "Block +10",
+      "u": -33.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 2 4",
+      "face": "Block +10",
+      "u": -30.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 2 5",
+      "face": "Block +10",
+      "u": -27.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 2 6",
+      "face": "Block +10",
+      "u": -24.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 2 7",
+      "face": "Block +10",
+      "u": -21.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 2 8",
+      "face": "Block +10",
+      "u": -18.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 3 0",
+      "face": "Block +10",
+      "u": -42.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 3 1",
+      "face": "Block +10",
+      "u": -39.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 3 2",
+      "face": "Block +10",
+      "u": -36.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 3 3",
+      "face": "Block +10",
+      "u": -33.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 3 4",
+      "face": "Block +10",
+      "u": -30.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 3 5",
+      "face": "Block +10",
+      "u": -27.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 3 6",
+      "face": "Block +10",
+      "u": -24.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 3 7",
+      "face": "Block +10",
+      "u": -21.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +10 window 3 8",
+      "face": "Block +10",
+      "u": -18.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 0 0",
+      "face": "Block +11",
+      "u": 14.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 0 1",
+      "face": "Block +11",
+      "u": 17.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 0 2",
+      "face": "Block +11",
+      "u": 20.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 0 3",
+      "face": "Block +11",
+      "u": 23.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 0 4",
+      "face": "Block +11",
+      "u": 26.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 0 5",
+      "face": "Block +11",
+      "u": 29.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 0 6",
+      "face": "Block +11",
+      "u": 32.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 0 7",
+      "face": "Block +11",
+      "u": 35.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 0 8",
+      "face": "Block +11",
+      "u": 38.0,
+      "z": 12.15,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 1 0",
+      "face": "Block +11",
+      "u": 14.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 1 1",
+      "face": "Block +11",
+      "u": 17.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 1 2",
+      "face": "Block +11",
+      "u": 20.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 1 3",
+      "face": "Block +11",
+      "u": 23.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 1 4",
+      "face": "Block +11",
+      "u": 26.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 1 5",
+      "face": "Block +11",
+      "u": 29.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 1 6",
+      "face": "Block +11",
+      "u": 32.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 1 7",
+      "face": "Block +11",
+      "u": 35.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 1 8",
+      "face": "Block +11",
+      "u": 38.0,
+      "z": 15.55,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 2 0",
+      "face": "Block +11",
+      "u": 14.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 2 1",
+      "face": "Block +11",
+      "u": 17.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 2 2",
+      "face": "Block +11",
+      "u": 20.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 2 3",
+      "face": "Block +11",
+      "u": 23.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 2 4",
+      "face": "Block +11",
+      "u": 26.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 2 5",
+      "face": "Block +11",
+      "u": 29.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 2 6",
+      "face": "Block +11",
+      "u": 32.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 2 7",
+      "face": "Block +11",
+      "u": 35.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 2 8",
+      "face": "Block +11",
+      "u": 38.0,
+      "z": 18.95,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 3 0",
+      "face": "Block +11",
+      "u": 14.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 3 1",
+      "face": "Block +11",
+      "u": 17.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 3 2",
+      "face": "Block +11",
+      "u": 20.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 3 3",
+      "face": "Block +11",
+      "u": 23.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 3 4",
+      "face": "Block +11",
+      "u": 26.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 3 5",
+      "face": "Block +11",
+      "u": 29.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 3 6",
+      "face": "Block +11",
+      "u": 32.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 3 7",
+      "face": "Block +11",
+      "u": 35.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "Block +11 window 3 8",
+      "face": "Block +11",
+      "u": 38.0,
+      "z": 22.35,
+      "width": 1.2,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        43.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "River",
+      "Quay -1",
+      "Bank road -1",
+      "Quay +1",
+      "Bank road +1"
+    ],
+    "bank -1": [
+      "bank -1 paving",
+      "bank -1 stone",
+      "bank -1 arch",
+      "bank -1 joint",
+      "bank -1 white"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020",
+      "Street tree trunk.007",
+      "Street tree branch.021",
+      "Street tree branch.022",
+      "Street tree branch.023"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023"
+    ],
+    "bank +1": [
+      "bank +1 paving",
+      "bank +1 stone",
+      "bank +1 arch",
+      "bank +1 joint",
+      "bank +1 white"
+    ],
+    "bridge": [
+      "Bridge body",
+      "Cutwater 0 -1",
+      "Cutwater hood 0 -1",
+      "Pier refuge 0 -1",
+      "Pier refuge cap 0 -1",
+      "Cutwater 0 +1",
+      "Cutwater hood 0 +1",
+      "Pier refuge 0 +1",
+      "Pier refuge cap 0 +1",
+      "Cutwater 1 -1",
+      "Cutwater hood 1 -1",
+      "Pier refuge 1 -1",
+      "Pier refuge cap 1 -1",
+      "Cutwater 1 +1",
+      "Cutwater hood 1 +1",
+      "Pier refuge 1 +1",
+      "Pier refuge cap 1 +1",
+      "Corner apron -1-1",
+      "Corner apron paving -1-1",
+      "Corner apron -1+1",
+      "Corner apron paving -1+1",
+      "Corner apron +1-1",
+      "Corner apron paving +1-1",
+      "Corner apron +1+1",
+      "Corner apron paving +1+1"
+    ],
+    "arch rings": [
+      "arch rings stone",
+      "arch rings arch"
+    ],
+    "ashlar": [
+      "ashlar joint"
+    ],
+    "pier pilaster 0 -1": [
+      "pier pilaster 0 -1 stone",
+      "pier pilaster 0 -1 arch",
+      "pier pilaster 0 -1 joint"
+    ],
+    "pier pilaster 0 +1": [
+      "pier pilaster 0 +1 stone",
+      "pier pilaster 0 +1 arch",
+      "pier pilaster 0 +1 joint"
+    ],
+    "pier pilaster 1 -1": [
+      "pier pilaster 1 -1 stone",
+      "pier pilaster 1 -1 arch",
+      "pier pilaster 1 -1 joint"
+    ],
+    "pier pilaster 1 +1": [
+      "pier pilaster 1 +1 stone",
+      "pier pilaster 1 +1 arch",
+      "pier pilaster 1 +1 joint"
+    ],
+    "cornice": [
+      "cornice stone",
+      "cornice arch"
+    ],
+    "deck": [
+      "Carriageway",
+      "deck paving",
+      "deck kerb",
+      "deck white"
+    ],
+    "balustrades": [
+      "balustrades stone",
+      "balustrades arch"
+    ],
+    "Lamp pier -12 -1": [
+      "Lamp pier -12 -1 hardware",
+      "Lamp pier -12 -1 pale"
+    ],
+    "lamps": [
+      "Lamp pier -12 -1 shaft",
+      "Lamp pier -12 +1 shaft",
+      "Lamp pier +8 -1 shaft",
+      "Lamp pier +8 +1 shaft",
+      "Lamp end -26 -1 shaft",
+      "Lamp end -26 +1 shaft",
+      "Lamp end +26 -1 shaft",
+      "Lamp end +26 +1 shaft"
+    ],
+    "Lamp pier -12 +1": [
+      "Lamp pier -12 +1 hardware",
+      "Lamp pier -12 +1 pale"
+    ],
+    "Lamp pier +8 -1": [
+      "Lamp pier +8 -1 hardware",
+      "Lamp pier +8 -1 pale"
+    ],
+    "Lamp pier +8 +1": [
+      "Lamp pier +8 +1 hardware",
+      "Lamp pier +8 +1 pale"
+    ],
+    "Lamp end -26 -1": [
+      "Lamp end -26 -1 hardware",
+      "Lamp end -26 -1 pale"
+    ],
+    "Lamp end -26 +1": [
+      "Lamp end -26 +1 hardware",
+      "Lamp end -26 +1 pale"
+    ],
+    "Lamp end +26 -1": [
+      "Lamp end +26 -1 hardware",
+      "Lamp end +26 -1 pale"
+    ],
+    "Lamp end +26 +1": [
+      "Lamp end +26 +1 hardware",
+      "Lamp end +26 +1 pale"
+    ],
+    "corner parapet -1-1": [
+      "corner parapet -1-1 stone",
+      "corner parapet -1-1 arch",
+      "corner parapet -1-1 paving"
+    ],
+    "corner parapet -1+1": [
+      "corner parapet -1+1 stone",
+      "corner parapet -1+1 arch",
+      "corner parapet -1+1 paving"
+    ],
+    "corner parapet +1-1": [
+      "corner parapet +1-1 stone",
+      "corner parapet +1-1 arch",
+      "corner parapet +1-1 paving"
+    ],
+    "corner parapet +1+1": [
+      "corner parapet +1+1 stone",
+      "corner parapet +1+1 arch",
+      "corner parapet +1+1 paving"
+    ],
+    "envelope": [
+      "Block -10 river face",
+      "Block -11 river face",
+      "Block +10 river face",
+      "Block +11 river face"
+    ],
+    "Block -10": [
+      "Block -10 Block -10 trim",
+      "Block -10 Block -10 glass"
+    ],
+    "context": [
+      "Block -10 body",
+      "Block -10 roof",
+      "Block -11 body",
+      "Block -11 roof",
+      "Block +10 body",
+      "Block +10 roof",
+      "Block +11 body",
+      "Block +11 roof"
+    ],
+    "Block -10 side windows": [
+      "Block -10 side windows dark"
+    ],
+    "Block -11": [
+      "Block -11 Block -11 trim",
+      "Block -11 Block -11 glass"
+    ],
+    "Block -11 side windows": [
+      "Block -11 side windows dark"
+    ],
+    "Block +10": [
+      "Block +10 Block +10 trim",
+      "Block +10 Block +10 glass"
+    ],
+    "Block +10 side windows": [
+      "Block +10 side windows dark"
+    ],
+    "Block +11": [
+      "Block +11 Block +11 trim",
+      "Block +11 Block +11 glass"
+    ],
+    "Block +11 side windows": [
+      "Block +11 side windows dark"
+    ],
+    "vehicles": [
+      "vehicles red",
+      "vehicles glass",
+      "vehicles dark",
+      "vehicles car",
+      "vehicles van"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-19T09:11:56.399608+00:00",
+  "delivery_and_render_seconds": 5047.642710521999,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

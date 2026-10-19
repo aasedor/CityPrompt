@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-stone-arch-road-bridge",
+  "variant_id": "clay-stone-arch-road-bridge-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "urban_vehicular_bridge/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-vehicular-bridge/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1312745,
+      "sha256": "73a50019577d60995e107a2e5e936e2381819fc33b81d39b0d38c99c7aaf79a8"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-vehicular-bridge/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 901141,
+      "sha256": "5ec846317e5ee14f4966b1a940f2abbff9fb313f58bf0c0eac48c941182af535"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-vehicular-bridge/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 813607,
+      "sha256": "21fb51dbea07f7ed8f6cbca5141985c088bb033db2665499b2ac5b9f85f6e041"
+    }
+  ]
+}
