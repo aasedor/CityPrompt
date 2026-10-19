@@ -23,7 +23,7 @@ ROAD_Y0, ROAD_Y1 = -17.0, 6.0                   # the east-west road
 NS_X0, NS_X1 = -22.0, -8.0                      # the north-south street
 T = .3
 EPS = .002
-PALETTE = dict(orange=(.94, .31, .08), deck=(.30, .30, .31), lane=(.94, .94, .92), under=(.74, .73, .70),
+PALETTE = dict(orange=(.80, .16, .045), deck=(.30, .30, .31), lane=(.94, .94, .92), under=(.74, .73, .70),
     concrete=(.72, .71, .68), asphalt=(.25, .25, .26), paving=(.60, .57, .54), kerb=(.70, .69, .66),
     grass=(.38, .48, .24), planting=(.30, .44, .20), tree=(.28, .44, .18), timber=(.42, .32, .22), soil=(.30, .25, .18),
     brick=(.52, .30, .22), brick2=(.60, .36, .26), roof=(.24, .24, .26), tile=(.70, .34, .20), trim=(.90, .89, .86),
@@ -511,7 +511,7 @@ def columns():
     return out
 
 
-def tapered(V, F, p0, p1, r0, r1, segs=12):
+def tapered(V, F, p0, p1, r0, r1, segs=20):
     """A round tapered rod from p0 (radius r0) to p1 (radius r1), capped, appended to one mesh."""
     ax = [p1[i] - p0[i] for i in range(3)]
     L = math.sqrt(sum(v * v for v in ax)); ax = [v / L for v in ax]
@@ -530,16 +530,41 @@ def tapered(V, F, p0, p1, r0, r1, segs=12):
     F.append(tuple(o + k for k in range(segs - 1, -1, -1))); F.append(tuple(o + segs + k for k in range(segs)))
 
 
-def corrugated(name, P, off_back, off_front, z0, z1, d=.12):
-    """Close vertical slats read as a folded orange sheet on the inner face of a parapet."""
+def bar_screen(V, F, P, c, s, z0, z1, sp=.16, w=.045, d=.03):
+    """Close vertical orange bars centred at offset c (left normal) between z0 and z1: each bar a front and a back
+    face (its ends sink into the bottom rail and the cap, so no top or bottom face shows), with open gaps between."""
+    for x, y, z, nx, ny, _ in resample(P, sp)[1:-1]:
+        tx, ty = ny, -nx
+        for o in (c + s * d, c - s * d):
+            k = len(V)
+            V += [(x + nx * o - tx * w, y + ny * o - ty * w, z + z0), (x + nx * o + tx * w, y + ny * o + ty * w, z + z0),
+                  (x + nx * o + tx * w, y + ny * o + ty * w, z + z1), (x + nx * o - tx * w, y + ny * o - ty * w, z + z1)]
+            F.append((k, k + 1, k + 2, k + 3))
+
+
+def round_rail(name, P, c, hw, zc, hh, role='orange', module='parapets', n=10):
+    """A smooth rounded top rail: an elliptical section (half-width hw, half-height hh) centred at offset c and
+    zc above the deck, lofted along P with smooth shading so the curve shows no chord facets."""
+    rings = []
+    for x, y, z, nx, ny, _ in P:
+        rings.append([(x + nx * (c + hw * math.cos(2 * math.pi * k / n)), y + ny * (c + hw * math.cos(2 * math.pi * k / n)),
+                       z + zc + hh * math.sin(2 * math.pi * k / n)) for k in range(n)])
+    obj = loft(name, rings, role, module, closed=False)
+    for f in obj.data.polygons[:-2]:
+        f.use_smooth = True
+
+
+def flat_quads(name, quads, role, module):
+    """Road and deck markings as single top faces (no hidden sides)."""
     V, F = [], []
-    for k, (x, y, z, nx, ny, _) in enumerate(resample(P, d)):
-        o = off_front if k % 2 else off_back
-        V += [(x + nx * o, y + ny * o, z + z0), (x + nx * o, y + ny * o, z + z1)]
-        if k:
-            a = 2 * (k - 1)
-            F.append((a, a + 2, a + 3, a + 1))
-    C.mesh(name, V, F, 'orange', 'parapets')
+    for q in quads:
+        k = len(V); V += list(q); F.append((k, k + 1, k + 2, k + 3))
+    if F:
+        C.mesh(name, V, F, role, module)
+
+
+def rect(cx, cy, z, sx, sy):
+    return [(cx - sx / 2, cy - sy / 2, z), (cx + sx / 2, cy - sy / 2, z), (cx + sx / 2, cy + sy / 2, z), (cx - sx / 2, cy + sy / 2, z)]
 
 
 def flyover():
@@ -547,22 +572,28 @@ def flyover():
     h = DW / 2
     ribbon('Deck girder', P, -h - .07, h + .07, -.80, -.04, 'under', 'deck')
     ribbon('Deck surface', P, -h - .06, h + .06, -.08, 0.0, 'deck', 'deck')
+    # Each edge: a smooth orange fascia band wrapping the deck edge (its foot above the pale soffit), a reveal, then
+    # a screen of close vertical orange bars between a bottom rail and a rounded top rail.
+    BV, BF = [], []
     for s, nm in ((-1, 'south'), (1, 'north')):
-        back, out = s * (h + .05), s * (h + .13)
-        lo, hi = (out, back) if s < 0 else (back, out)
-        ribbon(f'Parapet screen {nm}', P, lo, hi, -.83, PH - .06, 'orange', 'parapets')                 # one orange skin from fascia to cap
-        ribbon(f'Parapet cap {nm}', P, lo - (.02 if s < 0 else .025), hi + (.025 if s < 0 else .02), PH - .07, PH, 'orange', 'parapets')
-        corrugated(f'Parapet slats {nm}', P, back, s * (h + .015), .02, PH - .07)
+        lo, hi = sorted((s * (h + .05), s * (h + .19)))
+        ribbon(f'Fascia {nm}', P, lo, hi, -.66, -.06, 'orange', 'parapets')
+        lo, hi = sorted((s * h, s * (h + .14)))
+        ribbon(f'Parapet bottom rail {nm}', P, lo, hi, -.05, .12, 'orange', 'parapets')
+        bar_screen(BV, BF, P, s * (h + .07), s, .08, PH - .06)
+        round_rail(f'Parapet top rail {nm}', P, s * (h + .07), .095, PH - .05, .05)
+    C.mesh('Parapet bars', BV, BF, 'orange', 'parapets')
     # Dashed white centre line on the deck and on the at-grade paths: 2 m dashes every 5 m.
-    b = Batch()
+    quads = []
     for run in (P, west, east):
         if len(run) < 2:
             continue
         pts = resample(run, 1.0)
         for i in range(0, len(pts) - 2, 5):
             a, c = pts[i], pts[i + 2]
-            b.beam('lane', (a[0], a[1], a[2] + .006), (c[0], c[1], c[2] + .006), .14, .012)
-    b.flush('centre line')
+            quads.append([(a[0] - a[3] * .07, a[1] - a[4] * .07, a[2] + .006), (c[0] - c[3] * .07, c[1] - c[4] * .07, c[2] + .006),
+                          (c[0] + c[3] * .07, c[1] + c[4] * .07, c[2] + .006), (a[0] + a[3] * .07, a[1] + a[4] * .07, a[2] + .006)])
+    flat_quads('Centre line', quads, 'lane', 'deck')
     # At-grade cycle paths beyond the ramp feet, with low kerbs.
     for nm, run in (('west', west), ('east', east)):
         if len(run) < 2:
@@ -580,11 +611,20 @@ def flyover():
             tapered(V, F, (fx, fy, 0.0), (fx, fy, soffit + .08), .34, .26)
             continue
         zf = soffit - min(2.3, .45 * soffit)
-        tapered(V, F, (fx, fy, 0.0), (fx, fy, zf + .25), .42, .31, 16)
+        tapered(V, F, (fx, fy, 0.0), (fx, fy, zf + .25), .42, .31)
         for side in (-1, 1):
-            oa = max(-DW / 2 + .5, min(DW / 2 - .5, o + side * 1.7))
-            tapered(V, F, (fx, fy, zf), (x + nx * oa, y + ny * oa, soffit + .1), .26, .34, 14)
-    C.mesh('Y-columns', V, F, 'concrete', 'columns')
+            oa = max(-DW / 2 + .9, min(DW / 2 - .9, o + side * 1.7))
+            p0, p1 = (fx, fy, zf), (x + nx * oa, y + ny * oa, soffit + .1)
+            at = lambda zz: tuple(p0[i] + (p1[i] - p0[i]) * (zz - p0[2]) / (p1[2] - p0[2]) for i in range(3))
+            tapered(V, F, p0, at(soffit + .45), .26, .35)                   # sunk well into the deck: no rim below the soffit
+            ra = .26 + (.35 - .26) * (soffit - .55 - p0[2]) / (soffit + .45 - p0[2])
+            dx, dy, dz = (p1[i] - p0[i] for i in range(3))
+            sn = math.hypot(dx, dy) / math.sqrt(dx * dx + dy * dy + dz * dz)      # tilt of the arm from vertical
+            rb = min(.5, .34 / max(sn, .01))
+            tapered(V, F, at(soffit - .55), at(soffit + .06 + rb * sn), ra - .01, rb)  # flared head; its top face wholly inside the deck
+    obj = C.mesh('Y-columns', V, F, 'concrete', 'columns')
+    for f in obj.data.polygons:
+        f.use_smooth = len(f.vertices) == 4
 
 
 def streets():
@@ -599,21 +639,23 @@ def streets():
     for x0, x1 in ((-36.0, -26.0), (40.0, 58.0), (118.0, 134.0)):              # low shrub masses on the median under the ribbon
         for k in range(int((x1 - x0) / 2.2)):
             b.box('tree', x0 + 1.1 + k * 2.2, -9.0 + (.25 if k % 2 else -.25), .55, 1.8, 1.5, .7)
-    for k in range(-70, 71):                                                  # lane lines
+    b.flush('road beds')
+    marks = []
+    for k in range(-70, 71):                                                  # lane lines, as flat top faces
         x = k * 3.2
         if not (NS_X0 - 1 < x < NS_X1 + 1) and abs(x) < GX - 1:
             for y in (-13.0, -4.0, 1.5):
-                b.box('lane', x, y, .043, 1.6, .14, .006)
+                marks.append(rect(x, y, .046, 1.6, .14))
     for k in range(-34, 35):
         y = k * 3.2
-        if y > ROAD_Y1 + 1 or y < ROAD_Y0 - 1:
-            b.box('lane', (NS_X0 + NS_X1) / 2, y, .043, .14, 1.6, .006)
+        if (y > ROAD_Y1 + 1 or y < ROAD_Y0 - 1) and abs(y - (ROAD_Y1 + 2.6)) > 2.6 and abs(y - (ROAD_Y0 - 2.6)) > 2.6:
+            marks.append(rect((NS_X0 + NS_X1) / 2, y, .046, .14, 1.6))         # stopping clear of the crossings
     for i in range(7):                                                        # zebra crossings
-        b.box('lane', NS_X0 + 1.5 + i * 1.8, ROAD_Y1 + 2.6, .043, .8, 3.0, .006)
-        b.box('lane', NS_X0 + 1.5 + i * 1.8, ROAD_Y0 - 2.6, .043, .8, 3.0, .006)
+        marks.append(rect(NS_X0 + 1.5 + i * 1.8, ROAD_Y1 + 2.6, .046, .8, 3.0))
+        marks.append(rect(NS_X0 + 1.5 + i * 1.8, ROAD_Y0 - 2.6, .046, .8, 3.0))
     for i in range(10):
-        b.box('lane', 72.0, ROAD_Y0 + 1.4 + i * 2.2, .043, 3.0, .9, .006)
-    b.flush('road markings')
+        marks.append(rect(72.0, ROAD_Y0 + 1.4 + i * 2.2, .046, 3.0, .9))
+    flat_quads('Road markings', marks, 'lane', 'site')
     P = path()
     for x, y in TREES:                                                        # no street tree grows through the ribbon
         if all(math.hypot(x - p[0], y - p[1]) > DW / 2 + 3.0 for p in P):
@@ -622,19 +664,20 @@ def streets():
 
 def context():
     """Brick blocks on the four corners with proud-framed windows and sills; roofs read from the top view."""
-    def windows(b, face, axis, lo, hi, floors, sign, w=1.3, hh=1.6, pitch=3.2, big=False):
+    def windows(b, face, axis, lo, hi, floors, sign, w=1.3, hh=1.6, pitch=3.2, big=False, frames=None):
         n = int((hi - lo) / pitch)
         for k in range(floors):
             for j in range(n):
                 u = lo + pitch / 2 + j * pitch
                 z = 1.0 + k * 3.4
                 ww, wh = (w * 1.5, hh * 1.4) if big else (w, hh)
+                fw, fh, fp = (ww + .24) / 2, (wh + .24) / 2, face + sign * .06       # the proud frame's face (its sides never read)
                 if axis == 'y':                                                  # a proud frame, the pane standing forward of it, a sill
-                    b.box('trim', u, face + sign * .03, z + wh / 2, ww + .24, .06, wh + .24)
+                    frames.append([(u - fw, fp, z + wh / 2 - fh), (u + fw, fp, z + wh / 2 - fh), (u + fw, fp, z + wh / 2 + fh), (u - fw, fp, z + wh / 2 + fh)])
                     b.box('glass' if big else 'dark', u, face + sign * .07, z + wh / 2, ww, .04, wh)
                     b.box('trim', u, face + sign * .1, z - .1, ww + .34, .2, .1)
                 else:
-                    b.box('trim', face + sign * .03, u, z + wh / 2, .06, ww + .24, wh + .24)
+                    frames.append([(fp, u - fw, z + wh / 2 - fh), (fp, u + fw, z + wh / 2 - fh), (fp, u + fw, z + wh / 2 + fh), (fp, u - fw, z + wh / 2 + fh)])
                     b.box('glass' if big else 'dark', face + sign * .07, u, z + wh / 2, .04, ww, wh)
                     b.box('trim', face + sign * .1, u, z - .1, .2, ww + .34, .1)
     blocks = (('Office north-east', 2.0, 72.0, 18.0, 78.0, 24.0, 'brick', 'flat', True),
@@ -652,13 +695,14 @@ def context():
         else:
             pitched_roof(f'{name} roof', x0, x1, y0, y1, h, 6.5, hip_w=True, hip_e=True, axis='x', ov=.3,
                          role='roof' if roof == 'slate' else 'tile', module='context')
-        b = Batch()
+        b, frames = Batch(), []
         floors = int((h - 1.5) / 3.4)
         face = y0 if y0 > 0 else y1
-        windows(b, face, 'y', x0, x1, floors, -1 if y0 > 0 else 1, big=big)
+        windows(b, face, 'y', x0, x1, floors, -1 if y0 > 0 else 1, big=big, frames=frames)
         xf = x0 if x0 > 0 else x1                                             # the face towards the north-south street
-        windows(b, xf, 'x', y0, y1, floors, -1 if x0 > 0 else 1, big=big)
+        windows(b, xf, 'x', y0, y1, floors, -1 if x0 > 0 else 1, big=big, frames=frames)
         b.flush(f'{name} windows')
+        flat_quads(f'{name} window frames', frames, 'trim', 'context')
 
 
 def build():
