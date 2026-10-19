@@ -619,7 +619,8 @@ def house(label, x_face, ya, yb, base, h, facing, door=True, deep=7.0, extra=Non
     m = Merge(r)
     for hh in rhs:
         framed(m, r, hh, cols=2, rows=2, inset=.12, occupied='house', frame='blue', lite=True)
-    m.box('stone', (rl + rh) / 2, -.04, base - .05, rh - rl - 2 * T, .08, .1)                  # floor-line band: one house per base
+    if base > .3:
+        m.box('stone', (rl + rh) / 2, -.04, base - .05, rh - rl - 2 * T, .08, .1)              # floor-line band: one house per base
     m.flush(label + ' rear')
     xa, xb = (bx0 + T, bx1) if facing > 0 else (bx0, bx1 - T)
     C.box(f'{label} base', ((xa + xb) / 2, (ya + yb) / 2, (base - .02) / 2), (xb - xa, yb - ya, base - .02), 'white', 'houses', 0)
