@@ -1,0 +1,295 @@
+{
+  "candidate": "clay-cable-stayed-cycle-ring-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 117,
+    "vertices": 21834,
+    "polygons": 33776,
+    "triangles": 33776,
+    "path": "clay-cable-stayed-cycle-ring-clay-v001-authoring.blend",
+    "bytes": 3377436,
+    "sha256": "55cdbfb29ec9948bac3051f533056ee98a263fdb7294b7a9f4f2f721756cbbe7"
+  },
+  "runtime": {
+    "path": "clay-cable-stayed-cycle-ring-clay-v001.glb",
+    "bytes": 1849316,
+    "sha256": "9f134cd1a6c7c98cbac5b765d605268296c8169788197837a6f957d6b471ee31",
+    "meshes": 18,
+    "materials": 18,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 18,
+    "vertices": 21834,
+    "polygons": 33776,
+    "triangles": 33776
+  },
+  "original_bounds_m": [
+    [
+      -112.0,
+      -112.0,
+      0.0
+    ],
+    [
+      112.0,
+      112.0,
+      60.0
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -112.0,
+      -112.0,
+      0.0
+    ],
+    [
+      112.0,
+      112.0,
+      60.0
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 72.0,
+    "depth": 130.0,
+    "height": 60.0
+  },
+  "native_dimensions_m": {
+    "width": 224.0,
+    "depth": 224.0,
+    "height": 60.0
+  },
+  "native_bottom_center_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "white": 5,
+    "red": 2,
+    "rail": 1,
+    "cable": 1,
+    "steel": 4,
+    "concrete": 3,
+    "asphalt": 3,
+    "lane": 2,
+    "cycle": 8,
+    "paving": 8,
+    "grass": 4,
+    "planting": 24,
+    "timber": 32,
+    "brick": 2,
+    "brick2": 3,
+    "roof": 3,
+    "trim": 7,
+    "dark": 5
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/pylon_head.png",
+    "renders/cable_fan.png",
+    "renders/ring_deck.png",
+    "renders/ramp_landing.png",
+    "renders/column_support.png",
+    "renders/intersection_under.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Circular cycle bridge on columns and radial cables from a central pylon over a road intersection; ramp to the street",
+      "box": [
+        -36.0,
+        36.0,
+        -94.0,
+        36.0
+      ]
+    }
+  ],
+  "opening_sections": [],
+  "authoring_modules": {
+    "street": [
+      "North-south road",
+      "East-west road -1",
+      "East-west road +1",
+      "NS cycle path -1-1",
+      "NS footway -1-1",
+      "EW cycle path -1-1",
+      "EW footway -1-1",
+      "NS cycle path -1+1",
+      "NS footway -1+1",
+      "EW cycle path -1+1",
+      "EW footway -1+1",
+      "NS cycle path +1-1",
+      "NS footway +1-1",
+      "EW cycle path +1-1",
+      "EW footway +1-1",
+      "NS cycle path +1+1",
+      "NS footway +1+1",
+      "EW cycle path +1+1",
+      "EW footway +1+1"
+    ],
+    "plots": [
+      "Plot -1-1",
+      "Plot -1+1",
+      "Plot +1-1",
+      "Plot +1+1"
+    ],
+    "road markings": [
+      "road markings lane"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020",
+      "Street tree trunk.007",
+      "Street tree branch.021",
+      "Street tree branch.022",
+      "Street tree branch.023"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023"
+    ],
+    "context": [
+      "Flats north-east",
+      "Flats north-east parapet cap",
+      "Flats south-east",
+      "Flats south-east parapet cap",
+      "Houses north-west",
+      "Houses north-west roof",
+      "Houses south-west",
+      "Houses south-west roof",
+      "Houses north",
+      "Houses north roof"
+    ],
+    "Flats north-east windows": [
+      "Flats north-east windows dark",
+      "Flats north-east windows trim"
+    ],
+    "Flats south-east windows": [
+      "Flats south-east windows dark",
+      "Flats south-east windows trim"
+    ],
+    "Houses north-west windows": [
+      "Houses north-west windows dark",
+      "Houses north-west windows trim"
+    ],
+    "Houses south-west windows": [
+      "Houses south-west windows dark",
+      "Houses south-west windows trim"
+    ],
+    "Houses north windows": [
+      "Houses north windows dark",
+      "Houses north windows trim"
+    ],
+    "ring columns": [
+      "ring columns concrete"
+    ],
+    "ring": [
+      "Ring girder",
+      "Ring cycle surface",
+      "Ring inner kerb",
+      "Ring outer kerb"
+    ],
+    "deck markings": [
+      "deck markings lane"
+    ],
+    "ramp": [
+      "Ramp girder",
+      "Ramp cycle surface"
+    ],
+    "ramp columns": [
+      "ramp columns concrete"
+    ],
+    "railings": [
+      "railings rail"
+    ],
+    "pylon": [
+      "Pylon island",
+      "Pylon island kerb",
+      "Pylon mast",
+      "Pylon base",
+      "Cable collar"
+    ],
+    "cables": [
+      "cables cable",
+      "cables steel"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-19T07:04:38.561335+00:00",
+  "delivery_and_render_seconds": 4681.248553901998,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

@@ -67,3 +67,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (v002 reworks these six)
+
+1. P0: the ramp's ground landing is never shown; ramp_landing shows only the rising mid-ramp and every other view loses the ramp still raised.
+2. P1: the ring's outer edge kerb or bottom rail runs straight across the ramp entrance, a raised bar between ramp and ring.
+3. P1: both ring balustrades are open bar fences; the source shows glazed infill panels, and glass_close shows no glass.
+4. P1: the front camera sits on the near deck at rail height, losing the near arc fascia, column and ramp the source front shows.
+5. P1: the pylon tip leaves the top edge of every whole-envelope view; front_corner also cuts the cable collar.
+6. P1: the gable triangles of the context houses render pure black (missing faces or inverted normals).
