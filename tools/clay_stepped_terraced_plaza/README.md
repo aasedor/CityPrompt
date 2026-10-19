@@ -1,7 +1,7 @@
 # Stepped terraced plaza (RLASM v6.1 architectural clay)
 
 Candidate G9 of wave G of 2026-10-18, one of ten catalogue types that have quality reference images but
-no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **candidate under review**. Nothing here is keeper-approved,
+no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **stopped at v003 by the stopping rule (the bougainvillea finding survived two targeted fixes); v003 is the candidate**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -77,10 +77,8 @@ NOT TESTED. The model sits on a level base. Shared terrain registration is not a
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (the v003 rework targets all five)
+## Open blockers after v003 (stopped)
 
-- P1 #1: both bougainvilleas still read as balloon clusters with no drape or green foliage; the west plant sits over a blank setback wall instead of the door-and-window house front (surviving one targeted fix).
-- P1 #2: black voids where the low west parapet meets the terrace riser below, on both lowest west terraces.
-- P1 #3: the belfry stage reads as a rectangular slot with thin arch shells and open spandrels; the source has a tiered arcaded bell-gable (partly fixed).
-- P1 #4: eight uniform deep levels per side against about twelve shallower ones in the source; no mid cross-landing or stair offset; the strip too narrow and long (plan about 2.6 against 1.8).
-- P1 #5: the chapel stands inside the strip on the top landing; the source puts it outside the strip, west of and behind the upper west houses.
+- P1 #1: both bougainvilleas still read as loose clusters of faceted balloons with no canopy draping from the roof edge; a west spray floats on the blank south wall, the trunk is a bare pole over the door jamb, and the east plant spans about one terrace against about four (surviving two targeted fixes).
+- P1 #2: the foot of the strip does not widen west; the low west parapet runs on the bougainvillea house's east face line, 20-30% of the strip width east of the source, and the diagonal stair is a short wedge beside a new south-west house.
+- P1 #3: the pergola posts stand on the east seating terraces among the pots and the pergola spans the parapet and side stair; the source puts it on an east house beyond the side stair; a black void at the head of one post.
