@@ -44,7 +44,7 @@ def manifest(version):
         ('rear_north', (8.0, 28.8, 11.5), (0.0, 4.0, 5.5), 28)])
     for c in cams:                       # the locked front stands on the ice by the east boards at the south end, looking NNW
         if c['name'] == 'front':
-            c['location'] = (9.0, -14.0, 2.2); c['target'] = (7.6, 14.0, 3.9); c['lens'] = 20; c['whole'] = False
+            c['location'] = (9.0, -14.0, 2.2); c['target'] = (7.6, 14.0, 6.6); c['lens'] = 19; c['whole'] = False   # tilted up about 5 deg: tree, star and sky in frame
         elif c['name'] == 'aerial':                                            # steep enough that the near frontage clears the near chalet row
             c.update(location=(34.0, -42.0, 70.0), target=(0.0, -1.0, 0.0), lens=42)
         elif c['name'] == 'front_corner':                                      # the locked oblique looks north-east from high in the south-west
@@ -405,6 +405,34 @@ def rink_outline(rx, ry, rr, n=6):
     return pts
 
 
+def ring_tube(b, role, pts, zc, w, h, sides):
+    """Closed tube swept round a closed counter-clockwise outline with mitred joints, so the bends round the rink
+    corners leave no gaps. Cross-section: rectangle (sides=4) or an ellipse of `sides` points, w wide and h high."""
+    V, F = b.g.setdefault(role, ([], []))
+    o, n = len(V), len(pts)
+    if sides == 4:
+        sec = [(-w / 2, -h / 2), (w / 2, -h / 2), (w / 2, h / 2), (-w / 2, h / 2)]
+    else:
+        sec = [(w / 2 * math.cos(2 * math.pi * k / sides), h / 2 * math.sin(2 * math.pi * k / sides)) for k in range(sides)]
+    for i in range(n):
+        (px, py), (qx, qy), (rx, ry) = pts[i - 1], pts[i], pts[(i + 1) % n]
+        def nrm(ax, ay, bx, by):
+            L = math.hypot(bx - ax, by - ay)
+            return (by - ay) / L, -(bx - ax) / L                                   # outward for a counter-clockwise ring
+        n1, n2 = nrm(px, py, qx, qy), nrm(qx, qy, rx, ry)
+        mx, my = n1[0] + n2[0], n1[1] + n2[1]
+        L = math.hypot(mx, my); mx, my = mx / L, my / L
+        sc = 1.0 / max(.5, mx * n1[0] + my * n1[1])                              # mitre length
+        for (u, v) in sec:
+            V.append((qx + mx * u * sc, qy + my * u * sc, zc + v))
+    m = len(sec)
+    for i in range(n):
+        a, c = o + i * m, o + ((i + 1) % n) * m
+        for k in range(m):
+            k2 = (k + 1) % m
+            F.append((a + k, c + k, c + k2, a + k2))
+
+
 def ngon(b, role, cx, cy, z0, z1, r, n=12, cone=False):
     V, F = b.g.setdefault(role, ([], []))
     o = len(V)
@@ -441,7 +469,6 @@ def ice_and_boards():
         L = math.hypot(cx - ax, cy - ay)
         b.beam('white', (ax, ay, .58), (cx, cy, .58), .12 + .006 * (j % 2), .92, ext=.02)        # alternate widths: no shared planes     # opaque white board to 1.04 m
         b.beam('glass', (ax, ay, 1.34), (cx, cy, 1.34), .03, .6, ext=.0)
-        b.beam('timber', (ax, ay, 1.7), (cx, cy, 1.7), .26, .1, ext=.03)                          # timber handrail
         n = max(1, int(L / 2.0))
         for i in range(n):
             px, py = ax + (cx - ax) * i / n, ay + (cy - ay) * i / n
@@ -449,7 +476,6 @@ def ice_and_boards():
         # Lush garland laid along the top of the handrail, reading from the ice and the deck, with red baubles
         # and warm lights on both faces.
         nx, ny = (cy - ay) / L, -(cx - ax) / L                                                    # outward normal (ring is counter-clockwise)
-        b.beam('planting', (ax, ay, 1.86), (cx, cy, 1.86), .34 + .01 * (j % 2), .24, ext=.06)
         k = max(1, int(L / .55))
         for i in range(k):
             px, py = ax + (cx - ax) * (i + .5) / k, ay + (cy - ay) * (i + .5) / k
@@ -458,6 +484,8 @@ def ice_and_boards():
                 RAIL_LIGHTS.append((px + s * nx * .19, py + s * ny * .19, 1.95))
             else:
                 RAIL_BAUBLES.append((px + s * nx * .2, py + s * ny * .2, 1.8))
+    ring_tube(b, 'timber', out, 1.7, .26, .1, 4)                                                  # timber handrail, one mitred loop
+    ring_tube(b, 'planting', out, 1.86, .34, .24, 8)                                              # garland laid on the rail, one swept loop
     b.flush('boards')
     balls('Handrail garland baubles', 'flower', RAIL_BAUBLES, .075, 6, 4)
     balls('Handrail garland lights', 'pale', RAIL_LIGHTS, .04, 4, 2)
@@ -586,12 +614,17 @@ def fir(b, tx, ty):
     balls('Tree baubles red', 'flower', red, .15, 8, 5, small=[p for p in red if p[2] > zb0 + 8.6], rs=.11)
     balls('Tree baubles gold', 'gold', gold, .15, 8, 5, small=[p for p in gold if p[2] > zb0 + 8.6], rs=.11)
     balls('Tree lights', 'pale', lights, .055, 4, 2)
-    pts = []
-    for k in range(10):                                                         # five-point star, face to the south
+    # Five-point star seated on the leader tip by a short gold stem: two crossed closed star prisms (one facing
+    # north-south, one east-west) so it reads as a solid star from every side, its lowest inner point on the stem.
+    zc = top + .38
+    C.rod('Tree star stem', (tx, ty, top - .25), (tx, ty, zc), .07, 'gold', 'tree island', 10)
+    star = []
+    for k in range(10):
         a = math.pi / 2 + math.pi * k / 5
         rr = .55 if k % 2 == 0 else .22
-        pts.append((tx + rr * math.cos(a), top + .5 + rr * math.sin(a)))
-    C.prism('Tree star', pts, 'y', ty - .06, ty + .06, 'gold', 'tree island')
+        star.append((rr * math.cos(a), zc + rr * math.sin(a)))
+    C.prism('Tree star', [(tx + u, z) for (u, z) in reversed(star)], 'y', ty - .08, ty + .08, 'gold', 'tree island')
+    C.prism('Tree star cross', [(ty + u, z) for (u, z) in star], 'x', tx - .08, tx + .08, 'gold', 'tree island')
 
 
 def plate(name, axis, eave, ridge, lo, hi, t=.14, role='snow', module='chalets'):
