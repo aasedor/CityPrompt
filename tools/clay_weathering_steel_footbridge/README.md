@@ -67,3 +67,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (v002 reworks these six)
+
+1. P1: a separate hexagonal gazebo with its own posts, ring and dark deck sits at the bend; the sources show one sharp mitred V with the chords running to a single apex node and roof members radiating from it.
+2. P1: the V is rotated against the road: the crossing arm meets the road at about 50 degrees and the land arm splays about 45 degrees away; the source has about 70 degrees and a land arm 20-25 degrees off the road along the kerb.
+3. P1: every roof bay has a full X; the sources show one alternating diagonal per bay (zig-zag).
+4. P1: the infill is a heavy square bar grid; the source is a fine diamond-weave stainless cable net.
+5. P1: members cut through each other in the end panel by the landing tower (two diagonals in one plane, a diagonal, end post and portal diagonal stacked).
+6. P1: in left_side the foreground brick block hides about 40-45% of the bridge.

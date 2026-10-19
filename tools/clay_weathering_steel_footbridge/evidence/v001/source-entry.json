@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-weathering-steel-footbridge",
+  "variant_id": "clay-weathering-steel-footbridge-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "urban_pedestrian_footbridge/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-pedestrian-footbridge/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1431655,
+      "sha256": "05d426a55b9f63d2a0d997eec0745e2ebccd4e75359d3948939861600d75b3a7"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-pedestrian-footbridge/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 946369,
+      "sha256": "d914f7e6fcafd8c85e5787177727ff9754d537dce5d283dc3655f1051ed54b87"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-pedestrian-footbridge/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 927790,
+      "sha256": "182aba8a25be70fb6924b4c6b92467fc0dd26ba3710bbabed8ebbbe74c092771"
+    }
+  ]
+}

@@ -1,0 +1,451 @@
+{
+  "candidate": "clay-weathering-steel-footbridge-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-weathering-steel-footbridge",
+  "variant_id": "clay-weathering-steel-footbridge-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "urban_pedestrian_footbridge/variant_0 (Weathering Steel Truss)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 56.0,
+      "depth": 38.0,
+      "height": 14.8
+    },
+    "observed_storeys": 0,
+    "storey_programme": "street option: a two-span truss footbridge over a city street; the blocks are context",
+    "plan": "two straight Warren-truss spans of about 33 and 35 m meeting at a bend (a V in plan, apex north, top view); the east span crosses a 28 m street with sidewalks",
+    "section_m": {
+      "carriageway": [
+        -9.0,
+        9.0
+      ],
+      "sidewalks": 5.0,
+      "deck_top": 7.0,
+      "truss_height": 3.4,
+      "truss_lines": [
+        -2.0,
+        2.0
+      ]
+    },
+    "facade": "rust-orange Cor-Ten Warren trusses with bold diagonals, top chords with cross ties and bracing, perforated rust-brown deck, grey cable-mesh infill and handrail, brick stair towers, steel apex columns",
+    "levels_m": [
+      0.0,
+      7.0,
+      10.4
+    ],
+    "inferred": "the tower interiors, the far streets and the blocks are context"
+  },
+  "roof_contract": {
+    "type": "open truss, no roof; flat roofs on the towers and blocks",
+    "datum_m": 7.0,
+    "crowns_m": [
+      10.700000000000001
+    ]
+  },
+  "identity_contract": {
+    "owner": "rust-orange Cor-Ten Warren truss footbridge with mesh infill over a road between brick buildings"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: rust-orange weathering steel, rust-brown deck, grey mesh, red brick, pale roofs, glass office, dark asphalt with white and yellow lines",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 0,
+    "ground": "a footbridge over the street; the street, sidewalks and towers beneath"
+  },
+  "street_contract": {
+    "kind": "fixed_native_section",
+    "width_m": 28.0,
+    "axis": "y",
+    "junction_finish": "concrete",
+    "bands": [
+      "sidewalk",
+      "carriageway",
+      "sidewalk"
+    ]
+  },
+  "contact_contract": [
+    "Street and sidewalks at grade",
+    "Spans on the towers and the apex columns",
+    "Towers from grade"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -5.482266643153889,
+        -15.333568869867293,
+        9.5
+      ],
+      "target": [
+        1.5597617531553887,
+        -6.883134794296158,
+        8.6
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -12.0,
+        -40.0,
+        26.0
+      ],
+      "target": [
+        -10.0,
+        0.0,
+        7.0
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        30.0,
+        -40.0,
+        34.0
+      ],
+      "target": [
+        -4.0,
+        -6.0,
+        7.0
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        -8.0,
+        -6.0,
+        90.0
+      ],
+      "target": [
+        -8.0,
+        -5.999,
+        0.0
+      ],
+      "ortho_scale": 62.0,
+      "whole": false
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -60.0,
+        -2.0,
+        14.0
+      ],
+      "target": [
+        -10.0,
+        -6.0,
+        7.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        45.0,
+        -8.0,
+        14.0
+      ],
+      "target": [
+        0.0,
+        -6.0,
+        7.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        -6.0,
+        40.0,
+        26.0
+      ],
+      "target": [
+        -6.0,
+        -6.0,
+        7.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        -24.0,
+        40.0,
+        34.0
+      ],
+      "target": [
+        -6.0,
+        -6.0,
+        7.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        11.0,
+        -2.0,
+        1.7
+      ],
+      "target": [
+        1.5597617531553887,
+        -6.883134794296158,
+        8.5
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -1.0,
+        -1.0,
+        10.5
+      ],
+      "target": [
+        -11.5,
+        4.0,
+        8.5
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -2.92152904449597,
+        -4.450434075571134,
+        8.5
+      ],
+      "target": [
+        0.4074298337593254,
+        -3.579783292027441,
+        7.8
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "truss_node",
+      "location": [
+        -1.5131233652341143,
+        3.4878524802684163,
+        11.6
+      ],
+      "target": [
+        -2.5374184046972816,
+        -0.8654014374500465,
+        10.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "mesh_infill",
+      "location": [
+        3.2242411922830376,
+        -9.571909272886971,
+        8.5
+      ],
+      "target": [
+        6.521190850555109,
+        -8.739669553323148,
+        7.7
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "deck_walk",
+      "location": [
+        -8.043004241811808,
+        1.1191702015098408,
+        8.6
+      ],
+      "target": [
+        11.546638387921277,
+        -15.205531989934393,
+        8.2
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "landing_stair",
+      "location": [
+        13.32337304114077,
+        -10.177602804361763,
+        8.0
+      ],
+      "target": [
+        15.5,
+        -18.5,
+        7.5
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "road_under",
+      "location": [
+        2.0,
+        -18.0,
+        1.6
+      ],
+      "target": [
+        2.0,
+        -6.0,
+        7.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "top_chord",
+      "location": [
+        1.943872392954078,
+        -3.298102156175069,
+        16.0
+      ],
+      "target": [
+        2.3279830327527655,
+        -7.523319193960637,
+        10.4
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        -2.0,
+        22.0,
+        15.0
+      ],
+      "target": [
+        -6.0,
+        -4.0,
+        7.0
+      ],
+      "lens": 32,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "truss_node",
+    "mesh_infill",
+    "deck_walk",
+    "landing_stair",
+    "road_under",
+    "top_chord",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-pedestrian-footbridge/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1431655,
+        "sha256": "05d426a55b9f63d2a0d997eec0745e2ebccd4e75359d3948939861600d75b3a7"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-pedestrian-footbridge/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 946369,
+        "sha256": "d914f7e6fcafd8c85e5787177727ff9754d537dce5d283dc3655f1051ed54b87"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-pedestrian-footbridge/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 927790,
+        "sha256": "182aba8a25be70fb6924b4c6b92467fc0dd26ba3710bbabed8ebbbe74c092771"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1.webp",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2.webp",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3.webp",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_corten.py",
+        "sha256": "f4e7a203e32fcc104702b8eb48587fcc209d272992c541ae2d52cc0e5296030e"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "6b77895c02e8fa12ac85e7e600c2c01067b68fc6fb084e716e5524af2ade4fd3"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "82559e7b1b2b44469bf3637c2a95e8497cae4922dbc69f501204297584d399c7"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-19T07:43:37.367814+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

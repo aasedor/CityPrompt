@@ -1,0 +1,4354 @@
+{
+  "candidate": "clay-weathering-steel-footbridge-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 104,
+    "vertices": 15886,
+    "polygons": 24536,
+    "triangles": 24536,
+    "path": "clay-weathering-steel-footbridge-clay-v001-authoring.blend",
+    "bytes": 2862176,
+    "sha256": "4728fc4c3bbdd1519146f1faababec671844baf80db25f33b099a5ce2a8c1b2a"
+  },
+  "runtime": {
+    "path": "clay-weathering-steel-footbridge-clay-v001.glb",
+    "bytes": 1318608,
+    "sha256": "6d96dd4647585d672fdefd90e47b01e545637864b5a333d60a5ae23b77c21dfb",
+    "meshes": 19,
+    "materials": 19,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 19,
+    "vertices": 15886,
+    "polygons": 24536,
+    "triangles": 24536
+  },
+  "original_bounds_m": [
+    [
+      -73.0,
+      -60.0,
+      0.0
+    ],
+    [
+      57.0,
+      50.0,
+      26.600000381469727
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -73.0,
+      -60.0,
+      0.0
+    ],
+    [
+      57.0,
+      50.0,
+      26.600000381469727
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 56.0,
+    "depth": 38.0,
+    "height": 14.8
+  },
+  "native_dimensions_m": {
+    "width": 130.0,
+    "depth": 110.0,
+    "height": 26.600000381469727
+  },
+  "native_bottom_center_m": [
+    -8.0,
+    -5.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "rust": 6,
+    "deck": 3,
+    "mesh": 3,
+    "hardware": 6,
+    "brick": 15,
+    "trim": 7,
+    "glass": 11,
+    "pale": 9,
+    "concrete": 3,
+    "asphalt": 1,
+    "sand": 1,
+    "white": 1,
+    "yellow": 1,
+    "planting": 12,
+    "timber": 16,
+    "interior": 1,
+    "joint": 6,
+    "roof": 1,
+    "dark": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/truss_node.png",
+    "renders/mesh_infill.png",
+    "renders/deck_walk.png",
+    "renders/landing_stair.png",
+    "renders/road_under.png",
+    "renders/top_chord.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Two-span Cor-Ten truss footbridge over a city street: spans on brick towers and apex columns",
+      "box": [
+        -36.0,
+        20.0,
+        -24.0,
+        14.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "Apex tower deck door",
+      "face": "Apex tower",
+      "u": 0.0,
+      "z": 7.0,
+      "width": 2.4,
+      "height": 2.6,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.595863342285156,
+        6.39808464050293,
+        0.0
+      ],
+      "face_tangent": [
+        -0.9992019534111023,
+        -0.03994317725300789,
+        0.0
+      ],
+      "face_inward": [
+        -0.03994317725300789,
+        0.9992019534111023,
+        0.0
+      ],
+      "occupied_space": "deck lobby"
+    },
+    {
+      "id": "Apex tower ground door",
+      "face": "Apex tower",
+      "u": 0.0,
+      "z": 0.0,
+      "width": 1.6,
+      "height": 2.5,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.595863342285156,
+        6.39808464050293,
+        0.0
+      ],
+      "face_tangent": [
+        -0.9992019534111023,
+        -0.03994317725300789,
+        0.0
+      ],
+      "face_inward": [
+        -0.03994317725300789,
+        0.9992019534111023,
+        0.0
+      ],
+      "occupied_space": "stair hall"
+    },
+    {
+      "id": "Apex tower stair window",
+      "face": "Apex tower",
+      "u": 1.55,
+      "z": 1.2,
+      "width": 0.6,
+      "height": 4.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -11.595863342285156,
+        6.39808464050293,
+        0.0
+      ],
+      "face_tangent": [
+        -0.9992019534111023,
+        -0.03994317725300789,
+        0.0
+      ],
+      "face_inward": [
+        -0.03994317725300789,
+        0.9992019534111023,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "East tower deck door",
+      "face": "East tower",
+      "u": 0.0,
+      "z": 7.0,
+      "width": 2.4,
+      "height": 2.6,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        15.5,
+        -18.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.6401844024658203,
+        0.7682212591171265,
+        0.0
+      ],
+      "face_inward": [
+        0.7682212591171265,
+        -0.6401844024658203,
+        0.0
+      ],
+      "occupied_space": "deck lobby"
+    },
+    {
+      "id": "East tower ground door",
+      "face": "East tower",
+      "u": 0.0,
+      "z": 0.0,
+      "width": 1.6,
+      "height": 2.5,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        15.5,
+        -18.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.6401844024658203,
+        0.7682212591171265,
+        0.0
+      ],
+      "face_inward": [
+        0.7682212591171265,
+        -0.6401844024658203,
+        0.0
+      ],
+      "occupied_space": "stair hall"
+    },
+    {
+      "id": "East tower stair window",
+      "face": "East tower",
+      "u": 1.55,
+      "z": 1.2,
+      "width": 0.6,
+      "height": 4.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        15.5,
+        -18.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.6401844024658203,
+        0.7682212591171265,
+        0.0
+      ],
+      "face_inward": [
+        0.7682212591171265,
+        -0.6401844024658203,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "West tower deck door",
+      "face": "West tower",
+      "u": 0.0,
+      "z": 7.0,
+      "width": 2.4,
+      "height": 2.6,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -35.0,
+        -19.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.6994630694389343,
+        -0.7146687507629395,
+        0.0
+      ],
+      "face_inward": [
+        -0.7146687507629395,
+        -0.6994630694389343,
+        0.0
+      ],
+      "occupied_space": "deck lobby"
+    },
+    {
+      "id": "West tower ground door",
+      "face": "West tower",
+      "u": 0.0,
+      "z": 0.0,
+      "width": 1.6,
+      "height": 2.5,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -35.0,
+        -19.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.6994630694389343,
+        -0.7146687507629395,
+        0.0
+      ],
+      "face_inward": [
+        -0.7146687507629395,
+        -0.6994630694389343,
+        0.0
+      ],
+      "occupied_space": "stair hall"
+    },
+    {
+      "id": "West tower stair window",
+      "face": "West tower",
+      "u": 1.55,
+      "z": 1.2,
+      "width": 0.6,
+      "height": 4.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -35.0,
+        -19.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.6994630694389343,
+        -0.7146687507629395,
+        0.0
+      ],
+      "face_inward": [
+        -0.7146687507629395,
+        -0.6994630694389343,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f0 0",
+      "face": "Pale-roofed warehouse south",
+      "u": -40.5,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f0 1",
+      "face": "Pale-roofed warehouse south",
+      "u": -37.5,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f0 2",
+      "face": "Pale-roofed warehouse south",
+      "u": -34.5,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f0 3",
+      "face": "Pale-roofed warehouse south",
+      "u": -31.5,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f0 4",
+      "face": "Pale-roofed warehouse south",
+      "u": -28.5,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f0 5",
+      "face": "Pale-roofed warehouse south",
+      "u": -25.5,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f0 6",
+      "face": "Pale-roofed warehouse south",
+      "u": -22.5,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f0 7",
+      "face": "Pale-roofed warehouse south",
+      "u": -19.5,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f0 8",
+      "face": "Pale-roofed warehouse south",
+      "u": -16.5,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f1 0",
+      "face": "Pale-roofed warehouse south",
+      "u": -40.5,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f1 1",
+      "face": "Pale-roofed warehouse south",
+      "u": -37.5,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f1 2",
+      "face": "Pale-roofed warehouse south",
+      "u": -34.5,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f1 3",
+      "face": "Pale-roofed warehouse south",
+      "u": -31.5,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f1 4",
+      "face": "Pale-roofed warehouse south",
+      "u": -28.5,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f1 5",
+      "face": "Pale-roofed warehouse south",
+      "u": -25.5,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f1 6",
+      "face": "Pale-roofed warehouse south",
+      "u": -22.5,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f1 7",
+      "face": "Pale-roofed warehouse south",
+      "u": -19.5,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f1 8",
+      "face": "Pale-roofed warehouse south",
+      "u": -16.5,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f2 0",
+      "face": "Pale-roofed warehouse south",
+      "u": -40.5,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f2 1",
+      "face": "Pale-roofed warehouse south",
+      "u": -37.5,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f2 2",
+      "face": "Pale-roofed warehouse south",
+      "u": -34.5,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f2 3",
+      "face": "Pale-roofed warehouse south",
+      "u": -31.5,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f2 4",
+      "face": "Pale-roofed warehouse south",
+      "u": -28.5,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f2 5",
+      "face": "Pale-roofed warehouse south",
+      "u": -25.5,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f2 6",
+      "face": "Pale-roofed warehouse south",
+      "u": -22.5,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f2 7",
+      "face": "Pale-roofed warehouse south",
+      "u": -19.5,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse south window f2 8",
+      "face": "Pale-roofed warehouse south",
+      "u": -16.5,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        9.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f0 0",
+      "face": "Pale-roofed warehouse east",
+      "u": 11.3125,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f0 1",
+      "face": "Pale-roofed warehouse east",
+      "u": 14.3375,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f0 2",
+      "face": "Pale-roofed warehouse east",
+      "u": 17.3625,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f0 3",
+      "face": "Pale-roofed warehouse east",
+      "u": 20.387500000000003,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f0 4",
+      "face": "Pale-roofed warehouse east",
+      "u": 23.4125,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f0 5",
+      "face": "Pale-roofed warehouse east",
+      "u": 26.4375,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f0 6",
+      "face": "Pale-roofed warehouse east",
+      "u": 29.4625,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f0 7",
+      "face": "Pale-roofed warehouse east",
+      "u": 32.4875,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f1 0",
+      "face": "Pale-roofed warehouse east",
+      "u": 11.3125,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f1 1",
+      "face": "Pale-roofed warehouse east",
+      "u": 14.3375,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f1 2",
+      "face": "Pale-roofed warehouse east",
+      "u": 17.3625,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f1 3",
+      "face": "Pale-roofed warehouse east",
+      "u": 20.387500000000003,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f1 4",
+      "face": "Pale-roofed warehouse east",
+      "u": 23.4125,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f1 5",
+      "face": "Pale-roofed warehouse east",
+      "u": 26.4375,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f1 6",
+      "face": "Pale-roofed warehouse east",
+      "u": 29.4625,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f1 7",
+      "face": "Pale-roofed warehouse east",
+      "u": 32.4875,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f2 0",
+      "face": "Pale-roofed warehouse east",
+      "u": 11.3125,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f2 1",
+      "face": "Pale-roofed warehouse east",
+      "u": 14.3375,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f2 2",
+      "face": "Pale-roofed warehouse east",
+      "u": 17.3625,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f2 3",
+      "face": "Pale-roofed warehouse east",
+      "u": 20.387500000000003,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f2 4",
+      "face": "Pale-roofed warehouse east",
+      "u": 23.4125,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f2 5",
+      "face": "Pale-roofed warehouse east",
+      "u": 26.4375,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f2 6",
+      "face": "Pale-roofed warehouse east",
+      "u": 29.4625,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "Pale-roofed warehouse east window f2 7",
+      "face": "Pale-roofed warehouse east",
+      "u": 32.4875,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -15.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f0 0",
+      "face": "West warehouse east",
+      "u": -34.35,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f0 1",
+      "face": "West warehouse east",
+      "u": -31.05,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f0 2",
+      "face": "West warehouse east",
+      "u": -27.75,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f0 3",
+      "face": "West warehouse east",
+      "u": -24.45,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f0 4",
+      "face": "West warehouse east",
+      "u": -21.15,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f0 5",
+      "face": "West warehouse east",
+      "u": -17.85,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f0 6",
+      "face": "West warehouse east",
+      "u": -14.55,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f0 7",
+      "face": "West warehouse east",
+      "u": -11.25,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f0 8",
+      "face": "West warehouse east",
+      "u": -7.950000000000003,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f1 0",
+      "face": "West warehouse east",
+      "u": -34.35,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f1 1",
+      "face": "West warehouse east",
+      "u": -31.05,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f1 2",
+      "face": "West warehouse east",
+      "u": -27.75,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f1 3",
+      "face": "West warehouse east",
+      "u": -24.45,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f1 4",
+      "face": "West warehouse east",
+      "u": -21.15,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f1 5",
+      "face": "West warehouse east",
+      "u": -17.85,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f1 6",
+      "face": "West warehouse east",
+      "u": -14.55,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f1 7",
+      "face": "West warehouse east",
+      "u": -11.25,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f1 8",
+      "face": "West warehouse east",
+      "u": -7.950000000000003,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f2 0",
+      "face": "West warehouse east",
+      "u": -34.35,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f2 1",
+      "face": "West warehouse east",
+      "u": -31.05,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f2 2",
+      "face": "West warehouse east",
+      "u": -27.75,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f2 3",
+      "face": "West warehouse east",
+      "u": -24.45,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f2 4",
+      "face": "West warehouse east",
+      "u": -21.15,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f2 5",
+      "face": "West warehouse east",
+      "u": -17.85,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f2 6",
+      "face": "West warehouse east",
+      "u": -14.55,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f2 7",
+      "face": "West warehouse east",
+      "u": -11.25,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse east window f2 8",
+      "face": "West warehouse east",
+      "u": -7.950000000000003,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -44.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f0 0",
+      "face": "West warehouse north",
+      "u": 45.57142857142857,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f0 1",
+      "face": "West warehouse north",
+      "u": 48.714285714285715,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f0 2",
+      "face": "West warehouse north",
+      "u": 51.857142857142854,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f0 3",
+      "face": "West warehouse north",
+      "u": 55.0,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f0 4",
+      "face": "West warehouse north",
+      "u": 58.14285714285714,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f0 5",
+      "face": "West warehouse north",
+      "u": 61.285714285714285,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f0 6",
+      "face": "West warehouse north",
+      "u": 64.42857142857143,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f1 0",
+      "face": "West warehouse north",
+      "u": 45.57142857142857,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f1 1",
+      "face": "West warehouse north",
+      "u": 48.714285714285715,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f1 2",
+      "face": "West warehouse north",
+      "u": 51.857142857142854,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f1 3",
+      "face": "West warehouse north",
+      "u": 55.0,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f1 4",
+      "face": "West warehouse north",
+      "u": 58.14285714285714,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f1 5",
+      "face": "West warehouse north",
+      "u": 61.285714285714285,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f1 6",
+      "face": "West warehouse north",
+      "u": 64.42857142857143,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f2 0",
+      "face": "West warehouse north",
+      "u": 45.57142857142857,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f2 1",
+      "face": "West warehouse north",
+      "u": 48.714285714285715,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f2 2",
+      "face": "West warehouse north",
+      "u": 51.857142857142854,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f2 3",
+      "face": "West warehouse north",
+      "u": 55.0,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f2 4",
+      "face": "West warehouse north",
+      "u": 58.14285714285714,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f2 5",
+      "face": "West warehouse north",
+      "u": 61.285714285714285,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "West warehouse north window f2 6",
+      "face": "West warehouse north",
+      "u": 64.42857142857143,
+      "z": 8.6,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block west window f0 0",
+      "face": "South-east block west",
+      "u": 27.85,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block west window f0 1",
+      "face": "South-east block west",
+      "u": 30.95,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block west window f0 2",
+      "face": "South-east block west",
+      "u": 34.05,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block west window f0 3",
+      "face": "South-east block west",
+      "u": 37.15,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block west window f0 4",
+      "face": "South-east block west",
+      "u": 40.25,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block west window f0 5",
+      "face": "South-east block west",
+      "u": 43.35,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block west window f0 6",
+      "face": "South-east block west",
+      "u": 46.45,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block west window f1 0",
+      "face": "South-east block west",
+      "u": 27.85,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block west window f1 1",
+      "face": "South-east block west",
+      "u": 30.95,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block west window f1 2",
+      "face": "South-east block west",
+      "u": 34.05,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block west window f1 3",
+      "face": "South-east block west",
+      "u": 37.15,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block west window f1 4",
+      "face": "South-east block west",
+      "u": 40.25,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block west window f1 5",
+      "face": "South-east block west",
+      "u": 43.35,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block west window f1 6",
+      "face": "South-east block west",
+      "u": 46.45,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        18.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f0 0",
+      "face": "South-east block north",
+      "u": -44.47222222222222,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f0 1",
+      "face": "South-east block north",
+      "u": -41.416666666666664,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f0 2",
+      "face": "South-east block north",
+      "u": -38.361111111111114,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f0 3",
+      "face": "South-east block north",
+      "u": -35.30555555555556,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f0 4",
+      "face": "South-east block north",
+      "u": -32.25,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f0 5",
+      "face": "South-east block north",
+      "u": -29.194444444444443,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f0 6",
+      "face": "South-east block north",
+      "u": -26.13888888888889,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f0 7",
+      "face": "South-east block north",
+      "u": -23.083333333333332,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f0 8",
+      "face": "South-east block north",
+      "u": -20.02777777777778,
+      "z": 1.4,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f1 0",
+      "face": "South-east block north",
+      "u": -44.47222222222222,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f1 1",
+      "face": "South-east block north",
+      "u": -41.416666666666664,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f1 2",
+      "face": "South-east block north",
+      "u": -38.361111111111114,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f1 3",
+      "face": "South-east block north",
+      "u": -35.30555555555556,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f1 4",
+      "face": "South-east block north",
+      "u": -32.25,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f1 5",
+      "face": "South-east block north",
+      "u": -29.194444444444443,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f1 6",
+      "face": "South-east block north",
+      "u": -26.13888888888889,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f1 7",
+      "face": "South-east block north",
+      "u": -23.083333333333332,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    },
+    {
+      "id": "South-east block north window f1 8",
+      "face": "South-east block north",
+      "u": -20.02777777777778,
+      "z": 5.0,
+      "width": 1.3,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "Ground"
+    ],
+    "street": [
+      "Carriageway",
+      "Sidewalk -1",
+      "Sidewalk +1",
+      "street yellow",
+      "street white",
+      "street joint",
+      "street dark",
+      "street glass"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011"
+    ],
+    "East span": [
+      "East span rust",
+      "East span mesh",
+      "East span hardware",
+      "East span deck",
+      "East span joint"
+    ],
+    "West span": [
+      "West span rust",
+      "West span mesh",
+      "West span hardware",
+      "West span deck",
+      "West span joint"
+    ],
+    "apex": [
+      "Apex deck",
+      "apex rust",
+      "apex mesh",
+      "apex hardware",
+      "apex concrete"
+    ],
+    "envelope": [
+      "Apex tower front",
+      "East tower front",
+      "West tower front",
+      "Pale-roofed warehouse south wall",
+      "Pale-roofed warehouse east wall",
+      "West warehouse east wall",
+      "West warehouse north wall",
+      "South-east block west wall",
+      "South-east block north wall"
+    ],
+    "brick joints": [
+      "Apex tower measured mortar courses",
+      "East tower measured mortar courses",
+      "West tower measured mortar courses"
+    ],
+    "Apex tower": [
+      "Apex tower Apex tower hardware",
+      "Apex tower Apex tower glass",
+      "Apex tower Apex tower rust",
+      "Apex tower Apex tower pale"
+    ],
+    "towers": [
+      "Apex tower body",
+      "East tower body",
+      "West tower body"
+    ],
+    "East tower": [
+      "East tower East tower hardware",
+      "East tower East tower glass",
+      "East tower East tower rust",
+      "East tower East tower pale"
+    ],
+    "West tower": [
+      "West tower West tower hardware",
+      "West tower West tower glass",
+      "West tower West tower rust",
+      "West tower West tower pale"
+    ],
+    "Pale-roofed warehouse south": [
+      "Pale-roofed warehouse south Pale-roofed warehouse south trim",
+      "Pale-roofed warehouse south Pale-roofed warehouse south glass"
+    ],
+    "Pale-roofed warehouse east": [
+      "Pale-roofed warehouse east Pale-roofed warehouse east trim",
+      "Pale-roofed warehouse east Pale-roofed warehouse east glass"
+    ],
+    "context": [
+      "Pale-roofed warehouse body",
+      "Pale-roofed warehouse roof",
+      "West warehouse body",
+      "West warehouse roof",
+      "South-east block body",
+      "South-east block roof",
+      "Glass office",
+      "Glass office core"
+    ],
+    "Pale-roofed warehouse plant": [
+      "Pale-roofed warehouse plant pale"
+    ],
+    "West warehouse east": [
+      "West warehouse east West warehouse east trim",
+      "West warehouse east West warehouse east glass"
+    ],
+    "West warehouse north": [
+      "West warehouse north West warehouse north trim",
+      "West warehouse north West warehouse north glass"
+    ],
+    "West warehouse plant": [
+      "West warehouse plant pale"
+    ],
+    "South-east block west": [
+      "South-east block west South-east block west trim",
+      "South-east block west South-east block west glass"
+    ],
+    "South-east block north": [
+      "South-east block north South-east block north trim",
+      "South-east block north South-east block north glass"
+    ],
+    "South-east block plant": [
+      "South-east block plant pale"
+    ],
+    "Glass office": [
+      "Glass office trim",
+      "Glass office pale"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-19T09:22:12.076615+00:00",
+  "delivery_and_render_seconds": 5864.793592231999,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
