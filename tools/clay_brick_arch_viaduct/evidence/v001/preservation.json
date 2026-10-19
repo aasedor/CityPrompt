@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-brick-arch-viaduct-clay-v001",
+  "glb": "clay-brick-arch-viaduct-clay-v001.glb",
+  "glb_bytes": 2014500,
+  "glb_sha256": "880a9eb46adcd718c490e1cf02183102bd0b0a79374fe931024f4f1cb25e2277",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "arch_shopfront.png": 92,
+    "architecture_close.png": 92,
+    "cobbled_street.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "left_side.png": 92,
+    "parapet_coping.png": 92,
+    "pier_pilasters.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "top.png": 92,
+    "track_ballast.png": 92,
+    "train_cars.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-brick-arch-viaduct-clay-v001-renders-and-glb.zip",
+  "zip_bytes": 35313416
+}

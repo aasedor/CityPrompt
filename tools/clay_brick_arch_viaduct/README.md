@@ -67,3 +67,14 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (v002 reworks these eight)
+
+1. P1: the cobbled street shows only transverse joints and reads as a planked deck, not setts.
+2. P1: no ballast; sleepers and rails sit on a flat light-grey slab.
+3. P1: the imposts are token cubes and the arch ring runs down the jambs to the pavement, reading as a round-headed architrave rather than an arch on stone imposts.
+4. P1: street-tree canopies cut into the terrace facades with windows poking through.
+5. P1: the train sits flush against the far end parapet with no clear deck in front of the cab.
+6. P1: the viaduct is a short closed box of about 11 bays with blind end walls and dead-end tracks; the sources show only the near end cut.
+7. P1: front_corner and top sit on the north lawn side, hiding the shopfront arcade the sources show; phone board 01 pairs locked top with render aerial.
+8. P1: in left_side a foreground terrace hides the lower 45% of the north elevation.

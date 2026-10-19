@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-brick-arch-viaduct",
+  "variant_id": "clay-brick-arch-viaduct-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "rail_transit_viaduct/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/rail-transit-viaduct/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1547636,
+      "sha256": "fcc775ae4c2424d122d676e73fe85a22e3b005555b817af3dd1e3dab89db94b2"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/rail-transit-viaduct/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 1013551,
+      "sha256": "9cad3a89d960bd52e68bd37959276050df2070a6b1c3b0a8a8abdb66dc07af8b"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/rail-transit-viaduct/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 1036148,
+      "sha256": "4b0e146b6f318bf564879069c598ae42ded2cb5d162e50ee7431edef952facf7"
+    }
+  ]
+}
