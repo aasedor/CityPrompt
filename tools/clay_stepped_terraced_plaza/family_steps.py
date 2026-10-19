@@ -36,13 +36,13 @@ def manifest(version):
     cams = G.camera_roster(X1 - X0 + 16.0, Y1 - Y0 + 8.0, h, [
         ('facade_close', (0.0, Y0 - 10.0, 3.0), (0.0, Y0 + 10.0, 3.0), 45),
         ('architecture_close', (-6.0, Y0 + 6.0, 4.5), (-11.0, Y0 + 13.0, 3.4), 40),
-        ('glass_close', (-5.5, Y0 + 9.0, TR * 2 + 1.6), (-10.0, Y0 + 10.5, TR * 2 + 1.4), 40),
+        ('glass_close', (-6.5, Y0 + 18.15, TR * 3 + 1.55), (X0, Y0 + 18.15, TR * 3 + 1.55), 40),
         ('central_stair', (0.0, Y0 - 3.0, 2.2), (0.0, Y0 + 12.0, 3.5), 40),
         ('seating_terraces', (-7.0, Y0 + 5.0, 3.6), (-3.0, Y0 + 14.0, 2.4), 40),
         ('parapet_pots', (5.0, Y0 + 9.0, 4.4), (8.0, Y0 + 16.0, 3.6), 40),
-        ('side_stair', (12.5, Y0 - 4.0, 3.0), (9.2, Y0 + 12.0, 3.5), 40),
+        ('side_stair', (9.2, Y0 - 6.0, 2.6), (9.2, Y0 + 10.0, 4.5), 40),
         ('chapel_top', (2.0, Y1 - 6.0, NT * TR + 3.0), (-9.0, Y1 + 4.0, NT * TR + 3.5), 40),
-        ('interior', (-12.0, Y0 + 13.0, TR * 2 + 1.6), (-10.0, Y0 + 9.0, TR * 2 + 1.4), 40),
+        ('interior', (X0 - 4.6, Y0 + 15.0, TR * 3 + 1.6), (X0, Y0 + 16.6, TR * 3 + 1.3), 50),
         ('rear_north', (0.0, Y1 + 26.0, NT * TR + 8.0), (0.0, Y1 - 6.0, NT * TR), 45)])
     for c in cams:                       # the locked front looks up the stair from the lower plaza
         if c['name'] == 'front':
@@ -388,8 +388,8 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 
 # ---- Stepped terraced plaza ----
 
-G_STEP = .32                                    # stair going
-N_STEP = 7                                      # risers per terrace on the stairs
+G_STEP = .58                                    # stair going: flights cover about 70% of each terrace (top view)
+N_STEP = 9                                      # risers per terrace; the last riser rises onto the landing
 
 
 def yk(k):
@@ -407,12 +407,13 @@ def solid(b, x0, x1, ya, yb, top, nose=.03):
 
 
 def stair(b, x0, x1):
-    """Continuous stair: seven risers at the start of each terrace, then a landing at the terrace level."""
+    """Long flights with short landings: N_STEP - 1 treads from the foot of each terrace, the last riser rising
+    onto a landing at the terrace level (the landing and the top tread are one plate: no coplanar overlap)."""
     rise = TR / N_STEP
     for k in range(NT):
-        for i in range(1, N_STEP + 1):
+        for i in range(1, N_STEP):
             solid(b, x0, x1, yk(k) + (i - 1) * G_STEP, yk(k) + i * G_STEP, lv(k) + i * rise)
-        solid(b, x0, x1, yk(k) + N_STEP * G_STEP, yk(k + 1), lv(k + 1))
+        solid(b, x0, x1, yk(k) + (N_STEP - 1) * G_STEP, yk(k + 1), lv(k + 1))
 
 
 def stair_level(y):
@@ -442,14 +443,31 @@ def handrail(b, x):
             b.box('hardware', x, y, z + .475, .045, .045, .95)
 
 
+def taper(b, role, cx, cy, z0, z1, r0, r1, n=10):
+    """Closed tapered n-gon (a pot or a foliage mound)."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V)
+    for z, r in ((z0, r0), (z1, r1)):
+        for i in range(n):
+            a = 2 * math.pi * (i + .5) / n
+            V.append((cx + r * math.cos(a), cy + r * math.sin(a), z))
+    F.append(tuple(o + i for i in range(n - 1, -1, -1)))
+    F.append(tuple(o + n + i for i in range(n)))
+    for i in range(n):
+        j = (i + 1) % n
+        F.append((o + i, o + j, o + n + j, o + n + i))
+
+
 def pot(b, x, y, z, s=1.0):
-    """Terracotta pot of red geraniums."""
-    cyl8(b, 'pot', x, y, z, z + .42 * s, .24 * s)
-    b.box('pot', x, y, z + .44 * s, .54 * s, .54 * s, .05)
-    for dx, dy in ((-.12, -.08), (.12, -.06), (0, .12), (0, 0)):
-        b.box('planting', x + dx * s, y + dy * s, z + .58 * s, .26 * s, .26 * s, .22 * s)
-    for dx, dy in ((-.1, -.1), (.12, .02), (-.02, .14), (.08, -.14), (0, 0)):
-        b.box('flower', x + dx * s, y + dy * s, z + .73 * s, .11 * s, .11 * s, .1 * s)
+    """Tapered terracotta pot with a slim rolled lip, a rounded green mound of geraniums and red flower heads."""
+    taper(b, 'pot', x, y, z, z + .38 * s, .16 * s, .23 * s)
+    taper(b, 'pot', x, y, z + .37 * s, z + .43 * s, .245 * s, .245 * s)                   # lip, barely proud
+    taper(b, 'planting', x, y, z + .41 * s, z + .56 * s, .26 * s, .2 * s)
+    taper(b, 'planting', x, y, z + .55 * s, z + .66 * s, .2 * s, .07 * s)
+    for i in range(7):
+        a = 2 * math.pi * i / 7
+        r = .16 * s if i % 2 else .1 * s
+        b.box('flower', x + r * math.cos(a), y + r * math.sin(a), z + (.6 if i % 2 else .66) * s, .09 * s, .09 * s, .08 * s)
 
 
 def cyl8(b, role, cx, cy, z0, z1, r, n=8):
@@ -477,14 +495,15 @@ def plaza_strip():
         b.box('stone', EP + .2, (yk(k) + yk(k + 1)) / 2, top + .03, .48, TL, .06)
     stair(b, EP + .4, X1)
     # Top landing across the strip; the lower plaza.
-    b.box('white', 0.0, Y1 + 2.5, (lv(NT) - .06) / 2, X1 - X0, 5.0, lv(NT) - .06)
-    b.box('stone', 0.0, Y1 + 2.5 - .015, lv(NT) - .03, X1 - X0, 5.03, .06)
+    b.box('white', 0.0, Y1 + 6.0, (lv(NT) - .06) / 2, X1 - X0, 12.0, lv(NT) - .06)          # top landing runs under the top houses
+    b.box('stone', 0.0, Y1 + 6.0, lv(NT) - .03, X1 - X0, 12.0, .06)
     b.flush('stair plaza')
     b = Batch()
     handrail(b, -.9)
     handrail(b, .9)
     b.flush('handrails')
-    C.box('Lower plaza', (0.0, Y0 - 5.0, .02), (40.0, 10.0, .04), 'paving', 'site', 0)
+    C.box('Lower plaza', (0.0, Y0 - 5.0 + .15, .02), (40.0, 10.3, .04), 'paving', 'site', 0)       # runs 15 cm under the first risers
+    C.box('West lane paving', (X0 - 7.0, (Y0 + .3 + yk(2)) / 2, .02), (14.0 - .02, yk(2) - Y0 - .3, .04), 'paving', 'site', 0)
     b = Batch()
     for k in range(-26, 27):
         b.box('joint', k * .75, Y0 - 5.0, .042, .02, 9.98, .004)
@@ -493,23 +512,87 @@ def plaza_strip():
     for k in range(NT):                                                        # pots on the east terraces by the parapet
         for dy in (1.6, 3.4, 5.2):
             pot(b, EP - .4, yk(k) + dy, lv(k + 1))
-    for dy in (1.0, 3.0, 5.0):                                                 # and along the west edge of the lowest terraces
-        pot(b, X0 + .9, yk(0) + dy, lv(1))
     for x in (-SX - .6, SX + .6):
         pot(b, x, Y0 - .6, .04, 1.1)
-    b.box('white', X0 + .2, (yk(0) + .55 + yk(1)) / 2, lv(1) + .45, .4, TL - .55, .9)  # low west parapet on the first terrace
+    # Low white parapet with stone coping along the outer edge of the two lowest west terraces, pots seated on it;
+    # it opens at the head of the diagonal west stair.
+    for k, (ya, yb) in enumerate(((yk(0) + .55, yk(1)), (yk(1) + .55, yk(2) - 1.5))):
+        top = lv(k + 1) + .6
+        b.box('white', X0 + .2, (ya + yb) / 2, top / 2, .4, yb - ya, top)
+        b.box('stone', X0 + .2, (ya + yb) / 2, top + .03, .5, yb - ya - .02, .06)
+        for dy in (.25, .5, .75):
+            pot(b, X0 + .2, ya + (yb - ya) * dy, top + .06, .85)
     b.flush('pots')
+    west_stair()
     C.CONTACTS.append(dict(name='Terrace and stair solids from grade; stone plates on every tread and platform'))
 
 
+def arch_head(f, h, rise, ring=.26, segs=10, ring_role='arch'):
+    """Segmental or round head on a rectangular cut: brick spandrel infill above the curve (set 1 cm back so it
+    never shares a plane with the wall face) and a proud brick ring of headers over it."""
+    u, w, top = h['u'], h['w'], h['z'] + h['h']
+    R = (w * w / 4 + rise * rise) / (2 * rise)
+    cz = top - R
+    a0 = math.asin(min(1.0, (w / 2) / R))
+    arc = [(u + R * math.sin(-a0 + 2 * a0 * i / segs), cz + R * math.cos(-a0 + 2 * a0 * i / segs)) for i in range(segs + 1)]
+    pts = [(u - w / 2 - .06, top - rise)] + arc + [(u + w / 2 + .06, top - rise)]
+    vs, fs = [], []
+    for (pu, pz) in pts:
+        for d in (.01, T - .01):
+            vs.append(f.p(pu, d, pz)); vs.append(f.p(pu, d, top + .06))
+    for i in range(len(pts) - 1):
+        a, b = 4 * i, 4 * (i + 1)
+        fs += [(a, b, b + 1, a + 1), (a + 2, a + 3, b + 3, b + 2), (a, a + 2, b + 2, b), (a + 1, b + 1, b + 3, a + 3)]
+    n = 4 * (len(pts) - 1)
+    fs += [(0, 1, 3, 2), (n, n + 2, n + 3, n + 1)]
+    C.mesh(f'{h["id"]} spandrel', vs, fs, 'wall', 'arches')
+    vs, fs = [], []
+    for (pu, pz) in arc:
+        r = math.hypot(pu - u, pz - cz)
+        nu, nz = (pu - u) / r, (pz - cz) / r
+        for d in (-.035, .02):
+            vs.append(f.p(pu, d, pz)); vs.append(f.p(pu + nu * ring, d, pz + nz * ring))
+    for i in range(segs):
+        a, b = 4 * i, 4 * (i + 1)
+        fs += [(a, b, b + 1, a + 1), (a + 2, a + 3, b + 3, b + 2), (a, a + 2, b + 2, b), (a + 1, b + 1, b + 3, a + 3)]
+    n = 4 * segs
+    fs += [(0, 1, 3, 2), (n, n + 2, n + 3, n + 1)]
+    C.mesh(f'{h["id"]} arch ring', vs, fs, ring_role, 'arches')
+
+
+def west_stair():
+    """The narrow diagonal stair west of the lowest terraces (top view), from the lower lane up to a landing that
+    opens through the west parapet onto the second terrace."""
+    ax, ay, bx, by = X0 - .9, Y0 + .3, X0 - 3.0, yk(2) - 1.0
+    L = math.hypot(bx - ax, by - ay)
+    ux, uy = (bx - ax) / L, (by - ay) / L
+    px, py = uy, -ux                                                           # across the stair
+    n, w = 16, .75
+    for i in range(n):
+        s0, s1 = L * i / n, L * (i + 1) / n + (.02 if i < n - 1 else 0.0)
+        top = lv(2) * (i + 1) / n
+        quad = [(ax + ux * s + px * sw * w, ay + uy * s + py * sw * w) for s, sw in ((s0, -1), (s0, 1), (s1, 1), (s1, -1))]
+        if (quad[1][0] - quad[0][0]) * (quad[2][1] - quad[0][1]) - (quad[1][1] - quad[0][1]) * (quad[2][0] - quad[0][0]) < 0:
+            quad = quad[::-1]
+        C.prism(f'West stair step {i}', quad, 'z', 0.0, top - .06, 'white', 'west stair')
+        C.prism(f'West stair tread {i}', quad, 'z', top - .06, top, 'stone', 'west stair')
+    b = Batch()
+    b.box('white', (bx - .9 + X0 + .4) / 2, by + .25, (lv(2) - .06) / 2, X0 + .4 - bx + .9, 1.5, lv(2) - .06)    # landing
+    b.box('stone', (bx - .9 + X0 + .4) / 2, by + .25, lv(2) - .03, X0 + .4 - bx + .9, 1.5, .06)
+    b.flush('west stair landing')
+
+
 def house(label, x_face, ya, yb, base, h, facing, door=True, deep=7.0, extra=None):
-    """A white cubic house: a facade wall with real cuts (blue door, blue-framed windows) backed by a solid."""
+    """A white cubic house: a facade with real cuts (blue door, blue-framed windows), a hollow room behind it with
+    side, rear and roof shells over a solid hillside base, and windows in its rear wall."""
     if facing > 0:                                                             # faces east (+x)
         f = C.Face((x_face, 0, 0), (0, 1, 0), (-1, 0, 0), label)
+        r = C.Face((x_face - deep, 0, 0), (0, -1, 0), (1, 0, 0), label + ' rear')
         lo, hi = ya, yb
         bx0, bx1 = x_face - deep, x_face - T
     else:                                                                      # faces west (-x)
         f = C.Face((x_face, 0, 0), (0, -1, 0), (1, 0, 0), label)
+        r = C.Face((x_face + deep, 0, 0), (0, 1, 0), (-1, 0, 0), label + ' rear')
         lo, hi = -yb, -ya
         bx0, bx1 = x_face + T, x_face + deep
     um = (lo + hi) / 2
@@ -530,21 +613,148 @@ def house(label, x_face, ya, yb, base, h, facing, door=True, deep=7.0, extra=Non
             framed(m, f, hh, cols=2, rows=2, inset=.12, occupied='house', frame='blue')
     m.box('white', um, T / 2 - .02, base + h + .1, hi - lo, T + .1, .2)
     m.flush(label)
-    C.box(f'{label} body', ((bx0 + bx1) / 2, (ya + yb) / 2, (base + h) / 2), (bx1 - bx0, yb - ya, base + h), 'white', 'houses', 0)
+    rl, rh = -hi, -lo                                                          # rear face spans the same y, reversed
+    rhs = [hole(f'{label} rear window {i}', (rl + rh) / 2 + du, base + 1.0, .8, 1.1) for i, du in enumerate((-1.3, 1.3))]
+    r.wall(f'{label} rear wall', rl, rh - EPS, 0.0, base + h, depth=T, role='wall', holes=rhs)
+    m = Merge(r)
+    for hh in rhs:
+        framed(m, r, hh, cols=2, rows=2, inset=.12, occupied='house', frame='blue', lite=True)
+    m.box('stone', (rl + rh) / 2, -.04, base - .05, rh - rl - 2 * T, .08, .1)                  # floor-line band: one house per base
+    m.flush(label + ' rear')
+    xa, xb = (bx0 + T, bx1) if facing > 0 else (bx0, bx1 - T)
+    C.box(f'{label} base', ((xa + xb) / 2, (ya + yb) / 2, (base - .02) / 2), (xb - xa, yb - ya, base - .02), 'white', 'houses', 0)
+    b = Batch()
+    for y in (ya + T / 2, yb - T / 2):                                         # side walls of the room
+        b.box('white', (xa + xb) / 2, y, base + h / 2, xb - xa, T, h)
+    b.box('floor', (xa + xb) / 2, (ya + yb) / 2, base - .01, xb - xa, yb - ya - 2 * T, .02)
+    b.flush(label + ' room')
     C.box(f'{label} roof', ((bx0 + bx1) / 2, (ya + yb) / 2, base + h + .08), (bx1 - bx0, yb - ya - .04, .16), 'roof', 'houses', 0)
-    C.qa_room_light(f'{label} room', ((x_face + bx0) / 2 if facing > 0 else (x_face + bx1) / 2, (ya + yb) / 2, base + 1.6), 25, 1.6)
+    C.qa_room_light(f'{label} room', ((x_face + bx0) / 2 if facing > 0 else (x_face + bx1) / 2, (ya + yb) / 2, base + 1.9), 60, 2.4)
+
+
+def front_house(label, x0, x1, yf, base, h, deep=7.0):
+    """A white house at the head of the stair, its south face (looking down the stair) with a door and windows."""
+    f = C.Face((0, yf, 0), (1, 0, 0), (0, 1, 0), label)
+    um, w = (x0 + x1) / 2, x1 - x0
+    hs = [hole(f'{label} door', um - w * .18, base, 1.0, 2.2, kind='door'), hole(f'{label} window', um + w * .2, base + .9, 1.0, 1.3),
+          hole(f'{label} upper window', um, base + h - 1.6, .9, 1.0)]
+    f.wall(f'{label} front', x0, x1 - EPS, base, base + h, depth=T, role='wall', holes=hs)
+    m = Merge(f)
+    m.box('blue', hs[0]['u'], .16, hs[0]['z'] + 1.1, .98, .05, 2.18)
+    register(f, hs[0], .14, 'house door', 'house')
+    for hh in hs[1:]:
+        framed(m, f, hh, cols=2, rows=2, inset=.12, occupied='house', frame='blue')
+    m.flush(label)
+    C.box(f'{label} body', (um, yf + T + (deep - T) / 2, base + h / 2), (w, deep - T, h), 'white', 'houses', 0)
+
+
+def arched(m, f, h, frame='blue'):
+    framed(m, f, h, cols=1 if h['w'] < .8 else 2, rows=2, inset=.12, occupied='chapel', frame=frame)
+    arch_head(f, h, h['w'] / 2, ring=.08, segs=8, ring_role='white')
+
+
+def chapel(cx, cy, base):
+    """The chapel at the top: a nave with an arched door and arched windows cut in its south and east walls, a drum,
+    a blue dome and a cross."""
+    f = C.Face((0, cy - 2.0, 0), (1, 0, 0), (0, 1, 0), 'chapel south')
+    hs = [hole('chapel door', cx, base, 1.1, 2.5, kind='door')] + [hole(f'chapel window {s:+d}', cx + s * 1.8, base + 1.6, .6, 1.3) for s in (-1, 1)]
+    f.wall('chapel south wall', cx - 3.0, cx + 3.0 - EPS, base, base + 4.4, depth=T, role='wall', holes=hs)
+    m = Merge(f)
+    m.box('blue', cx, .16, base + 1.25, 1.08, .05, 2.48)
+    register(f, hs[0], .14, 'chapel door', 'chapel')
+    arch_head(f, hs[0], .55, ring=.1, segs=8, ring_role='white')
+    for h in hs[1:]:
+        arched(m, f, h)
+    m.flush('chapel south')
+    e = C.Face((cx + 3.0, 0, 0), (0, 1, 0), (-1, 0, 0), 'chapel east')
+    hs = [hole(f'chapel east window {i}', cy + du, base + 1.6, .6, 1.3) for i, du in enumerate((-1.0, 1.0))]
+    e.wall('chapel east wall', cy - 2.0 + T, cy + 2.0 - EPS, base, base + 4.4, depth=T, role='wall', holes=hs)
+    m = Merge(e)
+    for h in hs:
+        arched(m, e, h)
+    m.flush('chapel east')
+    C.box('Chapel nave', (cx - T / 2, cy + T / 2, base + 2.2), (6.0 - T, 4.0 - T, 4.4), 'white', 'chapel', 0)
+    b = Batch()
+    cyl8(b, 'white', cx, cy, base + 4.4, base + 5.6, 1.9, 16)
+    b.box('white', cx, cy, base + 7.95, .12, .12, .7)
+    b.box('white', cx, cy, base + 8.05, .45, .12, .1)
+    b.flush('chapel')
+    dome('Chapel dome', cx, cy, base + 5.6, 2.05, 2.2, [(1, 0), (.96, .3), (.8, .62), (.5, .88), (0, 1)], 'dome', 'chapel')
+
+
+def belfry(bx, by):
+    """The belfry at the foot: a solid base with an arched door, an open bell stage of four piers with round arches
+    on every face and a bell hanging inside, under a blue cupola."""
+    f = C.Face((0, by - 1.5, 0), (1, 0, 0), (0, 1, 0), 'belfry south')
+    d = hole('belfry door', bx, 0.0, 1.0, 2.3, kind='door')
+    f.wall('belfry south wall', bx - 1.5, bx + 1.5 - EPS, 0.0, 5.0, depth=T, role='wall', holes=[d])
+    m = Merge(f)
+    m.box('blue', bx, .16, 1.15, .98, .05, 2.28)
+    register(f, d, .14, 'belfry door', 'belfry')
+    arch_head(f, d, .5, ring=.1, segs=8, ring_role='white')
+    m.flush('belfry south')
+    C.box('Belfry base', (bx, by + T / 2, 2.5), (3.0, 3.0 - T, 5.0), 'white', 'belfry', 0)
+    b = Batch()
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            b.box('white', bx + sx * 1.15, by + sy * 1.15, 6.3, .7 + .02 * (sx > 0), .7 + .02 * (sy > 0), 2.6)
+    b.box('white', bx, by, 7.8, 3.06, 3.06, .4)
+    for face in ('s', 'n', 'e', 'w'):                                          # round arches between the piers
+        for i in range(6):
+            a0, a1 = math.pi * i / 6, math.pi * (i + 1) / 6
+            p = [(.8 * math.cos(a), 6.7 + .8 * math.sin(a)) for a in (a0, a1)]
+            if face in ('s', 'n'):
+                yy = by + (-1.15 if face == 's' else 1.15)
+                b.beam('white', (bx + p[0][0], yy, p[0][1]), (bx + p[1][0], yy, p[1][1]), .66, .16, ext=0.0)
+            else:
+                xx = bx + (1.15 if face == 'e' else -1.15)
+                b.beam('white', (xx, by + p[0][0], p[0][1]), (xx, by + p[1][0], p[1][1]), .66, .16, ext=0.0)
+    taper(b, 'hardware', bx, by, 6.15, 6.75, .42, .24, 12)                     # the bell and its hanger
+    b.box('hardware', bx, by, 7.15, .06, .06, .8)
+    b.box('hardware', bx, by, 6.9, .7, .1, .1)
+    b.box('white', bx, by, 10.05, .1, .1, .7)
+    b.box('white', bx, by, 10.2, .4, .1, .1)
+    b.flush('belfry')
+    dome('Belfry cupola', bx, by, 8.0, 1.3, 1.6, [(1, 0), (.9, .4), (.6, .78), (0, 1)], 'dome', 'belfry')
+
+
+def bougainvillea():
+    """A trunk from the west stair landing up the south-east corner of the third west house, and a draped magenta
+    canopy over that corner: every cluster sits outside the walls or above the roof. A second plant drapes over
+    the east parapet from the side-stair side."""
+    xf, yc, base, h = X0, yk(2), lv(3), 3.6
+    C.rod('Bougainvillea trunk', (X0 - .55, yc - .45, lv(2)), (X0 - .45, yc - .35, base + 1.5), .07, 'timber', 'planting', 8)
+    C.rod('Bougainvillea trunk upper', (X0 - .45, yc - .35, base + 1.5), (X0 - .2, yc - .25, base + h + .2), .06, 'timber', 'planting', 8)
+    import random
+    rng = random.Random(1907)
+    k = 0
+    for i in range(22):                                                         # on the south wall, west of the corner
+        x = X0 - .3 - rng.random() * 2.6
+        z = base + h - .3 - rng.random() * (1.0 + (2.6 - (X0 - x)) * .5)
+        A.foliage(f'Bougainvillea {k}', (x, yc - .32 - rng.random() * .15, z), (.38, .3, .32), role='bougain', detail=2); k += 1
+    for i in range(16):                                                         # round the corner onto the facade, above the door
+        y = yc + .1 + rng.random() * 1.6
+        z = base + h - .2 - rng.random() * .9
+        A.foliage(f'Bougainvillea {k}', (X0 + .3 + rng.random() * .12, y, z), (.3, .38, .3), role='bougain', detail=2); k += 1
+    for i in range(14):                                                         # spilling over the roof edge
+        A.foliage(f'Bougainvillea {k}', (X0 - .2 - rng.random() * 2.4, yc + .1 + rng.random() * 1.8, base + h + .35 + rng.random() * .3), (.42, .42, .3), role='bougain', detail=2); k += 1
+    for i in range(14):                                                         # over the east parapet, draping toward the side stair
+        y = yk(1) + 1.4 + rng.random() * 2.6
+        top = lv(2) + .95
+        if i % 2:
+            A.foliage(f'Parapet bougainvillea {i}', (EP + .2, y, top + .3), (.4, .42, .28), role='bougain', detail=2)
+        else:
+            A.foliage(f'Parapet bougainvillea {i}', (EP + .75, y, top - .3 - rng.random() * .6), (.32, .4, .4), role='bougain', detail=2)
 
 
 def edges():
-    for k in range(1, NT):                                                     # west houses on the terrace levels
-        house(f'west house {k}', X0, yk(k), yk(k + 1), lv(k + 1), 3.6 + .5 * (k % 2), 1)
+    for k in range(2, NT):                                                     # west houses on the terrace levels
+        house(f'west house {k}', X0, yk(k), yk(k + 1), lv(k + 1), 3.6 + .5 * (k % 2), 1, deep=6.5 + .8 * (k % 2))
+    house('west house 1', X0 - 4.5, yk(1), yk(2), lv(2), 3.8, 1, deep=6.5)        # set back beyond the diagonal stair
+    house('west corner house', X0 - 4.5, yk(0), yk(1), .04, 4.2, 1, deep=7.0)
     for k in range(NT):                                                        # east houses along the side stair
-        house(f'east house {k}', X1, yk(k), yk(k + 1), lv(k + 1), 3.4 + .6 * ((k + 1) % 2), -1, door=False)
-    C.box('West corner house', (X0 - 3.5, (yk(0) + yk(1)) / 2, 2.2), (7.0, TL - .04, 4.4), 'white', 'houses', 0)
+        house(f'east house {k}', X1, yk(k), yk(k + 1), lv(k + 1), 3.4 + .6 * ((k + 1) % 2), -1, door=False, deep=6.5 + .8 * ((k + 1) % 2))
     b = Batch()
-    b.box('blue', X0 - 2.2, yk(0) - .03, 1.1, 1.0, .06, 2.2)
-    b.box('blue', X0 - 5.0, yk(0) - .03, 1.7, 1.1, .06, 1.2)
-    b.box('glass', X0 - 5.0, yk(0) - .05, 1.7, .9, .03, 1.0)
     for i in range(10):                                                        # a blue balcony rail on one east house
         b.box('blue', X1 - .35, yk(5) + 2.2 + i * .22, lv(6) + 2.9, .03, .03, .9)
     b.box('blue', X1 - .35, yk(5) + 3.2, lv(6) + 3.35, .05, 2.2, .05)
@@ -554,41 +764,12 @@ def edges():
     for s in (0, 1):
         b.box('timber', X1 - 2.3, yk(3) + .9 + s * 3.5, lv(4) + 1.55, .12, .12, 3.1)
     b.flush('house details')
-    # Bougainvillea over the second-terrace house and the lower east parapet.
-    for i, (dy, dz, r) in enumerate(((1.2, 3.9, 1.3), (2.6, 4.3, 1.1), (3.6, 3.4, .9), (.4, 2.6, .8), (4.6, 4.6, .9))):
-        A.foliage(f'Bougainvillea {i}', (X0 - .1, yk(1) + dy, lv(2) + dz), (.6, r, .7 * r), role='bougain')
-    for i, (y, z) in enumerate(((yk(1) + 2.0, lv(2) + 1.2), (yk(1) + 3.2, lv(2) + 1.8))):
-        A.foliage(f'Parapet bougainvillea {i}', (EP + .3, y, z), (.6, .9, .9), role='bougain')
-    # The chapel at the top, west, and the belfry at the foot, east.
-    cx, cy, base = -6.0, Y1 + 3.0, lv(NT)
-    C.box('Chapel nave', (cx, cy, base + 2.2), (6.0, 4.0, 4.4), 'white', 'chapel', 0)
-    b = Batch()
-    cyl8(b, 'white', cx, cy, base + 4.4, base + 5.6, 1.9, 16)
-    b.box('blue', cx, cy - 2.02, base + 1.1, 1.1, .05, 2.2)
-    for s in (-1, 1):
-        b.box('blue', cx + s * 1.8, cy - 2.02, base + 2.6, .6, .05, 1.0)
-    b.box('white', cx, cy, base + 7.95, .12, .12, .7)
-    b.box('white', cx, cy, base + 8.05, .45, .12, .1)
-    b.flush('chapel')
-    dome('Chapel dome', cx, cy, base + 5.6, 2.05, 2.2, [(1, 0), (.96, .3), (.8, .62), (.5, .88), (0, 1)], 'dome', 'chapel')
-    bx, by = X1 + 3.0, Y0 - 4.0
-    C.box('Belfry base', (bx, by, 2.5), (3.0, 3.0, 5.0), 'white', 'belfry', 0)
-    b = Batch()
-    for sx in (-1, 1):
-        for sy in (-1, 1):
-            b.box('white', bx + sx * 1.15, by + sy * 1.15, 6.1, .7, .7, 2.2)
-    b.box('white', bx, by, 7.4, 3.0, 3.0, .4)
-    b.box('hardware', bx, by, 6.3, .6, .6, .7)
-    b.box('blue', bx, by - 1.52, 2.0, 1.0, .05, 2.0)
-    b.box('white', bx, by, 8.85, .1, .1, .7)
-    b.box('white', bx, by, 9.0, .4, .1, .1)
-    b.flush('belfry')
-    dome('Belfry cupola', bx, by, 7.6, 1.3, 1.1, [(1, 0), (.9, .4), (.6, .78), (0, 1)], 'dome', 'belfry')
-    # Backdrop: white houses beyond the top landing.
-    for i, (x0, x1, h) in enumerate(((-10.0, -1.0, 4.0), (0.0, 4.5, 5.2), (4.5, 10.0, 4.4))):
-        if i == 0:
-            continue
-        C.box(f'Top house {i}', ((x0 + x1) / 2, Y1 + 8.5, (lv(NT) + h) / 2), (x1 - x0 - .04, 7.0, lv(NT) + h), 'white', 'houses', 0)
+    bougainvillea()
+    chapel(-6.0, Y1 + 3.0, lv(NT))
+    belfry(X1 + 3.0, Y0 - 4.0)
+    # Houses at the head of the stair, their south faces looking down it.
+    front_house('Top house 1', 0.0, 4.5, Y1 + 5.0, lv(NT), 5.2)
+    front_house('Top house 2', 4.5, 10.0, Y1 + 5.0, lv(NT), 4.4)
 
 
 def build():
