@@ -1,7 +1,7 @@
 # Calgary RiverWalk street option (RLASM v6.1 architectural clay)
 
 Candidate G11, added at the user's request after wave G on 2026-10-18: Calgary's RiverWalk as a street option,
-locked from the Bow River pathway's Summer River Day views, which show the RiverWalk and the Peace Bridge. State: **candidate under review**. Nothing here is keeper-approved,
+locked from the Bow River pathway's Summer River Day views, which show the RiverWalk and the Peace Bridge. State: **stopped at v003 by the stopping rule (independent review PASS_ZERO_P0_P1); v003 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -76,7 +76,7 @@ section's runtime footprint.
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 reworks these two)
+## Open blockers after v003 (stopped)
 
-- P1 #1: right_side looks from the land side; the blocks hide the whole street section (river, rip-rap, riparian strip, rail, promenade, bridge) and about 60% of the frame is empty ground and sky (the v001 camera-framing finding carried over for this view).
-- P1 #2: every window shows an opaque black square where the vertical and horizontal frame bars cross (glass_close, architecture_close, planters_benches, facade_close).
+- No P0 or P1 findings remain. Six P2 refinements are listed in evidence/v003/independent-review.md (balcony guard returns, sparse far bank, gabion tone, canopies over the promenade in front_corner, waterline band, empty rear foregrounds).
+- This is an independent RLASM review result only; it is not keeper approval, runtime integration or catalogue enrolment.
