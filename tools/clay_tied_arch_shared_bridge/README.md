@@ -67,3 +67,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (v002 reworks these three)
+
+1. P1: the bridge crosses the canal at exactly 90 degrees; the governing top source skews the deck about 13 degrees to the quays.
+2. P1: 5 cross ties; the sources show 7 evenly spaced box ties over the central span.
+3. P1: the deck fascia is about 1.4x railing height (source about 0.6x) and the soffit sits barely above the water, so the deck reads as a slab on a flooded channel; no visible bearing seats.

@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-tied-arch-shared-bridge-clay-v001",
+  "glb": "clay-tied-arch-shared-bridge-clay-v001.glb",
+  "glb_bytes": 902468,
+  "glb_sha256": "6a38f6a5384f2cd7b5a8116d0e8d2131023458b7eeeb161189535173d7d79295",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "arch_springing.png": 92,
+    "architecture_close.png": 92,
+    "cycle_lane.png": 92,
+    "deck_edge.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "hangers.png": 92,
+    "left_side.png": 92,
+    "planter_divider.png": 92,
+    "quay_under.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-tied-arch-shared-bridge-clay-v001-renders-and-glb.zip",
+  "zip_bytes": 33798112
+}
