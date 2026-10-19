@@ -67,3 +67,15 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (v002 reworks these nine)
+
+1. P1: side bays read as a Warren/Howe truss with a full-height diagonal in every bay and no knee braces; the sources have one long diagonal only next to each portal and knee-braced portal frames elsewhere.
+2. P1: interior louvres hang in two staggered ragged layers ending in mid-air with no bottom rail.
+3. P1: a timber block pokes through the zinc roof near both hip apexes.
+4. P1: black void faces at the portal post tops under the eaves.
+5. P1: the edge girder is about twice the source depth and has tapered boat ends.
+6. P1: no concrete abutments; the timber girder ends run into the planted bank slope.
+7. P1: the pier cap is off-centre and floats over water in the front view.
+8. P1: the front camera clips the near portal post, roof corner and eaves.
+9. P1: a foreground tree in the aerial view hides the east portal end, support and landing.
