@@ -391,6 +391,39 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 UP = Z1 + .7                                    # upper sill line
 
 
+def arch_head(f, h, rise, ring=.26, segs=10, ring_role='arch'):
+    """Segmental or round head on a rectangular cut: brick spandrel infill above the curve (set 1 cm back so it
+    never shares a plane with the wall face) and a proud brick ring of headers over it."""
+    u, w, top = h['u'], h['w'], h['z'] + h['h']
+    R = (w * w / 4 + rise * rise) / (2 * rise)
+    cz = top - R
+    a0 = math.asin(min(1.0, (w / 2) / R))
+    arc = [(u + R * math.sin(-a0 + 2 * a0 * i / segs), cz + R * math.cos(-a0 + 2 * a0 * i / segs)) for i in range(segs + 1)]
+    pts = [(u - w / 2 - .06, top - rise)] + arc + [(u + w / 2 + .06, top - rise)]
+    vs, fs = [], []
+    for (pu, pz) in pts:
+        for d in (.01, T - .01):
+            vs.append(f.p(pu, d, pz)); vs.append(f.p(pu, d, top + .06))
+    for i in range(len(pts) - 1):
+        a, b = 4 * i, 4 * (i + 1)
+        fs += [(a, b, b + 1, a + 1), (a + 2, a + 3, b + 3, b + 2), (a, a + 2, b + 2, b), (a + 1, b + 1, b + 3, a + 3)]
+    n = 4 * (len(pts) - 1)
+    fs += [(0, 1, 3, 2), (n, n + 2, n + 3, n + 1)]
+    C.mesh(f'{h["id"]} spandrel', vs, fs, 'wall', 'arches')
+    vs, fs = [], []
+    for (pu, pz) in arc:
+        r = math.hypot(pu - u, pz - cz)
+        nu, nz = (pu - u) / r, (pz - cz) / r
+        for d in (-.035, .02):
+            vs.append(f.p(pu, d, pz)); vs.append(f.p(pu + nu * ring, d, pz + nz * ring))
+    for i in range(segs):
+        a, b = 4 * i, 4 * (i + 1)
+        fs += [(a, b, b + 1, a + 1), (a + 2, a + 3, b + 3, b + 2), (a, a + 2, b + 2, b), (a + 1, b + 1, b + 3, a + 3)]
+    n = 4 * segs
+    fs += [(0, 1, 3, 2), (n, n + 2, n + 3, n + 1)]
+    C.mesh(f'{h["id"]} arch ring', vs, fs, ring_role, 'arches')
+
+
 def sash(m, f, h, occupied='room', lite=False):
     """Six-over-six sash: each sash three lights by two, a heavier meeting rail, a dark sill below."""
     framed(m, f, h, cols=3, rows=4, inset=.12, occupied=occupied, lite=lite)
@@ -470,6 +503,8 @@ def south_face():
     for h in ups + [nb[2], nb[4], nb[5]]:
         sash(m, f, h)
     paired(m, f, nb[3])
+    for h in [pair] + ups + [nb[4], nb[5]]:                                                  # segmental heads on the upper sashes
+        arch_head(f, h, .2, ring=.14, segs=8, ring_role='trim')
     m.box('hardware', XN - .35, -.06, EAVE / 2, .1, .1, EAVE - .2)                              # downpipe by the party wall
     m.flush('south')
 
@@ -528,7 +563,7 @@ def roof_and_inside():
     ov, hd = .3, (Y1 - Y0) / 2
     slope = RISE / hd
     zg = EAVE - ov * slope + .02
-    b.box('hardware', (X0 + X1) / 2, Y0 - .3, zg, X1 - X0, .14, .12)                             # gutters, mitred at the corner
+    b.box('hardware', (X0 + X1 + .37) / 2, Y0 - .3, zg, X1 + .37 - X0, .14, .12)                # gutters, run on round the corner
     b.box('hardware', X1 + .3, (Y0 - .23 + Y1 + .37) / 2, zg, .14, Y1 - Y0 + .6, .12)
     b.box('hardware', (X0 + X1) / 2, Y1 + .3, zg, X1 - X0, .14, .12)
     b.flush('eaves')
@@ -543,15 +578,26 @@ def roof_and_inside():
     b = Batch()
     for x in (XN, X0 + .2):                                                   # stacks seated on the upstands
         chimney(b, x, 0.0, EAVE + RISE + .2, EAVE + RISE + 1.5, w=.95, d=.75, pots=3)
-    for x in (2.2, 5.0):                                                      # two low rooflights on the rear slope
-        zr = EAVE + RISE * (1 - 1.9 / hd)
-        b.box('hardware', x, 1.9, zr + .04, .9, .7, .08)
-        b.box('glass', x, 1.9, zr + .085, .78, .58, .02)
+    for x in (-1.5, -3.3):                                                    # two rooflights on the neighbour's front slope, west of the stack
+        za, zb = (EAVE + RISE * (1 - y / hd) for y in (2.3, 1.5))
+        b.beam('hardware', (x, -2.3, za + .05), (x, -1.5, zb + .05), .9, .08)
+        b.beam('glass', (x, -2.25, za + .1), (x, -1.55, zb + .1), .78, .02)
     for s in (-1, 1):                                                         # hip and ridge cappings
         b.beam('pot', (X1 - hd, 0.0, EAVE + RISE + .03), (X1 + ov, s * (hd + ov), EAVE - ov * slope + .03), .12, .08)
     b.beam('pot', (xe, 0.0, EAVE + RISE + .04), (X1 - hd, 0.0, EAVE + RISE + .04), .14, .08)
     b.beam('pot', (X0 + .2, 0.0, EAVE + RISE + .04), (XN - .2, 0.0, EAVE + RISE + .04), .14, .08)
     b.flush('roof furniture')
+    # The neighbour's hipped rear back-wing: a narrow two-storey wing on the west side, its ridge running north
+    # out from under the main rear eaves to a hipped end.
+    wx0, wx1, wy1, we = X0 + .05, X0 + 2.15, Y1 + 3.2, 5.4
+    C.box('Neighbour back wing', ((wx0 + wx1) / 2, (Y1 - .01 + wy1) / 2, we / 2), (wx1 - wx0, wy1 - Y1 + .01, we), 'wall', 'context', 0)
+    pitched_roof('Neighbour back wing roof', wx0, wx1, Y1 - 1.0, wy1, we, 1.2, hip_w=False, hip_e=True, axis='y', ov=.25)
+    b = Batch()
+    for z in (1.2, 3.6):
+        b.box('trim', wx1 + .02, Y1 + 1.7, z + .65, .04, .9, 1.4)
+        b.box('glass', wx1 + .045, Y1 + 1.7, z + .65, .02, .74, 1.24)
+    b.box('hardware', (wx0 + wx1) / 2, wy1 + .3, we - .2, wx1 - wx0 + .5, .12, .1)
+    b.flush('neighbour back wing')
     C.box('Ground floor slab', ((X0 + X1) / 2, 0, G0 / 2 + .05), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, G0 + .1), 'floor', 'inside', 0)
     C.box('First floor', ((X0 + X1) / 2, 0, Z1 - .12), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .24), 'floor', 'inside', 0)
     C.box('Ceiling', ((X0 + X1) / 2, 0, EAVE - .12), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .24), 'floor', 'inside', 0)
