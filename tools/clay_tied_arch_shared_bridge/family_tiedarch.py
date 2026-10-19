@@ -2,8 +2,9 @@
 shared_cycle_pedestrian_bridge / variant_1 (Steel Arch Suspended Deck).
 
 Read from the pixels (the top view governs the plan): a single-span bowstring bridge crossing a city canal between
-brick-paved quays, its axis running west-east and skewed about 13 degrees to the canal in plan (top view), so the
-square deck ends meet the quays across wedge-shaped brick landings. Two silver-grey box-section steel arches spring from the deck edges at both quays and lean in towards
+brick-paved quays, its axis running west-east and skewed about 13 degrees to the canal in plan (top view), and built as a
+true skew bridge: the deck is a parallelogram whose ends run parallel to the quay copings, the springings of both arches
+sit on one line along each quay and the cross ties run parallel to the quays, as in the top view. Two silver-grey box-section steel arches spring from the deck edges at both quays and lean in towards
 each other, joined over the central part of the span by seven straight box ties; slim vertical hangers carry the deck edges. The
 wide deck carries, north to south, a red cycle lane, a raised concrete planter of grasses and low shrubs, and a broad
 pale footway, with steel picket railings on both edge ties. Brick apartment blocks stand on the quays and on a pier
@@ -47,7 +48,7 @@ def manifest(version):
         ('cycle_lane', (-21.0, 4.2, ZQ + 1.6), (10.0, 4.0, ZQ + .5), 35),
         ('deck_edge', (-9.0, -14.0, ZQ - .4), (-2.0, -6.3, ZQ - .5), 35),
         ('quay_under', (-11.0, -15.0, 1.3), (-CW, 0.0, 1.4), 35),
-        ('rear_north', (2.0, 40.0, ZQ + 8.0), (0.0, 0.0, ZQ + 3.5), 35)])
+        ('rear_north', (-8.0, 60.0, 20.0), (0.0, 0.0, ZQ + 3.0), 28)])
     for c in cams:                       # the locked front stands on the west quay looking east along the deck
         if c['name'] == 'front':
             c.update(location=(-30.5, 2.6, ZQ + 1.7), target=(0.0, -1.2, ZQ + 3.4), lens=24, whole=False)
@@ -62,22 +63,22 @@ def manifest(version):
         elif c['name'] == 'right_side':
             c.update(location=(50.0, -8.0, 11.0), target=(0.0, 0.0, ZQ + 4.0), lens=35, whole=False)
         elif c['name'] == 'rear':
-            c.update(location=(4.0, 46.0, 9.0), target=(0.0, 0.0, ZQ + 4.0), lens=35, whole=False)
+            c.update(location=(0.0, 64.0, ZQ + 6.0), target=(0.0, 0.0, ZQ + 5.0), lens=28, whole=False)   # full north elevation, world frame
         elif c['name'] == 'rear_side':
             c.update(location=(10.0, 50.0, 34.0), target=(0.0, 0.0, ZQ + 3.0), lens=35, whole=False)   # over the canal, clear of the blocks
     cs, sn = math.cos(SKEW), math.sin(SKEW)
-    for c in cams:                       # every view but the plan is authored in the bridge frame and turned with the bridge
-        if c['name'] != 'top':
+    for c in cams:                       # views authored in the bridge frame are mapped with the bridge's skew shear
+        if c['name'] not in ('top', 'rear', 'rear_north'):
             for key in ('location', 'target'):
                 x, y, z = c[key]
-                c[key] = (x * cs - y * sn, x * sn + y * cs, z)
+                c[key] = (x * cs, x * sn + y / cs, z)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='shared_cycle_pedestrian_bridge/variant_1 (Steel Arch Suspended Deck)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=0, storey_programme='street option: a tied-arch cycle and pedestrian bridge over a canal; the quays and blocks are context',
-            plan='46 m span skewed 13 degrees across a 40 m canal (top view), wedge brick landings, seven box ties, 12.8 m deck: 3.6 m red cycle lane, 1.7 m raised planter, 6.5 m footway, edge ties',
+            plan='46 m span on a 13-degree skew across a 40 m canal (top view), parallelogram deck with its ends parallel to the quay copings, seven box ties parallel to the quays, 12.8 m deck: 3.6 m red cycle lane, 1.7 m raised planter, 6.5 m footway, edge ties',
             section_m=dict(cycle_lane=[2.3, 5.9], planter=[.6, 2.3], footway=[-5.9, .6], edge_ties=[5.9, 6.4], deck_level=ZQ, soffit=ZQ - .6, water=0.0),
             facade='silver-grey box arches leaning inward with cross ties, slim hangers, edge-tie girders, red cycle lane, planter of grasses and shrubs, pale footway, picket railings, brick quays',
             levels_m=[0.0, ZQ, ZQ + RISE], inferred='the deck structure, the bearing shelves, the canal width away from the bridge and the blocks are teaching assumptions'),
@@ -446,13 +447,19 @@ def tuft(b, role, cx, cy, z0, h, r, n=4):
         F.append((o + i, o + (i + 1) % n, o + n))
 
 
+def skew(x, y):
+    """Bridge frame (u along the axis, v across it) to plan: a skew shear. u = const maps to a line parallel to the
+    quays, so deck ends, plinth lines and cross ties all run along the quays; v = const maps to lines at SKEW, and the
+    perpendicular deck width and the distance along the axis are both kept."""
+    return x * math.cos(SKEW), x * math.sin(SKEW) + y / math.cos(SKEW)
+
+
 class RBatch(Batch):
-    """A batch authored in the bridge frame (axis along x) and turned by SKEW about the origin when flushed."""
+    """A batch authored in the bridge frame and sheared onto the skew plan when flushed."""
     def flush(self, module):
-        cs, sn = math.cos(SKEW), math.sin(SKEW)
         for role, (V, F) in self.g.items():
             if F:
-                C.mesh(f'{module} {role}', [(x * cs - y * sn, x * sn + y * cs, z) for x, y, z in V], F, role, module)
+                C.mesh(f'{module} {role}', [skew(x, y) + (z,) for x, y, z in V], F, role, module)
         self.g = {}
 
 
@@ -510,28 +517,26 @@ def canal_and_quays():
 
 
 def deck():
-    xa, xb = -25.6, 25.6                                                                     # square deck ends, every corner on a quay
+    xa, xb = (-(CW + .45) / math.cos(SKEW), (CW + .45) / math.cos(SKEW))                   # skew deck ends on the coping line of each quay
     b = RBatch()
     b.box('steel', 0.0, 0.0, ZQ - .45, xb - xa, 11.8, .22)                                   # deck plate, soffit at ZQ - .56
     for s in (-1, 1):
         b.box('arch', 0.0, s * 6.15, ZQ - .175, 49.0, .5, .85)                                # slim edge ties (the bowstring fascia), ending inside the plinths
     b.box('red', 0.0, 4.1, ZQ - .16, xb - xa, 3.6, .36)                                      # cycle lane, top 2 cm above the quay paving
     b.box('path', 0.0, -2.65, ZQ - .16, xb - xa, 6.5, .36)                                    # footway
-    for x0, x1 in ((xa, -21.5), (21.5, xb)):                                                  # footway over the planter line at the ends
+    for x0, x1 in ((xa, -18.5), (18.5, xb)):                                                  # footway over the planter line at the ends
         b.box('path', (x0 + x1) / 2, 1.45, ZQ - .16, x1 - x0, 1.7, .36)
-    cs, sn = math.cos(SKEW), math.sin(SKEW)
-    for sx in (-1, 1):                                                                        # elastomeric bearings on the shelves under the ties
+    for sx in (-1, 1):                                                                        # three bearing blocks on each shelf under each edge tie
         for s in (-1, 1):
-            y = s * 6.15
-            x = (sx * (CW - .3) + y * sn) / cs
-            b.box('hardware', x, y, ZQ - .67, .45, .45, .16)
+            for dy in (-.35, 0.0, .35):
+                b.box('pale', sx * (CW - .3) / math.cos(SKEW), s * 6.15 + dy, ZQ - .68, .4, .26, .22)
     for s in (-1, 1):                                                                         # planter: long walls, end walls, soil
-        b.box('concrete', 0.0, .675 if s < 0 else 2.225, ZQ + .095, 43.0, .15, .91)
-        b.box('concrete', s * 21.425, 1.45, ZQ + .095, .15, 1.4, .91)
-    b.box('planting', 0.0, 1.45, ZQ + .18, 42.7, 1.4, .54)                                   # soil, top ZQ + .45
-    for k in range(15):                                                                       # cycle lane centre dashes
-        b.box('white', -21.0 + k * 3.0, 4.1, ZQ + .022, 1.2, .12, .012)
-    for x in (-23.0, 23.0):                                                                   # cycle symbols as pale lozenges near the ends
+        b.box('concrete', 0.0, .675 if s < 0 else 2.225, ZQ + .095, 37.0, .15, .91)
+        b.box('concrete', s * 18.425, 1.45, ZQ + .095, .15, 1.4, .91)
+    b.box('planting', 0.0, 1.45, ZQ + .18, 36.7, 1.4, .54)                                   # soil, top ZQ + .45
+    for k in range(13):                                                                       # cycle lane centre dashes
+        b.box('white', -18.0 + k * 3.0, 4.1, ZQ + .022, 1.2, .12, .012)
+    for x in (-19.6, 19.6):                                                                   # cycle symbols as pale lozenges near the ends
         b.box('white', x, 4.1, ZQ + .022, .9, .5, .012)
     b.flush('deck')
     b = RBatch()
@@ -564,8 +569,8 @@ def arches():
 def planter():
     b = RBatch()
     z = ZQ + .45
-    x = -21.0
-    while x < 21.0:
+    x = -18.0
+    while x < 18.0:
         blob(b, RNG.choice(('shrub', 'planting', 'shrub', 'grass')), x, 1.45 + RNG.uniform(-.2, .2), z + .2, RNG.uniform(.4, .55), RNG.uniform(.38, .5), RNG.uniform(.25, .36))
         for k in range(2):                                                                    # soft clumped grasses in an ochre and green mix
             blob(b, RNG.choice(('grass', 'straw', 'straw')), x + RNG.uniform(-.35, .35), 1.45 + RNG.uniform(-.45, .45), z + .08, RNG.uniform(.28, .4), RNG.uniform(.28, .4), RNG.uniform(.22, .32), j=.2)
