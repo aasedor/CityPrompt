@@ -42,7 +42,7 @@ def manifest(version):
         ('architecture_close', (-14.0, -8.0, 9.5), (-27.0, -14.6, 6.0), 40),
         ('glass_close', (RM * math.cos(math.radians(160)), RM * math.sin(math.radians(160)), DZ + 1.6),
                         (RM * math.cos(math.radians(130)), RM * math.sin(math.radians(130)), DZ + 1.0), 40),
-        ('pylon_head', (14.0, -22.0, 52.0), (0.0, 0.0, 51.0), 40),
+        ('pylon_head', (16.0, -24.0, 47.0), (0.0, 0.0, 49.5), 60),
         ('cable_fan', (-6.0, -44.0, 12.0), (0.0, 0.0, 30.0), 28),
         ('ring_deck', (RM * math.cos(math.radians(205)), RM * math.sin(math.radians(205)), DZ + 1.7),
                       (RM * math.cos(math.radians(170)), RM * math.sin(math.radians(170)), DZ + .8), 30),
@@ -54,7 +54,7 @@ def manifest(version):
         ('rear_north', (6.0, 96.0, 24.0), (0.0, 0.0, 9.0), 35)])
     for c in cams:                       # the locked front stands by the ramp at deck height, looking east across the ring
         if c['name'] == 'front':
-            c.update(location=(-60.0, -16.0, 8.6), target=(0.0, 2.0, 15.0), lens=22, whole=False)
+            c.update(location=(-41.0, -11.0, 10.4), target=(0.0, 2.0, 15.0), lens=26, whole=False)
         elif c['name'] == 'front_corner':                                      # the locked oblique, higher, from the south-west
             c.update(location=(-62.0, -30.0, 24.0), target=(0.0, 2.0, 12.0), lens=24, whole=False)
         elif c['name'] == 'aerial':
@@ -563,7 +563,7 @@ def street():
         for i in range(14):
             b.box('lane', s * 11.2, -10.4 + i * 1.6, .053, .4, .4, .006)
     b.flush('road markings')
-    for x, y in ((-24.0, 24.0), (24.0, 26.0), (-26.0, -22.0), (30.0, -22.0), (-46.0, 20.0), (46.0, -20.0), (20.0, 46.0), (-30.0, -58.0)):
+    for x, y in ((-34.0, 34.0), (34.0, 36.0), (-38.0, -30.0), (40.0, -28.0), (-48.0, 20.0), (48.0, -20.0), (20.0, 46.0), (-30.0, -58.0)):                   # clear of the ring
         street_tree(x, y, z=.025, height=10.0, spread=2.6)
 
 
