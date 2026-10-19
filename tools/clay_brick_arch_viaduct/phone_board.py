@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
-PAIRS = [('front', 'front.png', 'Locked front'), ('oblique', 'front_corner.png', 'Locked oblique'), ('top', 'aerial.png', 'Locked top')]
+PAIRS = [('front', 'front.png', 'Locked front'), ('oblique', 'front_corner.png', 'Locked oblique'), ('top', 'top.png', 'Locked top')]
 BASE = ['left_side', 'right_side', 'rear', 'rear_side', 'top']
 
 

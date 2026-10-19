@@ -16,8 +16,10 @@ import assemblies as A
 import geometry as G
 
 SLUG = 'clay-brick-arch-viaduct'
-NA, SPAN, PIER, END = 10, 6.0, 2.2, 3.0          # arches, clear span, pier width, end abutments (along y)
-LEN = 2 * END + NA * SPAN + (NA - 1) * PIER       # 85.8 m modelled run
+NA, SPAN, PIER, END = 10, 6.0, 2.2, 3.0          # detailed arches, clear span, pier width, near end abutment (along y)
+NE = 10                                          # plainer arches carrying the run on past the far cameras
+LEN = 2 * END + NA * SPAN + (NA - 1) * PIER       # 85.8 m detailed run
+YE = -LEN / 2 + END + (NA + NE) * (SPAN + PIER) - PIER / 2   # the run is cut mid-pier far beyond the rear cameras
 VX = 5.0                                         # half-width of the viaduct (outer faces at x = +-VX)
 TW = 1.0                                         # face wall (arch ring) depth
 SPRING, CROWN = 4.2, 7.2                         # springing and crown of the arches
@@ -28,7 +30,7 @@ T = .3
 EPS = .002
 PALETTE = dict(wall=(.50, .30, .20), brick=(.50, .30, .20), arch=(.56, .34, .23), joint=(.62, .56, .48), stone=(.70, .66, .58),
     trim=(.30, .22, .15), frame=(.18, .16, .14), glass=(.22, .26, .28), interior=(.82, .72, .58), floor=(.50, .40, .30),
-    sign=(.16, .17, .19), shutter=(.46, .47, .48), ballast=(.40, .38, .36), timber=(.36, .26, .18), hardware=(.10, .10, .11),
+    sign=(.16, .17, .19), shutter=(.46, .47, .48), ballast=(.36, .34, .32), ballast2=(.27, .26, .25), ballast3=(.47, .45, .42), ground=(.52, .53, .50), timber=(.36, .26, .18), hardware=(.10, .10, .11),
     red=(.62, .10, .10), white=(.92, .92, .90), pale=(.86, .86, .84), dark=(.10, .10, .11), roof=(.24, .25, .27),
     setts=(.30, .29, .28), settjoint=(.46, .44, .40), paving=(.62, .60, .56), concrete=(.66, .65, .62), asphalt=(.28, .28, .29),
     planting=(.30, .44, .20), tree=(.28, .44, .18), soil=(.24, .18, .12), pot=(.60, .34, .22), grass=(.40, .52, .26),
@@ -50,23 +52,23 @@ def manifest(version):
         ('parapet_coping', (8.5, -12.0, 12.2), (VX, -2.0, PAR), 40),
         ('train_cars', (15.0, 14.0, 14.0), (1.8, 2.0, 10.8), 40),
         ('cobbled_street', (13.5, Y0 + 2.0, 1.7), (13.0, 10.0, 1.4), 35),
-        ('rear_north', (2.0, Y1 + 30.0, 15.0), (0.0, Y1 - 6.0, 6.0), 40)])
+        ('rear_north', (15.0, Y1 + 30.0, 12.0), (2.0, Y1 - 12.0, 5.0), 36)])
     for c in cams:
         if c['name'] == 'front':                 # the locked front: on the cobbles to the north-east, the arches receding south-west
             c.update(location=(13.5, 16.0, 1.6), target=(3.0, -12.0, 9.0), lens=26, whole=False)
         elif c['name'] == 'front_corner':        # the locked oblique: high over the south end, looking north along the run
-            c.update(location=(-16.0, Y0 - 22.0, 30.0), target=(6.0, Y0 + 30.0, 3.0), lens=32, whole=False)
+            c.update(location=(22.0, Y0 - 20.0, 30.0), target=(-1.0, Y0 + 34.0, 2.0), lens=30, whole=False)   # street side, as the source
         elif c['name'] == 'aerial':
             c.update(location=(42.0, Y0 - 30.0, 48.0), target=(2.0, -4.0, 4.0), lens=32, whole=False)
         elif c['name'] == 'top':                 # the locked top is a steep oblique from the south-west
-            c.update(location=(-8.0, -16.0, 36.0), target=(6.0, 10.0, 2.0), lens=30, whole=False)
+            c.update(location=(20.0, -34.0, 50.0), target=(1.0, 6.0, 2.0), lens=30, whole=False)          # street side, as the source
             c.pop('ortho_scale', None)                                           # a perspective, like the locked top
-        elif c['name'] == 'left_side':           # over the west terraces, which would hide the viaduct from the ground
-            c.update(location=(-48.0, -6.0, 30.0), target=(0.0, 0.0, 5.0), lens=32, whole=False)
+        elif c['name'] == 'left_side':           # over the gardens, high enough to clear the west terrace roofs
+            c.update(location=(-44.0, -2.0, 26.0), target=(-5.0, 0.0, 4.0), lens=28, whole=False)
         elif c['name'] == 'right_side':
-            c.update(location=(48.0, 6.0, 28.0), target=(2.0, 0.0, 5.0), lens=32, whole=False)
+            c.update(location=(46.0, 6.0, 34.0), target=(4.0, 0.0, 3.0), lens=30, whole=False)
         elif c['name'] == 'rear':
-            c.update(location=(-6.0, Y1 + 46.0, 26.0), target=(2.0, Y1 - 24.0, 5.0), lens=32, whole=False)
+            c.update(location=(-30.0, Y1 + 40.0, 30.0), target=(2.0, Y1 - 24.0, 4.0), lens=30, whole=False)
         elif c['name'] == 'rear_side':
             c.update(location=(40.0, Y1 + 36.0, 34.0), target=(2.0, 6.0, 4.0), lens=32, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -75,10 +77,10 @@ def manifest(version):
         source_archetype='rail_transit_viaduct/variant_0 (Victorian Brick Arch Viaduct)',
         measurement_contract=dict(dimensions_m=dict(width=2 * VX, depth=LEN, height=h),
             observed_storeys=0, storey_programme='street option: a rail viaduct with shop units in its arches; terraces are context',
-            plan=f'{2 * VX:.0f} m wide brick viaduct, {LEN:.1f} m modelled run of {NA} arches (top view), a 5 m flagged pavement and a 7 m cobbled street on its east side',
+            plan=f'{2 * VX:.0f} m wide brick viaduct, {YE - Y0:.0f} m modelled run of {NA + NE} arches (top view), cut at the near end and running on at the far end, a 5 m flagged pavement and a 7 m cobbled street on its east side',
             facade='red-brown brick arches and piers with pilasters, stone impost band, string course and coping; glazed timber shopfronts with fascia signs; blind arches on the west',
             section_m=dict(viaduct=[-VX, VX], pavement=[VX, PAVE], street=[PAVE, STREET], far_pavement=[STREET, FAR]),
-            levels_m=[0.0, SPRING, CROWN, DECK, PAR], inferred='the run is cut at both ends; the shop interiors and the west gardens are assumptions'),
+            levels_m=[0.0, SPRING, CROWN, DECK, PAR], inferred='the run is cut at the near end and runs on beyond the far cameras; the shop interiors and the west gardens are assumptions'),
         roof_contract=dict(type='open street option; ballasted twin-track deck inside the parapets', datum_m=DECK, crowns_m=[PAR]),
         identity_contract=dict(owner='long brick arch viaduct with pilastered piers, glazed shopfronts in the arches, coped parapet, twin tracks and a train on top, cobbled street alongside'),
         material_contract=dict(profile='source-palette clay: red-brown brick with joints, pale stone dressings, dark timber shopfronts and fascias, grey shutters, ballast and timber sleepers, red-and-white train, grey setts and pale flags', textured_keeper=False),
@@ -441,7 +443,7 @@ def arch_head(f, h, rise, ring=.26, segs=10, ring_role='arch', dep=None):
     C.mesh(f'{h["id"]} arch ring', vs, fs, ring_role, 'arches')
 
 
-def courses(f, lo, hi, z0, z1, holes, course=.3, brick=.66, heads=True):
+def courses(f, lo, hi, z0, z1, holes, course=.3, brick=.66, heads=True, hmax=None):
     """Brick bed joints and staggered head joints, cut round the openings (one mesh per face)."""
     G.brick_courses(f, lo + .02, hi - .02, z0, z1, holes, spacing=course)
     if not heads:
@@ -450,7 +452,7 @@ def courses(f, lo, hi, z0, z1, holes, course=.3, brick=.66, heads=True):
     for row in range(int((z1 - z0) / course)):
         zb = z0 + row * course
         u = lo + brick + (brick / 2) * (row % 2)
-        while u < hi - .05:
+        while u < min(hi, hmax or hi) - .05:
             if not any(h['u'] - h['w'] / 2 - .5 < u < h['u'] + h['w'] / 2 + .5 and zb < h['z'] + h['h'] + .55 for h in holes):
                 o = len(vs)
                 vs += [f.p(u - .006, -.002, zb), f.p(u + .006, -.002, zb), f.p(u + .006, -.002, zb + course), f.p(u - .006, -.002, zb + course)]
@@ -461,85 +463,121 @@ def courses(f, lo, hi, z0, z1, holes, course=.3, brick=.66, heads=True):
 
 
 PITCH = SPAN + PIER
-ARCHES = [Y0 + END + SPAN / 2 + i * PITCH for i in range(NA)]
-PIERS = [y + SPAN / 2 + PIER / 2 for y in ARCHES[:-1]]
+ALL = [Y0 + END + SPAN / 2 + i * PITCH for i in range(NA + NE)]
+ARCHES = ALL[:NA]                                # detailed shop arches; the rest carry the run on, plainer
+PIERS = [y + SPAN / 2 + PIER / 2 for y in ALL[:-1]]
 SHUTTERED = (0, 7)                               # arches closed by grey roller shutters (oblique)
-YA, YB = Y0 + .6, Y1 - .6                        # face walls run between the end walls
+YA = Y0 + .6                                     # face walls run from the near end wall to the far cut
 
 
 def pilaster(m, u, w=1.4):
     """Flat brick pilaster with a stone plinth, a narrower face strip, rising through the parapet to a capped pier."""
     m.box('wall', u, -.15, (PAR + .45) / 2, w, .3, PAR + .45)
-    m.box('wall', u, -.36, (SPRING + DECK - .3) / 2 + .3, w - .5, .12, DECK - .3 - SPRING + .6)
+    m.box('wall', u, -.36, (SPRING - .1 + DECK + .3) / 2, w - .5, .12, DECK + .3 - SPRING + .1)
     m.box('stone', u, -.21, .3, w + .16, .42, .6)
     m.box('stone', u, -.19, PAR + .51, w + .16, .48, .12)
 
 
+def imposts(m, holes, reveal):
+    """Stone impost course at the springing: across every pier and abutment face (proud of the pilasters), with a
+    return into each reveal, so the arch ring springs from it and the jambs below stay plain brick."""
+    zc = SPRING - .18
+    edges = sorted([h['u'] - SPAN / 2 for h in holes] + [h['u'] + SPAN / 2 for h in holes])
+    for k in range(0, len(edges) - 1):
+        a, b = edges[k], edges[k + 1]
+        if b - a < SPAN - .01:                                                          # a pier between two openings
+            m.box('stone', (a + b) / 2, -.25, zc, b - a, .5, .36)
+    m.box('stone', edges[0] - .5, -.25, zc, 1.0, .5, .36)                                # at the abutment ends
+    m.box('stone', edges[-1] + .5, -.25, zc, 1.0, .5, .36)
+    for h in holes:
+        for s in (-1, 1):
+            m.box('stone', h['u'] + s * (SPAN / 2 - .05), (reveal - .02) / 2, zc, .14, reveal + .02, .36)
+
+
+def shopfront(m, u, i):
+    m.box('sign', u, .45, 3.75, SPAN - .02, .12, .6)                                     # fascia sign board
+    m.box('glass', u, .62, (4.06 + CROWN) / 2, SPAN - .06, .02, CROWN - 4.06)               # glazed lunette
+    for k in (-1, 0, 1):
+        m.box('trim', u + k * SPAN / 4, .6, (4.06 + CROWN) / 2, .1, .14, CROWN - 4.06)
+    m.box('trim', u, .6, 5.6, SPAN - .04, .14, .1)
+    if i in SHUTTERED:
+        m.box('shutter', u, .5, 1.72, SPAN - .04, .1, 3.44)
+        for k in range(22):
+            m.box('dark', u, .44, .2 + k * .15, SPAN - .1, .02, .02)
+        m.box('shutter', u, .45, 3.3, SPAN - .02, .2, .3)                                    # shutter box
+    else:
+        m.box('glass', u, .62, 1.94, SPAN - .06, .02, 3.0)                                   # shopfront glazing over a stall riser
+        m.box('trim', u, .6, .22, SPAN - .04, .14, .44)
+        for k in (-2, -1, 0, 1, 2):
+            m.box('trim', u + k * SPAN / 4 + (.05 if k == -2 else -.05 if k == 2 else 0), .6, 1.72, .1, .14, 3.44)
+        m.box('trim', u, .6, 3.4, SPAN - .04, .14, .1)                                       # transom under the fascia
+        m.box('trim', u + SPAN / 8, .58, 1.3, 1.36, .12, 2.6)                                # glazed door
+        m.box('glass', u + SPAN / 8, .52, 1.55, .9, .02, 1.6)
+
+
+def plain_shopfront(m, u):
+    m.box('sign', u, .45, 3.75, SPAN - .02, .12, .6)
+    m.box('glass', u, .62, (4.06 + CROWN) / 2, SPAN - .06, .02, CROWN - 4.06)
+    m.box('trim', u, .6, (4.06 + CROWN) / 2, .1, .14, CROWN - 4.06)
+    m.box('glass', u, .62, 1.94, SPAN - .06, .02, 3.0)
+    m.box('trim', u, .6, .22, SPAN - .04, .14, .44)
+    for k in (-1, 1):
+        m.box('trim', u + k * SPAN / 4, .6, 1.72, .1, .14, 3.44)
+
+
 def east_face():
-    """Street face: arch openings with shopfronts or shutters, pilasters, impost blocks, string course and coping."""
+    """Street face: arch openings with shopfronts or shutters, pilasters, impost course, string course and coping."""
     f = C.Face((VX, 0, 0), (0, 1, 0), (-1, 0, 0), 'east')
-    hs = [hole(f'arch {i}', y, 0.0, SPAN, CROWN, kind='shopfront') for i, y in enumerate(ARCHES)]
-    f.wall('east face', YA, YB - EPS, 0.0, PAR, depth=TW, role='wall', holes=hs)
-    courses(f, YA, YB, .62, PAR - .05, hs)
+    hs = [hole(f'arch {i}', y, 0.0, SPAN, CROWN, kind='shopfront') for i, y in enumerate(ALL)]
+    f.wall('east face', YA, YE, 0.0, PAR, depth=TW, role='wall', holes=hs)
+    courses(f, YA, YE, .62, PAR - .05, hs, hmax=Y1)
     m = Merge(f)
     for i, h in enumerate(hs):
         u = h['u']
-        register(f, h, .6, 'shopfront', 'shop')
-        m.box('sign', u, .45, 3.75, SPAN - .02, .12, .6)                                     # fascia sign board
-        m.box('glass', u, .62, (4.06 + CROWN) / 2, SPAN - .06, .02, CROWN - 4.06)               # glazed lunette
-        for k in (-1, 0, 1):
-            m.box('trim', u + k * SPAN / 4, .6, (4.06 + CROWN) / 2, .1, .14, CROWN - 4.06)
-        m.box('trim', u, .6, 5.6, SPAN - .04, .14, .1)
-        if i in SHUTTERED:
-            m.box('shutter', u, .5, 1.72, SPAN - .04, .1, 3.44)
-            for k in range(22):
-                m.box('dark', u, .44, .2 + k * .15, SPAN - .1, .02, .02)
-            m.box('shutter', u, .45, 3.3, SPAN - .02, .2, .3)                                    # shutter box
+        if i < NA:
+            register(f, h, .6, 'shopfront', 'shop')
+            shopfront(m, u, i)
+            arch_head(f, h, SPAN / 2, ring=.48, segs=24, ring_role='arch', dep=2 * VX - TW + .02)
         else:
-            m.box('glass', u, .62, 1.94, SPAN - .06, .02, 3.0)                                   # shopfront glazing over a stall riser
-            m.box('trim', u, .6, .22, SPAN - .04, .14, .44)
-            for k in (-2, -1, 0, 1, 2):
-                m.box('trim', u + k * SPAN / 4 + (.05 if k == -2 else -.05 if k == 2 else 0), .6, 1.72, .1, .14, 3.44)
-            m.box('trim', u, .6, 3.4, SPAN - .04, .14, .1)                                       # transom under the fascia
-            m.box('trim', u + SPAN / 8, .58, 1.3, 1.36, .12, 2.6)                                # glazed door
-            m.box('glass', u + SPAN / 8, .52, 1.55, .9, .02, 1.6)
-        arch_head(f, h, SPAN / 2, ring=.48, segs=14, ring_role='arch', dep=2 * VX - TW + .02)
-    for u in PIERS + [YA + .8, YB - .8]:
+            plain_shopfront(m, u)
+            arch_head(f, h, SPAN / 2, ring=.48, segs=16, ring_role='arch', dep=2 * VX - TW + .02)
+    for u in PIERS + [YA + .8]:
         pilaster(m, u)
-    for u in PIERS:                                                                         # stone imposts at the springing
-        m.box('stone', u, -.1, SPRING - .12, PIER - .04, .2, .24)
-    m.box('stone', 0.0, -.12, DECK - .1, Y1 - Y0, .24, .24)                                 # deck string course, end to end
-    m.box('stone', 0.0, (TW - .12) / 2, PAR + .07, Y1 - Y0, TW + .12, .14)                   # parapet coping
+    imposts(m, hs, .55)
+    m.box('stone', (Y0 + YE) / 2, -.12, DECK - .1, YE - Y0, .24, .24)                       # deck string course
+    m.box('stone', (Y0 + YE) / 2, (TW - .12) / 2, PAR + .07, YE - Y0, TW + .12, .14)         # parapet coping
     m.flush('east')
 
 
 def west_face():
-    """Garden face: blind arches (a shallow recess under each arch), pilasters, string course and coping."""
+    """Garden face: blind arches (a shallow recess under each arch), pilasters, impost course, string course and coping."""
     f = C.Face((-VX, 0, 0), (0, -1, 0), (1, 0, 0), 'west')
-    hs = [hole(f'west blind arch {i}', -y, 0.0, SPAN, CROWN, kind='blind arch') for i, y in enumerate(ARCHES)]
-    f.wall('west face', -YB, -YA - EPS, 0.0, PAR, depth=TW, role='wall', holes=hs)
-    courses(f, -YB, -YA, .62, PAR - .05, hs, heads=False)
+    hs = [hole(f'west blind arch {i}', -y, 0.0, SPAN, CROWN, kind='blind arch') for i, y in enumerate(ALL)]
+    f.wall('west face', -YE, -YA - EPS, 0.0, PAR, depth=TW, role='wall', holes=hs)
+    courses(f, -YE, -YA, .62, PAR - .05, hs, heads=False)
     m = Merge(f)
-    for h in hs:
+    for i, h in enumerate(hs):
         m.box('wall', h['u'], (.35 + TW) / 2, CROWN / 2, SPAN + .02, TW - .35, CROWN)          # recess infill
-        arch_head(f, h, SPAN / 2, ring=.45, segs=14, ring_role='arch', dep=.38)
-        m.box('dark', h['u'] + 1.2, .33, 1.2, 1.0, .04, 2.4)                                   # a back door into the arch
-    for u in [-p for p in PIERS] + [-YB + .8, -YA - .8]:
+        arch_head(f, h, SPAN / 2, ring=.45, segs=16, ring_role='arch', dep=.38)
+        if i < NA:
+            m.box('dark', h['u'] + 1.2, .33, 1.2, 1.0, .04, 2.4)                               # a back door into the arch
+    for u in [-p for p in PIERS] + [-YA - .8]:
         pilaster(m, u)
-    m.box('stone', 0.0, -.12, DECK - .1, Y1 - Y0, .24, .24)
-    m.box('stone', 0.0, (TW - .12) / 2, PAR + .07, Y1 - Y0, TW + .12, .14)
+    imposts(m, hs, .33)
+    m.box('stone', -(Y0 + YE) / 2, -.12, DECK - .1, YE - Y0, .24, .24)
+    m.box('stone', -(Y0 + YE) / 2, (TW - .12) / 2, PAR + .07, YE - Y0, TW + .12, .14)
     m.flush('west')
 
 
 def end_wall(label, y, sgn):
-    """End of the modelled run: a brick end wall with a blind arch, corner pilasters and coping."""
+    """Near end of the run: a brick end wall with a blind arch, corner pilasters and coping."""
     f = C.Face((0, y, 0), (sgn, 0, 0), (0, sgn, 0), label)
     h = hole(f'{label} blind arch', 0.0, 0.0, 5.0, 6.4, kind='blind arch')
     f.wall(f'{label} wall', -VX, VX - EPS, 0.0, PAR, depth=.6, role='wall', holes=[h])
     courses(f, -VX, VX, .62, PAR - .05, [h], heads=False)
     m = Merge(f)
     m.box('wall', 0.0, (.3 + .6) / 2, 3.2, 5.02, .3, 6.4)
-    arch_head(f, h, 2.5, ring=.45, segs=12, ring_role='arch', dep=.33)
+    arch_head(f, h, 2.5, ring=.45, segs=16, ring_role='arch', dep=.33)
     for u in (-VX + .7, VX - .7):
         pilaster(m, u, w=1.36)
     m.box('stone', 0.0, -.12, DECK - .1, 2 * VX + .48, .24, .24)                         # wraps the corners of the side courses
@@ -547,43 +585,76 @@ def end_wall(label, y, sgn):
     m.flush(label)
 
 
+def ballast_bed(xt, y0, y1):
+    """Trapezoidal ballast bed under one track: sloped shoulders down to the deck, crest just under the sleeper tops."""
+    C.prism(f'Ballast bed {xt:+.0f}', [(xt - 1.8, DECK), (xt + 1.8, DECK), (xt + 1.35, DECK + .36), (xt - 1.35, DECK + .36)],
+            'y', y0, y1, 'ballast', 'tracks')
+
+
+def ballast_stones(xt, y0, y1, seed):
+    """Loose stones scattered over the crest, crib and shoulders: small faceted tetrahedra in three tones."""
+    import random
+    rnd = random.Random(seed)
+    groups = {'ballast2': ([], []), 'ballast3': ([], [])}
+    n = int((y1 - y0) * 15)
+    for _ in range(n):
+        x = xt + rnd.uniform(-1.78, 1.78)
+        y = rnd.uniform(y0 + .05, y1 - .05)
+        d = abs(x - xt)
+        z = DECK + .36 if d <= 1.35 else DECK + .36 * (1.8 - d) / .45
+        r = rnd.uniform(.045, .085)
+        a = rnd.uniform(0, 2 * math.pi)
+        vs, fs = groups['ballast2' if rnd.random() < .55 else 'ballast3']
+        o = len(vs)
+        vs += [(x + r * math.cos(a + k * 2.094), y + r * math.sin(a + k * 2.094), z - .015) for k in range(3)] + [(x, y, z + r * .55)]
+        fs += [(o, o + 1, o + 3), (o + 1, o + 2, o + 3), (o + 2, o, o + 3)]
+    for role, (vs, fs) in groups.items():
+        C.mesh(f'Ballast stones {role} {xt:+.0f}', vs, fs, role, 'tracks')
+
+
 def body_and_deck():
     xi = VX - TW
     b = Batch()
     for u in PIERS:
         b.box('wall', 0.0, u, CROWN / 2, 2 * xi, PIER, CROWN)
-    for ya, yb in ((YA, ARCHES[0] - SPAN / 2), (ARCHES[-1] + SPAN / 2, YB)):
-        b.box('wall', 0.0, (ya + yb) / 2, CROWN / 2, 2 * xi, yb - ya, CROWN)
-    b.box('concrete', 0.0, 0.0, (CROWN + DECK) / 2, 2 * xi, YB - YA, DECK - CROWN)
+    b.box('wall', 0.0, (YA + ARCHES[0] - SPAN / 2) / 2, CROWN / 2, 2 * xi, ARCHES[0] - SPAN / 2 - YA, CROWN)
+    ye0 = ALL[-1] + SPAN / 2                                                              # half pier at the far cut
+    b.box('wall', 0.0, (ye0 + YE) / 2, CROWN / 2, 2 * xi, YE - ye0, CROWN)
+    b.box('concrete', 0.0, (YA + YE) / 2, (CROWN + DECK) / 2, 2 * xi, YE - YA, DECK - CROWN)
     b.flush('viaduct body')
-    # Shop interiors in the vaults: floor, back shelving, a counter, warm light.
+    # Shop interiors in the vaults: floor, back shelving, a counter, warm light (detailed arches); floors beyond.
     b = Batch()
-    for i, y in enumerate(ARCHES):
+    for i, y in enumerate(ALL):
         b.box('floor', (-xi + VX - .55) / 2, y, .04, VX - .55 + xi, SPAN - .02, .08)
-        if i not in SHUTTERED:
+        if i < NA and i not in SHUTTERED:
             for k in range(4):
                 b.box('interior', -xi + .3, y, .5 + k * .6, .5, SPAN - 1.2, .06)
             b.box('timber', 1.2, y - 1.2, .55, .7, 2.4, 1.1)
-        C.qa_room_light(f'Arch {i} shop', (1.2, y, 2.6), 40, 2.5)
+        if i < NA:
+            C.qa_room_light(f'Arch {i} shop', (1.2, y, 2.6), 40, 2.5)
     b.flush('shops')
-    # Twin ballasted tracks, sleepers and rails.
+    # Twin tracks on trapezoidal ballast beds: sleepers bedded to near their tops, rails on the sleepers.
+    for xt, seed in ((-1.8, 11), (1.8, 23)):
+        ballast_bed(xt, YA, YE)
+        ballast_stones(xt, YA + .2, Y1 - 18.0, seed)
+    zs = DECK + .24
     b = Batch()
-    b.box('ballast', 0.0, 0.0, DECK + .14, 2 * xi - .6, YB - YA, .28)
-    zs = DECK + .28
-    n = int((YB - YA - .6) / .7)
+    ys = [YA + .5 + k * .7 for k in range(int((Y1 + 10.0 - YA) / .7))]
+    ys += [ys[-1] + (k + 1) * 1.0 for k in range(int((YE - .5 - ys[-1]) / 1.0))]
     for xt in (-1.8, 1.8):
-        for k in range(n):
-            b.box('timber', xt, YA + .5 + k * .7, zs + .06, 2.5, .24, .12)
+        for y in ys:
+            b.box('timber', xt, y, zs + .08, 2.5, .24, .16)
         for s in (-1, 1):
-            b.box('hardware', xt + s * .72, 0.0, zs + .2, .07, YB - YA - .1, .16)
+            b.box('hardware', xt + s * .72, (YA + YE) / 2, zs + .24, .07, YE - YA - .1, .16)
     b.flush('tracks')
 
 
 def train():
-    """A red-and-white train of three cars on the east track."""
-    xt, z0 = 1.8, DECK + .28 + .28
+    """A red-and-white train of three cars on the east track, mid-run with open track ahead of both cabs."""
+    xt, z0 = 1.8, DECK + .56
+    ys = -28.0
     b = Batch()
-    y = -10.0
+    y = ys
     for k in range(3):
         L = 17.0
         y0, y1 = y, y + L
@@ -599,33 +670,61 @@ def train():
             for j in range(1, 6):
                 b.box('white', xt + s * 1.43, y0 + L * j / 6, z0 + 2.4, .02, .18, 1.02)
         y = y1 + .7
-    b.box('dark', xt, -10.0 - .015, z0 + 2.5, 2.2, .02, 1.2)                                 # cab windscreen
-    b.box('pale', xt, -10.0 - .015, z0 + 1.0, 2.0, .02, .3)
+    for yy, sg in ((ys, -1), (y - .7, 1)):                                                  # cab windscreens and lamps
+        b.box('dark', xt, yy + sg * .015, z0 + 2.5, 2.2, .02, 1.2)
+        b.box('pale', xt, yy + sg * .015, z0 + 1.0, 2.0, .02, .3)
     b.flush('train')
+
+
+def sett_joints(x0, x1, ya, yb, ydet):
+    """Granite setts in staggered courses: transverse bed joints every course and staggered cross joints within each
+    course (one merged mesh); beyond ydet only the course lines are drawn."""
+    vs, fs = [], []
+    def quad(xa, xb, y0, y1, z=.061):
+        o = len(vs)
+        vs.extend([(xa, y0, z), (xb, y0, z), (xb, y1, z), (xa, y1, z)])
+        fs.append((o, o + 1, o + 2, o + 3))
+    course, sett = .25, .34
+    y, row = ya + .1, 0
+    while y < yb - .1:
+        if y < ydet or row % 2 == 0:
+            quad(x0, x1, y - .015, y + .015)
+        if y < ydet:
+            x = x0 + sett * (.5 if row % 2 else 1.0)
+            while x < x1 - .05:
+                quad(x - .012, x + .012, y + .015, y + course - .015)
+                x += sett
+        y += course
+        row += 1
+    C.mesh('Sett joints', vs, fs, 'settjoint', 'street')
 
 
 def street():
     b = Batch()
-    ya, yb = Y0 - 8.0, Y1 + 8.0
-    C.box('Flagged pavement', ((VX + PAVE) / 2, 0.0, .07), (PAVE - VX, yb - ya, .14), 'paving', 'street', 0)
-    C.box('Kerb', (PAVE + .1, 0.0, .07), (.2, yb - ya, .14), 'stone', 'street', 0)
-    C.box('Cobbled street', ((PAVE + .2 + STREET) / 2, 0.0, .03), (STREET - PAVE - .2, yb - ya, .06), 'setts', 'street', 0)
-    C.box('Far kerb', (STREET + .1, 0.0, .07), (.2, yb - ya, .14), 'stone', 'street', 0)
-    C.box('Far pavement', ((STREET + .2 + FAR) / 2, 0.0, .07), (FAR - STREET - .2, yb - ya, .14), 'paving', 'street', 0)
-    C.box('West gardens', ((-VX - 13.0) / 2, 0.0, .03), (13.0 - VX, yb - ya, .06), 'grass', 'gardens', 0)
-    k = 0
+    ya, yb = Y0 - 8.0, YE
+    C.box('Context ground', (0.0, (Y0 - 70.0 + YE) / 2, .002), (220.0, YE - Y0 + 70.0, .004), 'ground', 'site', 0)
+    C.box('Flagged pavement', ((VX + PAVE) / 2, (ya + yb) / 2, .07), (PAVE - VX, yb - ya, .14), 'paving', 'street', 0)
+    C.box('Kerb', (PAVE + .1, (ya + yb) / 2, .07), (.2, yb - ya, .14), 'stone', 'street', 0)
+    C.box('Cobbled street', ((PAVE + .2 + STREET) / 2, (ya + yb) / 2, .03), (STREET - PAVE - .2, yb - ya, .06), 'setts', 'street', 0)
+    C.box('Far kerb', (STREET + .1, (ya + yb) / 2, .07), (.2, yb - ya, .14), 'stone', 'street', 0)
+    C.box('Far pavement', ((STREET + .2 + FAR) / 2, (ya + yb) / 2, .07), (FAR - STREET - .2, yb - ya, .14), 'paving', 'street', 0)
+    C.box('West gardens', ((-VX - 27.0) / 2, (ya + yb) / 2, .03), (27.0 - VX, yb - ya, .06), 'grass', 'gardens', 0)
+    # Gutter channel: three courses of setts laid along each kerb, then the staggered field between them.
+    gl, gr = PAVE + .2, STREET
+    sett_joints(gl + .66, gr - .66, ya, yb, Y1 - 8.0)
+    for x in (gl + .22, gl + .44, gl + .66, gr - .22, gr - .44, gr - .66):
+        b.box('settjoint', x, (ya + yb) / 2, .061, .03, yb - ya - .02, .004)
+    vs, fs = [], []
     y = ya + .3
-    while y < yb - .2:                                                                     # flags and setts courses
-        b.box('settjoint', (PAVE + .2 + STREET) / 2, y, .061, STREET - PAVE - .2, .04, .004)
-        if k % 4 == 0:
-            b.box('settjoint', (VX + PAVE) / 2, y, .141, PAVE - VX - .02, .03, .004)
-            b.box('settjoint', (STREET + .2 + FAR) / 2, y, .141, FAR - STREET - .22, .03, .004)
-        y += .3
-        k += 1
+    while y < yb - .2:                                                                     # flag courses, flat quads
+        for xa, xb in ((VX + .01, PAVE - .01), (STREET + .21, FAR - .01)):
+            o = len(vs)
+            vs += [(xa, y - .015, .1415), (xb, y - .015, .1415), (xb, y + .015, .1415), (xa, y + .015, .1415)]
+            fs.append((o, o + 1, o + 2, o + 3))
+        y += 1.2
+    C.mesh('Flag joints', vs, fs, 'settjoint', 'street')
     for x in (VX + 1.6, VX + 3.3):
-        b.box('settjoint', x, 0.0, .141, .03, yb - ya - .02, .004)
-    for x in (PAVE + 2.4, PAVE + 4.6):
-        b.box('settjoint', x, 0.0, .061, .04, yb - ya - .02, .004)
+        b.box('settjoint', x, (ya + yb) / 2, .141, .03, yb - ya - .02, .004)
     for k in range(int((yb - ya) / 3.2)):                                                  # bollards at the kerb
         b.box('hardware', PAVE - .35, ya + 1.6 + k * 3.2, .14 + .5, .14, .14, 1.0)
         b.box('hardware', PAVE - .35, ya + 1.6 + k * 3.2, 1.17, .2, .2, .06)
@@ -636,61 +735,67 @@ def street():
             b.box('white', x, y, .14 + .74, .7, .7, .04)
             for s in (-1, 1):
                 b.box('timber', x + s * .55, y, .14 + .23, .4, .4, .46)
+    # West gardens: a brick boundary wall behind the terrace yards and a few garden trees.
+    b.box('terrace2', -20.0, (ya + yb) / 2, .8, .25, yb - ya, 1.6)                          # yard boundary wall
+    b.box('stone', -20.0, (ya + yb) / 2, 1.65, .33, yb - ya, .1)
+    for k in range(1, int((yb - ya) / 5.6)):
+        b.box('terrace2', -23.5, ya + k * 5.6, .6, 7.0, .14, 1.2)                           # low walls between the yards
     b.flush('street furniture')
     for i in (2, 3, 5, 6, 8):                                                              # planters with shrubs by the piers
-        y = PIERS[i - 1] if i - 1 < len(PIERS) else PIERS[-1]
+        y = PIERS[i - 1]
         b = Batch()
         b.box('pot', VX + .9, y, .14 + .35, .7, .7, .7)
         b.flush(f'planter {i}')
         A.foliage(f'Planter shrub {i}', (VX + .9, y, 1.3), (.5, .5, .55), role='planting', detail=2)
-    for y in (-30.0, -12.0, 6.0, 24.0, 40.0):
-        street_tree(STREET + 1.2, y, z=.14, height=8.0, spread=2.2)
+    for y in (-33.0, -21.0, 2.5, 22.0, 42.0, 64.0, 90.0):                                     # street trees near the kerb, clear of every facade and close camera
+        street_tree(PAVE - .8, y, z=.14, height=8.0, spread=1.9)
+    for y in (-30.0, 2.0, 36.0, 74.0):                                                    # garden trees in the west yards
+        street_tree(-9.0, y, z=.06, height=7.0, spread=1.6)
 
 
 def terraces():
     """Brick terrace houses as context: slate roofs, chimneys on the party walls, framed sash windows."""
-    for side, xf, sgn, role in (('East', FAR, 1, 'terrace'), ('West', -13.0 - 9.0, -1, 'terrace2')):
-        ya, yb = Y0 - 8.0, Y1 + 8.0
+    for side, sgn, role, x0, x1 in (('East', 1, 'terrace', FAR, FAR + 9.0), ('West', -1, 'terrace2', -36.0, -27.0)):
+        ya, yb = Y0 - 8.0, YE
         n = int((yb - ya) / 5.6)
         b = Batch()
-        x0, x1 = (FAR, FAR + 9.0) if sgn > 0 else (-22.0, -13.0)
         h = 8.4
         C.box(f'{side} terrace', ((x0 + x1) / 2, (ya + yb) / 2, h / 2), (x1 - x0, yb - ya + .5, h), role, 'context', 0)   # runs under the roof overhang
         pitched_roof(f'{side} terrace roof', x0, x1, ya, yb, h, 2.6, hip_w=False, hip_e=False, axis='y', ov=.25, role='roof', module='context')
-        for yg in (ya - .11, yb + .11):                                                       # gable end walls 1 cm proud of the roof ends
-            C.prism(f'{side} terrace gable {yg:+.0f}', [(x0 - .25, h - .15), (x1 + .25, h - .15), ((x0 + x1) / 2, h + 2.58)], 'y', yg - .15, yg + .15, role, 'context')
+        yg = ya - .11                                                                       # gable end wall at the near end, 1 cm proud of the roof end
+        C.prism(f'{side} terrace gable', [(x0 - .25, h - .15), (x1 + .25, h - .15), ((x0 + x1) / 2, h + 2.58)], 'y', yg - .15, yg + .15, role, 'context')
         for i in range(n):
             y0, y1 = ya + i * 5.6, ya + (i + 1) * 5.6
             if i:
-                chimney(b, (x0 + x1) / 2, y0, h + 1.6, h + 3.4, w=.9, d=.6, pots=3)
+                chimney(b, (x0 + x1) / 2, y0, h + 1.6, h + 3.4, w=.9, d=.6, pots=2)
             fx = x0 - .02 if sgn > 0 else x1 + .02                                         # the face towards the viaduct
             dx = -1 if sgn > 0 else 1
             for k, z in enumerate((1.0, 4.2)):
                 for j, du in enumerate((-1.3, 1.3)):
                     yy = (y0 + y1) / 2 + du
-                    if k == 0 and j == 0 and sgn > 0:
-                        b.box('dark', fx + dx * .02, yy, 1.25, .04, 1.0, 2.3)              # front door
+                    if k == 0 and j == 0:
+                        b.box('dark', fx + dx * .02, yy, 1.25, .04, 1.0, 2.3)              # front or back door
                         b.box('pale', fx + dx * .06, yy, 2.48, .1, 1.2, .14)
                         continue
-                    b.box('glass', fx + dx * .01, yy, z + .95, .02, .9, 1.7)
-                    for s in (-1, 1):
-                        b.box('white', fx + dx * .05, yy + s * .5, z + .95, .08, .1, 1.9)
-                    b.box('white', fx + dx * .05, yy, z + 1.85, .08, 1.1, .1)
-                    b.box('white', fx + dx * .05, yy, z + .95, .06, .9, .05)
-                    b.box('stone', fx + dx * .09, yy, z - .02, .16, 1.2, .1)
+                    b.box('white', fx + dx * .02, yy, z + .95, .04, 1.1, 1.9)                 # sash frame behind the pane
+                    b.box('glass', fx + dx * .045, yy, z + .95, .02, .9, 1.7)
+                    if yy < Y1 + 10.0:
+                        b.box('stone', fx + dx * .09, yy, z - .02, .16, 1.2, .1)
         b.flush(f'{side} terrace windows')
 
 
 def build():
+    for ob in C.bpy.data.objects:                       # the run carries on far past the default clip distance
+        if ob.type == 'CAMERA':
+            ob.data.clip_end = 900.0
     east_face()
     west_face()
     end_wall('south end', Y0, 1)
-    end_wall('north end', Y1, -1)
     body_and_deck()
     train()
     street()
     terraces()
-    C.CONTACTS.append(dict(name='Brick viaduct from grade: piers, face walls and end walls; deck on the arches; ballast and tracks on the deck; shopfronts in the arches', box=[X0, X1, Y0, Y1]))
+    C.CONTACTS.append(dict(name='Brick viaduct from grade: piers, face walls and the near end wall; deck on the arches; ballast and tracks on the deck; shopfronts in the arches', box=[X0, X1, Y0, YE]))
 
 
 LIGHT_RIG = dict(key=(40, -30, 45), fill=(-40, -20, 30), rear=(-15, 40, 30), target=(2.0, 0, 5.0), gain=3.4)
