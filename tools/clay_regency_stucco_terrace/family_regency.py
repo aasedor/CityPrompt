@@ -30,7 +30,7 @@ CX0, CX1, CY0, CY1 = -5.0, 5.0, -4.0, 8.0      # light court
 BAY = 3.0
 EPS = .002
 PALETTE = dict(wall=(.86, .82, .72), joint=(.70, .66, .57), stone=(.90, .87, .78), trim=(.95, .94, .90),
-    pale=(.88, .88, .86), roof=(.36, .39, .44), lead=(.58, .59, .60), sand=(.70, .66, .58), foundation=(.66, .62, .54),
+    pale=(.88, .88, .86), roof=(.31, .34, .39), lead=(.58, .59, .60), sand=(.70, .66, .58), foundation=(.66, .62, .54),
     glass=(.20, .23, .26), hardware=(.06, .06, .07), interior=(.84, .80, .74), floor=(.58, .48, .38),
     timber=(.46, .34, .22), door=(.10, .11, .12), planting=(.30, .46, .20), soil=(.22, .16, .10),
     concrete=(.70, .69, .66), white=(.95, .95, .93), asphalt=(.27, .27, .28), brick=(.54, .42, .30),
@@ -678,75 +678,67 @@ def roof_and_court():
     C.box('Roof deck west', ((X0 + T + CX0) / 2, (CY0 + CY1) / 2, CORN - .12), (CX0 - X0 - T, CY1 - CY0, .2), 'lead', 'roof', 0)
     C.box('Roof deck east', ((CX1 + X1 - T) / 2, (CY0 + CY1) / 2, CORN - .12), (X1 - T - CX1, CY1 - CY0, .2), 'lead', 'roof', 0)
     a = MSET
-    ridge = [(-RX, RY0), (RX, RY0), (RX, RY1), (-RX, RY1)]
+    # Roof bands measured on the locked top (shares of the 40 m block width per side): outer slate about 13%, a narrow
+    # flat ribbed lead band about 8%, inner slate about 12-13% falling to the court eaves. The outer slate is the steep
+    # 73-degree band up to the break plus a broad upper slate slope up to the lead band.
+    Lo = [(-13.6, -10.6), (13.6, -10.6), (13.6, 13.9), (-13.6, 13.9)]                       # outer edge of the lead band
+    Li = [(-10.4, -7.4), (10.4, -7.4), (10.4, 11.4), (-10.4, 11.4)]                         # inner edge of the lead band
     brk = [(X0 + BI, Y0 + BI), (X1 - BI, Y0 + BI), (X1 - BI, Y1 - BI), (X0 + BI, Y1 - BI)]
     strip('Slate mansard', [(X0 + a, Y0 + a), (X1 - a, Y0 + a), (X1 - a, Y1 - a), (X0 + a, Y1 - a)], brk, CORN + .02, BRK, 'roof', 'roof')
-    e = BI - .1                                                                              # shallow lead upper slope over the break
-    strip('Lead upper slope', [(X0 + e, Y0 + e), (X1 - e, Y0 + e), (X1 - e, Y1 - e), (X0 + e, Y1 - e)], ridge, BRK + .03, MTOP, 'lead', 'roof')
-    # Inner mansard round the light court: a steep slate band from the court wall tops up to a lead curb at the
-    # break (about 73 degrees, as outside), then a shallow ribbed lead slope up to the ridge ring.
-    ZC, ov, IB = CORN + .9, .15, 1.6
+    strip('Slate upper slope', [(x + (.08 if x < 0 else -.08), y + (.08 if y < 0 else -.08)) for x, y in brk], Lo, BRK - .02, MTOP, 'roof', 'roof')
+    strip('Lead ridge band', Lo, Li, MTOP + .01, MTOP + .01, 'lead', 'roof')
+    ZC, ov = CORN + .9, .15
     clo = [(CX0 + ov, CY0 + ov), (CX1 - ov, CY0 + ov), (CX1 - ov, CY1 - ov), (CX0 + ov, CY1 - ov)]
-    cbr = [(CX0 - IB, CY0 - IB), (CX1 + IB, CY0 - IB), (CX1 + IB, CY1 + IB), (CX0 - IB, CY1 + IB)]
-    strip('Court slate band', clo, cbr, ZC, BRK, 'roof', 'roof')
-    strip('Court lead slope', [(x + (.1 if x < 0 else -.1), y + (.1 if y < (CY0 + CY1) / 2 else -.1)) for x, y in cbr], ridge, BRK + .03, MTOP, 'lead', 'roof')
+    strip('Court slate slope', clo, Li, ZC, MTOP - .01, 'roof', 'roof')
     b = Batch()
-    for (xa, ya), (xc, yc) in zip(cbr, cbr[1:] + cbr[:1]):                                    # lead curb roll at the inner break
+    for ring, z in ((Lo, MTOP + .03), (Li, MTOP + .03)):                                       # lead rolls at both edges of the band
+        for (xa, ya), (xc, yc) in zip(ring, ring[1:] + ring[:1]):
+            b.beam('lead', (xa, ya, z + .04), (xc, yc, z + .04), .16, .1, ext=.08)
+    for (xa, ya), (xc, yc) in zip(brk, brk[1:] + brk[:1]):                                    # lead curb roll at the outer break
         b.beam('lead', (xa, ya, BRK + .06), (xc, yc, BRK + .06), .2, .14, ext=.1)
-    for (xa, ya), (xc, yc) in zip(clo, cbr):                                                  # lead hip rolls on the inner band corners
-        b.beam('lead', (xa, ya, ZC + .05), (xc, yc, BRK + .05), .14, .1)
+    for (xa, ya), (xc, yc) in zip(brk, Lo):                                                   # lead hip rolls, outer upper slate
+        b.beam('lead', (xa, ya, BRK + .05), (xc, yc, MTOP + .05), .14, .1)
+    for (xa, ya), (xc, yc) in zip(clo, Li):                                                   # lead hip rolls, inner slate
+        b.beam('lead', (xa, ya, ZC + .05), (xc, yc, MTOP + .05), .14, .1)
     for xa, ya, xc, yc in ((CX0 + .05, CY0 + .05, CX1 - .05, CY0 + .05), (CX0 + .05, CY1 - .05, CX1 - .05, CY1 - .05),
                            (CX0 + .05, CY0 + .05, CX0 + .05, CY1 - .05), (CX1 - .05, CY0 + .05, CX1 - .05, CY1 - .05)):
         b.box('stone', (xa + xc) / 2, (ya + yc) / 2, ZC + .02, abs(xc - xa) + .3, abs(yc - ya) + .3, .22)  # eaves coping over the court wall tops
-    # Standing-seam rolls on the straight runs of both lead slopes (not on the hips).
-    def zl(t):
-        return BRK + .03 + t * (MTOP - BRK - .03) + .05
-    for x in [-RX + .3 + .6 * i for i in range(int((2 * RX - .6) / .6) + 1)]:
-        b.beam('lead', (x, Y0 + BI - .1, zl(0)), (x, RY0, zl(1)), .06, .06)                      # outer south and north
-        b.beam('lead', (x, Y1 - BI + .1, zl(0)), (x, RY1, zl(1)), .06, .06)
-        if abs(x) < CX1 + IB - .3:
-            b.beam('lead', (x, CY0 - IB - .1, zl(0)), (x, RY0, zl(1)), .06, .06)                  # inner south and north
-            b.beam('lead', (x, CY1 + IB + .1, zl(0)), (x, RY1, zl(1)), .06, .06)
-    for y in [RY0 + .3 + .6 * i for i in range(int((RY1 - RY0 - .6) / .6) + 1)]:
-        b.beam('lead', (X0 + BI - .1, y, zl(0)), (-RX, y, zl(1)), .06, .06)                      # outer west and east
-        b.beam('lead', (X1 - BI + .1, y, zl(0)), (RX, y, zl(1)), .06, .06)
-        if CY0 - IB + .3 < y < CY1 + IB - .3:
-            b.beam('lead', (CX0 - IB - .1, y, zl(0)), (-RX, y, zl(1)), .06, .06)                  # inner west and east
-            b.beam('lead', (CX1 + IB + .1, y, zl(0)), (RX, y, zl(1)), .06, .06)
+    # Ribbed lead: rolls across the band at 0.9 m centres, as on the ridge band in the top source.
+    zr = MTOP + .06
+    for x in [-12.6 + .9 * i for i in range(29)]:
+        b.box('lead', x, (Lo[0][1] + Li[0][1]) / 2, zr, .07, Li[0][1] - Lo[0][1] - .1, .08)     # south band
+        b.box('lead', x, (Lo[2][1] + Li[2][1]) / 2, zr, .07, Lo[2][1] - Li[2][1] - .1, .08)     # north band
+    for y in [Li[0][1] + .45 + .9 * i for i in range(21) if Li[0][1] + .45 + .9 * i < Li[2][1]]:
+        for xo, xi in ((Lo[0][0], Li[0][0]), (Lo[1][0], Li[1][0])):
+            b.box('lead', (xo + xi) / 2, y, zr, abs(xo - xi) - .1, .07, .08)                    # west and east bands
     b.flush('court roof lead')
-    # Four large dormers on the west and east inner slopes, facing into the court.
+    # Four large lead-topped box dormers on the west and east inner slopes, running from under the lead band almost to
+    # the court eaves (about 13% of the block width deep and 11% of its length wide), windows facing the court.
     b = Batch()
-    zd = ZC + .35
-    xf = (CX0 + ov) - (zd - ZC) / (BRK - ZC) * (IB + ov) - .05
-    for y in (CY0 + .3 * (CY1 - CY0), CY0 + .7 * (CY1 - CY0)):
-        dormer(b, (xf, y), 1, 0, 0, 1, dep=1.6, w=1.7, h=1.7, z0=zd)
-        dormer(b, (-xf, y), -1, 0, 0, 1, dep=1.6, w=1.7, h=1.7, z0=zd)
-    b.flush('court dormers')
-    # Rooflights on the inner lead slopes: two flush lights on the north, two raised lanterns and a skylight on the south.
-    b = Batch()
-    def zs(y, yb, yr):
-        return BRK + .03 + (y - yb) / (yr - yb) * (MTOP - BRK - .03)
-    yb, yr = CY1 + IB + .1, RY1
-    for x in (-2.6, 2.6):
-        ya, yc = yb + .6, yb + 2.0
-        b.beam('hardware', (x, ya, zs(ya, yb, yr) + .05), (x, yc, zs(yc, yb, yr) + .05), 1.1, .08)
-        b.beam('glass', (x, ya + .06, zs(ya + .06, yb, yr) + .1), (x, yc - .06, zs(yc - .06, yb, yr) + .1), .96, .02)
-    yb, yr = CY0 - IB - .1, RY0
-    for x, w, d, hh in ((-3.0, 1.5, 1.3, .55), (3.0, 1.5, 1.3, .55), (0.0, .9, .8, .3)):
-        yc = yb - 1.6
-        zb = zs(yc - d / 2, yb, yr)                                                              # kerb top level with the high side
-        b.box('lead', x, yc, (zs(yc + d / 2, yb, yr) - .1 + zb + .15) / 2, w + .16, d + .16, zb + .15 - zs(yc + d / 2, yb, yr) + .1)
-        b.box('glass', x, yc, zb + .15 + hh / 2, w, d, hh)
-        b.box('lead', x, yc, zb + .15 + hh + .04, w + .1, d + .1, .08)
+    def zin(x):                                                                                # inner west/east slope height at |x|
+        return ZC + (abs(x) - (CX1 - ov)) / (Li[1][0] - (CX1 - ov)) * (MTOP - ZC)
+    for y in (4.4, -2.0):
         for s in (-1, 1):
-            b.box('lead', x + s * (w / 2 + .02), yc, zb + .15 + hh / 2, .05, d + .04, hh)
-    b.flush('court rooflights')
+            xb, xf, w = s * 10.7, s * 5.6, 3.7
+            xm, zt = (xb + xf) / 2, MTOP - .25
+            zf = zin(xf) - .25                                                                 # foot buried just under the slope
+            b.box('roof', xm, y, (zf + zt) / 2, abs(xb - xf), w, zt - zf)                     # slate-hung box
+            b.box('lead', xm - s * .05, y, zt + .07, abs(xb - xf) + .3, w + .3, .14)          # lead top with a drip
+            for j in (-.85, .85):                                                              # two windows facing the court
+                b.box('trim', xf + s * .03, y + j, (zin(xf) + zt) / 2 + .1, .08, 1.12, zt - zin(xf) - .55)
+                b.box('glass', xf + s * .07, y + j, (zin(xf) + zt) / 2 + .1, .04, .96, zt - zin(xf) - .75)
+                b.box('trim', xf + s * .08, y + j, (zin(xf) + zt) / 2 + .1, .05, .06, zt - zin(xf) - .75)
+    b.flush('court dormers')
+    # Rooflights: two flush lights on the north inner slope, two flush lights and a small skylight on the south.
     b = Batch()
-    for (xa, ya), (xc, yc) in zip(ridge, ridge[1:] + ridge[:1]):                              # lead ridge rolls
-        b.beam('lead', (xa, ya, MTOP + .03), (xc, yc, MTOP + .03), .16, .1, ext=.06)
-    for (xa, ya), (xc, yc) in zip(brk, brk[1:] + brk[:1]):                                    # lead curb roll at the break
-        b.beam('lead', (xa, ya, BRK + .06), (xc, yc, BRK + .06), .2, .14, ext=.1)
-    b.flush('ridge')
+    def zns(y, y_eave, y_band):
+        return ZC + (y - y_eave) / (y_band - y_eave) * (MTOP - ZC)
+    for y_eave, y_band, specs in ((CY1 - ov, Li[2][1], ((-2.6, 1.1), (2.6, 1.1))), (CY0 + ov, Li[0][1], ((-2.6, 1.1), (2.6, 1.1), (0.0, .7)))):
+        for x, w in specs:
+            ya, yc = y_eave + .3 * (y_band - y_eave), y_eave + .75 * (y_band - y_eave)
+            b.beam('hardware', (x, ya, zns(ya, y_eave, y_band) + .04), (x, yc, zns(yc, y_eave, y_band) + .04), w, .08)
+            b.beam('pale', (x, ya + .05 * (1 if yc > ya else -1), zns(ya, y_eave, y_band) + .09), (x, yc - .05 * (1 if yc > ya else -1), zns(yc, y_eave, y_band) + .09), w - .14, .02)
+    b.flush('court rooflights')
     # Light court: plain stucco walls with lite windows up to the foot of the court slopes.
     for label, o, t, n, lo, hi in (('court south', (0, CY0, 0), (-1, 0, 0), (0, -1, 0), -CX1 - .4, -CX0 + .4),
                                    ('court north', (0, CY1, 0), (1, 0, 0), (0, 1, 0), CX0 - .4, CX1 + .4),
