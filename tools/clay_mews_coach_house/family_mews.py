@@ -425,6 +425,24 @@ def arch_head(f, h, rise, ring=.26, segs=10, ring_role='arch', spandrel=True):
     C.mesh(f'{h["id"]} arch ring', vs, fs, ring_role, 'arches')
 
 
+def round_pots(name, centres, z0, h=.78, r=.13, sides=10):
+    """Tall round terracotta pots, each a closed cylinder with a slightly wider rim band, merged into one mesh."""
+    vs, fs = [], []
+    for (px, py) in centres:
+        for (za, zb, rr) in ((z0, z0 + h - .08, r), (z0 + h - .08, z0 + h, r + .025)):
+            o = len(vs)
+            for zz in (za, zb):
+                for k in range(sides):
+                    a = 2 * math.pi * k / sides
+                    vs.append((px + rr * math.cos(a), py + rr * math.sin(a), zz))
+            for k in range(sides):
+                k2 = (k + 1) % sides
+                fs.append((o + k, o + k2, o + sides + k2, o + sides + k))
+            fs.append(tuple(o + k for k in range(sides))[::-1])
+            fs.append(tuple(o + sides + k for k in range(sides)))
+    C.mesh(name, vs, fs, 'pot', 'roof')
+
+
 def sash(m, f, h, occupied='room', lite=False):
     """Six-over-six sash: each sash three lights by two, a heavier meeting rail, a dark sill below."""
     framed(m, f, h, cols=3, rows=4, inset=.12, occupied=occupied, lite=lite)
@@ -480,7 +498,7 @@ def south_face():
     face_courses(f, X0, X1, holes)
     m = Merge(f)
     m.box('foundation', (X0 + X1) / 2, -.03, .16, X1 - X0 - .02, .06, .32)                  # black plinth
-    m.box('trim', (X0 + X1) / 2, -.04, Z1 - .12, X1 - X0 - .02, .08, .1)                     # first-floor string course
+    m.box('trim', (X0 + X1) / 2 + .03, -.04, Z1 - .12, X1 - X0 + .06, .08, .1)                     # first-floor string course
     # Red boarded coach door in a shallow reveal, transom of three groups of small lights above.
     m.box('door', coach['u'], .14, coach['z'] + coach['h'] / 2, coach['w'] - .02, .06, coach['h'] - .02)
     for k in range(1, 16):
@@ -519,7 +537,7 @@ def other_faces():
     face_courses(e, -hd + T, hd - T, hs)
     m = Merge(e)
     m.box('foundation', 0, -.03, .16, 2 * hd - 2 * T - .02, .06, .32)
-    m.box('trim', 0, -.04, Z1 - .12, 2 * hd - 2 * T - .02, .08, .1)
+    m.box('trim', -.04, -.04, Z1 - .12, 2 * hd + .08, .08, .1)
     for h in hs:
         sash(m, e, h)
     m.box('hardware', -hd + .5, -.06, EAVE / 2, .1, .1, EAVE - .2)
@@ -535,7 +553,7 @@ def other_faces():
         if h.get('kind') == 'door':
             framed(m, n, h, cols=2, rows=3, inset=.12, occupied='hall', kind='door', lite=True)
         else:
-            sash(m, n, h, lite=True)
+            sash(m, n, h)
     m.flush('north')
     w = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west party')
     w.wall('west party wall', -hd + T, hd - T, 0.0, EAVE, depth=T, role='wall', holes=[])
@@ -543,7 +561,7 @@ def other_faces():
 
 def upstand(name, x0, x1):
     """Coped brick party-wall upstand standing above the slates, corbelled past the eaves, hiding the roof ends."""
-    pts = [(Y0 - .4, EAVE - .55), (Y0 - .4, EAVE + .2), (0.0, EAVE + RISE + .4), (Y1 + .4, EAVE + .2), (Y1 + .4, EAVE - .55)]
+    pts = [(Y0 - .4, EAVE - .14), (Y0 - .4, EAVE + .2), (0.0, EAVE + RISE + .4), (Y1 + .4, EAVE + .2), (Y1 + .4, EAVE - .14)]
     C.prism(name, pts, 'x', x0, x1, 'brick', 'party walls')
     b = Batch()
     xm = (x0 + x1) / 2
@@ -579,8 +597,21 @@ def roof_and_inside():
     upstand('Party upstand', XN - .25, XN + .25)
     upstand('West party upstand', X0 - .02, X0 + .43)
     b = Batch()
-    for x in (XN, X0 + .2):                                                   # stacks seated on the upstands
-        chimney(b, x, 0.0, EAVE + RISE + .2, EAVE + RISE + 1.5, w=.95, d=.75, pots=3)
+    # One long stack on the end-house/neighbour party wall, running from just in front of the ridge back down the
+    # rear slope in two steps: five tall round pots on the ridge section, four on the rear section (top source).
+    # The west party wall stays a coped parapet with no stack.
+    za, zb, zc = EAVE + RISE + 1.25, EAVE + RISE + .6, EAVE + .2
+    secs = ((-.55, 1.15, za, 5), (1.15, 3.05, zb, 4))
+    pots = []
+    for i, (y0, y1, zt, n) in enumerate(secs):
+        b.box('brick', XN, (y0 + y1) / 2, (zc + zt) / 2, .82, y1 - y0 + (.02 if i == 0 else 0), zt - zc)
+        b.box('stone', XN, (y0 + y1) / 2, zt + .05, .94, y1 - y0 + .12, .1)
+        b.box('brick', XN, (y0 + y1) / 2, zt - .32, .9, y1 - y0 + .08, .08)       # oversailing course below the cap
+        rows = (((-.2, .2), (-.2, .2), (0.0,)) if n == 5 else ((-.2, .2), (-.2, .2)))   # clusters of 5 and 4 pots
+        yc = y0 + .45 if i == 0 else y1 - .75
+        pots += [(XN + dx, yc + .36 * r, zt + .1) for r, row in enumerate(rows) for dx in row]
+    for zt in (za, zb):
+        round_pots(f'Chimney pots {zt:.1f}', [(px, py) for (px, py, z) in pots if abs(z - zt - .1) < 1e-6], zt + .1)
     for x in (-1.5, -3.3):                                                    # two rooflights on the neighbour's front slope, west of the stack
         za, zb = (EAVE + RISE * (1 - y / hd) for y in (2.3, 1.5))
         b.beam('hardware', (x, -2.3, za + .05), (x, -1.5, zb + .05), .9, .08)
@@ -620,7 +651,13 @@ def roof_and_inside():
         b.beam('pot', (xm, wy1 - half, zr + .03), (xm + s * (half + ov), wy1 + ov, ze + .03), .12, .08)
         b.box('hardware', xm + s * (half + ov + .05), (Y1 + .45 + wy1 + ov) / 2, ze - .02, .14, wy1 + ov - Y1 - .45, .12)
     b.box('hardware', xm, wy1 + ov + .05, ze - .02, wx1 - wx0 + 2 * ov + .2, .14, .12)
-    b.box('hardware', wx1 + ov + .05, wy1 + ov + .05, ze / 2, .1, .1, ze - .1)          # downpipe
+    py, px = wy1 - .3, wx1 + .08                                              # downpipe 3 cm off the wing's east face
+    b.box('hardware', wx1 + ov + .05, py, ze - .12, .12, .12, .14)                 # outlet under the gutter
+    b.beam('hardware', (wx1 + ov + .05, py, ze - .17), (px, py, ze - .55), .1, .1)  # swan-neck back to the wall
+    b.box('hardware', px, py, (ze - .55 + .14) / 2, .1, .1, ze - .55 - .14)
+    b.beam('hardware', (px, py, .26), (px + .14, py, .06), .1, .1)                  # shoe
+    for z in (1.2, 3.0, 4.8):
+        b.box('hardware', wx1 + .02, py, z, .06, .14, .05)                        # wall clips
     b.flush('neighbour back wing')
     C.box('Ground floor slab', ((X0 + X1) / 2, 0, G0 / 2 + .05), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, G0 + .1), 'floor', 'inside', 0)
     C.box('First floor', ((X0 + X1) / 2, 0, Z1 - .12), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .24), 'floor', 'inside', 0)
@@ -669,11 +706,27 @@ def site():
         if not (.6 < x < 5.1):
             b.box('settjoint', x, (yp + Y0) / 2, .121, .015, Y0 - yp - .02, .004)
     b.box('hardware', X1 + .5, Y0 - 1.3, 2.6, .1, .1, 5.2)                    # slender lamp column and lantern
-    b.box('hardware', X1 + .5, Y0 - 1.0, 5.15, .06, .6, .06)
-    b.box('pale', X1 + .5, Y0 - .75, 4.95, .26, .26, .32)
-    b.box('hardware', X1 + .5, Y0 - .75, 5.14, .34, .34, .06)
-    b.box('brick', X1 + .5, Y1 + .9, .9, .24, 1.8, 1.8)                       # garden wall stub and red side gate
-    b.box('door', X1 + .5, Y1 + 2.3, 1.02, .05, 1.0, 1.8)
+    b.box('hardware', X1 + .5, Y0 - 1.6, 5.15, .06, .6, .06)
+    b.box('pale', X1 + .5, Y0 - 1.85, 4.95, .26, .26, .32)
+    b.box('hardware', X1 + .5, Y0 - 1.85, 5.14, .34, .34, .06)
+    # Coped brick garden wall enclosing the end house's rear yard: along the side street from the house's north-east
+    # corner to the line of the neighbour's back wing, then back west to the wing; the red door between brick piers.
+    gx, gy1, gh, dy0, dy1, dh = X1 - .16, Y1 + 3.2 - .18, 2.1, Y1 + 1.15, Y1 + 2.15, 1.95
+    # Each wall run is its own closed box (no shared or coplanar faces): the north run stops inside the east run.
+    for i, (a, c) in enumerate(((Y1 - .02, dy0 - .1), (dy1 + .1, gy1 + .12))):          # ends buried in the piers
+        C.box(f'Garden wall east {i}', (gx, (a + c) / 2, gh / 2), (.24, c - a, gh), 'brick', 'street', 0)
+    C.box('Garden wall over door', (gx, (dy0 + dy1) / 2, (dh + gh) / 2), (.22, dy1 - dy0, gh - dh), 'brick', 'street', 0)
+    C.box('Garden wall north', ((-1.05 + gx - .1) / 2, gy1, gh / 2), (gx - .1 + 1.05, .24, gh), 'brick', 'street', 0)
+    C.box('Garden wall east coping', (gx, (Y1 + gy1 + .17) / 2, gh + .04), (.34, gy1 + .17 - Y1, .08), 'stone', 'street', 0)
+    C.box('Garden wall north coping', ((-1.05 + gx - .15) / 2, gy1, gh + .035), (gx - .15 + 1.05, .34, .07), 'stone', 'street', 0)
+    for k, yy in enumerate((dy0 - .17, dy1 + .17)):                            # piers with stone caps
+        C.box(f'Garden gate pier {k}', (gx, yy, (gh + .16) / 2), (.36, .34, gh + .16), 'brick', 'street', 0)
+        b.box('stone', gx, yy, gh + .2, .44, .42, .08)
+    b.box('timber', gx + .04, (dy0 + dy1) / 2, dh + .05, .16, dy1 - dy0 + .04, .1)   # timber head
+    b.box('door', gx + .02, (dy0 + dy1) / 2, dh / 2, .05, dy1 - dy0 - .02, dh - .02) # boarded red door, set in
+    for k in range(1, 5):
+        b.box('hardware', gx + .05, dy0 + (dy1 - dy0) * k / 5, dh / 2, .012, .018, dh - .1)
+    b.box('hardware', gx + .06, dy0 + .15, 1.0, .03, .06, .1)                 # latch
     b.flush('street')
     tx, ty = (X0 + XN) / 2, Y0 - 1.0                                          # plane tree on the pavement in front of the neighbour
     C.rod('Plane tree trunk', (tx, ty, .12), (tx, ty, 9.2), .22, 'timber', 'street planting', 8)
