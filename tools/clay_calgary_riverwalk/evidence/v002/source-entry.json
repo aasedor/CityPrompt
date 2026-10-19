@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-calgary-riverwalk",
+  "variant_id": "clay-calgary-riverwalk-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "bow_river_pathway/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/bow-river-pathway/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1674303,
+      "sha256": "16b0c7932cb4ebc6c2db6dbee45a5c6dde3a203be04d7a6e44fb0a5abb7adb13"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/bow-river-pathway/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 960596,
+      "sha256": "13dba812cdd827d11925fa79aa1fa3e726e13e45073c855bc2a966d2c4da9c36"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/bow-river-pathway/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 938413,
+      "sha256": "3d0699cef7e90e0ec1f9e3d7138b573724b2cee5b7433c66d9b3418f782e6f10"
+    }
+  ]
+}
