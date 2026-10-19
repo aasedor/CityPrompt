@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-swooping-cycle-flyover-clay-v001",
+  "glb": "clay-swooping-cycle-flyover-clay-v001.glb",
+  "glb_bytes": 3968352,
+  "glb_sha256": "7aab3fada04304d8e659839687a4bc12b821e4c0d6128c5d253e9fc2ce611b81",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "deck_surface.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "landing_ramp.png": 92,
+    "left_side.png": 92,
+    "parapet_panel.png": 92,
+    "ramp_curve.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "street_under.png": 92,
+    "top.png": 92,
+    "y_column.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-swooping-cycle-flyover-clay-v001-renders-and-glb.zip",
+  "zip_bytes": 35567485
+}

@@ -67,3 +67,14 @@ See `VERSIONS.md` beside this file; the independent review records live in
 
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
+
+## Open blockers after v001 (v002 reworks these eight)
+
+1. P0: no view shows the deck reaching the ground; in left_side the far end stops as a squared box at full deck height on Y-columns.
+2. P0: landing_ramp misses its subject; the deck leaves the frame still about 3 m up and about 40% of the frame is empty ground.
+3. P1: the deck is about half the source width against the street (about 0.6 of a lane against 1.4); it reads as a narrow footbridge.
+4. P1: the parapets are an open picket fence with a chunky top rail; the source reads as a dense, near-solid orange screen.
+5. P1: Y-columns stand in traffic lanes, one in a zebra crossing.
+6. P1: the Y-columns are square boxes with arm blocks notching through the shaft top; the source columns are slender, rounded and tapered with a smooth fork.
+7. P1: the other end curls over and drops almost vertically within one deck width instead of ramping.
+8. P1: at the far end both parapets sweep up into horn tips above the deck line with no deck under them.
