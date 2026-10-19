@@ -1,7 +1,7 @@
 # Riveted steel through-truss road bridge (RLASM v6.1 architectural clay)
 
 Candidate H3 of wave H (bridges) of 2026-10-19, one of the ten bridge variants the user chose from the
-street and path catalogue; a street or path option, not a building. State: **candidate under review**. Nothing here is keeper-approved,
+street and path catalogue; a street or path option, not a building. State: **stopped at v002 by the stopping rule (independent review PASS_ZERO_P0_P1); v002 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,10 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (v002 reworks these five)
+## Open blockers after v002 (stopped)
 
-1. P0: the front camera stands inside the portal bay; the top chord and struts are cut off and the inclined end post, portal, abutment and river are out of frame.
-2. P1: only the centre panel has crossed diagonals; the sources show crossed diagonals in every interior panel except the one next to each hip vertical.
-3. P1: the overhead bracing has 5 short flat X-bays between 6 struts; the top source has 3 long near-square X-bays between 4 struts.
-4. P1: a raised light-grey concrete bar crosses the whole road at each end, river side of the end-post feet; the source shows only a painted stop line.
-5. P1: in rear the bus hides most of the right truss and its end-post foot.
+- No P0 or P1 findings remain. Thirteen P2 refinements are listed in evidence/v002/independent-review.md.
+- This is an independent RLASM review result only; it is not keeper approval, runtime integration or catalogue enrolment.
