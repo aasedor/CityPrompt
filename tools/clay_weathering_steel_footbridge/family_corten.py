@@ -55,7 +55,7 @@ def manifest(version):
     a, ua = APEX, UA
     cams = G.camera_roster(X1 - X0, Y1 - Y0, h, [
         ('facade_close', (11.0, -2.0, 1.7), along(a, ua, 17.0, 0.0, ZD + 1.5), 35),
-        ('architecture_close', (-2.0, 12.0, ZD + 2.0), (APEX[0], APEX[1], ZD + 1.5), 35),
+        ('architecture_close', (-1.0, -1.0, ZD + 3.5), (APEX[0], APEX[1], ZD + 1.5), 35),
         ('glass_close', along(a, ua, 12.0, -1.0, ZD + 1.5), along(a, ua, 14.0, 1.8, ZD + .8), 35),
         ('truss_node', along(a, ua, 8.0, 6.0, ZD + 4.6), along(a, ua, 10.0, 2.0, ZD + 3.0), 40),
         ('mesh_infill', along(a, ua, 20.0, -1.0, ZD + 1.5), along(a, ua, 22.0, 1.75, ZD + .7), 35),
@@ -80,7 +80,7 @@ def manifest(version):
         elif c['name'] == 'rear':
             c.update(location=(-6.0, 40.0, 26.0), target=(-6.0, -6.0, ZD), lens=30, whole=False)
         elif c['name'] == 'rear_side':
-            c.update(location=(30.0, 34.0, 30.0), target=(-6.0, -6.0, ZD), lens=30, whole=False)
+            c.update(location=(-24.0, 40.0, 34.0), target=(-6.0, -6.0, ZD), lens=30, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,

@@ -49,7 +49,7 @@ def manifest(version):
         ('rear_north', (4.0, 22.0, ZD + 4.0), (0.0, 0.0, ZD + 1.5), 35)])
     for c in cams:                       # the locked front stands on the west promenade, south of the bridge
         if c['name'] == 'front':
-            c.update(location=(-16.8, -6.8, ZD + 1.7), target=(-4.0, 0.0, ZD + 2.3), lens=22, whole=False)
+            c.update(location=(-16.8, -6.8, ZD + 2.1), target=(-4.0, 0.0, ZD + 2.3), lens=22, whole=False)
         elif c['name'] == 'front_corner':                                      # the locked oblique: high in the south-west
             c.update(location=(-13.0, -23.0, 17.0), target=(2.0, 2.0, ZD + 1.0), lens=30, whole=False)
         elif c['name'] == 'aerial':
@@ -57,13 +57,13 @@ def manifest(version):
         elif c['name'] == 'top':
             c.update(location=(0.0, 0.0, 70.0), target=(0.0, .001, 0.0), ortho_scale=46.0, whole=False)
         elif c['name'] == 'left_side':
-            c.update(location=(-34.0, -6.0, ZD + 6.0), target=(0.0, 0.0, ZD + 1.5), lens=30, whole=False)
+            c.update(location=(-30.0, -3.0, ZD + 9.0), target=(0.0, 0.0, ZD + 1.0), lens=30, whole=False)
         elif c['name'] == 'right_side':
             c.update(location=(34.0, 4.0, ZD + 6.0), target=(0.0, 0.0, ZD + 1.5), lens=30, whole=False)
         elif c['name'] == 'rear':
             c.update(location=(3.0, 30.0, ZD + 6.0), target=(0.0, 0.0, ZD + 1.0), lens=30, whole=False)
         elif c['name'] == 'rear_side':
-            c.update(location=(-22.0, 28.0, 16.0), target=(0.0, 0.0, ZD), lens=30, whole=False)
+            c.update(location=(10.0, 30.0, 17.0), target=(0.0, 0.0, ZD), lens=30, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -456,7 +456,7 @@ def ground():
             continue
         zs = LOW + (UP - LOW) * (abs(x) - LOWX) / (BANKX - LOWX)
         A.foliage(f'Bank shrub {i}', (x, y, zs + .25), (RNG.uniform(.6, 1.0), RNG.uniform(.7, 1.2), RNG.uniform(.45, .7)), role='planting', detail=2)
-    for i, (x, y, h) in enumerate(((-17.5, -12.0, 9.0), (16.0, -11.0, 8.5), (19.5, -20.0, 9.5), (-16.0, 17.0, 8.0), (-21.0, -4.0, 8.0))):
+    for i, (x, y, h) in enumerate(((-17.5, -12.0, 9.0), (16.0, -11.0, 8.5), (19.5, -20.0, 9.5), (-16.0, 17.0, 8.0), (-21.0, -19.0, 8.0))):
         tree(x, y, UP, h=h)
 
 
@@ -514,8 +514,8 @@ def bridge():
                 if i % 2:
                     p, q = (xb - .16, s * 2.15, ZD + .3), (xa + .16, s * 2.15, EAVE - .55)
                 b.beam('glulam', p, q, .2, .26)
-            z0 = ZD + .16 if end else ZD + 2.15
-            n = int((xb - xa - .4) / .3)
+            z0 = ZD + .16 if end else ZD + 1.9
+            n = int((xb - xa - .4) / (.19 if end else .22))
             for k in range(n):
                 b.box('timber', xa + .2 + (xb - xa - .4) * (k + .5) / n, s * 2.15, (z0 + EAVE - .5) / 2, .06, .16, EAVE - .5 - z0)
     for s in (-1, 1):
