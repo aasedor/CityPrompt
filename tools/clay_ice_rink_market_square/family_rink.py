@@ -477,6 +477,14 @@ def ice_and_boards():
     for i in range(NF):
         F.append((o + i, o + (i + 1) % NF, o + NF))
     ap = math.cos(math.pi / NF)
+    for k in range(150):                                                        # bough tips sloping out and down from the surface
+        f = (k + .5) / 150
+        z = z0 + .3 + f * (z1 - z0 - 1.2)
+        rz = r0 * (1 - (z - z0) / (z1 - z0)) * ap
+        a = 2 * math.pi * ((k * 5) % NF) / NF + math.pi / NF + (.12 if k % 2 else -.12)
+        L = .55 + .35 * (1 - f)
+        b.beam('tree', (tx + (rz - .3) * math.cos(a), ty + (rz - .3) * math.sin(a), z + .25),
+               (tx + (rz + L) * math.cos(a), ty + (rz + L) * math.sin(a), z - .35), .42 * (1.2 - f), .16, ext=0.0)
     for k in range(96):
         f = (k + .5) / 96
         z = z0 + .5 + f * (z1 - z0 - 1.6)
@@ -560,7 +568,7 @@ def chalet(name, cx, cy, facing, width=4.4, depth=3.6):
     wz = H0 + .42
     for i in range(10):                                                          # wreath in the gable
         a0, a1 = 2 * math.pi * i / 10, 2 * math.pi * (i + 1) / 10
-        b.beam('planting', P(.28 * math.cos(a0), wz + .28 * math.sin(a0)), P(.28 * math.cos(a1), wz + .28 * math.sin(a1)), .1, .1, ext=.03)
+        b.beam('planting', P(.28 * math.cos(a0), wz + .28 * math.sin(a0)), P(.28 * math.cos(a1), wz + .28 * math.sin(a1)), .1 + .012 * (i % 2), .1 + .012 * (i % 2), ext=0.0)
     b.box('flower', *P(0.0, wz - .3), .16, .16, .16)
     bx, by, bz = P(0.0, top + .14)
     b.box('flower', bx, by, bz, .34 if abs(tx) > .5 else .12, .12 if abs(tx) > .5 else .34, .22)    # bow at the apex
