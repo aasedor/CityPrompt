@@ -44,12 +44,12 @@ def manifest(version):
         ('louvre_wall', (-10.6, -5.6, ZD + 1.6), (-11.7, -2.2, ZD + 1.8), 40),
         ('roof_eaves', (4.0, -9.0, ZD + 6.0), (2.0, -2.6, EAVE), 40),
         ('deck_inside', (-12.0, .2, ZD + 1.6), (6.0, 0.0, ZD + 1.0), 28),
-        ('pier_abutment', (9.0, -9.0, LOW + 1.6), (8.0, 0.0, 1.9), 35),
+        ('pier_abutment', (8.6, -10.5, LOW + 1.6), (9.4, 0.0, 2.1), 32),
         ('stream_under', (0.0, -14.0, 1.2), (0.0, 0.0, ZD - 1.4), 28),
         ('rear_north', (4.0, 22.0, ZD + 4.0), (0.0, 0.0, ZD + 1.5), 35)])
     for c in cams:                       # the locked front stands on the west promenade, south of the bridge
         if c['name'] == 'front':
-            c.update(location=(-16.8, -6.8, ZD + 2.1), target=(-4.0, 0.0, ZD + 2.3), lens=22, whole=False)
+            c.update(location=(-17.2, -7.8, ZD + 1.8), target=(-8.0, 1.5, ZD + 2.4), lens=22, whole=False)
         elif c['name'] == 'front_corner':                                      # the locked oblique: high in the south-west
             c.update(location=(-13.0, -23.0, 17.0), target=(2.0, 2.0, ZD + 1.0), lens=30, whole=False)
         elif c['name'] == 'aerial':
@@ -407,6 +407,9 @@ import random
 
 RNG = random.Random(1911)                       # fixed seed: the same shrubs on every build
 FRAMES = [-RX + 2.6 * i for i in range(11)]     # portal frames at a 2.6 m pitch
+XA = 10.9                                       # abutment faces on the banks
+XB = RX + .25                                   # edge beams run to here, seated on the abutments
+ZR = ZD + 2.3                                   # rail under the louvre band of the middle bays
 
 
 def cyl(b, role, cx, cy, z0, z1, r, n=20):
@@ -456,7 +459,7 @@ def ground():
             continue
         zs = LOW + (UP - LOW) * (abs(x) - LOWX) / (BANKX - LOWX)
         A.foliage(f'Bank shrub {i}', (x, y, zs + .25), (RNG.uniform(.6, 1.0), RNG.uniform(.7, 1.2), RNG.uniform(.45, .7)), role='planting', detail=2)
-    for i, (x, y, h) in enumerate(((-17.5, -12.0, 9.0), (16.0, -11.0, 8.5), (19.5, -20.0, 9.5), (-16.0, 17.0, 8.0), (-21.0, -19.0, 8.0))):
+    for i, (x, y, h) in enumerate(((-17.5, -12.0, 9.0), (21.5, -5.5, 8.5), (19.5, -20.0, 9.5), (-16.0, 17.0, 8.0), (-21.0, -19.0, 8.0), (-21.5, 6.5, 8.5))):
         tree(x, y, UP, h=h)
 
 
@@ -482,17 +485,19 @@ def railings():
 
 
 def bridge():
-    # Deck: timber boards on cross joists between deep glulam edge beams that run out onto the promenades.
+    # Deck: timber boards on cross joists between glulam edge beams seated on concrete abutments; beyond the roof the
+    # boards run out onto the promenades as landings.
     C.box('Deck boards', (0.0, 0.0, ZD - .05), (2 * DX, 4.0, .1), 'deck', 'deck', 0)
     b = Batch()
     for k in range(int(2 * DX / .3)):
         b.box('joint', -DX + .15 + k * .3, 0.0, ZD + .002, .02, 3.98, .004)
     for s in (-1, 1):
-        b.box('glulam', 0.0, s * 2.15, ZD - .375, 2 * DX, .3, 1.05)                           # edge beams with a low upstand
-    for k in range(int(2 * DX / 1.3)):
-        b.box('glulam', -DX + .65 + k * 1.3, 0.0, ZD - .28, .16, 4.0, .36)                    # cross joists
+        b.box('glulam', 0.0, s * 2.15, ZD - .16, 2 * XB, .3, .62)                             # straight edge beams, square ends
+    for k in range(int(2 * XB / 1.3)):
+        b.box('glulam', -XB + .65 + k * 1.3, 0.0, ZD - .28, .16, 4.0, .36)                    # cross joists
     b.flush('deck structure')
-    # Portal frames: posts, tie beams with king posts, knee braces; wall plates; a ridge beam.
+    # Portal frames: posts, tie beams with king posts, knee braces; wall plates stopping inside the end posts; a
+    # ridge beam stopping short of the hips.
     b = Batch()
     for x in FRAMES:
         for s in (-1, 1):
@@ -501,30 +506,43 @@ def bridge():
         b.box('glulam', x, 0.0, EAVE - .125, .24, 4.62, .25)
         b.box('glulam', x, 0.0, EAVE + .16, .18, .18, .32)
     for s in (-1, 1):
-        b.box('glulam', 0.0, s * 2.15, EAVE - .4, 2 * RX + .26, .26, .2)
-    b.box('glulam', 0.0, 0.0, EAVE + .43, 2 * RX + .6, .2, .26)
-    # Diagonal glulam braces in the middle bays, alternating; louvres in the end bays (full height) and in an upper
-    # band of the middle bays; a glass balustrade along the open middle bays and the approach decks.
+        b.box('glulam', 0.0, s * 2.15, EAVE - .4, 2 * RX - .04, .26, .2)
+    b.box('glulam', 0.0, 0.0, EAVE + .43, 2 * (RX - .4), .2, .26)
+    # Side frames by bay: the end bays filled with full-height louvres; the bay next to each portal carries one long
+    # diagonal rising from the post foot on the portal side to the post head on the midspan side; the interior bays
+    # are open, with knee braces at the post heads under a continuous rail. One layer of louvres fills the band
+    # between that rail and the wall plate; a glass balustrade runs along the open bays and the landings.
+    last = len(FRAMES) - 2
     for i in range(len(FRAMES) - 1):
         xa, xb = FRAMES[i], FRAMES[i + 1]
-        end = i in (0, len(FRAMES) - 2)
+        end = i in (0, last)
         for s in (-1, 1):
-            if not end:
-                p, q = (xa + .16, s * 2.15, ZD + .3), (xb - .16, s * 2.15, EAVE - .55)
-                if i % 2:
-                    p, q = (xb - .16, s * 2.15, ZD + .3), (xa + .16, s * 2.15, EAVE - .55)
+            y = s * 2.15
+            if i in (1, last - 1):
+                p, q = (xa + .16, y, ZD + .3), (xb - .16, y, EAVE - .55)
+                if i == last - 1:
+                    p, q = (xb - .16, y, ZD + .3), (xa + .16, y, EAVE - .55)
                 b.beam('glulam', p, q, .2, .26)
-            z0 = ZD + .16 if end else ZD + 1.9
-            n = int((xb - xa - .4) / (.19 if end else .22))
+            elif not end:
+                for xp, d in ((xa, 1), (xb, -1)):
+                    b.beam('glulam', (xp + d * .1, y, ZR - .85), (xp + d * .85, y, ZR - .06), .14, .16)
+            z0 = ZD + .16 if end else ZR + .08
+            pitch = .19 if end else .2
+            n = int((xb - xa - .3) / pitch)
             for k in range(n):
-                b.box('timber', xa + .2 + (xb - xa - .4) * (k + .5) / n, s * 2.15, (z0 + EAVE - .5) / 2, .06, .16, EAVE - .5 - z0)
+                b.box('timber', xa + .15 + (xb - xa - .3) * (k + .5) / n, y, (z0 + EAVE - .5) / 2, .06, .14, EAVE - .5 - z0)
+            if end:
+                b.box('glulam', (xa + xb) / 2, y, ZD + .2, xb - xa - .2, .2, .12)             # bottom rail of the end-bay louvres
+        if not end:
+            for s in (-1, 1):
+                b.box('glulam', (xa + xb) / 2, s * 2.15, ZR, xb - xa - .2, .22, .16)          # rail under the louvre band
     for s in (-1, 1):
         b.box('glass', 0.0, s * 1.98, ZD + .64, FRAMES[-2] - FRAMES[1] - .3, .02, .96)
         b.box('hardware', 0.0, s * 1.98, ZD + 1.14, FRAMES[-2] - FRAMES[1] - .3, .05, .04)
         for sx in (-1, 1):
             xa, xb = sx * (RX + .2), sx * (DX - .05)
-            b.box('glass', (xa + xb) / 2, s * 2.15, ZD + .64, abs(xb - xa), .02, .96)
-            b.box('hardware', (xa + xb) / 2, s * 2.15, ZD + 1.14, abs(xb - xa), .05, .04)
+            b.box('glass', (xa + xb) / 2, s * 1.95, ZD + .5, abs(xb - xa), .02, 1.0)            # on the landing boards
+            b.box('hardware', (xa + xb) / 2, s * 1.95, ZD + 1.02, abs(xb - xa), .05, .04)
     b.flush('frames')
     # Low-pitched hipped standing-seam zinc roof with deep eaves.
     ex, ey, rx = RX + .9, 2.8, RX - .3
@@ -538,16 +556,23 @@ def bridge():
         for s in (-1, 1):
             b.beam('seam', (x, s * .06, zs(.06) + .025), (x, s * (ey - .02), zs(ey - .02) + .025), .03, .05)
         x += .55
-    b.beam('seam', (-rx - .05, 0.0, z_hi + .03), (rx + .05, 0.0, z_hi + .03), .16, .07)
+    b.beam('seam', (-rx, 0.0, z_hi + .02), (rx, 0.0, z_hi + .02), .16, .06)
     b.flush('roof seams')
-    for sx in (-1, 1):                                                                      # boarded gable triangles under the hipped ends
-        C.prism(f'End gable board {sx:+d}', [(-2.31, EAVE - .01), (2.31, EAVE - .01), (0.0, EAVE + .55)], 'x', sx * RX - .12, sx * RX + .12, 'timber', 'roof')
-    # Round concrete piers on the lower paths with headstocks under the edge beams.
+    for sx in (-1, 1):                          # boarded gable triangles under the hipped ends, kept below the roof sheet
+        C.prism(f'End gable board {sx:+d}', [(-2.31, EAVE - .01), (2.31, EAVE - .01), (0.0, EAVE + .28)], 'x', sx * RX - .12, sx * RX + .12, 'timber', 'roof')
+    # Concrete abutments cut into the banks: the edge beams and joists bear on their seats, the planted slope meets
+    # their faces, and the paved promenade closes over their backs.
+    for sx in (-1, 1):
+        C.box(f'Abutment {sx:+d}', (sx * (XA + BANKX) / 2, 0.0, (LOW + ZD - .47) / 2), (BANKX - XA, 5.8, ZD - .47 - LOW), 'concrete', 'abutments', 0)
+        C.box(f'Abutment cill {sx:+d}', (sx * (XA + .1), 0.0, ZD - .52), (.3, 5.9, .06), 'concrete', 'abutments', 0)
+    # Round concrete piers on the lower paths, each with a concentric tapered headstock under the edge beams.
     b = Batch()
     for s in (-1, 1):
-        cyl(b, 'concrete', s * 8.0, 0.0, LOW, ZD - 1.24, 1.15, 24)
-        b.box('concrete', s * 8.0, 0.0, ZD - 1.07, 1.6, 4.9, .36)
+        cyl(b, 'concrete', s * 8.0, 0.0, LOW, ZD - 1.25, 1.0, 24)
     b.flush('piers')
+    for s in (-1, 1):
+        C.prism(f'Pier headstock {s:+d}', [(-1.0, ZD - 1.35), (1.0, ZD - 1.35), (2.45, ZD - .85), (2.45, ZD - .47), (-2.45, ZD - .47), (-2.45, ZD - .85)],
+                'x', s * 8.0 - 1.0, s * 8.0 + 1.0, 'concrete', 'piers')
 
 
 def block(name, xf, facing, y0, y1, top, nf, depth=12.0):
