@@ -18,7 +18,7 @@ import geometry as G
 
 SLUG = 'clay-calgary-sandstone-heritage'
 H = 22.0                                        # half-size of the main wall planes
-PP = .8                                         # pavilion projection
+PP = 2.0                                        # pavilion projection (top view: about 4-5% of the block)
 PW = 12.0                                       # pavilion width
 X0, X1, Y0, Y1 = -H - PP, H + PP, -H - PP, H + PP
 T = .6
@@ -30,7 +30,7 @@ TX0, TX1, TY0, TY1 = 17.0, 25.0, -4.0, 4.0     # clock tower, projecting 3 m fro
 TTOP, SPIRE = 26.0, 36.5
 EPS = .002
 PALETTE = dict(wall=(.54, .42, .25), joint=(.40, .31, .19), stone=(.63, .52, .34), arch=(.61, .50, .32),
-    trim=(.20, .18, .16), frame=(.20, .18, .16), pale=(.88, .86, .82), roof=(.34, .35, .38), copper=(.64, .38, .28),
+    trim=(.20, .18, .16), frame=(.20, .18, .16), pale=(.88, .86, .82), roof=(.11, .105, .10), membrane=(.36, .34, .32), copper=(.64, .38, .28),
     sand=(.66, .60, .50), foundation=(.52, .42, .28), glass=(.20, .22, .24), hardware=(.07, .07, .08),
     interior=(.82, .78, .70), floor=(.56, .46, .36), timber=(.42, .30, .20), clock=(.93, .91, .86),
     planting=(.30, .44, .20), soil=(.22, .16, .10), concrete=(.70, .69, .66), white=(.95, .95, .93),
@@ -44,8 +44,8 @@ def manifest(version):
         ('architecture_close', (36.0, -40.0, 20.0), (H, -H, 18.0), 45),
         ('glass_close', (-6.3, -36.0, 8.5), (-6.3, -H, 8.5), 45),
         ('clock_tower', (54.0, -14.0, 24.0), (TX1, 0.0, 26.0), 40),
-        ('portal_arch', (-12.0, -40.0, 3.0), (-16.8, Y0, 3.0), 40),
-        ('gables_pinnacles', (30.0, -46.0, 24.0), (16.8, Y0, 19.0), 40),
+        ('portal_arch', (-11.0, -42.0, 3.2), (-17.5, Y0 - 2.5, 3.2), 40),
+        ('gables_pinnacles', (30.0, -48.0, 24.0), (17.5, Y0, 19.0), 40),
         ('east_side', (80.0, 0.0, 12.0), (X1, 0.0, 12.0), 45),
         ('roofs_court', (-30.0, -40.0, 60.0), (0.0, 2.0, 16.0), 40),
         ('interior', (-4.0, -H + 5.0, F2 + 1.6), (-10.0, -H, F2 + 2.0), 40),
@@ -54,15 +54,17 @@ def manifest(version):
         if c['name'] == 'front':
             c['location'] = (36.0, -52.0, 1.6); c['target'] = (8.0, -16.0, 15.0); c['lens'] = 26; c['whole'] = False
         elif c['name'] == 'front_corner':
-            lx, ly, lz = c['location']; c['location'] = (-lx, ly, lz)
+            c.update(location=(50.0, -64.0, 62.0), target=(0.0, 0.0, 8.0), lens=35, whole=False)   # the locked oblique: high over the south-east corner
+        elif c['name'] == 'top':
+            c.update(location=(0.0, 0.0, 120.0), target=(0.0, .001, 0.0), ortho_scale=66.0, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='calgary_sandstone_heritage/variant_0 (sandstone_romanesque_revival)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=4, storey_programme='rusticated basement and four storeys of offices round a light court',
-            plan='45.6 m square block round a 14 x 13 m light court (top view), corner pavilions stepping 0.8 m forward, a clock tower projecting from the middle of the east wing',
-            facade='rock-faced buff sandstone; paired first-floor windows; round-arched second-floor windows; third-floor arcades; coped gables with pinnacles; deep arched portal',
+            plan='48 m square block round a 14 x 13 m light court with a roof terrace (top view), corner pavilions stepping 2 m forward, a clock tower projecting from the middle of the east wing',
+            facade='rock-faced buff sandstone; paired first-floor windows; round-arched second-floor windows; continuous third-floor arcades on colonnettes; two-storey arcaded pavilion bays; coped gables with pinnacles; projecting arched portal porch with a balcony',
             levels_m=[BASE, F2, F3, EAVE], roof_m=dict(eave=EAVE, ridge=RIDGE, tower=TTOP, spire=SPIRE),
             inferred='interiors, the light court elevations and the north and west fronts follow the visible grammar'),
         roof_contract=dict(type='steep slate hipped roofs round the court, taller slate pyramids over the corner pavilions, copper tower spire and turret caps', datum_m=EAVE, crowns_m=[RIDGE, TTOP, SPIRE]),
@@ -474,7 +476,15 @@ def disc(b, role, centre, normal, r, t=.08, n=24):
 
 
 def window_set(m, f, h, kind):
-    if kind == 'arch':
+    if kind == 'tall':                                                               # two-storey arcaded pavilion bay
+        framed(m, f, h, cols=2, rows=6, inset=.18, occupied='office', frame='frame')
+        arch_head(f, h, h['w'] / 2, ring=.3)
+        m.box('stone', h['u'], -.06, h['z'] - .07, h['w'] + .3, .16, .14)
+        m.box('stone', h['u'], .1, F3 + .1, h['w'] - .02, .16, .7)                       # carved spandrel panel at the floor line
+    elif kind == 'arc':                                                              # one light of a third-floor arcade
+        framed(m, f, h, cols=1, rows=3, inset=.18, occupied='office', frame='frame')
+        arch_head(f, h, h['w'] / 2, ring=.1)
+    elif kind == 'arch':
         framed(m, f, h, cols=2, rows=4, inset=.18, occupied='office', frame='frame')
         arch_head(f, h, h['w'] / 2, ring=.3)
         m.box('stone', h['u'], -.06, h['z'] - .07, h['w'] + .3, .16, .14)
@@ -487,7 +497,18 @@ def window_set(m, f, h, kind):
         framed(m, f, h, cols=2, rows=1, inset=.18, occupied='archive', frame='frame')
 
 
-def segment(label, origin, tangent, inward, lo, hi, depth, bays, portal=None, ends=(0.0, 0.0)):
+ARC_W, ARC_P = .66, .9                                                              # arcade light width and pitch
+
+
+def colonnettes(m, us, z0, z1):
+    """Stone colonnettes with capitals and bases standing in the piers of an arcade."""
+    for u in us:
+        m.box('stone', u, -.06, (z0 + z1) / 2, .16, .12, z1 - z0)
+        m.box('stone', u, -.1, z1 - .11, .26, .2, .2)
+        m.box('stone', u, -.1, z0 + .08, .24, .2, .16)
+
+
+def segment(label, origin, tangent, inward, lo, hi, depth, bays, portal=None, ends=(0.0, 0.0), group=None, arc_n=4):
     """One straight run of the outer wall with its window tiers and string courses. ends: how far the bands run past
     lo and hi to reach the outer corner (a negative value means 'band depth', for the run that wraps the corner)."""
     f = C.Face(origin, tangent, inward, label)
@@ -498,9 +519,14 @@ def segment(label, origin, tangent, inward, lo, hi, depth, bays, portal=None, en
         else:
             holes.append(hole(f'{label} basement {u:+.1f}', u, .5, 1.0, .9)); kinds.append('base')
             holes.append(hole(f'{label} first {u:+.1f}', u, F1 + .7, 2.0, 2.3)); kinds.append('pair')
-        holes.append(hole(f'{label} second {u:+.1f}', u, F2 + .6, 1.5, 3.4)); kinds.append('arch')
-        for s in (-1, 1):
-            holes.append(hole(f'{label} third {u + s * .62:+.1f}', u + s * .62, F3 + .7, .8, 2.3)); kinds.append('arch')
+        if group is not None and abs(u - group) < .1:                                  # three tall arches through two storeys
+            for du in (-1.9, 0.0, 1.9):
+                holes.append(hole(f'{label} tall {u + du:+.1f}', u + du, F2 + .6, 1.2, F3 + 2.8 - F2 - .6)); kinds.append('tall')
+        else:
+            holes.append(hole(f'{label} second {u:+.1f}', u, F2 + .6, 1.5, 3.4)); kinds.append('arch')
+            for i in range(arc_n):                                                     # a continuous arcade of small lights
+                du = (i - (arc_n - 1) / 2) * ARC_P
+                holes.append(hole(f'{label} third {u + du:+.1f}', u + du, F3 + .7, ARC_W, 2.3)); kinds.append('arc')
     f.wall(f'{label} carrier', lo, hi - EPS, 0.0, EAVE, depth=depth, role='wall', holes=holes)
     G.brick_courses(f, lo + .02, hi - .02, .1, EAVE - .1, holes, spacing=.5)
     m = Merge(f)
@@ -514,18 +540,34 @@ def segment(label, origin, tangent, inward, lo, hi, depth, bays, portal=None, en
             m.box('stone', (ra + rc) / 2, -d / 2, z, rc - ra, d, hh)
     for h, k in zip(holes, kinds):
         if k == 'portal':
-            m.box('timber', h['u'], depth - .2, h['h'] / 2 - .4, h['w'] - .02, .1, h['h'] - .8)
+            door_in_arch(m, h, depth, 1.7)
             register(f, h, depth - .3, 'portal', 'entrance hall')
             arch_head(f, h, 1.7, ring=.6, dep=depth)
-            for s in (-1, 1):
-                m.box('stone', h['u'] + s * (h['w'] / 2 + .3), -.2, 1.6, .6, .4, 3.2)          # portal columns
         else:
             window_set(m, f, h, k)
+    for u in bays:
+        if group is not None and abs(u - group) < .1:
+            colonnettes(m, [u - .95, u + .95], F2 + .5, F3 + 2.8 - .6)
+        else:
+            span = (arc_n - 1) * ARC_P + ARC_W
+            m.box('stone', u, -.06, F3 + .63, span + .3, .16, .14)                          # arcade sill
+            colonnettes(m, [u + (i - (arc_n - 2) / 2) * ARC_P for i in range(arc_n - 1)], F3 + .7, F3 + .7 + 2.3 - ARC_W / 2 - .01)
     m.flush(label)
     return f
 
 
-def gable(name, origin, tangent, inward, uc):
+def door_in_arch(m, h, depth, rise):
+    """Timber door leaves filling an arched opening to the crown, a transom at the springing and a fanlight above
+    (the spandrel infill closes the corners outside the curve)."""
+    spring = h['z'] + h['h'] - rise
+    m.box('timber', h['u'], depth - .2, h['z'] + (spring - h['z']) / 2, h['w'] - .02, .1, spring - h['z'] - .02)
+    m.box('frame', h['u'], depth - .2, (spring + h['z'] + h['h']) / 2, h['w'] - .02, .1, h['h'] - (spring - h['z']) - .02)
+    m.box('glass', h['u'], depth - .26, (spring + .15 + h['z'] + h['h']) / 2, h['w'] - .3, .02, h['h'] - (spring - h['z']) - .25)
+    m.box('stone', h['u'], depth - .3, spring + .06, h['w'] - .02, .14, .12)
+    m.box('hardware', h['u'], depth - .27, (spring + h['z']) / 2, .05, .04, spring - h['z'] - .3)
+
+
+def gable(name, origin, tangent, inward, uc, run=5.0):
     """A coped gable on a pavilion face: the gable wall, coping beams, pinnacles, a stone-framed triplet in it."""
     f = C.Face(origin, tangent, inward, name)
     hw, rise = 4.6, 6.0
@@ -535,11 +577,11 @@ def gable(name, origin, tangent, inward, uc):
     vs = [p(uc - hw, 0, EAVE), p(uc + hw, 0, EAVE), p(uc, 0, EAVE + rise), p(uc - hw, 1.0, EAVE), p(uc + hw, 1.0, EAVE), p(uc, 1.0, EAVE + rise)]
     C.mesh(f'{name} wall', vs, [(0, 1, 2), (3, 5, 4), (0, 3, 4, 1), (1, 4, 5, 2), (2, 5, 3, 0)], 'wall', 'gables')
     b = Batch()
-    for s in (-1, 1):
-        b.beam('stone', p(uc + s * (hw + .1), .45, EAVE + .05), p(uc, .45, EAVE + rise + .1), 1.15 + .04 * (s > 0), .3, ext=.05)
-        q = p(uc + s * (hw + .1), .45, 0)
-        b.box('stone', q[0], q[1], EAVE + .5, .9, .9, 1.0)
-        cone(b, 'stone', q[0], q[1], EAVE + 1.0, EAVE + 2.8, .35, 8)
+    for s in (-1, 1):                                                                  # rake copings start inside the shoulder blocks
+        b.beam('stone', p(uc + s * (hw - .2), .45, EAVE + .44), p(uc, .45, EAVE + rise + .1), 1.15 + .04 * (s > 0), .3, ext=.05)
+        q = p(uc + s * (hw + .1), .4, 0)
+        b.box('stone', q[0], q[1], EAVE + .725, 1.2, 1.2, 1.55)
+        cone(b, 'stone', q[0], q[1], EAVE + 1.5, EAVE + 3.3, .35, 8)
     q = p(uc, .45, 0)
     b.box('stone', q[0], q[1], EAVE + rise + .5, .8, .8, 1.0)
     cone(b, 'stone', q[0], q[1], EAVE + rise + 1.0, EAVE + rise + 2.6, .32, 8)
@@ -557,11 +599,11 @@ def gable(name, origin, tangent, inward, uc):
     tri = [(uc - hw, EAVE + .1), (uc + hw, EAVE + .1), (uc, EAVE + rise + .1)]
     if inward[0] == 0:
         pts = [(f.p(u, 0, 0)[0], z) for u, z in tri]
-        y0, y1 = sorted((f.p(0, .5, 0)[1], f.p(0, 5.0, 0)[1]))
+        y0, y1 = sorted((f.p(0, .5, 0)[1], f.p(0, run, 0)[1]))
         C.prism(f'{name} cross roof', pts, 'y', y0, y1, 'roof', 'roof')
     else:
         pts = [(f.p(u, 0, 0)[1], z) for u, z in tri]
-        x0, x1 = sorted((f.p(0, .5, 0)[0], f.p(0, 5.0, 0)[0]))
+        x0, x1 = sorted((f.p(0, .5, 0)[0], f.p(0, run, 0)[0]))
         C.prism(f'{name} cross roof', pts, 'x', x0, x1, 'roof', 'roof')
 
 
@@ -572,8 +614,11 @@ FACES = [  # label, tangent, inward, main-plane origin fn, pavilion-plane origin
     ('west', (0, -1, 0), (1, 0, 0), lambda q: (-q, 0, 0))]
 
 
+RUN = dict(south=8.8, north=7.3, west=7.8)                                          # mid-front cross gables run back past the ridge
+
+
 def outer_walls():
-    pc = H - PW / 2 + PP / 2                                                       # pavilion centre offset along a face
+    pc = (2 * H - PW + 1.5 * PP) / 2                                               # pavilion centre offset along a face
     for label, t, n, org in FACES:
         wraps = label in ('south', 'north')
         plo = -(H + PP) if wraps else -(H + PP) + T + PP
@@ -581,15 +626,47 @@ def outer_walls():
         for side, (a, c) in (('w', (plo, -H + PW - PP / 2)), ('e', (H - PW + PP / 2, -plo))):
             uc = -pc if side == 'w' else pc
             portal = uc if (label == 'south' and side == 'w') else None
-            segment(f'{label} pavilion {side}', org(H + PP), t, n, a, c, T + PP, [uc - 3.6, uc, uc + 3.6], portal=portal,
-                    ends=(corner, 0.0) if side == 'w' else (0.0, corner))
+            segment(f'{label} pavilion {side}', org(H + PP), t, n, a, c, T + PP, [uc - 4.4, uc, uc + 4.4], portal=portal,
+                    ends=(corner, 0.0) if side == 'w' else (0.0, corner), group=uc, arc_n=3)
             gable(f'{label} gable {side}', org(H + PP), t, n, uc)
         lo, hi = -H + PW - PP / 2, H - PW + PP / 2
         if label == 'east':
-            segment('east wing south', org(H), t, n, lo, TY0, T, [-8.4, -5.6])
-            segment('east wing north', org(H), t, n, TY1, hi, T, [5.6, 8.4])
+            segment('east wing south', org(H), t, n, lo, TY0, T, [-7.5])
+            segment('east wing north', org(H), t, n, TY1, hi, T, [7.5])
         else:
             segment(f'{label} wing', org(H), t, n, lo, hi, T, [-8.4, -4.2, 0.0, 4.2, 8.4])
+            gable(f'{label} mid gable', org(H), t, n, 0.0, run=RUN[label])                  # the mid-front gabled pavilion
+    porch()
+
+
+def porch():
+    """The south-west portal porch: a deep arched block standing forward of the pavilion, colonnettes, steps and a
+    balustraded balcony on top."""
+    uc, yf, dp, top = -(2 * H - PW + 1.5 * PP) / 2, Y0 - 2.5, 2.5, 6.0
+    f = C.Face((0, yf, 0), (1, 0, 0), (0, 1, 0), 'porch')
+    h = hole('porch arch', uc, 0.0, 3.4, 4.6, kind='door')
+    f.wall('porch block', uc - 2.8, uc + 2.8 - EPS, 0.0, top, depth=dp, role='wall', holes=[h])
+    G.brick_courses(f, uc - 2.78, uc + 2.78, .1, top - .1, [h], spacing=.5)
+    register(f, h, 0.0, 'porch arch', 'entrance porch')
+    C.box('Porch landing', (uc, (yf + Y0 + 2.3) / 2, .27), (3.38, Y0 + 2.3 - yf, .54), 'stone', 'porch', 0)
+    arch_head(f, h, 1.7, ring=.55, dep=dp)
+    m = Merge(f)
+    for s in (-1, 1):
+        colonnettes(m, [uc + s * 2.15], .3, 2.85)
+    m.box('stone', uc, -.1, top - .25, 5.8, .2, .5)                                           # cornice under the balcony
+    m.flush('porch')
+    b = Batch()
+    for k in range(3):                                                                    # granite steps up to the porch
+        b.box('stone', uc, yf - .3 - .3 * k, .09 + .09 * (2 - k), 4.2 + .4 * k, .3, .18 + .18 * (2 - k))
+    for x0, x1, y0, y1 in ((uc - 2.8, uc + 2.8, yf, yf + .25), (uc - 2.8, uc - 2.55, yf + .25, Y0), (uc + 2.55, uc + 2.8, yf + .25, Y0)):
+        b.box('stone', (x0 + x1) / 2, (y0 + y1) / 2, top + .9, x1 - x0, y1 - y0, .16)          # balcony rail
+        b.box('stone', (x0 + x1) / 2, (y0 + y1) / 2, top + .08, x1 - x0, y1 - y0, .16)         # balcony plinth
+        L = max(x1 - x0, y1 - y0)
+        for i in range(int(L / .32)):
+            t = (i + .5) / int(L / .32)
+            b.box('stone', x0 + (x1 - x0) * t if x1 - x0 > y1 - y0 else (x0 + x1) / 2,
+                  (y0 + y1) / 2 if x1 - x0 > y1 - y0 else y0 + (y1 - y0) * t, top + .49, .12, .12, .66)
+    b.flush('porch balcony')
 
 
 def court():
@@ -610,21 +687,35 @@ def court():
 
 def roofs():
     ov = .45
+    TR = 2.5                                                                                 # roof terrace width round the light court
+    ztr = EAVE - ov * .8 + .02                                                               # terrace top, just over the inner eave
     ridge = [(-14.5, -13.5), (14.5, -13.5), (14.5, 15.0), (-14.5, 15.0)]
     outer = [(-H - ov, -H - ov), (H + ov, -H - ov), (H + ov, H + ov), (-H - ov, H + ov)]
-    inner = [(CX0 + ov, CY0 + ov), (CX1 - ov, CY0 + ov), (CX1 - ov, CY1 - ov), (CX0 + ov, CY1 - ov)]
+    inner = [(CX0 - TR, CY0 - TR), (CX1 + TR, CY0 - TR), (CX1 + TR, CY1 + TR), (CX0 - TR, CY1 + TR)]
     strip('Wing roofs outer', outer, ridge, EAVE - ov * .8, RIDGE, 'roof', 'roof')
     strip('Wing roofs inner', inner, ridge, EAVE - ov * .8, RIDGE, 'roof', 'roof')
-    pcs = H + PP / 2 - PW / 2
+    for name, x0, x1, y0, y1 in (('south', CX0 - TR - .2, CX1 + TR + .2, CY0 - TR - .2, CY0 - .01), ('north', CX0 - TR - .2, CX1 + TR + .2, CY1 + .01, CY1 + TR + .2),
+                                 ('west', CX0 - TR - .2, CX0 - .01, CY0 - .01, CY1 + .01), ('east', CX1 + .01, CX1 + TR + .2, CY0 - .01, CY1 + .01)):
+        C.box(f'Court terrace {name}', ((x0 + x1) / 2, (y0 + y1) / 2, ztr - .15), (x1 - x0, y1 - y0, .3), 'membrane', 'roof', 0)
+    # Court-side cross hips at the middle of each inner side, running from the terrace edge back into the wing roof.
+    zc0, zc1, hw = ztr - .11, ztr - .11 + 3.0, 3.0
+    for name, lower, upper in (
+            ('north', [(-hw, CY1 + .1), (hw, CY1 + .1), (hw, 13.5), (-hw, 13.5)], [(-.05, CY1 + 3.1), (.05, CY1 + 3.1), (.05, 13.5), (-.05, 13.5)]),
+            ('south', [(hw, CY0 - .1), (-hw, CY0 - .1), (-hw, -13.0), (hw, -13.0)], [(.05, CY0 - 3.1), (-.05, CY0 - 3.1), (-.05, -13.0), (.05, -13.0)]),
+            ('west', [(CX0 - .1, 1.5 + hw), (CX0 - .1, 1.5 - hw), (-14.0, 1.5 - hw), (-14.0, 1.5 + hw)], [(CX0 - 3.1, 1.55), (CX0 - 3.1, 1.45), (-14.0, 1.45), (-14.0, 1.55)]),
+            ('east', [(CX1 + .1, 1.5 - hw), (CX1 + .1, 1.5 + hw), (14.0, 1.5 + hw), (14.0, 1.5 - hw)], [(CX1 + 3.1, 1.45), (CX1 + 3.1, 1.55), (14.0, 1.55), (14.0, 1.45)])):
+        strip(f'Court cross hip {name}', lower, upper, zc0, zc1, 'roof', 'roof')
+    lo_p, hi_p = H - PW + PP / 2, H + PP                                                    # pavilion extent in plan
+    pcs, r = (lo_p + hi_p) / 2, (hi_p - lo_p) / 2 + .45
+    apex = EAVE + 12.3
     for sx in (-1, 1):
         for sy in (-1, 1):
             cx, cy = sx * pcs, sy * pcs
-            r = PW / 2 + .45
             strip(f'Pavilion pyramid {sx:+d}{sy:+d}', [(cx - r, cy - r), (cx + r, cy - r), (cx + r, cy + r), (cx - r, cy + r)],
-                  [(cx - .4, cy - .4), (cx + .4, cy - .4), (cx + .4, cy + .4), (cx - .4, cy + .4)], EAVE - .3, EAVE + 9.5, 'roof', 'roof')
+                  [(cx - .4, cy - .4), (cx + .4, cy - .4), (cx + .4, cy + .4), (cx - .4, cy + .4)], EAVE - .3, apex, 'roof', 'roof')
             b = Batch()
-            b.box('copper', cx, cy, EAVE + 9.55, .9, .9, .2)
-            cone(b, 'copper', cx, cy, EAVE + 9.65, EAVE + 11.0, .3, 8)
+            b.box('copper', cx, cy, apex + .05, .9, .9, .2)
+            cone(b, 'copper', cx, cy, apex + .15, apex + 1.5, .3, 8)
             b.flush(f'finial {sx:+d}{sy:+d}')
     for z in (BASE, F2, F3):
         for name, cx, cy, sx, sy in (('south', 0, (-H + T + CY0) / 2, 2 * H - 2 * T, CY0 + H - T), ('north', 0, (CY1 + H - T) / 2, 2 * H - 2 * T, H - T - CY1),
@@ -654,7 +745,7 @@ def tower():
         m = Merge(f)
         for h in hs:
             if h.get('kind') == 'door':
-                m.box('timber', h['u'], .6, h['h'] / 2 - .3, h['w'] - .02, .1, h['h'] - .6)
+                door_in_arch(m, h, .8, 1.5)
                 register(f, h, .5, 'tower portal', 'tower hall')
                 arch_head(f, h, 1.5, ring=.5, dep=.8)
             else:
