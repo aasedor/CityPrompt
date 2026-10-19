@@ -28,7 +28,7 @@ PAR = 11.8                                      # parapet top
 EPS = .002
 PALETTE = dict(wall=(.42, .21, .15), joint=(.50, .48, .45), stone=(.70, .67, .60), arch=(.70, .67, .60),
     copper=(.42, .58, .52), frame=(.15, .25, .20), trim=(.15, .25, .20), pale=(.86, .86, .84),
-    roof=(.42, .40, .38), sand=(.62, .58, .52), foundation=(.56, .54, .50), glass=(.20, .24, .26),
+    roof=(.34, .31, .28), sand=(.62, .58, .52), foundation=(.56, .54, .50), glass=(.20, .24, .26),
     hardware=(.07, .07, .08), interior=(.82, .78, .72), floor=(.56, .46, .36), timber=(.46, .34, .22),
     planting=(.30, .44, .20), soil=(.22, .16, .10), concrete=(.70, .69, .66), white=(.95, .95, .93),
     asphalt=(.28, .28, .29), brick=(.46, .26, .19), pot=(.60, .34, .22), neighbour=(.42, .27, .21), membrane=(.50, .50, .49),
@@ -402,19 +402,20 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 
 # ---- Halifax waterfront warehouse ----
 
-def arch_head(f, h, rise, ring=.26, segs=10, ring_role='arch'):
-    """Segmental or round head on a rectangular cut: brick spandrel infill above the curve (set 1 cm back so it
-    never shares a plane with the wall face) and a proud brick ring of headers over it."""
+def arch_head(f, h, rise, ring=.26, segs=16, ring_role='arch'):
+    """Segmental or round head on a rectangular cut: brick spandrel infill filling the cut's corners above the curve
+    flush with the wall face (exactly the cut's width and height, so no recess reads at the shoulders), and a proud
+    ring over it."""
     u, w, top = h['u'], h['w'], h['z'] + h['h']
     R = (w * w / 4 + rise * rise) / (2 * rise)
     cz = top - R
     a0 = math.asin(min(1.0, (w / 2) / R))
     arc = [(u + R * math.sin(-a0 + 2 * a0 * i / segs), cz + R * math.cos(-a0 + 2 * a0 * i / segs)) for i in range(segs + 1)]
-    pts = [(u - w / 2 - .06, top - rise)] + arc + [(u + w / 2 + .06, top - rise)]
+    pts = [(u - w / 2, top - rise)] + arc + [(u + w / 2, top - rise)]
     vs, fs = [], []
     for (pu, pz) in pts:
-        for d in (.01, T - .01):
-            vs.append(f.p(pu, d, pz)); vs.append(f.p(pu, d, top + .06))
+        for d in (0.0, T - .01):
+            vs.append(f.p(pu, d, pz)); vs.append(f.p(pu, d, top))
     for i in range(len(pts) - 1):
         a, b = 4 * i, 4 * (i + 1)
         fs += [(a, b, b + 1, a + 1), (a + 2, a + 3, b + 3, b + 2), (a, a + 2, b + 2, b), (a + 1, b + 1, b + 3, a + 3)]
@@ -494,6 +495,8 @@ def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, pi
         m.box('stone', h['u'], -.06, h['z'] - .08, h['w'] + .34, .16, .14)
         arch_head(f, h, h['w'] / 2, ring=.3)
         m.box('stone', h['u'], -.06, h['z'] + h['h'] + .15, .3, .14, .42)                       # keystone
+        for s in (-1, 1):                                                                     # granite impost blocks at the springing
+            m.box('stone', h['u'] + s * (h['w'] / 2 + .17), -.05, h['z'] + h['h'] - h['w'] / 2 - .08, .36, .1, .2)
     band('stone', -.18, .36, BELT0 + .3, .6)                                                  # belt entablature
     band('stone', -.24, .48, BELT1 - .15, .3)
     band('stone', -.08, .16, BELT1 + .4, .14)                                                 # sill course
@@ -508,6 +511,12 @@ def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, pi
         u = lo + .375 + (hi - lo - .75) * i / max(1, n - 1)
         if all(abs(u - pu) > pw / 2 + .25 for pu, pw, _ in piers):
             m.box('copper', u, -.36, FRIEZE + .645, .16, .72, .22)
+    if wrap:
+        # The cornice runs on past the west wall over the lower neighbour: close the back of that overhang with plates
+        # in the wall plane following the profile (corona and cymatium out to the break, the frieze and bed below),
+        # so no open slot shows between the layers from behind.
+        m.box('copper', lo - .635, .045, CORN - .145, 1.37, .11, .49)                         # behind corona and cymatium
+        m.box('copper', lo - .135, .0425, (FRIEZE + .02 + CORN - .37) / 2, .37, .095, CORN - .39 - FRIEZE)   # behind frieze and bed
     ca, cc = (lo - .15, hi + .15) if wrap else (corner_lo + .55, corner_hi - .55)
     m.box('copper', (ca + cc) / 2, T / 2 - .05, PAR + .05, cc - ca, T + .2, .1)                 # parapet coping
     for u, w, raised in piers:
@@ -593,9 +602,14 @@ def build_faces():
     b.flush('east corner pier')
     w = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west party')
     w.wall('west party wall', -hd + T, hd - T, 0.0, PAR, depth=T, role='wall', holes=[])
+    G.brick_courses(w, -hd + T + .02, hd - T - .02, G0 + .05, PAR - .3, [], spacing=.16)     # free above the neighbour's annex
+    m = Merge(w)
+    m.box('copper', 0.0, T / 2 - .05, PAR + .04, Y1 - Y0 - .6, T + .2, .1)                      # copper coping on the west parapet too
+    m.flush('west party')
     n = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'north')
     hs = [hole(f'rear window {i} f{k}', u, z, 1.1, 2.4) for k, z in enumerate((1.2, BELT1 + .8)) for i, u in enumerate((-8.0, -2.5, 3.0, 8.5))]
     n.wall('north carrier', -X1, -X0 - EPS, 0.0, PAR, depth=T, role='wall', holes=hs)
+    G.brick_courses(n, -X1 + .02, -X0 - .02, G0 + .05, PAR - .3, hs, spacing=.16)
     m = Merge(n)
     for h in hs:
         framed(m, n, h, cols=2, rows=3, inset=.16, occupied='loft', frame='frame', lite=True)
@@ -608,8 +622,8 @@ def roof_and_inside():
     C.box('Roof membrane', (0, 0, CORN - .45), (X1 - X0 - 2 * T, Y1 - Y0 - 2 * T, .2), 'roof', 'roof', 0)
     b = Batch()
     for x in (-3.5, 5.0):                                                                    # chimneys on the rear parapet
-        b.box('brick', x, Y1 - T / 2, PAR + .7, 1.2, .9, 1.4)
-        b.box('stone', x, Y1 - T / 2, PAR + 1.45, 1.32, 1.02, .1)
+        b.box('brick', x, Y1 - T / 2 - .1, PAR + .7, 1.2, .9, 1.4)                             # seated within the coping
+        b.box('stone', x, Y1 - T / 2 - .1, PAR + 1.45, 1.32, 1.02, .1)
     b.box('pale', 6.5, -2.0, CORN - .2, .9, .9, .3)                                           # hatch and vents
     for x, y in ((-7.0, 1.0), (1.5, 2.5)):
         b.box('hardware', x, y, CORN - .15, .3, .3, .4)
@@ -648,15 +662,29 @@ def site():
     b.flush('street')
     street_tree(X0 - 2.5, Y0 - 2.6, z=.12, height=8.5, spread=2.6)
     street_tree(X1 + 3.4, 6.5, z=.12, height=8.0, spread=2.4)
-    # The brick neighbour attached to the west, as context: its east wall buried in ours.
+    # The brick neighbour attached to the west, as context: its east wall buried in ours. The top view governs its
+    # depth: the main block stops about 28% of the warehouse depth short of the north wall; a lower annex sits behind
+    # it, then an alley, so the warehouse's west parapet stands free for its northern third.
     nx0, nx1 = X0 - 10.0, X0 + .15
-    C.box('Neighbour block', ((nx0 + nx1) / 2, (Y0 + .4 + Y1 + .6) / 2, 5.25), (nx1 - nx0, Y1 + .6 - Y0 - .4, 10.5), 'neighbour', 'context', 0)   # deeper than the warehouse
+    ny1 = Y0 + .72 * (Y1 - Y0)
+    C.box('Neighbour block', ((nx0 + nx1) / 2, (Y0 + .4 + ny1) / 2, 5.25), (nx1 - nx0, ny1 - Y0 - .4, 10.5), 'neighbour', 'context', 0)
+    ay1 = ny1 + .12 * (Y1 - Y0)
+    C.box('Neighbour annex', ((nx0 + .4 + nx1) / 2, (ny1 - .1 + ay1) / 2, 2.1), (nx1 - nx0 - .4, ay1 - ny1 + .1, 4.2), 'neighbour', 'context', 0)
+    C.box('Alley', ((nx0 + X0) / 2, (ay1 + Y1 + 6.0) / 2, .01), (X0 - nx0, Y1 + 6.0 - ay1, .02), 'asphalt', 'site', 0)
     b = Batch()
     for z in (.6, 4.4, 7.6):
         for u in (nx0 + 1.5, nx0 + 4.0, nx0 + 6.5):
             b.box('glass', u, Y0 + .38, z + 1.2, 1.2, .04, 2.2 if z < 1 else 1.9)
+    for z in (4.9, 7.8):                                                                    # rear windows above the annex
+        for u in (nx0 + 2.0, nx0 + 5.0, nx0 + 8.0):
+            b.box('glass', u, ny1 + .02, z + .9, 1.1, .04, 1.7)
+    for u in (nx0 + 2.5, nx0 + 7.0):                                                        # annex windows and door
+        b.box('glass', u, ay1 + .02, 1.6, 1.2, .04, 1.4)
+    b.box('frame', nx0 + 5.0, ay1 + .02, 1.1, 1.0, .04, 2.2)
     b.box('stone', (nx0 + nx1) / 2, Y0 + .25, 10.2, nx1 - nx0 - .3, .4, .4)
-    b.box('membrane', (nx0 + nx1 - .3) / 2, (Y0 + .45 + Y1 + .55) / 2, 10.525, nx1 - nx0 - .5, Y1 + .1 - Y0 - .5 + .4, .07)          # grey membrane roof
+    b.box('stone', (nx0 + nx1 - .15) / 2, ny1 + .05, 10.3, nx1 - nx0 - .45, .14, .3)               # rear cornice band
+    b.box('membrane', (nx0 + nx1 - .3) / 2, (Y0 + .45 + ny1 - .05) / 2, 10.525, nx1 - nx0 - .5, ny1 - Y0 - .5, .07)          # grey membrane roofs
+    b.box('membrane', (nx0 + .4 + nx1 - .3) / 2, (ny1 + ay1 - .05) / 2, 4.225, nx1 - nx0 - .9, ay1 - ny1 - .05, .07)
     b.flush('neighbour')
 
 
