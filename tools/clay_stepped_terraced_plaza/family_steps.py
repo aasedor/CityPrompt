@@ -503,7 +503,7 @@ def plaza_strip():
     handrail(b, .9)
     b.flush('handrails')
     C.box('Lower plaza', (0.0, Y0 - 5.0 + .15, .02), (40.0, 10.3, .04), 'paving', 'site', 0)       # runs 15 cm under the first risers
-    C.box('West lane paving', (X0 - 7.0, (Y0 + .3 + yk(2)) / 2, .02), (14.0 - .02, yk(2) - Y0 - .3, .04), 'paving', 'site', 0)
+    C.box('West lane paving', (X0 - 7.0, (Y0 + .3 + yk(4)) / 2, .02), (14.0 - .02, yk(4) - Y0 - .3, .04), 'paving', 'site', 0)
     b = Batch()
     for k in range(-26, 27):
         b.box('joint', k * .75, Y0 - 5.0, .042, .02, 9.98, .004)
@@ -570,15 +570,16 @@ def west_stair():
     n, w = 16, .75
     for i in range(n):
         s0, s1 = L * i / n, L * (i + 1) / n + (.02 if i < n - 1 else 0.0)
-        top = lv(2) * (i + 1) / n
+        top = lv(2) * (i + 1) / (n + 1)                                         # the last riser rises onto the landing
         quad = [(ax + ux * s + px * sw * w, ay + uy * s + py * sw * w) for s, sw in ((s0, -1), (s0, 1), (s1, 1), (s1, -1))]
         if (quad[1][0] - quad[0][0]) * (quad[2][1] - quad[0][1]) - (quad[1][1] - quad[0][1]) * (quad[2][0] - quad[0][0]) < 0:
             quad = quad[::-1]
         C.prism(f'West stair step {i}', quad, 'z', 0.0, top - .06, 'white', 'west stair')
         C.prism(f'West stair tread {i}', quad, 'z', top - .06, top, 'stone', 'west stair')
     b = Batch()
-    b.box('white', (bx - .9 + X0 + .4) / 2, by + .25, (lv(2) - .06) / 2, X0 + .4 - bx + .9, 1.5, lv(2) - .06)    # landing
-    b.box('stone', (bx - .9 + X0 + .4) / 2, by + .25, lv(2) - .03, X0 + .4 - bx + .9, 1.5, .06)
+    lx0, ly0 = bx - 1.6, by - 1.4                                               # landing: covers the stair head, meets the terrace at X0
+    b.box('white', (lx0 + X0) / 2, (ly0 + yk(2)) / 2, (lv(2) - .06) / 2, X0 - lx0, yk(2) - ly0, lv(2) - .06)
+    b.box('stone', (lx0 + X0) / 2, (ly0 + yk(2)) / 2, lv(2) - .03, X0 - lx0, yk(2) - ly0, .06)
     b.flush('west stair landing')
 
 
@@ -626,7 +627,7 @@ def house(label, x_face, ya, yb, base, h, facing, door=True, deep=7.0, extra=Non
     C.box(f'{label} base', ((xa + xb) / 2, (ya + yb) / 2, (base - .02) / 2), (xb - xa, yb - ya, base - .02), 'white', 'houses', 0)
     b = Batch()
     for y in (ya + T / 2, yb - T / 2):                                         # side walls of the room
-        b.box('white', (xa + xb) / 2, y, base + h / 2, xb - xa, T, h)
+        b.box('white', (xa + xb) / 2, y, base - .02 + (h + .02) / 2, xb - xa, T, h + .02)        # down onto the base: no slit
     b.box('floor', (xa + xb) / 2, (ya + yb) / 2, base - .01, xb - xa, yb - ya - 2 * T, .02)
     b.flush(label + ' room')
     C.box(f'{label} roof', ((bx0 + bx1) / 2, (ya + yb) / 2, base + h + .08), (bx1 - bx0, yb - ya - .04, .16), 'roof', 'houses', 0)
