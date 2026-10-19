@@ -17,7 +17,7 @@ import geometry as G
 SLUG = 'clay-planted-green-bridge'
 X0, X1, Y0, Y1 = -16.0, 16.0, -40.0, 40.0      # deck with its pods (32 m) and an 80 m run across the river
 ZD = 6.0                                        # path level above the water surface
-PW = 1.8                                        # half-width of the central path (3.6 m, top view)
+PW = 2.3                                        # half-width of the central path (4.6 m, about a third of the deck, top view)
 DW = 6.95                                       # half-width of the planted deck to the edge beams
 RN, RS = 10.25, -10.0                           # north and south water lines
 ZB = 2.2                                        # bank level
@@ -43,12 +43,12 @@ def manifest(version):
         ('central_path', (0.0, -34.0, ZD + 1.7), (0.0, 0.0, ZD + 1.1), 35),
         ('viewing_pod', (-4.0, -8.0, ZD + 3.6), (-11.5, 3.0, ZD + .4), 40),
         ('pier_column', (-26.0, -9.0, 2.2), (-11.5, .7, 2.6), 40),
-        ('rail_bollard', (5.4, -18.0, ZD + 1.5), (7.0, -11.0, ZD + .9), 40),
+        ('rail_bollard', (.9, -17.6, ZD + 1.5), (PW + .45, -13.5, ZD + .7), 40),
         ('water_under', (14.0, -8.5, 1.0), (0.0, 4.0, 4.2), 35),
         ('rear_north', (0.0, 52.0, ZD + 6.0), (0.0, 8.0, ZD), 40)])
     for c in cams:                       # the locked front walks north along the path; the oblique stands high over it
         if c['name'] == 'front':
-            c.update(location=(.3, -25.0, ZD + 1.6), target=(0.0, 10.0, ZD + 1.6), lens=24, whole=False)
+            c.update(location=(.2, -13.0, ZD + 4.6), target=(0.0, 12.0, ZD - 1.2), lens=16, whole=False)
         elif c['name'] == 'front_corner':
             c.update(location=(0.0, -30.0, ZD + 8.5), target=(0.0, 14.0, ZD - .5), lens=26, whole=False)
         elif c['name'] == 'aerial':
@@ -69,7 +69,7 @@ def manifest(version):
         source_archetype='landscape_park_pedestrian_bridge/variant_2 (Planted Green Bridge)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=0, storey_programme='street option: a level planted pedestrian bridge over a river; the banks, trees and blocks are context',
-            plan='14 m deck (3.6 m path between two planting beds) on an 80 m run across a 20 m river (top view), two hexagonal planted viewing pods projecting 8.5 m each side near mid-river',
+            plan='14 m deck (4.6 m path between two planting beds of about the same width) on an 80 m run across a 20 m river (top view), two half-hexagonal planted viewing pods projecting 8 m each side near mid-river, each reached by a paved spur',
             section_m=dict(path=[-PW, PW], planting_beds=[PW, DW], edge_beams=[DW, DW + .3], deck_level=ZD, water=0.0, banks=ZB),
             facade='pale path, dense beds of grasses, shrubs, lavender, red flowers and small trees, low steel inner rails with bollard lights, timber-capped picket railings on weathering-steel edge beams, rusted pod fascias, concrete cross-heads and round columns',
             levels_m=[0.0, ZB, ZD], inferred='the deck structure under the planting, the far banks and the blocks are teaching assumptions; the bridge is shown as a section cut at both ends'),
@@ -469,10 +469,56 @@ def railing(b, pts, z, post=1.6, picket=.25):
             b.box('rail', ax + (cx - ax) * t, ay + (cy - ay) * t, z + .55, .018, .018, .86)
 
 
+def blade(b, role, x, y, z0, h, ang, lean, w=.035):
+    """One grass blade: a thin leaning three-sided spike."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V)
+    ca, sa = math.cos(ang), math.sin(ang)
+    V += [(x - sa * w, y + ca * w, z0), (x + sa * w, y - ca * w, z0), (x - ca * w * .6, y - sa * w * .6, z0),
+          (x + ca * lean, y + sa * lean, z0 + h)]
+    F += [(o, o + 1, o + 3), (o + 1, o + 2, o + 3), (o + 2, o, o + 3), (o + 2, o + 1, o)]
+
+
+def grass_clump(b, x, y, z0, h, n=8):
+    """A fountain clump: n blades fanning out from one base."""
+    a0 = RNG.uniform(0, 2 * math.pi)
+    for i in range(n):
+        role = 'straw' if RNG.random() < .35 else 'grass'
+        blade(b, role, x, y, z0, h * RNG.uniform(.75, 1.05), a0 + 2 * math.pi * i / n + RNG.uniform(-.2, .2), h * RNG.uniform(.25, .5))
+
+
+def lavender_drift(b, x, y, z0, L, w=.5):
+    """A long mounded lavender drift: grey-green base, a purple mass and many flower spikes."""
+    blob(b, 'planting', x, y, z0 + .18, w, L / 2, .32, j=.15)
+    blob(b, 'lavender', x, y, z0 + .45, w * .85, L / 2 * .9, .26, j=.15)
+    for k in range(int(L * 4)):
+        tuft(b, 'lavender', x + RNG.uniform(-w * .7, w * .7), y + RNG.uniform(-L * .42, L * .42), z0 + .35, RNG.uniform(.45, .7), .05, 3)
+
+
+def ground_mass(b, role, cx, cy, cz, rx, ry, rz, poppies=0):
+    """A groundcover or shrub mound; poppies sit in its upper surface, not on top of it."""
+    blob(b, role, cx, cy, cz, rx, ry, rz)
+    for k in range(poppies):
+        fx, fy = RNG.uniform(-.4, .4), RNG.uniform(-.4, .4)
+        dot(b, 'flower', cx + fx * rx, cy + fy * ry, cz + rz * math.sqrt(max(0.0, 1 - fx * fx - fy * fy)) * .8, .1)
+
+
+def dot(b, role, x, y, z, r):
+    """A small flower head: an octahedron."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V)
+    V += [(x + r, y, z), (x - r, y, z), (x, y + r, z), (x, y - r, z), (x, y, z + r * .8), (x, y, z - r * .8)]
+    F += [(o, o + 2, o + 4), (o + 2, o + 1, o + 4), (o + 1, o + 3, o + 4), (o + 3, o, o + 4),
+          (o + 2, o, o + 5), (o + 1, o + 2, o + 5), (o + 3, o + 1, o + 5), (o, o + 3, o + 5)]
+
+
+POD = [(DW, 8.5), (14.95, 5.5), (14.95, 0.5), (DW, -2.5)]          # half-hexagon: chord on the deck edge, two long flanks
+YSP = 1.4                                                          # axis of the paved spur from the path to each pod (south of the pod's middle)
+
+
 def pod_poly(s):
-    """Elongated half-hexagon viewing pod on side s (-1 west, +1 east), read from the top view."""
-    pts = [(DW, 10.0), (12.0, 10.0), (15.5, 6.5), (15.5, 0.0), (11.0, -3.0), (DW, -3.5)]
-    return [(s * x, y) for x, y in pts]
+    """Half-hexagonal viewing pod on side s (-1 west, +1 east), read from the top view."""
+    return [(s * x, y) for x, y in POD]
 
 
 def inset(poly, d):
@@ -560,27 +606,29 @@ def deck():
     b.box('concrete', 0.0, 0.0, 5.525, 2 * DW, Y1 - Y0, .65)                                  # deck slab 5.2..5.85
     b.box('path', 0.0, 0.0, 5.92, 2 * PW, Y1 - Y0, .16)                                       # pale path, top at ZD
     for s in (-1, 1):
-        b.box('steel', s * (PW + .04), 0.0, 6.03, .08, Y1 - Y0, .38)                           # path-side curbs
-        b.box('planting', s * (DW + PW + .08) / 2, 0.0, 5.995, DW - PW - .08, Y1 - Y0, .31)     # bed soil, top 6.15
-        for y0, y1 in ((Y0, -3.4), (9.92, Y1)):                                               # weathering-steel edge beams, open at the pod,
+        for y0, y1 in ((Y0, YSP - .9), (YSP + .9, Y1)):                                      # pale path-edge kerbs, open at the spur
+            b.box('concrete', s * (PW + .04), (y0 + y1) / 2, 6.0, .08, y1 - y0, .3)
+        b.box('soil', s * (DW + PW + .08) / 2, 0.0, 5.995, DW - PW - .08, Y1 - Y0, .31)         # bed soil, top 6.15
+        for y0, y1 in ((Y0, POD[3][1] + .1), (POD[0][1] - .08, Y1)):                          # weathering-steel edge beams, open at the pod,
             b.box('corten', s * (DW + .15), (y0 + y1) / 2, 5.725, .3, y1 - y0, 1.45)        # their ends buried in the pod fascia
         b.box('steel', s * 4.5, 0.0, 4.6, .4, Y1 - Y0, 1.2)                                     # main girders 4.0..5.2
     for k in range(int((Y1 - Y0) / 5.0) + 1):
         b.box('steel', 0.0, Y0 + k * 5.0 if k * 5.0 < Y1 - Y0 else Y1 - .2, 4.75, 8.6, .3, .9)
     b.flush('deck')
-    b = Batch()                                                                               # cross paths from the main path to the pods
-    for s in (-1, 1):
-        b.box('path', s * (DW + PW + .08) / 2, 5.0, 6.075, DW - PW - .08, 1.6, .17)
+    b = Batch()                                                                               # paved spurs from the path through the beds and pods
+    for s in (-1, 1):                                                                         # to each pod's perimeter walk
+        b.box('path', s * (DW + PW) / 2, YSP, 6.075, DW - PW + .02, 1.8, .17)
+        b.box('path', s * (DW + 14.05) / 2, YSP, 6.08, 14.05 - DW, 1.8, .17)
     b.flush('pod paths')
-    # Supports: a river pier line under the deck and the pods; land columns on the banks.
+    # Supports: a river pier line under the deck; each pod on its own cross-head and column pair under its south flank.
     b = Batch()
     b.box('concrete', 0.0, .7, 3.7, 11.0, 2.4, .6)
     for x in (-3.5, 3.5):
         cyl(b, 'concrete', x, .7, .005, 3.4, .62, 16)
     for s in (-1, 1):
-        b.box('concrete', s * 11.5, .7, 3.9, 6.0, 2.6, 1.0)
-        for x in (10.0, 13.0):
-            cyl(b, 'concrete', s * x, .7, .005, 3.4, .68, 16)
+        b.box('concrete', s * 11.7, 1.6, 3.9, 5.4, 2.4, 1.0)
+        for x in (10.3, 13.1):
+            cyl(b, 'concrete', s * x, 1.6, .005, 3.4, .68, 16)
     for y in (-30.0, -18.0, 18.0, 30.0):
         for x in (-4.5, 4.5):
             cyl(b, 'concrete', x, y, ZB - .02, 4.0, .45, 12)
@@ -588,87 +636,109 @@ def deck():
     # Railings: timber-capped pickets on the edge beams, a low steel rail with bollard lights along the path.
     b = Batch()
     for s in (-1, 1):
-        for y0, y1 in ((Y0, -3.5), (10.0, Y1)):
+        for y0, y1 in ((Y0, POD[3][1]), (POD[0][1], Y1)):
             railing(b, [(s * (DW + .15), y0), (s * (DW + .15), y1)], 6.45)
-        for y0, y1 in ((Y0 + .3, 4.1), (5.9, Y1 - .3)):
+        for y0, y1 in ((Y0 + .3, YSP - 1.0), (YSP + 1.0, Y1 - .3)):
             for z in (.55, .95):
-                b.beam('rail', (s * (PW + .2), y0, 6.15 + z), (s * (PW + .2), y1, 6.15 + z), .04, .04)
+                b.beam('rail', (s * (PW + .2), y0, 6.15 + z), (s * (PW + .2), y1, 6.15 + z), .035, .035)
             k = int((y1 - y0) / 2.0)
             for i in range(k + 1):
-                b.box('rail', s * (PW + .2), y0 + (y1 - y0) * i / k, 6.15 + .5, .05, .05, 1.0)
-        for i in range(17):                                                                   # bollard lights by the path
+                cyl(b, 'rail', s * (PW + .2), y0 + (y1 - y0) * i / k, 6.0, 7.13, .025, 8)
+        for i in range(17):                                                                   # bollard lights by the path, clear of the rail
             y = Y0 + 2.5 + i * 4.8
-            if 3.0 < y < 7.0:
+            if YSP - 1.5 < y < YSP + 1.5:
                 continue
-            cyl(b, 'rail', s * (PW + .35), y, 6.1, 7.05, .11, 10)
-            cyl(b, 'pale', s * (PW + .35), y, 7.05, 7.17, .1, 10)
+            cyl(b, 'rail', s * (PW + .48), y, 6.1, 7.05, .11, 10)
+            cyl(b, 'pale', s * (PW + .48), y, 7.05, 7.17, .1, 10)
     b.flush('railings')
 
 
 def pods():
     for s in (-1, 1):
         poly = ccw(pod_poly(s))
-        C.prism(f'Pod slab {s:+d}', poly, 'z', 5.2, 5.85, 'concrete', 'pods')
+        C.prism(f'Pod slab {s:+d}', poly, 'z', 5.5, 5.85, 'concrete', 'pods')
         C.prism(f'Pod walk {s:+d}', poly, 'z', 5.84, 6.0, 'path', 'pods')
-        C.prism(f'Pod bed {s:+d}', ccw(inset(pod_poly(s), 1.0)), 'z', 5.99, 6.15, 'planting', 'pods')
-        frame = [(x * .97 + (s * .2 if abs(abs(x) - DW) < 1e-6 else 0), y * .97 + .1) for x, y in pod_poly(s)]
-        C.prism(f'Pod frame {s:+d}', ccw(frame), 'z', 4.4, 5.2, 'steel', 'pods')
+        C.prism(f'Pod bed {s:+d}', ccw(inset(pod_poly(s), .8)), 'z', 5.99, 6.15, 'soil', 'pods')
+        frame = [(x, y) if abs(abs(x) - DW) < 1e-6 else (x - s * .06, y) for x, y in pod_poly(s)]
+        frame = [(x + s * .2, y) if abs(abs(x) - DW) < 1e-6 else (x, y) for x, y in frame]
+        C.prism(f'Pod girder band {s:+d}', ccw(frame), 'z', 4.4, 5.52, 'steel', 'pods')     # dark band just behind the fascia face
         b = Batch()
         pts = pod_poly(s)
-        edges = list(zip(pts, pts[1:]))
-        for (ax, ay), (cx, cy) in edges:                                                      # rusted fascia round the outer edges
-            b.beam('corten', (ax, ay, 5.55), (cx, cy, 5.55), .3, 1.9, ext=.15)         # top 6.5, clear of the edge-beam tops
+        for (ax, ay), (cx, cy) in zip(pts, pts[1:]):                                         # rusted fascia round the outer edges
+            b.beam('corten', (ax, ay, 6.0), (cx, cy, 6.0), .3, 1.0, ext=.15)                 # 5.5..6.5, clear of the edge-beam tops
         b.flush(f'pod fascia {s:+d}')
         b = Batch()
         railing(b, pts, 6.5)
         b.flush(f'pod railing {s:+d}')
 
 
+def inside_poly(poly, x, y):
+    P = ccw(poly)
+    return all((bx - ax) * (y - ay) - (by - ay) * (x - ax) >= -.01 for (ax, ay), (bx, by) in zip(P, P[1:] + P[:1]))
+
+
 def planting():
-    """Dense, varied beds: shrubs, grasses, lavender, red flowers and a few small trees, kept clear of the path."""
+    """Dense mounded beds reaching the rail caps: continuous groundcover, shrub masses, fountain grasses, long lavender
+    drifts (mostly the west bed) and red poppies set into the mounds (mostly the east bed); a few small trees."""
     b = Batch()
     zs = 6.15
     for s in (-1, 1):
-        y = Y0 + .6
-        while y < Y1 - .6:
-            if 4.0 < y < 6.0:
-                y += 2.0
-                continue
-            blob(b, 'planting', s * (PW + DW) / 2 + RNG.uniform(-.4, .4), y, zs + .05, 2.4, 1.1, .32, j=.18)    # low groundcover over the soil
-            x = s * RNG.uniform(PW + 1.6, DW - .9)
-            blob(b, RNG.choice(('shrub', 'tree', 'shrub')), x, y + RNG.uniform(-.3, .3), zs + .45, RNG.uniform(.75, 1.1), RNG.uniform(.7, 1.0), RNG.uniform(.55, .8))
-            for k in range(2):                                                                # tall grasses lining the path
-                tuft(b, RNG.choice(('grass', 'straw')), s * RNG.uniform(PW + .4, PW + 1.1), y + RNG.uniform(-.6, .6), zs, RNG.uniform(.8, 1.3), RNG.uniform(.14, .22))
-            tuft(b, 'grass', s * RNG.uniform(DW - 1.2, DW - .4), y + RNG.uniform(-.6, .6), zs, RNG.uniform(.7, 1.1), .18)
-            if RNG.random() < .6:                                                             # lavender drifts
-                lx, ly = s * RNG.uniform(PW + .5, DW - .6), y + RNG.uniform(-.4, .4)
-                blob(b, 'lavender', lx, ly, zs + .38, .45, .4, .32, j=.2)
-                tuft(b, 'lavender', lx + .2, ly, zs, .75, .12)
-            if RNG.random() < .5:                                                             # red flowers over a green mound
-                fx, fy = s * RNG.uniform(PW + .6, DW - .6), y + RNG.uniform(-.5, .5)
-                blob(b, 'planting', fx, fy, zs + .3, .5, .5, .35)
-                for k in range(3):
-                    blob(b, 'flower', fx + RNG.uniform(-.3, .3), fy + RNG.uniform(-.3, .3), zs + RNG.uniform(.55, .75), .1, .1, .08, j=.05)
-            y += RNG.uniform(1.3, 1.7)
-        for y in (-30.0, -17.0, 15.0, 26.0, 36.0):                                            # small trees in the beds
-            tree(b, s * 4.6, y + RNG.uniform(-1, 1), zs, RNG.uniform(4.5, 6.0), .55)
-    for s in (-1, 1):                                                                         # the pods: a planted mound inside the walk
-        poly = inset(pod_poly(s), 1.4)
+        lav = .55 if s < 0 else .2
+        pop = .15 if s < 0 else .45
+        y = Y0 + .5
+        while y < Y1 - .5:                                                                    # continuous groundcover rows
+            if abs(y - YSP) > 1.5:
+                for xc in (PW + 1.25, (PW + DW) / 2 + .1, DW - 1.0):
+                    role = RNG.choice(('planting', 'planting', 'shrub', 'grass'))
+                    ground_mass(b, role, s * (xc + RNG.uniform(-.2, .2)), y + RNG.uniform(-.2, .2), zs + .12,
+                                RNG.uniform(.8, .95), RNG.uniform(.65, .8), RNG.uniform(.4, .55), poppies=3 if RNG.random() < pop else 0)
+            y += .95
+        y = Y0 + 1.2
+        while y < Y1 - 1.2:                                                                   # shrub masses up to the rail caps
+            if abs(y - YSP) > 2.0:
+                ground_mass(b, RNG.choice(('shrub', 'tree', 'shrub', 'planting')), s * RNG.uniform(PW + 1.6, DW - 1.3),
+                            y + RNG.uniform(-.4, .4), zs + .6, RNG.uniform(.7, 1.0), RNG.uniform(.6, .9), RNG.uniform(.5, .7),
+                            poppies=2 if RNG.random() < pop else 0)
+            y += RNG.uniform(1.4, 2.0)
+        y = Y0 + .8
+        while y < Y1 - .8:                                                                    # fountain grasses along the path rail and in the bed
+            if abs(y - YSP) > 1.8:
+                grass_clump(b, s * RNG.uniform(PW + .6, PW + 1.1), y, zs + .2, RNG.uniform(1.0, 1.4), RNG.choice((7, 8, 10)))
+                if RNG.random() < .5:
+                    grass_clump(b, s * RNG.uniform(PW + 1.8, DW - .7), y + RNG.uniform(-.6, .6), zs + .3, RNG.uniform(.9, 1.3), 8)
+            y += RNG.uniform(1.5, 2.2)
+        y = Y0 + 2.0
+        while y < Y1 - 2.0:                                                                   # long lavender drifts
+            L = RNG.uniform(2.0, 4.0)
+            if abs(y - YSP) > L / 2 + 1.2 and RNG.random() < lav:
+                lavender_drift(b, s * RNG.uniform(PW + .9, DW - 1.4), y, zs + .15, L)
+            y += L + RNG.uniform(.6, 1.6)
+        for y in ((-28.0, 16.0) if s < 0 else (-20.0, 12.0)):                                # one or two small multi-stem trees per bed
+            tree(b, s * 4.8, y, zs, 5.2, .5)
+            tree(b, s * 4.2, y + 1.2, zs, 4.4, .4)
+    for s in (-1, 1):                                                                         # the pods: a mounded planted island inside the walk
+        poly = inset(pod_poly(s), 1.0)
         xs = [p[0] for p in poly]; ys = [p[1] for p in poly]
-        for i in range(70):
-            x, y = RNG.uniform(min(xs), max(xs)), RNG.uniform(min(ys), max(ys))
-            inside = all((bx - ax) * (y - ay) - (by - ay) * (x - ax) >= -.01 for (ax, ay), (bx, by) in zip(ccw(poly), ccw(poly)[1:] + ccw(poly)[:1]))
-            if not inside:
-                continue
-            r = RNG.random()
-            if r < .45:
-                blob(b, 'shrub', x, y, zs + .35, RNG.uniform(.6, 1.0), RNG.uniform(.6, 1.0), RNG.uniform(.45, .75))
-            elif r < .8:
-                tuft(b, RNG.choice(('grass', 'straw')), x, y, zs, RNG.uniform(.8, 1.3), .25)
-            else:
-                tuft(b, 'lavender', x, y, zs, .7, .18)
-        tree(b, s * 11.5, 5.5, zs, 5.5, .6)
-        tree(b, s * 9.0, 1.0, zs, 4.8, .5)
+        gx = min(xs) + .4
+        while gx < max(xs):
+            gy = min(ys) + .3
+            while gy < max(ys):
+                x, y = gx + RNG.uniform(-.25, .25), gy + RNG.uniform(-.25, .25)
+                if inside_poly(poly, x, y) and abs(y - YSP) > 1.55:
+                    ground_mass(b, RNG.choice(('planting', 'shrub', 'grass')), x, y, zs + .12, .85, .75, RNG.uniform(.4, .6),
+                                poppies=2 if RNG.random() < .25 else 0)
+                    r = RNG.random()
+                    if r < .3:
+                        ground_mass(b, 'shrub', x, y, zs + .6, RNG.uniform(.6, .9), RNG.uniform(.6, .9), RNG.uniform(.5, .7))
+                    elif r < .6:
+                        grass_clump(b, x + .3, y, zs + .25, RNG.uniform(1.0, 1.3), 8)
+                    elif r < .75:
+                        for k in range(4):
+                            tuft(b, 'lavender', x + RNG.uniform(-.4, .4), y + RNG.uniform(-.4, .4), zs + .4, .6, .05, 3)
+                gy += .9
+            gx += 1.0
+        tree(b, s * 10.2, 5.6, zs, 5.5, .6)
+        tree(b, s * 8.6, -.9, zs, 4.6, .45)
     b.flush('planting')
 
 
