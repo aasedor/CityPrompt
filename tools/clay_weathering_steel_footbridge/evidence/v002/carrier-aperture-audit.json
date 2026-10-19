@@ -1,0 +1,768 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "East tower deck door",
+      "face": "East tower",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East tower ground door",
+      "face": "East tower",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East tower stair window",
+      "face": "East tower",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West tower deck door",
+      "face": "West tower",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West tower ground door",
+      "face": "West tower",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West tower stair window",
+      "face": "West tower",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f0 0",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f0 1",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f0 2",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f0 3",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f0 4",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f0 5",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f0 6",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f0 7",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f0 8",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f1 0",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f1 1",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f1 2",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f1 3",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f1 4",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f1 5",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f1 6",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f1 7",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f1 8",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f2 0",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f2 1",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f2 2",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f2 3",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f2 4",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f2 5",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f2 6",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f2 7",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse south window f2 8",
+      "face": "Pale-roofed warehouse south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f0 0",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f0 1",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f0 2",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f0 3",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f0 4",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f0 5",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f0 6",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f0 7",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f1 0",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f1 1",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f1 2",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f1 3",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f1 4",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f1 5",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f1 6",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f1 7",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f2 0",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f2 1",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f2 2",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f2 3",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f2 4",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f2 5",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f2 6",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Pale-roofed warehouse east window f2 7",
+      "face": "Pale-roofed warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f0 0",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f0 1",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f0 2",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f0 3",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f0 4",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f0 5",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f0 6",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f0 7",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f0 8",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f0 9",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f0 10",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f1 0",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f1 1",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f1 2",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f1 3",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f1 4",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f1 5",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f1 6",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f1 7",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f1 8",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f1 9",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse east window f1 10",
+      "face": "West warehouse east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f0 0",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f0 1",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f0 2",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f0 3",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f0 4",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f0 5",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f0 6",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f0 7",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f1 0",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f1 1",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f1 2",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f1 3",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f1 4",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f1 5",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f1 6",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West warehouse north window f1 7",
+      "face": "West warehouse north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block west window f0 0",
+      "face": "South-east block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block west window f0 1",
+      "face": "South-east block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block west window f0 2",
+      "face": "South-east block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block west window f0 3",
+      "face": "South-east block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block west window f0 4",
+      "face": "South-east block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block west window f0 5",
+      "face": "South-east block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block west window f0 6",
+      "face": "South-east block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block west window f1 0",
+      "face": "South-east block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block west window f1 1",
+      "face": "South-east block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block west window f1 2",
+      "face": "South-east block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block west window f1 3",
+      "face": "South-east block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block west window f1 4",
+      "face": "South-east block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block west window f1 5",
+      "face": "South-east block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block west window f1 6",
+      "face": "South-east block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f0 0",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f0 1",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f0 2",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f0 3",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f0 4",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f0 5",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f0 6",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f0 7",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f0 8",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f1 0",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f1 1",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f1 2",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f1 3",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f1 4",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f1 5",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f1 6",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f1 7",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South-east block north window f1 8",
+      "face": "South-east block north",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
