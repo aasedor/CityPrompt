@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { ArrowLeft, Building2, Trees, Route, ParkingSquare } from 'lucide-react';
 import type { PlaceAssetId } from './catalogue';
-import { STREET_ASSETS, PARKADE_TRIAL_ASSETS, type StreetAsset } from './assetRegistry';
+import { STREET_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS, type StreetAsset } from './assetRegistry';
 import { CANONICAL_CHOICES, CLASSROOM_CHOICES, UNAVAILABLE_CATALOGUE_ENTRIES, filterCanonicalChoices, preferredCatalogueVariant, type CanonicalSelection } from './canonicalCatalogue';
 import { availablePickerCategories, pickerCategory } from './pickerCategories';
 import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
@@ -128,7 +128,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
           </button>}
         </div>
         <div key={`${section}:${categoryView ? 'categories' : purposeId || 'all'}`} aria-label="Available objects" className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-1">
-          {section === 'street_pathway' && PARKADE_TRIAL_ASSETS.length > 0 && <button type="button"
+          {section === 'street_pathway' && PARKADE_BUILDING_ASSETS.length + PARKADE_TRIAL_ASSETS.length > 0 && <button type="button"
             aria-label="Browse parkade buildings" onClick={() => { setSection('building'); choosePurpose('parkades'); }}
             className="mb-3 flex min-h-20 w-full items-center gap-4 rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-4 text-left text-slate-950 hover:bg-lime-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
             <span className="rounded-lg border-2 border-slate-900 bg-[#c9ff3d] p-3"><Building2 size={26} aria-hidden="true" /></span>

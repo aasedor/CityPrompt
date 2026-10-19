@@ -1,6 +1,6 @@
 {
  "source": "buildingArchetypes.json",
- "count": 244,
+ "count": 249,
  "archetypes": [
   {
    "id": "adaptive_reuse_warehouse_lofts",
@@ -8057,6 +8057,146 @@
    "min_d_m": 14.2,
    "max_d_m": 14.2,
    "suggested_area_sqm": 284.0
+  },
+  {
+   "id": "parkade-classic-concrete",
+   "title": "Classic Concrete Parkade",
+   "development_type": "mobility_infrastructure",
+   "aesthetic_category": "original_parkade",
+   "district_kit": null,
+   "generation_tags": [
+    "parkade",
+    "parking garage",
+    "structured parking",
+    "conventional"
+   ],
+   "min_floors": 4,
+   "max_floors": 4,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "classic-concrete-v1"
+   ],
+   "default_variant_id": "classic-concrete-v1",
+   "suggested_w_m": 64,
+   "suggested_d_m": 40,
+   "min_w_m": 64,
+   "max_w_m": 200,
+   "min_d_m": 40,
+   "max_d_m": 200,
+   "suggested_area_sqm": 2560
+  },
+  {
+   "id": "parkade-urban-brick",
+   "title": "Urban Brick Parkade",
+   "development_type": "mobility_infrastructure",
+   "aesthetic_category": "original_parkade",
+   "district_kit": null,
+   "generation_tags": [
+    "parkade",
+    "parking garage",
+    "structured parking",
+    "conventional"
+   ],
+   "min_floors": 5,
+   "max_floors": 5,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "brick-v1"
+   ],
+   "default_variant_id": "brick-v1",
+   "suggested_w_m": 58,
+   "suggested_d_m": 40.1,
+   "min_w_m": 58,
+   "max_w_m": 200,
+   "min_d_m": 40.1,
+   "max_d_m": 200,
+   "suggested_area_sqm": 2325.8
+  },
+  {
+   "id": "parkade-green-terraces",
+   "title": "Green Terraces Parkade",
+   "development_type": "mobility_infrastructure",
+   "aesthetic_category": "original_parkade",
+   "district_kit": null,
+   "generation_tags": [
+    "parkade",
+    "parking garage",
+    "structured parking",
+    "innovative"
+   ],
+   "min_floors": 4,
+   "max_floors": 4,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "green-v1"
+   ],
+   "default_variant_id": "green-v1",
+   "suggested_w_m": 64,
+   "suggested_d_m": 44,
+   "min_w_m": 64,
+   "max_w_m": 200,
+   "min_d_m": 44,
+   "max_d_m": 200,
+   "suggested_area_sqm": 2816
+  },
+  {
+   "id": "parkade-solar-ribbon",
+   "title": "Solar Ribbon Parkade",
+   "development_type": "mobility_infrastructure",
+   "aesthetic_category": "original_parkade",
+   "district_kit": null,
+   "generation_tags": [
+    "parkade",
+    "parking garage",
+    "structured parking",
+    "innovative"
+   ],
+   "min_floors": 5,
+   "max_floors": 5,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "solar-v1"
+   ],
+   "default_variant_id": "solar-v1",
+   "suggested_w_m": 70,
+   "suggested_d_m": 40,
+   "min_w_m": 70,
+   "max_w_m": 200,
+   "min_d_m": 40,
+   "max_d_m": 200,
+   "suggested_area_sqm": 2800
+  },
+  {
+   "id": "parkade-mobility-courtyard",
+   "title": "Mobility Courtyard Parkade",
+   "development_type": "mobility_infrastructure",
+   "aesthetic_category": "original_parkade",
+   "district_kit": null,
+   "generation_tags": [
+    "parkade",
+    "parking garage",
+    "structured parking",
+    "innovative"
+   ],
+   "min_floors": 4,
+   "max_floors": 4,
+   "usable": true,
+   "has_variants": true,
+   "variant_ids": [
+    "courtyard-v1"
+   ],
+   "default_variant_id": "courtyard-v1",
+   "suggested_w_m": 68,
+   "suggested_d_m": 52,
+   "min_w_m": 68,
+   "max_w_m": 200,
+   "min_d_m": 52,
+   "max_d_m": 200,
+   "suggested_area_sqm": 3536
   }
  ]
 }

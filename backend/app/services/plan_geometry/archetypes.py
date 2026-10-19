@@ -17,8 +17,6 @@ the same archetype id as the frontend. test_plan_archetypes.py pins this.
 from __future__ import annotations
 
 import json
-import os
-from urllib.parse import urlsplit
 import re
 from collections.abc import Collection, Mapping
 from dataclasses import dataclass
@@ -66,17 +64,6 @@ def load_dims_table() -> list[dict]:
     entries = payload.get("archetypes") or []
     if not entries:
         raise RuntimeError(f"archetype dims table empty/missing: {_DATA_PATH}")
-    # Unpublished parkades are an explicit local-only pilot. Keep both the
-    # production identity table and its automatic planning pool unchanged.
-    if os.getenv("CITYPROMPT_LOCAL_PARKADE_TRIAL", "").lower() == "true":
-        from app.core.config import get_settings
-        settings = get_settings()
-        if (settings.app_env.lower() in {"development", "test"}
-                and urlsplit(settings.database_url).hostname in {"127.0.0.1", "localhost", "::1"}):
-            trial = json.loads((_DATA_PATH.parent / "parkade_trial_dims.json").read_text(encoding="utf-8"))["archetypes"]
-            if {entry["id"] for entry in entries} & {entry["id"] for entry in trial}:
-                raise ValueError("Conflicting local parkade catalogue identities")
-            entries = entries + trial
     return entries
 
 

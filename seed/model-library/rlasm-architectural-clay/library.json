@@ -1,7 +1,7 @@
 {
   "schema": "cityprompt.rlasm-architectural-clay-library@1",
   "created_at": "2026-09-06T00:00:00Z",
-  "updated_at": "2026-10-13",
+  "updated_at": "2026-10-19",
   "method": "RLASM",
   "method_version": "6.1",
   "delivery_format": "architectural_clay",
@@ -9518,6 +9518,531 @@
         "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
         "unresolved_p0": 0,
         "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "parkade-classic-concrete-clay-v005",
+      "family": "parkade-classic-concrete",
+      "archetype_id": "parkade-classic-concrete",
+      "archetype_label": "Classic Concrete Parkade",
+      "variant_id": "classic-concrete-v1",
+      "variant_label": "Classic Concrete Parkade",
+      "runtime_enabled": true,
+      "local_trial_only": false,
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 60,
+        "depth": 36,
+        "height": 12.8
+      },
+      "source": {
+        "commit": "original-local-authored-design",
+        "path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\classic-clay-v005\\parkade-classic-concrete-clay-v005.glb",
+        "original_bytes_unchanged": true,
+        "units": "metres",
+        "up_axis": "+Y",
+        "limitations": "Fixed native architectural clay; no engineering, accessibility, capacity or terrain certification. No working doors or editable floor count."
+      },
+      "model": {
+        "path": "models/parkade-classic-concrete-clay-v005.glb",
+        "bytes": 961992,
+        "sha256": "e1333f02e199e5c59408667a36c488f7ad6e38737ebd7735977f7f51ec9484d3",
+        "native_dimensions_m": {
+          "width": 60.0,
+          "height": 12.800000190734863,
+          "depth": 36.0
+        },
+        "mesh_count": 7,
+        "material_count": 7,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-classic-concrete/front.png",
+          "sha256": "4905a00c2ebd68cec5f67bf2a6f43fcd460acc2eb1c1bde02a25ef909a949f2e",
+          "bytes": 49697
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-classic-concrete/oblique.png",
+          "sha256": "e6cca8f14f9211d32dd1325dc9cafd5f1ef338b5b1eda4ded74d2248b52d86f8",
+          "bytes": 63828
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-classic-concrete/top.png",
+          "sha256": "936bbdae038f73ec98f8576732150060a26e73d7bcb72c7d18e1dc8ac9e0572c",
+          "bytes": 46852
+        }
+      ],
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/parkade-classic-concrete-clay-v005.json",
+        "sha256": "72ee8e470275c73a4ccac0fc21734f82f11b1999080af2474efd59ef72390afc",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "picker": {
+        "id": "parkade_classic_concrete",
+        "description": "Open concrete decks, horizontal steel guards, two front glazed stair towers. Fixed-size architectural clay concept.",
+        "group_id": "parkades",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete parkade; resizing the surrounding plot preserves its native geometry and fixed levels.",
+        "width": 64.0,
+        "depth": 40.0,
+        "max_size": 200
+      },
+      "external_evidence": "docs/PARKADE_FAMILY_LOCAL_TRIAL_2026-10-17.md; docs/PARKADE_PRODUCTION_PUBLICATION_2026-10-19.md",
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, enable the five parkades on the live site and deploy the latest deployment version to Render. Please check everything works once it is live.",
+        "date": "2026-10-19",
+        "model_sha256": "e1333f02e199e5c59408667a36c488f7ad6e38737ebd7735977f7f51ec9484d3"
+      },
+      "local_trial": {
+        "model_sha256": "e1333f02e199e5c59408667a36c488f7ad6e38737ebd7735977f7f51ec9484d3",
+        "project_url": "http://127.0.0.1:5184/projects/7bbf376c-62b6-4aea-8804-48193baebd88",
+        "tested_by": "Codex, actual ordinary browser and local API readback",
+        "tested_at": "2026-10-19",
+        "evidence": [
+          "docs/PARKADE_FAMILY_LOCAL_TRIAL_2026-10-17.md",
+          "docs/PARKADE_PRODUCTION_PUBLICATION_2026-10-19.md",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\all-minimum-plots.png",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\all-large-plots.png",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\close-partial-source.png"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      }
+    },
+    {
+      "candidate": "parkade-urban-brick-clay-v001",
+      "family": "parkade-urban-brick",
+      "archetype_id": "parkade-urban-brick",
+      "archetype_label": "Urban Brick Parkade",
+      "variant_id": "brick-v1",
+      "variant_label": "Urban Brick Parkade",
+      "runtime_enabled": true,
+      "local_trial_only": false,
+      "native_floors": 5,
+      "design_dimensions_m": {
+        "width": 54,
+        "depth": 36,
+        "height": 16.1
+      },
+      "source": {
+        "commit": "original-local-authored-design",
+        "path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\brick-clay-v001\\parkade-urban-brick-clay-v001.glb",
+        "original_bytes_unchanged": true,
+        "units": "metres",
+        "up_axis": "+Y",
+        "limitations": "Fixed native architectural clay; no engineering, accessibility, capacity or terrain certification. No working doors or editable floor count."
+      },
+      "model": {
+        "path": "models/parkade-urban-brick-clay-v001.glb",
+        "bytes": 1789284,
+        "sha256": "e2edf36be628ba4af69e1dad4f9c4a851d03c4c927ab929db698bff05d299f3e",
+        "native_dimensions_m": {
+          "width": 54.0,
+          "height": 16.100000381469727,
+          "depth": 36.020999908447266
+        },
+        "mesh_count": 9,
+        "material_count": 9,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-urban-brick/front.png",
+          "sha256": "4d700724d3620d23969add8a9be26782556b2bd67f8a15b285edc156a2ce3439",
+          "bytes": 48535
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-urban-brick/oblique.png",
+          "sha256": "6783ad26feee1f5bb3427d126a96d69fc7ce69863a3f03c20e959e9899def550",
+          "bytes": 54863
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-urban-brick/top.png",
+          "sha256": "4de92cf56df1c58db791c4cd7a58d2f89b4666eb77038bc22fb49a64c8f5c587",
+          "bytes": 39122
+        }
+      ],
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/parkade-urban-brick-clay-v001.json",
+        "sha256": "b2e64a3b5927f8ae2f02e5f909d360b5363fb545805569e33e169b3cab400e74",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "picker": {
+        "id": "parkade_urban_brick",
+        "description": "Brick piers, recessed metal ventilation screens, sheltered pedestrian entrance. Fixed-size architectural clay concept.",
+        "group_id": "parkades",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete parkade; resizing the surrounding plot preserves its native geometry and fixed levels.",
+        "width": 58.0,
+        "depth": 40.1,
+        "max_size": 200
+      },
+      "external_evidence": "docs/PARKADE_FAMILY_LOCAL_TRIAL_2026-10-17.md; docs/PARKADE_PRODUCTION_PUBLICATION_2026-10-19.md",
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, enable the five parkades on the live site and deploy the latest deployment version to Render. Please check everything works once it is live.",
+        "date": "2026-10-19",
+        "model_sha256": "e2edf36be628ba4af69e1dad4f9c4a851d03c4c927ab929db698bff05d299f3e"
+      },
+      "local_trial": {
+        "model_sha256": "e2edf36be628ba4af69e1dad4f9c4a851d03c4c927ab929db698bff05d299f3e",
+        "project_url": "http://127.0.0.1:5184/projects/7bbf376c-62b6-4aea-8804-48193baebd88",
+        "tested_by": "Codex, actual ordinary browser and local API readback",
+        "tested_at": "2026-10-19",
+        "evidence": [
+          "docs/PARKADE_FAMILY_LOCAL_TRIAL_2026-10-17.md",
+          "docs/PARKADE_PRODUCTION_PUBLICATION_2026-10-19.md",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\all-minimum-plots.png",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\all-large-plots.png",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\close-partial-source.png"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      }
+    },
+    {
+      "candidate": "parkade-green-terraces-clay-v003",
+      "family": "parkade-green-terraces",
+      "archetype_id": "parkade-green-terraces",
+      "archetype_label": "Green Terraces Parkade",
+      "variant_id": "green-v1",
+      "variant_label": "Green Terraces Parkade",
+      "runtime_enabled": true,
+      "local_trial_only": false,
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 60,
+        "depth": 40,
+        "height": 12.799999999999999
+      },
+      "source": {
+        "commit": "original-local-authored-design",
+        "path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\green-clay-v003\\parkade-green-terraces-clay-v003.glb",
+        "original_bytes_unchanged": true,
+        "units": "metres",
+        "up_axis": "+Y",
+        "limitations": "Fixed native architectural clay; no engineering, accessibility, capacity or terrain certification. No working doors or editable floor count."
+      },
+      "model": {
+        "path": "models/parkade-green-terraces-clay-v003.glb",
+        "bytes": 4757064,
+        "sha256": "156255fec5bf208f8230b2ac636c90df9a37c9985c60805dc0122a738b941e44",
+        "native_dimensions_m": {
+          "width": 60.0,
+          "height": 12.800000190734863,
+          "depth": 40.0
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-green-terraces/front.png",
+          "sha256": "b7a7664fc6e19e98405c320ca19be3c9561c80fa1b32ba6014b534bf0d2de6d9",
+          "bytes": 53270
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-green-terraces/oblique.png",
+          "sha256": "fb9d3a1ec6f7b9c954b5efc8bbb8da351a64eaf4fc458efdcacfc527a69dabd3",
+          "bytes": 61584
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-green-terraces/top.png",
+          "sha256": "d809ee8f7301314c40dcc605ab599f6708d227dcb82a0cece36db36b6af0bd0c",
+          "bytes": 50938
+        }
+      ],
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/parkade-green-terraces-clay-v003.json",
+        "sha256": "88ac1c22151114177d467d9af7865b60a058a923651c5c2b92ab3905c885820c",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "picker": {
+        "id": "parkade_green_terraces",
+        "description": "Stepped planted edges, climbing screens and a separate rooftop garden. Fixed-size architectural clay concept.",
+        "group_id": "parkades",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete parkade; resizing the surrounding plot preserves its native geometry and fixed levels.",
+        "width": 64.0,
+        "depth": 44.0,
+        "max_size": 200
+      },
+      "external_evidence": "docs/PARKADE_FAMILY_LOCAL_TRIAL_2026-10-17.md; docs/PARKADE_PRODUCTION_PUBLICATION_2026-10-19.md",
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, enable the five parkades on the live site and deploy the latest deployment version to Render. Please check everything works once it is live.",
+        "date": "2026-10-19",
+        "model_sha256": "156255fec5bf208f8230b2ac636c90df9a37c9985c60805dc0122a738b941e44"
+      },
+      "local_trial": {
+        "model_sha256": "156255fec5bf208f8230b2ac636c90df9a37c9985c60805dc0122a738b941e44",
+        "project_url": "http://127.0.0.1:5184/projects/7bbf376c-62b6-4aea-8804-48193baebd88",
+        "tested_by": "Codex, actual ordinary browser and local API readback",
+        "tested_at": "2026-10-19",
+        "evidence": [
+          "docs/PARKADE_FAMILY_LOCAL_TRIAL_2026-10-17.md",
+          "docs/PARKADE_PRODUCTION_PUBLICATION_2026-10-19.md",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\all-minimum-plots.png",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\all-large-plots.png",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\close-partial-source.png"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      }
+    },
+    {
+      "candidate": "parkade-solar-ribbon-clay-v001",
+      "family": "parkade-solar-ribbon",
+      "archetype_id": "parkade-solar-ribbon",
+      "archetype_label": "Solar Ribbon Parkade",
+      "variant_id": "solar-v1",
+      "variant_label": "Solar Ribbon Parkade",
+      "runtime_enabled": true,
+      "local_trial_only": false,
+      "native_floors": 5,
+      "design_dimensions_m": {
+        "width": 66,
+        "depth": 36,
+        "height": 16.1
+      },
+      "source": {
+        "commit": "original-local-authored-design",
+        "path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\solar-clay-v001\\parkade-solar-ribbon-clay-v001.glb",
+        "original_bytes_unchanged": true,
+        "units": "metres",
+        "up_axis": "+Y",
+        "limitations": "Fixed native architectural clay; no engineering, accessibility, capacity or terrain certification. No working doors or editable floor count."
+      },
+      "model": {
+        "path": "models/parkade-solar-ribbon-clay-v001.glb",
+        "bytes": 2116728,
+        "sha256": "cd48038284941410a484f2114a9d35f3103c04f7c8fc1c051ae7cc94ce28eec1",
+        "native_dimensions_m": {
+          "width": 66.0,
+          "height": 16.100000381469727,
+          "depth": 36.0
+        },
+        "mesh_count": 11,
+        "material_count": 11,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-solar-ribbon/front.png",
+          "sha256": "6491749c6c74e46eec01c15bafa87f03a2e7a0ced257cd0c7dbcc618700b646a",
+          "bytes": 50270
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-solar-ribbon/oblique.png",
+          "sha256": "c027018cd304f2bdf14f5c8718171a58c77cfef8841665afc1bfb3190be45936",
+          "bytes": 60026
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-solar-ribbon/top.png",
+          "sha256": "5475b82a76de8dd6b51b820ecd243fd84544b11a0c382fa9ecc7dbce6497478d",
+          "bytes": 40553
+        }
+      ],
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/parkade-solar-ribbon-clay-v001.json",
+        "sha256": "94a85aea718b34063646a79a921258d215336a816e513ef84dffc5b57114f0b4",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "picker": {
+        "id": "parkade_solar_ribbon",
+        "description": "Sculptural metal fins, solar roof canopy and marked EV bays. Fixed-size architectural clay concept.",
+        "group_id": "parkades",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete parkade; resizing the surrounding plot preserves its native geometry and fixed levels.",
+        "width": 70.0,
+        "depth": 40.0,
+        "max_size": 200
+      },
+      "external_evidence": "docs/PARKADE_FAMILY_LOCAL_TRIAL_2026-10-17.md; docs/PARKADE_PRODUCTION_PUBLICATION_2026-10-19.md",
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, enable the five parkades on the live site and deploy the latest deployment version to Render. Please check everything works once it is live.",
+        "date": "2026-10-19",
+        "model_sha256": "cd48038284941410a484f2114a9d35f3103c04f7c8fc1c051ae7cc94ce28eec1"
+      },
+      "local_trial": {
+        "model_sha256": "cd48038284941410a484f2114a9d35f3103c04f7c8fc1c051ae7cc94ce28eec1",
+        "project_url": "http://127.0.0.1:5184/projects/7bbf376c-62b6-4aea-8804-48193baebd88",
+        "tested_by": "Codex, actual ordinary browser and local API readback",
+        "tested_at": "2026-10-19",
+        "evidence": [
+          "docs/PARKADE_FAMILY_LOCAL_TRIAL_2026-10-17.md",
+          "docs/PARKADE_PRODUCTION_PUBLICATION_2026-10-19.md",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\all-minimum-plots.png",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\all-large-plots.png",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\close-partial-source.png"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      }
+    },
+    {
+      "candidate": "parkade-mobility-courtyard-clay-v002",
+      "family": "parkade-mobility-courtyard",
+      "archetype_id": "parkade-mobility-courtyard",
+      "archetype_label": "Mobility Courtyard Parkade",
+      "variant_id": "courtyard-v1",
+      "variant_label": "Mobility Courtyard Parkade",
+      "runtime_enabled": true,
+      "local_trial_only": false,
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 64,
+        "depth": 48,
+        "height": 12.799999999999999
+      },
+      "source": {
+        "commit": "original-local-authored-design",
+        "path": "C:\\dev-artifacts\\CityPrompt\\parkade-family-2026-10-17\\courtyard-clay-v002\\parkade-mobility-courtyard-clay-v002.glb",
+        "original_bytes_unchanged": true,
+        "units": "metres",
+        "up_axis": "+Y",
+        "limitations": "Fixed native architectural clay; no engineering, accessibility, capacity or terrain certification. No working doors or editable floor count."
+      },
+      "model": {
+        "path": "models/parkade-mobility-courtyard-clay-v002.glb",
+        "bytes": 1820900,
+        "sha256": "9ad01dae33db93a02308a354e4f1330277a2e54d6382eb35373de098ab9c1c86",
+        "native_dimensions_m": {
+          "width": 64.0,
+          "height": 12.800000190734863,
+          "depth": 48.0
+        },
+        "mesh_count": 13,
+        "material_count": 13,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-mobility-courtyard/front.png",
+          "sha256": "76a4d5e576e4d06cc745299381a503e47901d295d47441793c9d76a24fbeb995",
+          "bytes": 70481
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-mobility-courtyard/oblique.png",
+          "sha256": "80d0afd078dc80c6a63a1aed2f4fe1f8919b925764adb18ca35c0983e9b0be64",
+          "bytes": 78950
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/parkade-mobility-courtyard/top.png",
+          "sha256": "0023b792027f8b8cec01fd62f7f7e61f2208f8580e22ba550003110b83863847",
+          "bytes": 64130
+        }
+      ],
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/parkade-mobility-courtyard-clay-v002.json",
+        "sha256": "5d4dd04bdffc73d200d5ec1fc6810496a8a763e2547bb25aad0c0bac01e9622f",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "picker": {
+        "id": "parkade_mobility_courtyard",
+        "description": "Open central court, colourful screens, bicycle hub and street-facing cafe. Fixed-size architectural clay concept.",
+        "group_id": "parkades",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete parkade; resizing the surrounding plot preserves its native geometry and fixed levels.",
+        "width": 68.0,
+        "depth": 52.0,
+        "max_size": 200
+      },
+      "external_evidence": "docs/PARKADE_FAMILY_LOCAL_TRIAL_2026-10-17.md; docs/PARKADE_PRODUCTION_PUBLICATION_2026-10-19.md",
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, enable the five parkades on the live site and deploy the latest deployment version to Render. Please check everything works once it is live.",
+        "date": "2026-10-19",
+        "model_sha256": "9ad01dae33db93a02308a354e4f1330277a2e54d6382eb35373de098ab9c1c86"
+      },
+      "local_trial": {
+        "model_sha256": "9ad01dae33db93a02308a354e4f1330277a2e54d6382eb35373de098ab9c1c86",
+        "project_url": "http://127.0.0.1:5184/projects/7bbf376c-62b6-4aea-8804-48193baebd88",
+        "tested_by": "Codex, actual ordinary browser and local API readback",
+        "tested_at": "2026-10-19",
+        "evidence": [
+          "docs/PARKADE_FAMILY_LOCAL_TRIAL_2026-10-17.md",
+          "docs/PARKADE_PRODUCTION_PUBLICATION_2026-10-19.md",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\all-minimum-plots.png",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\all-large-plots.png",
+          "C:\\dev-artifacts\\CityPrompt\\parkade-publication-2026-10-19\\close-partial-source.png"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
       }
     }
   ],

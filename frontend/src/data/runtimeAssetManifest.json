@@ -273,6 +273,7 @@
     "src/data/cataloguePresentation.json",
     "src/data/classroomExpansion.json",
     "src/data/classroomStarter.json",
+    "src/data/claudeFiveTrial.json",
     "src/data/communityBuildingBatch.json",
     "src/data/finalFiveBuildingBatch.json",
     "src/data/flexibleParks.json",
@@ -285,6 +286,7 @@
     "src/data/openSpaceArchetypes.json",
     "src/data/parkKitManifest.ts",
     "src/data/parkKitRecipes.ts",
+    "src/data/parkadeFamilyTrial.json",
     "src/data/savedModelRevisions.json",
     "src/data/sharedParkEquipment.ts",
     "src/data/sportsParkDimensions.json",
@@ -337,7 +339,12 @@
     "src/features/context/splatSpatialMask.ts",
     "src/features/context/surveyGround.ts",
     "src/features/context/useContextPresentation.ts",
+    "src/features/landing/LandingPage.css",
     "src/features/landing/LandingPage.tsx",
+    "src/features/landing/media/kensington-aerial.png",
+    "src/features/landing/media/kensington-context.png",
+    "src/features/landing/media/tree-lined-street.mp4",
+    "src/features/landing/media/tree-lined-street.png",
     "src/features/legoAssembly/LegoAssemblyPreview.tsx",
     "src/features/legoAssembly/allSettledWithConcurrency.ts",
     "src/features/legoAssembly/buildingInspection.ts",
@@ -351,6 +358,7 @@
     "src/features/legoAssembly/mountModelBuildingWalking.ts",
     "src/features/legoAssembly/nativeClayPlacement.ts",
     "src/features/legoAssembly/projectCommunityCompile.ts",
+    "src/features/legoAssembly/walkModelTransform.ts",
     "src/features/parks/BenchDetailEditor.tsx",
     "src/features/parks/DetailCataloguePicker.tsx",
     "src/features/parks/DetailCategoryTiles.tsx",
@@ -365,7 +373,9 @@
     "src/features/parks/ParkLayoutControls.tsx",
     "src/features/parks/PavingEditor.tsx",
     "src/features/parks/ProjectDetailEditor.tsx",
+    "src/features/parks/SafetyVariantCards.tsx",
     "src/features/parks/benchDetails.ts",
+    "src/features/parks/calgarySafetyCatalogue.json",
     "src/features/parks/detailCatalogue.ts",
     "src/features/parks/detailCatalogueExtras.json",
     "src/features/parks/detailInstances.ts",
@@ -380,10 +390,17 @@
     "src/features/parks/nativeParkSurfaceDepth.ts",
     "src/features/parks/nativeParkWalking.ts",
     "src/features/parks/parkWalking.ts",
+    "src/features/parks/parkingDriveway.ts",
+    "src/features/parks/parkingLot.ts",
     "src/features/parks/pavingGround.ts",
     "src/features/parks/pavingSurfaces.ts",
     "src/features/parks/projectBenches.ts",
+    "src/features/parks/projectDetailEdits.ts",
+    "src/features/parks/recoveredDetails.json",
+    "src/features/parks/safetyPlacement.ts",
+    "src/features/parks/safetySupport.ts",
     "src/features/parks/stepFreeParkAccess.ts",
+    "src/features/parks/trafficSafetyCatalogue.json",
     "src/features/parks/useDetailPlacement.ts",
     "src/features/pickPlace/BrtStopControls.tsx",
     "src/features/pickPlace/BuildingDesignControls.tsx",
@@ -494,6 +511,7 @@
     "src/features/referenceLayers/ReferenceLayersPanel.tsx",
     "src/features/referenceLayers/SiteAssessmentPanel.tsx",
     "src/features/referenceLayers/SiteElevation.tsx",
+    "src/features/referenceLayers/StreetNamesControl.tsx",
     "src/features/referenceLayers/StudyEditorShell.tsx",
     "src/features/referenceLayers/ZoningLabelsControls.tsx",
     "src/features/referenceLayers/ZoningStudyEditor.tsx",
@@ -506,8 +524,10 @@
     "src/features/referenceLayers/draftZoning.ts",
     "src/features/referenceLayers/existingTransport.ts",
     "src/features/referenceLayers/referenceGeometry.ts",
+    "src/features/referenceLayers/streetNames.ts",
     "src/features/referenceLayers/useMapExploration.ts",
     "src/features/referenceLayers/useReferenceLayers.ts",
+    "src/features/referenceLayers/useStreetNames.ts",
     "src/features/referenceLayers/useStudyMapDrawing.ts",
     "src/features/referenceLayers/useZoningLabels.ts",
     "src/features/referenceLayers/zoningAppearance.ts",
@@ -515,6 +535,7 @@
     "src/features/referenceLayers/zoningStudy.ts",
     "src/features/referenceLayers/zoningSurfaceGeometry.ts",
     "src/features/siteLandscape/SiteLandscapePanel.tsx",
+    "src/features/siteLandscape/automaticSiteTrees.ts",
     "src/features/siteLandscape/landscapeCapture.ts",
     "src/features/siteLandscape/landscapeContext.ts",
     "src/features/siteLandscape/landscapeEdges.ts",
@@ -535,6 +556,7 @@
     "src/features/zoningCatalogue/types.ts",
     "src/features/zoningCatalogue/zoningInspection.ts",
     "src/hooks/useGenerationPolling.ts",
+    "src/hooks/useNarrowViewport.ts",
     "src/hooks/useRoadNetwork.ts",
     "src/hooks/useSiteZones.ts",
     "src/hooks/useUndoRedoKeyboard.ts",
@@ -573,10 +595,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 3082,
+    "explicitReferenceCount": 3535,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 4866,
-    "requiredLogicalBytes": 11925583195,
+    "requiredFileCount": 5319,
+    "requiredLogicalBytes": 12696501098,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -1570,7 +1592,9 @@
       "url": "/archetypes/buildings/barcelona-mercat/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/data/claudeFiveTrial.json"
       ],
       "logicalBytes": 1903324
     },
@@ -2781,7 +2805,9 @@
       "url": "/archetypes/buildings/chateauesque-grand-railway-hotel/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/data/claudeFiveTrial.json"
       ],
       "logicalBytes": 1350586,
       "lfsOid": "c3d62e25c041ad01aceb2834f53bdd5f2d826bf3ab39f22ff0c5c2aea5b27e81"
@@ -5253,7 +5279,9 @@
       "url": "/archetypes/buildings/grand-magasin/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/data/claudeFiveTrial.json"
       ],
       "logicalBytes": 1498973,
       "lfsOid": "502d6d50e7b5ca032a3104f8505b4e4d2f372d2f22e62c091caaa6f9af8f8b12"
@@ -7238,7 +7266,9 @@
       "url": "/archetypes/buildings/montreal-second-empire-civic/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/data/claudeFiveTrial.json"
       ],
       "logicalBytes": 1240997,
       "lfsOid": "b65649dc4ebd7c66e01b4adacf677cf42222214ec6456b77d8a22cddcb65316b"
@@ -7959,7 +7989,9 @@
       "url": "/archetypes/buildings/parisian-corner-with-dome/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/data/claudeFiveTrial.json"
       ],
       "logicalBytes": 1404367,
       "lfsOid": "abed71053e7f90d7456b7eb8f0c618d9934e9442288c533bb65409b06f498d93"
@@ -8111,6 +8143,51 @@
         "src/data/buildingArchetypes.json"
       ],
       "logicalBytes": 1506334
+    },
+    {
+      "url": "/archetypes/buildings/parkade-classic-concrete/front.png",
+      "sources": [
+        "src/data/parkadeFamilyTrial.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 49697,
+      "lfsOid": "4905a00c2ebd68cec5f67bf2a6f43fcd460acc2eb1c1bde02a25ef909a949f2e"
+    },
+    {
+      "url": "/archetypes/buildings/parkade-green-terraces/front.png",
+      "sources": [
+        "src/data/parkadeFamilyTrial.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 53270,
+      "lfsOid": "b7a7664fc6e19e98405c320ca19be3c9561c80fa1b32ba6014b534bf0d2de6d9"
+    },
+    {
+      "url": "/archetypes/buildings/parkade-mobility-courtyard/front.png",
+      "sources": [
+        "src/data/parkadeFamilyTrial.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 70481,
+      "lfsOid": "76a4d5e576e4d06cc745299381a503e47901d295d47441793c9d76a24fbeb995"
+    },
+    {
+      "url": "/archetypes/buildings/parkade-solar-ribbon/front.png",
+      "sources": [
+        "src/data/parkadeFamilyTrial.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 50270,
+      "lfsOid": "6491749c6c74e46eec01c15bafa87f03a2e7a0ced257cd0c7dbcc618700b646a"
+    },
+    {
+      "url": "/archetypes/buildings/parkade-urban-brick/front.png",
+      "sources": [
+        "src/data/parkadeFamilyTrial.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
+      ],
+      "logicalBytes": 48535,
+      "lfsOid": "4d700724d3620d23969add8a9be26782556b2bd67f8a15b285edc156a2ce3439"
     },
     {
       "url": "/archetypes/buildings/parkitecture/hero.png",
@@ -22747,6 +22824,33 @@
       "lfsOid": "9f882830cfdfe9422bb65696b118e2f038cb63e0b37418ef51257711ffd828f4"
     },
     {
+      "url": "/archetypes/streets/standalone-sidewalks/standalone_narrow_sidewalk_v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 3598453,
+      "lfsOid": "dabc9ecf7d4fd90e86e140294a80ed0b9bb8f27b527d7c9ead15426630cd0044"
+    },
+    {
+      "url": "/archetypes/streets/standalone-sidewalks/standalone_neighbourhood_sidewalk_v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 3253493,
+      "lfsOid": "abaa73c45e121bf0cc4dee215cc4dee03f9357b7fa232e1d825986fa4dd64b13"
+    },
+    {
+      "url": "/archetypes/streets/standalone-sidewalks/standalone_urban_sidewalk_v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 3195698,
+      "lfsOid": "315a0b4a08fb04afccc1ffb52d7fcdb19d3aa85b00b41efe0a733718297f5ae6"
+    },
+    {
       "url": "/archetypes/streets/stephen-avenue-pedestrian-mall/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -24569,17 +24673,9 @@
       "logicalBytes": 7805575
     },
     {
-      "url": "/images/landing-prompt.jpg",
-      "sources": [
-        "src/features/landing/LandingPage.tsx"
-      ],
-      "logicalBytes": 860694
-    },
-    {
       "url": "/images/landing-render.png",
       "sources": [
-        "src/features/auth/AuthPageShell.tsx",
-        "src/features/landing/LandingPage.tsx"
+        "src/features/auth/AuthPageShell.tsx"
       ],
       "logicalBytes": 3042304
     },
@@ -25484,6 +25580,2596 @@
       "lfsOid": "1c37df5bfdca43feaa7fcac5aa1bc0c020569de524c83289ac40f68526ecbdc5"
     },
     {
+      "url": "/park-kits/recovered-details-v1/01_bench_timber_backed.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2268576
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/02_bench_stone_timber.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3400444
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/03_bench_crescent_concrete.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3347264
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/04_bench_double_sided.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2747540
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/05_planter_faceted_corten.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3307688
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/06_planter_rounded_stone.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4355548
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/07_table_civic_picnic.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3707392
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/08_bin_ribbed_hexagonal.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2929424
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/09_fountain_modern_pedestal.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3333604
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/10_sculpture_twisted_arch.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3250416
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/11_seat_ribbon_loop.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2262328
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/12_bike_rack_leaf.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2003612
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/13_bike_rack_folded_bird.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2020740
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/14_stall_farmers_market.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3622240
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/15_shelter_curved_timber_rib.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2373536
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/17_play_lantern_seed_tower.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3555132
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/18_play_pebble_balance_crescent.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3773836
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/19_play_colour_wheel_screen.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3186352
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/20_shade_folded_fan.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3206208
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/21_play_conversation_trumpets.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3205396
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/23_car_compact_hatch.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3321144
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/24_car_midsize_sedan.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3515672
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/25_car_estate_wagon.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3538440
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/26_car_small_crossover.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3328196
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/27_car_family_suv.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3346232
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/28_car_boxy_suv.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3470692
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/29_car_compact_ev.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3359728
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/30_car_fastback_ev.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3510772
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/31_car_two_door_coupe.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3627896
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/32_car_compact_mpv.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3494688
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/33_truck_regular_pickup.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3613520
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/34_truck_crew_pickup.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3671192
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/35_van_compact_panel.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2954240
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/36_van_high_roof_cargo.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2940652
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/37_van_passenger_shuttle.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3538424
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/38_truck_cabover_box.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2948964
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/39_truck_service_body.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3560248
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/40_truck_flatbed.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2653816
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/41_truck_small_tipper.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3372704
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/42_truck_refuse_compact.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3018048
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/43_play_cooperative_rocker.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2325924
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/44_play_sand_sorting_sail.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2028100
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/45_play_zigzag_water_gate.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3503480
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/46_play_touch_totems.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2447068
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/48_civic_compass_welcome_totem.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2548136
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/49_tree_american_elm.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4388024
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/51_shrub_red_osier_dogwood.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4073840
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/52_wetland_water_sedge.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3375104
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/amphitheater-lawn-carved-stone-seat-block-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1243184
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/amphitheater-lawn-portable-acoustic-shell-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1444480
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/amphitheater-lawn-stage-lantern-tower-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2226376
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/amphitheater-lawn-timber-sound-reflector-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1629272
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/amsterdam-hofje-garden-communal-well-cover-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1933892
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/amsterdam-hofje-garden-sandstone-water-pump-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1524964
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/amsterdam-hofje-garden-timber-storage-bench-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1468724
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/amsterdam-hofje-garden-wrought-iron-courtyard-gate-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1545568
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/beer-garden-barrel-standing-table-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1655064
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/beer-garden-communal-trestle-set-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1554160
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/beer-garden-sculptural-fire-bowl-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1192324
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/botanical-garden-concrete-corten-art-plinth-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1090884
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/botanical-garden-formal-fluted-urn-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1634764
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/botanical-garden-weathered-cottage-gate-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1786976
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/climbing-log-meshy-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1418440
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/community-garden-enhanced-accessible-raised-planter-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1507656
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/community-garden-enhanced-communal-harvest-table-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1786464
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/community-garden-enhanced-glazed-cold-frame-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1512816
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/community-garden-enhanced-woven-harvest-basket-rack-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2295360
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/community-garden-garden-wash-station-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1643872
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/community-garden-rain-barrel-rack-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1613740
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/community-garden-seed-library-cabinet-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1689756
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/community-garden-timber-compost-bay-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1738536
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/community-park-carved-stone-urn-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1623600
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/community-park-corten-path-light-cluster-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1316364
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/community-park-olive-oil-amphora-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1306156
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/community-park-thatched-shade-umbrella-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2068128
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/constructed-wetland-eco-park-pond-dipping-platform-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1672980
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/constructed-wetland-eco-park-sluice-control-gate-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1804956
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/constructed-wetland-eco-park-tactile-interpretive-table-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1678212
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/constructed-wetland-eco-park-wildlife-nesting-raft-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1929500
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-01_bench_timber_backed.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4746
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-02_bench_stone_timber.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2820
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-03_bench_crescent_concrete.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1590
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-04_bench_double_sided.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3916
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-05_planter_faceted_corten.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3254
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-06_planter_rounded_stone.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2902
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-07_table_civic_picnic.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3026
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-08_bin_ribbed_hexagonal.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2332
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-09_fountain_modern_pedestal.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2408
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-10_sculpture_twisted_arch.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3286
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-11_seat_ribbon_loop.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4536
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-12_bike_rack_leaf.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3090
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-13_bike_rack_folded_bird.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3488
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-14_stall_farmers_market.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4190
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-15_shelter_curved_timber_rib.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3154
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-17_play_lantern_seed_tower.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4432
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-18_play_pebble_balance_crescent.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2432
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-19_play_colour_wheel_screen.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3636
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-20_shade_folded_fan.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2920
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-21_play_conversation_trumpets.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2536
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-23_car_compact_hatch.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4258
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-24_car_midsize_sedan.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3442
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-25_car_estate_wagon.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3306
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-26_car_small_crossover.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 5086
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-27_car_family_suv.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3814
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-28_car_boxy_suv.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3724
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-29_car_compact_ev.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3906
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-30_car_fastback_ev.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3464
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-31_car_two_door_coupe.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4074
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-32_car_compact_mpv.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4148
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-33_truck_regular_pickup.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3658
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-34_truck_crew_pickup.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2866
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-35_van_compact_panel.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3468
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-36_van_high_roof_cargo.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3248
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-37_van_passenger_shuttle.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3440
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-38_truck_cabover_box.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3508
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-39_truck_service_body.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4138
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-40_truck_flatbed.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3406
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-41_truck_small_tipper.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4772
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-42_truck_refuse_compact.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4080
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-43_play_cooperative_rocker.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2770
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-44_play_sand_sorting_sail.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4030
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-45_play_zigzag_water_gate.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3310
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-46_play_touch_totems.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4214
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-48_civic_compass_welcome_totem.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3246
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-49_tree_american_elm.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3616
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-51_shrub_red_osier_dogwood.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4626
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-meshy-52_wetland_water_sedge.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3906
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-amphitheater-lawn-carved-stone-seat-block-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2762
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-amphitheater-lawn-portable-acoustic-shell-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3994
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-amphitheater-lawn-stage-lantern-tower-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4268
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-amphitheater-lawn-timber-sound-reflector-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4052
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-amsterdam-hofje-garden-communal-well-cover-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4958
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-amsterdam-hofje-garden-sandstone-water-pump-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3938
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-amsterdam-hofje-garden-timber-storage-bench-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4692
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-amsterdam-hofje-garden-wrought-iron-courtyard-gate-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4944
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-beer-garden-barrel-standing-table-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3724
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-beer-garden-communal-trestle-set-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4614
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-beer-garden-sculptural-fire-bowl-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2886
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-botanical-garden-concrete-corten-art-plinth-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3588
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-botanical-garden-formal-fluted-urn-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3958
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-botanical-garden-weathered-cottage-gate-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 6054
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-climbing-log-meshy-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3240
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-community-garden-enhanced-accessible-raised-planter-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3858
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-community-garden-enhanced-communal-harvest-table-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4686
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-community-garden-enhanced-glazed-cold-frame-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4264
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-community-garden-enhanced-woven-harvest-basket-rack-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 5592
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-community-garden-garden-wash-station-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4848
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-community-garden-rain-barrel-rack-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3952
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-community-garden-seed-library-cabinet-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3702
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-community-garden-timber-compost-bay-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 6454
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-community-park-carved-stone-urn-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3674
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-community-park-corten-path-light-cluster-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2768
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-community-park-olive-oil-amphora-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3240
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-community-park-thatched-shade-umbrella-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2926
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-constructed-wetland-eco-park-pond-dipping-platform-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4926
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-constructed-wetland-eco-park-sluice-control-gate-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3982
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-constructed-wetland-eco-park-tactile-interpretive-table-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4376
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-constructed-wetland-eco-park-wildlife-nesting-raft-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4132
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-dog-park-curved-concrete-tunnel-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2844
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-dog-park-dog-drinking-fountain-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2938
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-dog-park-rustic-agility-ramp-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3800
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-dog-park-urban-dog-wash-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4592
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-fountain-water-feature-bronze-lotus-bowl-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3364
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-fountain-water-feature-carved-wall-spout-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3352
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-fountain-water-feature-corten-cascade-vessels-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3566
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-fountain-water-feature-stainless-water-hoop-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4252
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-halifax-public-gardens-victorian-cast-iron-urn-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3254
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-halifax-public-gardens-victorian-park-bench-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 5706
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-japanese-garden-arched-timber-footbridge-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4204
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-japanese-garden-concrete-corten-sculpture-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2842
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-japanese-garden-weathered-rose-arbor-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4894
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-labyrinth-bronze-water-bowl-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2604
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-linear-park-greenway-kayak-storage-rack-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4420
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-linear-park-greenway-natural-riffle-weir-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3214
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-linear-park-greenway-railroad-tie-bench-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3330
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-linear-park-greenway-railway-switch-sculpture-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3862
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-memorial-garden-antique-remembrance-bench-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 6230
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-memorial-garden-stainless-mourning-sculpture-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3220
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-memorial-garden-stone-sundial-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3862
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-memorial-garden-woodland-remembrance-marker-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 5222
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-memorial-woodland-bench-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 5046
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-mini-golf-hollow-log-tunnel-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4000
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-mini-golf-sculptural-rock-obstacle-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4120
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-mini-golf-stump-gate-obstacle-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3470
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-nature-play-climbing-boulder-granite-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3008
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-nature-play-climbing-boulder-sandstone-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3026
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-nature-play-timber-water-table-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2494
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-nature-preserve-dune-sand-fence-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3810
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-nature-preserve-mossy-nurse-log-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3348
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-nature-preserve-observation-scope-pedestal-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3200
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-nature-preserve-prairie-nesting-tower-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2968
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-neighborhood-park-limestone-seat-wall-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3272
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-neighborhood-park-romantic-stone-footbridge-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4040
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-neighborhood-park-woven-palm-shade-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 5226
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-newyork-community-garden-compost-sifter-station-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 6974
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-newyork-community-garden-mosaic-garden-bench-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 5104
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-newyork-community-garden-painted-rain-barrel-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4430
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-newyork-community-garden-salvaged-steel-garden-arch-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4070
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-parisian-jardin-classical-stone-sundial-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4136
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-parisian-jardin-versailles-stone-urn-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4346
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-parisian-jardin-wrought-iron-chair-pair-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 7494
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-playground-adventure-carved-timber-play-animal-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3718
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-playground-adventure-concrete-play-tunnel-mound-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2264
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-playground-adventure-rope-climbing-pyramid-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4708
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-playground-adventure-timber-adventure-tower-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 7140
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-pollinator-insect-hotel-timber-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4854
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-pond-lake-carved-lakeside-bench-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2892
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-pond-lake-fishing-rod-rest-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4616
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-pond-lake-reed-habitat-bundle-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3462
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-productive-garden-rustic-potting-bench-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4960
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-promenade-boardwalk-maritime-bollard-rope-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2314
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-promenade-boardwalk-thatched-cabana-daybed-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3990
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-promenade-boardwalk-timber-fishing-rod-rack-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2894
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-quarry-garden-limestone-outcrop-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4392
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-regional-park-carved-stone-drinking-fountain-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4320
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-regional-park-limestone-picnic-hearth-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 7468
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-regional-park-sculptural-concrete-lounger-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2058
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-regional-park-volcanic-rock-seat-cluster-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3138
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-rewilding-brush-habitat-pile-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4426
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-rewilding-root-wad-large-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4296
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-rewilding-standing-snag-hollow-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2308
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-rewilding-standing-snag-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2154
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-riparian-buffer-coir-bank-fascine-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3968
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-riparian-buffer-gabion-seat-module-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4110
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-riparian-buffer-reclaimed-trail-bench-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3876
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-riparian-buffer-timber-overlook-rail-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3458
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-riverfront-park-beach-cargo-net-climbing-frame-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4848
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-riverfront-park-beach-cedar-kayak-rack-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 5008
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-riverfront-park-beach-parasol-deckchair-ensemble-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 5044
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-riverfront-park-beach-willow-fascine-revetment-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4470
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-rooftop-garden-beehive-stand-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4900
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-rooftop-garden-rainwater-tank-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 5634
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-rooftop-garden-sculptural-shade-pergola-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4526
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-sculpture-garden-corten-loop-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3122
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-sculpture-garden-stone-portal-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2686
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-splash-pad-area-bronze-animal-sprayer-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3012
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-splash-pad-area-stainless-water-arch-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3200
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-splash-pad-area-stone-splash-bowl-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2282
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-stormwater-retention-pond-gabion-overflow-weir-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4714
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-stormwater-retention-pond-pond-overlook-screen-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3872
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-stormwater-retention-pond-rock-armored-spillway-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3234
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-stormwater-retention-pond-stormwater-trash-rack-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 5636
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-street-plaza-parklet-bench-planter-module-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4308
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-street-plaza-parklet-bike-corral-planter-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3782
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-street-plaza-parklet-curbside-stage-platform-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2702
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-tidal-marsh-boardwalk-hexagonal-overlook-rail-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3974
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-tidal-marsh-boardwalk-low-wetland-viewing-hide-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4410
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-tidal-marsh-boardwalk-mangrove-bird-hide-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 6184
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-tidal-marsh-boardwalk-timber-birdwatch-tower-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 7396
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-urban-beach-beach-shower-column-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2572
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-urban-beach-driftwood-windbreak-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3676
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-urban-beach-shade-sail-canopy-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3170
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-urban-forest-interpretive-trail-marker-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2906
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-urban-forest-oyster-reef-module-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3704
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-urban-forest-rain-cistern-pipework-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4924
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-urban-forest-reclaimed-habitat-tower-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4658
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-urban-pocket-park-basalt-water-bowl-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1890
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-urban-pocket-park-ornamental-iron-loveseat-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 6270
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-urban-pocket-park-terracotta-planter-ensemble-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3584
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-vancouver-beach-driftwood-seat-log-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2176
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-wetland-rain-garden-pallet-insect-habitat-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 7170
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-wetland-rain-garden-stone-steel-check-weir-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3970
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-wetland-rain-garden-wildlife-interpretive-sign-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 4500
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/detail-recovered-wetland-timber-bird-blind-v1.webp",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 3366
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/dog-park-curved-concrete-tunnel-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1157564
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/dog-park-dog-drinking-fountain-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1504272
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/dog-park-rustic-agility-ramp-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1607544
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/dog-park-urban-dog-wash-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1778356
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/fountain-water-feature-bronze-lotus-bowl-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1642380
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/fountain-water-feature-carved-wall-spout-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1605916
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/fountain-water-feature-corten-cascade-vessels-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1348160
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/fountain-water-feature-stainless-water-hoop-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1697368
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/halifax-public-gardens-victorian-cast-iron-urn-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1548848
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/halifax-public-gardens-victorian-park-bench-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1766800
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/japanese-garden-arched-timber-footbridge-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1677712
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/japanese-garden-concrete-corten-sculpture-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1395652
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/japanese-garden-weathered-rose-arbor-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1901520
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/labyrinth-bronze-water-bowl-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1247300
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/linear-park-greenway-kayak-storage-rack-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1689752
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/linear-park-greenway-natural-riffle-weir-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1842956
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/linear-park-greenway-railroad-tie-bench-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1275872
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/linear-park-greenway-railway-switch-sculpture-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2111788
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/memorial-garden-antique-remembrance-bench-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1865776
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/memorial-garden-stainless-mourning-sculpture-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1293720
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/memorial-garden-stone-sundial-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1409744
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/memorial-garden-woodland-remembrance-marker-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1718800
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/memorial-woodland-bench-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1616020
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/mini-golf-hollow-log-tunnel-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1335372
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/mini-golf-sculptural-rock-obstacle-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1382724
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/mini-golf-stump-gate-obstacle-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1384732
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/nature-play-climbing-boulder-granite-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1445812
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/nature-play-climbing-boulder-sandstone-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1040788
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/nature-play-timber-water-table-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1569872
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/nature-preserve-dune-sand-fence-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1866108
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/nature-preserve-mossy-nurse-log-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1928308
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/nature-preserve-observation-scope-pedestal-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1639212
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/nature-preserve-prairie-nesting-tower-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1779200
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/neighborhood-park-limestone-seat-wall-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1779016
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/neighborhood-park-romantic-stone-footbridge-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1846204
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/neighborhood-park-woven-palm-shade-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1754632
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/newyork-community-garden-compost-sifter-station-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1942784
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/newyork-community-garden-mosaic-garden-bench-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1260076
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/newyork-community-garden-painted-rain-barrel-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1612824
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/newyork-community-garden-salvaged-steel-garden-arch-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1398776
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/parisian-jardin-classical-stone-sundial-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1477516
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/parisian-jardin-versailles-stone-urn-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1640096
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/parisian-jardin-wrought-iron-chair-pair-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1844552
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/playground-adventure-carved-timber-play-animal-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1382708
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/playground-adventure-concrete-play-tunnel-mound-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1068328
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/playground-adventure-rope-climbing-pyramid-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1889808
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/playground-adventure-timber-adventure-tower-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1859852
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/pollinator-insect-hotel-timber-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2033488
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/pond-lake-carved-lakeside-bench-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1286616
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/pond-lake-fishing-rod-rest-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1422044
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/pond-lake-reed-habitat-bundle-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2038812
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/productive-garden-rustic-potting-bench-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1569492
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/promenade-boardwalk-maritime-bollard-rope-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1666604
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/promenade-boardwalk-thatched-cabana-daybed-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2145612
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/promenade-boardwalk-timber-fishing-rod-rack-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1435044
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/quarry-garden-limestone-outcrop-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1454168
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/regional-park-carved-stone-drinking-fountain-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1385204
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/regional-park-limestone-picnic-hearth-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1976780
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/regional-park-sculptural-concrete-lounger-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1058072
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/regional-park-volcanic-rock-seat-cluster-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1908848
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/rewilding-brush-habitat-pile-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2075360
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/rewilding-root-wad-large-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1786676
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/rewilding-standing-snag-hollow-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1555944
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/rewilding-standing-snag-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1347132
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/riparian-buffer-coir-bank-fascine-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2102972
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/riparian-buffer-gabion-seat-module-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2399964
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/riparian-buffer-reclaimed-trail-bench-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1575312
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/riparian-buffer-timber-overlook-rail-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1561216
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/riverfront-park-beach-cargo-net-climbing-frame-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1997036
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/riverfront-park-beach-cedar-kayak-rack-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1669912
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/riverfront-park-beach-parasol-deckchair-ensemble-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1840836
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/riverfront-park-beach-willow-fascine-revetment-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2228340
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/rooftop-garden-beehive-stand-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1548596
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/rooftop-garden-rainwater-tank-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1670520
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/rooftop-garden-sculptural-shade-pergola-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1553412
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/sculpture-garden-corten-loop-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1150964
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/sculpture-garden-stone-portal-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 970316
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/splash-pad-area-bronze-animal-sprayer-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1352316
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/splash-pad-area-stainless-water-arch-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 936980
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/splash-pad-area-stone-splash-bowl-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1381120
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/stormwater-retention-pond-gabion-overflow-weir-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2247832
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/stormwater-retention-pond-pond-overlook-screen-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1519408
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/stormwater-retention-pond-rock-armored-spillway-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1759264
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/stormwater-retention-pond-stormwater-trash-rack-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1547104
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/street-plaza-parklet-bench-planter-module-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1978348
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/street-plaza-parklet-bike-corral-planter-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1514540
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/street-plaza-parklet-curbside-stage-platform-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1459756
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/tidal-marsh-boardwalk-hexagonal-overlook-rail-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1489368
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/tidal-marsh-boardwalk-low-wetland-viewing-hide-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1780164
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/tidal-marsh-boardwalk-mangrove-bird-hide-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1736568
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/tidal-marsh-boardwalk-timber-birdwatch-tower-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1898240
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/urban-beach-beach-shower-column-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1518868
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/urban-beach-driftwood-windbreak-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1557464
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/urban-beach-shade-sail-canopy-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1595648
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/urban-forest-interpretive-trail-marker-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1438376
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/urban-forest-oyster-reef-module-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1735732
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/urban-forest-rain-cistern-pipework-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2390760
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/urban-forest-reclaimed-habitat-tower-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1795216
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/urban-pocket-park-basalt-water-bowl-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1144188
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/urban-pocket-park-ornamental-iron-loveseat-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1632456
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/urban-pocket-park-terracotta-planter-ensemble-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1328880
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/vancouver-beach-driftwood-seat-log-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1286188
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/wetland-rain-garden-pallet-insect-habitat-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2046044
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/wetland-rain-garden-stone-steel-check-weir-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 2239168
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/wetland-rain-garden-wildlife-interpretive-sign-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1552112
+    },
+    {
+      "url": "/park-kits/recovered-details-v1/wetland-timber-bird-blind-v1.glb",
+      "sources": [
+        "src/features/parks/recoveredDetails.json"
+      ],
+      "logicalBytes": 1567568
+    },
+    {
       "url": "/park-kits/shared-park-equipment-v1/basketball-hoop-regulation.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -25902,6 +28588,156 @@
       ],
       "logicalBytes": 17381,
       "lfsOid": "2975ceb8144fa8083dffe83ab3e9935542bfbeb9da8ec94eebcc726cae8f03c8"
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/bicycle-signal.glb",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 280624,
+      "lfsOid": "20e0eb893e8034804cc0c681eff897a66d80ae64f1e8339cb337f316693dfcbe"
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/bicycle-signal.webp",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 1114
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/green-bike-box.glb",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 8480,
+      "lfsOid": "0ca0212311be674ca48da91c94ba7dd7f781e599766d3f87417b353a7d10da79"
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/green-bike-box.webp",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 1936
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/green-conflict-strip.glb",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 3836,
+      "lfsOid": "a969028d9e76dd3fb85a2423599e9eef02b1bbbab4869a52683d51a1061a0776"
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/green-conflict-strip.webp",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 2266
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/high-visibility-crossing.glb",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 66112,
+      "lfsOid": "d2170385c7923406d51b9b2493259388941f4dcffff86b7916609fbe257c9eb6"
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/high-visibility-crossing.webp",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 1402
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/left-turn-calming.glb",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 119616,
+      "lfsOid": "4bd43dd7e21f34390787bbcafe480eff34360ebe1cf1aa6b43238d35d5a1f28f"
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/left-turn-calming.webp",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 1672
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/school-crossing-sign.glb",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 57852,
+      "lfsOid": "e9432edf6343f84e3276336dce01f5b677db17e358e6a3c7a6bb05c9f2c98246"
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/school-crossing-sign.webp",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 2710
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/speed-cushion-pair.glb",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 14960,
+      "lfsOid": "5e8ee35c71b0e6faa668145f5e39b037f198db6032ecc79421a611d1dd7cdc96"
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/speed-cushion-pair.webp",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 2154
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/speed-cushion.glb",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 8452,
+      "lfsOid": "4f2ed46c0f9a4d4e7e0ece79c191afdc76c9213cc693d68fda542a9f0583c3f6"
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/speed-cushion.webp",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 1526
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/speed-display-trailer.glb",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 126164,
+      "lfsOid": "da8ff136f41c42ff1ec208b6cb14a769cd4a5af5230b917f91562ce2c19f1a30"
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/speed-display-trailer.webp",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 4072
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/traffic-diverter.glb",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 148448,
+      "lfsOid": "f81dea5593a0711948133c3ad6d8db3318bee44e8988ac92518d959e6b8290de"
+    },
+    {
+      "url": "/street-kits/calgary-safety-concepts-v1/traffic-diverter.webp",
+      "sources": [
+        "src/features/parks/calgarySafetyCatalogue.json"
+      ],
+      "logicalBytes": 2064
     },
     {
       "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_bench.glb",
@@ -27525,6 +30361,454 @@
       "lfsOid": "3aee84ad8de30ccb8508868ba6957368911e99b770c59b647d10f65900456a40"
     },
     {
+      "url": "/street-kits/traffic-safety-r1/calgary_delineator_illustrative_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 35724,
+      "lfsOid": "93e9152206f21d3a0c721a43f6ee071d8db24c36f1bb9e5dee52adf36ccb1ba0"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/calgary_tc_curb_2750_yellow_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 60496,
+      "lfsOid": "76b210ccb373c3ef6bf5de4e00a55cc0f010c4b5b25b508c8cd215bbf8b4e14f"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/calgary_tc_curb_flexpost_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 94516,
+      "lfsOid": "0121bcbd481d30a383b8105fefd65cdd8ee60d35c34d3552879e2c0ab9d505a8"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/calgary_tc_curb_object_marker_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 88592,
+      "lfsOid": "96b478072fcf0f39cd2da64b9f0f82d87ba0ce1122c6a844836c279810de5813"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_brick_infill_concept_10m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 19144,
+      "lfsOid": "cc174a8ccc152ea2c9e430faeaa15a11b465e748af725a6ab6145f91180f380c"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_brick_infill_concept_6m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 12656,
+      "lfsOid": "cf71e21005513db010e93e9231dbde26160187f22c6a3cf0138df703a6ab64ce"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_brick_infill_concept_8m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 15896,
+      "lfsOid": "3a7db0048aa4bc08d9eb1a3f633827747d70022a8124591fff23d74534286dc4"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_continental_white_10m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 2332,
+      "lfsOid": "413023b5fb8af39d034671c7c4be9e1c0e96bde0336ede5ac456e3667fdbe49f"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_continental_white_6m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 2032,
+      "lfsOid": "96e41496352379966151984f2ee6ec0a83abc523cf0d251465cbf801bc3e848b"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_continental_white_8m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 2248,
+      "lfsOid": "be247483f018badff2c0fb10229572413f627066dd5295b45a656ff04561befd"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_diagonal_hatch_generic_10m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 2952,
+      "lfsOid": "a27d7d9bee2080cd7cc46df320f7f9dba2f39d57007e536043deaa6fc44e955e"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_diagonal_hatch_generic_6m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 2592,
+      "lfsOid": "8517200429dffd39f9e7e3417d8eae217bdced07512ab6177bed78c6dfc7b64f"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_diagonal_hatch_generic_8m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 2732,
+      "lfsOid": "4db91ff04082b1af0d095cee6babfc371917eacc3063ef4586e44e90d2c1dab2"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_ladder_white_10m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 2556,
+      "lfsOid": "7c270c081cb0178407a2b28d6e59b0dc48d54b8d50b99f4900a148f28c04fc1c"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_ladder_white_6m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 2224,
+      "lfsOid": "a08a56314451c52365598822524448c76af4fdd637b89c2187171b46702477f0"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_ladder_white_8m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 2444,
+      "lfsOid": "41050319f0f0413a3a974bf15421010a09e059a27448172065ad67a7b3736451"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_multiuse_elephant_feet_10m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 5412,
+      "lfsOid": "1bc1cec9ec6daded443209b5b6605f5d9e1b4e19eef71b7a74eeaf9f0972e210"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_multiuse_elephant_feet_6m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 4000,
+      "lfsOid": "088ebd8b8796f175086bcf0914bb16ff58285e0cf87dc947cab871ab5a086148"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_multiuse_elephant_feet_8m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 4652,
+      "lfsOid": "bfab36d888b24bd59bde4fa319ea691cec14e32cb941d6a7fd3a90ab49417ac7"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_parallel_white_10m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 1692,
+      "lfsOid": "b540828c43b01dd0545a13cb712931613589bc40b28d4a3df8f7d9257d373d89"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_parallel_white_6m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 1688,
+      "lfsOid": "a5d3114b948f36e9ff737a2faec6ab416091a597f4346ec85e64d2330ce08370"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_parallel_white_8m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 1688,
+      "lfsOid": "5454b6fc6e7e46b1a1127a6b9e641e2fe798caf1dbedb979e267af4aeeb4d91b"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_rainbow_infill_concept_10m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 6780,
+      "lfsOid": "0f6706731a46d94086ad0426c5fd83578fbf87466292559bb1ec72651d13e888"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_rainbow_infill_concept_6m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 6764,
+      "lfsOid": "7d9a38e7672eebb606a7542329cb28e934520c75c48b226c86a7c5b792162f67"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_rainbow_infill_concept_8m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 6764,
+      "lfsOid": "1750d3ad9bca69d54f4e6e8aa4d5338aa6c32be7f7314292174018ace0f34309"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_raised_zebra_concept_10m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 3836,
+      "lfsOid": "d6bdf6a5ccbad05a1ba7d5cdc4704b4c0d395d7b0205d0aec1698c9221f140a0"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_raised_zebra_concept_6m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 3532,
+      "lfsOid": "b1502bfba19df1792c2415c6007492f1693a2fd8a55600dbd4716a3c8f58ba05"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/crosswalk_raised_zebra_concept_8m_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 3748,
+      "lfsOid": "2ef4169938a06cc15b6ac2f7351d4c38f075b7a82f729c3d306cedccd9a9e9e0"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_dual_corner_large_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 54980,
+      "lfsOid": "0461894845e5ad4d933beb55afb352825a20f9de6fd2253f4721e30d0fbffc7e"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_dual_corner_medium_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 58880,
+      "lfsOid": "cdc33ce2a1f63b243c4b105c5c82362cfafd2804b75e91c6cbbbd7a9056f75ad"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_dual_corner_small_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 55720,
+      "lfsOid": "7514ee2e73e2b9c3b3301c6aa6af3144b7595bdf9da3aaaba4e9106b03f11de8"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_midblock_large_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 25972,
+      "lfsOid": "08a9a5788b495c1e692211bf74ec4a26d5a7feb8e0267fc798e3096d8b1c1de0"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_midblock_medium_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 25840,
+      "lfsOid": "3054674563e0f4a1227fe4c95bd2da65a2d531d82ee1873254c89840a91b6e81"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_midblock_small_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 26164,
+      "lfsOid": "5a52d636a2ae234398c4d1b2b28e9188a86533e0385e015dc9a97ade537069ae"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_single_left_large_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 44100,
+      "lfsOid": "d78e00d55b65d766c2f73f9df49b90e38cc5c50043a12f2babde67e4cce2d031"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_single_left_medium_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 45396,
+      "lfsOid": "107844a4475902e3cabe43cfa8aa32b27d5fa643f2cffd9ed04d0425cf9a02f7"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_single_left_small_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 44888,
+      "lfsOid": "31b700012a5544f0b7b381e2716c5783ae562a249e085ac8fcb6caf02a084273"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_single_right_large_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 44068,
+      "lfsOid": "235147e985726fd7f4280520609eec2f1cf0f98ae30a1069ad73ead1fd7e6c8c"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_single_right_medium_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 45152,
+      "lfsOid": "743b4d1a56467ca25853bc3ae7b1c39d1e6f8e11886b3f5f0f4bd5cb8eb4ebb8"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/curb_bulb_single_right_small_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 44872,
+      "lfsOid": "c0b4b9b735f1883bd6db2dcbdc8f9a74c175edde9e804bc2f7fab1020304d9d3"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_pair_18m_amber_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 579808,
+      "lfsOid": "dff5f9f46a7052f91915a859b66430109ad0429da0abb87e46001093e2b5d895"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_pair_18m_unlit_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 579596,
+      "lfsOid": "de5313257696fa779dacce2777039ee397cf9100c7ae11d3c087354a534eaa44"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_10m_amber_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 292948,
+      "lfsOid": "52bb5768bf967c36922f515a675626e39a88ccb9070427154f19033cd87c24f7"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_10m_unlit_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 292736,
+      "lfsOid": "8313ef6787c889585c23849186335c5f7615de14082ce2e8ecc4f6a1a7b61df5"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_6m_amber_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 292956,
+      "lfsOid": "dff0ee496075aa84aca02f3a365d2af1d8c19f9dea2e74f809d0c915d1bd634d"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_6m_unlit_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 292580,
+      "lfsOid": "3aff60fcf6b09a7f76f695b1f665266ac46c2a5fb706c470c2735171f06ada36"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_8m_amber_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 292952,
+      "lfsOid": "e02ef3c2fde5790dabb046cdd78fbcbd71ebb82a0bb3542bec5392a85d509a6f"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/overhead_calgary_reach_8m_unlit_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 292744,
+      "lfsOid": "edaa41b2d7a9331c133a1a6e425110b1cf4384a226a04e375969a9e768489d55"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_dualface_amber_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 250524,
+      "lfsOid": "61f7ec4a53bb51527fb84af4127308a0facd0bb41647138235c891c671366e5d"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_dualface_unlit_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 250432,
+      "lfsOid": "059b53ba666eb3b1bc14be21d32117ce5875d4a8f6ea5e752516608ef849f1ec"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_pair_8m_amber_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 497012,
+      "lfsOid": "4adc5de87ba2b5a402327be9344ce8df90e96b1fcdd58191359532b1fbb85edc"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_pair_8m_unlit_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 496916,
+      "lfsOid": "22f84c0ca60ac89f86f541aece2325124059cfcbd30a8d2e695db5b26aa69e70"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_solar_amber_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 191836,
+      "lfsOid": "95b0c4fe84f4d910995919f0bc89db9d52eb87fbc8e2b4cc5bf75b04b6eba7e0"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_solar_unlit_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 191728,
+      "lfsOid": "9247bb8d198ffe5543c1d73bec28346c270d984c19dfd79e8f09899ff2899277"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_standard_amber_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 171324,
+      "lfsOid": "2701888dd7639aeb04e2ed888e4a3c6fd81fde85377b6ead6d66459f67944de1"
+    },
+    {
+      "url": "/street-kits/traffic-safety-r1/rrfb_calgary_standard_unlit_r1.glb",
+      "sources": [
+        "src/features/parks/trafficSafetyCatalogue.json"
+      ],
+      "logicalBytes": 171096,
+      "lfsOid": "35b243d1a8122c05060cdf3b05d78fa6c3300224121d7f167b5cb26c6c4583a4"
+    },
+    {
       "url": "/street-kits/traffic-safety-v1/flexible-bollard.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -27766,9 +31050,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 127,
-      "logicalBytes": 45005796,
-      "pathDigest": "8c7a9b42934e4797a5cf439b07d0bb9311077dd13be55ceae5eae0942fb1ef77"
+      "fileCount": 497,
+      "logicalBytes": 422280960,
+      "pathDigest": "9f2096feda13efdc83fddc21a029efc72ef2af37e4a0f033509f444788ee8c85"
     },
     {
       "name": "public-realm-skins",
@@ -27822,8 +31106,8 @@
     }
   ],
   "cleanupCandidates": {
-    "unclassifiedRuntimeFileCount": 21449,
-    "unclassifiedRuntimePathDigest": "9f8f664ce3985bdf057cf4f22a67c773c0fd97cf56cd22d5d5e915a251ce0fff",
+    "unclassifiedRuntimeFileCount": 21470,
+    "unclassifiedRuntimePathDigest": "46fd8aa6887d28f74a9eb4646530d4ee632543afd5ab4b36ba429051b1c3f69f",
     "unclassifiedRuntimePathSample": [
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_60.jpg",
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_90.jpg",

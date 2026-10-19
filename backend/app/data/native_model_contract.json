@@ -964,6 +964,71 @@
       "current": true
     },
     {
+      "asset_id": "parkade_classic_concrete",
+      "variant_id": "classic-concrete-v1",
+      "revision": "parkade-classic-concrete-clay-v005",
+      "dimensions_m": [
+        60,
+        36,
+        12.800000190734863
+      ],
+      "storeys": 4,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "parkade_urban_brick",
+      "variant_id": "brick-v1",
+      "revision": "parkade-urban-brick-clay-v001",
+      "dimensions_m": [
+        54,
+        36.020999908447266,
+        16.100000381469727
+      ],
+      "storeys": 5,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "parkade_green_terraces",
+      "variant_id": "green-v1",
+      "revision": "parkade-green-terraces-clay-v003",
+      "dimensions_m": [
+        60,
+        40,
+        12.800000190734863
+      ],
+      "storeys": 4,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "parkade_solar_ribbon",
+      "variant_id": "solar-v1",
+      "revision": "parkade-solar-ribbon-clay-v001",
+      "dimensions_m": [
+        66,
+        36,
+        16.100000381469727
+      ],
+      "storeys": 5,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "parkade_mobility_courtyard",
+      "variant_id": "courtyard-v1",
+      "revision": "parkade-mobility-courtyard-clay-v002",
+      "dimensions_m": [
+        64,
+        48,
+        12.800000190734863
+      ],
+      "storeys": 4,
+      "fixed": true,
+      "current": true
+    },
+    {
       "asset_id": "validation_minimalist_infill_brick_monolith",
       "variant_id": "minimalist_infill_brick_monolith",
       "revision": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6",
