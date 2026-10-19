@@ -7,7 +7,7 @@ limestone front with block coursing and proud quoins; a recessed central porch o
 with a green door, the upper porch behind a stone balcony with an iron railing and a pair of red glazed doors,
 sheltered by a flat canopy on two iron lattice columns. Wide timber-framed windows with transoms in the side
 bays, stone sills and lintels, small basement windows at grade. The black iron exterior stair climbs from the
-yard to the upper balcony and curls at its foot. A projecting bracketed cornice with a raised central parapet
+yard to the upper balcony and curls at its foot. A projecting bracketed cornice with a central attic panel
 and cartouche; plain grey brick side and rear walls with narrow windows. A pale membrane roof with three
 skylights and a roof hatch; a small lawn behind an iron fence, sidewalks and street trees.
 """
@@ -63,6 +63,8 @@ def manifest(version):
             c.update(location=(0.0, Y1 + 18.0, 5.0), target=(0.0, Y1, 4.5), lens=35, whole=False)
         elif c['name'] == 'rear_side':
             c.update(location=(15.0, 19.0, 12.0), target=(0.0, 1.0, 4.0), lens=35, whole=False)
+        elif c['name'] == 'top':                                               # plan view framed on the plex and its yard
+            c.update(location=(0.0, -1.5, 40.0), target=(0.0, -1.499, 0.0), ortho_scale=28.0, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -70,10 +72,10 @@ def manifest(version):
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=2, storey_programme='two flats over a half-basement, the upper flat reached by the exterior iron stair',
             plan='9 x 13 m corner plex (top view), a 3.8 m front yard, an attached neighbour west',
-            facade='grey limestone with quoins; recessed two-storey central porch; stone balcony and iron railing; canopy on iron lattice columns; wide timber windows; bracketed cornice with raised centre',
+            facade='grey limestone with quoins; recessed two-storey central porch; stone balcony and iron railing; canopy on iron lattice columns; wide timber windows; bracketed cornice with a central attic and cartouche',
             levels_m=[F1, F2, ROOF, PAR], roof_m=dict(flat=ROOF, parapet=PAR),
             inferred='interiors and the rear face are teaching assumptions; the rear repeats the side wall grammar'),
-        roof_contract=dict(type='flat membrane roof behind a bracketed cornice and raised central parapet, three skylights and a roof hatch', datum_m=ROOF, crowns_m=[PAR + .7]),
+        roof_contract=dict(type='flat membrane roof behind a bracketed cornice and central attic panel, three skylights and a roof hatch', datum_m=ROOF, crowns_m=[9.07]),
         identity_contract=dict(owner='grey limestone Plateau plex with a curling black iron exterior stair to a canopied upper balcony, red and green doors, bracketed cornice'),
         material_contract=dict(profile='source-palette clay: grey limestone with joints and pale quoins, grey brick sides, timber frames, black iron, red upper doors, green lower door, pale membrane roof', textured_keeper=False),
         programme_contract=dict(storeys=2, ground='lower flat and porch', upper='upper flat off the balcony', basement='half-basement'),
@@ -423,15 +425,16 @@ def fence(b, a, c, height=1.05, spacing=.14):
         b.box('hardware', px, py, (.2 + top) / 2, .025 if i % 12 else .06, .025 if i % 12 else .06, top - .2)
 
 
-CZ, RC, RISE_C = 8.15, 1.9, .7                  # cornice top, half-width and rise of the raised middle run
+CZ, RC, ATT = 8.15, 1.9, .75                    # cornice top, half-width and height of the flush central attic
 
 
-def cornice_run(m, lo, hi, z, wrap=(False, False)):
+def cornice_run(m, lo, hi, z, wrap=(False, False), behind=False):
     """Bed mould, modillions, corona and cymatium between lo and hi; a wrapped end runs on by each band's
-    projection so the corner square is closed by this run and the return can start on the corner line."""
+    projection so the corner square is closed by this run. A return run (behind=True) starts each band just
+    behind the matching front band's back face, so the two never share volume or faces."""
     for d, t, zc, h in ((-.10, T + .2, z - .62, .26), (-.29, T + .62, z - .13, .26), (-.29, T + .52, z + .03, .06)):
         p = -(d - t / 2)
-        a = lo - (p if wrap[0] else 0.0)
+        a = lo - (p if wrap[0] else 0.0) + ((d + t / 2 + .003) if behind else 0.0)
         c = hi + (p if wrap[1] else 0.0)
         m.box('stone', (a + c) / 2, d, zc, c - a, t, h)
     n = max(1, int((hi - lo) / .7))
@@ -440,10 +443,10 @@ def cornice_run(m, lo, hi, z, wrap=(False, False)):
 
 
 def console(m, u, z):
-    """Scroll console under the cornice: three stepped blocks and a rolled foot."""
-    for d, t, z0, z1 in ((-.3, .6, z - .78, z - .5), (-.22, .44, z - 1.02, z - .78), (-.14, .28, z - 1.24, z - 1.02)):
-        m.box('stone', u, d, (z0 + z1) / 2, .2, t, z1 - z0)
-    m.box('stone', u, -.24, z - 1.24, .2, .16, .16)
+    """Scroll console under the bed mould, backed on the wall: a deep head, a tapering shank and a rolled foot."""
+    for d, t, z0, z1, w in ((-.3, .6, z - 1.0, z - .74, .22), (-.2, .4, z - 1.22, z - 1.0, .2), (-.12, .24, z - 1.4, z - 1.22, .2)):
+        m.box('stone', u, d, (z0 + z1) / 2, w, t, z1 - z0)
+    m.box('stone', u, -.27, z - 1.34, .16, .14, .14)
 
 
 def disc_y(b, role, cx, cz, r, y0, y1, n=12):
@@ -479,23 +482,21 @@ def front_face():
         framed(m, f, h, cols=2, rows=1, inset=.13, occupied='basement')
     for s in (-1, 1):                                                                       # stone pilasters framing the porch
         m.box('quoin', s * (PW + .16), -.05, 3.85, .32, .1, 7.7)
-    # Bracketed cornice in three runs, the middle one breaking upward in the wall plane; the east run wraps the corner.
-    cornice_run(m, X0 - .1, -RC, CZ, wrap=(False, False))
-    cornice_run(m, -RC, RC, CZ + RISE_C, wrap=(False, False))
-    cornice_run(m, RC, X1, CZ, wrap=(False, True))
-    m.box('wall', 0.0, T / 2, PAR + RISE_C / 2, 2 * RC, T, RISE_C)                             # the raised parapet, in the wall plane
-    m.box('stone', 0.0, -.05, PAR - .05, X1 - X0 - .1, .1, .1)                                # parapet coping bands
-    m.box('stone', 0.0, -.05, PAR + RISE_C - .05, 2 * RC, .1, .1)
-    for s in (-1, 1):                                                                       # paired scroll consoles beside the canopy
-        for k in (0, 1):
-            console(m, s * (PW + .5 + .26 * k), CZ)
+    # One continuous bracketed cornice wrapping the east corner; above its middle a flush attic panel carries the cartouche.
+    cornice_run(m, X0 - .1, X1, CZ, wrap=(False, True))
+    m.box('stone', 0.0, -.05, PAR - .05, X1 - X0 - .1, .1, .1)                                # parapet coping band
+    m.box('stone', 0.0, (-.62 + T + .04) / 2, CZ + .05 + ATT / 2, 2 * RC, T + .66, ATT)         # attic block on the cymatium
+    m.box('stone', 0.0, (-.74 + T + .1) / 2, CZ + .05 + ATT + .05, 2 * RC + .24, T + .84, .12)  # attic cap cornice
+    for s in (-1, 1):                                                                       # one scroll console each side, clear of the windows
+        console(m, s * 2.15, CZ)
     m.flush('south')
     b = Batch()
-    disc_y(b, 'quoin', 0.0, PAR + .25, .34, Y0 - .1, Y0 + .02, 14)                          # cartouche: oval shield and scrolls
-    disc_y(b, 'stone', 0.0, PAR + .25, .24, Y0 - .16, Y0 - .09, 14)
+    za = CZ + .05 + ATT / 2
+    disc_y(b, 'quoin', 0.0, za, .26, Y0 - .7, Y0 - .6, 14)                                  # cartouche on the attic face: shield and scrolls
+    disc_y(b, 'stone', 0.0, za, .17, Y0 - .76, Y0 - .69, 14)
     for s in (-1, 1):
-        disc_y(b, 'quoin', s * .62, PAR + .22, .17, Y0 - .08, Y0 + .02, 10)
-        b.beam('quoin', (s * .3, Y0 - .05, PAR + .1), (s * .9, Y0 - .05, PAR + .45), .12, .1)
+        disc_y(b, 'quoin', s * .52, za - .05, .11, Y0 - .68, Y0 - .6, 10)
+        b.beam('quoin', (s * .28, Y0 - .66, za - .2), (s * .82, Y0 - .66, za + .18), .1, .08)
     b.flush('cartouche')
     b = Batch()
     for k in range(int(PAR / .45)):                                                         # long-and-short quoins wrapping both corners
@@ -516,7 +517,7 @@ def porch():
     gwin = hole('porch window', -.85, F1 + .55, .9, 1.8)
     udoors = [hole(f'upper flat door {s:+d}', s * .6, F2 + .03, .8, 2.3, kind='door') for s in (-1, 1)]
     holes = [gdoor, gwin] + udoors
-    back.wall('porch back wall', -PW, PW - EPS, 0.0, 7.45, depth=.3, role='wall', holes=holes)
+    back.wall('porch back wall', -PW, PW - EPS, 0.0, ROOF - .1, depth=.3, role='wall', holes=holes)
     m = Merge(back)
     m.box('green', gdoor['u'], .16, gdoor['z'] + gdoor['h'] / 2, gdoor['w'] - .02, .05, gdoor['h'] - .02)
     m.box('glass', gdoor['u'], .125, gdoor['z'] + 1.65, .5, .02, .8)
@@ -528,7 +529,7 @@ def porch():
     m.flush('porch')
     b = Batch()
     for s in (-1, 1):
-        b.box('wall', s * (PW + .15), (Y0 + T + Y0 + PD) / 2, 3.725, .3, PD - T, 7.45)
+        b.box('wall', s * (PW + .15), (Y0 + T + Y0 + PD) / 2, (ROOF - .1) / 2, .3, PD - T, ROOF - .1)
     b.box('stone', 0.0, (Y0 - .4 + Y0 + PD) / 2, .91, 2 * PW + .2, PD + .4, .22)            # ground porch slab
     for k in range(4):                                                                      # front steps to the lower flat
         top = F1 - .2 * (k + 1) + .02
@@ -631,7 +632,7 @@ def side_and_rear():
     for h in bs:
         framed(m, e, h, cols=2, rows=1, inset=.13, occupied='basement')
     m.box('stone', 0.0, -.06, 8.2, 2 * hd - 2 * T + .1, .2, .12)                              # coping
-    cornice_run(m, -hd, -hd + 1.4, CZ, wrap=(False, False))                                  # cornice return round the corner
+    cornice_run(m, -hd, -hd + 1.4, CZ, behind=True)                                          # cornice return round the corner
     m.flush('east')
     w = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west party')
     w.wall('west party wall', -hd + T, hd - T, 0.0, 8.2, depth=T, role='brick', holes=[])
@@ -668,9 +669,9 @@ def roof_and_inside():
     b.box('brick', -3.4, 5.6, ROOF + .6, .7, .5, 1.2)                                          # party-wall flue
     b.flush('roof furniture')
     for z in (F1, F2):
-        C.box(f'Floor {z:.1f}', (0, (Y0 + PD + .3 + Y1 - T) / 2, z - .14), (X1 - X0 - 2 * T, Y1 - T - Y0 - PD - .3, .24), 'floor', 'inside', 0)
+        C.box(f'Floor {z:.1f}', (0, (Y0 + PD + .26 + Y1 - T + .04) / 2, z - .14), (X1 - X0 - 2 * T + .08, Y1 - T - Y0 - PD - .22, .24), 'floor', 'inside', 0)
         for s in (-1, 1):
-            C.box(f'Bay floor {z:.1f} {s:+d}', (s * (X1 - T + PW + .3) / 2, (Y0 + T + Y0 + PD + .3) / 2, z - .14), (X1 - T - PW - .3, PD + .3 - T, .24), 'floor', 'inside', 0)
+            C.box(f'Bay floor {z:.1f} {s:+d}', (s * (X1 - T + .04 + PW + .26) / 2, (Y0 + T - .04 + Y0 + PD + .3) / 2, z - .14), (X1 - T - PW - .22, PD + .34 - T, .24), 'floor', 'inside', 0)
     for z in (F1, F2):
         for x in (-3.0, 3.0):
             C.qa_room_light(f'Room {x:+.0f} {z:.0f}', (x, Y0 + 2.0, z + 1.9), 45, 2.2)
