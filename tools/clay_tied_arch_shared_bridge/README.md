@@ -68,8 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (v002 reworks these three)
+## Open blockers after v002 (v003 reworks these two; a second failed skew fix stops the family)
 
-1. P1: the bridge crosses the canal at exactly 90 degrees; the governing top source skews the deck about 13 degrees to the quays.
-2. P1: 5 cross ties; the sources show 7 evenly spaced box ties over the central span.
-3. P1: the deck fascia is about 1.4x railing height (source about 0.6x) and the soffit sits barely above the water, so the deck reads as a slab on a flooded channel; no visible bearing seats.
+- P1 #1: the bridge is rotated 13 degrees as a plain rectangle, so both deck ends stay square to the axis instead of parallel to the quays; the ends overrun the copings by about 3-6 m, the four springing plinths sit at different setbacks and no distinct wedge landing shows (the v001 skew finding, surviving one targeted fix).
+- P1 #2: rear cuts off both near-arch springings and the west deck end, rear_north loses the west end; no elevation shows the full span with both abutments.
