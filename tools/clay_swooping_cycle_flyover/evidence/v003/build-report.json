@@ -1,0 +1,307 @@
+{
+  "candidate": "clay-swooping-cycle-flyover-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 138,
+    "vertices": 74808,
+    "polygons": 74996,
+    "triangles": 74996,
+    "path": "clay-swooping-cycle-flyover-clay-v003-authoring.blend",
+    "bytes": 6183472,
+    "sha256": "eebd5f1638f8c74958803868088df048d5a2a597698719b29ad57a65e9a360c7"
+  },
+  "runtime": {
+    "path": "clay-swooping-cycle-flyover-clay-v003.glb",
+    "bytes": 3850284,
+    "sha256": "4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4",
+    "meshes": 19,
+    "materials": 19,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 19,
+    "vertices": 74808,
+    "polygons": 74996,
+    "triangles": 74996
+  },
+  "original_bounds_m": [
+    [
+      -225.0,
+      -120.0,
+      0.0
+    ],
+    [
+      225.0,
+      110.0,
+      27.15999984741211
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -225.0,
+      -120.0,
+      0.0
+    ],
+    [
+      225.0,
+      110.0,
+      27.15999984741211
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 450.0,
+    "depth": 46.0,
+    "height": 7.45
+  },
+  "native_dimensions_m": {
+    "width": 450.0,
+    "depth": 230.0,
+    "height": 27.15999984741211
+  },
+  "native_bottom_center_m": [
+    0.0,
+    -5.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "orange": 7,
+    "deck": 3,
+    "lane": 2,
+    "under": 1,
+    "concrete": 1,
+    "asphalt": 3,
+    "paving": 1,
+    "kerb": 5,
+    "planting": 40,
+    "tree": 1,
+    "timber": 52,
+    "brick": 2,
+    "brick2": 2,
+    "roof": 1,
+    "tile": 1,
+    "trim": 10,
+    "glass": 1,
+    "dark": 3,
+    "pale": 2
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/y_column.png",
+    "renders/ramp_curve.png",
+    "renders/parapet_panel.png",
+    "renders/deck_surface.png",
+    "renders/street_under.png",
+    "renders/landing_ramp.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Elevated cycle ribbon on Y-columns over a street junction, ramping to grade at both ends",
+      "box": [
+        -225.0,
+        225.0,
+        -30.0,
+        16.0
+      ]
+    }
+  ],
+  "opening_sections": [],
+  "authoring_modules": {
+    "site": [
+      "Ground",
+      "East-west road",
+      "North-south street +6",
+      "North-south street -120",
+      "Road markings"
+    ],
+    "road beds": [
+      "road beds kerb",
+      "road beds planting",
+      "road beds tree"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020",
+      "Street tree trunk.007",
+      "Street tree branch.021",
+      "Street tree branch.022",
+      "Street tree branch.023",
+      "Street tree trunk.008",
+      "Street tree branch.024",
+      "Street tree branch.025",
+      "Street tree branch.026",
+      "Street tree trunk.009",
+      "Street tree branch.027",
+      "Street tree branch.028",
+      "Street tree branch.029",
+      "Street tree trunk.010",
+      "Street tree branch.030",
+      "Street tree branch.031",
+      "Street tree branch.032",
+      "Street tree trunk.011",
+      "Street tree branch.033",
+      "Street tree branch.034",
+      "Street tree branch.035",
+      "Street tree trunk.012",
+      "Street tree branch.036",
+      "Street tree branch.037",
+      "Street tree branch.038"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023",
+      "Street tree crown.024",
+      "Street tree crown.025",
+      "Street tree crown.026",
+      "Street tree crown.027",
+      "Street tree crown.028",
+      "Street tree crown.029",
+      "Street tree crown.030",
+      "Street tree crown.031",
+      "Street tree crown.032",
+      "Street tree crown.033",
+      "Street tree crown.034",
+      "Street tree crown.035",
+      "Street tree crown.036",
+      "Street tree crown.037",
+      "Street tree crown.038"
+    ],
+    "context": [
+      "Office north-east",
+      "Office north-east coping",
+      "Office north-east window frames",
+      "Block north-west",
+      "Block north-west roof",
+      "Block north-west window frames",
+      "Block south-east",
+      "Block south-east roof",
+      "Block south-east window frames",
+      "Block south-west",
+      "Block south-west coping",
+      "Block south-west window frames"
+    ],
+    "Office north-east roof plant": [
+      "Office north-east roof plant pale"
+    ],
+    "Office north-east windows": [
+      "Office north-east windows glass",
+      "Office north-east windows trim"
+    ],
+    "Block north-west windows": [
+      "Block north-west windows dark",
+      "Block north-west windows trim"
+    ],
+    "Block south-east windows": [
+      "Block south-east windows dark",
+      "Block south-east windows trim"
+    ],
+    "Block south-west roof plant": [
+      "Block south-west roof plant pale"
+    ],
+    "Block south-west windows": [
+      "Block south-west windows dark",
+      "Block south-west windows trim"
+    ],
+    "deck": [
+      "Deck girder",
+      "Deck surface",
+      "Centre line",
+      "Cycle path west",
+      "Cycle path kerb west -1",
+      "Cycle path kerb west +1",
+      "Cycle path east",
+      "Cycle path kerb east -1",
+      "Cycle path kerb east +1"
+    ],
+    "parapets": [
+      "Fascia south",
+      "Parapet bottom rail south",
+      "Parapet top rail south",
+      "Fascia north",
+      "Parapet bottom rail north",
+      "Parapet top rail north",
+      "Parapet bars"
+    ],
+    "columns": [
+      "Y-columns"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-19T22:26:48.164867+00:00",
+  "delivery_and_render_seconds": 5364.031857080001,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

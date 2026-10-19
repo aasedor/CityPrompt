@@ -1,7 +1,7 @@
 # Swooping elevated cycle flyover (RLASM v6.1 architectural clay)
 
 Candidate H10 of wave H (bridges) of 2026-10-19, one of the ten bridge variants the user chose from the
-street and path catalogue; a street or path option, not a building. State: **candidate under review**. Nothing here is keeper-approved,
+street and path catalogue; a street or path option, not a building. State: **stopped at v003 by the stopping rule (independent review PASS_ZERO_P0_P1); v003 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,8 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 reworks these three)
+## Open blockers after v003 (stopped)
 
-- P1 #1: from outside the parapet and fascia are one plain orange slab from cap to soffit, with no bars and no screen/fascia split, reading as a deep box girder (about 0.45 of the clear height against about 0.35 in the source).
-- P1 #2: where each Y-arm meets the soffit there is a crisp dark ring or flat disc; the arms read as open cut tubes in sockets, not blended into the deck.
-- P1 #3: the folded-sheet parapet leaks at its seams: black triangular holes where the sheet meets the cap, a sawtooth bottom edge at the deck, and a faceted curved cap.
+- No P0 or P1 findings remain. Twelve P2 refinements are listed in evidence/v003/independent-review.md (among them: chord kinks on the top rail at the tightest bend contrary to the builder note, the deck about 25% narrower than the source, the orange too dark, the front view mirrored).
+- This is an independent RLASM review result only; it is not keeper approval, runtime integration or catalogue enrolment.
