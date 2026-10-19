@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-planted-green-bridge-clay-v002",
+  "glb": "clay-planted-green-bridge-clay-v002.glb",
+  "glb_bytes": 3481664,
+  "glb_sha256": "630c8a4a46d8d86a57876e6a0559c01160c2516ef2789bbff77720da00f24d79",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "central_path.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "left_side.png": 92,
+    "pier_column.png": 92,
+    "planting_bed.png": 92,
+    "rail_bollard.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "top.png": 92,
+    "viewing_pod.png": 92,
+    "water_under.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-planted-green-bridge-clay-v002-renders-and-glb.zip",
+  "zip_bytes": 39032561
+}

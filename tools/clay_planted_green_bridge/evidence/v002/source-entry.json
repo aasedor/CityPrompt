@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-planted-green-bridge",
+  "variant_id": "clay-planted-green-bridge-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "landscape_park_pedestrian_bridge/variant_2",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/landscape-park-pedestrian-bridge/variant_2.png",
+      "path": "sources/front.png",
+      "bytes": 1653127,
+      "sha256": "fd3f4b85a8f168fb4684cdcb34750d9654ff8c525d54cfdbb9a7c535a31d32fb"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/landscape-park-pedestrian-bridge/variant_2_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 967340,
+      "sha256": "fa6886dd4070716e9067e08aea9ad459ec8a520f96c7dcdf9d59cfdf6bf1656f"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/landscape-park-pedestrian-bridge/variant_2_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 1031836,
+      "sha256": "e865fb21f5bbf2dadcbbf1c8618cf384555c4cea47d13ddd507d3631366243c9"
+    }
+  ]
+}

@@ -68,11 +68,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v001 (v002 reworks these six)
+## Open blockers after v002 (v003 reworks these three; a second failed fix of the pod or planting finding stops the family)
 
-1. P1: the front camera sits too low and far back; pods and water hidden behind shrubs and trees, both outer edge railings out of frame.
-2. P1: each planting bed is about 1.5x the path width against about 1.0x in the source; the deck reads as a narrow path through wide lawns.
-3. P1: the pods are chamfered rectangles instead of the source's half-hexagons with long angled sides, and about 15% too long along the axis.
-4. P1: no paved route reaches the pods; the spur stops at the pod planting and the perimeter walk ends at its inner corners.
-5. P1: the beds read as flat mown lawn with scattered shrubs and cones below the rail top, not dense mounded beds reaching the rail cap.
-6. P1: the planting lacks variety: lavender as small flat purple pieces, grasses as single spikes, poppies as a few balls.
+- P1 #1: the pods are undersized and pointed: projection about 0.56 of the deck width (source about 0.76), chord about 0.78 (source about 1.05), outer face about 0.35 (source about 0.6); they read as small wedge bays, not broad planted platforms (the v001 pod-shape finding, surviving one targeted fix).
+- P1 #2: the 1.8 m spur runs straight across both beds, the path and both pods at one station, a '+' crossroads in plan that cuts the beds and shrinks pod planting; the source has continuous planting with a small hidden threshold near each pod's north end.
+- P1 #3: the beds read as boulder fields of large faceted lumps matching the riprap; lavender is a few spiky lumps, poppies flat orange pyramids, grasses sparse; most mass sits at or below the path-rail top (the v001 planting finding, surviving one targeted fix).
