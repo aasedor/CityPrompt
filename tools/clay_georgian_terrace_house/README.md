@@ -68,7 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (the v004 rework targets it)
+## Open blockers after v004 (v005 reworks it; a second non-improving review or a second failed fix stops the family)
 
-- P1 #1: the rear range does not match the locked top: the east rear extension's flat roof is brick-coloured with no rooflight, reading as an open yard, where the source shows a grey roof inside a stone rim with a long hipped glazed lantern; the hipped rear wing has overhanging eaves where the source encloses its roof in a coped parapet.
-- Both v002 findings are resolved in the pixels.
+- P1 #1: the glazed lantern on the east rear extension has opaque white glazing-bar fins, end frames standing clear of the sloping glass ends and nearly invisible glass; it reads as an open white crate obliquely and as an undersized grid box with no hip lines from above, where the locked top shows a dark long hipped glazed roof filling almost the whole area inside the stone rim (the v003 rear-range finding, surviving one targeted fix).

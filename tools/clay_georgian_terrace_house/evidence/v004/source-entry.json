@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-georgian-terrace-house",
+  "variant_id": "clay-georgian-terrace-house-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "georgian_terrace_house/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/georgian-terrace-house/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1696238,
+      "sha256": "0d0bfcc66e8b46e7f9661847041281ae2534dcd1b7fcd884f1c5c1dda044349d"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/georgian-terrace-house/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 1024378,
+      "sha256": "84d22818aebfd4b452116091b643aad181a18141f0311cbbd7cd714ea75ddb89"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/georgian-terrace-house/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 918332,
+      "sha256": "292db9f5bda226c3b59dd2ca9c2d828ee9be3b50f0852f11fb5fbbf70c6c82de"
+    }
+  ]
+}
