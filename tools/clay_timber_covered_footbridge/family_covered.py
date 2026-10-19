@@ -406,7 +406,7 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 import random
 
 RNG = random.Random(1911)                       # fixed seed: the same shrubs on every build
-FRAMES = [-RX + 2.6 * i for i in range(11)]     # portal frames at a 2.6 m pitch
+FRAMES = [-RX + 2 * RX * i / 6 for i in range(7)]  # seven portal frames: six equal side bays, as in the oblique and top sources
 XA = 10.9                                       # abutment faces on the banks
 XB = RX + .25                                   # edge beams run to here, seated on the abutments
 ZR = ZD + 2.3                                   # rail under the louvre band of the middle bays
@@ -508,31 +508,33 @@ def bridge():
     for s in (-1, 1):
         b.box('glulam', 0.0, s * 2.15, EAVE - .4, 2 * RX - .04, .26, .2)
     b.box('glulam', 0.0, 0.0, EAVE + .43, 2 * (RX - .4), .2, .26)
-    # Side frames by bay: the end bays filled with full-height louvres; the bay next to each portal carries one long
-    # diagonal rising from the post foot on the portal side to the post head on the midspan side; the interior bays
-    # are open, with knee braces at the post heads under a continuous rail. One layer of louvres fills the band
-    # between that rail and the wall plate; a glass balustrade runs along the open bays and the landings.
+    # Side frames by bay, six equal bays as in the sources: each end bay is filled with full-height louvres on a
+    # bottom rail, with the one long diagonal laid over them on the outside, rising from the post foot on the portal
+    # side to the post head on the midspan side; the four interior bays are open, knee-braced at both post heads
+    # under a continuous rail, with one layer of louvres in the band between that rail and the wall plate. End-bay
+    # louvres stand 9 cm inside the post line so the diagonal passes in front of them without sharing a plane.
     last = len(FRAMES) - 2
     for i in range(len(FRAMES) - 1):
         xa, xb = FRAMES[i], FRAMES[i + 1]
         end = i in (0, last)
         for s in (-1, 1):
             y = s * 2.15
-            if i in (1, last - 1):
-                p, q = (xa + .16, y, ZD + .3), (xb - .16, y, EAVE - .55)
-                if i == last - 1:
-                    p, q = (xb - .16, y, ZD + .3), (xa + .16, y, EAVE - .55)
-                b.beam('glulam', p, q, .2, .26)
-            elif not end:
+            yl = s * 2.04 if end else y
+            if end:
+                p, q = (xa + .16, s * 2.2, ZD + .3), (xb - .16, s * 2.2, EAVE - .55)
+                if i == last:
+                    p, q = (xb - .16, s * 2.2, ZD + .3), (xa + .16, s * 2.2, EAVE - .55)
+                b.beam('glulam', p, q, .14, .26)
+            else:
                 for xp, d in ((xa, 1), (xb, -1)):
                     b.beam('glulam', (xp + d * .1, y, ZR - .85), (xp + d * .85, y, ZR - .06), .14, .16)
             z0 = ZD + .16 if end else ZR + .08
             pitch = .19 if end else .2
             n = int((xb - xa - .3) / pitch)
             for k in range(n):
-                b.box('timber', xa + .15 + (xb - xa - .3) * (k + .5) / n, y, (z0 + EAVE - .5) / 2, .06, .14, EAVE - .5 - z0)
+                b.box('timber', xa + .15 + (xb - xa - .3) * (k + .5) / n, yl, (z0 + EAVE - .5) / 2, .06, .14, EAVE - .5 - z0)
             if end:
-                b.box('glulam', (xa + xb) / 2, y, ZD + .2, xb - xa - .2, .2, .12)             # bottom rail of the end-bay louvres
+                b.box('glulam', (xa + xb) / 2, yl, ZD + .2, xb - xa - .2, .2, .12)            # bottom rail of the end-bay louvres
         if not end:
             for s in (-1, 1):
                 b.box('glulam', (xa + xb) / 2, s * 2.15, ZR, xb - xa - .2, .22, .16)          # rail under the louvre band
