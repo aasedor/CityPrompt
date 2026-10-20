@@ -1,0 +1,600 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "Corner block bay 0 door",
+      "face": "Corner block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner block bay 0 shopfront",
+      "face": "Corner block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner block bay 1 shopfront",
+      "face": "Corner block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner block bay 2 door",
+      "face": "Corner block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner block bay 2 shopfront",
+      "face": "Corner block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner block upper 0",
+      "face": "Corner block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner block upper 1",
+      "face": "Corner block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner block upper 2",
+      "face": "Corner block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner block upper 3",
+      "face": "Corner block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner block upper 4",
+      "face": "Corner block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner block upper 5",
+      "face": "Corner block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner block rear door",
+      "face": "Corner block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner block rear window 0",
+      "face": "Corner block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner block rear window 1",
+      "face": "Corner block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Lower bay bay 0 door",
+      "face": "Lower bay",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Lower bay bay 0 shopfront",
+      "face": "Lower bay",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Lower bay bay 1 shopfront",
+      "face": "Lower bay",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Lower bay rear door",
+      "face": "Lower bay rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Lower bay rear window 1",
+      "face": "Lower bay rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block bay 0 shopfront",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block bay 1 door",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block bay 1 shopfront",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block bay 2 double door",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block bay 2 sidelight -1",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block bay 2 sidelight +1",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block bay 3 door",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block bay 3 shopfront",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block bay 4 shopfront",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block upper 0",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block upper 1",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block upper 2",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block upper 3",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block upper 4",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block upper 5",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block upper 6",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block upper 7",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block upper 8",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block upper 9",
+      "face": "Middle block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block rear door",
+      "face": "Middle block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block rear window 0",
+      "face": "Middle block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block rear window 1",
+      "face": "Middle block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block rear window 2",
+      "face": "Middle block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block rear window 3",
+      "face": "Middle block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block rear window 4",
+      "face": "Middle block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block rear window 5",
+      "face": "Middle block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle block rear window 6",
+      "face": "Middle block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Arched block bay 0 door",
+      "face": "Arched block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Arched block bay 0 shopfront",
+      "face": "Arched block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Arched block bay 1 shopfront",
+      "face": "Arched block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Arched block bay 2 door",
+      "face": "Arched block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Arched block bay 2 shopfront",
+      "face": "Arched block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Arched block upper 0",
+      "face": "Arched block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Arched block upper 1",
+      "face": "Arched block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Arched block upper 2",
+      "face": "Arched block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Arched block upper 3",
+      "face": "Arched block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Arched block upper 4",
+      "face": "Arched block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Arched block rear door",
+      "face": "Arched block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Arched block rear window 0",
+      "face": "Arched block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Arched block rear window 1",
+      "face": "Arched block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Arched block rear window 2",
+      "face": "Arched block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Fine art block bay 0 shopfront",
+      "face": "Fine art block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Fine art block bay 1 door",
+      "face": "Fine art block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Fine art block bay 1 shopfront",
+      "face": "Fine art block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Fine art block upper 0",
+      "face": "Fine art block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Fine art block upper 1",
+      "face": "Fine art block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Fine art block upper 2",
+      "face": "Fine art block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Fine art block rear door",
+      "face": "Fine art block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Fine art block rear window 0",
+      "face": "Fine art block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Fine art block rear window 1",
+      "face": "Fine art block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Cafe block bay 0 door",
+      "face": "Cafe block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Cafe block bay 0 shopfront",
+      "face": "Cafe block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Cafe block bay 1 shopfront",
+      "face": "Cafe block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Cafe block upper 0",
+      "face": "Cafe block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Cafe block upper 1",
+      "face": "Cafe block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Cafe block upper 2",
+      "face": "Cafe block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Cafe block upper 3",
+      "face": "Cafe block",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Cafe block rear door",
+      "face": "Cafe block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Cafe block rear window 0",
+      "face": "Cafe block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Cafe block rear window 1",
+      "face": "Cafe block rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle west upper 0",
+      "face": "Middle block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle west upper 1",
+      "face": "Middle block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle west upper 2",
+      "face": "Middle block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Middle west upper 3",
+      "face": "Middle block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west shopfront 0",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west shopfront 1",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west side door",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west high window 0",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west high window 1",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west high window 2",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west rear door",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west upper 0",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west upper 1",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west upper 2",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west upper 3",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west upper 4",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west upper 5",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west upper 6",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west upper 7",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Corner west upper 8",
+      "face": "Corner block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
