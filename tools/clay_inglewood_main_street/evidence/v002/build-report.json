@@ -1,0 +1,3380 @@
+{
+  "candidate": "clay-inglewood-main-street-clay-v002",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 258,
+    "vertices": 29328,
+    "polygons": 36746,
+    "triangles": 36746,
+    "path": "clay-inglewood-main-street-clay-v002-authoring.blend",
+    "bytes": 4866076,
+    "sha256": "b8790d57ffbf7deb27b9d16194608132fcab727d111ccf1101f3ab5f41df0889"
+  },
+  "runtime": {
+    "path": "clay-inglewood-main-street-clay-v002.glb",
+    "bytes": 1916700,
+    "sha256": "3f628895b57f7fa9b9ac4a88db168ebe5c850b18f74fd5cf6cd208b4597e0c3e",
+    "meshes": 33,
+    "materials": 33,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 33,
+    "vertices": 29328,
+    "polygons": 36746,
+    "triangles": 36746
+  },
+  "original_bounds_m": [
+    [
+      -62.0,
+      -54.0,
+      0.0
+    ],
+    [
+      46.0,
+      45.0,
+      12.539999961853027
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -62.0,
+      -54.0,
+      0.0
+    ],
+    [
+      46.0,
+      45.0,
+      12.539999961853027
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 95.4,
+    "depth": 59.4,
+    "height": 12.0
+  },
+  "native_dimensions_m": {
+    "width": 108.0,
+    "depth": 99.0,
+    "height": 12.539999961853027
+  },
+  "native_bottom_center_m": [
+    -8.0,
+    -4.5,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 39,
+    "brick": 2,
+    "joint": 14,
+    "stone": 25,
+    "cream": 12,
+    "white": 8,
+    "frame": 15,
+    "dark": 4,
+    "sign": 3,
+    "glass": 16,
+    "interior": 6,
+    "floor": 6,
+    "roof": 5,
+    "membrane": 7,
+    "concrete": 5,
+    "sidejoint": 1,
+    "paver": 6,
+    "asphalt": 1,
+    "lane": 1,
+    "marking": 1,
+    "yellow": 1,
+    "hardware": 13,
+    "banner": 1,
+    "timber": 33,
+    "planting": 24,
+    "soil": 1,
+    "neighbour": 1,
+    "context": 1,
+    "car": 1,
+    "car2": 1,
+    "car3": 1,
+    "tyre": 1,
+    "pale": 2
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/storefront_close.png",
+    "renders/bracketed_cornice.png",
+    "renders/arched_windows.png",
+    "renders/corner_entrance.png",
+    "renders/angle_parking.png",
+    "renders/crosswalk_bulbout.png",
+    "renders/street_furniture.png",
+    "renders/sidewalk_section.png",
+    "renders/roof_parapets.png",
+    "renders/rear_lane.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Main-street section: storefront street wall, sidewalks with brick furnishing strips, angled parking, travel lanes, curb extensions and crossings",
+      "box": [
+        -49.4,
+        46.0,
+        -28.4,
+        31.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "Corner block bay 0 door",
+      "face": "Corner block",
+      "u": -28.779999999999998,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.58,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Corner block bay 0 shopfront",
+      "face": "Corner block",
+      "u": -27.559999999999995,
+      "z": 0.7,
+      "width": 0.7399999999999984,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Corner block bay 1 shopfront",
+      "face": "Corner block",
+      "u": -25.199999999999996,
+      "z": 0.7,
+      "width": 2.139999999999997,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Corner block bay 2 door",
+      "face": "Corner block",
+      "u": -21.62,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.58,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Corner block bay 2 shopfront",
+      "face": "Corner block",
+      "u": -22.84,
+      "z": 0.7,
+      "width": 0.7399999999999949,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Corner block upper 0",
+      "face": "Corner block",
+      "u": -28.935,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner block upper 1",
+      "face": "Corner block",
+      "u": -27.584999999999997,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner block upper 2",
+      "face": "Corner block",
+      "u": -25.874999999999996,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner block upper 3",
+      "face": "Corner block",
+      "u": -24.524999999999995,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner block upper 4",
+      "face": "Corner block",
+      "u": -22.815,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner block upper 5",
+      "face": "Corner block",
+      "u": -21.465,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner block rear door",
+      "face": "Corner block rear",
+      "u": 28.6,
+      "z": 0.05,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.899999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of shop"
+    },
+    {
+      "id": "Corner block rear window 0",
+      "face": "Corner block rear",
+      "u": 28.0,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.899999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner block rear window 1",
+      "face": "Corner block rear",
+      "u": 25.4,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.899999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Lower bay bay 0 door",
+      "face": "Lower bay",
+      "u": -16.835,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.58,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.014999999664723873,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Lower bay bay 0 shopfront",
+      "face": "Lower bay",
+      "u": -18.7075,
+      "z": 0.7,
+      "width": 2.0449999999999946,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.014999999664723873,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Lower bay bay 1 shopfront",
+      "face": "Lower bay",
+      "u": -13.642499999999998,
+      "z": 0.7,
+      "width": 3.4449999999999985,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.014999999664723873,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Lower bay rear door",
+      "face": "Lower bay rear",
+      "u": 19.0,
+      "z": 0.05,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of shop"
+    },
+    {
+      "id": "Lower bay rear window 0",
+      "face": "Lower bay rear",
+      "u": 18.4,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of shop"
+    },
+    {
+      "id": "Lower bay rear window 1",
+      "face": "Lower bay rear",
+      "u": 15.799999999999999,
+      "z": 1.0,
+      "width": 1.0,
+      "height": 1.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of shop"
+    },
+    {
+      "id": "Middle block bay 0 shopfront",
+      "face": "Middle block",
+      "u": -8.956999999999999,
+      "z": 0.7,
+      "width": 3.2459999999999987,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Middle block bay 1 door",
+      "face": "Middle block",
+      "u": -3.718,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.58,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Middle block bay 1 shopfront",
+      "face": "Middle block",
+      "u": -5.491,
+      "z": 0.7,
+      "width": 1.846,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Middle block bay 2 double door",
+      "face": "Middle block",
+      "u": -0.625,
+      "z": 0.17,
+      "width": 1.7,
+      "height": 3.58,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Middle block bay 2 sidelight -1",
+      "face": "Middle block",
+      "u": -1.9865000000000002,
+      "z": 0.7,
+      "width": 0.5230000000000001,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Middle block bay 2 sidelight +1",
+      "face": "Middle block",
+      "u": 0.7365000000000002,
+      "z": 0.7,
+      "width": 0.5230000000000001,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Middle block bay 3 door",
+      "face": "Middle block",
+      "u": 2.468,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.58,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Middle block bay 3 shopfront",
+      "face": "Middle block",
+      "u": 4.241,
+      "z": 0.7,
+      "width": 1.8459999999999992,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Middle block bay 4 shopfront",
+      "face": "Middle block",
+      "u": 7.706999999999999,
+      "z": 0.7,
+      "width": 3.2459999999999996,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Middle block upper 0",
+      "face": "Middle block",
+      "u": -9.9985,
+      "z": 5.45,
+      "width": 1.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block upper 1",
+      "face": "Middle block",
+      "u": -7.9155,
+      "z": 5.45,
+      "width": 1.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block upper 2",
+      "face": "Middle block",
+      "u": -5.8325000000000005,
+      "z": 5.45,
+      "width": 1.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block upper 3",
+      "face": "Middle block",
+      "u": -3.749500000000001,
+      "z": 5.45,
+      "width": 1.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block upper 4",
+      "face": "Middle block",
+      "u": -1.6665,
+      "z": 5.45,
+      "width": 1.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block upper 5",
+      "face": "Middle block",
+      "u": 0.4165000000000001,
+      "z": 5.45,
+      "width": 1.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block upper 6",
+      "face": "Middle block",
+      "u": 2.4995,
+      "z": 5.45,
+      "width": 1.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block upper 7",
+      "face": "Middle block",
+      "u": 4.5825,
+      "z": 5.45,
+      "width": 1.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block upper 8",
+      "face": "Middle block",
+      "u": 6.665499999999999,
+      "z": 5.45,
+      "width": 1.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block upper 9",
+      "face": "Middle block",
+      "u": 8.7485,
+      "z": 5.45,
+      "width": 1.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block rear door",
+      "face": "Middle block rear",
+      "u": 9.85,
+      "z": 0.05,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of shop"
+    },
+    {
+      "id": "Middle block rear window 0",
+      "face": "Middle block rear",
+      "u": 9.25,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block rear window 1",
+      "face": "Middle block rear",
+      "u": 6.65,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block rear window 2",
+      "face": "Middle block rear",
+      "u": 4.05,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block rear window 3",
+      "face": "Middle block rear",
+      "u": 1.4499999999999993,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block rear window 4",
+      "face": "Middle block rear",
+      "u": -1.1500000000000004,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block rear window 5",
+      "face": "Middle block rear",
+      "u": -3.75,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle block rear window 6",
+      "face": "Middle block rear",
+      "u": -6.350000000000001,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Arched block bay 0 door",
+      "face": "Arched block",
+      "u": 12.726666666666667,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.58,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Arched block bay 0 shopfront",
+      "face": "Arched block",
+      "u": 11.273333333333333,
+      "z": 0.7,
+      "width": 1.2066666666666634,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Arched block bay 1 shopfront",
+      "face": "Arched block",
+      "u": 15.500000000000002,
+      "z": 0.7,
+      "width": 2.6066666666666656,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Arched block bay 2 door",
+      "face": "Arched block",
+      "u": 18.273333333333337,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.58,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Arched block bay 2 shopfront",
+      "face": "Arched block",
+      "u": 19.726666666666667,
+      "z": 0.7,
+      "width": 1.20666666666666,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Arched block upper 0",
+      "face": "Arched block",
+      "u": 11.82,
+      "z": 5.35,
+      "width": 0.95,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Arched block upper 1",
+      "face": "Arched block",
+      "u": 13.66,
+      "z": 5.35,
+      "width": 0.95,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Arched block upper 2",
+      "face": "Arched block",
+      "u": 15.5,
+      "z": 5.35,
+      "width": 0.95,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Arched block upper 3",
+      "face": "Arched block",
+      "u": 17.34,
+      "z": 5.35,
+      "width": 0.95,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Arched block upper 4",
+      "face": "Arched block",
+      "u": 19.18,
+      "z": 5.35,
+      "width": 0.95,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Arched block rear door",
+      "face": "Arched block rear",
+      "u": -11.4,
+      "z": 0.05,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        23.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of shop"
+    },
+    {
+      "id": "Arched block rear window 0",
+      "face": "Arched block rear",
+      "u": -12.0,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        23.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Arched block rear window 1",
+      "face": "Arched block rear",
+      "u": -14.6,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        23.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Arched block rear window 2",
+      "face": "Arched block rear",
+      "u": -17.2,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        23.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Fine art block bay 0 shopfront",
+      "face": "Fine art block",
+      "u": 22.98,
+      "z": 0.7,
+      "width": 2.6199999999999974,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Fine art block bay 1 door",
+      "face": "Fine art block",
+      "u": 25.76,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.58,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Fine art block bay 1 shopfront",
+      "face": "Fine art block",
+      "u": 27.22,
+      "z": 0.7,
+      "width": 1.2199999999999953,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Fine art block upper 0",
+      "face": "Fine art block",
+      "u": 22.849999999999998,
+      "z": 5.4,
+      "width": 1.15,
+      "height": 2.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Fine art block upper 1",
+      "face": "Fine art block",
+      "u": 24.75,
+      "z": 5.4,
+      "width": 1.15,
+      "height": 2.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Fine art block upper 2",
+      "face": "Fine art block",
+      "u": 26.650000000000002,
+      "z": 5.4,
+      "width": 1.15,
+      "height": 2.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.029999999329447746,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Fine art block rear door",
+      "face": "Fine art block rear",
+      "u": -22.4,
+      "z": 0.05,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of shop"
+    },
+    {
+      "id": "Fine art block rear window 0",
+      "face": "Fine art block rear",
+      "u": -23.0,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Fine art block rear window 1",
+      "face": "Fine art block rear",
+      "u": -25.6,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Cafe block bay 0 door",
+      "face": "Cafe block",
+      "u": 32.24,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.58,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Cafe block bay 0 shopfront",
+      "face": "Cafe block",
+      "u": 30.28,
+      "z": 0.7,
+      "width": 2.219999999999999,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Cafe block bay 1 shopfront",
+      "face": "Cafe block",
+      "u": 35.519999999999996,
+      "z": 0.7,
+      "width": 3.6199999999999974,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Cafe block upper 0",
+      "face": "Cafe block",
+      "u": 29.845,
+      "z": 5.7,
+      "width": 1.2,
+      "height": 3.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Cafe block upper 1",
+      "face": "Cafe block",
+      "u": 32.115,
+      "z": 5.7,
+      "width": 1.2,
+      "height": 3.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Cafe block upper 2",
+      "face": "Cafe block",
+      "u": 34.385,
+      "z": 5.7,
+      "width": 1.2,
+      "height": 3.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Cafe block upper 3",
+      "face": "Cafe block",
+      "u": 36.655,
+      "z": 5.7,
+      "width": 1.2,
+      "height": 3.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Cafe block rear door",
+      "face": "Cafe block rear",
+      "u": -29.9,
+      "z": 0.05,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        24.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "back of shop"
+    },
+    {
+      "id": "Cafe block rear window 0",
+      "face": "Cafe block rear",
+      "u": -30.5,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Cafe block rear window 1",
+      "face": "Cafe block rear",
+      "u": -33.1,
+      "z": 5.7,
+      "width": 1.0,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        0.0,
+        24.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle west upper 0",
+      "face": "Middle block west",
+      "u": -4.5,
+      "z": 7.1,
+      "width": 1.0,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -11.449999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle west upper 1",
+      "face": "Middle block west",
+      "u": -9.5,
+      "z": 7.1,
+      "width": 1.0,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -11.449999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle west upper 2",
+      "face": "Middle block west",
+      "u": -14.5,
+      "z": 7.1,
+      "width": 1.0,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -11.449999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Middle west upper 3",
+      "face": "Middle block west",
+      "u": -19.5,
+      "z": 7.1,
+      "width": 1.0,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -11.449999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner west shopfront 0",
+      "face": "Corner block west",
+      "u": -3.0,
+      "z": 0.7,
+      "width": 3.4,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Corner west shopfront 1",
+      "face": "Corner block west",
+      "u": -7.4,
+      "z": 0.7,
+      "width": 3.4,
+      "height": 3.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Corner west side door",
+      "face": "Corner block west",
+      "u": -10.4,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.58,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Corner west high window 0",
+      "face": "Corner block west",
+      "u": -13.4,
+      "z": 2.3,
+      "width": 1.2,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Corner west high window 1",
+      "face": "Corner block west",
+      "u": -16.6,
+      "z": 2.3,
+      "width": 1.2,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Corner west high window 2",
+      "face": "Corner block west",
+      "u": -19.8,
+      "z": 2.3,
+      "width": 1.2,
+      "height": 1.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Corner west rear door",
+      "face": "Corner block west",
+      "u": -22.6,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 2.6,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "Corner west upper 0",
+      "face": "Corner block west",
+      "u": -2.2,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner west upper 1",
+      "face": "Corner block west",
+      "u": -4.65,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner west upper 2",
+      "face": "Corner block west",
+      "u": -7.1000000000000005,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner west upper 3",
+      "face": "Corner block west",
+      "u": -9.55,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner west upper 4",
+      "face": "Corner block west",
+      "u": -12.0,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner west upper 5",
+      "face": "Corner block west",
+      "u": -14.45,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner west upper 6",
+      "face": "Corner block west",
+      "u": -16.900000000000002,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner west upper 7",
+      "face": "Corner block west",
+      "u": -19.35,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "Corner west upper 8",
+      "face": "Corner block west",
+      "u": -21.8,
+      "z": 5.45,
+      "width": 1.05,
+      "height": 2.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -30.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    }
+  ],
+  "authoring_modules": {
+    "street": [
+      "Street asphalt",
+      "Back lane"
+    ],
+    "sidewalks": [
+      "North sidewalk",
+      "South sidewalk",
+      "North-west sidewalk",
+      "South-west sidewalk",
+      "Cross-street sidewalk beyond the lane",
+      "North brick band 0",
+      "South brick band 0",
+      "North brick band 1",
+      "South brick band 1"
+    ],
+    "road markings": [
+      "road markings yellow",
+      "road markings marking",
+      "road markings paver"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020",
+      "Street tree trunk.007",
+      "Street tree branch.021",
+      "Street tree branch.022",
+      "Street tree branch.023"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023"
+    ],
+    "street furniture": [
+      "street furniture paver",
+      "street furniture sidejoint",
+      "street furniture soil",
+      "street furniture hardware",
+      "street furniture pale",
+      "street furniture banner",
+      "street furniture dark",
+      "street furniture timber"
+    ],
+    "parked cars": [
+      "parked cars car",
+      "parked cars dark",
+      "parked cars tyre",
+      "parked cars car2",
+      "parked cars car3"
+    ],
+    "envelope": [
+      "Corner block street carrier",
+      "Corner block rear carrier",
+      "Lower bay street carrier",
+      "Lower bay rear carrier",
+      "Middle block street carrier",
+      "Middle block rear carrier",
+      "Arched block street carrier",
+      "Arched block rear carrier",
+      "Fine art block street carrier",
+      "Fine art block rear carrier",
+      "Cafe block street carrier",
+      "Cafe block rear carrier",
+      "Middle block west carrier",
+      "Corner block west carrier"
+    ],
+    "brick joints": [
+      "Corner block measured mortar courses",
+      "Corner block rear measured mortar courses",
+      "Lower bay measured mortar courses",
+      "Lower bay rear measured mortar courses",
+      "Middle block measured mortar courses",
+      "Middle block rear measured mortar courses",
+      "Arched block measured mortar courses",
+      "Arched block rear measured mortar courses",
+      "Fine art block measured mortar courses",
+      "Fine art block rear measured mortar courses",
+      "Cafe block measured mortar courses",
+      "Cafe block rear measured mortar courses",
+      "Middle block west measured mortar courses",
+      "Corner block west measured mortar courses"
+    ],
+    "Corner block": [
+      "Corner block Corner block stone",
+      "Corner block Corner block frame",
+      "Corner block Corner block glass",
+      "Corner block Corner block cream",
+      "Corner block Corner block white",
+      "Corner block Corner block hardware"
+    ],
+    "Corner block rear": [
+      "Corner block rear Corner block rear frame",
+      "Corner block rear Corner block rear glass",
+      "Corner block rear Corner block rear stone"
+    ],
+    "Corner block body": [
+      "Corner block body roof",
+      "Corner block body floor",
+      "Corner block body interior",
+      "Corner block body membrane",
+      "Corner block body hardware"
+    ],
+    "Lower bay": [
+      "Lower bay Lower bay brick",
+      "Lower bay Lower bay stone",
+      "Lower bay Lower bay frame",
+      "Lower bay Lower bay glass",
+      "Lower bay Lower bay cream",
+      "Lower bay Lower bay hardware"
+    ],
+    "Lower bay rear": [
+      "Lower bay rear Lower bay rear frame",
+      "Lower bay rear Lower bay rear glass",
+      "Lower bay rear Lower bay rear stone"
+    ],
+    "Lower bay body": [
+      "Lower bay body membrane",
+      "Lower bay body floor",
+      "Lower bay body interior",
+      "Lower bay body hardware"
+    ],
+    "arches": [
+      "Middle block upper 0 spandrel",
+      "Middle block upper 0 arch ring",
+      "Middle block upper 1 spandrel",
+      "Middle block upper 1 arch ring",
+      "Middle block upper 2 spandrel",
+      "Middle block upper 2 arch ring",
+      "Middle block upper 3 spandrel",
+      "Middle block upper 3 arch ring",
+      "Middle block upper 4 spandrel",
+      "Middle block upper 4 arch ring",
+      "Middle block upper 5 spandrel",
+      "Middle block upper 5 arch ring",
+      "Middle block upper 6 spandrel",
+      "Middle block upper 6 arch ring",
+      "Middle block upper 7 spandrel",
+      "Middle block upper 7 arch ring",
+      "Middle block upper 8 spandrel",
+      "Middle block upper 8 arch ring",
+      "Middle block upper 9 spandrel",
+      "Middle block upper 9 arch ring",
+      "Arched block upper 0 spandrel",
+      "Arched block upper 0 arch ring",
+      "Arched block upper 1 spandrel",
+      "Arched block upper 1 arch ring",
+      "Arched block upper 2 spandrel",
+      "Arched block upper 2 arch ring",
+      "Arched block upper 3 spandrel",
+      "Arched block upper 3 arch ring",
+      "Arched block upper 4 spandrel",
+      "Arched block upper 4 arch ring",
+      "Fine art block upper 0 spandrel",
+      "Fine art block upper 0 arch ring",
+      "Fine art block upper 1 spandrel",
+      "Fine art block upper 1 arch ring",
+      "Fine art block upper 2 spandrel",
+      "Fine art block upper 2 arch ring"
+    ],
+    "Middle block": [
+      "Middle block Middle block cream",
+      "Middle block Middle block frame",
+      "Middle block Middle block glass",
+      "Middle block Middle block stone",
+      "Middle block Middle block sign",
+      "Middle block Middle block white",
+      "Middle block Middle block wall",
+      "Middle block Middle block hardware"
+    ],
+    "Middle block rear": [
+      "Middle block rear Middle block rear frame",
+      "Middle block rear Middle block rear glass",
+      "Middle block rear Middle block rear stone"
+    ],
+    "Middle block body": [
+      "Middle block body roof",
+      "Middle block body floor",
+      "Middle block body interior",
+      "Middle block body membrane",
+      "Middle block body hardware",
+      "Middle block body pale",
+      "Middle block body glass"
+    ],
+    "Arched block": [
+      "Arched block Arched block brick",
+      "Arched block Arched block stone",
+      "Arched block Arched block frame",
+      "Arched block Arched block glass",
+      "Arched block Arched block sign",
+      "Arched block Arched block cream",
+      "Arched block Arched block white",
+      "Arched block Arched block dark",
+      "Arched block Arched block hardware"
+    ],
+    "Arched block rear": [
+      "Arched block rear Arched block rear frame",
+      "Arched block rear Arched block rear glass",
+      "Arched block rear Arched block rear stone"
+    ],
+    "Arched block body": [
+      "Arched block body roof",
+      "Arched block body floor",
+      "Arched block body interior",
+      "Arched block body membrane",
+      "Arched block body hardware"
+    ],
+    "Fine art block": [
+      "Fine art block Fine art block cream",
+      "Fine art block Fine art block frame",
+      "Fine art block Fine art block glass",
+      "Fine art block Fine art block stone",
+      "Fine art block Fine art block sign",
+      "Fine art block Fine art block white",
+      "Fine art block Fine art block wall",
+      "Fine art block Fine art block hardware"
+    ],
+    "Fine art block rear": [
+      "Fine art block rear Fine art block rear frame",
+      "Fine art block rear Fine art block rear glass",
+      "Fine art block rear Fine art block rear stone"
+    ],
+    "Fine art block body": [
+      "Fine art block body roof",
+      "Fine art block body floor",
+      "Fine art block body interior",
+      "Fine art block body membrane",
+      "Fine art block body hardware"
+    ],
+    "Cafe block": [
+      "Cafe block Cafe block stone",
+      "Cafe block Cafe block dark",
+      "Cafe block Cafe block glass",
+      "Cafe block Cafe block cream",
+      "Cafe block Cafe block hardware",
+      "Cafe block Cafe block frame"
+    ],
+    "Cafe block rear": [
+      "Cafe block rear Cafe block rear frame",
+      "Cafe block rear Cafe block rear glass",
+      "Cafe block rear Cafe block rear stone"
+    ],
+    "Cafe block body": [
+      "Cafe block body roof",
+      "Cafe block body floor",
+      "Cafe block body interior",
+      "Cafe block body membrane",
+      "Cafe block body hardware"
+    ],
+    "party walls": [
+      "party walls wall"
+    ],
+    "Middle block west": [
+      "Middle block west Middle block west white",
+      "Middle block west Middle block west glass",
+      "Middle block west Middle block west stone"
+    ],
+    "Corner block west": [
+      "Corner block west Corner block west frame",
+      "Corner block west Corner block west glass",
+      "Corner block west Corner block west stone",
+      "Corner block west Corner block west white",
+      "Corner block west Corner block west cream"
+    ],
+    "Corner bands and pier": [
+      "Corner bands and pier frame",
+      "Corner bands and pier stone",
+      "Corner bands and pier white"
+    ],
+    "context": [
+      "context neighbour",
+      "context white",
+      "context glass",
+      "context frame",
+      "context membrane",
+      "context wall",
+      "context context"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-20T13:00:20.230759+00:00",
+  "delivery_and_render_seconds": 6937.789747372,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

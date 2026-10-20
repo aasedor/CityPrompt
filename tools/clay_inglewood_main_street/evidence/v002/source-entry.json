@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-inglewood-main-street",
+  "variant_id": "clay-inglewood-main-street-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "inglewood_main_street/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/inglewood-main-street/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1322295,
+      "sha256": "c528164ed6ce8922d904ffe9bb0cc9bac3e19b0592695bb960d7f3f8712834aa"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/inglewood-main-street/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 957382,
+      "sha256": "08729fbdd71064f1603ab588d3c97660a0dfad8ef5fe076bd4f505aecac6c776"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/inglewood-main-street/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 894253,
+      "sha256": "96ea0c7b00c1b01a19f09c8207a7ca0b7f49cf016185e79f375cdcc7aff29a49"
+    }
+  ]
+}
