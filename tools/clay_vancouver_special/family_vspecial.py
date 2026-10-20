@@ -46,7 +46,7 @@ def manifest(version):
     h = EAVE + RISE + 1.4
     cams = G.camera_roster(X1 - X0 + 3.0, Y1 - Y0 + 3.0, h, [
         ('facade_close', (0.0, -17.0, 4.0), (0.0, Y0, 4.0), 40),
-        ('architecture_close', (8.5, -10.5, 8.2), (X1, Y0, 6.9), 45),
+        ('architecture_close', (8.6, -9.4, 4.9), (X1 - .4, Y0 - .3, 6.5), 45),
         ('glass_close', (-3.8, Y0 - 4.0, 5.75), (-3.8, Y0, 5.75), 45),
         ('balcony_rail', (4.5, -11.5, 5.6), (1.2, Y0 - .6, 4.6), 40),
         ('entry_stair', (3.0, -11.0, 2.0), (-1.0, Y0 - 1.0, 1.5), 40),
@@ -67,7 +67,7 @@ def manifest(version):
         elif c['name'] == 'right_side':
             c.update(location=(23.0, 0.0, 4.8), target=(X1, 0.0, 4.2), lens=35, whole=False)
         elif c['name'] == 'rear':
-            c.update(location=(0.0, Y1 + 21.0, 5.0), target=(0.0, Y1, 4.2), lens=35, whole=False)
+            c.update(location=(0.0, Y1 + 21.0, 8.5), target=(0.0, Y1, 3.6), lens=35, whole=False)
         elif c['name'] == 'rear_side':
             c.update(location=(15.0, 19.0, 13.0), target=(0.0, 1.0, 4.0), lens=35, whole=False)
         elif c['name'] == 'top':                                               # plan view framed on the house and its yards
@@ -453,23 +453,25 @@ def flight(start, n, top, go, sign):
 
 
 def rail(b, pts, z, h=1.0, spacing=.11, role='rail'):
-    """Aluminium picket railing on a level run of plan points: top and bottom rails, square end posts."""
-    for (ax, ay), (cx, cy) in zip(pts, pts[1:]):
+    """Aluminium picket railing on a level run of plan points: top and bottom rails, square end posts (one post at
+    each shared corner, never two coincident)."""
+    for j, ((ax, ay), (cx, cy)) in enumerate(zip(pts, pts[1:])):
         L = math.hypot(cx - ax, cy - ay)
         b.beam(role, (ax, ay, z + h), (cx, cy, z + h), .06, .04, ext=.025)
         b.beam(role, (ax, ay, z + .08), (cx, cy, z + .08), .04, .03)
         n = max(2, int(L / spacing))
-        for i in range(n + 1):
+        for i in range(0 if j == 0 else 1, n + 1):
             px, py = ax + (cx - ax) * i / n, ay + (cy - ay) * i / n
             s = .05 if i in (0, n) else .018
             b.box(role, px, py, z + (h + .02) / 2, s, s, h - .02)
 
 
-def rail_slope(b, a, c, h=1.0, n=7, role='rail'):
-    """Raked railing over a flight, from nosing point a down to nosing point c."""
+def rail_slope(b, a, c, h=1.0, n=7, role='rail', first=True):
+    """Raked railing over a flight, from nosing point a down to nosing point c; first=False when a landing rail
+    already stands a post at a."""
     b.beam(role, (a[0], a[1], a[2] + h), (c[0], c[1], c[2] + h), .06, .04, ext=.025)
     b.beam(role, (a[0], a[1], a[2] + .1), (c[0], c[1], c[2] + .1), .04, .03)
-    for i in range(n + 1):
+    for i in range(0 if first else 1, n + 1):
         p = [a[k] + (c[k] - a[k]) * i / n for k in range(3)]
         s = .05 if i in (0, n) else .018
         b.box(role, p[0], p[1], p[2] + h / 2, s, s, h)
@@ -581,7 +583,7 @@ def front_entry():
     foot = lx1 + go * (n - 1)
     rail(b, [(lx0 + .04, Y0), (lx0 + .04, ly0 + .04), (lx1, ly0 + .04)], FL1)
     for y in (sy0 + .04, sy1 - .04):
-        rail_slope(b, (lx1, y, FL1), (foot, y, FL1 / n), n=6)
+        rail_slope(b, (lx1, y, FL1), (foot, y, FL1 / n), n=6, first=y > sy0 + .1)
     b.flush('front entry')
     C.box('Front walk', ((foot - .02 + lx1 + 2.3) / 2, (Y0 - 3.22 + sy1) / 2, .03), (lx1 + 2.3 - foot + .02, sy1 - Y0 + 3.22, .06), 'paving', 'site', 0)
     C.box('Front bed behind the stair', ((lx1 + foot) / 2 + .0, (sy1 + Y0 - .02) / 2, .03), (foot - lx1 + .02, Y0 - .02 - sy1, .06), 'soil', 'site', 0)
@@ -628,8 +630,8 @@ def side_entry():
     n, go = 5, .28
     C.prism('Side stair', flight(.25, n, FL1, go, -1), 'x', X1 - .02, X1 + 1.0, 'concrete', 'side entry')
     foot = .25 - go * (n - 1)
-    rail(b, [(X1 + 1.01, .25), (X1 + 1.01, 1.51), (X1 + .02, 1.51)], FL1)
-    rail_slope(b, (X1 + .96, .25, FL1), (X1 + .96, foot, FL1 / n), n=6)
+    rail(b, [(X1 + .96, .25), (X1 + .96, 1.51), (X1 + .02, 1.51)], FL1)
+    rail_slope(b, (X1 + .96, .25, FL1), (X1 + .96, foot, FL1 / n), n=6, first=False)
     b.flush('side entry')
     C.box('Side path', (X1 + .55, (Y0 - 3.22 + foot + .02) / 2, .03), (1.0, foot + .02 - Y0 + 3.22, .06), 'paving', 'site', 0)
 
@@ -695,6 +697,11 @@ def roof():
             x0 = s * (W - k * .25)
             x1 = x0 - s * .05
             hexy(b, 'roofline', [(x0, zroof(x0) - .01), (x0, zroof(x0) + .012), (x1, zroof(x1) + .004), (x1, zroof(x1) - .01)], YA + .01, YB - .01)
+            xt = x0 - s * .16                                                 # staggered tab joints up the exposed course
+            y = YA + .1 + .17 * (k % 2)
+            while y < YB - .1:
+                hexy(b, 'roofline', [(x0, zroof(x0) - .004), (x0, zroof(x0) + .008), (xt, zroof(xt) + .006), (xt, zroof(xt) - .004)], y - .008, y + .008)
+                y += .34
             k += 1
     hexy(b, 'roofline', [(-.17, zroof(.17) - .01), (0.0, ZR + .035), (.17, zroof(.17) - .01), (0.0, ZR - .06)], YA + .01, YB - .01)   # ridge cap
     for yf, sg in ((Y0, -1), (Y1, 1)):                                       # exposed outrigger blocks under both rakes
