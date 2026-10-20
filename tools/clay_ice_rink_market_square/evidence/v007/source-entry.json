@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-ice-rink-market-square",
+  "variant_id": "clay-ice-rink-market-square-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "outdoor_ice_rink/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1338889,
+      "sha256": "9e5324878de2acef40874eaec1ef46ee98b23a122f52831167f13695dc7387e9"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 1024487,
+      "sha256": "851b6b96ca92b4f945038a748a5e5bf5672c1e4ac364196056c330020a19171d"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/outdoor-ice-rink/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 950215,
+      "sha256": "5bf50ae904d4c38b0e5d1711cad9f60e5c6c92c525712d2628c246d87d3784fb"
+    }
+  ]
+}
