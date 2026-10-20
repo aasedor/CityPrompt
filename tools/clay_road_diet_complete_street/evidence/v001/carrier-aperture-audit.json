@@ -1,0 +1,960 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "NE W door 0",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W shopfront 0",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W door 1",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W shopfront 1",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W door 2",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W shopfront 2",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W door 3",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W shopfront 3",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W door 4",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W shopfront 4",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W door 5",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W shopfront 5",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W upper 0.0.1",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W upper 0.0.2",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W upper 1.0.1",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W upper 1.0.2",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W upper 2.0.1",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W upper 2.0.2",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W upper 3.0.1",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W upper 3.0.2",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W upper 4.0.1",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W upper 4.0.2",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W upper 5.0.1",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE W upper 5.0.2",
+      "face": "North-east storefront row W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE S door 0",
+      "face": "North-east storefront row S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE S shopfront 0",
+      "face": "North-east storefront row S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE S door 1",
+      "face": "North-east storefront row S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE S shopfront 1",
+      "face": "North-east storefront row S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE S door 2",
+      "face": "North-east storefront row S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE S shopfront 2",
+      "face": "North-east storefront row S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE S upper 0.0.1",
+      "face": "North-east storefront row S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE S upper 0.0.2",
+      "face": "North-east storefront row S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE S upper 1.0.1",
+      "face": "North-east storefront row S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE S upper 1.0.2",
+      "face": "North-east storefront row S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE S upper 2.0.1",
+      "face": "North-east storefront row S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE S upper 2.0.2",
+      "face": "North-east storefront row S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W door 0",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W shopfront 0",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W door 1",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W shopfront 1",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W door 2",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W shopfront 2",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W door 3",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W shopfront 3",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W door 4",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W shopfront 4",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W door 5",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W shopfront 5",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W upper 0.0.1",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W upper 0.0.2",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W upper 1.0.1",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W upper 1.0.2",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W upper 2.0.1",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W upper 2.0.2",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W upper 3.0.1",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W upper 3.0.2",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W upper 4.0.1",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W upper 4.0.2",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W upper 5.0.1",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE W upper 5.0.2",
+      "face": "South-east block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE N door 0",
+      "face": "South-east block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE N shopfront 0",
+      "face": "South-east block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE N door 1",
+      "face": "South-east block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE N shopfront 1",
+      "face": "South-east block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE N door 2",
+      "face": "South-east block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE N shopfront 2",
+      "face": "South-east block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE N upper 0.0.1",
+      "face": "South-east block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE N upper 0.0.2",
+      "face": "South-east block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE N upper 1.0.1",
+      "face": "South-east block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE N upper 1.0.2",
+      "face": "South-east block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE N upper 2.0.1",
+      "face": "South-east block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SE N upper 2.0.2",
+      "face": "South-east block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W door 0",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W shopfront 0",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W door 1",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W shopfront 1",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W door 2",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W shopfront 2",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W door 3",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W shopfront 3",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 0.0.1",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 0.0.2",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 0.1.1",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 0.1.2",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 0.2.1",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 0.2.2",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 1.0.1",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 1.0.2",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 1.1.1",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 1.1.2",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 1.2.1",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 1.2.2",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 2.0.1",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 2.0.2",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 2.1.1",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 2.1.2",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 2.2.1",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 2.2.2",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 3.0.1",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 3.0.2",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 3.1.1",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 3.1.2",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 3.2.1",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT W upper 3.2.2",
+      "face": "North-east apartment block W",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 0.0",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 0.1",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 0.2",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 0.3",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 0.4",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 0.5",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 1.0",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 1.1",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 1.2",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 1.3",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 1.4",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 1.5",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 2.0",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 2.1",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 2.2",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 2.3",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 2.4",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "APT S window 2.5",
+      "face": "North-east apartment block S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW E g window 0.0",
+      "face": "North-west office E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW E g window 0.1",
+      "face": "North-west office E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW E g window 0.2",
+      "face": "North-west office E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW E g window 0.3",
+      "face": "North-west office E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW E g window 0.4",
+      "face": "North-west office E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW E g window 0.5",
+      "face": "North-west office E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW E g window 0.6",
+      "face": "North-west office E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW E u window 0.0",
+      "face": "North-west office E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW E u window 0.1",
+      "face": "North-west office E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW E u window 0.2",
+      "face": "North-west office E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW E u window 0.3",
+      "face": "North-west office E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW E u window 0.4",
+      "face": "North-west office E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW E u window 0.5",
+      "face": "North-west office E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW E u window 0.6",
+      "face": "North-west office E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW S g window 0.0",
+      "face": "North-west office S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW S g window 0.1",
+      "face": "North-west office S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW S g window 0.2",
+      "face": "North-west office S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW S g window 0.3",
+      "face": "North-west office S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW S g window 0.4",
+      "face": "North-west office S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW S g window 0.5",
+      "face": "North-west office S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW S u window 0.0",
+      "face": "North-west office S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW S u window 0.1",
+      "face": "North-west office S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW S u window 0.2",
+      "face": "North-west office S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW S u window 0.3",
+      "face": "North-west office S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW S u window 0.4",
+      "face": "North-west office S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW S u window 0.5",
+      "face": "North-west office S",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SW E window 0.0",
+      "face": "South-west block E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SW E window 0.1",
+      "face": "South-west block E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SW E window 0.2",
+      "face": "South-west block E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SW E window 0.3",
+      "face": "South-west block E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SW E window 0.4",
+      "face": "South-west block E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SW E window 0.5",
+      "face": "South-west block E",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SW N window 0.0",
+      "face": "South-west block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SW N window 0.1",
+      "face": "South-west block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SW N window 0.2",
+      "face": "South-west block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SW N window 0.3",
+      "face": "South-west block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SW N window 0.4",
+      "face": "South-west block N",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

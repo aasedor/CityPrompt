@@ -1,0 +1,5238 @@
+{
+  "candidate": "clay-road-diet-complete-street-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 388,
+    "vertices": 36382,
+    "polygons": 49526,
+    "triangles": 49526,
+    "path": "clay-road-diet-complete-street-clay-v001-authoring.blend",
+    "bytes": 6388036,
+    "sha256": "8d57bb11defc569e8da638c507a0bd41470db0594d3cae97d0deed474bae1cf1"
+  },
+  "runtime": {
+    "path": "clay-road-diet-complete-street-clay-v001.glb",
+    "bytes": 2623200,
+    "sha256": "920ab3d6731cb32f97d199eca15d41b8068198f2e0b8f50f699c5657c9bb4906",
+    "meshes": 36,
+    "materials": 36,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 36,
+    "vertices": 36382,
+    "polygons": 49526,
+    "triangles": 49526
+  },
+  "original_bounds_m": [
+    [
+      -48.0,
+      -48.0,
+      0.0
+    ],
+    [
+      48.0,
+      80.0,
+      13.460000038146973
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -48.0,
+      -48.0,
+      0.0
+    ],
+    [
+      48.0,
+      80.0,
+      13.460000038146973
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 96.0,
+    "depth": 128.0,
+    "height": 14.0
+  },
+  "native_dimensions_m": {
+    "width": 96.0,
+    "depth": 128.0,
+    "height": 13.460000038146973
+  },
+  "native_bottom_center_m": [
+    0.0,
+    16.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 30,
+    "joint": 24,
+    "stone": 15,
+    "cream": 17,
+    "white": 10,
+    "frame": 7,
+    "dark": 2,
+    "sign": 4,
+    "glass": 12,
+    "interior": 2,
+    "floor": 5,
+    "membrane": 6,
+    "concrete": 4,
+    "curbstone": 2,
+    "sidejoint": 1,
+    "asphalt": 1,
+    "marking": 41,
+    "yellow": 3,
+    "green": 1,
+    "hardware": 8,
+    "post": 1,
+    "rubber": 2,
+    "signal": 1,
+    "timber": 92,
+    "planting": 70,
+    "grasses": 1,
+    "soil": 2,
+    "grass": 1,
+    "stucco": 9,
+    "neighbour": 1,
+    "context": 1,
+    "car": 1,
+    "car2": 1,
+    "car3": 1,
+    "tyre": 1,
+    "pale": 8
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/bike_lane_separator.png",
+    "renders/refuge_island.png",
+    "renders/crosswalk_zebra.png",
+    "renders/bike_symbol.png",
+    "renders/turn_lane.png",
+    "renders/storefronts.png",
+    "renders/corner_signal.png",
+    "renders/cross_street_lane.png",
+    "renders/verge_trees.png",
+    "renders/rubber_curb.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Complete-street section at the intersection: green protected bike lanes, separators, travel lanes, centre turn lane, refuge islands and crosswalks",
+      "box": [
+        -48.0,
+        48.0,
+        -48.0,
+        80.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "NE W door 0",
+      "face": "North-east storefront row W",
+      "u": 10.15,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE W shopfront 0",
+      "face": "North-east storefront row W",
+      "u": 12.875,
+      "z": 0.6,
+      "width": 3.950000000000001,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE W door 1",
+      "face": "North-east storefront row W",
+      "u": 16.200000000000003,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE W shopfront 1",
+      "face": "North-east storefront row W",
+      "u": 18.925,
+      "z": 0.6,
+      "width": 3.9499999999999975,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE W door 2",
+      "face": "North-east storefront row W",
+      "u": 22.25,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE W shopfront 2",
+      "face": "North-east storefront row W",
+      "u": 24.975,
+      "z": 0.6,
+      "width": 3.950000000000003,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE W door 3",
+      "face": "North-east storefront row W",
+      "u": 28.300000000000004,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE W shopfront 3",
+      "face": "North-east storefront row W",
+      "u": 31.025000000000002,
+      "z": 0.6,
+      "width": 3.9499999999999957,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE W door 4",
+      "face": "North-east storefront row W",
+      "u": 34.35,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE W shopfront 4",
+      "face": "North-east storefront row W",
+      "u": 37.075,
+      "z": 0.6,
+      "width": 3.950000000000003,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE W door 5",
+      "face": "North-east storefront row W",
+      "u": 40.400000000000006,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE W shopfront 5",
+      "face": "North-east storefront row W",
+      "u": 43.12500000000001,
+      "z": 0.6,
+      "width": 3.9499999999999957,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE W upper 0.0.1",
+      "face": "North-east storefront row W",
+      "u": 11.166666666666668,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE W upper 0.0.2",
+      "face": "North-east storefront row W",
+      "u": 13.183333333333334,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE W upper 1.0.1",
+      "face": "North-east storefront row W",
+      "u": 17.21666666666667,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE W upper 1.0.2",
+      "face": "North-east storefront row W",
+      "u": 19.233333333333334,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE W upper 2.0.1",
+      "face": "North-east storefront row W",
+      "u": 23.26666666666667,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE W upper 2.0.2",
+      "face": "North-east storefront row W",
+      "u": 25.283333333333335,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE W upper 3.0.1",
+      "face": "North-east storefront row W",
+      "u": 29.31666666666667,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE W upper 3.0.2",
+      "face": "North-east storefront row W",
+      "u": 31.333333333333336,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE W upper 4.0.1",
+      "face": "North-east storefront row W",
+      "u": 35.36666666666667,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE W upper 4.0.2",
+      "face": "North-east storefront row W",
+      "u": 37.38333333333334,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE W upper 5.0.1",
+      "face": "North-east storefront row W",
+      "u": 41.41666666666667,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE W upper 5.0.2",
+      "face": "North-east storefront row W",
+      "u": 43.43333333333334,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE S door 0",
+      "face": "North-east storefront row S",
+      "u": 13.05,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE S shopfront 0",
+      "face": "North-east storefront row S",
+      "u": 15.816666666666666,
+      "z": 0.6,
+      "width": 4.033333333333331,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE S door 1",
+      "face": "North-east storefront row S",
+      "u": 19.183333333333334,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE S shopfront 1",
+      "face": "North-east storefront row S",
+      "u": 21.95,
+      "z": 0.6,
+      "width": 4.033333333333331,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE S door 2",
+      "face": "North-east storefront row S",
+      "u": 25.316666666666666,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE S shopfront 2",
+      "face": "North-east storefront row S",
+      "u": 28.083333333333332,
+      "z": 0.6,
+      "width": 4.033333333333331,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "NE S upper 0.0.1",
+      "face": "North-east storefront row S",
+      "u": 14.094444444444445,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE S upper 0.0.2",
+      "face": "North-east storefront row S",
+      "u": 16.13888888888889,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE S upper 1.0.1",
+      "face": "North-east storefront row S",
+      "u": 20.227777777777778,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE S upper 1.0.2",
+      "face": "North-east storefront row S",
+      "u": 22.272222222222222,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE S upper 2.0.1",
+      "face": "North-east storefront row S",
+      "u": 26.36111111111111,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NE S upper 2.0.2",
+      "face": "North-east storefront row S",
+      "u": 28.405555555555555,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE W door 0",
+      "face": "South-east block W",
+      "u": -44.45,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE W shopfront 0",
+      "face": "South-east block W",
+      "u": -41.725,
+      "z": 0.6,
+      "width": 3.9499999999999957,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE W door 1",
+      "face": "South-east block W",
+      "u": -38.400000000000006,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE W shopfront 1",
+      "face": "South-east block W",
+      "u": -35.675,
+      "z": 0.6,
+      "width": 3.950000000000003,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE W door 2",
+      "face": "South-east block W",
+      "u": -32.35,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE W shopfront 2",
+      "face": "South-east block W",
+      "u": -29.625000000000004,
+      "z": 0.6,
+      "width": 3.9499999999999993,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE W door 3",
+      "face": "South-east block W",
+      "u": -26.3,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE W shopfront 3",
+      "face": "South-east block W",
+      "u": -23.575,
+      "z": 0.6,
+      "width": 3.9499999999999993,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE W door 4",
+      "face": "South-east block W",
+      "u": -20.25,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE W shopfront 4",
+      "face": "South-east block W",
+      "u": -17.525000000000002,
+      "z": 0.6,
+      "width": 3.950000000000001,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE W door 5",
+      "face": "South-east block W",
+      "u": -14.2,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE W shopfront 5",
+      "face": "South-east block W",
+      "u": -11.475,
+      "z": 0.6,
+      "width": 3.950000000000001,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE W upper 0.0.1",
+      "face": "South-east block W",
+      "u": -43.43333333333334,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE W upper 0.0.2",
+      "face": "South-east block W",
+      "u": -41.41666666666667,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE W upper 1.0.1",
+      "face": "South-east block W",
+      "u": -37.38333333333334,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE W upper 1.0.2",
+      "face": "South-east block W",
+      "u": -35.36666666666667,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE W upper 2.0.1",
+      "face": "South-east block W",
+      "u": -31.333333333333336,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE W upper 2.0.2",
+      "face": "South-east block W",
+      "u": -29.316666666666666,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE W upper 3.0.1",
+      "face": "South-east block W",
+      "u": -25.283333333333335,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE W upper 3.0.2",
+      "face": "South-east block W",
+      "u": -23.266666666666666,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE W upper 4.0.1",
+      "face": "South-east block W",
+      "u": -19.233333333333334,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE W upper 4.0.2",
+      "face": "South-east block W",
+      "u": -17.216666666666665,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE W upper 5.0.1",
+      "face": "South-east block W",
+      "u": -13.183333333333332,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE W upper 5.0.2",
+      "face": "South-east block W",
+      "u": -11.166666666666664,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE N door 0",
+      "face": "South-east block N",
+      "u": -28.45,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE N shopfront 0",
+      "face": "South-east block N",
+      "u": -25.849999999999998,
+      "z": 0.6,
+      "width": 3.6999999999999993,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE N door 1",
+      "face": "South-east block N",
+      "u": -22.65,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE N shopfront 1",
+      "face": "South-east block N",
+      "u": -20.05,
+      "z": 0.6,
+      "width": 3.6999999999999957,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE N door 2",
+      "face": "South-east block N",
+      "u": -16.85,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE N shopfront 2",
+      "face": "South-east block N",
+      "u": -14.250000000000002,
+      "z": 0.6,
+      "width": 3.700000000000001,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "SE N upper 0.0.1",
+      "face": "South-east block N",
+      "u": -27.516666666666666,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE N upper 0.0.2",
+      "face": "South-east block N",
+      "u": -25.583333333333332,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE N upper 1.0.1",
+      "face": "South-east block N",
+      "u": -21.716666666666665,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE N upper 1.0.2",
+      "face": "South-east block N",
+      "u": -19.783333333333335,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE N upper 2.0.1",
+      "face": "South-east block N",
+      "u": -15.916666666666668,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SE N upper 2.0.2",
+      "face": "South-east block N",
+      "u": -13.983333333333334,
+      "z": 4.85,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -8.600000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W door 0",
+      "face": "North-east apartment block W",
+      "u": 51.55,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "APT W shopfront 0",
+      "face": "North-east apartment block W",
+      "u": 54.8,
+      "z": 0.6,
+      "width": 5.0,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "APT W door 1",
+      "face": "North-east apartment block W",
+      "u": 58.65,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "APT W shopfront 1",
+      "face": "North-east apartment block W",
+      "u": 61.900000000000006,
+      "z": 0.6,
+      "width": 5.000000000000007,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "APT W door 2",
+      "face": "North-east apartment block W",
+      "u": 65.75,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "APT W shopfront 2",
+      "face": "North-east apartment block W",
+      "u": 69.0,
+      "z": 0.6,
+      "width": 5.0,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "APT W door 3",
+      "face": "North-east apartment block W",
+      "u": 72.85,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.65,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "APT W shopfront 3",
+      "face": "North-east apartment block W",
+      "u": 76.10000000000001,
+      "z": 0.6,
+      "width": 5.000000000000014,
+      "height": 2.95,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "APT W upper 0.0.1",
+      "face": "North-east apartment block W",
+      "u": 52.916666666666664,
+      "z": 4.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 0.0.2",
+      "face": "North-east apartment block W",
+      "u": 55.28333333333333,
+      "z": 4.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 0.1.1",
+      "face": "North-east apartment block W",
+      "u": 52.916666666666664,
+      "z": 7.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 0.1.2",
+      "face": "North-east apartment block W",
+      "u": 55.28333333333333,
+      "z": 7.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 0.2.1",
+      "face": "North-east apartment block W",
+      "u": 52.916666666666664,
+      "z": 10.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 0.2.2",
+      "face": "North-east apartment block W",
+      "u": 55.28333333333333,
+      "z": 10.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 1.0.1",
+      "face": "North-east apartment block W",
+      "u": 60.016666666666666,
+      "z": 4.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 1.0.2",
+      "face": "North-east apartment block W",
+      "u": 62.38333333333333,
+      "z": 4.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 1.1.1",
+      "face": "North-east apartment block W",
+      "u": 60.016666666666666,
+      "z": 7.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 1.1.2",
+      "face": "North-east apartment block W",
+      "u": 62.38333333333333,
+      "z": 7.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 1.2.1",
+      "face": "North-east apartment block W",
+      "u": 60.016666666666666,
+      "z": 10.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 1.2.2",
+      "face": "North-east apartment block W",
+      "u": 62.38333333333333,
+      "z": 10.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 2.0.1",
+      "face": "North-east apartment block W",
+      "u": 67.11666666666666,
+      "z": 4.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 2.0.2",
+      "face": "North-east apartment block W",
+      "u": 69.48333333333333,
+      "z": 4.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 2.1.1",
+      "face": "North-east apartment block W",
+      "u": 67.11666666666666,
+      "z": 7.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 2.1.2",
+      "face": "North-east apartment block W",
+      "u": 69.48333333333333,
+      "z": 7.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 2.2.1",
+      "face": "North-east apartment block W",
+      "u": 67.11666666666666,
+      "z": 10.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 2.2.2",
+      "face": "North-east apartment block W",
+      "u": 69.48333333333333,
+      "z": 10.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 3.0.1",
+      "face": "North-east apartment block W",
+      "u": 74.21666666666667,
+      "z": 4.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 3.0.2",
+      "face": "North-east apartment block W",
+      "u": 76.58333333333333,
+      "z": 4.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 3.1.1",
+      "face": "North-east apartment block W",
+      "u": 74.21666666666667,
+      "z": 7.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 3.1.2",
+      "face": "North-east apartment block W",
+      "u": 76.58333333333333,
+      "z": 7.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 3.2.1",
+      "face": "North-east apartment block W",
+      "u": 74.21666666666667,
+      "z": 10.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT W upper 3.2.2",
+      "face": "North-east apartment block W",
+      "u": 76.58333333333333,
+      "z": 10.35,
+      "width": 1.5,
+      "height": 1.65,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 0.0",
+      "face": "North-east apartment block S",
+      "u": 13.75,
+      "z": 4.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 0.1",
+      "face": "North-east apartment block S",
+      "u": 17.150000000000002,
+      "z": 4.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 0.2",
+      "face": "North-east apartment block S",
+      "u": 20.55,
+      "z": 4.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 0.3",
+      "face": "North-east apartment block S",
+      "u": 23.950000000000003,
+      "z": 4.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 0.4",
+      "face": "North-east apartment block S",
+      "u": 27.35,
+      "z": 4.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 0.5",
+      "face": "North-east apartment block S",
+      "u": 30.75,
+      "z": 4.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 1.0",
+      "face": "North-east apartment block S",
+      "u": 13.75,
+      "z": 7.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 1.1",
+      "face": "North-east apartment block S",
+      "u": 17.150000000000002,
+      "z": 7.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 1.2",
+      "face": "North-east apartment block S",
+      "u": 20.55,
+      "z": 7.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 1.3",
+      "face": "North-east apartment block S",
+      "u": 23.950000000000003,
+      "z": 7.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 1.4",
+      "face": "North-east apartment block S",
+      "u": 27.35,
+      "z": 7.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 1.5",
+      "face": "North-east apartment block S",
+      "u": 30.75,
+      "z": 7.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 2.0",
+      "face": "North-east apartment block S",
+      "u": 13.75,
+      "z": 10.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 2.1",
+      "face": "North-east apartment block S",
+      "u": 17.150000000000002,
+      "z": 10.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 2.2",
+      "face": "North-east apartment block S",
+      "u": 20.55,
+      "z": 10.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 2.3",
+      "face": "North-east apartment block S",
+      "u": 23.950000000000003,
+      "z": 10.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 2.4",
+      "face": "North-east apartment block S",
+      "u": 27.35,
+      "z": 10.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "APT S window 2.5",
+      "face": "North-east apartment block S",
+      "u": 30.75,
+      "z": 10.35,
+      "width": 1.4,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        50.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NW E g window 0.0",
+      "face": "North-west office E",
+      "u": -35.92142857142858,
+      "z": 1.0,
+      "width": 1.6,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "NW E g window 0.1",
+      "face": "North-west office E",
+      "u": -32.864285714285714,
+      "z": 1.0,
+      "width": 1.6,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "NW E g window 0.2",
+      "face": "North-west office E",
+      "u": -29.80714285714286,
+      "z": 1.0,
+      "width": 1.6,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "NW E g window 0.3",
+      "face": "North-west office E",
+      "u": -26.750000000000004,
+      "z": 1.0,
+      "width": 1.6,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "NW E g window 0.4",
+      "face": "North-west office E",
+      "u": -23.692857142857147,
+      "z": 1.0,
+      "width": 1.6,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "NW E g window 0.5",
+      "face": "North-west office E",
+      "u": -20.635714285714286,
+      "z": 1.0,
+      "width": 1.6,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "NW E g window 0.6",
+      "face": "North-west office E",
+      "u": -17.57857142857143,
+      "z": 1.0,
+      "width": 1.6,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "NW E u window 0.0",
+      "face": "North-west office E",
+      "u": -35.92142857142858,
+      "z": 4.3,
+      "width": 1.6,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NW E u window 0.1",
+      "face": "North-west office E",
+      "u": -32.864285714285714,
+      "z": 4.3,
+      "width": 1.6,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NW E u window 0.2",
+      "face": "North-west office E",
+      "u": -29.80714285714286,
+      "z": 4.3,
+      "width": 1.6,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NW E u window 0.3",
+      "face": "North-west office E",
+      "u": -26.750000000000004,
+      "z": 4.3,
+      "width": 1.6,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NW E u window 0.4",
+      "face": "North-west office E",
+      "u": -23.692857142857147,
+      "z": 4.3,
+      "width": 1.6,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NW E u window 0.5",
+      "face": "North-west office E",
+      "u": -20.635714285714286,
+      "z": 4.3,
+      "width": 1.6,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NW E u window 0.6",
+      "face": "North-west office E",
+      "u": -17.57857142857143,
+      "z": 4.3,
+      "width": 1.6,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NW S g window 0.0",
+      "face": "North-west office S",
+      "u": -33.875,
+      "z": 1.0,
+      "width": 1.6,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        15.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "NW S g window 0.1",
+      "face": "North-west office S",
+      "u": -30.725,
+      "z": 1.0,
+      "width": 1.6,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        15.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "NW S g window 0.2",
+      "face": "North-west office S",
+      "u": -27.575000000000003,
+      "z": 1.0,
+      "width": 1.6,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        15.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "NW S g window 0.3",
+      "face": "North-west office S",
+      "u": -24.425,
+      "z": 1.0,
+      "width": 1.6,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        15.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "NW S g window 0.4",
+      "face": "North-west office S",
+      "u": -21.275000000000002,
+      "z": 1.0,
+      "width": 1.6,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        15.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "NW S g window 0.5",
+      "face": "North-west office S",
+      "u": -18.125,
+      "z": 1.0,
+      "width": 1.6,
+      "height": 1.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        15.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "NW S u window 0.0",
+      "face": "North-west office S",
+      "u": -33.875,
+      "z": 4.3,
+      "width": 1.6,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        15.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NW S u window 0.1",
+      "face": "North-west office S",
+      "u": -30.725,
+      "z": 4.3,
+      "width": 1.6,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        15.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NW S u window 0.2",
+      "face": "North-west office S",
+      "u": -27.575000000000003,
+      "z": 4.3,
+      "width": 1.6,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        15.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NW S u window 0.3",
+      "face": "North-west office S",
+      "u": -24.425,
+      "z": 4.3,
+      "width": 1.6,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        15.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NW S u window 0.4",
+      "face": "North-west office S",
+      "u": -21.275000000000002,
+      "z": 4.3,
+      "width": 1.6,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        15.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "NW S u window 0.5",
+      "face": "North-west office S",
+      "u": -18.125,
+      "z": 4.3,
+      "width": 1.6,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        15.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "SW E window 0.0",
+      "face": "South-west block E",
+      "u": 12.024999999999999,
+      "z": 0.9,
+      "width": 2.2,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "SW E window 0.1",
+      "face": "South-west block E",
+      "u": 15.375,
+      "z": 0.9,
+      "width": 2.2,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "SW E window 0.2",
+      "face": "South-west block E",
+      "u": 18.725,
+      "z": 0.9,
+      "width": 2.2,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "SW E window 0.3",
+      "face": "South-west block E",
+      "u": 22.075,
+      "z": 0.9,
+      "width": 2.2,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "SW E window 0.4",
+      "face": "South-west block E",
+      "u": 25.425,
+      "z": 0.9,
+      "width": 2.2,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "SW E window 0.5",
+      "face": "South-west block E",
+      "u": 28.775000000000002,
+      "z": 0.9,
+      "width": 2.2,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "SW N window 0.0",
+      "face": "South-west block N",
+      "u": 18.240000000000002,
+      "z": 0.9,
+      "width": 2.2,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -9.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "SW N window 0.1",
+      "face": "South-west block N",
+      "u": 21.62,
+      "z": 0.9,
+      "width": 2.2,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -9.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "SW N window 0.2",
+      "face": "South-west block N",
+      "u": 25.0,
+      "z": 0.9,
+      "width": 2.2,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -9.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "SW N window 0.3",
+      "face": "South-west block N",
+      "u": 28.380000000000003,
+      "z": 0.9,
+      "width": 2.2,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -9.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "SW N window 0.4",
+      "face": "South-west block N",
+      "u": 31.76,
+      "z": 0.9,
+      "width": 2.2,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -9.800000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    }
+  ],
+  "authoring_modules": {
+    "street": [
+      "Street asphalt"
+    ],
+    "sidewalks": [
+      "Sidewalk and lots +1+1",
+      "Sidewalk and lots +1-1",
+      "Sidewalk and lots -1+1",
+      "Sidewalk and lots -1-1"
+    ],
+    "ground layers": [
+      "ground layers grass",
+      "ground layers sidejoint"
+    ],
+    "road markings": [
+      "Turn arrow head",
+      "Turn arrow head.001",
+      "Turn arrow head.002",
+      "Turn arrow head.003",
+      "Lane arrow head",
+      "Lane arrow head.001",
+      "Bike symbol wheel",
+      "Bike symbol wheel.001",
+      "Bike symbol wheel.002",
+      "Bike symbol wheel.003",
+      "Bike symbol wheel.004",
+      "Bike symbol wheel.005",
+      "Bike symbol wheel.006",
+      "Bike symbol wheel.007",
+      "Bike symbol wheel.008",
+      "Bike symbol wheel.009",
+      "Bike symbol wheel.010",
+      "Bike symbol wheel.011",
+      "Bike symbol wheel.012",
+      "Bike symbol wheel.013",
+      "Bike symbol wheel.014",
+      "Bike symbol wheel.015",
+      "Bike symbol wheel.016",
+      "Bike symbol wheel.017",
+      "Bike symbol wheel.018",
+      "Bike symbol wheel.019",
+      "Bike symbol wheel.020",
+      "Bike symbol wheel.021",
+      "Bike symbol wheel.022",
+      "Bike symbol wheel.023",
+      "Bike symbol wheel.024",
+      "Bike symbol wheel.025",
+      "Bike symbol wheel.026",
+      "Bike symbol wheel.027",
+      "Bike symbol wheel.028",
+      "Bike symbol wheel.029",
+      "Bike symbol wheel.030",
+      "Bike symbol wheel.031",
+      "road markings green",
+      "road markings yellow",
+      "road markings marking"
+    ],
+    "separators and posts": [
+      "separators and posts curbstone",
+      "separators and posts rubber",
+      "separators and posts post",
+      "separators and posts pale",
+      "separators and posts yellow"
+    ],
+    "refuge islands": [
+      "refuge islands curbstone",
+      "refuge islands soil",
+      "refuge islands grasses",
+      "refuge islands planting",
+      "refuge islands hardware",
+      "refuge islands marking",
+      "refuge islands dark",
+      "refuge islands yellow",
+      "refuge islands rubber"
+    ],
+    "street furniture": [
+      "street furniture hardware",
+      "street furniture pale",
+      "street furniture signal",
+      "street furniture dark",
+      "street furniture marking"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020",
+      "Street tree trunk.007",
+      "Street tree branch.021",
+      "Street tree branch.022",
+      "Street tree branch.023",
+      "Street tree trunk.008",
+      "Street tree branch.024",
+      "Street tree branch.025",
+      "Street tree branch.026",
+      "Street tree trunk.009",
+      "Street tree branch.027",
+      "Street tree branch.028",
+      "Street tree branch.029",
+      "Street tree trunk.010",
+      "Street tree branch.030",
+      "Street tree branch.031",
+      "Street tree branch.032",
+      "Street tree trunk.011",
+      "Street tree branch.033",
+      "Street tree branch.034",
+      "Street tree branch.035",
+      "Street tree trunk.012",
+      "Street tree branch.036",
+      "Street tree branch.037",
+      "Street tree branch.038",
+      "Street tree trunk.013",
+      "Street tree branch.039",
+      "Street tree branch.040",
+      "Street tree branch.041",
+      "Street tree trunk.014",
+      "Street tree branch.042",
+      "Street tree branch.043",
+      "Street tree branch.044",
+      "Street tree trunk.015",
+      "Street tree branch.045",
+      "Street tree branch.046",
+      "Street tree branch.047",
+      "Street tree trunk.016",
+      "Street tree branch.048",
+      "Street tree branch.049",
+      "Street tree branch.050",
+      "Street tree trunk.017",
+      "Street tree branch.051",
+      "Street tree branch.052",
+      "Street tree branch.053",
+      "Street tree trunk.018",
+      "Street tree branch.054",
+      "Street tree branch.055",
+      "Street tree branch.056",
+      "Street tree trunk.019",
+      "Street tree branch.057",
+      "Street tree branch.058",
+      "Street tree branch.059",
+      "Street tree trunk.020",
+      "Street tree branch.060",
+      "Street tree branch.061",
+      "Street tree branch.062",
+      "Street tree trunk.021",
+      "Street tree branch.063",
+      "Street tree branch.064",
+      "Street tree branch.065",
+      "Street tree trunk.022",
+      "Street tree branch.066",
+      "Street tree branch.067",
+      "Street tree branch.068"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023",
+      "Street tree crown.024",
+      "Street tree crown.025",
+      "Street tree crown.026",
+      "Street tree crown.027",
+      "Street tree crown.028",
+      "Street tree crown.029",
+      "Street tree crown.030",
+      "Street tree crown.031",
+      "Street tree crown.032",
+      "Street tree crown.033",
+      "Street tree crown.034",
+      "Street tree crown.035",
+      "Street tree crown.036",
+      "Street tree crown.037",
+      "Street tree crown.038",
+      "Street tree crown.039",
+      "Street tree crown.040",
+      "Street tree crown.041",
+      "Street tree crown.042",
+      "Street tree crown.043",
+      "Street tree crown.044",
+      "Street tree crown.045",
+      "Street tree crown.046",
+      "Street tree crown.047",
+      "Street tree crown.048",
+      "Street tree crown.049",
+      "Street tree crown.050",
+      "Street tree crown.051",
+      "Street tree crown.052",
+      "Street tree crown.053",
+      "Street tree crown.054",
+      "Street tree crown.055",
+      "Street tree crown.056",
+      "Street tree crown.057",
+      "Street tree crown.058",
+      "Street tree crown.059",
+      "Street tree crown.060",
+      "Street tree crown.061",
+      "Street tree crown.062",
+      "Street tree crown.063",
+      "Street tree crown.064",
+      "Street tree crown.065",
+      "Street tree crown.066",
+      "Street tree crown.067",
+      "Street tree crown.068"
+    ],
+    "tree pits": [
+      "tree pits soil"
+    ],
+    "cars": [
+      "cars car",
+      "cars glass",
+      "cars tyre",
+      "cars car2",
+      "cars car3"
+    ],
+    "envelope": [
+      "North-east storefront row W ground carrier",
+      "North-east storefront row W upper carrier",
+      "North-east storefront row E ground carrier",
+      "North-east storefront row E upper carrier",
+      "North-east storefront row S ground carrier",
+      "North-east storefront row S upper carrier",
+      "North-east storefront row N ground carrier",
+      "North-east storefront row N upper carrier",
+      "South-east block W ground carrier",
+      "South-east block W upper carrier",
+      "South-east block E ground carrier",
+      "South-east block E upper carrier",
+      "South-east block S ground carrier",
+      "South-east block S upper carrier",
+      "South-east block N ground carrier",
+      "South-east block N upper carrier",
+      "North-east apartment block W ground carrier",
+      "North-east apartment block W upper carrier",
+      "North-east apartment block E ground carrier",
+      "North-east apartment block E upper carrier",
+      "North-east apartment block S ground carrier",
+      "North-east apartment block S upper carrier",
+      "North-east apartment block N ground carrier",
+      "North-east apartment block N upper carrier",
+      "North-west office W ground carrier",
+      "North-west office W upper carrier",
+      "North-west office E ground carrier",
+      "North-west office E upper carrier",
+      "North-west office S ground carrier",
+      "North-west office S upper carrier",
+      "North-west office N ground carrier",
+      "North-west office N upper carrier",
+      "South-west block W ground carrier",
+      "South-west block W upper carrier",
+      "South-west block E ground carrier",
+      "South-west block E upper carrier",
+      "South-west block S ground carrier",
+      "South-west block S upper carrier",
+      "South-west block N ground carrier",
+      "South-west block N upper carrier"
+    ],
+    "brick joints": [
+      "North-east storefront row W measured mortar courses",
+      "North-east storefront row E measured mortar courses",
+      "North-east storefront row S measured mortar courses",
+      "North-east storefront row N measured mortar courses",
+      "North-east apartment block W measured mortar courses",
+      "North-east apartment block W measured mortar courses.001",
+      "North-east apartment block E measured mortar courses",
+      "North-east apartment block E measured mortar courses.001",
+      "North-east apartment block S measured mortar courses",
+      "North-east apartment block S measured mortar courses.001",
+      "North-east apartment block N measured mortar courses",
+      "North-east apartment block N measured mortar courses.001",
+      "North-west office W measured mortar courses",
+      "North-west office W measured mortar courses.001",
+      "North-west office E measured mortar courses",
+      "North-west office E measured mortar courses.001",
+      "North-west office S measured mortar courses",
+      "North-west office S measured mortar courses.001",
+      "North-west office N measured mortar courses",
+      "North-west office N measured mortar courses.001",
+      "South-west block W measured mortar courses",
+      "South-west block E measured mortar courses",
+      "South-west block S measured mortar courses",
+      "South-west block N measured mortar courses"
+    ],
+    "North-east storefront row W": [
+      "North-east storefront row W North-east storefront row W frame",
+      "North-east storefront row W North-east storefront row W glass",
+      "North-east storefront row W North-east storefront row W stone",
+      "North-east storefront row W North-east storefront row W white",
+      "North-east storefront row W North-east storefront row W sign",
+      "North-east storefront row W North-east storefront row W wall"
+    ],
+    "North-east storefront row E": [
+      "North-east storefront row E North-east storefront row E sign"
+    ],
+    "North-east storefront row S": [
+      "North-east storefront row S North-east storefront row S frame",
+      "North-east storefront row S North-east storefront row S glass",
+      "North-east storefront row S North-east storefront row S stone",
+      "North-east storefront row S North-east storefront row S white",
+      "North-east storefront row S North-east storefront row S sign",
+      "North-east storefront row S North-east storefront row S wall"
+    ],
+    "North-east storefront row N": [
+      "North-east storefront row N North-east storefront row N sign"
+    ],
+    "North-east storefront row body": [
+      "North-east storefront row body wall",
+      "North-east storefront row body membrane",
+      "North-east storefront row body floor",
+      "North-east storefront row body interior",
+      "North-east storefront row body pale",
+      "North-east storefront row body hardware"
+    ],
+    "roof": [
+      "North-east storefront row parapet coping",
+      "South-east block parapet coping",
+      "North-east apartment block parapet coping",
+      "North-west office parapet coping",
+      "South-west block parapet coping"
+    ],
+    "South-east block W": [
+      "South-east block W South-east block W frame",
+      "South-east block W South-east block W glass",
+      "South-east block W South-east block W stone",
+      "South-east block W South-east block W white"
+    ],
+    "South-east block E": [
+      "South-east block E South-east block E frame"
+    ],
+    "South-east block S": [
+      "South-east block S South-east block S frame"
+    ],
+    "South-east block N": [
+      "South-east block N South-east block N frame",
+      "South-east block N South-east block N glass",
+      "South-east block N South-east block N stone",
+      "South-east block N South-east block N white"
+    ],
+    "South-east block body": [
+      "South-east block body stucco",
+      "South-east block body membrane",
+      "South-east block body floor",
+      "South-east block body interior",
+      "South-east block body pale",
+      "South-east block body hardware"
+    ],
+    "North-east apartment block W": [
+      "North-east apartment block W North-east apartment block W frame",
+      "North-east apartment block W North-east apartment block W glass",
+      "North-east apartment block W North-east apartment block W stone",
+      "North-east apartment block W North-east apartment block W white",
+      "North-east apartment block W North-east apartment block W cream",
+      "North-east apartment block W North-east apartment block W hardw"
+    ],
+    "North-east apartment block E": [
+      "North-east apartment block E North-east apartment block E cream"
+    ],
+    "North-east apartment block S": [
+      "North-east apartment block S North-east apartment block S white",
+      "North-east apartment block S North-east apartment block S glass",
+      "North-east apartment block S North-east apartment block S stone",
+      "North-east apartment block S North-east apartment block S cream"
+    ],
+    "North-east apartment block N": [
+      "North-east apartment block N North-east apartment block N cream"
+    ],
+    "North-east apartment block body": [
+      "North-east apartment block body wall",
+      "North-east apartment block body membrane",
+      "North-east apartment block body floor",
+      "North-east apartment block body pale",
+      "North-east apartment block body hardware"
+    ],
+    "North-west office W": [
+      "North-west office W North-west office W stone"
+    ],
+    "North-west office E": [
+      "North-west office E North-west office E white",
+      "North-west office E North-west office E glass",
+      "North-west office E North-west office E stone"
+    ],
+    "North-west office S": [
+      "North-west office S North-west office S white",
+      "North-west office S North-west office S glass",
+      "North-west office S North-west office S stone"
+    ],
+    "North-west office N": [
+      "North-west office N North-west office N stone"
+    ],
+    "North-west office body": [
+      "North-west office body wall",
+      "North-west office body membrane",
+      "North-west office body floor",
+      "North-west office body pale",
+      "North-west office body hardware"
+    ],
+    "South-west block W": [
+      "South-west block W South-west block W cream"
+    ],
+    "South-west block E": [
+      "South-west block E South-west block E white",
+      "South-west block E South-west block E glass",
+      "South-west block E South-west block E stone",
+      "South-west block E South-west block E cream"
+    ],
+    "South-west block S": [
+      "South-west block S South-west block S cream"
+    ],
+    "South-west block N": [
+      "South-west block N South-west block N white",
+      "South-west block N South-west block N glass",
+      "South-west block N South-west block N stone",
+      "South-west block N South-west block N cream"
+    ],
+    "South-west block body": [
+      "South-west block body wall",
+      "South-west block body membrane",
+      "South-west block body floor",
+      "South-west block body pale",
+      "South-west block body hardware"
+    ],
+    "context": [
+      "context neighbour",
+      "context membrane",
+      "context glass",
+      "context context"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-20T08:31:27.806050+00:00",
+  "delivery_and_render_seconds": 6649.115332126001,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
