@@ -2,16 +2,17 @@
 market_square / variant_0 (market_square_v0).
 
 Read from the pixels (the top view governs the plan): a large plaza of pale square concrete slabs that flares
-outward toward the viewer between stone bed walls that splay out from the foot of the bowl, set out with a regular
-grid of short grey utility bollards (market-stall and event power points) and small square floor drains; at its head
-a bowl of three seating tiers, each three steps of coursed warm-grey stacked-stone risers under pale concrete treads,
-each tier ending in a pale concrete terrace walk; the lowest tier is concave to the plaza and the tiers straighten as
-they rise until the top tier wraps forward around the stage, rising to a wide raised stage platform with a gently
-curved dark front edge; on the stage an open-fronted pavilion whose back and
+outward toward the viewer all the way to its south edge, first between stone bed walls that splay out from the foot of
+the bowl and then against open lawn wedges, set out with a regular grid of short grey utility bollards (market-stall
+and event power points) whose rows lengthen southward, and small square floor drains; at its head a bowl of three
+seating tiers on concentric arcs concave to the plaza, each tier a band of three steps of coursed warm-grey
+stacked-stone risers under light warm-stone treads, the bands separated by broad pale concrete terrace walks, the
+upper tiers' ends curling north beside the stage up to the stacked-stone cheek walls; a wide raised stage platform
+with a gently curved dark front edge; on the stage an open-fronted pavilion whose back and
 side walls are clad in vertical timber slats of mixed widths, depths and tones, under a deep flat dark roof slab,
 with a loudspeaker near each end of the back wall; two slender floodlight masts with stacked lamp heads just
-outside the pavilion; stacked-stone cheek walls that step up beside the bowl and raised planting beds of meadow
-grass retained by stacked stone along both flared plaza edges, with broad shade trees; lawn and meadow beyond.
+outside the pavilion; stacked-stone cheek walls beside the stage and raised planting beds of meadow
+grass retained by stacked stone beside the bowl, with broad shade trees; lawn and meadow beyond.
 There are no stalls or chalets in the source: the square is an open, serviced event floor.
 """
 import math
@@ -21,10 +22,11 @@ import geometry as G
 
 SLUG = 'clay-market-square'
 OX, OY = 0.0, 40.0                  # centre of the stage-front arc (the stage edge is convex toward the plaza)
-C_FOOT, C_TOP = -.0068, .0036       # bend of the tier lines y = u + c(u) x^2: the foot is concave to the plaza and
-                                    # the bend flips through the tiers until the top tier wraps forward around the stage
-FOOT_X, TOP_X = 18.0, 29.0          # half-width of the lowest riser and of the upper-terrace edge at the bed walls
-RISE, TREAD, TERRACE = .30, .55, 1.0
+YF, R0 = -3.0, 73.5                 # apex of the bowl foot on the axis; radius of the foot arc (centre on the plaza
+                                    # axis R0 south of the apex), so every tier line is a concentric arc concave to the plaza
+XB, CURL_K, CURL_P = 14.0, .099, 1.6    # beyond |x| = XB (just outside the stage) the upper tier lines curl north
+FOOT_X, TOP_X = 18.0, 27.0          # half-width of the lowest riser and of the top tier at the bowl-end walls
+RISE, TREAD, TERRACE = .30, .45, 2.3
 PAVE = .06                          # plaza paving top
 STAGE = 9 * RISE + .37              # stage deck top
 ROOF_Z = STAGE + 5.6                # underside of the pavilion roof slab
@@ -32,7 +34,7 @@ X0, X1, Y0, Y1 = -40.0, 40.0, -30.0, 34.0
 EPS = .002
 T = .3
 PALETTE = dict(paving=(.71, .70, .67), joint=(.52, .51, .49), joint2=(.44, .43, .41), concrete=(.80, .78, .74),
-    stone=(.57, .50, .41), stone2=(.65, .58, .47), stone3=(.49, .43, .35), mortar=(.30, .26, .21), dark=(.17, .17, .18), deck=(.36, .36, .37), roof=(.25, .25, .26),
+    stone=(.57, .50, .41), stone2=(.65, .58, .47), stone3=(.49, .43, .35), tread=(.74, .68, .58), mortar=(.30, .26, .21), dark=(.17, .17, .18), deck=(.36, .36, .37), roof=(.25, .25, .26),
     timber=(.46, .28, .16), timber2=(.66, .45, .27), timber3=(.27, .16, .09), hardware=(.12, .12, .13),
     pale=(.95, .92, .80), bollard=(.50, .50, .49), lawn=(.30, .44, .20), meadow=(.50, .53, .29), meadow2=(.64, .59, .35),
     tree=(.20, .36, .16), tree2=(.28, .43, .20), bark=(.30, .22, .15), trim=(.22, .22, .23), wall=(.17, .17, .18),
@@ -54,7 +56,7 @@ def manifest(version):
         ('rear_north', (5.0, 44.0, 10.0), (0.0, 15.0, 3.5), 30)])
     for c in cams:
         if c['name'] == 'front':                    # the locked front stands close on the plaza at eye height with a wide lens: the bowl foot fills about 70% of the frame and the low bed walls show at both edges
-            c.update(location=(0.0, -27.0, 2.4), target=(0.0, 10.0, 2.4), lens=22, whole=False)
+            c.update(location=(0.0, -27.0, 6.2), target=(0.0, 8.0, 1.6), lens=22, whole=False)
         elif c['name'] == 'front_corner':           # the locked oblique looks north from high over the south plaza
             c.update(location=(0.0, -37.0, 24.0), target=(0.0, 12.0, 3.0), lens=30, whole=False)
         elif c['name'] == 'aerial':                 # the locked top view is a steep oblique from the south
@@ -70,7 +72,7 @@ def manifest(version):
         source_archetype='market_square/variant_0 (market_square_v0)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=0, storey_programme='open space: a serviced market and event plaza with a seating bowl and a stage pavilion',
-            plan='plaza of square slabs fanning out between stone bed walls splayed about 22 degrees off the bowl foot, with a 3 m grid of short bollards; a three-tier seating bowl whose foot is concave to the plaza on a 36 m chord, straightening as it rises to a 58 m top tier that wraps forward around the stage; 27 m curved stage with a 21.6 m slatted pavilion; low wedge beds and raised stone-walled meadow beds both sides',
+            plan='plaza of square slabs flaring continuously to its south edge, first between stone bed walls splayed about 22 degrees off the bowl foot and then against lawn wedges, with a 3 m grid of short bollards whose rows lengthen southward; a three-tier seating bowl on concentric arcs concave to the plaza (36 m foot chord, 54 m top tier), three-step warm-stone bands separated by broad pale terrace walks, the upper tier ends curling north beside the stage to the cheek walls; 27 m curved stage with a 21.6 m slatted pavilion; low wedge beds and raised stone-walled meadow beds both sides',
             facade='stacked warm-grey stone risers and walls with pale concrete treads and copings; vertical timber slat cladding in three tones; dark flat roof slab; grey bollards; slender dark floodlight masts',
             levels_m=[0.0, PAVE, 3 * RISE, 6 * RISE, 9 * RISE, STAGE, ROOF_Z], inferred='the backstage door, stage side steps, the far lawn and tree belt are teaching assumptions; the meadow grass is abstracted as tufts'),
         roof_contract=dict(type='open space; flat dark roof slab over the stage pavilion', datum_m=0.0, crowns_m=[ROOF_Z + .38]),
@@ -473,20 +475,25 @@ def tuft(b, role, x, y, z, h, r, lean):
     F.extend([(o + 3, o + 2, o + 1, o), (o, o + 1, o + 4), (o + 1, o + 2, o + 4), (o + 2, o + 3, o + 4), (o + 3, o, o + 4)])
 
 
-# ---- plan: tier lines y = u + c(u) x^2 (u = distance up the axis from the bowl foot). c runs from C_FOOT (lines
-# concave to the plaza) to C_TOP (the top tier wraps forward around the stage) and stays at C_TOP above the top. ----
+# ---- plan: tier line u (distance up the axis from the bowl foot) is the arc of radius R0 + u about the centre
+# (0, YF - R0), so all tier lines are concentric and concave to the plaza; beyond |x| = XB the upper lines curl north
+# (weight rising with u) so the top tiers' ends wrap up beside the stage to the cheek walls. ----
 U_TOP = 8 * TREAD + 2 * TERRACE                     # face of the last riser (upper-terrace edge) on the axis
 U_W = U_TOP + 1.6                                   # high-bed retaining wall behind the top-tier walk
 TOP = 9 * RISE                                     # upper terrace (stone) level
 CHEEK_X = 14.7                                      # face of the high bed beside the stage cheek walls
 
 
-def bend(u):
-    return C_FOOT + (C_TOP - C_FOOT) * min(1.0, max(0.0, u / U_TOP))
+def curl(u, x):
+    ax = abs(x) - XB
+    if ax <= 0.0:
+        return 0.0
+    w = min(1.0, max(0.0, u / U_TOP))
+    return w * CURL_K * ax ** CURL_P
 
 
 def cy(u, x):
-    return u + bend(u) * x * x
+    return YF - R0 + math.sqrt((R0 + u) ** 2 - x * x) + curl(u, x)
 
 
 def curve_pts(u, x0, x1, n):
@@ -522,17 +529,19 @@ def end_x(u, d=0.0):
 T1 = 3 * TREAD + TERRACE                            # top of the first tier (its walk's back edge)
 F_MID = (end_x(T1), cy(T1, end_x(T1)))              # where the first tier meets the bowl-end wall: low bed ends here
 W_X = end_x(U_W)
-WALL_ARC = curve_pts(U_W, W_X, CHEEK_X, 10)
-# Low wedge bed: the stone front wall splays about 22 degrees off the foot line, so the plaza fans wide at the bowl foot.
-S_END = (37.0, F_END[1] - (37.0 - F_END[0]) * math.tan(math.radians(22.0)))
-B_E = (37.0, 3.0)
+WALL_ARC = curve_pts(U_W, W_X, CHEEK_X, 12)         # high-bed front behind the top walk, curling up to the cheek wall
+Y_CHEEK = WALL_ARC[-1][1] + .05                    # the stage cheek walls run forward to meet the high-bed corner
+# Low wedge bed: the stone front wall splays about 22 degrees off the foot line to the bed corner S_END; from there the
+# plaza edge keeps flaring south-outward against an open lawn wedge to the site's south edge.
+S_END = (27.0, F_END[1] - (27.0 - F_END[0]) * math.tan(math.radians(22.0)))
+B_E = (36.0, 2.0)
 BED_LO = [F_END, F_MID, B_E, S_END]
 BED_HI = [F_MID, U_END] + WALL_ARC + [(CHEEK_X, 22.3), (37.0, 22.3), B_E]
 H_LO, H_HI = .9, TOP + .45
 # per-edge treatment of the bed walls: base level of the dressed face, or None where the edge is buried
 LO_EDGES = [0.0, None, 0.0, 0.0]
 HI_EDGES = [0.0, 0.0] + [TOP] * (len(WALL_ARC) - 1) + [TOP, 0.0, 0.0, H_LO]
-# Plaza east edge: 12 cm under the splayed low-bed wall, then south past the bed corner to the site's south edge.
+# Plaza east edge: 12 cm under the splayed low-bed wall, then on to the south edge at PA_X.
 _SD = (S_END[0] - F_END[0], S_END[1] - F_END[1])
 _SL = math.hypot(*_SD)
 _SN = (-_SD[1] / _SL, _SD[0] / _SL)                 # normal of the splayed wall into the bed
@@ -555,7 +564,8 @@ def xe(y):
 
 def foot_x(y):
     """Half-width of the bottom riser line at y (0 north of its apex)."""
-    return math.sqrt(y / C_FOOT) if y < 0 else 0.0
+    dy = y - (YF - R0)
+    return math.sqrt(max(0.0, R0 * R0 - dy * dy)) if y < YF else 0.0
 
 
 def plaza_end():
@@ -578,9 +588,9 @@ def plaza():
     # Square slabs 1.5 m, a stronger joint every fourth line (6 m panels), clipped to the plaza and the bottom riser.
     for k in range(40):
         y = Y0 + .75 + k * 1.5
-        if y > -.1:
+        if y > YF - .1:
             break
-        e = min(xe(y), foot_x(y) if y > -12 else 99.0) - .06
+        e = min(xe(y), foot_x(y) if y > YF - 12 else 99.0) - .06
         if e < .5:
             continue
         role, w = ('joint2', .03) if k % 4 == 0 else ('joint', .012)
@@ -600,7 +610,7 @@ def plaza():
         b.box(role, x, (Y0 + .05 + ytop) / 2, PAVE + .0020, w, ytop - Y0 - .05, .0044)
     # Short stubby utility bollards on a 3 m grid (alternate rows offset 1.5 m), with single square slotted floor
     # drains centred in a slab.
-    for j, y in enumerate((-6.0, -10.5, -15.0, -19.5, -24.0)):
+    for j, y in enumerate((-7.5, -12.0, -16.5, -21.0, -25.5)):
         off = 1.5 if j % 2 else 0.0
         lim = xe(y) - 1.2
         for i in range(-13, 14):
@@ -660,7 +670,7 @@ def bowl():
             if t == 2 and s == 2:
                 riser_stones(b, face, lower, z - .045, k + 1)               # the last riser is the upper terrace edge
                 break
-            ring(f'Tier {t + 1} step {s + 1}', face, u + depth, z)
+            ring(f'Tier {t + 1} step {s + 1}', face, u + depth, z, cap_role='concrete' if s == 2 else 'tread')
             riser_stones(b, face, lower, z - .045, k + 1)
             lower = z + .02
             u += depth
@@ -686,13 +696,13 @@ def bowl():
     b = Batch()
     xc = CHEEK_X - .25
     for sgn in (1, -1):
-        for (y0, y1, h) in ((9.0, 13.0, TOP + .75), (13.0, 18.2, TOP + 1.15)):
+        for (y0, y1, h) in ((Y_CHEEK, 13.0, TOP + .75), (13.0, 18.2, TOP + 1.15)):
             C.box('Stage cheek wall', (sgn * xc, (y0 + y1) / 2, h / 2), (.6, y1 - y0, h), 'stone', 'seating bowl', 0)
             C.box('Stage cheek wall coping', (sgn * xc, (y0 + y1) / 2 - .01, h + .03), (.7, y1 - y0 + .04 - (.02 if y0 > 10 else 0.0), .06),
                   'concrete', 'seating bowl', 0)
             xf = sgn * (xc - .3)
             wall_courses(b, (xf, y0 if sgn > 0 else y1), (xf, y1 if sgn > 0 else y0), TOP, h, (-sgn, 0.0))
-        wall_courses(b, (sgn * (xc - .3), 9.0), (sgn * (xc + .3), 9.0), TOP, TOP + .75, (0.0, -1.0))
+        wall_courses(b, (sgn * (xc - .3), Y_CHEEK), (sgn * (xc + .3), Y_CHEEK), TOP, TOP + .75, (0.0, -1.0))
         wall_courses(b, (sgn * (xc - .3), 13.0), (sgn * (xc + .3), 13.0), TOP + .75, TOP + 1.15, (0.0, -1.0))
     b.flush('cheek wall joints')
 
@@ -859,7 +869,7 @@ def park_tree(x, y, z, height, spread, seed, detail=1, crowns=7):
 def trees():
     for s in (1, -1):
         for i, (x, y, z, h, sp) in enumerate(((19.5, 15.5, H_HI, 9.5, 3.0), (26.0, 19.5, H_HI, 10.0, 3.3), (17.8, 20.6, H_HI, 8.5, 2.6),
-                                             (32.0, 14.0, H_HI, 9.0, 3.0), (31.0, -3.0, H_LO, 8.0, 2.8), (25.5, 0.2, H_LO, 7.0, 2.4))):
+                                             (32.0, 14.0, H_HI, 9.0, 3.0), (31.0, -2.0, H_LO, 8.0, 2.8), (26.5, -3.5, H_LO, 7.0, 2.4))):
             park_tree(s * (x + .4 * (s < 0)), y - .5 * (s < 0), z, h, sp, i * 1.7 + (s < 0) * .9)
     for i, (x, y) in enumerate(((-32.0, 28.5), (-26.5, 30.0), (-21.0, 28.0), (21.5, 28.5), (27.0, 30.0), (32.0, 28.0),
                                 (-9.0, 30.0), (9.5, 29.5))):
