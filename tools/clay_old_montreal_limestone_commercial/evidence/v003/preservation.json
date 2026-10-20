@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-old-montreal-limestone-commercial-clay-v003",
+  "glb": "clay-old-montreal-limestone-commercial-clay-v003.glb",
+  "glb_bytes": 3564152,
+  "glb_sha256": "cec849096ce7cae65e0cb53db9b59c320beb585b5561393971706184a40590a9",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "balconettes.png": 92,
+    "dome_drum.png": 92,
+    "east_door.png": 92,
+    "end_pavilion_arches.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "long_facade.png": 92,
+    "portico.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roofs_dormers.png": 92,
+    "top.png": 92,
+    "west_range.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-old-montreal-limestone-commercial-clay-v003-renders-and-glb.zip",
+  "zip_bytes": 33647969
+}
