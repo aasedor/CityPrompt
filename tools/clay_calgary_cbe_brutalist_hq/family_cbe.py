@@ -30,11 +30,11 @@ SOFF = PODIUM + 1.45 * PITCH                    # underside of the cantilevered 
 FASCIA = 1.4                                    # plain fascia band over the ground storey (about .35 of the pitch)
 CELL0 = SOFF + FASCIA                           # bottom of the first row of precast window cells
 FLOORS = tuple(CELL0 + .1 + PITCH * r for r in range(3))     # office floor levels
-SILL = tuple(CELL0 + 1.0 + PITCH * r for r in range(3))      # glass sills, one row per floor
-WH, WW = 2.2, 1.6                               # glass clear height and width at the back of each coffer
+SILL = tuple(CELL0 + .9 + PITCH * r for r in range(3))      # glass sills, one row per floor
+WH, WW = 2.4, 1.85                              # glass clear height and width at the back of each coffer
 PARB = CELL0 + 3 * PITCH                        # top of the cell grid = foot of the parapet band
 PAR = PARB + .55 * PITCH                        # parapet top: one plain band about .55 of the pitch
-D = .9                                          # depth of the precast cell grid in front of the carrier
+D = .55                                         # depth of the precast cell grid in front of the carrier
 FB, FS = .28, .45                               # front width of the vertical cell members, front height of the horizontal ones
 PROUD = .05                                     # fascia, parapet and corner piers stand this far proud of the grid
 GH = 4.6                                        # two-tier storefront glazing height in the ground storey
@@ -67,7 +67,7 @@ def manifest(version):
         ('rear_north', (0.0, Y1 + 46.0, 22.0), (0.0, Y1, 10.0), 40)])
     for c in cams:                       # the locked front and oblique look from the south
         if c['name'] == 'front':
-            c.update(location=(30.0, -62.0, 4.0), target=(10.0, Y0, 11.5), lens=32, whole=False)
+            c.update(location=(36.0, -47.0, 2.2), target=(2.0, Y0 + 3.0, 12.0), lens=26, whole=False)
         elif c['name'] == 'front_corner':
             c.update(location=(34.0, -78.0, 58.0), target=(1.0, -2.0, 8.0), lens=35, whole=False)   # the locked oblique, high in the south
         elif c['name'] == 'aerial':
@@ -484,10 +484,6 @@ def upper_face(label, origin, tangent, inward, n, wrap):
     m.uprism('precast', bl, bh, [(0.0, PARB), (-F, PARB), (-F, PAR), (0.0, PAR)])            # one plain parapet band
     zj = PARB + (PAR - PARB) * .45
     m.box('joint', (bl + bh) / 2, -F - .002, zj, bh - bl - .04, .004, .025)                # its single horizontal joint
-    for k in range(n + 1):                                                                 # panel joints across the fascia
-        u = -L / 2 + BAY * k
-        if lo + .3 < u < hi - .3:
-            m.box('joint', u, -F - .002, (SOFF + CELL0) / 2, .025, .004, CELL0 - SOFF - .04)
     cl, ch = (-L / 2 - F - .05, L / 2 + F + .05) if wrap else (-L / 2 + T, L / 2 - T)
     m.box('precast', (cl + ch) / 2, (T - F - .05) / 2, PAR + .06, ch - cl, T + F + .05, .12)               # coping
     m.flush(label)
@@ -591,10 +587,10 @@ def floors_and_roof():
     z0, z1, tp = PAR - 1.0, PH['top'], .3
     x0, x1, y0, y1 = PH['x0'], PH['x1'], PH['y0'], PH['y1']
     faces = [('penthouse south', (0, y0, 0), (1, 0, 0), (0, 1, 0), x0, x1,
-              [('door', -8.3, .05, 1.0, 2.2), ('louvre', -5.6, 1.4, 2.6, 1.8), ('door', 7.0, .05, 1.0, 2.2)]),
-             ('penthouse north', (0, y1, 0), (-1, 0, 0), (0, -1, 0), -x1, -x0, [('louvre', 2.0, 1.4, 3.2, 1.8)]),
-             ('penthouse east', (x1, 0, 0), (0, 1, 0), (-1, 0, 0), y0 + tp, y1 - tp, [('louvre', 4.0, 1.4, 2.4, 1.8)]),
-             ('penthouse west', (x0, 0, 0), (0, -1, 0), (1, 0, 0), -(y1 - tp), -(y0 + tp), [('louvre', -1.0, 1.4, 3.6, 1.8), ('door', 6.0, .05, 1.0, 2.2)])]
+              [('door', -8.3, .05, 1.0, 2.2), ('louvre', -5.6, 2.6, 2.6, 1.8), ('door', 7.0, .05, 1.0, 2.2)]),
+             ('penthouse north', (0, y1, 0), (-1, 0, 0), (0, -1, 0), -x1, -x0, [('louvre', 2.0, 2.6, 3.2, 1.8)]),
+             ('penthouse east', (x1, 0, 0), (0, 1, 0), (-1, 0, 0), y0 + tp, y1 - tp, [('louvre', 4.0, 2.6, 2.4, 1.8)]),
+             ('penthouse west', (x0, 0, 0), (0, -1, 0), (1, 0, 0), -(y1 - tp), -(y0 + tp), [('louvre', -1.0, 2.6, 3.6, 1.8), ('door', 6.0, .05, 1.0, 2.2)])]
     for label, o, t, n, lo, hi, ops in faces:
         f = C.Face(o, t, n, label)
         hs = [(hole(f'{label} {k} {u:+.1f}', u, z0 + z, w_, h_, kind='door' if k == 'door' else 'louvre'), k) for k, u, z, w_, h_ in ops]
