@@ -570,73 +570,101 @@ def car_bodies():
     return out
 
 
-NOSE_PROF = [(.30, .34), (.60, .44), (.95, .48), (1.30, .46), (1.90, .33), (2.50, .18), (2.80, .08), (3.00, -.02), (3.08, -.10)]
+# Cab nose profile: (height, forward reach beyond the cab-end line, side inset). The lower front stands near vertical,
+# the windscreen rakes back about 20 degrees and steepens into the domed red roof cap, which curves back about 1 m.
+NOSE = [(.30, .32, .02), (.52, .44, 0), (.84, .50, 0), (1.18, .52, 0), (1.30, .51, 0), (1.70, .43, 0), (2.10, .31, .01),
+        (2.40, .18, .02), (2.65, .02, .035), (2.85, -.12, .055), (3.00, -.28, .09), (3.10, -.43, .14), (3.18, -.60, .21),
+        (3.23, -.80, .30), (3.26, -.95, .40)]
+CAB_D = 1.9                                      # cab section length behind the cab-end line, lofted instead of boxed
+
+
+def _nose(z, k):
+    pr = NOSE
+    if z <= pr[0][0]:
+        return pr[0][k]
+    for p0, p1 in zip(pr, pr[1:]):
+        if z <= p1[0]:
+            return p0[k] + (p1[k] - p0[k]) * (z - p0[0]) / (p1[0] - p0[0])
+    return pr[-1][k]
 
 
 def nose_f(z):
-    """Forward reach of the raked cab nose beyond the module end at height z."""
-    pr = NOSE_PROF
-    if z <= pr[0][0]:
-        return pr[0][1]
-    for (z0, f0), (z1, f1) in zip(pr, pr[1:]):
-        if z <= z1:
-            return f0 + (f1 - f0) * (z - z0) / (z1 - z0)
-    return pr[-1][1]
+    """Forward reach of the raked cab nose beyond the cab-end line at height z."""
+    return _nose(z, 1)
 
 
-BROW = [(2.95, .000, .030), (3.03, -.040, .055), (3.10, -.090, .100), (3.16, -.160, .170), (3.21, -.260, .270), (3.245, -.400, .420)]
-
-
-def nose_curve(ye, sgn, z, off=0.0, back=.30, wrap=None, n=6, f=None, inset=.006):
-    """Plan section of the cab nose at height z: sides, rounded corners and front, offset outward by off.
-    With wrap, only the visible front part, from wrap metres behind each corner start round to the other side."""
-    xc, hw = TC, CAR_W / 2 - inset + off
-    f = (nose_f(z) if f is None else f) + off
-    rc = max(.06, min(.62, f + back - .05))
+def nose_curve(ye, sgn, z, off=0.0, wrap=None, n=8, hwb=None):
+    """Plan ring of the cab at height z, offset outward by off: the sides leave the module body at CAB_D behind the cab-end
+    line at the body's half-width hwb, taper to the nose half-width, and turn round two corner arcs across the front.
+    With wrap, only the front part, from wrap metres behind each corner start."""
+    xc = TC
+    f = nose_f(z) + off
+    hwf = CAR_W / 2 - _nose(z, 2) + off
+    hwb = (CAR_W / 2 if hwb is None else hwb) + off
+    rc = .62 + .23 * min(1.0, max(0.0, (z - 2.85) / .41))                                       # corners round more up the cap
+    rc = min(rc, hwf - .05)
     yf = ye + sgn * f
     ys = yf - sgn * rc                                                                         # where the corner arc leaves the side
-    pts = []
-    y_start = ye - sgn * back if wrap is None else ys - sgn * wrap
-    pts.append((xc - hw, y_start, z))
+    yb = ye - sgn * CAB_D
+
+    def hw_at(y):
+        t = abs(y - yb) / max(1e-6, abs(ys - yb))
+        return hwb + (hwf - hwb) * min(1.0, max(0.0, t))
+    y0 = yb if wrap is None else ys - sgn * wrap
+    pts = [(xc - hw_at(y0), y0, z)]
     for i in range(n + 1):                                                                     # left corner
         a = math.pi / 2 * i / n
-        pts.append((xc - hw + rc * (1 - math.cos(a)), ys + sgn * rc * math.sin(a), z))
+        pts.append((xc - hwf + rc * (1 - math.cos(a)), ys + sgn * rc * math.sin(a), z))
     for i in range(n + 1):                                                                     # right corner
         a = math.pi / 2 * (1 - i / n)
-        pts.append((xc + hw - rc * (1 - math.cos(a)), ys + sgn * rc * math.sin(a), z))
-    pts.append((xc + hw, y_start, z))
+        pts.append((xc + hwf - rc * (1 - math.cos(a)), ys + sgn * rc * math.sin(a), z))
+    pts.append((xc + hw_at(y0), y0, z))
     if sgn < 0:
         pts = pts[::-1]
     return pts
 
 
+def smooth_loft(name, rings, role):
+    """Open loft capped at both ends; the swept faces are smooth-shaded, the two flat caps stay flat."""
+    obj = loft(name, rings, role, 'streetcar', closed=False)
+    ps = obj.data.polygons
+    for k, poly in enumerate(ps):
+        poly.use_smooth = k < len(ps) - 2
+    return obj
+
+
 def nose(b, ye, sgn):
-    """Raked, rounded Flexity cab: lofted red nose, a large windscreen wrapping onto the sides with the amber sign at its head,
-    the red light band, the white lower apron and a red skirt."""
-    zs = [z for z, _ in NOSE_PROF]
-    rings = [nose_curve(ye, sgn, z) for z in zs]
-    loft('Streetcar nose', rings, 'car_red', 'streetcar', closed=False)
-    brow = [nose_curve(ye, sgn, z, back=.90, f=fz, inset=ins) for z, fz, ins in BROW]            # rounded red roof cap over the cab
-    loft('Streetcar roof cap', brow, 'car_red', 'streetcar', closed=False)
-    wz = [1.32, 1.55, 1.80, 2.05, 2.30, 2.52]                                                  # wrap-around windscreen shell
-    shell = []
-    for z in wz:
-        outer = nose_curve(ye, sgn, z, off=.018, wrap=.38)
-        inner = nose_curve(ye, sgn, z, off=.006, wrap=.38)
-        shell.append(outer + inner[::-1])
-    loft('Streetcar windscreen', shell, 'car_glass', 'streetcar', closed=False)
+    """Raked, domed Flexity cab lofted from plan rings in the livery bands of the body: red skirt, white band, the glass
+    band that is the wrapped windscreen at the front, white band and a red roof cap that domes back into the roof.
+    Front overlays give the white apron, the red light band, the tall windscreen head and the red brow."""
+    hb = CAR_W / 2
+    bands = [('skirt', [.30, .52, .749], 'car_red', lambda z: hb),
+             ('white band', [.751, .84, 1.00, 1.179], 'car_white', lambda z: hb + .01),
+             ('glass band', [1.181, 1.30, 1.50, 1.70, 1.90, 2.10, 2.25, 2.399], 'car_glass', lambda z: hb - .02),
+             ('upper white band', [2.401, 2.55, 2.70, 2.849], 'car_white', lambda z: hb),
+             ('roof cap', [2.851, 2.95, 3.03, 3.10, 3.16, 3.21, 3.245, 3.26], 'car_red', lambda z: hb if z <= 3.10 else hb - .05)]
+    for nm, zs, role, hwb in bands:
+        smooth_loft(f'Streetcar cab {nm}', [nose_curve(ye, sgn, z, hwb=hwb(z)) for z in zs], role)
+
+    def shell(name, zs, role, wrap, o1=.016, o0=.004):
+        rings = [nose_curve(ye, sgn, z, off=o1, wrap=wrap) + nose_curve(ye, sgn, z, off=o0, wrap=wrap)[::-1] for z in zs]
+        smooth_loft(name, rings, role)
+    shell('Streetcar apron', [.52, .62, .72, .84], 'car_white', .10)                           # white lower apron
+    shell('Streetcar light band', [.842, 1.00, 1.18, 1.30], 'car_red', .12)                     # red light band under the windscreen
+    shell('Streetcar windscreen head', [2.38, 2.52, 2.68], 'car_glass', .42)                    # windscreen runs up past the side band
+    shell('Streetcar brow', [2.682, 2.78, 2.86], 'car_red', .42)                                 # red brow joining the cap
     xc = TC
+
     def front(z, off):
         return (xc, ye + sgn * (nose_f(z) + off), z)
-    b.beam('amber', front(2.24, .034), front(2.44, .034), 1.3, .012)                           # destination sign
-    az = [.52, .62, .72, .84]                                                                  # white lower apron
-    apron = [nose_curve(ye, sgn, z, off=.012, wrap=.10) + nose_curve(ye, sgn, z, off=.003, wrap=.10)[::-1] for z in az]
-    loft('Streetcar apron', apron, 'car_white', 'streetcar', closed=False)
+    b.beam('amber', front(2.44, .03), front(2.62, .03), 1.3, .012)                             # destination sign
     for s in (-1, 1):
-        y = ye + sgn * (nose_f(1.1) + .01)
-        b.box('lamp', xc + s * .72, y, 1.1, .30, .06, .11)                                     # headlights in the red light band
+        y = ye + sgn * (nose_f(1.0) + .025)
+        b.box('lamp', xc + s * .72, y, 1.02, .30, .06, .11)                                     # headlights in the red light band
         for k in (1, 2):
-            b.box('car_white', xc + s * (.18 + .17 * k), y, 1.1, .09, .05, .09)
+            b.box('car_white', xc + s * (.18 + .17 * k), y, 1.02, .09, .05, .09)
+        yp = ye + sgn * (nose_f(1.8) - .62 - .40)                                              # white pillar behind the wrapped windscreen
+        b.box('car_white', xc + s * (CAR_W / 2 - .01), yp, 1.79, .03, .12, 1.22)
     b.box('rubber', xc, ye + sgn * (nose_f(.36) + .02), .38, 1.6, .1, .1)                      # anti-climber
 
 
@@ -645,7 +673,9 @@ def streetcar():
     b = Batch()
     xc, hw = TC, CAR_W / 2
     mods = car_bodies()
-    for i, (y0, y1) in enumerate(mods):
+    for i, (m0, m1) in enumerate(mods):
+        y0 = m0 + (CAB_D if i == len(mods) - 1 else 0.0)                                      # end modules stop where the cab begins
+        y1 = m1 - (CAB_D if i == 0 else 0.0)
         L, yc = y1 - y0, (y0 + y1) / 2
         b.box('car_red', xc, yc, .525, CAR_W, L, .45)                                        # red skirt .30-.75
         b.box('car_white', xc, yc, .965, CAR_W + .02, L, .43)                                 # wide white band .75-1.18
@@ -657,14 +687,14 @@ def streetcar():
         cab_end = y1 if i == 0 else (y0 if i == len(mods) - 1 else None)
         for py in (y0 + .1, y1 - .1):                                                          # black joint stripes at the articulations
             if cab_end is not None and abs(py - cab_end) < .2:
-                b.box('car_white', xc, py - (.06 if py > yc else -.06), 1.79, CAR_W + .02, .32, 1.22)  # white frame closing the windows at the cab
-                continue
+                continue                                                                       # the lofted cab continues the bands here
             b.box('rubber', xc, py, 1.75, CAR_W + .03, .2, 2.5)
         b.box('car_white', xc, yc, 2.625, CAR_W, L, .45)                                      # wide white band 2.40-2.85
         b.box('car_red', xc, yc, 2.975, CAR_W, L, .25)                                        # red roof band 2.85-3.10
-        b.box('car_roof', xc, yc, 3.18, CAR_W - .1, L - .04, .16)                             # roof 3.10-3.26
+        r0, r1 = y0 + (0.0 if i == len(mods) - 1 else .02), y1 - (0.0 if i == 0 else .02)        # roof runs into the cab cap
+        b.box('car_roof', xc, (r0 + r1) / 2, 3.18, CAR_W - .1, r1 - r0, .16)                  # roof 3.10-3.26
         if i in (0, 4):
-            b.box('car_roof', xc, yc + (.6 if i == 4 else -.6), 3.44, 1.6, L - 2.2, .36)      # roof equipment
+            b.box('car_roof', xc, yc + (.5 if i == 4 else -.5), 3.44, 1.6, L - 1.4, .36)      # roof equipment
         if i in (0, 2, 4):                                                                     # bogies: frame and wheels on the rails
             for ax in (-.9, .9):
                 for s in (-1, 1):
