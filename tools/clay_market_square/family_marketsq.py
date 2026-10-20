@@ -636,6 +636,10 @@ def bowl():
     cap = bowl_pts(RTOP - .05, -a_c, a_c, 72) + east + [(8.8, 17.35), (-8.8, 17.35)] + mirror(east)
     C.prism('Upper terrace paving', cap, 'z', TOP - .03, TOP + .03, 'concrete', 'seating bowl')
     C.box('Upper terrace meadow', (0.0, 19.6, TOP + .085), (17.4, 4.4, .11), 'meadow', 'planting', 0)
+    C.box('Upper terrace back wall', (0.0, 22.04, TOP / 2), (2 * CHEEK_X + .5, .1, TOP), 'stone', 'seating bowl', 0)
+    b = Batch()
+    wall_courses(b, (CHEEK_X + .2, 22.09), (-CHEEK_X - .2, 22.09), 0.0, TOP, (0.0, 1.0))
+    b.flush('terrace back joints')
     # Stacked-stone cheek walls at both stage ends, stepping up toward the back, with the side steps between
     # each wall and the pavilion.
     b = Batch()
