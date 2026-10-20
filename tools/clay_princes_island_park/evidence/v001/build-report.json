@@ -1,0 +1,771 @@
+{
+  "candidate": "clay-princes-island-park-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 327,
+    "vertices": 39303,
+    "polygons": 53732,
+    "triangles": 53732,
+    "path": "clay-princes-island-park-clay-v001-authoring.blend",
+    "bytes": 6382612,
+    "sha256": "9119c41ac2fbf52a67dbf4f8111a3a27fb3eb7372a7760aced994044519e7637"
+  },
+  "runtime": {
+    "path": "clay-princes-island-park-clay-v001.glb",
+    "bytes": 3562372,
+    "sha256": "7ca324784a0df31ace26c238b6761ad49012c0c533f4cb1bb4f4e580fe59558a",
+    "meshes": 40,
+    "materials": 40,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 40,
+    "vertices": 39303,
+    "polygons": 53732,
+    "triangles": 53732
+  },
+  "original_bounds_m": [
+    [
+      -30.0,
+      -24.209392547607422,
+      0.0
+    ],
+    [
+      68.0,
+      41.0,
+      12.666999816894531
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -30.0,
+      -24.209392547607422,
+      0.0
+    ],
+    [
+      68.0,
+      41.0,
+      12.666998863220215
+    ]
+  ],
+  "max_roundtrip_delta_m": 9.5367431640625e-07,
+  "design_dimensions_m": {
+    "width": 97.0,
+    "depth": 63.0,
+    "height": 14.0
+  },
+  "native_dimensions_m": {
+    "width": 98.0,
+    "depth": 65.20939254760742,
+    "height": 12.666998863220215
+  },
+  "native_bottom_center_m": [
+    19.0,
+    8.395303726196289,
+    0.0
+  ],
+  "source_components_by_role": {
+    "water": 1,
+    "riprap": 1,
+    "rock": 1,
+    "rock2": 1,
+    "rock3": 1,
+    "lawn": 2,
+    "grass": 2,
+    "grass2": 3,
+    "planting": 1,
+    "shrub": 1,
+    "tree": 60,
+    "tree2": 60,
+    "bark": 90,
+    "soil": 11,
+    "flower": 1,
+    "flower2": 1,
+    "flower3": 1,
+    "concrete": 2,
+    "paving": 9,
+    "sett": 10,
+    "joint": 7,
+    "curb": 15,
+    "asphalt": 3,
+    "yellow": 2,
+    "deck": 5,
+    "timber": 5,
+    "batten": 4,
+    "post": 1,
+    "fascia": 3,
+    "sedum": 1,
+    "sedum2": 1,
+    "sedum3": 1,
+    "glass": 3,
+    "trim": 4,
+    "interior": 1,
+    "floor": 1,
+    "steel": 6,
+    "mesh": 2,
+    "corten": 1,
+    "bench": 2
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/pavilion_close.png",
+    "renders/glazing_close.png",
+    "renders/green_roof.png",
+    "renders/porch_northwest.png",
+    "renders/promenade_beds.png",
+    "renders/boardwalk.png",
+    "renders/riprap_bank.png",
+    "renders/bench_plaza.png",
+    "renders/footbridge.png",
+    "renders/west_path.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "top": {
+      "xmin": 0.08910495042800903,
+      "xmax": 0.910895049571991,
+      "ymin": 0.13428224623203278,
+      "ymax": 0.8633765578269958
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Pavilion: slab on the apron, walls on the slab, posts under the roof corners, sedum on the roof build-up",
+      "box": [
+        -1.172989565300139,
+        -7.457995798743751,
+        1.5729895653001393,
+        7.857995798743751
+      ]
+    },
+    {
+      "name": "Prince's Island Park: island ground, rip-rap, river, paths, beds, trees, boardwalk, footbridge, pavilion",
+      "box": [
+        -29.0,
+        68.0,
+        -23.0,
+        40.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "SE curtain wall",
+      "face": "Pavilion south-east glazed face",
+      "u": 0.0,
+      "z": 1.24,
+      "width": 6.6,
+      "height": 3.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        2.5607504844665527,
+        -4.433233737945557,
+        0.0
+      ],
+      "face_tangent": [
+        0.8910065293312073,
+        0.45399048924446106,
+        0.0
+      ],
+      "face_inward": [
+        -0.45399048924446106,
+        0.8910065293312073,
+        0.0
+      ],
+      "occupied_space": "pavilion room"
+    },
+    {
+      "id": "SW door",
+      "face": "Pavilion south-west face",
+      "u": -1.6,
+      "z": 1.15,
+      "width": 1.0,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -3.274925470352173,
+        -1.5705629587173462,
+        0.0
+      ],
+      "face_tangent": [
+        0.45399048924446106,
+        -0.8910065293312073,
+        0.0
+      ],
+      "face_inward": [
+        0.8910065293312073,
+        0.45399048924446106,
+        0.0
+      ],
+      "occupied_space": "pavilion room"
+    },
+    {
+      "id": "SW corner glazing",
+      "face": "Pavilion south-west face",
+      "u": 3.35,
+      "z": 1.24,
+      "width": 2.7,
+      "height": 3.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -3.274925470352173,
+        -1.5705629587173462,
+        0.0
+      ],
+      "face_tangent": [
+        0.45399048924446106,
+        -0.8910065293312073,
+        0.0
+      ],
+      "face_inward": [
+        0.8910065293312073,
+        0.45399048924446106,
+        0.0
+      ],
+      "occupied_space": "pavilion room"
+    },
+    {
+      "id": "NE clerestory a",
+      "face": "Pavilion north-east face",
+      "u": -2.8,
+      "z": 3.3,
+      "width": 2.6,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        3.6749253273010254,
+        1.9705629348754883,
+        0.0
+      ],
+      "face_tangent": [
+        -0.45399048924446106,
+        0.8910065293312073,
+        0.0
+      ],
+      "face_inward": [
+        -0.8910065293312073,
+        -0.45399048924446106,
+        0.0
+      ],
+      "occupied_space": "pavilion room"
+    },
+    {
+      "id": "NE clerestory b",
+      "face": "Pavilion north-east face",
+      "u": 0.4,
+      "z": 3.3,
+      "width": 2.6,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        3.6749253273010254,
+        1.9705629348754883,
+        0.0
+      ],
+      "face_tangent": [
+        -0.45399048924446106,
+        0.8910065293312073,
+        0.0
+      ],
+      "face_inward": [
+        -0.8910065293312073,
+        -0.45399048924446106,
+        0.0
+      ],
+      "occupied_space": "pavilion room"
+    },
+    {
+      "id": "NW door a",
+      "face": "Pavilion north-west porch face",
+      "u": -1.5,
+      "z": 1.15,
+      "width": 0.95,
+      "height": 2.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -1.3435677289962769,
+        3.229422092437744,
+        0.0
+      ],
+      "face_tangent": [
+        -0.8910065293312073,
+        -0.45399048924446106,
+        0.0
+      ],
+      "face_inward": [
+        0.45399048924446106,
+        -0.8910065293312073,
+        0.0
+      ],
+      "occupied_space": "pavilion room"
+    },
+    {
+      "id": "NW door b",
+      "face": "Pavilion north-west porch face",
+      "u": 1.5,
+      "z": 1.15,
+      "width": 0.95,
+      "height": 2.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -1.3435677289962769,
+        3.229422092437744,
+        0.0
+      ],
+      "face_tangent": [
+        -0.8910065293312073,
+        -0.45399048924446106,
+        0.0
+      ],
+      "face_inward": [
+        0.45399048924446106,
+        -0.8910065293312073,
+        0.0
+      ],
+      "occupied_space": "pavilion room"
+    }
+  ],
+  "authoring_modules": {
+    "ground": [
+      "Island ground"
+    ],
+    "bank": [
+      "Rip-rap bank"
+    ],
+    "river": [
+      "Bow River"
+    ],
+    "far bank": [
+      "Far bank"
+    ],
+    "rip-rap boulders": [
+      "rip-rap boulders rock",
+      "rip-rap boulders rock3",
+      "rip-rap boulders rock2"
+    ],
+    "bank grasses": [
+      "bank grasses grass",
+      "bank grasses grass2"
+    ],
+    "cycle paths": [
+      "West cycle path asphalt",
+      "West cycle path edge -1",
+      "West cycle path edge +1",
+      "East cycle path asphalt",
+      "East cycle path edge -1",
+      "East cycle path edge +1"
+    ],
+    "West cycle path markings": [
+      "West cycle path markings yellow"
+    ],
+    "East cycle path markings": [
+      "East cycle path markings yellow"
+    ],
+    "paving": [
+      "Promenade slabs",
+      "Promenade sett border -1",
+      "Promenade sett border +1",
+      "West crossing slabs",
+      "West crossing sett border -1",
+      "West crossing sett border +1",
+      "Bench link slabs",
+      "Bench link sett border -1",
+      "Bench link sett border +1",
+      "North path slabs",
+      "North path sett border -1",
+      "North path sett border +1",
+      "Bridge path slabs",
+      "Bridge path sett border -1",
+      "Bridge path sett border +1",
+      "South plaza"
+    ],
+    "Promenade joints": [
+      "Promenade joints joint"
+    ],
+    "West crossing joints": [
+      "West crossing joints joint"
+    ],
+    "Bench link joints": [
+      "Bench link joints joint"
+    ],
+    "North path joints": [
+      "North path joints joint"
+    ],
+    "Bridge path joints": [
+      "Bridge path joints joint"
+    ],
+    "plaza joints": [
+      "plaza joints joint"
+    ],
+    "beds": [
+      "Bed B1 kerb",
+      "Bed B1 soil",
+      "Bed B2 kerb",
+      "Bed B2 soil",
+      "Bed B3 kerb",
+      "Bed B3 soil",
+      "Bed B4 kerb",
+      "Bed B4 soil",
+      "Bed B5 kerb",
+      "Bed B5 soil",
+      "Bed B6 kerb",
+      "Bed B6 soil",
+      "Bed B7 kerb",
+      "Bed B7 soil",
+      "Bed B8 kerb",
+      "Bed B8 soil",
+      "Bed B9 kerb",
+      "Bed B9 soil",
+      "Tree pit 0 kerb",
+      "Tree pit 0 soil",
+      "Tree pit 1 kerb",
+      "Tree pit 1 soil"
+    ],
+    "planting": [
+      "planting grass",
+      "planting grass2",
+      "planting planting",
+      "planting shrub",
+      "planting flower",
+      "planting flower2",
+      "planting flower3"
+    ],
+    "trees": [
+      "Tree trunk",
+      "Tree limb",
+      "Tree limb.001",
+      "Tree trunk.001",
+      "Tree limb.002",
+      "Tree limb.003",
+      "Tree trunk.002",
+      "Tree limb.004",
+      "Tree limb.005",
+      "Tree trunk.003",
+      "Tree limb.006",
+      "Tree limb.007",
+      "Tree trunk.004",
+      "Tree limb.008",
+      "Tree limb.009",
+      "Tree trunk.005",
+      "Tree limb.010",
+      "Tree limb.011",
+      "Tree trunk.006",
+      "Tree limb.012",
+      "Tree limb.013",
+      "Tree trunk.007",
+      "Tree limb.014",
+      "Tree limb.015",
+      "Tree trunk.008",
+      "Tree limb.016",
+      "Tree limb.017",
+      "Tree trunk.009",
+      "Tree limb.018",
+      "Tree limb.019",
+      "Tree trunk.010",
+      "Tree limb.020",
+      "Tree limb.021",
+      "Tree trunk.011",
+      "Tree limb.022",
+      "Tree limb.023",
+      "Tree trunk.012",
+      "Tree limb.024",
+      "Tree limb.025",
+      "Tree trunk.013",
+      "Tree limb.026",
+      "Tree limb.027",
+      "Tree trunk.014",
+      "Tree limb.028",
+      "Tree limb.029",
+      "Tree trunk.015",
+      "Tree limb.030",
+      "Tree limb.031",
+      "Tree trunk.016",
+      "Tree limb.032",
+      "Tree limb.033",
+      "Tree trunk.017",
+      "Tree limb.034",
+      "Tree limb.035",
+      "Tree trunk.018",
+      "Tree limb.036",
+      "Tree limb.037",
+      "Tree trunk.019",
+      "Tree limb.038",
+      "Tree limb.039",
+      "Tree trunk.020",
+      "Tree limb.040",
+      "Tree limb.041",
+      "Tree trunk.021",
+      "Tree limb.042",
+      "Tree limb.043",
+      "Tree trunk.022",
+      "Tree limb.044",
+      "Tree limb.045",
+      "Tree trunk.023",
+      "Tree limb.046",
+      "Tree limb.047",
+      "Tree trunk.024",
+      "Tree limb.048",
+      "Tree limb.049",
+      "Tree trunk.025",
+      "Tree limb.050",
+      "Tree limb.051",
+      "Tree trunk.026",
+      "Tree limb.052",
+      "Tree limb.053",
+      "Tree trunk.027",
+      "Tree limb.054",
+      "Tree limb.055",
+      "Tree trunk.028",
+      "Tree limb.056",
+      "Tree limb.057",
+      "Tree trunk.029",
+      "Tree limb.058",
+      "Tree limb.059"
+    ],
+    "garden planting": [
+      "Tree crown",
+      "Tree crown mass",
+      "Tree crown mass.001",
+      "Tree crown mass.002",
+      "Tree crown.001",
+      "Tree crown mass.003",
+      "Tree crown mass.004",
+      "Tree crown mass.005",
+      "Tree crown.002",
+      "Tree crown mass.006",
+      "Tree crown mass.007",
+      "Tree crown mass.008",
+      "Tree crown.003",
+      "Tree crown mass.009",
+      "Tree crown mass.010",
+      "Tree crown mass.011",
+      "Tree crown.004",
+      "Tree crown mass.012",
+      "Tree crown mass.013",
+      "Tree crown mass.014",
+      "Tree crown.005",
+      "Tree crown mass.015",
+      "Tree crown mass.016",
+      "Tree crown mass.017",
+      "Tree crown.006",
+      "Tree crown mass.018",
+      "Tree crown mass.019",
+      "Tree crown mass.020",
+      "Tree crown.007",
+      "Tree crown mass.021",
+      "Tree crown mass.022",
+      "Tree crown mass.023",
+      "Tree crown.008",
+      "Tree crown mass.024",
+      "Tree crown mass.025",
+      "Tree crown mass.026",
+      "Tree crown.009",
+      "Tree crown mass.027",
+      "Tree crown mass.028",
+      "Tree crown mass.029",
+      "Tree crown.010",
+      "Tree crown mass.030",
+      "Tree crown mass.031",
+      "Tree crown mass.032",
+      "Tree crown.011",
+      "Tree crown mass.033",
+      "Tree crown mass.034",
+      "Tree crown mass.035",
+      "Tree crown.012",
+      "Tree crown mass.036",
+      "Tree crown mass.037",
+      "Tree crown mass.038",
+      "Tree crown.013",
+      "Tree crown mass.039",
+      "Tree crown mass.040",
+      "Tree crown mass.041",
+      "Tree crown.014",
+      "Tree crown mass.042",
+      "Tree crown mass.043",
+      "Tree crown mass.044",
+      "Tree crown.015",
+      "Tree crown mass.045",
+      "Tree crown mass.046",
+      "Tree crown mass.047",
+      "Tree crown.016",
+      "Tree crown mass.048",
+      "Tree crown mass.049",
+      "Tree crown mass.050",
+      "Tree crown.017",
+      "Tree crown mass.051",
+      "Tree crown mass.052",
+      "Tree crown mass.053",
+      "Tree crown.018",
+      "Tree crown mass.054",
+      "Tree crown mass.055",
+      "Tree crown mass.056",
+      "Tree crown.019",
+      "Tree crown mass.057",
+      "Tree crown mass.058",
+      "Tree crown mass.059",
+      "Tree crown.020",
+      "Tree crown mass.060",
+      "Tree crown mass.061",
+      "Tree crown mass.062",
+      "Tree crown.021",
+      "Tree crown mass.063",
+      "Tree crown mass.064",
+      "Tree crown mass.065",
+      "Tree crown.022",
+      "Tree crown mass.066",
+      "Tree crown mass.067",
+      "Tree crown mass.068",
+      "Tree crown.023",
+      "Tree crown mass.069",
+      "Tree crown mass.070",
+      "Tree crown mass.071",
+      "Tree crown.024",
+      "Tree crown mass.072",
+      "Tree crown mass.073",
+      "Tree crown mass.074",
+      "Tree crown.025",
+      "Tree crown mass.075",
+      "Tree crown mass.076",
+      "Tree crown mass.077",
+      "Tree crown.026",
+      "Tree crown mass.078",
+      "Tree crown mass.079",
+      "Tree crown mass.080",
+      "Tree crown.027",
+      "Tree crown mass.081",
+      "Tree crown mass.082",
+      "Tree crown mass.083",
+      "Tree crown.028",
+      "Tree crown mass.084",
+      "Tree crown mass.085",
+      "Tree crown mass.086",
+      "Tree crown.029",
+      "Tree crown mass.087",
+      "Tree crown mass.088",
+      "Tree crown mass.089"
+    ],
+    "boardwalk": [
+      "Boardwalk deck",
+      "Boardwalk kerb -1",
+      "Boardwalk kerb +1"
+    ],
+    "boardwalk railings": [
+      "boardwalk railings joint",
+      "boardwalk railings steel",
+      "boardwalk railings mesh"
+    ],
+    "footbridge": [
+      "Bridge landing",
+      "Footbridge deck",
+      "footbridge deck",
+      "footbridge concrete",
+      "footbridge steel",
+      "footbridge mesh",
+      "Far landing",
+      "Far bank path"
+    ],
+    "envelope": [
+      "Pavilion SE wall",
+      "Pavilion SW wall",
+      "Pavilion NE wall",
+      "Pavilion NW wall"
+    ],
+    "pavilion SE": [
+      "Pavilion south-east glazed face pavilion SE batten",
+      "Pavilion south-east glazed face pavilion SE trim",
+      "Pavilion south-east glazed face pavilion SE glass"
+    ],
+    "pavilion SW": [
+      "Pavilion south-west face pavilion SW batten",
+      "Pavilion south-west face pavilion SW trim",
+      "Pavilion south-west face pavilion SW fascia",
+      "Pavilion south-west face pavilion SW steel",
+      "Pavilion south-west face pavilion SW glass"
+    ],
+    "pavilion NE": [
+      "Pavilion north-east face pavilion NE batten",
+      "Pavilion north-east face pavilion NE trim",
+      "Pavilion north-east face pavilion NE glass"
+    ],
+    "pavilion NW": [
+      "Pavilion north-west porch face pavilion NW batten",
+      "Pavilion north-west porch face pavilion NW trim",
+      "Pavilion north-west porch face pavilion NW fascia",
+      "Pavilion north-west porch face pavilion NW steel"
+    ],
+    "pavilion frame": [
+      "Pavilion frame pavilion frame paving",
+      "Pavilion frame pavilion frame concrete",
+      "Pavilion frame pavilion frame floor",
+      "Pavilion frame pavilion frame timber",
+      "Pavilion frame pavilion frame sedum3",
+      "Pavilion frame pavilion frame fascia",
+      "Pavilion frame pavilion frame post",
+      "Pavilion frame pavilion frame bench",
+      "Pavilion frame pavilion frame steel",
+      "Pavilion frame pavilion frame interior"
+    ],
+    "green roof planting": [
+      "green roof planting sedum",
+      "green roof planting grass2",
+      "green roof planting sedum2"
+    ],
+    "benches and bins": [
+      "benches and bins bench",
+      "benches and bins steel",
+      "benches and bins corten"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-20T06:52:00.791590+00:00",
+  "delivery_and_render_seconds": 6907.543739565001,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
