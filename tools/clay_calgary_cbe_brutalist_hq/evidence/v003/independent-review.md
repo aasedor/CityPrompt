@@ -1,0 +1,52 @@
+# Independent holistic review: clay-calgary-cbe-brutalist-hq v003 (RLASM v6.1 architectural clay)
+
+## 1. Verdict
+
+**VISUAL_REWORK_REQUIRED**: the head-on window-size fix holds (glass is about 0.67 to 0.69 of the bay), but in front_corner, the view paired with the locked oblique, the east face still reads completely blank. No dark pane shows in any of its 13 x 3 cells, so the v002 P1 is only partly resolved.
+
+Counts: P0 = 0, P1 = 1, P2 = 5
+
+Sources opened: sources/front.png, sources/oblique.jpg, sources/top.jpg. All 18 renders were opened at full resolution, and so were the four phone boards. Zoomed crops were written only to a new folder, `/tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/cbe-v003-review-crops-2766716044/`.
+
+## 2. Findings table
+
+| # | severity | view(s) | symptom (what the pixels show) | likely cause | finite fix |
+|---|----------|---------|--------------------------------|--------------|------------|
+| 1 | P1 | front_corner (matched to the source oblique; phone-01 row 2) | At 3x zoom on the east face (x 880 to 1080), all 13 bays on all three floors show only the pale splayed coffer relief. There is not one dark pane, so the face reads as a blank, embossed precast wall. The source oblique shows a large dark pane between the fins in every east bay. The builder says front_corner shows "a dark pane in every cell". The pixels contradict that. | The front_corner camera azimuth almost grazes the east face. The east face projects to about 120 px against about 580 px for the south face. In the source oblique the two faces project to about 400 px and about 530 px. With a 0.55 m cell and a 0.28 m jamb splay, the near jamb hides about 0.55·tanθ − 0.28 m of the 1.85 m glass, so the glass is fully hidden beyond about 75° from the face normal. The view does not reproduce the source-oblique viewpoint, and the matched-role comparison fails. | Re-aim front_corner to the source-oblique azimuth and elevation, so the east face fills about 40 to 45% of the building's projected width as in sources/oblique.jpg (aerial is already close to this). Then confirm a dark pane in every east cell at 3x zoom. Do not deepen the cells again. |
+| 2 | P2 | front | No penthouse or louvre rises above the parapet anywhere along the roofline (3x crop y 140 to 480: sky only). The source front shows the penthouse and its louvre clearly above the south parapet. Strong vertical convergence (the near corner at y 165, the far ends at y 420) shows a close, wide-angle camera. The source uses a long lens with near-parallel verticals. The claimed fix of the front camera is therefore only partial. | The camera is too close and the field of view too wide, so the parapet blocks the set-back penthouse. | Keep the south-east azimuth and eye level, pull the camera back and narrow the FOV (longer focal length) until the penthouse and its louvre clear the parapet as in sources/front.png. |
+| 3 | P2 | right_side, east_side | Two nearly identical head-on east elevations, while no render shows the west face. | Duplicated camera preset. | Repoint one of them as a west-elevation coherence view, or drop it. |
+| 4 | P2 | (render set) | The brief names `architecture_close` and `glass_close`, but neither exists in renders/ (18 files). window_module and facade_close cover the glass close-up role adequately. | The view list in the brief and the render manifest differ. | Render the two named views or remove them from the view list, so the brief and the delivered set match. |
+| 5 | P2 | aerial | Every east cell does show a dark pane, but each reads as a narrow slit, about 0.4 of the foreshortened bay. In the source oblique the pane is about 0.5 to 0.55. | The splayed jamb still occludes part of the glass at about 50° incidence. | Acceptable as is. Optionally lower the aerial elevation slightly, or reduce the jamb splay to about 0.22 m. |
+| 6 | P2 | east_side, corner_cantilever | The east entrance can be read only as a glazed door with a mid-rail in a recessed bay. Apart from that rail it looks like the adjacent storefront panels. | The door has no distinguishing frame or canopy. | Give the east doors a heavier frame or a head band so the second entrance reads at elevation scale. |
+
+## 3. Source conformance checklist
+
+| Item | Status | Evidence (view) |
+|------|--------|-----------------|
+| Silhouette and storey count | conforms | front, front_corner, aerial, rear: three precast office floors over a tall recessed ground storey, with a single set-back penthouse. The near-square plan matches the top source (render 345 x 315 px, ratio 1.095; source 607 x 555 px, ratio 1.09). |
+| Bay rhythm 14 x 13 | conforms | front_corner, left_side and rear_north each show 14 bays on the south and north faces. right_side and east_side show 13 bays on the east face. front shows 14 on the left and 13 on the right. |
+| Window depth and fin/nose relief | conforms head-on; deviates in front_corner | facade_close, window_module and corner_cantilever show deep-set glass with splayed jambs and heads and a sloped sill nose, with readable returns and depth. Pixel-measured glass-to-bay ratio: 0.687 in facade_close (bottom row), 0.676 to 0.689 in right_side, 0.678 in east_side and 0.677 to 0.684 in rear_north. window_module reads about 0.64 to 0.66 in its perspective. The east face reads blank in front_corner (finding 1). |
+| Fascia and parapet bands | conforms | right_side, rear_north and front crop: one continuous plain parapet band with a coping line, the grid stopping at its foot, about 0.55 to 0.6 of the storey pitch. The deep plain fascia over the ground storey now has no vertical panel joints (front ground crop, corner_cantilever). |
+| Cantilever over the recessed ground storey with board-formed columns | conforms | corner_cantilever, arcade_soffit, ground_entrance and left_side show a cantilever of about 3 m with a soffit and freestanding board-formed (horizontally banded) columns in front of the glazing line. The columns make clean contact with the paving and the soffit. Board-formed wall panels sit at the west end of the south front (left_side, sculpture_plaza). Solid corner piers are present (right_side crop, front). |
+| Entrances and podium steps | conforms | ground_entrance shows glazed double doors facing the plaza, two-tier storefronts with transoms, and the podium steps. The east entrance is present but weak (east_side, finding 6). The steps also appear in corner_cantilever and sculpture_plaza. |
+| Penthouse and roof plant | conforms | top: the penthouse is about 0.49 of the building width x 0.69 of its depth, 0.095 of the depth from the north edge and 0.22 from the south, centred east-west. The source top gives 0.49 x 0.69, 0.086 and 0.225. roof_penthouse and left_side show the louvres now in the upper middle of the walls, with steel doors, two air-handling units with twin round fans on the penthouse roof (as in the source top), a railed unit on the main roof east of the penthouse, and small vents. The penthouse is not visible in front (finding 2, camera only). |
+| Sculpture plaza and site | conforms | top, aerial, front_corner and sculpture_plaza: a round plinth carrying a ring of standing figures in the south-east paved plaza, lawn to the south-west, brick neighbours west and north set off across a lane, east street with street trees, crossing and lamp, south street with sidewalks. The positions match the top source. |
+| Materials hierarchy | conforms | Warm grey precast box, slightly darker banded board-formed ground storey, dark glazing, brick neighbours, green lawn, grey asphalt: a clean clay palette. |
+
+## 4. Camera validity
+
+- No view has its target occluded or clipped, and none is illegible. The whole envelope is legible in front, front_corner, aerial, top, left_side, right_side, rear and rear_side. Each detail view (facade_close, window_module, corner_cantilever, ground_entrance, arcade_soffit, sculpture_plaza, east_side, roof_penthouse, interior, rear_north) frames its subject legibly.
+- front_corner is a valid camera but does not match its role. Its azimuth grazes the east face, unlike the source oblique, and this produces finding 1.
+- front is a valid camera but does not match its role on silhouette, because the penthouse is hidden behind the parapet (finding 2).
+- right_side and east_side are duplicates, and no west elevation is rendered (finding 3). The west and north faces appear in no source, so they were judged only for coherence. Both are coherent with the visible grammar: the same 14-bay grid on the north, with ground-storey windows and a door (rear, rear_north, rear_side).
+
+## 5. Previous-version findings: resolved in the pixels?
+
+| Previous finding | Status in v003 pixels |
+|------------------|-----------------------|
+| v002 P1 / v001 façade grid: windows too small (about 0.55 of the bay) at the back of a 0.9 m coffer | **Resolved head-on.** Glass measures 0.67 to 0.69 of the bay in facade_close, right_side, east_side and rear_north, and about 0.65 in window_module. The cells are visibly shallower, and the depth and returns are still clearly legible. |
+| v002 P1: east face reads blank at oblique angles in front, front_corner and aerial | **Partly resolved.** front: a dark pane is visible in every east cell (3x crop), and the near bays show large panes. aerial: a dark pane is visible in every east cell, though narrow (finding 5, P2). **front_corner: not resolved.** No pane is visible in any east cell (finding 1, P1). |
+| Claimed P2: front camera moved to the south-east corner at eye level, penthouse and louvre above the parapet | **Partly resolved.** The azimuth and eye level are correct (south face left, east face right). The penthouse and louvre are not visible above the parapet (finding 2). |
+| Claimed P2: vertical joints removed from the ground-storey fascia | **Resolved.** The fascia reads as one plain band in front, corner_cantilever and right_side/east_side. |
+| Claimed P2: penthouse louvres raised into the upper middle of the walls | **Resolved.** roof_penthouse, left_side, rear and rear_north. |
+| Earlier fixes that must still hold: continuous plain parapet band about 0.55 of the pitch with the grid stopping at its foot; tall recessed ground storey under a plain fascia with two-tier storefronts; solid corner piers; 14 x 13 rhythm; cantilever of about 3 m on freestanding board-formed columns; entrances and podium steps; penthouse position and roof plant; south-east sculpture plaza | **All still hold** (see the checklist above). |
