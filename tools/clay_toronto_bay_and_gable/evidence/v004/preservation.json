@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-toronto-bay-and-gable-house-clay-v004",
+  "glb": "clay-toronto-bay-and-gable-house-clay-v004.glb",
+  "glb_bytes": 911108,
+  "glb_sha256": "c11761d97f80e7462c88fb7d68b2d44eaaaa3010601fe23f32a4e624720186c8",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "bay_window.png": 92,
+    "foundation_fence.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "gable_bargeboard.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "porch_entrance.png": 92,
+    "porch_frieze.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_chimney.png": 92,
+    "top.png": 92,
+    "west_gable.png": 92,
+    "west_side.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-toronto-bay-and-gable-house-clay-v004-renders-and-glb.zip",
+  "zip_bytes": 33608561
+}
