@@ -162,6 +162,7 @@ class VideoPilotRequest(BaseModel):
     route_points: list[RoutePoint] = Field(..., min_length=2, max_length=24)
     camera_motion: CameraMotion = "path_follow"
     duration_seconds: Literal[8] = 8
+    custom_prompt: str = Field(default="", max_length=600)
     scene_brief: str = Field(
         default=(
             "Preserve every authored building, open space, and surrounding context exactly as depicted in Image1."
@@ -227,6 +228,7 @@ class VideoAttemptResponse(BaseModel):
     error: str | None = None
     interaction_id: str | None = None
     prompt: str | None = None
+    custom_prompt: str = ""
     estimated_cost_usd: float
     fidelity_score: float | None = None
     fidelity_min_score: float | None = None
@@ -703,6 +705,7 @@ def _preflight_values(req: VideoPilotRequest):
                 control_mode=req.control_mode,
                 keyframe_count=len(keyframes) if req.control_mode == "preview_video" else len(keyframes) or 1,
                 provider=req.provider,
+                custom_prompt=req.custom_prompt,
             )
         )
     except (ValueError, KeyError) as exc:
@@ -798,7 +801,7 @@ async def list_video_attempts(
             # Shared gallery access is distinct from requester-only recovery.
             # Saved pixels survive an interrupted completion check too.
             shared = _public_attempt(item).model_dump()
-            shared.update(prompt=None, error=None, guide_image_url=None,
+            shared.update(prompt=None, custom_prompt="", error=None, guide_image_url=None,
                           interaction_id=None, request_id="", recoverable=False,
                           negative_prompt=None, generation_settings=None, scene_direction=None)
             visible.append(shared)
@@ -921,8 +924,13 @@ async def generate_video(
     attempts = [dict(item) for item in meta.get("video_pilot_attempts", [])]
     for existing in attempts:
         if existing.get("request_id") == str(req.request_id):
+            request_hashes = {revision_sha256(req.model_dump(mode="json"))}
+            # Requests saved before the optional scene direction existed hashed
+            # the same body without that field. Preserve their exact replay.
+            if "custom_prompt" not in existing and req.custom_prompt == "":
+                request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude={"custom_prompt"})))
             if existing.get("request_sha256") and (
-                existing["request_sha256"] != revision_sha256(req.model_dump(mode="json"))
+                existing["request_sha256"] not in request_hashes
                 or existing.get("requested_by") != str(user.id)
             ):
                 raise HTTPException(409, "This request ID belongs to a different video. Recover the original attempt.")
@@ -1013,6 +1021,7 @@ async def generate_video(
         "error": None,
         "interaction_id": None,
         "prompt": prompt,
+        "custom_prompt": req.custom_prompt if req.provider == "omni" else "",
         "estimated_cost_usd": estimated_cost,
         "guide_sha256": guide_hash,
         "scene_revision_sha256": scene_revision_sha256,
@@ -1190,11 +1199,18 @@ async def generate_video(
                 ],
                 preview_video_base64=req.preview_video_base64,
                 preview_video_mime_type=preview.mime_type if preview else None,
+                render_quality=req.render_quality,
             )
+            async def retain_omni_interaction(value: str):
+                nonlocal interaction_id
+                interaction_id = value
+                await _update_attempt(db, req.project_id, attempt_id, interaction_id=value)
+
             result = await request_omni_video_once(
                 api_key=settings.gemini_api_key,
                 payload=payload,
                 timeout_seconds=settings.omni_video_timeout_seconds,
+                on_interaction=retain_omni_interaction,
             )
             interaction_id = result.interaction_id
         # Keep paid pixels and their address before optional scoring. A later

@@ -8,10 +8,12 @@ ledger before reaching this boundary.
 from __future__ import annotations
 
 import base64
+import asyncio
 import binascii
 import io
 from dataclasses import dataclass
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Awaitable, Callable, Iterable, Mapping, Sequence
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 import httpx
 from PIL import Image
@@ -159,8 +161,26 @@ def build_cinematic_prompt(
     control_mode: str = "single_frame",
     keyframe_count: int = 1,
     provider: str = "omni",
+    custom_prompt: str = "",
 ) -> str:
-    """Build a motion-only prompt used for both preflight and generation."""
+    """Build the shared preflight/generation prompt for the selected control mode."""
+    if provider == "omni" and control_mode == "preview_video":
+        # Google recommends short edits, rather than a competing storyboard.
+        # The source video already contains the inventory and camera motion;
+        # keep the full scene contract in attempt metadata, not in this prompt.
+        detail = custom_prompt.strip()
+        return " ".join([
+            f"Finish this {duration_seconds}-second architectural source video with realistic materials, "
+            "natural daylight and contact shadows. Keep it one continuous shot.",
+            "Match the source video's camera path, framing, speed and timing exactly.",
+            f"Requested scene detail: {detail}" if detail else
+            "Keep existing people and traffic as shown; do not add new actors.",
+            "Preserve all buildings, footprints, heights, roofs, windows, parks, streets and surrounding "
+            "context in their original positions. Do not enclose open façades or add connections between buildings. "
+            "Keep objects grounded. Any requested people or animals "
+            "must move naturally on existing paths without changing the design.",
+            "Keep everything else the same. No scene cuts, captions, logos or visible route graphics.",
+        ])
     prompt_scene_brief = scene_brief.strip()
     motion_prompt = MOTION_PROMPTS[camera_motion]
     route_description = describe_route(route_points)
@@ -393,6 +413,7 @@ def build_omni_payload(
     route_keyframes: Sequence[tuple[str, str]] | None = None,
     preview_video_base64: str | None = None,
     preview_video_mime_type: str | None = None,
+    render_quality: str = "draft",
 ) -> dict[str, Any]:
     if control_mode == "multi_keyframe":
         if not route_keyframes:
@@ -423,7 +444,8 @@ def build_omni_payload(
         task = "image_to_video"
     input_items.append({"type": "text", "text": prompt})
     response_format = (
-        {"type": "video"}
+        ({"type": "video", "resolution": "1080p" if render_quality == "high" else "720p", "delivery": "uri"}
+         if model == "gemini-omni-1.1-flash" else {"type": "video"})
         if control_mode == "preview_video"
         else {
             "type": "video",
@@ -438,7 +460,8 @@ def build_omni_payload(
         "generation_config": {"video_config": {"task": task}},
         "response_format": response_format,
         "background": False,
-        "store": False,
+        # Google requires retained media for URI delivery, including edit jobs.
+        "store": response_format.get("delivery") == "uri",
         "stream": False,
     }
 
@@ -493,15 +516,20 @@ def parse_omni_video(payload: Mapping[str, Any]) -> OmniVideoResult:
 
 def _download_url(uri: str) -> str:
     """Turn a Gemini Files metadata URI into its media download endpoint."""
-    if "generativelanguage.googleapis.com/v1beta/files/" in uri and "/download/v1beta/" not in uri:
-        uri = uri.replace(
-            "generativelanguage.googleapis.com/v1beta/files/",
-            "generativelanguage.googleapis.com/download/v1beta/files/",
-        )
-        if ":download" not in uri:
-            uri = f"{uri}:download"
-        return f"{uri}{'&' if '?' in uri else '?'}alt=media"
-    return uri
+    parsed = urlsplit(uri)
+    if (parsed.scheme != "https" or parsed.hostname != "generativelanguage.googleapis.com"
+            or parsed.username or parsed.password or parsed.port not in (None, 443)):
+        raise ValueError("Unsupported Google video download endpoint; no API key was forwarded.")
+    path = parsed.path
+    if path.startswith("/v1beta/files/"):
+        path = "/download" + path
+    if not path.startswith("/download/v1beta/files/"):
+        raise ValueError("Unsupported Google video download path; no API key was forwarded.")
+    if not path.endswith(":download"):
+        path += ":download"
+    query = dict(parse_qsl(parsed.query))
+    query["alt"] = "media"
+    return urlunsplit(("https", parsed.netloc, path, urlencode(query), ""))
 
 
 async def request_omni_video_once(
@@ -509,6 +537,7 @@ async def request_omni_video_once(
     api_key: str,
     payload: Mapping[str, Any],
     timeout_seconds: int,
+    on_interaction: Callable[[str], Awaitable[None]] | None = None,
 ) -> OmniVideoResult:
     """Issue exactly one provider POST. Transport retries are explicitly disabled."""
     timeout = httpx.Timeout(timeout_seconds, connect=20.0)
@@ -523,16 +552,36 @@ async def request_omni_video_once(
             detail = response.text.replace(api_key, "[redacted]")[:800]
             raise RuntimeError(f"Gemini Omni HTTP {response.status_code}: {detail}")
         interaction_payload = response.json()
+        interaction_id = str(interaction_payload.get("id") or "")
+        if interaction_id and on_interaction:
+            await on_interaction(interaction_id)
         output = find_omni_video_content(interaction_payload)
         if output.data:
             return parse_omni_video(interaction_payload)
         if not output.uri or not output.uri.startswith("https://"):
             raise ValueError("Gemini Omni returned an unsupported non-HTTPS video URI.")
 
+        download_url = _download_url(output.uri)
+        path = urlsplit(output.uri).path
+        if "/files/" in path:
+            file_id = path.split("/files/", 1)[1].split(":", 1)[0]
+            metadata_url = f"https://generativelanguage.googleapis.com/v1beta/files/{file_id}"
+            for poll in range(20):
+                metadata = await client.get(metadata_url, headers={"x-goog-api-key": api_key})
+                if metadata.status_code >= 400:
+                    raise RuntimeError(f"Gemini video status HTTP {metadata.status_code}; generation will not be repeated.")
+                state = metadata.json().get("state")
+                if state == "ACTIVE":
+                    break
+                if state == "FAILED":
+                    raise RuntimeError("Google could not process the generated video; generation will not be repeated.")
+                if poll == 19:
+                    raise RuntimeError("Google video is still processing; its interaction ID was retained. Generation will not be repeated.")
+                await asyncio.sleep(3)
         # This GET retrieves the already-created media; it is not a second
         # generation submission and uses the same no-retry transport.
         download = await client.get(
-            _download_url(output.uri),
+            download_url,
             headers={"x-goog-api-key": api_key},
         )
         if download.status_code >= 400:

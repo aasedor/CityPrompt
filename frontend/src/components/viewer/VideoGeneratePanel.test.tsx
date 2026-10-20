@@ -70,4 +70,36 @@ describe('free route preview when finished generation is unavailable', () => {
     expect(api.list).not.toHaveBeenCalled();
     expect(api.generate).not.toHaveBeenCalled();
   });
+
+  it('includes optional scene details in preflight and invalidates approval when they change', async () => {
+    api.capabilities.mockResolvedValue({ video_enabled: true });
+    api.list.mockResolvedValue({ attempts: [], attempts_used: 0, attempts_remaining: 2, max_attempts: 2 });
+    api.preflight.mockResolvedValue({ ready: true, width: 1280, height: 720,
+      model: 'gemini-omni-1.1-flash', estimated_cost_usd: .81, scene_revision_sha256: 'a'.repeat(64) });
+    const captureRouteControls = vi.fn().mockResolvedValue({
+      keyframesBase64: ['data:image/jpeg;base64,ZnJhbWU='],
+      previewVideoBase64: 'data:video/mp4;base64,Z3VpZGU=', previewVideoMimeType: 'video/mp4',
+      previewCaptureProfile: { width: 1280, height: 720, renderWidth: 1280, renderHeight: 720 },
+    });
+    render(<VideoGeneratePanel projectId="trial" canvas={null} buildings={[]} siteZones={[]}
+      captureAerialFrame={async () => 'data:image/jpeg;base64,ZnJhbWU='}
+      captureRouteControls={captureRouteControls} onClose={vi.fn()} />);
+    await screen.findByAltText('Captured City Prompt scene');
+    const prompt = screen.getByRole('textbox', { name: 'Custom prompt (optional)' });
+    expect(prompt).toHaveAttribute('maxLength', '600');
+    fireEvent.change(prompt, { target: { value: 'A woman walks her dog on the sidewalk.' } });
+    const route = screen.getByLabelText('Add drone path vertex');
+    vi.spyOn(route, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 100, height: 100 } as DOMRect);
+    fireEvent.click(route, { clientX: 40, clientY: 65 });
+    fireEvent.click(route, { clientX: 60, clientY: 65 });
+    fireEvent.click(screen.getByRole('button', { name: 'Run free check' }));
+    await waitFor(() => expect(api.preflight).toHaveBeenCalledOnce());
+    expect(api.preflight).toHaveBeenCalledWith(expect.objectContaining({
+      custom_prompt: 'A woman walks her dog on the sidewalk.', duration_seconds: 8,
+    }));
+    await waitFor(() => expect(screen.getByRole('button', { name: /Generate trial/ })).toBeEnabled());
+    fireEvent.change(prompt, { target: { value: 'Warm evening light.' } });
+    expect(screen.getByRole('button', { name: /Generate trial/ })).toBeDisabled();
+    expect(api.generate).not.toHaveBeenCalled();
+  });
 });

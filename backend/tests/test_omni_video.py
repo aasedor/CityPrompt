@@ -1,7 +1,9 @@
 import base64
 import io
 import uuid
+from unittest.mock import AsyncMock
 
+import httpx
 import pytest
 from PIL import Image
 from pydantic import ValidationError
@@ -23,6 +25,8 @@ from app.services.omni_video import (
     decode_preview_video,
     find_omni_video_content,
     parse_omni_video,
+    _download_url,
+    request_omni_video_once,
 )
 
 
@@ -30,6 +34,95 @@ def _jpeg_data_url(width: int = 1280, height: int = 720) -> str:
     buffer = io.BytesIO()
     Image.new("RGB", (width, height), (42, 54, 66)).save(buffer, format="JPEG", quality=90)
     return "data:image/jpeg;base64," + base64.b64encode(buffer.getvalue()).decode()
+
+
+@pytest.mark.parametrize("uri", [
+    "https://untrusted.invalid/generativelanguage.googleapis.com/v1beta/files/one",
+    "https://generativelanguage.googleapis.com.untrusted.invalid/v1beta/files/one",
+    "https://user:password@generativelanguage.googleapis.com/v1beta/files/one",
+    "http://generativelanguage.googleapis.com/v1beta/files/one",
+])
+def test_video_download_never_forwards_the_api_key_to_untrusted_urls(uri):
+    with pytest.raises(ValueError, match="Google video download"):
+        _download_url(uri)
+
+
+def test_google_file_download_keeps_the_authenticated_official_endpoint():
+    assert _download_url("https://generativelanguage.googleapis.com/v1beta/files/one") == (
+        "https://generativelanguage.googleapis.com/download/v1beta/files/one:download?alt=media")
+
+
+def test_google_documented_download_uri_does_not_duplicate_media_parameter():
+    assert _download_url("https://generativelanguage.googleapis.com/v1beta/files/one:download?alt=media") == (
+        "https://generativelanguage.googleapis.com/download/v1beta/files/one:download?alt=media")
+
+
+@pytest.mark.asyncio
+async def test_uri_delivery_waits_for_saved_media_without_resubmitting(monkeypatch):
+    calls = []
+    metadata_reads = 0
+    async def handle(request):
+        nonlocal metadata_reads
+        calls.append((request.method, str(request.url)))
+        if request.method == "POST":
+            return httpx.Response(200, json={"id": "interaction-one", "output_video": {
+                "type": "video", "uri": "https://generativelanguage.googleapis.com/v1beta/files/one",
+                "mime_type": "video/mp4"}})
+        if request.url.path == "/v1beta/files/one":
+            metadata_reads += 1
+            return httpx.Response(200, json={"state": "PROCESSING" if metadata_reads == 1 else "ACTIVE"})
+        return httpx.Response(200, content=b"saved-mp4", headers={"content-type": "video/mp4"})
+    monkeypatch.setattr("app.services.omni_video.httpx.AsyncHTTPTransport", lambda **_: httpx.MockTransport(handle))
+    monkeypatch.setattr("app.services.omni_video.asyncio.sleep", AsyncMock())
+    retain = AsyncMock()
+    result = await request_omni_video_once(api_key="test-only", payload={}, timeout_seconds=60,
+                                         on_interaction=retain)
+    retain.assert_awaited_once_with("interaction-one")
+    assert result.video_bytes == b"saved-mp4"
+    assert [method for method, _ in calls].count("POST") == 1
+    assert metadata_reads == 2
+
+
+def test_omni_video_finish_is_concise_and_keeps_custom_detail_separate():
+    prompt = build_cinematic_prompt(
+        route_points=[{"x": .4, "y": .6}, {"x": .6, "y": .4}],
+        camera_motion="street_walkby", scene_brief="INTERNAL SCENE CONTRACT " * 100,
+        duration_seconds=8, control_mode="preview_video", provider="omni",
+        custom_prompt="A woman walks her dog on the existing sidewalk.",
+    )
+    assert len(prompt.split()) < 180
+    assert "INTERNAL SCENE CONTRACT" not in prompt
+    assert prompt.count("A woman walks her dog") == 1
+    assert "camera" in prompt and "timing" in prompt
+    assert "footprints" in prompt and "windows" in prompt
+    assert "Keep everything else the same" in prompt
+    assert "clear glazing" not in prompt
+    assert "Do not enclose open façades or add connections between buildings" in prompt
+
+
+def test_omni_video_request_accepts_bounded_optional_scene_details():
+    values = dict(project_id=uuid.uuid4(), guide_frame_base64=_jpeg_data_url(),
+                  route_points=[{"x": .4, "y": .6}, {"x": .6, "y": .4}])
+    request = VideoPilotRequest(**values, custom_prompt="A woman walking her dog.")
+    assert request.custom_prompt == "A woman walking her dog."
+    assert VideoPilotRequest(**values).custom_prompt == ""
+    with pytest.raises(ValidationError):
+        VideoPilotRequest(**values, custom_prompt="x" * 601)
+
+
+def test_omni_11_preview_requests_explicit_high_detail_delivery():
+    payload = build_omni_payload(
+        model="gemini-omni-1.1-flash", guide_base64=_jpeg_data_url(),
+        guide_mime_type="image/jpeg", prompt="Finish the source video.",
+        duration_seconds=8, control_mode="preview_video", render_quality="high",
+        preview_video_base64=base64.b64encode(b"preview").decode(),
+        preview_video_mime_type="video/mp4",
+    )
+    assert payload["model"] == "gemini-omni-1.1-flash"
+    assert payload["generation_config"] == {"video_config": {"task": "edit"}}
+    assert payload["response_format"] == {"type": "video", "resolution": "1080p", "delivery": "uri"}
+    assert payload["store"] is True  # URI delivery requires retained media at Google.
+    assert [item["type"] for item in payload["input"]] == ["video", "text"]
 
 
 def test_decode_guide_image_inspects_real_format_and_dimensions():
@@ -112,8 +205,7 @@ def test_bicycle_request_and_prompt_keep_forward_eye_height_motion():
         scene_brief="A park beside the route.", duration_seconds=8,
         control_mode="preview_video",
     )
-    assert "Match the source video's total travel distance" in preview_prompt
-    assert "Copy the supplied video's camera positions" in preview_prompt
+    assert "Match the source video's camera path, framing, speed and timing exactly" in preview_prompt
 
 
 def test_video_request_defaults_to_high_quality_and_validates_capture_audit():
@@ -259,16 +351,10 @@ def test_omni_payload_supports_deterministic_preview_video_edit():
         preview_video_mime_type="video/webm",
     )
 
-    assert "Copy the supplied video's camera positions, headings, speed, timing" in prompt
-    assert "VISUAL FINISH — CONTROLLED EXCEPTION" in prompt
-    assert "physically convincing facade materials" in prompt
-    assert "realistic glazing with restrained reflections" in prompt
-    assert "natural contact shadows and ambient occlusion" in prompt
-    assert "subtle foliage movement" in prompt
-    assert "small number of correctly scaled pedestrians" in prompt
-    assert "Never spawn, fade, dissolve, teleport, duplicate" in prompt
-    assert "subtle environmental ambience only, with no dialogue or music" in prompt
-    assert "Match the source video's total travel distance" in prompt
+    assert "Match the source video's camera path, framing, speed and timing exactly" in prompt
+    assert "realistic materials, natural daylight and contact shadows" in prompt
+    assert "do not add new actors" in prompt
+    assert "Keep everything else the same" in prompt
     assert payload["generation_config"] == {"video_config": {"task": "edit"}}
     assert [item["type"] for item in payload["input"]] == ["video", "text"]
     assert payload["response_format"] == {"type": "video"}
@@ -302,14 +388,12 @@ def test_detail_flythrough_is_low_and_source_route_locked():
         control_mode="preview_video",
     )
 
-    assert "low detail architectural-drone fly-through" in prompt
-    assert "six metres above the route surface" in prompt
-    assert "between the authored buildings" in prompt
-    assert "Match the source video's total travel distance" in prompt
-    assert "Never fly through a solid wall, roof, tree, or facade" in prompt
+    # The deterministic source already encodes altitude and obstacle clearance.
+    assert "Match the source video's camera path, framing, speed and timing exactly" in prompt
+    assert "Preserve all buildings, footprints, heights, roofs, windows, parks, streets" in prompt
 
 
-def test_prompt_uses_premium_architectural_camera_language_and_ground_contact_lock():
+def test_preview_prompt_preserves_camera_and_ground_contact_without_a_new_storyboard():
     prompt = build_cinematic_prompt(
         route_points=[{"x": 0.22, "y": 0.72}, {"x": 0.5, "y": 0.55}, {"x": 0.78, "y": 0.48}],
         camera_motion="path_follow",
@@ -319,17 +403,11 @@ def test_prompt_uses_premium_architectural_camera_language_and_ground_contact_lo
         provider="omni",
     )
 
-    assert "ARCHITECTURAL CINEMATOGRAPHY" in prompt
-    assert "gentle acceleration into the move" in prompt
-    assert "gentle deceleration into the final hold" in prompt
-    assert "coherent foreground-to-background parallax" in prompt
-    assert "No roll, dutch angle, yaw hunting, orbiting, speed ramp" in prompt
-    assert "autofocus breathing, rack focus" in prompt
-    assert "GROUND-CONTACT LOCK" in prompt
-    assert "Never raise, lower, tilt, bury, float, hover" in prompt
-    assert "sink its base below the ground plane" in prompt
+    assert "one continuous shot" in prompt
+    assert "camera path, framing, speed and timing exactly" in prompt
+    assert "Keep objects grounded" in prompt
     assert "720p" not in prompt
-    assert "highest resolution supported by the supplied control video" in prompt
+    assert len(prompt.split()) < 150
 
 
 def test_prompt_ends_with_explicit_clean_plate_override_for_zone_id_artifacts():
@@ -342,10 +420,8 @@ def test_prompt_ends_with_explicit_clean_plate_override_for_zone_id_artifacts():
         provider="omni",
     )
 
-    assert "CLEAN-PLATE OUTPUT - ABSOLUTE FINAL CHECK" in prompt
-    assert "no B1, B2, B3, P1, S1, zone IDs" in prompt
-    assert "no typography or interface graphics anywhere" in prompt
-    assert prompt.endswith("preserve the corresponding source-video pixels unchanged.")
+    assert "B1" not in prompt and "P1" not in prompt
+    assert prompt.endswith("No scene cuts, captions, logos or visible route graphics.")
 
 
 def test_prompt_locks_courtyard_topology_and_limits_aerial_scale_change():

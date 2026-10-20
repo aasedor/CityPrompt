@@ -8,9 +8,10 @@ import uuid
 
 from fastapi import HTTPException
 import pytest
+from sqlalchemy import select
 
 from app.api.v1 import video, documents, files
-from app.models.models import Project, User, ProjectShare
+from app.models.models import Project, User, ProjectShare, ApiUsageLog
 from app.core.security import create_project_asset_ticket, create_file_asset_ticket
 from app.services.render_trial import TRIAL_KEY, check_trial_available
 from app.services.render_attempts import now
@@ -69,6 +70,29 @@ async def test_concurrent_duplicate_video_submits_pay_once_and_recover_after_new
 
 
 @pytest.mark.asyncio
+async def test_legacy_request_replays_without_new_prompt_or_provider_call(pilot):
+    f = pilot
+    original = await generate(f)
+    async with f.sessions() as db:
+        project = await db.get(Project, f.project.id)
+        meta = dict(project.metadata_)
+        entry = dict(meta["video_pilot_attempts"][0])
+        legacy_body = f.request.model_dump(mode="json", exclude={"custom_prompt"})
+        entry.pop("custom_prompt", None)
+        entry["request_sha256"] = video.revision_sha256(legacy_body)
+        meta["video_pilot_attempts"] = [entry]
+        project.metadata_ = meta
+        await db.commit()
+    recovered = await generate(f)
+    assert recovered.attempt.id == original.attempt.id
+    assert recovered.attempt.status == "complete"
+    with pytest.raises(HTTPException) as error:
+        await generate(f, f.request.model_copy(update={"custom_prompt": "Add a dog."}))
+    assert error.value.status_code == 409
+    f.video_provider.assert_awaited_once()
+
+
+@pytest.mark.asyncio
 async def test_video_allowance_spans_providers_and_counts_failure(pilot):
     f = pilot
     f.video_provider.side_effect = RuntimeError("uncertain paid outcome")
@@ -107,6 +131,24 @@ async def test_paid_pixels_survive_late_completion_failure(pilot, monkeypatch):
     assert recovered.attempt.status == "complete"
     assert recovered.attempt.fidelity_status == "unavailable"
     assert f.saved[recovered.attempt.video_url.removeprefix("/api/v1/files/")] == b"mock-mp4"
+    f.video_provider.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_paid_interaction_receipt_survives_download_failure(pilot):
+    f = pilot
+    async def created_but_download_failed(**kwargs):
+        await kwargs["on_interaction"]("saved-google-interaction")
+        raise RuntimeError("simulated media download failure")
+    f.video_provider.side_effect = created_but_download_failed
+    with pytest.raises(HTTPException):
+        await generate(f)
+    recovered = await generate(f)
+    assert recovered.attempt.status == "failed"
+    assert recovered.attempt.interaction_id == "saved-google-interaction"
+    async with f.sessions() as db:
+        usage = await db.scalar(select(ApiUsageLog).where(ApiUsageLog.task_id == recovered.attempt.id))
+        assert usage.metadata_["interaction_id"] == "saved-google-interaction"
     f.video_provider.assert_awaited_once()
 
 
@@ -155,6 +197,7 @@ async def test_shared_gallery_excludes_others_private_attempt_recovery(pilot, mo
         project = await db.get(Project, f.project.id)
         meta = dict(project.metadata_)
         saved = meta["video_pilot_attempts"][0]
+        saved["custom_prompt"] = "A private scene direction."
         private = {**saved, "id": "interrupted-private", "status": "generating", "video_url": None}
         meta["video_pilot_attempts"] = [saved, private]
         project.metadata_ = meta
@@ -164,9 +207,32 @@ async def test_shared_gallery_excludes_others_private_attempt_recovery(pilot, mo
         assert shared.attempts[0].video_url == saved["video_url"]
         assert shared.attempts[0].request_id == ""
         assert shared.attempts[0].prompt is shared.attempts[0].guide_image_url is None
+        assert shared.attempts[0].custom_prompt == ""
         own = await video.list_video_attempts(project.id, f.user, db)
         assert len(own.attempts) == 2
         assert own.attempts[1].request_id == private["request_id"]
+
+
+@pytest.mark.asyncio
+async def test_custom_video_detail_reaches_preflight_provider_and_saved_history_once(pilot):
+    f = pilot
+    direction = "A woman walks her dog on the existing sidewalk."
+    preview = "data:video/webm;base64," + base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode()
+    request = f.request.model_copy(update={"control_mode": "preview_video",
+        "preview_video_base64": preview, "preview_video_mime_type": "video/webm", "custom_prompt": direction})
+    async with f.sessions() as db:
+        user = await db.get(User, f.user.id)
+        check = await video.preflight_video(request, user, db)
+    f.video_provider.assert_not_awaited()
+    result = await generate(f, request)
+    assert result.attempt.custom_prompt == direction
+    assert result.attempt.prompt == check.prompt_preview
+    assert result.attempt.prompt.count(direction) == 1
+    sent = f.video_provider.call_args.kwargs["payload"]
+    assert sent["input"][-1]["text"] == check.prompt_preview
+    assert sent["response_format"]["resolution"] == "1080p"
+    await generate(f, request)
+    f.video_provider.assert_awaited_once()
 
 
 @pytest.mark.asyncio

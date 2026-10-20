@@ -67,7 +67,7 @@ type SeedanceReferenceMode = 'preview_only' | 'preview_plus_keyframes';
 type InternalEnhanceQuality = 'fast' | 'gpu_detail';
 
 const PROVIDERS: Array<{ id: VideoProvider; name: string; detail: string }> = [
-  { id: 'omni', name: 'Gemini Omni', detail: 'Video-to-video finish · $0.80 estimate' },
+  { id: 'omni', name: 'Gemini Omni 1.1', detail: 'Experimental video edit · paid generation' },
   { id: 'seedance_mini', name: 'Seedance Mini', detail: 'fal pilot · maximum 4 calls' },
   { id: 'internal_enhance', name: 'Internal Enhance', detail: 'Self-hosted · exact skins · $0' },
 ];
@@ -257,6 +257,7 @@ interface PreparedVideoRequest {
   route_points: VideoRoutePoint[];
   camera_motion: MotionId;
   duration_seconds: 8;
+  custom_prompt: string;
   scene_brief: string;
   details_revision?: number;
   community_3d_claims: Array<{
@@ -380,6 +381,7 @@ export function VideoGeneratePanel({
   const [internalEnhanceQuality, setInternalEnhanceQuality] = useState<InternalEnhanceQuality>('fast');
   const [renderQuality, setRenderQuality] = useState<VideoRenderQuality>('draft');
   const [controlMode, setControlMode] = useState<VideoControlMode>('preview_video');
+  const [customPrompt, setCustomPrompt] = useState('');
   const [sourceCaptureVersion, setSourceCaptureVersion] = useState(0);
   const [previewProgress, setPreviewProgress] = useState('Preparing your route…');
   const [pilot, setPilot] = useState<VideoPilotState>({
@@ -424,11 +426,11 @@ export function VideoGeneratePanel({
   const { routeControls, setRouteControls, isPreparingControls, prepare: prepareRoutePreview } = useVideoRoutePreview(routeCaptureSignature);
 
   const currentSignature = useMemo(
-    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}`,
-    [controlMode, currentSceneRevisionSignature, internalEnhanceQuality, motion, provider, renderQuality, routePoints, sceneContract.signature, seedanceReferenceMode],
+    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}:${provider === 'omni' && controlMode === 'preview_video' ? customPrompt.trim() : ''}`,
+    [controlMode, currentSceneRevisionSignature, customPrompt, internalEnhanceQuality, motion, provider, renderQuality, routePoints, sceneContract.signature, seedanceReferenceMode],
   );
   const preparedSignature = prepared
-    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}:${prepared.details_revision ?? ""}`
+    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}:${prepared.details_revision ?? ""}:${prepared.custom_prompt}`
     : null;
   const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
   const providerUsage = pilot.provider_usage[provider];
@@ -638,6 +640,7 @@ export function VideoGeneratePanel({
       route_points: routePoints,
       camera_motion: motion,
       duration_seconds: 8,
+      custom_prompt: provider === 'omni' && controlMode === 'preview_video' ? customPrompt.trim() : '',
       scene_brief: sceneBrief,
       community_3d_claims: community3DClaims,
       details_revision: detailsRevision,
@@ -645,7 +648,7 @@ export function VideoGeneratePanel({
         residual_landscape_claim: residualLandscapeClaim,
       } : {}),
     };
-  }, [prepareLocalPreview, community3DClaims, detailsRevision, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones]);
+  }, [prepareLocalPreview, community3DClaims, customPrompt, detailsRevision, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);
@@ -1068,7 +1071,9 @@ export function VideoGeneratePanel({
                 <div className="rounded-xl border border-[#151515]/15 bg-white/65 p-3">
                   <p className="text-xs font-black leading-relaxed text-[#151515]/80">{sceneContract.summary}</p>
                   <p className="mt-1 text-[10px] font-semibold leading-relaxed text-[#151515]/55">
-                    The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, lighting, Google context buildings, and open-space program. City Prompt adds no moving traffic or pedestrians; any baked Google context remains part of the captured surroundings.
+                    {provider === 'omni' && controlMode === 'preview_video'
+                      ? 'The source video guides the camera and design. Omni 1.1 improves the visual finish; optional scene details can add people or activity. Review every result for design changes.'
+                      : 'The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, lighting, Google context buildings, and open-space program. City Prompt adds no moving traffic or pedestrians; any baked Google context remains part of the captured surroundings.'}
                   </p>
                   <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
                     {provider === 'internal_enhance'
@@ -1082,7 +1087,7 @@ export function VideoGeneratePanel({
                       : controlMode === 'multi_keyframe'
                       ? 'Omni receives six ordered City Prompt views of the same scene, with no style or archetype reference images.'
                       : controlMode === 'preview_video'
-                        ? 'Omni edits City Prompt’s deterministic route video, which carries the exact camera timing and scene geometry.'
+                        ? 'Omni 1.1 edits the exact route recording. High quality requests 1080p output (Google upscales it); inspect the saved video’s actual resolution.'
                         : 'Omni receives one authoritative image plus conservative camera-motion instructions.'}
                   </p>
                   <p className="mt-2 rounded-lg bg-[#fff0bf] px-2 py-1.5 text-[9px] font-bold leading-relaxed text-[#705000]">
@@ -1091,6 +1096,17 @@ export function VideoGeneratePanel({
                       : `AI concept visualization: ${providerName(provider)} can still reinterpret geometry between frames. Verify the video against the 3D scene before using it for design decisions.`}
                   </p>
                 </div>
+                {provider === 'omni' && controlMode === 'preview_video' && (
+                  <div className="mt-3">
+                    <label htmlFor="video-custom-prompt" className="mb-1 block text-xs font-bold text-[#151515]">Custom prompt (optional)</label>
+                    <textarea id="video-custom-prompt" value={customPrompt} maxLength={600} rows={3}
+                      disabled={isGenerating || isPreflighting}
+                      onChange={event => { setCustomPrompt(event.target.value); setPreflight(null); setPrepared(null); }}
+                      placeholder="A woman walks her dog along the existing sidewalk."
+                      className="w-full resize-y rounded-xl border border-[#151515]/25 bg-white p-3 text-sm text-[#151515] focus:border-[#151515] focus:ring-2 focus:ring-[#c9ff3d] disabled:opacity-50" />
+                    <p className="mt-1 text-[10px] text-[#151515]/60">Keep it to one clear scene detail. The buildings, parks, streets and camera route should stay the same.</p>
+                  </div>
+                )}
               </div>
 
               <div className="rounded-2xl border-2 border-[#151515] bg-white p-3 shadow-[3px_3px_0_0_#151515]">
