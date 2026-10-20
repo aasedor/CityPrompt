@@ -1,0 +1,419 @@
+{
+  "candidate": "clay-toronto-bay-and-gable-house-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-toronto-bay-and-gable-house",
+  "variant_id": "clay-toronto-bay-and-gable-house-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "toronto_bay_and_gable_house/variant_0",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 7.6,
+      "depth": 11.0,
+      "height": 11.35
+    },
+    "observed_storeys": 2,
+    "storey_programme": "two full storeys over a raised stone foundation and a half-storey attic in the gables",
+    "plan": "7.6 x 11.0 m detached corner house (top view); canted bay and porch on the south front, side street to the west",
+    "facade": "red brick with buff stone sill and lintel bands; two-storey canted bay under an ornate front gable; hipped porch on turned posts",
+    "levels_m": [
+      0.95,
+      4.25,
+      7.25
+    ],
+    "roof_m": {
+      "eave": 7.25,
+      "ridge": 10.45,
+      "cross_gable": 10.25
+    },
+    "inferred": "interiors, the east and rear faces and metric dimensions are teaching assumptions; the rear repeats the visible grammar"
+  },
+  "roof_contract": {
+    "type": "steep slate roof: front section gabled east and west, hipped rear section, front cross gable with bargeboard and finial; brick chimney at the east gable",
+    "datum_m": 7.25,
+    "crowns_m": [
+      10.45,
+      10.25
+    ]
+  },
+  "identity_contract": {
+    "owner": "Toronto bay-and-gable: red-brick house with a two-storey canted bay under a steep ornamented front gable, a side entrance porch and a steep slate roof"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: red brick, buff stone bands, grey rubble foundation, grey slate, brown painted woodwork, green door, amber stained-glass transoms",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 2,
+    "ground": "parlour in the bay, hall and stair behind the porch",
+    "upper": "bedrooms; attic room in the front gable"
+  },
+  "contact_contract": [
+    "Grade-zero lawn, walks and sidewalks",
+    "Brick walls on a stone foundation",
+    "Roofs on the eaves and gable walls",
+    "Porch on a stone base and stair"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -7.0,
+        -18.3,
+        1.6
+      ],
+      "target": [
+        -0.2,
+        -3.0,
+        5.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -19.89,
+        -21.419999999999998,
+        22.7
+      ],
+      "target": [
+        0,
+        0,
+        5.1075
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        17.849999999999998,
+        -20.400000000000002,
+        34.05
+      ],
+      "target": [
+        0,
+        0,
+        5.1075
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        38.25
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 21.0
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -25.5,
+        0,
+        6.81
+      ],
+      "target": [
+        0,
+        0,
+        5.1075
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        25.5,
+        0,
+        6.81
+      ],
+      "target": [
+        0,
+        0,
+        5.1075
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        25.5,
+        6.81
+      ],
+      "target": [
+        0,
+        0,
+        5.1075
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        17.849999999999998,
+        20.400000000000002,
+        20.43
+      ],
+      "target": [
+        0,
+        0,
+        5.1075
+      ]
+    },
+    {
+      "name": "bay_window",
+      "location": [
+        -0.7999999999999999,
+        -16.5,
+        3.9
+      ],
+      "target": [
+        -0.7999999999999999,
+        -6.25,
+        3.9
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "gable_bargeboard",
+      "location": [
+        -1.2,
+        -14.5,
+        9.4
+      ],
+      "target": [
+        -1.2,
+        -5.5,
+        8.7
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "porch_entrance",
+      "location": [
+        2.6,
+        -12.5,
+        1.9
+      ],
+      "target": [
+        2.3,
+        -5.5,
+        2.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "porch_frieze",
+      "location": [
+        0.2,
+        -10.1,
+        2.5
+      ],
+      "target": [
+        2.4,
+        -7.4,
+        3.3
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "west_side",
+      "location": [
+        -18.8,
+        0.0,
+        4.6
+      ],
+      "target": [
+        -3.8,
+        0.0,
+        4.6
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "west_gable",
+      "location": [
+        -12.8,
+        -2.6,
+        9.2
+      ],
+      "target": [
+        -3.8,
+        -2.6,
+        8.6
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "roof_chimney",
+      "location": [
+        9.0,
+        -13.0,
+        17.0
+      ],
+      "target": [
+        1.0,
+        -1.0,
+        9.6
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "foundation_fence",
+      "location": [
+        -2.0,
+        -12.0,
+        1.1
+      ],
+      "target": [
+        -1.6,
+        -8.1,
+        0.7
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -1.2,
+        -5.8,
+        2.55
+      ],
+      "target": [
+        -0.3999999999999999,
+        -0.5,
+        2.25
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        0.0,
+        22.5,
+        5.0
+      ],
+      "target": [
+        0.0,
+        5.5,
+        5.0
+      ],
+      "lens": 45,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "bay_window",
+    "gable_bargeboard",
+    "porch_entrance",
+    "porch_frieze",
+    "west_side",
+    "west_gable",
+    "roof_chimney",
+    "foundation_fence",
+    "interior",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/toronto-bay-and-gable-house/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1488963,
+        "sha256": "d95d3c86850b2d98b3e04a4c0b69ea6747979598bff2eb39903e9bec779372f7"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/toronto-bay-and-gable-house/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 1002820,
+        "sha256": "de99a823f3eba0c67dac7ffd0d7539193394d1d375f758cd00f0d35c7b962a94"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/toronto-bay-and-gable-house/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 913422,
+        "sha256": "8997950a8420a55a25da21241f20a73c5698812f496a9b517961cd36e28c3433"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_baygable.py",
+        "sha256": "5b1ac842c0c38903c8e1f3a378131ecd76ecc7fdc31b4517f26f54317893813b"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "ab76b753a5bf51ad2fd6a50463b41d2c87c76dc5ab8afbb49f2aaaa18d50bea8"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "43b21919ba504e9660499892d4fecfcb3ebb181a06969921c193e2aca6e3d57b"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-20T03:43:55.567530+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
