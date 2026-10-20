@@ -586,13 +586,13 @@ def fountain(b, x, y, z0, h, n=7, roles=('grass', 'grass2')):
 
 
 def grass_mass(b, x, y, z0, h, roles):
-    """A dense ornamental grass clump: a soft mounded body of foliage with fine arching blades bursting from its crown."""
-    r = h * RNG.uniform(.36, .46)
-    dome(b, roles[0], x, y, z0, r, r * RNG.uniform(.85, 1.05), h * .62, seg=8, prof=((0.0, .85), (.45, 1.0), (.8, .62)), jit=.08)
+    """A dense ornamental grass clump: a low dark leafy base with a fountain of wide arching blades spilling over it."""
+    r = h * RNG.uniform(.38, .46)
+    dome(b, 'planting', x, y, z0, r, r * RNG.uniform(.85, 1.05), h * .3, seg=8, prof=((0.0, .9), (.5, 1.0), (.85, .6)), jit=.1)
     a0 = RNG.uniform(0, 2 * math.pi)
-    for i in range(7):
-        arch_blade(b, roles[i % len(roles)], x + RNG.uniform(-.06, .06), y + RNG.uniform(-.06, .06), z0 + h * .3,
-                   h * RNG.uniform(.62, .8), a0 + 2 * math.pi * i / 7 + RNG.uniform(-.3, .3), h * RNG.uniform(.35, .55))
+    for i in range(10):
+        arch_blade(b, roles[i % len(roles)], x + RNG.uniform(-.07, .07), y + RNG.uniform(-.07, .07), z0 + h * .12,
+                   h * RNG.uniform(.7, .95), a0 + 2 * math.pi * i / 10 + RNG.uniform(-.25, .25), h * RNG.uniform(.42, .62), w=.038)
 
 
 def picket(b, role, x, y, z0, z1, w=.022):
