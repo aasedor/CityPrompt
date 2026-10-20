@@ -1,0 +1,1872 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "south front g -6.8",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 -6.8",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g -3.4",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 -3.4",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front door +0.0",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +0.0",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +3.4",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +3.4",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +6.8",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +6.8",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front vent +10.2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +10.2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +10.2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f2 +10.2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front vent +13.6",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +13.6",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +13.6",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f2 +13.6",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front vent +17.0",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +17.0",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +17.0",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f2 +17.0",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front vent +20.4",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +20.4",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +20.4",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f2 +20.4",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front vent +23.8",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +23.8",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +23.8",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f2 +23.8",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front vent +27.2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +27.2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +27.2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f2 +27.2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front vent +30.6",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +30.6",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +30.6",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f2 +30.6",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front vent +34.0",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +34.0",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +34.0",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f2 +34.0",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front vent +37.4",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +37.4",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +37.4",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f2 +37.4",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front vent +40.8",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +40.8",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +40.8",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f2 +40.8",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front vent +45.2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +45.2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +45.2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f2 +45.2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front vent +48.9",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +48.9",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +48.9",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f2 +48.9",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front vent +52.6",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front g +52.6",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f1 +52.6",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south front f2 +52.6",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end vent -27.4",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end g -27.4",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end f1 -27.4",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end f2 -27.4",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end vent -23.9",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end g -23.9",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end f1 -23.9",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end f2 -23.9",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end door -20.2",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end f1 -20.2",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end f2 -20.2",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end vent -16.6",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end g -16.6",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end f1 -16.6",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end f2 -16.6",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end vent -13.1",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end g -13.1",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end f1 -13.1",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east end f2 -13.1",
+      "face": "east end",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north vent -45.2",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north g -45.2",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f1 -45.2",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f2 -45.2",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north vent -48.9",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north g -48.9",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f1 -48.9",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f2 -48.9",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north vent -52.6",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north g -52.6",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f1 -52.6",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f2 -52.6",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north vent -40.8",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north g -40.8",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f1 -40.8",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f2 -40.8",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north vent -37.4",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north g -37.4",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f1 -37.4",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f2 -37.4",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north vent -34.0",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north g -34.0",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f1 -34.0",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f2 -34.0",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north vent -30.6",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north g -30.6",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f1 -30.6",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f2 -30.6",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north vent -27.2",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north g -27.2",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f1 -27.2",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f2 -27.2",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north vent -23.8",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north g -23.8",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f1 -23.8",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f2 -23.8",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north vent -20.4",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north g -20.4",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f1 -20.4",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f2 -20.4",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north vent -17.0",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north g -17.0",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f1 -17.0",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f2 -17.0",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north vent -13.6",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north g -13.6",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f1 -13.6",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range north f2 -13.6",
+      "face": "east range north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west vent +13.2",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west g +13.2",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west f1 +13.2",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west f2 +13.2",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west vent +16.6",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west g +16.6",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west f1 +16.6",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west f2 +16.6",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west vent +20.0",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west g +20.0",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west f1 +20.0",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west f2 +20.0",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west vent +23.4",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west g +23.4",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west f1 +23.4",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west f2 +23.4",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west vent +26.8",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west g +26.8",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west f1 +26.8",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east range west f2 +26.8",
+      "face": "east range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south vent -48.6",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south g -48.6",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f1 -48.6",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f2 -48.6",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south vent -45.2",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south g -45.2",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f1 -45.2",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f2 -45.2",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south vent -41.8",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south g -41.8",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f1 -41.8",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f2 -41.8",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south vent -38.4",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south g -38.4",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f1 -38.4",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f2 -38.4",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south vent -35.0",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south g -35.0",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f1 -35.0",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f2 -35.0",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south vent -31.6",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south g -31.6",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f1 -31.6",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f2 -31.6",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south vent -28.2",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south g -28.2",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f1 -28.2",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f2 -28.2",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south vent -24.8",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south g -24.8",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f1 -24.8",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f2 -24.8",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south vent -21.4",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south g -21.4",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f1 -21.4",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f2 -21.4",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south vent -18.0",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south g -18.0",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f1 -18.0",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f2 -18.0",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south vent -14.6",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south g -14.6",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f1 -14.6",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range south f2 -14.6",
+      "face": "west range south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west vent -7.2",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west g -7.2",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west f1 -7.2",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west f2 -7.2",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west vent -3.6",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west g -3.6",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west f1 -3.6",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west f2 -3.6",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west vent +0.0",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west g +0.0",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west f1 +0.0",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west f2 +0.0",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west vent +3.6",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west g +3.6",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west f1 +3.6",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west f2 +3.6",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west vent +7.2",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west g +7.2",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west f1 +7.2",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west range west f2 +7.2",
+      "face": "west range west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front vent +48.6",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g +48.6",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 +48.6",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 +48.6",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front vent +45.2",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g +45.2",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 +45.2",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 +45.2",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front vent +41.8",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g +41.8",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 +41.8",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 +41.8",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front vent +38.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g +38.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 +38.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 +38.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front vent +35.0",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g +35.0",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 +35.0",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 +35.0",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front vent +31.6",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g +31.6",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 +31.6",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 +31.6",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front vent +28.2",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g +28.2",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 +28.2",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 +28.2",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front vent +24.8",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g +24.8",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 +24.8",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 +24.8",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front vent +21.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g +21.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 +21.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 +21.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front vent +18.0",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g +18.0",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 +18.0",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 +18.0",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front vent +14.6",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g +14.6",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 +14.6",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 +14.6",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front vent +8.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g +8.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 +8.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 +8.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g +4.2",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 +4.2",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 +4.2",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front door -0.0",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 -0.0",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 -0.0",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g -4.2",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 -4.2",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 -4.2",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front vent -8.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front g -8.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f1 -8.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north front f2 -8.4",
+      "face": "north front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east vent -6.3",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east g -6.3",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east f1 -6.3",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east f2 -6.3",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east vent -2.1",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east g -2.1",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east f1 -2.1",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east f2 -2.1",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east vent +2.1",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east g +2.1",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east f1 +2.1",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east f2 +2.1",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east vent +6.3",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east g +6.3",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east f1 +6.3",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "dome block east f2 +6.3",
+      "face": "dome block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north porch arch -4.4",
+      "face": "north porch front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north porch arch +0.0",
+      "face": "north porch front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north porch arch +4.4",
+      "face": "north porch front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north porch east arch",
+      "face": "north porch east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north porch west arch",
+      "face": "north porch west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 00",
+      "face": "drum 00",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 01",
+      "face": "drum 01",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 02",
+      "face": "drum 02",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 03",
+      "face": "drum 03",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 04",
+      "face": "drum 04",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 05",
+      "face": "drum 05",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 06",
+      "face": "drum 06",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 07",
+      "face": "drum 07",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 08",
+      "face": "drum 08",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 09",
+      "face": "drum 09",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 10",
+      "face": "drum 10",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 11",
+      "face": "drum 11",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 12",
+      "face": "drum 12",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 13",
+      "face": "drum 13",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 14",
+      "face": "drum 14",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "drum window 15",
+      "face": "drum 15",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
