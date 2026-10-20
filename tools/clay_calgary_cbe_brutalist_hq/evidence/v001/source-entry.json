@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-calgary-cbe-brutalist-hq",
+  "variant_id": "clay-calgary-cbe-brutalist-hq-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "calgary_cbe_brutalist_hq/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-board-of-education-hq/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1299315,
+      "sha256": "9def4af92fce9930bde0dd5652d58feefe6756e81849f115bca3e8bea95755cf"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-board-of-education-hq/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 875513,
+      "sha256": "596e75b3b905efd11db9c746686fcb8186d3358085c835e5c71e688d4e8a228a"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/calgary-board-of-education-hq/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 859525,
+      "sha256": "205aefd0b79e3ea7dcd09f62abb8fdc7cd4d5b562cff9a95a5fca223de8c06a4"
+    }
+  ]
+}

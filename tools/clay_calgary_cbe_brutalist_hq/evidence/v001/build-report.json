@@ -1,0 +1,6160 @@
+{
+  "candidate": "clay-calgary-cbe-brutalist-hq-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 256,
+    "vertices": 19566,
+    "polygons": 30420,
+    "triangles": 30420,
+    "path": "clay-calgary-cbe-brutalist-hq-clay-v001-authoring.blend",
+    "bytes": 4192052,
+    "sha256": "15e7610c79af493c16c1063a8dcf2a3511f0d4615f60702fe3aa4870bde8715b"
+  },
+  "runtime": {
+    "path": "clay-calgary-cbe-brutalist-hq-clay-v001.glb",
+    "bytes": 1527236,
+    "sha256": "5c3aaf74a74f22de7fec749eb7b59ae3cd9be27b965060c108504bce7dcfc164",
+    "meshes": 22,
+    "materials": 22,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 22,
+    "vertices": 19566,
+    "polygons": 30420,
+    "triangles": 30420
+  },
+  "original_bounds_m": [
+    [
+      -40.0,
+      -50.0,
+      0.0
+    ],
+    [
+      44.900001525878906,
+      39.54999923706055,
+      26.31999969482422
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -40.0,
+      -50.0,
+      0.0
+    ],
+    [
+      44.900001525878906,
+      39.54999923706055,
+      26.31999969482422
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 37.800000000000004,
+    "depth": 35.1,
+    "height": 25.000000000000004
+  },
+  "native_dimensions_m": {
+    "width": 84.9000015258789,
+    "depth": 89.54999923706055,
+    "height": 26.31999969482422
+  },
+  "native_bottom_center_m": [
+    2.450000762939453,
+    -5.225000381469727,
+    0.0
+  ],
+  "source_components_by_role": {
+    "precast": 15,
+    "board": 5,
+    "joint": 14,
+    "concrete": 10,
+    "paving": 2,
+    "frame": 12,
+    "glass": 9,
+    "hardware": 10,
+    "interior": 1,
+    "floor": 3,
+    "timber": 36,
+    "planting": 27,
+    "grass": 4,
+    "roof": 1,
+    "membrane": 1,
+    "asphalt": 2,
+    "white": 1,
+    "pale": 2,
+    "metal": 13,
+    "sculpture": 84,
+    "neighbour": 3,
+    "neighbourtrim": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/window_module.png",
+    "renders/corner_cantilever.png",
+    "renders/ground_entrance.png",
+    "renders/arcade_soffit.png",
+    "renders/sculpture_plaza.png",
+    "renders/east_side.png",
+    "renders/roof_penthouse.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "top": {
+      "xmin": 0.2516404092311859,
+      "xmax": 0.7787836790084839,
+      "ymin": 0.08606734126806259,
+      "ymax": 0.827420711517334
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Board-formed columns and ground walls on the podium; precast box on them",
+      "soffit_m": 5.2
+    },
+    {
+      "name": "Flat roof inside the parapet; penthouse and plant on the roof slab",
+      "roof_m": 18.8
+    },
+    {
+      "name": "Brutalist precast office box cantilevered over a recessed board-formed ground storey",
+      "box": [
+        -18.900000000000002,
+        18.900000000000002,
+        -17.55,
+        17.55
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "south window f1 b01",
+      "face": "south",
+      "u": -17.400000000000002,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f1 b02",
+      "face": "south",
+      "u": -14.850000000000001,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f1 b03",
+      "face": "south",
+      "u": -12.150000000000002,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f1 b04",
+      "face": "south",
+      "u": -9.450000000000001,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f1 b05",
+      "face": "south",
+      "u": -6.750000000000002,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f1 b06",
+      "face": "south",
+      "u": -4.050000000000001,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f1 b07",
+      "face": "south",
+      "u": -1.3500000000000014,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f1 b08",
+      "face": "south",
+      "u": 1.3499999999999979,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f1 b09",
+      "face": "south",
+      "u": 4.050000000000001,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f1 b10",
+      "face": "south",
+      "u": 6.75,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f1 b11",
+      "face": "south",
+      "u": 9.45,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f1 b12",
+      "face": "south",
+      "u": 12.149999999999999,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f1 b13",
+      "face": "south",
+      "u": 14.849999999999998,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f1 b14",
+      "face": "south",
+      "u": 17.400000000000002,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f2 b01",
+      "face": "south",
+      "u": -17.400000000000002,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f2 b02",
+      "face": "south",
+      "u": -14.850000000000001,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f2 b03",
+      "face": "south",
+      "u": -12.150000000000002,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f2 b04",
+      "face": "south",
+      "u": -9.450000000000001,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f2 b05",
+      "face": "south",
+      "u": -6.750000000000002,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f2 b06",
+      "face": "south",
+      "u": -4.050000000000001,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f2 b07",
+      "face": "south",
+      "u": -1.3500000000000014,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f2 b08",
+      "face": "south",
+      "u": 1.3499999999999979,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f2 b09",
+      "face": "south",
+      "u": 4.050000000000001,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f2 b10",
+      "face": "south",
+      "u": 6.75,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f2 b11",
+      "face": "south",
+      "u": 9.45,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f2 b12",
+      "face": "south",
+      "u": 12.149999999999999,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f2 b13",
+      "face": "south",
+      "u": 14.849999999999998,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f2 b14",
+      "face": "south",
+      "u": 17.400000000000002,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f3 b01",
+      "face": "south",
+      "u": -17.400000000000002,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f3 b02",
+      "face": "south",
+      "u": -14.850000000000001,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f3 b03",
+      "face": "south",
+      "u": -12.150000000000002,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f3 b04",
+      "face": "south",
+      "u": -9.450000000000001,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f3 b05",
+      "face": "south",
+      "u": -6.750000000000002,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f3 b06",
+      "face": "south",
+      "u": -4.050000000000001,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f3 b07",
+      "face": "south",
+      "u": -1.3500000000000014,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f3 b08",
+      "face": "south",
+      "u": 1.3499999999999979,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f3 b09",
+      "face": "south",
+      "u": 4.050000000000001,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f3 b10",
+      "face": "south",
+      "u": 6.75,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f3 b11",
+      "face": "south",
+      "u": 9.45,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f3 b12",
+      "face": "south",
+      "u": 12.149999999999999,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f3 b13",
+      "face": "south",
+      "u": 14.849999999999998,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "south window f3 b14",
+      "face": "south",
+      "u": 17.400000000000002,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f1 b01",
+      "face": "north",
+      "u": -17.400000000000002,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f1 b02",
+      "face": "north",
+      "u": -14.850000000000001,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f1 b03",
+      "face": "north",
+      "u": -12.150000000000002,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f1 b04",
+      "face": "north",
+      "u": -9.450000000000001,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f1 b05",
+      "face": "north",
+      "u": -6.750000000000002,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f1 b06",
+      "face": "north",
+      "u": -4.050000000000001,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f1 b07",
+      "face": "north",
+      "u": -1.3500000000000014,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f1 b08",
+      "face": "north",
+      "u": 1.3499999999999979,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f1 b09",
+      "face": "north",
+      "u": 4.050000000000001,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f1 b10",
+      "face": "north",
+      "u": 6.75,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f1 b11",
+      "face": "north",
+      "u": 9.45,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f1 b12",
+      "face": "north",
+      "u": 12.149999999999999,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f1 b13",
+      "face": "north",
+      "u": 14.849999999999998,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f1 b14",
+      "face": "north",
+      "u": 17.400000000000002,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f2 b01",
+      "face": "north",
+      "u": -17.400000000000002,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f2 b02",
+      "face": "north",
+      "u": -14.850000000000001,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f2 b03",
+      "face": "north",
+      "u": -12.150000000000002,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f2 b04",
+      "face": "north",
+      "u": -9.450000000000001,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f2 b05",
+      "face": "north",
+      "u": -6.750000000000002,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f2 b06",
+      "face": "north",
+      "u": -4.050000000000001,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f2 b07",
+      "face": "north",
+      "u": -1.3500000000000014,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f2 b08",
+      "face": "north",
+      "u": 1.3499999999999979,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f2 b09",
+      "face": "north",
+      "u": 4.050000000000001,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f2 b10",
+      "face": "north",
+      "u": 6.75,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f2 b11",
+      "face": "north",
+      "u": 9.45,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f2 b12",
+      "face": "north",
+      "u": 12.149999999999999,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f2 b13",
+      "face": "north",
+      "u": 14.849999999999998,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f2 b14",
+      "face": "north",
+      "u": 17.400000000000002,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f3 b01",
+      "face": "north",
+      "u": -17.400000000000002,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f3 b02",
+      "face": "north",
+      "u": -14.850000000000001,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f3 b03",
+      "face": "north",
+      "u": -12.150000000000002,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f3 b04",
+      "face": "north",
+      "u": -9.450000000000001,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f3 b05",
+      "face": "north",
+      "u": -6.750000000000002,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f3 b06",
+      "face": "north",
+      "u": -4.050000000000001,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f3 b07",
+      "face": "north",
+      "u": -1.3500000000000014,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f3 b08",
+      "face": "north",
+      "u": 1.3499999999999979,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f3 b09",
+      "face": "north",
+      "u": 4.050000000000001,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f3 b10",
+      "face": "north",
+      "u": 6.75,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f3 b11",
+      "face": "north",
+      "u": 9.45,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f3 b12",
+      "face": "north",
+      "u": 12.149999999999999,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f3 b13",
+      "face": "north",
+      "u": 14.849999999999998,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "north window f3 b14",
+      "face": "north",
+      "u": 17.400000000000002,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        17.549999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f1 b01",
+      "face": "east",
+      "u": -16.05,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f1 b02",
+      "face": "east",
+      "u": -13.5,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f1 b03",
+      "face": "east",
+      "u": -10.8,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f1 b04",
+      "face": "east",
+      "u": -8.1,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f1 b05",
+      "face": "east",
+      "u": -5.4,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f1 b06",
+      "face": "east",
+      "u": -2.6999999999999993,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f1 b07",
+      "face": "east",
+      "u": 0.0,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f1 b08",
+      "face": "east",
+      "u": 2.6999999999999993,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f1 b09",
+      "face": "east",
+      "u": 5.400000000000002,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f1 b10",
+      "face": "east",
+      "u": 8.100000000000001,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f1 b11",
+      "face": "east",
+      "u": 10.8,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f1 b12",
+      "face": "east",
+      "u": 13.5,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f1 b13",
+      "face": "east",
+      "u": 16.05,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f2 b01",
+      "face": "east",
+      "u": -16.05,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f2 b02",
+      "face": "east",
+      "u": -13.5,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f2 b03",
+      "face": "east",
+      "u": -10.8,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f2 b04",
+      "face": "east",
+      "u": -8.1,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f2 b05",
+      "face": "east",
+      "u": -5.4,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f2 b06",
+      "face": "east",
+      "u": -2.6999999999999993,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f2 b07",
+      "face": "east",
+      "u": 0.0,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f2 b08",
+      "face": "east",
+      "u": 2.6999999999999993,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f2 b09",
+      "face": "east",
+      "u": 5.400000000000002,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f2 b10",
+      "face": "east",
+      "u": 8.100000000000001,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f2 b11",
+      "face": "east",
+      "u": 10.8,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f2 b12",
+      "face": "east",
+      "u": 13.5,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f2 b13",
+      "face": "east",
+      "u": 16.05,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f3 b01",
+      "face": "east",
+      "u": -16.05,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f3 b02",
+      "face": "east",
+      "u": -13.5,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f3 b03",
+      "face": "east",
+      "u": -10.8,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f3 b04",
+      "face": "east",
+      "u": -8.1,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f3 b05",
+      "face": "east",
+      "u": -5.4,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f3 b06",
+      "face": "east",
+      "u": -2.6999999999999993,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f3 b07",
+      "face": "east",
+      "u": 0.0,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f3 b08",
+      "face": "east",
+      "u": 2.6999999999999993,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f3 b09",
+      "face": "east",
+      "u": 5.400000000000002,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f3 b10",
+      "face": "east",
+      "u": 8.100000000000001,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f3 b11",
+      "face": "east",
+      "u": 10.8,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f3 b12",
+      "face": "east",
+      "u": 13.5,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "east window f3 b13",
+      "face": "east",
+      "u": 16.05,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f1 b01",
+      "face": "west",
+      "u": -16.05,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f1 b02",
+      "face": "west",
+      "u": -13.5,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f1 b03",
+      "face": "west",
+      "u": -10.8,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f1 b04",
+      "face": "west",
+      "u": -8.1,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f1 b05",
+      "face": "west",
+      "u": -5.4,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f1 b06",
+      "face": "west",
+      "u": -2.6999999999999993,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f1 b07",
+      "face": "west",
+      "u": 0.0,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f1 b08",
+      "face": "west",
+      "u": 2.6999999999999993,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f1 b09",
+      "face": "west",
+      "u": 5.400000000000002,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f1 b10",
+      "face": "west",
+      "u": 8.100000000000001,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f1 b11",
+      "face": "west",
+      "u": 10.8,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f1 b12",
+      "face": "west",
+      "u": 13.5,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f1 b13",
+      "face": "west",
+      "u": 16.05,
+      "z": 6.9,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f2 b01",
+      "face": "west",
+      "u": -16.05,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f2 b02",
+      "face": "west",
+      "u": -13.5,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f2 b03",
+      "face": "west",
+      "u": -10.8,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f2 b04",
+      "face": "west",
+      "u": -8.1,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f2 b05",
+      "face": "west",
+      "u": -5.4,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f2 b06",
+      "face": "west",
+      "u": -2.6999999999999993,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f2 b07",
+      "face": "west",
+      "u": 0.0,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f2 b08",
+      "face": "west",
+      "u": 2.6999999999999993,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f2 b09",
+      "face": "west",
+      "u": 5.400000000000002,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f2 b10",
+      "face": "west",
+      "u": 8.100000000000001,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f2 b11",
+      "face": "west",
+      "u": 10.8,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f2 b12",
+      "face": "west",
+      "u": 13.5,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f2 b13",
+      "face": "west",
+      "u": 16.05,
+      "z": 11.3,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f3 b01",
+      "face": "west",
+      "u": -16.05,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f3 b02",
+      "face": "west",
+      "u": -13.5,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f3 b03",
+      "face": "west",
+      "u": -10.8,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f3 b04",
+      "face": "west",
+      "u": -8.1,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f3 b05",
+      "face": "west",
+      "u": -5.4,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f3 b06",
+      "face": "west",
+      "u": -2.6999999999999993,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f3 b07",
+      "face": "west",
+      "u": 0.0,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f3 b08",
+      "face": "west",
+      "u": 2.6999999999999993,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f3 b09",
+      "face": "west",
+      "u": 5.400000000000002,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f3 b10",
+      "face": "west",
+      "u": 8.100000000000001,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f3 b11",
+      "face": "west",
+      "u": 10.8,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f3 b12",
+      "face": "west",
+      "u": 13.5,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "west window f3 b13",
+      "face": "west",
+      "u": 16.05,
+      "z": 15.7,
+      "width": 1.9,
+      "height": 2.5,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -18.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "ground south storefront -6.75",
+      "face": "ground south",
+      "u": -6.750000000000002,
+      "z": 0.6,
+      "width": 2.3000000000000003,
+      "height": 4.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -14.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground south storefront -4.05",
+      "face": "ground south",
+      "u": -4.050000000000001,
+      "z": 0.6,
+      "width": 2.3000000000000003,
+      "height": 4.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -14.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground south storefront -1.35",
+      "face": "ground south",
+      "u": -1.3500000000000014,
+      "z": 0.6,
+      "width": 2.3000000000000003,
+      "height": 4.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -14.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground south storefront +1.35",
+      "face": "ground south",
+      "u": 1.3499999999999979,
+      "z": 0.6,
+      "width": 2.3000000000000003,
+      "height": 4.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -14.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground south storefront +4.05",
+      "face": "ground south",
+      "u": 4.050000000000001,
+      "z": 0.6,
+      "width": 2.3000000000000003,
+      "height": 4.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -14.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground south entrance +6.75",
+      "face": "ground south",
+      "u": 6.75,
+      "z": 0.45,
+      "width": 2.3000000000000003,
+      "height": 4.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -14.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground south storefront +9.45",
+      "face": "ground south",
+      "u": 9.45,
+      "z": 0.6,
+      "width": 2.3000000000000003,
+      "height": 4.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -14.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground south storefront +12.15",
+      "face": "ground south",
+      "u": 12.149999999999999,
+      "z": 0.6,
+      "width": 2.3000000000000003,
+      "height": 4.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -14.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground south storefront +14.85",
+      "face": "ground south",
+      "u": 14.849999999999998,
+      "z": 0.6,
+      "width": 2.3000000000000003,
+      "height": 4.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -14.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground east entrance -10.80",
+      "face": "ground east",
+      "u": -10.8,
+      "z": 0.45,
+      "width": 2.3000000000000003,
+      "height": 4.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground east storefront -8.10",
+      "face": "ground east",
+      "u": -8.1,
+      "z": 0.6,
+      "width": 2.3000000000000003,
+      "height": 4.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground east storefront -5.40",
+      "face": "ground east",
+      "u": -5.4,
+      "z": 0.6,
+      "width": 2.3000000000000003,
+      "height": 4.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground east storefront -2.70",
+      "face": "ground east",
+      "u": -2.6999999999999993,
+      "z": 0.6,
+      "width": 2.3000000000000003,
+      "height": 4.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground east storefront +8.10",
+      "face": "ground east",
+      "u": 8.100000000000001,
+      "z": 0.6,
+      "width": 2.3000000000000003,
+      "height": 4.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground east storefront +10.80",
+      "face": "ground east",
+      "u": 10.8,
+      "z": 0.6,
+      "width": 2.3000000000000003,
+      "height": 4.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground east storefront +13.50",
+      "face": "ground east",
+      "u": 13.5,
+      "z": 0.6,
+      "width": 2.3000000000000003,
+      "height": 4.05,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        15.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "ground north window +14.85",
+      "face": "ground north",
+      "u": 14.850000000000001,
+      "z": 1.75,
+      "width": 2.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "ground north service door +9.45",
+      "face": "ground north",
+      "u": 9.450000000000001,
+      "z": 0.45,
+      "width": 1.1,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "service"
+    },
+    {
+      "id": "ground north window +4.05",
+      "face": "ground north",
+      "u": 4.050000000000001,
+      "z": 1.75,
+      "width": 2.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "ground north window -1.35",
+      "face": "ground north",
+      "u": -1.3499999999999979,
+      "z": 1.75,
+      "width": 2.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "ground north window -6.75",
+      "face": "ground north",
+      "u": -6.75,
+      "z": 1.75,
+      "width": 2.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "ground north window -12.15",
+      "face": "ground north",
+      "u": -12.149999999999999,
+      "z": 1.75,
+      "width": 2.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        15.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "ground west window +10.80",
+      "face": "ground west",
+      "u": 10.8,
+      "z": 1.75,
+      "width": 2.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -16.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "ground west window +5.40",
+      "face": "ground west",
+      "u": 5.4,
+      "z": 1.75,
+      "width": 2.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -16.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "ground west window -0.00",
+      "face": "ground west",
+      "u": -0.0,
+      "z": 1.75,
+      "width": 2.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -16.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "ground west window -5.40",
+      "face": "ground west",
+      "u": -5.400000000000002,
+      "z": 1.75,
+      "width": 2.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -16.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "ground west window -10.80",
+      "face": "ground west",
+      "u": -10.8,
+      "z": 1.75,
+      "width": 2.1,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        -16.899999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "penthouse south louvre -5.6",
+      "face": "penthouse south",
+      "u": -5.6,
+      "z": 20.2,
+      "width": 2.6,
+      "height": 1.8,
+      "kind": "louvre",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        -9.350000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "plant"
+    },
+    {
+      "id": "penthouse south door +0.0",
+      "face": "penthouse south",
+      "u": 0.0,
+      "z": 18.85,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        -9.350000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "plant"
+    },
+    {
+      "id": "penthouse south door +4.0",
+      "face": "penthouse south",
+      "u": 4.0,
+      "z": 18.85,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        -9.350000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "plant"
+    },
+    {
+      "id": "penthouse north louvre +2.0",
+      "face": "penthouse north",
+      "u": 2.0,
+      "z": 20.2,
+      "width": 3.2,
+      "height": 1.8,
+      "kind": "louvre",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        14.550000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "plant"
+    },
+    {
+      "id": "penthouse east louvre +4.0",
+      "face": "penthouse east",
+      "u": 4.0,
+      "z": 20.2,
+      "width": 2.4,
+      "height": 1.8,
+      "kind": "louvre",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        8.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "plant"
+    },
+    {
+      "id": "penthouse west louvre -1.0",
+      "face": "penthouse west",
+      "u": -1.0,
+      "z": 20.2,
+      "width": 3.6,
+      "height": 1.8,
+      "kind": "louvre",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -9.600000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "plant"
+    },
+    {
+      "id": "penthouse west door +6.0",
+      "face": "penthouse west",
+      "u": 6.0,
+      "z": 18.85,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.5,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -9.600000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "plant"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "Podium",
+      "South step low",
+      "South step high",
+      "East step low",
+      "East step high",
+      "South street",
+      "South sidewalk",
+      "East street",
+      "East far sidewalk",
+      "East sidewalk",
+      "Sculpture plaza",
+      "South lawn",
+      "West walk",
+      "South-west lawn",
+      "West lawn",
+      "North lawn"
+    ],
+    "street": [
+      "street joint",
+      "street white",
+      "street hardware",
+      "street pale",
+      "street metal",
+      "street concrete"
+    ],
+    "sculpture": [
+      "Sculpture plinth",
+      "Sculpture leg",
+      "Sculpture arm",
+      "Sculpture leg.001",
+      "Sculpture arm.001",
+      "Sculpture torso",
+      "Sculpture neck",
+      "Sculpture head",
+      "Sculpture leg.002",
+      "Sculpture arm.002",
+      "Sculpture leg.003",
+      "Sculpture arm.003",
+      "Sculpture torso.001",
+      "Sculpture neck.001",
+      "Sculpture head.001",
+      "Sculpture leg.004",
+      "Sculpture arm.004",
+      "Sculpture leg.005",
+      "Sculpture arm.005",
+      "Sculpture torso.002",
+      "Sculpture neck.002",
+      "Sculpture head.002",
+      "Sculpture leg.006",
+      "Sculpture arm.006",
+      "Sculpture leg.007",
+      "Sculpture arm.007",
+      "Sculpture torso.003",
+      "Sculpture neck.003",
+      "Sculpture head.003",
+      "Sculpture leg.008",
+      "Sculpture arm.008",
+      "Sculpture leg.009",
+      "Sculpture arm.009",
+      "Sculpture torso.004",
+      "Sculpture neck.004",
+      "Sculpture head.004",
+      "Sculpture leg.010",
+      "Sculpture arm.010",
+      "Sculpture leg.011",
+      "Sculpture arm.011",
+      "Sculpture torso.005",
+      "Sculpture neck.005",
+      "Sculpture head.005",
+      "Sculpture leg.012",
+      "Sculpture arm.012",
+      "Sculpture leg.013",
+      "Sculpture arm.013",
+      "Sculpture torso.006",
+      "Sculpture neck.006",
+      "Sculpture head.006",
+      "Sculpture leg.014",
+      "Sculpture arm.014",
+      "Sculpture leg.015",
+      "Sculpture arm.015",
+      "Sculpture torso.007",
+      "Sculpture neck.007",
+      "Sculpture head.007",
+      "Sculpture leg.016",
+      "Sculpture arm.016",
+      "Sculpture leg.017",
+      "Sculpture arm.017",
+      "Sculpture torso.008",
+      "Sculpture neck.008",
+      "Sculpture head.008",
+      "Sculpture leg.018",
+      "Sculpture arm.018",
+      "Sculpture leg.019",
+      "Sculpture arm.019",
+      "Sculpture torso.009",
+      "Sculpture neck.009",
+      "Sculpture head.009",
+      "Sculpture leg.020",
+      "Sculpture arm.020",
+      "Sculpture leg.021",
+      "Sculpture arm.021",
+      "Sculpture torso.010",
+      "Sculpture neck.010",
+      "Sculpture head.010",
+      "Sculpture leg.022",
+      "Sculpture arm.022",
+      "Sculpture leg.023",
+      "Sculpture arm.023",
+      "Sculpture torso.011",
+      "Sculpture neck.011",
+      "Sculpture head.011"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020",
+      "Street tree trunk.007",
+      "Street tree branch.021",
+      "Street tree branch.022",
+      "Street tree branch.023",
+      "Street tree trunk.008",
+      "Street tree branch.024",
+      "Street tree branch.025",
+      "Street tree branch.026"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023",
+      "Street tree crown.024",
+      "Street tree crown.025",
+      "Street tree crown.026"
+    ],
+    "context": [
+      "West neighbour",
+      "North-west neighbour",
+      "North-east neighbour"
+    ],
+    "neighbours": [
+      "neighbours membrane",
+      "neighbours glass",
+      "neighbours neighbourtrim"
+    ],
+    "envelope": [
+      "south precast carrier",
+      "north precast carrier",
+      "east precast carrier",
+      "west precast carrier",
+      "ground south board-formed carrier",
+      "ground east board-formed carrier",
+      "ground north board-formed carrier",
+      "ground west board-formed carrier",
+      "penthouse south wall",
+      "penthouse north wall",
+      "penthouse east wall",
+      "penthouse west wall"
+    ],
+    "south": [
+      "south south frame",
+      "south south glass",
+      "south south precast",
+      "south south joint"
+    ],
+    "north": [
+      "north north frame",
+      "north north glass",
+      "north north precast",
+      "north north joint"
+    ],
+    "east": [
+      "east east frame",
+      "east east glass",
+      "east east precast",
+      "east east joint"
+    ],
+    "west": [
+      "west west frame",
+      "west west glass",
+      "west west precast",
+      "west west joint"
+    ],
+    "corner piers": [
+      "corner piers precast"
+    ],
+    "brick joints": [
+      "ground south measured mortar courses",
+      "ground east measured mortar courses",
+      "ground north measured mortar courses",
+      "ground west measured mortar courses"
+    ],
+    "ground south": [
+      "ground south ground south frame",
+      "ground south ground south glass",
+      "ground south ground south metal"
+    ],
+    "ground east": [
+      "ground east ground east frame",
+      "ground east ground east glass",
+      "ground east ground east metal"
+    ],
+    "ground north": [
+      "ground north ground north frame",
+      "ground north ground north glass",
+      "ground north ground north metal"
+    ],
+    "ground west": [
+      "ground west ground west frame",
+      "ground west ground west glass"
+    ],
+    "columns": [
+      "columns board",
+      "columns joint"
+    ],
+    "inside": [
+      "First floor slab and soffit",
+      "Floor 10.0",
+      "Floor 14.4",
+      "Service core",
+      "Penthouse floor"
+    ],
+    "roof": [
+      "Roof slab",
+      "Penthouse roof"
+    ],
+    "penthouse south": [
+      "penthouse south penthouse south frame",
+      "penthouse south penthouse south hardware",
+      "penthouse south penthouse south metal",
+      "penthouse south penthouse south joint"
+    ],
+    "penthouse north": [
+      "penthouse north penthouse north frame",
+      "penthouse north penthouse north hardware",
+      "penthouse north penthouse north metal",
+      "penthouse north penthouse north joint"
+    ],
+    "penthouse east": [
+      "penthouse east penthouse east frame",
+      "penthouse east penthouse east hardware",
+      "penthouse east penthouse east metal",
+      "penthouse east penthouse east joint"
+    ],
+    "penthouse west": [
+      "penthouse west penthouse west frame",
+      "penthouse west penthouse west hardware",
+      "penthouse west penthouse west metal",
+      "penthouse west penthouse west joint"
+    ],
+    "roof plant": [
+      "roof plant pale",
+      "roof plant metal",
+      "roof plant hardware",
+      "AHU fan shroud",
+      "AHU fan hub",
+      "AHU fan shroud.001",
+      "AHU fan hub.001",
+      "AHU fan shroud.002",
+      "AHU fan hub.002",
+      "AHU fan shroud.003",
+      "AHU fan hub.003"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear"
+  ],
+  "finished_utc": "2026-10-20T05:01:20.353107+00:00",
+  "delivery_and_render_seconds": 4596.507904790001,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
