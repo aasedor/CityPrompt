@@ -44,7 +44,7 @@ def manifest(version):
     cams = G.camera_roster(FAR + 10.0 - X0, Y1 - Y0 + 4.0, h, [
         ('pavilion_close', (-9.0, -9.0, ZG + 1.7), (0.5, 0.0, ZG + 2.2), 30),
         ('glazing_close', (5.2, -10.0, ZG + 2.2), (2.6, -4.4, ZG + 1.9), 30),
-        ('green_roof', (-14.0, -12.0, ZG + 13.0), (0.2, 0.2, ZG + 3.9), 35),
+        ('green_roof', (-6.0, -15.5, ZG + 14.0), (0.2, 0.2, ZG + 3.9), 35),
         ('porch_northwest', (-2.0, 14.0, ZG + 1.7), (1.0, 4.0, ZG + 2.0), 28),
         ('promenade_beds', (-14.6, 16.5, ZG + 1.7), (-6.0, -6.0, ZG + 1.0), 30),
         ('boardwalk', (13.0, -1.5, ZG + 1.9), (18.6, 26.0, ZG + 1.4), 30),
@@ -893,7 +893,7 @@ def bed(name, poly, dens, b):
                 d = 0.0 if k == 0 else r * .55
                 dome(b, role, p[0] + math.cos(a0 + 2.2 * k) * d, p[1] + math.sin(a0 + 2.2 * k) * d, ZG + .10,
                      r * RNG.uniform(.85, 1.1), r * RNG.uniform(.85, 1.1), r * RNG.uniform(1.0, 1.35) * (1.0 if k == 0 else .8), seg=8)
-    for i in range(int(fd * a * .5)):                       # perennial drifts: a low leafy mound carrying a pink, lavender or white flower mass
+    for i in range(int(fd * a * .7)):                       # perennial drifts: a low leafy mound carrying a pink, lavender or white flower mass
         p = spot()
         if p:
             rx, ry, h = RNG.uniform(.5, .9), RNG.uniform(.45, .8), RNG.uniform(.24, .4)
@@ -903,7 +903,7 @@ def bed(name, poly, dens, b):
             for k in range(3):                              # a few heads scattered on the flank of the mound
                 ang = RNG.uniform(0, 2 * math.pi)
                 dot(b, fr, p[0] + math.cos(ang) * rx * .8, p[1] + math.sin(ang) * ry * .8, ZG + .10 + h * .62, RNG.uniform(.07, .11))
-    for i in range(int(td * a * .32)):                      # ornamental grasses: arching clumps, green and gold
+    for i in range(int(td * a * .42)):                      # ornamental grasses: arching clumps, green and gold
         p = spot()
         if p:
             fountain(b, p[0], p[1], ZG + .095, RNG.uniform(.6, 1.15), n=7, roles=(('grass', 'grass2'), ('grass2', 'straw'), ('grass', 'planting'))[i % 3])
@@ -953,15 +953,15 @@ def trees():
     rng = random.Random(58)                                  # the far bank: a dense wood at the bridge landing, thinning to the south
     y = Y0 + 1.0
     while y < Y1 + .5:
-        dense = YB - 17.0 < y < YB + 8.0
-        for row in range(3 if dense else 1):
-            yy = y + rng.uniform(-1.0, 1.0) + row * 1.3
-            if abs(yy - YB) < 3.2 or yy > Y1 + .8:
+        dense = YB - 18.0 < y < YB + 8.0
+        for row in range(4 if dense else 2):
+            yy = y + rng.uniform(-.9, .9) + row * 1.2
+            if abs(yy - YB) < 3.0 + row * .4 or yy > Y1 + .8:
                 continue
-            park_tree(FAR + 1.8 + row * 2.7 + rng.uniform(-.5, .5), yy, rng.uniform(2.0, 4.2), z=ZG, k=k); k += 1
-        y += 3.1 if dense else 6.5
+            park_tree(FAR + 1.4 + row * 2.4 + rng.uniform(-.4, .4), yy, rng.uniform(2.4, 4.4), z=ZG, k=k); k += 1
+        y += 2.9 if dense else 6.0
     b = Batch()
-    for i in range(46):                                      # understorey mounds along the far shore and under the wood
+    for i in range(80):                                      # understorey mounds along the far shore and under the wood
         yy = rng.uniform(Y0, Y1)
         if abs(yy - YB) < 2.8:
             continue
@@ -1155,10 +1155,16 @@ def pavilion():
     for k, (role, hu, hv, zb) in enumerate((('sedum', 6.08, 4.58, ZG + 3.95), ('sedum2', 6.065, 4.565, ZG + 3.955), ('sedum4', 6.05, 4.55, ZG + 3.96))):
         ph = [RNG.uniform(0, math.tau) for _ in range(5)]                        # three interleaved fine mats: olive, ochre and rust patches
         amp = (.06, .06, .045)[k]
-        zf = lambda u, v, ph=ph, amp=amp: ZG + 3.995 + amp * (.5 + .22 * math.sin(u * 1.3 + ph[0]) * math.cos(v * 1.5 + ph[1])
-                                                          + .16 * math.sin(u * 3.1 + v * 2.4 + ph[2]) + .08 * math.sin(-u * 7.3 + v * 6.1 + ph[3])
-                                                          + .06 * math.sin(u * 11.0 + v * 9.0 + ph[4]))
-        heightmat(f'Green roof {role} mat', hu, hv, .3, zb, zf, role, 'pavilion')
+        zf = lambda u, v, ph=ph, amp=amp: ZG + 3.995 + amp * (.5 + .14 * math.sin(u * 1.1 + ph[0]) * math.cos(v * 1.3 + ph[1])
+                                                          + .2 * math.sin(u * 3.3 + ph[2]) * math.cos(v * 3.7 - ph[1]) + .14 * math.sin(u * 5.9 + v * 4.6 + ph[3])
+                                                          + .1 * math.sin(-u * 8.7 + v * 7.9 + ph[4]))
+        heightmat(f'Green roof {role} mat', hu, hv, .25, zb, zf, role, 'pavilion')
+    b = Batch()
+    for i in range(170):                                                         # small flowering sedum clumps over the mat
+        u, v = RNG.uniform(-5.9, 5.9), RNG.uniform(-4.4, 4.4)
+        x, y = L(u, v)
+        dot(b, ('sedum2', 'sedum4', 'grass2', 'sedum')[i % 4], x, y, ZG + 4.03, RNG.uniform(.07, .12))
+    flush_smooth(b, 'green roof clumps')
     C.qa_room_light('Pavilion room', (*L(-1.0, 0.0), ZG + 2.6), 120, 3.0)
     C.CONTACTS.append(dict(name='Pavilion: slab on the apron, walls on the slab, posts under the roof corners, sedum on the roof build-up', box=[*L(-6.2, -4.7), *L(6.2, 4.7)]))
 
