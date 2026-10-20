@@ -596,8 +596,8 @@ def separators():
         for sy in (1, -1):
             ya, yc = sy * CURB_STOP[0], sy * CURB_STOP[1]
             b.box('rubber', xc, (ya + yc) / 2, .055, .32, abs(yc - ya), .1)
-            for k in range(5):                                                                 # yellow chevrons pointing at the crosswalk
-                yy = sy * (CURB_STOP[0] + .3 + k * .42)
+            for k in range(2):                                                                 # yellow chevrons pointing at the crosswalk, between the posts
+                yy = sy * (CURB_STOP[0] + .83 + k * .8)
                 b.beam('yellow', (xc - .15, yy, .107), (xc + .005, yy - sy * .16, .107), .075, .006)
                 b.beam('yellow', (xc + .15, yy, .1075), (xc - .005, yy - sy * .16, .1075), .075, .0072)
             for k in range(3):
@@ -629,6 +629,7 @@ def separators():
         for ny, face in ((sy * (ISL[1] + .35), -sy), (sy * (ISL[2] - .35), sy)):
             g.box('hardware', 0.0, ny, SWZ + 1.3, .07, .07, 2.6)
             g.box('marking', 0.0, ny + face * .05, SWZ + 2.25, .6, .03, .75)
+            g.box('hardware', 0.0, ny + face * .025, SWZ + 2.25, .62, .01, .77)                   # plain grey back of the sign plate
             g.beam('dark', (-.12, ny + face * .07, SWZ + 2.0), (.12, ny + face * .07, SWZ + 2.36), .07, .01)     # black keep-right arrow on white
             g.beam('dark', (.15, ny + face * .07, SWZ + 2.39), (.0, ny + face * .07, SWZ + 2.47), .07, .01)
             g.beam('dark', (.15, ny + face * .07, SWZ + 2.39), (.15, ny + face * .07, SWZ + 2.22), .07, .01)
@@ -712,10 +713,11 @@ def flush_smooth(b, module):
     b.g = {}
 
 
-def round_tree(t, cr, x, y, z, h, r, rng, clamp=None):
+def round_tree(t, cr, x, y, z, h, r, rng, clamp=None, lift=0.0):
     """A mature street tree: a trunk to about 40 % of the height, scaffold limbs, and a dense rounded crown of overlapping
-    lobes whose lower lobes hang below the forks. `clamp` = (axis, limit) keeps every lobe on the street side of a facade."""
-    base_h = h * .42
+    lobes whose lower lobes hang below the forks. `clamp` = (axis, limit) keeps every lobe on the street side of a facade;
+    `lift` raises the whole crown on a taller clear trunk (verge trees: crowns above the lamp heads)."""
+    base_h = h * .42 + lift
     C.rod('Street tree trunk', (x, y, z), (x, y, z + base_h + .3), .07 + .018 * h, 'timber', 'street planting', 8)
     lobes = [(0.0, 0.0, h * .72, r, r, h * .26, 'tree')]
     a0 = rng.uniform(0, math.tau)
@@ -740,17 +742,17 @@ def round_tree(t, cr, x, y, z, h, r, rng, clamp=None):
                 else:
                     cy, ry = c, ext
         if dx or dy:
-            C.rod('Street tree limb', (x, y, z + base_h), (x + (cx - x) * .7, y + (cy - y) * .7, cz - rz * .3), .03 + .008 * h, 'timber', 'street planting', 6)
-        lobe(cr, role, cx, cy, cz, rx, ry, rz, rng)
+            C.rod('Street tree limb', (x, y, z + base_h), (x + (cx - x) * .7, y + (cy - y) * .7, cz + lift - rz * .3), .03 + .008 * h, 'timber', 'street planting', 6)
+        lobe(cr, role, cx, cy, cz + lift, rx, ry, rz, rng)
 
 
-def lamp(b, x, y, z, toward):
-    """Black cobra-head street lamp: base, pole, arm over the road, head."""
+def lamp(b, x, y, z, toward, top=8.6):
+    """Black cobra-head street lamp: base, pole to `top`, arm over the road, head."""
     b.box('hardware', x, y, z + .19, .38, .38, .42)
-    b.box('hardware', x, y, z + 4.4, .16, .16, 8.4)
-    b.beam('hardware', (x, y, z + 8.3), (x + toward * 2.2, y, z + 8.6), .1, .1)
-    b.box('hardware', x + toward * 2.45, y, z + 8.55, .75, .3, .16)
-    b.box('pale', x + toward * 2.45, y, z + 8.46, .6, .22, .03)
+    b.box('hardware', x, y, z + .2 + (top - .2) / 2, .16, .16, top - .2)
+    b.beam('hardware', (x, y, z + top - .3), (x + toward * 2.2, y, z + top), .1, .1)
+    b.box('hardware', x + toward * 2.45, y, z + top - .05, .75, .3, .16)
+    b.box('pale', x + toward * 2.45, y, z + top - .14, .6, .22, .03)
 
 
 def signal_pole(b, x, y, ax, ay, reach):
@@ -780,7 +782,7 @@ def car(b, x, y, ux, uy, role):
     b.beam('cabin', (x - ux * 1.25, y - uy * 1.25, 1.14), (x + ux * .95, y + uy * .95, 1.14), 1.6, .46)      # opaque tinted cabin: the roof rests on it
     b.beam(role, (x - ux * 1.3, y - uy * 1.3, 1.39), (x + ux * 1.0, y + uy * 1.0, 1.39), 1.66, .06)
     for s in (-1.42, 1.42):
-        for t in (-.8, .8):
+        for t in (-.72, .72):                                                   # wheels tucked under the sill, outer faces inside the body side
             cx, cy = x + ux * s + vx * t, y + uy * s + vy * t
             b.beam('tyre', (cx - vx * .13, cy - vy * .13, .335), (cx + vx * .13, cy + vy * .13, .335), .62, .62)
 
@@ -788,8 +790,8 @@ def car(b, x, y, ux, uy, role):
 def furniture():
     b = Batch()
     gz = GRASS_Z[1]
-    for y in (21.5, 43.5, 65.5, -21.5, -43.5):                                    # midway between the verge trees, near the curb: arms clear of the crowns
-        lamp(b, -8.6, y, gz, 1)
+    for y in (21.5, 43.5, 65.5, -21.5, -43.5):                                    # midway between the verge trees; heads at 6.2 m, under the lifted crowns (bottoms about 6.6 m), so low sightlines pass beneath the nearer crowns
+        lamp(b, -8.6, y, gz, 1, top=6.2)
     for y in (34.5, 55.0, -34.5):
         lamp(b, 8.65, y, SWZ, -1)
     signal_pole(b, 10.0, 7.6, -1, 0, 7.5)
@@ -809,7 +811,7 @@ def furniture():
     t = Batch(); cr = Batch()
     rng = random.Random(11)
     for y in (16.0, 27.0, 38.0, 49.0, 60.0, 71.0, -16.0, -27.0, -38.0):          # mature trees on the west verge: tall rounded overlapping crowns
-        round_tree(t, cr, -9.4, y, gz, 11.5, 4.2, rng)
+        round_tree(t, cr, -9.4, y, gz, 11.5, 4.2, rng, lift=2.6)
     for y in (16.5, 28.5, 40.5, -16.5, -28.5, -40.5):                             # young trees in pits on the east sidewalk, crowns kept off the shopfronts
         t.box('soil', 9.1, y, SWZ + .0055, 1.2, 1.2, .015)
         round_tree(t, cr, 9.1, y, SWZ + .01, 7.0, 1.9, rng, clamp=('x', EAST_BL - .35))
