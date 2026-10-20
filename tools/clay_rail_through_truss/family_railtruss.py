@@ -506,7 +506,7 @@ def columns(b):
                 b.box('plate', x, y, GB - .35, 1.2, 1.3, .6)                                  # capital flare under the girder
         if not end and j > 0:                                                                 # transverse riveted portal arch
             xa, xb = -CX + .30, CX - .30
-            ym_, zm_, rt = plate_rib(b, y, xa, xb, TSPRING, GB - .82, n=12, axis='y', depth=.5, web=.26, flange=.46)
+            ym_, zm_, rt = plate_rib(b, y, xa, xb, TSPRING, GB - .82, n=12, axis='y', depth=.5, web=.26, flange=.46, rivet_pitch=2.2)
             b.box('steel', 0.0, y, GB - .3, 2 * CX - .9, .5, .5)                              # portal head girder
             for xp in (-2.0, -1.0, 1.0, 2.0):                                                 # spandrel posts
                 zt = extrados_z(ym_, zm_, rt, xp)
@@ -522,7 +522,7 @@ def deck_arches(b):
         c0, c1 = COLS[k], COLS[k + 1]
         ya, yb = c0 + .05, c1 - .05
         for x in (-CX, CX):
-            ym, zm, rt = plate_rib(b, x, ya, yb, SPRING, CROWN, n=22, rivet_pitch=1.6)
+            ym, zm, rt = plate_rib(b, x, ya, yb, SPRING, CROWN, n=18, rivet_pitch=2.0)
             n = 12
             nodes = []                                                                           # (y, z on the rib extrados)
             for i in range(n + 1):
@@ -534,7 +534,6 @@ def deck_arches(b):
                 b.box('steel', x, y, (zt + GB - .04) / 2, .34, .30, GB - .04 - zt)             # vertical post
                 for sd in (-1, 1):
                     b.box('plate', x + sd * .2, y, GB - .32, .04, .62, .5)                       # gusset at the girder
-                    b.box('plate', x + sd * .21, y, zt + .26, .04, .66 if i % 2 == 0 else .5, .52)  # gusset on the rib
             for i in range(n):                                                                   # V-diagonals: up from every even rib node
                 (y0, z0), (y1, z1) = nodes[i], nodes[i + 1]
                 if i % 2 == 0:
@@ -555,17 +554,16 @@ def bowstring(b):
     dep, web, fl = .9, .46, .72
     for x in (-CX, CX):
         sx = 1 if x > 0 else -1
-        ym, zm, rt = plate_rib(b, x, ya, yb, zb, zc, n=26, depth=dep, web=web, flange=fl, rivet_pitch=.9)
+        ym, zm, rt = plate_rib(b, x, ya, yb, zb, zc, n=24, depth=dep, web=web, flange=fl, rivet_pitch=1.3)
         ri = rt - dep - FL + .02                                 # intrados face of the top chord
         zbt = DT + .62                                           # bottom chord top
         b.box('steel', x, (ya + yb) / 2, (GT - .22 + zbt) / 2, .56, yb - ya, zbt - GT + .22)   # deep riveted bottom chord
         b.box('plate', x, (ya + yb) / 2, zbt + .025, .76, yb - ya + .02, .05)                    # top cover plate
-        m = int((yb - ya) / .8)
+        m = int((yb - ya) / 1.5)
         for i in range(m):
-            y = ya + .4 + i * .8
+            y = ya + .75 + i * 1.5
             for sd in (-1, 1):
-                for z in (DT + .06, zbt - .14):
-                    b.box('rivet', x + sd * .292, y, z, .03, .06, .06)
+                b.box('rivet', x + sd * .292, y, zbt - .14, .03, .06, .06)
         for yy in (ya, yb):                                      # bearing shoes over the cap girders
             b.box('plate', x, yy + (.25 if yy == ya else -.25), (GT - .25 + zbt) / 2, .8, .7, zbt - GT + .25)
         n = 10
@@ -582,7 +580,7 @@ def bowstring(b):
             for zz, hh in ((zbt + .45, .9), (zt - .4, .8)):                                     # riveted gussets both faces
                 for sd in (-1, 1):
                     b.box('plate', x + sd * .275, y, zz, .03, 1.0, hh)
-                    for dy in (-.3, 0, .3):
+                    for dy in (-.25, .25):
                         b.box('rivet', x + sd * .293, y + dy, zz, .02, .05, .05)
         mid = n // 2
         for i in range(n):                                       # heavy main diagonal falling towards midspan, a lighter counter
@@ -744,13 +742,9 @@ def blocks():
                 z = 1.3 + f * 3.0
                 for j in range(n):
                     y = y0 + 2.5 + j * 3.0
-                    gx = fx + dx * .01 if dx > 0 else fx - .01
-                    gx = fx + (.01 if dx > 0 else -.01)
-                    tx = fx + (.05 if dx > 0 else -.05)
-                    b.box('glass', gx, y, z + .9, .02, 1.3, 1.7)
-                    for s in (-1, 1):
-                        b.box('trim', tx, y + s * .7, z + .9, .08, .1, 1.9)
-                    b.box('trim', tx, y, z + 1.8, .08, 1.5, .1)
+                    sg = 1 if dx > 0 else -1                 # one frame plate with the glass proud of it: no corner joints
+                    b.box('trim', fx + sg * .03, y, z + .9, .06, 1.5, 1.9)
+                    b.box('glass', fx + sg * .07, y, z + .9, .02, 1.3, 1.7)
                     b.box('stone', fx + (.09 if dx > 0 else -.09), y, z - .02, .16, 1.6, .1)
             b.flush(f'{side} block {i} details')
 
