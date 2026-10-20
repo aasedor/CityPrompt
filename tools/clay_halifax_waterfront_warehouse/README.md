@@ -68,6 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 reworks it)
+## Open blockers after v005 (v006 reworks it; a second non-improving review stops the family)
 
-- P1 #1: the east elevation's window counts differ from the sources: front and oblique show pair / triplet / pair upstairs over shop glazing / triplet / pair on the ground; the render has pair / pair / pair upstairs over shop glazing / triplet / triplet (middle east bay missing an upper arch, north bay with an extra ground arch).
+- P1 #1: the five arched ground windows on the east side (bay-2 triplet and bay-3 pair) have grey granite archivolt rings; both sources show plain brick arch heads there with only stone sills, so the ground storey copies the upper storey's granite and the material hierarchy is lost.
