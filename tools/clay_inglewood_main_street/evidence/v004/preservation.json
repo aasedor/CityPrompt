@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-inglewood-main-street-clay-v004",
+  "glb": "clay-inglewood-main-street-clay-v004.glb",
+  "glb_bytes": 1910720,
+  "glb_sha256": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "angle_parking.png": 92,
+    "arched_windows.png": 92,
+    "bracketed_cornice.png": 92,
+    "corner_entrance.png": 92,
+    "crosswalk_bulbout.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "left_side.png": 92,
+    "rear.png": 92,
+    "rear_lane.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_parapets.png": 92,
+    "sidewalk_section.png": 92,
+    "storefront_close.png": 92,
+    "street_furniture.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-inglewood-main-street-clay-v004-renders-and-glb.zip",
+  "zip_bytes": 35689527
+}
