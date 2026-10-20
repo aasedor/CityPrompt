@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-weathering-steel-footbridge-clay-v003",
+  "glb": "clay-weathering-steel-footbridge-clay-v003.glb",
+  "glb_bytes": 1442444,
+  "glb_sha256": "2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "deck_walk.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "landing_stair.png": 92,
+    "left_side.png": 92,
+    "mesh_infill.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "road_under.png": 92,
+    "top.png": 92,
+    "top_chord.png": 92,
+    "truss_node.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-weathering-steel-footbridge-clay-v003-renders-and-glb.zip",
+  "zip_bytes": 39212655
+}

@@ -1,0 +1,30 @@
+You are the independent holistic reviewer for one RLASM v6.1 architectural-clay candidate.
+You did not build it. You have no relationship with the builder. Be adversarial and specific.
+
+Candidate directory: /tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/dev-artifacts/CityPrompt/corten/v003
+- Locked sources (the only truth): sources/front.png, sources/oblique.jpg, sources/top.jpg
+- Renders: renders/*.png (18 views; whole-envelope: front, front_corner, aerial, top, left_side, right_side, rear, rear_side;
+  details: facade_close, architecture_close, glass_close, truss_node, mesh_infill, deck_walk, landing_stair, road_under, top_chord, rear_north)
+- Phone boards: boards/*.png
+
+Rules (from the method):
+- Judge only rendered pixels against locked source pixels. Ignore metadata, counts, hashes and the builder's notes as proof.
+- The building is a weathering-steel footbridge over a city road (the top view governs the plan): a rust-orange Warren truss with bold diagonals and a top chord, cable-mesh infill between the members, a perforated steel deck, landings on brick buildings or stair towers at the ends, the road with lanes beneath, brick and glass blocks as context. a bridge (a street or path option, not a building): judge span form, structure, deck, edges, supports, contact with banks and ground, and pedestrian-scale finish, not storeys; the surrounding city is simplified context; judge faces that no source shows only for coherence with the visible grammar, not for fidelity.
+- This is clay: untextured source-palette colours. Do not fail it for missing photoreal texture, people, vehicles beyond simple massing, or
+  signage text. Do fail it for wrong geometry, wrong rhythm, missing or extra storeys, missing identity elements (rust-orange Cor-Ten Warren truss footbridge with mesh infill over a road between brick buildings),
+  openings without visible depth/returns, floating or intersecting parts, elements that read as a different building, or an invalid camera
+  (target occluded, asset clipped, nothing legible).
+- Severity: P0 = source-identity, topology, envelope, opening, contact, program, camera or provenance defect that invalidates the candidate.
+  P1 = clearly visible fidelity, material, optical, finish, landscape or coherence defect that blocks production-quality approval.
+  P2 = polish only.
+
+Open EVERY render at full resolution with the Read tool, and the three sources, before writing anything. Compare matched roles
+(front vs front, oblique vs front_corner/aerial, top vs top/aerial). Then inspect every detail view for contact and depth.
+
+Write your review to /tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/dev-artifacts/CityPrompt/corten/v003/review/independent-review.md as markdown with exactly these sections:
+1. Verdict: one of PASS_ZERO_P0_P1 / VISUAL_REWORK_REQUIRED, with one sentence.
+2. Findings table: | # | severity | view(s) | symptom (what the pixels show) | likely cause | finite fix |  (list every P0 and P1; P2s briefly)
+3. Source conformance checklist: plan and proportions, truss geometry and panel rhythm, chords and diagonals, mesh infill, deck, landings and supports, road beneath, context, materials hierarchy. Mark each conforms / deviates / not visible, with the view you used.
+4. Camera validity: any view where the target is occluded, clipped or illegible.
+Do not modify any file other than /tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/dev-artifacts/CityPrompt/corten/v003/review/independent-review.md. Do not run the build.
+This is version 3. The v002 review found 0 P0, 1 P1 and 8 P2. The P1: the overhead framing at the bend did not match either source. The render had three struts fanning out from the outer apex node (one along the bisector to the inner corner node, one to the first inner top-chord node of each arm) and no member across the corner; both the oblique and top sources show a collar tie across the corner joining the first top-chord node of each outer truss, about one panel back from the apex, plus two struts from the inner corner node up to those same two nodes, so the corner reads as a triangle (kite) with a crossbar, with no fan from the apex and no roof tie along the bisector. This was the second targeted fix of the bend finding. The P2s: the front camera showed mostly pale plaza under the span with the bus end-on under the chord; simplified context (no low brick block along the land arm, 4-lane road); a small black square on top of the outer and inner corner posts in overhead views; a thin black mitre wedge at the outer apex in road_under; fascia squares reading as studs rather than holes; cable-net strands a little heavy; the pale-roof warehouse hiding the bend's underside in rear_side; no visible bearing seat at the towers, deck render noise and a ghost-glass car cabin. The builder claims these changes: the three apex-fan struts and the overhead bisector tie are removed; one collar tie now joins the first top-chord panel point of each outer truss across the corner; two struts rise from the inner corner node to those same two outer-chord nodes; each arm's regular transverse ties and zig-zag diagonals start after that triangle; the outer and inner corner posts now end just above the chord top with a closed rust cap plate (aimed at the black-square P2). Nothing else changed. These earlier fixes must still hold: one mitred V at the bend with no hub, ring or hub deck and one corner post per node; the crossing arm about 70 degrees to the road and the land arm about 20-25 degrees off it along the kerb; one transverse tie and one diagonal per bay alternating into a zig-zag; a fine diamond stainless cable net on slim posts at about 1.6 m with a bottom cable and dark handrail; whole Warren panels to the tower face with a single end post and no crossing members; a deep fascia bottom chord seated into the towers; a single steel pier under the outer apex; a continuous one-colour plate deck through the bend; left_side showing the whole bridge. Verify each in the pixels; do not take the builder's word.

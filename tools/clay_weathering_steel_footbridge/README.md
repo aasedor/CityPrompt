@@ -1,7 +1,7 @@
 # Weathering-steel truss footbridge (RLASM v6.1 architectural clay)
 
 Candidate H7 of wave H (bridges) of 2026-10-19, one of the ten bridge variants the user chose from the
-street and path catalogue; a street or path option, not a building. State: **candidate under review**. Nothing here is keeper-approved,
+street and path catalogue; a street or path option, not a building. State: **stopped at v003 by the stopping rule (independent review PASS_ZERO_P0_P1); v003 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,6 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 reworks it; a second failed fix stops the family)
+## Open blockers after v003 (stopped)
 
-- P1 #1: the overhead framing at the bend fans three struts from the outer apex node (one along the bisector to the inner corner node, one to each arm's first inner top-chord node); both sources show a collar tie across the corner joining the first top-chord node of each outer truss plus two struts from the inner corner node up to those nodes (a triangle with a crossbar, no fan, no bisector tie) (the v001 bend finding, surviving one targeted fix).
+- No P0 or P1 findings remain. Twelve P2 refinements are listed in evidence/v003/independent-review.md.
+- This is an independent RLASM review result only; it is not keeper approval, runtime integration or catalogue enrolment.
