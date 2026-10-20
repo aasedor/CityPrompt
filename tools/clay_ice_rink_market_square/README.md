@@ -77,8 +77,6 @@ NOT TESTED. The model sits on a level base. Shared terrain registration is not a
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 reworks these three)
+## Open blockers after v005 (x)
 
-- P1 #1: in front the tree runs off the top of the frame; the spire tip touches the edge and the star is cut off.
-- P1 #2: the gold star floats a few pixels above the spire tip as a flat plate, reading as a floating sliver from the east and west.
-- P1 #3: the handrail garland is straight segments round the rounded rink corners with a pure-black wedge gap at every joint (large black slashes in market_chalets).
+outward chalet gables and eaves bare (no garland, lights or bow)
