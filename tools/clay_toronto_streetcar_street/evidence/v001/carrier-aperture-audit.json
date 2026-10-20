@@ -1,0 +1,972 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "West corner block bay 0 door",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block bay 0 shopfront",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block bay 1 shopfront",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block bay 2 door",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block bay 2 shopfront",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block bay 3 shopfront",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block bay 4 door",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block bay 4 shopfront",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 2 0.0",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 2 0.1",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 2 1.0",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 2 1.1",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 2 2.0",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 2 2.1",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 2 3.0",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 2 3.1",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 2 4.0",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 2 4.1",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 3 0.0",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 3 0.1",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 3 1.0",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 3 1.1",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 3 2.0",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 3 2.1",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 3 3.0",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 3 3.1",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 3 4.0",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block storey 3 4.1",
+      "face": "West corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side bay 1 shopfront",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side bay 2 door",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side bay 2 shopfront",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side bay 3 shopfront",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side bay 4 shopfront",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side bay 5 door",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side bay 5 shopfront",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side bay 6 shopfront",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side service door",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 2 0.0",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 2 0.1",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 2 1.0",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 2 1.1",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 2 2.0",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 2 2.1",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 2 3.0",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 2 3.1",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 2 4.0",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 2 4.1",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 2 5.0",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 2 5.1",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 2 6.0",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 2 6.1",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 3 0.0",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 3 0.1",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 3 1.0",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 3 1.1",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 3 2.0",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 3 2.1",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 3 3.0",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 3 3.1",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 3 4.0",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 3 4.1",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 3 5.0",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 3 5.1",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 3 6.0",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West corner block side storey 3 6.1",
+      "face": "West corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block bay 0 door",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block bay 0 shopfront",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block bay 1 shopfront",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block bay 2 door",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block bay 2 shopfront",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block storey 2 0.0",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block storey 2 0.1",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block storey 2 1.0",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block storey 2 1.1",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block storey 2 2.0",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block storey 2 2.1",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block storey 3 0.0",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block storey 3 0.1",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block storey 3 1.0",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block storey 3 1.1",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block storey 3 2.0",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West brick block storey 3 2.1",
+      "face": "West brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block bay 0 shopfront",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block bay 1 door",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block bay 1 shopfront",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block bay 2 shopfront",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block bay 3 door",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block bay 3 shopfront",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 2 0.0",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 2 0.1",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 2 1.0",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 2 1.1",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 2 2.0",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 2 2.1",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 2 3.0",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 2 3.1",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 3 0.0",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 3 0.1",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 3 1.0",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 3 1.1",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 3 2.0",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 3 2.1",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 3 3.0",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block storey 3 3.1",
+      "face": "East corner block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side bay 0 shopfront",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side bay 1 door",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side bay 1 shopfront",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side bay 2 shopfront",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side bay 3 shopfront",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side bay 4 door",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side bay 4 shopfront",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side service door",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 2 0.0",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 2 0.1",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 2 1.0",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 2 1.1",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 2 2.0",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 2 2.1",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 2 3.0",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 2 3.1",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 2 4.0",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 2 4.1",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 2 5.0",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 2 5.1",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 3 0.0",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 3 0.1",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 3 1.0",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 3 1.1",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 3 2.0",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 3 2.1",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 3 3.0",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 3 3.1",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 3 4.0",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 3 4.1",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 3 5.0",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East corner block side storey 3 5.1",
+      "face": "East corner block cross street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block bay 0 shopfront",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block bay 1 door",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block bay 1 shopfront",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block bay 2 shopfront",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block storey 2 0.0",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block storey 2 0.1",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block storey 2 1.0",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block storey 2 1.1",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block storey 2 2.0",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block storey 2 2.1",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block storey 3 0.0",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block storey 3 0.1",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block storey 3 1.0",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block storey 3 1.1",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block storey 3 2.0",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East brick block storey 3 2.1",
+      "face": "East brick block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East low block bay 0 shopfront",
+      "face": "East low block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East low block bay 1 door",
+      "face": "East low block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East low block bay 1 shopfront",
+      "face": "East low block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East low block storey 2 0.0",
+      "face": "East low block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East low block storey 2 0.1",
+      "face": "East low block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East low block storey 2 0.2",
+      "face": "East low block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East low block storey 2 1.0",
+      "face": "East low block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East low block storey 2 1.1",
+      "face": "East low block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East low block storey 2 1.2",
+      "face": "East low block street",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
