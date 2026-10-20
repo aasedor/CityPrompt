@@ -4,7 +4,7 @@ market_square / variant_0 (market_square_v0).
 Read from the pixels (the top view governs the plan): a large plaza of pale square concrete slabs that flares
 outward toward the viewer, set out with a regular grid of short grey utility bollards (market-stall and event
 power points) and small square floor drains; at its head a curved bowl of three concentric seating tiers, each
-three low steps of stacked warm-grey stone risers under pale concrete treads with a wide terrace walk, rising to
+three steps of coursed warm-grey stacked-stone risers under thin stone treads, each tier ending in a wide pale concrete terrace walk, rising to
 a raised stage platform with a gently curved dark front edge; on the stage an open-fronted pavilion whose back and
 side walls are clad in vertical timber slats of mixed widths, depths and tones, under a deep flat dark roof slab,
 with a loudspeaker near each end of the back wall; two slender floodlight masts with stacked lamp heads just
@@ -18,10 +18,11 @@ import assemblies as A
 import geometry as G
 
 SLUG = 'clay-market-square'
-OX, OY = 0.0, 29.0                  # centre of the seating-bowl arcs (north of the stage)
-R0 = 29.0                           # outer (lowest) step radius: the bowl meets the plaza at y = 0 on the axis
-ARC = 41.0                          # half-angle of the bowl measured from due south (top view: about 38 m chord)
-RISE, TREAD, TERRACE = .20, .42, 2.0
+OX, OY = 0.0, 29.0                  # centre of the stage-front arc (the stage edge is convex toward the plaza)
+CY = -40.0                          # centre of the seating-bowl arcs, out on the plaza axis to the south: the tiers are
+R0 = 40.0                           # concave to the plaza and widen as they rise; the lowest riser meets the plaza at y = 0
+FOOT_X, TOP_X = 18.0, 25.0          # half-width of the lowest riser and of the upper-terrace edge at the bed walls
+RISE, TREAD, TERRACE = .30, .42, 2.0
 PAVE = .06                          # plaza paving top
 STAGE = 9 * RISE + .37              # stage deck top
 ROOF_Z = STAGE + 4.4                # underside of the pavilion roof slab
@@ -29,8 +30,8 @@ X0, X1, Y0, Y1 = -36.0, 36.0, -30.0, 34.0
 EPS = .002
 T = .3
 PALETTE = dict(paving=(.71, .70, .67), joint=(.52, .51, .49), joint2=(.44, .43, .41), concrete=(.80, .78, .74),
-    stone=(.57, .50, .41), mortar=(.38, .33, .27), dark=(.17, .17, .18), deck=(.36, .36, .37), roof=(.25, .25, .26),
-    timber=(.46, .28, .16), timber2=(.60, .39, .22), timber3=(.33, .20, .12), hardware=(.12, .12, .13),
+    stone=(.57, .50, .41), stone2=(.65, .58, .47), stone3=(.49, .43, .35), mortar=(.30, .26, .21), dark=(.17, .17, .18), deck=(.36, .36, .37), roof=(.25, .25, .26),
+    timber=(.46, .28, .16), timber2=(.66, .45, .27), timber3=(.27, .16, .09), hardware=(.12, .12, .13),
     pale=(.95, .92, .80), bollard=(.50, .50, .49), lawn=(.30, .44, .20), meadow=(.50, .53, .29), meadow2=(.64, .59, .35),
     tree=(.20, .36, .16), tree2=(.28, .43, .20), bark=(.30, .22, .15), trim=(.22, .22, .23), wall=(.17, .17, .18),
     glass=(.62, .70, .74), interior=(.70, .62, .50))
@@ -39,19 +40,19 @@ PALETTE = dict(paving=(.71, .70, .67), joint=(.52, .51, .49), joint2=(.44, .43, 
 def manifest(version):
     h = 12.0
     cams = G.camera_roster(X1 - X0, Y1 - Y0, h, [
-        ('stage_pavilion', (0.0, 3.0, 3.4), (0.0, 15.5, 3.9), 30),
-        ('slat_wall', (2.8, 11.2, 3.4), (1.2, 16.1, 3.9), 40),
-        ('seating_tiers', (-15.5, -1.5, 1.7), (-4.0, 11.0, .7), 30),
-        ('cheek_walls', (10.0, -5.0, 1.8), (17.5, 9.0, 1.0), 32),
-        ('bollard_grid', (-5.0, -24.0, 1.3), (1.5, -8.0, .2), 34),
-        ('paving_drain', (3.6, -14.4, 1.6), (4.5, -11.1, .0), 40),
-        ('light_mast', (15.5, 5.5, 3.2), (9.6, 15.4, 7.6), 30),
-        ('backstage_door', (11.6, 11.0, 3.6), (6.2, 14.4, 3.2), 34),
+        ('stage_pavilion', (0.0, 3.0, 4.4), (0.0, 15.5, 4.9), 30),
+        ('slat_wall', (2.8, 11.2, 4.4), (1.2, 16.1, 4.9), 40),
+        ('seating_tiers', (-13.0, -10.0, 1.8), (-6.0, 3.0, .6), 30),
+        ('cheek_walls', (2.0, 5.5, 4.3), (9.0, 12.5, 3.2), 30),
+        ('bollard_grid', (-4.5, -28.0, 1.3), (1.5, -10.0, .15), 34),
+        ('paving_drain', (-.9, -12.9, 1.6), (0.0, -9.6, .0), 40),
+        ('light_mast', (14.5, 3.0, 4.4), (9.6, 15.4, 8.0), 30),
+        ('backstage_door', (11.6, 11.0, 4.6), (6.2, 14.4, 4.2), 34),
         ('meadow_beds', (-31.0, -12.0, 4.5), (-20.0, 8.0, 2.0), 30),
         ('rear_north', (4.0, 42.0, 9.0), (0.0, 14.0, 3.0), 30)])
     for c in cams:
         if c['name'] == 'front':                    # the locked front stands on the plaza at eye height, looking north at the stage
-            c.update(location=(1.5, -25.5, 1.65), target=(0.0, 14.0, -2.2), lens=31, whole=False)
+            c.update(location=(1.0, -29.0, 3.0), target=(0.0, 12.0, 0.4), lens=32, whole=False)
         elif c['name'] == 'front_corner':           # the locked oblique looks north from high over the south plaza
             c.update(location=(0.0, -37.0, 24.0), target=(0.0, 12.0, 3.0), lens=30, whole=False)
         elif c['name'] == 'aerial':                 # the locked top view is a steep oblique from the south
@@ -62,7 +63,7 @@ def manifest(version):
         source_archetype='market_square/variant_0 (market_square_v0)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=0, storey_programme='open space: a serviced market and event plaza with a seating bowl and a stage pavilion',
-            plan='51 m wide flared plaza of square slabs with a 3 m bollard grid; a three-tier seating bowl of 38 m chord on 29 m arcs; 16 m curved stage with a 12.4 m slatted pavilion; raised stone-walled meadow beds both sides',
+            plan='51 m wide flared plaza of square slabs with a 3 m grid of short bollards; a three-tier seating bowl on 40-47 m arcs centred on the plaza axis to the south, concave to the plaza and widening upward from a 36 m to a 50 m chord; 16 m curved stage with a 12.4 m slatted pavilion; raised stone-walled meadow beds both sides',
             facade='stacked warm-grey stone risers and walls with pale concrete treads and copings; vertical timber slat cladding in three tones; dark flat roof slab; grey bollards; slender dark floodlight masts',
             levels_m=[0.0, PAVE, 3 * RISE, 6 * RISE, 9 * RISE, STAGE, ROOF_Z], inferred='the backstage door, stage side steps, the far lawn and tree belt are teaching assumptions; the meadow grass is abstracted as tufts'),
         roof_contract=dict(type='open space; flat dark roof slab over the stage pavilion', datum_m=0.0, crowns_m=[ROOF_Z + .38]),
@@ -465,83 +466,145 @@ def tuft(b, role, x, y, z, h, r, lean):
     F.extend([(o + 3, o + 2, o + 1, o), (o, o + 1, o + 4), (o + 1, o + 2, o + 4), (o + 2, o + 3, o + 4), (o + 3, o, o + 4)])
 
 
-# ---- plan ----
-A_OUT = arc_pts(R0, ARC, ARC, 0)[0]                 # cheek line, outer end (east)
-RIN = R0 - 8 * TREAD - 2 * TERRACE           # upper terrace edge radius
-B_IN = arc_pts(RIN, ARC, ARC, 0)[0]                 # cheek line, inner end (east)
+# ---- plan: tiers on arcs about (0, CY) to the south, so they are concave to the plaza and widen as they rise ----
+def bowl_pts(r, a0, a1, n):
+    """Points on a bowl arc about (0, CY); angles in degrees from due north, east positive."""
+    out = []
+    for i in range(n + 1):
+        a = math.radians(a0 + (a1 - a0) * i / n if n else a0)
+        out.append((r * math.sin(a), CY + r * math.cos(a)))
+    return out
+
+
+RTOP = R0 + 8 * TREAD + 2 * TERRACE                 # upper-terrace edge radius
 TOP = 9 * RISE                                     # upper terrace (stone) level
+F_END = bowl_pts(R0, math.degrees(math.asin(FOOT_X / R0)), 0, 0)[0]        # foot of the east bed wall
+U_END = bowl_pts(RTOP, math.degrees(math.asin(TOP_X / RTOP)), 0, 0)[0]     # upper end of the east bed wall
+_D = (U_END[0] - F_END[0], U_END[1] - F_END[1])
+_DL = math.hypot(*_D)
+N_OUT = (_D[1] / _DL, -_D[0] / _DL)                 # outward (bed-side) normal of the east bed wall line
+R_WALL = RTOP + 1.6                                 # radius of the high-bed retaining wall behind the top tier
+CHEEK_X = 9.3                                       # face of the high bed beside the stage cheek walls
 
 
-def cheek(t):
-    return (A_OUT[0] + (B_IN[0] - A_OUT[0]) * t, A_OUT[1] + (B_IN[1] - A_OUT[1]) * t)
+def wall_pt(t, d=0.0):
+    return (F_END[0] + t * _D[0] + d * N_OUT[0], F_END[1] + t * _D[1] + d * N_OUT[1])
 
 
-M_ = cheek(.42)
-BED_LO = [(22.37, -10.0), A_OUT, M_, (21.8, 12.7), (31.0, 1.0)]                     # low meadow bed by the plaza
-BED_HI = [cheek(.40), B_IN, (B_IN[0], 22.3), (24.5, 22.3), (21.8, 12.6)]           # high meadow bed by the cheek
+def end_angle(r, d=0.0):
+    """Angle (degrees from due north) where the bowl circle of radius r meets the east bed-wall line offset by d."""
+    q = (F_END[0] + d * N_OUT[0], F_END[1] + d * N_OUT[1] - CY)
+    b = q[0] * _D[0] + q[1] * _D[1]
+    c = q[0] ** 2 + q[1] ** 2 - r * r
+    t = (-b + math.sqrt(max(0.0, b * b - _DL ** 2 * c))) / _DL ** 2
+    x, y = q[0] + t * _D[0], q[1] + t * _D[1]
+    return math.degrees(math.atan2(x, y))
+
+
+def x_angle(r, x):
+    return math.degrees(math.asin(x / r))
+
+
+A_W = end_angle(R_WALL)
+W_END = bowl_pts(R_WALL, A_W, 0, 0)[0]
+F_MID = wall_pt(.4)
+WALL_ARC = bowl_pts(R_WALL, A_W, x_angle(R_WALL, CHEEK_X), 10)
+BED_HI = [F_MID] + [U_END] + WALL_ARC + [(CHEEK_X, 22.3), (27.5, 22.3), (31.5, 10.0), (31.5, -1.5)]
+P_EDGE = ((25.72, -26.0), (F_END[0] + .12, F_END[1]))                     # plaza east edge, 12 cm under the low bed
+BED_LO = [(25.72 - 7.6 * 10 / 21.73 - .12, -16.0), F_END, F_MID, (23.0, -1.6), (31.4, -.8), (31.4, -16.0)]
 H_LO, H_HI = .9, TOP + .45
-PLAZA_E = ((25.6, -26.0), arc_pts(R0 - .3, ARC + .5, ARC + .5, 0)[0])            # east plaza edge (south end, north end under the bottom step)
+# per-edge treatment of the bed walls: base level of the dressed face, or None where the edge is buried
+LO_EDGES = [0.0, 0.0, None, None, 0.0, 0.0]
+HI_EDGES = [0.0] + [0.0] + [TOP] * (len(WALL_ARC) - 1) + [TOP, 0.0, 0.0, 0.0, H_LO]
 
 
 def xe(y):
-    (xa, ya), (xb, yb) = PLAZA_E
+    (xa, ya), (xb, yb) = P_EDGE
     return xa + (y - ya) / (yb - ya) * (xb - xa)
+
+
+def plaza_end():
+    """Where the plaza east edge, carried on, meets the circle just under the bottom riser."""
+    (xa, ya), (xb, yb) = P_EDGE
+    s = 0.0
+    while True:
+        x, y = xb + (xb - xa) * s, yb + (yb - ya) * s
+        if math.hypot(x, y - CY) >= R0 + .3 or s > 1:
+            return x, y
+        s += .002
 
 
 def plaza():
     C.box('Lawn', (0.0, (Y0 + Y1) / 2, .015), (X1 - X0, Y1 - Y0, .03), 'lawn', 'site', 0)
-    (xa, ya), (xb, yb) = PLAZA_E
-    pts = [(-xa, ya), (xa, ya), (xb, yb)] + arc_pts(R0 - .3, ARC + .5, -ARC - .5, 72)[1:-1] + [(-xb, yb)]
+    (xa, ya), _ = P_EDGE
+    fp = plaza_end()
+    ap = math.degrees(math.atan2(fp[0], fp[1] - CY))
+    pts = [(-xa, ya), (xa, ya), fp] + bowl_pts(R0 + .3, ap, -ap, 72)[1:-1] + [(-fp[0], fp[1])]
     C.prism('Plaza paving', pts, 'z', 0.0, PAVE, 'paving', 'plaza')
     b = Batch()
-    ymax_axis = OY - R0
-    # Square slabs 1.5 m, a stronger joint every fourth line (6 m panels), clipped to the plaza and the bottom step.
-    for k in range(int((yb - ya) / 1.5) + 1):
+    # Square slabs 1.5 m, a stronger joint every fourth line (6 m panels), clipped to the plaza and the bottom riser.
+    for k in range(40):
         y = ya + .75 + k * 1.5
-        if y > yb - .1:
+        if y > -.1:
             break
-        e = xe(y) - .06
+        e = min(xe(y), math.sqrt(max(0.0, R0 ** 2 - (y - CY) ** 2))) - .06
         role, w = ('joint2', .03) if k % 4 == 0 else ('joint', .012)
-        if y <= ymax_axis - .05:
-            spans = [(-e, e)]
-        else:
-            x0 = math.sqrt(max(0.0, R0 ** 2 - (OY - y) ** 2)) + .05
-            spans = [(-e, -x0), (x0, e)] if x0 < e else []
-        for (p, q) in spans:
-            b.box(role, (p + q) / 2, y, PAVE + .0018, q - p, w, .004)
+        b.box(role, 0.0, y, PAVE + .0018, 2 * e, w, .004)
     for k in range(-17, 18):
         x = k * 1.5
-        if abs(x) <= A_OUT[0]:
-            ytop = OY - math.sqrt(R0 ** 2 - x * x) - .05
+        if abs(x) <= F_END[0]:
+            ytop = CY + math.sqrt(R0 ** 2 - x * x) - .05
+        elif abs(x) < xa:
+            ytop = ya + (xa - abs(x)) / (xa - F_END[0]) * (F_END[1] - ya) - .06
         else:
-            ytop = ya + (abs(x) - xa) / (xb - xa) * (yb - ya) - .06
-        if ytop <= ya + .1:
             continue
         role, w = ('joint2', .03) if k % 4 == 0 else ('joint', .012)
         b.box(role, x, (ya + .05 + ytop) / 2, PAVE + .0020, w, ytop - ya - .05, .0044)
-    # Bollard grid (3 m, alternate rows offset 1.5 m) and small square floor drains between them.
-    for j, y in enumerate((-3.0, -7.5, -12.0, -16.5, -21.0)):
+    # Short stubby utility bollards on a 3 m grid (alternate rows offset 1.5 m), with flush slotted floor drains.
+    for j, y in enumerate((-6.0, -10.5, -15.0, -19.5, -24.0)):
         off = 1.5 if j % 2 else 0.0
         lim = xe(y) - 1.2
         for i in range(-12, 13):
             x = i * 3.0 + off
             if abs(x) > lim:
                 continue
-            ngon(b, 'bollard', x, y, PAVE - .01, .70, .10, 12)
-            ngon(b, 'joint2', x, y, .68, .74, .11, 12)
+            ngon(b, 'bollard', x, y, PAVE - .01, .49, .16, 14)
+            ngon(b, 'joint2', x, y, .485, .525, .145, 14)
             if (i + j) % 3 == 0 and abs(x + 1.5) < lim:
-                b.box('joint2', x + 1.5, y + .9, PAVE + .005, .36, .36, .014)
+                b.box('dark', x + 1.5, y + .9, PAVE + .0012, .34, .34, .004)
                 for g in range(4):
-                    b.box('hardware', x + 1.5 - .12 + g * .08, y + .9, PAVE + .008, .02, .3, .004)
+                    b.box('hardware', x + 1.5 - .12 + g * .08, y + .9, PAVE + .0035, .022, .28, .0022)
     b.flush('plaza')
 
 
-def ring(name, r_out, r_in, top, n=72):
-    """Annular sector of the bowl from grade to `top`, with a pale concrete tread cap (40 mm nosing)."""
-    pts = arc_pts(r_out, -ARC - .5, ARC + .5, n) + arc_pts(r_in, ARC + .5, -ARC - .5, n)
-    C.prism(name, pts, 'z', 0.0, top, 'stone', 'seating bowl')
-    cap = arc_pts(r_out + .04, -ARC - .5, ARC + .5, n) + arc_pts(r_in + .02, ARC + .5, -ARC - .5, n)
-    C.prism(name + ' tread', cap, 'z', top - .025, top + .025, 'concrete', 'seating bowl')
+def ring(name, r_in, r_out, top, n=56, cap_role='stone2'):
+    """Annular step of the bowl from grade to `top` (riser face at r_in, toward the plaza), ends buried 20 cm in the
+    bed walls, with a thin tread cap (20 mm nosing): warm stone on the steps, pale concrete on the terrace walks."""
+    a_i, a_o = end_angle(r_in, .2), end_angle(r_out, .2)
+    pts = bowl_pts(r_in, -a_i, a_i, n) + bowl_pts(r_out, a_o, -a_o, n)
+    C.prism(name, pts, 'z', 0.0, top, 'mortar', 'seating bowl')
+    c_i, c_o = end_angle(r_in - .02, .15), end_angle(r_out + .02, .15)
+    cap = bowl_pts(r_in - .02, -c_i, c_i, n) + bowl_pts(r_out + .02, c_o, -c_o, n)
+    C.prism(name + ' tread', cap, 'z', top - .015, top + .015, cap_role, 'seating bowl')
+
+
+def riser_stones(b, r, z0, z1, seed):
+    """Stacked ledgestone on a curved riser face of radius r between z0 and z1: long flat stones in courses,
+    proud of the dark bedding mass behind, with staggered head joints."""
+    a = end_angle(r, .15)
+    courses = 3 if z1 - z0 > .15 else 2
+    h = (z1 - z0) / courses
+    for c in range(courses):
+        zc = z0 + h * (c + .5)
+        s = -a + (.3 + .5 * rnd(seed, c)) * 57.3 / r
+        i = 0
+        while s < a:
+            L = (.95 + 1.0 * rnd(seed * 31 + c, i)) * 57.3 / r                # stone length as an angle
+            e = min(s + L, a)
+            p, q = bowl_pts(r - .008, s, s, 0)[0], bowl_pts(r - .008, e - .012 * 57.3 / r, 0, 0)[0]
+            role = ('stone', 'stone2', 'stone3')[int(rnd(seed + c, i) * 3)]
+            b.beam(role, (p[0], p[1], zc), (q[0], q[1], zc), .034, h - .012)
+            s, i = e, i + 1
 
 
 def bowl():
@@ -552,35 +615,40 @@ def bowl():
         for s in range(3):
             z += RISE
             depth = TREAD + (TERRACE if (s == 2 and t < 2) else 0.0)
+            face = r - (.03 if k else 0.0)
             if t == 2 and s == 2:
-                break                                                  # the last riser is the upper terrace edge
-            r_in = r - depth
-            ring(f'Tier {t + 1} step {s + 1}', r + (.03 if k else 0.0), r_in, z)
-            # Stacked-stone riser: a bed joint at mid height and staggered head joints along the arc.
-            zj = (lower + z - .025) / 2
-            pts = arc_pts(r + .004, -ARC, ARC, 72)
-            for (p, q) in zip(pts, pts[1:]):
-                b.beam('mortar', (p[0], p[1], zj), (q[0], q[1], zj), .02, .012)
-            L = math.radians(2 * ARC) * r
-            m = int(L / .55)
-            for i in range(m):
-                a = -ARC + 2 * ARC * (i + .5 * ((t + s) % 2) + .25) / m
-                lo, hi = (lower + .035, zj) if i % 2 else (zj, z - .035)
-                p = arc_pts(r + .004, a, a, 0)[0]
-                b.beam('mortar', (p[0], p[1], lo), (p[0], p[1], hi), .02, .012)
-            lower = z + .025
-            r = r_in
+                riser_stones(b, face, lower, z - .015, k + 1)               # the last riser is the upper terrace edge
+                break
+            ring(f'Tier {t + 1} step {s + 1}', face, r + depth, z, cap_role='concrete' if depth > TREAD else 'stone2')
+            riser_stones(b, face, lower, z - .015, k + 1)
+            lower = z + .015
+            r += depth
             k += 1
-    b.flush('seating bowl joints')
-    # Upper terrace: stone mass at the top level, its paved cap in front of and beside the stage, meadow behind.
-    up = arc_pts(RIN + .03, -ARC - .5, ARC + .5, 72) + [(B_IN[0] + .05, 22.0), (-B_IN[0] - .05, 22.0)]
-    C.prism('Upper terrace', up, 'z', 0.0, TOP, 'stone', 'seating bowl')
-    cap = arc_pts(RIN + .07, -ARC - .5, ARC + .5, 72) + [(B_IN[0] - .25, 17.35), (-B_IN[0] + .25, 17.35)]
+    b.flush('seating bowl stones')
+    # Upper terrace: stone mass at the top level reaching under the high beds, its pale paving in front of and
+    # beside the stage, and meadow behind the pavilion.
+    a_t, a_w = end_angle(RTOP - .03, .2), end_angle(R_WALL + .3, .2)
+    east = bowl_pts(R_WALL + .3, a_w, x_angle(R_WALL + .3, CHEEK_X + .3), 10)
+    up = bowl_pts(RTOP - .03, -a_t, a_t, 72) + east + [(CHEEK_X + .3, 22.0), (-CHEEK_X - .3, 22.0)] + mirror(east)
+    C.prism('Upper terrace', up, 'z', 0.0, TOP, 'mortar', 'seating bowl')
+    a_c, a_k = end_angle(RTOP - .05, .1), end_angle(R_WALL + .1, .1)
+    east = bowl_pts(R_WALL + .1, a_k, x_angle(R_WALL + .1, 8.8), 10)
+    cap = bowl_pts(RTOP - .05, -a_c, a_c, 72) + east + [(8.8, 17.35), (-8.8, 17.35)] + mirror(east)
     C.prism('Upper terrace paving', cap, 'z', TOP - .03, TOP + .03, 'concrete', 'seating bowl')
-    C.box('Upper terrace meadow', (0.0, 19.5, TOP + .035), (2 * B_IN[0] - .55, 4.4, .11), 'meadow', 'planting', 0)
+    C.box('Upper terrace meadow', (0.0, 19.6, TOP + .085), (17.4, 4.4, .11), 'meadow', 'planting', 0)
+    # Stacked-stone cheek walls at both stage ends, stepping up toward the back, with the side steps between
+    # each wall and the pavilion.
     b = Batch()
-    wall_courses(b, (B_IN[0] + .05, 22.0), (-B_IN[0] - .05, 22.0), 0.0, TOP)
-    b.flush('upper terrace joints')
+    for sgn in (1, -1):
+        for (y0, y1, h) in ((8.0, 12.4, TOP + .75), (12.4, 17.7, TOP + 1.15)):
+            C.box('Stage cheek wall', (sgn * 9.05, (y0 + y1) / 2, h / 2), (.6, y1 - y0, h), 'stone', 'seating bowl', 0)
+            C.box('Stage cheek wall coping', (sgn * 9.05, (y0 + y1) / 2 - .01, h + .03), (.7, y1 - y0 + .04 - (.02 if y0 > 9 else 0.0), .06),
+                  'concrete', 'seating bowl', 0)
+            xf = sgn * 8.75
+            wall_courses(b, (xf, y0 if sgn > 0 else y1), (xf, y1 if sgn > 0 else y0), TOP, h, (-sgn, 0.0))
+        wall_courses(b, (sgn * 8.75, 8.0), (sgn * 9.35, 8.0), TOP, TOP + .75, (0.0, -1.0))
+        wall_courses(b, (sgn * 8.75, 12.4), (sgn * 9.35, 12.4), TOP + .75, TOP + 1.15, (0.0, -1.0))
+    b.flush('cheek wall joints')
 
 
 def wall_courses(b, p, q, z0, z1, outward=None):
@@ -588,6 +656,8 @@ def wall_courses(b, p, q, z0, z1, outward=None):
     set 6 mm proud of the face on its outward side (right of p->q unless given)."""
     (px, py), (qx, qy) = p, q
     L = math.hypot(qx - px, qy - py)
+    if L < .1:
+        return
     tx, ty = (qx - px) / L, (qy - py) / L
     nx, ny = outward if outward else (ty, -tx)
     o = .006
@@ -611,38 +681,28 @@ def edge_out(poly, i):
     return s * (qy - py) / L, -s * (qx - px) / L
 
 
-def ekey(p, q):
-    """Side-independent key of a bed edge (the west beds mirror the east ones)."""
-    return frozenset(((round(abs(p[0]), 4), round(p[1], 4)), (round(abs(q[0]), 4), round(q[1], 4))))
-
-
 def beds():
     b = Batch()
     tufts = Batch()
     for side in (1, -1):
         lo = BED_LO if side > 0 else mirror(BED_LO)
         hi = BED_HI if side > 0 else mirror(BED_HI)
+        lo_e = LO_EDGES if side > 0 else list(reversed(LO_EDGES[:-1])) + [LO_EDGES[-1]]
+        hi_e = HI_EDGES if side > 0 else list(reversed(HI_EDGES[:-1])) + [HI_EDGES[-1]]
         tag = 'east' if side > 0 else 'west'
         C.prism(f'Low meadow bed {tag}', lo, 'z', 0.0, H_LO, 'stone', 'planting')
         C.prism(f'High meadow bed {tag}', hi, 'z', 0.0, H_HI, 'stone', 'planting')
         C.prism(f'Low bed meadow {tag}', inset(lo, .3), 'z', H_LO - .06, H_LO + .06, 'meadow', 'planting')
         C.prism(f'High bed meadow {tag}', inset(hi, .3), 'z', H_HI - .06, H_HI + .06, 'meadow', 'planting')
-        for poly, h in ((lo, H_LO), (hi, H_HI)):
+        for poly, h, edges in ((lo, H_LO, lo_e), (hi, H_HI, hi_e)):
             for i in range(len(poly)):
-                p, q = poly[i], poly[(i + 1) % len(poly)]
-                z0 = 0.0
-                e = ekey(p, q)
-                if e == ekey(BED_HI[-1], BED_HI[0]):
-                    z0 = H_LO                                          # face above the low bed only
-                elif e == ekey(BED_HI[1], BED_HI[2]):
-                    z0 = TOP                                           # face above the upper terrace only
-                elif e == ekey(BED_LO[2], BED_LO[3]):
-                    continue                                           # under the high bed
-                wall_courses(b, p, q, z0, h, edge_out(poly, i))
-        for poly, h, n in ((inset(lo, .45), H_LO, 190), (inset(hi, .45), H_HI, 150)):
+                if edges[i] is None:
+                    continue
+                wall_courses(b, poly[i], poly[(i + 1) % len(poly)], edges[i], h, edge_out(poly, i))
+        for poly, h, n in ((inset(lo, .45), H_LO, 170), (inset(hi, .45), H_HI, 190)):
             xs = [p[0] for p in poly]; ys = [p[1] for p in poly]
             i = got = 0
-            while got < n and i < n * 6:
+            while got < n and i < n * 8:
                 i += 1
                 x = min(xs) + (max(xs) - min(xs)) * rnd(i, 3 + side)
                 y = min(ys) + (max(ys) - min(ys)) * rnd(i, 11 + side)
@@ -654,14 +714,14 @@ def beds():
     i = got = 0
     while got < 110:
         i += 1
-        x, y = -B_IN[0] + .7 + (2 * B_IN[0] - 1.4) * rnd(i, 21), 17.9 + 3.5 * rnd(i, 22)
+        x, y = -8.0 + 16.0 * rnd(i, 21), 17.9 + 3.5 * rnd(i, 22)
         got += 1
-        tuft(tufts, 'meadow2' if got % 2 else 'meadow', x, y, TOP + .07, .3 + .3 * rnd(i, 23), .15 + .12 * rnd(i, 24), rnd(i, 25))
+        tuft(tufts, 'meadow2' if got % 2 else 'meadow', x, y, TOP + .12, .3 + .3 * rnd(i, 23), .15 + .12 * rnd(i, 24), rnd(i, 25))
     i = got = 0
     while got < 260:
         i += 1
         x, y = X0 + 1.0 + (X1 - X0 - 2.0) * rnd(i, 31), 23.2 + (Y1 - 24.0) * rnd(i, 32)
-        if abs(x) < B_IN[0] + .4 and y < 22.6:
+        if abs(x) < CHEEK_X + .4 and y < 22.6:
             continue
         got += 1
         tuft(tufts, 'meadow2' if got % 3 else 'meadow', x, y, .02, .35 + .4 * rnd(i, 33), .16 + .14 * rnd(i, 34), rnd(i, 35))
@@ -725,8 +785,8 @@ def stage():
     b = Batch()
     for s in (1, -1):
         x, y = s * 9.6, 15.4
-        b.box('concrete', x, y, TOP + .2, .7, .7, .45)
-        C.rod('Floodlight mast', (x, y, TOP + .4), (x, y, 11.2), .09, 'hardware', 'masts', 12)
+        b.box('concrete', x, y, H_HI + .1, .7, .7, .3)
+        C.rod('Floodlight mast', (x, y, H_HI + .2), (x, y, 11.2), .09, 'hardware', 'masts', 12)
         b.box('hardware', x, y, 11.22, .24, .24, .06)
         for k in range(6):
             z = 6.6 + k * .85
@@ -752,21 +812,12 @@ def park_tree(x, y, z, height, spread, seed, detail=1, crowns=7):
 
 def trees():
     for s in (1, -1):
-        for i, (x, y, z, h, sp) in enumerate(((19.4, 16.6, H_HI, 8.5, 2.8), (22.6, 19.6, H_HI, 9.0, 3.0), (16.8, 20.2, H_HI, 7.5, 2.4),
-                                             (25.6, 4.6, H_LO, 8.0, 2.7), (23.6, -3.2, H_LO, 7.0, 2.3))):
+        for i, (x, y, z, h, sp) in enumerate(((19.4, 16.6, H_HI, 8.5, 2.8), (23.6, 19.6, H_HI, 9.0, 3.0), (15.2, 20.2, H_HI, 7.5, 2.4),
+                                             (27.6, 6.0, H_HI, 8.0, 2.7), (26.4, -8.0, H_LO, 7.0, 2.3))):
             park_tree(s * (x + .4 * (s < 0)), y - .5 * (s < 0), z, h, sp, i * 1.7 + (s < 0) * .9)
     for i, (x, y) in enumerate(((-32.0, 28.5), (-26.5, 30.0), (-21.0, 28.0), (21.5, 28.5), (27.0, 30.0), (32.0, 28.0),
                                 (-32.0, -14.0), (32.0, -18.0), (-9.0, 30.0), (9.5, 29.5))):
         park_tree(x, y, .03, 9.5, 3.0, 3.1 + i, detail=1, crowns=4)
-
-
-def furniture():
-    b = Batch()
-    for x, y in ((-28.0, -15.0), (28.0, -9.0)):
-        b.box('concrete', x, y, .22, .5, 2.0, .44)
-        for k in range(5):
-            b.box('timber', x, y - .8 + k * .4, .47, .55, .3, .06)
-    b.flush('benches')
 
 
 def build():
@@ -775,7 +826,6 @@ def build():
     beds()
     stage()
     trees()
-    furniture()
     C.CONTACTS.append(dict(name='Market and event plaza with a seating bowl, stage pavilion and meadow beds', box=[X0, X1, Y0, Y1]))
 
 
