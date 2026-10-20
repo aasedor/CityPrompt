@@ -68,7 +68,7 @@ def manifest(version):
         elif c['name'] == 'right_side':                                        # along the street from the east, raised
             c.update(location=(58.0, -14.0, 14.0), target=(0.0, -6.0, 3.0), lens=26, whole=False)
         elif c['name'] == 'rear':                                              # from over the back lane
-            c.update(location=(4.0, 52.0, 24.0), target=(4.0, 8.0, 4.0), lens=26, whole=False)
+            c.update(location=(4.0, 58.0, 28.0), target=(4.0, 8.0, 3.0), lens=26, whole=False)
         elif c['name'] == 'rear_side':
             c.update(location=(-62.0, 46.0, 30.0), target=(-4.0, 2.0, 2.0), lens=28, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -625,7 +625,7 @@ def furniture():
             b.box('sidejoint', (XCE + XW) / 2, y, SWZ, XW - XCE - .1, .02, .004)
         for x in ((-10.5, 6.0, 23.5) if side == 1 else (-6.0, 11.0, 26.0)):                   # tree pits
             b.box('soil', x, Y(-4.65), SWZ + .0045, 1.2, 1.2, .012)
-            street_tree(x, Y(-4.65), z=SWZ + .008, height=5.6, spread=.9)
+            street_tree(x, Y(-4.65), z=SWZ + .008, height=5.6, spread=.72)
         for x in ((-20.0, -2.5, 14.5, 44.5) if side == 1 else (-21.0, 2.5, 18.5, 38.0)):
             lamp(b, x, Y(-4.7) if -14.0 < x < 28.0 else Y(-BULB + .8), -side)
         for x in ((-6.0, 19.0) if side == 1 else (-1.0, 22.5)):
@@ -717,7 +717,7 @@ FLOOR2 = 4.62                                   # upper floor level (top of slab
 
 XLB = -20.4                                     # the corner block ends here; a lower one-storey bay runs on to the middle block (top view)
 BLOCKS = [
-    dict(name='Corner block', x0=XW, x1=XLB, dy=0.0, top=9.8, depth=24.9, pil='stone', sign='frame', letters='cream',
+    dict(name='Corner block', x0=XW, x1=XLB, dy=0.0, top=9.8, depth=24.9, pil='brick', sign='frame', letters='cream',
          pattern=['door+shop', 'shop', 'shop+door'], up_per_bay=2, pair_gap=.3, up=(5.45, 1.05, 2.25), head='flat', cornice='white', frame='frame'),
     dict(name='Lower bay', x0=XLB, x1=-11.25, dy=.015, top=6.6, depth=24.6, pil='brick', sign='frame', letters='cream', roof='membrane',
          pattern=['shop+door', 'shop'], up=None, head='flat', cornice='stone', frame='frame'),
@@ -874,10 +874,12 @@ def cornice(spec, m, top):
             m.box('wall', mid, T / 2, (za + z1) / 2, w, t, z1 - za)
             m.box('white', mid, T / 2 - .03, z1 + .04, w + .14, T + .14, .1)
         m.box('cream', mid, -.02, top + .85, 3.2, .08, .75)
-        letters(m, mid - 1.35, mid + 1.35, top + .85, -.065, 'sign', 77)
+        letters(m, mid - 1.35, mid + 1.35, top + .85, -.065, 'stone', 77)
     if spec['name'] == 'Cafe block':                                                       # cream stone end pier with a capital (front view)
-        m.box('cream', x1 - .32, -.14, (.05 + top - .6) / 2, .64, .3, top - .65)
-        m.box('cream', x1 - .34, -.2, top - .52, .76, .42, .3)
+        # Full width from the sidewalk to the capital, wrapping 5 cm past the block end and bedded 3 cm back into the
+        # east neighbour's front, so no slot opens at grade between the pier and the neighbour.
+        m.box('cream', x1 - .295, -.13, (.05 + top - .6) / 2, .69, .32, top - .65)
+        m.box('cream', x1 - .32, -.2, top - .52, .80, .42, .3)
 
 
 def block(spec):
@@ -1048,7 +1050,7 @@ def corner_west():
         b.box(role, (xa + x1) / 2, c, z, x1 - xa, t, h)
         y0, y1 = c + t / 2, (yend if yend else depth - T - .3)
         b.box(role, XW + c, (y0 + y1) / 2, z, t, y1 - y0, h)
-    b.box('stone', XW + .12, .12, (.05 + SIGN0 - .04) / 2, .66, .66, SIGN0 - .09)                 # the corner pier wraps both faces
+    b.box('brick', XW + .12, .12, (.05 + SIGN0 - .04) / 2, .66, .66, SIGN0 - .09)                 # the brick corner pier wraps both faces
     b.box('stone', XW + .1, .1, SIGN0 - .12, .78, .78, .2)
     b.box('stone', XW + .1, .1, .205, .74, .74, .29)
     b.flush('Corner bands and pier')
@@ -1085,7 +1087,9 @@ def context():
         b.box('membrane', (xa + xb) / 2, LANE1 + 7.5, h + .015, xb - xa - .4, 10.6, .04)
         for k in range(int((xb - xa) / 3.0)):
             b.box('glass', xa + 1.5 + k * 3.0, LANE1 + 2.0 - .005, h * .55, 1.1, .02, 1.4)
-    b.box('neighbour', (BLOCKS[-1]['x1'] + .1 + XE) / 2, 12.25, (9.5 + .004) / 2, XE - BLOCKS[-1]['x1'] - .1, 24.5, 9.5 - .004)   # east neighbour
+    # East neighbour: bedded 2 cm into the end block's wall (no gap at the party line) with its front 15 mm behind
+    # the block's street face so the two fronts never share a plane.
+    b.box('neighbour', (BLOCKS[-1]['x1'] - .02 + XE) / 2, (.015 + 24.5) / 2, (9.5 + .004) / 2, XE - BLOCKS[-1]['x1'] + .02, 24.5 - .015, 9.5 - .004)
     b.box('white', (BLOCKS[-1]['x1'] + XE) / 2 + .1, -.08, 8.9, XE - BLOCKS[-1]['x1'] - .2, .24, .3)
     for k in range(2):
         u = BLOCKS[-1]['x1'] + 2.2 + k * 4.0
