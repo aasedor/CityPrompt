@@ -67,7 +67,7 @@ def manifest(version):
         if c['name'] == 'front':                                               # the locked front: eye level in the west curb lane, looking south at the streetcar
             c.update(location=(-5.4, 68.5, 1.65), target=(1.0, 25.0, 4.6), lens=22, whole=False)
         elif c['name'] == 'front_corner':                                      # the locked oblique: high over the south-west, looking up the street
-            c.update(location=(30.0, -30.0, 42.0), target=(-8.0, 30.0, 0.0), lens=30, whole=False)
+            c.update(location=(34.0, -38.0, 50.0), target=(-10.0, 33.0, 5.0), lens=30, whole=False)
         elif c['name'] == 'aerial':
             c.update(location=(-56.0, -36.0, 54.0), target=(0.0, 32.0, 2.0), lens=28, whole=False)
         elif c['name'] == 'top':                                               # the locked top view: north up, the cross street at the foot
@@ -496,7 +496,7 @@ def track_and_markings():
 
 def tree_pit(b, x, y):
     b.box('soil', x, y, SWZ + .0045, 1.2, 1.2, .012)
-    street_tree(x, y, z=SWZ + .008, height=6.6, spread=1.4)
+    street_tree(x, y, z=SWZ + .008, height=4.8, spread=1.0)
 
 
 def furniture():
@@ -570,30 +570,74 @@ def car_bodies():
     return out
 
 
-def nose(b, ye, sgn):
-    """Sloped streetcar cab end: red nose prism, dark windscreen with an amber destination sign, headlights."""
-    xc = TC
-    prof = [(-.01, .30), (.30, .30), (.42, .95), (.40, 1.25), (.22, 2.55), (-.01, 3.05)]
-    pts = [(ye + sgn * dy, z) for dy, z in prof]
+NOSE_PROF = [(.30, .34), (.60, .44), (.95, .48), (1.30, .46), (1.90, .33), (2.50, .18), (2.80, .08), (3.00, -.02), (3.08, -.10)]
+
+
+def nose_f(z):
+    """Forward reach of the raked cab nose beyond the module end at height z."""
+    pr = NOSE_PROF
+    if z <= pr[0][0]:
+        return pr[0][1]
+    for (z0, f0), (z1, f1) in zip(pr, pr[1:]):
+        if z <= z1:
+            return f0 + (f1 - f0) * (z - z0) / (z1 - z0)
+    return pr[-1][1]
+
+
+BROW = [(2.95, .000, .030), (3.03, -.040, .055), (3.10, -.090, .100), (3.16, -.160, .170), (3.21, -.260, .270), (3.245, -.400, .420)]
+
+
+def nose_curve(ye, sgn, z, off=0.0, back=.30, wrap=None, n=6, f=None, inset=.006):
+    """Plan section of the cab nose at height z: sides, rounded corners and front, offset outward by off.
+    With wrap, only the visible front part, from wrap metres behind each corner start round to the other side."""
+    xc, hw = TC, CAR_W / 2 - inset + off
+    f = (nose_f(z) if f is None else f) + off
+    rc = max(.06, min(.62, f + back - .05))
+    yf = ye + sgn * f
+    ys = yf - sgn * rc                                                                         # where the corner arc leaves the side
+    pts = []
+    y_start = ye - sgn * back if wrap is None else ys - sgn * wrap
+    pts.append((xc - hw, y_start, z))
+    for i in range(n + 1):                                                                     # left corner
+        a = math.pi / 2 * i / n
+        pts.append((xc - hw + rc * (1 - math.cos(a)), ys + sgn * rc * math.sin(a), z))
+    for i in range(n + 1):                                                                     # right corner
+        a = math.pi / 2 * (1 - i / n)
+        pts.append((xc + hw - rc * (1 - math.cos(a)), ys + sgn * rc * math.sin(a), z))
+    pts.append((xc + hw, y_start, z))
     if sgn < 0:
         pts = pts[::-1]
-    C.prism('Streetcar nose', pts, 'x', xc - 1.24, xc + 1.24, 'car_red', 'streetcar')
-    ny, nz = 1.30 / 1.3124, .18 / 1.3124                                                     # outward normal of the windscreen face
-    def onface(z, off):
-        y = .40 - .18 * (z - 1.25) / 1.30
-        return (xc, ye + sgn * (y + ny * off), z + nz * off)
-    b.beam('car_glass', onface(1.32, .012), onface(2.48, .012), 2.2, .015)
-    b.beam('amber', onface(2.26, .026), onface(2.44, .026), 1.3, .012)
-    lo = (.65 / .6611, .12 / .6611)                                                          # outward normal of the lower nose face
-    def lower(z, off):
-        y = .30 + .12 * (z - .30) / .65
-        return (xc, ye + sgn * (y + lo[0] * off), z - lo[1] * off)
-    b.beam('car_white', lower(.52, .012), lower(.86, .012), 2.3, .02)                         # white lower face
+    return pts
+
+
+def nose(b, ye, sgn):
+    """Raked, rounded Flexity cab: lofted red nose, a large windscreen wrapping onto the sides with the amber sign at its head,
+    the red light band, the white lower apron and a red skirt."""
+    zs = [z for z, _ in NOSE_PROF]
+    rings = [nose_curve(ye, sgn, z) for z in zs]
+    loft('Streetcar nose', rings, 'car_red', 'streetcar', closed=False)
+    brow = [nose_curve(ye, sgn, z, back=.90, f=fz, inset=ins) for z, fz, ins in BROW]            # rounded red roof cap over the cab
+    loft('Streetcar roof cap', brow, 'car_red', 'streetcar', closed=False)
+    wz = [1.32, 1.55, 1.80, 2.05, 2.30, 2.52]                                                  # wrap-around windscreen shell
+    shell = []
+    for z in wz:
+        outer = nose_curve(ye, sgn, z, off=.018, wrap=.38)
+        inner = nose_curve(ye, sgn, z, off=.006, wrap=.38)
+        shell.append(outer + inner[::-1])
+    loft('Streetcar windscreen', shell, 'car_glass', 'streetcar', closed=False)
+    xc = TC
+    def front(z, off):
+        return (xc, ye + sgn * (nose_f(z) + off), z)
+    b.beam('amber', front(2.24, .034), front(2.44, .034), 1.3, .012)                           # destination sign
+    az = [.52, .62, .72, .84]                                                                  # white lower apron
+    apron = [nose_curve(ye, sgn, z, off=.012, wrap=.10) + nose_curve(ye, sgn, z, off=.003, wrap=.10)[::-1] for z in az]
+    loft('Streetcar apron', apron, 'car_white', 'streetcar', closed=False)
     for s in (-1, 1):
-        b.box('lamp', xc + s * .8, ye + sgn * .43, 1.1, .34, .06, .12)                         # headlights in the red bumper band
+        y = ye + sgn * (nose_f(1.1) + .01)
+        b.box('lamp', xc + s * .72, y, 1.1, .30, .06, .11)                                     # headlights in the red light band
         for k in (1, 2):
-            b.box('car_white', xc + s * (.2 + .18 * k), ye + sgn * .43, 1.1, .1, .05, .1)
-    b.box('rubber', xc, ye + sgn * .31, .36, 1.6, .1, .1)                                     # anti-climber
+            b.box('car_white', xc + s * (.18 + .17 * k), y, 1.1, .09, .05, .09)
+    b.box('rubber', xc, ye + sgn * (nose_f(.36) + .02), .38, 1.6, .1, .1)                      # anti-climber
 
 
 def streetcar():
@@ -603,17 +647,21 @@ def streetcar():
     mods = car_bodies()
     for i, (y0, y1) in enumerate(mods):
         L, yc = y1 - y0, (y0 + y1) / 2
-        b.box('car_red', xc, yc, .575, CAR_W, L, .55)                                        # red skirt .30-.85
-        b.box('car_white', xc, yc, 1.015, CAR_W + .02, L, .33)                                # white band .85-1.18
+        b.box('car_red', xc, yc, .525, CAR_W, L, .45)                                        # red skirt .30-.75
+        b.box('car_white', xc, yc, .965, CAR_W + .02, L, .43)                                 # wide white band .75-1.18
         b.box('car_glass', xc, yc, 1.79, CAR_W - .04, L, 1.22)                                # window band 1.18-2.40
         n = max(3, round(L / 1.3))
         for k in range(n + 1):                                                                 # slim window mullions
             py = y0 + .05 + (L - .1) * k / n
             b.box('car_white', xc, py, 1.79, CAR_W - .01, .07, 1.22)
-        for py in (y0 + .1, y1 - .1):                                                          # black joint stripes at the module ends
+        cab_end = y1 if i == 0 else (y0 if i == len(mods) - 1 else None)
+        for py in (y0 + .1, y1 - .1):                                                          # black joint stripes at the articulations
+            if cab_end is not None and abs(py - cab_end) < .2:
+                b.box('car_white', xc, py - (.06 if py > yc else -.06), 1.79, CAR_W + .02, .32, 1.22)  # white frame closing the windows at the cab
+                continue
             b.box('rubber', xc, py, 1.75, CAR_W + .03, .2, 2.5)
-        b.box('car_white', xc, yc, 2.51, CAR_W, L, .22)                                       # white band 2.40-2.62
-        b.box('car_red', xc, yc, 2.86, CAR_W, L, .48)                                         # red roof band 2.62-3.10
+        b.box('car_white', xc, yc, 2.625, CAR_W, L, .45)                                      # wide white band 2.40-2.85
+        b.box('car_red', xc, yc, 2.975, CAR_W, L, .25)                                        # red roof band 2.85-3.10
         b.box('car_roof', xc, yc, 3.18, CAR_W - .1, L - .04, .16)                             # roof 3.10-3.26
         if i in (0, 4):
             b.box('car_roof', xc, yc + (.6 if i == 4 else -.6), 3.44, 1.6, L - 2.2, .36)      # roof equipment
@@ -723,7 +771,7 @@ def arch_head(f, h, rise, ring=.2, segs=12, ring_role='stone', proud=.03):
     C.mesh(f'{h["id"]} arch ring', vs, fs, ring_role, 'arches')
 
 
-def dress(spec, f, ua, ub, pc, gh, uh, skip, lite=False, bands=True):
+def dress(spec, f, ua, ub, pc, gh, uh, skip, lite=False, bands=True, sign_span=None):
     """Storefront level, upper windows and (for mid-row blocks) the sign band, belt courses and cornice on one face."""
     m = Merge(f)
     top = spec['top']
@@ -759,7 +807,8 @@ def dress(spec, f, ua, ub, pc, gh, uh, skip, lite=False, bands=True):
         else:
             arch_head(f, h, h['w'] / 2, ring=.22, segs=12, ring_role='stone')
             m.box('stone', h['u'], -.045, h['z'] + h['h'] + .11, .2, .1, .26)                 # keystone
-    letters(m, ua + (ub - ua) * .2, ua + (ub - ua) * .8, (SIGN0 + SIGN1) / 2, -.16, 'cream', int(abs(ua) * 10))
+    la, lb = sign_span if sign_span else (ua + (ub - ua) * .2, ua + (ub - ua) * .8)
+    letters(m, la, lb, (SIGN0 + SIGN1) / 2, -.16, 'cream', int(abs(ua) * 10))
     if bands:
         lo, hi = ua + .01, ub - .01
         m.box('sign', (lo + hi) / 2, -.07, (SIGN0 + SIGN1) / 2, hi - lo, .16, SIGN1 - SIGN0)
@@ -790,7 +839,7 @@ def cornice(spec, m, lo, hi, top):
 
 VIC = [
     dict(name='West corner block', side='W', a=YN0, b=24.0, top=12.6, depth=31.0, nb=5, per=2, floors=3, heads=('seg', 'round'),
-         role='wall', pil='stone', cornice='stone', corner=True, south_nb=7, corbels=True, gable=True, letters='cream'),
+         role='wall', pil='stone', cornice='stone', corner=True, south_nb=7, corbels=True, gable=True, letters='cream', side_sign=5.2),
     dict(name='West brick block', side='W', a=24.0, b=37.0, top=11.8, depth=24.0, nb=3, per=2, floors=3, heads=('flat', 'flat'),
          role='brick2', pil='brick2', cornice='bracket', dy=.03, letters='sign', frame='dark'),
     dict(name='East corner block', side='E', a=YN0, b=22.0, top=11.8, depth=28.0, nb=4, per=2, floors=3, heads=('flat', 'flat'),
@@ -817,7 +866,12 @@ def corner_bands(spec):
              ('stone', .145, .025, FL2 + .05, .2), ('stone', .145, .025, FL3 + .05, .18),
              ('stone', .10, .02, top - 1.35, .16), ('stone', .27, .03, top - .55, .3), ('stone', .1, T + .04, top + .04, .1)]
     b = Batch()
+    side_sign = spec.get('side_sign')
     for role, p, q, z, h in bands:
+        if not e and side_sign and z in ((SIGN0 + SIGN1) / 2, SIGN1 + .04):                    # only over the corner shopfront
+            b.box(role, XWB + (p - q) / 2, (YN0 - p + spec['b'] - .01) / 2, z, p + q, spec['b'] - .01 - YN0 + p, h)
+            b.box(role, XWB - q - side_sign / 2, YN0 + (q - p) / 2, z, side_sign, p + q, h)
+            continue
         if e:
             b.box(role, XEB + (q - p) / 2, (YN0 - p + spec['b'] - .01) / 2, z, p + q, spec['b'] - .01 - YN0 + p, h)
             b.box(role, (XEB + q + XEB + depth - .01) / 2, YN0 + (q - p) / 2, z, depth - .01 - q, p + q, h)
@@ -830,6 +884,24 @@ def corner_bands(spec):
     b.box('stone', xo + s * .04, YN0 + .04, SIGN0 - .14, .66, .66, .16)
     b.box('stone', xo + s * .04, YN0 + .04, .2, .64, .64, .3)
     b.flush(spec['name'] + ' corner bands')
+
+
+def west_side_holes(spec, sa, sb):
+    """The west corner block's cross-street side as the oblique shows it: one shopfront at the corner, a mostly solid brick
+    ground storey with a few doors and small windows, and flat-headed sashes in pairs at an irregular rhythm above."""
+    nm = spec['name'] + ' side'
+    gh = [hole(nm + ' corner shopfront', sb - 2.9, GZ0, 4.2, GH, kind='shop'),
+          hole(nm + ' door 1', sb - 9.6, DZ0, 1.1, 2.7, kind='door'),
+          hole(nm + ' door 2', sb - 18.4, DZ0, 1.1, 2.7, kind='door'),
+          hole(nm + ' service door', sa + 1.1, DZ0, 1.0, 2.6, kind='door')]
+    uh = [hole(f'{nm} ground window {k}', u, 1.05, .95, 1.75, floor=0) for k, u in enumerate((sb - 13.2, sb - 22.4, sb - 26.0))]
+    pairs = (2.7, 6.6, 10.9, 14.4, 18.6, 22.1, 26.4)                                            # pair centres from the corner
+    for fi in range(spec['floors'] - 1):
+        z, h = UPS[fi]
+        for k, c in enumerate(pairs):
+            for j, du in enumerate((-.62, .62)):
+                uh.append(hole(f'{nm} storey {fi + 2} pair {k}.{j}', sb - c + du, z, .9, h, floor=fi))
+    return [], gh, uh
 
 
 def victorian(spec):
@@ -847,12 +919,17 @@ def victorian(spec):
         e = spec['side'] == 'E'
         sf = C.Face((0.0, YN0, 0.0), (1, 0, 0), (0, 1, 0), spec['name'] + ' cross street')
         sa, sb = (XEB + T, XEB + depth) if e else (XWB - depth, XWB - T)
-        spc, sgh, suh = hole_set(spec['name'] + ' side', sa, sb, spec['south_nb'], 2, floors, ['shop', 'door+shop', 'shop'] if e else ['shop', 'shop', 'shop+door'])
-        sgh.append(hole(spec['name'] + ' side service door', (sb - 1.1) if e else (sa + 1.1), DZ0, 1.0, 2.6, kind='door'))
-        sgh = [h for h in sgh if not (h['kind'] == 'shop' and abs(h['u'] - ((sb - 1.1) if e else (sa + 1.1))) < h['w'] / 2 + .7)]
+        if e:
+            spc, sgh, suh = hole_set(spec['name'] + ' side', sa, sb, spec['south_nb'], 2, floors, ['shop', 'door+shop', 'shop'])
+            sgh.append(hole(spec['name'] + ' side service door', sb - 1.1, DZ0, 1.0, 2.6, kind='door'))
+            sgh = [h for h in sgh if not (h['kind'] == 'shop' and abs(h['u'] - (sb - 1.1)) < h['w'] / 2 + .7)]
+            sspec, span = spec, None
+        else:
+            spc, sgh, suh = west_side_holes(spec, sa, sb)
+            sspec, span = dict(spec, heads=('flat', 'flat')), (sb - 5.0, sb - .8)
         sf.wall(spec['name'] + ' side carrier', sa, sb, 0.0, top, depth=T, role=spec['role'], holes=sgh + suh)
         G.brick_courses(sf, sa + .02, sb - .02, GZ0 - .1, top - .12, sgh + suh, spacing=.16)
-        dress(spec, sf, sa, sb, spc, sgh, suh, 0 if e else spec['south_nb'], lite=True, bands=False)
+        dress(sspec, sf, sa, sb, spc, sgh, suh, 0 if e else -1, lite=True, bands=False, sign_span=span)
         corner_bands(spec)
     body(spec)
     if spec.get('gable'):
