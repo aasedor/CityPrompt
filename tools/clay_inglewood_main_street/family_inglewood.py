@@ -415,9 +415,12 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 # ---- Inglewood main street ----
 
 import random
+from shapely.geometry import Polygon, LineString, box as sbox
+from shapely.ops import unary_union
 
 R_RET = 3.0                                     # curb-return radius at the cross street
-TAPER_W, TAPER_E = (-16.5, -14.0), (28.0, 30.5) # bulb-out tapers (curb at -BULB to curb at -SW), west and east, as x pairs
+TAPER_W, TAPER_E = (-17.5, -14.0), (28.0, 31.5) # bulb-out tapers (curb at -BULB to curb at -SW), west and east, as x pairs
+R_TAPER = 2.0                                   # fillet radius rounding both ends of each taper (reverse curves, not chamfers)
 LINE_X0, LINE_N, LINE_P = -13.5, 11, 3.5        # first stall line at the north curb, line count, spacing along the curb
 STALL_DX = PK / math.tan(math.radians(50.0))    # 50-degree angled stalls: lean of a stall line across the parking lane
 XCROSS = (-28.2, -25.8)                         # brick crossing over the main street at the intersection
@@ -434,13 +437,60 @@ def arc(cx, cy, r, a0, a1, n=8):
     return [(cx + r * math.cos(math.radians(a0 + (a1 - a0) * i / n)), cy + r * math.sin(math.radians(a0 + (a1 - a0) * i / n))) for i in range(n + 1)]
 
 
-def north_sidewalk_outline():
-    """The north sidewalk in plan: under the building line, the west sidewalk of the cross street up to the lane, the
-    corner curb return, the west curb extension and its taper, the straight curb, the east taper and extension."""
+def chamfer_outline():
+    """The north sidewalk in plan with straight tapers: under the building line, the west sidewalk of the cross street
+    up to the lane, the corner curb return, the west curb extension and its taper, the straight curb, the east taper
+    and extension."""
     pts = [(XCE, LANE0 + .05), (XW + .2, LANE0 + .05), (XW + .2, .2), (XE, .2), (XE, -BULB), (TAPER_E[1], -BULB), (TAPER_E[0], -SW),
            (TAPER_W[1], -SW), (TAPER_W[0], -BULB)]
     pts += arc(XCE + R_RET, -BULB + R_RET, R_RET, -90.0, -180.0)
     return pts
+
+
+def taper_zones():
+    return [sbox(TAPER_W[0] - 4.0, -BULB - 1.0, TAPER_W[1] + 4.0, -SW + 1.2), sbox(TAPER_E[0] - 4.0, -BULB - 1.0, TAPER_E[1] + 4.0, -SW + 1.2)]
+
+
+def sidewalk_poly():
+    """The north sidewalk polygon with each taper rounded into smooth reverse curves (opening rounds the convex bulb
+    corner, closing the concave corner at the main curb); everything outside the taper zones is unchanged."""
+    p = Polygon(chamfer_outline())
+    r = p.buffer(-R_TAPER, join_style=1).buffer(R_TAPER, join_style=1).buffer(R_TAPER, join_style=1).buffer(-R_TAPER, join_style=1)
+    z = unary_union(taper_zones())
+    out = unary_union([r.intersection(z), p.difference(z)]).buffer(0)
+    if out.geom_type != 'Polygon':
+        out = max(out.geoms, key=lambda g: g.area)
+    return out.simplify(.005)
+
+
+def ring(poly):
+    pts = list(poly.exterior.coords)[:-1]
+    return [(round(x, 4), round(y, 4)) for x, y in pts]
+
+
+def north_sidewalk_outline():
+    return ring(sidewalk_poly())
+
+
+def curb_line():
+    """The curb edge of the north sidewalk from the cross-street crossing round the corner return, along the west
+    curb extension, the taper, the main curb, the east taper and the east extension."""
+    p = sidewalk_poly()
+    edge = p.exterior.intersection(sbox(XCE - 1.0, -BULB - 1.0, XE + 1.0, -.6).difference(sbox(XCE + .05, -SW + .1, XE - .05, 1.0)))
+    edge = edge.difference(sbox(XE - .05, -BULB - 1.0, XE + 1.0, 1.0))
+    return edge.difference(sbox(XCE - 1.0, -1.2, XCE + .3, 1.0))
+
+
+def brick_band():
+    """The furnishing-strip brick band following the curb: 1.3 m wide (0.3..1.6 m from the curb face) on the main run,
+    narrowing to 0.7 m round the curb extensions, whose bodies are pale scored concrete."""
+    p = sidewalk_poly()
+    cl = curb_line()
+    wide = p.intersection(cl.buffer(1.6, cap_style=2)).difference(cl.buffer(.3, cap_style=2))
+    narrow = p.intersection(cl.buffer(1.0, cap_style=2)).difference(cl.buffer(.3, cap_style=2))
+    main = sbox(TAPER_W[1] - .2, -SW - .05, TAPER_E[0] + .2, 0.0)
+    band = unary_union([wide.intersection(main), narrow.difference(main)]).buffer(0)
+    return [g for g in getattr(band, 'geoms', [band]) if g.area > .05]
 
 
 def west_sidewalk_outline(ytop=LANE1 + 14.0):
@@ -501,6 +551,7 @@ def markings():
             b.box('marking', (LADDER[0] + LADDER[1]) / 2, y, zm, LADDER[1] - LADDER[0], .42, .009)
     for x in (LADDER[0] - .1, LADDER[1] + .1):
         b.box('marking', x, YC, zm, .15, -YS - 2 * BULB + .1, .009)
+    b.box('paver', (LADDER[0] + LADDER[1]) / 2, YC, .022, LADDER[1] - LADDER[0] + .02, -YS - 2 * BULB + .1, .006)   # brick band under the ladder
     b.flush('road markings')
 
 
@@ -548,7 +599,7 @@ def car(b, x, y, ux, uy, role):
     a = (x - ux * 2.25, y - uy * 2.25)
     f = (x + ux * 2.25, y + uy * 2.25)
     b.beam(role, (a[0], a[1], .64), (f[0], f[1], .64), 1.78, .64)
-    b.beam('glass', (x - ux * 1.25, y - uy * 1.25, 1.14), (x + ux * .95, y + uy * .95, 1.14), 1.6, .46)
+    b.beam('dark', (x - ux * 1.25, y - uy * 1.25, 1.14), (x + ux * .95, y + uy * .95, 1.14), 1.6, .46)
     b.beam(role, (x - ux * 1.2, y - uy * 1.2, 1.385), (x + ux * .9, y + uy * .9, 1.385), 1.52, .06)
     for s in (-1.42, 1.42):
         for t in (-.8, .8):
@@ -563,11 +614,8 @@ def furniture():
     for side in (1, -1):
         def Y(y):
             return y if side == 1 else YS - y
-        ya, yb = Y(-5.3), Y(-4.0)
-        b.box('paver', (TAPER_W[1] + .6 + TAPER_E[0] - .6) / 2, (ya + yb) / 2, SWZ + .002, TAPER_E[0] - TAPER_W[1] - 1.2, abs(yb - ya), .012)
-        for x0, x1 in ((XCE + 3.6, TAPER_W[0] - .5), (TAPER_E[1] + .5, LADDER[0] - .5), (LADDER[1] + .5, XE - .3)):   # brick pads on the extensions
-            yy0, yy1 = Y(-BULB + .45), Y(-SW + .4)
-            b.box('paver', (x0 + x1) / 2, (yy0 + yy1) / 2, SWZ + .002, x1 - x0, abs(yy1 - yy0), .012)
+        for x in (-24.0, 42.0):                                                              # small brick pads under the benches
+            b.box('paver', x, Y(-SW - .9), SWZ + .002, 2.4, 1.1, .012)
         for k in range(int((XE - XCE) / 1.6)):                                              # scored joints across the sidewalk
             x = XCE + .8 + k * 1.6
             b.box('sidejoint', x, Y(-1.95), SWZ, .02, 3.8, .004)
@@ -577,7 +625,7 @@ def furniture():
             b.box('sidejoint', (XCE + XW) / 2, y, SWZ, XW - XCE - .1, .02, .004)
         for x in ((-10.5, 6.0, 23.5) if side == 1 else (-6.0, 11.0, 26.0)):                   # tree pits
             b.box('soil', x, Y(-4.65), SWZ + .0045, 1.2, 1.2, .012)
-            street_tree(x, Y(-4.65), z=SWZ + .008, height=6.2, spread=1.35)
+            street_tree(x, Y(-4.65), z=SWZ + .008, height=5.6, spread=.9)
         for x in ((-20.0, -2.5, 14.5, 44.5) if side == 1 else (-21.0, 2.5, 18.5, 38.0)):
             lamp(b, x, Y(-4.7) if -14.0 < x < 28.0 else Y(-BULB + .8), -side)
         for x in ((-6.0, 19.0) if side == 1 else (-1.0, 22.5)):
@@ -586,13 +634,35 @@ def furniture():
             bike_hoop(b, x + 3.0, Y(-4.65))
         bench(b, -24.0, Y(-SW - .9), 'x')
         bench(b, 42.0, Y(-SW - .9), 'x')
-    street_tree(XCE + 1.6, 6.0, z=SWZ + .008, height=6.0, spread=1.3)
+    street_tree(XCE + 1.6, 6.0, z=SWZ + .008, height=5.4, spread=.9)
     b.box('soil', XCE + 1.6, 6.0, SWZ + .0045, 1.2, 1.2, .012)
-    street_tree(XCE + 1.6, YS - 6.0, z=SWZ + .008, height=6.0, spread=1.3)
+    street_tree(XCE + 1.6, YS - 6.0, z=SWZ + .008, height=5.4, spread=.9)
     b.box('soil', XCE + 1.6, YS - 6.0, SWZ + .0045, 1.2, 1.2, .012)
     lamp(b, XCE + .9, -BULB + 2.6, -1)
     lamp(b, XCW - .9, -SW + 1.2, -1)
+    # Scored joints on the pale concrete of the curb extensions, clipped to the concrete inside the brick band.
+    band = unary_union(brick_band())
+    bulbs = sidewalk_poly().intersection(sbox(XCE + .3, -BULB - .1, XE - .05, -SW - .02)).difference(band.buffer(.05))
+    for k in range(int((XE - XCE) / 1.5) + 1):
+        ln = LineString([(XCE + .75 + k * 1.5, -BULB - .2), (XCE + .75 + k * 1.5, -SW)]).intersection(bulbs)
+        for g in getattr(ln, 'geoms', [ln]):
+            if g.length > .1:
+                (ax, ay), (bx, by) = g.coords[0], g.coords[-1]
+                for s in (1, -1):
+                    yy0, yy1 = (ay, by) if s == 1 else (YS - ay, YS - by)
+                    b.box('sidejoint', ax, (yy0 + yy1) / 2, SWZ, .02, abs(yy1 - yy0), .004)
+    for yj in (-SW - 1.5, -SW - 3.0):
+        ln = LineString([(XCE, yj), (XE, yj)]).intersection(bulbs)
+        for g in getattr(ln, 'geoms', [ln]):
+            if g.length > .1:
+                (ax, ay), (bx, by) = g.coords[0], g.coords[-1]
+                for s in (1, -1):
+                    b.box('sidejoint', (ax + bx) / 2, yj if s == 1 else YS - yj, SWZ, abs(bx - ax), .02, .004)
     b.flush('street furniture')
+    for i, g in enumerate(brick_band()):                                                        # the brick band, north and south
+        pts = ring(g)
+        C.prism(f'North brick band {i}', pts, 'z', SWZ - .004, SWZ + .008, 'paver', 'sidewalks')
+        C.prism(f'South brick band {i}', mirror(pts), 'z', SWZ - .004, SWZ + .008, 'paver', 'sidewalks')
     c = Batch()
     ux, uy = STALL_DX / math.hypot(STALL_DX, PK), -PK / math.hypot(STALL_DX, PK)
     for k, role in ((7, 'car'), (9, 'car2')):                                                   # two cars nose-in on the north side (top view)
@@ -645,17 +715,20 @@ SIGN0, SIGN1 = 3.92, 4.52                       # sign band
 BELT = 4.70                                     # belt course centre
 FLOOR2 = 4.62                                   # upper floor level (top of slab)
 
+XLB = -20.4                                     # the corner block ends here; a lower one-storey bay runs on to the middle block (top view)
 BLOCKS = [
-    dict(name='Corner block', x0=XW, x1=-11.25, dy=0.0, top=9.8, depth=24.9, pil='stone', sign='frame', letters='cream',
-         pattern=['door+shop', 'shop', 'shop', 'shop+door'], up_per_bay=2, up=(5.45, 1.05, 2.25), head='flat', cornice='white', frame='frame'),
+    dict(name='Corner block', x0=XW, x1=XLB, dy=0.0, top=9.8, depth=24.9, pil='stone', sign='frame', letters='cream',
+         pattern=['door+shop', 'shop', 'shop+door'], up_per_bay=2, pair_gap=.3, up=(5.45, 1.05, 2.25), head='flat', cornice='white', frame='frame'),
+    dict(name='Lower bay', x0=XLB, x1=-11.25, dy=.015, top=6.6, depth=24.6, pil='brick', sign='frame', letters='cream', roof='membrane',
+         pattern=['shop+door', 'shop'], up=None, head='flat', cornice='stone', frame='frame'),
     dict(name='Middle block', x0=-11.25, x1=10.0, dy=.03, top=10.4, depth=24.4, pil='cream', sign='cream', letters='sign',
-         pattern=['shop', 'shop+door', 'door', 'door+shop', 'shop'], up_per_bay=2, up=(5.45, 1.0, 2.35), head='seg', cornice='white_modillion', frame='frame'),
+         pattern=['shop', 'shop+door', 'door', 'door+shop', 'shop'], up_per_bay=2, up=(5.45, 1.0, 2.35), head='seg', rise=.13, cornice='white_modillion', frame='frame'),
     dict(name='Arched block', x0=10.0, x1=21.0, dy=0.0, top=9.2, depth=23.0, pil='brick', sign='sign', letters='cream',
          pattern=['shop+door', 'shop', 'door+shop'], up_n=5, up=(5.35, .95, 2.25), head='seg', cornice='bracketed', frame='frame'),
     dict(name='Fine art block', x0=21.0, x1=28.5, dy=.03, top=10.0, depth=24.0, pil='cream', sign='cream', letters='sign',
          pattern=['shop', 'door+shop'], up_n=3, up=(5.4, 1.15, 2.6), head='round', cornice='corbel', frame='frame'),
-    dict(name='Cafe block', x0=28.5, x1=38.0, dy=0.0, top=10.8, depth=24.8, pil='stone', sign='stone', letters='dark',
-         pattern=['shop+door', 'shop'], up_per_bay=2, up=(5.5, 1.2, 2.8), head='flat', cornice='stone', frame='dark'),
+    dict(name='Cafe block', x0=28.5, x1=38.0, dy=0.0, top=12.4, depth=24.8, pil='stone', sign='stone', letters='dark',
+         pattern=['shop+door', 'shop'], up_per_bay=2, up=(5.7, 1.2, 3.3), head='flat', cornice='stone', frame='dark'),
 ]
 
 
@@ -686,9 +759,15 @@ def ground_bays(spec):
 
 
 def upper_holes(spec, pc):
+    if not spec['up']:
+        return []
     z, w, h = spec['up']
     us = []
-    if 'up_per_bay' in spec:
+    if 'pair_gap' in spec:                                                                 # tight pairs split by a brick mullion pier
+        for k in range(len(pc) - 1):
+            mid = (pc[k] + pc[k + 1]) / 2
+            us += [mid - (w + spec['pair_gap']) / 2, mid + (w + spec['pair_gap']) / 2]
+    elif 'up_per_bay' in spec:
         for k in range(len(pc) - 1):
             mid = (pc[k] + pc[k + 1]) / 2
             bw = pc[k + 1] - pc[k]
@@ -732,6 +811,10 @@ def storefront(spec, m, f, pc, gh):
             framed(m, f, h, cols=cols, rows=1, inset=.14, occupied='shop', kind='shopfront', frame=fr)
             m.box(fr, h['u'], .12, h['z'] + h['h'] - .72, h['w'] - .12, .09, .07)          # transom bar
             m.box(fr, h['u'], -.015, (.06 + GZ0 - .05) / 2, h['w'] + .05, .04, GZ0 - .11)  # panelled bulkhead
+            n = max(1, round(h['w'] / 1.6))
+            for k in range(n):                                                              # raised panel moulding
+                pu = h['u'] - h['w'] / 2 + h['w'] * (k + .5) / n
+                m.box(fr, pu, -.05, (.06 + GZ0 - .05) / 2, h['w'] / n - .3, .02, GZ0 - .33)
             m.box('stone', h['u'], -.05, GZ0 - .045, h['w'] + .12, .14, .08)                  # sill
         else:
             framed(m, f, h, cols=2 if h['w'] > 1.4 else 1, rows=1, inset=.16, occupied='shop', kind='door', frame=fr)
@@ -752,10 +835,9 @@ def upper(spec, m, f, uh):
         if spec['head'] == 'flat':
             m.box('stone', h['u'], -.02, h['z'] + h['h'] + .155, h['w'] + .3, .08, .3)          # lintel
         elif spec['head'] == 'seg':
-            arch_head(f, h, .32, ring=.2, ring_role='stone' if spec['name'] == 'Middle block' else 'cream')
+            arch_head(f, h, spec.get('rise', .32), ring=.2, ring_role='stone' if spec['name'] == 'Middle block' else 'cream')
         else:
-            arch_head(f, h, h['w'] / 2, ring=.2, ring_role='cream')
-            m.box('cream', h['u'], -.04, h['z'] + h['h'] + .1, .2, .1, .26)                   # keystone
+            arch_head(f, h, h['w'] / 2, ring=.22, ring_role='wall', proud=.04)                  # brick voussoir arch (front view)
 
 
 def cornice(spec, m, top):
@@ -770,7 +852,8 @@ def cornice(spec, m, top):
     elif kind == 'bracketed':                                                              # dark pressed-metal cornice on scrolled brackets
         eave_cornice(m, lo, hi, top - .2, span_t=T, proj=.8, role='dark', modillions=True)
         m.box('dark', (lo + hi) / 2, -.06, top - 1.15, hi - lo, .16, .5)                      # frieze panel
-        for u in (lo + .25, hi - .25, (lo + hi) / 2):
+        a, c = spec['x0'] + .9, spec['x1'] - .9
+        for u in (lo + .25, hi - .25, a + (c - a) * 2 / spec['up_n']):                       # the middle console sits between two windows
             m.box('dark', u, -.36, top - .95, .3, .76, .9)                                     # end and middle consoles
             m.box('dark', u, -.25, top - 1.55, .22, .54, .4)
     elif kind == 'corbel':                                                                 # corbelled brick table under a stone coping
@@ -787,11 +870,11 @@ def cornice(spec, m, top):
     m.box('white' if kind == 'white_modillion' else 'stone', (lo + hi) / 2, T / 2 - .03, top + .04, hi - lo, T + .14, .1)    # coping
     if spec['name'] == 'Middle block':                                                     # raised central parapet with a name panel
         mid = (x0 + x1) / 2
-        for w, za, z1, t in ((7.0, top - .02, top + .7, T - .01), (3.6, top + .3, top + 1.25, T - .02)):
+        for w, za, z1, t in ((7.0, top - .02, top + 1.1, T - .01), (3.6, top + .3, top + 2.05, T - .02)):
             m.box('wall', mid, T / 2, (za + z1) / 2, w, t, z1 - za)
             m.box('white', mid, T / 2 - .03, z1 + .04, w + .14, T + .14, .1)
-        m.box('cream', mid, -.02, top + .5, 3.0, .08, .6)
-        letters(m, mid - 1.25, mid + 1.25, top + .5, -.065, 'sign', 77)
+        m.box('cream', mid, -.02, top + .85, 3.2, .08, .75)
+        letters(m, mid - 1.35, mid + 1.35, top + .85, -.065, 'sign', 77)
     if spec['name'] == 'Cafe block':                                                       # cream stone end pier with a capital (front view)
         m.box('cream', x1 - .32, -.14, (.05 + top - .6) / 2, .64, .3, top - .65)
         m.box('cream', x1 - .34, -.2, top - .52, .76, .42, .3)
@@ -816,15 +899,11 @@ def block(spec):
     m.flush(spec['name'])
     # Rear wall with service doors and windows, roof, floors, an interior back-of-shop wall and room lights.
     rz = top - .9
+    rear_wall(spec)
     b = Batch()
-    ra, rb = (XW if x0 == XW else x0 - .15), x1 + .15
-    b.box('wall', (ra + rb) / 2, depth - T / 2, (top - .05) / 2, rb - ra, T, top - .05)
-    for u in [x0 + 2.0 + i * 2.6 for i in range(int((x1 - x0 - 2.0) / 2.6))]:
-        b.box('glass', u, depth + .005, 6.6, 1.0, .02, 1.8)
-        b.box('stone', u, depth + .02, 5.65, 1.2, .06, .1)
-    b.box('frame', x0 + 1.4, depth + .005, 1.25, 1.0, .02, 2.2)
-    b.box('roof', (x0 + x1) / 2, (dy + T - .05 + depth - T + .05) / 2, rz - .125, x1 - x0 - .3, depth - 2 * T + .1 - dy, .25)
-    b.box('floor', (x0 + x1) / 2, (dy + T - .05 + depth - T + .05) / 2, FLOOR2 - .15, x1 - x0 - .3, depth - 2 * T + .1 - dy, .3)
+    b.box(spec.get('roof', 'roof'), (x0 + x1) / 2, (dy + T - .05 + depth - T + .05) / 2, rz - .125, x1 - x0 - .3, depth - 2 * T + .1 - dy, .25)
+    if top > 8.0:
+        b.box('floor', (x0 + x1) / 2, (dy + T - .05 + depth - T + .05) / 2, FLOOR2 - .15, x1 - x0 - .3, depth - 2 * T + .1 - dy, .3)
     b.box('floor', (x0 + x1) / 2, (dy + T - .05 + depth - T + .05) / 2, .085, x1 - x0 - .3, depth - 2 * T + .1 - dy, .11)
     b.box('interior', (x0 + x1) / 2, 9.5, (.13 + FLOOR2 - .29) / 2, x1 - x0 - .3, .15, FLOOR2 - .29 - .13)
     for i, (hx, hy) in enumerate(((.3, .55), (.62, .4))):                                     # rooftop units
@@ -837,7 +916,31 @@ def block(spec):
             b.box('glass', ux, 12.0, rz + .4, 1.0, 2.2, .06)
     b.flush(spec['name'] + ' body')
     C.qa_room_light(f"{spec['name']} shop", ((x0 + x1) / 2, 4.5, 2.6), 90, 3.0)
-    C.qa_room_light(f"{spec['name']} upper", ((x0 + x1) / 2, 4.5, FLOOR2 + 2.3), 60, 3.0)
+    if top > 8.0:
+        C.qa_room_light(f"{spec['name']} upper", ((x0 + x1) / 2, 4.5, FLOOR2 + 2.3), 60, 3.0)
+
+
+def rear_wall(spec):
+    """The rear (lane) wall as a coursed brick carrier with cut openings: a service door and upper sashes in framed,
+    glazed reveals under flat stone lintels on stone sills (one-storey bays get ground windows instead)."""
+    x0, x1, top, depth = spec['x0'], spec['x1'], spec['top'], spec['depth']
+    ra, rb = (XW if x0 == XW else x0 - .15), x1 + .15
+    f = C.Face((0.0, depth, 0.0), (-1, 0, 0), (0, -1, 0), spec['name'] + ' rear')
+    hs = [hole(f"{spec['name']} rear door", -(x0 + 1.4), .05, 1.0, 2.2, kind='door')]
+    zw, hw = (5.7, 1.8) if top > 8.0 else (1.0, 1.4)
+    hs += [hole(f"{spec['name']} rear window {i}", -u, zw, 1.0, hw) for i, u in enumerate(x0 + 2.0 + i * 2.6 for i in range(int((x1 - x0 - 2.0) / 2.6)))]
+    f.wall(f"{spec['name']} rear carrier", -rb, -ra, 0.0, top - .05, depth=T, role='wall', holes=hs)
+    G.brick_courses(f, -rb + .02, -ra - .02, .12, top - .17, hs, spacing=.16)
+    m = Merge(f)
+    for h in hs:
+        if h.get('kind') == 'door':
+            framed(m, f, h, cols=1, rows=1, inset=.14, occupied='back of shop', kind='door', frame='frame')
+            m.box('frame', h['u'], .17, .05 + .9, h['w'] - .14, .04, 1.2)                       # door leaf panel
+        else:
+            framed(m, f, h, cols=1, rows=2, inset=.13, occupied='upper room' if top > 8.0 else 'back of shop', frame='frame')
+            m.box('stone', h['u'], -.05, h['z'] - .055, h['w'] + .22, .14, .1)                  # sill
+        m.box('stone', h['u'], -.02, h['z'] + h['h'] + .155, h['w'] + .3, .08, .3)              # lintel
+    m.flush(spec['name'] + ' rear')
 
 
 def party_walls():
@@ -845,11 +948,33 @@ def party_walls():
     for i in range(1, len(BLOCKS)):
         a, c = BLOCKS[i - 1], BLOCKS[i]
         x = a['x1']
+        if a['name'] == 'Lower bay':
+            continue                                                                       # the middle block's exposed side wall (side_wall)
         b.box('wall', x, (T - .05 + max(a['depth'], c['depth']) - .05) / 2, (max(a['top'], c['top']) - .03) / 2,
               T, max(a['depth'], c['depth']) - .05 - (T - .05), max(a['top'], c['top']) - .03)
     e = BLOCKS[-1]
     b.box('wall', e['x1'], (T - .05 + e['depth'] - .05) / 2, (e['top'] - .03) / 2, T, e['depth'] - .05 - (T - .05), e['top'] - .03)
     b.flush('party walls')
+
+
+def side_wall():
+    """The middle block's west wall, exposed above the lower bay's roof: coursed brick with punched upper windows
+    and a stone coping (oblique view)."""
+    s = next(b for b in BLOCKS if b['name'] == 'Middle block')
+    lb = next(b for b in BLOCKS if b['name'] == 'Lower bay')
+    top, depth, x = s['top'], s['depth'], s['x0']
+    f = C.Face((x - T / 2, 0.0, 0.0), (0, -1, 0), (1, 0, 0), 'Middle block west')
+    lo, hi = -(depth - .05), -(T - .05)
+    hs = [hole(f'Middle west upper {i}', -y, 7.1, 1.0, 1.9) for i, y in enumerate((4.5, 9.5, 14.5, 19.5))]
+    f.wall('Middle block west carrier', lo, hi, 0.0, top - .03, depth=T, role='wall', holes=hs)
+    G.brick_courses(f, lo + .02, hi - .02, lb['top'] + .12, top - .15, hs, spacing=.16)
+    m = Merge(f)
+    for h in hs:
+        framed(m, f, h, cols=1, rows=2, inset=.15, occupied='upper room', frame='white')
+        m.box('stone', h['u'], -.05, h['z'] - .055, h['w'] + .22, .14, .1)
+        m.box('stone', h['u'], -.02, h['z'] + h['h'] + .155, h['w'] + .3, .08, .3)
+    m.box('stone', (lo + hi) / 2, T / 2, top + .02, hi - lo, T + .12, .1)                        # coping
+    m.flush('Middle block west')
 
 
 def corner_bands(top):
@@ -963,6 +1088,7 @@ def build():
     for s in BLOCKS:
         block(s)
     party_walls()
+    side_wall()
     corner_west()
     context()
     C.CONTACTS.append(dict(name='Main-street section: storefront street wall, sidewalks with brick furnishing strips, angled parking, travel lanes, curb extensions and crossings', box=[XCW, XE, YS, LANE1]))
