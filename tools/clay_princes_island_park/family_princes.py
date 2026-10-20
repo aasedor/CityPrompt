@@ -53,7 +53,7 @@ def manifest(version):
         ('west_path', (-23.0, -21.0, ZG + 1.7), (-24.0, 12.0, ZG + .8), 30)])
     for c in cams:
         if c['name'] == 'front':                                              # the locked front: on the promenade, looking north-east
-            c.update(location=(-9.5, -12.5, ZG + 1.65), target=(4.0, 6.0, ZG + 3.0), lens=22, whole=False)
+            c.update(location=(-10.6, -13.6, ZG + 1.65), target=(4.0, 6.0, ZG + 3.0), lens=22, whole=False)
         elif c['name'] == 'front_corner':                                     # the locked oblique, high over the south plaza
             c.update(location=(-2.0, -34.0, ZG + 15.0), target=(3.0, 2.0, ZG + 0.0), lens=24, whole=False)
         elif c['name'] == 'aerial':                                           # the locked top: near-nadir over the pavilion
@@ -969,7 +969,7 @@ def pavilion():
         u, v = RNG.uniform(-5.4, 5.4), RNG.uniform(-3.9, 3.9)
         x, y = L(u, v)
         r = RNG.uniform(.3, .55)
-        lump(b, ('sedum', 'sedum2')[i % 2], x, y, ZG + 3.985 + r * .05, r * 1.3, r * 1.1, r * .3, .3)
+        lump(b, 'sedum', x, y, ZG + 3.985 + r * .05, r * 1.3, r * 1.1, r * .45, .3)
     for i in range(130):
         u, v = RNG.uniform(*roof[0]), RNG.uniform(*roof[1])
         x, y = L(u, v)
