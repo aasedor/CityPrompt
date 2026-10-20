@@ -68,6 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (v004 reworks it)
+## Open blockers after v004 (x)
 
-- P1 #1: the bowstring span, the hero of the source foreground, is the wrong structure type: a light, thin-membered tall through-arch on a straight-column gantry with nothing arching below its deck; both sources show a heavy riveted arched truss whose arch continues below the deck down to riveted columns on concrete pedestals.
+x
