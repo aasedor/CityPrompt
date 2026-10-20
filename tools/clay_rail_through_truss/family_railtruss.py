@@ -6,7 +6,7 @@ street. Each span is a riveted steel deck arch: a solid riveted plate rib in eac
 built-up box columns on concrete pedestals, an open spandrel lattice of posts and N-diagonals up to a deep plate
 girder, and riveted transverse portal arches between the paired columns (no bracing to the ground), a steel
 deck with sleepers and rails and edge railings. At the near (south) end the line enters a bowstring through-truss
-whose arched trusses rise above the deck on both sides. A silver stainless train on the west track. Beneath and
+whose heavy riveted arched trusses rise above the deck on both sides while the viaduct's own deck arches continue beneath it on columns and pedestals. A silver stainless train on the street-side (east) track. Beneath and
 west of the viaduct a pale paved promenade with trees; to its east a pale strip, a red cycle lane, a two-lane road,
 a sidewalk; flat-roofed brick apartment blocks on both sides.
 """
@@ -46,12 +46,12 @@ def manifest(version):
     cams = G.camera_roster(w, d, h, [
         ('facade_close', (13.0, -18.0, 6.5), (CX, -22.5, 9.0), 40),
         ('architecture_close', (9.5, 8.0, 9.0), (CX, 15.0, 9.5), 40),
-        ('glass_close', (7.5, -8.0, 15.4), (-TX, -14.0, 15.4), 40),
+        ('glass_close', (7.5, -8.0, 15.4), (TX, -14.0, 15.4), 40),
         ('arch_span', (19.0, 7.5, 4.0), (CX, 7.5, 7.5), 40),
         ('column_base', (7.5, -5.0, 1.7), (CX, 0.0, 2.6), 40),
         ('lattice_detail', (9.5, 27.0, 9.6), (CX, 22.5, 10.4), 40),
         ('track_deck', (2.6, 2.0, 16.0), (TX, 40.0, DT + .2), 40),
-        ('train_cars', (6.0, -4.0, 16.6), (-TX, -12.0, 15.2), 40),
+        ('train_cars', (7.5, -4.0, 16.6), (TX, -12.0, 15.2), 40),
         ('street_under', (5.5, 42.0, 1.7), (-1.0, 10.0, 6.5), 35),
         ('rear_north', (2.0, Y1 + 32.0, 17.0), (0.0, Y1 - 10.0, 9.0), 40)])
     for c in cams:
@@ -411,7 +411,8 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
         b.box(pot, px, y, z1 + .12 + .25, .18, .18, .5)
 # ---- Elevated steel rail viaduct ----
 
-COLS = [Y0, Y0 + BOW] + [Y0 + BOW + SP * k for k in range(1, SPANS + 1)]
+BOWEND = Y0 + BOW
+COLS = [Y0, Y0 + BOW / 2, BOWEND] + [BOWEND + SP * k for k in range(1, SPANS + 1)]   # the deck arches run on under the bowstring too
 
 
 def arc3(ya, yb, z0, zc, n):
@@ -517,8 +518,8 @@ def deck_arches(b):
     """Deck arches: a solid riveted plate rib in each plane, springing low from the columns, its crown well below the
     plate girder, and a deep continuous open spandrel lattice over the whole span: evenly spaced vertical posts (one on
     the crown) with V-diagonals rising from gusseted nodes on the rib to the girder, as in the source front."""
-    for k in range(SPANS):
-        c0, c1 = COLS[1 + k], COLS[2 + k]
+    for k in range(len(COLS) - 1):
+        c0, c1 = COLS[k], COLS[k + 1]
         ya, yb = c0 + .05, c1 - .05
         for x in (-CX, CX):
             ym, zm, rt = plate_rib(b, x, ya, yb, SPRING, CROWN, n=22, rivet_pitch=1.6)
@@ -543,30 +544,60 @@ def deck_arches(b):
 
 
 def bowstring(b):
-    """The bowstring through-truss at the south end: arched top chords above the deck, verticals, diagonals, struts."""
-    ya, yb = COLS[0] + .3, COLS[1] - .3
-    xb = X1 + .35
-    zb, zc = DT + .4, DT + 6.5
-    for x in (-xb, xb):
-        b.box('steel', x, (ya + yb) / 2, (GT - .3 + zb) / 2, .5, yb - ya, zb - GT + .3)          # bottom chord beside the deck
-        chain(b, 'steel', x, arc3(ya, yb, zb, zc, 16), .55, .6)
+    """The bowstring at the south end, as in the locked oblique and top: in each girder plane a heavy riveted arched
+    truss rises low over the deck (crown about at the car roof): a deep built-up arched top chord (curved web, flange
+    plates, rivet rows), a deep riveted bottom chord along the deck edge, built-up verticals, a heavy main diagonal and a
+    lighter counter in every panel, riveted gusset plates at the nodes. Below the deck the same planes carry the viaduct's
+    own plate-rib arches down to columns on concrete pedestals (deck_arches), so the truss reads as standing on the arcade.
+    Open above (no overhead struts), like the sources."""
+    ya, yb = Y0 + .35, BOWEND - .35
+    zb, zc = DT + .45, DT + 4.5                                  # top-chord centre line: springing at the deck, crown at car-roof height
+    dep, web, fl = .9, .46, .72
+    for x in (-CX, CX):
+        sx = 1 if x > 0 else -1
+        ym, zm, rt = plate_rib(b, x, ya, yb, zb, zc, n=26, depth=dep, web=web, flange=fl, rivet_pitch=.9)
+        ri = rt - dep - FL + .02                                 # intrados face of the top chord
+        zbt = DT + .62                                           # bottom chord top
+        b.box('steel', x, (ya + yb) / 2, (GT - .22 + zbt) / 2, .56, yb - ya, zbt - GT + .22)   # deep riveted bottom chord
+        b.box('plate', x, (ya + yb) / 2, zbt + .025, .76, yb - ya + .02, .05)                    # top cover plate
+        m = int((yb - ya) / .8)
+        for i in range(m):
+            y = ya + .4 + i * .8
+            for sd in (-1, 1):
+                for z in (DT + .06, zbt - .14):
+                    b.box('rivet', x + sd * .292, y, z, .03, .06, .06)
+        for yy in (ya, yb):                                      # bearing shoes over the cap girders
+            b.box('plate', x, yy + (.25 if yy == ya else -.25), (GT - .25 + zbt) / 2, .8, .7, zbt - GT + .25)
         n = 10
-        tops = []
-        for i in range(1, n):
+        nodes = []                                               # (y, z of the top chord intrados)
+        for i in range(n + 1):
             y = ya + (yb - ya) * i / n
-            zt = arc_z(ya, yb, zb, zc, y) - .3
-            tops.append((y, zt))
-            b.box('steel', x, y, (zb + zt) / 2, .3, .3, zt - zb)
-        nodes = [(ya + .3, zb + .3)] + tops + [(yb - .3, zb + .3)]
-        for i, ((y0, z0), (y1, z1)) in enumerate(zip(nodes, nodes[1:])):
-            if i < len(nodes) // 2:
-                b.beam('steel', (x, y0, zb + .1), (x, y1, z1), .24, .22)
+            nodes.append((y, zm + math.sqrt(max(0.0, ri * ri - (y - ym) ** 2))))
+        for i, (y, zt) in enumerate(nodes):
+            if i in (0, n) or zt - zbt < .3:
+                continue
+            b.box('steel', x, y, (zbt + zt) / 2 + .02, .40, .30, zt - zbt + .1)                   # built-up vertical: web
+            for s in (-1, 1):
+                b.box('plate', x, y + s * .17, (zbt + zt) / 2 + .02, .52, .04, zt - zbt + .06)   # flange plates
+            for zz, hh in ((zbt + .45, .9), (zt - .4, .8)):                                     # riveted gussets both faces
+                for sd in (-1, 1):
+                    b.box('plate', x + sd * .275, y, zz, .03, 1.0, hh)
+                    for dy in (-.3, 0, .3):
+                        b.box('rivet', x + sd * .293, y + dy, zz, .02, .05, .05)
+        mid = n // 2
+        for i in range(n):                                       # heavy main diagonal falling towards midspan, a lighter counter
+            (y0, z0), (y1, z1) = nodes[i], nodes[i + 1]
+            if i < mid:
+                main = ((y0, zbt - .05), (y1, z1 - .05)) if i > 0 else ((y0 + .4, zbt - .05), (y1, z1 - .05))
+                ctr = ((y0, z0 - .05), (y1, zbt - .05)) if i > 0 else None
             else:
-                b.beam('steel', (x, y0, z0), (x, y1, zb + .1), .24, .22)
-    for i in (4, 6):                                                                           # two slender struts near the crown
-        y = ya + (yb - ya) * i / 10
-        z = arc_z(ya, yb, zb, zc, y) - .4
-        b.box('steel', 0.0, y, z, 2 * xb, .18, .2)
+                main = ((y0, z0 - .05), (y1, zbt - .05)) if i < n - 1 else ((y0, z0 - .05), (y1 - .4, zbt - .05))
+                ctr = ((y0, zbt - .05), (y1, z1 - .05)) if i < n - 1 else None
+            if min(main[0][1], main[1][1]) < zbt - .1 and max(main[0][1], main[1][1]) - zbt < .5:
+                continue
+            b.beam('steel', (x, main[0][0], main[0][1]), (x, main[1][0], main[1][1]), .34, .26)
+            if ctr and max(ctr[0][1], ctr[1][1]) - zbt > .6:
+                b.beam('plate', (x - sx * .09, ctr[0][0], ctr[0][1]), (x - sx * .09, ctr[1][0], ctr[1][1]), .18, .14)
 
 
 def girders_and_deck(b):
@@ -577,7 +608,7 @@ def girders_and_deck(b):
             y = Y0 + .2 + k * 1.875
             for s in (-1, 1):
                 b.box('plate', x + s * .245, y, (GB + .07 + GT) / 2, .03, .14, GT - GB - .07)
-    for y, top in ((Y0, DT - .02), (COLS[1], GT + .1), (Y1, DT - .02)):                       # closed cap girders on the end and bowstring bents
+    for y, top in ((Y0, DT - .02), (BOWEND, GT + .1), (Y1, DT - .02)):                       # closed cap girders on the end and bowstring bents
         b.box('plate', 0.0, y, (GB - .7 + top) / 2, 2 * (X1 + .7), 1.1, top - GB + .7)
         for sd in (-1, 1):
             for k in range(13):
@@ -611,9 +642,9 @@ def gaps(lo, hi, cuts):
 
 
 def train():
-    """A silver stainless train of three cars on the west track, entering the bowstring span: a dark interior core
+    """A silver stainless train of three cars on the street-side (east) track, entering the bowstring span: a dark interior core
     behind a silver skin cut by real window openings (glazing set back in the reveal) and recessed door leaves."""
-    xt, z0 = -TX, DT + .31
+    xt, z0 = TX, DT + .31
     zb, zw0, zw1, zt = z0 + .5, z0 + 1.9, z0 + 2.95, z0 + 3.9          # body bottom, window band, body top
     b = Batch()
     y = -52.0
