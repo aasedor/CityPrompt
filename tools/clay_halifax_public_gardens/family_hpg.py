@@ -52,7 +52,7 @@ def manifest(version):
         ('carpet_beds', (-1.0, -20.0, 3.4), (-6.5, -8.0, .3), 32),
         ('inner_lawn_beds', (2.0, 18.0, 4.0), (-6.0, 6.5, .3), 30),
         ('loop_benches', (-3.0, 17.0, 2.0), (-12.5, 9.0, .8), 32),
-        ('mature_trees', (-2.0, -24.0, 3.0), (-13.5, -13.0, 5.0), 28),
+        ('mature_trees', (-1.0, -27.0, 3.2), (-13.0, -14.0, 6.0), 28),
         ('side_entrance', (-27.5, 7.0, 2.2), (-21.6, 0.0, 1.4), 30),
         ('rear_north', (0.0, 36.0, 9.0), (0.0, 14.0, 1.0), 34)])
     for c in cams:
@@ -65,9 +65,9 @@ def manifest(version):
         elif c['name'] == 'aerial':
             c.update(location=(46.0, -52.0, 46.0), target=(0.0, 0.0, 0.0), lens=32, whole=False)
         elif c['name'] == 'left_side':
-            c.update(location=(-50.0, -4.0, 18.0), target=(0.0, 0.0, 2.0), lens=28, whole=False)
+            c.update(location=(-30.5, -6.0, 15.0), target=(0.0, 0.0, 1.5), lens=22, whole=False)
         elif c['name'] == 'right_side':
-            c.update(location=(50.0, 4.0, 18.0), target=(0.0, 0.0, 2.0), lens=28, whole=False)
+            c.update(location=(30.5, 6.0, 15.0), target=(0.0, 0.0, 1.5), lens=22, whole=False)
         elif c['name'] == 'rear':
             c.update(location=(0.0, 38.5, 17.0), target=(0.0, -2.0, 0.0), lens=24, whole=False)
         elif c['name'] == 'rear_side':
@@ -519,13 +519,19 @@ def resample(pts, ds):
     return out
 
 
+def bezier(p0, p1, p2, p3, n=40):
+    return [tuple((1 - u) ** 3 * p0[c] + 3 * (1 - u) ** 2 * u * p1[c] + 3 * (1 - u) * u * u * p2[c] + u ** 3 * p3[c] for c in range(2))
+            for u in (i / n for i in range(n))]
+
+
 def loop_line():
-    """The oval loop centre line, from the south gate up the west leg, over the top and down the east leg."""
+    """The oval loop centre line, from the south gate up the west leg, out through an S-bend to the cross path,
+    over the top of the ellipse and back down the east side; tangent-continuous everywhere."""
     n = 120
     pts = [(-LX, FS - .05 + (LY - FS + .05) * i / 20) for i in range(20)]
-    pts += [(-(LX + (LA - LX) * math.cos(t)), LY * math.sin(t)) for t in (math.pi / 2 * (1 - i / 40) for i in range(40))]
+    pts += bezier((-LX, LY), (-LX, LY + 5.6), (-LA, -5.4), (-LA, 0.0))
     pts += [(LA * math.cos(t), LB * math.sin(t)) for t in (math.pi * (1 - i / n) for i in range(n))]
-    pts += [(LX + (LA - LX) * math.cos(t), LY * math.sin(t)) for t in (math.pi / 2 * i / 40 for i in range(40))]
+    pts += bezier((LA, 0.0), (LA, -5.4), (LX, LY + 5.6), (LX, LY))
     pts += [(LX, LY + (FS - .05 - LY) * i / 20) for i in range(21)]
     return resample(pts, .25)
 
@@ -652,9 +658,25 @@ def ground():
     b.flush('streets and plaza')
 
 
+def strip_mesh(name, A, B, z0, z1, role, module):
+    """Closed slab between two matched polylines (A[i] and B[i] form a cross-section): quads only, no large n-gon
+    to triangulate, so long curved paths and beds cannot fold."""
+    n = len(A)
+    V = [(x, y, z1) for x, y in A] + [(x, y, z1) for x, y in B] + [(x, y, z0) for x, y in A] + [(x, y, z0) for x, y in B]
+    a1, b1, a0, b0 = 0, n, 2 * n, 3 * n
+    F = []
+    for i in range(n - 1):
+        F.append((a1 + i, a1 + i + 1, b1 + i + 1, b1 + i))                   # top
+        F.append((b0 + i, b0 + i + 1, a0 + i + 1, a0 + i))                   # bottom
+        F.append((a0 + i, a0 + i + 1, a1 + i + 1, a1 + i))                   # side along A
+        F.append((b1 + i, b1 + i + 1, b0 + i + 1, b0 + i))                   # side along B
+    F.append((a0, a1, b1, b0)); F.append((b0 + n - 1, b1 + n - 1, a1 + n - 1, a0 + n - 1))
+    return C.mesh(name, V, F, role, module)
+
+
 def ribbon(name, pts, hw, z0, z1, module='paths'):
     left, right = offsets(pts, hw), offsets(pts, -hw)
-    C.prism(name, ccw(left + right[::-1]), 'z', z0, z1, 'paving', module)
+    strip_mesh(name, left, right, z0, z1, 'paving', module)
     return left, right
 
 
@@ -662,13 +684,11 @@ def paths():
     b = Batch()
     C.box('Axis path', (0.0, (FS + FN) / 2, (.02 + ZA) / 2), (2 * AXW, FN - FS + .1, ZA - .02), 'paving', 'paths', 0)
     C.box('Cross path', (0.0, 0.0, (.025 + ZC) / 2), (2 * FX + .1, 2 * CRW, ZC - .025), 'paving', 'paths', 0)
-    lo, ro = ribbon('Loop path', LOOP[::2] if (len(LOOP) - 1) % 2 == 0 else LOOP[::2] + [LOOP[-1]], LW, .03, ZL)
+    lo, ro = ribbon('Loop path', LOOP[::3] if (len(LOOP) - 1) % 3 == 0 else LOOP[::3] + [LOOP[-1]], LW, .03, ZL)
     C.prism('Bandstand circle', [(RC * math.cos(2 * math.pi * i / 64), RC * math.sin(2 * math.pi * i / 64)) for i in range(64)], 'z', .04, ZO, 'paving', 'paths')
-    fore = [(-LX - LW, FS - .05), (LX + LW, FS - .05), (LX + LW, FORE_Y)]
-    fore += arc(TIP_X, FORE_Y, TIP_R, 0.0, -math.pi)[:]
-    fore += arc(-TIP_X, FORE_Y, TIP_R, 0.0, -math.pi)
-    fore += [(-LX - LW, FORE_Y)]
-    C.prism('Gate forecourt', ccw(fore), 'z', .035, ZF, 'paving', 'paths')
+    xs = sorted(set([round(-LX - LW + i * .3, 4) for i in range(int(2 * (LX + LW) / .3) + 1)] + [LX + LW, -AXW, AXW, -LX + LW, LX - LW]))
+    top = [(x, FORE_Y - math.sqrt(max(0.0, TIP_R ** 2 - (abs(x) - TIP_X) ** 2)) if abs(abs(x) - TIP_X) < TIP_R else FORE_Y) for x in xs]
+    strip_mesh('Gate forecourt', [(x, FS - .05) for x in xs], top, .035, ZF, 'paving', 'paths')
     # Paver courses: joints across every path, stopping where a higher or crossing path takes over.
     for k in range(int((FN - FS) / .6)):
         y = FS + .3 + k * .6
@@ -732,7 +752,7 @@ def smooth(pts, n=10):
 
 def bed_outline(spine, width):
     """Leaf-shaped bed: a smooth spine with a width that tapers to points at both ends."""
-    pts = resample(smooth(spine), .3)
+    pts = resample(smooth(spine), .25)
     L = len(pts) - 1
     left, right = [], []
     for i, (x, y) in enumerate(pts):
@@ -748,23 +768,24 @@ def carpet_bed(name, spine, width):
     """A raised mulch bed with granite-free soft edge, planted in bands: white hydrangea mounds along the spine,
     lavender and purple either side, low pink and magenta at the edges."""
     pts, left, right = bed_outline(spine, width)
-    C.prism(name, ccw(left + right[::-1]), 'z', .02, .10, 'soil', 'flower beds')
+    strip_mesh(name, left[::2] + ([left[-1]] if len(left) % 2 == 0 else []), right[::2] + ([right[-1]] if len(right) % 2 == 0 else []), .02, .10, 'soil', 'flower beds')
     b = Batch()
     L = len(pts) - 1
-    for i in range(1, L, 2):
+    for i in range(1, L, 3):
         x, y = pts[i]
         w = width / 2 * math.sin(math.pi * i / L) ** .55
         ax, ay = pts[i - 1]; bx, by = pts[i + 1]
         d = math.hypot(bx - ax, by - ay); nx, ny = -(by - ay) / d, (bx - ax) / d
-        if i % 4 == 1:
-            mound(b, 'white', x, y, .10, 1.05, .85)                            # hydrangea mound on the spine
+        if (i // 3) % 2 == 0:
+            mound(b, 'white', x, y, .10, 1.1, .85)                             # hydrangea mound on the spine
         else:
-            mound(b, 'shrub', x, y, .10, .9, .65)
+            mound(b, 'shrub', x, y, .10, 1.0, .7)
         for side in (-1, 1):
-            for f, role, hgt in ((.5, FLOWERS[(i // 2 + (side > 0)) % 2] if (i // 2) % 3 else 'shrub', .55), (.84, FLOWERS[2 + (i // 2) % 2] if (i // 2) % 3 != 1 else 'shrub', .4)):
+            j = i // 3
+            for f, role, hgt in ((.5, FLOWERS[(j + (side > 0)) % 2] if j % 3 else 'shrub', .55), (.84, FLOWERS[2 + j % 2] if j % 3 != 1 else 'shrub', .4)):
                 if w * f < .35:
                     continue
-                mound(b, role, x + side * nx * w * f, y + side * ny * w * f, .10, .72, hgt)
+                mound(b, role, x + side * nx * w * f, y + side * ny * w * f, .10, .85, hgt)
     b.flush(name)
 
 
@@ -787,7 +808,7 @@ def shade_tree(name, x, y, h, r):
     for k in range(3):
         a = 2 * math.pi * k / 3 + .4
         C.rod(f'{name} limb', (x + .1, y, h * .38), (x + math.cos(a) * r * .5, y + math.sin(a) * r * .5, h * .6), .07 + .012 * r, 'timber', 'trees', 6)
-    A.foliage(f'{name} crown', (x, y, h * .64), (r * .86, r * .86, r * .58), role='tree', detail=2)
+    A.foliage(f'{name} crown', (x, y, h * .64), (r * .86, r * .86, r * .58), role='tree', detail=3 if r > 5 else 2)
     for k in range(6):
         a = 2 * math.pi * k / 6 + RNG.uniform(0, .5)
         rr = r * (.55 if k % 2 else .62)
@@ -806,13 +827,14 @@ TREES = [('South-west giant', -12.8, -14.0, 14.5, 7.0), ('South-west elm', -18.4
 def planting():
     # Four inner carpet beds (top view: long leaves across each inner lawn).
     for sx in (-1, 1):
-        carpet_bed(f'South inner bed {"west" if sx < 0 else "east"}', [(sx * 3.3, -22.6), (sx * 3.5, -17.0), (sx * 5.2, -12.4), (sx * 7.8, -8.4), (sx * 11.2, -4.2)], 2.8)
+        carpet_bed(f'South inner bed {"west" if sx < 0 else "east"}', [(sx * 3.3, -22.6), (sx * 3.4, -17.0), (sx * 3.6, -12.4), (sx * 5.0, -8.4), (sx * 9.4, -3.6)], 2.8)
         carpet_bed(f'North inner bed {"west" if sx < 0 else "east"}', [(sx * 2.7, 12.0), (sx * 5.0, 9.6), (sx * 8.0, 6.8), (sx * 11.4, 3.6)], 3.0)
         border(f'North axis border {"west" if sx < 0 else "east"}', *(sorted((sx * (AXW + .45), sx * (AXW + 1.65)))), 15.9, 26.8)
     # The flower ring round the bandstand, broken at the stair.
     a0, a1 = math.radians(-69), math.radians(249)
-    outer = arc(0.0, 0.0, BED1, a0, a1, .3); inner = arc(0.0, 0.0, BED0, a1, a0, .3)
-    C.prism('Bandstand flower ring', ccw(outer + inner), 'z', .06, .13, 'soil', 'flower beds')
+    n = int((a1 - a0) * BED1 / .3)
+    strip_mesh('Bandstand flower ring', [(BED1 * math.cos(a0 + (a1 - a0) * i / n), BED1 * math.sin(a0 + (a1 - a0) * i / n)) for i in range(n + 1)],
+               [(BED0 * math.cos(a0 + (a1 - a0) * i / n), BED0 * math.sin(a0 + (a1 - a0) * i / n)) for i in range(n + 1)], .06, .13, 'soil', 'flower beds')
     b = Batch()
     for r in (BED0, BED1):
         pts = arc(0.0, 0.0, r, a0, a1, .4)
@@ -1010,7 +1032,7 @@ def fence_run(b, a, c, top_z=.41):
     b.beam('granite', (ax - ux * .19, ay - uy * .19, top_z + .015), (cx + ux * .19, cy + uy * .19, top_z + .015), .38, .05)
     for z in (.55, 1.46):
         b.beam('hardware', (ax, ay, z), (cx, cy, z), .035, .04)
-    n = max(2, int(L / .34))
+    n = max(2, int(L / .36))
     for i in range(1, n):
         x, y = ax + ux * L * i / n, ay + uy * L * i / n
         spike(b, 'hardware', x, y, top_z + .02, 1.56, .022, .1)
@@ -1160,7 +1182,7 @@ def furniture():
     d = (-math.sin(math.radians(32)), math.cos(math.radians(32)))
     bench(b, 7.6 + 2.3 * d[0], -35.0 + 2.3 * d[1], d[0], d[1], .10)           # the front-view bench on the sidewalk outside the gate
     for s in (-1, 1):
-        lamp(b, s * 5.75, 5.75); lamp(b, s * 5.75, -5.75)
+        lamp(b, s * 5.2, 6.2); lamp(b, s * 5.2, -6.2)
         lamp(b, s * (FX - 1.2), 3.6)
         lamp(b, s * 11.0, SS + 1.2, .12)
     b.flush('furniture')
