@@ -72,7 +72,7 @@ def manifest(version):
         elif c['name'] == 'left_side':
             c.update(location=(-112.0, -10.0, 20.0), target=(0.0, -10.0, 14.0), lens=50, whole=False)
         elif c['name'] == 'rear':
-            c.update(location=(2.0, 112.0, 26.0), target=(2.0, -10.0, 14.0), lens=35, whole=False)
+            c.update(location=(1.5, 128.0, 28.0), target=(1.5, -10.0, 14.0), lens=35, whole=False)   # both range ends with a margin
         elif c['name'] == 'top':
             c.update(location=(2.0, -10.0, 160.0), target=(2.0, -9.999, 0.0), ortho_scale=136.0, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -890,11 +890,15 @@ def pavilion():
         b.beam('stone', (EX1 - .1, y + s * .25, EAVE + .15), (EX1 - .1, ym, EAVE + PED + .1), 1.4 + .04 * (s > 0), .6, ext=.05)
     arch_window_proud(b, EX1, ym, EAVE + .5, 1.5, EAVE + 1.55)
     b.flush('pavilion attic and pediment')
-    pitched_roof('Pavilion roof', PX0 + .9, AXE - .9, EY0 + .9, EY1 - .9, AT_P + .05, 1.5, hip_w=True, hip_e=True, axis='x', ov=.15)
-    za = AT_P + .05 + 1.5 * 2.6 / ((EY1 - EY0) / 2 - .9) + .08
-    zb = AT_P + .05 + 1.5 * 5.0 / ((EY1 - EY0) / 2 - .9) + .08
-    C.beam('Pavilion skylight frame', ((PX0 + AXE) / 2, EY0 + .9 + 2.6, za), ((PX0 + AXE) / 2, EY0 + .9 + 5.0, zb), 2.6, .14, 'frame', 'roof')
-    C.beam('Pavilion skylight glass', ((PX0 + AXE) / 2, EY0 + .9 + 2.7, za + .1), ((PX0 + AXE) / 2, EY0 + .9 + 4.9, zb + .1), 2.3, .04, 'glass', 'roof')
+    # One low hipped roof with a single north-south ridge: the attic is deeper (y) than it is long (x), so the ridge
+    # runs along y; hipping along x over a span shorter than the depth inverted the ridge into two pyramids.
+    rx0, rx1, ry0, ry1, PR = PX0 + .9, AXE - .9, EY0 + .9, EY1 - .9, 1.5
+    pitched_roof('Pavilion roof', rx0, rx1, ry0, ry1, AT_P + .05, PR, hip_w=True, hip_e=True, axis='y', ov=.15, role='roof')
+    k = PR / ((rx1 - rx0) / 2)                                   # rise per metre up the west slope
+    sx0, sx1 = rx0 + .9, rx0 + 3.0                               # skylight on the west slope, centred on the ridge length
+    za, zb = AT_P + .05 + k * (sx0 - rx0) + .08, AT_P + .05 + k * (sx1 - rx0) + .08
+    C.beam('Pavilion skylight frame', (sx0, ym - 1.6, za), (sx1, ym - 1.6, zb), 2.4, .14, 'frame', 'roof')
+    C.beam('Pavilion skylight glass', (sx0 + .1, ym - 1.6, za + .1), (sx1 - .1, ym - 1.6, zb + .1), 2.1, .04, 'glass', 'roof')
 
 
 def dome_block():
