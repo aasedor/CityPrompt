@@ -35,7 +35,7 @@ BX0 = X0 + 3.3                                  # west end of the front balcony 
 BD = 1.30                                       # balcony projection
 EPS = .002
 PALETTE = dict(wall=(.93, .92, .89), brick=(.64, .36, .25), joint=(.80, .76, .70), concrete=(.71, .70, .67),
-    foundation=(.62, .61, .58), roof=(.37, .35, .33), roofline=(.25, .24, .23), fascia=(.43, .31, .21),
+    foundation=(.62, .61, .58), roof=(.42, .37, .33), roofline=(.29, .26, .23), fascia=(.43, .31, .21),
     soffit=(.90, .88, .84), frame=(.30, .26, .22), glass=(.30, .36, .40), curtain=(.88, .86, .80),
     white=(.96, .96, .95), trim=(.90, .90, .88), rail=(.47, .45, .42), hardware=(.10, .10, .11), lamp=(.95, .90, .74),
     interior=(.86, .82, .76), floor=(.62, .56, .48), timber=(.55, .40, .26), planting=(.28, .42, .20),
@@ -52,7 +52,7 @@ def manifest(version):
         ('entry_stair', (3.0, -11.0, 2.0), (-1.0, Y0 - 1.0, 1.5), 40),
         ('brick_base', (2.7, -10.0, 2.4), (2.7, Y0, 2.4), 40),
         ('east_side', (19.0, -1.0, 3.8), (X1, 0.0, 3.8), 40),
-        ('side_entry', (X1 + 7.5, -4.5, 2.4), (X1 + .5, .3, 1.5), 40),
+        ('side_entry', (X1 + 7.5, -4.5, 2.4), (X1 + .5, 1.1, 1.5), 40),
         ('roof_ridge', (-9.0, -15.0, 16.0), (0.0, 0.0, EAVE + 1.0), 40),
         ('interior', (2.4, 2.8, FL2 + 1.6), (2.6, Y0, FL2 + 1.4), 40)])
     for c in cams:                       # the locked front and oblique look from the south-east
@@ -414,6 +414,8 @@ SLOPE = RISE / H
 ZE = EAVE - OV * SLOPE                          # roof top at the eave edge
 ZR = EAVE + RISE                                # ridge
 YA, YB = Y0 - OVR, Y1 + OVR                     # rake lines
+EWU, EDU = .05, 1.65                            # east wall: ground window / suite door centres (u = y), uppers stacked over them
+ESY, SN, SG = EDU - .65, 5, .28                 # side landing south edge (landing centred on the door), flight steps and going
 
 
 def zroof(x):
@@ -457,8 +459,9 @@ def rail(b, pts, z, h=1.0, spacing=.11, role='rail'):
     each shared corner, never two coincident)."""
     for j, ((ax, ay), (cx, cy)) in enumerate(zip(pts, pts[1:])):
         L = math.hypot(cx - ax, cy - ay)
-        b.beam(role, (ax, ay, z + h), (cx, cy, z + h), .06, .04, ext=.025)
-        b.beam(role, (ax, ay, z + .08), (cx, cy, z + .08), .04, .03)
+        k = j % 2                                    # alternate sections: overlapping corner ends never share a face plane
+        b.beam(role, (ax, ay, z + h), (cx, cy, z + h), .06 - .004 * k, .04 + .004 * k, ext=.025)
+        b.beam(role, (ax, ay, z + .08), (cx, cy, z + .08), .04 - .004 * k, .03 + .004 * k)
         n = max(2, int(L / spacing))
         for i in range(0 if j == 0 else 1, n + 1):
             px, py = ax + (cx - ax) * i / n, ay + (cy - ay) * i / n
@@ -469,8 +472,8 @@ def rail(b, pts, z, h=1.0, spacing=.11, role='rail'):
 def rail_slope(b, a, c, h=1.0, n=7, role='rail', first=True):
     """Raked railing over a flight, from nosing point a down to nosing point c; first=False when a landing rail
     already stands a post at a."""
-    b.beam(role, (a[0], a[1], a[2] + h), (c[0], c[1], c[2] + h), .06, .04, ext=.025)
-    b.beam(role, (a[0], a[1], a[2] + .1), (c[0], c[1], c[2] + .1), .04, .03)
+    b.beam(role, (a[0], a[1], a[2] + h), (c[0], c[1], c[2] + h), .052, .048, ext=.025)     # its own section, distinct from landing rails
+    b.beam(role, (a[0], a[1], a[2] + .1), (c[0], c[1], c[2] + .1), .032, .038)
     for i in range(0 if first else 1, n + 1):
         p = [a[k] + (c[k] - a[k]) * i / n for k in range(3)]
         s = .05 if i in (0, n) else .018
@@ -524,10 +527,10 @@ def downpipe(m, b, f, u, side):
     """Brown downpipe on the wall at u, swan-necked out under the soffit to the side eave gutter."""
     ztop = 6.3                                                                # clear under the soffit lining
     m.box('fascia', u, -.06, (ztop + .05) / 2, .08, .08, ztop - .05)
-    m.box('fascia', u, -.11, .1, .1, .18, .08)                                  # shoe
+    m.box('fascia', u, -.115, .1, .1, .17, .08)                                 # shoe (back face clear of the pipe's)
     p = C.Vector(f.p(u, -.06, ztop))
     gx = side * (W + .11)
-    b.beam('fascia', (p.x, p.y, ztop), (gx, p.y, ztop), .08, .08, ext=.04)
+    b.beam('fascia', (p.x, p.y, ztop), (gx, p.y, ztop), .07, .07, ext=.03)     # thinner than pipe and outlet: ends buried, no shared planes
     b.box('fascia', gx, p.y, (ztop + ZE - .16) / 2, .08, .08, ZE - .16 - ztop + .04)   # up into the gutter outlet
 
 
@@ -564,11 +567,11 @@ def south_face():
     a, c = side['u'] - side['w'] / 2, door['u'] + door['w'] / 2
     for u in (a - .05, c + .05):
         m.box('white', u, -.025, door['z'] + door['h'] / 2 + .05, .1, .05, door['h'] + .1)
-    m.box('white', (a + c) / 2, -.025, door['z'] + door['h'] + .05, c - a + .2, .05, .1)
+    m.box('white', (a + c) / 2, -.03, door['z'] + door['h'] + .055, c - a + .22, .06, .11)    # head proud of the posts on every side
     m.box('white', (side['u'] + side['w'] / 2 + door['u'] - door['w'] / 2) / 2, -.01, door['z'] + door['h'] / 2, .06, .04, door['h'])
     lamp(m, a - .38, FL1 + 2.0)
     lamp(m, c + .38, FL1 + 2.0)
-    m.box('hardware', c + .45, -.06, FL1 + 1.15, .32, .1, .38)                       # mailbox
+    m.box('hardware', c + .42, -.03, FL1 + 1.2, .22, .05, .3)                         # slim wall mailbox
     m.flush('south')
 
 
@@ -604,19 +607,20 @@ def balcony():
 
 def east_face():
     e = C.Face((X1, 0, 0), (0, 1, 0), (-1, 0, 0), 'east')
-    ups = [hole(f'east upper window {i}', u, 5.15, .75, 1.25) for i, u in enumerate((-2.4, -.4, 2.4))]
-    gws = [hole('east ground window', -2.4, 2.2, .75, 1.0), hole('east ground window rear', 3.0, 2.2, .75, 1.0)]
-    sdoor = hole('suite side door', .9, FL1 + .02, .9, 2.15, kind='door')
+    # Sources: the front ~45% of the side wall is blank stucco; one ground window and the suite door sit mid-wall,
+    # each with an upright upper window stacked over it; the rear third is blank.
+    ups = [hole(f'east upper window {i}', u, 5.15, .75, 1.25) for i, u in enumerate((EWU, EDU))]
+    gws = [hole('east ground window', EWU, 2.0, .75, 1.05)]
+    sdoor = hole('suite side door', EDU, FL1 + .02, .9, 2.15, kind='door')
     e.wall('east carrier', Y0 + T, Y1 - T, 0.0, WT, depth=T, role='wall', holes=ups + gws + [sdoor])
     m = Merge(e)
     b = Batch()
-    plinth(m, Y0 + T, -.9)
-    plinth(m, 1.6, Y1)
+    plinth(m, Y0 + T, ESY - SN * SG - .04)
+    plinth(m, ESY + 1.33, Y1)
     for h in ups + gws:
         slider(m, e, h, cols=2)
-    framed(m, e, sdoor, cols=1, rows=2, inset=.10, occupied='ground-floor suite', kind='door', frame='frame')
-    m.box('frame', sdoor['u'], .11, sdoor['z'] + .55, sdoor['w'] - .1, .03, 1.0)     # solid lower panel in front of the glass
-    lamp(m, .15, FL1 + 2.0)
+    framed(m, e, sdoor, cols=1, rows=1, inset=.10, occupied='ground-floor suite', kind='door', frame='frame')   # near full-lite glazed door
+    lamp(m, EDU - .75, FL1 + 2.0)
     for u in (Y0 + .12, Y1 - .12):
         downpipe(m, b, e, u, 1)
     m.flush('east')
@@ -626,12 +630,12 @@ def east_face():
 def side_entry():
     """The suite's own concrete landing at the side door and a flight running down towards the street."""
     b = Batch()
-    b.box('concrete', (X1 - .02 + X1 + 1.05) / 2, .9, FL1 / 2, 1.07, 1.3, FL1)
-    n, go = 5, .28
-    C.prism('Side stair', flight(.25, n, FL1, go, -1), 'x', X1 - .02, X1 + 1.0, 'concrete', 'side entry')
-    foot = .25 - go * (n - 1)
-    rail(b, [(X1 + .96, .25), (X1 + .96, 1.51), (X1 + .02, 1.51)], FL1)
-    rail_slope(b, (X1 + .96, .25, FL1), (X1 + .96, foot, FL1 / n), n=6, first=False)
+    b.box('concrete', (X1 - .02 + X1 + 1.05) / 2, ESY + .65, FL1 / 2, 1.07, 1.3, FL1)
+    n, go = SN, SG
+    C.prism('Side stair', flight(ESY, n, FL1, go, -1), 'x', X1 - .02, X1 + 1.0, 'concrete', 'side entry')
+    foot = ESY - go * (n - 1)
+    rail(b, [(X1 + .96, ESY), (X1 + .96, ESY + 1.26), (X1 + .02, ESY + 1.26)], FL1)
+    rail_slope(b, (X1 + .96, ESY, FL1), (X1 + .96, foot, FL1 / n), n=6, first=False)
     b.flush('side entry')
     C.box('Side path', (X1 + .55, (Y0 - 3.22 + foot + .02) / 2, .03), (1.0, foot + .02 - Y0 + 3.22, .06), 'paving', 'site', 0)
 
@@ -689,9 +693,13 @@ def roof():
     b = Batch()
     for s in (-1, 1):
         for y in (YA - .03, YB + .03):                                       # rake fascias, proud of the plate ends
-            b.beam('fascia', (s * (W + .055), y, ZE - RT / 2 + .01), (0.0, y, ZR - RT / 2 + .01), .05, .26, ext=.03)
-        b.box('fascia', s * (W + .03), (YA + YB) / 2, ZE - RT / 2 + .005, .05, YB - YA + .11, RT + .07)
-        b.box('fascia', s * (W + .11), (YA + YB) / 2, ZE - .1, .12, YB - YA + .1, .13)                 # gutters
+            k = (s + 1) // 2                                                  # the two rakes of a gable differ by a few mm: no shared planes at the apex
+            b.beam('fascia', (s * (W + .055), y, ZE - RT / 2 + .01), (0.0, y, ZR - RT / 2 + .01), .05 - .006 * k, .26 - .006 * k, ext=.03)
+            # corner return: a fascia block flush-wrapping the rake foot, the eave fascia and the gutter end, slightly
+            # thicker than the rake board so no faces coincide; eave fascia and gutter stop inside it
+            b.box('fascia', s * (W + .0825), y, ZE - .1175, .205, .056, .305)
+        b.box('fascia', s * (W + .03), (YA + YB) / 2, ZE - RT / 2 + .005, .05, YB - YA + .06, RT + .07)
+        b.box('fascia', s * (W + .11), (YA + YB) / 2, ZE - .1, .12, YB - YA + .06, .13)                 # gutters
         k = 1
         while W - k * .25 > .2:                                               # shingle course butts
             x0 = s * (W - k * .25)
@@ -772,10 +780,10 @@ def site():
     fence(b, (xw, yn), (X1 + 1.3, yn), first=False)
     fence(b, (X1 + 1.3, yn), (X1 + 1.3, 1.9), first=False)
     b.flush('site')
-    for k, y in enumerate((2.6, 3.5, 4.4, 5.3, 6.2, 7.0)):                         # cedar row inside the rear corner fence
+    for k, y in enumerate((3.0, 3.8, 4.6, 5.4, 6.2, 7.0)):                         # cedar row inside the rear corner fence
         A.foliage(f'Cedar {k}', (X1 + .85, y, 1.65), (.38, .38, 1.6), role='cedar', detail=2)
     street_tree(X0 - 1.5, ys1 - .7, z=.04, height=7.5, spread=2.2)
-    street_tree(xe1 + .7, Y1 + 3.5, z=.04, height=8.0, spread=2.2)
+    street_tree(xe1 + .7, Y1 + 7.5, z=.04, height=8.0, spread=2.2)   # clear of the rear_side view
 
 
 def build():

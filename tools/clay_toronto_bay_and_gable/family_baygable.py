@@ -7,7 +7,8 @@ with an ornate pierced bargeboard, a curved fretwork arch and a spike finial ove
 a two-storey canted bay with stained-glass transoms, buff stone sill and lintel bands and a small slate skirt
 roof between the floors. East of the bay a hipped entrance porch on turned posts with a spindle frieze, a dark
 green door with a transom and a stone stair down to a brick walk. A steep slate main roof: a front section
-gabled to west and east with a brick chimney at the east gable, a hipped rear section behind it. A rough stone
+gabled to west and east with a brick chimney at the east gable over the dominant front block, and a narrower
+hipped rear wing set in from both side walls (more on the east) whose ridge dies into the main north slope. A rough stone
 foundation with basement windows, a long west side elevation of tall sashes facing the side street, a low iron
 fence round the front lawn, sidewalks and street trees.
 """
@@ -17,28 +18,30 @@ import assemblies as A
 import geometry as G
 
 SLUG = 'clay-toronto-bay-and-gable-house'
-X0, X1, Y0, Y1 = -3.8, 3.8, -5.5, 5.5         # 7.6 m wide, 11.0 m deep main block; street front at Y0
+X0, X1, Y0, Y1 = -3.8, 3.8, -5.5, 5.5         # 7.6 m wide, 11.0 m deep overall; street front at Y0
+YF = 1.6                                        # north wall of the dominant front gabled block (7.1 m deep)
+RX0, RX1 = -2.9, 2.1                            # rear hipped wing, inset 0.9 m (west) and 1.7 m (east), YF to Y1
 T = .30
 G0 = .90                                        # top of the stone foundation (water table)
 F1 = .95                                        # raised ground floor
 F2 = 4.25                                       # upper floor
 EAVE = 7.25
-YR = Y0 + 2.9                                   # east-west ridge of the front roof section
-ZR = EAVE + 3.2                                 # main ridge
-XC, HW = -1.2, 2.6                              # front cross gable: centre line and half width (x -3.8 to 1.4)
+YR = (Y0 + YF) / 2                              # east-west ridge of the front block, centred on its depth
+ZR = EAVE + 1.0 * (YR - Y0)                     # main ridge (45 degree slate)
+XC, HW = -1.0, 2.5                              # front cross gable: centre line and half width (x -3.5 to 1.5)
 ZC = EAVE + 3.0                                 # cross-gable ridge, just under the main ridge
 BP, BF = .75, .85                               # canted bay: projection and half front width
 EPS = .002
 PALETTE = dict(wall=(.62, .33, .24), joint=(.70, .55, .47), trim=(.42, .32, .22), pale=(.86, .84, .80),
     stone=(.76, .70, .58), roof=(.34, .35, .37), foundation=(.55, .53, .50), glass=(.30, .36, .40),
     stained=(.80, .56, .26), hardware=(.10, .10, .11), interior=(.86, .82, .76), floor=(.62, .56, .48),
-    timber=(.50, .40, .28), door=(.14, .27, .21), planting=(.30, .44, .20), grass=(.38, .50, .24),
+    timber=(.50, .40, .28), door=(.14, .27, .21), door2=(.10, .21, .16), shingle=(.50, .45, .38), shjoint=(.34, .30, .26), planting=(.30, .44, .20), grass=(.38, .50, .24),
     paving=(.72, .71, .68), asphalt=(.28, .28, .29), walk=(.56, .32, .24), brick=(.60, .32, .23), pot=(.66, .40, .30))
 
 
 def manifest(version):
     h = ZC + 1.1
-    cams = G.camera_roster(X1 - X0 + 4.0, Y1 - Y0 + 4.0, h, [
+    cams = G.camera_roster(X1 - X0 + .6, Y1 - Y0 + .6, h, [
         ('bay_window', (XC + .4, Y0 - 11.0, 3.9), (XC + .4, Y0 - BP, 3.9), 40),
         ('gable_bargeboard', (XC, Y0 - 9.0, 9.4), (XC, Y0, 8.7), 45),
         ('porch_entrance', (2.6, Y0 - 7.0, 1.9), (2.3, Y0, 2.0), 40),
@@ -58,11 +61,11 @@ def manifest(version):
         source_archetype='toronto_bay_and_gable_house/variant_0',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=2, storey_programme='two full storeys over a raised stone foundation and a half-storey attic in the gables',
-            plan='7.6 x 11.0 m detached corner house (top view); canted bay and porch on the south front, side street to the west',
+            plan='7.6 x 11.0 m detached corner house on an L plan (top view): a dominant 7.6 x 7.1 m front gabled block and a narrower 5.0 x 3.9 m hipped rear wing inset 0.9 m west and 1.7 m east; canted bay and porch on the south front, side street to the west',
             facade='red brick with buff stone sill and lintel bands; two-storey canted bay under an ornate front gable; hipped porch on turned posts',
             levels_m=[F1, F2, EAVE], roof_m=dict(eave=EAVE, ridge=ZR, cross_gable=ZC),
             inferred='interiors, the east and rear faces and metric dimensions are teaching assumptions; the rear repeats the visible grammar'),
-        roof_contract=dict(type='steep slate roof: front section gabled east and west, hipped rear section, front cross gable with bargeboard and finial; brick chimney at the east gable',
+        roof_contract=dict(type='steep slate roof at one eave line: front block gabled east and west, narrower hipped rear wing whose ridge dies into the main north slope, front cross gable with a pierced bargeboard, fretwork arch and finial; brick chimney at the east gable',
             datum_m=EAVE, crowns_m=[ZR, ZC]),
         identity_contract=dict(owner='Toronto bay-and-gable: red-brick house with a two-storey canted bay under a steep ornamented front gable, a side entrance porch and a steep slate roof'),
         material_contract=dict(profile='source-palette clay: red brick, buff stone bands, grey rubble foundation, grey slate, brown painted woodwork, green door, amber stained-glass transoms', textured_keeper=False),
@@ -390,29 +393,32 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
         b.box(pot, px, y, z1 + .12 + .25, .18, .18, .5)
 # ---- Toronto bay-and-gable house ----
 
-S1 = (ZR - EAVE) / (YR - Y0)                    # front roof section slope (east-west ridge)
+S1 = (ZR - EAVE) / (YR - Y0)                    # main roof slope (front block, east-west ridge)
 S2 = (ZC - EAVE) / HW                           # cross-gable slope
-S3 = (ZR - EAVE) / ((X1 - X0) / 2)              # hipped rear section slope
-OV = .40                                        # horizontal eave overhang of the front section
+S3 = S1                                         # rear wing slopes, same pitch so every eave is one line
+OV = .30                                        # horizontal eave overhang on every eave
 ZE = EAVE - S1 * OV                             # every eave edge sits at this height
 OVX = (ZC - ZE) / S2 - HW                       # cross-gable side overhang, so its valleys meet the eave
-OVR = (EAVE - ZE) / S3                          # rear section overhang (same eave height)
-OVM = OVR                                       # main gable rakes overhang to meet the rear eaves
+OVM = .30                                       # main gable rakes project past the west and east gables
 OVF = .50                                       # front gable rake projects past the gable wall
-YG = YR + (ZR - EAVE) / S1                      # north eave line of the front section
-YH = Y1 - (X1 - X0) / 2                         # end of the rear ridge (hip)
 YV = Y0 + (ZC - EAVE) / S1                      # cross-gable valley apex on the main front slope
+RXC, RHW = (RX0 + RX1) / 2, (RX1 - RX0) / 2     # rear wing centre line and half width
+ZRR = EAVE + S3 * RHW                           # rear wing ridge
+YH = Y1 - RHW                                   # north hip point of the rear wing ridge
+YJ = YF - RHW                                   # where the rear wing ridge dies into the main north slope
 W1, H1 = F1 + .55, 2.05                         # ground-floor sash sill and height
-W2, H2 = F2 + .55, 1.95                         # upper-floor sash sill and height
+W2, H2 = F2 + .45, 1.80                         # upper-floor sash sill and height (lintels clear the eaves)
 PX0, PX1, PD = 1.00, 3.95, 2.10                  # porch x extent and depth
 SQ = math.sqrt(.5)
+YB = Y0 - OVF - .04                             # plane of the front bargeboard and its fretwork
 
 
 def zs(x, y): return EAVE + S1 * (y - Y0)
 def zn(x, y): return ZR - S1 * (y - YR)
 def zx(x, y): return ZC - S2 * abs(x - XC)
-def zrw(x, y): return ZR - S3 * abs(x)
-def zrn(x, y): return ZR - S3 * (y - YH)
+def zww(x, y): return ZRR - S3 * (RXC - x)
+def zwe(x, y): return ZRR - S3 * (x - RXC)
+def zwn(x, y): return ZRR - S3 * (y - YH)
 
 
 def plate(name, pts, zf, t=.18, role='roof', module='roof'):
@@ -424,25 +430,25 @@ def plate(name, pts, zf, t=.18, role='roof', module='roof'):
 
 
 def sash(m, f, h, occupied='room', stone=True, transom=True, lite=False):
-    """Tall one-over-one sash with a stained-glass transom light, a stone sill and a stone lintel."""
+    """Tall one-over-one sash, a stained-glass transom light where asked, a stone sill and a stone lintel."""
     framed(m, f, h, cols=1, rows=1, inset=.12, occupied=occupied, lite=lite)
     u, z, w, hh = h['u'], h['z'], h['w'], h['h']
     if not lite:
-        m.box('trim', u, .1, z + (hh - .48) * .5, w - .1, .1, .07)                  # meeting rail
+        m.box('trim', u, .1, z + (hh - (.48 if transom else 0)) * .5, w - .1, .1, .07)       # meeting rail
         if transom:
             m.box('trim', u, .1, z + hh - .48, w - .1, .1, .07)
             m.box('stained', u, .145, z + hh - .25, w - .16, .006, .34)
     if stone:
-        m.box('stone', u, -.05, z - .07, w + .24, .2, .14)
-        m.box('stone', u, -.03, z + hh + .12, w + .3, .14, .24)
+        m.box('stone', u, -.05, z - .075, w + .24, .2, .14)
+        m.box('stone', u, -.03, z + hh + .125, w + .3, .14, .24)
 
 
 def courses(f, lo, hi, holes, z0=G0 + .05, z1=EAVE - .05):
     G.brick_courses(f, lo + .02, hi - .02, z0, z1, holes, spacing=.085)
 
 
-def tri_courses(f, u0, u1, z0, zap, holes, spacing=.085):
-    """Mortar courses clipped to a gable triangle (base u0..u1 at z0, apex at zap over the middle)."""
+def tri_courses(f, u0, u1, z0, zap, holes, spacing=.085, role='joint', label='mortar courses'):
+    """Course lines clipped to a gable triangle (base u0..u1 at z0, apex at zap over the middle)."""
     uc, half = (u0 + u1) / 2, (u1 - u0) / 2
     vs, fs = [], []
     z = z0 + .05
@@ -454,7 +460,7 @@ def tri_courses(f, u0, u1, z0, zap, holes, spacing=.085):
             fs.append((o, o + 1, o + 2, o + 3))
         z += spacing
     if fs:
-        C.mesh(f.label + ' gable mortar courses', vs, fs, 'joint', 'brick joints')
+        C.mesh(f.label + ' gable ' + label, vs, fs, role, 'brick joints')
 
 
 def shifted(f, d, label):
@@ -480,79 +486,82 @@ def wall_face(f, lo, hi, holes, base_holes=(), top=EAVE, name=None):
     return m
 
 
+def plain_wall(f, lo, hi, ground, upper, base, occupied='room', doors=()):
+    """A side or rear wall with plain one-over-one sashes (no stained transoms) and basement lights."""
+    holes = [hole(f'{f.label} ground sash {k}', u, W1, .95, H1) for k, u in enumerate(ground)] + \
+            [hole(f'{f.label} upper sash {k}', u, W2, .95, H2) for k, u in enumerate(upper)] + list(doors)
+    m = wall_face(f, lo, hi, holes, [hole(f'{f.label} basement {k}', u, .3, .75, .42) for k, u in enumerate(base)])
+    for h in holes:
+        if h.get('kind') == 'door':
+            framed(m, f, h, cols=1, rows=3, inset=.12, occupied='kitchen', kind='door', lite=True)
+            m.box('stone', h['u'], -.03, h['z'] + h['h'] + .125, h['w'] + .3, .14, .24)
+        else:
+            sash(m, f, h, occupied=occupied, transom=False)
+    return m
+
+
 def south_face():
     f = C.Face((0, Y0, 0), (1, 0, 0), (0, 1, 0), 'south')
     door = hole('front door', 1.75, F1, .95, 2.3, kind='door')
     tr = hole('front door transom', 1.75, F1 + 2.38, .95, .42)
-    up = hole('upper sash over porch', 2.15, W2, 1.0, H2)
+    up = hole('upper sash over porch', 2.55, W2, 1.0, H2)
     holes = [hole('bay opening ground', XC, F1, 2 * (BF + BP) - .6, 2.75), hole('bay opening upper', XC, F2, 2 * (BF + BP) - .6, 2.7),
              door, tr, up]
     m = wall_face(f, X0, X1, holes)
-    # Dark green four-panel door, glazed upper panels, stained transom, stone threshold.
+    # Dark green four-panel door: raised green panels below, glazed upper panel, stained transom, stone threshold.
     m.box('door', door['u'], .16, door['z'] + door['h'] / 2, door['w'] - .02, .05, door['h'] - .02)
     for zz, hh in ((.5, .7), (1.35, .6)):
         for s in (-1, 1):
-            m.box('trim', door['u'] + s * .2, .125, door['z'] + zz, .3, .02, hh)
+            m.box('door2', door['u'] + s * .2, .125, door['z'] + zz, .3, .02, hh)
     m.box('glass', door['u'], .125, door['z'] + 1.85, .62, .02, .55)
     m.box('hardware', door['u'] + .33, .12, door['z'] + 1.05, .06, .05, .12)
     register(f, door, .12, 'entry door', 'hall')
     framed(m, f, tr, cols=1, rows=1, inset=.12, occupied='hall')
     m.box('stained', tr['u'], .145, tr['z'] + tr['h'] / 2, tr['w'] - .16, .006, tr['h'] - .16)
-    m.box('stone', tr['u'], -.03, tr['z'] + tr['h'] + .12, tr['w'] + .3, .14, .24)
+    m.box('stone', tr['u'], -.03, tr['z'] + tr['h'] + .125, tr['w'] + .3, .14, .24)
     m.box('stone', door['u'], -.06, F1 - .03, door['w'] + .2, .2, .06)
-    sash(m, f, up)
+    sash(m, f, up, transom=False)
     m.flush('south')
 
 
-def west_face():
-    f = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west')
-    holes = [hole(f'west ground sash {k}', -y, W1, .95, H1) for k, y in enumerate((-4.4, -2.5, 2.0, 4.2))] + \
-            [hole(f'west upper sash {k}', -y, W2, .95, H2) for k, y in enumerate((-4.4, -2.5, -.3, 2.0, 4.2))]
-    base = [hole(f'west basement {k}', -y, .3, .75, .42) for k, y in enumerate((-3.4, 1.0, 3.2))]
-    m = wall_face(f, -(Y1 - T), -(Y0 + T), holes, base)
-    for h in holes:
-        sash(m, f, h)
-    m.box('hardware', -(Y0 + .45), -.08, EAVE / 2, .1, .1, EAVE - .1)                # downpipe at the front corner
+def side_walls():
+    """Front block west and east walls, the two short north stubs of the front block, and the rear wing walls."""
+    w = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west')                          # u = -y
+    m = plain_wall(w, -(YF - T), -(Y0 + T), (4.2, -YR, -.3), (4.2, -YR, -.3), (3.1, .8))
+    m.box('hardware', -(Y0 + .45), -.08, (EAVE - .2) / 2 + .05, .1, .1, EAVE - .3)    # downpipe at the front corner
     m.flush('west')
-
-
-def east_face():
-    f = C.Face((X1, 0, 0), (0, 1, 0), (-1, 0, 0), 'east')
-    holes = [hole(f'east ground sash {k}', y, W1, .95, H1) for k, y in enumerate((-4.2, -.9, 2.8))] + \
-            [hole(f'east upper sash {k}', y, W2, .95, H2) for k, y in enumerate((-4.2, -.9, 2.8))]
-    base = [hole(f'east basement {k}', y, .3, .75, .42) for k, y in enumerate((-1.6, 2.2))]
-    m = wall_face(f, Y0 + T, Y1 - T, holes, base)
-    for h in holes:
-        sash(m, f, h, transom=False)
-    m.box('hardware', Y1 - .6, -.08, EAVE / 2, .1, .1, EAVE - .1)
+    e = C.Face((X1, 0, 0), (0, 1, 0), (-1, 0, 0), 'east')                          # u = y
+    m = plain_wall(e, Y0 + T, YF - T, (-4.2, -.4), (-4.2, -.4), (-2.6, .6))
+    m.box('hardware', YF - .45, -.08, (EAVE - .2) / 2 + .05, .1, .1, EAVE - .3)
     m.flush('east')
-
-
-def north_face():
-    f = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'north')
-    door = hole('rear door', -2.3, F1, .95, 2.25, kind='door')
-    holes = [hole('rear ground sash 0', 2.4, W1, .95, H1), hole('rear ground sash 1', .1, W1, .95, H1), door] + \
-            [hole(f'rear upper sash {k}', u, W2, .95, H2) for k, u in enumerate((2.4, 0.0, -2.4))]
-    base = [hole('rear basement', 1.2, .3, .75, .42)]
-    m = wall_face(f, -X1, -X0, holes, base)
-    for h in holes:
-        if h.get('kind') == 'door':
-            framed(m, f, h, cols=1, rows=3, inset=.12, occupied='kitchen', kind='door', lite=True)
-            m.box('stone', h['u'], -.03, h['z'] + h['h'] + .12, h['w'] + .3, .14, .24)
-        else:
-            sash(m, f, h, transom=False)
+    sw = C.Face((0, YF, 0), (-1, 0, 0), (0, -1, 0), 'north stub west')              # u = -x
+    m = plain_wall(sw, -RX0, -X0, (), (), ())
+    m.flush('north stub west')
+    se = C.Face((0, YF, 0), (-1, 0, 0), (0, -1, 0), 'north stub east')
+    m = plain_wall(se, -X1, -RX1, (), (-2.95,), ())
+    m.flush('north stub east')
+    ww = C.Face((RX0, 0, 0), (0, -1, 0), (1, 0, 0), 'wing west')                    # u = -y
+    m = plain_wall(ww, -(Y1 - T), -(YF - T), (-2.7, -4.3), (-2.7, -4.3), (-3.5,))
+    m.flush('wing west')
+    we = C.Face((RX1, 0, 0), (0, 1, 0), (-1, 0, 0), 'wing east')                    # u = y
+    m = plain_wall(we, YF - T, Y1 - T, (2.7, 4.3), (2.7, 4.3), (3.5,))
+    m.box('hardware', Y1 - .45, -.08, (EAVE - .2) / 2 + .05, .1, .1, EAVE - .3)
+    m.flush('wing east')
+    n = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'north')                         # u = -x
+    door = hole('rear door', 1.6, F1, .95, 2.25, kind='door')
+    m = plain_wall(n, -RX1, -RX0, (-.8,), (1.6, -.8), (-.8,), occupied='kitchen', doors=(door,))
     m.flush('north')
     # Rear stoop: stone landing and steps down to grade at the kitchen door.
     b = Batch()
-    b.box('stone', 2.3, Y1 + .54, (F1 - .02) / 2, 1.5, 1.0, F1 - .02)                      # landing (north face u = -x)
+    b.box('stone', -1.6, Y1 + .54, (F1 - .02) / 2, 1.5, 1.0, F1 - .02)
     for i in range(1, 4):
         hh = (F1 - .02) * (4 - i) / 4
-        b.box('stone', 2.3, Y1 + 1.04 + .3 * (i - .5), hh / 2, 1.5, .3, hh)
+        b.box('stone', -1.6, Y1 + 1.04 + .3 * (i - .5), hh / 2, 1.5, .3, hh)
     b.flush('rear stoop')
 
 
 def bay():
-    """Two-storey canted bay under the front gable: carriers on the three faces, stone bands, slate skirt roof."""
+    """Two-storey canted bay under the front gable: carriers on the three faces, wrapped stone bands, slate skirt roof."""
     A_ = (XC - BF - BP, Y0); B_ = (XC - BF, Y0 - BP); C_ = (XC + BF, Y0 - BP); D_ = (XC + BF + BP, Y0)
     L = BP / SQ / 2
     faces = [(C.Face(((A_[0] + B_[0]) / 2, (A_[1] + B_[1]) / 2, 0), (SQ, -SQ, 0), (SQ, SQ, 0), 'bay west'), -L - .3, L, .55),
@@ -564,13 +573,7 @@ def bay():
         m = wall_face(f, lo, hi, holes, base)
         for h in holes:
             sash(m, f, h, occupied='parlour bay', stone=False)
-        e0, e1 = (lo + .3 if lo < -L else lo) - .1, (hi - .3 if hi > L else hi) + .1
-        for zb in (W1 - .07, W2 - .07):                                              # continuous stone sill bands
-            m.box('stone', (e0 + e1) / 2, -.05, zb, e1 - e0, .2, .14)
-        for zb in (W1 + H1 + .12, W2 + H2 + .12):                                    # continuous stone lintel bands
-            m.box('stone', (e0 + e1) / 2, -.03, zb, e1 - e0, .14, .24)
         m.flush(f.label)
-    # Slate skirt roof between the floors and the cornice and flat cap at the top.
     pts = [A_, B_, C_, D_]
 
     def offset(d, yback):
@@ -593,14 +596,20 @@ def bay():
                 mx, my = n0[0] + n1[0], n0[1] + n1[1]; k = d / (1 + n0[0] * n1[0] + n0[1] * n1[1])
                 out.append((pts[i][0] + mx * k, pts[i][1] + my * k))
         return out
+    # Continuous buff stone sill and lintel bands: one mitred band per level wrapping all three faces into the wall.
+    band = offset(.05, Y0 + .03) + offset(-.08, Y0 + .03)[::-1]
+    for z0, z1 in ((W1 - .145, W1 - .005), (W2 - .145, W2 - .005), (W1 + H1 + .005, W1 + H1 + .245), (W2 + H2 + .005, W2 + H2 + .245)):
+        C.prism(f'Bay stone band {z0:.2f}', band, 'z', z0, z1, 'stone', 'bay')
     strip('Bay skirt roof', offset(.42, Y0 + .02), offset(-.04, Y0 + .02), 3.95, 4.36, 'roof', 'bay', closed=False)
+    # A slim moulded cornice and cap at the top of the bay, under the projecting gable.
     b = Batch()
-    cor = offset(.16, Y0 + .01)
+    cor = offset(.08, Y0 + .01)
+    bed = offset(.03, Y0 + .01)
     for i in range(3):
-        b.beam('trim', (*cor[i], EAVE - .16), (*cor[i + 1], EAVE - .16), .34, .30, ext=.1)
-        b.beam('trim', (*cor[i], EAVE - .38), (*cor[i + 1], EAVE - .38), .22, .12, ext=.06)
+        b.beam('trim', (*cor[i], EAVE - .12), (*cor[i + 1], EAVE - .12), .18, .18, ext=.09)
+        b.beam('trim', (*bed[i], EAVE - .25), (*bed[i + 1], EAVE - .25), .1, .09, ext=.05)
     b.flush('bay cornice')
-    C.prism('Bay cap', offset(.20, Y0 + .02)[::-1], 'z', EAVE - .02, EAVE + .04, 'trim', 'bay')
+    C.prism('Bay cap', offset(.12, Y0 + .02)[::-1], 'z', EAVE - .02, EAVE + .04, 'trim', 'bay')
     inner = offset(-T, Y0 + T)
     for z in (F1, F2):
         C.prism(f'Bay floor {z:.1f}', inner[::-1], 'z', z - .22, z, 'floor', 'inside')
@@ -608,129 +617,162 @@ def bay():
 
 
 def gables():
-    """Brick gable walls (carriers with attic windows): the front cross gable and the west and east gables."""
+    """Gable walls with attic windows: the shingled front cross gable and the brick west and east gables."""
     f = C.Face((0, Y0, 0), (1, 0, 0), (0, 1, 0), 'south')
-    g = C.prism('Front gable', [(X0, EAVE), (XC + HW, EAVE), (XC, ZC - .12)], 'y', Y0, Y0 + T, 'wall', 'envelope')
+    g = C.prism('Front gable', [(XC - HW, EAVE), (XC + HW, EAVE), (XC, ZC - .12)], 'y', Y0, Y0 + T, 'shingle', 'envelope')
     g['rlasm_wall_carrier'] = True
-    att = [hole('attic centre window', XC, EAVE + .4, .66, 1.3), hole('attic west window', XC - .62, EAVE + .4, .4, .95),
-           hole('attic east window', XC + .62, EAVE + .4, .4, .95)]
+    za = EAVE + .25
+    att = [hole('attic centre window', XC, za, .66, 1.2), hole('attic west window', XC - .62, za, .4, .95),
+           hole('attic east window', XC + .62, za, .4, .95)]
     for h in att:
         f.cut(g, h['id'] + ' full carrier cut', h['u'], h['z'], h['w'], h['h'], T)
     m = Merge(f)
     for h in att:
         framed(m, f, h, cols=1, rows=2, inset=.12, occupied='attic room')
         m.box('stained', h['u'], .145, h['z'] + h['h'] - .2, h['w'] - .16, .006, .26)
-    m.box('stone', XC, -.05, EAVE + .33, 1.95, .2, .12)                                 # shared stone sill
+    m.box('stone', XC, -.05, za - .075, 1.95, .2, .12)                                  # shared stone sill
     for h in att:
-        m.box('stone', h['u'], -.03, h['z'] + h['h'] + .1, h['w'] + .2, .12, .2)
+        m.box('stone', h['u'], -.03, h['z'] + h['h'] + .105, h['w'] + .2, .12, .2)
     m.flush('front gable')
-    tri_courses(f, X0, XC + HW, EAVE, ZC - .12, att)
+    tri_courses(f, XC - HW, XC + HW, EAVE, ZC - .12, att, spacing=.15, role='shjoint', label='shingle courses')
+    # West gable: the paired tall attic sashes of the source, centred under the ridge.
     w = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west')
-    g = C.prism('West gable', [(Y0, EAVE), (YG, EAVE), (YR, ZR - .12)], 'x', X0, X0 + T, 'wall', 'envelope')
+    g = C.prism('West gable', [(Y0, EAVE), (YF, EAVE), (YR, ZR - .12)], 'x', X0, X0 + T, 'wall', 'envelope')
     g['rlasm_wall_carrier'] = True
-    wa = [hole('west attic window', -YR, EAVE + .45, 1.1, 1.25)]
-    w.cut(g, wa[0]['id'] + ' full carrier cut', -YR, EAVE + .45, 1.1, 1.25, T)
+    wa = [hole(f'west attic sash {k}', -YR + s * .55, EAVE + .35, .72, 1.6) for k, s in enumerate((-1, 1))]
+    for h in wa:
+        w.cut(g, h['id'] + ' full carrier cut', h['u'], h['z'], h['w'], h['h'], T)
     m = Merge(w)
-    framed(m, w, wa[0], cols=2, rows=2, inset=.12, occupied='attic room')
-    m.box('stone', -YR, -.05, EAVE + .38, 1.34, .2, .14)
-    m.box('stone', -YR, -.03, EAVE + 1.82, 1.4, .14, .24)
+    for h in wa:
+        sash(m, w, h, occupied='attic room', transom=False)
     m.flush('west gable')
-    tri_courses(w, -YG, -Y0, EAVE, ZR - .12, wa)
-    C.prism('East gable', [(Y0, EAVE), (YG, EAVE), (YR, ZR - .12)], 'x', X1 - T, X1, 'wall', 'envelope')['rlasm_wall_carrier'] = True
+    tri_courses(w, -YF, -Y0, EAVE, ZR - .12, wa)
+    C.prism('East gable', [(Y0, EAVE), (YF, EAVE), (YR, ZR - .12)], 'x', X1 - T, X1, 'wall', 'envelope')['rlasm_wall_carrier'] = True
     e = C.Face((X1, 0, 0), (0, 1, 0), (-1, 0, 0), 'east')
-    tri_courses(e, Y0, YG, EAVE, ZR - .12, [])
+    tri_courses(e, Y0, YF, EAVE, ZR - .12, [])
 
 
 def roofs():
-    zx_e = XC + HW + OVX
-    plate('Main front slope', [(X0 - OVM, Y0 - OV), (XC - HW - OVX, Y0 - OV), (XC, YV), (zx_e, Y0 - OV), (X1 + OVM, Y0 - OV),
+    """One eave line all round: the gabled front block, the front cross gable and the hipped rear wing whose ridge dies
+    into the main north slope along two valleys."""
+    xw, xe = XC - HW - OVX, XC + HW + OVX                                             # cross-gable feet at the eave
+    yn = YF + OV                                                                       # north eave line of the front block
+    plate('Main front slope', [(X0 - OVM, Y0 - OV), (xw, Y0 - OV), (XC, YV), (xe, Y0 - OV), (X1 + OVM, Y0 - OV),
                                 (X1 + OVM, YR), (X0 - OVM, YR)], zs)
-    yc = YR + (S3 / S1) * (X1 + OVM)
-    plate('Main rear slope west', [(0.0, YR), (X0 - OVM, YR), (X0 - OVM, yc)], zn)
-    plate('Main rear slope east', [(0.0, YR), (X1 + OVM, YR), (X1 + OVM, yc)], zn)
-    plate('Cross gable west slope', [(XC - HW - OVX, Y0 - OVF), (XC, Y0 - OVF), (XC, YV), (XC - HW - OVX, Y0 - OV)], zx)
-    plate('Cross gable east slope', [(XC, Y0 - OVF), (zx_e, Y0 - OVF), (zx_e, Y0 - OV), (XC, YV)], zx)
-    plate('Rear section west slope', [(0.0, YR), (0.0, YH), (X0 - OVR, Y1 + OVR), (X0 - OVR, yc)], zrw)
-    plate('Rear section east slope', [(0.0, YR), (X1 + OVR, yc), (X1 + OVR, Y1 + OVR), (0.0, YH)], zrw)
-    plate('Rear section hip', [(0.0, YH), (X1 + OVR, Y1 + OVR), (X0 - OVR, Y1 + OVR)], zrn)
+    plate('Main north slope', [(X0 - OVM, YR), (X1 + OVM, YR), (X1 + OVM, yn), (RX1 + OV, yn), (RXC, YJ), (RX0 - OV, yn),
+                                (X0 - OVM, yn)], zn)
+    plate('Cross gable west slope', [(xw, Y0 - OVF), (XC, Y0 - OVF), (XC, YV), (xw, Y0 - OV)], zx)
+    plate('Cross gable east slope', [(XC, Y0 - OVF), (xe, Y0 - OVF), (xe, Y0 - OV), (XC, YV)], zx)
+    plate('Rear wing west slope', [(RXC, YJ), (RXC, YH), (RX0 - OV, Y1 + OV), (RX0 - OV, yn)], zww)
+    plate('Rear wing east slope', [(RXC, YJ), (RX1 + OV, yn), (RX1 + OV, Y1 + OV), (RXC, YH)], zwe)
+    plate('Rear wing hip', [(RXC, YH), (RX0 - OV, Y1 + OV), (RX1 + OV, Y1 + OV)], zwn)
     b = Batch()
     up = .06
-    b.beam('roof', (X0 - OVM, YR, ZR + up), (X1 + OVM, YR, ZR + up), .16, .1)                       # ridges and hips
-    b.beam('roof', (0.0, YR, ZR + up), (0.0, YH, ZR + up), .16, .1)
-    for s in (-1, 1):
-        b.beam('roof', (0.0, YH, ZR + up), (s * (X1 + OVR), Y1 + OVR, ZE + up), .14, .08)
+    b.beam('roof', (X0 - OVM, YR, ZR + up), (X1 + OVM, YR, ZR + up), .16, .1, ext=.02)                # ridges and hips
+    b.beam('roof', (RXC, YJ, ZRR + up), (RXC, YH, ZRR + up), .16, .1)
+    for xx in (RX0 - OV, RX1 + OV):
+        b.beam('roof', (RXC, YH, ZRR + up), (xx, Y1 + OV, ZE + up), .14, .08)
     b.beam('roof', (XC, Y0 - OVF, ZC + up), (XC, YV, ZC + up), .14, .08)
-    # Plain painted fascias on the main gable rakes and the rear eaves; gutters and downpipes.
-    for x in (X0 - OVM + .03, X1 + OVM - .03):
-        b.beam('trim', (x, Y0 - OV, ZE - .1), (x, YR, ZR - .1), .05, .24, ext=.03)
-        b.beam('trim', (x, YR, ZR - .1), (x, yc, ZE - .1), .05, .24, ext=.03)
-    b.beam('trim', (zx_e, Y0 - OV - .03, ZE - .1), (X1 + OVM, Y0 - OV - .03, ZE - .1), .05, .24)
-    b.beam('hardware', (zx_e + .1, Y0 - OV - .1, ZE - .1), (X1 + OVM, Y0 - OV - .1, ZE - .1), .14, .12)
-    for s in (-1, 1):
-        x = s * (X1 + OVR - .03)
-        b.beam('trim', (x, yc, ZE - .1), (x, Y1 + OVR, ZE - .1), .05, .24)
-        b.beam('hardware', (x + s * .06, yc + .2, ZE - .1), (x + s * .06, Y1 + OVR - .05, ZE - .1), .12, .12)
-    b.beam('trim', (X0 - OVR, Y1 + OVR - .03, ZE - .1), (X1 + OVR, Y1 + OVR - .03, ZE - .1), .05, .24)
-    b.beam('hardware', (X0 - OVR + .05, Y1 + OVR + .03, ZE - .1), (X1 + OVR - .05, Y1 + OVR + .03, ZE - .1), .12, .12)
-    # Soffits under the eaves (painted boards) where the walls meet the overhangs.
-    b.box('trim', (zx_e + X1 + OVM) / 2 - .2, Y0 - OV / 2, EAVE - .06, X1 + OVM - zx_e + .4, OV, .06)
-    for s in (-1, 1):
-        b.box('trim', s * (X1 + OVR / 2), (YG + Y1 + OVR) / 2, EAVE - .06, OVR, Y1 + OVR - YG, .06)
-    b.box('trim', 0.0, Y1 + OVR / 2, EAVE - .06, X1 - X0 + 2 * OVR, OVR, .06)
+    # Fascias (5 cm clear of the plate edges), gutters and the closed apex blocks on the two main gable rakes.
+    fz, fh, gz = ZE - .09, .22, ZE - .14
+    for x in (X0 - OVM - .035, X1 + OVM + .035):
+        b.beam('trim', (x, Y0 - OV, fz), (x, YR, ZR - .09), .05, fh, ext=.05)
+        b.beam('trim', (x, YR, ZR - .09), (x, yn, fz), .05, fh, ext=.05)
+        b.box('trim', x, YR, ZR - .06, .08, .36, .36)
+    runs = [((X0 - OVM, Y0 - OV - .035), (xw, Y0 - OV - .035), (0, -1)), ((xe, Y0 - OV - .035), (X1 + OVM, Y0 - OV - .035), (0, -1)),
+            ((X0 - OVM, yn + .035), (RX0 - OV, yn + .035), (0, 1)), ((RX1 + OV, yn + .035), (X1 + OVM, yn + .035), (0, 1)),
+            ((RX0 - OV - .035, yn), (RX0 - OV - .035, Y1 + OV), (-1, 0)), ((RX1 + OV + .035, yn), (RX1 + OV + .035, Y1 + OV), (1, 0)),
+            ((RX0 - OV, Y1 + OV + .035), (RX1 + OV, Y1 + OV + .035), (0, 1))]
+    for (a, c, (nx, ny)) in runs:
+        b.beam('trim', (a[0], a[1], fz), (c[0], c[1], fz), .05, fh, ext=.04)
+        b.beam('hardware', (a[0] + nx * .085, a[1] + ny * .085, gz), (c[0] + nx * .085, c[1] + ny * .085, gz), .11, .1, ext=.08)
+    # Downpipes from the gutters to grade at the house corners, with a short swan neck back to the wall.
+    for (gx, gy, wx, wy) in ((X0 - OVM + .25, Y0 - OV - .12, X0 - .08, Y0 + .45), (X1 + .08, yn + .12, X1 + .08, YF - .45),
+                             (RX1 + OV + .12, Y1 + OV - .25, RX1 + .08, Y1 - .45)):
+        b.beam('hardware', (gx, gy, gz - .05), (wx, wy, gz - .5), .09, .09, ext=.04)
     chimney(b, X1 - .55, YR, EAVE + 1.6, ZR + 1.0, w=.9, d=.62, pots=2, role='brick', pot='pot', cap='stone')
     b.box('brick', X1 - .55, YR, ZR + .55, 1.02, .74, .1)                           # oversailing course
     b.flush('roof furniture')
 
 
 def bargeboard():
-    """Ornate front gable: pierced bargeboard with roundels and drops, a fretwork arch, finial and pendant."""
-    y = Y0 - OVF + .04
+    """Ornate front gable at the rake edge: one wide pierced bargeboard on each rake with roundels and drops, ending on
+    a foot block and a stepped bracket at the gable foot; a fretwork arch inside the gable under the apex; finial and pendant."""
+    Wb = .30
+    k = math.sqrt(1 + S2 * S2)
+    Wv = Wb * k                                                                        # vertical depth of the board
+    xw, xe = XC - HW - OVX, XC + HW + OVX
+
+    def zt(x):
+        return zx(x, 0) + .02
+    zbot = ZE - .30
+    off = (ZC + .02 - Wv - zbot) / S2                                                  # where the board's lower edge reaches zbot
+    yb0, yb1 = YB - .03, YB + .03                                                      # board thickness (front face at YB - .03)
+    for s, xf in ((-1, xw), (1, xe)):
+        poly = [(XC, zt(XC)), (xf, zt(xf)), (xf, zbot), (XC + s * off, zbot), (XC, zt(XC) - Wv)]
+        C.prism(f'Bargeboard {"west" if s < 0 else "east"}', poly, 'y', yb0, yb1, 'trim', 'gable ornament')
     b = Batch()
-    ends = [(XC - HW - OVX, ZE), (XC + HW + OVX, ZE)]
-    for (xe, ze) in ends:
-        top = (XC, ZC - .12); bot = (xe, ze - .12)
-        b.beam('trim', (top[0], y, top[1]), (bot[0], y, bot[1]), .07, .30, ext=.04)          # bargeboard plank
-        L = math.hypot(bot[0] - top[0], bot[1] - top[1])
-        ux, uz = (bot[0] - top[0]) / L, (bot[1] - top[1]) / L
-        nx, nz = uz, -ux                                                              # normal pointing down
-        if nz > 0:
-            nx, nz = -nx, -nz
-        lo = [(top[0] + nx * .52, top[1] + nz * .52), (bot[0] + nx * .52, bot[1] + nz * .52)]
-        b.beam('trim', (lo[0][0], y, lo[0][1]), (lo[1][0], y, lo[1][1]), .05, .07)           # lower rail of the pierced band
-        k = 0
-        s = .45
-        while s < L - .3:
-            cx, cz = top[0] + ux * s + nx * .34, top[1] + uz * s + nz * .34
-            annulus(f'Bargeboard roundel {xe:.1f} {k}', (cx, y, cz), (0, 1, 0), .06, .11, -.03, .03, 'trim', 'gable ornament', segs=12)
-            dx, dz = top[0] + ux * (s + .22) + nx * .62, top[1] + uz * (s + .22) + nz * .62
-            b.box('trim', dx, y, dz, .06, .05, .18)                                           # drop
-            b.box('trim', dx, y, dz - .12, .1, .06, .08)
-            s += .45
-            k += 1
-    # Fretwork arch over the attic windows, tied into the bargeboards, with spindles above it.
-    cz0, R = EAVE + 1.05, 1.5
-    arc = [(XC + R * math.cos(math.radians(a)), cz0 + R * math.sin(math.radians(a))) for a in range(18, 163, 9)]
-    for i in range(len(arc) - 1):
-        b.beam('trim', (arc[i][0], y + .03, arc[i][1]), (arc[i + 1][0], y + .03, arc[i + 1][1]), .06, .14, ext=.02)
-    for (ax, az) in arc[1:-1:2]:
-        ztop = zx(ax, 0) - .55
-        if ztop > az + .1:
-            b.box('trim', ax, y + .03, (az + ztop) / 2, .045, .045, ztop - az)
-    b.beam('trim', (XC - .9, y + .05, EAVE + 2.55), (XC + .9, y + .05, EAVE + 2.55), .05, .1)   # collar
-    # Finial and pendant at the apex; carved brackets at the gable feet.
-    C.rod('Gable finial', (XC, y, ZC - .2), (XC, y, ZC + 1.0), .045, 'trim', 'gable ornament', 8)
-    b.box('trim', XC, y, ZC + .2, .16, .16, .2)
-    b.box('trim', XC, y, ZC + .62, .1, .1, .14)
-    C.rod('Gable pendant', (XC, y, ZC - .2), (XC, y, ZC - 1.05), .05, 'trim', 'gable ornament', 8)
-    b.box('trim', XC, y, ZC - 1.05, .14, .14, .14)
-    for x in (X0 + .12, XC + HW - .12):
-        for k in range(3):
-            b.box('trim', x, Y0 - .12 - .1 * k, EAVE - .22 - .12 * k, .14, .2, .14)
+    # Roundels on the board face and drops from its lower edge, from the apex down to the foot.
+    L = math.hypot(xe - XC, ZC - ZE)
+    for s in (-1, 1):
+        ux, uz = s / k, -S2 / k                                                        # unit vector down the rake
+        dx, dz = -s * S2 / k, -1 / k                                                   # square to the rake, into the board
+        q, j = .42, 0
+        while q < L:
+            tx0, tz0 = XC + ux * q, zt(XC) + uz * q                                    # point on the top edge
+            cX, cZ = tx0 + dx * Wb / 2, tz0 + dz * Wb / 2
+            if cZ - .1 > zbot + .02:
+                annulus(f'Bargeboard roundel {s} {j}', (cX, YB - .03, cZ), (0, 1, 0), .05, .095, -.015, .02, 'trim', 'gable ornament', segs=12)
+            ex, ez = tx0 + ux * .21 + dx * Wb, tz0 + uz * .21 + dz * Wb               # lower edge, between two roundels
+            if abs(ex - XC) > 1.25 and ez > zbot + .05:
+                b.box('trim', ex, YB - .01, ez - .07, .05, .05, .16)                  # drop
+                b.box('trim', ex, YB - .01, ez - .19, .085, .07, .085)
+            q += .42
+            j += 1
+    # Foot blocks and stepped brackets back to the wall at both gable feet.
+    for s, xf in ((-1, xw), (1, xe)):
+        bx = xf - s * .07
+        b.box('trim', bx, YB - .005, (zbot - .15 + ZE + .05) / 2, .2, .11, ZE + .05 - zbot + .15)
+        b.box('trim', bx, YB - .005, zbot - .22, .11, .09, .1)
+        for (z0, z1, depth) in ((zbot - .13, zbot, OVF + .02), (zbot - .29, zbot - .13, .36), (zbot - .45, zbot - .29, .2)):
+            b.box('trim', bx, Y0 + .02 - depth / 2, (z0 + z1) / 2, .12, depth, z1 - z0)
+    # Fretwork arch inside the gable: a pierced board between the bargeboards' lower edges and a round arch springing
+    # tangent to them and cresting above the attic windows; short spindles stand in the spandrel.
+    Zb0 = ZC + .02 - Wv
+    crest = za_crest()
+    zc0 = (crest - Zb0 / k) / (1 - 1 / k)
+    r = (Zb0 - zc0) / k
+    tx, tz = r * S2 / k, zc0 + r / k
+    th = math.degrees(math.atan2(1, S2))
+    arc = [(XC + r * math.cos(math.radians(a)), zc0 + r * math.sin(math.radians(a)))
+           for a in [180 - th + (2 * th - 180) * i / 16 for i in range(17)]]
+    lap = .03
+    poly = [(XC, Zb0 + lap), (XC - tx, tz + lap)] + arc + [(XC + tx, tz + lap)]
+    C.prism('Gable fretwork arch', poly, 'y', YB - .02, YB + .04, 'trim', 'gable ornament')
+    xs = .16
+    while xs < tx - .05:
+        for s in (-1, 1):
+            x = XC + s * xs
+            za = zc0 + math.sqrt(max(r * r - xs * xs, 0))
+            zb = Zb0 - S2 * xs
+            if zb - za > .08:
+                b.box('trim', x, YB - .03, (za + zb) / 2, .035, .03, zb - za)
+        xs += .16
+    # Finial and pendant at the apex.
+    C.rod('Gable finial', (XC, YB - .03, ZC - .2), (XC, YB - .03, ZC + .55), .045, 'trim', 'gable ornament', 8)
+    b.box('trim', XC, YB - .03, ZC + .12, .15, .15, .18)
+    b.box('trim', XC, YB - .03, ZC + .38, .09, .09, .12)
+    C.rod('Gable pendant', (XC, YB - .03, ZC - .2), (XC, YB - .03, crest - .2), .05, 'trim', 'gable ornament', 8)
+    b.box('trim', XC, YB - .03, crest - .24, .13, .13, .13)
     # Painted cornice across the gable base either side of the bay.
-    for (a, c) in ((X0, XC - BF - BP), (XC + BF + BP, XC + HW)):
-        b.box('trim', (a + c) / 2, Y0 - .12, EAVE - .1, c - a, .26, .2)
+    for (a, c) in ((XC - HW, XC - BF - BP), (XC + BF + BP, XC + HW)):
+        b.box('trim', (a + c) / 2, Y0 - .09, EAVE - .1, c - a, .2, .16)
     b.flush('gable ornament')
 
+
+def za_crest():
+    """Crest of the gable fretwork arch: just above the centre attic window lintel."""
+    return EAVE + .25 + 1.2 + .4
 
 def porch():
     """Hipped entrance porch on turned posts with a spindle frieze, iron balustrade and a stone stair."""
@@ -764,7 +806,7 @@ def porch():
             b.box('trim', a[0] + (c[0] - a[0]) * t, a[1] + (c[1] - a[1]) * t, (zf0 + zf1) / 2, .025, .025, zf1 - zf0)
     for (px, py) in posts:
         for dx, dy in ((1 if px < xm else -1, 0), (0, 1)):
-            b.beam('trim', (px + dx * .1, py + dy * .1, zf0 - .35), (px + dx * .45, py + dy * .45, zf0 - .02), .05, .07)
+            b.beam('trim', (px + dx * .06, py + dy * .06, zf0 - .38), (px + dx * .45, py + dy * .45, zf0 + .01), .05, .07, ext=.04)
     # Iron balustrade: west side, the front west of the stair, east side.
     sx0, sx1 = 2.35, PX1 - .26
     rails = [((PX0 + .14, Y0 - .05), (PX0 + .14, yf + .24)), ((PX0 + .24, yf + .14), (sx0, yf + .14)),
@@ -778,7 +820,7 @@ def porch():
             b.box('hardware', a[0] + (c[0] - a[0]) * t, a[1] + (c[1] - a[1]) * t, F1 + .52, .018, .018, .8)
     b.flush('porch')
     # Hipped porch roof: front plane and two hip triangles against the wall.
-    ov, ze, zw = .22, zt + .22, 4.25
+    ov, ze, zw = .22, zt + .22, 4.50                                                  # about 17 degrees, clear of the sill above
     xw, xe, yfr = PX0 - ov, PX1 + ov, yf - ov
     xa, xb = xw + 1.15, xe - 1.15
 
@@ -794,10 +836,10 @@ def porch():
     plate('Porch roof west hip', [(xw, yfr), (xa, Y0), (xw, Y0)], zwh, t=.12)
     plate('Porch roof east hip', [(xe, yfr), (xe, Y0), (xb, Y0)], zeh, t=.12)
     b = Batch()
-    b.beam('trim', (xw, yfr - .02, ze - .08), (xe, yfr - .02, ze - .08), .04, .18)
-    b.beam('trim', (xw - .02, yfr, ze - .08), (xw - .02, Y0, ze - .08), .04, .18)
-    b.beam('trim', (xe + .02, yfr, ze - .08), (xe + .02, Y0, ze - .08), .04, .18)
-    b.beam('hardware', (xw, yfr - .09, ze - .1), (xe, yfr - .09, ze - .1), .12, .1)
+    b.beam('trim', (xw, yfr - .03, ze - .07), (xe, yfr - .03, ze - .07), .04, .12, ext=.03)
+    b.beam('trim', (xw - .03, yfr, ze - .07), (xw - .03, Y0, ze - .07), .04, .12, ext=.03)
+    b.beam('trim', (xe + .03, yfr, ze - .07), (xe + .03, Y0, ze - .07), .04, .12, ext=.03)
+    b.beam('hardware', (xw, yfr - .1, ze - .09), (xe, yfr - .1, ze - .09), .1, .08)
     b.beam('roof', (xw, yfr, ze + .03), (xa, Y0, zw + .03), .1, .06)
     b.beam('roof', (xe, yfr, ze + .03), (xb, Y0, zw + .03), .1, .06)
     b.beam('trim', (xa, Y0 - .03, zw + .02), (xb, Y0 - .03, zw + .02), .06, .1)       # flashing board on the wall
@@ -816,11 +858,16 @@ def porch():
     b.flush('porch roof')
 
 
+
+
 def interior():
-    xi0, xi1, yi0, yi1 = X0 + T, X1 - T, Y0 + T, Y1 - T
-    C.box('Ground floor', ((xi0 + xi1) / 2, (yi0 + yi1) / 2, F1 - .11), (xi1 - xi0, yi1 - yi0, .22), 'floor', 'inside', 0)
-    C.box('Upper floor', ((xi0 + xi1) / 2, (yi0 + yi1) / 2, F2 - .12), (xi1 - xi0, yi1 - yi0, .24), 'floor', 'inside', 0)
-    C.box('Attic floor', ((xi0 + xi1) / 2, (yi0 + yi1) / 2, EAVE - .12), (xi1 - xi0, yi1 - yi0, .24), 'floor', 'inside', 0)
+    """Floors, partitions and a parlour fireplace in the front block; floors in the rear wing."""
+    blocks = [(X0 + T, X1 - T, Y0 + T, YF - T), (RX0 + T, RX1 - T, YF - T, Y1 - T)]
+    for k, (xi0, xi1, yi0, yi1) in enumerate(blocks):
+        for name, z, th in (('Ground floor', F1 - .11, .22), ('Upper floor', F2 - .12, .24), ('Attic floor', EAVE - .12, .24)):
+            C.box(f'{name} {k}', ((xi0 + xi1) / 2, (yi0 + yi1) / 2 + (.001 if k else 0), z), (xi1 - xi0, yi1 - yi0 - (.002 if k else 0), th),
+                  'floor', 'inside', 0)
+    xi0, xi1, yi0 = X0 + T, X1 - T, Y0 + T
     C.box('Hall partition', (.75, yi0 + 3.2, (F1 + F2) / 2 - .12), (.12, 6.4, F2 - F1 - .24), 'interior', 'inside', 0)
     C.box('Upper partition', ((xi0 + xi1) / 2, .6, (F2 + EAVE) / 2 - .12), (xi1 - xi0, .12, EAVE - F2 - .24), 'interior', 'inside', 0)
     C.box('Ground partition', ((xi0 + xi1) / 2, 1.2, (F1 + F2) / 2 - .12), (xi1 - xi0, .12, F2 - F1 - .24), 'interior', 'inside', 0)
@@ -833,10 +880,9 @@ def interior():
         C.box('Parlour mantel pilaster', (XC + s * .6, yp - .44, F1 + .62), (.16, .1, 1.24), 'trim', 'inside', 0)
     C.box('Parlour overmantel mirror', (XC, yp - .41, F1 + 2.0), (1.0, .03, 1.1), 'glass', 'inside', 0)
     for name, loc, p in (('Parlour', (XC, Y0 + 2.0, F2 - .5), 45), ('Hall', (2.2, Y0 + 2.0, F2 - .5), 30),
-                         ('Kitchen', (0, 3.4, F2 - .5), 35), ('Front bedroom', (XC, Y0 + 2.0, EAVE - .5), 40),
-                         ('Rear bedroom', (0, 3.0, EAVE - .5), 35), ('Attic', (XC, Y0 + 1.6, EAVE + 1.6), 25)):
+                         ('Kitchen', (RXC, 3.4, F2 - .5), 35), ('Front bedroom', (XC, Y0 + 2.0, EAVE - .5), 40),
+                         ('Rear bedroom', (RXC, 3.0, EAVE - .5), 35), ('Attic', (XC, Y0 + 1.6, EAVE + 1.4), 25)):
         C.qa_room_light(name, loc, p, 2.0)
-
 
 def site():
     yw = Y0 - 4.0                                   # back of the front sidewalk
@@ -875,20 +921,20 @@ def site():
     C.rod('Hydro pole', (xw - 3.2, Y1 + 2.0, .04), (xw - 3.2, Y1 + 2.0, 9.5), .14, 'timber', 'street', 8)
 
 
+
+
 def build():
     site()
     south_face()
-    west_face()
-    east_face()
-    north_face()
+    side_walls()
     bay()
     gables()
     roofs()
     bargeboard()
     porch()
     interior()
-    C.CONTACTS.append(dict(name='Detached two-and-a-half-storey bay-and-gable house on a corner lot', box=[X0, X1, Y0, Y1], eave_m=EAVE,
-                           ridge_m=ZR))
+    C.CONTACTS.append(dict(name='Detached two-and-a-half-storey bay-and-gable house on a corner lot (L plan)', box=[X0, X1, Y0, Y1],
+                           eave_m=EAVE, ridge_m=ZR))
 
 
 LIGHT_RIG = dict(key=(-28, -36, 30), fill=(34, -22, 24), rear=(-12, 32, 26), target=(0, -1, 4.8), gain=4.0)
