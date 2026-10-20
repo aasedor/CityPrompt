@@ -25,20 +25,26 @@ Y0, Y1 = -NE * BAY / 2, NE * BAY / 2
 T = .5                                          # precast carrier depth
 TG = .35                                        # ground-storey carrier depth
 PODIUM = .45                                    # podium top, ground floor level
-SOFF = 5.2                                      # underside of the cantilevered box
-FLOORS = (5.6, 10.0, 14.4)                      # office floor levels
-SILL = (6.9, 11.3, 15.7)                        # window sills, one row per floor
-WH, WW = 2.5, 1.9                               # window clear height and width
-PAR = 19.8                                      # parapet top
-NOSE = .42                                      # projection of the fascia, spandrel noses and parapet band
-FIN = .60                                       # projection of the tapered fins
+PITCH = 4.0                                     # office storey pitch = one precast cell high
+SOFF = PODIUM + 1.45 * PITCH                    # underside of the cantilevered box: a tall recessed ground storey
+FASCIA = 1.4                                    # plain fascia band over the ground storey (about .35 of the pitch)
+CELL0 = SOFF + FASCIA                           # bottom of the first row of precast window cells
+FLOORS = tuple(CELL0 + .1 + PITCH * r for r in range(3))     # office floor levels
+SILL = tuple(CELL0 + 1.0 + PITCH * r for r in range(3))      # glass sills, one row per floor
+WH, WW = 2.2, 1.6                               # glass clear height and width at the back of each coffer
+PARB = CELL0 + 3 * PITCH                        # top of the cell grid = foot of the parapet band
+PAR = PARB + .55 * PITCH                        # parapet top: one plain band about .55 of the pitch
+D = .9                                          # depth of the precast cell grid in front of the carrier
+FB, FS = .28, .45                               # front width of the vertical cell members, front height of the horizontal ones
+PROUD = .05                                     # fascia, parapet and corner piers stand this far proud of the grid
+GH = 4.6                                        # two-tier storefront glazing height in the ground storey
 INS = 3.0                                       # ground glazing line set back from the south and east faces
 INW = 2.0                                       # ... and from the west and north faces
 PH = dict(x0=-9.6, x1=8.7, y0=-9.35, y1=14.55, top=PAR + 4.4)    # mechanical penthouse (top view)
 SCULPT = (12.1, -28.0)                          # sculpture plinth centre (top view)
 EPS = .002
-PALETTE = dict(wall=(.60, .58, .53), precast=(.62, .60, .55), board=(.52, .50, .46), joint=(.40, .39, .36),
-    concrete=(.66, .65, .61), paving=(.58, .57, .54), frame=(.13, .13, .13), trim=(.13, .13, .13),
+PALETTE = dict(wall=(.62, .58, .50), precast=(.65, .60, .51), board=(.54, .50, .43), joint=(.41, .38, .33),
+    concrete=(.67, .64, .57), paving=(.60, .58, .53), frame=(.13, .13, .13), trim=(.13, .13, .13),
     glass=(.17, .21, .23), hardware=(.10, .10, .11), interior=(.80, .77, .71), floor=(.50, .46, .40),
     timber=(.40, .30, .20), planting=(.36, .46, .20), grass=(.33, .45, .22), soil=(.24, .18, .12),
     roof=(.52, .49, .44), membrane=(.55, .53, .49), asphalt=(.27, .27, .28), white=(.92, .92, .90),
@@ -49,19 +55,19 @@ PALETTE = dict(wall=(.60, .58, .53), precast=(.62, .60, .55), board=(.52, .50, .
 def manifest(version):
     h = PH['top'] + .8
     cams = G.camera_roster(X1 - X0 + 4.0, Y1 - Y0 + 4.0, h, [
-        ('facade_close', (0.0, -44.0, 12.0), (0.0, Y0, 12.0), 40),
-        ('window_module', (6.75, -24.0, 12.6), (6.75, Y0, 12.6), 50),
-        ('corner_cantilever', (X1 + 9.0, Y0 - 11.0, 2.2), (X1 - 2.0, Y0 + 1.5, 5.2), 30),
+        ('facade_close', (0.0, -44.0, 14.5), (0.0, Y0, 14.5), 40),
+        ('window_module', (9.5, -30.0, CELL0 + PITCH * 1.5), (6.75, Y0, CELL0 + PITCH * 1.5), 50),
+        ('corner_cantilever', (X1 + 9.0, Y0 - 11.0, 2.2), (X1 - 2.0, Y0 + 1.5, SOFF), 30),
         ('ground_entrance', (4.0, Y0 - 13.0, 2.0), (4.0, Y0 + INS, 2.6), 35),
-        ('arcade_soffit', (X1 - .6, Y0 + 2.45, 1.7), (X0 + 6.0, Y0 + 1.2, 4.0), 30),
+        ('arcade_soffit', (X1 - .6, Y0 + 2.45, 1.7), (X0 + 6.0, Y0 + 1.2, SOFF - 1.0), 30),
         ('sculpture_plaza', (SCULPT[0] + 9.0, SCULPT[1] - 9.0, 3.0), (SCULPT[0] - 2.0, SCULPT[1] + 2.0, 3.0), 30),
-        ('east_side', (X1 + 44.0, 0.0, 10.0), (X1, 0.0, 10.0), 40),
+        ('east_side', (X1 + 48.0, 0.0, 12.0), (X1, 0.0, 12.0), 40),
         ('roof_penthouse', (-6.0, -34.0, 34.0), (0.0, 2.5, PAR + 1.0), 35),
         ('interior', (2.0, Y0 + 9.0, FLOORS[0] + 1.7), (2.0, Y0, SILL[0] + 1.0), 35),
         ('rear_north', (0.0, Y1 + 46.0, 22.0), (0.0, Y1, 10.0), 40)])
     for c in cams:                       # the locked front and oblique look from the south
         if c['name'] == 'front':
-            c.update(location=(24.0, -58.0, 1.7), target=(2.0, Y0, 9.5), lens=30, whole=False)
+            c.update(location=(30.0, -62.0, 4.0), target=(10.0, Y0, 11.5), lens=32, whole=False)
         elif c['name'] == 'front_corner':
             c.update(location=(34.0, -78.0, 58.0), target=(1.0, -2.0, 8.0), lens=35, whole=False)   # the locked oblique, high in the south
         elif c['name'] == 'aerial':
@@ -69,9 +75,9 @@ def manifest(version):
         elif c['name'] == 'left_side':
             c.update(location=(-50.0, -50.0, 22.0), target=(X0, -4.0, 8.0), lens=35, whole=False)   # south-west, past the brick neighbour
         elif c['name'] == 'right_side':
-            c.update(location=(66.0, 0.0, 10.0), target=(X1, 0.0, 9.0), lens=35, whole=False)
+            c.update(location=(70.0, 0.0, 11.0), target=(X1, 0.0, 11.0), lens=35, whole=False)
         elif c['name'] == 'rear':
-            c.update(location=(0.0, 66.0, 24.0), target=(0.0, Y1, 9.0), lens=35, whole=False)
+            c.update(location=(0.0, 70.0, 25.0), target=(0.0, Y1, 11.0), lens=35, whole=False)
         elif c['name'] == 'rear_side':
             c.update(location=(-48.0, 56.0, 36.0), target=(0.0, 0.0, 8.0), lens=35, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -81,7 +87,7 @@ def manifest(version):
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=4, storey_programme='recessed ground storey (lobby and public counters), three office floors in the cantilevered precast box, a mechanical penthouse',
             plan=f'{X1 - X0:.1f} x {Y1 - Y0:.1f} m corner block of {NS} x {NE} precast bays (top view); penthouse set back towards the north',
-            facade='deep plain fascia over the recessed ground storey; one deep-set window per bay between tapered fins; spandrel noses with sloped tops; tall plain parapet band; board-formed columns and wall panels below',
+            facade='plain fascia over a tall recessed ground storey; a flush cellular precast grid, one deep coffer per bay and floor splayed on all four sides to the glass, continuous horizontal members at the floor lines; one continuous plain parapet band; board-formed columns and wall panels below',
             levels_m=[PODIUM, SOFF, *FLOORS, PAR, PH['top']], roof_m=dict(flat=PAR - 1.0, parapet=PAR, penthouse=PH['top']),
             inferred='interiors, the west and north elevations and the ground-floor layout behind the glass are teaching assumptions'),
         roof_contract=dict(type='flat membrane roof inside a precast parapet; a set-back concrete mechanical penthouse with air-handling units', datum_m=PAR - 1.0, crowns_m=[PH['top'] + 1.4]),
@@ -431,15 +437,32 @@ class Kit(Merge):
 
 
 def bay_centres(n):
-    """Window centres; the end bays step .15 m in so their reveals clear the corner piers and the butting carriers."""
-    us = [-n * BAY / 2 + BAY * (k + .5) for k in range(n)]
-    us[0] += .15; us[-1] -= .15
-    return us
+    """Window centres, one per precast cell."""
+    return [-n * BAY / 2 + BAY * (k + .5) for k in range(n)]
+
+
+def coffer(m, role, u0, u1, z0, z1, g0, g1, h0, h1):
+    """One precast window cell as a closed ring solid: a flush front frame at d = -D around the outer opening, four
+    splayed reveals (jambs, head and a deep sloped sill) narrowing to the glass opening g0..g1 x h0..h1 at the
+    carrier face d = 0, and a back ring on the carrier face."""
+    vs, fs = m.groups.setdefault(role, ([], []))
+    o = len(vs)
+    a0, a1, b0, b1 = u0 + FB / 2, u1 - FB / 2, z0 + FS * .45, z1 - FS * .55
+    ring = lambda us, zs, d: [m.f.p(us[0], d, zs[0]), m.f.p(us[1], d, zs[0]), m.f.p(us[1], d, zs[1]), m.f.p(us[0], d, zs[1])]
+    vs.extend(ring((u0, u1), (z0, z1), -D) + ring((a0, a1), (b0, b1), -D) + ring((u0, u1), (z0, z1), 0.0) + ring((g0, g1), (h0, h1), 0.0))
+    A, B, Cc, E = o, o + 4, o + 8, o + 12
+    for i in range(4):
+        j = (i + 1) % 4
+        fs.append((A + i, A + j, B + j, B + i))          # front frame
+        fs.append((B + i, B + j, E + j, E + i))          # splayed reveal
+        fs.append((E + i, E + j, Cc + j, Cc + i))        # back ring on the carrier
+        fs.append((Cc + i, Cc + j, A + j, A + i))        # outer sides (shared with the neighbouring cell, hidden)
 
 
 def upper_face(label, origin, tangent, inward, n, wrap):
-    """The precast office box: carrier with one deep-set window per bay and floor, plain fascia over the ground
-    storey, spandrel noses with sloped tops under every sill, tapered fins at the bay lines and a parapet band.
+    """The precast office box: carrier with one glass opening per bay and floor, a flush cellular grid of deep
+    coffers in front of it (continuous horizontal members at the floor lines, one tapered vertical member per cell
+    and storey), a plain fascia over the ground storey and one continuous plain parapet band above the grid.
     South and north run the full length and wrap the corners; east and west butt between them."""
     f = C.Face(origin, tangent, inward, label)
     L = n * BAY
@@ -449,35 +472,38 @@ def upper_face(label, origin, tangent, inward, n, wrap):
     f.wall(f'{label} precast carrier', lo, hi - EPS, SOFF, PAR, depth=T, role='precast', holes=holes)
     m = Kit(f)
     for h in holes:
-        framed(m, f, h, cols=1, rows=1, inset=.22, occupied='office', frame='frame')
-        m.box('frame', h['u'], .21, h['z'] + .62, WW - .14, .06, .05)                    # hopper rail low in each light
-    bl, bh = (-L / 2 - NOSE, L / 2 + NOSE) if wrap else (-L / 2, L / 2)
-    m.uprism('precast', bl, bh, [(0.0, SOFF), (-NOSE, SOFF), (-NOSE, SILL[0] - .22), (0.0, SILL[0])])     # fascia
-    for r in range(2):                                                                     # spandrel noses
-        top = SILL[r] + WH
-        m.uprism('precast', bl, bh, [(0.0, top), (-NOSE, top), (-NOSE, SILL[r + 1] - .22), (0.0, SILL[r + 1])])
-    m.uprism('precast', bl, bh, [(0.0, SILL[2] + WH), (-NOSE, SILL[2] + WH), (-NOSE, PAR), (0.0, PAR)])      # parapet band
-    for k in range(1, n):                                                                  # tapered fins on the bay lines
-        u = -L / 2 + BAY * k
-        m.zprism('precast', [(u - .26, 0.0), (u + .26, 0.0), (u + .14, -FIN), (u - .14, -FIN)], SILL[0] - .2, PAR)
+        framed(m, f, h, cols=1, rows=1, inset=.12, occupied='office', frame='frame')
+        m.box('frame', h['u'], .11, h['z'] + .62, WW - .14, .06, .05)                    # hopper rail low in each light
+    for r in range(3):                                                                     # the cellular grid
+        z0 = CELL0 + PITCH * r
+        for k, u in enumerate(bay_centres(n)):
+            coffer(m, 'precast', u - BAY / 2, u + BAY / 2, z0, z0 + PITCH, u - WW / 2, u + WW / 2, SILL[r], SILL[r] + WH)
+    F = D + PROUD
+    bl, bh = (-L / 2 - F, L / 2 + F) if wrap else (-L / 2, L / 2)
+    m.uprism('precast', bl, bh, [(0.0, SOFF), (-F, SOFF), (-F, CELL0), (0.0, CELL0)])        # plain fascia
+    m.uprism('precast', bl, bh, [(0.0, PARB), (-F, PARB), (-F, PAR), (0.0, PAR)])            # one plain parapet band
+    zj = PARB + (PAR - PARB) * .45
+    m.box('joint', (bl + bh) / 2, -F - .002, zj, bh - bl - .04, .004, .025)                # its single horizontal joint
     for k in range(n + 1):                                                                 # panel joints across the fascia
         u = -L / 2 + BAY * k
         if lo + .3 < u < hi - .3:
-            m.box('joint', u, -NOSE - .002, (SOFF + SILL[0] - .22) / 2, .025, .004, SILL[0] - .22 - SOFF - .02)
-    cl, ch = (-L / 2 - FIN - .05, L / 2 + FIN + .05) if wrap else (-L / 2 + T, L / 2 - T)
-    m.box('precast', (cl + ch) / 2, (T - FIN - .05) / 2, PAR + .06, ch - cl, T + FIN + .05, .12)            # coping
+            m.box('joint', u, -F - .002, (SOFF + CELL0) / 2, .025, .004, CELL0 - SOFF - .04)
+    cl, ch = (-L / 2 - F - .05, L / 2 + F + .05) if wrap else (-L / 2 + T, L / 2 - T)
+    m.box('precast', (cl + ch) / 2, (T - F - .05) / 2, PAR + .06, ch - cl, T + F + .05, .12)               # coping
     m.flush(label)
     return f
 
 
 def corner_piers():
+    """Solid precast piers closing the grid at the four corners, flush with the fascia and parapet."""
     b = Batch()
+    F = D + PROUD
     for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1)):
         xc = X1 if sx > 0 else X0
         yc = Y1 if sy > 0 else Y0
-        xa, xb = sorted((xc - sx * .3, xc + sx * FIN))
-        ya, yb = sorted((yc - sy * .3, yc + sy * FIN))
-        b.box('precast', (xa + xb) / 2, (ya + yb) / 2, (SOFF - .05 + PAR) / 2, xb - xa, yb - ya, PAR - SOFF + .05)
+        xa, xb = sorted((xc, xc + sx * F))
+        ya, yb = sorted((yc, yc + sy * F))
+        b.box('precast', (xa + xb) / 2, (ya + yb) / 2, (CELL0 + PARB) / 2, xb - xa, yb - ya, PARB - CELL0)
     b.flush('corner piers')
 
 
@@ -488,11 +514,11 @@ def ground_face(label, origin, tangent, inward, lo, hi, bays):
     hs = []
     for u, kind in bays:
         if kind == 'glass':
-            hs.append((hole(f'{label} storefront {u:+.2f}', u, PODIUM + .15, BAY - .4, SOFF - .55 - PODIUM - .15, kind='shopfront'), kind))
+            hs.append((hole(f'{label} storefront {u:+.2f}', u, PODIUM + .15, BAY - .4, GH, kind='shopfront'), kind))
         elif kind == 'door':
-            hs.append((hole(f'{label} entrance {u:+.2f}', u, PODIUM, BAY - .4, SOFF - .55 - PODIUM, kind='door'), kind))
+            hs.append((hole(f'{label} entrance {u:+.2f}', u, PODIUM, BAY - .4, GH + .15, kind='door'), kind))
         elif kind == 'window':
-            hs.append((hole(f'{label} window {u:+.2f}', u, PODIUM + 1.3, BAY - .6, 2.0), kind))
+            hs.append((hole(f'{label} window {u:+.2f}', u, PODIUM + 1.3, BAY - .6, GH - 1.15), kind))
         elif kind == 'service':
             hs.append((hole(f'{label} service door {u:+.2f}', u, PODIUM, 1.1, 2.3, kind='door'), kind))
     holes = [h for h, k in hs]
@@ -502,7 +528,7 @@ def ground_face(label, origin, tangent, inward, lo, hi, bays):
     for h, kind in hs:
         if kind == 'glass':
             framed(m, f, h, cols=2, rows=1, inset=.12, occupied='lobby', kind='shopfront', frame='frame')
-            m.box('frame', h['u'], .1, h['z'] + h['h'] - 1.1, h['w'] - .1, .1, .08)           # transom bar
+            m.box('frame', h['u'], .1, h['z'] + 3.0, h['w'] - .1, .1, .08)                     # transom bar
         elif kind == 'door':
             framed(m, f, h, cols=2, rows=1, inset=.12, occupied='lobby', kind='door', frame='frame')
             m.box('frame', h['u'], .1, h['z'] + 2.45, h['w'] - .1, .1, .1)                    # transom over the leaves
@@ -511,6 +537,7 @@ def ground_face(label, origin, tangent, inward, lo, hi, bays):
                 m.box('metal', h['u'] + s * .3, .06, h['z'] + 1.05, .5, .04, .04)
         elif kind == 'window':
             framed(m, f, h, cols=2, rows=1, inset=.12, occupied='office', frame='frame')
+            m.box('frame', h['u'], .1, h['z'] + 1.9, h['w'] - .1, .1, .08)
         else:
             framed(m, f, h, cols=1, rows=1, inset=.12, occupied='service', kind='door', frame='frame', glass='metal')
     m.flush(label)
@@ -527,7 +554,7 @@ def build_box():
     gx0, gx1, gy0, gy1 = X0 + INW, X1 - INS, Y0 + INS, Y1 - INW
     sx = [X0 + BAY * (k + .5) for k in range(NS)]
     sy = [Y0 + BAY * (k + .5) for k in range(NE)]
-    south = ['solid', 'board', 'board', 'board', 'glass', 'glass', 'glass', 'glass', 'glass', 'door', 'glass', 'glass', 'glass', 'solid']
+    south = ['solid', 'board', 'board', 'board', 'board', 'glass', 'glass', 'glass', 'glass', 'door', 'glass', 'glass', 'glass', 'solid']
     ground_face('ground south', (0, gy0, 0), (1, 0, 0), (0, 1, 0), gx0, gx1, [(sx[k], kind) for k, kind in enumerate(south)])
     east = ['solid', 'solid', 'door', 'glass', 'glass', 'glass', 'board', 'board', 'board', 'glass', 'glass', 'glass', 'solid']
     ground_face('ground east', (gx1, 0, 0), (0, 1, 0), (-1, 0, 0), gy0 + TG, gy1 - TG, [(sy[k], kind) for k, kind in enumerate(east)])
@@ -564,7 +591,7 @@ def floors_and_roof():
     z0, z1, tp = PAR - 1.0, PH['top'], .3
     x0, x1, y0, y1 = PH['x0'], PH['x1'], PH['y0'], PH['y1']
     faces = [('penthouse south', (0, y0, 0), (1, 0, 0), (0, 1, 0), x0, x1,
-              [('louvre', -5.6, 1.4, 2.6, 1.8), ('door', 0.0, .05, 1.0, 2.2), ('door', 4.0, .05, 1.0, 2.2)]),
+              [('door', -8.3, .05, 1.0, 2.2), ('louvre', -5.6, 1.4, 2.6, 1.8), ('door', 7.0, .05, 1.0, 2.2)]),
              ('penthouse north', (0, y1, 0), (-1, 0, 0), (0, -1, 0), -x1, -x0, [('louvre', 2.0, 1.4, 3.2, 1.8)]),
              ('penthouse east', (x1, 0, 0), (0, 1, 0), (-1, 0, 0), y0 + tp, y1 - tp, [('louvre', 4.0, 1.4, 2.4, 1.8)]),
              ('penthouse west', (x0, 0, 0), (0, -1, 0), (1, 0, 0), -(y1 - tp), -(y0 + tp), [('louvre', -1.0, 1.4, 3.6, 1.8), ('door', 6.0, .05, 1.0, 2.2)])]
@@ -575,7 +602,7 @@ def floors_and_roof():
         m = Kit(f)
         for h, k in hs:
             if k == 'door':
-                framed(m, f, h, cols=1, rows=1, inset=.1, occupied='plant', kind='door', frame='frame', glass='metal')
+                framed(m, f, h, cols=1, rows=1, inset=.1, occupied='plant', kind='door', frame='frame', glass='hardware')
             else:
                 framed(m, f, h, cols=1, rows=1, inset=.1, occupied='plant', kind='louvre', frame='frame', glass='hardware')
                 for i in range(1, 9):                                                         # louvre blades
@@ -618,11 +645,11 @@ def figure(x, y, z, a, s=1.0):
     ux, uy = math.cos(a), math.sin(a)
     tx, ty = -uy, ux
     for e in (-1, 1):
-        C.rod('Sculpture leg', (x + tx * e * .1 * s, y + ty * e * .1 * s, z), (x + tx * e * .09 * s, y + ty * e * .09 * s, z + 1.05 * s), .085 * s, 'sculpture', 'sculpture', 8)
-        C.rod('Sculpture arm', (x + tx * e * .27 * s, y + ty * e * .27 * s, z + 1.0 * s), (x + tx * e * .25 * s, y + ty * e * .25 * s, z + 1.72 * s), .06 * s, 'sculpture', 'sculpture', 8)
-    C.rod('Sculpture torso', (x, y, z + 1.0 * s), (x, y, z + 1.8 * s), .2 * s, 'sculpture', 'sculpture', 10)
+        C.rod('Sculpture leg', (x + tx * e * .08 * s, y + ty * e * .08 * s, z), (x + tx * e * .07 * s, y + ty * e * .07 * s, z + 1.05 * s), .065 * s, 'sculpture', 'sculpture', 8)
+        C.rod('Sculpture arm', (x + tx * e * .2 * s, y + ty * e * .2 * s, z + 1.0 * s), (x + tx * e * .18 * s, y + ty * e * .18 * s, z + 1.72 * s), .045 * s, 'sculpture', 'sculpture', 8)
+    C.rod('Sculpture torso', (x, y, z + 1.0 * s), (x, y, z + 1.8 * s), .14 * s, 'sculpture', 'sculpture', 10)
     C.rod('Sculpture neck', (x, y, z + 1.78 * s), (x, y, z + 1.9 * s), .06 * s, 'sculpture', 'sculpture', 8)
-    C.rod('Sculpture head', (x, y, z + 1.88 * s), (x, y, z + 2.18 * s), .12 * s, 'sculpture', 'sculpture', 10)
+    C.rod('Sculpture head', (x, y, z + 1.88 * s), (x, y, z + 2.16 * s), .1 * s, 'sculpture', 'sculpture', 12)
 
 
 def site():
@@ -681,8 +708,8 @@ def site():
     for i in range(12):
         a = math.tau * i / 12 + .2
         r = 2.1 if i % 2 else 1.7
-        figure(sx + r * math.cos(a), sy + r * math.sin(a), .8, a, s=1.12 if i % 3 else 1.0)
-    for x, y in ((X1 + 5.6, -12.5), (X1 + 5.6, -6.0), (X1 + 5.6, 6.0), (X1 + 5.6, 16.0)):
+        figure(sx + r * math.cos(a), sy + r * math.sin(a), .8, a, s=1.34 if i % 3 else 1.22)
+    for x, y in ((X1 + 5.6, -15.5), (X1 + 5.6, -4.0), (X1 + 5.6, 6.0), (X1 + 5.6, 16.0)):
         street_tree(x, y, z=.12, height=8.0, spread=2.4)
     for x, y in ((-21.0, -26.5), (-29.0, -28.0), (-6.5, -27.0), (-33.0, -18.0), (-27.0, 2.0)):
         street_tree(x, y, z=.06, height=9.0, spread=2.8)
