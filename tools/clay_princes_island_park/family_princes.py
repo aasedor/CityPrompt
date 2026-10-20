@@ -916,28 +916,18 @@ def bed(name, poly, dens, b):
     a = abs(area(inner))
     td, sd, fd = dens
     core = offset(poly, .35)
-    if fd >= .5:                                             # a low undulating groundcover mat, so the bed reads planted between the plants
-        gin = offset(poly, .22)
-        st = .55
-        nx, ny = int((max(xs) - min(xs)) / st) + 2, int((max(ys) - min(ys)) / st) + 2
-        x0, y0 = min(xs), min(ys)
-        bump = lambda x, y: ZG + .135 + .045 * (1 + math.sin(x * 1.9 + y * .7) * math.cos(y * 1.6 - x * .5)) + RNG.uniform(0, .02)
-        idx, V, F = {}, [], []
-
-        def vid(i, j):
-            if (i, j) not in idx:
-                x, y = x0 + i * st, y0 + j * st
-                idx[(i, j)] = len(V)
-                V.append((x, y, bump(x, y)))
-            return idx[(i, j)]
-        for i in range(nx):
-            for j in range(ny):
-                cs = [(x0 + (i + a) * st, y0 + (j + c) * st) for a, c in ((0, 0), (1, 0), (1, 1), (0, 1))]
-                if all(inside(q, gin) for q in cs):
-                    F.append((vid(i, j), vid(i + 1, j), vid(i + 1, j + 1), vid(i, j + 1)))
-        if F:
-            smooth(C.mesh(f'{name} groundcover', V, F, 'planting', 'beds'))
-
+    if fd >= .5:                                             # a soft hummocky groundcover berm following the bed outline inside the kerb
+        rings = [(offset(poly, .2), .012, 0.0), (offset(poly, .5), .1, .045), (offset(poly, .86), .006, 0.0)]
+        n = len(poly)
+        V, F = [], []
+        for r, (ring, h, amp) in enumerate(rings):
+            for i, (x, y) in enumerate(ring):
+                V.append((x, y, ZG + .10 + h + amp * (1 + math.sin(i * 1.3 + r) * math.cos(i * .55)) + (RNG.uniform(0, .03) if amp else 0.0)))
+        for r in range(len(rings) - 1):
+            for i in range(n):
+                j = (i + 1) % n
+                F.append((r * n + i, r * n + j, (r + 1) * n + j, (r + 1) * n + i))
+        smooth(C.mesh(f'{name} groundcover', V, F, 'planting', 'beds'))
     def spot(rr):
         """A planting point whose whole plant (horizontal reach rr) stays clear of the kerb's inner face."""
         for _ in range(60):
@@ -970,7 +960,7 @@ def bed(name, poly, dens, b):
                 head(b, fr, hx, hy, ZG + .10 + h * (1 - d * d) * .92 + hr * .35, hr)
     for i in range(int(td * a * .42 * .75)):                # ornamental grasses: dense arching clumps of fine blades, green, gold and straw
         hh = RNG.uniform(.6, 1.15)
-        p = spot(hh * .55)
+        p = spot(.08)                                       # blades arch over the kerb; only the base must stay inside it
         if p:
             fountain(b, p[0], p[1], ZG + .095, hh, n=10, roles=(('grass', 'grass2', 'straw'), ('grass2', 'straw', 'grass'), ('grass', 'planting', 'grass2'))[i % 3])
 

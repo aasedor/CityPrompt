@@ -481,7 +481,7 @@ def bedding(b, role, x, y, z0, r, h):
     """One carpet-bedding plant: a small, low, grounded rounded head (flat base sunk into the bed soil)."""
     j = RNG.uniform(.86, 1.12)
     dome(b, role, x + RNG.uniform(-.04, .04), y + RNG.uniform(-.04, .04), z0, r * j, r * j * RNG.uniform(.88, 1.0),
-         h * RNG.uniform(.85, 1.12), 5)
+         h * RNG.uniform(.85, 1.12), 6)
 
 
 def fill(poly, s):
