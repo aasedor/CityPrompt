@@ -1,7 +1,7 @@
 # Halifax waterfront stone warehouse (RLASM v6.1 architectural clay)
 
 Candidate G7 of wave G of 2026-10-18, one of ten catalogue types that have quality reference images but
-no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **candidate under review**. Nothing here is keeper-approved,
+no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **stopped at v006 by the stopping rule (independent review PASS_ZERO_P0_P1); v006 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,6 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 reworks it; a second non-improving review stops the family)
+## Open blockers after v006 (the v005 ground-arch finding is fixed and earlier fixes hold; v006 becomes the candidate; family stops on the first stopping condition)
 
-- P1 #1: the five arched ground windows on the east side (bay-2 triplet and bay-3 pair) have grey granite archivolt rings; both sources show plain brick arch heads there with only stone sills, so the ground storey copies the upper storey's granite and the material hierarchy is lost.
+none
