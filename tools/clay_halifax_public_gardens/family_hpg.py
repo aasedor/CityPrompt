@@ -467,6 +467,38 @@ def shrub(b, role, x, y, z0, r, h):
     dome(b, role, x, y, z0 + h * .40, r * .5, r * .5, h * .6)
 
 
+def flush_smooth(b, module):
+    """Flush a Batch as smooth-shaded meshes (planting: no visible facets)."""
+    for role, (V, F) in b.g.items():
+        if F:
+            obj = C.mesh(f'{module} {role}', V, F, role, module)
+            for f in obj.data.polygons:
+                f.use_smooth = True
+    b.g = {}
+
+
+def bedding(b, role, x, y, z0, r, h):
+    """One carpet-bedding plant: a small, low, grounded rounded head (flat base sunk into the bed soil)."""
+    j = RNG.uniform(.86, 1.12)
+    dome(b, role, x + RNG.uniform(-.04, .04), y + RNG.uniform(-.04, .04), z0, r * j, r * j * RNG.uniform(.88, 1.0),
+         h * RNG.uniform(.85, 1.12), 5)
+
+
+def fill(poly, s):
+    """Staggered planting grid at spacing s inside a shapely polygon."""
+    minx, miny, maxx, maxy = poly.bounds
+    out, row, y = [], 0, miny + s * .5
+    while y < maxy:
+        x = minx + s * (.5 + .5 * (row % 2))
+        while x < maxx:
+            if poly.contains(Point(x, y)):
+                out.append((x, y))
+            x += s
+        y += s * .866
+        row += 1
+    return out
+
+
 def mound(b, role, x, y, zb, w, h):
     """A planted mound w wide and h high standing on a surface at zb (the lump's lowest point stays at or above zb - 2 cm)."""
     lump(b, role, x, y, zb + .47 * h, w / 2, w / 2, h / 2)
@@ -843,37 +875,34 @@ def carpet_bed(name, spine, width):
     lavender and purple either side, low pink and magenta at the edges."""
     pts, left, right = bed_outline(spine, width)
     strip_mesh(name, left[::2] + ([left[-1]] if len(left) % 2 == 0 else []), right[::2] + ([right[-1]] if len(right) % 2 == 0 else []), .02, .10, 'soil', 'flower beds')
+    # Massed carpet bedding in bands across the leaf: white hydrangea heads (with some green) along the spine,
+    # lavender and purple either side, low pink and magenta at the rims. Many small smooth heads, not gems.
+    poly = Polygon(left + right[::-1]).buffer(-.10)
+    sp = LineString(pts)
+    L = sp.length
     b = Batch()
-    L = len(pts) - 1
-    for i in range(1, L, 3):
-        x, y = pts[i]
-        w = width / 2 * math.sin(math.pi * i / L) ** .55
-        ax, ay = pts[i - 1]; bx, by = pts[i + 1]
-        d = math.hypot(bx - ax, by - ay); nx, ny = -(by - ay) / d, (bx - ax) / d
-        if (i // 3) % 2 == 0:
-            mound(b, 'white', x, y, .10, 1.1, .85)                             # hydrangea mound on the spine
+    for (x, y) in fill(poly, .36):
+        p = Point(x, y)
+        u = sp.project(p) / L
+        t = sp.distance(p) / (width / 2 * max(.05, math.sin(math.pi * u)) ** .55)
+        blk = int(u * 7)
+        if t < .32:
+            bedding(b, 'white' if RNG.random() < .82 else 'shrub', x, y, .10, .25, .46)
+        elif t < .68:
+            bedding(b, FLOWERS[blk % 2], x, y, .10, .21, .33)
         else:
-            mound(b, 'shrub', x, y, .10, 1.0, .7)
-        for side in (-1, 1):
-            j = i // 3
-            for f, role, hgt in ((.5, FLOWERS[(j + (side > 0)) % 2] if j % 3 else 'shrub', .55), (.84, FLOWERS[2 + j % 2] if j % 3 != 1 else 'shrub', .4)):
-                if w * f < .35:
-                    continue
-                mound(b, role, x + side * nx * w * f, y + side * ny * w * f, .10, .85, hgt)
-    b.flush(name)
+            bedding(b, FLOWERS[2 + blk % 2], x, y, .10, .19, .25)
+    flush_smooth(b, name)
 
 
 def border(name, x0, x1, y0, y1, colours=('white', 'shrub', 'lavender')):
     """A straight shrub-and-flower border along a path."""
     C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, .06), (x1 - x0, y1 - y0, .08), 'soil', 'flower beds', 0)
     b = Batch()
-    n = max(2, int((y1 - y0) / .8))
-    for i in range(n):
-        y = y0 + .4 + (y1 - y0 - .8) * i / (n - 1)
-        role = colours[i % len(colours)]
-        hgt = .75 if role == 'white' else .55
-        mound(b, role, (x0 + x1) / 2 + RNG.uniform(-.15, .15), y, .10, (x1 - x0) * 1.0, hgt)
-    b.flush(name)
+    for (x, y) in fill(sbox(x0 + .08, y0 + .08, x1 - .08, y1 - .08), .34):
+        role = colours[int((y - y0) / 1.1) % len(colours)]
+        bedding(b, role, x, y, .10, .23 if role == 'white' else .2, .44 if role == 'white' else .32)
+    flush_smooth(b, name)
 
 
 def shade_tree(name, x, y, h, r):
@@ -909,30 +938,63 @@ def planting():
     n = int((a1 - a0) * BED1 / .3)
     strip_mesh('Bandstand flower ring', [(BED1 * math.cos(a0 + (a1 - a0) * i / n), BED1 * math.sin(a0 + (a1 - a0) * i / n)) for i in range(n + 1)],
                [(BED0 * math.cos(a0 + (a1 - a0) * i / n), BED0 * math.sin(a0 + (a1 - a0) * i / n)) for i in range(n + 1)], .06, .13, 'soil', 'flower beds')
-    b = Batch()
+    b, bp = Batch(), Batch()
     for r in (BED0, BED1):
         pts = arc(0.0, 0.0, r, a0, a1, .4)
         for i, ((ax, ay), (cx, cy)) in enumerate(zip(pts, pts[1:])):
             b.beam('granite', (ax, ay, .125), (cx, cy, .125), .10 + .004 * (i % 2), .07 + .004 * (i % 2), ext=.02)
-    for k, (x, y) in enumerate(arc(0.0, 0.0, 4.6, a0 + .08, a1 - .08, .62)):
-        role = ('white', 'pink', 'lavender', 'magenta', 'white', 'purple')[k % 6]
-        hgt = .7 if role == 'white' else .42
-        mound(b, role, x, y, .13, .75, hgt)
+    sector = Polygon([(0.0, 0.0)] + arc(0.0, 0.0, BED1 + 1.0, a0 + .05, a1 - .05, .3))
+    ring = Point(0, 0).buffer(BED1 - .14, 64).difference(Point(0, 0).buffer(BED0 + .14, 64)).intersection(sector)
+    for (x, y) in fill(ring, .34):                                             # massed bedding in colour blocks round the ring
+        a = math.atan2(y, x) % (2 * math.pi)
+        role = ('white', 'pink', 'lavender', 'magenta', 'white', 'purple')[int(a / .55) % 6]
+        outer = math.hypot(x, y) > (BED0 + BED1) / 2
+        bedding(bp, role, x, y, .13, .23 if role == 'white' else .2, (.42 if role == 'white' else .3) * (.82 if outer else 1.0))
     # Shrubs and hydrangeas along the fence and by the gates (top view: round shrubs at the south corners and gates).
     for (x, y, r, role) in ((-10.6, -27.4, .9, 'shrub'), (10.4, -27.4, .9, 'shrub'), (-19.8, -27.6, .8, 'white'), (-18.4, -27.8, .7, 'pink'),
                             (19.6, -27.6, .8, 'white'), (18.2, -27.8, .7, 'purple'), (-20.2, -1.0 - 3.0, .9, 'shrub'), (20.2, -4.2, .9, 'shrub'),
                             (-20.4, 5.0, .8, 'white'), (20.4, 5.2, .8, 'shrub'), (4.4, 19.6, 1.2, 'white'), (-4.8, 17.6, 1.0, 'white'),
                             (-20.4, -16.0, .7, 'shrub'), (20.4, -24.0, .8, 'shrub'), (6.0, 26.6, .9, 'shrub'), (-4.0, 26.8, .8, 'pink')):
-        shrub(b, role, x, y, ZG, r, 1.3 * r)
+        shrub(bp, role, x, y, ZG, r, 1.3 * r)
     for s in (-1, 1):                                                          # low hedges along the outer lawn strips
         for k in range(8):
-            dome(b, 'shrub', s * (11.0 + k * 1.3), FS - .9, .10, .72, .66, .8, 7)
+            dome(bp, 'shrub', s * (11.0 + k * 1.3), FS - .9, .10, .72, .66, .8, 7)
     b.flush('planting')
+    flush_smooth(bp, 'planting plants')
     for t in TREES:
         shade_tree(*t)
 
 
 # ---------------------------------------------------------------- bandstand
+
+def hip_roll(b, a, rz, rad, n=8):
+    """A copper hip roll swept along the ogee corner (radius, height) polyline as one closed tube: rings set square to
+    the averaged tangent so the bends close with no notches, capped at both ends."""
+    V, F = b.g.setdefault('copper2', ([], []))
+    o = len(V)
+    ux, uy = math.cos(a), math.sin(a)                       # radial
+    bx, by = -uy, ux                                        # horizontal tangential (constant binormal)
+    P = [(r * ux, r * uy, z) for (r, z) in rz]
+    m = len(P)
+    for i in range(m):
+        p0, p1 = P[max(0, i - 1)], P[min(m - 1, i + 1)]
+        tx, ty, tz = p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2]
+        L = math.sqrt(tx * tx + ty * ty + tz * tz)
+        tx, ty, tz = tx / L, ty / L, tz / L
+        nx, ny, nz = by * tz, -bx * tz, bx * ty - by * tx   # binormal x tangent
+        k = math.sqrt(nx * nx + ny * ny + nz * nz)
+        nx, ny, nz = nx / k, ny / k, nz / k
+        for j in range(n):
+            th = 2 * math.pi * j / n
+            c, s = math.cos(th) * rad, math.sin(th) * rad
+            V.append((P[i][0] + bx * c + nx * s, P[i][1] + by * c + ny * s, P[i][2] + nz * s))
+    for i in range(m - 1):
+        for j in range(n):
+            jn = (j + 1) % n
+            F.append((o + i * n + j, o + i * n + jn, o + (i + 1) * n + jn, o + (i + 1) * n + j))
+    F.append(tuple(o + j for j in range(n - 1, -1, -1)))
+    F.append(tuple(o + (m - 1) * n + j for j in range(n)))
+
 
 AP, RP = 3.3, 3.3                               # plinth apothem; post radius (to the octagon corners)
 
@@ -1025,10 +1087,9 @@ def bandstand():
     rings = [[(r * math.cos(math.pi / 8 + k * math.pi / 4 - math.pi / 2), r * math.sin(math.pi / 8 + k * math.pi / 4 - math.pi / 2), z) for k in range(8)] for (r, z) in prof]
     loft('Bandstand roof', rings, 'copper', 'bandstand roof', closed=False)
     b = Batch()
-    for k in range(8):
+    for k in range(8):                                                         # hip rolls: one continuous closed tube each
         a = math.pi / 8 + k * math.pi / 4 - math.pi / 2
-        for (r0, z0), (r1, z1) in zip(prof[1:], prof[2:]):
-            b.beam('copper2', (math.cos(a) * (r0 + .02), math.sin(a) * (r0 + .02), z0 + .04), (math.cos(a) * (r1 + .02), math.sin(a) * (r1 + .02), z1 + .04), .11 + .004 * (k % 2), .09, ext=.10)
+        hip_roll(b, a, [(r + .02, z + .045) for (r, z) in prof[1:]], .055 + .002 * (k % 2))
     ngon(b, 'copper2', 0.0, 0.0, 3.82 - .01, 3.97, 4.42, 8, phase=.5 - .0)                 # eave fascia ring (slightly proud of the roof edge)
     ngon(b, 'copper2', 0.0, 0.0, 7.30, 7.78, .11, 10)
     ngon(b, 'copper2', 0.0, 0.0, 8.0, 8.62, .045, 8, cone=True)
@@ -1258,7 +1319,7 @@ def furniture():
         a = math.radians(-90 + s * 55)
         bench(b, (RC - .55) * math.cos(a), (RC - .55) * math.sin(a), -math.cos(a), -math.sin(a), ZO - .02)
     d = (-math.sin(math.radians(32)), math.cos(math.radians(32)))
-    bench(b, 7.6 + 2.3 * d[0], -35.0 + 2.3 * d[1], -d[0], -d[1], .10)         # the front-view bench: back to the camera, facing the garden
+    bench(b, 7.6 + 2.3 * d[0], -35.0 + 2.3 * d[1], d[0], d[1], .10)           # the front-view bench: back to the camera, facing the garden
     for s in (-1, 1):
         lamp(b, s * 5.2, 6.2); lamp(b, s * 5.2, -6.2)
         lamp(b, s * (FX - 1.2), 3.6)

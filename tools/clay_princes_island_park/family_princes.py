@@ -782,7 +782,7 @@ def ground_and_river():
         lump(b, RNG.choice(('rock', 'rock2', 'rock3')), FAR + RNG.uniform(-.3, .3), yy, max(r * .55, r * .75 * 1.05) + .2, r * 1.2, r * 1.3, r * .75)
     flush_smooth(b, 'rip-rap boulders')
     b = Batch()
-    for i in range(90):                                    # grass clumps in the joints between the boulders, densest along the top
+    for i in range(70):                                    # grass clumps in the joints between the boulders, densest along the top
         yy = RNG.uniform(Y0 - .5, Y1 + .5)
         if abs(yy - YB) < 2.9:
             continue
@@ -916,6 +916,27 @@ def bed(name, poly, dens, b):
     a = abs(area(inner))
     td, sd, fd = dens
     core = offset(poly, .35)
+    if fd >= .5:                                             # a low undulating groundcover mat, so the bed reads planted between the plants
+        gin = offset(poly, .22)
+        st = .55
+        nx, ny = int((max(xs) - min(xs)) / st) + 2, int((max(ys) - min(ys)) / st) + 2
+        x0, y0 = min(xs), min(ys)
+        bump = lambda x, y: ZG + .135 + .045 * (1 + math.sin(x * 1.9 + y * .7) * math.cos(y * 1.6 - x * .5)) + RNG.uniform(0, .02)
+        idx, V, F = {}, [], []
+
+        def vid(i, j):
+            if (i, j) not in idx:
+                x, y = x0 + i * st, y0 + j * st
+                idx[(i, j)] = len(V)
+                V.append((x, y, bump(x, y)))
+            return idx[(i, j)]
+        for i in range(nx):
+            for j in range(ny):
+                cs = [(x0 + (i + a) * st, y0 + (j + c) * st) for a, c in ((0, 0), (1, 0), (1, 1), (0, 1))]
+                if all(inside(q, gin) for q in cs):
+                    F.append((vid(i, j), vid(i + 1, j), vid(i + 1, j + 1), vid(i, j + 1)))
+        if F:
+            smooth(C.mesh(f'{name} groundcover', V, F, 'planting', 'beds'))
 
     def spot(rr):
         """A planting point whose whole plant (horizontal reach rr) stays clear of the kerb's inner face."""
@@ -951,7 +972,7 @@ def bed(name, poly, dens, b):
         hh = RNG.uniform(.6, 1.15)
         p = spot(hh * .55)
         if p:
-            fountain(b, p[0], p[1], ZG + .095, hh, n=11, roles=(('grass', 'grass2', 'straw'), ('grass2', 'straw', 'grass'), ('grass', 'planting', 'grass2'))[i % 3])
+            fountain(b, p[0], p[1], ZG + .095, hh, n=10, roles=(('grass', 'grass2', 'straw'), ('grass2', 'straw', 'grass'), ('grass', 'planting', 'grass2'))[i % 3])
 
 
 def planting():
@@ -964,13 +985,13 @@ def planting():
     flush_smooth(b, 'planting')
 
 
-def park_tree(x, y, r, z=ZG + .09, k=0, masses=3):
+def park_tree(x, y, r, z=ZG + .09, k=0, masses=3, limbs=True):
     """Rounded deciduous tree: a trunk, two limbs and a crown of four overlapping masses."""
     H = 2.4 * r + 3.0
     lean = ((.2, .1), (-.15, .2), (.1, -.2))[k % 3]
     top = (x + lean[0], y + lean[1], z + H * .55)
     C.rod('Tree trunk', (x, y, z - .05), top, .12 + .03 * r, 'bark', 'trees', 7)
-    for i, a in enumerate((k * 1.3, k * 1.3 + 2.4)):
+    for i, a in enumerate((k * 1.3, k * 1.3 + 2.4) if limbs else ()):
         C.rod('Tree limb', (x, y, z + H * .35), (x + math.cos(a) * r * .5, y + math.sin(a) * r * .5, z + H * .62), .06 + .015 * r, 'bark', 'trees', 6)
     roles = ('tree', 'tree2', 'tree3')
     smooth(A.foliage('Tree crown', (top[0], top[1], z + H * .7), (r * .85, r * .85, r * .75), role=roles[k % 3], detail=2))
@@ -1003,7 +1024,7 @@ def trees():
             yy = y + rng.uniform(-.9, .9) + row * 1.2
             if abs(yy - YB) < 3.0 + row * .4 or yy > Y1 + .8:
                 continue
-            park_tree(FAR + 1.4 + row * 2.4 + rng.uniform(-.4, .4), yy, rng.uniform(2.4, 4.4), z=ZG, k=k, masses=2); k += 1
+            park_tree(FAR + 1.4 + row * 2.4 + rng.uniform(-.4, .4), yy, rng.uniform(2.4, 4.4), z=ZG, k=k, masses=2, limbs=False); k += 1
         y += 2.9 if dense else 6.0
     b = Batch()
     for i in range(80):                                      # understorey mounds along the far shore and under the wood
@@ -1048,8 +1069,8 @@ def boardwalk():
         for q, r in zip(posts, posts[1:]):
             b.beam('rail', (q[0], q[1], q[2] + 1.0), (r[0], r[1], r[2] + 1.0), .07, .05, ext=.03)
             b.beam('rail', (q[0], q[1], q[2] + .08), (r[0], r[1], r[2] + .08), .04, .04, ext=.03)
-            m = max(2, int(math.dist(q[:2], r[:2]) / .14))
-            for j in range(1, m):                            # slender pickets, about 140 mm apart, from the bottom rail into the top rail
+            m = max(2, int(math.dist(q[:2], r[:2]) / .17))
+            for j in range(1, m):                            # slender pickets, about 170 mm apart, from the bottom rail into the top rail
                 u = j / m
                 pkx, pky, pkz = q[0] + (r[0] - q[0]) * u, q[1] + (r[1] - q[1]) * u, q[2] + (r[2] - q[2]) * u
                 picket(pk, 'rail', pkx, pky, pkz + .09, pkz + .99)
