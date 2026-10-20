@@ -6,8 +6,8 @@ import { CANONICAL_CHOICES, filterCanonicalChoices } from '@/features/pickPlace/
 
 describe('three additional native street programs', () => {
   it('offers the consolidated classroom selection with distinct exact identities', () => {
-    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'street')).toHaveLength(41);
-    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'building')).toHaveLength(74);
+    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'street')).toHaveLength(44);
+    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'building')).toHaveLength(79);
     expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'green_space')).toHaveLength(38);
     expect(validateRegistry(CATALOGUE_ASSETS)).toEqual([]);
     expect(new Set(CANONICAL_CHOICES.map(c => c.id)).size).toBe(CANONICAL_CHOICES.length);
