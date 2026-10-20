@@ -6,10 +6,13 @@ basement, in two offset ranges joined by a square domed block. The west range li
 east range is stepped south of it by a full range depth, so the plan reads as a long bar with a joggle at the dome
 (top view). Regular bays of six-over-six windows on three floors with small barred basement vents, dressed
 pilaster strips, a plinth, sill bands and a strong modillioned eave cornice; low hipped slate roofs with stone
-chimneys, small vent dormers and a skylight. At the east end an end pavilion, flush with the range, carries round-arched
-windows with radial fanlights on all three floors, iron balconettes on the first floor, a balustrade along its eaves
-and a pediment on the east front, with a corniced door on the east face (front and oblique). On the south street a
-tetrastyle Tuscan portico with a pediment stands in front of the west end of the east range, below the dome. Over
+chimneys, small vent dormers and a skylight. At the east end an end pavilion, flush with the range, carries two tall tiers of
+round-arched windows with radial fanlights within the range height (iron grilles and an arched door on the ground
+tier, iron balconettes on the taller first tier), the main cornice continuing the range eave, and above it an attic
+storey with rectangular six-over-six sashes, a top cornice, a balustrade with pedestals and its own low hipped slate
+roof; on the east front a pediment springs from the main cornice with an arched fanlit window in its tympanum and a
+corniced door below (front and oblique). On the south street a giant-order tetrastyle Tuscan portico rises through all
+three storeys to an entablature at the eave line, its pediment standing above the slate roof, below the dome. Over
 the dome block a square stone attic with corner pedestals carries a drum of round-arched windows between pilasters,
 a ribbed silver tin dome and an open lantern with a cupola and cross. A flat-roofed arcaded porch on the north
 front of the dome block (top view). Cobbled squares, sidewalks, streets and street trees round the hall.
@@ -25,11 +28,13 @@ DX0, DX1 = -11.0, 11.0                                # dome block, the west ran
 EX0, EX1, EY0, EY1 = -11.0, 55.0, -30.0, -10.5        # east range, stepped a full depth south (top view)
 PX0, PP = 43.0, 0.0                                   # east end pavilion from PX0 to EX1, flush with the range (oblique)
 QX0, QX1, QD = -8.6, 8.6, 4.6                         # south portico span and depth
-NX0, NX1, ND = -7.5, 7.5, 3.6                         # north arcaded porch span and depth
+NX0, NX1, ND = -9.95, 9.95, 3.6                       # north arcaded porch span (about 90% of the block, clear of the side windows) and depth
 X0, X1, Y0, Y1 = WX0, EX1, EY0 - QD, WY1 + ND
 T = .7
 G0, F1, F2, EAVE = .9, 6.0, 10.6, 15.0                # ground floor, first, second, eave (corona top)
 RISE = 4.4                                            # hipped slate roofs: eave to ridge
+AT_P, DP, PED = 19.6, 1.5, 3.6                        # pavilion attic top, attic set-back behind the pediment, pediment rise
+AXE = EX1 - DP                                        # east face of the pavilion attic
 ATT = 21.0                                            # top of the square attic over the dome block
 DR, DRUM = 7.3, 6.8                                   # drum radius and height
 DOME_R, DOME_H = 7.7, 7.6
@@ -38,7 +43,7 @@ LANT = DOME0 + DOME_H - .5
 TOP = LANT + 6.6
 EPS = .002
 PALETTE = dict(wall=(.58, .58, .56), joint=(.42, .42, .41), stone=(.70, .70, .67), arch=(.66, .66, .63),
-    trim=(.86, .86, .83), frame=(.86, .86, .83), roof=(.19, .21, .24), metal=(.76, .78, .80), membrane=(.80, .81, .82),
+    trim=(.86, .86, .83), frame=(.86, .86, .83), roof=(.19, .21, .24), metal=(.83, .85, .87), membrane=(.80, .81, .82),
     glass=(.15, .17, .19), hardware=(.06, .06, .07), timber=(.60, .62, .58), interior=(.80, .76, .68),
     floor=(.52, .44, .36), cobble=(.40, .39, .37), concrete=(.68, .67, .64), asphalt=(.27, .27, .28),
     planting=(.30, .44, .20), soil=(.22, .16, .10), pot=(.62, .62, .60), brick=(.58, .58, .56))
@@ -47,10 +52,10 @@ PALETTE = dict(wall=(.58, .58, .56), joint=(.42, .42, .41), stone=(.70, .70, .67
 def manifest(version):
     h = TOP
     cams = G.camera_roster(X1 - X0 + 3.0, Y1 - Y0 + 3.0, h, [
-        ('portico', (16.0, -60.0, 8.0), (0.0, -32.0, 9.0), 40),
+        ('portico', (18.0, -64.0, 9.0), (0.0, -33.0, 10.5), 35),
         ('dome_drum', (34.0, -44.0, 40.0), (0.0, 0.0, ATT + 6.0), 45),
-        ('end_pavilion_arches', (38.0, -50.0, 6.5), (49.0, EY0 - PP, 8.0), 40),
-        ('balconettes', (45.0, -40.0, 9.0), (49.0, EY0 - PP, 8.4), 45),
+        ('end_pavilion_arches', (36.0, -58.0, 9.0), (49.0, EY0 - PP, 11.0), 35),
+        ('balconettes', (45.0, -40.0, 8.0), (49.0, EY0 - PP, 7.6), 45),
         ('east_door', (74.0, -24.0, 3.0), (EX1, (EY0 + EY1) / 2, 4.5), 40),
         ('long_facade', (20.0, -56.0, 8.0), (20.0, EY0, 8.0), 40),
         ('roofs_dormers', (44.0, 30.0, 44.0), (20.0, -12.0, 17.0), 40),
@@ -59,9 +64,15 @@ def manifest(version):
         ('rear_north', (0.0, 74.0, 16.0), (0.0, WY1, 15.0), 45)])
     for c in cams:                       # the locked front and oblique look from the south-east
         if c['name'] == 'front':
-            c.update(location=(65.0, -50.0, 1.6), target=(30.0, -27.0, 13.5), lens=22, whole=False)
+            c.update(location=(65.0, -55.0, 1.6), target=(36.7, -26.7, 10.1), lens=22, whole=False)   # dome clear of the pavilion attic
         elif c['name'] == 'front_corner':
             c.update(location=(92.0, -84.0, 66.0), target=(8.0, -14.0, 12.0), lens=35, whole=False)   # the locked oblique: high over the south-east
+        elif c['name'] == 'right_side':                                     # framed on the hall, not the whole site
+            c.update(location=(118.0, -10.0, 20.0), target=(5.0, -10.0, 14.0), lens=50, whole=False)
+        elif c['name'] == 'left_side':
+            c.update(location=(-112.0, -10.0, 20.0), target=(0.0, -10.0, 14.0), lens=50, whole=False)
+        elif c['name'] == 'rear':
+            c.update(location=(2.0, 112.0, 26.0), target=(2.0, -10.0, 14.0), lens=35, whole=False)
         elif c['name'] == 'top':
             c.update(location=(2.0, -10.0, 160.0), target=(2.0, -9.999, 0.0), ortho_scale=136.0, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -71,9 +82,9 @@ def manifest(version):
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=3, storey_programme='low basement and three storeys of market hall, shops and assembly rooms',
             plan='107 m long hall in two 21 and 19.5 m deep ranges offset by one range depth at a 22 m square dome block (top view); south portico 17 m wide, north arcaded porch',
-            facade='grey limestone ashlar; three tiers of six-over-six windows with barred basement vents; pilaster strips, plinth, sill bands and a modillioned eave cornice; east end pavilion with round-arched windows, radial fanlights, iron balconettes, an eaves balustrade and a pediment',
+            facade='grey limestone ashlar; three tiers of six-over-six windows with barred basement vents; pilaster strips, plinth, sill bands and a modillioned eave cornice; east end pavilion with two tiers of round-arched windows with radial fanlights, grilles and iron balconettes, an attic storey with sashes, balustrade and hipped roof, and a pediment with an arched tympanum window; giant-order Tuscan portico to the eave',
             dome='square stone attic with corner pedestals, drum of sixteen round-arched windows between pilasters, ribbed silver tin dome, open lantern with cupola and cross',
-            levels_m=[G0, F1, F2, EAVE], roof_m=dict(eave=EAVE, ridge=EAVE + RISE, attic=ATT, dome=DOME0 + DOME_H, top=TOP),
+            levels_m=[G0, F1, F2, EAVE], roof_m=dict(eave=EAVE, ridge=EAVE + RISE, pavilion_attic=AT_P, attic=ATT, dome=DOME0 + DOME_H, top=TOP),
             inferred='interiors, the north and west fronts and the dome block east face follow the visible grammar; metric dimensions are authored teaching assumptions'),
         roof_contract=dict(type='low hipped slate roofs, gabled at the pediment and against the attic; flat tin deck over the attic; tin dome and lantern', datum_m=EAVE, crowns_m=[EAVE + RISE, ATT, TOP]),
         identity_contract=dict(owner='long grey limestone market hall with a pedimented Tuscan portico, a silver ribbed dome on an arcaded drum and an arched end pavilion with iron balconettes'),
@@ -544,7 +555,7 @@ def runs(a, c, z0, z1, holes, pad=.04):
 BANDS = ((0.0, G0 - .1, .1), (G0 - .15, G0 + .15, .16), (F1 + .5, F1 + .7, .12), (F2 + .5, F2 + .7, .12),
          (EAVE - .75, EAVE - .45, .25), (EAVE - .25, EAVE, .75))
 PLAIN = dict(g=(1.7, 1.4, 2.9), f1=(6.8, 1.4, 2.7), f2=(11.4, 1.4, 2.4))       # sill z, width, height
-PAV = dict(g=(1.3, 2.0, 4.4), f1=(6.6, 1.8, 3.6), f2=(11.2, 1.6, 2.6))
+PAV = dict(g=(1.4, 2.0, 4.6), f1=(7.0, 2.0, 6.0))                               # two tall arched tiers, the first the tallest
 
 
 def facade(label, origin, tangent, inward, lo, hi, bays, ext, pils, lite=False, top=EAVE, cornice=True):
@@ -561,7 +572,7 @@ def facade(label, origin, tangent, inward, lo, hi, bays, ext, pils, lite=False, 
             holes.append(hole(f'{label} vent {u:+.1f}', u, .22, .9 if k == 'plain' else 1.2, .42)); kinds.append('vent')
         for lvl in ('g', 'f1', 'f2'):
             v = bay.get(lvl, k)
-            if v is None:
+            if v is None or (v == 'pav' and lvl not in PAV):
                 continue
             if v == 'door':
                 holes.append(hole(f'{label} door {u:+.1f}', u, G0, bay.get('dw', 2.6), bay.get('dh', 5.0), kind='door')); kinds.append('door')
@@ -569,7 +580,8 @@ def facade(label, origin, tangent, inward, lo, hi, bays, ext, pils, lite=False, 
                 holes.append(hole(f'{label} door {u:+.1f}', u, G0, 1.8, 3.4, kind='door')); kinds.append('sqdoor')
             else:
                 z, w, hh = (PAV if v == 'pav' else PLAIN)[lvl]
-                holes.append(hole(f'{label} {lvl} {u:+.1f}', u, z, w, hh)); kinds.append(v if lvl != 'f1' or v != 'pav' else 'pav_bal')
+                holes.append(hole(f'{label} {lvl} {u:+.1f}', u, z, w, hh))
+                kinds.append({'g': 'pav_g', 'f1': 'pav_bal'}[lvl] if v == 'pav' else v)
     f.wall(f'{label} carrier', lo, hi - EPS, 0.0, top, depth=T, role='wall', holes=holes)
     G.brick_courses(f, lo + .02, hi - .02, G0 + .2, top - .8, holes, spacing=.55)
     m = Merge(f)
@@ -584,15 +596,22 @@ def facade(label, origin, tangent, inward, lo, hi, bays, ext, pils, lite=False, 
         n = max(2, int((hi - lo) / .9))
         for i in range(n + 1):                                                    # modillions under the corona
             m.box('stone', lo + .3 + (hi - lo - .6) * i / n, -.28, EAVE - .35, .22, .5, .24)
-    for a, c in pils:                                                             # dressed pilaster strips
+    for a, c in pils:                                                             # dressed pilaster strips with capitals
         m.box('stone', (a + c) / 2, -.075, (G0 + .15 + EAVE - .75) / 2, c - a, .15, EAVE - .75 - G0 - .15)
+        if top == EAVE:
+            m.box('stone', (a + c) / 2, -.11, EAVE - .93, c - a + .14, .22, .3)
     for h, k in zip(holes, kinds):
         if k == 'vent':
             vent(m, f, h)
         elif k == 'plain':
             sash(m, f, h, lite=lite)
-        elif k in ('pav', 'pav_bal'):
+        elif k in ('pav_g', 'pav_bal'):
             arched_window(m, b, f, h, lite=lite)
+            if k == 'pav_g':                                                       # iron grille in the reveal
+                spring = h['z'] + h['h'] - h['w'] / 2
+                for i in range(5):
+                    m.box('hardware', h['u'] - h['w'] / 2 + h['w'] * (i + .5) / 5, .09, (h['z'] + spring) / 2, .035, .035, spring - h['z'] - .04)
+                m.box('hardware', h['u'], .09, h['z'] + (spring - h['z']) * .55, h['w'] - .06, .03, .035)
             arch_head(f, h, h['w'] / 2, ring=.3, segs=8)
             m.box('arch', h['u'], -.09, h['z'] + h['h'] + .12, .36, .18, .5)              # keystone
             if k == 'pav_bal':
@@ -654,10 +673,13 @@ def elevations():
             bays.append(dict(u=x, kind='plain', vent=False, f2=None, g='door' if x == 0 else 'plain'))
         else:
             bays.append(dict(u=x, kind='plain'))
-    bays += pav_bays(pav)
+    bays += [dict(u=x, kind='pav', g='door', dw=2.0, dh=5.1, vent=False) if x == pav[1] else dict(u=x, kind='pav') for x in pav]
     pils = [(-11.0 - .15, -10.1), (14.85, 15.75), (25.05, 25.95), (35.25, 36.15),
             (42.3, 43.5), (46.6, 47.5), (50.3, 51.2), (54.1, 55.15)]
     f = facade('south front', (0, EY0, 0), *S_, EX0, EX1, bays, ('out', 'out'), pils)
+    b = Batch()
+    steps(b, f, pav[1], 2.0)
+    b.flush('south pavilion door steps')
     # East end: five pavilion bays round the corniced door.
     ys = [-27.45, -23.85, -20.25, -16.65, -13.05]
     bays = [dict(u=y, kind='pav', g='sqdoor', vent=False) if y == -20.25 else dict(u=y, kind='pav') for y in ys]
@@ -695,31 +717,34 @@ def elevations():
 
 
 def portico():
-    """Tetrastyle Tuscan portico on a stepped podium: plain shafts with entasis, entablature, pediment with raking
-    cornices and a slate roof running back into the front wall."""
+    """Giant-order tetrastyle Tuscan portico on a stepped podium: shafts with entasis through all three storeys, the
+    entablature at the eave line, a pediment with raking cornices standing above the slate roof, and a tin roof
+    running back until it dies into the range roof."""
     yf = EY0 - QD
-    ZE, ZE1, rise = 10.1, 11.7, 3.0
+    ZE1, rise = EAVE, 3.2
+    ZE = ZE1 - 1.7
     b = Batch()
     b.box('stone', 0.0, (yf - .3 + EY0 + .1) / 2, G0 / 2, QX1 - QX0 + .8, EY0 + .1 - (yf - .3), G0)            # podium
     for k in range(3):
         hgt = G0 * (3 - k) / 4
         b.box('stone', 0.0, yf - .3 - .36 * (k + .5), hgt / 2, QX1 - QX0 + .8 + .3 * k, .36, hgt)
-    yc = yf + .9
+    yc = yf + 1.2
     for x in (-8.0, -2.65, 2.65, 8.0):
-        b.box('stone', x, yc, G0 + .15, 1.55, 1.55, .3)                                                      # plinth
-        cyl(b, 'stone', x, yc, G0 + .3, G0 + .55, .72, 16)                                                     # torus
-        frustum(b, 'stone', x, yc, G0 + .55, ZE - .8, .62, .52, 16)                                          # shaft with entasis
-        cyl(b, 'stone', x, yc, ZE - .8, ZE - .68, .58, 16)                                                     # necking
-        frustum(b, 'stone', x, yc, ZE - .68, ZE - .35, .55, .74, 16)                                         # echinus
-        b.box('stone', x, yc, ZE - .15, 1.6, 1.6, .4)                                                        # abacus, seated into the beam
+        b.box('stone', x, yc, G0 + .175, 2.15, 2.15, .35)                                                    # plinth
+        cyl(b, 'stone', x, yc, G0 + .35, G0 + .65, .98, 16)                                                    # torus
+        frustum(b, 'stone', x, yc, G0 + .65, ZE - .95, .86, .72, 16)                                         # shaft with entasis
+        cyl(b, 'stone', x, yc, ZE - .95, ZE - .8, .78, 16)                                                     # necking
+        frustum(b, 'stone', x, yc, ZE - .8, ZE - .42, .74, 1.0, 16)                                          # echinus
+        b.box('stone', x, yc, ZE - .19, 2.15, 2.15, .48)                                                     # abacus, seated into the beam
     for x in (-8.0, 8.0):                                                                                     # responds on the wall
-        b.box('stone', x, EY0 - .1, (G0 + ZE) / 2, .9, .2, ZE - G0)
+        b.box('stone', x, EY0 - .09, (G0 + ZE) / 2, 1.2, .2, ZE - G0)
     b.box('stone', 0.0, (yf + EY0 + .15) / 2, (ZE + ZE1 - .2) / 2, QX1 - QX0, EY0 + .15 - yf, ZE1 - .2 - ZE)       # architrave and frieze
     for i in range(13):                                                                                       # triglyphs
         b.box('stone', QX0 + .4 + (QX1 - QX0 - .8) * i / 12, yf - .05, ZE + 1.0, .5, .12, .7)
     b.box('stone', 0.0, (yf - .3 + EY0 + .15) / 2, ZE1 - .175, QX1 - QX0 + .6, EY0 + .15 - yf + .3, .35)         # cornice
     C.prism('Portico tympanum', [(QX0 + .3, ZE1 - .1), (QX1 - .3, ZE1 - .1), (0.0, ZE1 + rise)], 'y', yf + .15, yf + .55, 'wall', 'portico')
-    C.prism('Portico roof', [(QX0 - .35, ZE1 - .05), (QX1 + .35, ZE1 - .05), (0.0, ZE1 + rise + .45)], 'y', yf + .45, EY0 + .3, 'roof', 'portico')
+    run = (rise + .5) * ((EY1 - EY0) / 2) / RISE + .4                                                        # back until the ridge dies into the range roof
+    C.prism('Portico roof', [(QX0 - .35, ZE1 - .05), (QX1 + .35, ZE1 - .05), (0.0, ZE1 + rise + .45)], 'y', yf + .25, EY0 + run, 'metal', 'portico')
     for s in (-1, 1):
         b.beam('stone', (s * (QX1 + .25), yf + .1, ZE1 + .05), (0.0, yf + .1, ZE1 + rise + .32), .9 + .04 * (s > 0), .42, ext=.05)
     disc(b, 'stone', (0.0, yf + .15, ZE1 + 1.15), (0, -1), .75, .06)
@@ -731,7 +756,7 @@ def north_porch():
     """Flat-roofed arcaded porch on the north front of the dome block, with a balustrade on its roof."""
     yf, top = WY1 + ND, 5.4
     f = C.Face((0, yf, 0), *N_, 'north porch front')
-    hs = [hole(f'north porch arch {u:+.1f}', u, G0, 2.6, 4.0, kind='arcade') for u in (-4.4, 0.0, 4.4)]
+    hs = [hole(f'north porch arch {u:+.1f}', u, G0, 2.6, 4.0, kind='arcade') for u in (-5.6, 0.0, 5.6)]
     f.wall('north porch front carrier', NX0, NX1 - EPS, 0.0, top, depth=.6, role='wall', holes=hs)
     G.brick_courses(f, NX0 + .02, NX1 - .02, .2, top - .2, hs, spacing=.55)
     m = Merge(f)
@@ -785,18 +810,9 @@ def balustrade(b, a, c, z, posts, ends=(True, True), end_w=.62):
 def roofs():
     ov = .35
     pitched_roof('West range roof', WX0, WX1, WY0, WY1, EAVE, RISE, hip_w=True, hip_e=False, axis='x', ov=ov)
-    pitched_roof('East range roof', EX0, EX1 - 1.1, EY0, EY1, EAVE, RISE, hip_w=True, hip_e=False, axis='x', ov=ov)
-    # East pediment: tympanum under the roof plate, raking cornices standing proud of the slates, a blind oculus.
+    pitched_roof('East range roof', EX0, PX0 + .05 - ov, EY0, EY1, EAVE, RISE, hip_w=True, hip_e=False, axis='x', ov=ov)   # gable end buried in the pavilion attic
     ym = (EY0 + EY1) / 2
-    C.prism('East pediment tympanum', [(EY0 + .3, EAVE - .05), (EY1 - .3, EAVE - .05), (ym, EAVE + RISE)], 'x', EX1 - .7, EX1, 'wall', 'pediment')
     b = Batch()
-    for s, y in ((-1, EY0), (1, EY1)):
-        b.beam('stone', (EX1 - .1, y + s * .25, EAVE + .15), (EX1 - .1, ym, EAVE + RISE + .1), 1.4 + .04 * (s > 0), .6, ext=.05)
-    disc(b, 'stone', (EX1, ym, EAVE + 1.7), (1, 0), .95, .08)
-    disc(b, 'glass', (EX1 + .08, ym, EAVE + 1.7), (1, 0), .7, .03)
-    # Eaves balustrades of the end pavilion.
-    balustrade(b, (PX0, EY0 - .3), (EX1 - .3, EY0 - .3), EAVE, [6.0], ends=(True, True))
-    balustrade(b, (PX0, EY1 + .3), (EX1 - .3, EY1 + .3), EAVE, [6.0], ends=(True, True))
     # Stone chimneys on the ridges, vent dormers on the court slope of the east range.
     for x, y in ((-44.0, 0.0), (-26.0, 0.0), (16.0, ym), (32.0, ym)):
         chimney(b, x, y, EAVE + RISE - .6, EAVE + RISE + 1.9, w=1.3, d=.8, pots=2, role='wall', pot='pot', cap='stone')
@@ -810,6 +826,75 @@ def roofs():
     zb = EAVE + RISE * 6.5 / ((WY1 - WY0) / 2) + .1
     C.beam('West skylight frame', (-33.0, WY0 + 3.5, za), (-33.0, WY0 + 6.5, zb), 5.0, .14, 'frame', 'roof')
     C.beam('West skylight glass', (-33.0, WY0 + 3.6, za + .1), (-33.0, WY0 + 6.4, zb + .1), 4.7, .04, 'glass', 'roof')
+
+
+def arch_window_proud(b, x, yc, z0, w, spring, inset=.0):
+    """Round-arched fanlit window built proud of a plane x = const facing +x (the pediment tympanum): a dark glazed
+    arched panel, a dressed-stone surround with keystone and sill, a frame, a transom and radial fanlight bars."""
+    r = w / 2
+    n = 10
+    arc = [(yc + r * math.cos(math.pi * i / n), spring + r * math.sin(math.pi * i / n)) for i in range(n + 1)]
+    C.prism('Tympanum window glass', [(yc + r, z0)] + arc + [(yc - r, z0)], 'x', x + .005, x + .025, 'glass', 'pediment')
+    R0, R1 = r + .06, r + .3                                                      # surround ring, segment by segment
+    for i in range(n):
+        a0, a1 = math.pi * i / n, math.pi * (i + 1) / n
+        pts = [(yc + R0 * math.cos(a0), spring + R0 * math.sin(a0)), (yc + R1 * math.cos(a0), spring + R1 * math.sin(a0)),
+               (yc + R1 * math.cos(a1), spring + R1 * math.sin(a1)), (yc + R0 * math.cos(a1), spring + R0 * math.sin(a1))]
+        C.prism(f'Tympanum window ring {i}', pts, 'x', x, x + .14 + .002 * (i % 2), 'stone', 'pediment')
+    for s in (-1, 1):
+        b.box('stone', x + .07, yc + s * (r + .18), (z0 + spring) / 2, .14, .24, spring - z0)                 # jambs
+        b.box('frame', x + .045, yc + s * (r - .03), (z0 + spring) / 2, .05, .06, spring - z0)                # frame stiles
+    b.box('stone', x + .1, yc, z0 - .08, .2, w + .7, .16)                                                     # sill
+    b.box('stone', x + .1, yc, spring + R1 - .05, .2, .34, .4)                                                # keystone
+    b.box('frame', x + .045, yc, spring, .05, w - .04, .06)                                                   # transom at the springing
+    b.box('frame', x + .045, yc, (z0 + spring) / 2, .045, .05, spring - z0 - .04)                             # mullion
+    for i in range(5):                                                                                        # radial fanlight bars
+        a = math.pi * (i + 1) / 6
+        b.beam('frame', (x + .045, yc + .1 * math.cos(a), spring + .1 * math.sin(a)), (x + .045, yc + (r - .05) * math.cos(a), spring + (r - .05) * math.sin(a)), .04, .04)
+
+
+def pavilion():
+    """Attic storey of the east end pavilion over the main cornice: walls with rectangular six-over-six sashes on the
+    long faces, a top cornice, a balustrade with pedestals and a low hipped slate roof with a chimney and skylight;
+    on the east front a pediment springing from the main cornice with an arched fanlit window in its tympanum and a
+    short tin roof back to the attic."""
+    ym = (EY0 + EY1) / 2
+    us = (45.2, 48.9, 52.4)
+    for label, o, t, n, lo, hi, wins in (('pavilion attic south', (0, EY0, 0), *S_, PX0, AXE, us),
+                                         ('pavilion attic north', (0, EY1, 0), *N_, -AXE, -PX0, tuple(-u for u in us)),
+                                         ('pavilion attic east', (AXE, 0, 0), *E_, EY0 + T, EY1 - T, ()),
+                                         ('pavilion attic west', (PX0, 0, 0), *W_, -EY1 + T, -EY0 - T, ())):
+        f = C.Face(o, t, n, label)
+        holes = [hole(f'{label} sash {u:+.1f}', u, EAVE + 1.0, 1.3, 2.2) for u in wins]
+        f.wall(label + ' carrier', lo, hi - EPS, EAVE - .01, AT_P, depth=T, role='wall', holes=holes)
+        G.brick_courses(f, lo + .02, hi - .02, EAVE + .3, AT_P - .9, holes, spacing=.55)
+        m = Merge(f)
+        wraps = label.endswith(('south', 'north'))
+        for z0, z1, d in ((AT_P - .9, AT_P - .6, .2), (AT_P - .3, AT_P, .45)):
+            e = d if wraps else T
+            m.box('stone', (lo + hi) / 2, -d / 2, (z0 + z1) / 2, hi - lo + 2 * e, d, z1 - z0)
+        for h in holes:
+            sash(m, f, h)
+        m.flush(label)
+    b = Batch()
+    b.box('membrane', (PX0 + AXE) / 2, ym, AT_P - .15, AXE - PX0 - 2 * T + .2, EY1 - EY0 - 2 * T + .2, .25)       # attic deck
+    balustrade(b, (PX0 + .3, EY0 + .3), (AXE - .3, EY0 + .3), AT_P, [(AXE - PX0 - .6) / 2])
+    balustrade(b, (PX0 + .3, EY1 - .3), (AXE - .3, EY1 - .3), AT_P, [(AXE - PX0 - .6) / 2])
+    for x in (PX0 + .3, AXE - .3):
+        balustrade(b, (x, EY0 + .3), (x, EY1 - .3), AT_P, [(EY1 - EY0 - .6) / 2], ends=(False, False))
+    chimney(b, PX0 + 2.4, EY1 - 2.6, AT_P + .3, AT_P + 2.9, w=1.1, d=.7, pots=2, role='wall', pot='pot', cap='stone')
+    # Pediment on the east front, springing from the main cornice, with its short roof back to the attic.
+    C.prism('East pediment tympanum', [(EY0 + .3, EAVE - .08), (EY1 - .3, EAVE - .08), (ym, EAVE + PED)], 'x', EX1 - .7, EX1, 'wall', 'pediment')
+    C.prism('East pediment roof', [(EY0 - .35, EAVE - .05), (EY1 + .35, EAVE - .05), (ym, EAVE + PED + .45)], 'x', AXE - .2, EX1 - .45, 'metal', 'pediment')
+    for s, y in ((-1, EY0), (1, EY1)):
+        b.beam('stone', (EX1 - .1, y + s * .25, EAVE + .15), (EX1 - .1, ym, EAVE + PED + .1), 1.4 + .04 * (s > 0), .6, ext=.05)
+    arch_window_proud(b, EX1, ym, EAVE + .5, 1.5, EAVE + 1.55)
+    b.flush('pavilion attic and pediment')
+    pitched_roof('Pavilion roof', PX0 + .9, AXE - .9, EY0 + .9, EY1 - .9, AT_P + .05, 1.5, hip_w=True, hip_e=True, axis='x', ov=.15)
+    za = AT_P + .05 + 1.5 * 2.6 / ((EY1 - EY0) / 2 - .9) + .08
+    zb = AT_P + .05 + 1.5 * 5.0 / ((EY1 - EY0) / 2 - .9) + .08
+    C.beam('Pavilion skylight frame', ((PX0 + AXE) / 2, EY0 + .9 + 2.6, za), ((PX0 + AXE) / 2, EY0 + .9 + 5.0, zb), 2.6, .14, 'frame', 'roof')
+    C.beam('Pavilion skylight glass', ((PX0 + AXE) / 2, EY0 + .9 + 2.7, za + .1), ((PX0 + AXE) / 2, EY0 + .9 + 4.9, zb + .1), 2.3, .04, 'glass', 'roof')
 
 
 def dome_block():
@@ -896,7 +981,7 @@ def inside():
 
 def site():
     for name, x0, x1, y0, y1, role, top in (
-            ('South street', -62.0, 66.0, -46.0, -38.5, 'asphalt', .02), ('North street', -62.0, 66.0, 14.5, 22.0, 'asphalt', .02),
+            ('South street', -62.0, 66.0, -46.0, -38.5, 'asphalt', .02), ('Far south sidewalk', -62.0, 66.0, -58.0, -46.0, 'concrete', .14), ('North street', -62.0, 66.0, 14.5, 22.0, 'asphalt', .02),
             ('East street', 59.5, 66.0, -38.5, 14.5, 'asphalt', .02), ('West street', -62.0, -56.0, -38.5, 14.5, 'asphalt', .02),
             ('South sidewalk', -56.0, 59.5, -38.5, EY0, 'concrete', .14), ('North sidewalk', -56.0, 59.5, WY1, 14.5, 'concrete', .14),
             ('East sidewalk', EX1, 59.5, EY0, WY1, 'concrete', .14), ('West sidewalk', -56.0, WX0, EY0, WY1, 'concrete', .14),
@@ -923,6 +1008,7 @@ def build():
     portico()
     north_porch()
     roofs()
+    pavilion()
     dome_block()
     inside()
     C.CONTACTS.append(dict(name='Domed limestone market hall with a portico on a city block', box=[X0, X1, Y0, Y1]))
