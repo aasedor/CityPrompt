@@ -1,7 +1,7 @@
 # Planted green bridge (RLASM v6.1 architectural clay)
 
 Candidate H8 of wave H (bridges) of 2026-10-19, one of the ten bridge variants the user chose from the
-street and path catalogue; a street or path option, not a building. State: **candidate under review**. Nothing here is keeper-approved,
+street and path catalogue; a street or path option, not a building. State: **stopped at v003 by the stopping rule (the planting finding survived two targeted fixes); v002 is the candidate**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,8 +68,13 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 reworks these three; a second failed fix of the pod or planting finding stops the family)
+## Open blockers after v003 (stopped)
 
-- P1 #1: the pods are undersized and pointed: projection about 0.56 of the deck width (source about 0.76), chord about 0.78 (source about 1.05), outer face about 0.35 (source about 0.6); they read as small wedge bays, not broad planted platforms (the v001 pod-shape finding, surviving one targeted fix).
-- P1 #2: the 1.8 m spur runs straight across both beds, the path and both pods at one station, a '+' crossroads in plan that cuts the beds and shrinks pod planting; the source has continuous planting with a small hidden threshold near each pod's north end.
-- P1 #3: the beds read as boulder fields of large faceted lumps matching the riprap; lavender is a few spiky lumps, poppies flat orange pyramids, grasses sparse; most mass sits at or below the path-rail top (the v001 planting finding, surviving one targeted fix).
+- P0 #1: glass_close is jammed against a foreground mound filling about 80% of the frame.
+- P1: front lost the water and crops both pods; the wide lens keystones the towers (a v001 front fix regressed).
+- P1: mounds overrun the path rail and kerb and pass through the rail bars.
+- P1: rail_bollard shows no bollard (a v002 fix regressed).
+- P1: mounds push through the outer railing and hang over the corten fascia.
+- P1: lavender reads as solid lilac capsules, the bunch-grass and plume-grass layer is missing, and the mounds are near-uniform gumdrops (the v001 planting finding, surviving two targeted fixes).
+- P1: both deck ends stop in mid-air 3-4 m above the bank lawns with no abutment, landing or ramp.
+- Stopped by the stopping rule; v002 remains the candidate. Nothing here is keeper-approved.
