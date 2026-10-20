@@ -575,7 +575,7 @@ def car_bodies():
 NOSE = [(.30, .32, .02), (.52, .44, 0), (.84, .50, 0), (1.18, .52, 0), (1.30, .51, 0), (1.70, .43, 0), (2.10, .31, .01),
         (2.40, .18, .02), (2.65, .02, .035), (2.85, -.12, .055), (3.00, -.28, .09), (3.10, -.43, .14), (3.18, -.60, .21),
         (3.23, -.80, .30), (3.26, -.95, .40)]
-CAB_D = 1.9                                      # cab section length behind the cab-end line, lofted instead of boxed
+CAB_D = 2.6                                      # cab section length behind the cab-end line, lofted instead of boxed
 
 
 def _nose(z, k):
@@ -608,17 +608,18 @@ def nose_curve(ye, sgn, z, off=0.0, wrap=None, n=8, hwb=None):
     yb = ye - sgn * CAB_D
 
     def hw_at(y):
-        t = abs(y - yb) / max(1e-6, abs(ys - yb))
-        return hwb + (hwf - hwb) * min(1.0, max(0.0, t))
+        t = min(1.0, max(0.0, (y - yb) * sgn / max(1e-6, abs(ys - yb))))
+        return hwb + (hwf - hwb) * t * t * (3 - 2 * t)                                         # smooth taper, tangent at both ends
     y0 = yb if wrap is None else ys - sgn * wrap
-    pts = [(xc - hw_at(y0), y0, z)]
+    side = [yb + (ys - yb) * u for u in (.2, .4, .6, .8)] if wrap is None else []
+    pts = [(xc - hw_at(y0), y0, z)] + [(xc - hw_at(y), y, z) for y in side]
     for i in range(n + 1):                                                                     # left corner
         a = math.pi / 2 * i / n
         pts.append((xc - hwf + rc * (1 - math.cos(a)), ys + sgn * rc * math.sin(a), z))
     for i in range(n + 1):                                                                     # right corner
         a = math.pi / 2 * (1 - i / n)
         pts.append((xc + hwf - rc * (1 - math.cos(a)), ys + sgn * rc * math.sin(a), z))
-    pts.append((xc + hw_at(y0), y0, z))
+    pts += [(xc + hw_at(y), y, z) for y in side[::-1]] + [(xc + hw_at(y0), y0, z)]
     if sgn < 0:
         pts = pts[::-1]
     return pts
@@ -633,6 +634,26 @@ def smooth_loft(name, rings, role):
     return obj
 
 
+def cab_loft(name, rings, role):
+    """Cab band loft from open plan rings that start and end on the cab-start line. The swept skin is smooth-shaded on
+    its own vertices; the flat back strip on the cab-start line and the two flat caps get separate vertices, so no
+    smoothed normal bends round a square edge."""
+    n, m = len(rings), len(rings[0])
+    vs = [v for ring in rings for v in ring]
+    fs = [(i * m + j, (i + 1) * m + j, (i + 1) * m + j + 1, i * m + j + 1) for i in range(n - 1) for j in range(m - 1)]
+    ns = len(fs)
+    base = len(vs)
+    for ring in rings:
+        vs += [ring[-1], ring[0]]
+    fs += [(base + 2 * i, base + 2 * i + 2, base + 2 * i + 3, base + 2 * i + 1) for i in range(n - 1)]
+    base = len(vs); vs += list(rings[0]); fs.append(tuple(range(base + m - 1, base - 1, -1)))
+    base = len(vs); vs += list(rings[-1]); fs.append(tuple(base + j for j in range(m)))
+    obj = C.mesh(name, vs, fs, role, 'streetcar')
+    for k, poly in enumerate(obj.data.polygons):
+        poly.use_smooth = k < ns
+    return obj
+
+
 def nose(b, ye, sgn):
     """Raked, domed Flexity cab lofted from plan rings in the livery bands of the body: red skirt, white band, the glass
     band that is the wrapped windscreen at the front, white band and a red roof cap that domes back into the roof.
@@ -642,9 +663,10 @@ def nose(b, ye, sgn):
              ('white band', [.751, .84, 1.00, 1.179], 'car_white', lambda z: hb + .01),
              ('glass band', [1.181, 1.30, 1.50, 1.70, 1.90, 2.10, 2.25, 2.399], 'car_glass', lambda z: hb - .02),
              ('upper white band', [2.401, 2.55, 2.70, 2.849], 'car_white', lambda z: hb),
-             ('roof cap', [2.851, 2.95, 3.03, 3.10, 3.16, 3.21, 3.245, 3.26], 'car_red', lambda z: hb if z <= 3.10 else hb - .05)]
+             ('roof cap', [2.851, 2.95, 3.03, 3.099], 'car_red', lambda z: hb),                 # meets the boxed red roof band
+             ('roof dome', [3.10, 3.16, 3.21, 3.245, 3.26], 'car_red', lambda z: hb - .05)]     # meets the boxed roof, same step
     for nm, zs, role, hwb in bands:
-        smooth_loft(f'Streetcar cab {nm}', [nose_curve(ye, sgn, z, hwb=hwb(z)) for z in zs], role)
+        cab_loft(f'Streetcar cab {nm}', [nose_curve(ye, sgn, z, hwb=hwb(z)) for z in zs], role)
 
     def shell(name, zs, role, wrap, o1=.016, o0=.004):
         rings = [nose_curve(ye, sgn, z, off=o1, wrap=wrap) + nose_curve(ye, sgn, z, off=o0, wrap=wrap)[::-1] for z in zs]
@@ -1037,6 +1059,9 @@ def condo(name, side, y0, y1, depth, top, piers, pier_role, band_role, step, bal
             fbox(b, side, 'pale', (ya + yb) / 2, -.75, f + .15, yb - ya - .02, 1.3, .22)       # balcony slab
             fbox(b, side, 'railglass', (ya + yb) / 2, -1.36, f + .78, yb - ya - .06, .02, 1.04)  # glass rail
             fbox(b, side, 'hardware', (ya + yb) / 2, -1.37, f + 1.32, yb - ya - .06, .05, .05)
+            for ye_ in (ya + .045, yb - .045):                                                 # glass returns at both balcony ends
+                fbox(b, side, 'railglass', ye_, -.7275, f + .78, .02, 1.255, 1.03)              # 5 mm inside the front panel
+                fbox(b, side, 'hardware', ye_, -.74, f + 1.317, .04, 1.24, .04)
         for f in floors:
             fbox(b, side, 'stone', (ya + yb) / 2, .3, f + .36, yb - ya, .12, .06)            # sill
     # Interior behind the glass, floors, closure walls and the green roof.
