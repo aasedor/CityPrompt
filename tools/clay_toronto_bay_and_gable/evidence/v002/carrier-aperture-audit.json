@@ -1,0 +1,276 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "front door",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front door transom",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "upper sash over porch",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west basement 0",
+      "face": "west foundation",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west basement 1",
+      "face": "west foundation",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west ground sash 0",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west ground sash 1",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west ground sash 2",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west upper sash 0",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west upper sash 1",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west upper sash 2",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east basement 0",
+      "face": "east foundation",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east basement 1",
+      "face": "east foundation",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east ground sash 0",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east ground sash 1",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east upper sash 0",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east upper sash 1",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north stub east upper sash 0",
+      "face": "north stub east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing west basement 0",
+      "face": "wing west foundation",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing west ground sash 0",
+      "face": "wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing west ground sash 1",
+      "face": "wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing west upper sash 0",
+      "face": "wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing west upper sash 1",
+      "face": "wing west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing east basement 0",
+      "face": "wing east foundation",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing east ground sash 0",
+      "face": "wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing east ground sash 1",
+      "face": "wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing east upper sash 0",
+      "face": "wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "wing east upper sash 1",
+      "face": "wing east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north basement 0",
+      "face": "north foundation",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north ground sash 0",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north upper sash 0",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north upper sash 1",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear door",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "bay west ground sash",
+      "face": "bay west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "bay west upper sash",
+      "face": "bay west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "bay front basement",
+      "face": "bay front foundation",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "bay front ground sash",
+      "face": "bay front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "bay front upper sash",
+      "face": "bay front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "bay east ground sash",
+      "face": "bay east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "bay east upper sash",
+      "face": "bay east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "attic centre window",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "attic west window",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "attic east window",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west attic sash 0",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west attic sash 1",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

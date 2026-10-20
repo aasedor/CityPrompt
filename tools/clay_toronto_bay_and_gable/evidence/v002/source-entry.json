@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-toronto-bay-and-gable-house",
+  "variant_id": "clay-toronto-bay-and-gable-house-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "toronto_bay_and_gable_house/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/toronto-bay-and-gable-house/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1488963,
+      "sha256": "d95d3c86850b2d98b3e04a4c0b69ea6747979598bff2eb39903e9bec779372f7"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/toronto-bay-and-gable-house/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 1002820,
+      "sha256": "de99a823f3eba0c67dac7ffd0d7539193394d1d375f758cd00f0d35c7b962a94"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/toronto-bay-and-gable-house/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 913422,
+      "sha256": "8997950a8420a55a25da21241f20a73c5698812f496a9b517961cd36e28c3433"
+    }
+  ]
+}
