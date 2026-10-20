@@ -53,6 +53,8 @@ def manifest(version):
         ('interior', (XC, Y0 - .3, F1 + 1.6), (XC + .8, Y0 + 5.0, F1 + 1.3), 30),
         ('rear_north', (0.0, Y1 + 17.0, 5.0), (0.0, Y1, 5.0), 45)])
     for c in cams:                       # the locked front looks from the south-south-west at eye level
+        if c['name'] in ('aerial', 'front_corner'):        # start close; the whole-scene fit backs off only as far as needed
+            c['location'] = tuple(t + (l - t) * .5 for l, t in zip(c['location'], c['target']))
         if c['name'] == 'front':
             c['location'] = (-7.0, Y0 - 12.8, 1.6); c['target'] = (-.2, Y0 + 2.5, 5.0); c['lens'] = 28; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -609,7 +611,7 @@ def bay():
         b.beam('trim', (*cor[i], EAVE - .12), (*cor[i + 1], EAVE - .12), .18, .18, ext=.09)
         b.beam('trim', (*bed[i], EAVE - .25), (*bed[i + 1], EAVE - .25), .1, .09, ext=.05)
     b.flush('bay cornice')
-    C.prism('Bay cap', offset(.12, Y0 + .02)[::-1], 'z', EAVE - .02, EAVE + .04, 'trim', 'bay')
+    C.prism('Bay cap', offset(.12, Y0 + .02)[::-1], 'z', EAVE - .02, EAVE + .04, 'roof', 'bay')
     inner = offset(-T, Y0 + T)
     for z in (F1, F2):
         C.prism(f'Bay floor {z:.1f}', inner[::-1], 'z', z - .22, z, 'floor', 'inside')
@@ -888,20 +890,20 @@ def site():
     yw = Y0 - 4.0                                   # back of the front sidewalk
     xw = X0 - 1.6                                   # back of the side-street sidewalk
     C.box('Lawn', ((xw + X1 + 3.5) / 2, (yw + Y1 + 3.0) / 2, .015), (X1 + 3.5 - xw, Y1 + 3.0 - yw, .03), 'grass', 'site', 0)
-    C.box('Front sidewalk', ((X0 - 5.2 + X1 + 8.0) / 2, yw - .9, .05), (X1 + 8.0 - X0 + 5.2, 1.8, .1), 'paving', 'site', 0)
+    C.box('Front sidewalk', ((X0 - 5.2 + X1 + 6.0) / 2, yw - .9, .05), (X1 + 6.0 - X0 + 5.2, 1.8, .1), 'paving', 'site', 0)
     C.box('Side sidewalk', (xw - .8, (yw + Y1 + 3.0) / 2, .05), (1.6, Y1 + 3.0 - yw, .1), 'paving', 'site', 0)
     C.box('Side boulevard', (xw - 2.6, (yw + Y1 + 3.0) / 2, .02), (2.0, Y1 + 3.0 - yw, .04), 'grass', 'site', 0)
     C.box('Side street curb', (xw - 3.675, (yw - 1.8 + Y1 + 3.0) / 2, .07), (.15, Y1 + 3.0 - yw + 1.8, .14), 'paving', 'site', 0)
-    C.box('Front curb', ((X0 - 5.2 + X1 + 8.0) / 2, yw - 1.875, .07), (X1 + 8.0 - X0 + 5.2, .15, .14), 'paving', 'site', 0)
-    C.box('Front street', ((X0 - 12.0 + X1 + 8.0) / 2, yw - 5.45, .005), (X1 + 8.0 - X0 + 12.0, 7.0, .01), 'asphalt', 'site', 0)
-    C.box('Side street', (xw - 7.25, (yw - 1.95 + Y1 + 3.0) / 2, .005), (7.0, Y1 + 3.0 - yw + 1.95, .01), 'asphalt', 'site', 0)
+    C.box('Front curb', ((X0 - 5.2 + X1 + 6.0) / 2, yw - 1.875, .07), (X1 + 6.0 - X0 + 5.2, .15, .14), 'paving', 'site', 0)
+    C.box('Front street', ((X0 - 8.35 + X1 + 6.0) / 2, yw - 4.25, .005), (X1 + 6.0 - X0 + 8.35, 4.6, .01), 'asphalt', 'site', 0)
+    C.box('Side street', (xw - 6.05, (yw - 1.95 + Y1 + 3.0) / 2, .005), (4.6, Y1 + 3.0 - yw + 1.95, .01), 'asphalt', 'site', 0)
     b = Batch()
-    for k in range(int((X1 + 8.0 - X0 + 5.2) / 1.5)):
+    for k in range(int((X1 + 6.0 - X0 + 5.2) / 1.5)):
         b.box('joint', X0 - 5.2 + k * 1.5, yw - .9, .101, .02, 1.78, .004)
     for k in range(int((Y1 + 3.0 - yw) / 1.5)):
         b.box('joint', xw - .8, yw + k * 1.5, .101, 1.58, .02, .004)
     for k in range(9):                                                           # centre line of the side street
-        b.box('pale', xw - 7.25, yw - 1.0 + k * 2.4, .012, .12, 1.2, .004)
+        b.box('pale', xw - 8.1, yw - 1.0 + k * 2.4, .012, .12, 1.2, .004)
     # Brick walk from the stair to the sidewalk.
     yb = Y0 - PD - 4 * .30
     C.box('Brick walk', ((2.35 + PX1 - .26) / 2, (yb + yw) / 2, .03), (PX1 - .26 - 2.35, yb - yw, .06), 'walk', 'site', 0)
