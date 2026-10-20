@@ -15,13 +15,14 @@ import geometry as G
 SLUG = 'clay-ice-rink-market-square'
 RX, RY, RR = 11.0, 17.0, 4.0                    # rink half-sizes and corner radius
 DX, DY = 13.0, 19.5                             # timber deck half-sizes
+CX, CY = 9.9, 17.2                              # deck chamfer: ends of the north/south and east/west chalet rows
 X0, X1, Y0, Y1 = -17.0, 17.0, -23.5, 23.5      # the rink, deck and chalet ring
 ICE = .16
 TREE = (0.0, 1.0)                               # just north of centre (top view: about 47% from the north end)
 EPS = .002
 T = .3
 PALETTE = dict(ice=(.86, .90, .93), white=(.95, .95, .94), glass=(.62, .70, .74), hardware=(.10, .10, .11),
-    deck=(.30, .22, .16), timber=(.32, .21, .14), hut=(.30, .20, .13), snow=(.94, .95, .96), roof=(.94, .95, .96),
+    deck=(.21, .15, .10), timber=(.32, .21, .14), hut=(.30, .20, .13), snow=(.94, .95, .96), roof=(.94, .95, .96),
     planting=(.12, .30, .16), tree=(.10, .26, .14), tree2=(.07, .21, .11), flower=(.76, .10, .10), gold=(.86, .70, .30), pale=(.98, .92, .70),
     counter=(.46, .32, .20), interior=(.80, .56, .34), setts=(.20, .19, .18), joint=(.31, .30, .28), stone=(.72, .70, .66),
     wall=(.80, .74, .62), facade=(.80, .74, .62), facade2=(.62, .34, .26), facade3=(.84, .82, .78), troof=(.56, .26, .18),
@@ -44,7 +45,7 @@ def manifest(version):
         ('rear_north', (8.0, 28.8, 11.5), (0.0, 4.0, 5.5), 28)])
     for c in cams:                       # the locked front stands on the ice by the east boards at the south end, looking NNW
         if c['name'] == 'front':
-            c['location'] = (9.0, -14.0, 2.2); c['target'] = (7.6, 14.0, 6.6); c['lens'] = 19; c['whole'] = False   # tilted up about 5 deg: tree, star and sky in frame
+            c['location'] = (9.0, -14.0, 2.2); c['target'] = (5.6, 14.0, 6.6); c['lens'] = 19; c['whole'] = False   # tilted up about 5 deg, yawed about 4 deg west: tree, star, sky and the west row in frame
         elif c['name'] == 'aerial':                                            # steep enough that the near frontage clears the near chalet row
             c.update(location=(34.0, -42.0, 70.0), target=(0.0, -1.0, 0.0), lens=42)
         elif c['name'] == 'front_corner':                                      # the locked oblique looks north-east from high in the south-west
@@ -456,19 +457,26 @@ def ngon(b, role, cx, cy, z0, z1, r, n=12, cone=False):
 
 
 def ice_and_boards():
-    C.box('Timber deck', (0, 0, .06), (2 * DX, 2 * DY, .12), 'deck', 'rink', 0)
+    # Deck trimmed to the chalet line: the corners are chamfered between the end of the side rows and the end
+    # of the north and south rows, so no square pad sticks out past the chalet ring.
+    deck = [(DX, -CY), (DX, CY), (CX, DY), (-CX, DY), (-DX, CY), (-DX, -CY), (-CX, -DY), (CX, -DY)]
+    C.prism('Timber deck', deck, 'z', 0.0, .12, 'deck', 'rink')
     out = rink_outline(RX, RY, RR)
     C.prism('Ice', out, 'z', .12, ICE, 'ice', 'rink')
     b = Batch()
     for k in range(int(2 * DX / .6)):                                          # deck boards
         x = -DX + .3 + k * .6
-        b.box('joint', x, 0.0, .121, .015, 2 * DY - .02, .004)
+        ym = DY if abs(x) <= CX else DY - (abs(x) - CX) * (DY - CY) / (DX - CX)     # clipped to the chamfered corners
+        b.box('joint', x, 0.0, .121, .015, 2 * ym - .3, .004)
     # Dasher boards: white board, glass panel above, posts and a top rail, round the rounded outline.
     ring = out + [out[0]]
     for j, ((ax, ay), (cx, cy)) in enumerate(zip(ring, ring[1:])):
         L = math.hypot(cx - ax, cy - ay)
         b.beam('white', (ax, ay, .58), (cx, cy, .58), .12 + .006 * (j % 2), .92, ext=.02)        # alternate widths: no shared planes     # opaque white board to 1.04 m
         b.beam('glass', (ax, ay, 1.34), (cx, cy, 1.34), .03, .6, ext=.0)
+        ux, uy = (cy - ay) / L, -(cx - ax) / L                                                    # outward normal
+        b.beam('dark', (ax - ux * .07, ay - uy * .07, ICE + .07), (cx - ux * .07, cy - uy * .07, ICE + .07),
+               .04 + .006 * (j % 2), .18, ext=.02)                                                # kick-plate at the ice, sunk 2 cm into it
         n = max(1, int(L / 2.0))
         for i in range(n):
             px, py = ax + (cx - ax) * i / n, ay + (cy - ay) * i / n
@@ -480,6 +488,8 @@ def ice_and_boards():
         for i in range(k):
             px, py = ax + (cx - ax) * (i + .5) / k, ay + (cy - ay) * (i + .5) / k
             s = -1 if i % 2 else 1                                                                # alternate ice and deck faces
+            if i % 6 in (0, 3):                                                                   # extra warm lights on the ice-side face
+                RAIL_LIGHTS.append((px - nx * .19, py - ny * .19, 1.97))
             if i % 3 == 2:
                 RAIL_LIGHTS.append((px + s * nx * .19, py + s * ny * .19, 1.95))
             else:
@@ -609,8 +619,8 @@ def fir(b, tx, ty):
         if q % 3 == 2:
             continue
         br = .15 if i < 9 else .11                                              # round bauble hung just under the tip
-        rr = .93 * r
-        (red if (q + i) % 2 else gold).append((x0 + rr * ca, y0 + rr * sa, z - .1 - br))
+        rr = 1.02 * r + .06                                                     # proud of the tip: never buried in the skirt below
+        (red if (q + i) % 2 else gold).append((x0 + rr * ca, y0 + rr * sa, z - .04 - br))
     balls('Tree baubles red', 'flower', red, .15, 8, 5, small=[p for p in red if p[2] > zb0 + 8.6], rs=.11)
     balls('Tree baubles gold', 'gold', gold, .15, 8, 5, small=[p for p in gold if p[2] > zb0 + 8.6], rs=.11)
     balls('Tree lights', 'pale', lights, .055, 4, 2)
@@ -696,6 +706,24 @@ def chalet(name, cx, cy, facing, width=4.4, depth=3.6):
     b.box('flower', *P(0.0, wz - .3), .16, .16, .16)
     bx, by, bz = Q(0.0, under(0.0) - .14)
     b.box('flower', bx, by, bz, .34 if abs(tx) > .5 else .14, .14 if abs(tx) > .5 else .34, .2)     # bow at the apex
+    # Outward faces trimmed like the front: a garland with lights under the rear rakes and a red bow at the rear
+    # apex, and a garland with lights along both outer eaves, so every chalet reads decorated from the lanes.
+    R = lambda u, z: (cx - fx * dg + tx * u, cy - fy * dg + ty * u, z)
+    for s in (-1, 1):
+        u0, u1 = s * (half - .15), s * .12
+        b.beam('planting', R(u0, under(u0) - .1), R(u1, under(u1) - .1), .16 + .01, .16, ext=0.0)
+        for i in range(1, 6):
+            u = u0 + (u1 - u0) * i / 6
+            b.box('pale', *R(u, under(u) - .22), .07, .07, .07)
+        ue = s * (half - .22)                                                    # eave garland just inside the eave edge
+        ze = under(ue) - .1
+        ea = depth / 2 + ov - .3
+        b.beam('planting', (cx - fx * ea + tx * ue, cy - fy * ea + ty * ue, ze), (cx + fx * ea + tx * ue, cy + fy * ea + ty * ue, ze), .15, .15, ext=0.0)
+        for i in range(5):
+            e = -ea + 2 * ea * (i + .5) / 5
+            b.box('pale', cx + fx * e + tx * ue, cy + fy * e + ty * ue, ze - .12, .07, .07, .07)
+    rx, ry, rz = R(0.0, under(0.0) - .14)
+    b.box('flower', rx, ry, rz, .34 if abs(tx) > .5 else .14, .14 if abs(tx) > .5 else .34, .2)     # red bow at the rear apex
     da = depth / 2 + .93                                                         # garland along the awning's front edge
     b.beam('planting', (cx + fx * da - tx * (width / 2 - .75), cy + fy * da - ty * (width / 2 - .75), 2.1),
            (cx + fx * da + tx * (width / 2 - .75), cy + fy * da + ty * (width / 2 - .75), 2.1), .14, .14)
