@@ -1,0 +1,9068 @@
+{
+  "candidate": "clay-old-montreal-limestone-commercial-clay-v004",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 415,
+    "vertices": 44781,
+    "polygons": 66776,
+    "triangles": 66776,
+    "path": "clay-old-montreal-limestone-commercial-clay-v004-authoring.blend",
+    "bytes": 6965760,
+    "sha256": "76f68ac0cac72a26da7d2da655029b20c631c807700d79092c361a8235d78d83"
+  },
+  "runtime": {
+    "path": "clay-old-montreal-limestone-commercial-clay-v004.glb",
+    "bytes": 3423736,
+    "sha256": "eee62a12874fc1248a17383fe5f6c98e41b01511a50e1e44533db25b538ad3a8",
+    "meshes": 18,
+    "materials": 18,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 18,
+    "vertices": 44781,
+    "polygons": 66776,
+    "triangles": 66776
+  },
+  "original_bounds_m": [
+    [
+      -62.0,
+      -58.0,
+      0.0
+    ],
+    [
+      66.0,
+      22.0,
+      42.5
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -62.0,
+      -58.0,
+      0.0
+    ],
+    [
+      66.0,
+      22.0,
+      42.5
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 107.0,
+    "depth": 48.7,
+    "height": 42.5
+  },
+  "native_dimensions_m": {
+    "width": 128.0,
+    "depth": 80.0,
+    "height": 42.5
+  },
+  "native_bottom_center_m": [
+    2.0,
+    -18.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 83,
+    "joint": 22,
+    "stone": 52,
+    "arch": 45,
+    "trim": 17,
+    "frame": 31,
+    "roof": 8,
+    "metal": 7,
+    "membrane": 2,
+    "glass": 36,
+    "hardware": 9,
+    "timber": 51,
+    "floor": 3,
+    "cobble": 2,
+    "concrete": 5,
+    "asphalt": 4,
+    "planting": 36,
+    "pot": 2
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/portico.png",
+    "renders/dome_drum.png",
+    "renders/end_pavilion_arches.png",
+    "renders/balconettes.png",
+    "renders/east_door.png",
+    "renders/long_facade.png",
+    "renders/roofs_dormers.png",
+    "renders/west_range.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "aerial": {
+      "xmin": 0.14274124801158905,
+      "xmax": 0.7878128886222839,
+      "ymin": 0.08145098388195038,
+      "ymax": 0.6216931343078613
+    },
+    "rear_side": {
+      "xmin": 0.07649656385183334,
+      "xmax": 0.7735767364501953,
+      "ymin": 0.2211589813232422,
+      "ymax": 0.6504108309745789
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Limestone walls from grade; roofs on the eave cornices; attic and drum on the dome block walls",
+      "eave_m": 15.0
+    },
+    {
+      "name": "Domed limestone market hall with a portico on a city block",
+      "box": [
+        -52.0,
+        55.0,
+        -34.6,
+        14.1
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "south front g -6.8",
+      "face": "south front",
+      "u": -6.8,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 -6.8",
+      "face": "south front",
+      "u": -6.8,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front g -3.4",
+      "face": "south front",
+      "u": -3.4,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 -3.4",
+      "face": "south front",
+      "u": -3.4,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front door +0.0",
+      "face": "south front",
+      "u": 0.0,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 5.0,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.39999999999999997,
+      "pane_inset_m": 0.43699999999999994,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "entrance hall"
+    },
+    {
+      "id": "south front f1 +0.0",
+      "face": "south front",
+      "u": 0.0,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front g +3.4",
+      "face": "south front",
+      "u": 3.4,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 +3.4",
+      "face": "south front",
+      "u": 3.4,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front g +6.8",
+      "face": "south front",
+      "u": 6.8,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 +6.8",
+      "face": "south front",
+      "u": 6.8,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front vent +10.2",
+      "face": "south front",
+      "u": 10.2,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "south front g +10.2",
+      "face": "south front",
+      "u": 10.2,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 +10.2",
+      "face": "south front",
+      "u": 10.2,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f2 +10.2",
+      "face": "south front",
+      "u": 10.2,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front vent +13.6",
+      "face": "south front",
+      "u": 13.6,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "south front g +13.6",
+      "face": "south front",
+      "u": 13.6,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 +13.6",
+      "face": "south front",
+      "u": 13.6,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f2 +13.6",
+      "face": "south front",
+      "u": 13.6,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front vent +17.0",
+      "face": "south front",
+      "u": 17.0,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "south front g +17.0",
+      "face": "south front",
+      "u": 17.0,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 +17.0",
+      "face": "south front",
+      "u": 17.0,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f2 +17.0",
+      "face": "south front",
+      "u": 17.0,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front vent +20.4",
+      "face": "south front",
+      "u": 20.4,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "south front g +20.4",
+      "face": "south front",
+      "u": 20.4,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 +20.4",
+      "face": "south front",
+      "u": 20.4,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f2 +20.4",
+      "face": "south front",
+      "u": 20.4,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front vent +23.8",
+      "face": "south front",
+      "u": 23.8,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "south front g +23.8",
+      "face": "south front",
+      "u": 23.8,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 +23.8",
+      "face": "south front",
+      "u": 23.8,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f2 +23.8",
+      "face": "south front",
+      "u": 23.8,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front vent +27.2",
+      "face": "south front",
+      "u": 27.2,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "south front g +27.2",
+      "face": "south front",
+      "u": 27.2,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 +27.2",
+      "face": "south front",
+      "u": 27.2,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f2 +27.2",
+      "face": "south front",
+      "u": 27.2,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front vent +30.6",
+      "face": "south front",
+      "u": 30.599999999999998,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "south front g +30.6",
+      "face": "south front",
+      "u": 30.599999999999998,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 +30.6",
+      "face": "south front",
+      "u": 30.599999999999998,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f2 +30.6",
+      "face": "south front",
+      "u": 30.599999999999998,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front vent +34.0",
+      "face": "south front",
+      "u": 34.0,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "south front g +34.0",
+      "face": "south front",
+      "u": 34.0,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 +34.0",
+      "face": "south front",
+      "u": 34.0,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f2 +34.0",
+      "face": "south front",
+      "u": 34.0,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front vent +37.4",
+      "face": "south front",
+      "u": 37.4,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "south front g +37.4",
+      "face": "south front",
+      "u": 37.4,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 +37.4",
+      "face": "south front",
+      "u": 37.4,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f2 +37.4",
+      "face": "south front",
+      "u": 37.4,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front vent +42.6",
+      "face": "south front",
+      "u": 42.6,
+      "z": 0.22,
+      "width": 1.2,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "south front g +42.6",
+      "face": "south front",
+      "u": 42.6,
+      "z": 1.4,
+      "width": 2.4,
+      "height": 4.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 +42.6",
+      "face": "south front",
+      "u": 42.6,
+      "z": 7.0,
+      "width": 2.4,
+      "height": 6.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front door +47.4",
+      "face": "south front",
+      "u": 47.4,
+      "z": 0.9,
+      "width": 2.2,
+      "height": 5.1,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.39999999999999997,
+      "pane_inset_m": 0.43699999999999994,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "entrance hall"
+    },
+    {
+      "id": "south front f1 +47.4",
+      "face": "south front",
+      "u": 47.4,
+      "z": 7.0,
+      "width": 2.4,
+      "height": 6.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front vent +52.2",
+      "face": "south front",
+      "u": 52.2,
+      "z": 0.22,
+      "width": 1.2,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "south front g +52.2",
+      "face": "south front",
+      "u": 52.2,
+      "z": 1.4,
+      "width": 2.4,
+      "height": 4.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "south front f1 +52.2",
+      "face": "south front",
+      "u": 52.2,
+      "z": 7.0,
+      "width": 2.4,
+      "height": 6.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east end vent -26.2",
+      "face": "east end",
+      "u": -26.25,
+      "z": 0.22,
+      "width": 1.2,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        55.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east end g -26.2",
+      "face": "east end",
+      "u": -26.25,
+      "z": 1.4,
+      "width": 2.8,
+      "height": 4.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        55.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east end f1 -26.2",
+      "face": "east end",
+      "u": -26.25,
+      "z": 7.0,
+      "width": 2.8,
+      "height": 6.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        55.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east end door -20.2",
+      "face": "east end",
+      "u": -20.25,
+      "z": 0.9,
+      "width": 1.8,
+      "height": 3.4,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.49999999999999994,
+      "pane_inset_m": 0.5369999999999999,
+      "face_origin": [
+        55.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stair hall"
+    },
+    {
+      "id": "east end f1 -20.2",
+      "face": "east end",
+      "u": -20.25,
+      "z": 7.0,
+      "width": 2.8,
+      "height": 6.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        55.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east end vent -14.2",
+      "face": "east end",
+      "u": -14.25,
+      "z": 0.22,
+      "width": 1.2,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        55.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east end g -14.2",
+      "face": "east end",
+      "u": -14.25,
+      "z": 1.4,
+      "width": 2.8,
+      "height": 4.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        55.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east end f1 -14.2",
+      "face": "east end",
+      "u": -14.25,
+      "z": 7.0,
+      "width": 2.8,
+      "height": 6.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        55.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north vent -42.6",
+      "face": "east range north",
+      "u": -42.6,
+      "z": 0.22,
+      "width": 1.2,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range north g -42.6",
+      "face": "east range north",
+      "u": -42.6,
+      "z": 1.4,
+      "width": 2.4,
+      "height": 4.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f1 -42.6",
+      "face": "east range north",
+      "u": -42.6,
+      "z": 7.0,
+      "width": 2.4,
+      "height": 6.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north vent -47.4",
+      "face": "east range north",
+      "u": -47.4,
+      "z": 0.22,
+      "width": 1.2,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range north g -47.4",
+      "face": "east range north",
+      "u": -47.4,
+      "z": 1.4,
+      "width": 2.4,
+      "height": 4.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f1 -47.4",
+      "face": "east range north",
+      "u": -47.4,
+      "z": 7.0,
+      "width": 2.4,
+      "height": 6.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north vent -52.2",
+      "face": "east range north",
+      "u": -52.2,
+      "z": 0.22,
+      "width": 1.2,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range north g -52.2",
+      "face": "east range north",
+      "u": -52.2,
+      "z": 1.4,
+      "width": 2.4,
+      "height": 4.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f1 -52.2",
+      "face": "east range north",
+      "u": -52.2,
+      "z": 7.0,
+      "width": 2.4,
+      "height": 6.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north vent -37.4",
+      "face": "east range north",
+      "u": -37.4,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range north g -37.4",
+      "face": "east range north",
+      "u": -37.4,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f1 -37.4",
+      "face": "east range north",
+      "u": -37.4,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f2 -37.4",
+      "face": "east range north",
+      "u": -37.4,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north vent -34.0",
+      "face": "east range north",
+      "u": -34.0,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range north g -34.0",
+      "face": "east range north",
+      "u": -34.0,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f1 -34.0",
+      "face": "east range north",
+      "u": -34.0,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f2 -34.0",
+      "face": "east range north",
+      "u": -34.0,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north vent -30.6",
+      "face": "east range north",
+      "u": -30.599999999999998,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range north g -30.6",
+      "face": "east range north",
+      "u": -30.599999999999998,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f1 -30.6",
+      "face": "east range north",
+      "u": -30.599999999999998,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f2 -30.6",
+      "face": "east range north",
+      "u": -30.599999999999998,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north vent -27.2",
+      "face": "east range north",
+      "u": -27.2,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range north g -27.2",
+      "face": "east range north",
+      "u": -27.2,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f1 -27.2",
+      "face": "east range north",
+      "u": -27.2,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f2 -27.2",
+      "face": "east range north",
+      "u": -27.2,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north vent -23.8",
+      "face": "east range north",
+      "u": -23.8,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range north g -23.8",
+      "face": "east range north",
+      "u": -23.8,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f1 -23.8",
+      "face": "east range north",
+      "u": -23.8,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f2 -23.8",
+      "face": "east range north",
+      "u": -23.8,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north vent -20.4",
+      "face": "east range north",
+      "u": -20.4,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range north g -20.4",
+      "face": "east range north",
+      "u": -20.4,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f1 -20.4",
+      "face": "east range north",
+      "u": -20.4,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f2 -20.4",
+      "face": "east range north",
+      "u": -20.4,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north vent -17.0",
+      "face": "east range north",
+      "u": -17.0,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range north g -17.0",
+      "face": "east range north",
+      "u": -17.0,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f1 -17.0",
+      "face": "east range north",
+      "u": -17.0,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f2 -17.0",
+      "face": "east range north",
+      "u": -17.0,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north vent -13.6",
+      "face": "east range north",
+      "u": -13.6,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range north g -13.6",
+      "face": "east range north",
+      "u": -13.6,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f1 -13.6",
+      "face": "east range north",
+      "u": -13.6,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range north f2 -13.6",
+      "face": "east range north",
+      "u": -13.6,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west vent +13.2",
+      "face": "east range west",
+      "u": 13.2,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range west g +13.2",
+      "face": "east range west",
+      "u": 13.2,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west f1 +13.2",
+      "face": "east range west",
+      "u": 13.2,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west f2 +13.2",
+      "face": "east range west",
+      "u": 13.2,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west vent +16.6",
+      "face": "east range west",
+      "u": 16.6,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range west g +16.6",
+      "face": "east range west",
+      "u": 16.6,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west f1 +16.6",
+      "face": "east range west",
+      "u": 16.6,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west f2 +16.6",
+      "face": "east range west",
+      "u": 16.6,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west vent +20.0",
+      "face": "east range west",
+      "u": 20.0,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range west g +20.0",
+      "face": "east range west",
+      "u": 20.0,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west f1 +20.0",
+      "face": "east range west",
+      "u": 20.0,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west f2 +20.0",
+      "face": "east range west",
+      "u": 20.0,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west vent +23.4",
+      "face": "east range west",
+      "u": 23.4,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range west g +23.4",
+      "face": "east range west",
+      "u": 23.4,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west f1 +23.4",
+      "face": "east range west",
+      "u": 23.4,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west f2 +23.4",
+      "face": "east range west",
+      "u": 23.4,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west vent +26.8",
+      "face": "east range west",
+      "u": 26.8,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "east range west g +26.8",
+      "face": "east range west",
+      "u": 26.8,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west f1 +26.8",
+      "face": "east range west",
+      "u": 26.8,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "east range west f2 +26.8",
+      "face": "east range west",
+      "u": 26.8,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south vent -48.6",
+      "face": "west range south",
+      "u": -48.6,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range south g -48.6",
+      "face": "west range south",
+      "u": -48.6,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f1 -48.6",
+      "face": "west range south",
+      "u": -48.6,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f2 -48.6",
+      "face": "west range south",
+      "u": -48.6,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south vent -45.2",
+      "face": "west range south",
+      "u": -45.2,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range south g -45.2",
+      "face": "west range south",
+      "u": -45.2,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f1 -45.2",
+      "face": "west range south",
+      "u": -45.2,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f2 -45.2",
+      "face": "west range south",
+      "u": -45.2,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south vent -41.8",
+      "face": "west range south",
+      "u": -41.800000000000004,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range south g -41.8",
+      "face": "west range south",
+      "u": -41.800000000000004,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f1 -41.8",
+      "face": "west range south",
+      "u": -41.800000000000004,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f2 -41.8",
+      "face": "west range south",
+      "u": -41.800000000000004,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south vent -38.4",
+      "face": "west range south",
+      "u": -38.400000000000006,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range south g -38.4",
+      "face": "west range south",
+      "u": -38.400000000000006,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f1 -38.4",
+      "face": "west range south",
+      "u": -38.400000000000006,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f2 -38.4",
+      "face": "west range south",
+      "u": -38.400000000000006,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south vent -35.0",
+      "face": "west range south",
+      "u": -35.0,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range south g -35.0",
+      "face": "west range south",
+      "u": -35.0,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f1 -35.0",
+      "face": "west range south",
+      "u": -35.0,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f2 -35.0",
+      "face": "west range south",
+      "u": -35.0,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south vent -31.6",
+      "face": "west range south",
+      "u": -31.6,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range south g -31.6",
+      "face": "west range south",
+      "u": -31.6,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f1 -31.6",
+      "face": "west range south",
+      "u": -31.6,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f2 -31.6",
+      "face": "west range south",
+      "u": -31.6,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south vent -28.2",
+      "face": "west range south",
+      "u": -28.200000000000003,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range south g -28.2",
+      "face": "west range south",
+      "u": -28.200000000000003,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f1 -28.2",
+      "face": "west range south",
+      "u": -28.200000000000003,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f2 -28.2",
+      "face": "west range south",
+      "u": -28.200000000000003,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south vent -24.8",
+      "face": "west range south",
+      "u": -24.8,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range south g -24.8",
+      "face": "west range south",
+      "u": -24.8,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f1 -24.8",
+      "face": "west range south",
+      "u": -24.8,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f2 -24.8",
+      "face": "west range south",
+      "u": -24.8,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south vent -21.4",
+      "face": "west range south",
+      "u": -21.400000000000002,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range south g -21.4",
+      "face": "west range south",
+      "u": -21.400000000000002,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f1 -21.4",
+      "face": "west range south",
+      "u": -21.400000000000002,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f2 -21.4",
+      "face": "west range south",
+      "u": -21.400000000000002,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south vent -18.0",
+      "face": "west range south",
+      "u": -18.000000000000004,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range south g -18.0",
+      "face": "west range south",
+      "u": -18.000000000000004,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f1 -18.0",
+      "face": "west range south",
+      "u": -18.000000000000004,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f2 -18.0",
+      "face": "west range south",
+      "u": -18.000000000000004,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south vent -14.6",
+      "face": "west range south",
+      "u": -14.600000000000001,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range south g -14.6",
+      "face": "west range south",
+      "u": -14.600000000000001,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f1 -14.6",
+      "face": "west range south",
+      "u": -14.600000000000001,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range south f2 -14.6",
+      "face": "west range south",
+      "u": -14.600000000000001,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west vent -7.2",
+      "face": "west range west",
+      "u": -7.2,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range west g -7.2",
+      "face": "west range west",
+      "u": -7.2,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west f1 -7.2",
+      "face": "west range west",
+      "u": -7.2,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west f2 -7.2",
+      "face": "west range west",
+      "u": -7.2,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west vent -3.6",
+      "face": "west range west",
+      "u": -3.6,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range west g -3.6",
+      "face": "west range west",
+      "u": -3.6,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west f1 -3.6",
+      "face": "west range west",
+      "u": -3.6,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west f2 -3.6",
+      "face": "west range west",
+      "u": -3.6,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west vent +0.0",
+      "face": "west range west",
+      "u": 0.0,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range west g +0.0",
+      "face": "west range west",
+      "u": 0.0,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west f1 +0.0",
+      "face": "west range west",
+      "u": 0.0,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west f2 +0.0",
+      "face": "west range west",
+      "u": 0.0,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west vent +3.6",
+      "face": "west range west",
+      "u": 3.6,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range west g +3.6",
+      "face": "west range west",
+      "u": 3.6,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west f1 +3.6",
+      "face": "west range west",
+      "u": 3.6,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west f2 +3.6",
+      "face": "west range west",
+      "u": 3.6,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west vent +7.2",
+      "face": "west range west",
+      "u": 7.2,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "west range west g +7.2",
+      "face": "west range west",
+      "u": 7.2,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west f1 +7.2",
+      "face": "west range west",
+      "u": 7.2,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "west range west f2 +7.2",
+      "face": "west range west",
+      "u": 7.2,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        -52.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front vent +48.6",
+      "face": "north front",
+      "u": 48.6,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "north front g +48.6",
+      "face": "north front",
+      "u": 48.6,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 +48.6",
+      "face": "north front",
+      "u": 48.6,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 +48.6",
+      "face": "north front",
+      "u": 48.6,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front vent +45.2",
+      "face": "north front",
+      "u": 45.2,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "north front g +45.2",
+      "face": "north front",
+      "u": 45.2,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 +45.2",
+      "face": "north front",
+      "u": 45.2,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 +45.2",
+      "face": "north front",
+      "u": 45.2,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front vent +41.8",
+      "face": "north front",
+      "u": 41.800000000000004,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "north front g +41.8",
+      "face": "north front",
+      "u": 41.800000000000004,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 +41.8",
+      "face": "north front",
+      "u": 41.800000000000004,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 +41.8",
+      "face": "north front",
+      "u": 41.800000000000004,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front vent +38.4",
+      "face": "north front",
+      "u": 38.400000000000006,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "north front g +38.4",
+      "face": "north front",
+      "u": 38.400000000000006,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 +38.4",
+      "face": "north front",
+      "u": 38.400000000000006,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 +38.4",
+      "face": "north front",
+      "u": 38.400000000000006,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front vent +35.0",
+      "face": "north front",
+      "u": 35.0,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "north front g +35.0",
+      "face": "north front",
+      "u": 35.0,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 +35.0",
+      "face": "north front",
+      "u": 35.0,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 +35.0",
+      "face": "north front",
+      "u": 35.0,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front vent +31.6",
+      "face": "north front",
+      "u": 31.6,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "north front g +31.6",
+      "face": "north front",
+      "u": 31.6,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 +31.6",
+      "face": "north front",
+      "u": 31.6,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 +31.6",
+      "face": "north front",
+      "u": 31.6,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front vent +28.2",
+      "face": "north front",
+      "u": 28.200000000000003,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "north front g +28.2",
+      "face": "north front",
+      "u": 28.200000000000003,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 +28.2",
+      "face": "north front",
+      "u": 28.200000000000003,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 +28.2",
+      "face": "north front",
+      "u": 28.200000000000003,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front vent +24.8",
+      "face": "north front",
+      "u": 24.8,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "north front g +24.8",
+      "face": "north front",
+      "u": 24.8,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 +24.8",
+      "face": "north front",
+      "u": 24.8,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 +24.8",
+      "face": "north front",
+      "u": 24.8,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front vent +21.4",
+      "face": "north front",
+      "u": 21.400000000000002,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "north front g +21.4",
+      "face": "north front",
+      "u": 21.400000000000002,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 +21.4",
+      "face": "north front",
+      "u": 21.400000000000002,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 +21.4",
+      "face": "north front",
+      "u": 21.400000000000002,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front vent +18.0",
+      "face": "north front",
+      "u": 18.000000000000004,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "north front g +18.0",
+      "face": "north front",
+      "u": 18.000000000000004,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 +18.0",
+      "face": "north front",
+      "u": 18.000000000000004,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 +18.0",
+      "face": "north front",
+      "u": 18.000000000000004,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front vent +14.6",
+      "face": "north front",
+      "u": 14.600000000000001,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "north front g +14.6",
+      "face": "north front",
+      "u": 14.600000000000001,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 +14.6",
+      "face": "north front",
+      "u": 14.600000000000001,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 +14.6",
+      "face": "north front",
+      "u": 14.600000000000001,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front g +8.4",
+      "face": "north front",
+      "u": 8.4,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 +8.4",
+      "face": "north front",
+      "u": 8.4,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 +8.4",
+      "face": "north front",
+      "u": 8.4,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front g +4.2",
+      "face": "north front",
+      "u": 4.2,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 +4.2",
+      "face": "north front",
+      "u": 4.2,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 +4.2",
+      "face": "north front",
+      "u": 4.2,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front door -0.0",
+      "face": "north front",
+      "u": -0.0,
+      "z": 0.9,
+      "width": 2.4,
+      "height": 3.8,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.39999999999999997,
+      "pane_inset_m": 0.43699999999999994,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "entrance hall"
+    },
+    {
+      "id": "north front f1 -0.0",
+      "face": "north front",
+      "u": -0.0,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 -0.0",
+      "face": "north front",
+      "u": -0.0,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front g -4.2",
+      "face": "north front",
+      "u": -4.2,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 -4.2",
+      "face": "north front",
+      "u": -4.2,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 -4.2",
+      "face": "north front",
+      "u": -4.2,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front g -8.4",
+      "face": "north front",
+      "u": -8.4,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f1 -8.4",
+      "face": "north front",
+      "u": -8.4,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north front f2 -8.4",
+      "face": "north front",
+      "u": -8.4,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "dome block east vent -6.3",
+      "face": "dome block east",
+      "u": -6.3,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "dome block east g -6.3",
+      "face": "dome block east",
+      "u": -6.3,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "dome block east f1 -6.3",
+      "face": "dome block east",
+      "u": -6.3,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "dome block east f2 -6.3",
+      "face": "dome block east",
+      "u": -6.3,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "dome block east vent -2.1",
+      "face": "dome block east",
+      "u": -2.1,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "dome block east g -2.1",
+      "face": "dome block east",
+      "u": -2.1,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "dome block east f1 -2.1",
+      "face": "dome block east",
+      "u": -2.1,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "dome block east f2 -2.1",
+      "face": "dome block east",
+      "u": -2.1,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "dome block east vent +2.1",
+      "face": "dome block east",
+      "u": 2.1,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "dome block east g +2.1",
+      "face": "dome block east",
+      "u": 2.1,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "dome block east f1 +2.1",
+      "face": "dome block east",
+      "u": 2.1,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "dome block east f2 +2.1",
+      "face": "dome block east",
+      "u": 2.1,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "dome block east vent +6.3",
+      "face": "dome block east",
+      "u": 6.3,
+      "z": 0.22,
+      "width": 0.9,
+      "height": 0.42,
+      "kind": "basement vent",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "basement"
+    },
+    {
+      "id": "dome block east g +6.3",
+      "face": "dome block east",
+      "u": 6.3,
+      "z": 1.7,
+      "width": 1.4,
+      "height": 2.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "dome block east f1 +6.3",
+      "face": "dome block east",
+      "u": 6.3,
+      "z": 6.8,
+      "width": 1.4,
+      "height": 2.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "dome block east f2 +6.3",
+      "face": "dome block east",
+      "u": 6.3,
+      "z": 11.4,
+      "width": 1.4,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        11.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "north porch arch -5.6",
+      "face": "north porch front",
+      "u": -5.6,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 4.0,
+      "kind": "porch arch",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.0,
+      "pane_inset_m": 0.037,
+      "face_origin": [
+        0.0,
+        14.100000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "entrance porch"
+    },
+    {
+      "id": "north porch arch +0.0",
+      "face": "north porch front",
+      "u": 0.0,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 4.0,
+      "kind": "porch arch",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.0,
+      "pane_inset_m": 0.037,
+      "face_origin": [
+        0.0,
+        14.100000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "entrance porch"
+    },
+    {
+      "id": "north porch arch +5.6",
+      "face": "north porch front",
+      "u": 5.6,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 4.0,
+      "kind": "porch arch",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.0,
+      "pane_inset_m": 0.037,
+      "face_origin": [
+        0.0,
+        14.100000381469727,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "entrance porch"
+    },
+    {
+      "id": "north porch east arch",
+      "face": "north porch east",
+      "u": 12.0,
+      "z": 0.9,
+      "width": 1.6,
+      "height": 3.6,
+      "kind": "porch arch",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.0,
+      "pane_inset_m": 0.037,
+      "face_origin": [
+        9.949999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "entrance porch"
+    },
+    {
+      "id": "north porch west arch",
+      "face": "north porch west",
+      "u": -12.0,
+      "z": 0.9,
+      "width": 1.6,
+      "height": 3.6,
+      "kind": "porch arch",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.0,
+      "pane_inset_m": 0.037,
+      "face_origin": [
+        -9.949999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "entrance porch"
+    },
+    {
+      "id": "pavilion attic south sash +42.6",
+      "face": "pavilion attic south",
+      "u": 42.6,
+      "z": 16.0,
+      "width": 1.3,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "pavilion attic south sash +47.4",
+      "face": "pavilion attic south",
+      "u": 47.4,
+      "z": 16.0,
+      "width": 1.3,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "pavilion attic south sash +52.2",
+      "face": "pavilion attic south",
+      "u": 52.2,
+      "z": 16.0,
+      "width": 1.3,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "pavilion attic north sash -42.6",
+      "face": "pavilion attic north",
+      "u": -42.6,
+      "z": 16.0,
+      "width": 1.3,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "pavilion attic north sash -47.4",
+      "face": "pavilion attic north",
+      "u": -47.4,
+      "z": 16.0,
+      "width": 1.3,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "pavilion attic north sash -52.2",
+      "face": "pavilion attic north",
+      "u": -52.2,
+      "z": 16.0,
+      "width": 1.3,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -10.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "hall"
+    },
+    {
+      "id": "drum window 00",
+      "face": "drum 00",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        7.022160530090332,
+        1.3967945575714111,
+        0.0
+      ],
+      "face_tangent": [
+        -0.19509032368659973,
+        0.9807852506637573,
+        0.0
+      ],
+      "face_inward": [
+        -0.9807852506637573,
+        -0.19509032368659973,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 01",
+      "face": "drum 01",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        5.953100204467773,
+        3.977734327316284,
+        0.0
+      ],
+      "face_tangent": [
+        -0.5555702447891235,
+        0.8314695954322815,
+        0.0
+      ],
+      "face_inward": [
+        -0.8314695954322815,
+        -0.5555702447891235,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 02",
+      "face": "drum 02",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        3.977734327316284,
+        5.953100204467773,
+        0.0
+      ],
+      "face_tangent": [
+        -0.8314695954322815,
+        0.5555702447891235,
+        0.0
+      ],
+      "face_inward": [
+        -0.5555702447891235,
+        -0.8314695954322815,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 03",
+      "face": "drum 03",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        1.3967945575714111,
+        7.022160530090332,
+        0.0
+      ],
+      "face_tangent": [
+        -0.9807852506637573,
+        0.19509032368659973,
+        0.0
+      ],
+      "face_inward": [
+        -0.19509032368659973,
+        -0.9807852506637573,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 04",
+      "face": "drum 04",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -1.3967945575714111,
+        7.022160530090332,
+        0.0
+      ],
+      "face_tangent": [
+        -0.9807852506637573,
+        -0.19509032368659973,
+        0.0
+      ],
+      "face_inward": [
+        0.19509032368659973,
+        -0.9807852506637573,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 05",
+      "face": "drum 05",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -3.977734327316284,
+        5.953100204467773,
+        0.0
+      ],
+      "face_tangent": [
+        -0.8314695954322815,
+        -0.5555702447891235,
+        0.0
+      ],
+      "face_inward": [
+        0.5555702447891235,
+        -0.8314695954322815,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 06",
+      "face": "drum 06",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -5.953100204467773,
+        3.977734327316284,
+        0.0
+      ],
+      "face_tangent": [
+        -0.5555702447891235,
+        -0.8314695954322815,
+        0.0
+      ],
+      "face_inward": [
+        0.8314695954322815,
+        -0.5555702447891235,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 07",
+      "face": "drum 07",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -7.022160530090332,
+        1.3967945575714111,
+        0.0
+      ],
+      "face_tangent": [
+        -0.19509032368659973,
+        -0.9807852506637573,
+        0.0
+      ],
+      "face_inward": [
+        0.9807852506637573,
+        -0.19509032368659973,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 08",
+      "face": "drum 08",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -7.022160530090332,
+        -1.3967945575714111,
+        0.0
+      ],
+      "face_tangent": [
+        0.19509032368659973,
+        -0.9807852506637573,
+        0.0
+      ],
+      "face_inward": [
+        0.9807852506637573,
+        0.19509032368659973,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 09",
+      "face": "drum 09",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -5.953100204467773,
+        -3.977734327316284,
+        0.0
+      ],
+      "face_tangent": [
+        0.5555702447891235,
+        -0.8314695954322815,
+        0.0
+      ],
+      "face_inward": [
+        0.8314695954322815,
+        0.5555702447891235,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 10",
+      "face": "drum 10",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -3.977734327316284,
+        -5.953100204467773,
+        0.0
+      ],
+      "face_tangent": [
+        0.8314695954322815,
+        -0.5555702447891235,
+        0.0
+      ],
+      "face_inward": [
+        0.5555702447891235,
+        0.8314695954322815,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 11",
+      "face": "drum 11",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -1.3967945575714111,
+        -7.022160530090332,
+        0.0
+      ],
+      "face_tangent": [
+        0.9807852506637573,
+        -0.19509032368659973,
+        0.0
+      ],
+      "face_inward": [
+        0.19509032368659973,
+        0.9807852506637573,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 12",
+      "face": "drum 12",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        1.3967945575714111,
+        -7.022160530090332,
+        0.0
+      ],
+      "face_tangent": [
+        0.9807852506637573,
+        0.19509032368659973,
+        0.0
+      ],
+      "face_inward": [
+        -0.19509032368659973,
+        0.9807852506637573,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 13",
+      "face": "drum 13",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        3.977734327316284,
+        -5.953100204467773,
+        0.0
+      ],
+      "face_tangent": [
+        0.8314695954322815,
+        0.5555702447891235,
+        0.0
+      ],
+      "face_inward": [
+        -0.5555702447891235,
+        0.8314695954322815,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 14",
+      "face": "drum 14",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        5.953100204467773,
+        -3.977734327316284,
+        0.0
+      ],
+      "face_tangent": [
+        0.5555702447891235,
+        0.8314695954322815,
+        0.0
+      ],
+      "face_inward": [
+        -0.8314695954322815,
+        0.5555702447891235,
+        0.0
+      ],
+      "occupied_space": "drum"
+    },
+    {
+      "id": "drum window 15",
+      "face": "drum 15",
+      "u": 0.0,
+      "z": 22.2,
+      "width": 1.3,
+      "height": 4.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.7,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        7.022160530090332,
+        -1.3967945575714111,
+        0.0
+      ],
+      "face_tangent": [
+        0.19509032368659973,
+        0.9807852506637573,
+        0.0
+      ],
+      "face_inward": [
+        -0.9807852506637573,
+        0.19509032368659973,
+        0.0
+      ],
+      "occupied_space": "drum"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "South street",
+      "Far south sidewalk",
+      "North street",
+      "East street",
+      "West street",
+      "South sidewalk",
+      "North sidewalk",
+      "East sidewalk",
+      "West sidewalk",
+      "South-west cobbled square",
+      "North-east cobbled court"
+    ],
+    "paving joints": [
+      "paving joints joint"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020",
+      "Street tree trunk.007",
+      "Street tree branch.021",
+      "Street tree branch.022",
+      "Street tree branch.023",
+      "Street tree trunk.008",
+      "Street tree branch.024",
+      "Street tree branch.025",
+      "Street tree branch.026",
+      "Street tree trunk.009",
+      "Street tree branch.027",
+      "Street tree branch.028",
+      "Street tree branch.029",
+      "Street tree trunk.010",
+      "Street tree branch.030",
+      "Street tree branch.031",
+      "Street tree branch.032",
+      "Street tree trunk.011",
+      "Street tree branch.033",
+      "Street tree branch.034",
+      "Street tree branch.035"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023",
+      "Street tree crown.024",
+      "Street tree crown.025",
+      "Street tree crown.026",
+      "Street tree crown.027",
+      "Street tree crown.028",
+      "Street tree crown.029",
+      "Street tree crown.030",
+      "Street tree crown.031",
+      "Street tree crown.032",
+      "Street tree crown.033",
+      "Street tree crown.034",
+      "Street tree crown.035"
+    ],
+    "envelope": [
+      "south front carrier",
+      "east end carrier",
+      "east range north carrier",
+      "east range west carrier",
+      "west range south carrier",
+      "west range west carrier",
+      "north front carrier",
+      "dome block east carrier",
+      "north porch front carrier",
+      "north porch east carrier",
+      "north porch west carrier",
+      "pavilion attic south carrier",
+      "pavilion attic north carrier",
+      "pavilion attic east carrier",
+      "pavilion attic west carrier",
+      "attic north carrier",
+      "attic south carrier",
+      "attic east carrier",
+      "attic west carrier",
+      "drum 00 carrier",
+      "drum 01 carrier",
+      "drum 02 carrier",
+      "drum 03 carrier",
+      "drum 04 carrier",
+      "drum 05 carrier",
+      "drum 06 carrier",
+      "drum 07 carrier",
+      "drum 08 carrier",
+      "drum 09 carrier",
+      "drum 10 carrier",
+      "drum 11 carrier",
+      "drum 12 carrier",
+      "drum 13 carrier",
+      "drum 14 carrier",
+      "drum 15 carrier"
+    ],
+    "brick joints": [
+      "south front measured mortar courses",
+      "east end measured mortar courses",
+      "east range north measured mortar courses",
+      "east range west measured mortar courses",
+      "west range south measured mortar courses",
+      "west range west measured mortar courses",
+      "north front measured mortar courses",
+      "dome block east measured mortar courses",
+      "north porch front measured mortar courses",
+      "pavilion attic south measured mortar courses",
+      "pavilion attic north measured mortar courses",
+      "pavilion attic east measured mortar courses",
+      "pavilion attic west measured mortar courses",
+      "attic north measured mortar courses",
+      "attic south measured mortar courses",
+      "attic east measured mortar courses",
+      "attic west measured mortar courses"
+    ],
+    "arches": [
+      "south front door +0.0 spandrel",
+      "south front door +0.0 arch ring",
+      "south front g +42.6 spandrel",
+      "south front g +42.6 arch ring",
+      "south front f1 +42.6 spandrel",
+      "south front f1 +42.6 arch ring",
+      "south front door +47.4 spandrel",
+      "south front door +47.4 arch ring",
+      "south front f1 +47.4 spandrel",
+      "south front f1 +47.4 arch ring",
+      "south front g +52.2 spandrel",
+      "south front g +52.2 arch ring",
+      "south front f1 +52.2 spandrel",
+      "south front f1 +52.2 arch ring",
+      "east end g -26.2 spandrel",
+      "east end g -26.2 arch ring",
+      "east end f1 -26.2 spandrel",
+      "east end f1 -26.2 arch ring",
+      "east end f1 -20.2 spandrel",
+      "east end f1 -20.2 arch ring",
+      "east end g -14.2 spandrel",
+      "east end g -14.2 arch ring",
+      "east end f1 -14.2 spandrel",
+      "east end f1 -14.2 arch ring",
+      "east range north g -42.6 spandrel",
+      "east range north g -42.6 arch ring",
+      "east range north f1 -42.6 spandrel",
+      "east range north f1 -42.6 arch ring",
+      "east range north g -47.4 spandrel",
+      "east range north g -47.4 arch ring",
+      "east range north f1 -47.4 spandrel",
+      "east range north f1 -47.4 arch ring",
+      "east range north g -52.2 spandrel",
+      "east range north g -52.2 arch ring",
+      "east range north f1 -52.2 spandrel",
+      "east range north f1 -52.2 arch ring",
+      "north front door -0.0 spandrel",
+      "north front door -0.0 arch ring",
+      "north porch arch -5.6 spandrel",
+      "north porch arch -5.6 arch ring",
+      "north porch arch +0.0 spandrel",
+      "north porch arch +0.0 arch ring",
+      "north porch arch +5.6 spandrel",
+      "north porch arch +5.6 arch ring",
+      "north porch east arch spandrel",
+      "north porch east arch arch ring",
+      "north porch west arch spandrel",
+      "north porch west arch arch ring",
+      "drum window 00 spandrel",
+      "drum window 00 arch ring",
+      "drum window 01 spandrel",
+      "drum window 01 arch ring",
+      "drum window 02 spandrel",
+      "drum window 02 arch ring",
+      "drum window 03 spandrel",
+      "drum window 03 arch ring",
+      "drum window 04 spandrel",
+      "drum window 04 arch ring",
+      "drum window 05 spandrel",
+      "drum window 05 arch ring",
+      "drum window 06 spandrel",
+      "drum window 06 arch ring",
+      "drum window 07 spandrel",
+      "drum window 07 arch ring",
+      "drum window 08 spandrel",
+      "drum window 08 arch ring",
+      "drum window 09 spandrel",
+      "drum window 09 arch ring",
+      "drum window 10 spandrel",
+      "drum window 10 arch ring",
+      "drum window 11 spandrel",
+      "drum window 11 arch ring",
+      "drum window 12 spandrel",
+      "drum window 12 arch ring",
+      "drum window 13 spandrel",
+      "drum window 13 arch ring",
+      "drum window 14 spandrel",
+      "drum window 14 arch ring",
+      "drum window 15 spandrel",
+      "drum window 15 arch ring"
+    ],
+    "south front": [
+      "south front south front stone",
+      "south front south front frame",
+      "south front south front glass",
+      "south front south front timber",
+      "south front south front hardware",
+      "south front south front arch"
+    ],
+    "south front fanlights": [
+      "south front fanlights frame"
+    ],
+    "south pavilion door steps": [
+      "south pavilion door steps stone"
+    ],
+    "east end": [
+      "east end east end stone",
+      "east end east end glass",
+      "east end east end hardware",
+      "east end east end frame",
+      "east end east end arch",
+      "east end east end timber"
+    ],
+    "east end fanlights": [
+      "east end fanlights frame"
+    ],
+    "east door steps": [
+      "east door steps stone"
+    ],
+    "east range north": [
+      "east range north east range north stone",
+      "east range north east range north glass",
+      "east range north east range north hardware",
+      "east range north east range north frame",
+      "east range north east range north arch"
+    ],
+    "east range west": [
+      "east range west east range west stone",
+      "east range west east range west glass",
+      "east range west east range west hardware",
+      "east range west east range west frame"
+    ],
+    "west range south": [
+      "west range south west range south stone",
+      "west range south west range south glass",
+      "west range south west range south hardware",
+      "west range south west range south frame"
+    ],
+    "west range west": [
+      "west range west west range west stone",
+      "west range west west range west glass",
+      "west range west west range west hardware",
+      "west range west west range west frame"
+    ],
+    "north front": [
+      "north front north front stone",
+      "north front north front glass",
+      "north front north front hardware",
+      "north front north front frame",
+      "north front north front timber",
+      "north front north front arch"
+    ],
+    "dome block east": [
+      "dome block east dome block east stone",
+      "dome block east dome block east glass",
+      "dome block east dome block east hardware",
+      "dome block east dome block east frame"
+    ],
+    "portico": [
+      "Portico tympanum",
+      "Portico roof",
+      "portico stone",
+      "portico glass"
+    ],
+    "north porch front": [
+      "north porch front north porch front arch",
+      "north porch front north porch front stone"
+    ],
+    "north porch east": [
+      "north porch east north porch east stone"
+    ],
+    "north porch west": [
+      "north porch west north porch west stone"
+    ],
+    "north porch": [
+      "north porch stone",
+      "north porch membrane"
+    ],
+    "roof": [
+      "West range roof",
+      "East range roof",
+      "Vent dormer 0",
+      "Vent dormer louvre 0",
+      "Vent dormer 1",
+      "Vent dormer louvre 1",
+      "Vent dormer 2",
+      "Vent dormer louvre 2",
+      "Vent dormer 3",
+      "Vent dormer louvre 3",
+      "Vent dormer 4",
+      "Vent dormer louvre 4",
+      "West skylight frame",
+      "West skylight glass",
+      "Pavilion roof",
+      "Pavilion skylight frame",
+      "Pavilion skylight glass"
+    ],
+    "roof furniture": [
+      "roof furniture wall",
+      "roof furniture stone",
+      "roof furniture pot"
+    ],
+    "pavilion attic south": [
+      "pavilion attic south pavilion attic south stone",
+      "pavilion attic south pavilion attic south frame",
+      "pavilion attic south pavilion attic south glass"
+    ],
+    "pavilion attic north": [
+      "pavilion attic north pavilion attic north stone",
+      "pavilion attic north pavilion attic north frame",
+      "pavilion attic north pavilion attic north glass"
+    ],
+    "pavilion attic east": [
+      "pavilion attic east pavilion attic east stone"
+    ],
+    "pavilion attic west": [
+      "pavilion attic west pavilion attic west stone"
+    ],
+    "pediment": [
+      "East pediment tympanum",
+      "East pediment roof",
+      "Tympanum window glass",
+      "Tympanum window ring 0",
+      "Tympanum window ring 1",
+      "Tympanum window ring 2",
+      "Tympanum window ring 3",
+      "Tympanum window ring 4",
+      "Tympanum window ring 5",
+      "Tympanum window ring 6",
+      "Tympanum window ring 7",
+      "Tympanum window ring 8",
+      "Tympanum window ring 9"
+    ],
+    "pavilion attic and pediment": [
+      "pavilion attic and pediment membrane",
+      "pavilion attic and pediment stone",
+      "pavilion attic and pediment wall",
+      "pavilion attic and pediment pot",
+      "pavilion attic and pediment frame"
+    ],
+    "attic north": [
+      "attic north attic north stone",
+      "attic north attic north joint",
+      "attic north attic north wall"
+    ],
+    "attic south": [
+      "attic south attic south stone",
+      "attic south attic south joint",
+      "attic south attic south wall"
+    ],
+    "attic east": [
+      "attic east attic east stone",
+      "attic east attic east joint",
+      "attic east attic east wall"
+    ],
+    "attic west": [
+      "attic west attic west stone",
+      "attic west attic west joint",
+      "attic west attic west wall"
+    ],
+    "drum 00": [
+      "drum 00 drum 00 frame",
+      "drum 00 drum 00 glass",
+      "drum 00 drum 00 stone"
+    ],
+    "drum 01": [
+      "drum 01 drum 01 frame",
+      "drum 01 drum 01 glass",
+      "drum 01 drum 01 stone"
+    ],
+    "drum 02": [
+      "drum 02 drum 02 frame",
+      "drum 02 drum 02 glass",
+      "drum 02 drum 02 stone"
+    ],
+    "drum 03": [
+      "drum 03 drum 03 frame",
+      "drum 03 drum 03 glass",
+      "drum 03 drum 03 stone"
+    ],
+    "drum 04": [
+      "drum 04 drum 04 frame",
+      "drum 04 drum 04 glass",
+      "drum 04 drum 04 stone"
+    ],
+    "drum 05": [
+      "drum 05 drum 05 frame",
+      "drum 05 drum 05 glass",
+      "drum 05 drum 05 stone"
+    ],
+    "drum 06": [
+      "drum 06 drum 06 frame",
+      "drum 06 drum 06 glass",
+      "drum 06 drum 06 stone"
+    ],
+    "drum 07": [
+      "drum 07 drum 07 frame",
+      "drum 07 drum 07 glass",
+      "drum 07 drum 07 stone"
+    ],
+    "drum 08": [
+      "drum 08 drum 08 frame",
+      "drum 08 drum 08 glass",
+      "drum 08 drum 08 stone"
+    ],
+    "drum 09": [
+      "drum 09 drum 09 frame",
+      "drum 09 drum 09 glass",
+      "drum 09 drum 09 stone"
+    ],
+    "drum 10": [
+      "drum 10 drum 10 frame",
+      "drum 10 drum 10 glass",
+      "drum 10 drum 10 stone"
+    ],
+    "drum 11": [
+      "drum 11 drum 11 frame",
+      "drum 11 drum 11 glass",
+      "drum 11 drum 11 stone"
+    ],
+    "drum 12": [
+      "drum 12 drum 12 frame",
+      "drum 12 drum 12 glass",
+      "drum 12 drum 12 stone"
+    ],
+    "drum 13": [
+      "drum 13 drum 13 frame",
+      "drum 13 drum 13 glass",
+      "drum 13 drum 13 stone"
+    ],
+    "drum 14": [
+      "drum 14 drum 14 frame",
+      "drum 14 drum 14 glass",
+      "drum 14 drum 14 stone"
+    ],
+    "drum 15": [
+      "drum 15 drum 15 frame",
+      "drum 15 drum 15 glass",
+      "drum 15 drum 15 stone"
+    ],
+    "drum and attic": [
+      "drum and attic metal",
+      "drum and attic stone"
+    ],
+    "dome": [
+      "Tin dome",
+      "Dome rib 00",
+      "Dome rib 01",
+      "Dome rib 02",
+      "Dome rib 03",
+      "Dome rib 04",
+      "Dome rib 05",
+      "Dome rib 06",
+      "Dome rib 07",
+      "Dome rib 08",
+      "Dome rib 09",
+      "Dome rib 10",
+      "Dome rib 11",
+      "Dome rib 12",
+      "Dome rib 13",
+      "Dome rib 14",
+      "Dome rib 15",
+      "Lantern cupola"
+    ],
+    "lantern": [
+      "lantern metal",
+      "lantern glass",
+      "lantern trim"
+    ],
+    "cross": [
+      "cross metal",
+      "cross hardware"
+    ],
+    "inside": [
+      "Floor 0.9",
+      "Floor 6.0",
+      "Floor 10.6"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-20T20:07:39.294665+00:00",
+  "delivery_and_render_seconds": 5929.3158634899955,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
