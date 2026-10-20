@@ -1,0 +1,466 @@
+{
+  "candidate": "clay-stone-arch-road-bridge-clay-v003",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-stone-arch-road-bridge",
+  "variant_id": "clay-stone-arch-road-bridge-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "urban_vehicular_bridge/variant_0 (Heritage Stone Arch)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 68.5,
+      "depth": 18.0,
+      "height": 18.0
+    },
+    "observed_storeys": 0,
+    "storey_programme": "bridge: a four-lane road with footways over a river; the quays and town blocks are context",
+    "plan": "68.5 x 18 m bridge (top view): three river arches between the high west quay and the east river pier, a fourth land arch over the low east quay road; the north-east quay curves into the bridge so the upstream channel is narrower; the road continues east and west",
+    "section_m": {
+      "carriageway": [
+        -6.0,
+        6.0
+      ],
+      "footways": [
+        [
+          -8.4,
+          -6.0
+        ],
+        [
+          6.0,
+          8.4
+        ]
+      ],
+      "balustrades": [
+        -8.65,
+        8.65
+      ]
+    },
+    "facade": "three semicircular 16 m cut-stone arches with voussoired rings, coursed ashlar spandrels, pointed cutwaters rising as pilasters, dentilled cornice, stone balustrades with pedestals, double-lantern lamp standards",
+    "levels_m": [
+      0.0,
+      1.2,
+      3.0,
+      4.0,
+      9.2,
+      11.0
+    ],
+    "inferred": "the river bed, foundations and the town blocks beyond the quays are context; the deck build-up is an assumption"
+  },
+  "roof_contract": {
+    "type": "open road deck; hipped tile roofs on the context blocks",
+    "datum_m": 11.0,
+    "crowns_m": [
+      18.0
+    ]
+  },
+  "identity_contract": {
+    "owner": "three-arch cut-stone road bridge with cutwaters, cornice, balustrades and double-lantern lamps over a river between quays"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: warm honey sandstone with lighter voussoirs and cornice and darker joints, darker greyer quay walls, grey asphalt with white lane marks, cool grey paving, dark iron lamps with warm lanterns, dark olive river water, orange roofs",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 0,
+    "ground": "four traffic lanes, two footways"
+  },
+  "street_contract": {
+    "kind": "fixed_native_section",
+    "width_m": 18.0,
+    "axis": "x",
+    "junction_finish": "asphalt",
+    "bands": [
+      "balustrade",
+      "footway",
+      "carriageway",
+      "footway",
+      "balustrade"
+    ]
+  },
+  "contact_contract": [
+    "River surface at grade zero",
+    "Piers and cutwaters from the water",
+    "River arches spring from the piers and the west abutment",
+    "Land arch springs from the east river pier and the east abutment over the low quay road",
+    "Quadrant walls on the curved abutment quay corners",
+    "Deck on the spandrels, road on the quays"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -35.0,
+        17.8,
+        14.3
+      ],
+      "target": [
+        -14.0,
+        7.0,
+        8.6
+      ],
+      "lens": 20,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -50.0,
+        -27.0,
+        32.0
+      ],
+      "target": [
+        8.0,
+        0.0,
+        3.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        54.0,
+        -70.0,
+        50.0
+      ],
+      "target": [
+        6.0,
+        0.0,
+        4.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        6.0,
+        0.0,
+        160.0
+      ],
+      "target": [
+        6.0,
+        0.001,
+        0.0
+      ],
+      "ortho_scale": 130.0,
+      "whole": false
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -4.0,
+        -34.0,
+        4.5
+      ],
+      "target": [
+        -27.0,
+        -10.0,
+        6.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        35.5,
+        -40.0,
+        4.7
+      ],
+      "target": [
+        35.0,
+        0.0,
+        6.5
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        6.0,
+        70.0,
+        9.0
+      ],
+      "target": [
+        6.0,
+        8.9,
+        6.0
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        20.0,
+        70.0,
+        30.0
+      ],
+      "target": [
+        7.0,
+        0.0,
+        5.0
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        0.0,
+        -42.0,
+        7.0
+      ],
+      "target": [
+        0.0,
+        -8.9,
+        6.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -15.0,
+        -23.0,
+        13.0
+      ],
+      "target": [
+        -9.75,
+        -9.6,
+        10.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        6.5,
+        -13.5,
+        15.5
+      ],
+      "target": [
+        9.75,
+        -9.1,
+        15.9
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "arch_spandrel",
+      "location": [
+        -19.5,
+        -31.0,
+        5.0
+      ],
+      "target": [
+        -19.5,
+        -8.9,
+        6.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "cutwater_pier",
+      "location": [
+        -3.0,
+        -25.0,
+        3.0
+      ],
+      "target": [
+        -9.75,
+        -10.6,
+        3.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "balustrade",
+      "location": [
+        -3.0,
+        -7.6,
+        12.8
+      ],
+      "target": [
+        8.0,
+        -8.65,
+        11.8
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "lamp_standard",
+      "location": [
+        16.0,
+        -4.0,
+        14.0
+      ],
+      "target": [
+        9.75,
+        -9.15,
+        15.4
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "roadway_deck",
+      "location": [
+        -25.0,
+        -3.0,
+        14.0
+      ],
+      "target": [
+        14.0,
+        -3.0,
+        11.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "river_underside",
+      "location": [
+        -19.5,
+        -27.0,
+        1.6
+      ],
+      "target": [
+        -19.5,
+        0.0,
+        5.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        22.0,
+        42.0,
+        7.0
+      ],
+      "target": [
+        2.0,
+        8.9,
+        6.0
+      ],
+      "lens": 30,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "arch_spandrel",
+    "cutwater_pier",
+    "balustrade",
+    "lamp_standard",
+    "roadway_deck",
+    "river_underside",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-vehicular-bridge/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1312745,
+        "sha256": "73a50019577d60995e107a2e5e936e2381819fc33b81d39b0d38c99c7aaf79a8"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-vehicular-bridge/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 901141,
+        "sha256": "5ec846317e5ee14f4966b1a940f2abbff9fb313f58bf0c0eac48c941182af535"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/urban-vehicular-bridge/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 813607,
+        "sha256": "21fb51dbea07f7ed8f6cbca5141985c088bb033db2665499b2ac5b9f85f6e041"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1.webp",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2.webp",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3.webp",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_stonearch.py",
+        "sha256": "3bfb66e64348e7d81e433ea7bb3d2aab40503e2f787b64221639793b511d5fff"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "1a6fe8b236c89bde1ff9cc39192be77568d245e0dfb8623e9130958cec53722e"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "6648aa9c8e794fd64738872245be540fa7578b964bc9ca1d4796b0913353e887"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-19T23:48:22.580608+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
