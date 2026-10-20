@@ -39,7 +39,7 @@ PALETTE = dict(wall=(.62, .33, .24), joint=(.70, .55, .47), trim=(.42, .32, .22)
 def manifest(version):
     h = ZC + 1.1
     cams = G.camera_roster(X1 - X0 + 4.0, Y1 - Y0 + 4.0, h, [
-        ('bay_window', (XC, Y0 - 7.5, 3.8), (XC, Y0 - BP, 3.8), 40),
+        ('bay_window', (XC + .4, Y0 - 11.0, 3.9), (XC + .4, Y0 - BP, 3.9), 40),
         ('gable_bargeboard', (XC, Y0 - 9.0, 9.4), (XC, Y0, 8.7), 45),
         ('porch_entrance', (2.6, Y0 - 7.0, 1.9), (2.3, Y0, 2.0), 40),
         ('porch_frieze', (.2, Y0 - 4.6, 2.5), (2.4, Y0 - 1.9, 3.3), 35),
@@ -51,7 +51,7 @@ def manifest(version):
         ('rear_north', (0.0, Y1 + 17.0, 5.0), (0.0, Y1, 5.0), 45)])
     for c in cams:                       # the locked front looks from the south-south-west at eye level
         if c['name'] == 'front':
-            c['location'] = (-8.5, Y0 - 15.5, 1.6); c['target'] = (-.2, Y0 + 2.5, 4.9); c['lens'] = 28; c['whole'] = False
+            c['location'] = (-7.0, Y0 - 12.8, 1.6); c['target'] = (-.2, Y0 + 2.5, 5.0); c['lens'] = 28; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -597,9 +597,10 @@ def bay():
     b = Batch()
     cor = offset(.16, Y0 + .01)
     for i in range(3):
-        b.beam('stone', (*cor[i], EAVE - .16), (*cor[i + 1], EAVE - .16), .34, .30, ext=.1)
+        b.beam('trim', (*cor[i], EAVE - .16), (*cor[i + 1], EAVE - .16), .34, .30, ext=.1)
+        b.beam('trim', (*cor[i], EAVE - .38), (*cor[i + 1], EAVE - .38), .22, .12, ext=.06)
     b.flush('bay cornice')
-    C.prism('Bay cap', offset(.26, Y0 + .02)[::-1], 'z', EAVE - .02, EAVE + .1, 'roof', 'bay')
+    C.prism('Bay cap', offset(.20, Y0 + .02)[::-1], 'z', EAVE - .02, EAVE + .04, 'trim', 'bay')
     inner = offset(-T, Y0 + T)
     for z in (F1, F2):
         C.prism(f'Bay floor {z:.1f}', inner[::-1], 'z', z - .22, z, 'floor', 'inside')
@@ -668,9 +669,9 @@ def roofs():
     for s in (-1, 1):
         x = s * (X1 + OVR - .03)
         b.beam('trim', (x, yc, ZE - .1), (x, Y1 + OVR, ZE - .1), .05, .24)
-        b.beam('hardware', (x + s * .08, yc + .2, ZE - .1), (x + s * .08, Y1 + OVR, ZE - .1), .14, .12)
+        b.beam('hardware', (x + s * .06, yc + .2, ZE - .1), (x + s * .06, Y1 + OVR - .05, ZE - .1), .12, .12)
     b.beam('trim', (X0 - OVR, Y1 + OVR - .03, ZE - .1), (X1 + OVR, Y1 + OVR - .03, ZE - .1), .05, .24)
-    b.beam('hardware', (X0 - OVR, Y1 + OVR + .05, ZE - .1), (X1 + OVR, Y1 + OVR + .05, ZE - .1), .14, .12)
+    b.beam('hardware', (X0 - OVR + .05, Y1 + OVR + .03, ZE - .1), (X1 + OVR - .05, Y1 + OVR + .03, ZE - .1), .12, .12)
     # Soffits under the eaves (painted boards) where the walls meet the overhangs.
     b.box('trim', (zx_e + X1 + OVM) / 2 - .2, Y0 - OV / 2, EAVE - .06, X1 + OVM - zx_e + .4, OV, .06)
     for s in (-1, 1):
@@ -823,6 +824,14 @@ def interior():
     C.box('Hall partition', (.75, yi0 + 3.2, (F1 + F2) / 2 - .12), (.12, 6.4, F2 - F1 - .24), 'interior', 'inside', 0)
     C.box('Upper partition', ((xi0 + xi1) / 2, .6, (F2 + EAVE) / 2 - .12), (xi1 - xi0, .12, EAVE - F2 - .24), 'interior', 'inside', 0)
     C.box('Ground partition', ((xi0 + xi1) / 2, 1.2, (F1 + F2) / 2 - .12), (xi1 - xi0, .12, F2 - F1 - .24), 'interior', 'inside', 0)
+    # Parlour fireplace on the cross partition: brick breast, dark firebox, timber mantel, overmantel glass.
+    yp = 1.2 - .06
+    C.box('Parlour chimney breast', (XC, yp - .2, (F1 + F2) / 2 - .12), (1.7, .4, F2 - F1 - .24), 'brick', 'inside', 0)
+    C.box('Parlour firebox', (XC, yp - .41, F1 + .45), (.75, .04, .8), 'hardware', 'inside', 0)
+    C.box('Parlour mantel shelf', (XC, yp - .48, F1 + 1.25), (1.9, .22, .08), 'trim', 'inside', 0)
+    for s in (-1, 1):
+        C.box('Parlour mantel pilaster', (XC + s * .6, yp - .44, F1 + .62), (.16, .1, 1.24), 'trim', 'inside', 0)
+    C.box('Parlour overmantel mirror', (XC, yp - .41, F1 + 2.0), (1.0, .03, 1.1), 'glass', 'inside', 0)
     for name, loc, p in (('Parlour', (XC, Y0 + 2.0, F2 - .5), 45), ('Hall', (2.2, Y0 + 2.0, F2 - .5), 30),
                          ('Kitchen', (0, 3.4, F2 - .5), 35), ('Front bedroom', (XC, Y0 + 2.0, EAVE - .5), 40),
                          ('Rear bedroom', (0, 3.0, EAVE - .5), 35), ('Attic', (XC, Y0 + 1.6, EAVE + 1.6), 25)):
