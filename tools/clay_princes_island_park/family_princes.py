@@ -512,7 +512,7 @@ def flush_smooth(b, module):
     b.g = {}
 
 
-def dome(b, role, cx, cy, z0, rx, ry, h, seg=7, prof=((0.0, 1.0), (.55, .86), (.88, .5))):
+def dome(b, role, cx, cy, z0, rx, ry, h, seg=7, prof=((0.0, 1.0), (.55, .86), (.88, .5)), jit=.1):
     """A soft planting mound: a jittered low dome whose open base is sunk into the bed (smooth-shaded when flushed)."""
     V, F = b.g.setdefault(role, ([], []))
     o = len(V)
@@ -520,7 +520,7 @@ def dome(b, role, cx, cy, z0, rx, ry, h, seg=7, prof=((0.0, 1.0), (.55, .86), (.
     for fz, fr in prof:
         for i in range(seg):
             a = a0 + 2 * math.pi * i / seg
-            k = 1 + RNG.uniform(-.1, .1)
+            k = 1 + RNG.uniform(-jit, jit)
             V.append((cx + rx * fr * k * math.cos(a), cy + ry * fr * k * math.sin(a), z0 - .05 + (h + .05) * fz * (1 + RNG.uniform(-.06, .06))))
     V.append((cx + RNG.uniform(-.06, .06) * rx, cy + RNG.uniform(-.06, .06) * ry, z0 + h))
     for r in range(len(prof) - 1):
@@ -541,7 +541,29 @@ def dot(b, role, x, y, z, r):
           (o + 2, o, o + 5), (o + 1, o + 2, o + 5), (o + 3, o + 1, o + 5), (o, o + 3, o + 5)]
 
 
-def arch_blade(b, role, x, y, z0, h, ang, reach, w=.035):
+def head(b, role, x, y, z, r):
+    """A rounded flower head: a squat octahedron turned at random (smooth-shaded it reads as a soft round bloom)."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V)
+    a = RNG.uniform(0, math.pi / 2)
+    c, s = math.cos(a), math.sin(a)
+    for (u, v, w) in OCT_V:
+        V.append((x + (u * c - v * s) * r, y + (u * s + v * c) * r, z + w * r * .8))
+    F.extend(tuple(o + i for i in f) for f in OCT_F)
+
+
+def edge_dist(p, poly):
+    """Distance from p to the nearest edge of a closed outline."""
+    best = 1e9
+    for a, c in zip(poly, poly[1:] + poly[:1]):
+        ex, ey = c[0] - a[0], c[1] - a[1]
+        l2 = ex * ex + ey * ey or 1e-9
+        t = max(0.0, min(1.0, ((p[0] - a[0]) * ex + (p[1] - a[1]) * ey) / l2))
+        best = min(best, math.hypot(p[0] - a[0] - t * ex, p[1] - a[1] - t * ey))
+    return best
+
+
+def arch_blade(b, role, x, y, z0, h, ang, reach, w=.028):
     """One arching grass blade: a flat tapering two-segment strip that rises steeply, then bows outward (seen from both sides)."""
     V, F = b.g.setdefault(role, ([], []))
     o = len(V)
@@ -719,6 +741,22 @@ def outline(pxs, step=1.0):
 # ---------------------------------------------------------------- ground, river, bank
 
 
+_BWL = []
+
+
+def near_boardwalk(x, y, m):
+    """True when (x, y) lies within m of the boardwalk centre line (deck half-width 1.6 m, kerbs to 1.61 m)."""
+    if not _BWL:
+        _BWL.extend(spline(BW, .5))
+    for a, c in zip(_BWL, _BWL[1:]):
+        ex, ey = c[0] - a[0], c[1] - a[1]
+        l2 = ex * ex + ey * ey or 1e-9
+        t = max(0.0, min(1.0, ((x - a[0]) * ex + (y - a[1]) * ey) / l2))
+        if math.hypot(x - a[0] - t * ex, y - a[1] - t * ey) < m:
+            return True
+    return False
+
+
 def ground_and_river():
     ys = [Y0 - 1.0 + k * 1.0 for k in range(int(Y1 - Y0 + 2.0) + 1)]
     loft('Island ground', [[(X0 - 1.0, y, 0.0), (bank(y) + .06, y, 0.0), (bank(y) + .06, y, ZG), (X0 - 1.0, y, ZG)] for y in ys], 'lawn', 'ground', closed=False)
@@ -732,7 +770,7 @@ def ground_and_river():
         while x < WATER - .2:
             r = RNG.uniform(.3, .95)
             xx = x + RNG.uniform(-.12, .12); yy = y + RNG.uniform(-.25, .25)
-            if not abs(yy - YB) < 2.9:
+            if not abs(yy - YB) < 2.9 and not near_boardwalk(xx, yy, 1.75 + r * 1.35 + .1):   # no stone under or through the boardwalk
                 lump(b, RNG.choice(('rock', 'rock2', 'rock3')), xx, yy, max(slope_z(xx, yy) + r * .25, r * .75 * 1.05), r * 1.25, r * RNG.uniform(.95, 1.3), r * .75)
             x += r * 1.55 + .2
         y += RNG.uniform(.8, 1.25)
@@ -749,6 +787,8 @@ def ground_and_river():
         if abs(yy - YB) < 2.9:
             continue
         xx = bank(yy) + RNG.uniform(.05, 1.0) ** 1.6 * 3.2
+        if near_boardwalk(xx, yy, 1.95):
+            continue
         fountain(b, xx, yy, slope_z(xx, yy) - .03, RNG.uniform(.45, .8), n=6, roles=('grass2', 'grass', 'straw'))
     flush_smooth(b, 'bank grasses')
 
@@ -877,36 +917,41 @@ def bed(name, poly, dens, b):
     td, sd, fd = dens
     core = offset(poly, .35)
 
-    def spot():
+    def spot(rr):
+        """A planting point whose whole plant (horizontal reach rr) stays clear of the kerb's inner face."""
         for _ in range(60):
             p = (RNG.uniform(min(xs), max(xs)), RNG.uniform(min(ys), max(ys)))
-            if inside(p, core) and Y0 - .3 < p[1] < Y1 + .3:
+            if inside(p, core) and Y0 - .3 < p[1] < Y1 + .3 and edge_dist(p, poly) > rr + .2:
                 return p
         return None
-    for i in range(int(sd * a * .55)):                      # shrubs: grounded rounded masses of two or three overlapping lobes
-        p = spot()
+    for i in range(int(sd * a * .55 * .7)):                 # shrubs: grounded rounded masses of two or three overlapping, finely segmented lobes
+        r = RNG.uniform(.4, .75)
+        p = spot(r * 1.75)
         if p:
-            r = RNG.uniform(.4, .75)
             role = ('shrub', 'planting')[i % 2]
             a0 = RNG.uniform(0, 2 * math.pi)
             for k in range(RNG.choice((2, 3))):
                 d = 0.0 if k == 0 else r * .55
                 dome(b, role, p[0] + math.cos(a0 + 2.2 * k) * d, p[1] + math.sin(a0 + 2.2 * k) * d, ZG + .10,
-                     r * RNG.uniform(.85, 1.1), r * RNG.uniform(.85, 1.1), r * RNG.uniform(1.0, 1.35) * (1.0 if k == 0 else .8), seg=8)
-    for i in range(int(fd * a * .7)):                       # perennial drifts: a low leafy mound carrying a pink, lavender or white flower mass
-        p = spot()
+                     r * RNG.uniform(.9, 1.05), r * RNG.uniform(.9, 1.05), r * RNG.uniform(1.0, 1.3) * (1.0 if k == 0 else .8), seg=12,
+                     prof=((0.0, 1.0), (.5, .9), (.82, .58)), jit=.04)
+    for i in range(int(fd * a * .7 * .75)):                 # perennial drifts: a leafy mound crowned by a cluster of rounded flower heads
+        rx, ry, h = RNG.uniform(.5, .9), RNG.uniform(.45, .8), RNG.uniform(.26, .4)
+        p = spot(max(rx, ry) * 1.1)
         if p:
-            rx, ry, h = RNG.uniform(.5, .9), RNG.uniform(.45, .8), RNG.uniform(.24, .4)
-            dome(b, 'planting', p[0], p[1], ZG + .10, rx, ry, h)
+            dome(b, 'planting', p[0], p[1], ZG + .10, rx, ry, h, seg=8, jit=.06)
             fr = ('flower', 'flower2', 'flower3', 'flower', 'flower2')[i % 5]
-            dome(b, fr, p[0] + RNG.uniform(-.1, .1), p[1] + RNG.uniform(-.1, .1), ZG + .10 + h * .5, rx * .75, ry * .75, h * .72, seg=6)
-            for k in range(3):                              # a few heads scattered on the flank of the mound
+            for k in range(11):                             # heads packed over the crown of the mound, sitting on its surface
                 ang = RNG.uniform(0, 2 * math.pi)
-                dot(b, fr, p[0] + math.cos(ang) * rx * .8, p[1] + math.sin(ang) * ry * .8, ZG + .10 + h * .62, RNG.uniform(.07, .11))
-    for i in range(int(td * a * .42)):                      # ornamental grasses: arching clumps, green and gold
-        p = spot()
+                d = math.sqrt(RNG.uniform(0, 1)) * .72
+                hx, hy = p[0] + math.cos(ang) * rx * d, p[1] + math.sin(ang) * ry * d
+                hr = RNG.uniform(.085, .13)
+                head(b, fr, hx, hy, ZG + .10 + h * (1 - d * d) * .92 + hr * .35, hr)
+    for i in range(int(td * a * .42 * .75)):                # ornamental grasses: dense arching clumps of fine blades, green, gold and straw
+        hh = RNG.uniform(.6, 1.15)
+        p = spot(hh * .55)
         if p:
-            fountain(b, p[0], p[1], ZG + .095, RNG.uniform(.6, 1.15), n=7, roles=(('grass', 'grass2'), ('grass2', 'straw'), ('grass', 'planting'))[i % 3])
+            fountain(b, p[0], p[1], ZG + .095, hh, n=11, roles=(('grass', 'grass2', 'straw'), ('grass2', 'straw', 'grass'), ('grass', 'planting', 'grass2'))[i % 3])
 
 
 def planting():
@@ -919,7 +964,7 @@ def planting():
     flush_smooth(b, 'planting')
 
 
-def park_tree(x, y, r, z=ZG + .09, k=0):
+def park_tree(x, y, r, z=ZG + .09, k=0, masses=3):
     """Rounded deciduous tree: a trunk, two limbs and a crown of four overlapping masses."""
     H = 2.4 * r + 3.0
     lean = ((.2, .1), (-.15, .2), (.1, -.2))[k % 3]
@@ -929,8 +974,8 @@ def park_tree(x, y, r, z=ZG + .09, k=0):
         C.rod('Tree limb', (x, y, z + H * .35), (x + math.cos(a) * r * .5, y + math.sin(a) * r * .5, z + H * .62), .06 + .015 * r, 'bark', 'trees', 6)
     roles = ('tree', 'tree2', 'tree3')
     smooth(A.foliage('Tree crown', (top[0], top[1], z + H * .7), (r * .85, r * .85, r * .75), role=roles[k % 3], detail=2))
-    for j in range(3):
-        a = k * .9 + j * math.tau / 3
+    for j in range(masses):
+        a = k * .9 + j * math.tau / masses
         smooth(A.foliage('Tree crown mass', (top[0] + math.cos(a) * r * .5, top[1] + math.sin(a) * r * .5, z + H * (.58 + .04 * j)),
                          (r * .6, r * .6, r * .52), role=roles[(k + j + 1) % 3], detail=2))
 
@@ -958,7 +1003,7 @@ def trees():
             yy = y + rng.uniform(-.9, .9) + row * 1.2
             if abs(yy - YB) < 3.0 + row * .4 or yy > Y1 + .8:
                 continue
-            park_tree(FAR + 1.4 + row * 2.4 + rng.uniform(-.4, .4), yy, rng.uniform(2.4, 4.4), z=ZG, k=k); k += 1
+            park_tree(FAR + 1.4 + row * 2.4 + rng.uniform(-.4, .4), yy, rng.uniform(2.4, 4.4), z=ZG, k=k, masses=2); k += 1
         y += 2.9 if dense else 6.0
     b = Batch()
     for i in range(80):                                      # understorey mounds along the far shore and under the wood
