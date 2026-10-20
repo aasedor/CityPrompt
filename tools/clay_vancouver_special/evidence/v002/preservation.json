@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-vancouver-special-clay-v002",
+  "glb": "clay-vancouver-special-clay-v002.glb",
+  "glb_bytes": 1854312,
+  "glb_sha256": "ebc83cd323d442ca6f48c72fcc5cec489db11237239734ee06f0324fd7bb764c",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "balcony_rail.png": 92,
+    "brick_base.png": 92,
+    "east_side.png": 92,
+    "entry_stair.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_ridge.png": 92,
+    "side_entry.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-vancouver-special-clay-v002-renders-and-glb.zip",
+  "zip_bytes": 33984202
+}
