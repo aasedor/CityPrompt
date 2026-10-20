@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "halifax_public_gardens",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "halifax_public_gardens_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "halifax_public_gardens",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "halifax_public_gardens_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/openspaces/halifax-public-gardens/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1556335,
+      "sha256": "e87f7a011833076c985a1ab9c1da22a58ee19d1006d778373e38f9f095998b9e",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "halifax_public_gardens",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "halifax_public_gardens_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/openspaces/halifax-public-gardens/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 1021819,
+      "sha256": "fe4f13a4732e47f4e7303b8b416a332c898274eecdec49c125db3ed70e342a10",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "halifax_public_gardens",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "halifax_public_gardens_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/openspaces/halifax-public-gardens/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 928683,
+      "sha256": "adbd6581a714fa2679c94abbdedbd434d6ce5ce84f1a66279cc04ff30daa1b30",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "calgary_cbe_brutalist_hq",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "calgary_cbe_brutalist_hq_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "calgary_cbe_brutalist_hq",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "calgary_cbe_brutalist_hq_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/calgary-board-of-education-hq/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1299315,
+      "sha256": "9def4af92fce9930bde0dd5652d58feefe6756e81849f115bca3e8bea95755cf",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "calgary_cbe_brutalist_hq",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "calgary_cbe_brutalist_hq_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/calgary-board-of-education-hq/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 875513,
+      "sha256": "596e75b3b905efd11db9c746686fcb8186d3358085c835e5c71e688d4e8a228a",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "calgary_cbe_brutalist_hq",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "calgary_cbe_brutalist_hq_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/calgary-board-of-education-hq/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 859525,
+      "sha256": "205aefd0b79e3ea7dcd09f62abb8fdc7cd4d5b562cff9a95a5fca223de8c06a4",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

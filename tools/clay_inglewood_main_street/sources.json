@@ -1,0 +1,68 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "inglewood_main_street",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "inglewood_main_street_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1.webp",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2.webp",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3.webp",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "inglewood_main_street",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "inglewood_main_street_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/streets/inglewood-main-street/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1322295,
+      "sha256": "c528164ed6ce8922d904ffe9bb0cc9bac3e19b0592695bb960d7f3f8712834aa",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "inglewood_main_street",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "inglewood_main_street_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/streets/inglewood-main-street/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 957382,
+      "sha256": "08729fbdd71064f1603ab588d3c97660a0dfad8ef5fe076bd4f505aecac6c776",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "inglewood_main_street",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "inglewood_main_street_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/streets/inglewood-main-street/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 894253,
+      "sha256": "96ea0c7b00c1b01a19f09c8207a7ca0b7f49cf016185e79f375cdcc7aff29a49",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

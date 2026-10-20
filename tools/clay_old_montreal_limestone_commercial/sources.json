@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "old_montreal_limestone_commercial",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "old_montreal_limestone_commercial_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "old_montreal_limestone_commercial",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "old_montreal_limestone_commercial_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/old-montreal-limestone-commercial/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1509189,
+      "sha256": "af691c0c7a1f20be366f6b00683bacc526267a0bd77c873e10ad19a812efd432",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "old_montreal_limestone_commercial",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "old_montreal_limestone_commercial_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/old-montreal-limestone-commercial/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 923080,
+      "sha256": "b158c78db9eb6550aa5743e9280e938c5a57a4a5017f7c2b1a7fa78ec44aa8db",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "old_montreal_limestone_commercial",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "old_montreal_limestone_commercial_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/old-montreal-limestone-commercial/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 874520,
+      "sha256": "f5653065c75c4e0190c72051d6ff7189930c2a40f0afea51186afce67e661c56",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "calgary_princes_island",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "calgary_princes_island_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "calgary_princes_island",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "calgary_princes_island_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/openspaces/princes-island-park/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1505682,
+      "sha256": "1b888e08c7c12b1ef0c559998fb419479f7d2212bc5f54e786b87336059960e7",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "calgary_princes_island",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "calgary_princes_island_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/openspaces/princes-island-park/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 979352,
+      "sha256": "8b979668e4f59df85fdaa84f762aa410fb7eed553300003cb36c929aef1bc694",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "calgary_princes_island",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "calgary_princes_island_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/openspaces/princes-island-park/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 1002287,
+      "sha256": "c172c901f34540d22a8f4f0f42cf0a8d0639f92b0dec8688212cab682f894344",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

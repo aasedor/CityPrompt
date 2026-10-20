@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "vancouver_special",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "vancouver_special_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "vancouver_special",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "vancouver_special_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/vancouver-special/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1198511,
+      "sha256": "d35ea463c540674c43ba6c8d2162a7dfad9b21be7d4924dbd008054519bf7a28",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "vancouver_special",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "vancouver_special_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/vancouver-special/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 869740,
+      "sha256": "052e9e31318baf4bf7e87f6b0e5145554646ce8908145baf91209ae160863236",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "vancouver_special",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "vancouver_special_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/vancouver-special/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 846284,
+      "sha256": "4eb1722a8e99aee70058e16088affb1097b1cd6e18de1d3165dab7ee76d96c19",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}
