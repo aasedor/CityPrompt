@@ -37,20 +37,20 @@ PALETTE = dict(steel=(.40, .45, .46), plate=(.35, .40, .42), rivet=(.30, .34, .3
     stone=(.66, .65, .62), timber=(.36, .27, .19), hardware=(.12, .12, .13), silver=(.80, .80, .78), dark=(.10, .11, .12),
     glass=(.20, .24, .27), pale=(.88, .88, .86), brick=(.56, .31, .22), brick2=(.62, .38, .27), trim=(.86, .84, .80),
     roof=(.74, .73, .70), wall=(.56, .31, .22), interior=(.82, .78, .72), floor=(.58, .48, .38), planting=(.30, .44, .20),
-    tree=(.28, .44, .18), soil=(.24, .18, .12), sand=(.66, .60, .50), blue=(.20, .30, .40))
+    tree=(.28, .44, .18), soil=(.24, .18, .12), sand=(.66, .60, .50), blue=(.20, .30, .40), deck=(.25, .27, .28))
 
 
 def manifest(version):
     h = DT + 7.0
     w, d = 70.0, Y1 - Y0
     cams = G.camera_roster(w, d, h, [
-        ('facade_close', (13.0, -18.0, 6.5), (CX, -22.5, 9.0), 40),
+        ('facade_close', (0.5, -48.0, 18.5), (-CX, -55.5, 14.6), 35),          # bowstring close: the inner face at the south shoe and first panels
         ('architecture_close', (9.5, 8.0, 9.0), (CX, 15.0, 9.5), 40),
         ('glass_close', (7.5, -8.0, 15.4), (TX, -14.0, 15.4), 40),
         ('arch_span', (19.0, 7.5, 4.0), (CX, 7.5, 7.5), 40),
         ('column_base', (7.5, -5.0, 1.7), (CX, 0.0, 2.6), 40),
         ('lattice_detail', (9.5, 27.0, 9.6), (CX, 22.5, 10.4), 40),
-        ('track_deck', (2.6, 2.0, 16.0), (TX, 40.0, DT + .2), 40),
+        ('track_deck', (-.2, 6.5, 17.4), (-.2, 32.0, DT), 40),                 # above the deck between the tracks, north of the train
         ('train_cars', (7.5, -4.0, 16.6), (TX, -12.0, 15.2), 40),
         ('street_under', (5.5, 42.0, 1.7), (-1.0, 10.0, 6.5), 35),
         ('rear_north', (2.0, Y1 + 32.0, 17.0), (0.0, Y1 - 10.0, 9.0), 40)])
@@ -577,11 +577,32 @@ def bowstring(b):
             b.box('steel', x, y, (zbt + zt) / 2 + .02, .40, .30, zt - zbt + .1)                   # built-up vertical: web
             for s in (-1, 1):
                 b.box('plate', x, y + s * .17, (zbt + zt) / 2 + .02, .52, .04, zt - zbt + .06)   # flange plates
-            for zz, hh in ((zbt + .45, .9), (zt - .4, .8)):                                     # riveted gussets both faces
+            if zt - .8 > zbt + .9:                                   # riveted gussets both faces, top and bottom of the vertical
+                gus = [(zbt + .45, .9, (zbt + .45,)), (zt - .4, .8, (zt - .4,))]
+            else:                                                    # short end-panel vertical: one full-height gusset, never two
+                gus = [((zbt + zt) / 2, zt - zbt, (zbt + .3, zt - .3))]  # overlapping coincident plates (they rendered black)
+            for zz, hh, rows in gus:
                 for sd in (-1, 1):
                     b.box('plate', x + sd * .275, y, zz, .03, 1.0, hh)
-                    for dy in (-.25, .25):
-                        b.box('rivet', x + sd * .293, y + dy, zz, .02, .05, .05)
+                    for zr in rows:
+                        for dy in (-.25, .25):
+                            b.box('rivet', x + sd * .293, y + dy, zr, .02, .05, .05)
+        rf = ri - .005                                           # just inside the intrados flange plate
+        def end_fill(y_from, y_to, k=10):                        # solid riveted end-panel plate between the chords at each shoe:
+            def ring_at(j):                                      # closes the narrow wedge slot the low top chord made with the bottom chord
+                y = y_from + (y_to - y_from) * j / k
+                ztop = max(zbt + .08, zm + math.sqrt(max(0.0, rf * rf - (y - ym) ** 2)))
+                return [(x - .35, y, zbt + .03), (x + .35, y, zbt + .03), (x + .35, y, ztop), (x - .35, y, ztop)]
+            sweep(b, 'plate', ring_at, k)
+            for j in range(1, int(abs(y_to - y_from) / .6)):
+                y = min(y_from, y_to) + j * .6
+                ztop = zm + math.sqrt(max(0.0, rf * rf - (y - ym) ** 2))
+                for zz in (zbt + .2, zbt + .55):
+                    if ztop - zz > .15:
+                        for sd in (-1, 1):
+                            b.box('rivet', x + sd * .362, y, zz, .03, .06, .06)
+        end_fill(ya, nodes[1][0])
+        end_fill(nodes[n - 1][0], yb)
         mid = n // 2
         for i in range(n):                                       # heavy main diagonal falling towards midspan, a lighter counter
             (y0, z0), (y1, z1) = nodes[i], nodes[i + 1]
@@ -613,7 +634,7 @@ def girders_and_deck(b):
                 b.box('rivet', -(X1 + .55) + k * (2 * X1 + 1.1) / 12, y + sd * .562, GB - .45, .06, .03, .06)
     for k in range(int((Y1 - Y0) / 3.75) + 1):                                                 # floor beams under the deck
         b.box('steel', 0.0, Y0 + .4 + k * 3.75, GT - .3, 2 * CX - .46, .36, .6)
-    b.box('plate', 0.0, 0.0, (GT + DT) / 2, X1 - X0, Y1 - Y0, DT - GT)
+    b.box('deck', 0.0, 0.0, (GT + DT) / 2, X1 - X0, Y1 - Y0, DT - GT)                         # dark steel deck plate
     n = int((Y1 - Y0) / .7)
     for xt in (-TX, TX):                                                                       # sleepers and rails
         for k in range(n):
