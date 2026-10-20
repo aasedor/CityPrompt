@@ -1,0 +1,901 @@
+{
+  "candidate": "clay-vancouver-special-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 100,
+    "vertices": 25868,
+    "polygons": 32228,
+    "triangles": 32228,
+    "path": "clay-vancouver-special-clay-v003-authoring.blend",
+    "bytes": 3500376,
+    "sha256": "42afefaacf23ac11b814295c7cf8e30a0705aa50ed210a459bb6a014fb8a8b39"
+  },
+  "runtime": {
+    "path": "clay-vancouver-special-clay-v003.glb",
+    "bytes": 1854456,
+    "sha256": "fd63618b4edfdea9988aa23672e445c88f02d083d69df30d97e1b1361b1baa79",
+    "meshes": 26,
+    "materials": 26,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 26,
+    "vertices": 25868,
+    "polygons": 32228,
+    "triangles": 32228
+  },
+  "original_bounds_m": [
+    [
+      -12.300000190734863,
+      -20.149999618530273,
+      0.0
+    ],
+    [
+      19.450000762939453,
+      23.384267807006836,
+      8.984999656677246
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -12.300000190734863,
+      -20.149999618530273,
+      0.0
+    ],
+    [
+      19.450000762939453,
+      23.384267807006836,
+      8.984999656677246
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 10.8,
+    "depth": 9.2,
+    "height": 10.35
+  },
+  "native_dimensions_m": {
+    "width": 31.750000953674316,
+    "depth": 43.53426742553711,
+    "height": 8.984999656677246
+  },
+  "native_bottom_center_m": [
+    3.575000286102295,
+    1.6171340942382812,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 6,
+    "brick": 2,
+    "joint": 3,
+    "concrete": 8,
+    "foundation": 4,
+    "roof": 1,
+    "roofline": 1,
+    "fascia": 5,
+    "soffit": 1,
+    "frame": 4,
+    "glass": 4,
+    "curtain": 2,
+    "white": 3,
+    "trim": 1,
+    "rail": 4,
+    "hardware": 3,
+    "lamp": 3,
+    "interior": 1,
+    "floor": 2,
+    "timber": 10,
+    "planting": 12,
+    "cedar": 6,
+    "lawn": 6,
+    "soil": 2,
+    "paving": 4,
+    "asphalt": 2
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/balcony_rail.png",
+    "renders/entry_stair.png",
+    "renders/brick_base.png",
+    "renders/east_side.png",
+    "renders/side_entry.png",
+    "renders/roof_ridge.png",
+    "renders/interior.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Brick front and stucco walls on a concrete foundation; front-gable roof on the wall plates",
+      "eave_m": 6.95,
+      "ridge_m": 8.95
+    },
+    {
+      "name": "Corner Vancouver Special with front and side stairs, balcony, lawn and fenced back yard",
+      "box": [
+        -5.4,
+        5.4,
+        -4.6,
+        4.6
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "ground window west",
+      "face": "south",
+      "u": -3.4300000000000006,
+      "z": 1.95,
+      "width": 1.8,
+      "height": 1.45,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        -4.599999904632568,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "suite"
+    },
+    {
+      "id": "ground window east",
+      "face": "south",
+      "u": 2.6999999999999993,
+      "z": 1.95,
+      "width": 3.0,
+      "height": 1.45,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        -4.599999904632568,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "entry hall"
+    },
+    {
+      "id": "upper window west",
+      "face": "south",
+      "u": -3.8000000000000003,
+      "z": 5.05,
+      "width": 1.9,
+      "height": 1.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        -4.599999904632568,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "bedroom"
+    },
+    {
+      "id": "upper window middle",
+      "face": "south",
+      "u": -0.5500000000000007,
+      "z": 5.05,
+      "width": 1.3,
+      "height": 1.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        -4.599999904632568,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room"
+    },
+    {
+      "id": "balcony sliding door",
+      "face": "south",
+      "u": 2.6999999999999993,
+      "z": 3.97,
+      "width": 3.0,
+      "height": 2.43,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        -4.599999904632568,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room"
+    },
+    {
+      "id": "front door",
+      "face": "south",
+      "u": -1.0,
+      "z": 0.92,
+      "width": 1.0,
+      "height": 2.15,
+      "kind": "entry door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.12,
+      "pane_inset_m": 0.157,
+      "face_origin": [
+        0.0,
+        -4.599999904632568,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "entry hall"
+    },
+    {
+      "id": "front sidelight",
+      "face": "south",
+      "u": -1.7200000000000002,
+      "z": 0.92,
+      "width": 0.36,
+      "height": 2.15,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        -4.599999904632568,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "entry hall"
+    },
+    {
+      "id": "east upper window 0",
+      "face": "east",
+      "u": 0.05,
+      "z": 5.15,
+      "width": 0.75,
+      "height": 1.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        5.400000095367432,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east upper window 1",
+      "face": "east",
+      "u": 1.65,
+      "z": 5.15,
+      "width": 0.75,
+      "height": 1.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        5.400000095367432,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "east ground window",
+      "face": "east",
+      "u": 0.05,
+      "z": 2.0,
+      "width": 0.75,
+      "height": 1.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        5.400000095367432,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "suite side door",
+      "face": "east",
+      "u": 1.65,
+      "z": 0.92,
+      "width": 0.9,
+      "height": 2.15,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        5.400000095367432,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "ground-floor suite"
+    },
+    {
+      "id": "rear upper window west",
+      "face": "north",
+      "u": 3.5,
+      "z": 5.05,
+      "width": 1.4,
+      "height": 1.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        4.599999904632568,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "rear upper window middle",
+      "face": "north",
+      "u": 0.2,
+      "z": 5.05,
+      "width": 1.0,
+      "height": 1.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        4.599999904632568,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "rear ground window west",
+      "face": "north",
+      "u": 3.5,
+      "z": 1.95,
+      "width": 1.4,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        4.599999904632568,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "rear ground window east",
+      "face": "north",
+      "u": -3.4,
+      "z": 1.95,
+      "width": 1.4,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        4.599999904632568,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "rear deck door",
+      "face": "north",
+      "u": -3.4,
+      "z": 3.97,
+      "width": 2.4,
+      "height": 2.43,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        4.599999904632568,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "living room"
+    },
+    {
+      "id": "rear door",
+      "face": "north",
+      "u": 0.0,
+      "z": 0.92,
+      "width": 0.9,
+      "height": 2.15,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        0.0,
+        4.599999904632568,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "ground-floor suite"
+    },
+    {
+      "id": "west upper window 0",
+      "face": "west",
+      "u": -2.2,
+      "z": 5.15,
+      "width": 0.75,
+      "height": 1.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -5.400000095367432,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west upper window 1",
+      "face": "west",
+      "u": 1.8,
+      "z": 5.15,
+      "width": 0.75,
+      "height": 1.25,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -5.400000095367432,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west ground window 0",
+      "face": "west",
+      "u": -2.2,
+      "z": 2.2,
+      "width": 0.75,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -5.400000095367432,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    },
+    {
+      "id": "west ground window 1",
+      "face": "west",
+      "u": 1.8,
+      "z": 2.2,
+      "width": 0.75,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.28,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -5.400000095367432,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "room"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "Front lawn",
+      "East side yard",
+      "West side yard",
+      "Back yard",
+      "South sidewalk",
+      "East sidewalk",
+      "South boulevard",
+      "East boulevard",
+      "South curb",
+      "East curb",
+      "South street",
+      "East street",
+      "site joint",
+      "site white",
+      "site timber",
+      "Front walk",
+      "Front bed behind the stair",
+      "Front bed west",
+      "Side path"
+    ],
+    "garden planting": [
+      "Cedar 0",
+      "Cedar 1",
+      "Cedar 2",
+      "Cedar 3",
+      "Cedar 4",
+      "Cedar 5",
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Front shrub 0",
+      "Front shrub 1",
+      "Front shrub 2",
+      "Front shrub 3",
+      "Stair bed shrub 0",
+      "Stair bed shrub 1"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005"
+    ],
+    "envelope": [
+      "south brick carrier",
+      "south stucco carrier",
+      "South gable",
+      "east carrier",
+      "north carrier",
+      "North gable",
+      "west carrier"
+    ],
+    "brick joints": [
+      "south measured mortar courses",
+      "south head joints"
+    ],
+    "south": [
+      "south south foundation",
+      "south south white",
+      "south south frame",
+      "south south glass",
+      "south south curtain",
+      "south south brick",
+      "south south trim",
+      "south south hardware",
+      "south south lamp"
+    ],
+    "front entry": [
+      "Front stair",
+      "front entry concrete",
+      "front entry rail"
+    ],
+    "balcony": [
+      "balcony white",
+      "balcony rail"
+    ],
+    "east": [
+      "east east foundation",
+      "east east frame",
+      "east east glass",
+      "east east curtain",
+      "east east hardware",
+      "east east lamp",
+      "east east fascia"
+    ],
+    "east downpipes": [
+      "east downpipes fascia"
+    ],
+    "side entry": [
+      "Side stair",
+      "side entry concrete",
+      "side entry rail"
+    ],
+    "north": [
+      "north north foundation",
+      "north north frame",
+      "north north glass",
+      "north north hardware",
+      "north north lamp"
+    ],
+    "rear entry": [
+      "Rear stoop flight"
+    ],
+    "rear deck and stoop": [
+      "rear deck and stoop timber",
+      "rear deck and stoop rail",
+      "rear deck and stoop concrete"
+    ],
+    "west": [
+      "west west foundation",
+      "west west frame",
+      "west west glass",
+      "west west fascia"
+    ],
+    "west downpipes": [
+      "west downpipes fascia"
+    ],
+    "roof": [
+      "Roof plate",
+      "Soffit lining"
+    ],
+    "roof trim": [
+      "roof trim fascia",
+      "roof trim roofline"
+    ],
+    "inside": [
+      "Ground floor",
+      "Upper floor",
+      "Ceiling"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-20T17:18:02.725506+00:00",
+  "delivery_and_render_seconds": 7165.7087261060005,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

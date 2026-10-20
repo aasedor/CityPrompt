@@ -1,0 +1,430 @@
+{
+  "candidate": "clay-vancouver-special-clay-v003",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-vancouver-special",
+  "variant_id": "clay-vancouver-special-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "vancouver_special/variant_0 (vancouver_special_v0)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 10.8,
+      "depth": 9.2,
+      "height": 10.35
+    },
+    "observed_storeys": 2,
+    "storey_programme": "raised ground floor (suite, entry hall) and the main living floor above off the front balcony",
+    "plan": "10.8 x 9.2 m box (top view) under one front-gable roof with 0.6 m overhangs; balcony across the east two thirds of the front",
+    "facade": "red-orange brick ground storey on the street front, white stucco above and on all other walls; bronze aluminium sliders; white door with sidelight; aluminium picket railings",
+    "levels_m": [
+      0.9,
+      3.95,
+      6.6850000000000005
+    ],
+    "roof_m": {
+      "eave": 6.95,
+      "ridge": 8.95
+    },
+    "inferred": "interiors, the west face and the rear face are teaching assumptions; the rear carries a small upper deck as glimpsed in the front view"
+  },
+  "roof_contract": {
+    "type": "low front-gable asphalt-shingle roof, central ridge front to back, open rakes with outriggers, boxed eaves with gutters",
+    "datum_m": 6.95,
+    "crowns_m": [
+      8.95
+    ]
+  },
+  "identity_contract": {
+    "owner": "boxy two-storey Vancouver Special: low wide front gable, brick ground storey and stucco upper storey, long front balcony with aluminium railing, raised side-stair entry"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: white stucco, red-orange brick with pale joints, grey concrete foundation and stairs, brown-grey shingles, brown fascia and outriggers, bronze window frames, grey aluminium railings",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 2,
+    "ground": "entry hall and a ground-floor suite with its own side door",
+    "upper": "main living floor and bedrooms off the front balcony"
+  },
+  "contact_contract": [
+    "Grade-zero lawn, walks and sidewalks",
+    "Walls on a concrete foundation",
+    "Front landing and stair on grade",
+    "Roof on the wall plates"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        11.4,
+        -14.6,
+        1.7
+      ],
+      "target": [
+        1.2,
+        -1.0,
+        3.8
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        10.0,
+        -18.0,
+        16.0
+      ],
+      "target": [
+        0.0,
+        -1.2,
+        3.4
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        -12.0,
+        -17.0,
+        22.0
+      ],
+      "target": [
+        0.0,
+        -0.5,
+        3.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        0.5,
+        -1.5,
+        40.0
+      ],
+      "target": [
+        0.5,
+        -1.499,
+        0.0
+      ],
+      "ortho_scale": 24.0,
+      "whole": false
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -21.0,
+        -2.0,
+        5.0
+      ],
+      "target": [
+        -5.4,
+        0.0,
+        4.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        23.0,
+        0.0,
+        4.8
+      ],
+      "target": [
+        5.4,
+        0.0,
+        4.2
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        0.0,
+        25.6,
+        8.5
+      ],
+      "target": [
+        0.0,
+        4.6,
+        3.6
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        15.0,
+        19.0,
+        13.0
+      ],
+      "target": [
+        0.0,
+        1.0,
+        4.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        0.0,
+        -17.0,
+        4.0
+      ],
+      "target": [
+        0.0,
+        -4.6,
+        4.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        8.6,
+        -9.4,
+        4.9
+      ],
+      "target": [
+        5.0,
+        -4.8999999999999995,
+        6.5
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -3.8,
+        -8.6,
+        5.75
+      ],
+      "target": [
+        -3.8,
+        -4.6,
+        5.75
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "balcony_rail",
+      "location": [
+        4.5,
+        -11.5,
+        5.6
+      ],
+      "target": [
+        1.2,
+        -5.199999999999999,
+        4.6
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "entry_stair",
+      "location": [
+        3.0,
+        -11.0,
+        2.0
+      ],
+      "target": [
+        -1.0,
+        -5.6,
+        1.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "brick_base",
+      "location": [
+        2.7,
+        -10.0,
+        2.4
+      ],
+      "target": [
+        2.7,
+        -4.6,
+        2.4
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "east_side",
+      "location": [
+        19.0,
+        -1.0,
+        3.8
+      ],
+      "target": [
+        5.4,
+        0.0,
+        3.8
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "side_entry",
+      "location": [
+        12.9,
+        -4.5,
+        2.4
+      ],
+      "target": [
+        5.9,
+        1.1,
+        1.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "roof_ridge",
+      "location": [
+        -9.0,
+        -15.0,
+        16.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        7.95
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        2.4,
+        2.8,
+        5.550000000000001
+      ],
+      "target": [
+        2.6,
+        -4.6,
+        5.35
+      ],
+      "lens": 40,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "balcony_rail",
+    "entry_stair",
+    "brick_base",
+    "east_side",
+    "side_entry",
+    "roof_ridge",
+    "interior"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/vancouver-special/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1198511,
+        "sha256": "d35ea463c540674c43ba6c8d2162a7dfad9b21be7d4924dbd008054519bf7a28"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/vancouver-special/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 869740,
+        "sha256": "052e9e31318baf4bf7e87f6b0e5145554646ce8908145baf91209ae160863236"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/vancouver-special/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 846284,
+        "sha256": "4eb1722a8e99aee70058e16088affb1097b1cd6e18de1d3165dab7ee76d96c19"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_vspecial.py",
+        "sha256": "b6aa5d9b49704867ca2651acd7ae16337fa3eefbe0b8ccb57d9ff254d3fbb79f"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "173d3eeb402dce2f50830de1e6b930407a7998a7e847579df31bc3df38fce28e"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "09e3a1ff0d732352aaf872a7388483848eb2606bfb9fffbf85c9d1d23863cf9c"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-20T15:18:35.396089+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

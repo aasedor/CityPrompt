@@ -1,0 +1,132 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "ground window west",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "ground window east",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "upper window west",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "upper window middle",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "balcony sliding door",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front door",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front sidelight",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east upper window 0",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east upper window 1",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east ground window",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "suite side door",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear upper window west",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear upper window middle",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear ground window west",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear ground window east",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear deck door",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "rear door",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west upper window 0",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west upper window 1",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west ground window 0",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west ground window 1",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

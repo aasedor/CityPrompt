@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-vancouver-special",
+  "variant_id": "clay-vancouver-special-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "vancouver_special/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/vancouver-special/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1198511,
+      "sha256": "d35ea463c540674c43ba6c8d2162a7dfad9b21be7d4924dbd008054519bf7a28"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/vancouver-special/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 869740,
+      "sha256": "052e9e31318baf4bf7e87f6b0e5145554646ce8908145baf91209ae160863236"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/vancouver-special/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 846284,
+      "sha256": "4eb1722a8e99aee70058e16088affb1097b1cd6e18de1d3165dab7ee76d96c19"
+    }
+  ]
+}
