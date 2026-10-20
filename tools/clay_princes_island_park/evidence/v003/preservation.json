@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-princes-island-park-clay-v003",
+  "glb": "clay-princes-island-park-clay-v003.glb",
+  "glb_bytes": 4045264,
+  "glb_sha256": "f928125c1a5b95a056964c3fa48a36de84141a3dcde7951a0f142c4438a0db0d",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "bench_plaza.png": 92,
+    "boardwalk.png": 92,
+    "footbridge.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glazing_close.png": 92,
+    "green_roof.png": 92,
+    "left_side.png": 92,
+    "pavilion_close.png": 92,
+    "porch_northwest.png": 92,
+    "promenade_beds.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "riprap_bank.png": 92,
+    "top.png": 92,
+    "west_path.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-princes-island-park-clay-v003-renders-and-glb.zip",
+  "zip_bytes": 38767952
+}
