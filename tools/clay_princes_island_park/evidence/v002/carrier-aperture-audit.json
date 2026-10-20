@@ -1,0 +1,48 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "SE curtain wall",
+      "face": "Pavilion south-east glazed face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SW door",
+      "face": "Pavilion south-west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "SW corner glazing",
+      "face": "Pavilion south-west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE clerestory a",
+      "face": "Pavilion north-east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NE clerestory b",
+      "face": "Pavilion north-east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW door a",
+      "face": "Pavilion north-west porch face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "NW door b",
+      "face": "Pavilion north-west porch face",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
