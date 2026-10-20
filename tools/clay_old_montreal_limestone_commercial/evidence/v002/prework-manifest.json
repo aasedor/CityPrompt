@@ -1,0 +1,436 @@
+{
+  "candidate": "clay-old-montreal-limestone-commercial-clay-v002",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-old-montreal-limestone-commercial",
+  "variant_id": "clay-old-montreal-limestone-commercial-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "old_montreal_limestone_commercial/variant_0 (domed limestone market hall)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 107.0,
+      "depth": 48.7,
+      "height": 42.5
+    },
+    "observed_storeys": 3,
+    "storey_programme": "low basement and three storeys of market hall, shops and assembly rooms",
+    "plan": "107 m long hall in two 21 and 19.5 m deep ranges offset by one range depth at a 22 m square dome block (top view); south portico 17 m wide, north arcaded porch",
+    "facade": "grey limestone ashlar; three tiers of six-over-six windows with barred basement vents; pilaster strips, plinth, sill bands and a modillioned eave cornice; east end pavilion with two tiers of round-arched windows with radial fanlights, grilles and iron balconettes, an attic storey with sashes, balustrade and hipped roof, and a pediment with an arched tympanum window; giant-order Tuscan portico to the eave",
+    "dome": "square stone attic with corner pedestals, drum of sixteen round-arched windows between pilasters, ribbed silver tin dome, open lantern with cupola and cross",
+    "levels_m": [
+      0.9,
+      6.0,
+      10.6,
+      15.0
+    ],
+    "roof_m": {
+      "eave": 15.0,
+      "ridge": 19.4,
+      "pavilion_attic": 19.6,
+      "attic": 21.0,
+      "dome": 36.4,
+      "top": 42.5
+    },
+    "inferred": "interiors, the north and west fronts and the dome block east face follow the visible grammar; metric dimensions are authored teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "low hipped slate roofs, gabled at the pediment and against the attic; flat tin deck over the attic; tin dome and lantern",
+    "datum_m": 15.0,
+    "crowns_m": [
+      19.4,
+      21.0,
+      42.5
+    ]
+  },
+  "identity_contract": {
+    "owner": "long grey limestone market hall with a pedimented Tuscan portico, a silver ribbed dome on an arcaded drum and an arched end pavilion with iron balconettes"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: grey limestone ashlar with dark joints and paler dressings, blue-grey slate, silver tin dome, off-white sashes, black ironwork",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 3,
+    "basement": "storage and plant",
+    "ground": "market hall and shops",
+    "upper": "assembly rooms and offices"
+  },
+  "contact_contract": [
+    "Grade-zero sidewalks, cobbled squares and streets",
+    "Limestone walls from grade",
+    "Roofs on the eave cornices",
+    "Attic, drum and dome on the dome block walls",
+    "Portico on its stepped podium"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        65.0,
+        -55.0,
+        1.6
+      ],
+      "target": [
+        36.7,
+        -26.7,
+        10.1
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        92.0,
+        -84.0,
+        66.0
+      ],
+      "target": [
+        8.0,
+        -14.0,
+        12.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        130.9,
+        -149.6,
+        127.5
+      ],
+      "target": [
+        0,
+        0,
+        19.125
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        2.0,
+        -10.0,
+        160.0
+      ],
+      "target": [
+        2.0,
+        -9.999,
+        0.0
+      ],
+      "ortho_scale": 136.0,
+      "whole": false
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -112.0,
+        -10.0,
+        20.0
+      ],
+      "target": [
+        0.0,
+        -10.0,
+        14.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        118.0,
+        -10.0,
+        20.0
+      ],
+      "target": [
+        5.0,
+        -10.0,
+        14.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        2.0,
+        112.0,
+        26.0
+      ],
+      "target": [
+        2.0,
+        -10.0,
+        14.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        130.9,
+        149.6,
+        76.5
+      ],
+      "target": [
+        0,
+        0,
+        19.125
+      ]
+    },
+    {
+      "name": "portico",
+      "location": [
+        18.0,
+        -64.0,
+        9.0
+      ],
+      "target": [
+        0.0,
+        -33.0,
+        10.5
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "dome_drum",
+      "location": [
+        34.0,
+        -44.0,
+        40.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        27.0
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "end_pavilion_arches",
+      "location": [
+        36.0,
+        -58.0,
+        9.0
+      ],
+      "target": [
+        49.0,
+        -30.0,
+        11.0
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "balconettes",
+      "location": [
+        45.0,
+        -40.0,
+        8.0
+      ],
+      "target": [
+        49.0,
+        -30.0,
+        7.6
+      ],
+      "lens": 45,
+      "whole": false
+    },
+    {
+      "name": "east_door",
+      "location": [
+        74.0,
+        -24.0,
+        3.0
+      ],
+      "target": [
+        55.0,
+        -20.25,
+        4.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "long_facade",
+      "location": [
+        20.0,
+        -56.0,
+        8.0
+      ],
+      "target": [
+        20.0,
+        -30.0,
+        8.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "roofs_dormers",
+      "location": [
+        44.0,
+        30.0,
+        44.0
+      ],
+      "target": [
+        20.0,
+        -12.0,
+        17.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "west_range",
+      "location": [
+        -66.0,
+        -48.0,
+        12.0
+      ],
+      "target": [
+        -34.0,
+        -10.5,
+        9.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        30.6,
+        -26.8,
+        7.7
+      ],
+      "target": [
+        30.6,
+        -30.0,
+        8.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        0.0,
+        74.0,
+        16.0
+      ],
+      "target": [
+        0.0,
+        10.5,
+        15.0
+      ],
+      "lens": 45,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "portico",
+    "dome_drum",
+    "end_pavilion_arches",
+    "balconettes",
+    "east_door",
+    "long_facade",
+    "roofs_dormers",
+    "west_range",
+    "interior",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/old-montreal-limestone-commercial/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1509189,
+        "sha256": "af691c0c7a1f20be366f6b00683bacc526267a0bd77c873e10ad19a812efd432"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/old-montreal-limestone-commercial/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 923080,
+        "sha256": "b158c78db9eb6550aa5743e9280e938c5a57a4a5017f7c2b1a7fa78ec44aa8db"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/old-montreal-limestone-commercial/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 874520,
+        "sha256": "f5653065c75c4e0190c72051d6ff7189930c2a40f0afea51186afce67e661c56"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_oldmtl.py",
+        "sha256": "3f15b5d7ec4294b7b2eb2bc4f9cadcc320bba9414d1e22a7f85d114efd777767"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "fce965720eba66dc990244a3b64bfcfd8b513918589d30e645008f4a049c916e"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "109cbd416248824c8e07845956032d15fe8cfddb3e4921cb12d5e79b08174dd6"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-20T09:14:07.954339+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
