@@ -57,7 +57,7 @@ def manifest(version):
         ('interior', (2.4, 2.8, FL2 + 1.6), (2.6, Y0, FL2 + 1.4), 40)])
     for c in cams:                       # the locked front and oblique look from the south-east
         if c['name'] == 'front':
-            c.update(location=(7.5, -18.5, 1.7), target=(.4, -3.0, 3.7), lens=28, whole=False)
+            c.update(location=(11.4, -14.6, 1.7), target=(1.2, -1.0, 3.8), lens=32, whole=False)   # from across the side street: east wall about half the front
         elif c['name'] == 'front_corner':                                      # the locked oblique: high from the south-south-east
             c.update(location=(10.0, -18.0, 16.0), target=(0.0, -1.2, 3.4), lens=35, whole=False)
         elif c['name'] == 'aerial':
@@ -437,7 +437,7 @@ def chevron(name, top, thick, y0, y1, role, module):
     """Closed gable plate: a chevron section (eave, ridge, eave) of vertical thickness `thick`, carried along y."""
     pts = [(-W, top(-W)), (0.0, top(0.0)), (W, top(W)), (W, top(W) - thick), (0.0, top(0.0) - thick), (-W, top(-W) - thick)]
     vs = [(x, y, z) for y in (y0, y1) for x, z in pts]
-    fs = [(0, 1, 4, 5), (1, 2, 3, 4), (6, 11, 10, 7), (7, 10, 9, 8)]
+    fs = [(5, 4, 1, 0), (4, 3, 2, 1), (7, 10, 11, 6), (8, 9, 10, 7)]          # end caps wound outward (-y at y0, +y at y1)
     fs += [(i, (i + 1) % 6, (i + 1) % 6 + 6, i + 6) for i in range(6)]
     return C.mesh(name, vs, fs, role, module)
 
@@ -490,7 +490,7 @@ def brick_veneer(f, lo, hi, z0, z1, holes, course=.075, brick=.22):
         while u < hi - .02:
             if not any(h['u'] - h['w'] / 2 - .1 < u < h['u'] + h['w'] / 2 + .1 and h['z'] - .14 < zb + course and zb < h['z'] + h['h'] + .02 for h in holes):
                 o = len(vs)
-                vs += [f.p(u - .005, -.002, zb), f.p(u + .005, -.002, zb), f.p(u + .005, -.002, zb + course), f.p(u - .005, -.002, zb + course)]
+                vs += [f.p(u - .005, -.0025, zb + .006), f.p(u + .005, -.0025, zb + .006), f.p(u + .005, -.0025, zb + course), f.p(u - .005, -.0025, zb + course)]   # between bed joints, own plane: no T overlaps
                 fs.append((o, o + 1, o + 2, o + 3))
             u += brick
     if fs:
@@ -689,15 +689,16 @@ def west_face():
 def roof():
     """Low front-gable roof: shingle plate, soffit lining, rake and eave fascias, gutters, outriggers."""
     chevron('Roof plate', zroof, RT, YA, YB, 'roof', 'roof')
-    chevron('Soffit lining', lambda x: zroof(x) - RT - .012, .03, YA + .03, YB - .03, 'soffit', 'roof')
+    chevron('Soffit lining', lambda x: zroof(x) - RT - .012, .03, YA - .014, YB + .014, 'soffit', 'roof')   # bedded into both rake fascias: no slot under the rakes
     b = Batch()
     for s in (-1, 1):
         for y in (YA - .03, YB + .03):                                       # rake fascias, proud of the plate ends
             k = (s + 1) // 2                                                  # the two rakes of a gable differ by a few mm: no shared planes at the apex
-            b.beam('fascia', (s * (W + .055), y, ZE - RT / 2 + .01), (0.0, y, ZR - RT / 2 + .01), .05 - .006 * k, .26 - .006 * k, ext=.03)
+            # deep enough that its underside drops below the soffit lining, so the lining's end is buried in the board
+            b.beam('fascia', (s * (W + .055), y, ZE - RT / 2 - .01), (0.0, y, ZR - RT / 2 - .01), .05 - .006 * k, .30 - .006 * k, ext=.03)
             # corner return: a fascia block flush-wrapping the rake foot, the eave fascia and the gutter end, slightly
             # thicker than the rake board so no faces coincide; eave fascia and gutter stop inside it
-            b.box('fascia', s * (W + .0825), y, ZE - .1175, .205, .056, .305)
+            b.box('fascia', s * (W + .0825), y, ZE - .12, .205, .056, .345)
         b.box('fascia', s * (W + .03), (YA + YB) / 2, ZE - RT / 2 + .005, .05, YB - YA + .06, RT + .07)
         b.box('fascia', s * (W + .11), (YA + YB) / 2, ZE - .1, .12, YB - YA + .06, .13)                 # gutters
         k = 1
@@ -783,7 +784,7 @@ def site():
     for k, y in enumerate((3.0, 3.8, 4.6, 5.4, 6.2, 7.0)):                         # cedar row inside the rear corner fence
         A.foliage(f'Cedar {k}', (X1 + .85, y, 1.65), (.38, .38, 1.6), role='cedar', detail=2)
     street_tree(X0 - 1.5, ys1 - .7, z=.04, height=7.5, spread=2.2)
-    street_tree(xe1 + .7, Y1 + 7.5, z=.04, height=8.0, spread=2.2)   # clear of the rear_side view
+    street_tree(xe1 + .7, Y1 + 16.0, z=.04, height=8.0, spread=2.2)   # behind the rear_side camera plane, clear of its frame
 
 
 def build():
