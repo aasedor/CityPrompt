@@ -640,13 +640,13 @@ def ground():
     for k in range(-5, 6):
         b.box('mark', k * 4.0 + 2.0, SN + ST / 2, .0235, 2.0, .12, .006)
         b.box('mark', k * 4.0 + 2.0, SS - ST / 2, .0235, 2.0, .12, .006)
-    for k in range(int(2 * SW / 1.5)):                                         # sidewalk scoring
-        x = -SW + .75 + k * 1.5
+    for k in range(int(2 * SW / 2.0)):                                         # sidewalk scoring
+        x = -SW + 1.0 + k * 2.0
         b.box('joint', x, (SS + FS - 2.8) / 2, .1255, .025, FS - 2.8 - SS - .1, .003)
         b.box('joint', x, (FN + SN) / 2, .1255, .025, SN - FN - .1, .003)
     for s in (-1, 1):
-        for k in range(int((FN - FS + 2.8) / 1.5)):
-            b.box('joint', s * (SW + FX) / 2, FS - 2.8 + .75 + k * 1.5, .1215, SW - FX - .2, .025, .003)
+        for k in range(int((FN - FS + 2.8) / 2.0)):
+            b.box('joint', s * (SW + FX) / 2, FS - 2.8 + 1.0 + k * 2.0, .1215, SW - FX - .2, .025, .003)
     for k in range(int(20.0 / .45)):                                           # brick plaza courses outside the gate
         b.box('joint', -10.0 + .25 + k * .45, FS - 1.4, .1115, .02, 2.7, .003)
     b.flush('streets and plaza')
@@ -686,11 +686,11 @@ def paths():
             p = (a[0] + (c[0] - a[0]) * .03, a[1] + (c[1] - a[1]) * .03); q = (c[0] + (a[0] - c[0]) * .03, c[1] + (a[1] - c[1]) * .03)
             b.beam('joint', (p[0], p[1], ZL + .0025), (q[0], q[1], ZL + .0025), .022, .003)
     for r in (5.8, 6.4, 7.0):                                                  # concentric courses on the circle
-        ring = arc(0.0, 0.0, r, 0.0, 2 * math.pi, .5)
+        ring = arc(0.0, 0.0, r, 0.0, 2 * math.pi, 1.0)
         for i, ((ax, ay), (cx, cy)) in enumerate(zip(ring, ring[1:])):
             b.beam('joint', (ax, ay, ZO + .0025), (cx, cy, ZO + .0025), .022 + .002 * (i % 2), .003, ext=.01)
-    for k in range(36):
-        a = 2 * math.pi * k / 36
+    for k in range(24):
+        a = 2 * math.pi * k / 24
         b.beam('joint', (5.3 * math.cos(a), 5.3 * math.sin(a), ZO + .0025), (7.5 * math.cos(a), 7.5 * math.sin(a), ZO + .0025), .022, .003)
     for k in range(int((FORE_Y - FS) / .5) + 4):
         y = FS + .25 + k * .5
@@ -792,7 +792,7 @@ def shade_tree(name, x, y, h, r):
         a = 2 * math.pi * k / 6 + RNG.uniform(0, .5)
         rr = r * (.55 if k % 2 else .62)
         A.foliage(f'{name} crown mass', (x + math.cos(a) * r * .5, y + math.sin(a) * r * .5, h * (.54 + .07 * (k % 3))),
-                  (rr, rr * RNG.uniform(.85, 1.1), r * .42), role='tree2' if k % 2 else 'tree', detail=2 if k % 2 == 0 else 1)
+                  (rr, rr * RNG.uniform(.85, 1.1), r * .42), role='tree2' if k % 2 else 'tree', detail=2 if k in (0, 3) else 1)
     A.foliage(f'{name} crown top', (x - .2 * r, y + .1 * r, h * .64 + r * .42), (r * .5, r * .5, r * .32), role='tree', detail=1)
 
 
@@ -881,7 +881,7 @@ def bandstand():
                     (ua, za), (ub, zb) = seg[0], seg[-1]
                     if math.hypot(ub - ua, zb - za) > .08:
                         b.beam('paint', P(ua, .04 + .012 * (fam > 0), za), P(ub, .04 + .012 * (fam > 0), zb), .035, .03)
-                c += .32
+                c += .38
     # Front stair on the south side between low cheek walls.
     rise = (1.05 - ZO) / 6
     for i in range(5):
@@ -1010,7 +1010,7 @@ def fence_run(b, a, c, top_z=.41):
     b.beam('granite', (ax - ux * .19, ay - uy * .19, top_z + .015), (cx + ux * .19, cy + uy * .19, top_z + .015), .38, .05)
     for z in (.55, 1.46):
         b.beam('hardware', (ax, ay, z), (cx, cy, z), .035, .04)
-    n = max(2, int(L / .32))
+    n = max(2, int(L / .34))
     for i in range(1, n):
         x, y = ax + ux * L * i / n, ay + uy * L * i / n
         spike(b, 'hardware', x, y, top_z + .02, 1.56, .022, .1)
