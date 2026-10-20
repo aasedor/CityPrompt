@@ -5,8 +5,8 @@ Read from the pixels (the top view governs the plan): a fenced rectangular Victo
 north-south, between city streets on all four sides. A straight brick-paved axis runs from the main south gate to the
 north fence; an east-west cross path meets it at a round paved circle holding an octagonal white bandstand with a
 pink-copper ogee roof, a balustrade, fretwork arches and a front stair, ringed by a flower bed. A great oval loop path
-leaves the axis north of the bandstand, swells out to cross the cross path near the side fences and comes straight
-back south to the gate, so the axis, the cross path and the loop frame four leaf-shaped inner lawns, each with a long
+leaves the axis in a Y well north of the bandstand, swells out to cross the cross path near the side fences and comes
+straight back south to the gate, so the axis, the cross path and the loop frame four leaf-shaped inner lawns, each with a long
 planted carpet bed of white hydrangeas, lavender, purple and pink flowers, and four outer lawns under big mature
 shade trees. Granite edging lines every path. A black wrought-iron picket fence on a granite curb closes the block;
 the south front has a grand gate of two tall brick piers on granite bases with iron lanterns, an iron arch bearing
@@ -22,14 +22,16 @@ import geometry as G
 SLUG = 'clay-halifax-public-gardens'
 FX, FS, FN = 21.6, -29.2, 28.0                  # fence line: half-width, south and north (top view, 0.08 m per pixel)
 AXW, CRW = 1.6, 2.2                             # axis and cross-path half-widths
-LA, LB = 14.6, 14.4                             # upper loop: ellipse semi-axes (centre line)
+LA, YJ = 14.6, 20.0                             # loop centre line crosses the cross path at x = +-LA; joins the axis in a Y at y = YJ
 LX, LY = 6.2, -13.6                             # lower loop: straight legs at x = +-LX south of y = LY
 LW = 1.2                                        # loop half-width
 RC = 7.6                                        # paved circle round the bandstand
 BED0, BED1 = 4.0, 5.2                           # flower ring round the bandstand
 SW, SN, SS = 24.6, 31.0, -35.2                  # outer sidewalk lines (west/east, north, south)
 ST = 9.0                                        # street width
-ZA, ZC, ZL, ZF, ZO = .070, .076, .082, .088, .094   # paving tops: axis, cross, loop, forecourt, circle (no shared planes)
+ZA, ZC, ZL, ZF, ZO = .070, .076, .064, .088, .094   # paving tops: axis, cross, loop, forecourt, circle (no shared planes;
+                                                    # the loop is lowest, so its ends die under the axis and forecourt)
+ZK = .067                                       # paving top of the corner fillets where the paths meet
 ZG = .04                                        # lawn top
 EPS = .002
 T = .3
@@ -46,7 +48,7 @@ def manifest(version):
     h = 14.0
     cams = G.camera_roster(2 * FX + 6.0, FN - FS + 6.0, h, [
         ('gate_arch', (1.5, -36.0, 2.2), (0.0, -29.2, 5.0), 32),
-        ('gate_piers_fence', (-14.0, -36.5, 2.4), (-6.0, -29.2, 1.6), 30),
+        ('gate_piers_fence', (-14.6, -36.0, 2.4), (-6.0, -29.2, 1.6), 30),
         ('bandstand', (2.5, -14.0, 1.9), (0.0, 0.0, 3.6), 30),
         ('bandstand_roof', (-6.5, -8.0, 9.0), (0.0, 0.0, 5.2), 34),
         ('carpet_beds', (-1.0, -20.0, 3.4), (-6.5, -8.0, .3), 32),
@@ -63,7 +65,7 @@ def manifest(version):
         elif c['name'] == 'top':                  # the locked top view: the block with both side streets, north up
             c.update(location=(0.0, -.6, 120.0), target=(0.0, -.599, 0.0), ortho_scale=95.6, whole=False)
         elif c['name'] == 'aerial':
-            c.update(location=(46.0, -52.0, 46.0), target=(0.0, 0.0, 0.0), lens=32, whole=False)
+            c.update(location=(16.0, -52.0, 72.0), target=(0.0, -2.0, 0.0), lens=30, whole=False)   # over the south street, clear of every roof
         elif c['name'] == 'left_side':
             c.update(location=(-30.5, -6.0, 15.0), target=(0.0, 0.0, 1.5), lens=22, whole=False)
         elif c['name'] == 'right_side':
@@ -78,7 +80,7 @@ def manifest(version):
         source_archetype='halifax_public_gardens/variant_0 (halifax_public_gardens_v0)',
         measurement_contract=dict(dimensions_m=dict(width=2 * FX, depth=FN - FS, height=h),
             observed_storeys=0, storey_programme='open space: a fenced Victorian public garden with a bandstand; the street blocks are context',
-            plan='43.2 x 57.2 m fenced block (top view at about 0.08 m per pixel): axis, cross path, paved bandstand circle, oval loop path, four inner carpet-bed lawns, four outer tree lawns',
+            plan='43.2 x 57.2 m fenced block (top view at about 0.08 m per pixel): axis, cross path, paved bandstand circle, loop path joining the axis in a Y, filleted paving at every junction, four inner leaf-shaped carpet-bed lawns, four outer tree lawns',
             facade='black wrought-iron picket fence on a granite curb, brick gate piers with lanterns and a gilded iron sign arch, white octagonal bandstand with a pink-copper ogee roof',
             levels_m=[0.0, ZG, ZA, ZO, 1.0], inferred='the north and side entrances, bed planting mixes and the street blocks are teaching assumptions'),
         roof_contract=dict(type='open space; octagonal ogee copper bandstand roof', datum_m=0.0, crowns_m=[8.3]),
@@ -409,6 +411,8 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 # ---- Halifax Public Gardens ----
 
 import random
+from shapely.geometry import LineString, Point, Polygon, box as sbox
+from shapely.ops import unary_union
 
 RNG = random.Random(1867)                       # fixed seed: the same flower mounds on every build
 ICO_V = [(-1, 1.618, 0), (1, 1.618, 0), (-1, -1.618, 0), (1, -1.618, 0), (0, -1, 1.618), (0, 1, 1.618), (0, -1, -1.618), (0, 1, -1.618),
@@ -427,6 +431,40 @@ def lump(b, role, cx, cy, cz, rx, ry, rz, jitter=.16):
         k = 1 + RNG.uniform(-jitter, jitter)
         V.append((cx + x * s * rx * k, cy + y * s * ry * k, cz + z * s * rz * k))
     F.extend(tuple(o + i for i in f) for f in ICO_F)
+
+
+def dome(b, role, cx, cy, z0, rx, ry, h, seg=6):
+    """A grounded rounded shrub lobe: a flat base ring sunk 3 cm below the surface at z0, a bulging belly ring, a
+    shoulder ring and a crown point, so it sits on the ground like a plant and never balances on a vertex."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V)
+    ph = RNG.uniform(0, math.pi)
+    for dz, k in ((-.03, .96), (h * .40, 1.06), (h * .76, .74)):
+        for i in range(seg):
+            a = ph + 2 * math.pi * i / seg
+            j = 1 + RNG.uniform(-.07, .07)
+            V.append((cx + math.cos(a) * rx * k * j, cy + math.sin(a) * ry * k * j, z0 + dz))
+    top, bot = o + 3 * seg, o + 3 * seg + 1
+    V.append((cx, cy, z0 + h)); V.append((cx, cy, z0 - .03))
+    for r in range(2):
+        for i in range(seg):
+            a, c = o + r * seg + i, o + r * seg + (i + 1) % seg
+            F.append((a, c, c + seg, a + seg))
+    for i in range(seg):
+        F.append((o + 2 * seg + i, o + 2 * seg + (i + 1) % seg, top))
+        F.append((o + (i + 1) % seg, o + i, bot))
+
+
+def shrub(b, role, x, y, z0, r, h):
+    """A free-standing shrub or hydrangea as a cluster of grounded lobes: a broad green base with flower heads (white,
+    pink or purple) or more foliage lobes on top."""
+    dome(b, 'shrub', x, y, z0, r, r * RNG.uniform(.9, 1.0), h * .62, 7)
+    lobes = 3 if r < .85 else 4
+    for k in range(lobes):
+        a = 2 * math.pi * k / lobes + RNG.uniform(-.3, .3)
+        d = r * .42
+        dome(b, role, x + math.cos(a) * d, y + math.sin(a) * d, z0 + h * .28, r * .52, r * .5, h * .66)
+    dome(b, role, x, y, z0 + h * .40, r * .5, r * .5, h * .6)
 
 
 def mound(b, role, x, y, zb, w, h):
@@ -524,19 +562,17 @@ def bezier(p0, p1, p2, p3, n=40):
             for u in (i / n for i in range(n))]
 
 
-def loop_line():
-    """The oval loop centre line, from the south gate up the west leg, out through an S-bend to the cross path,
-    over the top of the ellipse and back down the east side; tangent-continuous everywhere."""
-    n = 120
-    pts = [(-LX, FS - .05 + (LY - FS + .05) * i / 20) for i in range(20)]
-    pts += bezier((-LX, LY), (-LX, LY + 5.6), (-LA, -5.4), (-LA, 0.0))
-    pts += [(LA * math.cos(t), LB * math.sin(t)) for t in (math.pi * (1 - i / n) for i in range(n))]
-    pts += bezier((LA, 0.0), (LA, -5.4), (LX, LY + 5.6), (LX, LY))
-    pts += [(LX, LY + (FS - .05 - LY) * i / 20) for i in range(21)]
+def loop_half(s):
+    """One half of the loop centre line (s = -1 west, +1 east): from the south gate up the straight leg, out through
+    an S-bend to the cross path, then up a broad arc that swings in and joins the axis in a Y at y = YJ, as the top
+    view shows (no right-angle T). Tangent-continuous; its north end dies under the higher axis paving."""
+    pts = [(s * LX, FS - .05 + (LY - FS + .05) * i / 20) for i in range(20)]
+    pts += bezier((s * LX, LY), (s * LX, LY + 5.6), (s * LA, -5.4), (s * LA, 0.0))
+    pts += bezier((s * LA, 0.0), (s * LA, 10.0), (s * 3.6, 16.0), (0.0, YJ), 60) + [(0.0, YJ)]
     return resample(pts, .25)
 
 
-LOOP = loop_line()
+LOOPS = [loop_half(-1), loop_half(1)]
 
 
 def offsets(pts, d):
@@ -572,7 +608,7 @@ REGIONS = dict(
     axis=lambda x, y, m: abs(x) < AXW - m and FS - .1 < y < FN + .1,
     cross=lambda x, y, m: abs(y) < CRW - m and abs(x) < FX + .1,
     circle=lambda x, y, m: math.hypot(x, y) < RC - m,
-    loop=lambda x, y, m: seg_dist(x, y, LOOP) < LW - m,
+    loop=lambda x, y, m: min(seg_dist(x, y, L) for L in LOOPS) < LW - m,
     fore=lambda x, y, m: in_fore(x, y, m))
 
 
@@ -684,27 +720,14 @@ def paths():
     b = Batch()
     C.box('Axis path', (0.0, (FS + FN) / 2, (.02 + ZA) / 2), (2 * AXW, FN - FS + .1, ZA - .02), 'paving', 'paths', 0)
     C.box('Cross path', (0.0, 0.0, (.025 + ZC) / 2), (2 * FX + .1, 2 * CRW, ZC - .025), 'paving', 'paths', 0)
-    lo, ro = ribbon('Loop path', LOOP[::3] if (len(LOOP) - 1) % 3 == 0 else LOOP[::3] + [LOOP[-1]], LW, .03, ZL)
+    for k, L in enumerate(LOOPS):
+        ribbon(f'Loop path {"west" if k == 0 else "east"}', L[::3] if (len(L) - 1) % 3 == 0 else L[::3] + [L[-1]], LW, .03, ZL)
     C.prism('Bandstand circle', [(RC * math.cos(2 * math.pi * i / 64), RC * math.sin(2 * math.pi * i / 64)) for i in range(64)], 'z', .04, ZO, 'paving', 'paths')
     xs = sorted(set([round(-LX - LW + i * .3, 4) for i in range(int(2 * (LX + LW) / .3) + 1)] + [LX + LW, -AXW, AXW, -LX + LW, LX - LW]))
     top = [(x, FORE_Y - math.sqrt(max(0.0, TIP_R ** 2 - (abs(x) - TIP_X) ** 2)) if abs(abs(x) - TIP_X) < TIP_R else FORE_Y) for x in xs]
     strip_mesh('Gate forecourt', [(x, FS - .05) for x in xs], top, .035, ZF, 'paving', 'paths')
-    # Paver courses: joints across every path, stopping where a higher or crossing path takes over.
-    for k in range(int((FN - FS) / .6)):
-        y = FS + .3 + k * .6
-        for run in runs(line((-AXW + .05, y), (AXW - .05, y), .2), ('axis',)):
-            b.beam('joint', (run[0][0], y, ZA + .0025), (run[-1][0], y, ZA + .0025), .022, .003)
-    for k in range(int(2 * FX / .6)):
-        x = -FX + .3 + k * .6
-        for run in runs(line((x, -CRW + .05), (x, CRW - .05), .2), ('cross',)):
-            b.beam('joint', (x, run[0][1], ZC + .0025), (x, run[-1][1], ZC + .0025), .022, .003)
-    lj, rj = offsets(LOOP, LW), offsets(LOOP, -LW)
-    for i in range(0, len(LOOP), 3):
-        a, c = lj[i], rj[i]
-        mx, my = (a[0] + c[0]) / 2, (a[1] + c[1]) / 2
-        if not paved(mx, my, ('loop',), -.4):
-            p = (a[0] + (c[0] - a[0]) * .03, a[1] + (c[1] - a[1]) * .03); q = (c[0] + (a[0] - c[0]) * .03, c[1] + (a[1] - c[1]) * .03)
-            b.beam('joint', (p[0], p[1], ZL + .0025), (q[0], q[1], ZL + .0025), .022, .003)
+    # The long paths stay plain brick colour (plank-like transverse joints read as a boardwalk); the circle keeps
+    # its concentric and radial courses.
     for r in (5.8, 6.4, 7.0):                                                  # concentric courses on the circle
         ring = arc(0.0, 0.0, r, 0.0, 2 * math.pi, 1.0)
         for i, ((ax, ay), (cx, cy)) in enumerate(zip(ring, ring[1:])):
@@ -712,23 +735,74 @@ def paths():
     for k in range(24):
         a = 2 * math.pi * k / 24
         b.beam('joint', (5.3 * math.cos(a), 5.3 * math.sin(a), ZO + .0025), (7.5 * math.cos(a), 7.5 * math.sin(a), ZO + .0025), .022, .003)
-    for k in range(int((FORE_Y - FS) / .5) + 4):
-        y = FS + .25 + k * .5
-        for run in runs(line((-LX - LW + .05, y), (LX + LW - .05, y), .15), ('fore',)):
-            if in_fore((run[0][0] + run[-1][0]) / 2, y, .05):
-                b.beam('joint', (run[0][0], y, ZF + .0025), (run[-1][0], y, ZF + .0025), .022, .003)
     b.flush('paver joints')
-    # Granite edging along every path edge.
+    # Broad filleted paving where the paths meet, so every lawn reads as a soft-cornered island, then granite
+    # edging along the lawn outlines.
+    shapes = path_shapes()
+    union = unary_union(list(shapes.values()))
+    fil = []
+    for key_a, key_b, cx, cy, r in junctions():
+        pair = shapes[key_a].union(shapes[key_b])
+        piece = pair.buffer(r, 16).buffer(-r, 16).difference(pair).intersection(Point(cx, cy).buffer(r * 2.6 + 1.6, 24))
+        fil.append(piece)
+    fil = unary_union(fil).buffer(.02).intersection(GARDEN)
+    for k, g in enumerate(polys(fil)):
+        if g.area > .03:
+            C.prism(f'Path junction fillet {k}', list(g.simplify(.015).exterior.coords)[:-1], 'z', .036, ZK, 'paving', 'paths')
+    paved_all = union.union(fil)
     b = Batch()
-    for s in (-1, 1):
-        edging(b, line((s * AXW, FS + .2), (s * AXW, FN - .2), .2), ('axis',), straight=True)
-        edging(b, line((-FX + .2, s * CRW), (FX - .2, s * CRW), .2), ('cross',), straight=True)
-    edging(b, lj[2:-2:3], ('loop',))
-    edging(b, rj[2:-2:3], ('loop',))
-    edging(b, arc(0.0, 0.0, RC, 0.0, 2 * math.pi, .6), ('circle',))
-    for s in (-1, 1):
-        edging(b, arc(s * TIP_X, FORE_Y, TIP_R, 0.0, -math.pi, .3), ('fore',))
+    for g in polys(GARDEN.difference(paved_all)):
+        if g.area < .2:
+            continue
+        pts = list(g.simplify(.02).exterior.coords)
+        for i, ((ax, ay), (cx2, cy2)) in enumerate(zip(pts, pts[1:])):
+            if on_fence(ax, ay) and on_fence(cx2, cy2):
+                continue
+            if math.hypot(cx2 - ax, cy2 - ay) < .01:
+                continue
+            b.beam('granite', (ax, ay, .07), (cx2, cy2, .07), .10 + .004 * (i % 2), .08 + .004 * (i % 2), ext=.02)
     b.flush('path edging')
+    return paved_all
+
+
+GARDEN = sbox(-FX + .12, FS + .12, FX - .12, FN - .12)
+
+
+def on_fence(x, y):
+    return abs(x) > FX - .2 or y < FS + .2 or y > FN - .2
+
+
+def polys(g):
+    return [g] if g.geom_type == 'Polygon' else [p for p in getattr(g, 'geoms', []) if p.geom_type == 'Polygon']
+
+
+def path_shapes():
+    """The paved areas as plan polygons; paths are carried past the fence so the fillets never act at the fence."""
+    xs = [-LX - LW + i * .25 for i in range(int(2 * (LX + LW) / .25) + 1)]
+    top = [(x, FORE_Y - math.sqrt(max(0.0, TIP_R ** 2 - (abs(x) - TIP_X) ** 2)) if abs(abs(x) - TIP_X) < TIP_R else FORE_Y) for x in xs]
+    S = dict(axis=sbox(-AXW, FS - 6, AXW, FN + 6), cross=sbox(-FX - 6, -CRW, FX + 6, CRW), circle=Point(0, 0).buffer(RC, 32),
+             fore=Polygon([(xs[0], FS - 6)] + top + [(xs[-1], FS - 6)]))
+    for k, L in enumerate(LOOPS):
+        S[f'loop{k}'] = LineString([(x, FS - 6 if y < FS + .1 else y) for x, y in L]).buffer(LW, 16, cap_style=2)
+    return S
+
+
+def junctions():
+    """(path, path, corner centre, fillet radius) for every lawn corner: circle with axis and with cross path,
+    loop with cross path, and the small rounded tips where each loop arc meets the axis."""
+    out = []
+    for sy in (-1, 1):
+        out.append(('circle', 'axis', 0.0, sy * math.sqrt(RC * RC - AXW * AXW), 2.0))
+    for s in (-1, 1):
+        out.append(('circle', 'cross', s * math.sqrt(RC * RC - CRW * CRW), 0.0, 2.0))
+        out.append((f'loop{0 if s < 0 else 1}', 'cross', s * LA, 0.0, 2.2))
+        L = LOOPS[0 if s < 0 else 1]
+        edge = LineString(offsets(L, s * LW))                               # the inner (lawn) edge of the north arc
+        tip = edge.intersection(LineString([(s * AXW, 4.0), (s * AXW, YJ)]))
+        if not tip.is_empty:
+            p = tip if tip.geom_type == 'Point' else min(tip.geoms, key=lambda q: q.y)
+            out.append((f'loop{0 if s < 0 else 1}', 'axis', p.x, p.y, .7))
+    return out
 
 
 # ---------------------------------------------------------------- planting
@@ -829,7 +903,7 @@ def planting():
     for sx in (-1, 1):
         carpet_bed(f'South inner bed {"west" if sx < 0 else "east"}', [(sx * 3.3, -22.6), (sx * 3.4, -17.0), (sx * 3.6, -12.4), (sx * 5.0, -8.4), (sx * 9.4, -3.6)], 2.8)
         carpet_bed(f'North inner bed {"west" if sx < 0 else "east"}', [(sx * 2.7, 12.0), (sx * 5.0, 9.6), (sx * 8.0, 6.8), (sx * 11.4, 3.6)], 3.0)
-        border(f'North axis border {"west" if sx < 0 else "east"}', *(sorted((sx * (AXW + .45), sx * (AXW + 1.65)))), 15.9, 26.8)
+        border(f'North axis border {"west" if sx < 0 else "east"}', *(sorted((sx * (AXW + .45), sx * (AXW + 1.65)))), YJ + .9, 26.8)
     # The flower ring round the bandstand, broken at the stair.
     a0, a1 = math.radians(-69), math.radians(249)
     n = int((a1 - a0) * BED1 / .3)
@@ -849,10 +923,10 @@ def planting():
                             (19.6, -27.6, .8, 'white'), (18.2, -27.8, .7, 'purple'), (-20.2, -1.0 - 3.0, .9, 'shrub'), (20.2, -4.2, .9, 'shrub'),
                             (-20.4, 5.0, .8, 'white'), (20.4, 5.2, .8, 'shrub'), (4.4, 19.6, 1.2, 'white'), (-4.8, 17.6, 1.0, 'white'),
                             (-20.4, -16.0, .7, 'shrub'), (20.4, -24.0, .8, 'shrub'), (6.0, 26.6, .9, 'shrub'), (-4.0, 26.8, .8, 'pink')):
-        mound(b, role, x, y, ZG, 2 * r, 1.3 * r)
+        shrub(b, role, x, y, ZG, r, 1.3 * r)
     for s in (-1, 1):                                                          # low hedges along the outer lawn strips
         for k in range(8):
-            mound(b, 'shrub', s * (11.0 + k * 1.3), FS - .9, .10, 1.4, .8)
+            dome(b, 'shrub', s * (11.0 + k * 1.3), FS - .9, .10, .72, .66, .8, 7)
     b.flush('planting')
     for t in TREES:
         shade_tree(*t)
@@ -954,7 +1028,7 @@ def bandstand():
     for k in range(8):
         a = math.pi / 8 + k * math.pi / 4 - math.pi / 2
         for (r0, z0), (r1, z1) in zip(prof[1:], prof[2:]):
-            b.beam('copper2', (math.cos(a) * (r0 + .02), math.sin(a) * (r0 + .02), z0 + .04), (math.cos(a) * (r1 + .02), math.sin(a) * (r1 + .02), z1 + .04), .11, .09, ext=.03)
+            b.beam('copper2', (math.cos(a) * (r0 + .02), math.sin(a) * (r0 + .02), z0 + .04), (math.cos(a) * (r1 + .02), math.sin(a) * (r1 + .02), z1 + .04), .11 + .004 * (k % 2), .09, ext=.10)
     ngon(b, 'copper2', 0.0, 0.0, 3.82 - .01, 3.97, 4.42, 8, phase=.5 - .0)                 # eave fascia ring (slightly proud of the roof edge)
     ngon(b, 'copper2', 0.0, 0.0, 7.30, 7.78, .11, 10)
     ngon(b, 'copper2', 0.0, 0.0, 8.0, 8.62, .045, 8, cone=True)
@@ -1157,6 +1231,7 @@ def bench(b, x, y, fx, fy, z0=.02):
         b.beam('hardware', P(u, -.16, .05), P(u, -.12, .45), .05, .04)
         b.beam('hardware', P(u, -.24, .45), P(u, -.22, .92), .05, .04)
         b.beam('hardware', P(u, .22, .64), P(u, -.2, .64), .05, .04)
+        b.beam('hardware', P(u, .19, .47), P(u, .21, .62), .045, .045)        # front arm support down to the seat
 
 
 def lamp(b, x, y, z0=ZG):
@@ -1170,21 +1245,24 @@ def lamp(b, x, y, z0=ZG):
 
 def furniture():
     b = Batch()
-    for t in (128, 142, 52, 38):                                               # benches on the outer side of the upper loop
-        a = math.radians(t)
-        x, y = LA * math.cos(a), LB * math.sin(a)
-        nx, ny = math.cos(a) / LA, math.sin(a) / LB
-        L = math.hypot(nx, ny); nx, ny = nx / L, ny / L
-        bench(b, x + nx * (LW + .55), y + ny * (LW + .55), -nx, -ny)
+    for s in (-1, 1):                                                          # benches on the outer side of the north arcs
+        H = LOOPS[0 if s < 0 else 1]
+        for yb in (11.0, 13.8):
+            i = min((k for k in range(1, len(H) - 1) if H[k][1] > 1.0), key=lambda k: abs(H[k][1] - yb))
+            (ax, ay), (cx, cy) = H[i - 1], H[i + 1]
+            L = math.hypot(cx - ax, cy - ay)
+            nx, ny = -(cy - ay) / L * -s, (cx - ax) / L * -s                    # outward, away from the inner lawn
+            x, y = H[i]
+            bench(b, x + nx * (LW + .55), y + ny * (LW + .55), -nx, -ny)
     for s in (-1, 1):                                                          # benches on the circle facing the bandstand
         a = math.radians(-90 + s * 55)
         bench(b, (RC - .55) * math.cos(a), (RC - .55) * math.sin(a), -math.cos(a), -math.sin(a), ZO - .02)
     d = (-math.sin(math.radians(32)), math.cos(math.radians(32)))
-    bench(b, 7.6 + 2.3 * d[0], -35.0 + 2.3 * d[1], d[0], d[1], .10)           # the front-view bench on the sidewalk outside the gate
+    bench(b, 7.6 + 2.3 * d[0], -35.0 + 2.3 * d[1], -d[0], -d[1], .10)         # the front-view bench: back to the camera, facing the garden
     for s in (-1, 1):
         lamp(b, s * 5.2, 6.2); lamp(b, s * 5.2, -6.2)
         lamp(b, s * (FX - 1.2), 3.6)
-        lamp(b, s * 11.0, SS + 1.2, .12)
+        lamp(b, s * 16.0, SS + 1.2, .12)                                   # clear of the gate_piers_fence view
     b.flush('furniture')
 
 
@@ -1193,7 +1271,8 @@ def context():
     blocks = [('West block south', -48.0, -36.0, -44.0, -14.0, 18.0, 'facade', 'x+'), ('West block middle', -48.0, -36.0, -13.0, 12.0, 24.0, 'facade', 'x+'),
               ('West block north', -48.0, -36.0, 13.0, 40.0, 16.0, 'facade2', 'x+'), ('East office', 36.0, 50.0, -44.0, -8.0, 26.0, 'facade3', 'x-'),
               ('East block north', 36.0, 50.0, -7.0, 40.0, 17.0, 'facade', 'x-'), ('North apartments', -26.0, -2.0, 42.4, 56.0, 32.0, 'facade', 'y-'),
-              ('North office', 2.0, 26.0, 42.4, 56.0, 27.0, 'facade3', 'y-')]
+              ('North office', 2.0, 26.0, 42.4, 56.0, 27.0, 'facade3', 'y-'), ('South row west', -40.0, -5.0, -64.0, -48.4, 15.0, 'facade2', 'y+'),
+              ('South row east', 5.0, 40.0, -64.0, -48.4, 19.0, 'facade', 'y+')]
     b = Batch()
     for name, x0, x1, y0, y1, h, role, face in blocks:
         C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, h / 2), (x1 - x0, y1 - y0, h), role, 'context', 0)
@@ -1207,15 +1286,15 @@ def context():
                 xf = x1 + .02 if face == 'x+' else x0 - .02
                 b.box('dark', xf, (y0 + y1) / 2, z, .06, y1 - y0 - 1.2, hh)
             else:
-                b.box('dark', (x0 + x1) / 2, y0 - .02, z, x1 - x0 - 1.2, .06, hh)
+                b.box('dark', (x0 + x1) / 2, y0 - .02 if face == 'y-' else y1 + .02, z, x1 - x0 - 1.2, .06, hh)
         if not glass:                                                          # brick piers between the window bays, full height
-            span = (y1 - y0) if face != 'y-' else (x1 - x0)
+            span = (y1 - y0) if face in ('x+', 'x-') else (x1 - x0)
             for k in range(int((span - 1.2) / 3.0) + 1):
                 if face in ('x+', 'x-'):
                     xf = x1 + .06 if face == 'x+' else x0 - .06
                     b.box(role, xf, y0 + .6 + k * 3.0, (h - .4) / 2 + .2, .06, .5, h - .6)
                 else:
-                    b.box(role, x0 + .6 + k * 3.0, y0 - .06, (h - .4) / 2 + .2, .5, .06, h - .6)
+                    b.box(role, x0 + .6 + k * 3.0, y0 - .06 if face == 'y-' else y1 + .06, (h - .4) / 2 + .2, .5, .06, h - .6)
         if glass:
             n = int(((y1 - y0) if face != 'y-' else (x1 - x0)) / 1.5)
             for k in range(n + 1):
@@ -1224,6 +1303,7 @@ def context():
                 else:
                     b.box('trim', x0 + .3 + k * (x1 - x0 - .6) / n, y0 - .07, h / 2, .12, .06, h - .4)
     b.flush('context')
+    C.box('South far sidewalk', (0.0, SS - ST - 2.1, .064), (2 * (SW + ST + 2.38), 4.2 - .04, .12), 'concrete', 'sidewalks', 0)
     for s in (-1, 1):                                                          # street trees on the far sidewalks
         for y in (-30.0, 24.0):
             shade_tree('Street tree', s * (SW + ST + 1.2), y, 8.0, 1.6)
