@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-rail-through-truss-clay-v003",
+  "glb": "clay-rail-through-truss-clay-v003.glb",
+  "glb_bytes": 3904976,
+  "glb_sha256": "738760896a7183089f322923eb07d73e0f4b1c60562e0e84249ef14dc42f9f64",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "arch_span.png": 92,
+    "architecture_close.png": 92,
+    "column_base.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "lattice_detail.png": 92,
+    "left_side.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "street_under.png": 92,
+    "top.png": 92,
+    "track_deck.png": 92,
+    "train_cars.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-rail-through-truss-clay-v003-renders-and-glb.zip",
+  "zip_bytes": 36198007
+}

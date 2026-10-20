@@ -68,7 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (v003 reworks these two; a second failed fix of either stops the family)
+## Open blockers after v003 (v004 reworks it)
 
-- P1 #1: the spandrel lattice is reduced to one post and one diagonal at each haunch, and the rib crown runs into and laps over the deck girder; the source front shows a deep continuous lattice of posts and N/V diagonals over the whole spandrel, including over the crown at about half the rise (the v001 arch finding, surviving one targeted fix).
-- P1 #2: every car end shows a full-height solid black strip where side meets end (open seam or exposed core); the silver skin does not wrap the corner (the v001 train finding, surviving one targeted fix).
+- P1 #1: the bowstring span, the hero of the source foreground, is the wrong structure type: a light, thin-membered tall through-arch on a straight-column gantry with nothing arching below its deck; both sources show a heavy riveted arched truss whose arch continues below the deck down to riveted columns on concrete pedestals.
