@@ -48,7 +48,8 @@ PALETTE = dict(wall=(.58, .31, .21), brick=(.58, .31, .21), joint=(.70, .64, .56
     glass=(.20, .25, .27), interior=(.82, .78, .72), floor=(.56, .46, .36), roof=(.60, .57, .52), membrane=(.74, .73, .70),
     concrete=(.76, .75, .72), curbstone=(.82, .81, .78), sidejoint=(.60, .59, .56), asphalt=(.26, .26, .27),
     marking=(.94, .94, .92), yellow=(.88, .70, .16), green=(.30, .58, .36), hardware=(.08, .08, .09), post=(.92, .92, .90),
-    rubber=(.12, .12, .12), signal=(.80, .64, .14), timber=(.40, .30, .21), tree=(.32, .46, .20), planting=(.33, .47, .22),
+    rubber=(.12, .12, .12), signal=(.80, .64, .14), timber=(.40, .30, .21), tree=(.32, .46, .20), tree2=(.26, .40, .17), planting=(.33, .47, .22),
+    straw=(.72, .64, .42), cabin=(.24, .27, .29),
     grasses=(.62, .58, .36), soil=(.24, .18, .12), grass=(.42, .54, .28), stucco=(.83, .77, .64),
     neighbour=(.62, .42, .32), context=(.80, .78, .72), car=(.62, .63, .64), car2=(.18, .22, .28), car3=(.70, .66, .58), tyre=(.07, .07, .07),
     pale=(.88, .88, .86), blue=(.20, .30, .40))
@@ -502,21 +503,21 @@ def bike_symbol(b, x, y, along):
     for cx, cy in (w0, w1):
         annulus('Bike symbol wheel', (cx, cy, 0.0), (0, 0, 1), .30, .37, .0245, .031, 'marking', 'road markings', 16)
     p = lambda a, c: (x + ux * a + (-uy) * c, y + uy * a + ux * c, ZW + .001)
-    for a, c in (((-.55, 0), (-.05, .32)), ((-.05, .32), (.55, 0)), ((-.55, 0), (.05, 0)), ((.05, 0), (-.05, .32)), ((.05, 0), (.4, .36)), ((-.15, .32), (-.15, .42))):
-        b.beam('marking', p(*a), p(*c), .07, .009)
-    b.beam('marking', p(.3, .42), p(.5, .3), .07, .009)
+    strokes = (((-.55, 0), (-.05, .32)), ((-.05, .32), (.55, 0)), ((-.55, 0), (.05, 0)), ((.05, 0), (-.05, .32)), ((.05, 0), (.4, .36)), ((-.15, .32), (-.15, .42)), ((.3, .42), (.5, .3)))
+    for i, (a, c) in enumerate(strokes):                 # each stroke a little taller than the last: overlapping joints never share a top face
+        b.beam('marking', p(*a), p(*c), .07, .009 + .0014 * i)
 
 
 def arrow(b, x, y, dirn, turn=0):
     """White lane arrow pointing along +y (dirn=1) or -y (dirn=-1); turn=-1 hooks to the driver's left."""
     s = dirn
-    b.box('marking', x, y, ZM, .16, 2.2, .009)
+    b.box('marking', x, y, ZM, .16, 2.2, .009)                   # shaft top ZM + 4.5 mm; head and hook stand 0.7-1.7 mm higher, so no shared top face
     if turn == 0:
-        C.prism('Lane arrow head', [(x - .45, y + s * 1.1), (x + .45, y + s * 1.1), (x, y + s * 2.2)], 'z', ZM - .0045, ZM + .0045, 'marking', 'road markings')
+        C.prism('Lane arrow head', [(x - .45, y + s * 1.1), (x + .45, y + s * 1.1), (x, y + s * 2.2)], 'z', ZM - .0045, ZM + .0058, 'marking', 'road markings')
     else:
         hx = -s                                              # driver's left for a vehicle heading +y is -x
-        b.box('marking', x + hx * .4, y + s * 1.05, ZM, .8, .16, .009)
-        C.prism('Turn arrow head', [(x + hx * .75, y + s * .6), (x + hx * .75, y + s * 1.5), (x + hx * 1.45, y + s * 1.05)], 'z', ZM - .0045, ZM + .0045, 'marking', 'road markings')
+        b.box('marking', x + hx * .4, y + s * 1.05, ZM, .8, .16, .0104)
+        C.prism('Turn arrow head', [(x + hx * .75, y + s * .6), (x + hx * .75, y + s * 1.5), (x + hx * 1.45, y + s * 1.05)], 'z', ZM - .0045, ZM + .0062, 'marking', 'road markings')
 
 
 def markings():
@@ -595,9 +596,10 @@ def separators():
         for sy in (1, -1):
             ya, yc = sy * CURB_STOP[0], sy * CURB_STOP[1]
             b.box('rubber', xc, (ya + yc) / 2, .055, .32, abs(yc - ya), .1)
-            for k in range(5):
-                yy = sy * (CURB_STOP[0] + .25 + k * .45)
-                b.box('yellow', xc, yy, .056, .34, .18, .104)
+            for k in range(5):                                                                 # yellow chevrons pointing at the crosswalk
+                yy = sy * (CURB_STOP[0] + .3 + k * .42)
+                b.beam('yellow', (xc - .15, yy, .107), (xc + .005, yy - sy * .16, .107), .075, .006)
+                b.beam('yellow', (xc + .15, yy, .1075), (xc - .005, yy - sy * .16, .1075), .075, .0072)
             for k in range(3):
                 post(b, xc, sy * (CURB_STOP[0] + .35 + k * .8), .095)
     for sy in (1, -1):                                                                         # cross-street buffer posts
@@ -605,21 +607,24 @@ def separators():
             for k in range(5):
                 post(b, sx * (STOP_X + 4.0 + k * 6.0), sy * (CR_LANE + CR_BUF / 2), .015)
     b.flush('separators and posts')
-    g = Batch()
+    g = Batch(); gg = Batch()
     rng = random.Random(7)
     for sy in (1, -1):
         y0, y1 = sorted((sy * ISL[1], sy * ISL[2]))
         g.box('curbstone', 0.0, (y0 + y1) / 2, (.005 + SWZ) / 2, 2 * ISL[0], y1 - y0, SWZ - .005)
         g.box('soil', 0.0, (y0 + y1) / 2, (SWZ - .01 + SWZ + .016) / 2, 2 * ISL[0] - .4, y1 - y0 - .4, .026)
-        for i in range(12):                                                                    # tall straw grasses in clumps
-            cx = rng.uniform(-ISL[0] + .45, ISL[0] - .45)
-            cy = rng.uniform(y0 + .6, y1 - .6)
-            for j in range(9):
-                a = math.tau * j / 9 + rng.uniform(-.2, .2)
-                h = rng.uniform(.8, 1.25)
-                lean = rng.uniform(.12, .32)
-                g.beam('grasses', (cx, cy, SWZ + .01), (cx + math.cos(a) * lean, cy + math.sin(a) * lean, SWZ + h), .07, .03)
-            g.box('planting', cx, cy, SWZ + .14, .38, .38, .26)
+        k = 0
+        for cy in [y0 + .7 + i * (y1 - y0 - 1.4) / 7 for i in range(8)]:                       # tall straw grasses: a dense mass of arching tussocks
+            for cx in (-.52, .52):
+                cx += rng.uniform(-.1, .1); cyy = cy + rng.uniform(-.15, .15)
+                role = ('grasses', 'straw')[k % 2]; k += 1
+                rr = rng.uniform(.5, .6)
+                mound(gg, role, cx, cyy, SWZ + .01, rr, rr * rng.uniform(1.0, 1.15), rng.uniform(.28, .36), rng)
+                for j in range(34):                                                            # blades rise from across the tussock and arch outward
+                    a = rng.uniform(0, math.tau)
+                    d = rr * math.sqrt(rng.uniform(0, .7))
+                    zb = SWZ + .01 + .3 * (1 - (d / rr) ** 2)
+                    blade(gg, role, cx + math.cos(a) * d, cyy + math.sin(a) * d, zb - .06, a, rng.uniform(.65, 1.05), rng.uniform(.18, .42) + d * .4)
         # Keep-right sign and object marker at the nose facing the intersection; a second sign at the far nose.
         for ny, face in ((sy * (ISL[1] + .35), -sy), (sy * (ISL[2] - .35), sy)):
             g.box('hardware', 0.0, ny, SWZ + 1.3, .07, .07, 2.6)
@@ -634,6 +639,109 @@ def separators():
                 zz = SWZ + .5 + k * .22
                 g.beam('rubber', (-.13, ny + face * .07, zz), (.13, ny + face * .07, zz + .16), .06, .01)
     g.flush('refuge islands')
+    flush_smooth(gg, 'refuge island grasses')
+
+
+def mound(b, role, cx, cy, z0, rx, ry, h, rng, seg=9):
+    """A rounded grass mound: a closed jittered dome whose base sits on the mulch (smooth-shaded when flushed)."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V)
+    prof = ((0.0, 1.0), (.4, .92), (.75, .62), (.95, .25))
+    for fz, fr in prof:
+        for i in range(seg):
+            a = math.tau * i / seg
+            k = 1 + rng.uniform(-.12, .12)
+            V.append((cx + rx * fr * k * math.cos(a), cy + ry * fr * k * math.sin(a), z0 + h * fz))
+    V.append((cx, cy, z0 + h)); V.append((cx, cy, z0))
+    for r in range(len(prof) - 1):
+        for i in range(seg):
+            j = (i + 1) % seg
+            F.append((o + r * seg + i, o + r * seg + j, o + (r + 1) * seg + j, o + (r + 1) * seg + i))
+    top, bot = o + len(prof) * seg, o + len(prof) * seg + 1
+    for i in range(seg):
+        F.append((o + (len(prof) - 1) * seg + i, o + (len(prof) - 1) * seg + (i + 1) % seg, top))
+        F.append((o + (i + 1) % seg, o + i, bot))
+
+
+def blade(b, role, x, y, z0, ang, h, reach):
+    """One arching grass blade: a thin tapering two-segment strip rising steeply, then bowing outward (closed, both faces)."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V)
+    ca, sa = math.cos(ang), math.sin(ang)
+    nx, ny = -sa, ca
+    pts = [(0.0, 0.0, .022), (reach * .35, h * .7, .014), (reach, h, .002)]
+    for d, z, w in pts:
+        for s in (-1, 1):
+            for t in (-1, 1):
+                V.append((x + ca * d + nx * w * s + ca * .004 * t, y + sa * d + ny * w * s + sa * .004 * t, z0 + z - .004 * t))
+    for k in range(2):
+        a, c = o + 4 * k, o + 4 * (k + 1)
+        F.extend([(a, a + 1, c + 1, c), (a + 2, c + 2, c + 3, a + 3), (a, c, c + 2, a + 2), (a + 1, a + 3, c + 3, c + 1)])
+    F.append((o, o + 2, o + 3, o + 1)); F.append((o + 8, o + 9, o + 11, o + 10))
+
+
+def lobe(b, role, cx, cy, cz, rx, ry, rz, rng, seg=10, rings=6):
+    """A closed jittered ellipsoid lobe of a tree crown."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V)
+    V.append((cx, cy, cz - rz))
+    for r in range(1, rings):
+        ph = math.pi * r / rings - math.pi / 2
+        for i in range(seg):
+            a = math.tau * i / seg
+            k = 1 + rng.uniform(-.07, .07)
+            V.append((cx + rx * k * math.cos(ph) * math.cos(a), cy + ry * k * math.cos(ph) * math.sin(a), cz + rz * k * math.sin(ph)))
+    V.append((cx, cy, cz + rz))
+    for i in range(seg):
+        j = (i + 1) % seg
+        F.append((o, o + 1 + j, o + 1 + i))
+        F.append((o + 1 + (rings - 2) * seg + i, o + 1 + (rings - 2) * seg + j, o + 1 + (rings - 1) * seg))
+    for r in range(rings - 2):
+        for i in range(seg):
+            j = (i + 1) % seg
+            a, c = o + 1 + r * seg, o + 1 + (r + 1) * seg
+            F.append((a + i, a + j, c + j, c + i))
+
+
+def flush_smooth(b, module):
+    for role, (V, F) in b.g.items():
+        if F:
+            obj = C.mesh(f'{module} {role}', V, F, role, module)
+            for f in obj.data.polygons:
+                f.use_smooth = True
+    b.g = {}
+
+
+def round_tree(t, cr, x, y, z, h, r, rng, clamp=None):
+    """A mature street tree: a trunk to about 40 % of the height, scaffold limbs, and a dense rounded crown of overlapping
+    lobes whose lower lobes hang below the forks. `clamp` = (axis, limit) keeps every lobe on the street side of a facade."""
+    base_h = h * .42
+    C.rod('Street tree trunk', (x, y, z), (x, y, z + base_h + .3), .07 + .018 * h, 'timber', 'street planting', 8)
+    lobes = [(0.0, 0.0, h * .72, r, r, h * .26, 'tree')]
+    a0 = rng.uniform(0, math.tau)
+    for i in range(5):
+        a = a0 + math.tau * i / 5 + rng.uniform(-.25, .25)
+        d = r * rng.uniform(.45, .6)
+        lobes.append((math.cos(a) * d, math.sin(a) * d, h * rng.uniform(.56, .66), r * .62, r * .62, h * .2, ('tree', 'tree2')[i % 2]))
+    lobes.append((rng.uniform(-.2, .2) * r, rng.uniform(-.2, .2) * r, h * .88, r * .6, r * .6, h * .14, 'tree2'))
+    for dx, dy, cz, rx, ry, rz, role in lobes:
+        cx, cy = x + dx, y + dy
+        if clamp:
+            ax, lim = clamp
+            c = cx if ax == 'x' else cy
+            ext = rx if ax == 'x' else ry
+            s = 1 if lim > (x if ax == 'x' else y) else -1
+            over = s * (c + s * ext - lim)
+            if over > 0:                                                # pull the lobe back, then shrink it, to stay off the wall
+                shift = min(over, .5 * ext)
+                c -= s * shift; ext = max(.3, s * (lim - c))
+                if ax == 'x':
+                    cx, rx = c, ext
+                else:
+                    cy, ry = c, ext
+        if dx or dy:
+            C.rod('Street tree limb', (x, y, z + base_h), (x + (cx - x) * .7, y + (cy - y) * .7, cz - rz * .3), .03 + .008 * h, 'timber', 'street planting', 6)
+        lobe(cr, role, cx, cy, cz, rx, ry, rz, rng)
 
 
 def lamp(b, x, y, z, toward):
@@ -664,13 +772,13 @@ def signal_pole(b, x, y, ax, ay, reach):
 
 
 def car(b, x, y, ux, uy, role):
-    """A plain clay car: body, glass cabin with a roof, four wheels; heading (ux, uy)."""
+    """A plain clay car: body, opaque tinted cabin under an overhanging roof, four wheels; heading (ux, uy)."""
     vx, vy = -uy, ux
     a = (x - ux * 2.25, y - uy * 2.25)
     f = (x + ux * 2.25, y + uy * 2.25)
     b.beam(role, (a[0], a[1], .64), (f[0], f[1], .64), 1.78, .64)
-    b.beam('glass', (x - ux * 1.25, y - uy * 1.25, 1.14), (x + ux * .95, y + uy * .95, 1.14), 1.6, .46)
-    b.beam(role, (x - ux * 1.2, y - uy * 1.2, 1.385), (x + ux * .9, y + uy * .9, 1.385), 1.52, .06)
+    b.beam('cabin', (x - ux * 1.25, y - uy * 1.25, 1.14), (x + ux * .95, y + uy * .95, 1.14), 1.6, .46)      # opaque tinted cabin: the roof rests on it
+    b.beam(role, (x - ux * 1.3, y - uy * 1.3, 1.39), (x + ux * 1.0, y + uy * 1.0, 1.39), 1.66, .06)
     for s in (-1.42, 1.42):
         for t in (-.8, .8):
             cx, cy = x + ux * s + vx * t, y + uy * s + vy * t
@@ -680,9 +788,9 @@ def car(b, x, y, ux, uy, role):
 def furniture():
     b = Batch()
     gz = GRASS_Z[1]
-    for y in (22.0, 42.0, 62.0, -22.0, -42.0):
-        lamp(b, -9.35, y, gz, 1)
-    for y in (32.0, 55.0, -32.0):
+    for y in (21.5, 43.5, 65.5, -21.5, -43.5):                                    # midway between the verge trees, near the curb: arms clear of the crowns
+        lamp(b, -8.6, y, gz, 1)
+    for y in (34.5, 55.0, -34.5):
         lamp(b, 8.65, y, SWZ, -1)
     signal_pole(b, 10.0, 7.6, -1, 0, 7.5)
     signal_pole(b, -10.0, -7.6, 1, 0, 7.5)
@@ -698,18 +806,20 @@ def furniture():
             b.box('hardware', x, y + 2.0 + dy, SWZ + .45, .05, .05, .92)
         b.box('hardware', x, y + 2.0, SWZ + .89, .05, .75, .05)
     b.flush('street furniture')
-    for y in (16.0, 27.0, 38.0, 49.0, 60.0, 71.0, -16.0, -27.0, -38.0):          # mature trees on the west verge
-        street_tree(-9.4, y, z=gz, height=10.0, spread=3.0)
-    t = Batch()
-    for y in (16.5, 28.5, 40.5, -16.5, -28.5, -40.5):                             # young trees in pits on the east sidewalk
-        t.box('soil', 9.5, y, SWZ + .0055, 1.2, 1.2, .015)
-        street_tree(9.5, y, z=SWZ + .01, height=7.0, spread=1.7)
+    t = Batch(); cr = Batch()
+    rng = random.Random(11)
+    for y in (16.0, 27.0, 38.0, 49.0, 60.0, 71.0, -16.0, -27.0, -38.0):          # mature trees on the west verge: tall rounded overlapping crowns
+        round_tree(t, cr, -9.4, y, gz, 11.5, 4.2, rng)
+    for y in (16.5, 28.5, 40.5, -16.5, -28.5, -40.5):                             # young trees in pits on the east sidewalk, crowns kept off the shopfronts
+        t.box('soil', 9.1, y, SWZ + .0055, 1.2, 1.2, .015)
+        round_tree(t, cr, 9.1, y, SWZ + .01, 7.0, 1.9, rng, clamp=('x', EAST_BL - .35))
     for sx in (1, -1):
         for sy in (1, -1):
             for x in (24.0, 38.0):
-                t.box('soil', sx * x, sy * 7.5, SWZ + .0055, 1.1, 1.1, .015)
-                street_tree(sx * x, sy * 7.5, z=SWZ + .01, height=7.5, spread=1.8)
-    t.flush('tree pits')
+                t.box('soil', sx * x, sy * 6.7, SWZ + .0055, 1.0, 1.0, .015)
+                round_tree(t, cr, sx * x, sy * 6.7, SWZ + .01, 7.5, 1.9, rng, clamp=('y', sy * (CROSS_BL - .35)))
+    t.flush('street trees')
+    flush_smooth(cr, 'street tree crowns')
     c = Batch()
     car(c, -(TW + X_SEP0) / 2, 26.0, 0.0, -1.0, 'car')
     car(c, -(TW + X_SEP0) / 2, 44.0, 0.0, -1.0, 'car2')
