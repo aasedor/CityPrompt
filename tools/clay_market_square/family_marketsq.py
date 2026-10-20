@@ -568,8 +568,8 @@ def plaza():
             x = i * 3.0 + off
             if abs(x) > lim:
                 continue
-            ngon(b, 'bollard', x, y, PAVE - .01, .49, .16, 14)
-            ngon(b, 'joint2', x, y, .485, .525, .145, 14)
+            ngon(b, 'bollard', x, y, PAVE - .01, .49, .16, 10)
+            ngon(b, 'joint2', x, y, .485, .525, .145, 10)
             if (i + j) % 3 == 0 and abs(x + 1.5) < lim:
                 b.box('dark', x + 1.5, y + .9, PAVE + .0012, .34, .34, .004)
                 for g in range(4):
@@ -599,7 +599,7 @@ def riser_stones(b, r, z0, z1, seed):
         s = -a + (.3 + .5 * rnd(seed, c)) * 57.3 / r
         i = 0
         while s < a:
-            L = (.95 + 1.0 * rnd(seed * 31 + c, i)) * 57.3 / r                # stone length as an angle
+            L = (1.3 + 1.4 * rnd(seed * 31 + c, i)) * 57.3 / r                 # stone length as an angle
             e = min(s + L, a)
             p, q = bowl_pts(r - .008, s, s, 0)[0], bowl_pts(r - .008, e - .012 * 57.3 / r, 0, 0)[0]
             role = ('stone', 'stone2', 'stone3')[int(rnd(seed + c, i) * 3)]
@@ -703,7 +703,7 @@ def beds():
                 if edges[i] is None:
                     continue
                 wall_courses(b, poly[i], poly[(i + 1) % len(poly)], edges[i], h, edge_out(poly, i))
-        for poly, h, n in ((inset(lo, .45), H_LO, 170), (inset(hi, .45), H_HI, 190)):
+        for poly, h, n in ((inset(lo, .45), H_LO, 120), (inset(hi, .45), H_HI, 140)):
             xs = [p[0] for p in poly]; ys = [p[1] for p in poly]
             i = got = 0
             while got < n and i < n * 8:
@@ -716,13 +716,13 @@ def beds():
                 tuft(tufts, 'meadow2' if got % 3 else 'meadow', x, y, h + .02, .35 + .35 * rnd(i, 5), .16 + .14 * rnd(i, 7), rnd(i, 9) * .5)
     # Meadow behind the stage on the upper terrace and in the field to the north.
     i = got = 0
-    while got < 110:
+    while got < 80:
         i += 1
         x, y = -8.0 + 16.0 * rnd(i, 21), 17.9 + 3.5 * rnd(i, 22)
         got += 1
         tuft(tufts, 'meadow2' if got % 2 else 'meadow', x, y, TOP + .12, .3 + .3 * rnd(i, 23), .15 + .12 * rnd(i, 24), rnd(i, 25))
     i = got = 0
-    while got < 260:
+    while got < 200:
         i += 1
         x, y = X0 + 1.0 + (X1 - X0 - 2.0) * rnd(i, 31), 23.2 + (Y1 - 24.0) * rnd(i, 32)
         if abs(x) < CHEEK_X + .4 and y < 22.6:
