@@ -59,7 +59,7 @@ def manifest(version):
         ('rear_north', (0.0, 74.0, 16.0), (0.0, WY1, 15.0), 45)])
     for c in cams:                       # the locked front and oblique look from the south-east
         if c['name'] == 'front':
-            c.update(location=(72.0, -60.0, 1.6), target=(26.0, -26.0, 12.0), lens=26, whole=False)
+            c.update(location=(65.0, -50.0, 1.6), target=(30.0, -27.0, 13.5), lens=22, whole=False)
         elif c['name'] == 'front_corner':
             c.update(location=(92.0, -84.0, 66.0), target=(8.0, -14.0, 12.0), lens=35, whole=False)   # the locked oblique: high over the south-east
         elif c['name'] == 'top':
@@ -909,7 +909,7 @@ def site():
     for k in range(-27, 30):
         b.box('joint', k * 2.0, -34.25, .141, .02, 8.46, .004)
     b.flush('paving joints')
-    for x in (-48.0, -32.0, -18.0, 14.0, 26.0, 38.0, 50.0):
+    for x in (-48.0, -32.0, -18.0, 14.0, 26.0):                                   # the pavilion end of the street stays open (front)
         street_tree(x, -37.2, z=.14, height=10.0, spread=2.6)
     for x, y in ((-44.0, -21.0), (-32.0, -21.0), (-20.0, -21.0)):
         street_tree(x, y, z=.10, height=9.0, spread=2.4)
