@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-road-diet-complete-street-clay-v002",
+  "glb": "clay-road-diet-complete-street-clay-v002.glb",
+  "glb_bytes": 3202864,
+  "glb_sha256": "61424877485b88c03ba30c80b9dc8eaa552aea6ae5d59c8cd1f9b37a33c81002",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "bike_lane_separator.png": 92,
+    "bike_symbol.png": 92,
+    "corner_signal.png": 92,
+    "cross_street_lane.png": 92,
+    "crosswalk_zebra.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "left_side.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "refuge_island.png": 92,
+    "right_side.png": 92,
+    "rubber_curb.png": 92,
+    "storefronts.png": 92,
+    "top.png": 92,
+    "turn_lane.png": 92,
+    "verge_trees.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-road-diet-complete-street-clay-v002-renders-and-glb.zip",
+  "zip_bytes": 36724435
+}

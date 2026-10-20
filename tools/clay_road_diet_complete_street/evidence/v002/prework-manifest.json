@@ -1,0 +1,508 @@
+{
+  "candidate": "clay-road-diet-complete-street-clay-v002",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-road-diet-complete-street",
+  "variant_id": "clay-road-diet-complete-street-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "road_diet_complete_street/variant_0, a four-lane arterial converted to a complete street at a neighbourhood intersection",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 96.0,
+      "depth": 128.0,
+      "height": 14.0
+    },
+    "observed_storeys": 2,
+    "storey_programme": "street option: a complete-street section at an intersection; the one- and two-storey corner blocks are the street wall it is read with",
+    "plan": "16.2 m main street curb to curb and 11.2 m cross street curb to curb (top view), the intersection at the centre",
+    "section_m": {
+      "west_verge": [
+        -10.5,
+        -8.100000000000001
+      ],
+      "west_sidewalk": [
+        -12.6,
+        -10.5
+      ],
+      "west_bike_lane": [
+        -8.100000000000001,
+        -6.1000000000000005
+      ],
+      "west_separator": [
+        -6.1000000000000005,
+        -5.2
+      ],
+      "southbound_lane": [
+        -5.2,
+        -1.8
+      ],
+      "centre_turn_lane": [
+        -1.8,
+        1.8
+      ],
+      "northbound_lane": [
+        1.8,
+        5.2
+      ],
+      "east_separator": [
+        5.2,
+        6.1000000000000005
+      ],
+      "east_bike_lane": [
+        6.1000000000000005,
+        8.100000000000001
+      ],
+      "east_sidewalk": [
+        8.100000000000001,
+        11.5
+      ],
+      "cross_street_lane": [
+        0.0,
+        3.2
+      ],
+      "cross_street_buffer": [
+        3.2,
+        3.8000000000000003
+      ],
+      "cross_street_bike_lane": [
+        3.8000000000000003,
+        5.6
+      ],
+      "curb_height": 0.15,
+      "curb_return_radius": 3.0,
+      "refuge_island_width": 2.8
+    },
+    "facade": "green protected bike lanes behind raised concrete separators with white delineator posts and rubber curb stops, a centre two-way turn lane with yellow lines, continental zebra crosswalks, planted refuge islands with keep-right signs and object markers, grass verges with mature trees, black lamp standards, signal mast arms; one- and two-storey storefront and office blocks",
+    "levels_m": [
+      0.0,
+      0.15,
+      4.6,
+      7.6,
+      13.4
+    ],
+    "inferred": "the blocks beyond the corners and their rear walls and interiors are context and teaching assumptions; the signal heads are generic"
+  },
+  "roof_contract": {
+    "type": "flat membrane roofs inside parapets with copings and rooftop units",
+    "datum_m": 7.0,
+    "crowns_m": [
+      13.4
+    ]
+  },
+  "identity_contract": {
+    "owner": "road-diet complete street: one travel lane each way and a centre turn lane where four lanes were, green bike lanes protected by raised separators with posts, zebra crosswalks and planted refuge islands"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: dark asphalt, green bike-lane paint, white and yellow markings, pale concrete curbs, separators and sidewalks, grass verges, tall straw-coloured grasses, white posts, yellow-black markers, black lamp and signal poles, red-brick and beige storefront blocks",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 2,
+    "ground": "shops and services on the corners",
+    "upper": "offices and flats"
+  },
+  "street_contract": {
+    "kind": "fixed_native_section",
+    "width_m": 16.200000000000003,
+    "axis": "y",
+    "junction_finish": "continental zebra crosswalks and refuge islands",
+    "bands": [
+      "west_verge",
+      "west_sidewalk",
+      "west_bike_lane",
+      "west_separator",
+      "southbound_lane",
+      "centre_turn_lane",
+      "northbound_lane",
+      "east_separator",
+      "east_bike_lane",
+      "east_sidewalk",
+      "east_storefronts"
+    ]
+  },
+  "contact_contract": [
+    "Asphalt at grade zero",
+    "Sidewalks, separators and refuge islands on the asphalt with a 150 mm curb",
+    "Paint on the asphalt",
+    "Building walls from grade with the sidewalk running under them",
+    "Trees in the verge and in pits"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -7.4,
+        6.2,
+        1.6
+      ],
+      "target": [
+        -2.4,
+        40.0,
+        3.4
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -19.0,
+        -2.0,
+        30.0
+      ],
+      "target": [
+        6.0,
+        42.0,
+        0.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        -40.0,
+        -55.0,
+        50.0
+      ],
+      "target": [
+        0.0,
+        4.0,
+        0.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        0.0,
+        0.0,
+        150.0
+      ],
+      "target": [
+        0.0,
+        0.001,
+        0.0
+      ],
+      "ortho_scale": 92.0,
+      "whole": false
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -46.0,
+        -3.0,
+        6.0
+      ],
+      "target": [
+        0.0,
+        2.0,
+        2.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        46.0,
+        3.0,
+        6.0
+      ],
+      "target": [
+        0.0,
+        -2.0,
+        2.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        2.0,
+        58.0,
+        14.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        -38.0,
+        50.0,
+        34.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "bike_lane_separator",
+      "location": [
+        -7.3,
+        22.0,
+        1.5
+      ],
+      "target": [
+        -6.6,
+        40.0,
+        0.6
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "refuge_island",
+      "location": [
+        -3.6,
+        6.5,
+        1.7
+      ],
+      "target": [
+        0.0,
+        13.6,
+        1.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "crosswalk_zebra",
+      "location": [
+        -4.0,
+        3.0,
+        5.0
+      ],
+      "target": [
+        1.5,
+        10.3,
+        0.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "bike_symbol",
+      "location": [
+        -7.1,
+        -24.0,
+        3.4
+      ],
+      "target": [
+        -7.1,
+        -18.0,
+        0.0
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "turn_lane",
+      "location": [
+        4.0,
+        -10.0,
+        9.0
+      ],
+      "target": [
+        0.0,
+        -28.0,
+        0.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "storefronts",
+      "location": [
+        7.0,
+        17.0,
+        1.7
+      ],
+      "target": [
+        11.5,
+        22.0,
+        3.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "corner_signal",
+      "location": [
+        2.0,
+        -2.0,
+        3.5
+      ],
+      "target": [
+        9.5,
+        7.0,
+        3.5
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "cross_street_lane",
+      "location": [
+        12.5,
+        -2.5,
+        2.2
+      ],
+      "target": [
+        30.0,
+        4.6,
+        0.4
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "verge_trees",
+      "location": [
+        -13.5,
+        -10.0,
+        1.7
+      ],
+      "target": [
+        -9.5,
+        -28.0,
+        3.5
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "rubber_curb",
+      "location": [
+        -7.4,
+        10.6,
+        1.4
+      ],
+      "target": [
+        -5.6,
+        13.4,
+        0.2
+      ],
+      "lens": 32,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "bike_lane_separator",
+    "refuge_island",
+    "crosswalk_zebra",
+    "bike_symbol",
+    "turn_lane",
+    "storefronts",
+    "corner_signal",
+    "cross_street_lane",
+    "verge_trees",
+    "rubber_curb"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/road-diet-complete-street/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1577164,
+        "sha256": "27c582cd87e4208c2387d35a38e5654623dfb55c9a8a005400f9797e4cb31b2d"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/road-diet-complete-street/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 980814,
+        "sha256": "616c0101afe6776f4af35e22435058a90f1ca69d4c9afcc4721dfb34599fef14"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/road-diet-complete-street/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 919159,
+        "sha256": "bb3d67df65ec38edac38f054b884d4396a21c86ac9ed7cfc11b1723d49a27524"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1.webp",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2.webp",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3.webp",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_roaddiet.py",
+        "sha256": "2ffe0b427c36958db727881e2bd4b8208eb33b388158cd7a29c0808fb36eb63e"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "1ab146fbabf1913d92358a0b196cc1a2ef9ba1678c8a783f9a2827098ea1586a"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "28c6ccf3a69e3f75e98cfa7803889c18b334093cdd44a739812ae9974d429cb2"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-20T11:44:06.020172+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

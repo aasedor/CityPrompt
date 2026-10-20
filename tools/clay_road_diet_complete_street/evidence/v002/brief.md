@@ -1,0 +1,49 @@
+You are the independent holistic reviewer for one RLASM v6.1 architectural-clay candidate.
+You did not build it. You have no relationship with the builder. Be adversarial and specific.
+
+Candidate directory: /tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/dev-artifacts/CityPrompt/roaddiet/v002
+- Locked sources (the only truth): sources/front.png, sources/oblique.jpg, sources/top.jpg
+- Renders: renders/*.png (18 views; whole-envelope: front, front_corner, aerial, top, left_side, right_side, rear, rear_side;
+  details: facade_close, architecture_close, glass_close, bike_lane_separator, refuge_island, crosswalk_zebra, bike_symbol, turn_lane, storefronts, corner_signal, cross_street_lane, verge_trees, rubber_curb)
+- Phone boards: boards/*.png
+
+Rules (from the method):
+- Judge only rendered pixels against locked source pixels. Ignore metadata, counts, hashes and the builder's notes as proof.
+- The building is a street option, not a building: a former four-lane arterial rebuilt as a complete street at a neighbourhood intersection, the top view governing the plan (main street north-south, cross street east-west, the intersection at the centre). The main-street section from the west: a grass verge with mature street trees and black cobra-head lamps; a green-painted bike lane at road level against the curb; a raised concrete separator with white delineator posts; one travel lane each way either side of a centre two-way left-turn lane (solid outer and dashed inner yellow lines, opposing white left-turn arrows); the same separator and green bike lane on the east side; a pale concrete east sidewalk with scored joints, young trees in pits, bins and bike racks, in front of the storefront blocks. At each crosswalk the separator stops and a black rubber curb stop with yellow chevrons and three posts fills the gap. Continental zebra crosswalks span all four legs, over the bike lanes too; just beyond each main-street crosswalk a raised refuge island in the centre lane is planted with tall straw grasses and carries a white keep-right sign with a black arrow over a yellow-and-black object marker. The cross street has one travel lane each way with a dashed yellow centre line, white stop bars, a hatched painted buffer with posts and green bike lanes at the curbs; white bicycle symbols on all the green lanes. Signal poles with mast arms and three-lamp heads at the four corners. The street wall: a two-storey north-east storefront row (brick ground storey with large shopfront glazing, transoms and doors, a dark sign band, a cream upper storey with brick pilasters and sash windows), a four-storey brick apartment block with balconies further north on the east side, a beige stucco two-storey block on the south-east corner, a two-storey brick office and a one-storey block set back behind lawns on the west side; the blocks further out are plain context and the cars are simple clay placeholders. Pedestrians and the cyclist in the sources are not modelled. Note: the locked front view shows a separator in the foreground before its crosswalk while the top view puts the separators beyond the crosswalks next to the refuge islands; the plan follows the top view, so the front camera stands at the intersection looking north. Judge it as a street section: band order and widths, separators, islands, markings, crossings, surfaces, furniture, planting and the street wall, not storeys; judge faces that no source shows only for coherence with the visible grammar, not for fidelity.
+- This is clay: untextured source-palette colours. Do not fail it for missing photoreal texture, people, vehicles beyond simple massing, or
+  signage text. Do fail it for wrong geometry, wrong rhythm, missing or extra storeys, missing identity elements (road diet: one travel lane each way and a centre turn lane where four lanes were, green bike lanes protected by raised separators with posts, zebra crosswalks and planted refuge islands with keep-right signs),
+  openings without visible depth/returns, floating or intersecting parts, elements that read as a different building, or an invalid camera
+  (target occluded, asset clipped, nothing legible).
+- Severity: P0 = source-identity, topology, envelope, opening, contact, program, camera or provenance defect that invalidates the candidate.
+  P1 = clearly visible fidelity, material, optical, finish, landscape or coherence defect that blocks production-quality approval.
+  P2 = polish only.
+
+Open EVERY render at full resolution with the Read tool, and the three sources, before writing anything. Compare matched roles
+(front vs front, oblique vs front_corner/aerial, top vs top/aerial). Then inspect every detail view for contact and depth.
+
+Write your review to /tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/dev-artifacts/CityPrompt/roaddiet/v002/review/independent-review.md as markdown with exactly these sections:
+1. Verdict: one of PASS_ZERO_P0_P1 / VISUAL_REWORK_REQUIRED, with one sentence.
+2. Findings table: | # | severity | view(s) | symptom (what the pixels show) | likely cause | finite fix |  (list every P0 and P1; P2s briefly)
+3. Source conformance checklist: section order and widths (verge, bike lane, separator, travel lane, centre turn lane, travel lane, separator, bike lane, sidewalk, storefronts), green paint extent, separators and delineator posts, rubber curb stops with chevrons at the crosswalks, centre-lane yellow lines and turn arrows, refuge islands (curb, planting, keep-right sign, object marker), continental crosswalks on all legs, stop bars, cross-street centre line, hatched buffers and green lanes, bicycle symbols, signal poles and heads, lamps, verge trees and east tree pits, bins and bike racks, storefront row (glazing, doors, sign band, cream upper storey, brick pilasters, coping), apartment block and balconies, south-east and west blocks, context massing, materials hierarchy. Mark each conforms / deviates / not visible, with the view you used.
+4. Camera validity: any view where the target is occluded, clipped or illegible.
+Do not modify any file other than /tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/dev-artifacts/CityPrompt/roaddiet/v002/review/independent-review.md. Do not run the build.
+This is version 2. The v001 review found 0 P0 and 6 P1.
+1. Each west-verge "mature street tree" was a flat-bottomed faceted slab on a bare Y-fork armature, so from pedestrian height the canopy underside read as a flat green plane, like a parasol; the source shows tall, dense, rounded crowns whose foliage hangs low and overlaps from tree to tree.
+2. The cobra-head lamp arm was buried inside a verge-tree canopy: the pole rose into the canopy and the head stuck out of the foliage with no visible arm (front, verge_trees).
+3. The east-sidewalk and corner tree canopies cut through the storefront facades and covered sash windows (corner_signal, rear, right_side, top).
+4. The refuge-island grasses read as bundles of flat straight planks stuck into bright green cubes on bare soil, where the source shows one dense mound of tall straw grasses covering the island bed.
+5. The placeholder cars had fully transparent cabins, so the roof slab floated above the body.
+6. The pavement markings showed black triangles where strokes overlapped: the bicycle-symbol frame joints and the centre-lane turn-arrow elbows.
+
+The builder claims each is fixed:
+1. Every street tree is now a trunk to about 42 % of its height, with scaffold limbs into a dense rounded crown of seven overlapping, smooth-shaded, jittered ellipsoid lobes in two greens (a large central lobe, five side lobes hanging below the forks, a top lobe). The west-verge trees are 11.5 m tall with about 4.2 m crown radius, so neighbouring crowns overlap along the verge.
+2. The west-verge lamps now stand midway between the trees (y = +-21.5, 43.5, 65.5) near the curb (x = -8.6), and the east lamps midway between the pit trees (y = +-34.5), so each pole, arm and cobra head reads clear of the foliage.
+3. The east pit trees moved to x = 9.1 and the cross-street corner trees to |y| = 6.7, and every crown lobe is clamped to stay at least 0.35 m short of the building line (x = 11.5 on the east, |y| = 8.6 on the cross street) at every height, so no canopy enters a facade.
+4. Each refuge island is now one dense mass of 16 low straw-coloured tussock mounds in two straw tones on the mulch bed, each sprouting 34 thin arching blades that rise 0.65 to 1.05 m and bow outward; smooth-shaded, no cubes, covering the bed.
+5. The car cabins are an opaque tinted grey volume, and the roof slab now overhangs and rests on the cabin.
+6. Every overlapping marking stroke now has its own top height (the bicycle strokes step up 1.4 mm each; the arrow heads and hook bars stand 0.7 to 1.7 mm above the shafts), so no two strokes share a top face.
+
+Cheap P2s the builder claims:
+- yellow chevrons (not bands) on the rubber curb stops, pointing at the crosswalk.
+
+Verify each in the pixels (front, verge_trees, bike_lane_separator, turn_lane, rear, corner_signal, right_side, left_side, top, refuge_island, rubber_curb, crosswalk_zebra, aerial, cross_street_lane, bike_symbol); do not take the builder's word. The things v001 got right must still hold: the lane order and widths (verge, sidewalk, green bike lane, raised separator with white posts, travel lane, centre two-way turn lane with solid and dashed yellow lines, and the mirror on the east); continental zebra crosswalks on all four legs; the planted refuge islands with keep-right signs and yellow-and-black object markers beyond each main-street crosswalk; the cross street's dashed centre line, hatched painted buffer with posts and green curb-side bike lanes; the signal mast arms at the corners; the brick-and-cream storefront row, the four-storey brick apartment block and the set-back west blocks.
