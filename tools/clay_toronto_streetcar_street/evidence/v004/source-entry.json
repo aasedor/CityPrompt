@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-toronto-streetcar-street",
+  "variant_id": "clay-toronto-streetcar-street-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "toronto_streetcar_street/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/toronto-streetcar-street/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1379433,
+      "sha256": "a871fbf65e99fc36ea01b340a5ca190d22065b38ee67f40c98e7d94b7151da3a"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/toronto-streetcar-street/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 973141,
+      "sha256": "2281194ddb33d5c05b94515a1827e7f86e36e3f67caff887ad9cfae2c426a73c"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/toronto-streetcar-street/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 917016,
+      "sha256": "c8ae807e89cde4d1705c19f7c3708bd327c3edb2edc21d5befaa76584e6cc426"
+    }
+  ]
+}
