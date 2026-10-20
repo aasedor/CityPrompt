@@ -20,8 +20,7 @@ A family stops at the first of these:
 
 The best-reviewed version stays the candidate, and a tie keeps the earlier version.
 
-Nothing here is enrolled, published, runtime-integrated or keeper-approved. Each README says
-`keeper_claimed=False` and `runtime_seed_allowed=False`.
+Nothing here is enrolled, published, runtime-integrated or keeper-approved. Each README states that nothing in the family is keeper-approved, runtime-integrated, enrolled in a catalogue or activated, and that those remain separate checkpoints for the user's decision.
 
 ## Results
 
