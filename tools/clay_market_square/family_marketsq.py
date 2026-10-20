@@ -4,10 +4,11 @@ market_square / variant_0 (market_square_v0).
 Read from the pixels (the top view governs the plan): a large plaza of pale square concrete slabs that flares
 outward toward the viewer all the way to its south edge, first between stone bed walls that splay out from the foot of
 the bowl and then against open lawn wedges, set out with a regular grid of short grey utility bollards (market-stall
-and event power points) whose rows lengthen southward, and small square floor drains; at its head a bowl of three
-seating tiers on concentric arcs concave to the plaza, each tier a band of three steps of coursed warm-grey
-stacked-stone risers under light warm-stone treads, the bands separated by broad pale concrete terrace walks, the
-upper tiers' ends curling north beside the stage up to the stacked-stone cheek walls; a wide raised stage platform
+and event power points) whose rows lengthen southward, and small square floor drains; at its head a stone seating
+bowl on concentric arcs concave to the plaza, their outer ends furthest south: two broad bands of three deep seat
+steps (coursed warm-grey stacked-stone risers under light warm-stone treads) run across in front of the stage with a
+narrow pale walk between them and a pale terrace before the stage, and the third band rises only as stepped wings
+beside the stage up to the stacked-stone cheek walls; a wide raised stage platform
 with a gently curved dark front edge; on the stage an open-fronted pavilion whose back and
 side walls are clad in vertical timber slats of mixed widths, depths and tones, under a deep flat dark roof slab,
 with a loudspeaker near each end of the back wall; two slender floodlight masts with stacked lamp heads just
@@ -22,13 +23,12 @@ import geometry as G
 
 SLUG = 'clay-market-square'
 OX, OY = 0.0, 40.0                  # centre of the stage-front arc (the stage edge is convex toward the plaza)
-YF, R0 = -3.0, 73.5                 # apex of the bowl foot on the axis; radius of the foot arc (centre on the plaza
+YF, R0 = 1.0, 73.5                  # apex of the bowl foot on the axis; radius of the foot arc (centre on the plaza
                                     # axis R0 south of the apex), so every tier line is a concentric arc concave to the plaza
-XB, CURL_K, CURL_P = 14.0, .099, 1.6    # beyond |x| = XB (just outside the stage) the upper tier lines curl north
-FOOT_X, TOP_X = 18.0, 27.0          # half-width of the lowest riser and of the top tier at the bowl-end walls
-RISE, TREAD, TERRACE = .30, .45, 2.3
+FOOT_X, TOP_X = 18.0, 27.0          # half-width of the lowest riser and of the wing tops at the bowl-end walls
+RISE, TREAD, TERRACE = .40, .85, 1.0    # deep seat steps; narrow pale walks
 PAVE = .06                          # plaza paving top
-STAGE = 9 * RISE + .37              # stage deck top
+STAGE = 6 * RISE + .37              # stage deck top
 ROOF_Z = STAGE + 5.6                # underside of the pavilion roof slab
 X0, X1, Y0, Y1 = -40.0, 40.0, -30.0, 34.0
 EPS = .002
@@ -46,8 +46,8 @@ def manifest(version):
     cams = G.camera_roster(X1 - X0, Y1 - Y0, h, [
         ('stage_pavilion', (0.0, -4.0, 5.5), (0.0, 16.0, 5.8), 28),
         ('slat_wall', (4.0, 12.4, 5.2), (2.0, 17.4, 5.8), 40),
-        ('seating_tiers', (-10.0, -8.0, 1.7), (-4.0, 4.0, 1.0), 30),
-        ('cheek_walls', (7.0, 6.5, 4.8), (14.4, 12.0, 3.4), 30),
+        ('seating_tiers', (-10.0, -5.0, 1.8), (-4.0, 6.0, 1.2), 30),
+        ('cheek_walls', (7.0, 6.8, 5.2), (14.6, 10.0, 3.6), 30),
         ('bollard_grid', (-4.5, -28.0, 1.3), (1.5, -10.0, .15), 34),
         ('paving_drain', (-.15, -12.3, 1.6), (.75, -9.0, .0), 40),
         ('light_mast', (21.0, 4.0, 4.8), (16.1, 16.0, 9.5), 30),
@@ -56,7 +56,7 @@ def manifest(version):
         ('rear_north', (5.0, 44.0, 10.0), (0.0, 15.0, 3.5), 30)])
     for c in cams:
         if c['name'] == 'front':                    # the locked front stands close on the plaza at eye height with a wide lens: the bowl foot fills about 70% of the frame and the low bed walls show at both edges
-            c.update(location=(0.0, -27.0, 6.2), target=(0.0, 8.0, 1.6), lens=22, whole=False)
+            c.update(location=(0.0, -33.0, 6.0), target=(0.0, 9.0, 1.8), lens=24, whole=False)
         elif c['name'] == 'front_corner':           # the locked oblique looks north from high over the south plaza
             c.update(location=(0.0, -37.0, 24.0), target=(0.0, 12.0, 3.0), lens=30, whole=False)
         elif c['name'] == 'aerial':                 # the locked top view is a steep oblique from the south
@@ -72,11 +72,11 @@ def manifest(version):
         source_archetype='market_square/variant_0 (market_square_v0)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=h),
             observed_storeys=0, storey_programme='open space: a serviced market and event plaza with a seating bowl and a stage pavilion',
-            plan='plaza of square slabs flaring continuously to its south edge, first between stone bed walls splayed about 22 degrees off the bowl foot and then against lawn wedges, with a 3 m grid of short bollards whose rows lengthen southward; a three-tier seating bowl on concentric arcs concave to the plaza (36 m foot chord, 54 m top tier), three-step warm-stone bands separated by broad pale terrace walks, the upper tier ends curling north beside the stage to the cheek walls; 27 m curved stage with a 21.6 m slatted pavilion; low wedge beds and raised stone-walled meadow beds both sides',
+            plan='plaza of square slabs flaring continuously to its south edge, first between stone bed walls splayed about 22 degrees off the bowl foot and then against lawn wedges, with a 3 m grid of short bollards whose rows lengthen southward; a stone seating bowl on concentric arcs concave to the plaza (36 m foot chord): two 2.5 m bands of three deep seat steps across the front with a 1 m pale walk between them and a pale terrace before the stage, and a third band only as stepped wings beside the stage up to the cheek walls; 27 m curved stage with a 21.6 m slatted pavilion; low wedge beds and raised stone-walled meadow beds both sides',
             facade='stacked warm-grey stone risers and walls with pale concrete treads and copings; vertical timber slat cladding in three tones; dark flat roof slab; grey bollards; slender dark floodlight masts',
             levels_m=[0.0, PAVE, 3 * RISE, 6 * RISE, 9 * RISE, STAGE, ROOF_Z], inferred='the backstage door, stage side steps, the far lawn and tree belt are teaching assumptions; the meadow grass is abstracted as tufts'),
         roof_contract=dict(type='open space; flat dark roof slab over the stage pavilion', datum_m=0.0, crowns_m=[ROOF_Z + .38]),
-        identity_contract=dict(owner='flared bollard-gridded plaza facing a curved three-tier stone-and-concrete seating bowl and a timber-slatted stage pavilion, framed by stacked-stone meadow beds, shade trees and floodlight masts'),
+        identity_contract=dict(owner='flared bollard-gridded plaza facing a curved stone seating bowl with stepped wings and a timber-slatted stage pavilion, framed by stacked-stone meadow beds, shade trees and floodlight masts'),
         material_contract=dict(profile='source-palette clay: pale concrete slabs with grey joints, warm stacked stone, pale concrete treads, mixed-tone timber slats, charcoal stage and roof, grey bollards, green lawn and golden meadow', textured_keeper=False),
         programme_contract=dict(storeys=0, ground='market stalls and events on the serviced plaza, seating on the tiers, performance on the stage'),
         contact_contract=['Grade-zero lawn and paving', 'Bowl tiers on grade', 'Stage on the top terrace', 'Pavilion on the stage deck', 'Beds on grade'],
@@ -476,24 +476,19 @@ def tuft(b, role, x, y, z, h, r, lean):
 
 
 # ---- plan: tier line u (distance up the axis from the bowl foot) is the arc of radius R0 + u about the centre
-# (0, YF - R0), so all tier lines are concentric and concave to the plaza; beyond |x| = XB the upper lines curl north
-# (weight rising with u) so the top tiers' ends wrap up beside the stage to the cheek walls. ----
-U_TOP = 8 * TREAD + 2 * TERRACE                     # face of the last riser (upper-terrace edge) on the axis
-U_W = U_TOP + 1.6                                   # high-bed retaining wall behind the top-tier walk
-TOP = 9 * RISE                                     # upper terrace (stone) level
+# (0, YF - R0), so every tier line is a simple arc concave to the plaza, its outer ends furthest south. Two full bands of
+# three seat steps run across the bowl in front of the stage; the third band exists only as wings rising beside the
+# stage, between the stage cheek walls and the bowl-end walls. ----
+U_TOP = 5 * TREAD + TERRACE                         # face of the sixth riser (upper-terrace edge) on the axis
+TOP = 6 * RISE                                     # upper terrace (stone) level
+U_WING = U_TOP + TERRACE                            # face of the first wing riser, behind a walk beside the stage
+U_W = U_WING + 3 * TREAD                            # high-bed front behind the top wing step
+WTOP = TOP + 3 * RISE                               # top of the wings
 CHEEK_X = 14.7                                      # face of the high bed beside the stage cheek walls
 
 
-def curl(u, x):
-    ax = abs(x) - XB
-    if ax <= 0.0:
-        return 0.0
-    w = min(1.0, max(0.0, u / U_TOP))
-    return w * CURL_K * ax ** CURL_P
-
-
 def cy(u, x):
-    return YF - R0 + math.sqrt((R0 + u) ** 2 - x * x) + curl(u, x)
+    return YF - R0 + math.sqrt((R0 + u) ** 2 - x * x)
 
 
 def curve_pts(u, x0, x1, n):
@@ -501,7 +496,7 @@ def curve_pts(u, x0, x1, n):
 
 
 F_END = (FOOT_X, cy(0.0, FOOT_X))                   # foot of the east bowl-end (bed) wall
-U_END = (TOP_X, cy(U_TOP, TOP_X))                   # upper end of the east bowl-end wall
+U_END = (TOP_X, cy(U_W, TOP_X))                     # upper end of the east bowl-end wall, at the top of the wings
 _D = (U_END[0] - F_END[0], U_END[1] - F_END[1])
 _DL = math.hypot(*_D)
 N_OUT = (_D[1] / _DL, -_D[0] / _DL)                 # outward (bed-side) normal of the east bowl-end wall line
@@ -529,18 +524,18 @@ def end_x(u, d=0.0):
 T1 = 3 * TREAD + TERRACE                            # top of the first tier (its walk's back edge)
 F_MID = (end_x(T1), cy(T1, end_x(T1)))              # where the first tier meets the bowl-end wall: low bed ends here
 W_X = end_x(U_W)
-WALL_ARC = curve_pts(U_W, W_X, CHEEK_X, 12)         # high-bed front behind the top walk, curling up to the cheek wall
-Y_CHEEK = WALL_ARC[-1][1] + .05                    # the stage cheek walls run forward to meet the high-bed corner
+WALL_ARC = curve_pts(U_W, W_X, CHEEK_X, 12)         # high-bed front behind the top wing step, out to the cheek wall
+Y_CHEEK = cy(U_WING, CHEEK_X) - .25                 # the stage cheek walls start just in front of the first wing riser
 # Low wedge bed: the stone front wall splays about 22 degrees off the foot line to the bed corner S_END; from there the
 # plaza edge keeps flaring south-outward against an open lawn wedge to the site's south edge.
 S_END = (27.0, F_END[1] - (27.0 - F_END[0]) * math.tan(math.radians(22.0)))
 B_E = (36.0, 2.0)
 BED_LO = [F_END, F_MID, B_E, S_END]
-BED_HI = [F_MID, U_END] + WALL_ARC + [(CHEEK_X, 22.3), (37.0, 22.3), B_E]
-H_LO, H_HI = .9, TOP + .45
+BED_HI = [F_MID] + WALL_ARC + [(CHEEK_X, 22.3), (37.0, 22.3), B_E]
+H_LO, H_HI = .9, WTOP + .3
 # per-edge treatment of the bed walls: base level of the dressed face, or None where the edge is buried
 LO_EDGES = [0.0, None, 0.0, 0.0]
-HI_EDGES = [0.0, 0.0] + [TOP] * (len(WALL_ARC) - 1) + [TOP, 0.0, 0.0, H_LO]
+HI_EDGES = [0.0] + [WTOP] * (len(WALL_ARC) - 1) + [TOP, 0.0, 0.0, H_LO]
 # Plaza east edge: 12 cm under the splayed low-bed wall, then on to the south edge at PA_X.
 _SD = (S_END[0] - F_END[0], S_END[1] - F_END[1])
 _SL = math.hypot(*_SD)
@@ -627,83 +622,108 @@ def plaza():
     b.flush('plaza')
 
 
-def ring(name, u_in, u_out, top, n=56, cap_role='concrete'):
+def ring(name, u_in, u_out, top, n=56, walk=0.0, xa=None):
     """One step of the bowl from grade to `top` between tier lines u_in (riser face, toward the plaza) and u_out, ends
-    buried 20 cm in the bowl-end walls, with a pale concrete tread cap 6 cm thick whose 5 cm nosing throws a shadow
-    line over the stone riser below."""
-    x_i, x_o = end_x(u_in, .2), end_x(u_out, .2)
-    pts = curve_pts(u_in, -x_i, x_i, n) + curve_pts(u_out, x_o, -x_o, n)
-    C.prism(name, pts, 'z', 0.0, top, 'mortar', 'seating bowl')
-    c_i, c_o = end_x(u_in - .05, .15), end_x(u_out + .02, .15)
-    cap = curve_pts(u_in - .05, -c_i, c_i, n) + curve_pts(u_out + .02, c_o, -c_o, n)
-    C.prism(name + ' tread', cap, 'z', top - .04, top + .02, cap_role, 'seating bowl')
+    buried 20 cm in the bowl-end walls, with a light warm-stone tread cap 6 cm thick whose 5 cm nosing throws a shadow
+    line over the stone riser below. With `walk`, the back `walk` metres of the step are a pale concrete walk set 5 mm
+    below the tread. With `xa`, the step is a wing: two pieces from x = +-xa (buried in the cheek walls) out to the
+    bowl-end walls."""
+    def piece(ui, uo, d, x0):
+        xi, xo = end_x(ui, d), end_x(uo, d)
+        if x0 is None:
+            return curve_pts(ui, -xi, xi, n) + curve_pts(uo, xo, -xo, n)
+        return curve_pts(ui, x0, xi, n // 2) + curve_pts(uo, xo, x0, n // 2)
+    sides = (1,) if xa is None else (1, -1)
+    for sgn in sides:
+        tag = name if xa is None else f"{name} {'east' if sgn > 0 else 'west'}"
+        fix = (lambda pts: pts) if sgn > 0 else mirror
+        C.prism(tag, fix(piece(u_in, u_out, .2, xa)), 'z', 0.0, top, 'mortar', 'seating bowl')
+        u_t = u_out - walk if walk else u_out + .02
+        C.prism(tag + ' tread', fix(piece(u_in - .05, u_t, .15, xa)), 'z', top - .04, top + .02, 'tread', 'seating bowl')
+        if walk:
+            C.prism(tag + ' walk', fix(piece(u_t - .02, u_out + .02, .15, xa)), 'z', top - .04, top + .015, 'concrete', 'seating bowl')
 
 
-def riser_stones(b, u, z0, z1, seed):
+def riser_stones(b, u, z0, z1, seed, x0=None):
     """Stacked ledgestone on a riser face (tier line u) between z0 and z1: long flat stones in courses, proud of the
-    dark bedding mass behind, with staggered head joints."""
+    dark bedding mass behind, with staggered head joints. With x0, only the two wing pieces |x| >= x0."""
     a = end_x(u, .15)
+    spans = [(-a, a)] if x0 is None else [(x0, a), (-a, -x0)]
     courses = 3 if z1 - z0 > .15 else 2
     h = (z1 - z0) / courses
-    for c in range(courses):
-        zc = z0 + h * (c + .5)
-        s = -a + (.3 + .5 * rnd(seed, c))
-        i = 0
-        while s < a:
-            L = 1.3 + 1.4 * rnd(seed * 31 + c, i)
-            e = min(s + L, a)
-            p, q = (s, cy(u - .008, s)), (e - .012, cy(u - .008, e - .012))
-            role = ('stone', 'stone2', 'stone3')[int(rnd(seed + c, i) * 3)]
-            b.beam(role, (p[0], p[1], zc), (q[0], q[1], zc), .034, h - .012)
-            s, i = e, i + 1
+    for j, (lo, hi) in enumerate(spans):
+        for c in range(courses):
+            zc = z0 + h * (c + .5)
+            s = lo + (.3 + .5 * rnd(seed + j, c))
+            i = 0
+            while s < hi:
+                L = 1.3 + 1.4 * rnd(seed * 31 + c + j, i)
+                e = min(s + L, hi)
+                p, q = (s, cy(u - .008, s)), (e - .012, cy(u - .008, e - .012))
+                role = ('stone', 'stone2', 'stone3')[int(rnd(seed + c + j, i) * 3)]
+                b.beam(role, (p[0], p[1], zc), (q[0], q[1], zc), .034, h - .012)
+                s, i = e, i + 1
 
 
 def bowl():
     b = Batch()
+    # Two full bands of three seat steps in front of the stage; a narrow pale walk behind the first band; the sixth
+    # riser is the upper-terrace edge.
     u, z, k = 0.0, 0.0, 0
     lower = PAVE
-    for t in range(3):
+    for t in range(2):
         for s in range(3):
             z += RISE
-            depth = TREAD + (TERRACE if (s == 2 and t < 2) else 0.0)
+            walk = TERRACE if (s == 2 and t == 0) else 0.0
             face = u - (.03 if k else 0.0)
-            if t == 2 and s == 2:
-                riser_stones(b, face, lower, z - .045, k + 1)               # the last riser is the upper terrace edge
+            if t == 1 and s == 2:
+                riser_stones(b, face, lower, z - .045, k + 1)
                 break
-            ring(f'Tier {t + 1} step {s + 1}', face, u + depth, z, cap_role='concrete' if s == 2 else 'tread')
+            ring(f'Tier {t + 1} step {s + 1}', face, u + TREAD + walk, z, walk=walk)
             riser_stones(b, face, lower, z - .045, k + 1)
             lower = z + .02
-            u += depth
+            u += TREAD + walk
             k += 1
+    # Third band: wings of three seat steps rising beside the stage from the walk at the upper-terrace level up to the
+    # high beds, their inner ends buried in the stage cheek walls.
+    xa = CHEEK_X - .3
+    u, z, lower = U_WING, TOP, TOP + .02
+    for s in range(3):
+        z += RISE
+        ring(f'Wing step {s + 1}', u - .03 * (s > 0), u + TREAD + (.3 if s == 2 else 0.0), z, n=28, xa=xa)
+        riser_stones(b, u - .03 * (s > 0), lower, z - .045, 40 + s, x0=xa + .05)
+        lower = z + .02
+        u += TREAD
     b.flush('seating bowl stones')
-    # Upper terrace: stone mass at the top level reaching under the high beds, its pale paving in front of and
-    # beside the stage, and meadow behind the pavilion.
+    # Upper terrace: stone mass at the top level reaching under the wings and high beds, its pale paving in front of
+    # the stage and along the walk before the wings, and meadow behind the pavilion.
     x_t, x_w = end_x(U_TOP - .03, .2), end_x(U_W + .3, .2)
     east = curve_pts(U_W + .3, x_w, CHEEK_X + .3, 10)
     up = curve_pts(U_TOP - .03, -x_t, x_t, 72) + east + [(CHEEK_X + .3, 22.0), (-CHEEK_X - .3, 22.0)] + mirror(east)
     C.prism('Upper terrace', up, 'z', 0.0, TOP, 'mortar', 'seating bowl')
-    x_c, x_k = end_x(U_TOP - .05, .1), end_x(U_W + .1, .1)
-    east = curve_pts(U_W + .1, x_k, CHEEK_X - .5, 10)
-    cap = curve_pts(U_TOP - .05, -x_c, x_c, 72) + east + [(CHEEK_X - .5, 18.1), (-CHEEK_X + .5, 18.1)] + mirror(east)
+    x_c, x_k = end_x(U_TOP - .05, .1), end_x(U_WING + .1, .1)
+    east = curve_pts(U_WING + .1, x_k, CHEEK_X - .4, 10)
+    cap = curve_pts(U_TOP - .05, -x_c, x_c, 72) + east + [(CHEEK_X - .4, 18.1), (-CHEEK_X + .4, 18.1)] + mirror(east)
     C.prism('Upper terrace paving', cap, 'z', TOP - .03, TOP + .03, 'concrete', 'seating bowl')
     C.box('Upper terrace meadow', (0.0, 20.05, TOP + .085), (2 * CHEEK_X - .6, 3.8, .11), 'meadow', 'planting', 0)
     C.box('Upper terrace back wall', (0.0, 22.04, TOP / 2), (2 * CHEEK_X + .5, .1, TOP), 'stone', 'seating bowl', 0)
     b = Batch()
     wall_courses(b, (CHEEK_X + .2, 22.09), (-CHEEK_X - .2, 22.09), 0.0, TOP, (0.0, 1.0))
     b.flush('terrace back joints')
-    # Stacked-stone cheek walls at both stage ends, stepping up toward the back, with the side steps between
-    # each wall and the stage.
+    # Stacked-stone cheek walls at both stage ends, retaining the wings and stepping up toward the back, with the side
+    # steps between each wall and the stage.
     b = Batch()
     xc = CHEEK_X - .25
+    h1, h2 = H_HI + .2, H_HI + .5
     for sgn in (1, -1):
-        for (y0, y1, h) in ((Y_CHEEK, 13.0, TOP + .75), (13.0, 18.2, TOP + 1.15)):
+        for (y0, y1, h) in ((Y_CHEEK, 13.0, h1), (13.0, 18.2, h2)):
             C.box('Stage cheek wall', (sgn * xc, (y0 + y1) / 2, h / 2), (.6, y1 - y0, h), 'stone', 'seating bowl', 0)
             C.box('Stage cheek wall coping', (sgn * xc, (y0 + y1) / 2 - .01, h + .03), (.7, y1 - y0 + .04 - (.02 if y0 > 10 else 0.0), .06),
                   'concrete', 'seating bowl', 0)
             xf = sgn * (xc - .3)
             wall_courses(b, (xf, y0 if sgn > 0 else y1), (xf, y1 if sgn > 0 else y0), TOP, h, (-sgn, 0.0))
-        wall_courses(b, (sgn * (xc - .3), Y_CHEEK), (sgn * (xc + .3), Y_CHEEK), TOP, TOP + .75, (0.0, -1.0))
-        wall_courses(b, (sgn * (xc - .3), 13.0), (sgn * (xc + .3), 13.0), TOP + .75, TOP + 1.15, (0.0, -1.0))
+        wall_courses(b, (sgn * (xc - .3), Y_CHEEK), (sgn * (xc + .3), Y_CHEEK), TOP, h1, (0.0, -1.0))
+        wall_courses(b, (sgn * (xc - .3), 13.0), (sgn * (xc + .3), 13.0), h1, h2, (0.0, -1.0))
     b.flush('cheek wall joints')
 
 
@@ -869,7 +889,7 @@ def park_tree(x, y, z, height, spread, seed, detail=1, crowns=7):
 def trees():
     for s in (1, -1):
         for i, (x, y, z, h, sp) in enumerate(((19.5, 15.5, H_HI, 9.5, 3.0), (26.0, 19.5, H_HI, 10.0, 3.3), (17.8, 20.6, H_HI, 8.5, 2.6),
-                                             (32.0, 14.0, H_HI, 9.0, 3.0), (31.0, -2.0, H_LO, 8.0, 2.8), (26.5, -3.5, H_LO, 7.0, 2.4))):
+                                             (32.0, 14.0, H_HI, 9.0, 3.0), (29.0, -1.0, H_LO, 8.0, 2.8), (26.5, -3.5, H_LO, 7.0, 2.4))):
             park_tree(s * (x + .4 * (s < 0)), y - .5 * (s < 0), z, h, sp, i * 1.7 + (s < 0) * .9)
     for i, (x, y) in enumerate(((-32.0, 28.5), (-26.5, 30.0), (-21.0, 28.0), (21.5, 28.5), (27.0, 30.0), (32.0, 28.0),
                                 (-9.0, 30.0), (9.5, 29.5))):
