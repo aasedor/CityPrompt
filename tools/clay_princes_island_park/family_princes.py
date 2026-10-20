@@ -585,6 +585,16 @@ def fountain(b, x, y, z0, h, n=7, roles=('grass', 'grass2')):
     arch_blade(b, roles[0], x, y, z0, h * 1.1, a0, h * .1)                    # an upright centre blade
 
 
+def grass_mass(b, x, y, z0, h, roles):
+    """A dense ornamental grass clump: a soft mounded body of foliage with fine arching blades bursting from its crown."""
+    r = h * RNG.uniform(.36, .46)
+    dome(b, roles[0], x, y, z0, r, r * RNG.uniform(.85, 1.05), h * .62, seg=8, prof=((0.0, .85), (.45, 1.0), (.8, .62)), jit=.08)
+    a0 = RNG.uniform(0, 2 * math.pi)
+    for i in range(7):
+        arch_blade(b, roles[i % len(roles)], x + RNG.uniform(-.06, .06), y + RNG.uniform(-.06, .06), z0 + h * .3,
+                   h * RNG.uniform(.62, .8), a0 + 2 * math.pi * i / 7 + RNG.uniform(-.3, .3), h * RNG.uniform(.35, .55))
+
+
 def picket(b, role, x, y, z0, z1, w=.022):
     """A slender railing picket: a closed three-sided bar (smooth-shaded it reads as a round rod)."""
     V, F = b.g.setdefault(role, ([], []))
@@ -958,11 +968,11 @@ def bed(name, poly, dens, b):
                 hx, hy = p[0] + math.cos(ang) * rx * d, p[1] + math.sin(ang) * ry * d
                 hr = RNG.uniform(.085, .13)
                 head(b, fr, hx, hy, ZG + .10 + h * (1 - d * d) * .92 + hr * .35, hr)
-    for i in range(int(td * a * .42 * .75)):                # ornamental grasses: dense arching clumps of fine blades, green, gold and straw
-        hh = RNG.uniform(.6, 1.15)
-        p = spot(.08)                                       # blades arch over the kerb; only the base must stay inside it
+    for i in range(int(td * a * .42 * .65)):                # ornamental grasses: dense mounded clumps with arching blades, green, gold and straw
+        hh = RNG.uniform(.7, 1.25)
+        p = spot(hh * .46)                                  # the mounded body stays inside the kerb; the blades may arch over it
         if p:
-            fountain(b, p[0], p[1], ZG + .095, hh, n=10, roles=(('grass', 'grass2', 'straw'), ('grass2', 'straw', 'grass'), ('grass', 'planting', 'grass2'))[i % 3])
+            grass_mass(b, p[0], p[1], ZG + .095, hh, (('grass', 'grass2', 'straw'), ('grass2', 'straw', 'grass'), ('straw', 'grass2', 'grass'))[i % 3])
 
 
 def planting():
