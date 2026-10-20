@@ -1,7 +1,7 @@
 # Elevated riveted steel arch rail viaduct (RLASM v6.1 architectural clay)
 
 Candidate H4 of wave H (bridges) of 2026-10-19, one of the ten bridge variants the user chose from the
-street and path catalogue; a street or path option, not a building. State: **candidate under review**. Nothing here is keeper-approved,
+street and path catalogue; a street or path option, not a building. State: **stopped at v005 by the stopping rule (independent review PASS_ZERO_P0_P1); v005 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,6 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (x)
+## Open blockers after v005 (x)
 
 x
