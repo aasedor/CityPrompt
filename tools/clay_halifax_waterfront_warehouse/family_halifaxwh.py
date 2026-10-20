@@ -31,7 +31,7 @@ PALETTE = dict(wall=(.42, .21, .15), joint=(.50, .48, .45), stone=(.70, .67, .60
     roof=(.34, .31, .28), sand=(.62, .58, .52), foundation=(.56, .54, .50), glass=(.20, .24, .26),
     hardware=(.07, .07, .08), interior=(.82, .78, .72), floor=(.56, .46, .36), timber=(.46, .34, .22),
     planting=(.30, .44, .20), soil=(.22, .16, .10), concrete=(.70, .69, .66), white=(.95, .95, .93),
-    asphalt=(.28, .28, .29), brick=(.46, .26, .19), pot=(.60, .34, .22), neighbour=(.42, .27, .21), membrane=(.50, .50, .49),
+    asphalt=(.28, .28, .29), brick=(.46, .26, .19), brickring=(.50, .20, .12), pot=(.60, .34, .22), neighbour=(.42, .27, .21), membrane=(.50, .50, .49),
     blue=(.20, .30, .40))
 
 
@@ -402,7 +402,7 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 
 # ---- Halifax waterfront warehouse ----
 
-def arch_head(f, h, rise, ring=.26, segs=16, ring_role='arch', course=None):
+def arch_head(f, h, rise, ring=.26, segs=16, ring_role='arch', course=None, joints=False, proud=.035):
     """Segmental or round head on a rectangular cut: brick spandrel infill filling the cut's corners above the curve
     flush with the wall face (exactly the cut's width and height, so no recess reads at the shoulders), and a proud
     ring over it."""
@@ -442,7 +442,7 @@ def arch_head(f, h, rise, ring=.26, segs=16, ring_role='arch', course=None):
     for (pu, pz) in arc:
         r = math.hypot(pu - u, pz - cz)
         nu, nz = (pu - u) / r, (pz - cz) / r
-        for d in (-.035, .02):
+        for d in (-proud, .02):
             vs.append(f.p(pu, d, pz)); vs.append(f.p(pu + nu * ring, d, pz + nz * ring))
     for i in range(segs):
         a, b = 4 * i, 4 * (i + 1)
@@ -450,6 +450,19 @@ def arch_head(f, h, rise, ring=.26, segs=16, ring_role='arch', course=None):
     n = 4 * segs
     fs += [(0, 1, 3, 2), (n, n + 2, n + 3, n + 1)]
     C.mesh(f'{h["id"]} arch ring', vs, fs, ring_role, 'arches')
+    if joints:                                              # radial mortar joints between the rubbed-brick voussoirs
+        vs, fs = [], []
+        for i in range(1, segs):
+            pu, pz = arc[i]
+            r = math.hypot(pu - u, pz - cz)
+            nu, nz = (pu - u) / r, (pz - cz) / r
+            tu, tz = -nz * .006, nu * .006
+            o = len(vs)
+            d = -proud - .002
+            vs += [f.p(pu - tu, d, pz - tz), f.p(pu + tu, d, pz + tz),
+                   f.p(pu + nu * ring + tu, d, pz + nz * ring + tz), f.p(pu + nu * ring - tu, d, pz + nz * ring - tz)]
+            fs.append((o, o + 1, o + 2, o + 3))
+        C.mesh(f'{h["id"]} voussoir joints', vs, fs, 'joint', 'brick joints')
 
 
 
@@ -506,7 +519,9 @@ def street_face(label, origin, tangent, inward, lo, hi, corner_lo, corner_hi, pi
         else:
             framed(m, f, g, cols=2, rows=3, inset=.16, occupied='warehouse', frame='frame')
             m.box('stone', g['u'], -.05, g['z'] - .07, g['w'] + .2, .14, .12)
-            arch_head(f, g, g['w'] / 2, ring=.2 if g['w'] < 1 else .24, course=(G0 + .05, .16))
+            # plain brick arch heads on the ground storey (sources): a rubbed-brick voussoir ring barely proud of the
+            # wall, with radial joints, no granite archivolt, keystone or imposts; granite only at the sill
+            arch_head(f, g, g['w'] / 2, ring=.24, segs=20, ring_role='brickring', course=(G0 + .05, .16), joints=True, proud=.015)
     for h in uppers:
         framed(m, f, h, cols=2, rows=4, inset=.16, occupied='loft', frame='frame')
         m.box('stone', h['u'], -.06, h['z'] - .08, h['w'] + .34, .16, .14)
