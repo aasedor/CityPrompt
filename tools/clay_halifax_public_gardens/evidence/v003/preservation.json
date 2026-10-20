@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-halifax-public-gardens-clay-v003",
+  "glb": "clay-halifax-public-gardens-clay-v003.glb",
+  "glb_bytes": 4018108,
+  "glb_sha256": "cf0c62fac6f6ac0826b9e506af8237d4ca360b7046f366dc3abf6bf4139b3557",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "bandstand.png": 92,
+    "bandstand_roof.png": 92,
+    "carpet_beds.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "gate_arch.png": 92,
+    "gate_piers_fence.png": 92,
+    "inner_lawn_beds.png": 92,
+    "left_side.png": 92,
+    "loop_benches.png": 92,
+    "mature_trees.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "side_entrance.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-halifax-public-gardens-clay-v003-renders-and-glb.zip",
+  "zip_bytes": 40828046
+}
