@@ -29,7 +29,7 @@ X0, X1, Y0, Y1 = -36.0, 36.0, -30.0, 34.0
 EPS = .002
 T = .3
 PALETTE = dict(paving=(.71, .70, .67), joint=(.52, .51, .49), joint2=(.44, .43, .41), concrete=(.80, .78, .74),
-    stone=(.63, .56, .46), mortar=(.42, .37, .30), dark=(.17, .17, .18), deck=(.36, .36, .37), roof=(.25, .25, .26),
+    stone=(.57, .50, .41), mortar=(.38, .33, .27), dark=(.17, .17, .18), deck=(.36, .36, .37), roof=(.25, .25, .26),
     timber=(.46, .28, .16), timber2=(.60, .39, .22), timber3=(.33, .20, .12), hardware=(.12, .12, .13),
     pale=(.95, .92, .80), bollard=(.50, .50, .49), lawn=(.30, .44, .20), meadow=(.50, .53, .29), meadow2=(.64, .59, .35),
     tree=(.20, .36, .16), tree2=(.28, .43, .20), bark=(.30, .22, .15), trim=(.22, .22, .23), wall=(.17, .17, .18),
@@ -44,8 +44,8 @@ def manifest(version):
         ('seating_tiers', (-15.5, -1.5, 1.7), (-4.0, 11.0, .7), 30),
         ('cheek_walls', (10.0, -5.0, 1.8), (17.5, 9.0, 1.0), 32),
         ('bollard_grid', (-5.0, -24.0, 1.3), (1.5, -8.0, .2), 34),
-        ('paving_drain', (5.5, -14.5, 1.6), (6.2, -11.0, .0), 40),
-        ('light_mast', (4.0, 5.0, 2.6), (9.6, 15.4, 7.8), 30),
+        ('paving_drain', (3.6, -14.4, 1.6), (4.5, -11.1, .0), 40),
+        ('light_mast', (15.5, 5.5, 3.2), (9.6, 15.4, 7.6), 30),
         ('backstage_door', (11.6, 11.0, 3.6), (6.2, 14.4, 3.2), 34),
         ('meadow_beds', (-31.0, -12.0, 4.5), (-20.0, 8.0, 2.0), 30),
         ('rear_north', (4.0, 42.0, 9.0), (0.0, 14.0, 3.0), 30)])
@@ -480,7 +480,7 @@ M_ = cheek(.42)
 BED_LO = [(22.37, -10.0), A_OUT, M_, (21.8, 12.7), (31.0, 1.0)]                     # low meadow bed by the plaza
 BED_HI = [cheek(.40), B_IN, (B_IN[0], 22.3), (24.5, 22.3), (21.8, 12.6)]           # high meadow bed by the cheek
 H_LO, H_HI = .9, TOP + .45
-PLAZA_E = ((25.6, -26.0), arc_pts(R0 + .3, ARC + .5, ARC + .5, 0)[0])            # east plaza edge (south end, north end)
+PLAZA_E = ((25.6, -26.0), arc_pts(R0 - .3, ARC + .5, ARC + .5, 0)[0])            # east plaza edge (south end, north end under the bottom step)
 
 
 def xe(y):
@@ -491,7 +491,7 @@ def xe(y):
 def plaza():
     C.box('Lawn', (0.0, (Y0 + Y1) / 2, .015), (X1 - X0, Y1 - Y0, .03), 'lawn', 'site', 0)
     (xa, ya), (xb, yb) = PLAZA_E
-    pts = [(-xa, ya), (xa, ya), (xb, yb)] + arc_pts(R0 + .3, ARC + .5, -ARC - .5, 72)[1:-1] + [(-xb, yb)]
+    pts = [(-xa, ya), (xa, ya), (xb, yb)] + arc_pts(R0 - .3, ARC + .5, -ARC - .5, 72)[1:-1] + [(-xb, yb)]
     C.prism('Plaza paving', pts, 'z', 0.0, PAVE, 'paving', 'plaza')
     b = Batch()
     ymax_axis = OY - R0
@@ -530,7 +530,7 @@ def plaza():
             ngon(b, 'bollard', x, y, PAVE - .01, .70, .10, 12)
             ngon(b, 'joint2', x, y, .68, .74, .11, 12)
             if (i + j) % 3 == 0 and abs(x + 1.5) < lim:
-                b.box('dark', x + 1.5, y + .9, PAVE + .005, .36, .36, .014)
+                b.box('joint2', x + 1.5, y + .9, PAVE + .005, .36, .36, .014)
                 for g in range(4):
                     b.box('hardware', x + 1.5 - .12 + g * .08, y + .9, PAVE + .008, .02, .3, .004)
     b.flush('plaza')
