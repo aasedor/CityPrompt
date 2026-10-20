@@ -4,14 +4,14 @@ Read from the pixels (the top view governs the plan; 1 m is about 22 px of it, t
 park on the island in the Bow. A timber pavilion with a planted sedum roof stands at the centre, rotated about 27
 degrees off the river line: cedar board cladding, a fully glazed south-east face with dark mullions, a door and
 corner glazing on the long south-west face, an open porch under the roof at the north-west end, slim timber posts
-at the roof corners and a thin dark metal fascia. A wide pale-slab promenade with granite sett borders runs past
+at the roof corners and a thin dark metal fascia. A wide pale-slab promenade with wide flush dark granite sett borders and crossing bands runs past
 its south-west face from the south plaza to the north-west, crossed by a paved band to the west; two asphalt
 cycle paths with yellow dashed centre lines run north-south, the western one inland, the eastern one rising onto
-a raised concrete boardwalk with mesh railings on both sides along the rip-rap river bank. Lens-shaped kerbed
-beds of ornamental grasses, perennials with pink, lavender and white flowers and shrubs fill the spaces between
-the paths; groves of rounded deciduous trees stand north of the pavilion and along the boardwalk; timber benches
+a raised concrete boardwalk with open steel picket railings on both sides along the grey-brown rip-rap river bank. Lens-shaped kerbed
+beds densely planted with arching ornamental grasses, mounded perennial drifts in pink, lavender and white and
+rounded shrubs fill the spaces between the paths; groves of rounded deciduous trees stand north of the pavilion and along the boardwalk; timber benches
 on dark steel frames and corten bins sit on the paving. North of the top-view frame the boardwalk lands on a
-plaza at a concrete footbridge that crosses the Bow to a wooded far bank. The downtown skyline is context.
+plaza at a concrete footbridge that crosses the Bow to a densely wooded far bank. The downtown skyline is context.
 """
 import math
 import clay_core as C
@@ -26,16 +26,17 @@ YB = 34.0                                       # footbridge centre line
 FAR = 58.0                                      # far bank edge
 T = .3
 EPS = .002
-PALETTE = dict(water=(.20, .45, .48), riprap=(.30, .29, .27), rock=(.50, .49, .46), rock2=(.42, .41, .39), rock3=(.58, .56, .52),
-    lawn=(.36, .50, .20), grass=(.45, .52, .24), grass2=(.64, .58, .32), planting=(.26, .42, .18), shrub=(.34, .48, .22),
-    tree=(.25, .42, .16), tree2=(.33, .49, .20), bark=(.36, .28, .20), soil=(.30, .25, .18),
+PALETTE = dict(water=(.20, .45, .48), riprap=(.30, .28, .25), rock=(.45, .42, .37), rock2=(.37, .35, .31), rock3=(.52, .49, .43),
+    lawn=(.36, .50, .20), grass=(.45, .52, .24), grass2=(.64, .58, .32), straw=(.72, .63, .38), planting=(.26, .42, .18), shrub=(.34, .48, .22),
+    bedcover=(.24, .33, .15),
+    tree=(.25, .42, .16), tree2=(.33, .49, .20), tree3=(.20, .34, .14), bark=(.36, .28, .20), soil=(.30, .25, .18),
     flower=(.80, .44, .62), flower2=(.62, .48, .80), flower3=(.93, .90, .82),
-    concrete=(.80, .78, .74), paving=(.74, .72, .68), sett=(.52, .51, .49), joint=(.60, .58, .55), curb=(.84, .82, .78),
+    concrete=(.80, .78, .74), paving=(.74, .72, .68), sett=(.36, .35, .33), settjoint=(.22, .21, .20), joint=(.60, .58, .55), curb=(.84, .82, .78),
     asphalt=(.30, .30, .31), yellow=(.86, .70, .20), deck=(.76, .75, .72),
     timber=(.62, .43, .26), wall=(.62, .43, .26), batten=(.52, .35, .20), post=(.56, .39, .23), fascia=(.20, .20, .21),
-    sedum=(.45, .50, .22), sedum2=(.60, .50, .26), sedum3=(.36, .45, .19),
+    sedum=(.45, .50, .22), sedum2=(.62, .50, .25), sedum3=(.36, .45, .19), sedum4=(.55, .37, .22),
     glass=(.24, .30, .34), trim=(.17, .17, .18), interior=(.84, .80, .74), floor=(.58, .48, .38),
-    steel=(.22, .22, .23), mesh=(.40, .40, .40), corten=(.50, .27, .14), bench=(.64, .47, .29), hardware=(.20, .20, .20))
+    steel=(.22, .22, .23), mesh=(.40, .40, .40), rail=(.58, .59, .60), corten=(.50, .27, .14), bench=(.64, .47, .29), hardware=(.20, .20, .20))
 
 
 def manifest(version):
@@ -65,7 +66,7 @@ def manifest(version):
         elif c['name'] == 'right_side':                                       # from over the river, the bank and boardwalk square on
             c.update(location=(48.0, -16.0, 16.0), target=(8.0, 6.0, 2.0), lens=26, whole=False)
         elif c['name'] == 'rear':                                             # from the north lawn looking south over the park
-            c.update(location=(-6.0, Y1 + 18.0, 16.0), target=(0.0, 0.0, 2.0), lens=26, whole=False)
+            c.update(location=(-4.0, Y1 + 16.0, 25.0), target=(0.0, 0.0, 2.0), lens=26, whole=False)
         elif c['name'] == 'rear_side':                                        # from the far bank, north-east, over the footbridge
             c.update(location=(62.0, 50.0, 24.0), target=(10.0, 6.0, 1.5), lens=28, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -76,11 +77,11 @@ def manifest(version):
             observed_storeys=1, storey_programme='park: a one-storey pavilion (cafe or washrooms) among paths, beds and trees',
             plan='park 52.6 x 63 m from the west edge to the waterline (top view: pavilion roof about 12.4 x 9.4 m rotated 27 degrees), the Bow 34 m wide, a footbridge at the north to a far bank',
             levels_m=dict(river=0.0, park_grade=ZG, boardwalk_deck=ZG + .45, pavilion_floor=ZG + .15, pavilion_eave=ZG + 3.6, green_roof=ZG + 4.1),
-            facade='cedar board cladding, glazed south-east face with dark mullions, sedum roof with a dark fascia, timber posts; pale slab paving with sett borders, asphalt cycle paths with yellow dashes, a concrete boardwalk with mesh railings, rip-rap, kerbed planting beds, rounded deciduous trees',
+            facade='cedar board cladding, glazed south-east face with dark mullions, sedum roof with a dark fascia, timber posts; pale slab paving with sett borders, asphalt cycle paths with yellow dashes, a concrete boardwalk with open picket railings, rip-rap, kerbed planting beds, rounded deciduous trees',
             inferred='the north lawn, footbridge and far bank lie beyond the top view and follow the front and oblique; the skyline is context and not modelled; the river bed below the surface is not modelled'),
         roof_contract=dict(type='flat planted sedum roof with a thin dark fascia over the pavilion', datum_m=ZG + 3.6, crowns_m=[ZG + 4.15]),
         identity_contract=dict(owner="Prince's Island Park: a green-roofed timber pavilion on a wide slab promenade among lens-shaped beds of grasses and flowers, cycle paths with yellow dashes, a railed boardwalk along a rip-rap bank of the Bow, groves of rounded trees"),
-        material_contract=dict(profile='source-palette clay: blue-green water, grey rip-rap, greens and golds of grasses and trees with pink, lavender and white flowers, pale slabs and granite setts, asphalt and yellow dashes, cedar, dark steel and glass, corten', textured_keeper=False),
+        material_contract=dict(profile='source-palette clay: blue-green water, grey rip-rap, greens and golds of grasses and trees with pink, lavender and white flowers, pale slabs and dark granite setts, asphalt and yellow dashes, cedar, dark steel and glass, corten', textured_keeper=False),
         programme_contract=dict(storeys=1, ground='pavilion room with tables behind the glazed face, porch, paths for walking and cycling, benches, planting'),
         open_space_contract=dict(kind='fixed_native_park', axis='y', river_side='east',
                                  zones=['river', 'riprap', 'boardwalk', 'east_cycle_path', 'pavilion', 'promenade', 'planting_beds', 'west_cycle_path', 'groves', 'north_lawn', 'footbridge']),
@@ -497,6 +498,119 @@ def obox(b, role, cx, cy, cz, lx, ly, lz, ang):
     b._hex(role, pts)
 
 
+def smooth(obj):
+    for f in obj.data.polygons:
+        f.use_smooth = True
+    return obj
+
+
+def flush_smooth(b, module):
+    """Flush a batch with smooth shading so planting, boulders and rods read rounded, not faceted."""
+    for role, (V, F) in b.g.items():
+        if F:
+            smooth(C.mesh(f'{module} {role}', V, F, role, module))
+    b.g = {}
+
+
+def dome(b, role, cx, cy, z0, rx, ry, h, seg=7, prof=((0.0, 1.0), (.55, .86), (.88, .5))):
+    """A soft planting mound: a jittered low dome whose open base is sunk into the bed (smooth-shaded when flushed)."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V)
+    a0 = RNG.uniform(0, 2 * math.pi)
+    for fz, fr in prof:
+        for i in range(seg):
+            a = a0 + 2 * math.pi * i / seg
+            k = 1 + RNG.uniform(-.1, .1)
+            V.append((cx + rx * fr * k * math.cos(a), cy + ry * fr * k * math.sin(a), z0 - .05 + (h + .05) * fz * (1 + RNG.uniform(-.06, .06))))
+    V.append((cx + RNG.uniform(-.06, .06) * rx, cy + RNG.uniform(-.06, .06) * ry, z0 + h))
+    for r in range(len(prof) - 1):
+        for i in range(seg):
+            j = (i + 1) % seg
+            F.append((o + r * seg + i, o + r * seg + j, o + (r + 1) * seg + j, o + (r + 1) * seg + i))
+    top = (len(prof) - 1) * seg
+    for i in range(seg):
+        F.append((o + top + i, o + top + (i + 1) % seg, o + len(prof) * seg))
+
+
+def dot(b, role, x, y, z, r):
+    """A small flower head: an octahedron."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V)
+    V += [(x + r, y, z), (x - r, y, z), (x, y + r, z), (x, y - r, z), (x, y, z + r * .8), (x, y, z - r * .8)]
+    F += [(o, o + 2, o + 4), (o + 2, o + 1, o + 4), (o + 1, o + 3, o + 4), (o + 3, o, o + 4),
+          (o + 2, o, o + 5), (o + 1, o + 2, o + 5), (o + 3, o + 1, o + 5), (o, o + 3, o + 5)]
+
+
+def arch_blade(b, role, x, y, z0, h, ang, reach, w=.035):
+    """One arching grass blade: a flat tapering two-segment strip that rises steeply, then bows outward (seen from both sides)."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V)
+    ca, sa = math.cos(ang), math.sin(ang)
+    nx, ny = -sa, ca
+    mx, my, mz = x + ca * reach * .4, y + sa * reach * .4, z0 + h * .78
+    V += [(x + nx * w, y + ny * w, z0), (x - nx * w, y - ny * w, z0),
+          (mx - nx * w * .6, my - ny * w * .6, mz), (mx + nx * w * .6, my + ny * w * .6, mz),
+          (x + ca * reach, y + sa * reach, z0 + h * .92)]
+    F += [(o, o + 1, o + 2, o + 3), (o + 3, o + 2, o + 4)]
+
+
+def fountain(b, x, y, z0, h, n=7, roles=('grass', 'grass2')):
+    """An ornamental grass clump: n arching blades fanning from one base, mixed green and gold."""
+    a0 = RNG.uniform(0, 2 * math.pi)
+    for i in range(n):
+        arch_blade(b, roles[i % len(roles)] if RNG.random() < .8 else roles[0], x + RNG.uniform(-.05, .05), y + RNG.uniform(-.05, .05), z0,
+                   h * RNG.uniform(.75, 1.05), a0 + 2 * math.pi * i / n + RNG.uniform(-.25, .25), h * RNG.uniform(.3, .5))
+    arch_blade(b, roles[0], x, y, z0, h * 1.1, a0, h * .1)                    # an upright centre blade
+
+
+def picket(b, role, x, y, z0, z1, w=.022):
+    """A slender railing picket: a closed three-sided bar (smooth-shaded it reads as a round rod)."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V)
+    for z in (z0, z1):
+        for a in (0.0, 2.094, 4.189):
+            V.append((x + w * math.cos(a), y + w * math.sin(a), z))
+    F += [(o + 2, o + 1, o), (o + 3, o + 4, o + 5), (o, o + 1, o + 4, o + 3), (o + 1, o + 2, o + 5, o + 4), (o + 2, o, o + 3, o + 5)]
+
+
+def stripe(b, role, a, c, w, z):
+    """A flush joint line: one thin quad lying just above a paved surface."""
+    V, F = b.g.setdefault(role, ([], []))
+    dx, dy = c[0] - a[0], c[1] - a[1]
+    l = math.hypot(dx, dy) or 1.0
+    nx, ny = -dy / l * w / 2, dx / l * w / 2
+    o = len(V)
+    V += [(a[0] + nx, a[1] + ny, z), (a[0] - nx, a[1] - ny, z), (c[0] - nx, c[1] - ny, z), (c[0] + nx, c[1] + ny, z)]
+    F.append((o, o + 1, o + 2, o + 3))
+
+
+def heightmat(name, hu, hv, step, zb, zfun, role, module):
+    """A closed planted mat over a pavilion-local rectangle: a smooth bumpy top grid, a flat bottom and n-gon sides."""
+    nu, nv = int(2 * hu / step) + 1, int(2 * hv / step) + 1
+    us = [-hu + 2 * hu * i / (nu - 1) for i in range(nu)]
+    vs_ = [-hv + 2 * hv * j / (nv - 1) for j in range(nv)]
+    V = []
+    for v in vs_:
+        for u in us:
+            x, y = L(u, v)
+            V.append((x, y, zfun(u, v)))
+    idx = lambda i, j: j * nu + i
+    F = [(idx(i, j), idx(i + 1, j), idx(i + 1, j + 1), idx(i, j + 1)) for j in range(nv - 1) for i in range(nu - 1)]
+    b0 = len(V)
+    for u, v in ((-hu, -hv), (hu, -hv), (hu, hv), (-hu, hv)):
+        x, y = L(u, v)
+        V.append((x, y, zb))
+    F.append((b0 + 3, b0 + 2, b0 + 1, b0))
+    F.append(tuple([idx(i, 0) for i in range(nu)] + [b0 + 1, b0]))
+    F.append(tuple([idx(nu - 1, j) for j in range(nv)] + [b0 + 2, b0 + 1]))
+    F.append(tuple([idx(i, nv - 1) for i in range(nu - 1, -1, -1)] + [b0 + 3, b0 + 2]))
+    F.append(tuple([idx(0, j) for j in range(nv - 1, -1, -1)] + [b0, b0 + 3]))
+    obj = C.mesh(name, V, F, role, module)
+    for f in obj.data.polygons:
+        if len(f.vertices) == 4 and f.normal.z > .3:
+            f.use_smooth = True
+
+
 def cr(p0, p1, p2, p3, u):
     return tuple(.5 * (2 * p1[i] + (-p0[i] + p2[i]) * u + (2 * p0[i] - 5 * p1[i] + 4 * p2[i] - p3[i]) * u * u
                        + (-p0[i] + 3 * p1[i] - 3 * p2[i] + p3[i]) * u ** 3) for i in range(2))
@@ -613,30 +727,30 @@ def ground_and_river():
     C.box('Far bank', (FAR + 5.0, (Y0 + Y1) / 2, ZG / 2), (10.0, Y1 - Y0 + 2.0, ZG), 'lawn', 'far bank', 0)
     b = Batch()
     y = Y0 - .6
-    while y < Y1 + .6:                                     # packed rounded boulders over the slope, three greys
-        x = bank(y) + .35
+    while y < Y1 + .6:                                     # packed rounded boulders of mixed size over the slope, three grey-browns
+        x = bank(y) + .3
         while x < WATER - .2:
-            r = RNG.uniform(.45, .7)
-            xx = x + RNG.uniform(-.12, .12); yy = y + RNG.uniform(-.2, .2)
+            r = RNG.uniform(.3, .95)
+            xx = x + RNG.uniform(-.12, .12); yy = y + RNG.uniform(-.25, .25)
             if not abs(yy - YB) < 2.9:
                 lump(b, RNG.choice(('rock', 'rock2', 'rock3')), xx, yy, max(slope_z(xx, yy) + r * .25, r * .75 * 1.05), r * 1.25, r * RNG.uniform(.95, 1.3), r * .75)
-            x += r * 1.75
-        y += 1.15
+            x += r * 1.55 + .2
+        y += RNG.uniform(.8, 1.25)
     for i in range(70):                                    # far bank stones at its waterline
         yy = RNG.uniform(Y0, Y1)
         if abs(yy - YB) < 2.6:
             continue
         r = RNG.uniform(.35, .55)
         lump(b, RNG.choice(('rock', 'rock2', 'rock3')), FAR + RNG.uniform(-.3, .3), yy, max(r * .55, r * .75 * 1.05) + .2, r * 1.2, r * 1.3, r * .75)
-    b.flush('rip-rap boulders')
+    flush_smooth(b, 'rip-rap boulders')
     b = Batch()
-    for i in range(140):                                   # grasses in the joints along the top of the bank
+    for i in range(90):                                    # grass clumps in the joints between the boulders, densest along the top
         yy = RNG.uniform(Y0 - .5, Y1 + .5)
         if abs(yy - YB) < 2.9:
             continue
-        xx = bank(yy) + RNG.uniform(.05, 1.3)
-        tuft(b, 'grass2' if i % 3 else 'grass', xx, yy, slope_z(xx, yy) - .02, RNG.uniform(.4, .8), RNG.uniform(.1, .18))
-    b.flush('bank grasses')
+        xx = bank(yy) + RNG.uniform(.05, 1.0) ** 1.6 * 3.2
+        fountain(b, xx, yy, slope_z(xx, yy) - .03, RNG.uniform(.45, .8), n=6, roles=('grass2', 'grass', 'straw'))
+    flush_smooth(b, 'bank grasses')
 
 
 # ---------------------------------------------------------------- paths
@@ -660,20 +774,44 @@ def asphalt_path(name, pts):
     b.flush(f'{name} markings')
 
 
-def slab_path(name, pts, width, top, border=.45, step=1.6):
-    """Pale slab paving with granite sett borders, transverse joints and a centre joint."""
+def slab_path(name, pts, width, top, border=.45, step=1.6, sett=.45, bands=0.0):
+    """Pale slab paving with wide flush dark granite sett borders (sett joints), transverse slab joints and optional sett crossing bands."""
     fr = frames(clip(spline(pts, 1.1)))
     ribbon(f'{name} slabs', fr, width, ZG - .02, ZG + top, 'paving', 'paving')
+    b = Batch()
+    zs = ZG + top + .0045                                    # sett joint lines lie 1.5 mm above the sett top
     if border:
         for s in (-1, 1):
-            ribbon(f'{name} sett border {s:+d}', fr, border, ZG - .02, ZG + top + .006, 'sett', 'paving', off=s * (width / 2 - border / 2 + .01))
-    b = Batch()
+            off = s * (width / 2 - border / 2 + .01)
+            ribbon(f'{name} sett border {s:+d}', fr, border, ZG - .02, ZG + top + .003, 'sett', 'paving', off=off)
+            i0, i1 = off - border / 2 + .02, off + border / 2 - .02
+            last = -9.0
+            for p, n, ss in fr:
+                if ss - last >= sett:
+                    stripe(b, 'settjoint', (p[0] + n[0] * i0, p[1] + n[1] * i0), (p[0] + n[0] * i1, p[1] + n[1] * i1), .022, zs)
+                    last = ss
+            if border > .5:                                  # wide bands: a running joint down the middle, two setts across
+                for (p, n, _), (q, m, _) in zip(fr, fr[1:]):
+                    stripe(b, 'settjoint', (p[0] + n[0] * off, p[1] + n[1] * off), (q[0] + m[0] * off, q[1] + m[1] * off), .022, zs)
     last = -9.0
     inner = width / 2 - (border or 0)
     for p, n, s in fr[1:-1]:
         if s - last >= step:
-            b.beam('joint', (p[0] + n[0] * inner, p[1] + n[1] * inner, ZG + top + .001), (p[0] - n[0] * inner, p[1] - n[1] * inner, ZG + top + .001), .03, .006)
+            stripe(b, 'joint', (p[0] + n[0] * inner, p[1] + n[1] * inner), (p[0] - n[0] * inner, p[1] - n[1] * inner), .03, ZG + top + .0015)
             last = s
+    if bands:                                                # dark sett bands crossing the promenade at intervals
+        last = -bands / 2
+        for p, n, s in fr[2:-2]:
+            if s - last >= bands:
+                tx, ty = n[1], -n[0]
+                obox(b, 'sett', p[0], p[1], ZG + top - .0035, .8, 2 * inner, .0135, math.atan2(ty, tx))
+                k = max(2, int(2 * inner / .45))
+                for j in range(1, k):
+                    d = -inner + 2 * inner * j / k
+                    c = (p[0] + n[0] * d, p[1] + n[1] * d)
+                    stripe(b, 'settjoint', (c[0] - tx * .38, c[1] - ty * .38), (c[0] + tx * .38, c[1] + ty * .38), .022, zs)
+                stripe(b, 'settjoint', (p[0] + n[0] * inner, p[1] + n[1] * inner), (p[0] - n[0] * inner, p[1] - n[1] * inner), .022, zs)
+                last = s
     b.flush(f'{name} joints')
     return fr
 
@@ -685,24 +823,33 @@ PITS = [(-12.95, -11.1), (-11.4, -18.9)]
 def paths():
     asphalt_path('West cycle path', [(-26.6, Y1 + 1.0), (-26.0, 30.0), (-24.8, 19.8), (-22.7, 10.7), (-19.8, 1.6), (-16.8, -5.7), (-19.1, -9.3), (-22.7, -13.0), (-23.4, -21.0), (-23.5, Y0 - 1.0)])
     asphalt_path('East cycle path', [(12.7, -3.2), (10.9, -8.4), (9.5, -13.9), (9.8, -21.0), (9.9, Y0 - 1.0)])
-    slab_path('Promenade', [(-18.0, Y1 + 1.0), (-17.0, 30.0)] + [px(*p) for p in ((285, 0), (300, 100), (345, 200), (390, 300), (440, 400), (480, 500), (505, 600), (515, 660))], 5.0, .060)
-    slab_path('West crossing', [px(*p) for p in ((300, 645), (130, 650))] + [(X0 - .6, -9.8)], 4.5, .066)
-    slab_path('Bench link', [px(*p) for p in ((372, 305), (250, 312), (150, 328))], 2.5, .068, border=.3)
-    slab_path('North path', [px(*p) for p in ((300, 50), (420, 15), (560, 25), (620, 80), (615, 200), (605, 290))], 2.6, .055, border=.3)
-    slab_path('Bridge path', [px(560, 25), (3.6, 22.5), (10.5, 28.9), (15.4, 34.0)], 2.6, .0572, border=.3)
+    slab_path('Promenade', [(-18.0, Y1 + 1.0), (-17.0, 30.0)] + [px(*p) for p in ((285, 0), (300, 100), (345, 200), (390, 300), (440, 400), (480, 500), (505, 600), (515, 660))], 5.0, .060, border=.8, bands=13.0)
+    slab_path('West crossing', [px(*p) for p in ((300, 645), (130, 650))] + [(X0 - .6, -9.8)], 4.5, .066, border=.7)
+    slab_path('Bench link', [px(*p) for p in ((372, 305), (250, 312), (150, 328))], 2.5, .068, border=.4)
+    slab_path('North path', [px(*p) for p in ((300, 50), (420, 15), (560, 25), (620, 80), (615, 200), (605, 290))], 2.6, .055, border=.4)
+    slab_path('Bridge path', [px(560, 25), (3.6, 22.5), (10.5, 28.9), (15.4, 34.0)], 2.6, .0572, border=.4)
     poly = [px(*p) for p in PLAZA]
     poly = poly if area(poly) > 0 else poly[::-1]
     slab('South plaza', poly, ZG - .02, ZG + .054, 'paving', 'paving')
+    ring_mesh('South plaza sett frame', offset(poly, -.01), offset(poly, .6), ZG - .02, ZG + .057, 'sett', 'paving')
     b = Batch()
+    for a, c in zip(poly, poly[1:] + poly[:1]):              # sett joints round the frame: across every 0.45 m and one running joint
+        l = math.dist(a, c)
+        ex, ey = (c[0] - a[0]) / l, (c[1] - a[1]) / l
+        nx, ny = -ey, ex                                     # inward for the counter-clockwise outline
+        for k in range(1, int(l / .45)):
+            q = (a[0] + ex * k * .45, a[1] + ey * k * .45)
+            stripe(b, 'settjoint', (q[0] + nx * .02, q[1] + ny * .02), (q[0] + nx * .56, q[1] + ny * .56), .022, ZG + .0585)
+        stripe(b, 'settjoint', (a[0] + nx * .29 + ex * .3, a[1] + ny * .29 + ey * .3), (c[0] + nx * .29 - ex * .3, c[1] + ny * .29 - ey * .3), .022, ZG + .0585)
     beds = [outline(BEDS['B5'][0])]
     ok = lambda p: inside(p, poly) and not any(inside(p, q) for q in beds) and all(math.dist(p, c) > 1.5 for c in PITS)
-    for k in range(-30, 30):                               # slab joints, 1.6 m grid
+    for k in range(-30, 30):                               # slab joints, 1.6 m grid, as flush lines
         for j in range(-30, 30):
             a = (-12.0 + k * 1.6, -24.0 + j * 1.6)
             for d in ((1.6, 0.0), (0.0, 1.6)):
                 e = (a[0] + d[0], a[1] + d[1])
                 if ok(a) and ok(e):
-                    b.beam('joint', (a[0], a[1], ZG + .0545), (e[0], e[1], ZG + .0545), .03, .006)
+                    stripe(b, 'joint', a, e, .03, ZG + .0555)
     b.flush('plaza joints')
 
 
@@ -724,7 +871,7 @@ BEDS = {
 def bed(name, poly, dens, b):
     inner = offset(poly, .15)
     ring_mesh(f'{name} kerb', poly, inner, ZG - .02, ZG + .14, 'curb', 'beds')
-    slab(f'{name} soil', offset(poly, .12), ZG - .02, ZG + .10, 'soil', 'beds')
+    slab(f'{name} planted ground', offset(poly, .12), ZG - .02, ZG + .10, 'bedcover', 'beds')
     xs = [p[0] for p in inner]; ys = [p[1] for p in inner]
     a = abs(area(inner))
     td, sd, fd = dens
@@ -736,20 +883,30 @@ def bed(name, poly, dens, b):
             if inside(p, core) and Y0 - .3 < p[1] < Y1 + .3:
                 return p
         return None
-    for i in range(int(td * a)):                            # ornamental grasses, green and gold
+    for i in range(int(sd * a * .55)):                      # shrubs: grounded rounded masses of two or three overlapping lobes
         p = spot()
         if p:
-            tuft(b, ('grass', 'grass2', 'planting')[i % 3], p[0], p[1], ZG + .095, RNG.uniform(.5, 1.15), RNG.uniform(.14, .25))
-    for i in range(int(sd * a)):                            # shrub masses
+            r = RNG.uniform(.4, .75)
+            role = ('shrub', 'planting')[i % 2]
+            a0 = RNG.uniform(0, 2 * math.pi)
+            for k in range(RNG.choice((2, 3))):
+                d = 0.0 if k == 0 else r * .55
+                dome(b, role, p[0] + math.cos(a0 + 2.2 * k) * d, p[1] + math.sin(a0 + 2.2 * k) * d, ZG + .10,
+                     r * RNG.uniform(.85, 1.1), r * RNG.uniform(.85, 1.1), r * RNG.uniform(1.0, 1.35) * (1.0 if k == 0 else .8), seg=8)
+    for i in range(int(fd * a * .5)):                       # perennial drifts: a low leafy mound carrying a pink, lavender or white flower mass
         p = spot()
         if p:
-            r = RNG.uniform(.35, .75)
-            lump(b, 'shrub' if i % 2 else 'planting', p[0], p[1], ZG + .1 + r * .45, r * 1.3, r * 1.3, r * 1.0, .22)
-    for i in range(int(fd * a)):                            # perennials: a stem with a flower head, pink, lavender, white
+            rx, ry, h = RNG.uniform(.5, .9), RNG.uniform(.45, .8), RNG.uniform(.24, .4)
+            dome(b, 'planting', p[0], p[1], ZG + .10, rx, ry, h)
+            fr = ('flower', 'flower2', 'flower3', 'flower', 'flower2')[i % 5]
+            dome(b, fr, p[0] + RNG.uniform(-.1, .1), p[1] + RNG.uniform(-.1, .1), ZG + .10 + h * .5, rx * .75, ry * .75, h * .72, seg=6)
+            for k in range(3):                              # a few heads scattered on the flank of the mound
+                ang = RNG.uniform(0, 2 * math.pi)
+                dot(b, fr, p[0] + math.cos(ang) * rx * .8, p[1] + math.sin(ang) * ry * .8, ZG + .10 + h * .62, RNG.uniform(.07, .11))
+    for i in range(int(td * a * .32)):                      # ornamental grasses: arching clumps, green and gold
         p = spot()
         if p:
-            tip = tuft(b, 'planting', p[0], p[1], ZG + .095, RNG.uniform(.5, .85), .06)
-            bud(b, ('flower', 'flower2', 'flower3', 'flower')[i % 4], tip[0], tip[1], tip[2], RNG.uniform(.09, .14))
+            fountain(b, p[0], p[1], ZG + .095, RNG.uniform(.6, 1.15), n=7, roles=(('grass', 'grass2'), ('grass2', 'straw'), ('grass', 'planting'))[i % 3])
 
 
 def planting():
@@ -759,7 +916,7 @@ def planting():
     for i, c in enumerate(PITS):                             # tree pits in the south plaza
         poly = [(c[0] + 1.3 * math.cos(a * math.tau / 20), c[1] + 1.3 * math.sin(a * math.tau / 20)) for a in range(20)]
         bed(f'Tree pit {i}', poly, (3.0, 0.0, 0.0), b)
-    b.flush('planting')
+    flush_smooth(b, 'planting')
 
 
 def park_tree(x, y, r, z=ZG + .09, k=0):
@@ -770,11 +927,12 @@ def park_tree(x, y, r, z=ZG + .09, k=0):
     C.rod('Tree trunk', (x, y, z - .05), top, .12 + .03 * r, 'bark', 'trees', 7)
     for i, a in enumerate((k * 1.3, k * 1.3 + 2.4)):
         C.rod('Tree limb', (x, y, z + H * .35), (x + math.cos(a) * r * .5, y + math.sin(a) * r * .5, z + H * .62), .06 + .015 * r, 'bark', 'trees', 6)
-    A.foliage('Tree crown', (top[0], top[1], z + H * .7), (r * .85, r * .85, r * .75), role='tree' if k % 2 else 'tree2', detail=1)
+    roles = ('tree', 'tree2', 'tree3')
+    smooth(A.foliage('Tree crown', (top[0], top[1], z + H * .7), (r * .85, r * .85, r * .75), role=roles[k % 3], detail=2))
     for j in range(3):
         a = k * .9 + j * math.tau / 3
-        A.foliage('Tree crown mass', (top[0] + math.cos(a) * r * .5, top[1] + math.sin(a) * r * .5, z + H * (.58 + .04 * j)),
-                  (r * .6, r * .6, r * .52), role='tree2' if (k + j) % 2 else 'tree', detail=1)
+        smooth(A.foliage('Tree crown mass', (top[0] + math.cos(a) * r * .5, top[1] + math.sin(a) * r * .5, z + H * (.58 + .04 * j)),
+                         (r * .6, r * .6, r * .52), role=roles[(k + j + 1) % 3], detail=2))
 
 
 TREES = [((690, 40), 2.6), ((730, 170), 3.8), ((830, 330), 3.9), ((790, 60), 3.2), ((900, 90), 3.4), ((955, 25), 2.2), ((880, 230), 2.8),
@@ -792,8 +950,25 @@ def trees():
         park_tree(x, y, r, k=k); k += 1
     for (x, y), r in (((-20.5, 27.0), 3.4), ((-9.5, 30.0), 3.8), ((-2.0, 35.5), 3.0), ((4.5, 31.0), 3.2), ((9.0, 38.0), 2.8), ((13.5, 24.5), 3.0)):
         park_tree(x, y, r, z=ZG, k=k); k += 1
-    for y in (-15.0, -3.0, 9.0, 22.0, 38.0):
-        park_tree(FAR + 3.0 + (k % 2) * 2.5, y, 3.4, z=ZG, k=k); k += 1
+    rng = random.Random(58)                                  # the far bank: a dense wood at the bridge landing, thinning to the south
+    y = Y0 + 1.0
+    while y < Y1 + .5:
+        dense = YB - 17.0 < y < YB + 8.0
+        for row in range(3 if dense else 1):
+            yy = y + rng.uniform(-1.0, 1.0) + row * 1.3
+            if abs(yy - YB) < 3.2 or yy > Y1 + .8:
+                continue
+            park_tree(FAR + 1.8 + row * 2.7 + rng.uniform(-.5, .5), yy, rng.uniform(2.0, 4.2), z=ZG, k=k); k += 1
+        y += 3.1 if dense else 6.5
+    b = Batch()
+    for i in range(46):                                      # understorey mounds along the far shore and under the wood
+        yy = rng.uniform(Y0, Y1)
+        if abs(yy - YB) < 2.8:
+            continue
+        xx = FAR + .9 + rng.uniform(0, 1) ** 1.5 * 7.5
+        r = rng.uniform(.6, 1.2)
+        dome(b, ('shrub', 'planting', 'tree3')[i % 3], xx, yy, ZG, r * 1.2, r, r * .9, seg=8)
+    flush_smooth(b, 'far bank understorey')
 
 
 # ---------------------------------------------------------------- boardwalk and footbridge
@@ -815,7 +990,8 @@ def boardwalk():
             z = zt(p, s) + .001
             b.beam('joint', (p[0] + n[0] * 1.4, p[1] + n[1] * 1.4, z), (p[0] - n[0] * 1.4, p[1] - n[1] * 1.4, z), .03, .006)
             last = s
-    for side in (-1, 1):                                     # dark steel railings with mesh panels on both kerbs
+    pk = Batch()
+    for side in (-1, 1):                                     # open galvanised picket railings on both kerbs
         posts = []
         last = -9.0
         for p, n, s in fr:
@@ -823,12 +999,17 @@ def boardwalk():
                 posts.append((p[0] + n[0] * side * 1.52, p[1] + n[1] * side * 1.52, zt(p, s) + .1))
                 last = s
         for q in posts:
-            b.box('steel', q[0], q[1], q[2] + .5, .06, .06, 1.02)
+            b.box('rail', q[0], q[1], q[2] + .5, .06, .06, 1.02)
         for q, r in zip(posts, posts[1:]):
-            b.beam('steel', (q[0], q[1], q[2] + 1.0), (r[0], r[1], r[2] + 1.0), .07, .05, ext=.03)
-            b.beam('steel', (q[0], q[1], q[2] + .08), (r[0], r[1], r[2] + .08), .04, .04, ext=.03)
-            b.beam('mesh', (q[0], q[1], q[2] + .54), (r[0], r[1], r[2] + .54), .015, .84, ext=-.03)
+            b.beam('rail', (q[0], q[1], q[2] + 1.0), (r[0], r[1], r[2] + 1.0), .07, .05, ext=.03)
+            b.beam('rail', (q[0], q[1], q[2] + .08), (r[0], r[1], r[2] + .08), .04, .04, ext=.03)
+            m = max(2, int(math.dist(q[:2], r[:2]) / .14))
+            for j in range(1, m):                            # slender pickets, about 140 mm apart, from the bottom rail into the top rail
+                u = j / m
+                pkx, pky, pkz = q[0] + (r[0] - q[0]) * u, q[1] + (r[1] - q[1]) * u, q[2] + (r[2] - q[2]) * u
+                picket(pk, 'rail', pkx, pky, pkz + .09, pkz + .99)
     b.flush('boardwalk railings')
+    flush_smooth(pk, 'boardwalk pickets')
     slab('Bridge landing', [(14.6, YB - 2.4), (20.2, YB - 2.4), (20.2, YB + 2.4), (14.6, YB + 2.4)], ZG - .05, ZG + .055, 'paving', 'footbridge')
 
 
@@ -865,14 +1046,20 @@ def footbridge():
     b.box('concrete', 21.0, YB, zt / 2, 2.8, 4.6, zt)                       # near abutment on the rip-rap
     zt = bridge_z(FAR - 2.4) - .52
     b.box('concrete', FAR - 1.1, YB, zt / 2, 2.8, 4.6, zt)                 # far abutment
-    for s in (-1, 1):                                       # railings
+    pk = Batch()
+    for s in (-1, 1):                                       # open picket railings, as on the boardwalk
         posts = [(x, YB + s * 1.9, bridge_z(x) + .15) for x in xs[::2]]
         for q in posts:
-            b.box('steel', q[0], q[1], q[2] + .5, .06, .06, 1.02)
+            b.box('rail', q[0], q[1], q[2] + .5, .06, .06, 1.02)
         for q, r in zip(posts, posts[1:]):
-            b.beam('steel', (q[0], q[1], q[2] + 1.0), (r[0], r[1], r[2] + 1.0), .07, .05, ext=.03)
-            b.beam('mesh', (q[0], q[1], q[2] + .54), (r[0], r[1], r[2] + .54), .015, .84, ext=-.03)
+            b.beam('rail', (q[0], q[1], q[2] + 1.0), (r[0], r[1], r[2] + 1.0), .07, .05, ext=.03)
+            b.beam('rail', (q[0], q[1], q[2] + .08), (r[0], r[1], r[2] + .08), .04, .04, ext=.03)
+            m = max(2, int(math.dist(q[:2], r[:2]) / .16))
+            for j in range(1, m):
+                u = j / m
+                picket(pk, 'rail', q[0] + (r[0] - q[0]) * u, q[1] + (r[1] - q[1]) * u, q[2] + (r[2] - q[2]) * u + .09, q[2] + (r[2] - q[2]) * u + .99)
     b.flush('footbridge')
+    flush_smooth(pk, 'footbridge pickets')
     slab('Far landing', [(FAR - .4, YB - 2.4), (FAR + 4.0, YB - 2.4), (FAR + 4.0, YB + 2.4), (FAR - .4, YB + 2.4)], ZG - .05, ZG + .055, 'paving', 'footbridge')
     asphalt = [(FAR + 4.0, YB), (FAR + 9.8, YB)]
     ribbon('Far bank path', frames(spline(asphalt, 1.0)), 3.0, ZG - .02, ZG + .04, 'asphalt', 'footbridge')
@@ -945,9 +1132,11 @@ def pavilion():
     m.box('floor', -.9, 0.0, Z0 + .02, 7.9, 7.1, .04)                            # interior floor
     m.box('timber', 0.0, 0.0, ZG + 3.73, 12.4, 9.4, .24)                         # roof deck and timber soffit
     m.box('sedum3', 0.0, 0.0, ZG + 3.915, 12.2, 9.2, .14)                        # green roof build-up, planted
-    for s in (-1, 1):                                                            # thin dark metal fascia
-        m.box('fascia', 0.0, s * 4.73, ZG + 3.84, 12.52, .08, .5)
-        m.box('fascia', s * 6.23, 0.0, ZG + 3.835, .08, 9.4, .49)
+    for s in (-1, 1):                                                            # thin dark metal fascia over a timber beam band
+        m.box('fascia', 0.0, s * 4.73, ZG + 4.01, 12.52, .08, .16)
+        m.box('fascia', s * 6.23, 0.0, ZG + 4.005, .08, 9.4, .15)
+        m.box('post', 0.0, s * 4.725, ZG + 3.755, 12.4, .07, .31)
+        m.box('post', s * 6.225, 0.0, ZG + 3.755, .07, 9.3, .31)
     for su in (-1, 1):                                                           # timber posts at the roof corners
         for sv in (-1, 1):
             m.box('post', su * 5.95, sv * 4.45, (ZG + .15 + ZG + 3.63) / 2, .2, .2, 3.48)
@@ -963,18 +1152,13 @@ def pavilion():
     m.box('interior', 2.6, 0.0, ZG + .62, .7, 5.0, .95)                          # counter along the back wall
     m.box('bench', 2.6, 0.0, ZG + 1.11, .78, 5.1, .04)
     m.flush('pavilion frame')
-    b = Batch()
-    roof = [(-6.0, 6.0), (-4.5, 4.5)]
-    for i in range(90):                                                          # low sedum mounds, mottled, clear of the fascia
-        u, v = RNG.uniform(-5.4, 5.4), RNG.uniform(-3.9, 3.9)
-        x, y = L(u, v)
-        r = RNG.uniform(.3, .55)
-        lump(b, 'sedum', x, y, ZG + 3.985 + r * .05, r * 1.3, r * 1.1, r * .45, .3)
-    for i in range(130):
-        u, v = RNG.uniform(*roof[0]), RNG.uniform(*roof[1])
-        x, y = L(u, v)
-        tuft(b, 'sedum2' if i % 2 else 'grass2', x, y, ZG + 3.98, RNG.uniform(.14, .26), .07)
-    b.flush('green roof planting')
+    for k, (role, hu, hv, zb) in enumerate((('sedum', 6.08, 4.58, ZG + 3.95), ('sedum2', 6.065, 4.565, ZG + 3.955), ('sedum4', 6.05, 4.55, ZG + 3.96))):
+        ph = [RNG.uniform(0, math.tau) for _ in range(5)]                        # three interleaved fine mats: olive, ochre and rust patches
+        amp = (.06, .06, .045)[k]
+        zf = lambda u, v, ph=ph, amp=amp: ZG + 3.995 + amp * (.5 + .22 * math.sin(u * 1.3 + ph[0]) * math.cos(v * 1.5 + ph[1])
+                                                          + .16 * math.sin(u * 3.1 + v * 2.4 + ph[2]) + .08 * math.sin(-u * 7.3 + v * 6.1 + ph[3])
+                                                          + .06 * math.sin(u * 11.0 + v * 9.0 + ph[4]))
+        heightmat(f'Green roof {role} mat', hu, hv, .3, zb, zf, role, 'pavilion')
     C.qa_room_light('Pavilion room', (*L(-1.0, 0.0), ZG + 2.6), 120, 3.0)
     C.CONTACTS.append(dict(name='Pavilion: slab on the apron, walls on the slab, posts under the roof corners, sedum on the roof build-up', box=[*L(-6.2, -4.7), *L(6.2, 4.7)]))
 
