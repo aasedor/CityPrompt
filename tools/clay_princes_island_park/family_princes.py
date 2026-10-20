@@ -588,7 +588,7 @@ def fountain(b, x, y, z0, h, n=7, roles=('grass', 'grass2')):
 def grass_mass(b, x, y, z0, h, roles):
     """A dense ornamental grass clump: a low dark leafy base with a fountain of wide arching blades spilling over it."""
     r = h * RNG.uniform(.38, .46)
-    dome(b, 'planting', x, y, z0, r, r * RNG.uniform(.85, 1.05), h * .3, seg=8, prof=((0.0, .9), (.5, 1.0), (.85, .6)), jit=.1)
+    dome(b, 'planting', x, y, z0, r, r * RNG.uniform(.85, 1.05), h * .3, seg=6, prof=((0.0, 1.0), (.6, .72)), jit=.1)   # coarse: mostly hidden under the blades
     a0 = RNG.uniform(0, 2 * math.pi)
     for i in range(10):
         arch_blade(b, roles[i % len(roles)], x + RNG.uniform(-.07, .07), y + RNG.uniform(-.07, .07), z0 + h * .12,
