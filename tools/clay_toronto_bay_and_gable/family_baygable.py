@@ -32,11 +32,45 @@ XC, HW = -1.0, 2.5                              # front cross gable: centre line
 ZC = EAVE + 3.0                                 # cross-gable ridge, just under the main ridge
 BP, BF = .75, .85                               # canted bay: projection and half front width
 EPS = .002
-PALETTE = dict(wall=(.62, .33, .24), joint=(.70, .55, .47), trim=(.42, .32, .22), pale=(.86, .84, .80),
-    stone=(.76, .70, .58), roof=(.34, .35, .37), foundation=(.55, .53, .50), glass=(.30, .36, .40),
+PALETTE = dict(wall=(.66, .30, .20), joint=(.70, .55, .47), trim=(.42, .32, .22), pale=(.86, .84, .80),
+    stone=(.76, .70, .58), roof=(.34, .35, .37), foundation=(.47, .45, .42), glass=(.30, .36, .40),
     stained=(.80, .56, .26), hardware=(.10, .10, .11), interior=(.86, .82, .76), floor=(.62, .56, .48),
     timber=(.50, .40, .28), door=(.14, .27, .21), door2=(.10, .21, .16), shingle=(.43, .37, .30), shjoint=(.26, .22, .18), planting=(.30, .44, .20), grass=(.38, .50, .24),
     paving=(.72, .71, .68), asphalt=(.28, .28, .29), walk=(.56, .32, .24), brick=(.60, .32, .23), pot=(.66, .40, .30))
+
+
+HOUSE_BOX = ((X0 - .45, X1 + .55), (Y0 - 3.45, Y1 + .4), (0.0, 12.5))   # house, porch, stair, front fence and chimney
+
+
+def frame_house(az, el, lens, margin=.07, aspect=.75):
+    """Camera location that holds HOUSE_BOX inside the frame with a margin; az from +x, el above horizon (degrees).
+    Pure pinhole maths for a 36 mm horizontal sensor, so the whole-envelope views frame the house, not the street."""
+    (x0, x1), (y0, y1), (z0, z1) = HOUSE_BOX
+    tgt = ((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) * .42)
+    a, e = math.radians(az), math.radians(el)
+    d = (math.cos(e) * math.cos(a), math.cos(e) * math.sin(a), math.sin(e))       # from the target towards the camera
+    f = (-d[0], -d[1], -d[2])
+    r = (f[1], -f[0], 0.0); rn = math.hypot(r[0], r[1]); r = (r[0] / rn, r[1] / rn, 0.0)
+    u = (r[1] * f[2] - r[2] * f[1], r[2] * f[0] - r[0] * f[2], r[0] * f[1] - r[1] * f[0])
+    th = 18.0 / lens; lim = 1 - 2 * margin
+    corners = [(x, y, z) for x in (x0, x1) for y in (y0, y1) for z in (z0, z1)]
+    dist = 5.0
+    while dist < 400:
+        loc = tuple(tgt[i] + d[i] * dist for i in range(3))
+        ok = True
+        for p in corners:
+            v = tuple(p[i] - loc[i] for i in range(3))
+            zc = sum(v[i] * f[i] for i in range(3))
+            if zc <= .1:
+                ok = False; break
+            xn = sum(v[i] * r[i] for i in range(3)) / zc / th
+            yn = sum(v[i] * u[i] for i in range(3)) / zc / (th * aspect)
+            if abs(xn) > lim or abs(yn) > lim:
+                ok = False; break
+        if ok:
+            return tuple(round(c, 2) for c in loc), tuple(round(c, 2) for c in tgt)
+        dist *= 1.02
+    raise ValueError('frame_house: no fit')
 
 
 def manifest(version):
@@ -53,10 +87,10 @@ def manifest(version):
         ('interior', (XC, Y0 - .3, F1 + 1.6), (XC + .8, Y0 + 5.0, F1 + 1.3), 30),
         ('rear_north', (0.0, Y1 + 17.0, 5.0), (0.0, Y1, 5.0), 45)])
     for c in cams:                       # the locked front looks from the south-south-west at eye level
-        if c['name'] == 'front_corner':                    # the locked oblique: high from the south-west, the house filling the frame
-            c['location'] = (-10.5, -12.5, 15.5); c['target'] = (-.4, -1.2, 4.4); c['lens'] = 35; c['whole'] = False
-        if c['name'] == 'aerial':
-            c['location'] = (11.0, -13.5, 19.0); c['target'] = (0.0, -.5, 3.8); c['lens'] = 35; c['whole'] = False
+        if c['name'] == 'front_corner':                    # the locked oblique: high from the south-west, whole house with margin
+            c['location'], c['target'] = frame_house(232, 38, 35); c['lens'] = 35; c['whole'] = False
+        if c['name'] == 'aerial':                          # higher, from the same south-west quarter as the oblique
+            c['location'], c['target'] = frame_house(225, 58, 35); c['lens'] = 35; c['whole'] = False
         if c['name'] == 'front':
             c['location'] = (-7.0, Y0 - 12.8, 1.6); c['target'] = (-.2, Y0 + 2.5, 5.0); c['lens'] = 28; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -818,10 +852,10 @@ def porch():
         sx = 1 if px < xm else -1
         C.prism(f'Porch brace front {i}', [(px + sx * u, z) for u, z in prof], 'y', py - .017, py + .017, 'trim', 'porch')
         C.prism(f'Porch brace side {i}', [(py + u, z) for u, z in prof], 'x', px - .017, px + .017, 'trim', 'porch')
-    # Iron balustrade: west side, the front west of the stair, east side.
-    sx0, sx1 = 2.35, PX1 - .26
-    rails = [((PX0 + .14, Y0 - .05), (PX0 + .14, yf + .24)), ((PX0 + .24, yf + .14), (sx0, yf + .14)),
-             ((PX1 - .14, yf + .24), (PX1 - .14, Y0 - .05))]
+    # Iron balustrade on the two porch sides only; the front is open between the posts, where the wide stair
+    # rises straight to the door (as in the source front and oblique).
+    sx0, sx1 = PX0 + .24, PX1 - .24
+    rails = [((PX0 + .14, Y0 - .05), (PX0 + .14, yf + .24)), ((PX1 - .14, yf + .24), (PX1 - .14, Y0 - .05))]
     for (a, c) in rails:
         b.beam('hardware', (a[0], a[1], F1 + .92), (c[0], c[1], F1 + .92), .05, .04)
         b.beam('hardware', (a[0], a[1], F1 + .12), (c[0], c[1], F1 + .12), .04, .03)
@@ -854,7 +888,8 @@ def porch():
     b.beam('roof', (xw, yfr, ze + .03), (xa, Y0, zw + .03), .1, .06)
     b.beam('roof', (xe, yfr, ze + .03), (xb, Y0, zw + .03), .1, .06)
     b.beam('trim', (xa, Y0 - .03, zw + .02), (xb, Y0 - .03, zw + .02), .06, .1)       # flashing board on the wall
-    # Stone stair down to the brick walk, iron handrails both sides.
+    # Wide stone stair spanning the porch front from post to post, in front of the door; an iron handrail
+    # down its east flank only.
     r, run, n = F1 / 5, .30, 4
     yb = yf - n * run
     prof = [(yf + .02, 0.0), (yb, 0.0)]
@@ -862,7 +897,7 @@ def porch():
         prof += [(yb + i * run, (i + 1) * r), (yb + (i + 1) * run, (i + 1) * r)]
     prof += [(yf + .02, F1 - .08)]
     C.prism('Porch stair', prof, 'x', sx0, sx1, 'stone', 'porch')
-    for x in (sx0 + .05, sx1 - .05):
+    for x in (sx1 - .05,):
         b.beam('hardware', (x, yb + .1, r + .9), (x, yf, F1 + .9), .05, .04)
         for k in range(n):
             b.box('hardware', x, yb + .15 + k * run, r * (k + 1) + .45, .025, .025, .9)
@@ -915,14 +950,15 @@ def site():
         b.box('pale', xw - 8.1, yw - 1.0 + k * 2.4, .012, .12, 1.2, .004)
     # Brick walk from the stair to the sidewalk.
     yb = Y0 - PD - 4 * .30
-    C.box('Brick walk', ((2.35 + PX1 - .26) / 2, (yb + yw) / 2, .03), (PX1 - .26 - 2.35, yb - yw, .06), 'walk', 'site', 0)
+    wx0, wx1 = PX0 + .34, PX1 - .34                                                # walk as wide as the stair, centred on it
+    C.box('Brick walk', ((wx0 + wx1) / 2, (yb + yw) / 2, .03), (wx1 - wx0, yb - yw, .06), 'walk', 'site', 0)
     for k in range(int((yb - yw) / .2)):
-        b.box('joint', (2.35 + PX1 - .26) / 2, yw + .1 + k * .2, .061, PX1 - .26 - 2.35 - .02, .012, .004)
+        b.box('joint', (wx0 + wx1) / 2, yw + .1 + k * .2, .061, wx1 - wx0 - .02, .012, .004)
     b.flush('site joints')
     # Low iron fence round the front lawn; shrubs in the beds.
     yfc = Y0 - 2.9
     iron_fence((X0 - .7, Y0 - .3), (X0 - .7, yfc), height=.95, wall=.14, spacing=.13)
-    iron_fence((X0 - .7, yfc), (2.25, yfc), height=.95, wall=.14, spacing=.13)
+    iron_fence((X0 - .7, yfc), (PX0 - .05, yfc), height=.95, wall=.14, spacing=.13)   # stops at the walk
     for (x, y, h) in ((X0 - .1, Y0 - 1.2, .8), (XC + 1.3, Y0 - 1.25, .7), (XC - 1.5, Y0 - 1.3, .7), (PX1 + .6, Y0 - .7, 1.0),
                       (PX1 + .6, Y0 - 1.9, .8), (X0 - .9, 1.5, .9)):
         A.shrub(x, y, .03, h)
