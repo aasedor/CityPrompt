@@ -1,0 +1,504 @@
+{
+  "candidate": "clay-toronto-streetcar-street-clay-v002",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-toronto-streetcar-street",
+  "variant_id": "clay-toronto-streetcar-street-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "toronto_streetcar_street/variant_0, modelled as a Toronto mixed-traffic streetcar main street",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 118.0,
+      "depth": 140.0,
+      "height": 34.7
+    },
+    "observed_storeys": 3,
+    "storey_programme": "street option: a streetcar main-street section; the storefront blocks and condominiums are the street wall it is read with",
+    "plan": "25.4 m building line to building line, 16.2 m curb to curb (top view), an 80 m run north of a cross street and 50 m of context south of it",
+    "section_m": {
+      "west_sidewalk": [
+        -12.0,
+        -8.1
+      ],
+      "west_curb_lane": [
+        -8.1,
+        -3.9
+      ],
+      "west_track_lane": [
+        -3.9,
+        0.0
+      ],
+      "east_track_lane": [
+        0.0,
+        3.9
+      ],
+      "east_curb_lane": [
+        3.9,
+        8.1
+      ],
+      "east_sidewalk": [
+        8.1,
+        13.4
+      ],
+      "track_centres": [
+        -1.85,
+        1.85
+      ],
+      "track_gauge": 1.495,
+      "track_slab": [
+        -3.65,
+        3.65
+      ],
+      "contact_wire_height": 5.6,
+      "curb_height": 0.15,
+      "cross_street": [
+        -10.0,
+        0.0
+      ]
+    },
+    "facade": "pale scored concrete sidewalks with red brick-paver furnishing strips, grey steel poles with span wires, contact wires and cobra-head lights, a concrete track slab with twin grooved-rail tracks, white lane dashes and a yellow centre line; a red-and-white articulated streetcar; red-brick storefront blocks with stone and white trim, brick and charcoal condominiums with glass balconies",
+    "levels_m": [
+      0.0,
+      0.15,
+      4.62,
+      8.2,
+      11.8,
+      5.6
+    ],
+    "inferred": "the block interiors, rear walls, the back lanes and the context south of the cross street are teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "flat membrane and gravel roofs inside brick parapets with copings; green roofs with penthouses on the condominiums",
+    "datum_m": 12.0,
+    "crowns_m": [
+      12.6,
+      23.0,
+      31.5,
+      34.7
+    ]
+  },
+  "identity_contract": {
+    "owner": "Toronto streetcar main street: twin embedded streetcar tracks in the centre lanes under overhead contact wires on span wires, a red-and-white articulated streetcar, wide curb lanes, sidewalks with brick furnishing strips, and a mixed street wall of Victorian red-brick storefront blocks and newer condominiums"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: red-brick, stone and white trim, charcoal cladding, glass, pale concrete, brick pavers, dark asphalt with white and yellow markings, grey steel poles and dark wires, a red-and-white streetcar",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 3,
+    "ground": "shops and cafes on the sidewalk",
+    "upper": "offices and flats; condominium flats in the mid-rises"
+  },
+  "street_contract": {
+    "kind": "fixed_native_section",
+    "width_m": 25.4,
+    "axis": "y",
+    "junction_finish": "crosswalk lines and stop bars at the cross street",
+    "bands": [
+      "west_storefronts",
+      "west_sidewalk",
+      "furnishing_strip",
+      "curb_lane",
+      "track_lane",
+      "centre_line",
+      "track_lane",
+      "curb_lane",
+      "furnishing_strip",
+      "east_sidewalk",
+      "east_storefronts"
+    ],
+    "transit": {
+      "mode": "streetcar in mixed traffic",
+      "tracks": 2,
+      "gauge_m": 1.495,
+      "overhead": "span-wire contact system",
+      "vehicle": "articulated low-floor streetcar on the northbound track"
+    }
+  },
+  "contact_contract": [
+    "Asphalt at grade zero",
+    "Sidewalks on the asphalt with a 150 mm curb",
+    "Track slab flush with the road, rails proud by about 1 cm",
+    "Streetcar wheels on the rails, pantograph at the contact wire",
+    "Building walls from grade with the sidewalk running under them",
+    "Poles and trees in the furnishing strip"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -5.4,
+        68.5,
+        1.65
+      ],
+      "target": [
+        1.0,
+        25.0,
+        4.6
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        34.0,
+        -38.0,
+        50.0
+      ],
+      "target": [
+        -10.0,
+        33.0,
+        5.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        -56.0,
+        -36.0,
+        54.0
+      ],
+      "target": [
+        0.0,
+        32.0,
+        2.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        -4.2,
+        34.1,
+        160.0
+      ],
+      "target": [
+        -4.2,
+        34.101,
+        0.0
+      ],
+      "ortho_scale": 116.0,
+      "whole": false
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -58.0,
+        -6.0,
+        9.0
+      ],
+      "target": [
+        0.0,
+        18.0,
+        5.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        56.0,
+        -7.0,
+        11.0
+      ],
+      "target": [
+        0.0,
+        22.0,
+        4.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        2.0,
+        122.0,
+        34.0
+      ],
+      "target": [
+        0.0,
+        40.0,
+        4.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        62.0,
+        112.0,
+        46.0
+      ],
+      "target": [
+        0.0,
+        36.0,
+        2.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "streetcar_nose",
+      "location": [
+        4.6,
+        63.5,
+        2.3
+      ],
+      "target": [
+        1.85,
+        56.0,
+        1.8
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "pantograph_wire",
+      "location": [
+        7.0,
+        33.0,
+        7.6
+      ],
+      "target": [
+        1.85,
+        40.4,
+        5.0
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "track_slab",
+      "location": [
+        -0.9,
+        15.0,
+        1.5
+      ],
+      "target": [
+        -1.85,
+        26.0,
+        0.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "span_wire_pole",
+      "location": [
+        11.8,
+        28.5,
+        1.7
+      ],
+      "target": [
+        7.0,
+        33.5,
+        6.6
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "intersection_crossing",
+      "location": [
+        -6.5,
+        26.0,
+        7.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "corner_storefront",
+      "location": [
+        6.2,
+        1.8,
+        1.8
+      ],
+      "target": [
+        13.4,
+        10.0,
+        2.8
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "victorian_arches",
+      "location": [
+        -5.0,
+        21.0,
+        3.0
+      ],
+      "target": [
+        -12.0,
+        14.0,
+        9.6
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "condo_balconies",
+      "location": [
+        4.6,
+        49.0,
+        2.0
+      ],
+      "target": [
+        13.4,
+        64.0,
+        11.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "east_sidewalk",
+      "location": [
+        11.6,
+        46.0,
+        1.7
+      ],
+      "target": [
+        10.6,
+        26.0,
+        1.4
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "roof_skylights",
+      "location": [
+        20.0,
+        -8.0,
+        24.0
+      ],
+      "target": [
+        28.0,
+        12.0,
+        12.0
+      ],
+      "lens": 32,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "streetcar_nose",
+    "pantograph_wire",
+    "track_slab",
+    "span_wire_pole",
+    "intersection_crossing",
+    "corner_storefront",
+    "victorian_arches",
+    "condo_balconies",
+    "east_sidewalk",
+    "roof_skylights"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/toronto-streetcar-street/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1379433,
+        "sha256": "a871fbf65e99fc36ea01b340a5ca190d22065b38ee67f40c98e7d94b7151da3a"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/toronto-streetcar-street/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 973141,
+        "sha256": "2281194ddb33d5c05b94515a1827e7f86e36e3f67caff887ad9cfae2c426a73c"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/toronto-streetcar-street/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 917016,
+        "sha256": "c8ae807e89cde4d1705c19f7c3708bd327c3edb2edc21d5befaa76584e6cc426"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1.webp",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2.webp",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3.webp",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_streetcar.py",
+        "sha256": "b31e20402b1b0251d7e0a427893ba30a6328ee6d55c7dd6d355ac7578c33748a"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "eb9c9862c49151788e363db7cf66d8b22c1fdedaf643951221277eaf0bac5f34"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "d31b995ed5ae30233644ffe9887367782abb5b58d96d8bce85684ccd85133534"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-20T12:48:58.032658+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

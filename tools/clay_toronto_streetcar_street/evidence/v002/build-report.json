@@ -1,0 +1,5250 @@
+{
+  "candidate": "clay-toronto-streetcar-street-clay-v002",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 406,
+    "vertices": 41276,
+    "polygons": 53836,
+    "triangles": 53836,
+    "path": "clay-toronto-streetcar-street-clay-v002-authoring.blend",
+    "bytes": 6968600,
+    "sha256": "46d0a1594301d3f69e4e83498281874d88fa9be1164b025cf45884ba5eb017e7"
+  },
+  "runtime": {
+    "path": "clay-toronto-streetcar-street-clay-v002.glb",
+    "bytes": 2795968,
+    "sha256": "0a10af6ea91d557880f93a0a905026022058f7eb3311f0664ca30e71f8cf1e1b",
+    "meshes": 46,
+    "materials": 46,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 46,
+    "vertices": 41276,
+    "polygons": 53836,
+    "triangles": 53836
+  },
+  "original_bounds_m": [
+    [
+      -62.0,
+      -60.0,
+      0.0
+    ],
+    [
+      56.0,
+      80.0,
+      34.70000076293945
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -62.0,
+      -60.0,
+      0.0
+    ],
+    [
+      56.0,
+      80.0,
+      34.70000076293945
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 118.0,
+    "depth": 140.0,
+    "height": 34.7
+  },
+  "native_dimensions_m": {
+    "width": 118.0,
+    "depth": 140.0,
+    "height": 34.70000076293945
+  },
+  "native_bottom_center_m": [
+    -3.0,
+    10.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 42,
+    "brick2": 8,
+    "brick3": 2,
+    "joint": 7,
+    "stone": 44,
+    "cream": 7,
+    "white": 9,
+    "frame": 8,
+    "dark": 4,
+    "sign": 5,
+    "charcoal": 3,
+    "panel": 2,
+    "glass": 13,
+    "curtain": 1,
+    "railglass": 2,
+    "interior": 7,
+    "floor": 7,
+    "roof": 4,
+    "membrane": 9,
+    "concrete": 4,
+    "slab": 1,
+    "sidejoint": 2,
+    "paver": 1,
+    "asphalt": 1,
+    "marking": 1,
+    "yellow": 1,
+    "rail": 1,
+    "groove": 1,
+    "steel": 12,
+    "hardware": 10,
+    "wire": 62,
+    "lamp": 2,
+    "timber": 48,
+    "planting": 36,
+    "soil": 1,
+    "green": 3,
+    "car_red": 5,
+    "car_white": 5,
+    "car_roof": 1,
+    "car_glass": 3,
+    "amber": 1,
+    "rubber": 13,
+    "context": 1,
+    "neighbour": 1,
+    "pale": 4,
+    "ttc": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/streetcar_nose.png",
+    "renders/pantograph_wire.png",
+    "renders/track_slab.png",
+    "renders/span_wire_pole.png",
+    "renders/intersection_crossing.png",
+    "renders/corner_storefront.png",
+    "renders/victorian_arches.png",
+    "renders/condo_balconies.png",
+    "renders/east_sidewalk.png",
+    "renders/roof_skylights.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Streetcar main street: track slab and grooved rails in the asphalt, sidewalks and furnishing strips, span-wire poles, the streetcar on the rails under its contact wire, storefront street walls",
+      "box": [
+        -62.0,
+        56.0,
+        -60.0,
+        80.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "West corner block bay 0 door",
+      "face": "West corner block street",
+      "u": 4.97,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West corner block bay 0 shopfront",
+      "face": "West corner block street",
+      "u": 6.63,
+      "z": 0.62,
+      "width": 1.620000000000001,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West corner block bay 1 shopfront",
+      "face": "West corner block street",
+      "u": 9.89,
+      "z": 0.62,
+      "width": 3.0199999999999996,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West corner block bay 2 door",
+      "face": "West corner block street",
+      "u": 12.890000000000002,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West corner block bay 2 shopfront",
+      "face": "West corner block street",
+      "u": 14.55,
+      "z": 0.62,
+      "width": 1.6199999999999992,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West corner block bay 3 shopfront",
+      "face": "West corner block street",
+      "u": 17.810000000000002,
+      "z": 0.62,
+      "width": 3.0199999999999996,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West corner block bay 4 door",
+      "face": "West corner block street",
+      "u": 20.81,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West corner block bay 4 shopfront",
+      "face": "West corner block street",
+      "u": 22.47,
+      "z": 0.62,
+      "width": 1.620000000000001,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West corner block storey 2 0.0",
+      "face": "West corner block street",
+      "u": 4.94,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 2 0.1",
+      "face": "West corner block street",
+      "u": 6.92,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 2 1.0",
+      "face": "West corner block street",
+      "u": 8.9,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 2 1.1",
+      "face": "West corner block street",
+      "u": 10.88,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 2 2.0",
+      "face": "West corner block street",
+      "u": 12.860000000000001,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 2 2.1",
+      "face": "West corner block street",
+      "u": 14.840000000000002,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 2 3.0",
+      "face": "West corner block street",
+      "u": 16.82,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 2 3.1",
+      "face": "West corner block street",
+      "u": 18.8,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 2 4.0",
+      "face": "West corner block street",
+      "u": 20.78,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 2 4.1",
+      "face": "West corner block street",
+      "u": 22.759999999999998,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 3 0.0",
+      "face": "West corner block street",
+      "u": 4.94,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 3 0.1",
+      "face": "West corner block street",
+      "u": 6.92,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 3 1.0",
+      "face": "West corner block street",
+      "u": 8.9,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 3 1.1",
+      "face": "West corner block street",
+      "u": 10.88,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 3 2.0",
+      "face": "West corner block street",
+      "u": 12.860000000000001,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 3 2.1",
+      "face": "West corner block street",
+      "u": 14.840000000000002,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 3 3.0",
+      "face": "West corner block street",
+      "u": 16.82,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 3 3.1",
+      "face": "West corner block street",
+      "u": 18.8,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 3 4.0",
+      "face": "West corner block street",
+      "u": 20.78,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block storey 3 4.1",
+      "face": "West corner block street",
+      "u": 22.759999999999998,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side corner shopfront",
+      "face": "West corner block cross street",
+      "u": -15.3,
+      "z": 0.62,
+      "width": 4.2,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West corner block side door 1",
+      "face": "West corner block cross street",
+      "u": -22.0,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 2.7,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West corner block side door 2",
+      "face": "West corner block cross street",
+      "u": -30.799999999999997,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 2.7,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West corner block side service door",
+      "face": "West corner block cross street",
+      "u": -41.9,
+      "z": 0.17,
+      "width": 1.0,
+      "height": 2.6,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West corner block side ground window 0",
+      "face": "West corner block cross street",
+      "u": -25.6,
+      "z": 1.05,
+      "width": 0.95,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side ground window 1",
+      "face": "West corner block cross street",
+      "u": -34.8,
+      "z": 1.05,
+      "width": 0.95,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side ground window 2",
+      "face": "West corner block cross street",
+      "u": -38.4,
+      "z": 1.05,
+      "width": 0.95,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 2 pair 0.0",
+      "face": "West corner block cross street",
+      "u": -15.72,
+      "z": 5.35,
+      "width": 0.9,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 2 pair 0.1",
+      "face": "West corner block cross street",
+      "u": -14.480000000000002,
+      "z": 5.35,
+      "width": 0.9,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 2 pair 1.0",
+      "face": "West corner block cross street",
+      "u": -19.62,
+      "z": 5.35,
+      "width": 0.9,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 2 pair 1.1",
+      "face": "West corner block cross street",
+      "u": -18.38,
+      "z": 5.35,
+      "width": 0.9,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 2 pair 2.0",
+      "face": "West corner block cross street",
+      "u": -23.92,
+      "z": 5.35,
+      "width": 0.9,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 2 pair 2.1",
+      "face": "West corner block cross street",
+      "u": -22.68,
+      "z": 5.35,
+      "width": 0.9,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 2 pair 3.0",
+      "face": "West corner block cross street",
+      "u": -27.42,
+      "z": 5.35,
+      "width": 0.9,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 2 pair 3.1",
+      "face": "West corner block cross street",
+      "u": -26.18,
+      "z": 5.35,
+      "width": 0.9,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 2 pair 4.0",
+      "face": "West corner block cross street",
+      "u": -31.62,
+      "z": 5.35,
+      "width": 0.9,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 2 pair 4.1",
+      "face": "West corner block cross street",
+      "u": -30.38,
+      "z": 5.35,
+      "width": 0.9,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 2 pair 5.0",
+      "face": "West corner block cross street",
+      "u": -35.12,
+      "z": 5.35,
+      "width": 0.9,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 2 pair 5.1",
+      "face": "West corner block cross street",
+      "u": -33.88,
+      "z": 5.35,
+      "width": 0.9,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 2 pair 6.0",
+      "face": "West corner block cross street",
+      "u": -39.419999999999995,
+      "z": 5.35,
+      "width": 0.9,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 2 pair 6.1",
+      "face": "West corner block cross street",
+      "u": -38.18,
+      "z": 5.35,
+      "width": 0.9,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 3 pair 0.0",
+      "face": "West corner block cross street",
+      "u": -15.72,
+      "z": 8.9,
+      "width": 0.9,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 3 pair 0.1",
+      "face": "West corner block cross street",
+      "u": -14.480000000000002,
+      "z": 8.9,
+      "width": 0.9,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 3 pair 1.0",
+      "face": "West corner block cross street",
+      "u": -19.62,
+      "z": 8.9,
+      "width": 0.9,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 3 pair 1.1",
+      "face": "West corner block cross street",
+      "u": -18.38,
+      "z": 8.9,
+      "width": 0.9,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 3 pair 2.0",
+      "face": "West corner block cross street",
+      "u": -23.92,
+      "z": 8.9,
+      "width": 0.9,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 3 pair 2.1",
+      "face": "West corner block cross street",
+      "u": -22.68,
+      "z": 8.9,
+      "width": 0.9,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 3 pair 3.0",
+      "face": "West corner block cross street",
+      "u": -27.42,
+      "z": 8.9,
+      "width": 0.9,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 3 pair 3.1",
+      "face": "West corner block cross street",
+      "u": -26.18,
+      "z": 8.9,
+      "width": 0.9,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 3 pair 4.0",
+      "face": "West corner block cross street",
+      "u": -31.62,
+      "z": 8.9,
+      "width": 0.9,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 3 pair 4.1",
+      "face": "West corner block cross street",
+      "u": -30.38,
+      "z": 8.9,
+      "width": 0.9,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 3 pair 5.0",
+      "face": "West corner block cross street",
+      "u": -35.12,
+      "z": 8.9,
+      "width": 0.9,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 3 pair 5.1",
+      "face": "West corner block cross street",
+      "u": -33.88,
+      "z": 8.9,
+      "width": 0.9,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 3 pair 6.0",
+      "face": "West corner block cross street",
+      "u": -39.419999999999995,
+      "z": 8.9,
+      "width": 0.9,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West corner block side storey 3 pair 6.1",
+      "face": "West corner block cross street",
+      "u": -38.18,
+      "z": 8.9,
+      "width": 0.9,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West brick block bay 0 door",
+      "face": "West brick block street",
+      "u": 25.27,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West brick block bay 0 shopfront",
+      "face": "West brick block street",
+      "u": 27.033333333333335,
+      "z": 0.62,
+      "width": 1.826666666666668,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West brick block bay 1 shopfront",
+      "face": "West brick block street",
+      "u": 30.5,
+      "z": 0.62,
+      "width": 3.22666666666667,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West brick block bay 2 door",
+      "face": "West brick block street",
+      "u": 33.60333333333333,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West brick block bay 2 shopfront",
+      "face": "West brick block street",
+      "u": 35.36666666666667,
+      "z": 0.62,
+      "width": 1.826666666666668,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "West brick block storey 2 0.0",
+      "face": "West brick block street",
+      "u": 25.291666666666668,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West brick block storey 2 0.1",
+      "face": "West brick block street",
+      "u": 27.375,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West brick block storey 2 1.0",
+      "face": "West brick block street",
+      "u": 29.458333333333336,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West brick block storey 2 1.1",
+      "face": "West brick block street",
+      "u": 31.541666666666668,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West brick block storey 2 2.0",
+      "face": "West brick block street",
+      "u": 33.625,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West brick block storey 2 2.1",
+      "face": "West brick block street",
+      "u": 35.708333333333336,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West brick block storey 3 0.0",
+      "face": "West brick block street",
+      "u": 25.291666666666668,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West brick block storey 3 0.1",
+      "face": "West brick block street",
+      "u": 27.375,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West brick block storey 3 1.0",
+      "face": "West brick block street",
+      "u": 29.458333333333336,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West brick block storey 3 1.1",
+      "face": "West brick block street",
+      "u": 31.541666666666668,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West brick block storey 3 2.0",
+      "face": "West brick block street",
+      "u": 33.625,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "West brick block storey 3 2.1",
+      "face": "West brick block street",
+      "u": 35.708333333333336,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -12.029999732971191,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block bay 0 shopfront",
+      "face": "East corner block street",
+      "u": -19.525,
+      "z": 0.62,
+      "width": 3.5100000000000016,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East corner block bay 1 door",
+      "face": "East corner block street",
+      "u": -13.870000000000001,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East corner block bay 1 shopfront",
+      "face": "East corner block street",
+      "u": -15.775000000000002,
+      "z": 0.62,
+      "width": 2.110000000000001,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East corner block bay 2 shopfront",
+      "face": "East corner block street",
+      "u": -10.625,
+      "z": 0.62,
+      "width": 3.51,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East corner block bay 3 door",
+      "face": "East corner block street",
+      "u": -4.969999999999999,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East corner block bay 3 shopfront",
+      "face": "East corner block street",
+      "u": -6.874999999999998,
+      "z": 0.62,
+      "width": 2.1099999999999994,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East corner block storey 2 0.0",
+      "face": "East corner block street",
+      "u": -20.6375,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 2 0.1",
+      "face": "East corner block street",
+      "u": -18.4125,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 2 1.0",
+      "face": "East corner block street",
+      "u": -16.1875,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 2 1.1",
+      "face": "East corner block street",
+      "u": -13.9625,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 2 2.0",
+      "face": "East corner block street",
+      "u": -11.737499999999999,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 2 2.1",
+      "face": "East corner block street",
+      "u": -9.5125,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 2 3.0",
+      "face": "East corner block street",
+      "u": -7.287499999999999,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 2 3.1",
+      "face": "East corner block street",
+      "u": -5.062499999999999,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 3 0.0",
+      "face": "East corner block street",
+      "u": -20.6375,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 3 0.1",
+      "face": "East corner block street",
+      "u": -18.4125,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 3 1.0",
+      "face": "East corner block street",
+      "u": -16.1875,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 3 1.1",
+      "face": "East corner block street",
+      "u": -13.9625,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 3 2.0",
+      "face": "East corner block street",
+      "u": -11.737499999999999,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 3 2.1",
+      "face": "East corner block street",
+      "u": -9.5125,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 3 3.0",
+      "face": "East corner block street",
+      "u": -7.287499999999999,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block storey 3 3.1",
+      "face": "East corner block street",
+      "u": -5.062499999999999,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side bay 0 shopfront",
+      "face": "East corner block cross street",
+      "u": 16.308333333333334,
+      "z": 0.62,
+      "width": 3.576666666666666,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East corner block side bay 1 door",
+      "face": "East corner block cross street",
+      "u": 19.586666666666666,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East corner block side bay 1 shopfront",
+      "face": "East corner block cross street",
+      "u": 21.525000000000002,
+      "z": 0.62,
+      "width": 2.1766666666666694,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East corner block side bay 2 shopfront",
+      "face": "East corner block cross street",
+      "u": 25.34166666666667,
+      "z": 0.62,
+      "width": 3.576666666666668,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East corner block side bay 3 shopfront",
+      "face": "East corner block cross street",
+      "u": 29.858333333333334,
+      "z": 0.62,
+      "width": 3.576666666666668,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East corner block side bay 4 door",
+      "face": "East corner block cross street",
+      "u": 33.13666666666666,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East corner block side bay 4 shopfront",
+      "face": "East corner block cross street",
+      "u": 35.075,
+      "z": 0.62,
+      "width": 2.1766666666666694,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East corner block side service door",
+      "face": "East corner block cross street",
+      "u": 40.3,
+      "z": 0.17,
+      "width": 1.0,
+      "height": 2.6,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East corner block side storey 2 0.0",
+      "face": "East corner block cross street",
+      "u": 15.179166666666667,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 2 0.1",
+      "face": "East corner block cross street",
+      "u": 17.4375,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 2 1.0",
+      "face": "East corner block cross street",
+      "u": 19.695833333333333,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 2 1.1",
+      "face": "East corner block cross street",
+      "u": 21.95416666666667,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 2 2.0",
+      "face": "East corner block cross street",
+      "u": 24.212500000000002,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 2 2.1",
+      "face": "East corner block cross street",
+      "u": 26.470833333333335,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 2 3.0",
+      "face": "East corner block cross street",
+      "u": 28.729166666666668,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 2 3.1",
+      "face": "East corner block cross street",
+      "u": 30.9875,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 2 4.0",
+      "face": "East corner block cross street",
+      "u": 33.24583333333334,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 2 4.1",
+      "face": "East corner block cross street",
+      "u": 35.50416666666666,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 2 5.0",
+      "face": "East corner block cross street",
+      "u": 37.7625,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 2 5.1",
+      "face": "East corner block cross street",
+      "u": 40.02083333333333,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 3 0.0",
+      "face": "East corner block cross street",
+      "u": 15.179166666666667,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 3 0.1",
+      "face": "East corner block cross street",
+      "u": 17.4375,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 3 1.0",
+      "face": "East corner block cross street",
+      "u": 19.695833333333333,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 3 1.1",
+      "face": "East corner block cross street",
+      "u": 21.95416666666667,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 3 2.0",
+      "face": "East corner block cross street",
+      "u": 24.212500000000002,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 3 2.1",
+      "face": "East corner block cross street",
+      "u": 26.470833333333335,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 3 3.0",
+      "face": "East corner block cross street",
+      "u": 28.729166666666668,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 3 3.1",
+      "face": "East corner block cross street",
+      "u": 30.9875,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 3 4.0",
+      "face": "East corner block cross street",
+      "u": 33.24583333333334,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 3 4.1",
+      "face": "East corner block cross street",
+      "u": 35.50416666666666,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 3 5.0",
+      "face": "East corner block cross street",
+      "u": 37.7625,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East corner block side storey 3 5.1",
+      "face": "East corner block cross street",
+      "u": 40.02083333333333,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        3.700000047683716,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East brick block bay 0 shopfront",
+      "face": "East brick block street",
+      "u": -31.833333333333336,
+      "z": 0.62,
+      "width": 2.8933333333333344,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East brick block bay 1 door",
+      "face": "East brick block street",
+      "u": -27.10333333333333,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East brick block bay 1 shopfront",
+      "face": "East brick block street",
+      "u": -28.700000000000003,
+      "z": 0.62,
+      "width": 1.4933333333333358,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East brick block bay 2 shopfront",
+      "face": "East brick block street",
+      "u": -24.166666666666664,
+      "z": 0.62,
+      "width": 2.8933333333333344,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East brick block storey 2 0.0",
+      "face": "East brick block street",
+      "u": -32.791666666666664,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East brick block storey 2 0.1",
+      "face": "East brick block street",
+      "u": -30.875,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East brick block storey 2 1.0",
+      "face": "East brick block street",
+      "u": -28.958333333333336,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East brick block storey 2 1.1",
+      "face": "East brick block street",
+      "u": -27.041666666666664,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East brick block storey 2 2.0",
+      "face": "East brick block street",
+      "u": -25.125,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East brick block storey 2 2.1",
+      "face": "East brick block street",
+      "u": -23.208333333333332,
+      "z": 5.35,
+      "width": 1.15,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East brick block storey 3 0.0",
+      "face": "East brick block street",
+      "u": -32.791666666666664,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East brick block storey 3 0.1",
+      "face": "East brick block street",
+      "u": -30.875,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East brick block storey 3 1.0",
+      "face": "East brick block street",
+      "u": -28.958333333333336,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East brick block storey 3 1.1",
+      "face": "East brick block street",
+      "u": -27.041666666666664,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East brick block storey 3 2.0",
+      "face": "East brick block street",
+      "u": -25.125,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East brick block storey 3 2.1",
+      "face": "East brick block street",
+      "u": -23.208333333333332,
+      "z": 8.9,
+      "width": 1.15,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.430000305175781,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East low block bay 0 shopfront",
+      "face": "East low block street",
+      "u": -41.375,
+      "z": 0.62,
+      "width": 3.8100000000000023,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East low block bay 1 door",
+      "face": "East low block street",
+      "u": -35.269999999999996,
+      "z": 0.17,
+      "width": 1.1,
+      "height": 3.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East low block bay 1 shopfront",
+      "face": "East low block street",
+      "u": -37.325,
+      "z": 0.62,
+      "width": 2.4100000000000037,
+      "height": 3.0,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "East low block storey 2 0.0",
+      "face": "East low block street",
+      "u": -42.958333333333336,
+      "z": 5.35,
+      "width": 0.8333333333333333,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East low block storey 2 0.1",
+      "face": "East low block street",
+      "u": -41.375,
+      "z": 5.35,
+      "width": 0.8333333333333333,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East low block storey 2 0.2",
+      "face": "East low block street",
+      "u": -39.791666666666664,
+      "z": 5.35,
+      "width": 0.8333333333333333,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East low block storey 2 1.0",
+      "face": "East low block street",
+      "u": -38.208333333333336,
+      "z": 5.35,
+      "width": 0.8333333333333333,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East low block storey 2 1.1",
+      "face": "East low block street",
+      "u": -36.625,
+      "z": 5.35,
+      "width": 0.8333333333333333,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    },
+    {
+      "id": "East low block storey 2 1.2",
+      "face": "East low block street",
+      "u": -35.041666666666664,
+      "z": 5.35,
+      "width": 0.8333333333333333,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        13.399999618530273,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "upper room"
+    }
+  ],
+  "authoring_modules": {
+    "street": [
+      "Street asphalt"
+    ],
+    "sidewalks": [
+      "Sidewalk NE",
+      "Sidewalk SE",
+      "Sidewalk NW",
+      "Sidewalk SW"
+    ],
+    "track": [
+      "Track slab"
+    ],
+    "track and markings": [
+      "track and markings rail",
+      "track and markings groove",
+      "track and markings sidejoint",
+      "track and markings yellow",
+      "track and markings marking"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020",
+      "Street tree trunk.007",
+      "Street tree branch.021",
+      "Street tree branch.022",
+      "Street tree branch.023",
+      "Street tree trunk.008",
+      "Street tree branch.024",
+      "Street tree branch.025",
+      "Street tree branch.026",
+      "Street tree trunk.009",
+      "Street tree branch.027",
+      "Street tree branch.028",
+      "Street tree branch.029",
+      "Street tree trunk.010",
+      "Street tree branch.030",
+      "Street tree branch.031",
+      "Street tree branch.032",
+      "Street tree trunk.011",
+      "Street tree branch.033",
+      "Street tree branch.034",
+      "Street tree branch.035"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023",
+      "Street tree crown.024",
+      "Street tree crown.025",
+      "Street tree crown.026",
+      "Street tree crown.027",
+      "Street tree crown.028",
+      "Street tree crown.029",
+      "Street tree crown.030",
+      "Street tree crown.031",
+      "Street tree crown.032",
+      "Street tree crown.033",
+      "Street tree crown.034",
+      "Street tree crown.035"
+    ],
+    "street furniture": [
+      "street furniture paver",
+      "street furniture sidejoint",
+      "street furniture soil",
+      "street furniture hardware",
+      "street furniture dark",
+      "street furniture steel",
+      "street furniture ttc",
+      "street furniture car_white"
+    ],
+    "overhead": [
+      "Overhead pole",
+      "Overhead pole.001",
+      "Span wire",
+      "Span wire.001",
+      "Span wire.002",
+      "Span wire.003",
+      "Span wire.004",
+      "Span wire.005",
+      "Span wire.006",
+      "Span wire.007",
+      "Span wire.008",
+      "Span wire.009",
+      "Contact wire hanger",
+      "Contact wire hanger.001",
+      "Overhead pole.002",
+      "Overhead pole.003",
+      "Span wire.010",
+      "Span wire.011",
+      "Span wire.012",
+      "Span wire.013",
+      "Span wire.014",
+      "Span wire.015",
+      "Span wire.016",
+      "Span wire.017",
+      "Span wire.018",
+      "Span wire.019",
+      "Contact wire hanger.002",
+      "Contact wire hanger.003",
+      "Overhead pole.004",
+      "Overhead pole.005",
+      "Span wire.020",
+      "Span wire.021",
+      "Span wire.022",
+      "Span wire.023",
+      "Span wire.024",
+      "Span wire.025",
+      "Span wire.026",
+      "Span wire.027",
+      "Span wire.028",
+      "Span wire.029",
+      "Contact wire hanger.004",
+      "Contact wire hanger.005",
+      "Overhead pole.006",
+      "Overhead pole.007",
+      "Span wire.030",
+      "Span wire.031",
+      "Span wire.032",
+      "Span wire.033",
+      "Span wire.034",
+      "Span wire.035",
+      "Span wire.036",
+      "Span wire.037",
+      "Span wire.038",
+      "Span wire.039",
+      "Contact wire hanger.006",
+      "Contact wire hanger.007",
+      "Overhead pole.008",
+      "Overhead pole.009",
+      "Span wire.040",
+      "Span wire.041",
+      "Span wire.042",
+      "Span wire.043",
+      "Span wire.044",
+      "Span wire.045",
+      "Span wire.046",
+      "Span wire.047",
+      "Span wire.048",
+      "Span wire.049",
+      "Contact wire hanger.008",
+      "Contact wire hanger.009",
+      "Contact wire",
+      "Contact wire.001",
+      "overhead steel",
+      "overhead lamp",
+      "overhead hardware",
+      "overhead car_white"
+    ],
+    "streetcar": [
+      "Streetcar wheel",
+      "Streetcar wheel.001",
+      "Streetcar wheel.002",
+      "Streetcar wheel.003",
+      "Streetcar wheel.004",
+      "Streetcar wheel.005",
+      "Streetcar wheel.006",
+      "Streetcar wheel.007",
+      "Streetcar wheel.008",
+      "Streetcar wheel.009",
+      "Streetcar wheel.010",
+      "Streetcar wheel.011",
+      "Streetcar nose",
+      "Streetcar roof cap",
+      "Streetcar windscreen",
+      "Streetcar apron",
+      "Streetcar nose.001",
+      "Streetcar roof cap.001",
+      "Streetcar windscreen.001",
+      "Streetcar apron.001",
+      "streetcar car_red",
+      "streetcar car_white",
+      "streetcar car_glass",
+      "streetcar rubber",
+      "streetcar car_roof",
+      "streetcar amber",
+      "streetcar lamp",
+      "streetcar hardware"
+    ],
+    "envelope": [
+      "West corner block street carrier",
+      "West corner block side carrier",
+      "West corner block street gable",
+      "West brick block street carrier",
+      "East corner block street carrier",
+      "East corner block side carrier",
+      "East brick block street carrier",
+      "East low block street carrier"
+    ],
+    "brick joints": [
+      "West corner block street measured mortar courses",
+      "West corner block cross street measured mortar courses",
+      "West brick block street measured mortar courses",
+      "East corner block street measured mortar courses",
+      "East corner block cross street measured mortar courses",
+      "East brick block street measured mortar courses",
+      "East low block street measured mortar courses"
+    ],
+    "arches": [
+      "West corner block storey 2 0.0 spandrel",
+      "West corner block storey 2 0.0 arch ring",
+      "West corner block storey 2 0.1 spandrel",
+      "West corner block storey 2 0.1 arch ring",
+      "West corner block storey 2 1.0 spandrel",
+      "West corner block storey 2 1.0 arch ring",
+      "West corner block storey 2 1.1 spandrel",
+      "West corner block storey 2 1.1 arch ring",
+      "West corner block storey 2 2.0 spandrel",
+      "West corner block storey 2 2.0 arch ring",
+      "West corner block storey 2 2.1 spandrel",
+      "West corner block storey 2 2.1 arch ring",
+      "West corner block storey 2 3.0 spandrel",
+      "West corner block storey 2 3.0 arch ring",
+      "West corner block storey 2 3.1 spandrel",
+      "West corner block storey 2 3.1 arch ring",
+      "West corner block storey 2 4.0 spandrel",
+      "West corner block storey 2 4.0 arch ring",
+      "West corner block storey 2 4.1 spandrel",
+      "West corner block storey 2 4.1 arch ring",
+      "West corner block storey 3 0.0 spandrel",
+      "West corner block storey 3 0.0 arch ring",
+      "West corner block storey 3 0.1 spandrel",
+      "West corner block storey 3 0.1 arch ring",
+      "West corner block storey 3 1.0 spandrel",
+      "West corner block storey 3 1.0 arch ring",
+      "West corner block storey 3 1.1 spandrel",
+      "West corner block storey 3 1.1 arch ring",
+      "West corner block storey 3 2.0 spandrel",
+      "West corner block storey 3 2.0 arch ring",
+      "West corner block storey 3 2.1 spandrel",
+      "West corner block storey 3 2.1 arch ring",
+      "West corner block storey 3 3.0 spandrel",
+      "West corner block storey 3 3.0 arch ring",
+      "West corner block storey 3 3.1 spandrel",
+      "West corner block storey 3 3.1 arch ring",
+      "West corner block storey 3 4.0 spandrel",
+      "West corner block storey 3 4.0 arch ring",
+      "West corner block storey 3 4.1 spandrel",
+      "West corner block storey 3 4.1 arch ring",
+      "East brick block storey 2 0.0 spandrel",
+      "East brick block storey 2 0.0 arch ring",
+      "East brick block storey 2 0.1 spandrel",
+      "East brick block storey 2 0.1 arch ring",
+      "East brick block storey 2 1.0 spandrel",
+      "East brick block storey 2 1.0 arch ring",
+      "East brick block storey 2 1.1 spandrel",
+      "East brick block storey 2 1.1 arch ring",
+      "East brick block storey 2 2.0 spandrel",
+      "East brick block storey 2 2.0 arch ring",
+      "East brick block storey 2 2.1 spandrel",
+      "East brick block storey 2 2.1 arch ring",
+      "East brick block storey 3 0.0 spandrel",
+      "East brick block storey 3 0.0 arch ring",
+      "East brick block storey 3 0.1 spandrel",
+      "East brick block storey 3 0.1 arch ring",
+      "East brick block storey 3 1.0 spandrel",
+      "East brick block storey 3 1.0 arch ring",
+      "East brick block storey 3 1.1 spandrel",
+      "East brick block storey 3 1.1 arch ring",
+      "East brick block storey 3 2.0 spandrel",
+      "East brick block storey 3 2.0 arch ring",
+      "East brick block storey 3 2.1 spandrel",
+      "East brick block storey 3 2.1 arch ring"
+    ],
+    "West corner block West corner block street": [
+      "West corner block street West corner block West corner block st",
+      "West corner block street West corner block West corner bloc",
+      "West corner block street West corner block West corner bloc.001",
+      "West corner block street West corner block West corner bloc.002",
+      "West corner block street West corner block West corner bloc.003",
+      "West corner block street West corner block West corner bloc.004"
+    ],
+    "West corner block West corner block cross street": [
+      "West corner block cross street West corner block West corner bl",
+      "West corner block cross street West corner block West corne",
+      "West corner block cross street West corner block West corne.001",
+      "West corner block cross street West corner block West corne.002",
+      "West corner block cross street West corner block West corne.003",
+      "West corner block cross street West corner block West corne.004"
+    ],
+    "West corner block corner bands": [
+      "West corner block corner bands sign",
+      "West corner block corner bands stone"
+    ],
+    "West corner block body": [
+      "West corner block body wall",
+      "West corner block body roof",
+      "West corner block body floor",
+      "West corner block body interior",
+      "West corner block body membrane",
+      "West corner block body hardware"
+    ],
+    "West corner block gable": [
+      "West corner block gable stone"
+    ],
+    "West brick block West brick block street": [
+      "West brick block street West brick block West brick block stree",
+      "West brick block street West brick block West brick block s",
+      "West brick block street West brick block West brick block s.001",
+      "West brick block street West brick block West brick block s.002",
+      "West brick block street West brick block West brick block s.003",
+      "West brick block street West brick block West brick block s.004",
+      "West brick block street West brick block West brick block s.005"
+    ],
+    "West brick block body": [
+      "West brick block body brick2",
+      "West brick block body roof",
+      "West brick block body floor",
+      "West brick block body interior",
+      "West brick block body membrane",
+      "West brick block body hardware"
+    ],
+    "East corner block East corner block street": [
+      "East corner block street East corner block East corner block st",
+      "East corner block street East corner block East corner bloc",
+      "East corner block street East corner block East corner bloc.001",
+      "East corner block street East corner block East corner bloc.002",
+      "East corner block street East corner block East corner bloc.003"
+    ],
+    "East corner block East corner block cross street": [
+      "East corner block cross street East corner block East corner bl",
+      "East corner block cross street East corner block East corne",
+      "East corner block cross street East corner block East corne.001",
+      "East corner block cross street East corner block East corne.002",
+      "East corner block cross street East corner block East corne.003"
+    ],
+    "East corner block corner bands": [
+      "East corner block corner bands sign",
+      "East corner block corner bands stone"
+    ],
+    "roof": [
+      "East corner block skylight",
+      "East corner block skylight.001"
+    ],
+    "East corner block body": [
+      "East corner block body wall",
+      "East corner block body roof",
+      "East corner block body floor",
+      "East corner block body interior",
+      "East corner block body membrane",
+      "East corner block body hardware",
+      "East corner block body pale"
+    ],
+    "East brick block East brick block street": [
+      "East brick block street East brick block East brick block stree",
+      "East brick block street East brick block East brick block s",
+      "East brick block street East brick block East brick block s.001",
+      "East brick block street East brick block East brick block s.002",
+      "East brick block street East brick block East brick block s.003",
+      "East brick block street East brick block East brick block s.004"
+    ],
+    "East brick block body": [
+      "East brick block body brick3",
+      "East brick block body roof",
+      "East brick block body floor",
+      "East brick block body interior",
+      "East brick block body membrane",
+      "East brick block body hardware"
+    ],
+    "East low block East low block street": [
+      "East low block street East low block East low block street bric",
+      "East low block street East low block East low block street ston",
+      "East low block street East low block East low block street fram",
+      "East low block street East low block East low block street glas",
+      "East low block street East low block East low block street whit",
+      "East low block street East low block East low block street crea",
+      "East low block street East low block East low block street sign"
+    ],
+    "East low block body": [
+      "East low block body brick2",
+      "East low block body dark",
+      "East low block body floor",
+      "East low block body interior",
+      "East low block body membrane",
+      "East low block body hardware"
+    ],
+    "West brick condominium wing": [
+      "West brick condominium wing brick2",
+      "West brick condominium wing stone",
+      "West brick condominium wing charcoal",
+      "West brick condominium wing glass",
+      "West brick condominium wing white",
+      "West brick condominium wing pale",
+      "West brick condominium wing railglass",
+      "West brick condominium wing hardware",
+      "West brick condominium wing interior",
+      "West brick condominium wing floor",
+      "West brick condominium wing green",
+      "West brick condominium wing membrane"
+    ],
+    "East charcoal condominium": [
+      "East charcoal condominium charcoal",
+      "East charcoal condominium pale",
+      "East charcoal condominium glass",
+      "East charcoal condominium frame",
+      "East charcoal condominium railglass",
+      "East charcoal condominium hardware",
+      "East charcoal condominium stone",
+      "East charcoal condominium interior",
+      "East charcoal condominium floor",
+      "East charcoal condominium green",
+      "East charcoal condominium membrane"
+    ],
+    "west glass slab": [
+      "west glass slab charcoal",
+      "west glass slab glass",
+      "west glass slab pale",
+      "west glass slab curtain",
+      "west glass slab panel",
+      "west glass slab frame",
+      "west glass slab green",
+      "west glass slab membrane"
+    ],
+    "context": [
+      "context context",
+      "context membrane",
+      "context panel",
+      "context glass",
+      "context frame",
+      "context wall",
+      "context white",
+      "context neighbour",
+      "context brick2"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-20T15:18:31.971648+00:00",
+  "delivery_and_render_seconds": 8942.735191699001,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
