@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-market-square-clay-v004",
+  "glb": "clay-market-square-clay-v004.glb",
+  "glb_bytes": 3239284,
+  "glb_sha256": "dd4e645f515d663f9307a50791c5394f19ad70664cf524c1d0612d4305c3ec2c",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "backstage_door.png": 92,
+    "bollard_grid.png": 92,
+    "cheek_walls.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "left_side.png": 92,
+    "light_mast.png": 92,
+    "meadow_beds.png": 92,
+    "paving_drain.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "seating_tiers.png": 92,
+    "slat_wall.png": 92,
+    "stage_pavilion.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-market-square-clay-v004-renders-and-glb.zip",
+  "zip_bytes": 33304348
+}

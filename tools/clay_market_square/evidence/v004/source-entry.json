@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-market-square",
+  "variant_id": "clay-market-square-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "market_square/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/market-square/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1087074,
+      "sha256": "97c2c0fa7aeddc85bad809176952921a7b5201422cf00fb694aaedc2de9a715a"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/market-square/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 730421,
+      "sha256": "8118270b60c141656bb2167b37960aeee83c8ec9dc4020b8f8928a466a1dce8d"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/market-square/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 853590,
+      "sha256": "cb66fd45a78c456bdc42b75ca29dc932366fb479537002008b5ddfc7194f51a8"
+    }
+  ]
+}

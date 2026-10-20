@@ -1,0 +1,427 @@
+{
+  "candidate": "clay-market-square-clay-v004",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-market-square",
+  "variant_id": "clay-market-square-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "market_square/variant_0 (market_square_v0)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 80.0,
+      "depth": 64.0,
+      "height": 12.0
+    },
+    "observed_storeys": 0,
+    "storey_programme": "open space: a serviced market and event plaza with a seating bowl and a stage pavilion",
+    "plan": "plaza of square slabs flaring continuously to its south edge, first between stone bed walls splayed about 22 degrees off the bowl foot and then against lawn wedges, with a 3 m grid of short bollards whose rows lengthen southward; a three-tier seating bowl on concentric arcs concave to the plaza (36 m foot chord, 54 m top tier), three-step warm-stone bands separated by broad pale terrace walks, the upper tier ends curling north beside the stage to the cheek walls; 27 m curved stage with a 21.6 m slatted pavilion; low wedge beds and raised stone-walled meadow beds both sides",
+    "facade": "stacked warm-grey stone risers and walls with pale concrete treads and copings; vertical timber slat cladding in three tones; dark flat roof slab; grey bollards; slender dark floodlight masts",
+    "levels_m": [
+      0.0,
+      0.06,
+      0.8999999999999999,
+      1.7999999999999998,
+      2.6999999999999997,
+      3.07,
+      8.67
+    ],
+    "inferred": "the backstage door, stage side steps, the far lawn and tree belt are teaching assumptions; the meadow grass is abstracted as tufts"
+  },
+  "roof_contract": {
+    "type": "open space; flat dark roof slab over the stage pavilion",
+    "datum_m": 0.0,
+    "crowns_m": [
+      9.05
+    ]
+  },
+  "identity_contract": {
+    "owner": "flared bollard-gridded plaza facing a curved three-tier stone-and-concrete seating bowl and a timber-slatted stage pavilion, framed by stacked-stone meadow beds, shade trees and floodlight masts"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: pale concrete slabs with grey joints, warm stacked stone, pale concrete treads, mixed-tone timber slats, charcoal stage and roof, grey bollards, green lawn and golden meadow",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 0,
+    "ground": "market stalls and events on the serviced plaza, seating on the tiers, performance on the stage"
+  },
+  "contact_contract": [
+    "Grade-zero lawn and paving",
+    "Bowl tiers on grade",
+    "Stage on the top terrace",
+    "Pavilion on the stage deck",
+    "Beds on grade"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0.0,
+        -27.0,
+        6.2
+      ],
+      "target": [
+        0.0,
+        8.0,
+        1.6
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        0.0,
+        -37.0,
+        24.0
+      ],
+      "target": [
+        0.0,
+        12.0,
+        3.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        0.0,
+        -29.0,
+        40.0
+      ],
+      "target": [
+        0.0,
+        6.0,
+        0.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        204.0
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 112.0
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -58.0,
+        2.0,
+        10.0
+      ],
+      "target": [
+        0.0,
+        2.0,
+        2.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        58.0,
+        2.0,
+        10.0
+      ],
+      "target": [
+        0.0,
+        2.0,
+        2.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        0.0,
+        74.0,
+        13.0
+      ],
+      "target": [
+        0.0,
+        2.0,
+        2.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        95.19999999999999,
+        108.80000000000001,
+        21.6
+      ],
+      "target": [
+        0,
+        0,
+        5.4
+      ]
+    },
+    {
+      "name": "stage_pavilion",
+      "location": [
+        0.0,
+        -4.0,
+        5.5
+      ],
+      "target": [
+        0.0,
+        16.0,
+        5.8
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "slat_wall",
+      "location": [
+        4.0,
+        12.4,
+        5.2
+      ],
+      "target": [
+        2.0,
+        17.4,
+        5.8
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "seating_tiers",
+      "location": [
+        -10.0,
+        -8.0,
+        1.7
+      ],
+      "target": [
+        -4.0,
+        4.0,
+        1.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "cheek_walls",
+      "location": [
+        7.0,
+        6.5,
+        4.8
+      ],
+      "target": [
+        14.4,
+        12.0,
+        3.4
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "bollard_grid",
+      "location": [
+        -4.5,
+        -28.0,
+        1.3
+      ],
+      "target": [
+        1.5,
+        -10.0,
+        0.15
+      ],
+      "lens": 34,
+      "whole": false
+    },
+    {
+      "name": "paving_drain",
+      "location": [
+        -0.15,
+        -12.3,
+        1.6
+      ],
+      "target": [
+        0.75,
+        -9.0,
+        0.0
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "light_mast",
+      "location": [
+        21.0,
+        4.0,
+        4.8
+      ],
+      "target": [
+        16.1,
+        16.0,
+        9.5
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "backstage_door",
+      "location": [
+        13.0,
+        12.2,
+        4.8
+      ],
+      "target": [
+        10.8,
+        15.45,
+        4.4
+      ],
+      "lens": 34,
+      "whole": false
+    },
+    {
+      "name": "meadow_beds",
+      "location": [
+        -36.0,
+        -15.0,
+        5.0
+      ],
+      "target": [
+        -27.0,
+        1.0,
+        1.8
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        5.0,
+        44.0,
+        10.0
+      ],
+      "target": [
+        0.0,
+        15.0,
+        3.5
+      ],
+      "lens": 30,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "stage_pavilion",
+    "slat_wall",
+    "seating_tiers",
+    "cheek_walls",
+    "bollard_grid",
+    "paving_drain",
+    "light_mast",
+    "backstage_door",
+    "meadow_beds",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/market-square/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1087074,
+        "sha256": "97c2c0fa7aeddc85bad809176952921a7b5201422cf00fb694aaedc2de9a715a"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/market-square/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 730421,
+        "sha256": "8118270b60c141656bb2167b37960aeee83c8ec9dc4020b8f8928a466a1dce8d"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/market-square/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 853590,
+        "sha256": "cb66fd45a78c456bdc42b75ca29dc932366fb479537002008b5ddfc7194f51a8"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_marketsq.py",
+        "sha256": "2c896df7f8b3f17df51cf6af93bf96833c179ffdda729389e4cec99504634a3b"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "b649bb3294f2128e78abe09e61dea17e21540311c810ad6c562d5e658b6ec240"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "7c6a3e20cc35b67b46bc592512e9f2c03e1f685b3ad238f63c34a3ecf6769348"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-20T19:12:37.813682+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
