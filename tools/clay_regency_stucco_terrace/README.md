@@ -1,7 +1,7 @@
 # Regency stucco terrace (RLASM v6.1 architectural clay)
 
 Candidate G6 of wave G of 2026-10-18, one of ten catalogue types that have quality reference images but
-no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **candidate under review**. Nothing here is keeper-approved,
+no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **stopped at v006 by the stopping rule (two consecutive non-improving reviews); v004 is the candidate**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,7 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (v006 reworks these two; a second non-improving review or a second failed court fix stops the family)
+## Open blockers after v006 (both v005 findings fixed, but higher than v004; v004 stays the candidate; second consecutive non-improving review, so the family stops)
 
-- P1 #1: slate and lead are the wrong way round: about three quarters of the visible roof is pale standing-seam lead with slate only as thin steep strips; the sources show broad slate on the outer and inner slopes with lead only as a narrow ribbed ridge band (source slate about 13% outside and 12% inside of block width with lead about 8%; render slate about 3% and 4% with lead about 25%).
-- P1 #2: the inner court is still under-scaled: inner dormers about 1.3-1.5x street size on a steep strip about 4% of block width; the source has large lead-topped box dormers (2.5-4x street size) on broad inner slate slopes with the cream court walls and windows showing below (the v004 court finding, surviving one targeted fix).
+plan too shallow north-south (court a square well, not the long slot); court box-dormer windows render as blank pale panels
