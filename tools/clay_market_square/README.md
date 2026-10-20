@@ -1,7 +1,7 @@
 # Market square (RLASM v6.1 architectural clay)
 
 Candidate I7 of wave I of 2026-10-20, one of the ten catalogue additions the user approved
-(four buildings, three parks and squares, three streets); a park and open-space option, not a building. State: **candidate under review**. Nothing here is keeper-approved,
+(four buildings, three parks and squares, three streets); a park and open-space option, not a building. State: **stopped at v005 by the stopping rule (the tier-band legibility finding survived two targeted fixes); v004 is the candidate**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,6 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (x)
+## Open blockers after v005 (x)
 
 x
