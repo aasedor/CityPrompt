@@ -64,7 +64,7 @@ def manifest(version):
         elif c['name'] == 'top':                                               # the locked top view: north blocks above, the street below
             c.update(location=(-1.7, 9.5, 140.0), target=(-1.7, 9.501, 0.0), ortho_scale=75.0, whole=False)
         elif c['name'] == 'left_side':                                         # down the cross street from the south-west
-            c.update(location=(-46.0, -48.0, 9.0), target=(-34.0, 6.0, 3.0), lens=26, whole=False)
+            c.update(location=(-42.0, -34.0, 8.0), target=(-30.0, 8.0, 3.5), lens=26, whole=False)
         elif c['name'] == 'right_side':                                        # along the street from the east, raised
             c.update(location=(58.0, -14.0, 14.0), target=(0.0, -6.0, 3.0), lens=26, whole=False)
         elif c['name'] == 'rear':                                              # from over the back lane
@@ -727,7 +727,7 @@ BLOCKS = [
          pattern=['shop+door', 'shop', 'door+shop'], up_n=5, up=(5.35, .95, 2.25), head='seg', cornice='bracketed', frame='frame'),
     dict(name='Fine art block', x0=21.0, x1=28.5, dy=.03, top=10.0, depth=24.0, pil='cream', sign='cream', letters='sign',
          pattern=['shop', 'door+shop'], up_n=3, up=(5.4, 1.15, 2.6), head='round', cornice='corbel', frame='frame'),
-    dict(name='Cafe block', x0=28.5, x1=38.0, dy=0.0, top=12.4, depth=24.8, pil='stone', sign='stone', letters='dark',
+    dict(name='Cafe block', x0=28.5, x1=38.0, dy=0.0, top=12.4, depth=24.8, pil='stone', sign='stone', letters='dark', roof='membrane',
          pattern=['shop+door', 'shop'], up_per_bay=2, up=(5.7, 1.2, 3.3), head='flat', cornice='stone', frame='dark'),
 ]
 
@@ -920,6 +920,16 @@ def block(spec):
         C.qa_room_light(f"{spec['name']} upper", ((x0 + x1) / 2, 4.5, FLOOR2 + 2.3), 60, 3.0)
 
 
+def rear_clear(h, hs, pier=.3):
+    """True when opening h keeps at least `pier` of solid wall from every opening in hs whose height band it shares,
+    so no two rear-wall openings overlap or share a sill, lintel or jamb."""
+    for o in hs:
+        if h['z'] < o['z'] + o['h'] + pier and o['z'] < h['z'] + h['h'] + pier:
+            if abs(h['u'] - o['u']) < (h['w'] + o['w']) / 2 + pier:
+                return False
+    return True
+
+
 def rear_wall(spec):
     """The rear (lane) wall as a coursed brick carrier with cut openings: a service door and upper sashes in framed,
     glazed reveals under flat stone lintels on stone sills (one-storey bays get ground windows instead)."""
@@ -928,7 +938,10 @@ def rear_wall(spec):
     f = C.Face((0.0, depth, 0.0), (-1, 0, 0), (0, -1, 0), spec['name'] + ' rear')
     hs = [hole(f"{spec['name']} rear door", -(x0 + 1.4), .05, 1.0, 2.2, kind='door')]
     zw, hw = (5.7, 1.8) if top > 8.0 else (1.0, 1.4)
-    hs += [hole(f"{spec['name']} rear window {i}", -u, zw, 1.0, hw) for i, u in enumerate(x0 + 2.0 + i * 2.6 for i in range(int((x1 - x0 - 2.0) / 2.6)))]
+    for i, u in enumerate(x0 + 2.0 + i * 2.6 for i in range(int((x1 - x0 - 2.0) / 2.6))):
+        w = hole(f"{spec['name']} rear window {i}", -u, zw, 1.0, hw)
+        if rear_clear(w, hs) and -w['u'] + w['w'] / 2 <= x1 - .45:
+            hs.append(w)
     f.wall(f"{spec['name']} rear carrier", -rb, -ra, 0.0, top - .05, depth=T, role='wall', holes=hs)
     G.brick_courses(f, -rb + .02, -ra - .02, .12, top - .17, hs, spacing=.16)
     m = Merge(f)
