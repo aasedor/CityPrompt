@@ -1962,6 +1962,8 @@ export function generateClayRender(
 // ---------------------------------------------------------------------------
 
 export interface StreetViewResult {
+  /** Per-preview fidelity advice; absent for legacy renders and clean sources. */
+  reviewWarnings?: string[];
   /** URL or data-URI of the generated image. */
   imageUrl: string;
   /** The prompt that was sent to the API. */

@@ -1545,6 +1545,12 @@ export function GlobeAIRenderPanel({
             </details>
           )}
           {directDiagnostics && (<details className="mt-2 rounded-lg bg-slate-900 px-3 text-white"><summary className="min-h-11 cursor-pointer py-3 text-sm">Render diagnostics · advanced</summary>
+            {directDiagnostics.displayed_image_variant === 'provider_original' && (
+              <p className="mb-2 text-xs text-amber-100" role="status">
+                AI original shown — compare its geometry with the 3D source. The measurements below
+                describe the server&apos;s aligned candidate and processed copy, not a verified lock on this original image.
+              </p>
+            )}
             <div className={`mt-1.5 grid grid-cols-2 gap-x-3 gap-y-1 rounded border px-2 py-1.5 text-[9px] font-bold ${
               directReview?.outcome === 'review_required'
                 ? 'border-amber-300/25 bg-amber-300/10 text-amber-100/80'
@@ -1584,7 +1590,7 @@ export function GlobeAIRenderPanel({
               )}
               {directDiagnostics.returned_safety_strategy && (
                 <span className="col-span-2 capitalize">
-                  Returned safety strategy {directDiagnostics.returned_safety_strategy.replace(/_/g, ' ')}
+                  Processed copy strategy {directDiagnostics.returned_safety_strategy.replace(/_/g, ' ')}
                 </span>
               )}
               {directDiagnostics.returned_safety_strategy !== 'authoritative_source' && directDiagnostics.instance_source_presence && (
@@ -1606,7 +1612,7 @@ export function GlobeAIRenderPanel({
                 <>
                   <span className="capitalize">Mode {directDiagnostics.processing_mode ?? 'scene'}</span>
                   <span>
-                    View {(directDiagnostics.view_lock ?? 'camera_registered').replace(/_/g, ' ')}
+                    Processed view {(directDiagnostics.view_lock ?? 'camera_registered').replace(/_/g, ' ')}
                   </span>
                   <span>Context {directDiagnostics.context_restyled ? 'restyled' : 'not restyled'}</span>
                   <span>Provider-first {directDiagnostics.provider_first ? 'yes' : 'no'}</span>

@@ -15,6 +15,7 @@ import {
 import type { Building, SavedRender, SiteZone } from '@/types';
 import toast from 'react-hot-toast';
 import { getRenderImageKey, saveRenderedImage } from '@/utils/renderPersistence';
+import { downloadImage } from '@/utils/downloadDataImage';
 import { getApiErrorMessage, resolveApiFileUrl } from '@/services/api';
 import { RenderEditModal } from './RenderEditModal';
 import { DIRECT_3D_ALLOWED_STYLES, resolveDirect3DPresentationMode, useDirect3DRender } from './globe/useDirect3DRender';
@@ -371,6 +372,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
               model: direct.render.model,
               imageQuality: 'high',
               providerLabel: direct.render.providerLabel,
+              reviewWarnings: direct.warnings,
             };
             const original = direct.providerOriginalRender;
             const originalPreview: StreetViewResult | undefined = original ? {
@@ -379,13 +381,16 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
               model: original.model,
               imageQuality: original.image_quality,
               providerLabel: 'AI render',
+              reviewWarnings: ['AI original — compare its geometry with the clean 3D source.'],
             } : undefined;
             const sourcePreview: StreetViewResult = {
               imageUrl: direct.sourceImageUrl, prompt: '', providerLabel: 'Original 3D view',
             };
             const showingOriginal = direct.render.savedRender?.id === original?.id && Boolean(original);
             const index = completedPreviews.length;
-            completedPreviews.push(...(showingOriginal ? [directResult, sourcePreview] : originalPreview ? [directResult, originalPreview] : [directResult]));
+            completedPreviews.push(directResult);
+            if (originalPreview && !showingOriginal) completedPreviews.push(originalPreview);
+            completedPreviews.push(sourcePreview);
             setPreviews([...completedPreviews]);
             setSelectedPreviewIndex(index);
             setResult(directResult);
@@ -516,12 +521,13 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
     }
   }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, currentSceneClaims, detailsRevision, selectedStyle, imageModel, useRealContext, includePeople, includeVehicles, customPrompt, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved, selectedEngineUnavailable]);
 
-  const handleDownload = useCallback(() => {
+  const handleDownload = useCallback(async () => {
     if (!result?.imageUrl || result.error) return;
-    const a = document.createElement('a');
-    a.href = result.imageUrl;
-    a.download = `siteforge-streetview-${Date.now()}.png`;
-    a.click();
+    try {
+      await downloadImage(result.imageUrl, `siteforge-streetview-${Date.now()}.png`);
+    } catch {
+      toast.error('Could not download the image. Please try again.');
+    }
   }, [result]);
 
   const handleSave = useCallback(async () => {
@@ -650,6 +656,14 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
           </div>
           {/* Image — click to enlarge */}
           <div className="flex-1 overflow-auto p-4">
+            {Boolean(result.reviewWarnings?.length) && (
+              <details className="mb-3 rounded-lg border border-amber-300/30 bg-amber-300/10 p-3 text-xs text-amber-100">
+                <summary className="cursor-pointer font-semibold">Compare with the 3D source</summary>
+                <ul className="mt-2 list-disc space-y-1 pl-4">
+                  {result.reviewWarnings!.map((warning) => <li key={warning}>{warning}</li>)}
+                </ul>
+              </details>
+            )}
             <div className="relative">
               <img
                 src={result.imageUrl}
@@ -774,14 +788,14 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
               >
                 <X size={20} />
               </button>
-              <a
-                href={result.imageUrl}
-                download={`siteforge-streetview-${Date.now()}.png`}
+              <button
+                type="button"
+                onClick={handleDownload}
                 className="absolute top-3 right-14 rounded-full bg-black/60 p-2 text-white/80 hover:bg-black/80 hover:text-white transition"
                 title="Download"
               >
                 <Download size={20} />
-              </a>
+              </button>
               {projectId && !result.error && (
                 <button
                   type="button"
