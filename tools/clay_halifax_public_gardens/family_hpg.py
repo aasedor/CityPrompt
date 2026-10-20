@@ -630,7 +630,7 @@ def ground():
     b = Batch()
     for s in (-1, 1):                                                          # granite street curbs
         b.box('granite', s * SW, (SN + SS) / 2, .07, .18, SN - SS + .18, .14)
-        b.box('granite', s * (SW + ST), (SS - ST + SN + ST) / 2, .07, .18, SN - SS + 2 * ST, .14 + .004)
+        b.box('granite', s * (SW + ST), (SS - ST + SN + ST) / 2, .072, .18, SN - SS + 2 * ST, .144)
     b.box('granite', 0.0, SN, .072, 2 * SW + .18, .18, .144)
     b.box('granite', 0.0, SS, .072, 2 * SW + .18, .18, .144)
     b.box('granite', 0.0, SN + ST, .074, 2 * (SW + ST) + .18, .18, .148)
