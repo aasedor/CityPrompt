@@ -59,7 +59,7 @@ def manifest(version):
         if c['name'] == 'front':                  # the locked front: on the plaza outside the gate, east of the axis, looking north-north-west
             c.update(location=(7.6, -37.4, 1.65), target=(-4.6, -10.6, 3.6), lens=25, whole=False)
         elif c['name'] == 'front_corner':         # the locked oblique: high over the south street, looking north up the axis
-            c.update(location=(0.0, -54.0, 31.0), target=(0.0, -6.0, 0.0), lens=30, whole=False)
+            c.update(location=(0.0, -49.0, 27.0), target=(0.0, -5.0, 0.0), lens=30, whole=False)
         elif c['name'] == 'top':                  # the locked top view: the block with both side streets, north up
             c.update(location=(0.0, -.6, 120.0), target=(0.0, -.599, 0.0), ortho_scale=95.6, whole=False)
         elif c['name'] == 'aerial':
@@ -69,9 +69,9 @@ def manifest(version):
         elif c['name'] == 'right_side':
             c.update(location=(50.0, 4.0, 18.0), target=(0.0, 0.0, 2.0), lens=28, whole=False)
         elif c['name'] == 'rear':
-            c.update(location=(0.0, 58.0, 24.0), target=(0.0, 0.0, 1.0), lens=30, whole=False)
+            c.update(location=(0.0, 38.5, 17.0), target=(0.0, -2.0, 0.0), lens=24, whole=False)
         elif c['name'] == 'rear_side':
-            c.update(location=(-40.0, 50.0, 30.0), target=(0.0, 0.0, 1.0), lens=30, whole=False)
+            c.update(location=(-30.0, 39.5, 24.0), target=(0.0, 0.0, 1.0), lens=28, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -640,13 +640,13 @@ def ground():
     for k in range(-5, 6):
         b.box('mark', k * 4.0 + 2.0, SN + ST / 2, .0235, 2.0, .12, .006)
         b.box('mark', k * 4.0 + 2.0, SS - ST / 2, .0235, 2.0, .12, .006)
-    for k in range(int(2 * SW / 1.2)):                                         # sidewalk scoring
-        x = -SW + .6 + k * 1.2
+    for k in range(int(2 * SW / 1.5)):                                         # sidewalk scoring
+        x = -SW + .75 + k * 1.5
         b.box('joint', x, (SS + FS - 2.8) / 2, .1255, .025, FS - 2.8 - SS - .1, .003)
         b.box('joint', x, (FN + SN) / 2, .1255, .025, SN - FN - .1, .003)
     for s in (-1, 1):
-        for k in range(int((FN - FS + 2.8) / 1.2)):
-            b.box('joint', s * (SW + FX) / 2, FS - 2.8 + .6 + k * 1.2, .1215, SW - FX - .2, .025, .003)
+        for k in range(int((FN - FS + 2.8) / 1.5)):
+            b.box('joint', s * (SW + FX) / 2, FS - 2.8 + .75 + k * 1.5, .1215, SW - FX - .2, .025, .003)
     for k in range(int(20.0 / .45)):                                           # brick plaza courses outside the gate
         b.box('joint', -10.0 + .25 + k * .45, FS - 1.4, .1115, .02, 2.7, .003)
     b.flush('streets and plaza')
@@ -662,7 +662,7 @@ def paths():
     b = Batch()
     C.box('Axis path', (0.0, (FS + FN) / 2, (.02 + ZA) / 2), (2 * AXW, FN - FS + .1, ZA - .02), 'paving', 'paths', 0)
     C.box('Cross path', (0.0, 0.0, (.025 + ZC) / 2), (2 * FX + .1, 2 * CRW, ZC - .025), 'paving', 'paths', 0)
-    lo, ro = ribbon('Loop path', LOOP, LW, .03, ZL)
+    lo, ro = ribbon('Loop path', LOOP[::2] if (len(LOOP) - 1) % 2 == 0 else LOOP[::2] + [LOOP[-1]], LW, .03, ZL)
     C.prism('Bandstand circle', [(RC * math.cos(2 * math.pi * i / 64), RC * math.sin(2 * math.pi * i / 64)) for i in range(64)], 'z', .04, ZO, 'paving', 'paths')
     fore = [(-LX - LW, FS - .05), (LX + LW, FS - .05), (LX + LW, FORE_Y)]
     fore += arc(TIP_X, FORE_Y, TIP_R, 0.0, -math.pi)[:]
@@ -670,22 +670,17 @@ def paths():
     fore += [(-LX - LW, FORE_Y)]
     C.prism('Gate forecourt', ccw(fore), 'z', .035, ZF, 'paving', 'paths')
     # Paver courses: joints across every path, stopping where a higher or crossing path takes over.
-    for k in range(int((FN - FS) / .5)):
-        y = FS + .25 + k * .5
+    for k in range(int((FN - FS) / .6)):
+        y = FS + .3 + k * .6
         for run in runs(line((-AXW + .05, y), (AXW - .05, y), .2), ('axis',)):
             b.beam('joint', (run[0][0], y, ZA + .0025), (run[-1][0], y, ZA + .0025), .022, .003)
-    for x in (-AXW / 3, AXW / 3):
-        for run in runs(line((x, FS), (x, FN), .2), ('axis',)):
-            b.beam('joint', (x, run[0][1], ZA + .0025), (x, run[-1][1], ZA + .0025), .022, .003)
-    for k in range(int(2 * FX / .5)):
-        x = -FX + .25 + k * .5
+    for k in range(int(2 * FX / .6)):
+        x = -FX + .3 + k * .6
         for run in runs(line((x, -CRW + .05), (x, CRW - .05), .2), ('cross',)):
             b.beam('joint', (x, run[0][1], ZC + .0025), (x, run[-1][1], ZC + .0025), .022, .003)
-    for y in (-CRW / 3, CRW / 3):
-        for run in runs(line((-FX, y), (FX, y), .2), ('cross',)):
-            b.beam('joint', (run[0][0], y, ZC + .0025), (run[-1][0], y, ZC + .0025), .022, .003)
-    for i in range(0, len(LOOP), 2):
-        a, c = lo[i], ro[i]
+    lj, rj = offsets(LOOP, LW), offsets(LOOP, -LW)
+    for i in range(0, len(LOOP), 3):
+        a, c = lj[i], rj[i]
         mx, my = (a[0] + c[0]) / 2, (a[1] + c[1]) / 2
         if not paved(mx, my, ('loop',), -.4):
             p = (a[0] + (c[0] - a[0]) * .03, a[1] + (c[1] - a[1]) * .03); q = (c[0] + (a[0] - c[0]) * .03, c[1] + (a[1] - c[1]) * .03)
@@ -702,20 +697,15 @@ def paths():
         for run in runs(line((-LX - LW + .05, y), (LX + LW - .05, y), .15), ('fore',)):
             if in_fore((run[0][0] + run[-1][0]) / 2, y, .05):
                 b.beam('joint', (run[0][0], y, ZF + .0025), (run[-1][0], y, ZF + .0025), .022, .003)
-    for x in (-5.9, -3.3, -1.0, 1.0, 3.3, 5.9):
-        for run in runs(line((x, FS), (x, FORE_Y), .15), ('fore',)):
-            pts = [p for p in run if in_fore(p[0], p[1], .05)]
-            if len(pts) > 1:
-                b.beam('joint', (x, pts[0][1], ZF + .0025), (x, pts[-1][1], ZF + .0025), .022, .003)
     b.flush('paver joints')
     # Granite edging along every path edge.
     b = Batch()
     for s in (-1, 1):
         edging(b, line((s * AXW, FS + .2), (s * AXW, FN - .2), .2), ('axis',), straight=True)
         edging(b, line((-FX + .2, s * CRW), (FX - .2, s * CRW), .2), ('cross',), straight=True)
-    edging(b, lo[2:-2], ('loop',))
-    edging(b, ro[2:-2], ('loop',))
-    edging(b, arc(0.0, 0.0, RC, 0.0, 2 * math.pi, .4), ('circle',))
+    edging(b, lj[2:-2:3], ('loop',))
+    edging(b, rj[2:-2:3], ('loop',))
+    edging(b, arc(0.0, 0.0, RC, 0.0, 2 * math.pi, .6), ('circle',))
     for s in (-1, 1):
         edging(b, arc(s * TIP_X, FORE_Y, TIP_R, 0.0, -math.pi, .3), ('fore',))
     b.flush('path edging')
@@ -771,10 +761,10 @@ def carpet_bed(name, spine, width):
         else:
             mound(b, 'shrub', x, y, .10, .9, .65)
         for side in (-1, 1):
-            for f, role, hgt in ((.48, FLOWERS[(i // 2 + (side > 0)) % 2], .42), (.82, FLOWERS[2 + (i // 2) % 2], .3)):
+            for f, role, hgt in ((.5, FLOWERS[(i // 2 + (side > 0)) % 2] if (i // 2) % 3 else 'shrub', .55), (.84, FLOWERS[2 + (i // 2) % 2] if (i // 2) % 3 != 1 else 'shrub', .4)):
                 if w * f < .35:
                     continue
-                mound(b, role, x + side * nx * w * f, y + side * ny * w * f, .10, .7, hgt)
+                mound(b, role, x + side * nx * w * f, y + side * ny * w * f, .10, .72, hgt)
     b.flush(name)
 
 
@@ -797,18 +787,20 @@ def shade_tree(name, x, y, h, r):
     for k in range(3):
         a = 2 * math.pi * k / 3 + .4
         C.rod(f'{name} limb', (x + .1, y, h * .38), (x + math.cos(a) * r * .5, y + math.sin(a) * r * .5, h * .6), .07 + .012 * r, 'timber', 'trees', 6)
-    A.foliage(f'{name} crown', (x, y, h * .66), (r * .82, r * .82, r * .55), role='tree', detail=2)
-    for k in range(5):
-        a = 2 * math.pi * k / 5 + RNG.uniform(0, .6)
-        A.foliage(f'{name} crown mass', (x + math.cos(a) * r * .48, y + math.sin(a) * r * .48, h * (.56 + .06 * (k % 2))),
-                  (r * .52, r * .52 * RNG.uniform(.85, 1.1), r * .4), role='tree2' if k % 2 else 'tree', detail=1)
+    A.foliage(f'{name} crown', (x, y, h * .64), (r * .86, r * .86, r * .58), role='tree', detail=2)
+    for k in range(6):
+        a = 2 * math.pi * k / 6 + RNG.uniform(0, .5)
+        rr = r * (.55 if k % 2 else .62)
+        A.foliage(f'{name} crown mass', (x + math.cos(a) * r * .5, y + math.sin(a) * r * .5, h * (.54 + .07 * (k % 3))),
+                  (rr, rr * RNG.uniform(.85, 1.1), r * .42), role='tree2' if k % 2 else 'tree', detail=2 if k % 2 == 0 else 1)
+    A.foliage(f'{name} crown top', (x - .2 * r, y + .1 * r, h * .64 + r * .42), (r * .5, r * .5, r * .32), role='tree', detail=1)
 
 
-TREES = [('South-west giant', -12.8, -13.6, 14.0, 6.6), ('South-west elm', -18.6, -7.6, 9.0, 3.0), ('South-west small', -19.4, -22.6, 6.0, 2.0),
-         ('South-east giant', 15.2, -16.8, 13.5, 6.3), ('South-east elm', 19.4, -4.8, 8.5, 2.6), ('South-east small', 19.6, -10.8, 7.0, 2.2),
-         ('West row 1', -19.0, 12.6, 11.0, 4.0), ('West row 2', -19.4, 21.4, 12.0, 4.2), ('North-west', -12.6, 25.6, 11.0, 3.6),
-         ('East row 1', 19.8, 14.2, 10.0, 3.6), ('East row 2', 16.8, 22.8, 10.0, 3.2), ('East small', 18.6, 3.8, 8.0, 2.3),
-         ('North-east', 9.0, 25.8, 10.5, 3.4), ('North-west small', -7.4, 26.0, 8.0, 2.4)]
+TREES = [('South-west giant', -12.8, -14.0, 14.5, 7.0), ('South-west elm', -18.4, -7.4, 10.0, 3.4), ('South-west small', -19.2, -22.6, 6.5, 2.2),
+         ('South-east giant', 15.0, -17.0, 14.0, 6.8), ('South-east elm', 19.2, -4.8, 9.0, 3.0), ('South-east small', 19.4, -10.6, 7.5, 2.5),
+         ('West row 1', -18.6, 12.4, 12.0, 4.6), ('West row 2', -18.8, 21.6, 13.0, 4.8), ('North-west', -12.4, 25.4, 12.0, 4.2),
+         ('East row 1', 19.2, 14.0, 11.0, 4.0), ('East row 2', 16.6, 22.8, 11.0, 3.8), ('East small', 18.4, 3.9, 8.5, 2.6),
+         ('North-east', 9.0, 25.6, 11.5, 4.0), ('North-west small', -7.2, 25.8, 9.0, 2.8)]
 
 
 def planting():
@@ -981,7 +973,7 @@ def lantern(b, x, y, z):
         b.beam('hardware', (x + sx * .16, y, z + .02), (x + sx * .34, y, z - .25), .04, .04)
 
 
-def leaf(b, hx, hy, ux, uy, W, h0, h1, spacing=.13):
+def leaf(b, hx, hy, ux, uy, W, h0, h1, spacing=.13, rings=True):
     """An iron gate leaf hinged at (hx, hy), running W along (ux, uy): stiles, rails, pickets and an arched top."""
     P = lambda u, z: (hx + ux * u, hy + uy * u, z)
     top = lambda u: h0 + (h1 - h0) * (u / W) ** 1.4
@@ -1000,11 +992,11 @@ def leaf(b, hx, hy, ux, uy, W, h0, h1, spacing=.13):
         u = W * i / n
         x, y, _ = P(u, 0)
         spike(b, 'hardware', x, y, .18, top(u) + .08, .024, .11)
-    for i in range(int(W / .3)):                                               # ring band between the middle rails
+    for i in range(int(W / .3) if rings else 0):                               # diamond band between the middle rails
         u = .3 * (i + .5)
         c = P(u, 1.1)
-        for k in range(6):
-            a0, a1 = 2 * math.pi * k / 6, 2 * math.pi * (k + 1) / 6
+        for k in range(4):
+            a0, a1 = 2 * math.pi * k / 4, 2 * math.pi * (k + 1) / 4
             b.beam('hardware', (c[0] + ux * .11 * math.cos(a0), c[1] + uy * .11 * math.cos(a0), 1.1 + .11 * math.sin(a0)),
                    (c[0] + ux * .11 * math.cos(a1), c[1] + uy * .11 * math.cos(a1), 1.1 + .11 * math.sin(a1)), .025, .025, ext=.01)
 
@@ -1018,7 +1010,7 @@ def fence_run(b, a, c, top_z=.41):
     b.beam('granite', (ax - ux * .19, ay - uy * .19, top_z + .015), (cx + ux * .19, cy + uy * .19, top_z + .015), .38, .05)
     for z in (.55, 1.46):
         b.beam('hardware', (ax, ay, z), (cx, cy, z), .035, .04)
-    n = max(2, int(L / .25))
+    n = max(2, int(L / .32))
     for i in range(1, n):
         x, y = ax + ux * L * i / n, ay + uy * L * i / n
         spike(b, 'hardware', x, y, top_z + .02, 1.56, .022, .1)
@@ -1026,8 +1018,8 @@ def fence_run(b, a, c, top_z=.41):
     for i in range(m + 1):
         x, y = ax + ux * L * i / m, ay + uy * L * i / m
         b.box('hardware', x, y, (top_z + .02 + 1.72) / 2, .07, .07, 1.72 - top_z - .02)
-        ngon(b, 'hardware', x, y, 1.70, 1.86, .06, 8)
-        ngon(b, 'hardware', x, y, 1.84, 1.98, .06, 8, cone=True)
+        ngon(b, 'hardware', x, y, 1.70, 1.84, .07, 4, phase=0.0)
+        ngon(b, 'hardware', x, y, 1.82, 1.98, .07, 4, phase=0.0, cone=True)
 
 
 def sign_arch():
@@ -1112,8 +1104,8 @@ def gates_and_fence():
     leaf(b, -3.56, FS, c, sn, 3.5, 2.2, 2.75)                                 # main double gate thrown open into the forecourt
     leaf(b, 3.56, FS, -c, sn, 3.5, 2.2, 2.75)
     for s in (-1, 1):                                                          # side gates where the loop paths enter
-        leaf(b, s * 4.44, FS, s * c, sn, 1.6, 1.75, 1.95, .12)
-        leaf(b, s * 7.68, FS, -s * c, sn, 1.6, 1.75, 1.95, .12)
+        leaf(b, s * 4.44, FS, s * c, sn, 1.6, 1.75, 1.95, .14, False)
+        leaf(b, s * 7.68, FS, -s * c, sn, 1.6, 1.75, 1.95, .14, False)
     b.flush('gate leaves')
     b = Batch()
     for s in (-1, 1):
@@ -1192,15 +1184,16 @@ def context():
             if face in ('x+', 'x-'):
                 xf = x1 + .02 if face == 'x+' else x0 - .02
                 b.box('dark', xf, (y0 + y1) / 2, z, .06, y1 - y0 - 1.2, hh)
-                if not glass:
-                    for k in range(int((y1 - y0 - 1.2) / 3.0) + 1):
-                        b.box('trim', xf + (.04 if face == 'x+' else -.04), y0 + .6 + k * 3.0, z, .06, .3, hh + .1)
             else:
-                yf = y0 - .02
-                b.box('dark', (x0 + x1) / 2, yf, z, x1 - x0 - 1.2, .06, hh)
-                if not glass:
-                    for k in range(int((x1 - x0 - 1.2) / 3.0) + 1):
-                        b.box('trim', x0 + .6 + k * 3.0, yf - .04, z, .3, .06, hh + .1)
+                b.box('dark', (x0 + x1) / 2, y0 - .02, z, x1 - x0 - 1.2, .06, hh)
+        if not glass:                                                          # brick piers between the window bays, full height
+            span = (y1 - y0) if face != 'y-' else (x1 - x0)
+            for k in range(int((span - 1.2) / 3.0) + 1):
+                if face in ('x+', 'x-'):
+                    xf = x1 + .06 if face == 'x+' else x0 - .06
+                    b.box(role, xf, y0 + .6 + k * 3.0, (h - .4) / 2 + .2, .06, .5, h - .6)
+                else:
+                    b.box(role, x0 + .6 + k * 3.0, y0 - .06, (h - .4) / 2 + .2, .5, .06, h - .6)
         if glass:
             n = int(((y1 - y0) if face != 'y-' else (x1 - x0)) / 1.5)
             for k in range(n + 1):
@@ -1210,7 +1203,7 @@ def context():
                     b.box('trim', x0 + .3 + k * (x1 - x0 - .6) / n, y0 - .07, h / 2, .12, .06, h - .4)
     b.flush('context')
     for s in (-1, 1):                                                          # street trees on the far sidewalks
-        for y in (-30.0, -16.0, 16.0, 30.0):
+        for y in (-30.0, 24.0):
             shade_tree('Street tree', s * (SW + ST + 1.2), y, 8.0, 1.6)
 
 
