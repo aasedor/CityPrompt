@@ -1,7 +1,7 @@
 # Calgary sandstone heritage block (RLASM v6.1 architectural clay)
 
 Candidate G8 of wave G of 2026-10-18, one of ten catalogue types that have quality reference images but
-no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **candidate under review**. Nothing here is keeper-approved,
+no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **stopped at v005 by the stopping rule (two consecutive non-improving reviews); v003 is the candidate**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,7 +68,7 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (v005 reworks these two; a second non-improving review stops the family)
+## Open blockers after v005 (stopped)
 
-- P1 #1: on all four corner pavilions the giant round arches sit one storey too high (third floor under the eave, tall rectangular lights below, paired rectangles on the first floor); the sources show the giant arcade rising from above the basement (rectangular first floor, round-arched second floor) with a full-width small-arch arcade across the third floor.
-- P1 #2: no street trees on the north and west sidewalks; the top source shows about two trees on each of the four sidewalks.
+- P1 #1: the south entrance (portal porch, balustraded balcony and the giant arcade above it) sits in the south-west corner pavilion, but all three sources put it at the centre of the south front under the large turret-flanked central gable. This contradicts the brief's wording ('portal in the south-west pavilion') and is left for the method owner to rule on.
+- Stopped by the stopping rule: v004 and v005 did not lower P0+P1 below v003; v003 remains the candidate. Nothing here is keeper-approved.
