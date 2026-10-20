@@ -21,10 +21,10 @@ SLUG = 'clay-market-square'
 OX, OY = 0.0, 29.0                  # centre of the seating-bowl arcs (north of the stage)
 R0 = 29.0                           # outer (lowest) step radius: the bowl meets the plaza at y = 0 on the axis
 ARC = 41.0                          # half-angle of the bowl measured from due south (top view: about 38 m chord)
-RISE, TREAD, TERRACE = .17, .36, 2.15
+RISE, TREAD, TERRACE = .20, .42, 2.0
 PAVE = .06                          # plaza paving top
-STAGE = 1.90                        # stage deck top
-ROOF_Z = 6.30                       # underside of the pavilion roof slab
+STAGE = 9 * RISE + .37              # stage deck top
+ROOF_Z = STAGE + 4.4                # underside of the pavilion roof slab
 X0, X1, Y0, Y1 = -36.0, 36.0, -30.0, 34.0
 EPS = .002
 T = .3
@@ -45,13 +45,13 @@ def manifest(version):
         ('cheek_walls', (10.0, -5.0, 1.8), (17.5, 9.0, 1.0), 32),
         ('bollard_grid', (-5.0, -24.0, 1.3), (1.5, -8.0, .2), 34),
         ('paving_drain', (5.5, -14.5, 1.6), (6.2, -11.0, .0), 40),
-        ('light_mast', (4.0, 5.0, 2.2), (9.4, 15.2, 7.5), 30),
-        ('backstage_door', (11.6, 11.0, 3.2), (6.2, 14.4, 3.0), 34),
+        ('light_mast', (4.0, 5.0, 2.6), (9.6, 15.4, 7.8), 30),
+        ('backstage_door', (11.6, 11.0, 3.6), (6.2, 14.4, 3.2), 34),
         ('meadow_beds', (-31.0, -12.0, 4.5), (-20.0, 8.0, 2.0), 30),
         ('rear_north', (4.0, 42.0, 9.0), (0.0, 14.0, 3.0), 30)])
     for c in cams:
         if c['name'] == 'front':                    # the locked front stands on the plaza at eye height, looking north at the stage
-            c.update(location=(0.0, -24.5, 1.65), target=(0.0, 14.0, -2.4), lens=31, whole=False)
+            c.update(location=(1.5, -25.5, 1.65), target=(0.0, 14.0, -2.2), lens=31, whole=False)
         elif c['name'] == 'front_corner':           # the locked oblique looks north from high over the south plaza
             c.update(location=(0.0, -37.0, 24.0), target=(0.0, 12.0, 3.0), lens=30, whole=False)
         elif c['name'] == 'aerial':                 # the locked top view is a steep oblique from the south
@@ -64,7 +64,7 @@ def manifest(version):
             observed_storeys=0, storey_programme='open space: a serviced market and event plaza with a seating bowl and a stage pavilion',
             plan='51 m wide flared plaza of square slabs with a 3 m bollard grid; a three-tier seating bowl of 38 m chord on 29 m arcs; 16 m curved stage with a 12.4 m slatted pavilion; raised stone-walled meadow beds both sides',
             facade='stacked warm-grey stone risers and walls with pale concrete treads and copings; vertical timber slat cladding in three tones; dark flat roof slab; grey bollards; slender dark floodlight masts',
-            levels_m=[0.0, PAVE, .51, 1.02, 1.53, STAGE, ROOF_Z], inferred='the backstage door, stage side steps, the far lawn and tree belt are teaching assumptions; the meadow grass is abstracted as tufts'),
+            levels_m=[0.0, PAVE, 3 * RISE, 6 * RISE, 9 * RISE, STAGE, ROOF_Z], inferred='the backstage door, stage side steps, the far lawn and tree belt are teaching assumptions; the meadow grass is abstracted as tufts'),
         roof_contract=dict(type='open space; flat dark roof slab over the stage pavilion', datum_m=0.0, crowns_m=[ROOF_Z + .38]),
         identity_contract=dict(owner='flared bollard-gridded plaza facing a curved three-tier stone-and-concrete seating bowl and a timber-slatted stage pavilion, framed by stacked-stone meadow beds, shade trees and floodlight masts'),
         material_contract=dict(profile='source-palette clay: pale concrete slabs with grey joints, warm stacked stone, pale concrete treads, mixed-tone timber slats, charcoal stage and roof, grey bollards, green lawn and golden meadow', textured_keeper=False),
@@ -479,7 +479,7 @@ def cheek(t):
 M_ = cheek(.42)
 BED_LO = [(22.37, -10.0), A_OUT, M_, (21.8, 12.7), (31.0, 1.0)]                     # low meadow bed by the plaza
 BED_HI = [cheek(.40), B_IN, (B_IN[0], 22.3), (24.5, 22.3), (21.8, 12.6)]           # high meadow bed by the cheek
-H_LO, H_HI = .75, 1.95
+H_LO, H_HI = .9, TOP + .45
 PLAZA_E = ((25.6, -26.0), arc_pts(R0 + .3, ARC + .5, ARC + .5, 0)[0])            # east plaza edge (south end, north end)
 
 
@@ -527,8 +527,8 @@ def plaza():
             x = i * 3.0 + off
             if abs(x) > lim:
                 continue
-            ngon(b, 'bollard', x, y, PAVE - .01, .60, .095, 12)
-            ngon(b, 'dark', x, y, .58, .635, .105, 12)
+            ngon(b, 'bollard', x, y, PAVE - .01, .70, .10, 12)
+            ngon(b, 'joint2', x, y, .68, .74, .11, 12)
             if (i + j) % 3 == 0 and abs(x + 1.5) < lim:
                 b.box('dark', x + 1.5, y + .9, PAVE + .005, .36, .36, .014)
                 for g in range(4):
@@ -541,7 +541,7 @@ def ring(name, r_out, r_in, top, n=72):
     pts = arc_pts(r_out, -ARC - .5, ARC + .5, n) + arc_pts(r_in, ARC + .5, -ARC - .5, n)
     C.prism(name, pts, 'z', 0.0, top, 'stone', 'seating bowl')
     cap = arc_pts(r_out + .04, -ARC - .5, ARC + .5, n) + arc_pts(r_in + .02, ARC + .5, -ARC - .5, n)
-    C.prism(name + ' tread', cap, 'z', top - .03, top + .03, 'concrete', 'seating bowl')
+    C.prism(name + ' tread', cap, 'z', top - .025, top + .025, 'concrete', 'seating bowl')
 
 
 def bowl():
@@ -557,7 +557,7 @@ def bowl():
             r_in = r - depth
             ring(f'Tier {t + 1} step {s + 1}', r + (.03 if k else 0.0), r_in, z)
             # Stacked-stone riser: a bed joint at mid height and staggered head joints along the arc.
-            zj = (lower + .03 + z - .03) / 2
+            zj = (lower + z - .025) / 2
             pts = arc_pts(r + .004, -ARC, ARC, 72)
             for (p, q) in zip(pts, pts[1:]):
                 b.beam('mortar', (p[0], p[1], zj), (q[0], q[1], zj), .02, .012)
@@ -568,7 +568,7 @@ def bowl():
                 lo, hi = (lower + .035, zj) if i % 2 else (zj, z - .035)
                 p = arc_pts(r + .004, a, a, 0)[0]
                 b.beam('mortar', (p[0], p[1], lo), (p[0], p[1], hi), .02, .012)
-            lower = z + .03
+            lower = z + .025
             r = r_in
             k += 1
     b.flush('seating bowl joints')
