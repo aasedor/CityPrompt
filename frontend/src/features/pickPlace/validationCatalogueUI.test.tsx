@@ -17,7 +17,11 @@ describe('local student validation discovery',()=>{
     expect(screen.getAllByRole('article')).toHaveLength(12);
     const count = (domain: string) => CANONICAL_CHOICES.filter(choice => choice.domain === domain).length;
     expect(screen.getByText(new RegExp(`${count('building')} buildings, ${count('park_plaza')} parks, ${count('street_pathway')} streets`))).toBeInTheDocument();
-    for(const article of screen.getAllByRole('article'))expect(within(article).getAllByRole('option')).toHaveLength(1);
+    for(const article of screen.getAllByRole('article')) {
+      expect(within(article).queryByRole('combobox')).not.toBeInTheDocument();
+      fireEvent.click(within(article).getByRole('button', { name: /^Expand details for / }));
+      expect(within(article).getAllByRole('option')).toHaveLength(1);
+    }
     fireEvent.click(screen.getAllByRole('button',{name:'Parks'})[1]);
     fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     expect(screen.getAllByRole('article')).toHaveLength(12);
@@ -34,8 +38,9 @@ describe('local student validation discovery',()=>{
       }
       const asset = choice.placements[0];
       expect(asset.kind).toBe('street');
+      fireEvent.click(screen.getByRole('button', { name: `Expand details for ${cataloguePresentationFor(asset.id)?.label ?? asset.label}` }));
       const article = screen.getByLabelText(`Variant for ${cataloguePresentationFor(asset.id)?.label ?? asset.label}`).closest('article')!;
-      fireEvent.click(within(article).getByRole('button', { name: /Choose & draw route/ }));
+      fireEvent.click(within(article).getByRole('button', { name: 'Choose & draw route' }));
       expect(onPickStreet).toHaveBeenLastCalledWith(asset);
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     }
