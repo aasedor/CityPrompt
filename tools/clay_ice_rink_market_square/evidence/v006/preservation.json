@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-ice-rink-market-square-clay-v006",
+  "glb": "clay-ice-rink-market-square-clay-v006.glb",
+  "glb_bytes": 4134768,
+  "glb_sha256": "7d8cd26a265af09e38f191134f42cf1d2e4077e7c2f61ee53e3cbcdffafd9f37",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "christmas_tree.png": 92,
+    "dasher_boards.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "ice_surface.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "market_chalets.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "square_aerial.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-ice-rink-market-square-clay-v006-renders-and-glb.zip",
+  "zip_bytes": 37322907
+}

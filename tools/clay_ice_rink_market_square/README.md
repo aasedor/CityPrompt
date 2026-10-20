@@ -77,6 +77,6 @@ NOT TESTED. The model sits on a level base. Shared terrain registration is not a
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (x)
+## Open blockers after v006 (x)
 
-outward chalet gables and eaves bare (no garland, lights or bow)
+x

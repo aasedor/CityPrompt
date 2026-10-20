@@ -1,0 +1,126 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "North chalet 0 counter",
+      "face": "North chalet 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South chalet 0 counter",
+      "face": "South chalet 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "North chalet 1 counter",
+      "face": "North chalet 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South chalet 1 counter",
+      "face": "South chalet 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "North chalet 2 counter",
+      "face": "North chalet 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South chalet 2 counter",
+      "face": "South chalet 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "North chalet 3 counter",
+      "face": "North chalet 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "South chalet 3 counter",
+      "face": "South chalet 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West chalet 0 counter",
+      "face": "West chalet 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East chalet 0 counter",
+      "face": "East chalet 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West chalet 1 counter",
+      "face": "West chalet 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East chalet 1 counter",
+      "face": "East chalet 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West chalet 2 counter",
+      "face": "West chalet 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East chalet 2 counter",
+      "face": "East chalet 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West chalet 3 counter",
+      "face": "West chalet 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East chalet 3 counter",
+      "face": "East chalet 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West chalet 4 counter",
+      "face": "West chalet 4",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East chalet 4 counter",
+      "face": "East chalet 4",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "West chalet 5 counter",
+      "face": "West chalet 5",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "East chalet 5 counter",
+      "face": "East chalet 5",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
