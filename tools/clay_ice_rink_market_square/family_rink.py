@@ -621,8 +621,8 @@ def fir(b, tx, ty):
         br = .15 if i < 9 else .11                                              # round bauble hung just under the tip
         rr = 1.02 * r + .06                                                     # proud of the tip: never buried in the skirt below
         (red if (q + i) % 2 else gold).append((x0 + rr * ca, y0 + rr * sa, z - .04 - br))
-    balls('Tree baubles red', 'flower', red, .15, 8, 5, small=[p for p in red if p[2] > zb0 + 8.6], rs=.11)
-    balls('Tree baubles gold', 'gold', gold, .15, 8, 5, small=[p for p in gold if p[2] > zb0 + 8.6], rs=.11)
+    balls('Tree baubles red', 'flower', red, .15, 6, 4, small=[p for p in red if p[2] > zb0 + 8.6], rs=.11)
+    balls('Tree baubles gold', 'gold', gold, .15, 6, 4, small=[p for p in gold if p[2] > zb0 + 8.6], rs=.11)
     balls('Tree lights', 'pale', lights, .055, 4, 2)
     # Five-point star seated on the leader tip by a short gold stem: two crossed closed star prisms (one facing
     # north-south, one east-west) so it reads as a solid star from every side, its lowest inner point on the stem.
@@ -706,24 +706,34 @@ def chalet(name, cx, cy, facing, width=4.4, depth=3.6):
     b.box('flower', *P(0.0, wz - .3), .16, .16, .16)
     bx, by, bz = Q(0.0, under(0.0) - .14)
     b.box('flower', bx, by, bz, .34 if abs(tx) > .5 else .14, .14 if abs(tx) > .5 else .34, .2)     # bow at the apex
-    # Outward faces trimmed like the front: a garland with lights under the rear rakes and a red bow at the rear
-    # apex, and a garland with lights along both outer eaves, so every chalet reads decorated from the lanes.
-    R = lambda u, z: (cx - fx * dg + tx * u, cy - fy * dg + ty * u, z)
+    # Outward faces: fat garlands hung PROUD of the snow-slab lip on the rear rakes and along both outer eaves,
+    # with warm lights on their outer faces, and a large red bow at the rear apex, so the rear-facing chalets
+    # read as decorated from the elevated views as well as from the lanes.
+    dr = depth / 2 + ov + .12                                                    # rear rake garland: outboard of the slab end face
+    R = lambda u, z: (cx - fx * dr + tx * u, cy - fy * dr + ty * u, z)
+    lip = lambda u: zr + (zeave - zr) * abs(u) / half - .07                     # mid-height of the slab lip at u
     for s in (-1, 1):
-        u0, u1 = s * (half - .15), s * .12
-        b.beam('planting', R(u0, under(u0) - .1), R(u1, under(u1) - .1), .16 + .01, .16, ext=0.0)
-        for i in range(1, 6):
-            u = u0 + (u1 - u0) * i / 6
-            b.box('pale', *R(u, under(u) - .22), .07, .07, .07)
-        ue = s * (half - .22)                                                    # eave garland just inside the eave edge
-        ze = under(ue) - .1
-        ea = depth / 2 + ov - .3
-        b.beam('planting', (cx - fx * ea + tx * ue, cy - fy * ea + ty * ue, ze), (cx + fx * ea + tx * ue, cy + fy * ea + ty * ue, ze), .15, .15, ext=0.0)
-        for i in range(5):
-            e = -ea + 2 * ea * (i + .5) / 5
-            b.box('pale', cx + fx * e + tx * ue, cy + fy * e + ty * ue, ze - .12, .07, .07, .07)
-    rx, ry, rz = R(0.0, under(0.0) - .14)
-    b.box('flower', rx, ry, rz, .34 if abs(tx) > .5 else .14, .14 if abs(tx) > .5 else .34, .2)     # red bow at the rear apex
+        u0, u1 = s * (half + .02), s * .2
+        b.beam('planting', R(u0, lip(u0) - .02), R(u1, lip(u1) - .02), .22, .22, ext=0.0)
+        for i in range(1, 7):
+            u = u0 + (u1 - u0) * i / 7
+            px, py, pz = R(u, lip(u) - .02)
+            b.box('pale', px - fx * .12, py - fy * .12, pz + .02, .08, .08, .08)          # lights on the outer face
+        ue = s * (half + .12)                                                    # eave garland outboard of the slab edge
+        ze = zeave - .09
+        ea = depth / 2 + ov
+        b.beam('planting', (cx - fx * ea + tx * ue, cy - fy * ea + ty * ue, ze), (cx + fx * ea + tx * ue, cy + fy * ea + ty * ue, ze), .22, .22, ext=0.0)
+        for i in range(6):
+            e = -ea + 2 * ea * (i + .5) / 6
+            b.box('pale', cx + fx * e + tx * (ue + s * .12), cy + fy * e + ty * (ue + s * .12), ze + .02, .08, .08, .08)
+    rx, ry, rz = R(0.0, zr - .12)                                                # large red bow at the rear apex
+    wide = abs(tx) > .5
+    for s in (-1, 1):                                                            # two loops either side of the knot
+        lx, ly = rx + tx * s * .2, ry + ty * s * .2
+        b.box('flower', lx, ly, rz + .04, .3 if wide else .12, .12 if wide else .3, .32)
+        tl = (rx + tx * s * .12, ry + ty * s * .12)                              # tails hanging below the knot
+        b.box('flower', tl[0] - fx * .01, tl[1] - fy * .01, rz - .28, .1, .1, .34)              # top pokes into the loop: no shared plane
+    b.box('flower', rx - fx * .02, ry - fy * .02, rz + .04, .16, .16, .2)      # knot, standing proud of the loops
     da = depth / 2 + .93                                                         # garland along the awning's front edge
     b.beam('planting', (cx + fx * da - tx * (width / 2 - .75), cy + fy * da - ty * (width / 2 - .75), 2.1),
            (cx + fx * da + tx * (width / 2 - .75), cy + fy * da + ty * (width / 2 - .75), 2.1), .14, .14)
@@ -756,7 +766,7 @@ def square():
         o = len(V)
         V.extend([(x0, y0, .041), (x1, y0, .041), (x1, y1, .041), (x0, y1, .041)])
         Fj.append((o, o + 1, o + 2, o + 3))
-    CW, SL = .35, .6                                                             # sett course width and length
+    CW, SL = .35, .68                                                            # sett course width and length
     for k in range(int((ys1 - ys0) / CW)):                                      # coursed setts: bed joints and staggered cross joints
         y = ys0 + k * CW
         spans = [(-FW + 3.05, FW - 3.05)] if abs(y + CW / 2) > DY + .05 else [(-FW + 3.05, -DX - .05), (DX + .05, FW - 3.05)]
