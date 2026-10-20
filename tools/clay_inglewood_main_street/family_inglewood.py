@@ -33,7 +33,7 @@ T = .4
 EPS = .002
 PALETTE = dict(wall=(.58, .29, .19), brick=(.58, .29, .19), joint=(.70, .64, .56), stone=(.80, .74, .62), cream=(.86, .81, .68),
     white=(.93, .92, .88), trim=(.93, .92, .88), frame=(.13, .21, .18), dark=(.15, .16, .17), sign=(.20, .24, .22),
-    glass=(.20, .25, .27), interior=(.82, .78, .72), floor=(.56, .46, .36), roof=(.62, .58, .50), membrane=(.76, .76, .74),
+    glass=(.20, .25, .27), interior=(.82, .78, .72), floor=(.56, .46, .36), roof=(.52, .48, .40), membrane=(.76, .76, .74),
     concrete=(.76, .75, .72), sidejoint=(.60, .59, .56), paver=(.55, .30, .23), asphalt=(.25, .25, .26), lane=(.33, .33, .34),
     marking=(.94, .94, .92), yellow=(.86, .66, .18), hardware=(.08, .08, .09), banner=(.62, .12, .14), timber=(.40, .30, .21),
     tree=(.32, .46, .20), planting=(.30, .44, .20), soil=(.24, .18, .12), grass=(.45, .52, .30),
@@ -45,9 +45,9 @@ def manifest(version):
     h = 12.0
     cams = G.camera_roster(XE - XCW, LANE1 - YS, h, [
         ('storefront_close', (-2.0, -4.6, 1.8), (-2.0, 0.0, 2.6), 32),
-        ('bracketed_cornice', (14.0, -6.5, 3.0), (16.5, 0.0, 9.0), 35),
-        ('arched_windows', (30.5, -7.5, 4.5), (30.5, 0.0, 6.6), 35),
-        ('corner_entrance', (-36.5, -9.5, 2.2), (-29.0, -1.0, 3.6), 32),
+        ('bracketed_cornice', (13.0, -3.2, 2.5), (16.0, 0.0, 8.8), 35),
+        ('arched_windows', (25.4, -3.6, 3.2), (24.75, 0.0, 7.0), 35),
+        ('corner_entrance', (-41.0, -6.0, 2.4), (-29.0, 0.0, 3.4), 32),
         ('angle_parking', (6.0, -22.0, 9.0), (8.0, -9.0, 0.0), 32),
         ('crosswalk_bulbout', (-12.0, -20.0, 6.5), (-28.0, -9.0, 0.0), 30),
         ('street_furniture', (-8.0, -10.6, 1.7), (-14.0, -4.6, 1.6), 30),
@@ -58,7 +58,7 @@ def manifest(version):
         if c['name'] == 'front':                                               # the locked front: eye level at the east bulb-out, looking west along the north sidewalk
             c.update(location=(38.5, -10.0, 1.7), target=(6.0, -1.5, 4.6), lens=22, whole=False)
         elif c['name'] == 'front_corner':                                      # the locked oblique: high over the south-west corner, looking up the street
-            c.update(location=(-52.0, -38.0, 38.0), target=(-2.0, 0.0, 0.0), lens=30, whole=False)
+            c.update(location=(-46.0, -32.0, 32.0), target=(-6.0, 2.0, 0.0), lens=30, whole=False)
         elif c['name'] == 'aerial':
             c.update(location=(36.0, -60.0, 46.0), target=(-4.0, -4.0, 0.0), lens=28, whole=False)
         elif c['name'] == 'top':                                               # the locked top view: north blocks above, the street below
@@ -590,7 +590,7 @@ def furniture():
     b.box('soil', XCE + 1.6, 6.0, SWZ + .0045, 1.2, 1.2, .012)
     street_tree(XCE + 1.6, YS - 6.0, z=SWZ + .008, height=6.0, spread=1.3)
     b.box('soil', XCE + 1.6, YS - 6.0, SWZ + .0045, 1.2, 1.2, .012)
-    lamp(b, XCE + .9, -SW + 1.2, -1)
+    lamp(b, XCE + .9, -BULB + 2.6, -1)
     lamp(b, XCW - .9, -SW + 1.2, -1)
     b.flush('street furniture')
     c = Batch()
@@ -804,7 +804,7 @@ def block(spec):
     uh = upper_holes(spec, pc)
     z0 = .003 if dy else 0.0
     f.wall(f"{spec['name']} street carrier", x0, x1 + .01, z0, top, depth=T, role='wall', holes=gh + uh)
-    G.brick_courses(f, x0 + .02, x1 - .02, GZ0 - .1, top - .12, gh + uh, spacing=.24)
+    G.brick_courses(f, x0 + .02, x1 - .02, GZ0 - .1, top - .12, gh + uh, spacing=.16)
     m = Merge(f)
     storefront(spec, m, f, pc, gh)
     upper(spec, m, f, uh)
@@ -876,7 +876,7 @@ def corner_west():
     hs += [hole('Corner west rear door', -22.6, DZ0, 1.1, 2.6, kind='door')]
     uh = [hole(f'Corner west upper {i}', -2.2 - i * 2.45, 5.45, 1.05, 2.25) for i in range(9)]
     f.wall('Corner block west carrier', lo, hi, 0.0, top, depth=T, role='wall', holes=hs + uh)
-    G.brick_courses(f, lo + .02, hi - .02, GZ0 - .1, top - .12, hs + uh, spacing=.24)
+    G.brick_courses(f, lo + .02, hi - .02, GZ0 - .1, top - .12, hs + uh, spacing=.16)
     m = Merge(f)
     for h in hs:
         if h['kind'] == 'shop':
