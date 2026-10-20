@@ -35,7 +35,7 @@ EPS = .002
 PALETTE = dict(wall=(.62, .33, .24), joint=(.70, .55, .47), trim=(.42, .32, .22), pale=(.86, .84, .80),
     stone=(.76, .70, .58), roof=(.34, .35, .37), foundation=(.55, .53, .50), glass=(.30, .36, .40),
     stained=(.80, .56, .26), hardware=(.10, .10, .11), interior=(.86, .82, .76), floor=(.62, .56, .48),
-    timber=(.50, .40, .28), door=(.14, .27, .21), door2=(.10, .21, .16), shingle=(.50, .45, .38), shjoint=(.34, .30, .26), planting=(.30, .44, .20), grass=(.38, .50, .24),
+    timber=(.50, .40, .28), door=(.14, .27, .21), door2=(.10, .21, .16), shingle=(.43, .37, .30), shjoint=(.26, .22, .18), planting=(.30, .44, .20), grass=(.38, .50, .24),
     paving=(.72, .71, .68), asphalt=(.28, .28, .29), walk=(.56, .32, .24), brick=(.60, .32, .23), pot=(.66, .40, .30))
 
 
@@ -43,7 +43,7 @@ def manifest(version):
     h = ZC + 1.1
     cams = G.camera_roster(X1 - X0 + .6, Y1 - Y0 + .6, h, [
         ('bay_window', (XC + .4, Y0 - 11.0, 3.9), (XC + .4, Y0 - BP, 3.9), 40),
-        ('gable_bargeboard', (XC, Y0 - 9.0, 9.4), (XC, Y0, 8.7), 45),
+        ('gable_bargeboard', (XC, Y0 - 9.6, 9.4), (XC, Y0 - BP, 8.7), 45),
         ('porch_entrance', (2.6, Y0 - 7.0, 1.9), (2.3, Y0, 2.0), 40),
         ('porch_frieze', (.2, Y0 - 4.6, 2.5), (2.4, Y0 - 1.9, 3.3), 35),
         ('west_side', (X0 - 15.0, 0.0, 4.6), (X0, 0.0, 4.6), 40),
@@ -53,8 +53,10 @@ def manifest(version):
         ('interior', (XC, Y0 - .3, F1 + 1.6), (XC + .8, Y0 + 5.0, F1 + 1.3), 30),
         ('rear_north', (0.0, Y1 + 17.0, 5.0), (0.0, Y1, 5.0), 45)])
     for c in cams:                       # the locked front looks from the south-south-west at eye level
-        if c['name'] in ('aerial', 'front_corner'):        # start close; the whole-scene fit backs off only as far as needed
-            c['location'] = tuple(t + (l - t) * .5 for l, t in zip(c['location'], c['target']))
+        if c['name'] == 'front_corner':                    # the locked oblique: high from the south-west, the house filling the frame
+            c['location'] = (-10.5, -12.5, 15.5); c['target'] = (-.4, -1.2, 4.4); c['lens'] = 35; c['whole'] = False
+        if c['name'] == 'aerial':
+            c['location'] = (11.0, -13.5, 19.0); c['target'] = (0.0, -.5, 3.8); c['lens'] = 35; c['whole'] = False
         if c['name'] == 'front':
             c['location'] = (-7.0, Y0 - 12.8, 1.6); c['target'] = (-.2, Y0 + 2.5, 5.0); c['lens'] = 28; c['whole'] = False
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -412,7 +414,8 @@ W1, H1 = F1 + .55, 2.05                         # ground-floor sash sill and hei
 W2, H2 = F2 + .45, 1.80                         # upper-floor sash sill and height (lintels clear the eaves)
 PX0, PX1, PD = 1.00, 3.95, 2.10                  # porch x extent and depth
 SQ = math.sqrt(.5)
-YB = Y0 - OVF - .04                             # plane of the front bargeboard and its fretwork
+YG = Y0 - BP                                    # front gable plane, carried out over the bay to the bay face
+YB = YG - OVF - .04                             # plane of the front bargeboard and its fretwork
 
 
 def zs(x, y): return EAVE + S1 * (y - Y0)
@@ -603,15 +606,6 @@ def bay():
     for z0, z1 in ((W1 - .145, W1 - .005), (W2 - .145, W2 - .005), (W1 + H1 + .005, W1 + H1 + .245), (W2 + H2 + .005, W2 + H2 + .245)):
         C.prism(f'Bay stone band {z0:.2f}', band, 'z', z0, z1, 'stone', 'bay')
     strip('Bay skirt roof', offset(.42, Y0 + .02), offset(-.04, Y0 + .02), 3.95, 4.36, 'roof', 'bay', closed=False)
-    # A slim moulded cornice and cap at the top of the bay, under the projecting gable.
-    b = Batch()
-    cor = offset(.08, Y0 + .01)
-    bed = offset(.03, Y0 + .01)
-    for i in range(3):
-        b.beam('trim', (*cor[i], EAVE - .12), (*cor[i + 1], EAVE - .12), .18, .18, ext=.09)
-        b.beam('trim', (*bed[i], EAVE - .25), (*bed[i + 1], EAVE - .25), .1, .09, ext=.05)
-    b.flush('bay cornice')
-    C.prism('Bay cap', offset(.12, Y0 + .02)[::-1], 'z', EAVE - .02, EAVE + .04, 'roof', 'bay')
     inner = offset(-T, Y0 + T)
     for z in (F1, F2):
         C.prism(f'Bay floor {z:.1f}', inner[::-1], 'z', z - .22, z, 'floor', 'inside')
@@ -620,12 +614,12 @@ def bay():
 
 def gables():
     """Gable walls with attic windows: the shingled front cross gable and the brick west and east gables."""
-    f = C.Face((0, Y0, 0), (1, 0, 0), (0, 1, 0), 'south')
-    g = C.prism('Front gable', [(XC - HW, EAVE), (XC + HW, EAVE), (XC, ZC - .12)], 'y', Y0, Y0 + T, 'shingle', 'envelope')
+    f = C.Face((0, YG, 0), (1, 0, 0), (0, 1, 0), 'front gable')
+    g = C.prism('Front gable', [(XC - HW, EAVE), (XC + HW, EAVE), (XC, ZC - .12)], 'y', YG, YG + T, 'shingle', 'envelope')
     g['rlasm_wall_carrier'] = True
     za = EAVE + .25
-    att = [hole('attic centre window', XC, za, .66, 1.2), hole('attic west window', XC - .62, za, .4, .95),
-           hole('attic east window', XC + .62, za, .4, .95)]
+    att = [hole('attic centre window', XC, za, .66, 1.2), hole('attic west window', XC - .62, za, .4, 1.2),
+           hole('attic east window', XC + .62, za, .4, 1.2)]
     for h in att:
         f.cut(g, h['id'] + ' full carrier cut', h['u'], h['z'], h['w'], h['h'], T)
     m = Merge(f)
@@ -633,10 +627,9 @@ def gables():
         framed(m, f, h, cols=1, rows=2, inset=.12, occupied='attic room')
         m.box('stained', h['u'], .145, h['z'] + h['h'] - .2, h['w'] - .16, .006, .26)
     m.box('stone', XC, -.05, za - .075, 1.95, .2, .12)                                  # shared stone sill
-    for h in att:
-        m.box('stone', h['u'], -.03, h['z'] + h['h'] + .105, h['w'] + .2, .12, .2)
+    m.box('stone', XC, -.03, za + 1.2 + .105, 1.95, .12, .2)                              # one shared head over the triple
     m.flush('front gable')
-    tri_courses(f, XC - HW, XC + HW, EAVE, ZC - .12, att, spacing=.15, role='shjoint', label='shingle courses')
+    tri_courses(f, XC - HW, XC + HW, EAVE, ZC - .12, att, spacing=.12, role='shjoint', label='shingle courses')
     # West gable: the paired tall attic sashes of the source, centred under the ridge.
     w = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west')
     g = C.prism('West gable', [(Y0, EAVE), (YF, EAVE), (YR, ZR - .12)], 'x', X0, X0 + T, 'wall', 'envelope')
@@ -663,8 +656,8 @@ def roofs():
                                 (X1 + OVM, YR), (X0 - OVM, YR)], zs)
     plate('Main north slope', [(X0 - OVM, YR), (X1 + OVM, YR), (X1 + OVM, yn), (RX1 + OV, yn), (RXC, YJ), (RX0 - OV, yn),
                                 (X0 - OVM, yn)], zn)
-    plate('Cross gable west slope', [(xw, Y0 - OVF), (XC, Y0 - OVF), (XC, YV), (xw, Y0 - OV)], zx)
-    plate('Cross gable east slope', [(XC, Y0 - OVF), (xe, Y0 - OVF), (xe, Y0 - OV), (XC, YV)], zx)
+    plate('Cross gable west slope', [(xw, YG - OVF), (XC, YG - OVF), (XC, YV), (xw, Y0 - OV)], zx)
+    plate('Cross gable east slope', [(XC, YG - OVF), (xe, YG - OVF), (xe, Y0 - OV), (XC, YV)], zx)
     plate('Rear wing west slope', [(RXC, YJ), (RXC, YH), (RX0 - OV, Y1 + OV), (RX0 - OV, yn)], zww)
     plate('Rear wing east slope', [(RXC, YJ), (RX1 + OV, yn), (RX1 + OV, Y1 + OV), (RXC, YH)], zwe)
     plate('Rear wing hip', [(RXC, YH), (RX0 - OV, Y1 + OV), (RX1 + OV, Y1 + OV)], zwn)
@@ -674,7 +667,7 @@ def roofs():
     b.beam('roof', (RXC, YJ, ZRR + up), (RXC, YH, ZRR + up), .16, .1)
     for xx in (RX0 - OV, RX1 + OV):
         b.beam('roof', (RXC, YH, ZRR + up), (xx, Y1 + OV, ZE + up), .14, .08)
-    b.beam('roof', (XC, Y0 - OVF, ZC + up), (XC, YV, ZC + up), .14, .08)
+    b.beam('roof', (XC, YG - OVF, ZC + up), (XC, YV, ZC + up), .14, .08)
     # Fascias (5 cm clear of the plate edges), gutters and the closed apex blocks on the two main gable rakes.
     fz, fh, gz = ZE - .09, .22, ZE - .14
     for x in (X0 - OVM - .035, X1 + OVM + .035):
@@ -685,6 +678,8 @@ def roofs():
             ((X0 - OVM, yn + .035), (RX0 - OV, yn + .035), (0, 1)), ((RX1 + OV, yn + .035), (X1 + OVM, yn + .035), (0, 1)),
             ((RX0 - OV - .035, yn), (RX0 - OV - .035, Y1 + OV), (-1, 0)), ((RX1 + OV + .035, yn), (RX1 + OV + .035, Y1 + OV), (1, 0)),
             ((RX0 - OV, Y1 + OV + .035), (RX1 + OV, Y1 + OV + .035), (0, 1))]
+    for x in (xw - .035, xe + .035):                                                   # fascia on the cross-gable side eaves
+        b.beam('trim', (x, YG - OVF + .06, fz), (x, Y0 - OV - .035, fz), .05, fh - .02, ext=.03)
     for (a, c, (nx, ny)) in runs:
         b.beam('trim', (a[0], a[1], fz), (c[0], c[1], fz), .05, fh, ext=.04)
         b.beam('hardware', (a[0] + nx * .085, a[1] + ny * .085, gz), (c[0] + nx * .085, c[1] + ny * .085, gz), .11, .1, ext=.08)
@@ -736,8 +731,6 @@ def bargeboard():
         bx = xf - s * .07
         b.box('trim', bx, YB - .005, (zbot - .15 + ZE + .05) / 2, .2, .11, ZE + .05 - zbot + .15)
         b.box('trim', bx, YB - .005, zbot - .22, .11, .09, .1)
-        for (z0, z1, depth) in ((zbot - .13, zbot, OVF + .02), (zbot - .29, zbot - .13, .36), (zbot - .45, zbot - .29, .2)):
-            b.box('trim', bx, Y0 + .02 - depth / 2, (z0 + z1) / 2, .12, depth, z1 - z0)
     # Fretwork arch inside the gable: a pierced board between the bargeboards' lower edges and a round arch springing
     # tangent to them and cresting above the attic windows; short spindles stand in the spandrel.
     Zb0 = ZC + .02 - Wv
@@ -764,12 +757,23 @@ def bargeboard():
     C.rod('Gable finial', (XC, YB - .03, ZC - .2), (XC, YB - .03, ZC + .55), .045, 'trim', 'gable ornament', 8)
     b.box('trim', XC, YB - .03, ZC + .12, .15, .15, .18)
     b.box('trim', XC, YB - .03, ZC + .38, .09, .09, .12)
-    C.rod('Gable pendant', (XC, YB - .03, ZC - .2), (XC, YB - .03, crest - .2), .05, 'trim', 'gable ornament', 8)
-    b.box('trim', XC, YB - .03, crest - .24, .13, .13, .13)
-    # Painted cornice across the gable base either side of the bay.
-    for (a, c) in ((XC - HW, XC - BF - BP), (XC + BF + BP, XC + HW)):
-        b.box('trim', (a + c) / 2, Y0 - .09, EAVE - .1, c - a, .2, .16)
+    C.rod('Gable pendant', (XC, YB - .03, ZC - .2), (XC, YB - .03, crest - .05), .05, 'trim', 'gable ornament', 8)
+    b.box('trim', XC, YB - .03, crest - .09, .13, .13, .13)
     b.flush('gable ornament')
+    # Gable-base cornice: the projecting gable sits on one moulded cornice running across its whole base from the bay
+    # face back into the main wall, carried on knee brackets at its ends and consoles at the bay's front corners.
+    b = Batch()
+    b.box('trim', XC, (YG - .16 + Y0 + .05) / 2, EAVE - .055, 2 * (HW - .05), Y0 + .05 - (YG - .16), .17)      # corona
+    b.box('trim', XC, (YG - .08 + Y0 + .08) / 2, EAVE - .235, 2 * (HW - .09), Y0 + .08 - (YG - .08), .19)     # bed mould
+    b.flush('gable base cornice')
+    zc = EAVE - .32                                                                    # underside the brackets bear on
+    for s in (-1, 1):
+        x = XC + s * (HW - .3)
+        C.prism(f'Gable knee bracket {s}', [(Y0 + .03, zc - 1.0), (Y0 + .03, zc + .01), (YG - .02, zc + .01), (YG - .02, zc - .14),
+                                           (Y0 - .25, zc - 1.0)], 'x', x - .06, x + .06, 'trim', 'gable ornament')
+        x = XC + s * (BF - .06)
+        C.prism(f'Gable bay console {s}', [(YG + .03, zc - .42), (YG + .03, zc + .01), (YG - .1, zc + .01), (YG - .1, zc - .2)],
+                'x', x - .05, x + .05, 'trim', 'gable ornament')
 
 
 def za_crest():
@@ -791,12 +795,12 @@ def porch():
         C.rod('Porch post', (px, py, F1 + .24), (px, py, zt - .2), .06, 'trim', 'porch', 10)
         for zz, r, hh in ((F1 + .7, .085, .3), (F1 + 1.6, .08, .18), (zt - .55, .085, .3)):
             C.rod('Porch post turning', (px, py, zz), (px, py, zz + hh), r, 'trim', 'porch', 10)
-        b.box('trim', px, py, zt - .14, .18, .18, .14)
-    b.box('trim', xm, yf + .14, zt + .07, PX1 - PX0 + .1, .2, .3)                      # beams
+        b.box('trim', px, py, zt - .08, .18, .18, .26)                                 # post cap, up into the beam
+    b.box('trim', xm, yf + .14, zt + .13, PX1 - PX0 + .1, .2, .18)                     # slim beams (fascia)
     for x in (PX0 + .14, PX1 - .14):
-        b.box('trim', x, (yf + Y0) / 2, zt + .07, .2, PD, .3)
-    # Spindle frieze under the beams, front and sides, with curved corner brackets.
-    zf0, zf1 = zt - .32, zt - .08
+        b.box('trim', x, (yf + Y0) / 2, zt + .13, .2, PD, .18)
+    # Spindle frieze under the beams, front and sides, with corner braces.
+    zf0, zf1 = zt - .2, zt + .02
     runs = [((PX0 + .24, yf + .14), (PX1 - .24, yf + .14)), ((PX0 + .14, yf + .24), (PX0 + .14, Y0 - .05)),
             ((PX1 - .14, yf + .24), (PX1 - .14, Y0 - .05))]
     for (a, c) in runs:
@@ -806,9 +810,14 @@ def porch():
         for i in range(1, n):
             t = i / n
             b.box('trim', a[0] + (c[0] - a[0]) * t, a[1] + (c[1] - a[1]) * t, (zf0 + zf1) / 2, .025, .025, zf1 - zf0)
-    for (px, py) in posts:
-        for dx, dy in ((1 if px < xm else -1, 0), (0, 1)):
-            b.beam('trim', (px + dx * .06, py + dy * .06, zf0 - .38), (px + dx * .45, py + dy * .45, zf0 + .01), .05, .07, ext=.04)
+    # Corner braces, narrower than the rail and the post so no face is shared: each is cut to finish inside the post
+    # (vertical end) and inside the frieze rail's underside (horizontal end), with no end cap left in the open.
+    zr = zf0 - .02
+    prof = [(.05, zr - .38), (.45, zr), (.35, zr), (.05, zr - .28)]
+    for i, (px, py) in enumerate(posts):
+        sx = 1 if px < xm else -1
+        C.prism(f'Porch brace front {i}', [(px + sx * u, z) for u, z in prof], 'y', py - .017, py + .017, 'trim', 'porch')
+        C.prism(f'Porch brace side {i}', [(py + u, z) for u, z in prof], 'x', px - .017, px + .017, 'trim', 'porch')
     # Iron balustrade: west side, the front west of the stair, east side.
     sx0, sx1 = 2.35, PX1 - .26
     rails = [((PX0 + .14, Y0 - .05), (PX0 + .14, yf + .24)), ((PX0 + .24, yf + .14), (sx0, yf + .14)),
