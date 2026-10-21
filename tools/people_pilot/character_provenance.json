@@ -1,0 +1,283 @@
+{
+  "schemaVersion": 1,
+  "initiative": "people-video-pilot-2026-10-21",
+  "localOnly": true,
+  "sources": [
+    {
+      "title": "Universal Base Characters Standard",
+      "creator": "Quaternius",
+      "officialPage": "https://quaternius.com/packs/universalbasecharacters.html",
+      "officialDownloadPage": "https://quaternius.itch.io/universal-base-characters",
+      "downloadMethod": "Official public No thanks, just take me to the downloads, Standard file only; no sign-in or payment.",
+      "archiveFile": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\characters\\sources\\universal-base-characters-standard.zip",
+      "archiveByteSize": 128968391,
+      "archiveSha256": "fdbf1804c90dfc1ea03e992bff7da2dfd1a79318e13270a660180f9308455f40",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseFile": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\characters\\sources\\universal-base-characters\\Universal Base Characters[Standard]\\License_Standard.txt",
+      "licenseSha256": "0f4beaf0fe360a7732e58bbe3dbf60a2422367fbea60cb9ea4add968f383268e"
+    },
+    {
+      "title": "Universal Animation Library Standard",
+      "creator": "Quaternius",
+      "officialPage": "https://quaternius.com/packs/universalanimationlibrary.html",
+      "officialDownloadPage": "https://quaternius.itch.io/universal-animation-library",
+      "downloadMethod": "Official public No thanks, just take me to the downloads, Standard file only; no sign-in or payment.",
+      "archiveFile": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\characters\\sources\\universal-animation-library-standard.zip",
+      "archiveByteSize": 15904933,
+      "archiveSha256": "cc73fc4e495b82958207316596317a3f40b9fa38065bde1027937452da537724",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseFile": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\characters\\sources\\universal-animation-library\\Universal Animation Library[Standard]\\License.txt",
+      "licenseSha256": "6d01f55c6e4c49a2c9963e147e561945ae2c83958c8ca667d90a6bffdbfac061"
+    }
+  ],
+  "derivativeAuthorship": "Original simple outer-garment meshes, trousers, closed sneaker meshes, open-front coat hem, palettes and measured root grounding over CC0 source adult anatomy, hair and motion. These are derivatives, not wholly original anatomy or mocap.",
+  "sourceSelection": "Free Standard supplies Superhero_Female_FullBody and Superhero_Male_FullBody, plus Hair_Buns, Hair_Long and Hair_SimpleParted. Paid Regular/Source models excluded.",
+  "buildTool": "Blender 5.2.0 LTS; tools/people_pilot/build_characters.py",
+  "measurementTool": "Blender 5.2.0 LTS; tools/people_pilot/measure_characters.py",
+  "footContact": "Root-bone vertical correction baked at 24 fps from evaluated sneaker soles. In-between full-cycle samples remain within -2.04 mm to +6.48 mm of datum. Body retains source pelvis bob.",
+  "limitations": [
+    "Stylized low polygon source faces/anatomy; not photoreal characters.",
+    "Simple shoulder/collar seams, no cloth simulation, fingers retain source motion.",
+    "Stride estimate is measured ankle travel, not marker-based locomotion calibration.",
+    "Decoded costs estimate accessors, RGBA8 mipmapped textures and joint matrices; exclude Three.js objects, GPU allocator overhead and browser caches.",
+    "Browser visual review and capture integration are separate root-agent gates."
+  ],
+  "actors": [
+    {
+      "id": "people-pilot-commuter",
+      "runtimeUrl": "/people-pilot/people-pilot-commuter.glb",
+      "artifactFile": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\characters\\runtime\\people-pilot-commuter.glb",
+      "sha256": "123dd1a32a1f33141fbb52aa7e7ef7eb0d543d06d7517a890ee474a8d2dc06e5",
+      "byteSize": 1096500,
+      "coordinates": {
+        "up": "+Y",
+        "forward": "+Z",
+        "unit": "metre",
+        "footDatumY": 0
+      },
+      "idleFrame0DimensionsMetresXYZ": [
+        0.685206800699234,
+        1.6933352323248982,
+        0.7102333605289459
+      ],
+      "triangleCount": 13828,
+      "bones": 65,
+      "meshPrimitives": 14,
+      "materials": [
+        "people-pilot-commuter_brows",
+        "MI_Eyes",
+        "people-pilot-commuter_skin",
+        "people-pilot-commuter_jacket",
+        "people-pilot-commuter_hair",
+        "people-pilot-commuter_shirt",
+        "people-pilot-commuter_shoes",
+        "people-pilot-commuter_trousers"
+      ],
+      "decodedAccessorBytes": 925940,
+      "textures": [
+        {
+          "name": "T_Eye_Normal",
+          "width": 256,
+          "height": 256,
+          "encodedBytes": 15099,
+          "decodedRGBA8Bytes": 262144,
+          "estimatedRGBA8WithMipmapsBytes": 349526
+        },
+        {
+          "name": "T_Eye_Brown",
+          "width": 256,
+          "height": 256,
+          "encodedBytes": 35958,
+          "decodedRGBA8Bytes": 262144,
+          "estimatedRGBA8WithMipmapsBytes": 349526
+        }
+      ],
+      "estimatedDecodedAssetBytes": 1629152,
+      "clips": [
+        {
+          "name": "Idle",
+          "sourceName": "Idle_Loop",
+          "durationSeconds": 2.5,
+          "channelCount": 195,
+          "sampledSoleYMinMetres": -6.106682121753693e-06,
+          "sampledSoleYMaxMetres": -2.1420419216156006e-08,
+          "sampleCount": 41
+        },
+        {
+          "name": "Walk",
+          "sourceName": "Walk_Loop",
+          "durationSeconds": 1.3333333333333333,
+          "channelCount": 195,
+          "sampledSoleYMinMetres": -0.0019000321626663208,
+          "sampledSoleYMaxMetres": 0.006474951282143593,
+          "sampleCount": 41
+        }
+      ],
+      "strideEstimateMetresPerWalkCycle": 1.2933183461427689,
+      "strideEstimateMethod": "Sum of left and right ankle forward-axis ranges across 41 uniformly sampled times. Approximation; tune visually for source speed.",
+      "leftRightAnkleForwardRangesMetres": {
+        "l": 0.6516486257314682,
+        "r": 0.6416697204113007
+      },
+      "idlePreviewFile": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\characters\\qa\\people-pilot-commuter.png"
+    },
+    {
+      "id": "people-pilot-creative",
+      "runtimeUrl": "/people-pilot/people-pilot-creative.glb",
+      "artifactFile": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\characters\\runtime\\people-pilot-creative.glb",
+      "sha256": "8be2a865c978bdf91ec6e1fd6a28c3725293fb10e7bac268fe06da9ac0a8be81",
+      "byteSize": 1077976,
+      "coordinates": {
+        "up": "+Y",
+        "forward": "+Z",
+        "unit": "metre",
+        "footDatumY": 0
+      },
+      "idleFrame0DimensionsMetresXYZ": [
+        0.6699921786785126,
+        1.6531294025480747,
+        0.6944633424282074
+      ],
+      "triangleCount": 13562,
+      "bones": 65,
+      "meshPrimitives": 15,
+      "materials": [
+        "people-pilot-creative_brows",
+        "MI_Eyes",
+        "people-pilot-creative_skin",
+        "people-pilot-creative_jacket",
+        "people-pilot-creative_hair",
+        "people-pilot-creative_shirt",
+        "people-pilot-creative_shoes",
+        "people-pilot-creative_trousers"
+      ],
+      "decodedAccessorBytes": 906228,
+      "textures": [
+        {
+          "name": "T_Eye_Normal",
+          "width": 256,
+          "height": 256,
+          "encodedBytes": 15099,
+          "decodedRGBA8Bytes": 262144,
+          "estimatedRGBA8WithMipmapsBytes": 349526
+        },
+        {
+          "name": "T_Eye_Brown",
+          "width": 256,
+          "height": 256,
+          "encodedBytes": 35958,
+          "decodedRGBA8Bytes": 262144,
+          "estimatedRGBA8WithMipmapsBytes": 349526
+        }
+      ],
+      "estimatedDecodedAssetBytes": 1609440,
+      "clips": [
+        {
+          "name": "Idle",
+          "sourceName": "Idle_Loop",
+          "durationSeconds": 2.5,
+          "channelCount": 195,
+          "sampledSoleYMinMetres": -6.122514605522156e-06,
+          "sampledSoleYMaxMetres": -2.3469328880310059e-07,
+          "sampleCount": 41
+        },
+        {
+          "name": "Walk",
+          "sourceName": "Walk_Loop",
+          "durationSeconds": 1.3333333333333333,
+          "channelCount": 195,
+          "sampledSoleYMinMetres": -0.0018577435985207558,
+          "sampledSoleYMaxMetres": 0.006331204902380705,
+          "sampleCount": 41
+        }
+      ],
+      "strideEstimateMetresPerWalkCycle": 1.264602169394493,
+      "strideEstimateMethod": "Sum of left and right ankle forward-axis ranges across 41 uniformly sampled times. Approximation; tune visually for source speed.",
+      "leftRightAnkleForwardRangesMetres": {
+        "l": 0.6371798068284988,
+        "r": 0.6274223625659943
+      },
+      "idlePreviewFile": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\characters\\qa\\people-pilot-creative.png"
+    },
+    {
+      "id": "people-pilot-neighbour",
+      "runtimeUrl": "/people-pilot/people-pilot-neighbour.glb",
+      "artifactFile": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\characters\\runtime\\people-pilot-neighbour.glb",
+      "sha256": "8a7f19f6dceed71350c6106c633ecaaa0d5021a804bf4a7ef5f011fd2ad0398f",
+      "byteSize": 796312,
+      "coordinates": {
+        "up": "+Y",
+        "forward": "+Z",
+        "unit": "metre",
+        "footDatumY": 0
+      },
+      "idleFrame0DimensionsMetresXYZ": [
+        0.7911909818649292,
+        1.7858213540166616,
+        0.7403755486011505
+      ],
+      "triangleCount": 11397,
+      "bones": 65,
+      "meshPrimitives": 14,
+      "materials": [
+        "people-pilot-neighbour_brows",
+        "MI_Eyes",
+        "people-pilot-neighbour_skin",
+        "people-pilot-neighbour_jacket",
+        "people-pilot-neighbour_hair",
+        "people-pilot-neighbour_shirt",
+        "people-pilot-neighbour_shoes",
+        "people-pilot-neighbour_trousers"
+      ],
+      "decodedAccessorBytes": 626286,
+      "textures": [
+        {
+          "name": "T_Eye_Normal",
+          "width": 256,
+          "height": 256,
+          "encodedBytes": 15099,
+          "decodedRGBA8Bytes": 262144,
+          "estimatedRGBA8WithMipmapsBytes": 349526
+        },
+        {
+          "name": "T_Eye_Brown",
+          "width": 256,
+          "height": 256,
+          "encodedBytes": 35958,
+          "decodedRGBA8Bytes": 262144,
+          "estimatedRGBA8WithMipmapsBytes": 349526
+        }
+      ],
+      "estimatedDecodedAssetBytes": 1329498,
+      "clips": [
+        {
+          "name": "Idle",
+          "sourceName": "Idle_Loop",
+          "durationSeconds": 2.5,
+          "channelCount": 195,
+          "sampledSoleYMinMetres": -3.4188851714134216e-06,
+          "sampledSoleYMaxMetres": 5.774199962615967e-08,
+          "sampleCount": 41
+        },
+        {
+          "name": "Walk",
+          "sourceName": "Walk_Loop",
+          "durationSeconds": 1.3333333333333333,
+          "channelCount": 195,
+          "sampledSoleYMinMetres": -0.00203816220164299,
+          "sampledSoleYMaxMetres": 0.005751184653490782,
+          "sampleCount": 41
+        }
+      ],
+      "strideEstimateMetresPerWalkCycle": 1.3252060413360596,
+      "strideEstimateMethod": "Sum of left and right ankle forward-axis ranges across 41 uniformly sampled times. Approximation; tune visually for source speed.",
+      "leftRightAnkleForwardRangesMetres": {
+        "l": 0.6680054664611816,
+        "r": 0.6572005748748779
+      },
+      "idlePreviewFile": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\characters\\qa\\people-pilot-neighbour.png"
+    }
+  ]
+}

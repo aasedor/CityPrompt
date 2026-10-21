@@ -22,9 +22,15 @@ OMNI_INTERACTIONS_URL = "https://generativelanguage.googleapis.com/v1beta/intera
 MAX_GUIDE_IMAGE_BYTES = 12 * 1024 * 1024
 MAX_ROUTE_IMAGE_BYTES = 36 * 1024 * 1024
 MAX_PREVIEW_VIDEO_BYTES = 24 * 1024 * 1024
+MAX_CHARACTER_REFERENCE_BYTES = 8 * 1024 * 1024
+MAX_CHARACTER_REFERENCE_EDGE = 4096
 MIN_GUIDE_IMAGE_EDGE = 640
 
 MOTION_PROMPTS: dict[str, str] = {
+    "people_follow": (
+        "Keep the primary walking subject's face and upper body recognizable as the camera tracks them "
+        "exactly as shown in the source. Preserve the subject's natural gait, ground contact and stable appearance."
+    ),
     "bicycle_ride": (
         "Create a stabilized forward-facing bicycle ride along the supplied route. Hold the camera 1.6 metres "
         "above the route surface with a natural 35 mm perspective and level verticals. Follow the travel "
@@ -76,6 +82,56 @@ class OmniVideoContent:
 class PreviewVideo:
     data: bytes
     mime_type: str
+
+
+def decode_character_reference(value: str, declared_mime_type: str) -> GuideImage:
+    """Bound and fully decode one identity image before paid admission."""
+    encoded = value.split(",", 1)[1] if "," in value else value
+    if len(encoded) > 4 * ((MAX_CHARACTER_REFERENCE_BYTES + 2) // 3):
+        raise ValueError("The character reference exceeds the 8 MiB decoded limit.")
+    try:
+        data = base64.b64decode(encoded, validate=True)
+    except (binascii.Error, ValueError) as exc:
+        raise ValueError("The character reference is not valid base64 image data.") from exc
+    if not data:
+        raise ValueError("The character reference is empty.")
+    if len(data) > MAX_CHARACTER_REFERENCE_BYTES:
+        raise ValueError("The character reference exceeds the 8 MiB decoded limit.")
+    try:
+        with Image.open(io.BytesIO(data)) as image:
+            image_format = (image.format or "").upper()
+            if image_format not in {"PNG", "JPEG"}:
+                raise ValueError("The character reference must be PNG or JPEG.")
+            width, height = image.size
+            if not (0 < width <= MAX_CHARACTER_REFERENCE_EDGE and 0 < height <= MAX_CHARACTER_REFERENCE_EDGE):
+                raise ValueError("The character reference must have nonzero dimensions no greater than 4096 px.")
+            if getattr(image, "n_frames", 1) != 1:
+                raise ValueError("The character reference must contain one still image.")
+            image.verify()
+        with Image.open(io.BytesIO(data)) as image:
+            image.load()  # Verify real pixels too, including truncated JPEG scans.
+    except ValueError:
+        raise
+    except Exception as exc:
+        raise ValueError("The character reference is not a readable PNG or JPEG.") from exc
+    mime_type = "image/png" if image_format == "PNG" else "image/jpeg"
+    if mime_type != declared_mime_type:
+        raise ValueError("The character reference MIME type does not match its image content.")
+    return GuideImage(data=data, mime_type=mime_type, width=width, height=height)
+
+
+def build_character_reference_prompt(prompt: str) -> str:
+    """Declare separate Omni source-video and identity-image roles."""
+    # Official Omni guidance: ai.google.dev/gemini-api/docs/omni#prompt-guide
+    prefix = "[# Sources <VIDEO_0>@Video1] [# References <IMAGE_REF_0>@Image1]"
+    direction = (
+        "Use Image1 only for the walking subject's identity and appearance, including face, hair and clothing. "
+        "Preserve Video1's camera, timing, motion, actor positions and architecture. "
+        "Do not use the reference image as a first frame, background or camera layout."
+    )
+    if prompt.startswith(prefix + " ") and prompt.endswith(" " + direction):
+        return prompt
+    return f"{prefix} {prompt} {direction}"
 
 
 def decode_guide_image(value: str) -> GuideImage:
@@ -166,6 +222,8 @@ def build_cinematic_prompt(
     use_custom_prompt_only: bool = False,
 ) -> str:
     """Build the shared preflight/generation prompt for the selected control mode."""
+    if camera_motion == "people_follow" and (provider != "omni" or control_mode != "preview_video"):
+        raise ValueError("People-follow tracking requires Omni preview video.")
     if use_custom_prompt_only:
         if provider != "omni" or control_mode != "preview_video":
             raise ValueError("Custom-prompt-only mode requires Omni preview video.")
@@ -180,7 +238,8 @@ def build_cinematic_prompt(
         return " ".join([
             "Transform this rough 3D source into convincing live-action architectural footage. "
             "Use the source as a camera and layout guide, not a target rendering style. Keep it one continuous shot.",
-            "Match the source video's camera path, framing, speed and timing exactly.",
+            "Match the source video's camera path, framing, speed and timing exactly."
+            + (" " + MOTION_PROMPTS["people_follow"] if camera_motion == "people_follow" else ""),
             f"Requested scene detail: {detail}" if detail else
             "Keep existing people and traffic as shown; do not add new actors.",
             "Preserve building footprints, heights, roof forms, window openings, parks and street layout. "
@@ -423,8 +482,12 @@ def build_omni_payload(
     route_keyframes: Sequence[tuple[str, str]] | None = None,
     preview_video_base64: str | None = None,
     preview_video_mime_type: str | None = None,
+    character_reference_base64: str | None = None,
+    character_reference_mime_type: str = "image/png",
     render_quality: str = "draft",
 ) -> dict[str, Any]:
+    if character_reference_base64 is not None and control_mode != "preview_video":
+        raise ValueError("Character references require Omni preview video.")
     if control_mode == "multi_keyframe":
         if not route_keyframes:
             raise ValueError("Multi-keyframe video generation requires route keyframes.")
@@ -447,6 +510,11 @@ def build_omni_payload(
                 "mime_type": preview_video_mime_type,
             }
         ]
+        if character_reference_base64 is not None:
+            reference = decode_character_reference(character_reference_base64, character_reference_mime_type)
+            input_items.append({"type": "image", "data": base64.b64encode(reference.data).decode("ascii"),
+                                "mime_type": reference.mime_type})
+            prompt = build_character_reference_prompt(prompt)
         task = "edit"
     else:
         encoded = guide_base64.split(",", 1)[1] if "," in guide_base64 else guide_base64

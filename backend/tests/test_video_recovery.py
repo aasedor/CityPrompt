@@ -97,6 +97,102 @@ async def test_legacy_request_replays_without_new_prompt_or_provider_call(pilot)
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize("old_prompt_fields", [set(), {"custom_prompt", "use_custom_prompt_only"}])
+async def test_legacy_request_without_character_defaults_replays_exactly_once(pilot, old_prompt_fields):
+    f = pilot
+    original = await generate(f)
+    async with f.sessions() as db:
+        project = await db.get(Project, f.project.id)
+        meta = dict(project.metadata_)
+        entry = dict(meta["video_pilot_attempts"][0])
+        for key in list(entry):
+            if key.startswith("character_reference_") or key in old_prompt_fields:
+                entry.pop(key)
+        entry["request_sha256"] = video.revision_sha256(f.request.model_dump(mode="json",
+            exclude={"character_reference_base64", "character_reference_mime_type"} | old_prompt_fields))
+        meta["video_pilot_attempts"] = [entry]
+        project.metadata_ = meta
+        await db.commit()
+    assert (await generate(f)).attempt.id == original.attempt.id
+    with pytest.raises(HTTPException) as error:
+        await generate(f, f.request.model_copy(update={"character_reference_mime_type": "image/jpeg"}))
+    assert error.value.status_code == 409
+    f.video_provider.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_four_second_character_edit_saves_exact_private_reference_and_replays(pilot, monkeypatch):
+    from tests.test_people_video import _reference
+    import hashlib
+    f = pilot
+    monkeypatch.setattr(video, "inspect_video_media", lambda *_: {
+        "width": 1280, "height": 720, "fps": 24.0, "frame_count": 96,
+        "duration_seconds": 4.0, "duration_basis": "decoded_frames/fps"})
+    preview = base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode()
+    request = video.VideoGenerateRequest.model_validate({**f.request.model_dump(),
+        "control_mode": "preview_video", "duration_seconds": 4,
+        "preview_video_base64": preview, "preview_video_mime_type": "video/webm",
+        "character_reference_base64": _reference(), "character_reference_mime_type": "image/png"})
+    async with f.sessions() as db:
+        user = await db.get(User, f.user.id)
+        preflight = await video.preflight_video(request, user, db)
+    assert preflight.reference_image_count == 1
+    f.video_provider.assert_not_awaited()
+    result = await generate(f, request)
+    sent = f.video_provider.call_args.kwargs["payload"]
+    assert sent["input"][-1]["text"] == preflight.prompt_preview
+    assert [part["type"] for part in sent["input"]] == ["video", "image", "text"]
+    assert result.attempt.source_media["frame_count"] == 96
+    async with f.sessions() as db:
+        project = await db.get(Project, f.project.id)
+        entry = project.metadata_["video_pilot_attempts"][0]
+        assert entry["character_reference_sha256"] == hashlib.sha256(base64.b64decode(_reference())).hexdigest()
+        assert entry["character_reference_mime_type"] == "image/png"
+        assert entry["character_reference_width"] == 64
+        assert entry["character_reference_height"] == 128
+        assert entry["character_reference_role"] == "identity_appearance"
+        assert entry["reference_image_count"] == 1
+        assert f.saved[entry["character_reference_url"].removeprefix("/api/v1/files/")] == base64.b64decode(_reference())
+        assert "character_reference_base64" not in entry
+        assert entry["request_sha256"] == video.revision_sha256(request.model_dump(mode="json"))
+        control = hashlib.sha256()
+        control.update(base64.b64decode(f.request.guide_frame_base64.split(",")[1]))
+        control.update(base64.b64decode(preview))
+        control.update(base64.b64decode(_reference()))
+        assert entry["guide_sha256"] == control.hexdigest()
+        monkeypatch.setattr(video, "check_project_read_access", AsyncMock())
+        shared = await video.list_video_attempts(project.id, SimpleNamespace(id=uuid.uuid4()), db)
+        assert shared.attempts[0].character_reference_url is None
+        assert shared.attempts[0].character_reference_sha256 is None
+        assert shared.attempts[0].character_reference_role is None
+        assert shared.attempts[0].character_reference_mime_type is None
+        assert shared.attempts[0].character_reference_width is None
+        assert shared.attempts[0].character_reference_height is None
+    assert (await generate(f, request)).attempt.id == result.attempt.id
+    with pytest.raises(HTTPException) as error:
+        await generate(f, request.model_copy(update={"character_reference_base64": _reference(width=65)}))
+    assert error.value.status_code == 409
+    f.video_provider.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_invalid_character_reference_never_reserves_or_contacts_provider(pilot):
+    f = pilot
+    preview = base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode()
+    request = f.request.model_copy(update={"control_mode": "preview_video",
+        "preview_video_base64": preview, "preview_video_mime_type": "video/webm",
+        "character_reference_base64": "not an image"})
+    with pytest.raises(HTTPException, match="base64"):
+        await generate(f, request)
+    f.video_provider.assert_not_awaited()
+    assert not f.saved
+    async with f.sessions() as db:
+        project = await db.get(Project, f.project.id)
+        assert not project.metadata_[TRIAL_KEY]["video_requests"]
+        assert not project.metadata_.get("video_pilot_attempts")
+
+
+@pytest.mark.asyncio
 async def test_video_allowance_spans_providers_and_counts_failure(pilot):
     f = pilot
     f.video_provider.side_effect = RuntimeError("uncertain paid outcome")

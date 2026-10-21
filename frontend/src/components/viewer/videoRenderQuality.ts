@@ -113,6 +113,7 @@ export function videoRenderQualityProfile(quality: VideoRenderQuality): VideoRen
 
 export function buildVideoWarmupFrames(
   profile: VideoRenderQualityProfile,
+  durationSeconds: 4 | 8 = 8,
 ): VideoWarmupFrame[] {
   if (profile.warmupFrameCount <= 6) {
     return Array.from({ length: profile.warmupFrameCount }, (_, index) => ({
@@ -122,11 +123,12 @@ export function buildVideoWarmupFrames(
     }));
   }
 
-  return buildDeterministicVideoFrames().map((frame) => ({
+  const frames = buildDeterministicVideoFrames(durationSeconds);
+  return frames.map((frame) => ({
     index: frame.index,
     progress: frame.progress,
     settleTiles: frame.index === 0
-      || frame.index === profile.warmupFrameCount - 1
+      || frame.index === frames.length - 1
       || frame.index % profile.warmupSettleInterval === 0,
   }));
 }

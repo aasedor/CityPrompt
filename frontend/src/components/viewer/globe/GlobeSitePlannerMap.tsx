@@ -216,6 +216,7 @@ import {
   type VideoRouteCaptureRequest,
   type VideoRouteCaptureResult,
 } from '../videoRouteControls';
+import { beginPeopleCapture, renderPeopleCaptureFrame } from '@/features/people/peopleCapture';
 import {
   captureDeterministicVideo,
   getCenterCropRect,
@@ -3159,7 +3160,8 @@ export function GlobeSitePlannerMap({
     const streetWalkby = request.cameraMotion === 'street_walkby';
     const detailFlythrough = request.cameraMotion === 'detail_flythrough';
     const bicycleRide = request.cameraMotion === 'bicycle_ride';
-    const nearFieldRoute = streetWalkby || detailFlythrough || bicycleRide;
+    const peopleFollow = request.cameraMotion === 'people_follow';
+    const nearFieldRoute = streetWalkby || detailFlythrough || bicycleRide || peopleFollow;
     let previousStreetProjection: ReturnType<typeof applyStreetCameraProjection> = null;
     let routeSurfacePoints: THREE.Vector3[];
     let nearFieldTerrainHeight: number | null = null;
@@ -3258,6 +3260,7 @@ export function GlobeSitePlannerMap({
     let restoreTextureAnisotropy: (() => void) | null = null;
     let releaseTileQueueHold: (() => void) | null = null;
     let streetRenderReadiness: VideoRouteCaptureResult['streetRenderReadiness'];
+    let peopleCapture: ReturnType<typeof beginPeopleCapture> | undefined;
     const waitForRouteContext = () => request.renderQuality === 'high'
       ? waitForVisibleTileCoverage(tileRenderer, {
           stableMs: 750,
@@ -3267,6 +3270,12 @@ export function GlobeSitePlannerMap({
       : waitForCurrentTiles();
 
     const applyRoutePose = (progress: number) => {
+      if (peopleFollow) {
+        const focus = peopleCapture?.focus();
+        if (!focus) throw new Error('Place a person from Add details → People, then enable their animation before following them.');
+        applyStreetRoutePose(camera, pathCurve, progress, streetUp, 1.6, focus.addScaledVector(streetUp, 1.05));
+        return;
+      }
       if (bicycleRide) {
         applyStreetRoutePose(camera, pathCurve, progress, streetUp, BICYCLE_CAMERA_HEIGHT_METERS);
         return;
@@ -3340,11 +3349,13 @@ export function GlobeSitePlannerMap({
       // High Quality is a true two-pass render. The dry traversal visits every
       // final camera pose and waits for a stable tile window at 25 distributed
       // views before any encoded frame is produced.
-      const warmupFrames = buildVideoWarmupFrames(renderProfile);
+      peopleCapture = beginPeopleCapture(scene, Boolean(request.animatePeople));
+      const warmupFrames = buildVideoWarmupFrames(renderProfile, request.durationSeconds);
       if (request.renderQuality === 'high') {
         for (const warmup of warmupFrames) {
           if (warmup.index % 8 === 0) request.onProgress?.('loading', warmup.index, warmupFrames.length);
-          applyRoutePose(warmup.progress);
+          peopleCapture.pose(warmup.index / 24);
+          applyRoutePose(videoMotionProgress(warmup.progress, request.cameraMotion));
           await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
           if (warmup.settleTiles) {
             const settled = await waitForRouteContext();
@@ -3372,6 +3383,7 @@ export function GlobeSitePlannerMap({
       const geometryCheckpoints: NonNullable<VideoRouteCaptureResult['geometryCheckpoints']> = [];
       for (let index = 0; index < sampledRoute.length; index += 1) {
         request.onProgress?.('checking', index, sampledRoute.length);
+        peopleCapture.pose(index / (sampledRoute.length - 1) * (request.durationSeconds - 1 / 24));
         applyRoutePose(videoMotionProgress(index / (sampledRoute.length - 1), request.cameraMotion));
         await twoFrames();
         const settled = await waitForRouteContext();
@@ -3381,6 +3393,8 @@ export function GlobeSitePlannerMap({
         await waitForSharedGround();
         assertSharedGroundUnchanged(routeGroundSnapshot, sharedGroundRef.current);
         assertStreetGroundReady(scene);
+        peopleCapture.pose(index / (sampledRoute.length - 1) * (request.durationSeconds - 1 / 24));
+        applyRoutePose(videoMotionProgress(index / (sampledRoute.length - 1), request.cameraMotion));
         // Near-field source creation needs a trustworthy beauty checkpoint,
         // not a full semantic/instance pass at every pose. The latter is a
         // metadata product and can fail when a close facade fills the frame;
@@ -3444,24 +3458,29 @@ export function GlobeSitePlannerMap({
         previewContext.drawImage(canvas, sx, sy, sw, sh, 0, 0, previewCanvas.width, previewCanvas.height);
       };
 
+      const cpuSubmissionMs: number[] = [];
       const previewCapture = await captureDeterministicVideo({
         canvas: previewCanvas,
         durationSeconds: request.durationSeconds,
         bitrate: renderProfile.bitrate,
         renderFrame: async (frame) => {
-          if (frame.index % 8 === 0) request.onProgress?.('rendering', frame.index, 192);
-          applyRoutePose(videoMotionProgress(frame.progress, request.cameraMotion));
-          // Give TilesRenderer and the authored R3F layers one render cycle to
-          // respond to this indexed pose, then render that exact camera state.
-          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-          assertSharedGroundUnchanged(routeGroundSnapshot, sharedGroundRef.current);
-          assertStreetGroundReady(scene);
-          renderer.setRenderTarget(null);
-          renderer.render(scene, camera);
-          drawPreviewFrame();
+          if (frame.index % 8 === 0) request.onProgress?.('rendering', frame.index, request.durationSeconds * 24);
+          await renderPeopleCaptureFrame(peopleCapture!, frame.timestampMicroseconds / 1_000_000,
+            () => applyRoutePose(videoMotionProgress(frame.progress, request.cameraMotion)),
+            () => new Promise<void>(resolve => requestAnimationFrame(() => resolve())),
+            () => {
+              assertSharedGroundUnchanged(routeGroundSnapshot, sharedGroundRef.current);
+              assertStreetGroundReady(scene);
+              renderer.setRenderTarget(null);
+              const renderStarted = performance.now();
+              renderer.render(scene, camera);
+              cpuSubmissionMs.push(performance.now() - renderStarted);
+              drawPreviewFrame();
+            });
         },
       });
       const previewBlob = previewCapture.blob;
+      const orderedSubmissionMs = cpuSubmissionMs.sort((a, b) => a - b);
       const previewVideoBase64 = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(String(reader.result));
@@ -3469,11 +3488,16 @@ export function GlobeSitePlannerMap({
         reader.readAsDataURL(previewBlob);
       });
       return {
+        peopleCaptureCount: peopleCapture.count,
+        renderStats: { drawCalls: renderer.info.render.calls, triangles: renderer.info.render.triangles,
+          geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures,
+          cpuSubmissionMedianMs: orderedSubmissionMs[Math.floor(orderedSubmissionMs.length * .5)] ?? 0,
+          cpuSubmissionP95Ms: orderedSubmissionMs[Math.min(orderedSubmissionMs.length - 1, Math.floor(orderedSubmissionMs.length * .95))] ?? 0 },
         keyframesBase64,
         previewVideoBase64,
         previewVideoMimeType: previewBlob.type,
         routeProfile: { distanceMeters: routeDistanceMeters, averageSpeedMps: routeDistanceMeters / request.durationSeconds,
-          ...(bicycleRide ? {eyeHeightMeters: BICYCLE_CAMERA_HEIGHT_METERS} : streetWalkby ? {eyeHeightMeters: 1.7} : detailFlythrough ? {eyeHeightMeters: 6} : {}) },
+          ...(bicycleRide || peopleFollow ? {eyeHeightMeters: BICYCLE_CAMERA_HEIGHT_METERS} : streetWalkby ? {eyeHeightMeters: 1.7} : detailFlythrough ? {eyeHeightMeters: 6} : {}) },
         geometryCheckpoints,
         previewCaptureProfile: {
           encoder: previewCapture.encoder,
@@ -3533,6 +3557,7 @@ export function GlobeSitePlannerMap({
       setSelectedBuildingId(previousSelectedBuildingId);
       setBuildingModelsVisible(previousModelsVisible);
       if (fadePlugin && previousFadeDuration !== null) fadePlugin.fadeDuration = previousFadeDuration;
+      peopleCapture?.restore();
     }
   }, [captureDirect3D, raycastSurfacePoint, waitForCurrentTiles, waitForSharedGround]);
 

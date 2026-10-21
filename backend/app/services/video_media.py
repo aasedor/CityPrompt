@@ -47,4 +47,5 @@ def validate_omni_source_media(media: dict, *, expected_seconds: int) -> None:
             or abs(media["fps"] - 24) > .1
             or abs(media["duration_seconds"] - expected_seconds) > .1
             or abs(media["frame_count"] - expected_seconds * 24) > 1):
-        raise ValueError("The route recording must be a complete eight-second, 24 fps video at least 640×360. Re-capture the free preview.")
+        duration_label = "four-second" if expected_seconds == 4 else "eight-second"
+        raise ValueError(f"The route recording must be a complete {duration_label}, 24 fps video at least 640×360. Re-capture the free preview.")

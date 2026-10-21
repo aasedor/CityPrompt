@@ -2,6 +2,7 @@ import extras from "./detailCatalogueExtras.json";
 import recovered from "./recoveredDetails.json";
 import trafficSafety from "./trafficSafetyCatalogue.json";
 import calgarySafety from "./calgarySafetyCatalogue.json";
+import peopleCatalogue from '../people/peopleCatalogue.json';
 import type { DetailWalkSurface } from "./detailWalking";
 export interface DetailAsset {
   id: string;
@@ -18,6 +19,8 @@ export interface DetailAsset {
   offset?: readonly number[];
   /** Defaults preserve legacy saved furniture. Safety kits have an authored datum. */
   datumLift?: number;
+  /** Reviewed in-place animation, Y-up metric foot datum; no crowd simulation. */
+  people?: { walkClip: string; idleClip: string; walkStrideMeters: number; sha256: string };
   safety?: {
     group: string;
     family: string;
@@ -46,7 +49,8 @@ const safetyModels = ([...trafficSafety, ...releasedCalgary] as unknown as Detai
   return {...asset, category: 'Traffic & safety', description: placementText(asset.description),
     safety: {...asset.safety!, limitation: placementText(asset.safety!.limitation)}};
 });
-const extraModels = [...extras, ...recovered, ...safetyModels] as DetailAsset[];
+const peopleModels = peopleCatalogue as DetailAsset[];
+const extraModels = [...extras, ...recovered, ...safetyModels, ...peopleModels] as DetailAsset[];
 /** Existing metric assets only. No user-provided paths or nonuniform scaling. */
 const RUSTIC = "/landscape-pilots/neighborhood-rustic-v5";
 const EQUIPMENT = "/park-kits/shared-park-equipment-v1";

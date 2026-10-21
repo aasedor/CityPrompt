@@ -10,6 +10,13 @@ import {
 import * as THREE from 'three';
 
 describe('Video Render quality profiles', () => {
+  it('preloads the exact 96-pose four-second timeline without changing legacy eight-second capture', () => {
+    const warmup = buildVideoWarmupFrames(videoRenderQualityProfile('high'), 4);
+    expect(warmup).toHaveLength(96);
+    expect(warmup[0].progress).toBe(0);
+    expect(warmup[95]).toEqual({ index: 95, progress: 1, settleTiles: true });
+    expect(buildVideoWarmupFrames(videoRenderQualityProfile('draft'), 4)).toHaveLength(6);
+  });
   it('renders High Quality above delivery resolution and retains all 192 route poses', () => {
     const profile = videoRenderQualityProfile('high');
     const warmup = buildVideoWarmupFrames(profile);

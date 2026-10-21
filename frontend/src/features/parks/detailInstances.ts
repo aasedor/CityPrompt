@@ -62,6 +62,16 @@ export function pickProjectDetail(root: Object3D, ray: Raycaster, tolerance?: { 
   const box = new Box3(), matrix = new Matrix4(), centre = new Vector3(), hitPoint = new Vector3();
   root.traverseVisible(object => {
     const mesh = object as InstancedMesh;
+    if (!mesh.isInstancedMesh && (object as Mesh).isMesh) {
+      let owner: Object3D | null = object;
+      while (owner && !owner.userData.projectDetailId) owner = owner.parent;
+      const id = owner?.userData.projectDetailId as string | undefined;
+      if (!id || id.startsWith('detail-preview:')) return;
+      const hits: Intersection[] = [];
+      object.raycast(ray, hits);
+      for (const hit of hits) candidates.push({ id, distance: hit.distance });
+      return;
+    }
     const ids = mesh.parent?.userData.projectDetailIds as (string | undefined)[] | undefined;
     if (!mesh.isInstancedMesh || !ids) return;
     const hits: Intersection[] = [];

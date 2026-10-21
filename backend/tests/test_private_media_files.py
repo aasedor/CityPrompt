@@ -26,12 +26,13 @@ def media(mock_db, test_user, monkeypatch):
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("operation", ["get", "head", "ticket"])
-@pytest.mark.parametrize("private_path", ["image-request", "video-guide", "video-checkpoint"])
+@pytest.mark.parametrize("private_path", ["image-request", "video-guide", "video-checkpoint", "character-reference"])
 async def test_owner_cannot_bypass_private_recovery_via_file_proxy(media, mock_db, test_user, monkeypatch, operation, private_path):
     paths = {
         "image-request": f"projects/{media.project.id}/render-attempts/attempt/request.json",
         "video-guide": f"{media.root}/route-guide.png",
         "video-checkpoint": f"{media.root}/controls/geometry-00-depth.png",
+        "character-reference": f"{media.root}/controls/character-reference.png",
     }
     path = paths[private_path]
     storage = MagicMock()

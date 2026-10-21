@@ -44,9 +44,11 @@ from app.services.internal_video import (
 )
 from app.services.omni_video import (
     MAX_ROUTE_IMAGE_BYTES,
+    build_character_reference_prompt,
     build_cinematic_prompt,
     build_omni_payload,
     decode_guide_image,
+    decode_character_reference,
     decode_preview_video,
     request_omni_video_once,
 )
@@ -73,7 +75,7 @@ VIDEO_CREDIT_COST = 50
 SEEDANCE_VIDEO_CREDIT_COST = 125
 ESTIMATED_OMNI_COST_PER_SECOND_USD = Decimal("0.10136")
 
-CameraMotion = Literal["path_follow", "street_walkby", "detail_flythrough", "bicycle_ride"]
+CameraMotion = Literal["path_follow", "street_walkby", "detail_flythrough", "bicycle_ride", "people_follow"]
 ControlMode = Literal["single_frame", "multi_keyframe", "preview_video"]
 VideoProvider = Literal["omni", "seedance_mini", "internal_enhance"]
 SeedanceReferenceMode = Literal["preview_only", "preview_plus_keyframes"]
@@ -95,7 +97,7 @@ class VideoCaptureProfile(BaseModel):
 
     encoder: CaptureEncoder
     fixed_timestep: Literal[True]
-    frame_count: Literal[192]
+    frame_count: Literal[96, 192]
     fps: Literal[24]
     width: int = Field(..., ge=640, le=1920)
     height: int = Field(..., ge=360, le=1080)
@@ -158,11 +160,13 @@ class VideoPilotRequest(BaseModel):
     route_keyframes_base64: list[str] = Field(default_factory=list, max_length=6)
     preview_video_base64: str | None = Field(default=None, max_length=34_000_000)
     preview_video_mime_type: str | None = Field(default=None, max_length=100)
+    character_reference_base64: str | None = Field(default=None, max_length=11_185_000)
+    character_reference_mime_type: Literal["image/png", "image/jpeg"] = "image/png"
     geometry_checkpoints: list[VideoGeometryCheckpoint] = Field(default_factory=list, max_length=6)
     capture_profile: VideoCaptureProfile | None = None
     route_points: list[RoutePoint] = Field(..., min_length=2, max_length=24)
     camera_motion: CameraMotion = "path_follow"
-    duration_seconds: Literal[8] = 8
+    duration_seconds: Literal[4, 8] = 8
     custom_prompt: str = Field(default="", max_length=600)
     use_custom_prompt_only: bool = False
     scene_brief: str = Field(
@@ -231,6 +235,12 @@ class VideoAttemptResponse(BaseModel):
     created_at: str
     video_url: str | None = None
     guide_image_url: str | None = None
+    character_reference_url: str | None = None
+    character_reference_sha256: str | None = None
+    character_reference_mime_type: str | None = None
+    character_reference_width: int | None = None
+    character_reference_height: int | None = None
+    character_reference_role: Literal["identity_appearance"] | None = None
     error: str | None = None
     interaction_id: str | None = None
     prompt: str | None = None
@@ -668,6 +678,18 @@ def _decode_geometry_checkpoints(req: VideoPilotRequest) -> list[dict[str, Any]]
 
 def _preflight_values(req: VideoPilotRequest):
     try:
+        if req.camera_motion == "people_follow" and (req.provider != "omni" or req.control_mode != "preview_video"):
+            raise ValueError("People-follow tracking requires Omni preview video.")
+        if (req.duration_seconds == 4 or req.character_reference_base64 is not None) and (
+            req.provider != "omni" or req.control_mode != "preview_video"
+        ):
+            raise ValueError("Four-second clips and character references require Omni preview video.")
+        if req.capture_profile and req.capture_profile.frame_count != req.duration_seconds * 24:
+            raise ValueError("The capture frame count must match the requested duration at 24 fps.")
+        character_reference = (
+            decode_character_reference(req.character_reference_base64, req.character_reference_mime_type)
+            if req.character_reference_base64 is not None else None
+        )
         guide = decode_guide_image(req.guide_frame_base64)
         keyframes = [decode_guide_image(value) for value in req.route_keyframes_base64]
         if sum(len(frame.data) for frame in keyframes) > MAX_ROUTE_IMAGE_BYTES:
@@ -718,9 +740,11 @@ def _preflight_values(req: VideoPilotRequest):
                 use_custom_prompt_only=req.use_custom_prompt_only,
             )
         )
+        if character_reference is not None:
+            prompt = build_character_reference_prompt(prompt)
     except (ValueError, KeyError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-    return guide, keyframes, preview, geometry_checkpoints, prompt
+    return guide, keyframes, preview, geometry_checkpoints, prompt, character_reference
 
 
 async def _inspect_omni_source(req, preview) -> dict | None:
@@ -754,7 +778,7 @@ async def preflight_video(
         raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured.")
     if req.provider == "seedance_mini" and not settings.fal_key:
         raise HTTPException(status_code=503, detail="FAL_KEY is not configured.")
-    guide, keyframes, preview, geometry_checkpoints, prompt = _preflight_values(req)
+    guide, keyframes, preview, geometry_checkpoints, prompt, character_reference = _preflight_values(req)
     await _inspect_omni_source(req, preview)
     if req.provider == "seedance_mini" and preview:
         runtime_error = seedance_runtime_error(preview.mime_type)
@@ -804,7 +828,7 @@ async def preflight_video(
         allowance_scope=usage.allowance_scope,
         estimated_cost_usd=estimated_cost,
         model=_provider_model(req.provider, settings, req.internal_enhance_quality),
-        reference_image_count=len(keyframes),
+        reference_image_count=len(keyframes) + int(character_reference is not None),
         geometry_checkpoint_count=len(geometry_checkpoints),
         scene_revision_sha256=scene_revision_sha256,
     )
@@ -832,7 +856,10 @@ async def list_video_attempts(
             shared = _public_attempt(item).model_dump()
             shared.update(prompt=None, custom_prompt="", error=None, guide_image_url=None,
                           interaction_id=None, request_id="", recoverable=False,
-                          negative_prompt=None, generation_settings=None, scene_direction=None)
+                          negative_prompt=None, generation_settings=None, scene_direction=None,
+                          character_reference_url=None, character_reference_sha256=None,
+                          character_reference_mime_type=None, character_reference_width=None,
+                          character_reference_height=None, character_reference_role=None)
             visible.append(shared)
     attempts = visible
     omni_usage = _visible_usage(project, all_attempts, "omni")
@@ -937,7 +964,7 @@ async def generate_video(
         raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured.")
     if req.provider == "seedance_mini" and not settings.fal_key:
         raise HTTPException(status_code=503, detail="FAL_KEY is not configured.")
-    guide, keyframes, preview, geometry_checkpoints, prompt = _preflight_values(req)
+    guide, keyframes, preview, geometry_checkpoints, prompt, character_reference = _preflight_values(req)
     if req.provider == "seedance_mini" and preview:
         runtime_error = seedance_runtime_error(preview.mime_type)
         if runtime_error:
@@ -955,6 +982,11 @@ async def generate_video(
         if existing.get("request_id") == str(req.request_id):
             request_hashes = {revision_sha256(req.model_dump(mode="json"))}
             legacy_excluded: set[str] = set()
+            if ("character_reference_sha256" not in existing
+                    and req.character_reference_base64 is None
+                    and req.character_reference_mime_type == "image/png"):
+                legacy_excluded.update({"character_reference_base64", "character_reference_mime_type"})
+                request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded)))
             if "use_custom_prompt_only" not in existing and not req.use_custom_prompt_only:
                 legacy_excluded.add("use_custom_prompt_only")
                 request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded)))
@@ -1004,6 +1036,8 @@ async def generate_video(
         control_hash.update(frame.data)
     if preview:
         control_hash.update(preview.data)
+    if character_reference is not None:
+        control_hash.update(character_reference.data)
     for checkpoint in geometry_checkpoints:
         for image in checkpoint["images"].values():
             control_hash.update(image.data)
@@ -1051,6 +1085,13 @@ async def generate_video(
         "control_mode": req.control_mode,
         "camera_motion": req.camera_motion,
         "duration_seconds": req.duration_seconds,
+        "character_reference_sha256": (
+            hashlib.sha256(character_reference.data).hexdigest() if character_reference else None
+        ),
+        "character_reference_mime_type": character_reference.mime_type if character_reference else None,
+        "character_reference_width": character_reference.width if character_reference else None,
+        "character_reference_height": character_reference.height if character_reference else None,
+        "character_reference_role": "identity_appearance" if character_reference else None,
         "source_media": source_media,
         "created_at": _now(),
         "video_url": None,
@@ -1063,7 +1104,7 @@ async def generate_video(
         "estimated_cost_usd": estimated_cost,
         "guide_sha256": guide_hash,
         "scene_revision_sha256": scene_revision_sha256,
-        "reference_image_count": len(keyframes),
+        "reference_image_count": len(keyframes) + int(character_reference is not None),
         "geometry_checkpoint_count": len(geometry_checkpoints),
         "fidelity_status": "pending" if preview or len(keyframes) >= 2 else None,
         **resource_updates,
@@ -1105,6 +1146,14 @@ async def generate_video(
             )
             await _upload_to_storage(preview_key, preview.data, preview.mime_type)
             preview_video_url = f"/api/v1/files/{preview_key}"
+        character_reference_url = None
+        if character_reference is not None:
+            extension = "png" if character_reference.mime_type == "image/png" else "jpg"
+            reference_key = (
+                f"projects/{req.project_id}/video-render/{attempt_id}/controls/character-reference.{extension}"
+            )
+            await _upload_to_storage(reference_key, character_reference.data, character_reference.mime_type)
+            character_reference_url = f"/api/v1/files/{reference_key}"
         geometry_checkpoint_controls: list[dict[str, Any]] = []
         for index, checkpoint in enumerate(geometry_checkpoints, start=1):
             base_key = f"projects/{req.project_id}/video-render/{attempt_id}/controls/geometry-{index:02d}"
@@ -1144,6 +1193,7 @@ async def generate_video(
             guide_image_url=guide_url,
             route_keyframe_urls=route_keyframe_urls,
             preview_video_url=preview_video_url,
+            character_reference_url=character_reference_url,
             geometry_checkpoint_controls=geometry_checkpoint_controls,
         )
     except Exception as exc:
@@ -1237,6 +1287,8 @@ async def generate_video(
                 ],
                 preview_video_base64=req.preview_video_base64,
                 preview_video_mime_type=preview.mime_type if preview else None,
+                character_reference_base64=req.character_reference_base64,
+                character_reference_mime_type=req.character_reference_mime_type,
                 render_quality=req.render_quality,
             )
             async def retain_omni_interaction(value: str):
