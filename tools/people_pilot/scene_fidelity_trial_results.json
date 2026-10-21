@@ -12,9 +12,9 @@
   "actual_provider_invoice_confirmed": false,
   "native_source_sha256": "ecde65dbe289028e8e09e2eb3dc49d19d4b3d4ad181cb70eab7afff2741a922a",
   "new_capture_used_in_paid_trials": false,
-  "new_capture_observation": "New high-quality route completed96frames1080p; browser disconnected during download. Paid A/B deliberately reuse the reviewed take8 source; C edits A. New capture binary not recovered or visually certified.",
+  "new_capture_observation": "Recaptured after browser interruption, downloaded through UI, fully decoded96frames1920x1080at24fps4s, inspected0/1/2/3-second frames and played in the actual app. Same scene but different short path: another character passes close to camera; QA only, not a paid creative take.",
   "source_route_metadata_limit": "Paid source retains original take8 camera path. New request route_points are the observed route on the same local scene; exact original normalized points were not persisted. Video controls provider motion.",
-  "capture_detail_limit": "Requested2px SSE; stable drawn coverage is not proof every source tile meets target. Strict final-SSE prototype withdrawn after browser failures.",
+  "capture_detail_limit": "Requested2px SSE; stable drawn coverage is not proof every source tile meets target. Strict final-SSE prototype withdrawn after browser failures. Different camera paths prevent a controlled before/after sharpness claim.",
   "implemented": [
     "Opt-in Omni preview-video scene references, one or two captured views",
     "Explicit source/video versus architecture-image roles, separate from character identity",
@@ -30,7 +30,8 @@
     "independent_review": "Offscreen tile readiness finding fixed and rechecked; no remaining source review finding",
     "media": "All inputs/results/comparisons fully decoded,96frames24fps4seconds",
     "browser": "All four comparison players reached ended=true,currentTime4,duration4,readyState4,error=null in Edge. Three are per-trial input/output pairs; fourth is original-native versus C, no extra generation.",
-    "browser_screenshot": "qa/browser-final.jpg"
+    "browser_screenshot": "qa/browser-final.jpg",
+    "local_app_reload": "All four historical attempts visible, latestC plays, local balance8644,3of3new-call cap reached; free capture remains available."
   },
   "results": {
     "a": {
@@ -219,5 +220,20 @@
     "https://developers.google.com/maps/documentation/tile/policies",
     "https://ai.google.dev/gemini-api/docs/omni",
     "https://deepmind.google/models/gemini-omni/prompt-guide/"
-  ]
+  ],
+  "updated_free_source": {
+    "sha256": "7a8208be4af21d9924b84cf109536f575cef8ea793633412540009bf2d85fbc4",
+    "bytes": 10827886,
+    "media": {
+      "width": 1920,
+      "height": 1080,
+      "r_frame_rate": "24/1",
+      "duration": "4.000000",
+      "nb_frames": "96"
+    },
+    "full_decode": "passed",
+    "capture": "Actual updated local UI: follow person, animated people, highquality2560x1440 to1920x1080,96preloadposes,4.4m at1.6m camera height",
+    "used_in_paid_trials": false,
+    "download": "Actual browser Download preview control saved default Downloads file; automation event not emitted."
+  }
 }
