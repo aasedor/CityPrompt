@@ -1,7 +1,7 @@
 # Calgary Board of Education brutalist headquarters (RLASM v6.1 architectural clay)
 
 Candidate I3 of wave I of 2026-10-20, one of the ten catalogue additions the user approved
-(four buildings, three parks and squares, three streets); a building option from the building catalogue. State: **stopped at v003 by the stopping rule (the facade-glazing finding survived two targeted fixes); v002 is the candidate**. Nothing here is keeper-approved,
+(four buildings, three parks and squares, three streets); a building option from the building catalogue. State: **reopened by the user for a second pass (v004 re-aims the front, front_corner and side cameras to the locked views; geometry unchanged from v003); v002 remains the candidate until a review beats it**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -40,7 +40,7 @@ overlap, every vertex sits at or above grade, and rooms behind glazing carry low
 lights. Renders are taken from the reimported optimised GLB only.
 
 Camera roster: the eight whole-envelope views plus the ten family detail views
-`facade_close, window_module, corner_cantilever, ground_entrance, arcade_soffit, sculpture_plaza, east_side, roof_penthouse, interior, rear_north`.
+`facade_close, window_module, corner_cantilever, ground_entrance, arcade_soffit, sculpture_plaza, west_side, roof_penthouse, interior, rear_north`.
 
 Run:
 

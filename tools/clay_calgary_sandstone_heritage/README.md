@@ -1,7 +1,7 @@
 # Calgary sandstone heritage block (RLASM v6.1 architectural clay)
 
 Candidate G8 of wave G of 2026-10-18, one of ten catalogue types that have quality reference images but
-no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **stopped at v005 by the stopping rule (two consecutive non-improving reviews); v003 is the candidate**. Nothing here is keeper-approved,
+no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **reopened by the user for a second pass (v006 moves the entrance to the centre of the south front, as the sources show); v003 remains the candidate until a review beats it**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
