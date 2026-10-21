@@ -46,7 +46,10 @@ trials and the deterministic capture checks are recorded in the
 [pilot report](../../docs/video-pilots/PEOPLE_VIDEO_PILOT_2026-10-21.md) and
 [hash-bound results](pilot_results.json). The comparison player is
 `http://127.0.0.1:18121/#take-6`; Add Details → People is available in the local
-app on port 5184. These checks do not establish exact photographic identity,
+app on port 5184. The later [weather trial](weather_trial_results.json) reuses
+the exact ensemble source with the [blue-sky prompt](ensemble-blue-sky-prompt.txt):
+seven of ten authorized calls are now complete, with three unused. That trial
+shows blue sky, soft white clouds and neutral sunshine. These checks do not establish exact photographic identity,
 unchanged architectural detail or human approval for production publication.
 
 These models remain visibly stylized, with simple collar/shoulder seams, no
