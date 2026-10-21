@@ -1,7 +1,7 @@
 # Calgary Board of Education brutalist headquarters (RLASM v6.1 architectural clay)
 
 Candidate I3 of wave I of 2026-10-20, one of the ten catalogue additions the user approved
-(four buildings, three parks and squares, three streets); a building option from the building catalogue. State: **reopened by the user for a second pass (v004 re-aims the front, front_corner and side cameras to the locked views; geometry unchanged from v003); v002 remains the candidate until a review beats it**. Nothing here is keeper-approved,
+(four buildings, three parks and squares, three streets); a building option from the building catalogue. State: **stopped at v004 by the stopping rule (independent review PASS_ZERO_P0_P1 after the user reopened the family to re-aim the cameras to the locked views); v004 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,6 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (x)
+## Open blockers after v004 (x)
 
 x
