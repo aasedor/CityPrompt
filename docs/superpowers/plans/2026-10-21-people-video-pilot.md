@@ -32,9 +32,9 @@
 
 **Interfaces:** `duration_seconds: Literal[4,8]=8`; optional `character_reference_base64: str | None = None` and `character_reference_mime_type: Literal['image/png','image/jpeg']='image/png'`. Four seconds and references apply only to Omni `preview_video`. Decode and verify one image (max 8 MiB decoded, max 4096 px each dimension, nonzero pixels). Reference is identity/appearance, never an output first frame. Extend exact hashes, saved private metadata, privacy redaction and old replay compatibility.
 
-- [ ] Add failing tests for four-second source media, invalid reference, preview-only restrictions, provider input and replay/privacy.
-- [ ] Implement validated optional reference and duration without relaxing paid admission or retry behavior.
-- [ ] Run narrow pytest and report the exact result; do not call paid providers.
+- [x] Add failing tests for four-second source media, invalid reference, preview-only restrictions, provider input and replay/privacy.
+- [x] Implement validated optional reference and duration without relaxing paid admission or retry behavior.
+- [x] Run narrow pytest and report the exact result; do not call paid providers.
 
 ### Task 2: Three measured character derivatives
 
@@ -42,9 +42,9 @@
 
 **Interfaces:** Three Y-up metre GLBs with feet at y=0, stable forward direction recorded, independent named `Walk` and `Idle` clips where supplied. Stable IDs `people-pilot-commuter`, `people-pilot-neighbour`, `people-pilot-creative`. A JSON manifest records source/license/hash, runtime hash, dimensions, animation names/duration, triangles, materials, decoded costs and limitations. Prefer standard free official character source; no paid generation.
 
-- [ ] Verify official license/download, inventory rigs and animation, preserve source.
-- [ ] Build distinctive clothed adult derivatives, export bounded runtime GLBs, inspect posed bounds/feet and all animation tracks.
-- [ ] Produce a free browser turnaround/animation preview and report exact artifacts; no invented readiness claims.
+- [x] Verify official license/download, inventory rigs and animation, preserve source.
+- [x] Build distinctive clothed adult derivatives, export bounded runtime GLBs, inspect posed bounds/feet and all animation tracks.
+- [x] Produce a free browser turnaround/animation preview and report exact artifacts; no invented readiness claims.
 
 ### Task 3: Deterministic native people and four-second UI/capture
 
@@ -52,16 +52,16 @@
 
 **Interfaces:** `durationSeconds: 4|8`; `buildVideoWarmupFrames(profile,durationSeconds=8)` and final frames use the same duration. Add optional image upload and four/eight-second controls only for supported Omni preview. Actors use a copied skeleton, shared geometry, isolated material state and absolute-time poses; initial static placement is saved through existing details. Opt-in capture animation follows authored paths/speed; idle in editing. Temporary capture state is restored in `finally`.
 
-- [ ] Add failing timeline/pose/isolation/UI tests, implement minimal supporting code, run narrow Vitest and type-check after integration.
-- [ ] Register local pilot assets safely and build one authored project without mutating user projects.
-- [ ] Browser-test placement/edit/persistence, free full-motion capture, actor ground contact and framing. Run scoped lint and configured build.
+- [x] Add failing timeline/pose/isolation/UI tests, implement minimal supporting code, run narrow Vitest and type-check after integration.
+- [x] Register local pilot assets safely and build one authored project without mutating user projects.
+- [x] Browser-test placement/edit/persistence, free full-motion capture, actor ground contact and framing. Run scoped lint and configured build.
 
 ### Task 4: Bounded quality trials and review
 
 **Files:** external per-attempt ledger, receipts, source/result MP4s, comparison page; concise report in `docs/video-pilots/`.
 
-- [ ] Create the immutable ten-call budget ledger before a provider call; inspect free source and matching original photographic reference.
-- [ ] Run one four-second identity/motion pilot through the app. Measure actual output; review complete gait, face/clothes stability, ground contact and architecture before any next batch.
-- [ ] Improve one variable at a time, up to ten total; stop when enough convincing results are obtained. Record rejected results honestly.
-- [ ] Independent implementation/visual review, final tests and source diff review; commit only this initiative if verified, no push/deploy.
-- [ ] Show best outputs, local scene and measured limitations.
+- [x] Create the immutable ten-call budget ledger before a provider call; inspect free source and matching original photographic reference.
+- [x] Run one four-second identity/motion pilot through the app. Measure actual output; review complete gait, face/clothes stability, ground contact and architecture before any next batch.
+- [x] Improve one variable at a time, up to ten total; stop when enough convincing results are obtained. Record rejected results honestly.
+- [x] Independent implementation/visual review, final tests and source diff review; commit only this initiative if verified, no push/deploy.
+- [x] Show best outputs, local scene and measured limitations.

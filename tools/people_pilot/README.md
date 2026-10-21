@@ -40,8 +40,14 @@ range from -2.04 mm to +6.48 mm; idle sole residuals are below 0.007 mm.
 The artifact folder contains `preview.html` and `serve_preview.py`; start the
 server to review all three at `http://127.0.0.1:9029/preview.html`. The page has
 Walk/Idle, time seek, pause, orbit and a turntable. `qa/{id}.png` files show the
-idle pose. Browser full-motion review, project placement, capture integration,
-appearance editing and human approval remain separate gates.
+idle pose. The integrated local pilot passed browser placement, selection,
+move/rotate/delete, undo/redo and save/reload checks. Six four-second Omni
+trials and the deterministic capture checks are recorded in the
+[pilot report](../../docs/video-pilots/PEOPLE_VIDEO_PILOT_2026-10-21.md) and
+[hash-bound results](pilot_results.json). The comparison player is
+`http://127.0.0.1:18121/#take-6`; Add Details → People is available in the local
+app on port 5184. These checks do not establish exact photographic identity,
+unchanged architectural detail or human approval for production publication.
 
 These models remain visibly stylized, with simple collar/shoulder seams, no
 cloth simulation and source hand animation. Do not describe them as original

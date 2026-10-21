@@ -1,0 +1,393 @@
+{
+  "schema": "cityprompt.people-pilot-results@1",
+  "localOnly": true,
+  "productionPublished": false,
+  "implementationCommit": "683517d0d471c550fc72c1ac5f6bd09cccb94a07",
+  "authorizedMaximumCalls": 10,
+  "completedFourSecondCalls": 6,
+  "unusedCalls": 4,
+  "sourceAuthoring": "Three CC0-derived rigged adults, six existing native buildings and one native street.",
+  "testResults": {
+    "frontendPassed": 52,
+    "frontendFiles": 9,
+    "backendPassed": 188,
+    "backendExistingWarnings": 6,
+    "typeCheck": "passed",
+    "configuredViteBuild": "passed",
+    "scopedLintErrors": 0,
+    "scopedExistingLintWarnings": 2
+  },
+  "captureMeasurement": {
+    "scope": "whole desktop scene including Google context; not laptop FPS",
+    "people": 3,
+    "frames": 96,
+    "renderWidth": 2560,
+    "renderHeight": 1440,
+    "outputWidth": 1920,
+    "outputHeight": 1080,
+    "drawCalls": 1171,
+    "triangles": 4164278,
+    "geometries": 880,
+    "textures": 807,
+    "cpuSubmissionMedianMs": 22.6,
+    "cpuSubmissionP95Ms": 25.1,
+    "gpuTimeMeasured": false
+  },
+  "limitations": [
+    "Native people remain stylized.",
+    "Facial identity and architecture can drift in the AI edit.",
+    "Take 6 reverses a secondary walker, changes clothing and adds distant pedestrians.",
+    "No pathfinding or crowd collision avoidance.",
+    "No student-laptop/mobile performance benchmark.",
+    "1080p Omni delivery dimensions do not establish native 1080p model synthesis."
+  ],
+  "visualReview": {
+    "preferredSinglePersonTake": 3,
+    "ensembleTake": 6,
+    "photographicAppearance": "demonstrated qualitatively",
+    "exactSceneAndIdentityFidelity": "not passed",
+    "independentSampleReview": "48 output frames; take 6 also has eight matched source frames",
+    "allSourceAndResultPairsBrowserPlayedToEnd": true,
+    "continuousMotionIndependentlyVerified": false
+  },
+  "calls": [
+    {
+      "take": 1,
+      "label": "maya-film-01",
+      "attemptId": "304a4445-63bb-461a-adb8-7c5222a41c89",
+      "model": "gemini-omni-1.1-flash",
+      "source": {
+        "fps": 24.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_count": 96,
+        "duration_basis": "decoded_frames/fps",
+        "duration_seconds": 4.0,
+        "bytes": 10609233,
+        "sha256": "3d627b49e3f38d67dae60a199f26beeccb7fe073091820955dff33db51bf64d3"
+      },
+      "output": {
+        "fps": 24.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_count": 96,
+        "duration_basis": "decoded_frames/fps",
+        "duration_seconds": 4.0,
+        "bytes": 5847727,
+        "sha256": "5b3c0af7d33a984f1d0b88e45b8886d738c17069d294487e0299119b5abe9183"
+      },
+      "characterReferenceSha256": "231080f5e11eac3d89512ceedfddfebe20ee7111d761d36a8cdb45d790a90705",
+      "usage": {
+        "total_tokens": 58949,
+        "total_input_tokens": 23565,
+        "total_cached_tokens": 0,
+        "total_output_tokens": 34752,
+        "total_thought_tokens": 632,
+        "total_tool_use_tokens": 0,
+        "input_tokens_by_modality": [
+          {
+            "tokens": 1080,
+            "modality": "image"
+          },
+          {
+            "tokens": 141,
+            "modality": "text"
+          },
+          {
+            "tokens": 22344,
+            "modality": "video"
+          }
+        ],
+        "output_tokens_by_modality": [
+          {
+            "tokens": 34752,
+            "modality": "video"
+          }
+        ]
+      },
+      "mediaWarning": null,
+      "prompt": "[# Sources <VIDEO_0>@Video1] [# References <IMAGE_REF_0>@Image1] Turn this 3D animation into live-action cinema. The woman in the rust jacket is the woman in Image1. Preserve her walk, the camera path and the street architecture. Natural skin and fabric, grounded footsteps, warm late-afternoon sunlight. One continuous four-second shot, no cuts. Use Image1 only for the walking subject's identity and appearance, including face, hair and clothing. Preserve Video1's camera, timing, motion, actor positions and architecture. Do not use the reference image as a first frame, background or camera layout."
+    },
+    {
+      "take": 2,
+      "label": "maya-identity-02",
+      "attemptId": "f99d3b9e-fa6e-4186-87ca-1c1efc723416",
+      "model": "gemini-omni-1.1-flash",
+      "source": {
+        "fps": 24.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_count": 96,
+        "duration_basis": "decoded_frames/fps",
+        "duration_seconds": 4.0,
+        "bytes": 10609233,
+        "sha256": "3d627b49e3f38d67dae60a199f26beeccb7fe073091820955dff33db51bf64d3"
+      },
+      "output": {
+        "fps": 24.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_count": 96,
+        "duration_basis": "decoded_frames/fps",
+        "duration_seconds": 4.0,
+        "bytes": 8266593,
+        "sha256": "c99cc4e32db2a783405b6840cc1cf0223e15cef5fa64a6c567f604edf77a0fd3"
+      },
+      "characterReferenceSha256": "231080f5e11eac3d89512ceedfddfebe20ee7111d761d36a8cdb45d790a90705",
+      "usage": {
+        "total_tokens": 58818,
+        "total_input_tokens": 23596,
+        "total_cached_tokens": 0,
+        "total_output_tokens": 34752,
+        "total_thought_tokens": 470,
+        "total_tool_use_tokens": 0,
+        "input_tokens_by_modality": [
+          {
+            "tokens": 1080,
+            "modality": "image"
+          },
+          {
+            "tokens": 172,
+            "modality": "text"
+          },
+          {
+            "tokens": 22344,
+            "modality": "video"
+          }
+        ],
+        "output_tokens_by_modality": [
+          {
+            "tokens": 34752,
+            "modality": "video"
+          }
+        ]
+      },
+      "mediaWarning": null,
+      "prompt": "[# Sources <VIDEO_0>@Video1] [# References <IMAGE_REF_0>@Image1] Turn this 3D animation into live-action cinema. Replace the rust-jacket character with the woman in Image1: warm medium-brown skin, dark curly hair in a low bun, rust overshirt, ivory T-shirt, charcoal trousers and off-white sneakers. Preserve her walk, the camera path and the street architecture. Natural skin and fabric, grounded footsteps, warm late-afternoon sunlight. One continuous four-second shot, no cuts. Use Image1 only for the walking subject's identity and appearance, including face, hair and clothing. Preserve Video1's camera, timing, motion, actor positions and architecture. Do not use the reference image as a first frame, background or camera layout."
+    },
+    {
+      "take": 3,
+      "label": "maya-layout-03",
+      "attemptId": "3e726099-4b53-4051-8a89-90da2db0e3ba",
+      "model": "gemini-omni-1.1-flash",
+      "source": {
+        "fps": 24.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_count": 96,
+        "duration_basis": "decoded_frames/fps",
+        "duration_seconds": 4.0,
+        "bytes": 10609233,
+        "sha256": "3d627b49e3f38d67dae60a199f26beeccb7fe073091820955dff33db51bf64d3"
+      },
+      "output": {
+        "fps": 24.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_count": 96,
+        "duration_basis": "decoded_frames/fps",
+        "duration_seconds": 4.0,
+        "bytes": 7884456,
+        "sha256": "92fac199abc6a3511957c37fa5957186bd58e6588b5b7a486b760d26588856a9"
+      },
+      "characterReferenceSha256": "231080f5e11eac3d89512ceedfddfebe20ee7111d761d36a8cdb45d790a90705",
+      "usage": {
+        "total_tokens": 58635,
+        "total_input_tokens": 23588,
+        "total_cached_tokens": 0,
+        "total_output_tokens": 34752,
+        "total_thought_tokens": 295,
+        "total_tool_use_tokens": 0,
+        "input_tokens_by_modality": [
+          {
+            "tokens": 22344,
+            "modality": "video"
+          },
+          {
+            "tokens": 164,
+            "modality": "text"
+          },
+          {
+            "tokens": 1080,
+            "modality": "image"
+          }
+        ],
+        "output_tokens_by_modality": [
+          {
+            "tokens": 34752,
+            "modality": "video"
+          }
+        ]
+      },
+      "mediaWarning": null,
+      "prompt": "[# Sources <VIDEO_0>@Video1] [# References <IMAGE_REF_0>@Image1] Turn this 3D animation into live-action cinema. The woman in the rust jacket is the woman in Image1. Preserve her walk, the camera path and the street architecture. Natural skin and fabric, grounded footsteps, warm late-afternoon sunlight. Retain the open grass verge on the right and the distant silhouettes; no additional buildings, hedges or paved areas. One continuous four-second shot, no cuts. Use Image1 only for the walking subject's identity and appearance, including face, hair and clothing. Preserve Video1's camera, timing, motion, actor positions and architecture. Do not use the reference image as a first frame, background or camera layout."
+    },
+    {
+      "take": 4,
+      "label": "eli-film-04",
+      "attemptId": "35c73dd2-a179-440d-a411-519d5fb4a15b",
+      "model": "gemini-omni-1.1-flash",
+      "source": {
+        "fps": 24.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_count": 96,
+        "duration_basis": "decoded_frames/fps",
+        "duration_seconds": 4.0,
+        "bytes": 11023065,
+        "sha256": "7a85ce97f23244cbf2a3d25c111eb3423a44c21c87ac7e2425ede5fbee846b52"
+      },
+      "output": {
+        "fps": 24.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_count": 96,
+        "duration_basis": "decoded_frames/fps",
+        "duration_seconds": 4.0,
+        "bytes": 5106501,
+        "sha256": "36aa80f83fbdbd6a8e229d5006538186b015c91b354ed1ede8c3cdcfb987268a"
+      },
+      "characterReferenceSha256": "c8b70f4b57b92dabf014c050670b5f142ba4a54c0bf4af8221d249daf4e0c9ef",
+      "usage": {
+        "total_tokens": 58805,
+        "total_input_tokens": 23582,
+        "total_cached_tokens": 0,
+        "total_output_tokens": 34752,
+        "total_thought_tokens": 471,
+        "total_tool_use_tokens": 0,
+        "input_tokens_by_modality": [
+          {
+            "tokens": 22344,
+            "modality": "video"
+          },
+          {
+            "tokens": 158,
+            "modality": "text"
+          },
+          {
+            "tokens": 1080,
+            "modality": "image"
+          }
+        ],
+        "output_tokens_by_modality": [
+          {
+            "tokens": 34752,
+            "modality": "video"
+          }
+        ]
+      },
+      "mediaWarning": null,
+      "prompt": "[# Sources <VIDEO_0>@Video1] [# References <IMAGE_REF_0>@Image1] Turn this 3D animation into live-action cinema. The man in the navy overshirt is the man in Image1. Preserve his walk, the camera path and the street architecture. Natural skin and fabric, grounded footsteps, warm late-afternoon sunlight. Retain the open grass verge and distant silhouettes; no additional buildings or paving. One continuous four-second shot, no cuts. Use Image1 only for the walking subject's identity and appearance, including face, hair and clothing. Preserve Video1's camera, timing, motion, actor positions and architecture. Do not use the reference image as a first frame, background or camera layout."
+    },
+    {
+      "take": 5,
+      "label": "sofia-film-05",
+      "attemptId": "f33bc675-f6f8-4001-9479-488e95b7d4cb",
+      "model": "gemini-omni-1.1-flash",
+      "source": {
+        "fps": 24.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_count": 96,
+        "duration_basis": "decoded_frames/fps",
+        "duration_seconds": 4.0,
+        "bytes": 11089357,
+        "sha256": "49c8f4f531bfc2544c0e35b465547dcacba51b4bff98fe251185c8f92c5c89ac"
+      },
+      "output": {
+        "fps": 24.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_count": 96,
+        "duration_basis": "decoded_frames/fps",
+        "duration_seconds": 4.0,
+        "bytes": 6653212,
+        "sha256": "8dc0247a5ed1ec45b7f0d84b3fe3c324691bad76c1ec2c947340bf3dce1b6c47"
+      },
+      "characterReferenceSha256": "0812b16f552b8db5b3893e8fc59ff070b6d6eb94aa1af5ae88dad184087e259f",
+      "usage": {
+        "total_tokens": 58884,
+        "total_input_tokens": 23581,
+        "total_cached_tokens": 0,
+        "total_output_tokens": 34752,
+        "total_thought_tokens": 551,
+        "total_tool_use_tokens": 0,
+        "input_tokens_by_modality": [
+          {
+            "tokens": 1080,
+            "modality": "image"
+          },
+          {
+            "tokens": 157,
+            "modality": "text"
+          },
+          {
+            "tokens": 22344,
+            "modality": "video"
+          }
+        ],
+        "output_tokens_by_modality": [
+          {
+            "tokens": 34752,
+            "modality": "video"
+          }
+        ]
+      },
+      "mediaWarning": null,
+      "prompt": "[# Sources <VIDEO_0>@Video1] [# References <IMAGE_REF_0>@Image1] Turn this 3D animation into live-action cinema. The woman in the sage coat is the woman in Image1. Preserve her walk, the camera path and the street architecture. Natural skin and fabric, grounded footsteps, warm late-afternoon sunlight. Retain the open grass verge and distant silhouettes; no additional buildings or paving. One continuous four-second shot, no cuts. Use Image1 only for the walking subject's identity and appearance, including face, hair and clothing. Preserve Video1's camera, timing, motion, actor positions and architecture. Do not use the reference image as a first frame, background or camera layout."
+    },
+    {
+      "take": 6,
+      "label": "ensemble-video-only-06",
+      "attemptId": "b30d3681-7e7f-4729-bb1d-e89efb202bf4",
+      "model": "gemini-omni-1.1-flash",
+      "source": {
+        "fps": 24.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_count": 96,
+        "duration_basis": "decoded_frames/fps",
+        "duration_seconds": 4.0,
+        "bytes": 11232366,
+        "sha256": "30b2cf5dc0457b4e9144f76cf930a2c7931666181843d07851a250e7fb62804f"
+      },
+      "output": {
+        "fps": 24.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_count": 96,
+        "duration_basis": "decoded_frames/fps",
+        "duration_seconds": 4.0,
+        "bytes": 6756481,
+        "sha256": "58a904195d01b942b0c64909bb1915c7ff82b6c426852309dde984f0bc0a5efd"
+      },
+      "characterReferenceSha256": null,
+      "usage": {
+        "total_tokens": 57672,
+        "total_input_tokens": 22418,
+        "total_cached_tokens": 0,
+        "total_output_tokens": 34752,
+        "total_thought_tokens": 502,
+        "total_tool_use_tokens": 0,
+        "input_tokens_by_modality": [
+          {
+            "tokens": 74,
+            "modality": "text"
+          },
+          {
+            "tokens": 22344,
+            "modality": "video"
+          }
+        ],
+        "output_tokens_by_modality": [
+          {
+            "tokens": 34752,
+            "modality": "video"
+          }
+        ]
+      },
+      "mediaWarning": null,
+      "prompt": "Turn this 3D street animation into live-action cinema. Keep the three walkers distinct, with the same clothing, positions and natural walking motion. Realistic skin, fabric, grounded footsteps and leafy trees. Preserve the camera, street layout, facades, grass verge and object positions. Warm late-afternoon light. One continuous four-second shot, no cuts."
+    }
+  ]
+}
