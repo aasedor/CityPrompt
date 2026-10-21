@@ -408,7 +408,7 @@ PK_SINK = .025                                  # every plant base and carpet ed
 PK_CLEAR = .05                                  # clearance between a plant's buried base and a kerb's inner edge or a rail
 PK_PALETTE = dict(
     pk_leaf=(.21, .37, .14), pk_leaf2=(.31, .47, .19), pk_leaf_dark=(.13, .26, .10), pk_leaf_light=(.40, .55, .22),
-    pk_leaf_silver=(.42, .47, .36), pk_leaf_red=(.38, .14, .15), pk_leaf_hairy=(.17, .29, .11), pk_lav_leaf=(.34, .40, .31),
+    pk_leaf_silver=(.42, .47, .36), pk_leaf_red=(.38, .14, .15), pk_leaf_hairy=(.17, .29, .11), pk_lav_leaf=(.25, .31, .22),
     pk_groundcover=(.17, .30, .11), pk_shrub_core=(.05, .11, .04),
     pk_stem=(.25, .37, .16), pk_crown=(.11, .19, .08), pk_crown_blue=(.24, .32, .29), pk_bark=(.30, .23, .16),
     pk_blade=(.36, .50, .21), pk_blade_blue=(.44, .55, .50), pk_straw=(.74, .64, .42), pk_plume=(.84, .74, .55),
@@ -642,16 +642,6 @@ def _pk_speck(g, c, n, r, a0=0.):
     readable fleck for micro-florets, bracts and leaf grain."""
     rot = _pk_tilt(n); vs = [(0., 0., r * 1.1)] + [(r * math.cos(a0 + 2.0944 * j), r * math.sin(a0 + 2.0944 * j), 0.) for j in range(3)]
     g.add([tuple(c[k] + (_pk_rot(p, *rot) if rot else p)[k] for k in range(3)) for p in vs], [(0, 1, 2), (0, 2, 3), (0, 3, 1)])
-
-
-def _pk_floret(g, c, n, R, petals=4, cup=.25):
-    """Tiny flat floret (hydrangea, bedding): `petals` rounded petal tips round a raised centre, cupped by `cup`."""
-    rot = _pk_tilt(n); m = petals * 2; vs = [(0., 0., R * cup * .5)]
-    for j in range(m):
-        a = 2 * math.pi * j / m; rr = R if j % 2 == 0 else R * .5
-        vs.append((rr * math.cos(a), rr * math.sin(a), R * cup * (rr / R)))
-    vs = [tuple(c[k] + (_pk_rot(p, *rot) if rot else p)[k] for k in range(3)) for p in vs]
-    g.add(vs, [(0, 1 + j, 1 + (j + 1) % m) for j in range(m)])
 
 
 def _pk_daisy(gp, gb, c, R, petals, droop, axis, cone=1.0, seg=4, rings=3):
@@ -1132,33 +1122,33 @@ def flower_head_cluster(kit, name, head='daisy', heads=7, height=.65, spread=.32
       'umbel'   yarrow / sedum: flat-topped corymb of small smooth floret domes;
       'cup'     poppy / tulip / anemone: a bowl of four broad petals round a dark boss (boss_role);
       'panicle' astilbe / panicle hydrangea / phlox: loose conical floret panicle;
-      'mophead' hydrangea: 7-9 smooth domed heads skinned in tiny 4-petal florets (head_role2 = dome role, default
-                head_role), sunk 40% into a shrubby leafy mound with leaves lapping their rims.
+      'mophead' hydrangea: 7-9 heads, each a smooth dome under nine smooth floret-cluster domes (a fine lumpy outline,
+                never creased or flaky; head_role2 = their role, default head_role), seated in a shrubby mound of
+                dark lobes (pk_shrub_core) skinned in broad leaf cards.
     Heights are metres above the soil; place it with kit.place() or kit.place_in()."""
     rnd = _pkr.Random(seed); stem_role = stem_role or leaf_role
     parts = _pk_parts(leaf_role, stem_role, head_role, *([head_role2] if head_role2 else []),
                       *([boss_role] if head in ('daisy', 'cup') else []))
     if head == 'mophead':
-        fh = height * .78
-        _pk_foliage(parts[leaf_role], foliage, fh, rnd, leaves=leaves, lobes=4, bump=.02, wave=.12)
+        fh = height * .78; core = parts.setdefault('pk_shrub_core', PkGeo())
+        hull = [((0., 0., fh * .3), (foliage * .85, foliage * .8, fh * .55))]
+        _pk_dome(core, hull[0][0], hull[0][1], -PK_SINK, seed=seed, bump=.008, wave=.4, seg=14, rings=6)
+        for k in range(4):
+            a = k * 1.5708 + rnd.uniform(-.4, .4); d = foliage * rnd.uniform(.25, .45); rr = foliage * rnd.uniform(.45, .55)
+            c = (d * math.cos(a), d * math.sin(a), fh - rr * .85); hull.append((c, (rr, rr, rr * .85)))
+            _pk_dome(core, c, hull[-1][1], -PK_SINK, seed=rnd.randrange(1 << 20), bump=.008, wave=.4, seg=12, rings=5)
+        _pk_leaf_skin(parts[leaf_role], parts[leaf_role], hull, leaves * 22, .09 * size, fh, rnd)
         dome = parts[head_role2 or head_role]
         for k in range(heads):
             a = k * 2.39996 + rnd.uniform(-.3, .3); d = foliage * .78 * math.sqrt((k + .5) / heads)
-            hr = .115 * size * rnd.uniform(.88, 1.12)
-            zc = fh * (1 - .45 * (d / foliage) ** 2) + hr * .15
+            hr = .13 * size * rnd.uniform(.88, 1.12)
+            zc = fh * (1 - .45 * (d / foliage) ** 2) + hr * .4
             c = (d * math.cos(a), d * math.sin(a), zc)
-            _pk_ball(dome, c, (hr * .92, hr * .92, hr * .8), seed=rnd.randrange(1 << 20), bump=hr * .04, wave=hr * 1.2, seg=12, rings=6)
-            for j in range(5):                                   # floret clusters: a smooth lumpy (never creased) outline
-                u = _pk_norm((math.cos(j * 1.2566 + a), math.sin(j * 1.2566 + a), .55)); sr = hr * .5
-                _pk_ball(dome, (c[0] + hr * .55 * u[0], c[1] + hr * .55 * u[1], c[2] + hr * .5 * u[2]), (sr, sr, sr * .85), seg=9, rings=5)
-            for j in range(18):
-                u = _pk_norm((rnd.gauss(0, 1), rnd.gauss(0, 1), abs(rnd.gauss(0, 1)) * .9 + .15))
-                p = (c[0] + hr * .99 * u[0], c[1] + hr * .99 * u[1], c[2] + hr * .86 * .99 * u[2])
-                _pk_floret(parts[head_role], p, u, .02 * size * rnd.uniform(.8, 1.15))
-            for j in range(3):                                   # leaves lapping the lower rim of the head
-                phi = a + rnd.uniform(-1.2, 1.2); p0 = (c[0] * .7, c[1] * .7, zc - hr * .9)
-                _pk_blade(parts[leaf_role], _pk_arc(p0, phi, math.radians(28), math.radians(60), hr * 1.9, 5),
-                          phi, hr * .9, fold=.2, ovate=True)
+            _pk_ball(dome, c, (hr * .8, hr * .8, hr * .72), seg=10, rings=5)
+            for j in range(9):                                   # floret clusters: a fine, smooth lumpy (never creased) outline
+                q = 0 if j < 6 else 1; aj = j * (1.0472 if q == 0 else 2.0944) + a + q * .5
+                u = _pk_norm((math.cos(aj), math.sin(aj), .35 if q == 0 else 1.3)); sr = hr * rnd.uniform(.36, .42)
+                _pk_ball(dome, (c[0] + hr * .62 * u[0], c[1] + hr * .62 * u[1], c[2] + hr * .55 * u[2]), (sr, sr, sr * .85), seg=8, rings=5)
         return kit.proto(name, parts)
     _pk_foliage(parts[leaf_role], foliage, foliage * 1.15, rnd, leaves=leaves, leaf_w=leaf_w, ovate=leaf_w > .45)
     for k in range(heads):
@@ -1192,11 +1182,11 @@ def lavender(kit, name, radius=.30, height=.52, spikes=38, leaf_role='pk_lav_lea
     rnd = _pkr.Random(seed); parts = _pk_parts(leaf_role, head_role); g = parts[leaf_role]
     fh = height * .42
     _pk_dome(g, (0., 0., fh * .3), (radius * .55, radius * .55, fh * .62), -PK_SINK, seed=seed, bump=.008, wave=.1, seg=14, rings=5)
-    for k in range(64):
-        phi = k * 2.39996 + rnd.uniform(-.2, .2); q = (k + .5) / 64
+    for k in range(84):
+        phi = k * 2.39996 + rnd.uniform(-.2, .2); q = (k + .5) / 84
         p0 = (radius * .4 * q ** .5 * math.cos(phi), radius * .4 * q ** .5 * math.sin(phi), fh * (.75 - .5 * q))
         _pk_blade(g, _pk_arc(p0, phi, math.radians(70 - 50 * q), math.radians(40), radius * rnd.uniform(.45, .65), 4, floor=.01),
-                  phi, .011, fold=.35)
+                  phi, .014, fold=.3)
     for k in range(spikes):
         phi = k * 2.39996 + rnd.uniform(-.25, .25); q = (k + .5) / spikes; d = radius * .9 * q ** .5
         H = height * (1 - .3 * q ** 1.5) * rnd.uniform(.9, 1.06)
@@ -1244,25 +1234,10 @@ def arching_grass(kit, name, blades=44, height=.55, width=.016, role='pk_blade',
     return kit.proto(name, parts)
 
 
-def shrub_mass(kit, name, radius=.8, height=1.0, lobes=7, role='pk_leaf_dark', role2='pk_leaf', seed=1, leaves=None, leaf=None,
-               core_role='pk_shrub_core'):
-    """Grounded leafy shrub as a kit prototype (sizes 0.4-1.6 m): a smooth inner hull (a broad buried base lobe and
-    `lobes` overlapping smooth lobes, no ridged noise) clothed in a skin of small cupped leaf cards (role2 above, role
-    below) springing outward at +-35 degrees, so the silhouette is broken by leaves, not by spurs or creases, and dark
-    gaps in the very dark hull (core_role) read as foliage depth. leaves defaults to about 560 per m2 of hull."""
-    rnd = _pkr.Random(seed); parts = _pk_parts(core_role, role, role2); g = parts[core_role]
-    hull = [((0., 0., height * .28), (radius * .82, radius * .78, height * .42))]
-    _pk_dome(g, hull[0][0], hull[0][1], -PK_SINK, seed=seed, bump=.01, wave=.45, lo=.012, seg=16, rings=6)
-    for k in range(lobes):
-        a = 2 * math.pi * k / lobes + rnd.uniform(-.3, .3); up = rnd.random(); d = radius * (.55 - .4 * up) * rnd.uniform(.8, 1.1)
-        rr = radius * rnd.uniform(.34, .46); cz = height * (.40 + .32 * up)
-        rz = min(rr * .95, height * .94 - cz)
-        c = (d * math.cos(a), d * math.sin(a), cz); r = (rr, rr * rnd.uniform(.85, 1), rz)
-        hull.append((c, r))
-        _pk_dome(g, c, r, -PK_SINK, seed=rnd.randrange(1 << 20), bump=.01, wave=.45, lo=.01, seg=13, rings=6)
-    area = sum(r[0] * r[2] for _, r in hull) * 2.5
-    n = leaves or int(min(1500, max(220, 560 * area)))
-    leaf = leaf or (.06 + .04 * min(1., height / 1.4))
+def _pk_leaf_skin(gd, gl, hull, n, leaf, height, rnd, light=.45):
+    """Skin a hull of lobes [((c), (r)), ...] in n broad cupped leaf cards of length ~leaf, lying mostly along the
+    surface and lifting 20-35 degrees off it (gl above `light` x height, gd below, with jitter); leaves buried inside a
+    neighbouring lobe are skipped. Shared by shrub_mass and the mophead's shrubby mound."""
     wts = [r[0] * r[2] for _, r in hull]; placed = 0; tries = 0
     while placed < n and tries < n * 6:
         tries += 1
@@ -1281,9 +1256,32 @@ def shrub_mass(kit, name, radius=.8, height=1.0, lobes=7, role='pk_leaf_dark', r
         cn = _pk_rot(_pk_norm(tuple(nrm[k] - dn * d[k] for k in range(3))), d, rnd.uniform(-.4, .4))
         L = leaf * rnd.uniform(.8, 1.2)
         base = tuple(p[k] - nrm[k] * .012 for k in range(3))
-        up = (p[2] / height) + rnd.uniform(-.25, .25)
-        _pk_card(parts[role2 if up > .45 else role], base, d, cn, L, L * .68)
+        if base[2] + min(0., d[2]) * L < .015:                  # no leaf tip below the soil
+            continue
+        up = (p[2] / height) + rnd.uniform(-.3, .3)
+        _pk_card(gl if up > light else gd, base, d, cn, L, L * .78, fold=.12)
         placed += 1
+
+
+def shrub_mass(kit, name, radius=.8, height=1.0, lobes=7, role='pk_leaf_dark', role2='pk_leaf', seed=1, leaves=None, leaf=None,
+               core_role='pk_shrub_core'):
+    """Grounded leafy shrub as a kit prototype (sizes 0.4-1.6 m): a smooth inner hull (a broad buried base lobe and
+    `lobes` overlapping smooth lobes, no ridged noise) clothed in a skin of small cupped leaf cards (role2 above, role
+    below) springing outward at +-35 degrees, so the silhouette is broken by leaves, not by spurs or creases, and dark
+    gaps in the very dark hull (core_role) read as foliage depth. leaves defaults to about 560 per m2 of hull."""
+    rnd = _pkr.Random(seed); parts = _pk_parts(core_role, role, role2); g = parts[core_role]
+    hull = [((0., 0., height * .28), (radius * .82, radius * .78, height * .42))]
+    _pk_dome(g, hull[0][0], hull[0][1], -PK_SINK, seed=seed, bump=.01, wave=.45, lo=.012, seg=16, rings=6)
+    for k in range(lobes):
+        a = 2 * math.pi * k / lobes + rnd.uniform(-.3, .3); up = rnd.random(); d = radius * (.55 - .4 * up) * rnd.uniform(.8, 1.1)
+        rr = radius * rnd.uniform(.34, .46); cz = height * (.40 + .32 * up)
+        rz = min(rr * .95, height * .94 - cz)
+        c = (d * math.cos(a), d * math.sin(a), cz); r = (rr, rr * rnd.uniform(.85, 1), rz)
+        hull.append((c, r))
+        _pk_dome(g, c, r, -PK_SINK, seed=rnd.randrange(1 << 20), bump=.01, wave=.45, lo=.01, seg=13, rings=6)
+    area = sum(r[0] * r[2] for _, r in hull) * 2.5
+    _pk_leaf_skin(parts[role], parts[role2], hull, leaves or int(min(1500, max(220, 560 * area))),
+                  leaf or (.075 + .05 * min(1., height / 1.4)), height, rnd)
     return kit.proto(name, parts)
 
 
@@ -1629,8 +1627,8 @@ def planting():
                (1.15, -.75, 'sh12b'), (-1.6, -.55, 'sh04'), (2.15, -.35, 'sh04'), (-.9, -1.0, 'blue1')], rnd, pk_region(o4, KERB))
     # B5 groundcover with florets and leaf grain
     o5 = bed('B5 groundcover', pk_ellipse(-10.5, 1.0, 2.2, 1.4))
-    groundcover('B5 carpet', o5, ZS, kerb=KERB, role='pk_leaf2', seed=11, dots=(('pk_pink', 'pk_pink2'), 60, .009, 4),
-                grain=(('pk_leaf', 'pk_leaf_light'), 25, .022))
+    groundcover('B5 carpet', o5, ZS, kerb=KERB, role='pk_leaf', seed=11, dots=(('pk_pink', 'pk_pink2'), 60, .009, 4),
+                grain=(('pk_leaf_light', 'pk_leaf2'), 25, .022))
     # B6 clipped bedding rings with bedding cushions and a salvia at the centre
     o6 = bed('B6 bedding bands', pk_ellipse(-4.0, 1.0, 1.9, 1.9))
     rings = carpet_bands('B6', o6, ZS, [(.30, 'pk_leaf_silver', .07, None),
