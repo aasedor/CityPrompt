@@ -1098,7 +1098,7 @@ def condos():
     b.box('glass', XEB + 5.99, 61.0, 21.4, .02, 14.0, 2.2)
     b.box('pale', XEB + 11.0, 61.0, 23.05, 10.4, 16.4, .1)
     # The glass slab behind the west wing: ten storeys, floor bands, east-face mullions and balconies, green roof, penthouse.
-    xa, xb, ya, yb, top = -46.0, -25.0, 46.0, 76.0, 31.5
+    xa, xb, ya, yb, top = -46.0, -23.8, 46.0, 76.0, 31.5                                  # east face buried in the wing's rear wall (no open gap)
     b.box('curtain', (xa + xb) / 2, (ya + yb) / 2, top / 2, xb - xa, yb - ya, top)
     for i in range(1, 10):
         b.box('panel', (xa + xb) / 2, (ya + yb) / 2, 3.1 * i, xb - xa + .16, yb - ya + .16, .26)
@@ -1110,10 +1110,10 @@ def condos():
     b.box('membrane', -36.0, 61.0, top + 1.7, 9.0, 12.0, 3.0)
     b.box('curtain', -31.49, 61.0, top + 1.5, .02, 10.0, 2.0)
     # Its low glass base to the south, behind the west brick block.
-    b.box('curtain', (xa + xb) / 2, 41.7, 5.0, xb - xa, 8.0, 10.0)
+    b.box('curtain', (xa + xb) / 2, 41.5, 5.0, xb - xa, 9.4, 10.0)                            # 0.2 m into the brick block and under the slab (no open gaps)
     for i in (1, 2):
-        b.box('panel', (xa + xb) / 2, 41.7, 3.3 * i, xb - xa + .16, 8.16, .24)
-    b.box('membrane', (xa + xb) / 2, 41.7, 10.1, xb - xa - .6, 7.4, .2)
+        b.box('panel', (xa + xb) / 2, 41.5, 3.3 * i, xb - xa + .16, 9.56, .24)
+    b.box('membrane', (xa + xb) / 2, 41.5, 10.1, xb - xa - .6, 8.8, .2)
     b.flush('west glass slab')
 
 
@@ -1151,7 +1151,7 @@ def context():
                     z += 3.4
     for x0, x1, y0, y1, h, role in ((XW_END, -44.5, YN0, 34.0, 8.5, 'context'), (42.0, XE_END, YN0, 34.0, 10.0, 'neighbour'),
                                     (XW_END, -40.5, YS_END, YS0, 9.0, 'neighbour'), (40.0, XE_END, YS_END, YS0, 8.0, 'context'),
-                                    (XW_END, -47.0, 36.0, Y1, 12.0, 'context'), (42.0, XE_END, 36.0, Y1, 9.0, 'context')):
+                                    (XW_END, -45.6, 36.0, Y1, 12.0, 'context'), (42.0, XE_END, 36.0, Y1, 9.0, 'context')):
         b.box(role, (x0 + x1) / 2, (y0 + y1) / 2, h / 2, x1 - x0, y1 - y0, h)
         b.box('membrane', (x0 + x1) / 2, (y0 + y1) / 2, h + .02, x1 - x0 - .6, y1 - y0 - .6, .04)
         yf = y0 if y0 == YN0 else (y1 if y1 == YS0 else None)
