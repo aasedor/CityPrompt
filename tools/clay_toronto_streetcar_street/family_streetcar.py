@@ -987,11 +987,21 @@ def victorian(spec):
     if spec.get('gable'):
         ym = (spec['a'] + spec['b']) / 2
         gable_wall(spec['name'] + ' street gable', XWB - T / 2, ym - 3.6, ym + 3.6, top, 2.4, axis='x', role=spec['role'])
-        b = Batch()
+        # Raking coping: two closed prisms in the gable plane whose soffit is buried 4 cm in the gable and whose feet are cut
+        # level 2 cm below the wall top, so they die into the flat coping and cornice cap with no open end; the left half runs
+        # 1 cm past the apex line under the finial block, so the halves overlap instead of meeting on a shared plane. The
+        # outer face stands 3 cm proud of the flat coping's face (XWB + .1): a shared plane there rendered black at both feet.
+        k, lo_x, hi_x = 2.4 / 3.6, XWB - T / 2 - (T + .2) / 2, XWB + .13
+        zb = lambda d: top + k * (3.6 - d) - .04                                               # soffit at distance d from the apex line
         for s in (-1, 1):
-            b.beam('stone', (XWB - T / 2, ym + s * 3.85, top - .12), (XWB - T / 2, ym, top + 2.4 + .06), T + .2, .22)
+            pts = [(ym + s * 3.95, top - .02), (ym + s * 3.57, top - .02), (ym - s * .01, zb(-.01)), (ym - s * .01, zb(-.01) + .30),
+                   (ym + s * 3.95, zb(3.95) + .30)]
+            if s > 0:
+                pts = [(ym + .0, zb(0.0)), (ym + 3.57, top - .02), (ym + 3.95, top - .02), (ym + 3.95, zb(3.95) + .30), (ym, zb(0.0) + .30)]
+            C.prism(spec['name'] + (' raking coping W' if s < 0 else ' raking coping E'), pts, 'x', lo_x, hi_x, 'stone')
+        b = Batch()
         b.box('stone', XWB + .03, ym, top + 1.0, .1, 1.3, 1.0)                                  # date plaque
-        b.box('stone', XWB - T / 2, ym, top + 2.75, .5, .5, .4)                                # finial block
+        b.box('stone', XWB - T / 2, ym, top + 2.65, .5, .5, .4)                                # finial block, seated into the coping apex
         b.flush(spec['name'] + ' gable')
 
 
@@ -1024,8 +1034,8 @@ def body(spec):
     if corner and e:                                                                          # the two glazed hipped roof skylights (top view)
         for hx, hy in ((.3, .42), (.55, .62)):
             cx, cy = X(depth * hx), y0 + (y1 - y0) * hy
-            b.box('pale', cx, cy, rz + .2, 2.8, 2.2, .4)
-            pitched_roof(spec['name'] + ' skylight', cx - 1.3, cx + 1.3, cy - 1.0, cy + 1.0, rz + .55, .6, True, True, 'x', .04, 'glass', 'roof')
+            b.box('pale', cx, cy, rz + .2, 3.6, 2.8, .4)
+            pitched_roof(spec['name'] + ' skylight', cx - 1.7, cx + 1.7, cy - 1.3, cy + 1.3, rz + .55, 1.1, True, True, 'x', .04, 'glass', 'roof')
     b.flush(spec['name'] + ' body')
     C.qa_room_light(spec['name'] + ' shop', (X(3.5), (y0 + y1) / 2, 2.6), 90, 3.0)
     C.qa_room_light(spec['name'] + ' upper', (X(3.0), (y0 + y1) / 2, FL2 + 2.3), 60, 3.0)

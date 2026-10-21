@@ -1,7 +1,7 @@
 # Toronto streetcar street (RLASM v6.1 architectural clay)
 
 Candidate I10 of wave I of 2026-10-20, one of the ten catalogue additions the user approved
-(four buildings, three parks and squares, three streets); a street or path option, not a building. State: **stopped at v004 by the stopping rule (two consecutive non-improving reviews); v002 is the candidate**. Nothing here is keeper-approved,
+(four buildings, three parks and squares, three streets); a street or path option, not a building. State: **reopened by the user for a second pass (v005 builds on v004); v002 remains the candidate until a review beats it**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
