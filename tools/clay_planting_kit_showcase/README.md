@@ -229,19 +229,24 @@ There are fifteen cameras:
   yarrow, plumes and clearance fixed; shrubs as topiary balls of flat chips over a near-black hull, hydrangea body a
   drum, bougainvillea as a quilt with pink balloons and black slits (P0), panicle cones, sea-urchin lavender, gumdrop
   cushions and intersecting pots.
-- **v003 (this module):** custom-normal ovate leaves; structural shrub hulls with an inner leaf layer, stems and
-  sprigs; the hydrangea's own leafy body with seated heads; open racemes; needle-leaf lavender with whorled spikes;
-  leaf-skinned lumpy cushions; the climber rebuilt as instanced sprays and trailing canes over a hidden carrier; pot
-  and shell audits. See `VERSIONS.md` once it is reviewed.
+- **v003 (this module, the candidate):** independent review FAIL, P0 = 0, P1 = 2, P2 = 12
+  (`evidence/v003/independent-review.md`). Fixed: the bougainvillea now reads as a flowering climber with no balloons
+  or black slits, and the panicle, lavender, cushions, pot clash and hydrangea silhouette are fixed. Open: (1) the
+  smooth shrub hull still shows between large flat leaves, so shrubs, the hydrangea body and the begonia cushion read
+  as leaf-pasted lumps at 3-5 m; (2) three shrub canopies cross their kerbs, because the clearance audit measures a
+  smaller footprint than the delivered canopy. The shrub finding survived two targeted fixes (v002, v003), so the
+  stopping rule stops the kit at v003. The reviewer judged that v003 would close the stopped planting findings of
+  Prince's Island Park, the Halifax Public Gardens and the stepped terraced plaza, but not the planted green bridge.
 
 ## Open points
 
-- v003 has not had an independent review. Its quality is the builder's reading of 480 px smokes and 1440 px
-  close-ups of the shrub, climber, cascade, specimen, lavender and bedding cameras.
-- The largest shrub (1.6 m) still reads as a rounded mound from some angles, and between its leaves the hull shows as
-  shaded depth; leaf gaps in deep shade still render below 3% luminance (contact shadow, not a slit).
-- Lavender clumps are airy rather than dense cushions; salvia spires still show their whorl beads at 1.5 m.
-- The climber carrier shows as a dark green backing through gaps in the sprays on the cascade face.
+State: **stopped at v003 by the stopping rule (the shrub finding survived two targeted fixes); v003 is the
+candidate**. Nothing here is keeper-approved, runtime-integrated, enrolled in a catalogue or activated.
+
+- P1 #1 (v003): shrub hulls show between the leaf cards; shrubs read as leaf-pasted lumps rather than loose foliage.
+- P1 #2 (v003): the clearance audit uses a smaller footprint than the delivered canopy, so three canopies overrun
+  their kerbs although the build reports 0 violations. Fix: measure clearance from the instanced canopy's actual
+  plan extent.
 - The GLB has about 94 KB of headroom under the cap, and the glTF JSON (instance nodes, about 760 B each with extras)
   is 499 KB; a park family must budget its own carpets, drapes and node count.
 - Instances are glTF node instances, not `EXT_mesh_gpu_instancing`; a runtime loader should batch shared meshes.
