@@ -1266,9 +1266,10 @@ def _pk_leaf_skin(gd, gl, hull, n, leaf, height, rnd, light=.45):
 def shrub_mass(kit, name, radius=.8, height=1.0, lobes=7, role='pk_leaf_dark', role2='pk_leaf', seed=1, leaves=None, leaf=None,
                core_role='pk_shrub_core'):
     """Grounded leafy shrub as a kit prototype (sizes 0.4-1.6 m): a smooth inner hull (a broad buried base lobe and
-    `lobes` overlapping smooth lobes, no ridged noise) clothed in a skin of small cupped leaf cards (role2 above, role
-    below) springing outward at +-35 degrees, so the silhouette is broken by leaves, not by spurs or creases, and dark
-    gaps in the very dark hull (core_role) read as foliage depth. leaves defaults to about 560 per m2 of hull."""
+    `lobes` overlapping smooth lobes, no ridged noise) clothed in a skin of broad cupped leaf cards (role2 above, role
+    below) lying along the surface and lifting 20-35 degrees off it, so the silhouette is broken by leaves, not by
+    spurs or creases, and gaps in the very dark hull (core_role) read as foliage depth. leaves defaults to about 560
+    per m2 of hull."""
     rnd = _pkr.Random(seed); parts = _pk_parts(core_role, role, role2); g = parts[core_role]
     hull = [((0., 0., height * .28), (radius * .82, radius * .78, height * .42))]
     _pk_dome(g, hull[0][0], hull[0][1], -PK_SINK, seed=seed, bump=.01, wave=.45, lo=.012, seg=16, rings=6)
