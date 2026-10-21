@@ -126,7 +126,7 @@ A replacement baseline submission requires a new user authorization.
    - Full-resolution samples, source/result comparison, saved prompts, receipts,
      capture profile and browser proof are in the external evidence directory.
 
-## Current conclusion and remaining gate
+## Conclusion after the initial batch
 
 The local video-to-video transport and optional prompt workflow work. The output
 is an experimental architectural concept, not an approved fidelity-preserving
@@ -135,13 +135,96 @@ render. Nothing from this pilot has been pushed or deployed.
 Following the visual failure, the prompt's blanket instruction to create clear
 glazing was removed, and preserving open façades and building separation was
 made explicit. The revised prompt remains short and passes regression tests,
-but **has not received another paid generation test**. The provider option now
+but at this checkpoint **had not received another paid generation test**. The provider option now
 explicitly says experimental. Original submitted prompts and pixels remain
 immutable in the external evidence directory.
 
-Two provider requests were submitted total, including the HTTP 400 rejection;
-the server allowance is exhausted. No third request, quota reset or provider
-purchase was made. Completing a replacement baseline trial requires the pending
-user authorization. Before any student rollout, review a closer source with
+At this checkpoint two provider requests had been submitted, including the HTTP
+400 rejection, and that allowance was exhausted. The subsequently authorized
+follow-up batch is recorded below. Before any student rollout, review a closer source with
 recognizable actors and recheck all buildings, voids, roofs, parks and streets
 against their source. Prompt instructions alone cannot guarantee that fidelity.
+
+## Follow-up batch: two more trials explicitly authorized
+
+The user subsequently authorized two additional eight-second trials. The earlier
+allowance and both attempt IDs were archived in a new external batch ledger;
+the current local allowance admits exactly two new requests, including failures.
+Both prior attempts remain in project history. The disposable local account
+received 100 internal test tokens for these two requests; production balances
+and provider subscriptions were unchanged.
+
+Evidence: `C:/dev-artifacts/CityPrompt/omni-11-video-pilot-2026-10-20/followup-two-trials/`.
+Source commit: `0d5668613`. No additional runtime source changes were made for
+these tests. The Omni helper suite was rerun: 37 passed.
+
+The existing Timber and Stone Square was moved between the front parkades in
+the disposable local scene, and the camera was brought closer. Seven buildings,
+two parks, two streets and the existing details remain. Because framing and
+park position changed as well as the prompt, comparisons against the previous
+trial do not isolate the prompt's effect.
+
+### Follow-up 1: closer aerial, no added activity
+
+- Attempt: `b433058a-d70e-46bc-a6fb-ce7871ffb63a`.
+- Completed through the local app using `gemini-omni-1.1-flash` and the revised
+  prompt. Actual result: 1920×1080, 24 fps, 192 frames, exactly 8 seconds,
+  11,768,690 bytes. Every frame decoded at the expected dimensions.
+- Source SHA-256: `54f3cd725692e83e7c650fd2e648b92f57bf6477190da01ff8ce20ae6cd327fc`.
+- Result SHA-256: `df0110910504ae2204d83d5cc2aef6cf50e88955586b74df7faa9a1de8f845a6`.
+- Five matched-time samples show the buildings remaining separate and the park
+  remaining between them, without the prior invented connecting bridge.
+- Roof panel and façade treatments still differ. This is improved concept
+  fidelity, not exact architectural acceptance. Image similarity is 80.6/100;
+  the metric is not a proof of preserved architecture.
+- The submitted prompt, original control/result videos, full-resolution frames,
+  comparison sheet, capture profile and admission receipt are retained outside
+  Git. Provider billing remains unverified; the app's US$0.80 figure is an estimate.
+
+### Follow-up 2: lower park route with custom direction
+
+- Attempt: `67d577f4-89e6-47ea-9637-9bbf3b7bdbd4`.
+- Optional direction: “A woman walks her dog along the existing park path.”
+- Completed through the local app using `gemini-omni-1.1-flash`. Actual result:
+  1920×1080, 24 fps, 192 frames, exactly 8 seconds, 11,099,900 bytes. Every frame
+  decoded at the expected dimensions.
+- Source SHA-256: `599b9c15c344f7afbed36da34f81d57565c0594e6927dc7b65d8e4d08d57d60a`.
+- Result SHA-256: `ba5bf7e189fe5e35a7134778bc54b286f1cf0e0eb2c07d212ed5141bb27b238e`.
+- The woman and leashed dog are clearly recognizable, walking across the park
+  paving. Park paths, benches, planted beds and pergola remain recognizable.
+- Architectural fidelity did not pass: the orange/brick-like parking structure
+  becomes dark gray, and a brown background apartment building appears at the
+  right where the control has Google context. Prompt compliance for the actor
+  does not establish architectural preservation.
+- Image similarity is 73.8/100. Both new results have the automated label
+  `stable`; this pixel heuristic is not manual architectural acceptance.
+- The final source uses the six-metre-high detail flythrough, approximately
+  4.3 m of movement over eight seconds. It contains zero auxiliary geometry,
+  depth, normal, instance, semantic or material checkpoints. The aerial source
+  contains six checkpoints. Both sources are 1920×1080 at fixed 24 fps, using
+  the high-quality 2560×1440 capture/downsample path and tile warmup.
+
+### Follow-up verification and disposition
+
+- Exactly two new provider submissions completed, about 97 and 98 seconds from
+  submission to completion. Four submissions now exist across both batches,
+  including the original HTTP 400. No further generations are authorized.
+- The app estimate is US$0.80 per result (US$1.60 for this batch); actual
+  provider billing has not been verified. The local test account has zero
+  remaining internal tokens. No production account balances were changed.
+- Both videos persisted in Project Renders after reload and played fully in
+  the actual CityPrompt video lightbox: duration/current time 8 seconds,
+  1920×1080, browser media readiness 4. Both source/result pairs also played
+  fully in the comparison viewer, whose captured error log was empty.
+- Fresh automated verification: `backend/tests/test_omni_video.py`, 37 passed.
+  No runtime source edits were made during this follow-up batch; the prior
+  runtime commit's frontend/type/backend checks remain separately recorded.
+- External evidence includes `trial-ledger.json`, `saved-attempts.json`, both
+  prompt files, source/result MP4s, media metadata, five matched-time comparison
+  frames per result, the test log and actual saved-gallery browser screenshots.
+- Local comparison viewer: `http://127.0.0.1:18116/index.html`. This loopback
+  viewer is only available while its local server is running.
+
+Generation, custom prompting, storage, reload and playback passed. Exact
+architectural fidelity remains a limitation, so the provider stays experimental.
+This follow-up is local only; no push or deployment was performed.
