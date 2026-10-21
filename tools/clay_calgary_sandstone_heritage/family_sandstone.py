@@ -6,8 +6,9 @@ buff sandstone round a square light court, on a city block with streets on all f
 rusticated basement; corner pavilions that step forward of the wings and rise into steep slate pyramids, each
 with a coped gable and pinnacles on its outward faces; steep slate hipped roofs over the wings. Small square
 basement windows, paired rectangular first-floor windows, tall round-arched windows on the second floor and
-arcades of small arches on the third, all with deep reveals and stone string courses. A deep round-arched
-portal in the south-west pavilion. At the middle of the east front a square clock tower projects from the wing,
+arcades of small arches on the third, all with deep reveals and stone string courses. At the centre of the south
+front a deep round-arched portal porch with a balcony, a giant arcade rising from it and a larger coped gable with
+a small arcade between round turret pinnacles. At the middle of the east front a square clock tower projects from the wing,
 with tall lancets, clock faces on four sides, a belfry arcade, round corner turrets with copper caps and a tall
 copper spire. Sidewalks, streets and trees round the block.
 """
@@ -30,7 +31,7 @@ TX0, TX1, TY0, TY1 = 17.0, 25.0, -4.0, 4.0     # clock tower, projecting 3 m fro
 TTOP, SPIRE = 36.5, 48.7                         # tower crown above every pavilion pyramid; slender octagonal spire
 EPS = .002
 PALETTE = dict(wall=(.54, .42, .25), joint=(.40, .31, .19), stone=(.63, .52, .34), arch=(.61, .50, .32),
-    trim=(.20, .18, .16), frame=(.20, .18, .16), pale=(.88, .86, .82), roof=(.11, .105, .10), membrane=(.36, .34, .32), copper=(.64, .38, .28),
+    trim=(.20, .18, .16), frame=(.20, .18, .16), pale=(.88, .86, .82), roof=(.25, .24, .23), membrane=(.36, .34, .32), copper=(.64, .38, .28),
     sand=(.66, .60, .50), foundation=(.52, .42, .28), glass=(.20, .22, .24), hardware=(.07, .07, .08),
     interior=(.82, .78, .70), floor=(.56, .46, .36), timber=(.42, .30, .20), clock=(.93, .91, .86),
     planting=(.30, .44, .20), soil=(.22, .16, .10), concrete=(.70, .69, .66), white=(.95, .95, .93),
@@ -44,7 +45,7 @@ def manifest(version):
         ('architecture_close', (36.0, -40.0, 20.0), (H, -H, 18.0), 45),
         ('glass_close', (-6.3, -36.0, 8.5), (-6.3, -H, 8.5), 45),
         ('clock_tower', (62.0, -18.0, 34.0), (TX1, 0.0, 37.0), 40),
-        ('portal_arch', (-11.0, -42.0, 3.2), (-17.5, Y0 - 2.5, 3.2), 40),
+        ('portal_arch', (6.5, -40.0, 3.2), (0.0, -H - 2.5, 3.2), 40),
         ('gables_pinnacles', (30.0, -48.0, 24.0), (17.5, Y0, 19.0), 40),
         ('east_side', (100.0, 0.0, 20.0), (X1, 0.0, 22.0), 40),
         ('roofs_court', (-30.0, -40.0, 60.0), (0.0, 2.0, 16.0), 40),
@@ -579,10 +580,10 @@ def door_in_arch(m, h, depth, rise):
     m.box('hardware', h['u'], depth - .27, (spring + h['z']) / 2, .05, .04, spring - h['z'] - .3)
 
 
-def gable(name, origin, tangent, inward, uc, run=5.0):
-    """A coped gable on a pavilion face: the gable wall, coping beams, pinnacles, a stone-framed triplet in it."""
+def gable(name, origin, tangent, inward, uc, run=5.0, hw=4.6, rise=6.0, lights=3, turrets=False):
+    """A coped gable on a pavilion face: the gable wall, coping beams, pinnacles, a stone-framed row of lights in it.
+    turrets: round turret pinnacles standing on the eave cornice at the shoulders instead of square blocks."""
     f = C.Face(origin, tangent, inward, name)
-    hw, rise = 4.6, 6.0
     p = lambda u, d, z: f.p(u, d, z)
     nx, ny = -inward[0], -inward[1]
     pts = []
@@ -592,20 +593,30 @@ def gable(name, origin, tangent, inward, uc, run=5.0):
     for s in (-1, 1):                                                                  # rake copings start inside the shoulder blocks
         b.beam('stone', p(uc + s * (hw - .2), .45, EAVE + .44), p(uc, .45, EAVE + rise + .1), 1.15 + .04 * (s > 0), .3, ext=.05)
         q = p(uc + s * (hw + .1), .4, 0)
-        b.box('stone', q[0], q[1], EAVE + .725, 1.2, 1.2, 1.55)
-        cone(b, 'stone', q[0], q[1], EAVE + 1.5, EAVE + 3.3, .35, 8)
+        if turrets:
+            cyl(b, 'stone', q[0], q[1], EAVE - .45, EAVE - .2, .85, 10)                  # corbel ring on the eave cornice
+            cyl(b, 'stone', q[0], q[1], EAVE - .3, EAVE + 2.6, .7, 10)                    # round turret shaft
+            cyl(b, 'stone', q[0], q[1], EAVE + 2.45, EAVE + 2.7, .82, 10)                 # cap ring
+            cone(b, 'stone', q[0], q[1], EAVE + 2.65, EAVE + 5.2, .8, 10)                 # conical stone cap
+        else:
+            b.box('stone', q[0], q[1], EAVE + .725, 1.2, 1.2, 1.55)
+            cone(b, 'stone', q[0], q[1], EAVE + 1.5, EAVE + 3.3, .35, 8)
     q = p(uc, .45, 0)
     b.box('stone', q[0], q[1], EAVE + rise + .5, .8, .8, 1.0)
     cone(b, 'stone', q[0], q[1], EAVE + rise + 1.0, EAVE + rise + 2.6, .32, 8)
-    # Triplet of arched lights set in a proud stone frame (the gable is solid behind them).
-    for du in (-.9, 0.0, .9):
+    # A row of lights (a triplet, or a small arcade on the south centre) set in a proud stone frame; the gable is solid
+    # behind them.
+    pitch, fw, gw = (.9, .62, .5) if lights == 3 else (.78, .56, .44)
+    span = 2.9 if lights == 3 else (lights - 1) * pitch + fw + .5
+    for i in range(lights):
+        du = (i - (lights - 1) / 2) * pitch
         g = p(uc + du, -.05, 0)
-        b.box('frame', g[0], g[1], EAVE + 1.85, .62 if inward[0] == 0 else .1, .1 if inward[0] == 0 else .62, 2.3)
+        b.box('frame', g[0], g[1], EAVE + 1.85, fw if inward[0] == 0 else .1, .1 if inward[0] == 0 else fw, 2.3)
         g = p(uc + du, -.1, 0)
-        b.box('glass', g[0], g[1], EAVE + 1.85, .5 if inward[0] == 0 else .02, .02 if inward[0] == 0 else .5, 2.1)
+        b.box('glass', g[0], g[1], EAVE + 1.85, gw if inward[0] == 0 else .02, .02 if inward[0] == 0 else gw, 2.1)
     g = p(uc, -.08, 0)
-    b.box('stone', g[0], g[1], EAVE + .62, 2.9 if inward[0] == 0 else .2, .2 if inward[0] == 0 else 2.9, .16)
-    b.box('stone', g[0], g[1], EAVE + 3.15, 2.9 if inward[0] == 0 else .2, .2 if inward[0] == 0 else 2.9, .3)
+    b.box('stone', g[0], g[1], EAVE + .62, span if inward[0] == 0 else .2, .2 if inward[0] == 0 else span, .16)
+    b.box('stone', g[0], g[1], EAVE + 3.15, span if inward[0] == 0 else .2, .2 if inward[0] == 0 else span, .3)
     b.flush(name)
     # The cross roof behind the gable, running back into the pavilion pyramid.
     tri = [(uc - hw, EAVE + .1), (uc + hw, EAVE + .1), (uc, EAVE + rise + .1)]
@@ -637,7 +648,7 @@ def outer_walls():
         corner = -1.0 if wraps else T + PP
         for side, (a, c) in (('w', (plo, -H + PW - PP / 2)), ('e', (H - PW + PP / 2, -plo))):
             uc = -pc if side == 'w' else pc
-            portal = uc if (label == 'south' and side == 'w') else None
+            portal = None                                                          # the portal is on the south wing centre
             # On the east and west faces the corner 2.6 m belongs to the south or north wall's end, so only the inner
             # side bay is set there; the north and south faces carry both side bays.
             bays = [uc - 4.4, uc, uc + 4.4] if wraps else [uc, uc - (4.4 if uc > 0 else -4.4)]
@@ -648,6 +659,11 @@ def outer_walls():
         if label == 'east':
             segment('east wing south', org(H), t, n, lo, TY0, T, [-7.5])
             segment('east wing north', org(H), t, n, TY1, hi, T, [7.5])
+        elif label == 'south':
+            # The south front's central block (all three sources): the arched portal porch with its balcony, the giant
+            # arcade rising from the balcony, and a larger coped gable with a small arcade between turret pinnacles.
+            segment('south wing', org(H), t, n, lo, hi, T, [-8.4, -4.2, 0.0, 4.2, 8.4], portal=0.0, group=0.0)
+            gable('south mid gable', org(H), t, n, 0.0, run=RUN[label], hw=5.4, rise=6.3, lights=5, turrets=True)
         else:
             segment(f'{label} wing', org(H), t, n, lo, hi, T, [-8.4, -4.2, 0.0, 4.2, 8.4])
             gable(f'{label} mid gable', org(H), t, n, 0.0, run=RUN[label])                  # the mid-front gabled pavilion
@@ -656,15 +672,16 @@ def outer_walls():
 
 
 def porch():
-    """The south-west portal porch: a deep arched block standing forward of the pavilion, colonnettes, steps and a
-    balustraded balcony on top."""
-    uc, yf, dp, top = -(2 * H - PW + 1.5 * PP) / 2, Y0 - 2.5, 2.5, 6.0
+    """The portal porch at the centre of the south front (all three sources): a deep arched block standing forward
+    of the wing under the central gable, colonnettes, steps and a balustraded balcony on top."""
+    uc, YW, dp, top = 0.0, -H, 2.5, 6.0
+    yf = YW - dp
     f = C.Face((0, yf, 0), (1, 0, 0), (0, 1, 0), 'porch')
     h = hole('porch arch', uc, 0.0, 3.4, 4.6, kind='door')
     f.wall('porch block', uc - 2.8, uc + 2.8 - EPS, 0.0, top, depth=dp, role='wall', holes=[h])
     G.brick_courses(f, uc - 2.78, uc + 2.78, .1, top - .1, [h], spacing=.5)
     register(f, h, 0.0, 'porch arch', 'entrance porch')
-    C.box('Porch landing', (uc, (yf + Y0 + 2.3) / 2, .27), (3.38, Y0 + 2.3 - yf, .54), 'stone', 'porch', 0)
+    C.box('Porch landing', (uc, (yf + YW + 2.3) / 2, .27), (3.38, YW + 2.3 - yf, .54), 'stone', 'porch', 0)
     arch_head(f, h, 1.7, ring=.55, dep=dp)
     m = Merge(f)
     for s in (-1, 1):
@@ -674,7 +691,7 @@ def porch():
     b = Batch()
     for k in range(3):                                                                    # granite steps up to the porch
         b.box('stone', uc, yf - .3 - .3 * k, .09 + .09 * (2 - k), 4.2 + .4 * k, .3, .18 + .18 * (2 - k))
-    for x0, x1, y0, y1 in ((uc - 2.8, uc + 2.8, yf, yf + .25), (uc - 2.8, uc - 2.55, yf + .25, Y0), (uc + 2.55, uc + 2.8, yf + .25, Y0)):
+    for x0, x1, y0, y1 in ((uc - 2.8, uc + 2.8, yf, yf + .25), (uc - 2.8, uc - 2.55, yf + .25, YW), (uc + 2.55, uc + 2.8, yf + .25, YW)):
         b.box('stone', (x0 + x1) / 2, (y0 + y1) / 2, top + .9, x1 - x0, y1 - y0, .16)          # balcony rail
         b.box('stone', (x0 + x1) / 2, (y0 + y1) / 2, top + .08, x1 - x0, y1 - y0, .16)         # balcony plinth
         L = max(x1 - x0, y1 - y0)
@@ -820,10 +837,10 @@ def tower():
             b.beam('hardware', f.p(uc, -.15, ZC), f.p(uc + r * math.cos(ang), -.15, ZC + r * math.sin(ang)), .06, .03)
     for x in (TX0, TX1):                                                                         # corner turrets with copper caps
         for y in (TY0, TY1):
-            cyl(b, 'wall', x, y, ZS - .5, TTOP + .8, .75, 14)
+            cyl(b, 'wall', x, y, ZS - .5, TTOP + .8, .75, 12)
             b.box('stone', x, y, ZS - .7, 1.2, 1.2, .4)
-            cyl(b, 'stone', x, y, TTOP + .8, TTOP + 1.05, .9, 14)
-            cone(b, 'copper', x, y, TTOP + 1.05, TTOP + 5.2, .9, 14)
+            cyl(b, 'stone', x, y, TTOP + .8, TTOP + 1.05, .9, 12)
+            cone(b, 'copper', x, y, TTOP + 1.05, TTOP + 5.2, .9, 12)
     b.box('stone', xc, 0.0, TTOP + .05, 8.9, 8.9, .3)
     cyl(b, 'stone', xc, 0.0, TTOP + .2, TTOP + .7, 3.75, 8)                                     # octagonal spire base
     cone(b, 'copper', xc, 0.0, TTOP + .7, SPIRE, 3.6, 8)                                         # slender octagonal spire (h:base ~1.7)
@@ -842,7 +859,7 @@ def site():
     for k in range(-22, 23):
         b.box('joint', k * 2.0, Y0 - 3.0, .121, .02, 5.98, .004)
     b.flush('sidewalk joints')
-    for x in (-28.0, -14.0, 3.0, 26.0):
+    for x in (-12.5, 12.5):                                                         # south sidewalk, flanking the central block
         street_tree(x, Y0 - 4.2, z=.12, height=10.0, spread=2.8)
     for y in (-18.0, 14.0):
         street_tree(X1 + 4.2, y, z=.12, height=10.0, spread=2.8)
