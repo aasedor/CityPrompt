@@ -7,7 +7,7 @@ nothing here may be enrolled, seeded or published. The module exists so the kit 
 before park families reuse it.
 
 South row (y = -6.5), west to east: B1 flower_head_cluster specimens (mophead, coneflower, rudbeckia, salvia, yarrow,
-panicle, poppy, lavender), B2 perennial_drift, B3 arching_grass (fountain, feather-reed with plumes, blue), B4 shrub_mass
+panicle, astilbe, lavender), B2 perennial_drift, B3 arching_grass (fountain, feather-reed with plumes, blue), B4 shrub_mass
 size range (0.4-1.6 m), B9 green-bridge strip (lavender, poppies, small shrubs) against a railing. Middle row (y = +1):
 B5 groundcover with florets and leaf grain, B6 clipped bedding rings with bedding cushions, B7 leaf-shaped Halifax carpet
 bed (flat clipped silver, begonia, ageratum and alyssum bands with micro-florets round white hydrangeas). North (y = +8):
@@ -396,9 +396,12 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 # flat-shaded and buried, and nothing is built from coplanar faces. Prototype plants are shared mesh datablocks placed as
 # linked instances (glTF: one mesh, many nodes) when PlantKit(instancing=True); the family build.py must keep instances out
 # of clay_core.deliver()'s per-role join (see tools/clay_planting_kit_showcase/build.py, keep_instances()).
-# Kit v002: smooth (non-ridged) noise everywhere, leaf-skinned shrubs, floret-skinned mopheads, corymb umbels, spikelet
-# plumes, flat clipped carpets with shoulder rings and lapped band joints, a kit-wide clearance rule (kerbs and rails),
-# and the lavender, cup, panicle, bedding-cushion, pot-plant and wall-drape modules.
+# Kit v003: canopy leaves are curved, tapered ovate cards whose custom normals lean toward the canopy normal (so a shrub
+# shades as one leafy mass, not as chips); shrubs and hydrangea bodies are irregular multi-lobe hulls (bays, a wide low
+# base, stems at the foot, sprigs breaking the outline); open branched racemes for panicles; needle-leaf lavender with
+# whorled spikes in a vase-shaped fan; leaf-skinned lumpy bedding cushions; wall climbers built from instanced leafy and
+# flowering sprays (three-bract clusters) over a hidden dark carrier, with trailing canes and a woody armature; pots and
+# opposing near-coincident shell faces are audited with the clearance rule (audit() must be 0).
 import random as _pkr
 import numpy as _pknp
 import shapely as _pksh
@@ -408,8 +411,8 @@ PK_SINK = .025                                  # every plant base and carpet ed
 PK_CLEAR = .05                                  # clearance between a plant's buried base and a kerb's inner edge or a rail
 PK_PALETTE = dict(
     pk_leaf=(.21, .37, .14), pk_leaf2=(.31, .47, .19), pk_leaf_dark=(.13, .26, .10), pk_leaf_light=(.40, .55, .22),
-    pk_leaf_silver=(.42, .47, .36), pk_leaf_red=(.38, .14, .15), pk_leaf_hairy=(.17, .29, .11), pk_lav_leaf=(.25, .31, .22),
-    pk_groundcover=(.17, .30, .11), pk_shrub_core=(.05, .11, .04),
+    pk_leaf_silver=(.36, .44, .37), pk_leaf_red=(.38, .14, .15), pk_leaf_hairy=(.17, .29, .11), pk_lav_leaf=(.25, .31, .22),
+    pk_groundcover=(.17, .30, .11), pk_shrub_core=(.15, .25, .10),
     pk_stem=(.25, .37, .16), pk_crown=(.11, .19, .08), pk_crown_blue=(.24, .32, .29), pk_bark=(.30, .23, .16),
     pk_blade=(.36, .50, .21), pk_blade_blue=(.44, .55, .50), pk_straw=(.74, .64, .42), pk_plume=(.84, .74, .55),
     pk_white=(.93, .93, .89), pk_white2=(.98, .97, .92), pk_cream=(.88, .87, .70), pk_pink=(.88, .55, .66),
@@ -443,13 +446,19 @@ class _PkNoise:
 
 
 class PkGeo:
-    """Vertex/face accumulator for one role of a prototype; `flat` lists face indices to flat-shade (buried caps)."""
+    """Vertex/face accumulator for one role of a prototype; `flat` lists face indices to flat-shade (buried caps); `n`
+    holds optional per-vertex custom normals (None = the mesh's own smooth normal). A role that carries custom normals is
+    stored as triangles only, so the build's triangulate pass and the glTF round trip keep them exactly."""
     def __init__(self):
-        self.v = []; self.f = []; self.flat = []
+        self.v = []; self.f = []; self.flat = []; self.n = None
 
-    def add(self, vs, fs, flat=()):
+    def add(self, vs, fs, flat=(), ns=None):
         o = len(self.v); b = len(self.f)
+        if ns is not None and self.n is None:
+            self.n = [None] * o
         self.v.extend(vs); self.f.extend(tuple(o + i for i in face) for face in fs); self.flat.extend(b + i for i in flat)
+        if self.n is not None:
+            self.n.extend(ns if ns is not None else [None] * len(vs))
 
     def tris(self):
         return sum(len(f) - 2 for f in self.f)
@@ -637,11 +646,33 @@ def _pk_card(g, base, d, cn, length, width, fold=.18):
            tuple(base[k] + d[k] * length for k in range(3))], [(0, 2, 3), (0, 3, 1)])
 
 
-def _pk_speck(g, c, n, r, a0=0.):
+def _pk_speck(g, c, n, r, a0=0., ns=None):
     """Tiny smooth 3-sided cap (4 vertices, 3 triangles) standing r x 1.1 proud of c along the normal n: the cheapest
-    readable fleck for micro-florets, bracts and leaf grain."""
+    readable fleck for micro-florets, bracts and leaf grain. ns (unit) gives all four vertices that custom normal."""
     rot = _pk_tilt(n); vs = [(0., 0., r * 1.1)] + [(r * math.cos(a0 + 2.0944 * j), r * math.sin(a0 + 2.0944 * j), 0.) for j in range(3)]
-    g.add([tuple(c[k] + (_pk_rot(p, *rot) if rot else p)[k] for k in range(3)) for p in vs], [(0, 1, 2), (0, 2, 3), (0, 3, 1)])
+    g.add([tuple(c[k] + (_pk_rot(p, *rot) if rot else p)[k] for k in range(3)) for p in vs], [(0, 1, 2), (0, 2, 3), (0, 3, 1)],
+          ns=None if ns is None else [ns] * 4)
+
+
+def _pk_ovate(g, base, d, cn, L, W, cup=.10, droop=.10, bend=None, lean=.72):
+    """Curved, tapered ovate leaf card (6 vertices, 4 triangles): widest near 30% of its length, a rounded shoulder at
+    66%, a pointed tip; the edges cup back and the tip droops along -cn. Its custom normals lean `lean` of the way from
+    the card normal cn toward `bend` (the canopy normal at the leaf), with a slight cross-leaf roll, so a mass of leaves
+    shades as one soft canopy instead of a heap of flat chips. Faces always wind toward cn."""
+    side = _pk_norm(_pk_cross(d, cn))
+    P = lambda q, s, z: tuple(base[k] + d[k] * L * q + side[k] * W * s + cn[k] * L * z for k in range(3))
+    vs = [P(0., 0., 0.), P(.30, -.50, -cup * .5), P(.30, .50, -cup * .5), P(.66, -.36, -cup * .3 - droop * .45),
+          P(.66, .36, -cup * .3 - droop * .45), P(1., 0., -droop)]
+    b = _pk_norm(tuple(cn[k] * (1 - lean) + (bend or cn)[k] * lean for k in range(3)))
+    nl = _pk_norm(tuple(b[k] - side[k] * .22 for k in range(3))); nr = _pk_norm(tuple(b[k] + side[k] * .22 for k in range(3)))
+    g.add(vs, [(0, 2, 1), (1, 2, 4), (1, 4, 3), (3, 4, 5)], ns=[b, nl, nr, nl, nr, b])
+
+
+def _pk_tangent(nrm, rnd):
+    """A random unit vector perpendicular to nrm."""
+    j = _pk_norm((rnd.gauss(0, 1), rnd.gauss(0, 1), rnd.gauss(0, 1)))
+    dt = sum(j[i] * nrm[i] for i in range(3))
+    return _pk_norm(tuple(j[k] - nrm[k] * dt for k in range(3)))
 
 
 def _pk_daisy(gp, gb, c, R, petals, droop, axis, cone=1.0, seg=4, rings=3):
@@ -711,18 +742,43 @@ def _pk_spike(g, base, axis, length, r0, seed, seg=5):
     _pk_lathe(g, tb, axis, length * (1 - q0) + r0 * .4, lambda q: r0 * .55 * (1 - q) ** .7 * min(1, q * 4 + .3), seg=seg, rings=4)
 
 
-def _pk_panicle(g, base, axis, length, r0, rnd, florets=13):
-    """Loose conical panicle (astilbe, panicle hydrangea, white phlox): a smooth tapering cone of florets, widest
-    near its base, with small floret domes standing proud of its surface so the outline is fine-grained."""
-    _pk_lathe(g, base, axis, length, lambda q: r0 * min(1., q * 3.5) * (1 - q) ** .85, seg=9, rings=7)
-    rot = _pk_tilt(axis)
-    for k in range(florets):
-        q = .12 + .78 * (k + .5) / florets; a = k * 2.39996 + rnd.uniform(-.3, .3)
-        rr = r0 * min(1., q * 3.5) * (1 - q) ** .85; fr = r0 * rnd.uniform(.32, .42) * (1.1 - .5 * q)
-        p = (rr * .95 * math.cos(a), rr * .95 * math.sin(a), length * q)
-        if rot:
-            p = _pk_rot(p, *rot)
-        _pk_ball(g, (base[0] + p[0], base[1] + p[1], base[2] + p[2]), (fr, fr, fr * .85), seg=5, rings=4)
+def _pk_panicle(g, base, axis, length, r0, rnd, branches=None):
+    """Open branched raceme (astilbe, panicle hydrangea, white phlox, persicaria): a slender rachis nodding near its tip,
+    8-14 side branches that shorten toward the tip and rise 35-60 degrees, each carrying 6-12 tiny floret specks
+    (r 6-10 mm) with visible air between branches, and a fine tuft of florets at the tip; r0 is the half-width of the
+    widest (lowest) branch tier. Feathery in outline, never a solid cone."""
+    br = branches or rnd.randint(9, 13); up = axis
+    side0 = _pk_tangent(up, rnd); nod = math.radians(rnd.uniform(14, 28))
+    pts = []; p = tuple(base)
+    for i in range(7):                                           # rachis: straight below, nodding over the top third
+        q = i / 6; ang = nod * max(0., (q - .55) / .45) ** 1.5
+        dr = _pk_norm(tuple(up[k] * math.cos(ang) + side0[k] * math.sin(ang) for k in range(3)))
+        if i:
+            p = tuple(p[k] + dr[k] * length / 6 for k in range(3))
+        pts.append(p)
+    _pk_tube(g, pts, .0032, .0015, 3)
+    def at(q):
+        f = q * 6; i = min(5, int(f)); w = f - i
+        return tuple(pts[i][k] * (1 - w) + pts[i + 1][k] * w for k in range(3))
+    for b in range(br):
+        q = .06 + .80 * b / (br - 1); p0 = at(q); a = b * 2.39996 + rnd.uniform(-.25, .25)
+        t = _pk_norm(_pk_rot(side0, up, a)); el = math.radians(rnd.uniform(35, 60))
+        d = _pk_norm(tuple(up[k] * math.sin(el) + t[k] * math.cos(el) for k in range(3)))
+        Lb = (r0 * (1 - q) ** .8 + .012) * rnd.uniform(.8, 1.1)
+        p1 = tuple(p0[k] + d[k] * Lb for k in range(3))
+        _pk_tube(g, [p0, p1], .0016, .001, 3)
+        m = max(5, min(9, int(Lb / .009)))
+        for j in range(m):
+            s = .2 + .8 * j / (m - 1); fr = rnd.uniform(.006, .009)
+            c = tuple(p0[k] + d[k] * Lb * s + rnd.uniform(-.006, .006) for k in range(3))
+            _pk_speck(g, c, _pk_norm((rnd.gauss(0, 1), rnd.gauss(0, 1), rnd.gauss(0, 1) + .6)), fr, rnd.uniform(0, 6.3))
+    tip = pts[-1]
+    for j in range(5):                                           # tip tuft
+        c = tuple(tip[k] + rnd.uniform(-.012, .012) for k in range(3))
+        _pk_speck(g, c, _pk_norm((rnd.gauss(0, 1), rnd.gauss(0, 1), 1.)), rnd.uniform(.006, .008), rnd.uniform(0, 6.3))
+    for j in range(6):                                           # florets along the rachis between branches
+        c = at(rnd.uniform(.1, .95)); c = tuple(c[k] + rnd.uniform(-.006, .006) for k in range(3))
+        _pk_speck(g, c, _pk_norm((rnd.gauss(0, 1), rnd.gauss(0, 1), .5)), rnd.uniform(.005, .007), rnd.uniform(0, 6.3))
 
 
 class PlantKit:
@@ -736,7 +792,7 @@ class PlantKit:
     def __init__(self, module='planting', instancing=True, kerb_h=.045):
         self.module = module; self.instancing = instancing; self.batch = {}; self.placed = 0; self.nodes = 0
         self.unique_triangles = 0; self.counts = {}; self.kerb_h = kerb_h; self.beds = []; self.obstacles = []
-        self.placements = []; self.rejected = 0
+        self.placements = []; self.rejected = 0; self.flushed = False
 
     def proto(self, name, parts):
         datas = {}; base_r = canopy_r = height = 0.
@@ -748,10 +804,29 @@ class PlantKit:
                 if z < self.kerb_h:
                     base_r = max(base_r, h)
             me = C.bpy.data.meshes.new(f'PK {name} {role}')
-            me.from_pydata(g.v, [], g.f); C.normalise(me)
+            if g.n is not None:                          # custom normals: triangles only (kept exactly by triangulate + glTF),
+                fs = []; fl = []; flat0 = set(g.flat)    # each wound to face its custom normals (Cycles shades a back face
+                for i, f in enumerate(g.f):              # with its normal flipped, which renders a leaf black)
+                    for k in range(1, len(f) - 1):
+                        if i in flat0:
+                            fl.append(len(fs))
+                        tri = (f[0], f[k], f[k + 1]); cs = [g.n[j] for j in tri if g.n[j] is not None]
+                        if cs:
+                            a, b, c = (g.v[j] for j in tri)
+                            gn = _pk_cross(tuple(b[q] - a[q] for q in range(3)), tuple(c[q] - a[q] for q in range(3)))
+                            if sum(gn[q] * sum(n[q] for n in cs) for q in range(3)) < 0:
+                                tri = (tri[0], tri[2], tri[1])
+                        fs.append(tri)
+                g.f = fs; g.flat = fl
+            me.from_pydata(g.v, [], g.f)
+            if g.n is None:
+                C.normalise(me)
             flat = set(g.flat)
             for p in me.polygons:
                 p.use_smooth = p.index not in flat
+            if g.n is not None:
+                auto = [v.normal.copy() for v in me.vertices]
+                me.normals_split_custom_set_from_vertices([n if n is not None else tuple(auto[i]) for i, n in enumerate(g.n)])
             me.materials.append(C.MATS[role]); datas[role] = (me, g)
             self.unique_triangles += g.tris()
         return dict(name=name, parts=datas, tris=sum(g.tris() for _, g in datas.values()), base_r=base_r,
@@ -791,11 +866,14 @@ class PlantKit:
         self.rejected += 1
         return 0.
 
-    def place(self, p, x, y, z, rot=0., s=1., sz=None, sy=None, lean=(0., 0.), instance=None):
+    def place(self, p, x, y, z, rot=0., s=1., sz=None, sy=None, lean=(0., 0.), instance=None, track=True):
+        """track=False for parts of a wall climber (sprays, trailing canes), which belong on their wall and are not
+        ground plants; everything else is checked by audit()."""
         inst = self.instancing if instance is None else instance
         sz = s if sz is None else sz; sy = s if sy is None else sy
         self.placed += 1; self.counts[p['name']] = self.counts.get(p['name'], 0) + 1
-        self.placements.append((x, y, max(s, sy), p))
+        if track:
+            self.placements.append((x, y, max(s, sy), p))
         for role, (me, g) in p['parts'].items():
             if inst:
                 o = C.bpy.data.objects.new(f"{p['name']} {role} {self.placed}", me)
@@ -821,21 +899,62 @@ class PlantKit:
                 F.extend(tuple(o + i for i in face) for face in g.f); FL.extend(b + i for i in g.flat)
 
     def audit(self, detail=False):
-        """Placements whose buried base crosses a registered bed edge or obstacle, or whose canopy enters a tall one
-        (the count, or with detail=True the offending (name, x, y))."""
+        """Placements whose buried base crosses a registered bed edge or obstacle, or whose canopy enters a tall one;
+        pots (protos with a rim radius) closer than their two rims plus 3 cm; and pairs of shell faces (carpets,
+        carriers) from different meshes that lie within 2 mm of each other with opposing or coincident normals (the
+        black-slit and z-fighting signature; see shell_faces()). The count, or with detail=True the offending items."""
         bad = []
         for x, y, s, p in self.placements:
             pt = _pksh.points(x, y); br = p['base_r'] * s
             if any(_pksh.contains_xy(r, x, y) and r.boundary.distance(pt) < br for r in self.beds) or \
                     any(g.distance(pt) < br or (top > .3 and g.distance(pt) < p['canopy_r'] * s * .9) for g, top in self.obstacles):
                 bad.append((p['name'], round(x, 2), round(y, 2)))
+        pots = [(x, y, p['rim_r'] * s, p['name']) for x, y, s, p in self.placements if p.get('rim_r')]
+        for i in range(len(pots)):
+            for j in range(i):
+                (x1, y1, r1, n1), (x2, y2, r2, n2) = pots[i], pots[j]
+                if math.hypot(x1 - x2, y1 - y2) < r1 + r2 + .03:
+                    bad.append(('pots overlap', n1, n2, round(x1, 2), round(y1, 2)))
+        bad.extend(self.shell_faces())
         return bad if detail else len(bad)
+
+    def shell_faces(self, tol=.002):
+        """Opposing (dot < -0.5) or coincident (dot > 0.9) faces of two different registered shell meshes (pk_mesh(...,
+        shell=True): carpets, bands, groundcover, climber carriers) whose centroids lie within tol of each other. Cached
+        once computed after flush()."""
+        if getattr(self, '_shell_bad', None) is not None:
+            return self._shell_bad
+        from mathutils import kdtree, Vector
+        objs = [o for o in _PK_SHELLS if o.name in C.bpy.data.objects]
+        items = []
+        for k, o in enumerate(objs):
+            mw = o.matrix_world
+            for p in o.data.polygons:
+                items.append((k, mw @ p.center, (mw.to_3x3() @ p.normal).normalized()))
+        bad = []
+        if items:
+            kd = kdtree.KDTree(len(items))
+            for i, (k, c, n) in enumerate(items):
+                kd.insert(c, i)
+            kd.balance()
+            seen = set()
+            for i, (k, c, n) in enumerate(items):
+                for _, j, dist in kd.find_range(c, tol):
+                    kj, cj, nj = items[j]
+                    if kj == k or (kj, k) in seen:
+                        continue
+                    dt = n.dot(nj)
+                    if dt < -.5 or dt > .9:
+                        seen.add((k, kj)); bad.append(('shell faces', objs[k].name, objs[kj].name, round(dist, 4)))
+        if self.flushed:
+            self._shell_bad = bad
+        return bad
 
     def flush(self):
         for role, (V, F, FL) in self.batch.items():
             if F:
                 pk_mesh(f'{self.module} merged {role}', V, F, FL, role, self.module)
-        self.batch = {}
+        self.batch = {}; self.flushed = True
         C.MODULES.setdefault(self.module, []).append(dict(planting_kit=True, instancing=self.instancing, plants=self.placed,
             instance_nodes=self.nodes, prototypes=self.counts, clearance_violations=self.audit(), rejected=self.rejected))
 
@@ -844,12 +963,18 @@ class PlantKit:
                     prototype_triangles=self.unique_triangles, clearance_violations=self.audit(), rejected=self.rejected)
 
 
-def pk_mesh(name, V, F, flat, role, module):
-    """C.mesh with smooth shading on every face not listed in `flat`."""
+_PK_SHELLS = []                                  # carpets, bands and climber carriers checked by PlantKit.shell_faces()
+
+
+def pk_mesh(name, V, F, flat, role, module, shell=False):
+    """C.mesh with smooth shading on every face not listed in `flat`; shell=True registers it for the kit's
+    near-coincident face audit."""
     o = C.mesh(name, V, F, role, module)
     fl = set(flat)
     for p in o.data.polygons:
         p.use_smooth = p.index not in fl
+    if shell:
+        _PK_SHELLS.append(o)
     return o
 
 
@@ -1008,15 +1133,16 @@ def _pk_field(region, z, height, bump, wave, grid, ramp, seed, edge=None, mid=Fa
     return V, F, hz
 
 
-def groundcover(name, poly, z, kerb=.15, height=.06, bump=.012, wave=.45, grid=.2, ramp=.04, role='pk_groundcover', seed=1,
+def groundcover(name, poly, z, kerb=.15, height=.06, bump=.012, wave=.45, grid=.2, ramp=.08, role='pk_groundcover', seed=1,
                 module='planting', dots=None, grain=None, edge=.08):
-    """Low continuous carpet (thyme, sedum, vinca, ajuga) over a bed outline minus the kerb (lapped 3 cm under the kerb so
-    no edge shows): a softly cushioned heightfield with a clean clipped rim, grounded and leaving no bare fill between
+    """Low continuous carpet (thyme, sedum, vinca, ajuga) over a bed outline minus the kerb (lapped 1.5 cm under the kerb,
+    its rim held below the kerb's inner arris by the 8 cm shoulder, so the visible kerb width never wobbles): a softly
+    cushioned heightfield with a clean clipped rim, grounded and leaving no bare fill between
     larger plants. dots=(roles, per_m2, radius[, seed]) adds merged floret specks; grain=(roles, per_m2, radius) adds
     merged leaf-rosette specks for leaf texture at eye level. Returns (object, hz)."""
-    reg = pk_region(poly, kerb - .03) if kerb else pk_region(poly)
+    reg = pk_region(poly, kerb - .015) if kerb else pk_region(poly)
     V, F, hz = _pk_field(reg, z, height, bump, wave, grid, ramp, seed, edge)
-    o = pk_mesh(name, V, F, (), role, module)
+    o = pk_mesh(name, V, F, (), role, module, shell=True)
     sub = pk_region(reg, .05)
     if grain:
         pk_dots(name + ' grain', sub, hz, *grain[:3], seed=seed + 13, module=module, sink=.45)
@@ -1057,7 +1183,7 @@ def bedding_band(name, outline, z, d_out, d_in, role, kerb=.15, height=.075, bum
     if reg.is_empty:
         return None, vis, None
     V, F, hz = _pk_field(reg, z, height, bump, wave, grid, ramp, seed, edge)
-    o = pk_mesh(name, V, F, (), role, module)
+    o = pk_mesh(name, V, F, (), role, module, shell=True)
     if dots and not vis.is_empty:
         pk_dots(name + ' dots', vis, hz, dots[0], dots[1], dots[2], seed=seed + 5, module=module)
     return o, vis, hz
@@ -1121,34 +1247,46 @@ def flower_head_cluster(kit, name, head='daisy', heads=7, height=.65, spread=.32
       'spike'   salvia / veronica: dense whorled spire with a tapered tip;
       'umbel'   yarrow / sedum: flat-topped corymb of small smooth floret domes;
       'cup'     poppy / tulip / anemone: a bowl of four broad petals round a dark boss (boss_role);
-      'panicle' astilbe / panicle hydrangea / phlox: loose conical floret panicle;
+      'panicle' astilbe / panicle hydrangea / phlox: open branched raceme of tiny florets with a nodding tip;
       'mophead' hydrangea: 7-9 heads, each a smooth dome under nine smooth floret-cluster domes (a fine lumpy outline,
-                never creased or flaky; head_role2 = their role, default head_role), seated in a shrubby mound of
-                dark lobes (pk_shrub_core) skinned in broad leaf cards.
+                never creased or flaky; head_role2 = their role, default head_role), seated into and collared by the
+                leaves of its own broad low domed body (3-4 lobes round a centre, h:w about 0.75) of large ovate leaves
+                that splay out and droop to the soil at the skirt.
     Heights are metres above the soil; place it with kit.place() or kit.place_in()."""
     rnd = _pkr.Random(seed); stem_role = stem_role or leaf_role
     parts = _pk_parts(leaf_role, stem_role, head_role, *([head_role2] if head_role2 else []),
                       *([boss_role] if head in ('daisy', 'cup') else []))
     if head == 'mophead':
-        fh = height * .78; core = parts.setdefault('pk_shrub_core', PkGeo())
-        hull = [((0., 0., fh * .3), (foliage * .85, foliage * .8, fh * .55))]
-        _pk_dome(core, hull[0][0], hull[0][1], -PK_SINK, seed=seed, bump=.008, wave=.4, seg=14, rings=6)
-        for k in range(4):
-            a = k * 1.5708 + rnd.uniform(-.4, .4); d = foliage * rnd.uniform(.25, .45); rr = foliage * rnd.uniform(.45, .55)
-            c = (d * math.cos(a), d * math.sin(a), fh - rr * .85); hull.append((c, (rr, rr, rr * .85)))
-            _pk_dome(core, c, hull[-1][1], -PK_SINK, seed=rnd.randrange(1 << 20), bump=.008, wave=.4, seg=12, rings=5)
-        _pk_leaf_skin(parts[leaf_role], parts[leaf_role], hull, leaves * 22, .09 * size, fh, rnd)
+        core = parts.setdefault('pk_shrub_core', PkGeo()); F = foliage; L = .12 * size; lift = .06
+        fh = height * .70 - L * .9                                 # hull top; leaves and seated heads make up the rest
+        hull = [((0., 0., lift + (fh - lift) * .42), (F * .60, F * .56, (fh - lift) * .42))]
+        a0 = rnd.uniform(0, 2 * math.pi); nl = 3 + seed % 2
+        for k in range(nl):                                         # 3-4 broad low lobes round the centre (a domed mound)
+            a = a0 + 2 * math.pi * k / nl + rnd.uniform(-.35, .35); rr = F * rnd.uniform(.44, .54); rz = rr * rnd.uniform(.58, .70)
+            d = max(0., F - rr * 1.05 - L * .4); cz = lift + rz + (fh - lift - 2 * rz) * rnd.uniform(0., .35)
+            hull.append(((d * math.cos(a), d * math.sin(a), cz), (rr, rr * rnd.uniform(.85, 1.), rz)))
+        rz = (fh - lift) * .32
+        hull.append(((rnd.uniform(-.06, .06), rnd.uniform(-.06, .06), fh - rz), (F * .52, F * .48, rz)))
+        for c, r in hull:
+            _pk_ball(core, c, r, seed=rnd.randrange(1 << 20), bump=min(r) * .1, wave=min(r) * 1.5, seg=12, rings=7)
+        _pk_canopy(parts[leaf_role], parts[leaf_role], core, hull, leaves * 14, L, fh, rnd, off=(.03, .05), sprigs=.0, skirt=.42)
         dome = parts[head_role2 or head_role]
-        for k in range(heads):
-            a = k * 2.39996 + rnd.uniform(-.3, .3); d = foliage * .78 * math.sqrt((k + .5) / heads)
-            hr = .13 * size * rnd.uniform(.88, 1.12)
-            zc = fh * (1 - .45 * (d / foliage) ** 2) + hr * .4
-            c = (d * math.cos(a), d * math.sin(a), zc)
-            _pk_ball(dome, c, (hr * .8, hr * .8, hr * .72), seg=10, rings=5)
-            for j in range(9):                                   # floret clusters: a fine, smooth lumpy (never creased) outline
+        for k in range(heads):                                      # heads seated into the leaf layer, collared by leaves
+            a = k * 2.39996 + rnd.uniform(-.3, .3); d = F * .70 * math.sqrt((k + .5) / heads)
+            x, y = d * math.cos(a), d * math.sin(a); zt = _pk_hull_top(hull, x, y)
+            if zt is None:
+                continue
+            hr = .12 * size * rnd.uniform(.88, 1.12); c = (x, y, zt + .04 + hr * .25)
+            _pk_ball(dome, c, (hr * .8, hr * .8, hr * .7), seg=9, rings=5)
+            for j in range(9):                                      # floret clusters: a fine, smooth lumpy (never creased) outline
                 q = 0 if j < 6 else 1; aj = j * (1.0472 if q == 0 else 2.0944) + a + q * .5
                 u = _pk_norm((math.cos(aj), math.sin(aj), .35 if q == 0 else 1.3)); sr = hr * rnd.uniform(.36, .42)
-                _pk_ball(dome, (c[0] + hr * .62 * u[0], c[1] + hr * .62 * u[1], c[2] + hr * .55 * u[2]), (sr, sr, sr * .85), seg=8, rings=5)
+                _pk_ball(dome, (c[0] + hr * .62 * u[0], c[1] + hr * .62 * u[1], c[2] + hr * .55 * u[2]), (sr, sr, sr * .85), seg=7, rings=4)
+            for j in range(5):                                      # leaf collar under the head
+                aj = a + j * 1.2566 + rnd.uniform(-.2, .2); dd = _pk_norm((math.cos(aj), math.sin(aj), -.25))
+                b0 = (c[0] + dd[0] * hr * .3, c[1] + dd[1] * hr * .3, c[2] - hr * .45)
+                _pk_ovate(parts[leaf_role], b0, dd, _pk_norm((-dd[0] * .3, -dd[1] * .3, 1.)), L * 1.05, L * .6,
+                          bend=_pk_norm((dd[0] * .4, dd[1] * .4, 1.)))
         return kit.proto(name, parts)
     _pk_foliage(parts[leaf_role], foliage, foliage * 1.15, rnd, leaves=leaves, leaf_w=leaf_w, ovate=leaf_w > .45)
     for k in range(heads):
@@ -1168,36 +1306,54 @@ def flower_head_cluster(kit, name, head='daisy', heads=7, height=.65, spread=.32
             _pk_cup(parts[head_role], parts[boss_role], (top[0], top[1], top[2] - .005), .045 * size * rnd.uniform(.85, 1.15),
                     _pk_norm((lean[0] * .6, lean[1] * .6, 1.)))
         elif head == 'panicle':
-            _pk_panicle(parts[head_role], (top[0], top[1], top[2] - .03), lean, .26 * size * rnd.uniform(.85, 1.15),
-                        .055 * size, rnd)
+            _pk_panicle(parts[head_role], (top[0], top[1], top[2] - .01), lean, .26 * size * rnd.uniform(.85, 1.15),
+                        .075 * size, rnd)
         else:
             _pk_corymb(parts[head_role if k % 3 or not head_role2 else head_role2], (top[0], top[1], top[2] + .004),
                        .05 * size * rnd.uniform(.85, 1.15), rnd)
     return kit.proto(name, parts)
 
 
-def lavender(kit, name, radius=.30, height=.52, spikes=38, leaf_role='pk_lav_leaf', head_role='pk_lavender', seed=1):
-    """Lavender / catmint / perovskia as a kit prototype: a low grey-sage mound of narrow needle leaves under a dense
-    dome-shaped haze of thin wiry stems, each ending in a slim smooth flower spike (never solid capsules)."""
-    rnd = _pkr.Random(seed); parts = _pk_parts(leaf_role, head_role); g = parts[leaf_role]
-    fh = height * .42
-    _pk_dome(g, (0., 0., fh * .3), (radius * .55, radius * .55, fh * .62), -PK_SINK, seed=seed, bump=.008, wave=.1, seg=14, rings=5)
-    for k in range(84):
-        phi = k * 2.39996 + rnd.uniform(-.2, .2); q = (k + .5) / 84
-        p0 = (radius * .4 * q ** .5 * math.cos(phi), radius * .4 * q ** .5 * math.sin(phi), fh * (.75 - .5 * q))
-        _pk_blade(g, _pk_arc(p0, phi, math.radians(70 - 50 * q), math.radians(40), radius * rnd.uniform(.45, .65), 4, floor=.01),
-                  phi, .014, fold=.3)
-    for k in range(spikes):
-        phi = k * 2.39996 + rnd.uniform(-.25, .25); q = (k + .5) / spikes; d = radius * .9 * q ** .5
-        H = height * (1 - .3 * q ** 1.5) * rnd.uniform(.9, 1.06)
-        top = (d * math.cos(phi) * 1.25, d * math.sin(phi) * 1.25, H)
-        b0 = (d * .3 * math.cos(phi), d * .3 * math.sin(phi), fh * .6)
-        mid = ((b0[0] + top[0]) / 2, (b0[1] + top[1]) / 2, (b0[2] + top[2]) / 2 - .01)
-        _pk_tube(g, [b0, mid, top], .0035, .0025, 3)
-        ax = _pk_norm((top[0] - mid[0], top[1] - mid[1], top[2] - mid[2]))
-        L = .10 * rnd.uniform(.85, 1.2)
-        _pk_lathe(parts[head_role], (top[0] - ax[0] * .005, top[1] - ax[1] * .005, top[2] - ax[2] * .005), ax, L,
-                  lambda q: .0115 * min(1., q * 5 + .2) * (1 - q) ** .45, seg=6, rings=6)
+def lavender(kit, name, radius=.30, height=.52, spikes=34, leaf_role='pk_lav_leaf', head_role='pk_lavender', seed=1):
+    """Lavender / catmint / perovskia as a kit prototype, with no solid dome: 40-48 short leafy stems rising steeply
+    from the crown, each clothed in narrow grey-sage needle leaves (custom normals leaning to a low hemisphere, so the
+    loose mass shades as a soft mound and the soil shows at its edge), under a vase-shaped upright fan of thin flower
+    stems (within about 25 degrees of vertical) carrying spikes of 6-9 tiny paired whorls that taper to the tip."""
+    rnd = _pkr.Random(seed); parts = _pk_parts(leaf_role, head_role); g = parts[leaf_role]; gh = parts[head_role]
+    fh = height * .40; ctr = (0., 0., -fh * .35)
+    for k in range(rnd.randint(40, 48)):                         # leafy stems and needle leaves
+        phi = k * 2.39996 + rnd.uniform(-.3, .3); q = rnd.random() ** .7
+        tilt = math.radians(10 + 50 * q); Ls = fh * rnd.uniform(.75, 1.1) * (1 - .25 * q)
+        b0 = (radius * .12 * q * math.cos(phi), radius * .12 * q * math.sin(phi), -PK_SINK)
+        d = (math.sin(tilt) * math.cos(phi), math.sin(tilt) * math.sin(phi), math.cos(tilt))
+        top = tuple(b0[i] + d[i] * Ls for i in range(3))
+        _pk_tube(g, [b0, top], .0035, .002, 3)
+        for j in range(rnd.randint(8, 11)):
+            s = .2 + .8 * j / 10; p = tuple(b0[i] + d[i] * Ls * s for i in range(3))
+            if p[2] < .02:
+                continue
+            a = phi + j * 2.2 + rnd.uniform(-.4, .4)
+            dn = _pk_norm((math.cos(a) * .9 + d[0] * .5, math.sin(a) * .9 + d[1] * .5, .55 + rnd.uniform(-.2, .2)))
+            mn = _pk_norm(tuple(p[i] - ctr[i] for i in range(3)))
+            cn = _pk_norm(tuple(mn[i] - sum(mn[q_] * dn[q_] for q_ in range(3)) * dn[i] for i in range(3)))
+            _pk_ovate(g, p, dn, cn, rnd.uniform(.04, .055), .012, cup=.05, droop=.05, bend=mn, lean=.8)
+    for k in range(spikes):                                      # vase-shaped fan of flower stems with whorled spikes
+        phi = k * 2.39996 + rnd.uniform(-.3, .3); q = (k + .5) / spikes
+        tilt = math.radians(25 * math.sqrt(q) + rnd.uniform(-4, 4)); H = height * rnd.uniform(.88, 1.06) * (1 - .12 * q)
+        b0 = (radius * .1 * math.cos(phi), radius * .1 * math.sin(phi), fh * .4)
+        d = (math.sin(tilt) * math.cos(phi), math.sin(tilt) * math.sin(phi), math.cos(tilt))
+        Ls = (H - b0[2]) / max(.6, d[2]); top = tuple(b0[i] + d[i] * Ls for i in range(3))
+        mid = tuple((b0[i] + top[i]) / 2 + (d[i] * .01 if i < 2 else 0.) for i in range(3))
+        _pk_tube(g, [b0, mid, top], .0022, .0016, 3)
+        sl = .085 * rnd.uniform(.85, 1.2); nw = rnd.randint(6, 8); a = rnd.uniform(0, 6.3)
+        side = _pk_norm(_pk_cross(d, (0., 0., 1.) if abs(d[2]) < .99 else (1., 0., 0.)))
+        for j in range(nw):                                      # paired whorls, alternating 90 degrees, tapering
+            s = j / (nw - 1); c = tuple(top[i] - d[i] * sl * (1 - s) for i in range(3)); r = .0062 * (1 - .45 * s)
+            for m in range(2):
+                aa = a + j * 1.5708 + m * math.pi
+                o = _pk_rot(side, d, aa); cc = tuple(c[i] + o[i] * r * .55 for i in range(3))
+                _pk_speck(gh, cc, _pk_norm(tuple(o[i] + d[i] * .4 for i in range(3))), r, rnd.uniform(0, 6.3))
+        _pk_speck(gh, tuple(top[i] + d[i] * .008 for i in range(3)), d, .004, 0.)
     return kit.proto(name, parts)
 
 
@@ -1234,71 +1390,169 @@ def arching_grass(kit, name, blades=44, height=.55, width=.016, role='pk_blade',
     return kit.proto(name, parts)
 
 
-def _pk_leaf_skin(gd, gl, hull, n, leaf, height, rnd, light=.45):
-    """Skin a hull of lobes [((c), (r)), ...] in n broad cupped leaf cards of length ~leaf, lying mostly along the
-    surface and lifting 20-35 degrees off it (gl above `light` x height, gd below, with jitter); leaves buried inside a
-    neighbouring lobe are skipped. Shared by shrub_mass and the mophead's shrubby mound."""
-    wts = [r[0] * r[2] for _, r in hull]; placed = 0; tries = 0
-    while placed < n and tries < n * 6:
+def _pk_inside(p, hull, skip=-1, f=.97):
+    """True when p lies inside any hull lobe other than `skip` (scaled radius f)."""
+    return any(j != skip and sum(((p[k] - c[k]) / r[k]) ** 2 for k in range(3)) < f * f for j, (c, r) in enumerate(hull))
+
+
+def _pk_hull_top(hull, x, y):
+    """Height of the hull's upper surface above (x, y), or None outside every lobe."""
+    best = None
+    for c, r in hull:
+        q = 1 - ((x - c[0]) / r[0]) ** 2 - ((y - c[1]) / r[1]) ** 2
+        if q > 0:
+            z = c[2] + r[2] * math.sqrt(q); best = z if best is None else max(best, z)
+    return best
+
+
+def _pk_shrub_hull(rnd, radius, height, lobes, lift, top_gap):
+    """Irregular multi-lobe shrub hull: `lobes` flattened ellipsoid lobes round the axis in a ring of lobes + 2 slots with
+    two slots left empty (concave bays in plan and elevation), lower lobes reaching out and upper ones drawn in (a wide,
+    low-shouldered base; the two empty slots are adjacent, so one deep bay), one or two crown lobes and a central filler;
+    the hull rises from `lift` above the soil (stems
+    show below it) to height - top_gap (the leaf layer makes up the rest)."""
+    hull = []; slots = lobes + 2; g0 = rnd.randrange(slots); gaps = {g0, (g0 + 1) % slots}; a0 = rnd.uniform(0, 2 * math.pi)
+    H = height - top_gap - lift
+    for k in [k for k in range(slots) if k not in gaps]:
+        a = a0 + 2 * math.pi * k / slots + rnd.uniform(-.22, .22); up = rnd.random()
+        rr = radius * rnd.uniform(.30, .55) * (1 - .25 * up); rz = min(rr * rnd.uniform(.6, .85), H * .42)
+        d = max(0., radius - rr * rnd.uniform(.7, 1.4)) * (1 - .45 * up)
+        cz = lift + rz + (H - 2 * rz) * up * rnd.uniform(.55, 1.)
+        hull.append(((d * math.cos(a), d * math.sin(a), cz), (rr, rr * rnd.uniform(.78, 1.), rz)))
+    nc = 1 if radius < .45 else 3; ac = rnd.uniform(0, 2 * math.pi)
+    for k in range(nc):                                           # an uneven crown: lobes off-centre at different heights
+        rr = radius * rnd.uniform(.30, .44) * (1.25 if nc == 1 else 1.); rz = min(rr * .8, H * .36)
+        a = ac + 2 * math.pi * k / nc + rnd.uniform(-.4, .4); d = radius * (rnd.uniform(.05, .2) if nc == 1 else rnd.uniform(.22, .42))
+        top = lift + H * (1. if k == 0 else rnd.uniform(.80, .92))
+        hull.append(((d * math.cos(a), d * math.sin(a), top - rz), (rr, rr * rnd.uniform(.8, 1.), rz)))
+    hull.append(((0., 0., lift + H * .42), (radius * .52, radius * .48, H * .36)))
+    return hull
+
+
+def _pk_canopy(gl, gd, gt, hull, n, leaf, height, rnd, light=.5, off=(.015, .035), sprigs=.2, floor=.015, skirt=0., under=0.):
+    """Clothe a hull in n curved ovate leaves (_pk_ovate) based `off` m outside it and lifting 15-35 degrees off it, so
+    the hull lies about 4 cm under the leaf surface and shows only as depth between leaves; a fraction `sprigs` of the leaves
+    ride in threes on short twigs (gt, 6-14 cm) standing out of the canopy, breaking its outline; custom normals lean to
+    the hull normal so the mass shades as one canopy. Leaves above `light` x height (with jitter) go to gl, others to gd.
+    skirt > 0: below skirt x height the leaves splay outward and droop to the soil (hydrangea skirt). under > 0: that
+    fraction of the leaves forms an inner layer of larger (1.5x) dark leaves lying nearly flat on the hull, so gaps in
+    the outer layer show leaves in shade, never a smooth hull. No leaf tip goes below `floor`."""
+    wts = [r[0] * r[1] + r[0] * r[2] + r[1] * r[2] for _, r in hull]; placed = 0; tries = 0; nu = int(n * under)
+    while placed < n and tries < n * 8:
         tries += 1
         i = rnd.choices(range(len(hull)), wts)[0]; c, r = hull[i]
-        u = _pk_norm((rnd.gauss(0, 1), rnd.gauss(0, 1), rnd.gauss(0, 1) * .8 + .25))
-        p = (c[0] + r[0] * u[0], c[1] + r[1] * u[1], c[2] + r[2] * u[2])
-        if p[2] < .04:
+        u = _pk_norm((rnd.gauss(0, 1), rnd.gauss(0, 1), rnd.gauss(0, 1) * .9 + .15))
+        p = tuple(c[k] + r[k] * u[k] for k in range(3))
+        if _pk_inside(p, hull, i):
             continue
-        if any(j != i and sum(((p[k] - cc[k]) / rr_[k]) ** 2 for k in range(3)) < .8 for j, (cc, rr_) in enumerate(hull)):
-            continue
-        nrm = _pk_norm((u[0] / r[0], u[1] / r[1], u[2] / r[2]))
-        jit = _pk_norm((rnd.gauss(0, 1), rnd.gauss(0, 1), rnd.gauss(0, 1)))
-        tan = _pk_norm(tuple(jit[k] - nrm[k] * sum(jit[i] * nrm[i] for i in range(3)) for k in range(3)))
-        d = _pk_norm(tuple(tan[k] + nrm[k] * rnd.uniform(.35, .7) + (-.15 if k == 2 else 0.) for k in range(3)))
-        dn = sum(nrm[k] * d[k] for k in range(3))
-        cn = _pk_rot(_pk_norm(tuple(nrm[k] - dn * d[k] for k in range(3))), d, rnd.uniform(-.4, .4))
+        nrm = _pk_norm(tuple(u[k] / r[k] for k in range(3)))
+        g = gl if (p[2] / height + rnd.uniform(-.25, .25)) > light else gd
         L = leaf * rnd.uniform(.8, 1.2)
-        base = tuple(p[k] - nrm[k] * .012 for k in range(3))
-        if base[2] + min(0., d[2]) * L < .015:                  # no leaf tip below the soil
+        if placed < nu:                                             # inner layer: big dark leaves flat on the hull
+            t = _pk_tangent(nrm, rnd); d = _pk_norm(tuple(t[k] + nrm[k] * rnd.uniform(0., .2) for k in range(3)))
+            base = tuple(p[k] + nrm[k] * rnd.uniform(.004, .012) for k in range(3))
+            if base[2] + min(0., d[2]) * L * 1.5 < floor:
+                continue
+            cn = _pk_norm(tuple(nrm[k] - sum(nrm[q] * d[q] for q in range(3)) * d[k] for k in range(3)))
+            _pk_ovate(gd, base, d, cn, L * 1.5, L * .85, cup=.06, droop=.04, bend=nrm, lean=.8)
+            placed += 1
             continue
-        up = (p[2] / height) + rnd.uniform(-.3, .3)
-        _pk_card(gl if up > light else gd, base, d, cn, L, L * .78, fold=.12)
+        if rnd.random() < sprigs:                                   # a twig standing out with three leaves at its tip
+            t = _pk_tangent(nrm, rnd)
+            dr = _pk_norm(tuple(nrm[k] + t[k] * .6 + (.15 if k == 2 else 0.) for k in range(3)))
+            b0 = tuple(p[k] - nrm[k] * .02 for k in range(3)); tl = rnd.uniform(.06, .14) * min(1.4, leaf / .08)
+            tip = tuple(p[k] + dr[k] * tl for k in range(3))
+            if tip[2] < floor + L:
+                continue
+            _pk_tube(gt, [b0, tip], .006 * min(1.5, leaf / .08), .003, 3)
+            for j in range(3):
+                tj = _pk_tangent(dr, rnd)
+                d = _pk_norm(tuple(dr[k] * .55 + tj[k] for k in range(3)))
+                cn = _pk_norm(tuple(nrm[k] - sum(nrm[q] * d[q] for q in range(3)) * d[k] for k in range(3)))
+                _pk_ovate(g, tip, d, cn, L * .9, L * .52, bend=nrm)
+            placed += 3
+            continue
+        base = tuple(p[k] + nrm[k] * rnd.uniform(*off) for k in range(3))
+        if skirt and p[2] < skirt * height:                        # skirt: splay out and droop toward the soil
+            h = _pk_norm((nrm[0], nrm[1], 0.)); d = _pk_norm((h[0], h[1], -rnd.uniform(.35, .7)))
+            L *= 1.15
+        else:
+            t = _pk_tangent(nrm, rnd); lift = math.tan(math.radians(rnd.uniform(15, 35)))
+            d = _pk_norm(tuple(t[k] + nrm[k] * lift - (.12 if k == 2 else 0.) for k in range(3)))
+        if base[2] + min(0., d[2]) * L < floor:
+            continue
+        cn = _pk_norm(tuple(nrm[k] - sum(nrm[q] * d[q] for q in range(3)) * d[k] for k in range(3)))
+        _pk_ovate(g, base, d, cn, L, L * .55, bend=nrm)
         placed += 1
+    return placed
 
 
 def shrub_mass(kit, name, radius=.8, height=1.0, lobes=7, role='pk_leaf_dark', role2='pk_leaf', seed=1, leaves=None, leaf=None,
-               core_role='pk_shrub_core'):
-    """Grounded leafy shrub as a kit prototype (sizes 0.4-1.6 m): a smooth inner hull (a broad buried base lobe and
-    `lobes` overlapping smooth lobes, no ridged noise) clothed in a skin of broad cupped leaf cards (role2 above, role
-    below) lying along the surface and lifting 20-35 degrees off it, so the silhouette is broken by leaves, not by
-    spurs or creases, and gaps in the very dark hull (core_role) read as foliage depth. leaves defaults to about 560
-    per m2 of hull."""
+               core_role='pk_shrub_core', stems=4):
+    """Grounded leafy shrub as a kit prototype (sizes 0.4-1.6 m). Structure first: an irregular multi-lobe hull
+    (_pk_shrub_hull: flattened lobes, two bays, a wide low-shouldered base, crown lobes) in a mid-dark leaf green
+    (core_role), lifted off the soil on `stems` visible stems, clothed by _pk_canopy in curved ovate leaves 3.5-6 cm
+    outside it (role2 above, role below) with a fifth of them on twig sprigs breaking the outline, custom normals
+    leaning to the hull normal. leaves defaults to about 460 per m2 of hull surface; leaf length scales with size."""
     rnd = _pkr.Random(seed); parts = _pk_parts(core_role, role, role2); g = parts[core_role]
-    hull = [((0., 0., height * .28), (radius * .82, radius * .78, height * .42))]
-    _pk_dome(g, hull[0][0], hull[0][1], -PK_SINK, seed=seed, bump=.01, wave=.45, lo=.012, seg=16, rings=6)
-    for k in range(lobes):
-        a = 2 * math.pi * k / lobes + rnd.uniform(-.3, .3); up = rnd.random(); d = radius * (.55 - .4 * up) * rnd.uniform(.8, 1.1)
-        rr = radius * rnd.uniform(.34, .46); cz = height * (.40 + .32 * up)
-        rz = min(rr * .95, height * .94 - cz)
-        c = (d * math.cos(a), d * math.sin(a), cz); r = (rr, rr * rnd.uniform(.85, 1), rz)
-        hull.append((c, r))
-        _pk_dome(g, c, r, -PK_SINK, seed=rnd.randrange(1 << 20), bump=.01, wave=.45, lo=.01, seg=13, rings=6)
-    area = sum(r[0] * r[2] for _, r in hull) * 2.5
-    _pk_leaf_skin(parts[role], parts[role2], hull, leaves or int(min(1500, max(220, 560 * area))),
-                  leaf or (.075 + .05 * min(1., height / 1.4)), height, rnd)
+    leaf = leaf or (.065 + .045 * min(1., height / 1.4)); lift = min(.16, height * .1)
+    hull = _pk_shrub_hull(rnd, radius - leaf * .9, height, lobes, lift, leaf * 1.1)
+    for c, r in hull:
+        _pk_ball(g, c, r, seed=rnd.randrange(1 << 20), bump=min(r) * .22, wave=min(r) * .7, seg=10, rings=6)
+    for k in range(stems):                                           # stems from the soil into the hull's underside
+        a = 2 * math.pi * k / stems + rnd.uniform(-.4, .4); d = radius * rnd.uniform(.08, .2)
+        top = (d * 1.8 * math.cos(a), d * 1.8 * math.sin(a), lift + height * .14)
+        _pk_tube(g, [(d * math.cos(a) * .5, d * math.sin(a) * .5, -PK_SINK), ((d * .9 + d * .5) / 2 * math.cos(a), (d * .9 + d * .5) / 2 * math.sin(a), lift * .7), top],
+                 .014 * min(1.6, radius / .5), .009 * min(1.6, radius / .5), 5)
+    area = sum(4 * math.pi * ((r[0] * r[1]) ** 1.6 + (r[0] * r[2]) ** 1.6 + (r[1] * r[2]) ** 1.6) ** (1 / 1.6) / 3 ** (1 / 1.6)
+               for _, r in hull) * .55
+    _pk_canopy(parts[role2], parts[role], g, hull, leaves or int(min(1500, max(240, 460 * area * (.08 / leaf) ** 2))), leaf,
+               height, rnd, off=(.02, .04), sprigs=.16, under=.35)
     return kit.proto(name, parts)
 
 
-def bedding_cushion(kit, name, radius=.28, height=.2, role='pk_leaf_red', floret_role='pk_red', florets=80, seed=1):
-    """Low mounded bedding plant (begonia, impatiens, ageratum, alyssum) as a kit prototype: a smooth softly lumpy
-    leafy cushion skinned in small floret domes over its upper surface; for ring and strip beds."""
-    rnd = _pkr.Random(seed); parts = _pk_parts(role, floret_role)
-    _pk_dome(parts[role], (0., 0., height * .2), (radius, radius * .94, height * .8), -PK_SINK, seed=seed, bump=.012, wave=.12,
-             seg=20, rings=7)
-    for k in range(florets):
-        u = _pk_norm((rnd.gauss(0, 1), rnd.gauss(0, 1), abs(rnd.gauss(0, 1)) + .35))
-        p = (radius * .97 * u[0], radius * .94 * .97 * u[1], height * .2 + height * .8 * .97 * u[2])
-        if p[2] < .04:
+def bedding_cushion(kit, name, radius=.28, height=.13, role='pk_leaf_red', floret_role='pk_red', kind='begonia', seed=1,
+                    leaf_role=None):
+    """Low bedding plant (begonia, ageratum, alyssum, impatiens) as a kit prototype: a broad lumpy mound (h:w about
+    0.25-0.35) of 6-8 low sub-mounds, clothed in small ovate leaves (3-5 cm, about 550 per m2, custom normals leaning to
+    the mound) with flower clusters over 40-70% of its top in a soft noise mask: kind='begonia' clusters of 3-4 beads,
+    'ageratum' fuzzy puffs, 'alyssum' a dense froth of tiny specks. Neighbouring cushions placed closer than their
+    diameter merge into a continuous band. leaf_role defaults to role (the sub-mounds' colour)."""
+    rnd = _pkr.Random(seed); leaf_role = leaf_role or role; parts = _pk_parts(role, leaf_role, floret_role)
+    hb = height - .03; hull = [((0., 0., hb * .2), (radius * .62, radius * .58, hb * .8))]
+    n = rnd.randint(5, 7); a0 = rnd.uniform(0, 6.3)
+    for k in range(n):
+        a = a0 + 2 * math.pi * k / n + rnd.uniform(-.3, .3); rr = radius * rnd.uniform(.34, .44); d = radius - rr * 1.1
+        hull.append(((d * math.cos(a), d * math.sin(a), hb * .1), (rr, rr * rnd.uniform(.85, 1.), hb * rnd.uniform(.62, .85))))
+    for c, r in hull:
+        _pk_dome(parts[role], c, r, -PK_SINK, seed=rnd.randrange(1 << 20), bump=.006, wave=.1, seg=12, rings=5)
+    area = math.pi * radius * radius * 1.35
+    _pk_canopy(parts[leaf_role], parts[leaf_role], parts[role], hull, int(550 * area), .042, height, rnd, off=(.012, .022),
+               sprigs=0., floor=.005)
+    mask = _PkNoise(seed + 3, 2 * math.pi / (radius * 1.1)); gf = parts[floret_role]
+    per = dict(begonia=300, ageratum=420, alyssum=620)[kind]
+    for k in range(int(per * area)):
+        i = rnd.choices(range(len(hull)), [r[0] * r[1] for _, r in hull])[0]; c, r = hull[i]
+        u = _pk_norm((rnd.gauss(0, 1), rnd.gauss(0, 1), abs(rnd.gauss(0, 1)) + .5))
+        p = tuple(c[q] + r[q] * u[q] for q in range(3))
+        if p[2] < hb * .4 or _pk_inside(p, hull, i) or mask(p[0], p[1]) < -.5:
             continue
-        fr = .016 * rnd.uniform(.8, 1.2)
-        _pk_ball(parts[floret_role], p, (fr, fr, fr * .8), seg=5, rings=3)
+        nrm = _pk_norm(tuple(u[q] / r[q] for q in range(3))); p = tuple(p[q] + nrm[q] * .022 for q in range(3))
+        if kind == 'begonia':
+            for j in range(rnd.randint(3, 4)):
+                o = _pk_tangent(nrm, rnd); fr = rnd.uniform(.008, .011)
+                _pk_speck(gf, tuple(p[q] + o[q] * .012 for q in range(3)), _pk_norm(tuple(nrm[q] + o[q] * .6 for q in range(3))), fr,
+                          rnd.uniform(0, 6.3), ns=nrm)
+        elif kind == 'ageratum':
+            for j in range(5):
+                o = _pk_tangent(nrm, rnd); fr = rnd.uniform(.007, .01)
+                _pk_speck(gf, tuple(p[q] + o[q] * .008 + nrm[q] * .003 * j for q in range(3)),
+                          _pk_norm(tuple(nrm[q] + o[q] for q in range(3))), fr, rnd.uniform(0, 6.3), ns=nrm)
+        else:
+            for j in range(4):
+                o = _pk_tangent(nrm, rnd); fr = rnd.uniform(.005, .007)
+                _pk_speck(gf, tuple(p[q] + o[q] * .009 for q in range(3)), _pk_norm(tuple(nrm[q] + o[q] * .8 for q in range(3))), fr,
+                          rnd.uniform(0, 6.3), ns=nrm)
     return kit.proto(name, parts)
 
 
@@ -1350,7 +1604,8 @@ def pot_plant(kit, name, pot_r=.22, pot_h=.34, plant='geranium', pot_role='pk_te
             cn = _pk_norm(_pk_cross(_pk_norm(_pk_cross(u, ref)), u))
             _pk_card(g, tuple(p[i] - u[i] * .01 for i in range(3)), u, cn, .035, .02)
         parts[leaf_role].add(g.v, g.f, g.flat)
-    return kit.proto(name, parts)
+    p = kit.proto(name, parts); p['rim_r'] = pot_r * 1.09            # pots are audited against each other by their rims
+    return p
 
 
 def perennial_drift(kit, poly, z, mix, kerb=.15, spacing=.42, seed=1, drift=2.4, scale=(.85, 1.15), underlay='pk_groundcover',
@@ -1365,7 +1620,7 @@ def perennial_drift(kit, poly, z, mix, kerb=.15, spacing=.42, seed=1, drift=2.4,
     reg = pk_region(poly, kerb); n = 0
     if underlay:
         groundcover(f'drift underlay {seed}', reg.buffer(.03), z, kerb=0., height=.045, role=underlay, seed=seed + 3,
-                    module=kit.module, grid=.22, edge=.1)
+                    module=kit.module, grid=.28, edge=.12)
     for x, y in pk_scatter(poly, spacing, kerb=kerb, margin=PK_CLEAR, seed=seed):
         order = sorted(range(len(mix)), key=lambda i: -(fields[i](x, y) + 1.4 * math.log(mix[i][1])))
         for i in order:
@@ -1402,24 +1657,104 @@ def _pk_profile(profile, step=.04, smooth=.08):
     return ss, N, Z, _pknp.array(NN), _pknp.array(NZ)
 
 
-def wall_drape(name, p0, p1, out, profile, curtain, openings=(), thickness=.2, bump=.07, wave=.3, grid=.1, ramp=.14,
-               role='pk_leaf', role2='pk_leaf_dark', bract_roles=('pk_magenta', 'pk_bract2'), bracts_per_m2=6, trunks=(),
-               trunk_role='pk_bark', seed=1, module='planting', tongues=4, cover=1., leaf_per_m2=55, mass_bracts_per_m2=170):
-    """Wall-trained climber or parapet cascade (bougainvillea, wisteria, ivy, jasmine) as unique geometry: a continuous
-    leafy canopy shell draped over a wall cross-section `profile` [(n, z), ...] (n measured outward from the wall face
-    line p0-p1, `out` its unit outward normal (x, y)), listed from the hanging lower end up and over the coping. The
-    shell is a heightfield in (u along the wall, s along the profile) whose edges dive 2.5 cm into the masonry, so it is
-    grounded on the wall and coping. Its hanging edge sits at s = curtain(u) metres (a float or a function) with
-    `tongues` longer hanging lobes and a fringe of dangling leaves; `openings` [(u0, u1, z0, z1), ...] (doors, windows,
-    measured on the wall face) are cut out with a 7 cm margin so it never crosses them. Lumpy bract masses (bract_roles,
-    `cover` scales them) ride on about half the shell with their edges diving into it, leaf cards (leaf_per_m2) and
-    bract specks (bracts_per_m2) texture it; `trunks` [(u, (x, y, z) root), ...] add woody stems from a pot or
-    planter that climb into the canopy and branch along the wall. Returns the shell area in m2."""
+def _pk_bract_triad(g, c, rnd, size, up=(0., 0., 1.)):
+    """Three papery bracts (bougainvillea) round a tiny centre: broad cupped ovate cards rising out of c at 120 degrees,
+    their custom normals leaning to `up` so a panicle of triads shades as one soft flower mass."""
+    a0 = rnd.uniform(0, 6.3); side = _pk_tangent(up, rnd); side2 = _pk_cross(up, side)
+    for m in range(3):
+        aa = a0 + m * 2.0944 + rnd.uniform(-.2, .2)
+        r = tuple(side[k] * math.cos(aa) + side2[k] * math.sin(aa) for k in range(3))
+        d = _pk_norm(tuple(r[k] * .62 + up[k] * .78 for k in range(3)))
+        cn = _pk_norm(tuple(r[k] * .78 - up[k] * .62 for k in range(3)))
+        L = size * rnd.uniform(.85, 1.15)
+        _pk_ovate(g, c, d, tuple(-x for x in cn), L, L * .78, cup=.16, droop=.04, bend=up, lean=.6)
+
+
+def _pk_spray(kit, name, leaf_role, bract_role, rnd, clusters=0):
+    """One climber spray in a local frame whose +z is the canopy's outward normal: 5-6 short arching stems from the
+    centre with ~60 ovate leaves (4.5-7 cm) along them, custom normals leaning to +z; with bract_role, `clusters`
+    three-bract clusters grouped into an irregular panicle 0.15-0.30 m across near the stem ends."""
+    parts = _pk_parts(leaf_role, *([bract_role] if bract_role else [])); g = parts[leaf_role]
+    ns = rnd.randint(5, 6); a0 = rnd.uniform(0, 6.3); tips = []
+    for k in range(ns):
+        a = a0 + 2 * math.pi * k / ns + rnd.uniform(-.3, .3); L = rnd.uniform(.16, .24)
+        pts = _pk_arc((0., 0., -.015), a, math.radians(rnd.uniform(18, 32)), math.radians(rnd.uniform(40, 60)), L, 5)
+        _pk_tube(g, pts, .0045, .0025, 3); tips.append(pts[-1])
+        for j, p in enumerate(pts[1:]):
+            for sd in (-1, 1):
+                aa = a + sd * math.radians(rnd.uniform(40, 65))
+                d = _pk_norm((math.cos(aa), math.sin(aa), rnd.uniform(.1, .45)))
+                cn = _pk_norm((-d[0] * d[2], -d[1] * d[2], 1 - d[2] * d[2]))
+                Lf = rnd.uniform(.055, .08) * (1 - .15 * j / 4)
+                _pk_ovate(g, p, d, cn, Lf, Lf * .6, bend=_pk_norm((rnd.uniform(-.25, .25), rnd.uniform(-.25, .25), 1.)))
+    for k in range(6):                                           # a rosette of leaves over the centre
+        aa = a0 + k * 1.047 + rnd.uniform(-.2, .2); d = _pk_norm((math.cos(aa), math.sin(aa), .35))
+        _pk_ovate(g, (0., 0., .012), d, _pk_norm((-d[0] * .35, -d[1] * .35, 1.)), .06, .035, bend=(0., 0., 1.))
+    if bract_role:                                               # bract panicles held above the leaves, as the plant flowers
+        gb = parts[bract_role]
+        for k in range(clusters):
+            t = tips[k % len(tips)]; f = rnd.uniform(.15, 1.)
+            c = (t[0] * f + rnd.uniform(-.04, .04), t[1] * f + rnd.uniform(-.04, .04), rnd.uniform(.05, .13))
+            _pk_bract_triad(gb, c, rnd, rnd.uniform(.045, .06), _pk_norm((c[0] * 1.2, c[1] * 1.2, 1.)))
+    return kit.proto(name, parts)
+
+
+def _pk_trail(kit, name, leaf_role, bract_role, rnd, length):
+    """A trailing cane in a local frame with +z up and -y outward from the wall: it leaves the canopy, arches out
+    12-18 cm and hangs `length` m with a slight sway, leafy along its length (custom normals leaning outward) and
+    ending in a small panicle of bract triads."""
+    parts = _pk_parts(leaf_role, bract_role); g = parts[leaf_role]
+    pts = [(0., 0., 0.), (rnd.uniform(-.02, .02), -.07, .035), (rnd.uniform(-.03, .03), -.14, .0)]
+    n = max(4, int(length / .09)); sw = rnd.uniform(-.08, .08)
+    for i in range(1, n + 1):
+        q = i / n
+        pts.append((pts[2][0] + sw * math.sin(q * 2.2), -.14 - .06 * q + .03 * math.sin(q * 3.1), -length * q))
+    _pk_tube(g, pts, .0045, .002, 3)
+    for i, p in enumerate(pts[2:]):
+        for sd in (-1, 1):
+            d = _pk_norm((sd * rnd.uniform(.5, .9), -rnd.uniform(.2, .6), -rnd.uniform(.2, .7)))
+            cn = _pk_norm(_pk_cross(d, (sd * 1., 0., 0.))) if abs(d[0]) < .95 else (0., -1., 0.)
+            if cn[1] > 0:
+                cn = tuple(-x for x in cn)
+            Lf = rnd.uniform(.05, .075)
+            _pk_ovate(g, p, d, cn, Lf, Lf * .6, bend=_pk_norm((0., -1., .2)))
+    gb = parts[bract_role]
+    for k in range(0, len(pts) - 3, 2):                          # bract triads along the lower half and a tip panicle
+        p = pts[-1 - k]
+        if k > len(pts) // 2 and k:
+            break
+        _pk_bract_triad(gb, (p[0] + rnd.uniform(-.02, .02), p[1] - .02, p[2] + .01), rnd, rnd.uniform(.038, .05), _pk_norm((0., -1., -.2)))
+    return kit.proto(name, parts)
+
+
+def climber_sprays(kit, name='bougainvillea', leaf_role='pk_leaf', bract_roles=('pk_magenta', 'pk_bract2'), seed=1):
+    """The instanced parts wall_drape() scatters: a leafy spray, two flowering sprays (one bract tone each, 16-20 triads held above the leaves)
+    and two trailing canes (0.65 m and 1.0 m, one bract tone each). Returns a dict for wall_drape(sprays=...)."""
+    rnd = _pkr.Random(seed)
+    return dict(leafy=_pk_spray(kit, name + '_leafy', leaf_role, None, rnd),
+                flower=[_pk_spray(kit, f'{name}_flower{i}', leaf_role, ro, rnd, clusters=rnd.randint(16, 20)) for i, ro in enumerate(bract_roles)],
+                trail=[(L, _pk_trail(kit, f'{name}_trail{i}', leaf_role, ro, rnd, L)) for i, (L, ro) in enumerate(((.65, bract_roles[0]), (1.0, bract_roles[1])))])
+
+
+def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), thickness=.04, bump=.012, wave=.3, grid=.12,
+               ramp=.06, carrier_role='pk_shrub_core', trunks=(), trunk_role='pk_bark', seed=1, module='planting', tongues=4,
+               cover=.65, spacing=.21, trails_per_m=5., floor=0., canes=4):
+    """Wall-trained climber or parapet cascade (bougainvillea, wisteria, jasmine) over a wall cross-section `profile`
+    [(n, z), ...] (n outward from the wall face line p0-p1, `out` its unit outward normal (x, y)), listed from the
+    hanging lower end up and over the coping. A hidden dark carrier (carrier_role: a thin heightfield sheet in (u along
+    the wall, s along the profile) whose edges dive 2.5 cm into the masonry) gives depth only; the visible canopy is
+    instanced sprays (climber_sprays(): leafy, and flowering where a blob mask covers about `cover` of it) oriented to
+    the carrier normal and spun at random, trailing canes hanging from the lower edge (`trails_per_m`, shortened so they
+    stay above `floor`), a woody armature of `canes` canes fanning from each trunk over the wall and coping, and trunks
+    [(u, (x, y, z) root), ...] from a pot. The hanging edge sits at s = curtain(u) with `tongues` longer lobes; openings
+    [(u0, u1, z0, z1), ...] are cut with a 7 cm margin and sprays and canes keep clear of them. No two closed shells share
+    a volume (the carrier is the only shell). Returns the carrier area in m2."""
+    from mathutils import Matrix, Vector
     rnd = _pkr.Random(seed); ss, PN, PZ, NN, NZ = _pk_profile(profile)
     L = math.hypot(p1[0] - p0[0], p1[1] - p0[1]); tx, ty = (p1[0] - p0[0]) / L, (p1[1] - p0[1]) / L
     Smax = float(ss[-1]); z0p = profile[0][1]
     cur = curtain if callable(curtain) else (lambda u, c=curtain: c)
-    tg = [(rnd.uniform(.12, .88) * L, rnd.uniform(.25, .6), rnd.uniform(.1, .2)) for _ in range(tongues)]
+    tg = [(rnd.uniform(.12, .88) * L, rnd.uniform(.2, .45), rnd.uniform(.1, .2)) for _ in range(tongues)]
     nz_ = _PkNoise(seed + 5, 2 * math.pi / 1.1)
 
     def lo(u):
@@ -1427,8 +1762,10 @@ def wall_drape(name, p0, p1, out, profile, curtain, openings=(), thickness=.2, b
     us = _pknp.linspace(0., L, max(12, int(L / .05)))
     poly = [(float(u), lo(float(u))) for u in us] + [(L, Smax), (0., Smax)]
     reg = _PkPolygon(poly).buffer(0).intersection(_pksh.box(.02, 0., L - .02, Smax - .015))
+    keep = reg
     for u0, u1, a, b in openings:
         reg = reg.difference(_pksh.box(u0 - .07, a - z0p - .07, u1 + .07, b - z0p + .07))
+        keep = keep.difference(_pksh.box(u0 - .17, a - z0p - .17, u1 + .17, b - z0p + .17))
     reg = reg.buffer(-.01).buffer(.01)
     V, F, hz = _pk_field(reg, 0., thickness, bump, wave, grid, ramp, seed, mid=True)
 
@@ -1437,77 +1774,56 @@ def wall_drape(name, p0, p1, out, profile, curtain, openings=(), thickness=.2, b
         L2 = math.hypot(a, c) or 1.; a, c = a / L2, c / L2
         w = n + h * a
         return (p0[0] + u * tx + w * out[0], p0[1] + u * ty + w * out[1], zz + h * c), (a, c)
-    pk_mesh(name + ' canopy', [world(u, s, h)[0] for u, s, h in V], F, (), role, module)
-    # bract masses: lumpy magenta clouds riding on the canopy (their edges dive into it), covering about half of it
-    inner = reg.buffer(-.06)
-    blobs = [_pksh.Point(u, s).buffer(rnd.uniform(.14, .32) * cover ** .5, quad_segs=6)
-             for u, s in (pk_scatter(inner, .42, seed=seed + 4) if not inner.is_empty else [])]
-    patch = _pksh.union_all(blobs).intersection(inner) if blobs else None
-    if patch is not None and not patch.is_empty:
-        Vb, Fb, hb = _pk_field(patch, 0., .03, .012, .2, .1, .04, seed + 6, edge=.07, base=lambda X, Y: hz(X, Y))
-        pk_mesh(name + ' bract masses', [world(u, s, h)[0] for u, s, h in Vb], Fb, (), bract_roles[0], module)
-        gm = {ro: PkGeo() for ro in bract_roles}            # papery bracts: dense flecks facing every way over the masses
-        for u, s in pk_scatter(patch, 1 / math.sqrt(mass_bracts_per_m2) * .85, seed=seed + 7):
-            r = rnd.uniform(.022, .036); (x, y, z), (a, c) = world(u, s, hb(u, s) - r * .45)
-            nv = _pk_norm((out[0] * a + rnd.uniform(-.6, .6), out[1] * a + rnd.uniform(-.6, .6), c + rnd.uniform(-.6, .6)))
-            _pk_speck(gm[bract_roles[rnd.randrange(len(bract_roles))]], (x, y, z), nv, r, rnd.uniform(0, 6.3))
-        for ro, g in gm.items():
-            if g.f:
-                pk_mesh(f'{name} mass bracts {ro}', g.v, g.f, (), ro, module)
-    # leaf cards and bract specks for texture
-    gl = PkGeo(); gs = {ro: PkGeo() for ro in bract_roles}
-    for u, s in (pk_scatter(inner, 1 / math.sqrt(leaf_per_m2) * .85, seed=seed + 8) if not inner.is_empty else []):
-        h = hz(u, s); (x, y, z), (a, c) = world(u, s, h - .01)
-        nv = _pk_norm((out[0] * a, out[1] * a, c)); jit = _pk_norm((rnd.gauss(0, 1), rnd.gauss(0, 1), rnd.gauss(0, 1)))
-        tan = _pk_norm(tuple(jit[k] - nv[k] * sum(jit[i] * nv[i] for i in range(3)) for k in range(3)))
-        d = _pk_norm(tuple(tan[k] + nv[k] * .5 for k in range(3))); Lc = rnd.uniform(.06, .09)
-        dn = sum(nv[k] * d[k] for k in range(3))
-        _pk_card(gl, (x, y, z), d, _pk_norm(tuple(nv[k] - dn * d[k] for k in range(3))), Lc, Lc * .65)
-    if gl.f:
-        pk_mesh(name + ' leaves', gl.v, gl.f, (), role2, module)
-    for u, s in (pk_scatter(inner, 1 / math.sqrt(bracts_per_m2) * .85, seed=seed + 2) if not inner.is_empty else []):
-        h = hz(u, s); g = gs[bract_roles[rnd.randrange(len(bract_roles))]]
-        for j in range(4):
-            du, ds = rnd.uniform(-.05, .05), rnd.uniform(-.05, .05); r = rnd.uniform(.022, .034)
-            hh = hz(u + du, s + ds) if _pksh.contains_xy(reg, u + du, s + ds) else h
-            (x, y, z), (a, c) = world(u + du, s + ds, hh - r * .3)
-            nv = _pk_norm((out[0] * a + rnd.uniform(-.3, .3), out[1] * a + rnd.uniform(-.3, .3), c + rnd.uniform(-.3, .3)))
-            _pk_speck(g, (x, y, z), nv, r, rnd.uniform(0, 6.3))
-    for ro, g in gs.items():
-        if g.f:
-            pk_mesh(f'{name} bracts {ro}', g.v, g.f, (), ro, module)
-    # dangling leaf fringe along the hanging edge
-    fr = PkGeo(); fb = PkGeo()
-    for u in _pknp.arange(.15, L - .15, .06):
-        u = float(u) + rnd.uniform(-.02, .02); s = lo(u) + .05
-        if not reg.buffer(.02).contains(_pksh.points(u, s)):
+    pk_mesh(name + ' carrier', [world(u, s, h)[0] for u, s, h in V], F, (), carrier_role, module, shell=True)
+    # flowering mask: irregular blobs over about `cover` of the canopy
+    blobs = [_pksh.Point(u, s).buffer(rnd.uniform(.16, .34), quad_segs=6) for u, s in pk_scatter(reg, .5 / max(.2, cover) ** .5, seed=seed + 4)]
+    patch = _pksh.union_all(blobs) if blobs else None
+    if patch is not None:
+        _pksh.prepare(patch)
+    sreg = keep.intersection(reg.buffer(-.03))
+    nfl = 0
+    for u, s in (pk_scatter(sreg, spacing, seed=seed + 8) if not sreg.is_empty else []):
+        (x, y, z), (a, c) = world(u, s, hz(u, s) + rnd.uniform(.004, .03))
+        N = Vector((out[0] * a, out[1] * a, c)).normalized(); T = Vector((tx, ty, 0.)); B = N.cross(T).normalized()
+        ph = rnd.uniform(0, 6.3); X = (T * math.cos(ph) + B * math.sin(ph)).normalized(); Y = N.cross(X)
+        e = Matrix((X, Y, N)).transposed().to_euler('XYZ')
+        fl = patch is not None and _pksh.contains_xy(patch, u, s)
+        p = sprays['flower'][nfl % len(sprays['flower'])] if fl else sprays['leafy']; nfl += fl
+        sc = rnd.uniform(.85, 1.15)
+        kit.place(p, x, y, z, e.z, sc, sy=sc * rnd.uniform(.85, 1.1), sz=sc * rnd.uniform(.8, 1.1), lean=(e.x, e.y), track=False)
+    # trailing canes from the hanging edge, clear of the openings and above the floor
+    rot0 = math.atan2(out[0], -out[1])
+    for u in _pknp.arange(.12, L - .12, 1 / trails_per_m):
+        u = float(u) + rnd.uniform(-.04, .04); s = lo(u) + .06
+        if any(u0 - .15 < u < u1 + .15 for u0, u1, a, b in openings) or not _pksh.contains_xy(reg, u, s):
             continue
-        (x, y, z), (a, c) = world(u, s, max(.02, hz(u, s) * .5))
-        d = _pk_norm((out[0] * a * .5, out[1] * a * .5, -1.))
-        cn = (out[0], out[1], 0.)
-        for j in range(2):
-            Lf = rnd.uniform(.07, .13)
-            _pk_card(fb if rnd.random() < .3 else fr, (x + tx * rnd.uniform(-.02, .02), y + ty * rnd.uniform(-.02, .02), z),
-                     _pk_norm((d[0] + tx * rnd.uniform(-.3, .3), d[1] + ty * rnd.uniform(-.3, .3), d[2])), cn, Lf, Lf * .6)
-    if fr.f:
-        pk_mesh(name + ' fringe', fr.v, fr.f, (), role2, module)
-    if fb.f:
-        pk_mesh(name + ' fringe bracts', fb.v, fb.f, (), bract_roles[0], module)
-    # woody trunks from a root point, climbing into the canopy and branching along the wall
+        (x, y, z), _ = world(u, s, hz(u, s) * .6)
+        room = z - floor - .1
+        Lp, pr = sprays['trail'][1] if room > 1.05 and rnd.random() < .5 else sprays['trail'][0]
+        sc = min(1.1, room / Lp) * rnd.uniform(.8, 1.)
+        if sc < .35:
+            continue
+        kit.place(pr, x, y, z, rot0 + rnd.uniform(-.35, .35), sc, sy=1., sz=sc, track=False)
+    # woody armature: trunks from their pots and canes fanning over the wall and coping, on the carrier under the sprays
     tb = PkGeo()
     for u, root in trunks:
         for u0, u1, a, b in openings:
             if u0 - .1 < u < u1 + .1:
                 raise ValueError(f'{name}: trunk at u={u:.2f} crosses an opening')
-        s_in = lo(u) + .35; (x1, y1, z1), _ = world(u, s_in, thickness * .3)
+        s_in = lo(u) + .3; (x1, y1, z1), _ = world(u, s_in, hz(u, s_in) * .5)
         (xm, ym, zm), _ = world(u, max(0., (z1 - z0p) * .5), .05)
-        pts = [root, ((root[0] + xm) / 2, (root[1] + ym) / 2, (root[2] + zm) / 2), (xm, ym, zm), (x1, y1, z1)]
-        _pk_tube(tb, pts, .035, .022, 6)
-        for side in (-1, 1):
-            br = [world(u + side * k * .22, s_in + k * .18, thickness * .3)[0] for k in range(4)]
-            _pk_tube(tb, [(x1, y1, z1)] + br[1:], .018, .01, 5)
+        _pk_tube(tb, [root, ((root[0] + xm) / 2, (root[1] + ym) / 2, (root[2] + zm) / 2), (xm, ym, zm), (x1, y1, z1)], .035, .022, 6)
+        for k in range(canes):
+            ang = math.radians(-62 + 124 * k / max(1, canes - 1) + rnd.uniform(-8, 8)); pts = [(x1, y1, z1)]
+            for j in range(1, 9):
+                uu = u + math.sin(ang) * .3 * j; sj = s_in + math.cos(ang) * .3 * j + .04 * math.sin(j * 1.3 + k)
+                if sj > Smax - .05 or not _pksh.contains_xy(keep, uu, sj):
+                    break
+                pts.append(world(uu, sj, hz(uu, sj) + .006)[0])
+            if len(pts) > 2:
+                _pk_tube(tb, pts, .016, .007, 5)
     if tb.f:
-        pk_mesh(name + ' trunks', tb.v, tb.f, (), trunk_role, module)
+        pk_mesh(name + ' canes', tb.v, tb.f, (), trunk_role, module)
     return float(reg.area)
 
 
@@ -1517,22 +1833,25 @@ KIT = None
 
 
 def protos(kit):
-    """The showcase prototype library: two seeds for the species that repeat most, one for accents, and the shrub size
-    range 0.4 / 0.8 / 1.2 / 1.6 m."""
+    """The showcase prototype library: two seeds for the species that repeat most, one for accents, the shrub size
+    range 0.4 / 0.8 / 1.2 / 1.6 m and the climber sprays."""
     P = {}
+    P['mophead1'] = flower_head_cluster(kit, 'hydrangea1', 'mophead', heads=8, height=.95, foliage=.50, head_role='pk_white',
+                                        leaf_role='pk_leaf', leaves=26, seed=11)
+    P['lavender2'] = lavender(kit, 'lavender2', radius=.27, height=.48, spikes=24, seed=72)
+    P['astilbe1'] = flower_head_cluster(kit, 'astilbe1', 'panicle', heads=7, height=.62, spread=.22, foliage=.26,
+                                        head_role='pk_pink2', leaf_role='pk_leaf_dark', leaf_w=.45, leaves=30, seed=63)
+    P['sprays'] = climber_sprays(kit, 'bougainvillea', seed=151)
     for s in (1, 2):
-        P[f'mophead{s}'] = flower_head_cluster(kit, f'hydrangea{s}', 'mophead', heads=8, height=.95, foliage=.48,
-                                                head_role='pk_white' if s == 1 else 'pk_cream', leaf_role='pk_leaf_dark',
-                                                leaves=26, seed=10 + s)
         P[f'salvia{s}'] = flower_head_cluster(kit, f'salvia{s}', 'spike', heads=11, height=.48, spread=.26, foliage=.27,
                                                head_role='pk_purple', leaf_w=.5, leaves=28, seed=40 + s)
         P[f'feather{s}'] = arching_grass(kit, f'feather_reed{s}', blades=60, height=.5, width=.018, role='pk_straw', plume_role='pk_plume',
                                          plumes=6 if s == 1 else 5, plume_height=2.3 if s == 1 else 1.8, seed=90 + s)
     P['cone1'] = flower_head_cluster(kit, 'coneflower1', 'daisy', heads=9, height=.66, foliage=.3, head_role='pk_pink', droop=.35,
                                      size=1.3, seed=21)
-    P['panicle1'] = flower_head_cluster(kit, 'panicle1', 'panicle', heads=6, height=.82, spread=.26, foliage=.3, head_role='pk_white',
+    P['panicle1'] = flower_head_cluster(kit, 'panicle1', 'panicle', heads=6, height=.82, spread=.26, foliage=.3, head_role='pk_cream',
                                         leaf_role='pk_leaf_dark', seed=61)
-    P['lavender1'] = lavender(kit, 'lavender1', radius=.30, height=.52, seed=71)
+    P['lavender1'] = lavender(kit, 'lavender1', radius=.30, height=.52, spikes=28, seed=71)
     P['fountain1'] = arching_grass(kit, 'fountain_grass1', blades=70, height=.55, width=.019, seed=81)
     P['blue1'] = arching_grass(kit, 'blue_grass1', blades=56, height=.32, width=.013, role='pk_blade_blue', crown_role='pk_crown_blue',
                                seed=101)
@@ -1544,12 +1863,14 @@ def protos(kit):
                                        leaves=40, seed=52)
     P['poppy1'] = flower_head_cluster(kit, 'poppy1', 'cup', heads=7, height=.55, spread=.24, foliage=.22, head_role='pk_orange',
                                       leaf_role='pk_leaf2', leaf_w=.7, leaves=24, seed=111)
-    for key, r, h, s in (('sh04', .30, .40, 1), ('sh08a', .50, .80, 2), ('sh08b', .52, .78, 3), ('sh12a', .66, 1.2, 4),
-                         ('sh12b', .70, 1.15, 5), ('sh16', .85, 1.6, 6)):
-        P[key] = shrub_mass(kit, 'shrub_' + key, radius=r, height=h, lobes=5 if h < .5 else 7, seed=120 + s)
-    P['begonia_c'] = bedding_cushion(kit, 'begonia_cushion', role='pk_leaf_red', floret_role='pk_red', seed=131)
-    P['ageratum_c'] = bedding_cushion(kit, 'ageratum_cushion', radius=.26, role='pk_leaf', floret_role='pk_purple2', seed=132)
-    P['alyssum_c'] = bedding_cushion(kit, 'alyssum_cushion', radius=.24, height=.16, role='pk_leaf2', floret_role='pk_white2', seed=133)
+    for key, r, h, s, lb in (('sh04', .30, .40, 1, 4), ('sh08a', .58, .78, 2, 6), ('sh12a', .82, 1.15, 4, 7), ('sh16', 1.0, 1.6, 6, 9)):
+        P[key] = shrub_mass(kit, 'shrub_' + key, radius=r, height=h, lobes=lb, seed=120 + s)
+    P['sh08b'], P['sh12b'] = P['sh08a'], P['sh12a']                   # placed with their own spin, lean and non-uniform scale
+    P['begonia_c'] = bedding_cushion(kit, 'begonia_cushion', role='pk_leaf_red', floret_role='pk_red', kind='begonia', seed=131)
+    P['ageratum_c'] = bedding_cushion(kit, 'ageratum_cushion', radius=.26, role='pk_leaf', floret_role='pk_purple2', kind='ageratum',
+                                      seed=132)
+    P['alyssum_c'] = bedding_cushion(kit, 'alyssum_cushion', radius=.25, height=.11, role='pk_leaf2', floret_role='pk_white2',
+                                     kind='alyssum', seed=133)
     P['geranium_pot'] = pot_plant(kit, 'geranium_pot', seed=141)
     P['box_pot'] = pot_plant(kit, 'box_pot', pot_r=.24, pot_h=.40, plant='box', leaf_role='pk_leaf_dark', seed=142)
     P['big_pot'] = pot_plant(kit, 'climber_pot', pot_r=.30, pot_h=.46, plant=None, seed=143)
@@ -1595,12 +1916,13 @@ def plaza(kit, P):
     kit.add_obstacle(_pksh.box(22.85, 5.55, 25.65, 6.13), 1.15)
     kit.place(P['big_pot'], 19.95, 7.16, ZV, .3)
     wall_drape('B10 bougainvillea', (17.5, yf), (22.5, yf), (0., -1.), [(0., 1.2), (0., 3.0), (.05, 3.0), (.05, 3.08), (-.32, 3.08)],
-               lambda u: .85 + .25 * math.sin(u * 1.7), openings=[(.7, 1.7, 0., 2.2), (3.2, 4.2, 1.0, 2.1)],
-               trunks=[(2.45, (19.95, 7.16, ZV + .42))], seed=5, module='planting')
+               lambda u: .85 + .25 * math.sin(u * 1.7), kit, P['sprays'], openings=[(.7, 1.7, 0., 2.2), (3.2, 4.2, 1.0, 2.1)],
+               trunks=[(2.45, (19.95, 7.16, ZV + .42))], seed=5, module='planting', floor=ZV)
     wall_drape('B10 cascade', (22.9, 5.6), (25.6, 5.6), (0., -1.), [(0., .40), (0., 1.1), (.05, 1.1), (.05, 1.15), (-.52, 1.15)],
-               lambda u: .22 + .08 * math.sin(u * 2.3), thickness=.15, tongues=3, seed=9, module='planting')
-    for x, y, key in ((17.85, 7.18, 'geranium_pot'), (19.55, 7.2, 'box_pot'), (23.25, 5.08, 'geranium_pot'),
-                      (24.35, 5.1, 'box_pot'), (25.35, 5.08, 'geranium_pot')):
+               lambda u: .22 + .08 * math.sin(u * 2.3), kit, P['sprays'], tongues=3, seed=9, module='planting', spacing=.17,
+               floor=ZV + .25)
+    for x, y, key in ((17.85, 7.18, 'geranium_pot'), (20.75, 7.2, 'box_pot'), (23.25, 4.95, 'geranium_pot'),
+                      (24.35, 4.97, 'box_pot'), (25.35, 4.95, 'geranium_pot')):
         kit.place(P[key], x, y, ZV, x * 1.7)
 
 
@@ -1609,9 +1931,9 @@ def planting():
     kit = KIT = PlantKit('planting', instancing=INSTANCING); P = protos(kit); rnd = _pkr.Random(7)
     # B1 flower_head_cluster specimens round a hydrangea, over a groundcover underlay
     o1 = bed('B1 flower heads', pk_ellipse(-10.5, -6.5, 2.4, 1.6))
-    groundcover('B1 underlay', o1, ZS, kerb=KERB, height=.045, seed=51)
+    groundcover('B1 underlay', o1, ZS, kerb=KERB, height=.045, seed=51, grid=.26)
     place_ring(kit, P, -10.5, -6.5, [(0, .05, 'mophead1'), (-1.35, .5, 'cone1'), (-1.45, -.4, 'rud1'), (1.35, .55, 'panicle1'),
-               (1.45, -.4, 'poppy1'), (-.55, -.95, 'salvia1'), (.6, -.95, 'yarrow1'), (-.5, 1.0, 'lavender1'), (.55, 1.0, 'yarrow2')],
+               (1.45, -.4, 'astilbe1'), (-.55, -.95, 'salvia1'), (.6, -.95, 'yarrow1'), (-.5, 1.0, 'lavender1'), (.55, 1.0, 'yarrow2')],
                rnd, pk_region(o1, KERB))
     # B2 perennial_drift (underlay by default)
     o2 = bed('B2 perennial drift', pk_blob(-4.0, -6.5, 2.3, 1.6, seed=3))
@@ -1623,7 +1945,7 @@ def planting():
                     kerb=KERB, spacing=.62, seed=8, drift=2.2)
     # B4 shrub_mass size range, 0.4 to 1.6 m, over an underlay
     o4 = bed('B4 shrub mass', pk_blob(9.0, -6.5, 2.6, 1.7, seed=4))
-    groundcover('B4 underlay', o4, ZS, kerb=KERB, height=.045, seed=53)
+    groundcover('B4 underlay', o4, ZS, kerb=KERB, height=.045, seed=53, grid=.26)
     place_ring(kit, P, 9.0, -6.5, [(-1.1, .45, 'sh16'), (.35, .6, 'sh12a'), (1.55, .3, 'sh08a'), (-.15, -.55, 'sh08b'),
                (1.15, -.75, 'sh12b'), (-1.6, -.55, 'sh04'), (2.15, -.35, 'sh04'), (-.9, -1.0, 'blue1')], rnd, pk_region(o4, KERB))
     # B5 groundcover with florets and leaf grain
@@ -1639,8 +1961,8 @@ def planting():
     hz6 = rings[-1][2]
     kit.place(P['salvia1'], -4.0, 1.0, hz6(-4.0, 1.0) - .03, 0., 1.1)
     for i in range(6):
-        a = i * math.pi / 3 + .3; x, y = -4.0 + .62 * math.cos(a), 1.0 + .62 * math.sin(a)
-        kit.place_in(P[('begonia_c', 'ageratum_c', 'alyssum_c')[i % 3]], x, y, hz6(x, y) - .03, a, .95)
+        a = i * math.pi / 3 + .3; x, y = -4.0 + .6 * math.cos(a), 1.0 + .6 * math.sin(a)
+        kit.place_in(P[('begonia_c', 'ageratum_c', 'alyssum_c')[i % 3]], x, y, hz6(x, y) - .03, a, 1.12)
     # B7 Halifax-style Victorian carpet bed: flat clipped ribbons following the leaf outline round white hydrangeas
     o7 = bed('B7 Halifax carpet bed', pk_leaf(5.3, 1.2, 9.0, 3.1))
     bands = carpet_bands('B7', o7, ZS, [(.28, 'pk_leaf_silver', .07, None),
@@ -1649,11 +1971,11 @@ def planting():
                                         (None, 'pk_leaf', .085, (('pk_pink', 'pk_pink2'), 120, .009))], kerb=KERB, seed=31)
     _, centre, hz = bands[-1]
     for i, (x, y) in enumerate(pk_scatter(centre, 1.3, margin=.45, seed=6)):
-        kit.place_in(P['mophead%d' % (1 + i % 2)], x, y, hz(x, y) - .03, rnd.uniform(0, 2 * math.pi), .8)
+        kit.place_in(P['mophead1'], x, y, hz(x, y) - .03, rnd.uniform(0, 2 * math.pi), .8)
     # B8 Prince's-Island-style perennial bed: layered shrub backdrop, drifts of perennials and grasses over a groundcover
     o8 = bed('B8 perennial bed', pk_blob(0.0, 8.0, 6.5, 2.5, seed=8, amp=.10))
     reg8 = pk_region(o8, KERB)
-    groundcover('B8 carpet', o8, ZS, kerb=KERB, height=.05, seed=41)
+    groundcover('B8 carpet', o8, ZS, kerb=KERB, height=.05, seed=41, grid=.26)
     back = reg8.intersection(_pksh.box(-20, 8.7, 20, 20))
     holes = []; sizes = ('sh16', 'sh12a', 'sh08a', 'sh12b', 'sh16', 'sh08b', 'sh12a')
     for i, (x, y) in enumerate(sorted(pk_scatter(back, 1.3, seed=9))):
@@ -1663,7 +1985,7 @@ def planting():
             holes.append(_pksh.Point(x, y).buffer(p['canopy_r'] * s * .9))
     front = reg8.difference(_pksh.union_all(holes)) if holes else reg8
     perennial_drift(kit, front, ZS, [(P['cone1'], 1.6), (P['rud1'], .9), (P['salvia1'], 1), (P['salvia2'], 1),
-                    (P['yarrow1'], .6), (P['yarrow2'], .5), (P['panicle1'], 1.1), (P['feather1'], .9),
+                    (P['yarrow1'], .6), (P['yarrow2'], .5), (P['panicle1'], 1.1), (P['astilbe1'], .7), (P['feather1'], .9),
                     (P['feather2'], .9), (P['fountain1'], .7)], kerb=0., spacing=.52, seed=12, drift=2.6, underlay=None)
     # B9 green-bridge strip: lavender, poppies, grasses and small shrubs held clear of a railing by the kit rule
     o9 = bed('B9 green bridge strip', pk_rounded_rect(20.0, -6.5, 3.4, .95, r=.4))
@@ -1674,8 +1996,8 @@ def planting():
     rb.box('rail_steel', 20.0, yr, .55, 6.46, .03, .03)
     rb.flush('rail')
     kit.add_obstacle(_pksh.LineString([(16.75, yr), (23.25, yr)]).buffer(.04), 1.1)
-    perennial_drift(kit, o9, ZS, [(P['lavender1'], 2.8), (P['poppy1'], .6), (P['fountain1'], .5),
-                    (P['sh04'], .45), (P['sh08a'], .35)], kerb=KERB, spacing=.5, seed=14, drift=2.4)
+    perennial_drift(kit, o9, ZS, [(P['lavender1'], 1.5), (P['lavender2'], 1.4), (P['poppy1'], .6), (P['fountain1'], .5),
+                    (P['sh04'], .45), (P['sh08a'], .35)], kerb=KERB, spacing=.48, seed=14, drift=2.4)
     plaza(kit, P)
     kit.flush()
     bad = kit.audit(detail=True)

@@ -39,8 +39,16 @@ These rules apply to every builder:
   crumpled (the v001 shrub, hydrangea, yarrow and carpet failures all came from `abs(noise)`).
 - **Clearance rule (kit-wide):** `kit.fits()` / `kit.place_in()` keep every plant's buried base `PK_CLEAR` (5 cm)
   inside each registered bed edge and off every obstacle; only canopy above kerb height may overhang a kerb, and an
-  obstacle taller than 0.3 m (a rail, a wall) keeps the whole canopy clear. `kit.audit()` counts placements that break
-  it; the showcase build fails unless it is 0.
+  obstacle taller than 0.3 m (a rail, a wall) keeps the whole canopy clear. Pots (protos with `rim_r`) must stay their
+  two rims plus 3 cm apart.
+- **Shell audit (kit-wide):** carpets, bands, groundcover and climber carriers are registered shells
+  (`pk_mesh(..., shell=True)`); faces of two different shells whose centroids lie within 2 mm with opposing
+  (dot < -0.5) or coincident (dot > 0.9) normals are counted, the black-slit and z-fighting signature.
+  `kit.audit()` counts clearance, pot and shell violations together; the showcase build fails unless it is 0.
+- **Leaf shading (v003):** canopy leaves are curved, tapered ovate cards (`_pk_ovate`, 6 vertices, 4 triangles) whose
+  custom normals lean about 70% toward the canopy normal, so a mass of leaves shades as one soft canopy instead of a
+  heap of chips. A role that carries custom normals is stored as triangles wound to face their normals (Cycles renders
+  a back-facing leaf black), which the build's triangulate pass and the glTF round trip keep exactly.
 
 ### API
 
@@ -54,7 +62,8 @@ These rules apply to every builder:
 | `kit.add_obstacle(geom, top)` | Registers a rail, wall or post footprint and its height above the soil. |
 | `kit.place_in(proto, x, y, z, rot, s, region=, aspect=, lean=)` | Places a prototype only if it passes the clearance rule (trying 1.0, 0.85 and 0.72 x s), else skips it. |
 | `kit.place(proto, x, y, z, rot, s, sz=, sy=, lean=)` | Places without checking: non-uniform scale and a small lean, as linked instances or merged per role. |
-| `kit.audit(detail=False)` | Counts (or lists) placements that break the clearance rule. |
+| `kit.place(..., track=False)` | Places a climber part (spray, trailing cane) that belongs on its wall and is not audited as a ground plant. |
+| `kit.audit(detail=False)` | Counts (or lists) clearance, pot-overlap and shell-face violations. |
 | `kit.flush()` / `kit.stats()` | Merges batches and records counts, violations and rejections. |
 
 **Prototype plants** (each returns a proto to place)
@@ -65,31 +74,48 @@ These rules apply to every builder:
   - `'spike'`: a tapered core packed with floret whorls (salvia, veronica);
   - `'umbel'`: a flat-topped corymb of small smooth floret domes (yarrow, sedum);
   - `'cup'`: a bowl of four broad petals round a dark boss (poppy, tulip);
-  - `'panicle'`: a loose conical floret panicle (astilbe, panicle hydrangea, phlox);
-  - `'mophead'`: hydrangea heads of smooth floret-cluster domes in a leaf-skinned shrubby mound.
-- **`lavender(kit, name, ...)`**: a grey-sage mound of needle leaves under a dome-shaped haze of thin stems with slim
-  smooth spikes (lavender, catmint, perovskia).
+  - `'panicle'`: an open branched raceme: a nodding rachis, 9-13 side branches shortening to the tip, tiny floret
+    specks with air between them (astilbe, panicle hydrangea, phlox); cream and pink (astilbe) in the showcase;
+  - `'mophead'`: hydrangea heads of smooth floret-cluster domes seated into and collared by the leaves of the plant's
+    own broad, low domed body (3-4 lobes round a centre, h:w about 0.75) of large ovate leaves that splay and droop to
+    the soil at the skirt.
+- **`lavender(kit, name, ...)`**: no dome: 40-48 short leafy stems of grey-sage needle leaves (custom normals leaning
+  to a low hemisphere, soil showing at the edge) under a vase-shaped fan of flower stems within about 25 degrees of
+  vertical, each a spike of 6-8 tiny paired whorls tapering to the tip (lavender, catmint, perovskia); use two seeds.
 - **`arching_grass(kit, name, ..., plumes=, plume_height=)`**: keeled blades arching from a low crown; optional plumes
   are a slim spindle wrapped in hair-fine spikelets on a nodding rachis.
-- **`shrub_mass(kit, name, radius, height, ...)`**: a very dark smooth hull of overlapping lobes skinned in broad cupped
-  leaf cards (lighter above); use 0.4, 0.8, 1.2 and 1.6 m sizes with two seeds for repeats.
-- **`bedding_cushion(kit, name, ...)`**: a low smooth leafy cushion studded with floret domes (begonia, ageratum,
-  alyssum).
+- **`shrub_mass(kit, name, radius, height, lobes=, ...)`**: structure first. An irregular multi-lobe hull
+  (`_pk_shrub_hull`: flattened lobes in a ring with two adjacent slots left empty for a deep bay, lower lobes reaching
+  out and upper ones drawn in, an uneven crown of off-centre lobes at different heights) in mid-dark green, lifted on
+  visible stems, clothed by `_pk_canopy` in an inner layer of large dark leaves lying flat on it (a third of the
+  leaves) and an outer layer of ovate leaves lifting 15-35 degrees, a sixth of them in threes on twig sprigs that break
+  the outline. Use 0.4, 0.8, 1.2 and 1.6 m sizes with h:w about 0.7-0.8; repeats come from spin, lean and
+  non-uniform scale.
+- **`bedding_cushion(kit, name, kind='begonia'|'ageratum'|'alyssum', ...)`**: a broad lumpy mound (6-8 low sub-mounds,
+  h:w about 0.25-0.35) clothed in 3-5 cm ovate leaves with flower clusters over 40-70% of its top: bead clusters,
+  fuzzy puffs or a white froth. Cushions placed closer than their diameter merge into a band.
 - **`pot_plant(kit, name, plant='geranium'|'box'|None)`**: a terracotta pot with a rolled rim and a soil top, holding
-  a geranium, a leaf-skinned box ball, or nothing (the root pot of a climber).
+  a geranium, a leaf-skinned box ball, or nothing (the root pot of a climber). The proto records `rim_r` for the pot
+  audit.
+- **`climber_sprays(kit, name, leaf_role, bract_roles)`**: the instanced climber parts: a leafy spray (5-6 short
+  arching stems, about 60 ovate leaves), two flowering sprays (16-20 three-bract clusters held above the leaves, one
+  bract tone each) and two trailing canes (0.65 and 1.0 m, leafy, with bract triads along the lower half).
 
 **Beds, carpets and drapes** (unique geometry, merged)
 
 - **`pk_bed(name, outline, soil_z, kerb=..., kit=)`**: a granite kerb ring and a mulch surface.
-- **`groundcover(name, poly, z, kerb=..., dots=, grain=)`**: a softly cushioned carpet lapped 3 cm under the kerb,
-  with a clean clipped rim (an outline ring and a shoulder ring, no teeth); optional micro-floret and leaf-grain specks.
+- **`groundcover(name, poly, z, kerb=..., dots=, grain=)`**: a softly cushioned carpet lapped 1.5 cm under the kerb,
+  its rim held below the kerb's inner arris by an 8 cm shoulder (an outline ring and a shoulder ring, no teeth);
+  optional micro-floret and leaf-grain specks.
 - **`carpet_bands(name, outline, z, bands, kerb=...)`**: the Halifax module: flat clipped bands (bump <= 4 mm,
   near-vertical 2.5 cm shoulder) following the outline, with automatic laps and height steps and micro-florets
   (`pk_dots`, 100-300 per m2, two hue roles). `bedding_band(...)` builds one band.
-- **`wall_drape(name, p0, p1, out, profile, curtain, openings=, trunks=)`**: a wall-trained climber or parapet cascade
-  (bougainvillea): a leafy canopy shell draped over a wall cross-section, cut clear of doors and windows, with an
-  irregular hanging edge and fringe, lumpy bract masses studded with papery bract flecks, leaf cards and woody trunks
-  rising from a pot.
+- **`wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=, trunks=, floor=, spacing=)`**: a
+  wall-trained climber or parapet cascade (bougainvillea). A thin hidden carrier sheet in mid-dark green (the only
+  closed shell, its edges diving into the masonry) gives depth; the visible canopy is instanced sprays oriented to the
+  carrier normal (flowering where a blob mask covers about 65%), trailing canes from the hanging edge kept clear of the
+  openings and above `floor`, and a woody armature of canes fanning from each trunk over the wall and coping. Openings
+  are cut with a 7 cm margin and spray centres stay 17 cm clear of them.
 
 **Placement and outlines**
 
@@ -123,16 +149,22 @@ and `build-report.json`.
 
 ### Measured on the showcase
 
-v002 smoke build at 480 px and 8 samples: 159 plants from 27 prototypes on 399 instance nodes, plus the unique
-carpets, kerbs, plaza walls and climber drapes.
+v003 smoke build at 480 px and 8 samples: 337 placements (plants and climber parts) from 31 prototypes on 629
+instance nodes, plus the unique carpets, kerbs, plaza walls, climber carriers and canes.
 
-| | v002 (instanced, shipped) | v001 (instanced) |
-|---|---|---|
-| Showcase GLB | 3,931,904 B (under the 4,194,304 B cap) | 3,338,232 B |
-| Stored triangles | 134,728 | 143,020 |
-| Scene (rendered) triangles | 587,044 | 667,084 |
-| Prototype triangles | 83,536 | 68,832 |
-| Clearance violations | 0 | not measured |
+| | v003 (instanced) | v002 (instanced) | v001 (instanced) |
+|---|---|---|---|
+| Showcase GLB | 4,100,404 B (94 KB under the 4,194,304 B cap) | 3,931,904 B | 3,338,232 B |
+| Stored triangles | 125,828 | 134,728 | 143,020 |
+| Scene (rendered) triangles | 603,625 | 587,044 | 667,084 |
+| Prototype triangles | 86,683 | 83,536 | 68,832 |
+| glTF JSON (mostly instance nodes) | 498,660 B | 347,236 B | |
+| Clearance, pot and shell violations | 0 | 0 (clearance only) | not measured |
+
+v003 byte split (mesh buffers): shrubs (4 prototypes) about 800 KB, kerbs, soil and groundcover about 400 KB, B6 and B7
+carpet bands about 540 KB, lavender (2 seeds) 212 KB, hydrangea 152 KB, cushions 269 KB, other perennials and grasses
+about 1.1 MB, climber sprays and canes 63 KB plus 99 KB of unique carrier and armature. Custom-normal leaves cost about
+42 B per triangle (156 B per leaf).
 
 For v001, the same scene joined (`--no-instancing`) came to 15,861,936 B, and each further instanced plant costs
 about 1.9 KB (3.1 nodes at about 615 B each, mostly glTF extras). The build passes `build_valid` with
@@ -154,8 +186,8 @@ about 1.9 KB (3.1 nodes at about 615 B each, mostly glTF extras). The build pass
 ## Running it
 
 ```
-python tools/clay_planting_kit_showcase/build.py --version 2 --output <dir> --resolution 480 --samples 8
-python tools/clay_planting_kit_showcase/build.py --version 2 --output <dir2> --cameras front_corner --no-instancing   # size comparison
+python tools/clay_planting_kit_showcase/build.py --version 3 --output <dir> --resolution 480 --samples 8
+python tools/clay_planting_kit_showcase/build.py --version 3 --output <dir2> --cameras front_corner --no-instancing   # size comparison
 python tools/clay_planting_kit_showcase/phone_board.py --candidate <dir>
 ```
 
@@ -167,17 +199,17 @@ prototype triangles, clearance violations and rejected placements.
 There are nine kerbed beds and a paved plaza corner on a 41 × 22 m lawn with two gravel walks:
 
 - **South row (y = -6.5):** B1 specimens of every head type (mophead, coneflower, rudbeckia, salvia, yarrow in two
-  colours, panicle, poppy, lavender) over an underlay; B2 perennial drift; B3 arching grasses; B4 shrub size range
-  (0.4, 0.8, 1.2 and 1.6 m); B9 green-bridge strip (lavender, poppies, fountain grass and small shrubs held clear of a
-  railing by the clearance rule).
+  colours, cream panicle, pink astilbe, lavender) over an underlay; B2 perennial drift; B3 arching grasses; B4 shrub
+  size range (0.4, 0.8, 1.2 and 1.6 m); B9 green-bridge strip (two lavender seeds at knitting spacing, poppies,
+  fountain grass and small shrubs held clear of a railing by the clearance rule).
 - **Middle row (y = +1):** B5 groundcover with florets and leaf grain; B6 clipped bedding rings with bedding cushions
   round a salvia; B7 the Halifax-style leaf carpet bed (flat clipped silver, begonia, ageratum and pink bands with
   micro-florets round white hydrangeas).
 - **North (y = +8):** B8 the Prince's-Island-style perennial bed: a layered shrub backdrop at 1.3 m spacing, drifts of
-  perennials, panicles and grasses over a groundcover.
+  perennials, cream panicles, pink astilbe and grasses over a groundcover.
 - **East (x = +17 to +26):** B10 the stepped-plaza corner: a 3 m rendered wall with a door and a window carrying a
   bougainvillea trained from a pot up and over its coping, a 1.1 m terrace wall with a parapet cascade, and geranium and
-  box pots.
+  box pots placed clear of each other (pot audit).
 
 There are fifteen cameras:
 
@@ -193,15 +225,23 @@ There are fifteen cameras:
 - **v001:** independent review FAIL, P0 = 0, P1 = 6, P2 = 9 (`evidence/v001/independent-review.md`): crumpled shrub
   masses, puffy carpet tubes with saw-tooth crests and mulch valleys, crumpled hydrangea heads, jagged yarrow plates,
   faceted feather-reed pods, and a placement rule that let a shrub cut its kerb.
-- **v002 (this module):** reworks all six and adds the lavender, cup, panicle, bedding-cushion, pot-plant and
-  wall-drape modules, the shrub size range and the rail clearance rule. See `VERSIONS.md` once it is reviewed.
+- **v002:** independent review FAIL, P0 = 1, P1 = 7, P2 = 12 (`evidence/v002/independent-review.md`): carpets,
+  yarrow, plumes and clearance fixed; shrubs as topiary balls of flat chips over a near-black hull, hydrangea body a
+  drum, bougainvillea as a quilt with pink balloons and black slits (P0), panicle cones, sea-urchin lavender, gumdrop
+  cushions and intersecting pots.
+- **v003 (this module):** custom-normal ovate leaves; structural shrub hulls with an inner leaf layer, stems and
+  sprigs; the hydrangea's own leafy body with seated heads; open racemes; needle-leaf lavender with whorled spikes;
+  leaf-skinned lumpy cushions; the climber rebuilt as instanced sprays and trailing canes over a hidden carrier; pot
+  and shell audits. See `VERSIONS.md` once it is reviewed.
 
 ## Open points
 
-- v002 has not had an independent review. Its quality is the builder's reading of 480 px smokes and 1440 px
-  close-ups.
-- Shrub and hydrangea leaf skins are flat 4-vertex cards; up close they read as leafy but slightly angular.
-- Lavender mounds read as grey needle cushions; salvia spires still show their whorl beads at 1.5 m.
-- The bougainvillea is a draped shell with bract masses; it has no free-hanging branches away from the wall.
-- The GLB has about 260 KB of headroom under the cap; a park family must budget its own carpets and drapes.
+- v003 has not had an independent review. Its quality is the builder's reading of 480 px smokes and 1440 px
+  close-ups of the shrub, climber, cascade, specimen, lavender and bedding cameras.
+- The largest shrub (1.6 m) still reads as a rounded mound from some angles, and between its leaves the hull shows as
+  shaded depth; leaf gaps in deep shade still render below 3% luminance (contact shadow, not a slit).
+- Lavender clumps are airy rather than dense cushions; salvia spires still show their whorl beads at 1.5 m.
+- The climber carrier shows as a dark green backing through gaps in the sprays on the cascade face.
+- The GLB has about 94 KB of headroom under the cap, and the glTF JSON (instance nodes, about 760 B each with extras)
+  is 499 KB; a park family must budget its own carpets, drapes and node count.
 - Instances are glTF node instances, not `EXT_mesh_gpu_instancing`; a runtime loader should batch shared meshes.
