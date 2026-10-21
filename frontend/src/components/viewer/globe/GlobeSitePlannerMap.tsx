@@ -21,6 +21,9 @@ import { SurveyGroundSurface } from '@/features/context/SurveyGroundSurface';
 import { GaussianContextLayer } from '@/features/context/GaussianContextLayer';
 import { AlternateContextLayer, GoogleContextVisibility } from '@/features/context/ContextLayers';
 import { contextPilotCaptureProblem } from '@/features/context/contextProvider';
+import { MapCleanupControls } from './MapCleanupControls';
+import { MapCleanupPreview } from './MapCleanupPreview';
+import { readMapCleanupBoxes, type MapCleanupBox } from './mapCleanup';
 import { assetForZone } from '@/features/pickPlace/catalogue';
 import { projectedFrameFraction } from './projectFrameHeight';
 import { useWorkingViewQuality } from './useWorkingViewQuality';
@@ -1507,6 +1510,7 @@ interface GlobeSitePlannerMapProps {
   mapToolsTarget?: HTMLElement | null;
   entrancePick?: import('@/features/pickPlace/pickBuildingEntrance').EntrancePickRequest | null;
   onPrepareGround?: (zoneId: string, clear: boolean, height?: number, edges?: import('./preparedSiteEdges').PreparedEdgeProfile | null) => Promise<void>;
+  onSaveMapCleanup?: (zoneId: string, boxes: MapCleanupBox[]) => Promise<void>;
   onFollowParkTerrain?: (profiles: Record<string, ParkTerrainProfile>) => Promise<void>;
   onAutoParkTerrain?: SaveParkGround;
   parkGroundPaused?: boolean;
@@ -1627,6 +1631,7 @@ export function GlobeSitePlannerMap({
   placementDraft,
   onPlacementDraftChange,
   onPrepareGround,
+  onSaveMapCleanup,
   onFollowParkTerrain,
   onAutoParkTerrain,
   parkGroundPaused = false,
@@ -1674,7 +1679,21 @@ export function GlobeSitePlannerMap({
   const [walkBuildingZoneId, setWalkBuildingZoneId] = useState<string | null>(null);
   const walkSavedCameraRef = useRef<{ position: THREE.Vector3; quaternion: THREE.Quaternion; up: THREE.Vector3; pivot: THREE.Vector3 | null } | null>(null);
   const walkPointerRef = useRef<{ x: number; y: number } | null>(null);
-  const interactionPaused = externalInteractionPaused || detailEditing || Boolean(entrancePick) || walkMode !== null;
+  const [showMapCleanup, setShowMapCleanup] = useState(false);
+  const [cleanupPicking, setCleanupPicking] = useState(false);
+  const [cleanupDraft, setCleanupDraft] = useState<MapCleanupBox | null>(null);
+  const cleanupBoundary = getActiveSiteBoundary(allSiteZones);
+  const cleanupBoxes = useMemo(() => readMapCleanupBoxes(allSiteZones), [allSiteZones]);
+  const interactionPaused = externalInteractionPaused || detailEditing || Boolean(entrancePick) || walkMode !== null || cleanupPicking;
+  useEffect(() => {
+    if (externalInteractionPaused || detailEditing || entrancePick || placementDraft || walkMode) setCleanupPicking(false);
+  }, [externalInteractionPaused, detailEditing, entrancePick, placementDraft, walkMode]);
+  useEffect(() => {
+    if (!cleanupPicking) return;
+    const cancel = (event: KeyboardEvent) => { if (event.key === 'Escape') { event.preventDefault(); setCleanupPicking(false); } };
+    window.addEventListener('keydown', cancel, true);
+    return () => window.removeEventListener('keydown', cancel, true);
+  }, [cleanupPicking]);
   const [entrancePickError, setEntrancePickError] = useState('');
   const entrancePointerHitRef = useRef<{buildingId:string;hit?:NativeEntranceHit}|null>(null);
   useEffect(() => { setEntrancePickError(''); }, [entrancePick]);
@@ -4130,6 +4149,20 @@ export function GlobeSitePlannerMap({
   // Canvas onPointerMissed â€” fires when click doesn't hit any R3F mesh
   // We use this + onCreated to handle globe clicks at the Canvas level
   const handleCanvasClick = useCallback((e: MouseEvent) => {
+    if (cleanupPicking) {
+      const canvas = canvasRef.current, camera = cameraRef.current, tiles = tilesRendererRef.current?.group;
+      if (!canvas || !camera || !tiles || externalInteractionPaused) return;
+      const rect = canvas.getBoundingClientRect(), ray = new THREE.Raycaster();
+      ray.setFromCamera(new THREE.Vector2((e.clientX - rect.left) / rect.width * 2 - 1,
+        -(e.clientY - rect.top) / rect.height * 2 + 1), camera);
+      const hit = ray.intersectObjects(tiles.children, true).find(item => isPlausibleTerrainAnchor(
+        WGS84_ELLIPSOID.getPositionElevation(item.point), terrainElevationRef.current));
+      if (!hit) return;
+      const point = pointToCartographic(hit.point, terrainEllipsoidRef.current);
+      setCleanupDraft({ id: crypto.randomUUID(), lng: point.lon * RAD_TO_DEG, lat: point.lat * RAD_TO_DEG,
+        altitude: WGS84_ELLIPSOID.getPositionElevation(hit.point), width: 4, depth: 4, height: 3, yaw: 0, enabled: true });
+      setCleanupPicking(false); ignoreNextCanvasClickRef.current = false; return;
+    }
     if (detailInteraction && !detailInteraction.moving
       && !externalInteractionPaused && !hasDrawingTool && !placementDraft && !streetViewPegman && !walkMode && !entrancePick && !measureModeActive && !zoningInspection?.editing) {
       const canvas = canvasRef.current;
@@ -4305,7 +4338,7 @@ export function GlobeSitePlannerMap({
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
     requestAnimationFrame(updateCenterConnectionState);
-  }, [zoningInspection?.editing, detailInteraction, walkMode, detailEditing, onPlaceDetail, externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, activeToolProperties, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
+  }, [cleanupPicking, zoningInspection?.editing, detailInteraction, walkMode, detailEditing, onPlaceDetail, externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, activeToolProperties, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
     if (zoningInspection?.editing) return;
@@ -4671,8 +4704,9 @@ export function GlobeSitePlannerMap({
             {policyMap && <GlobePolicyMap ref={policyMapRef} {...policyMap} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
             {cityPolicyMaps && <GlobeCityPolicyMaps ref={cityPolicyMapsRef} {...cityPolicyMaps} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
           </group>
-          <TileStencilPatcher zones={tileMaskZones} assemblyZones={allSiteZones} terrainHeight={terrainElevation} />
+          <TileStencilPatcher zones={tileMaskZones} assemblyZones={allSiteZones} terrainHeight={terrainElevation} cleanupBoxes={cleanupBoxes} />
           <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />
+          {!captureOverlaysHidden && showMapCleanup && <MapCleanupPreview box={cleanupDraft} />}
           {/* Camera starts at project location via Canvas camera prop */}
 
           {/* Editable fills/outlines/labels can hide for a clean AI capture,
@@ -4950,6 +4984,11 @@ export function GlobeSitePlannerMap({
           setShowBuildingGroundProblems(false); onZoneSelected(zone.id);
           void requestProjectFrame([{ ...zone, coordinates: zone.coordinates as [number, number][] }], 'manual');
         }} />}
+      {!captureOverlaysHidden && showMapCleanup && cleanupBoundary && onSaveMapCleanup && <MapCleanupControls
+        boxes={cleanupBoxes} draft={cleanupDraft} picking={cleanupPicking} onDraft={setCleanupDraft}
+        onPick={value => { setCleanupPicking(value); if (value) setCleanupDraft(null); }}
+        onSave={boxes => onSaveMapCleanup(cleanupBoundary.id, boxes)}
+        onClose={() => { setShowMapCleanup(false); setCleanupPicking(false); setCleanupDraft(null); }} />}
       {contextPresentation.provider &&
         <ContextControls requested={contextPresentation.requested} onChange={contextPresentation.select}
           geographic={contextPresentation.provider.registration === 'geographic-pilot'}
@@ -5303,6 +5342,7 @@ export function GlobeSitePlannerMap({
           </button>
         )}
         {getActiveSiteBoundary(allSiteZones) && onPrepareGround && <button className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold hover:bg-[#fff9ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" onClick={() => setShowGroundReview(true)}>Review ground</button>}
+        {import.meta.env.DEV && cleanupBoundary && onSaveMapCleanup && <button type="button" className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold" disabled={Boolean(detailEditing || entrancePick || placementDraft || hasDrawingTool || measureModeActive)} onClick={() => { setWalkMode(null); onZoneSelected(null); setShowMapCleanup(true); }}>Map cleanup pilot</button>}
         {siteZones.some(zone=>zone.building_id||zone.building_ids?.length)&&<button type="button" className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold hover:bg-[#fff9ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           onClick={()=>setShowEntranceReview(true)}>Review entrances</button>}
         </>, mapToolsTarget)}

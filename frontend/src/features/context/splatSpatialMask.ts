@@ -1,4 +1,4 @@
-import { Vector2, Vector4, type Matrix4, type ShaderMaterial } from 'three';
+import { Vector2, Vector3, Vector4, type Matrix4, type ShaderMaterial } from 'three';
 import type { TileSpatialMaskConfig } from '@/components/viewer/globe/TileSpatialMaskPlugin';
 import { siteMaskFragmentDeclarations, siteMaskFragmentTest } from '@/components/viewer/globe/siteMaskShader';
 
@@ -22,5 +22,9 @@ export function applySplatSpatialMask(material: ShaderMaterial, config: TileSpat
     siteMaskRanges: { value: Array.from({ length: 8 }, (_, i) => config.maskRanges[i] ?? new Vector2()) },
     siteMaskCount: { value: config.maskCount },
     siteMaskHeightRange: { value: new Vector2(config.minHeight, config.maxHeight) },
+    // Manual cleanup applies to Google meshes only, not independent captures.
+    mapCleanupCount: { value: 0 },
+    mapCleanupCenters: { value: Array.from({ length: 4 }, () => new Vector4()) },
+    mapCleanupHalfSizes: { value: Array.from({ length: 4 }, () => new Vector3()) },
   });
 }

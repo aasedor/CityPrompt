@@ -1144,6 +1144,13 @@ export function ProjectViewPage() {
                 ...(edges !== undefined ? { terrain_edge_profile: edges } : {}),
               } }, previousData: { properties: boundary.properties } });
             }}
+            onSaveMapCleanup={async (zoneId, boxes) => {
+              const boundary = siteZones.find(zone => zone.id === zoneId && zone.zone_type === 'site_boundary');
+              if (!boundary) throw new Error('Site boundary no longer exists');
+              await updateZone.mutateAsync({ zoneId, data: { properties: { ...boundary.properties,
+                map_cleanup: { version: 1, boxes },
+              } }, previousData: { properties: boundary.properties } });
+            }}
             onPlaceAsset={placeObject}
             onCancelPlacement={cancelPlacement}
             latitude={project.location?.latitude}

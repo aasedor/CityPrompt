@@ -30,7 +30,7 @@ import {
   validateDirect3DMaskCoverage,
   validateDirect3DVisibleContextPixels,
 } from './direct3dCapture';
-import { createTileSpatialMaskConfig, patchMaterialForSpatialMask } from './TileSpatialMaskPlugin';
+import { createTileSpatialMaskConfig, createTileSpatialMaskSetConfig, patchMaterialForSpatialMask } from './TileSpatialMaskPlugin';
 import type { SiteZone } from '@/types';
 
 function hexRgb(hex: string): [number, number, number] {
@@ -39,6 +39,20 @@ function hexRgb(hex: string): [number, number, number] {
 }
 
 describe('Direct 3D capture helpers', () => {
+  it.each(['depth', 'normal'] as const)('retains an elevated cleanup box in the %s capture without a site mask', pass => {
+    const source = new THREE.MeshBasicMaterial();
+    const config = createTileSpatialMaskSetConfig([], 100, [{ id: 'floating-fragment', lng: -114, lat: 51,
+      altitude: 106, width: 4, depth: 4, height: 3, yaw: 30, enabled: true }])!;
+    patchMaterialForSpatialMask(source, config);
+    const control = createDirect3DGeometryMaterial(source, pass);
+    const shader = { vertexShader: THREE.ShaderLib[pass].vertexShader,
+      fragmentShader: THREE.ShaderLib[pass].fragmentShader, uniforms: THREE.UniformsUtils.clone(THREE.ShaderLib[pass].uniforms) };
+    control.onBeforeCompile(shader as never, {} as never);
+    expect(shader.uniforms.siteMaskCount.value).toBe(0);
+    expect(shader.uniforms.mapCleanupCount.value).toBe(1);
+    expect(shader.uniforms.mapCleanupHalfSizes.value[0].toArray()).toEqual([2, 2, 1.5]);
+    control.dispose(); source.dispose();
+  });
   it('rejects sky-only context even when proposal geometry would produce a nonblank beauty', () => {
     const context = new Uint8Array(400);
     expect(() => validateDirect3DVisibleContextPixels(context, 0.05)).toThrow(/surrounding map/);

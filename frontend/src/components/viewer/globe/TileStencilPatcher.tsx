@@ -20,17 +20,21 @@ import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { siteBoundaryOpacity } from '@/utils/siteBoundaryAppearance';
 import { resolvePreparedSiteTerrainHeight } from './sitePreparationSurface';
 import { useParkAssemblyGroundOwners } from './ParkAssemblyGround';
+import type { MapCleanupBox } from './mapCleanup';
 
 interface TileStencilPatcherProps {
   /** Only patch when there are zones that need tile masking. */
   zones: SiteZone[];
   terrainHeight: number;
   assemblyZones?: SiteZone[];
+  /** Google-only cleanup; alternate providers keep their own source intact. */
+  cleanupBoxes?: readonly MapCleanupBox[];
 }
 
 const NO_ASSEMBLY_ZONES: SiteZone[] = [];
+const NO_CLEANUP_BOXES: readonly MapCleanupBox[] = [];
 
-export function TileStencilPatcher({ zones, terrainHeight, assemblyZones = NO_ASSEMBLY_ZONES }: TileStencilPatcherProps) {
+export function TileStencilPatcher({ zones, terrainHeight, assemblyZones = NO_ASSEMBLY_ZONES, cleanupBoxes = NO_CLEANUP_BOXES }: TileStencilPatcherProps) {
   const tiles = useContext(TilesRendererContext);
   const parkGroundOwners = useParkAssemblyGroundOwners(assemblyZones);
   const patchedMaterials = useRef(new Set<THREE.Material>());
@@ -43,9 +47,10 @@ export function TileStencilPatcher({ zones, terrainHeight, assemblyZones = NO_AS
         siteBoundary ? zones.filter(zone => zone.id !== siteBoundary.id || siteBoundaryOpacity(siteBoundary.properties) === 1)
           : [...zones, ...parkGroundOwners.filter(owner => !zones.some(zone => zone.id === owner.id))],
         siteBoundary ? resolvePreparedSiteTerrainHeight(siteBoundary, terrainHeight) : terrainHeight,
+        cleanupBoxes,
       );
     },
-    [zones, terrainHeight, parkGroundOwners],
+    [zones, terrainHeight, parkGroundOwners, cleanupBoxes],
   );
 
   useEffect(() => {
