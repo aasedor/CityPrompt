@@ -45,6 +45,7 @@ from app.services.internal_video import (
 from app.services.omni_video import (
     MAX_ROUTE_IMAGE_BYTES,
     build_character_reference_prompt,
+    build_architecture_reference_prompt,
     build_cinematic_prompt,
     build_omni_payload,
     decode_guide_image,
@@ -169,6 +170,7 @@ class VideoPilotRequest(BaseModel):
     duration_seconds: Literal[4, 8] = 8
     custom_prompt: str = Field(default="", max_length=600)
     use_custom_prompt_only: bool = False
+    omni_reference_mode: Literal["video_only", "architecture_references"] = "video_only"
     scene_brief: str = Field(
         default=(
             "Preserve every authored building, open space, and surrounding context exactly as depicted in Image1."
@@ -678,6 +680,10 @@ def _decode_geometry_checkpoints(req: VideoPilotRequest) -> list[dict[str, Any]]
 
 def _preflight_values(req: VideoPilotRequest):
     try:
+        if req.omni_reference_mode == "architecture_references" and (
+            req.provider != "omni" or req.control_mode != "preview_video"
+        ):
+            raise ValueError("Architectural references require Omni preview video.")
         if req.camera_motion == "people_follow" and (req.provider != "omni" or req.control_mode != "preview_video"):
             raise ValueError("People-follow tracking requires Omni preview video.")
         if (req.duration_seconds == 4 or req.character_reference_base64 is not None) and (
@@ -710,7 +716,10 @@ def _preflight_values(req: VideoPilotRequest):
         if req.control_mode == "preview_video":
             if preview is None:
                 raise ValueError("Preview-video mode requires the deterministic route preview.")
-            if req.provider in {"omni", "internal_enhance"} and keyframes:
+            if req.provider == "omni" and req.omni_reference_mode == "architecture_references":
+                if len(keyframes) not in (1, 2):
+                    raise ValueError("Architectural references require one or two scene images.")
+            elif req.provider in {"omni", "internal_enhance"} and keyframes:
                 raise ValueError("This preview-video mode sends the route video without route keyframe references.")
             if req.provider == "seedance_mini":
                 expected_keyframes = 3 if req.seedance_reference_mode == "preview_plus_keyframes" else 0
@@ -740,7 +749,10 @@ def _preflight_values(req: VideoPilotRequest):
                 use_custom_prompt_only=req.use_custom_prompt_only,
             )
         )
-        if character_reference is not None:
+        if req.omni_reference_mode == "architecture_references":
+            prompt = build_architecture_reference_prompt(prompt, len(keyframes),
+                has_character=character_reference is not None)
+        elif character_reference is not None:
             prompt = build_character_reference_prompt(prompt)
     except (ValueError, KeyError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
@@ -982,6 +994,9 @@ async def generate_video(
         if existing.get("request_id") == str(req.request_id):
             request_hashes = {revision_sha256(req.model_dump(mode="json"))}
             legacy_excluded: set[str] = set()
+            if "omni_reference_mode" not in existing and req.omni_reference_mode == "video_only":
+                legacy_excluded.add("omni_reference_mode")
+                request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded)))
             if ("character_reference_sha256" not in existing
                     and req.character_reference_base64 is None
                     and req.character_reference_mime_type == "image/png"):
@@ -1101,6 +1116,7 @@ async def generate_video(
         "prompt": prompt,
         "custom_prompt": req.custom_prompt if req.provider == "omni" else "",
         "use_custom_prompt_only": req.use_custom_prompt_only,
+        "omni_reference_mode": req.omni_reference_mode,
         "estimated_cost_usd": estimated_cost,
         "guide_sha256": guide_hash,
         "scene_revision_sha256": scene_revision_sha256,
@@ -1290,6 +1306,7 @@ async def generate_video(
                 character_reference_base64=req.character_reference_base64,
                 character_reference_mime_type=req.character_reference_mime_type,
                 render_quality=req.render_quality,
+                omni_reference_mode=req.omni_reference_mode,
             )
             async def retain_omni_interaction(value: str):
                 nonlocal interaction_id

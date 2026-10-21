@@ -51,6 +51,22 @@ type WaitForTileDisplayReadyOptions = Omit<
   'acceptVisibleCoverageAtTimeout'
 >;
 
+/** TilesFadePlugin enables displayActiveTiles, so visibleTiles also contains
+ * active off-camera siblings. Those are not drawn or recursively refined.
+ * Ignore explicit non-drawable metadata; absent metadata remains conservative. */
+function drawnTiles(tiles: SceneTileRenderer): unknown[] {
+  return Array.from(tiles.visibleTiles ?? []).filter(value => {
+    const tile = value as {
+      traversal?: { inFrustum?: boolean };
+      internal?: { hasRenderableContent?: boolean };
+      engineData?: { scene?: { visible?: boolean } };
+    } | null;
+    return tile?.traversal?.inFrustum !== false
+      && tile?.internal?.hasRenderableContent !== false
+      && tile?.engineData?.scene?.visible !== false;
+  });
+}
+
 /**
  * Wait for the current Google tile stream to remain idle for a short window.
  *
@@ -163,8 +179,8 @@ export function waitForVisibleTileCoverage(
     };
 
     const sample = () => {
-      const visibleTiles = tiles.visibleTiles;
-      if (!visibleTiles || visibleTiles.size < minimumVisibleTiles) {
+      const visibleTiles = drawnTiles(tiles);
+      if (visibleTiles.length < minimumVisibleTiles) {
         lastSignature = null;
         stableSince = Date.now();
         return;
@@ -182,7 +198,7 @@ export function waitForVisibleTileCoverage(
     sample();
     pollTimer = window.setInterval(sample, Math.max(16, pollMs));
     timeoutTimer = window.setTimeout(() => {
-      const visibleCount = tiles.visibleTiles?.size ?? 0;
+      const visibleCount = drawnTiles(tiles).length;
       finish(acceptVisibleCoverageAtTimeout && visibleCount >= minimumVisibleTiles);
     }, Math.max(0, timeoutMs));
   });

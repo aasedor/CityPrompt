@@ -262,6 +262,7 @@ interface PreparedVideoRequest {
   duration_seconds: 4 | 8;
   character_reference_base64?: string;
   character_reference_mime_type?: 'image/png' | 'image/jpeg';
+  omni_reference_mode?: 'video_only' | 'architecture_references';
   custom_prompt: string;
   use_custom_prompt_only: boolean;
   scene_brief: string;
@@ -384,6 +385,7 @@ export function VideoGeneratePanel({
   const [videoGenerationEnabled, setVideoGenerationEnabled] = useState(false);
   const [provider, setProvider] = useState<VideoProvider>('omni');
   const [seedanceReferenceMode, setSeedanceReferenceMode] = useState<SeedanceReferenceMode>('preview_plus_keyframes');
+  const [useSceneReferences, setUseSceneReferences] = useState(false);
   const [internalEnhanceQuality, setInternalEnhanceQuality] = useState<InternalEnhanceQuality>('fast');
   const [renderQuality, setRenderQuality] = useState<VideoRenderQuality>('draft');
   const [controlMode, setControlMode] = useState<VideoControlMode>('preview_video');
@@ -441,8 +443,8 @@ export function VideoGeneratePanel({
   const { routeControls, setRouteControls, isPreparingControls, prepare: prepareRoutePreview } = useVideoRoutePreview(routeCaptureSignature);
 
   const currentSignature = useMemo(
-    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeCaptureSignature}:${sceneContract.signature}:${currentSceneRevisionSignature}:${supportsPeopleEdit ? customPrompt.trim() : ''}:${supportsPeopleEdit && useCustomPromptOnly}:${supportsPeopleEdit ? characterReference?.revision ?? 0 : 0}`,
-    [controlMode, currentSceneRevisionSignature, customPrompt, useCustomPromptOnly, internalEnhanceQuality, motion, provider, renderQuality, routeCaptureSignature, sceneContract.signature, seedanceReferenceMode, supportsPeopleEdit, characterReference],
+    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeCaptureSignature}:${sceneContract.signature}:${currentSceneRevisionSignature}:${supportsPeopleEdit ? customPrompt.trim() : ''}:${supportsPeopleEdit && useCustomPromptOnly}:${supportsPeopleEdit ? characterReference?.revision ?? 0 : 0}:${supportsPeopleEdit && useSceneReferences}`,
+    [controlMode, currentSceneRevisionSignature, customPrompt, useCustomPromptOnly, internalEnhanceQuality, motion, provider, renderQuality, routeCaptureSignature, sceneContract.signature, seedanceReferenceMode, supportsPeopleEdit, characterReference, useSceneReferences],
   );
   const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
   const providerUsage = pilot.provider_usage[provider];
@@ -623,8 +625,14 @@ export function VideoGeneratePanel({
     // Keep architectural source admission on finished enhancement; a free
     // exact-camera preview may show a sparse park without inventing detail.
     if (motion !== 'path_follow' && allRouteKeyframes.length) await assertNearFieldVideoSourceQuality(allRouteKeyframes);
+    const architectureReferences = supportsPeopleEdit && useSceneReferences;
+    if (architectureReferences && !allRouteKeyframes.length) {
+      throw new Error('Capture a route preview before using scene reference frames.');
+    }
     const routeKeyframes = controlMode === 'multi_keyframe'
       ? allRouteKeyframes
+      : architectureReferences
+        ? allRouteKeyframes.length === 1 ? allRouteKeyframes : [allRouteKeyframes[0], allRouteKeyframes[allRouteKeyframes.length - 1]]
       : provider === 'seedance_mini' && seedanceReferenceMode === 'preview_plus_keyframes' && allRouteKeyframes.length >= 3
         ? [
             allRouteKeyframes[0],
@@ -641,6 +649,7 @@ export function VideoGeneratePanel({
       guide_frame_base64: routeKeyframes[0] ?? sourceFrame,
       control_mode: controlMode,
       route_keyframes_base64: routeKeyframes,
+      ...(architectureReferences ? { omni_reference_mode: 'architecture_references' as const } : {}),
       ...(controlMode === 'preview_video' && activeControls ? {
         preview_video_base64: activeControls.previewVideoBase64,
         preview_video_mime_type: activeControls.previewVideoMimeType,
@@ -697,7 +706,7 @@ export function VideoGeneratePanel({
         residual_landscape_claim: residualLandscapeClaim,
       } : {}),
     };
-  }, [prepareLocalPreview, community3DClaims, customPrompt, useCustomPromptOnly, detailsRevision, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones, durationSeconds, supportsPeopleEdit, characterReference]);
+  }, [prepareLocalPreview, community3DClaims, customPrompt, useCustomPromptOnly, detailsRevision, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones, durationSeconds, supportsPeopleEdit, characterReference, useSceneReferences]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);
@@ -1165,6 +1174,14 @@ export function VideoGeneratePanel({
                       </label>
                       <p className="mt-1 text-[10px] text-[#151515]/60">People walk forward from their saved position at 1.2 m/s during capture. Leave a clear path; normal editing stays still.</p>
                     </fieldset>
+                    <label className="mb-1 flex items-center gap-2 text-xs font-bold text-[#151515]">
+                      <input type="checkbox" checked={useSceneReferences}
+                        disabled={isGenerating || isPreflighting}
+                        onChange={event => { setUseSceneReferences(event.target.checked); setPreflight(null); setPrepared(null); }}
+                        className="accent-[#96ba10]" />
+                      Use scene reference frames
+                    </label>
+                    <p className="mb-3 text-[10px] text-[#151515]/60">Adds up to two captured views to guide buildings and skyline. The source video still controls camera and motion. Fidelity remains approximate.</p>
                     <label htmlFor="video-character-reference" className="mb-1 block text-xs font-bold text-[#151515]">Character appearance reference (optional)</label>
                     <input id="video-character-reference" type="file" accept="image/png,image/jpeg" disabled={isGenerating || isPreflighting || referenceLoading}
                       onChange={event => void selectCharacterReference(event.target.files?.[0])}
@@ -1189,7 +1206,7 @@ export function VideoGeneratePanel({
                         className="accent-[#96ba10]" />
                       Use only my prompt
                     </label>
-                    <p className="mt-1 text-[10px] text-[#151515]/60">Sends the source video and your exact text, without added appearance or preservation instructions. Design details may change.</p>
+                    <p className="mt-1 text-[10px] text-[#151515]/60">Uses your text with reference-role instructions when references are enabled. Design details may change.</p>
                   </div>
                 )}
               </div>

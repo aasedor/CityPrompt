@@ -54,6 +54,56 @@ async def generate(f, request=None):
 
 
 @pytest.mark.asyncio
+async def test_architectural_edit_persists_reference_bytes_and_replay_cannot_swap_them(pilot):
+    f = pilot
+    frames = [_jpeg_data_url(), _jpeg_data_url(width=1920, height=1080)]
+    request = f.request.model_copy(update={
+        "control_mode": "preview_video", "omni_reference_mode": "architecture_references",
+        "route_keyframes_base64": frames,
+        "preview_video_base64": base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode(),
+        "preview_video_mime_type": "video/webm",
+    })
+    result = await generate(f, request)
+    assert result.attempt.status == "complete"
+    payload = f.video_provider.await_args.kwargs["payload"]
+    assert [part["type"] for part in payload["input"]] == ["video", "image", "image", "text"]
+    for index, frame in enumerate(frames, start=1):
+        expected = frame.split(",", 1)[-1]
+        assert payload["input"][index]["data"] == expected
+        assert base64.b64decode(expected) in f.saved.values()
+    async with f.sessions() as db:
+        project = await db.get(Project, f.project.id)
+        entry = project.metadata_["video_pilot_attempts"][0]
+        assert entry["omni_reference_mode"] == "architecture_references"
+        assert entry["reference_image_count"] == 2
+    replay = await generate(f, request)
+    assert replay.attempt.id == result.attempt.id
+    with pytest.raises(HTTPException) as error:
+        await generate(f, request.model_copy(update={"route_keyframes_base64": frames[::-1]}))
+    assert error.value.status_code == 409
+    f.video_provider.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_pre_reference_mode_receipt_remains_replayable_without_a_new_paid_call(pilot):
+    f = pilot
+    original = await generate(f)
+    async with f.sessions() as db:
+        project = await db.get(Project, f.project.id)
+        meta = dict(project.metadata_)
+        entry = dict(meta["video_pilot_attempts"][0])
+        entry.pop("omni_reference_mode")
+        entry["request_sha256"] = video.revision_sha256(
+            f.request.model_dump(mode="json", exclude={"omni_reference_mode"}))
+        meta["video_pilot_attempts"] = [entry]
+        project.metadata_ = meta
+        await db.commit()
+    replay = await generate(f)
+    assert replay.attempt.id == original.attempt.id
+    f.video_provider.assert_awaited_once()
+
+
+@pytest.mark.asyncio
 async def test_concurrent_duplicate_video_submits_pay_once_and_recover_after_new_session(pilot):
     f = pilot
     results = await asyncio.gather(*(generate(f) for _ in range(8)))

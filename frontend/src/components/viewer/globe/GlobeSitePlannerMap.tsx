@@ -3283,8 +3283,7 @@ export function GlobeSitePlannerMap({
     const waitForRouteContext = () => request.renderQuality === 'high'
       ? waitForVisibleTileCoverage(tileRenderer, {
           stableMs: 750,
-          timeoutMs: 4_000,
-          acceptVisibleCoverageAtTimeout: true,
+          timeoutMs: 45_000,
         })
       : waitForCurrentTiles();
 

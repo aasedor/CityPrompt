@@ -25,7 +25,7 @@ describe('Video Render quality profiles', () => {
     expect(profile.renderHeight).toBe(1440);
     expect(profile.outputWidth).toBe(1920);
     expect(profile.outputHeight).toBe(1080);
-    expect(profile.tileErrorTarget).toBe(4);
+    expect(profile.tileErrorTarget).toBe(2);
     expect(warmup).toHaveLength(192);
     expect(warmup[0]).toEqual({ index: 0, progress: 0, settleTiles: true });
     expect(warmup[warmup.length - 1]).toEqual({ index: 191, progress: 1, settleTiles: true });

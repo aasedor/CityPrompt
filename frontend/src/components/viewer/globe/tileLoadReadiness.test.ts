@@ -101,6 +101,39 @@ describe('waitForVisibleTileCoverage', () => {
     vi.useRealTimers();
   });
 
+  it('ignores hidden active siblings and metadata nodes when checking drawn detail', async () => {
+    vi.useFakeTimers();
+    const tiles = new FakeTiles();
+    tiles.errorTarget = 2;
+    const drawn = { traversal: { error: 1, inFrustum: true }, children: [],
+      internal: { hasRenderableContent: true }, engineData: { scene: { visible: true } } };
+    const offscreen = { traversal: { error: 100, inFrustum: false }, children: [{}],
+      internal: { hasRenderableContent: true }, engineData: { scene: { visible: false } } };
+    tiles.visibleTiles = new Set([drawn, offscreen, {
+      traversal: { error: 100, inFrustum: true }, children: [{}],
+      internal: { hasRenderableContent: false },
+    }]);
+    const result = waitForVisibleTileCoverage(tiles, {
+      stableMs: 200, pollMs: 50, timeoutMs: 800,
+    });
+    await vi.advanceTimersByTimeAsync(150);
+    // TilesFadePlugin exposes active siblings; offscreen churn is not a frame change.
+    tiles.visibleTiles.delete(offscreen);
+    tiles.visibleTiles.add({ ...offscreen });
+    await vi.advanceTimersByTimeAsync(50);
+    await expect(result).resolves.toBe(true);
+  });
+
+  it('does not treat hidden active tiles as visible coverage', async () => {
+    vi.useFakeTimers();
+    const tiles = new FakeTiles();
+    tiles.visibleTiles.add({ traversal: { error: 1, inFrustum: false }, children: [],
+      engineData: { scene: { visible: false } } });
+    const result = waitForVisibleTileCoverage(tiles, { stableMs: 200, timeoutMs: 500 });
+    await vi.advanceTimersByTimeAsync(500);
+    await expect(result).resolves.toBe(false);
+  });
+
   it('accepts stable visible context even while background refinement is loading', async () => {
     vi.useFakeTimers();
     const tiles = new FakeTiles();

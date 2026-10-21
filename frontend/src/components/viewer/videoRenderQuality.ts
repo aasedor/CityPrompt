@@ -48,10 +48,10 @@ export const VIDEO_RENDER_QUALITY_PROFILES: Readonly<Record<VideoRenderQuality, 
     renderWidth: 2560,
     renderHeight: 1440,
     bitrate: 18_000_000,
-    // At the 2560px supersampled backing resolution a 4px tile error is
-    // sub-pixel after the 1080p downsample, while avoiding an endless Google
-    // photogrammetry refinement stream that can never enter the idle window.
-    tileErrorTarget: 4,
+    // Capture-only refinement: nominal 2px error at 1440p becomes 1.5px at
+    // 1080p. Supersampling alone does not make a 4px tile error sub-pixel.
+    // Navigation retains its own lighter detail and memory settings.
+    tileErrorTarget: 2,
     tileHoldMilliseconds: 120_000,
     warmupFrameCount: CITY_PROMPT_VIDEO_DURATION_SECONDS * CITY_PROMPT_VIDEO_FPS,
     // Settle Google Tiles at 24 evenly spaced views during the 192-frame dry

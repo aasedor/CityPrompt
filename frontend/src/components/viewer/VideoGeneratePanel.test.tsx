@@ -14,6 +14,36 @@ vi.mock('@/features/community3d/community3d', () => ({
 }));
 
 describe('free route preview when finished generation is unavailable', () => {
+  it('binds scene reference frames to the free check and invalidates it when disabled', async () => {
+    api.capabilities.mockResolvedValue({ video_enabled: true });
+    api.list.mockResolvedValue({ attempts: [], attempts_used: 0, attempts_remaining: 2, max_attempts: 2 });
+    api.preflight.mockResolvedValue({ ready: true, width: 1280, height: 720,
+      model: 'gemini-omni-1.1-flash', scene_revision_sha256: 'b'.repeat(64) });
+    const captureRouteControls = vi.fn().mockResolvedValue({
+      keyframesBase64: ['start-frame', 'middle-frame', 'end-frame'],
+      previewVideoBase64: 'data:video/mp4;base64,Z3VpZGU=', previewVideoMimeType: 'video/mp4',
+    });
+    render(<VideoGeneratePanel projectId="trial" canvas={null} buildings={[]} siteZones={[]}
+      captureAerialFrame={async () => 'data:image/jpeg;base64,ZnJhbWU='}
+      captureRouteControls={captureRouteControls} onClose={vi.fn()} />);
+    await screen.findByAltText('Captured City Prompt scene');
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Use scene reference frames' }));
+    const route = screen.getByLabelText('Add drone path vertex');
+    vi.spyOn(route, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 100, height: 100 } as DOMRect);
+    fireEvent.click(route, { clientX: 40, clientY: 65 });
+    fireEvent.click(route, { clientX: 60, clientY: 65 });
+    fireEvent.click(screen.getByRole('button', { name: 'Run free check' }));
+    await waitFor(() => expect(api.preflight).toHaveBeenCalledOnce());
+    expect(api.preflight).toHaveBeenCalledWith(expect.objectContaining({
+      omni_reference_mode: 'architecture_references',
+      route_keyframes_base64: ['data:image/jpeg;base64,ZnJhbWU=', 'data:image/jpeg;base64,ZnJhbWU='],
+      preview_video_base64: 'data:video/mp4;base64,Z3VpZGU=',
+    }));
+    await waitFor(() => expect(screen.getByRole('button', { name: /Generate trial/ })).toBeEnabled());
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Use scene reference frames' }));
+    expect(screen.getByRole('button', { name: /Generate trial/ })).toBeDisabled();
+    expect(api.generate).not.toHaveBeenCalled();
+  });
   it('captures four seconds with opt-in people motion and invalidates the free check when duration changes', async () => {
     api.capabilities.mockResolvedValue({ video_enabled: true });
     api.list.mockResolvedValue({ attempts: [], attempts_used: 0, attempts_remaining: 2, max_attempts: 2 });
