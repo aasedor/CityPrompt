@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-toronto-streetcar-street-clay-v006",
+  "glb": "clay-toronto-streetcar-street-clay-v006.glb",
+  "glb_bytes": 2975140,
+  "glb_sha256": "a1086fe7d38f5f899aaec4251b3f0f9a2be6b1618b9125adcadefca60d48da41",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "condo_balconies.png": 92,
+    "corner_storefront.png": 92,
+    "east_sidewalk.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "intersection_crossing.png": 92,
+    "left_side.png": 92,
+    "pantograph_wire.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_skylights.png": 92,
+    "span_wire_pole.png": 92,
+    "streetcar_nose.png": 92,
+    "top.png": 92,
+    "track_slab.png": 92,
+    "victorian_arches.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-toronto-streetcar-street-clay-v006-renders-and-glb.zip",
+  "zip_bytes": 36756474
+}
