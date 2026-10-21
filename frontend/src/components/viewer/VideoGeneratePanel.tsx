@@ -129,6 +129,8 @@ export interface VideoAttempt {
   control_mode?: VideoControlMode;
   camera_motion: string;
   duration_seconds: number;
+  output_media?: { width: number; height: number; fps: number; frame_count: number; duration_seconds: number } | null;
+  media_warning?: string | null;
   created_at: string;
   video_url?: string | null;
   guide_image_url?: string | null;
@@ -1072,7 +1074,7 @@ export function VideoGeneratePanel({
                   <p className="text-xs font-black leading-relaxed text-[#151515]/80">{sceneContract.summary}</p>
                   <p className="mt-1 text-[10px] font-semibold leading-relaxed text-[#151515]/55">
                     {provider === 'omni' && controlMode === 'preview_video'
-                      ? 'The source video guides the camera and design. Omni 1.1 improves the visual finish; optional scene details can add people or activity. Review every result for design changes.'
+                      ? 'The source guides the camera and layout. Omni targets live-action architectural footage with lifelike materials, lighting and planting. Optional scene details can add activity. Review every result for design changes.'
                       : 'The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, lighting, Google context buildings, and open-space program. City Prompt adds no moving traffic or pedestrians; any baked Google context remains part of the captured surroundings.'}
                   </p>
                   <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
@@ -1104,7 +1106,7 @@ export function VideoGeneratePanel({
                       onChange={event => { setCustomPrompt(event.target.value); setPreflight(null); setPrepared(null); }}
                       placeholder="A woman walks her dog along the existing sidewalk."
                       className="w-full resize-y rounded-xl border border-[#151515]/25 bg-white p-3 text-sm text-[#151515] focus:border-[#151515] focus:ring-2 focus:ring-[#c9ff3d] disabled:opacity-50" />
-                    <p className="mt-1 text-[10px] text-[#151515]/60">Keep it to one clear scene detail. The buildings, parks, streets and camera route should stay the same.</p>
+                    <p className="mt-1 text-[10px] text-[#151515]/60">Keep it to one clear appearance or activity detail. The building massing, street layout and camera route should stay recognizable.</p>
                   </div>
                 )}
               </div>
@@ -1145,9 +1147,10 @@ export function VideoGeneratePanel({
                     : provider === 'internal_enhance'
                       ? `${internalEnhanceQuality === 'gpu_detail' ? 'Run GPU pass' : 'Run fast pass'} · unlimited local runs · est. $0.00`
                       : providerCanRun
-                        ? `Generate trial ${providerUsage.attempts_used + 1} of ${providerUsage.max_attempts} · est. $${(preflight?.estimated_cost_usd ?? (provider === 'seedance_mini' ? 1.98 : 0.8)).toFixed(2)}`
+                        ? `Generate trial ${providerUsage.attempts_used + 1} of ${providerUsage.max_attempts} · est. $${(preflight?.estimated_cost_usd ?? (provider === 'seedance_mini' ? 1.98 : 1.0136)).toFixed(2)}`
                         : `${providerUsage.max_attempts}-trial cap reached`}
                 </button>
+                {provider === 'omni' && controlMode === 'preview_video' && <p className="mt-2 text-[10px] text-white/60">Output estimate allows 10 seconds at the published 720p rate; input charges are extra. This is not a billing cap. Actual duration and dimensions are checked after generation.</p>}
                 {isGenerating && <p className="mt-2 text-center text-[10px] text-white/45">{provider === 'internal_enhance' ? 'Keep this panel open while the local frame restoration finishes.' : 'Keep this panel open. High-quality video can take several minutes.'}</p>}
               </div>
 
@@ -1172,11 +1175,12 @@ export function VideoGeneratePanel({
                         )}
                       </div>
                       <p className="text-[9px] text-[#151515]/45">
-                        {selectedAttempt.duration_seconds} sec · {selectedAttempt.mode === 'saved_render_animation' ? 'Finished render source' : selectedAttempt.render_quality === 'high' ? '1080p HQ source' : '720p source'} · {providerOrigin(selectedAttempt.provider)} · saved to project
+                        {selectedAttempt.output_media?.duration_seconds ?? selectedAttempt.duration_seconds} sec · {selectedAttempt.output_media ? `${selectedAttempt.output_media.width}×${selectedAttempt.output_media.height} output` : selectedAttempt.mode === 'saved_render_animation' ? 'Finished render source' : selectedAttempt.render_quality === 'high' ? '1080p HQ source' : '720p source'} · {providerOrigin(selectedAttempt.provider)} · saved to project
                         {selectedAttempt.scene_revision_sha256
                           ? ` · scene ${selectedAttempt.scene_revision_sha256.slice(0, 10)}`
                           : ''}
                       </p>
+                      {selectedAttempt.media_warning && <p className="mt-1 text-[10px] font-semibold text-[#8d2c23]">{selectedAttempt.media_warning}</p>}
                     </div>
                     {selectedAttempt.provider === 'omni' && !selectedAttempt.is_benchmark && (
                       <button type="button" onClick={() => void setBenchmark(selectedAttempt)} disabled={isBenchmarking} className="inline-flex items-center gap-1 rounded-full border-2 border-[#151515] px-2.5 py-2 text-[9px] font-black uppercase hover:bg-[#f7f2e8] disabled:opacity-40" aria-label="Set as Omni benchmark" title="Set as Omni benchmark">

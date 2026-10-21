@@ -86,6 +86,8 @@ describe('free route preview when finished generation is unavailable', () => {
       captureRouteControls={captureRouteControls} onClose={vi.fn()} />);
     await screen.findByAltText('Captured City Prompt scene');
     const prompt = screen.getByRole('textbox', { name: 'Custom prompt (optional)' });
+    expect(screen.getByText(/targets live-action architectural footage/)).toBeVisible();
+    expect(screen.getByText(/Output estimate allows 10 seconds/)).toBeVisible();
     expect(prompt).toHaveAttribute('maxLength', '600');
     fireEvent.change(prompt, { target: { value: 'A woman walks her dog on the sidewalk.' } });
     const route = screen.getByLabelText('Add drone path vertex');
@@ -100,6 +102,21 @@ describe('free route preview when finished generation is unavailable', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: /Generate trial/ })).toBeEnabled());
     fireEvent.change(prompt, { target: { value: 'Warm evening light.' } });
     expect(screen.getByRole('button', { name: /Generate trial/ })).toBeDisabled();
+    expect(api.generate).not.toHaveBeenCalled();
+  });
+
+  it('shows measured output facts and warnings when a saved result differs from the request', async () => {
+    api.capabilities.mockResolvedValue({ video_enabled: true });
+    api.list.mockResolvedValue({ attempts_used: 1, attempts_remaining: 0, max_attempts: 1,
+      attempts: [{ id: 'measured', status: 'complete', provider: 'omni', camera_motion: 'bicycle_ride',
+        style: 'source_fidelity', request_id: 'measured-request', created_at: '2026-10-21T00:00:00Z',
+        duration_seconds: 8, video_url: '/measured.mp4', estimated_cost_usd: 1.0136,
+        output_media: { width: 1280, height: 720, fps: 24, frame_count: 245, duration_seconds: 10.2 },
+        media_warning: 'The provider changed the clip duration.' }] });
+    render(<VideoGeneratePanel projectId="trial" canvas={null} buildings={[]} siteZones={[]}
+      captureAerialFrame={async () => 'data:image/jpeg;base64,ZnJhbWU='} onClose={vi.fn()} />);
+    expect(await screen.findByText(/10.2 sec · 1280×720 output/)).toBeVisible();
+    expect(screen.getByText('The provider changed the clip duration.')).toBeVisible();
     expect(api.generate).not.toHaveBeenCalled();
   });
 });

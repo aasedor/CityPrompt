@@ -62,6 +62,7 @@ class OmniVideoResult:
     interaction_id: str
     video_bytes: bytes
     mime_type: str
+    usage: dict | None = None
 
 
 @dataclass(frozen=True)
@@ -170,16 +171,18 @@ def build_cinematic_prompt(
         # keep the full scene contract in attempt metadata, not in this prompt.
         detail = custom_prompt.strip()
         return " ".join([
-            f"Finish this {duration_seconds}-second architectural source video with realistic materials, "
-            "natural daylight and contact shadows. Keep it one continuous shot.",
+            "Transform this rough 3D source into convincing live-action architectural footage. "
+            "Use the source as a camera and layout guide, not a target rendering style. Keep it one continuous shot.",
             "Match the source video's camera path, framing, speed and timing exactly.",
             f"Requested scene detail: {detail}" if detail else
             "Keep existing people and traffic as shown; do not add new actors.",
-            "Preserve all buildings, footprints, heights, roofs, windows, parks, streets and surrounding "
-            "context in their original positions. Do not enclose open façades or add connections between buildings. "
+            "Preserve building footprints, heights, roof forms, window openings, parks and street layout. "
+            "Replace viewport shading with physically plausible materials, natural daylight, contact shadows, "
+            "reflections, surface texture and lifelike planting detail. "
+            "Do not enclose open façades or add connections between buildings. "
             "Keep objects grounded. Any requested people or animals "
             "must move naturally on existing paths without changing the design.",
-            "Keep everything else the same. No scene cuts, captions, logos or visible route graphics.",
+            "No scene cuts, captions, logos or visible route graphics.",
         ])
     prompt_scene_brief = scene_brief.strip()
     motion_prompt = MOTION_PROMPTS[camera_motion]
@@ -511,6 +514,7 @@ def parse_omni_video(payload: Mapping[str, Any]) -> OmniVideoResult:
         interaction_id=str(payload.get("id") or ""),
         video_bytes=video_bytes,
         mime_type=output.mime_type,
+        usage=dict(payload["usage"]) if isinstance(payload.get("usage"), Mapping) else None,
     )
 
 
@@ -593,4 +597,5 @@ async def request_omni_video_once(
             interaction_id=str(interaction_payload.get("id") or ""),
             video_bytes=download.content,
             mime_type=download.headers.get("content-type", output.mime_type).split(";", 1)[0],
+            usage=dict(interaction_payload["usage"]) if isinstance(interaction_payload.get("usage"), Mapping) else None,
         )

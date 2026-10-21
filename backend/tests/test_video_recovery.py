@@ -30,6 +30,9 @@ async def pilot(isolated, monkeypatch):
     monkeypatch.setattr(video, "request_omni_video_once", provider)
     monkeypatch.setattr(video, "request_seedance_video_once", provider)
     monkeypatch.setattr(video, "score_video_fidelity", lambda **_: SimpleNamespace(metadata=lambda: {"fidelity_status": "drift", "fidelity_score": 0.1}))
+    monkeypatch.setattr(video, "inspect_video_media", lambda *_: {
+        "width": 1280, "height": 720, "fps": 24.0, "frame_count": 192,
+        "duration_seconds": 8.0, "duration_basis": "decoded_frames/fps"})
     saved = {}
     async def upload(key, value, _mime):
         saved[key] = value
@@ -231,7 +234,50 @@ async def test_custom_video_detail_reaches_preflight_provider_and_saved_history_
     sent = f.video_provider.call_args.kwargs["payload"]
     assert sent["input"][-1]["text"] == check.prompt_preview
     assert sent["response_format"]["resolution"] == "1080p"
+    assert result.attempt.output_media["frame_count"] == 192
+    assert result.attempt.source_media["duration_seconds"] == 8.0
+    assert check.estimated_cost_usd == pytest.approx(1.0136)
     await generate(f, request)
+    f.video_provider.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_invalid_omni_recording_is_refused_without_admission_or_paid_call(pilot, monkeypatch):
+    f = pilot
+    monkeypatch.setattr(video, "inspect_video_media", lambda *_: {"width": 1280,
+        "height": 720, "fps": 24.0, "frame_count": 48, "duration_seconds": 2.0})
+    preview = "data:video/webm;base64," + base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode()
+    request = f.request.model_copy(update={"control_mode": "preview_video",
+        "preview_video_base64": preview, "preview_video_mime_type": "video/webm"})
+    with pytest.raises(HTTPException, match="route recording"):
+        await generate(f, request)
+    f.video_provider.assert_not_awaited()
+    async with f.sessions() as db:
+        project = await db.get(Project, f.project.id)
+        assert not project.metadata_[TRIAL_KEY]["video_requests"]
+
+
+@pytest.mark.asyncio
+async def test_output_check_failure_keeps_paid_pixels_and_never_resubmits(pilot, monkeypatch):
+    f = pilot
+    monkeypatch.setattr(video, "inspect_video_media", lambda *_: (_ for _ in ()).throw(ValueError("Cannot decode result")))
+    result = await generate(f)
+    assert result.attempt.status == "complete"
+    assert result.attempt.video_url
+    assert "Cannot decode result" in result.attempt.media_warning
+    assert (await generate(f)).attempt.id == result.attempt.id
+    f.video_provider.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_saved_preview_replay_does_not_depend_on_new_codec_checks(pilot, monkeypatch):
+    f = pilot
+    preview = "data:video/webm;base64," + base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode()
+    request = f.request.model_copy(update={"control_mode": "preview_video",
+        "preview_video_base64": preview, "preview_video_mime_type": "video/webm"})
+    original = await generate(f, request)
+    monkeypatch.setattr(video, "inspect_video_media", lambda *_: (_ for _ in ()).throw(ValueError("Codec unavailable")))
+    assert (await generate(f, request)).attempt.id == original.attempt.id
     f.video_provider.assert_awaited_once()
 
 

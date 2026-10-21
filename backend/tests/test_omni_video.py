@@ -65,7 +65,7 @@ async def test_uri_delivery_waits_for_saved_media_without_resubmitting(monkeypat
         nonlocal metadata_reads
         calls.append((request.method, str(request.url)))
         if request.method == "POST":
-            return httpx.Response(200, json={"id": "interaction-one", "output_video": {
+            return httpx.Response(200, json={"id": "interaction-one", "usage": {"total_output_tokens": 46336}, "output_video": {
                 "type": "video", "uri": "https://generativelanguage.googleapis.com/v1beta/files/one",
                 "mime_type": "video/mp4"}})
         if request.url.path == "/v1beta/files/one":
@@ -79,6 +79,7 @@ async def test_uri_delivery_waits_for_saved_media_without_resubmitting(monkeypat
                                          on_interaction=retain)
     retain.assert_awaited_once_with("interaction-one")
     assert result.video_bytes == b"saved-mp4"
+    assert result.usage == {"total_output_tokens": 46336}
     assert [method for method, _ in calls].count("POST") == 1
     assert metadata_reads == 2
 
@@ -94,8 +95,11 @@ def test_omni_video_finish_is_concise_and_keeps_custom_detail_separate():
     assert "INTERNAL SCENE CONTRACT" not in prompt
     assert prompt.count("A woman walks her dog") == 1
     assert "camera" in prompt and "timing" in prompt
-    assert "footprints" in prompt and "windows" in prompt
-    assert "Keep everything else the same" in prompt
+    assert "footprints" in prompt and "window openings" in prompt
+    assert "live-action architectural footage" in prompt
+    assert "source as a camera and layout guide" in prompt
+    assert "physically plausible materials" in prompt
+    assert "Keep everything else the same" not in prompt
     assert "clear glazing" not in prompt
     assert "Do not enclose open façades or add connections between buildings" in prompt
 
@@ -352,9 +356,9 @@ def test_omni_payload_supports_deterministic_preview_video_edit():
     )
 
     assert "Match the source video's camera path, framing, speed and timing exactly" in prompt
-    assert "realistic materials, natural daylight and contact shadows" in prompt
+    assert "physically plausible materials, natural daylight, contact shadows" in prompt
     assert "do not add new actors" in prompt
-    assert "Keep everything else the same" in prompt
+    assert "live-action architectural footage" in prompt
     assert payload["generation_config"] == {"video_config": {"task": "edit"}}
     assert [item["type"] for item in payload["input"]] == ["video", "text"]
     assert payload["response_format"] == {"type": "video"}
@@ -390,7 +394,7 @@ def test_detail_flythrough_is_low_and_source_route_locked():
 
     # The deterministic source already encodes altitude and obstacle clearance.
     assert "Match the source video's camera path, framing, speed and timing exactly" in prompt
-    assert "Preserve all buildings, footprints, heights, roofs, windows, parks, streets" in prompt
+    assert "building footprints, heights, roof forms, window openings" in prompt
 
 
 def test_preview_prompt_preserves_camera_and_ground_contact_without_a_new_storyboard():

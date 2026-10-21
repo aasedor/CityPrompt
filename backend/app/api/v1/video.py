@@ -61,6 +61,7 @@ from app.services.scene_revision import compiled_scene_revision_sha256
 from app.services.render_provenance import revision_sha256
 from app.services.render_trial import TRIAL_KEY, reserve_trial_slot, check_trial_available
 from app.services.video_fidelity import FidelityStatus, score_video_fidelity
+from app.services.video_media import inspect_video_media, validate_omni_source_media
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -70,7 +71,7 @@ SEEDANCE_PILOT_MAX_PROVIDER_CALLS = 4
 INTERNAL_ENHANCE_MAX_RUNS: None = None
 VIDEO_CREDIT_COST = 50
 SEEDANCE_VIDEO_CREDIT_COST = 125
-ESTIMATED_OMNI_COST_PER_SECOND_USD = Decimal("0.10")
+ESTIMATED_OMNI_COST_PER_SECOND_USD = Decimal("0.10136")
 
 CameraMotion = Literal["path_follow", "street_walkby", "detail_flythrough", "bicycle_ride"]
 ControlMode = Literal["single_frame", "multi_keyframe", "preview_video"]
@@ -222,6 +223,10 @@ class VideoAttemptResponse(BaseModel):
     control_mode: ControlMode = "single_frame"
     camera_motion: str
     duration_seconds: int
+    source_media: dict | None = None
+    output_media: dict | None = None
+    media_warning: str | None = None
+    provider_usage: dict | None = None
     created_at: str
     video_url: str | None = None
     guide_image_url: str | None = None
@@ -713,6 +718,24 @@ def _preflight_values(req: VideoPilotRequest):
     return guide, keyframes, preview, geometry_checkpoints, prompt
 
 
+async def _inspect_omni_source(req, preview) -> dict | None:
+    if req.provider != "omni" or preview is None:
+        return None
+    try:
+        media = await asyncio.to_thread(inspect_video_media, preview.data, preview.mime_type)
+        validate_omni_source_media(media, expected_seconds=req.duration_seconds)
+        return media
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+
+
+def _omni_output_cost_estimate(req) -> float:
+    # Edits do not accept a requested output duration. Allow ten output seconds
+    # at the published 720p rate; input billing is additional, not a price cap.
+    seconds = 10 if req.control_mode == "preview_video" else req.duration_seconds
+    return float(ESTIMATED_OMNI_COST_PER_SECOND_USD * seconds)
+
+
 @router.post("/preflight", response_model=VideoPreflightResponse)
 async def preflight_video(
     req: VideoPilotRequest,
@@ -727,6 +750,7 @@ async def preflight_video(
     if req.provider == "seedance_mini" and not settings.fal_key:
         raise HTTPException(status_code=503, detail="FAL_KEY is not configured.")
     guide, keyframes, preview, geometry_checkpoints, prompt = _preflight_values(req)
+    await _inspect_omni_source(req, preview)
     if req.provider == "seedance_mini" and preview:
         runtime_error = seedance_runtime_error(preview.mime_type)
         if runtime_error:
@@ -760,7 +784,7 @@ async def preflight_video(
     elif req.provider == "internal_enhance":
         estimated_cost = 0.0
     else:
-        estimated_cost = float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
+        estimated_cost = _omni_output_cost_estimate(req)
     usage = _visible_usage(project, attempts, req.provider)
     return VideoPreflightResponse(
         ready=True,
@@ -945,6 +969,9 @@ async def generate_video(
                 ),
             )
 
+    # Existing paid receipts remain replayable even if codec support or source
+    # validation rules change. Only a new submission needs media admission.
+    source_media = await _inspect_omni_source(req, preview)
     scene_revision_sha256 = await _validate_video_scene_revision(req, db)
 
     usage = _provider_usage(attempts, req.provider)
@@ -997,7 +1024,7 @@ async def generate_video(
     elif req.provider == "internal_enhance":
         estimated_cost = 0.0
     else:
-        estimated_cost = float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
+        estimated_cost = _omni_output_cost_estimate(req)
     resource_updates = (
         await _project_internal_resources(db, req.project_id) if req.provider == "internal_enhance" else {}
     )
@@ -1015,6 +1042,7 @@ async def generate_video(
         "control_mode": req.control_mode,
         "camera_motion": req.camera_motion,
         "duration_seconds": req.duration_seconds,
+        "source_media": source_media,
         "created_at": _now(),
         "video_url": None,
         "guide_image_url": None,
@@ -1220,6 +1248,16 @@ async def generate_video(
         video_url = f"/api/v1/files/{video_key}"
         await _update_attempt(db, req.project_id, attempt_id, video_url=video_url,
                               interaction_id=interaction_id, size_bytes=len(result.video_bytes))
+        media_updates: dict = {"provider_usage": getattr(result, "usage", None)}
+        try:
+            media_updates["output_media"] = await asyncio.to_thread(
+                inspect_video_media, result.video_bytes, result.mime_type)
+            if abs(media_updates["output_media"]["duration_seconds"] - req.duration_seconds) > .1:
+                media_updates["media_warning"] = "The provider changed the clip duration. Compare the complete result with the source."
+        except Exception as media_exc:
+            # Pixels are already saved. A local checker failure is never a
+            # reason to lose paid output or submit another generation.
+            media_updates["media_warning"] = f"Saved video inspection unavailable: {str(media_exc)[:200]}"
         fidelity_updates: dict = {}
         if preview or len(keyframes) >= 2:
             try:
@@ -1251,6 +1289,7 @@ async def generate_video(
             size_bytes=len(result.video_bytes),
             **enhancement_updates,
             **fidelity_updates,
+            **media_updates,
         )
         db.add(
             ApiUsageLog(
@@ -1263,6 +1302,8 @@ async def generate_video(
                 metadata_={
                     "project_id": str(req.project_id),
                     "duration_seconds": req.duration_seconds,
+                    "output_media": media_updates.get("output_media"),
+                    "provider_usage": media_updates.get("provider_usage"),
                     "model": model,
                     "control_mode": req.control_mode,
                     "seedance_reference_mode": req.seedance_reference_mode if req.provider == "seedance_mini" else None,
