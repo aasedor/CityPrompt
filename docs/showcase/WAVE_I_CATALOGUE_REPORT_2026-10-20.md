@@ -29,8 +29,8 @@ Nothing here is enrolled, published, runtime-integrated or keeper-approved. Each
 
 ## Results
 
-Four of the ten reached PASS_ZERO_P0_P1. The other six stopped with one to three P1s open and no
-P0.
+Five of the ten reached PASS_ZERO_P0_P1, one of them (the CBE headquarters) in a second pass the user
+reopened. The other five stopped with one to three P1s open and no P0.
 
 | model | catalogue archetype / variant | family | outcome | candidate | triangles | GLB bytes | candidate review P0 / P1 |
 |---|---|---|---|---|---|---|---|
@@ -38,10 +38,10 @@ P0.
 | Toronto bay-and-gable house | toronto_bay_and_gable_house / variant_0 | `tools/clay_toronto_bay_and_gable` | **PASS_ZERO_P0_P1** at v004 | v004 | 17,326 | 911,108 | 0 / 0 |
 | Old Montreal limestone commercial | old_montreal_limestone_commercial / variant_0 | `tools/clay_old_montreal_limestone_commercial` | **PASS_ZERO_P0_P1** at v004 | v004 | 66,776 | 3,423,736 | 0 / 0 |
 | Inglewood main street | inglewood_main_street / variant_0 | `tools/clay_inglewood_main_street` | **PASS_ZERO_P0_P1** at v004 | v004 | 36,632 | 1,910,720 | 0 / 0 |
-| Calgary Board of Education HQ | calgary_cbe_brutalist_hq / variant_0 | `tools/clay_calgary_cbe_brutalist_hq` | stopped: the facade-glazing finding survived two fixes | v002 | 35,750 | 1,752,132 | 0 / 1 |
+| Calgary Board of Education HQ | calgary_cbe_brutalist_hq / variant_0 | `tools/clay_calgary_cbe_brutalist_hq` | **PASS_ZERO_P0_P1** at v004 (second pass) | v004 | 35,078 | 1,717,448 | 0 / 0 |
 | Halifax Public Gardens | halifax_public_gardens / variant_0 | `tools/clay_halifax_public_gardens` | stopped: the bed-plant finding survived two fixes | v002 | 63,266 | 3,852,788 | 0 / 1 |
 | Prince's Island Park | calgary_princes_island / variant_0 | `tools/clay_princes_island_park` | stopped: the close-up planting finding survived two fixes | v003 | 141,252 | 4,045,264 | 0 / 1 |
-| Toronto streetcar street | toronto_streetcar_street / variant_0 | `tools/clay_toronto_streetcar_street` | stopped: v003 and v004 did not lower v002's count | v002 | 53,836 | 2,795,968 | 0 / 1 |
+| Toronto streetcar street | toronto_streetcar_street / variant_0 | `tools/clay_toronto_streetcar_street` | stopped: v003 and v004, then v005 and v006 in a second pass, did not lower v002's count | v002 | 53,836 | 2,795,968 | 0 / 1 |
 | Market square | market_square / variant_0 | `tools/clay_market_square` | stopped: the tier-band finding survived two fixes | v004 | 59,968 | 3,239,284 | 0 / 2 |
 | Vancouver Special | vancouver_special / variant_0 | `tools/clay_vancouver_special` | stopped: v002 and v003 did not lower v001's count | v001 | 32,456 | 1,865,808 | 0 / 3 |
 
@@ -51,33 +51,32 @@ closest.
 
 ### Trajectory (P0 / P1 per independent review)
 
-| model | v001 | v002 | v003 | v004 | v005 |
-|---|---|---|---|---|---|
-| road-diet street | 0 / 6 | 0 / 1 | **0 / 0** | | |
-| bay-and-gable | 0 / 6 | 0 / 2 | 0 / 2 | **0 / 0** | |
-| Old Montreal | 0 / 2 | 0 / 2 | 0 / 1 | **0 / 0** | |
-| Inglewood | 0 / 5 | 0 / 1 | 0 / 1 | **0 / 0** | |
-| CBE HQ | 0 / 3 | 0 / 1 | 0 / 1 | (stopped) | |
-| Halifax Public Gardens | 0 / 3 | 0 / 1 | 0 / 1 | (stopped) | |
-| Prince's Island Park | 0 / 5 | 0 / 2 | 0 / 1 | (stopped) | |
-| streetcar street | 0 / 4 | 0 / 1 | 0 / 2 | 0 / 1 | (stopped) |
-| market square | 1 / 3 | 0 / 3 | 0 / 3 | 0 / 2 | 0 / 4 |
-| Vancouver Special | 0 / 3 | 0 / 3 | 0 / 3 | (stopped) | |
+| model | v001 | v002 | v003 | v004 | v005 | v006 |
+|---|---|---|---|---|---|---|
+| road-diet street | 0 / 6 | 0 / 1 | **0 / 0** | | | |
+| bay-and-gable | 0 / 6 | 0 / 2 | 0 / 2 | **0 / 0** | | |
+| Old Montreal | 0 / 2 | 0 / 2 | 0 / 1 | **0 / 0** | | |
+| Inglewood | 0 / 5 | 0 / 1 | 0 / 1 | **0 / 0** | | |
+| CBE HQ | 0 / 3 | 0 / 1 | 0 / 1 | **0 / 0** (second pass) | | |
+| Halifax Public Gardens | 0 / 3 | 0 / 1 | 0 / 1 | (stopped) | | |
+| Prince's Island Park | 0 / 5 | 0 / 2 | 0 / 1 | (stopped) | | |
+| streetcar street | 0 / 4 | 0 / 1 | 0 / 2 | 0 / 1 | 0 / 1 (second pass) | 0 / 1 (stopped) |
+| market square | 1 / 3 | 0 / 3 | 0 / 3 | 0 / 2 | 0 / 4 | |
+| Vancouver Special | 0 / 3 | 0 / 3 | 0 / 3 | (stopped) | | |
 
 ## Open findings on the candidates that did not pass
 
 Each family README lists the blockers of its last review, and the full reviews are in
 `evidence/vNNN/independent-review.md`.
 
-### Calgary Board of Education HQ v002 (0 / 1)
+### Calgary Board of Education HQ: passed at v004 in a second pass
 
-- **Open P1:** the glass sits too small and too deep in the coffers, so the east face reads blank at
-  oblique angles.
-- **What happened in v003:** v003 enlarged the glass to about 0.68 of the bay, which matches the
-  source head-on. But the front_corner camera looks almost along the east face, so the reviewer
-  still saw no panes there.
-- **Likely fix:** re-aim front_corner to the source oblique's angle. The geometry is now close to the
-  source; the camera is not.
+- **Before:** v002 (0 / 1) was the candidate. Its glass sat too small and deep, so the east face read blank at
+  oblique angles. v003 enlarged the glass to match the source head-on, but its front_corner camera looked almost
+  along the east face.
+- **Second pass:** the user reopened the family. v004 keeps the v003 geometry and re-aims front, front_corner and
+  a new west_side camera to the locked views' angles.
+- **Result:** PASS_ZERO_P0_P1 (P2 = 6). At the source oblique's angle every east-face cell shows a dark pane.
 
 ### Halifax Public Gardens v002 (0 / 1)
 
@@ -99,10 +98,16 @@ Each family README lists the blockers of its last review, and the full reviews a
   - v003 fixed the rake and dome but opened a dark seam at the cab-to-roof junction and showed
     open-sided balconies;
   - v004 fixed both, but its review found black slots in the coping of the west Romanesque gable.
+- **Second pass, reopened by the user:**
+  - v005 rebuilt the gable coping as buried solid prisms and fixed it. Its review found a black stripe in the
+    top view from a 1 m open gap between the west glass slab and the brick condominium wing.
+  - v006 closed that gap, and the gaps around the slab's base and the west context block. Its review found a
+    dark slot from a 0.6 m gap behind the east corner block.
 
-  Neither beat v002.
-- **Likely next step:** v004 is the most complete model, so a v005 that only closes the gable
-  coping would probably pass.
+  Both scored 0 / 1, so the stopping rule ended the family with v002 as the candidate.
+- **Caveat for the user:** the v006 reviewer found that both the slab stripe and the east-block slot are already
+  in v002's top render; neither was recorded in its review. Like for like, v006 is the most complete model. Closing
+  the 0.6 m gap is a small fix if the user wants a v007 or prefers v006 as the candidate.
 
 ### Market square v004 (0 / 2)
 
@@ -142,8 +147,12 @@ Each family README lists the blockers of its last review, and the full reviews a
 
   `docs/HIGH_QUALITY_3D_PARK_MEMORY.md` should record this.
 - **Cameras decide findings.** The CBE east face and the Vancouver Special side wall were both
-  geometry that matched the source but was judged through a camera that did not. Matching the
-  front and front_corner cameras to the locked views before v001 saves a version.
+  geometry that matched the source but was judged through a camera that did not. The CBE passed in
+  its second pass with only its cameras re-aimed. Matching the front and front_corner cameras to the
+  locked views before v001 saves a version.
+- **Open air gaps between volumes read as black stripes from above.** A 0.6 to 1 m gap between two
+  blocks is in deep shadow in a nadir view. Butt or overlap neighbouring volumes, and check every
+  version's top view for pixels below about 15% luminance; earlier reviews can miss these.
 - **Black slots move rather than disappear.** Inglewood, the Vancouver Special and the streetcar each
   fixed one black slot and revealed another:
   - a pier base short of its neighbour;

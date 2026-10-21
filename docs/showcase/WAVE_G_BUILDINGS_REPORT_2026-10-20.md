@@ -24,8 +24,8 @@ Nothing here is enrolled, published, runtime-integrated or keeper-approved. Each
 
 ## Results
 
-Four of the eleven reached PASS_ZERO_P0_P1. The other seven stopped with one to five P1s open and
-no P0.
+Five of the eleven reached PASS_ZERO_P0_P1, one of them (the sandstone block) in a second pass the user
+reopened. The other six stopped with one to five P1s open and no P0.
 
 | model | catalogue archetype / variant | family | outcome | candidate | triangles | GLB bytes | candidate review P0 / P1 |
 |---|---|---|---|---|---|---|---|
@@ -35,7 +35,7 @@ no P0.
 | Calgary RiverWalk (street option) | bow_river_pathway / bow_river_pathway_v0 | `tools/clay_calgary_riverwalk` | **PASS_ZERO_P0_P1** at v003 | v003 | 59,876 | 3,766,080 | 0 / 0 |
 | Georgian terrace house with a slate mansard | georgian_terrace_house / georgian-terrace-house-early | `tools/clay_georgian_terrace_house` | stopped: v004 and v005 did not lower v003's count | v003 | 10,360 | 569,680 | 0 / 1 |
 | Regency stucco terrace | regency_stucco_terrace / regency-stucco-terrace-nash | `tools/clay_regency_stucco_terrace` | stopped: v005 and v006 did not lower v004's count | v004 | 70,818 | 3,738,368 | 0 / 1 |
-| Calgary sandstone heritage block | calgary_sandstone_heritage / sandstone_romanesque_revival | `tools/clay_calgary_sandstone_heritage` | stopped: v004 and v005 did not lower v003's count | v003 | 82,120 | 3,910,356 | 0 / 1 |
+| Calgary sandstone heritage block | calgary_sandstone_heritage / sandstone_romanesque_revival | `tools/clay_calgary_sandstone_heritage` | **PASS_ZERO_P0_P1** at v006 (second pass) | v006 | 86,876 | 4,190,248 | 0 / 0 |
 | Amsterdam twin-gabled canal warehouse | amsterdam_canal_warehouse / canal_warehouse_spice | `tools/clay_amsterdam_canal_warehouse` | stopped: the valley finding survived two fixes | v003 | 23,762 | 1,151,356 | 0 / 3 |
 | Stepped terraced plaza | stepped_terraced_plaza / stepped_terraced_plaza_v0 | `tools/clay_stepped_terraced_plaza` | stopped: the bougainvillea finding survived two fixes | v003 | 44,282 | 2,734,476 | 0 / 3 |
 | Amsterdam step-gable canal house | amsterdam_step_gable_house / step_gable_gothic | `tools/clay_step_gable_canal_house` | stopped: the brick-siding finding survived two fixes | v003 | 26,826 | 1,465,984 | 0 / 5 |
@@ -54,7 +54,7 @@ candidate is under the 4 MiB ordinary-blob cap.
 | RiverWalk | 1 / 8 | 0 / 2 | **0 / 0** | | | | |
 | Georgian terrace | 1 / 10 | 0 / 2 | 0 / 1 | 0 / 1 | 0 / 1 | (stopped) | |
 | Regency terrace | 1 / 7 | 0 / 2 | 0 / 4 | 0 / 1 | 0 / 2 | 0 / 2 | (stopped) |
-| sandstone block | 0 / 10 | 1 / 2 | 0 / 1 | 0 / 2 | 0 / 1 | (stopped) | |
+| sandstone block | 0 / 10 | 1 / 2 | 0 / 1 | 0 / 2 | 0 / 1 | **0 / 0** (second pass) | |
 | canal warehouse | 0 / 9 | 0 / 4 | 0 / 3 | (stopped) | | | |
 | stepped plaza | 3 / 9 | 0 / 5 | 0 / 3 | (stopped) | | | |
 | step-gable house | 2 / 12 | 0 / 8 | 0 / 5 | (stopped) | | | |
@@ -81,16 +81,16 @@ Each family README lists the blockers of its last review, and the full reviews a
   found that the plan is about 14% too shallow north–south, which makes the court a square well rather
   than the source's long slot. They also found that the new court dormers render as blank pale panels.
 
-### Calgary sandstone heritage block v003 (0 / 1)
+### Calgary sandstone heritage block: passed at v006 in a second pass
 
-- **Open P1:** the clock tower barely clears the main roofs. Its cornice sits below the corner
-  pavilions' finials.
-- **What happened after v003:** v004 and v005 raised the tower. Their reviews then flagged the south
-  entrance: all three sources put it at the centre of the south front, under the big turret-flanked
-  gable, but the model follows the brief and puts it in the south-west pavilion.
-- **Question for the user:** should the entrance move to the centre of the south front, as the
-  sources show? The brief's wording disagrees with the pixels, so this was left for your decision
-  rather than changed.
+- **Before:** the family stopped at v005 with v003 (0 / 1) as the candidate. v004 and v005 raised the clock
+  tower, and their reviews then flagged the south entrance: all three sources put it at the centre of the south
+  front, but the brief put it in the south-west pavilion.
+- **Second pass:** the user ruled that the entrance follows the sources and reopened the family. v006 moves the
+  portal porch, balcony and giant arcade to the centre of the south front under a larger coped gable between
+  round turrets, and restores the south-west pavilion to the standard treatment.
+- **Result:** PASS_ZERO_P0_P1 (P2 = 10). The largest remaining P2 is a simplified central entrance block. The
+  GLB, at 4,190,248 bytes, is 4 KB under the cap.
 
 ### Amsterdam canal warehouse v003 (0 / 3)
 
