@@ -1,0 +1,270 @@
+{
+  "candidate": "clay-planting-kit-showcase-clay-v002",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 475,
+    "vertices": 423672,
+    "polygons": 587044,
+    "triangles": 587044,
+    "path": "clay-planting-kit-showcase-clay-v002-authoring.blend",
+    "bytes": 11005264,
+    "sha256": "d916db3510cdc102133449ad4c67ea6137e872c04db9da64973ae1a3ecad2ea9"
+  },
+  "runtime": {
+    "path": "clay-planting-kit-showcase-clay-v002.glb",
+    "bytes": 3931904,
+    "sha256": "549b3af8eb44cbcbe59e7a6a1ece2b093f0490433b2ffe7febe9e26eb14dc7b9",
+    "meshes": 98,
+    "materials": 43,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 427,
+    "vertices": 423672,
+    "polygons": 587044,
+    "triangles": 587044
+  },
+  "original_bounds_m": [
+    [
+      -14.5,
+      -10.5,
+      0.0
+    ],
+    [
+      26.5,
+      11.5,
+      3.4316020011901855
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -14.5,
+      -10.5,
+      0.0
+    ],
+    [
+      26.5,
+      11.5,
+      3.4316020011901855
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 41.0,
+    "depth": 22.0,
+    "height": 3.1
+  },
+  "native_dimensions_m": {
+    "width": 41.0,
+    "depth": 22.0,
+    "height": 3.4316020011901855
+  },
+  "native_bottom_center_m": [
+    6.0,
+    0.5,
+    0.0
+  ],
+  "source_components_by_role": {
+    "grass": 1,
+    "gravel": 1,
+    "granite": 9,
+    "paving": 1,
+    "stucco": 1,
+    "coping": 1,
+    "door": 1,
+    "dark_pane": 1,
+    "rail_steel": 1,
+    "pk_leaf": 4,
+    "pk_leaf2": 2,
+    "pk_leaf_dark": 6,
+    "pk_leaf_light": 1,
+    "pk_leaf_silver": 2,
+    "pk_leaf_red": 2,
+    "pk_groundcover": 6,
+    "pk_bark": 1,
+    "pk_white2": 1,
+    "pk_cream": 1,
+    "pk_pink": 2,
+    "pk_pink2": 2,
+    "pk_magenta": 8,
+    "pk_bract2": 4,
+    "pk_purple": 2,
+    "pk_purple2": 2,
+    "pk_red": 2,
+    "pk_red2": 2,
+    "pk_mulch": 9
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front_corner.png",
+    "renders/top.png",
+    "renders/eye_flower_heads.png",
+    "renders/eye_specimen_close.png",
+    "renders/eye_perennial_drift.png",
+    "renders/eye_arching_grass.png",
+    "renders/eye_shrub_mass.png",
+    "renders/eye_lavender_rail.png",
+    "renders/eye_groundcover.png",
+    "renders/eye_bedding_band.png",
+    "renders/eye_carpet_bed.png",
+    "renders/eye_perennial_bed.png",
+    "renders/eye_b8_rear.png",
+    "renders/eye_climber_wall.png",
+    "renders/eye_cascade_pots.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Planting kit showcase: kerbed beds and a plaza corner on a lawn at grade zero",
+      "box": [
+        -14.5,
+        26.5,
+        -10.5,
+        11.5
+      ]
+    }
+  ],
+  "opening_sections": [],
+  "authoring_modules": {
+    "ground": [
+      "ground grass",
+      "ground gravel",
+      "ground paving"
+    ],
+    "beds": [
+      "B1 flower heads kerb",
+      "B1 flower heads soil",
+      "B2 perennial drift kerb",
+      "B2 perennial drift soil",
+      "B3 arching grass kerb",
+      "B3 arching grass soil",
+      "B4 shrub mass kerb",
+      "B4 shrub mass soil",
+      "B5 groundcover kerb",
+      "B5 groundcover soil",
+      "B6 bedding bands kerb",
+      "B6 bedding bands soil",
+      "B7 Halifax carpet bed kerb",
+      "B7 Halifax carpet bed soil",
+      "B8 perennial bed kerb",
+      "B8 perennial bed soil",
+      "B9 green bridge strip kerb",
+      "B9 green bridge strip soil"
+    ],
+    "planting": [
+      "B1 underlay",
+      "drift underlay 5",
+      "drift underlay 8",
+      "B4 underlay",
+      "B5 carpet",
+      "B5 carpet grain pk_leaf_light",
+      "B5 carpet grain pk_leaf2",
+      "B5 carpet dots pk_pink",
+      "B5 carpet dots pk_pink2",
+      "B6 0 pk_leaf_silver",
+      "B6 1 pk_leaf_red",
+      "B6 1 pk_leaf_red dots pk_red",
+      "B6 1 pk_leaf_red dots pk_red2",
+      "B6 2 pk_leaf_dark",
+      "B6 2 pk_leaf_dark dots pk_purple",
+      "B6 2 pk_leaf_dark dots pk_purple2",
+      "B6 3 pk_leaf2",
+      "B6 3 pk_leaf2 dots pk_white2",
+      "B6 3 pk_leaf2 dots pk_cream",
+      "B7 0 pk_leaf_silver",
+      "B7 1 pk_leaf_red",
+      "B7 1 pk_leaf_red dots pk_red",
+      "B7 1 pk_leaf_red dots pk_red2",
+      "B7 2 pk_leaf_dark",
+      "B7 2 pk_leaf_dark dots pk_purple",
+      "B7 2 pk_leaf_dark dots pk_purple2",
+      "B7 3 pk_leaf",
+      "B7 3 pk_leaf dots pk_pink",
+      "B7 3 pk_leaf dots pk_pink2",
+      "B8 carpet",
+      "drift underlay 14",
+      "B10 bougainvillea canopy",
+      "B10 bougainvillea bract masses",
+      "B10 bougainvillea mass bracts pk_magenta",
+      "B10 bougainvillea mass bracts pk_bract2",
+      "B10 bougainvillea leaves",
+      "B10 bougainvillea bracts pk_magenta",
+      "B10 bougainvillea bracts pk_bract2",
+      "B10 bougainvillea fringe",
+      "B10 bougainvillea fringe bracts",
+      "B10 bougainvillea trunks",
+      "B10 cascade canopy",
+      "B10 cascade bract masses",
+      "B10 cascade mass bracts pk_magenta",
+      "B10 cascade mass bracts pk_bract2",
+      "B10 cascade leaves",
+      "B10 cascade bracts pk_magenta",
+      "B10 cascade bracts pk_bract2",
+      "B10 cascade fringe",
+      "B10 cascade fringe bracts",
+      {
+        "planting_kit": true,
+        "instancing": true,
+        "plants": 159,
+        "instance_nodes": 399,
+        "prototypes": {
+          "hydrangea1": 2,
+          "coneflower1": 41,
+          "rudbeckia1": 2,
+          "panicle1": 10,
+          "poppy1": 4,
+          "salvia1": 13,
+          "yarrow1": 5,
+          "lavender1": 18,
+          "yarrow2": 2,
+          "salvia2": 12,
+          "fountain_grass1": 10,
+          "blue_grass1": 4,
+          "shrub_sh16": 2,
+          "shrub_sh12a": 2,
+          "shrub_sh08a": 2,
+          "shrub_sh08b": 1,
+          "shrub_sh12b": 1,
+          "shrub_sh04": 2,
+          "begonia_cushion": 2,
+          "ageratum_cushion": 2,
+          "alyssum_cushion": 2,
+          "hydrangea2": 1,
+          "feather_reed2": 6,
+          "feather_reed1": 7,
+          "climber_pot": 1,
+          "geranium_pot": 3,
+          "box_pot": 2
+        },
+        "clearance_violations": 0,
+        "rejected": 6
+      }
+    ],
+    "rail": [
+      "rail rail_steel"
+    ],
+    "plaza": [
+      "plaza stucco",
+      "plaza coping",
+      "plaza door",
+      "plaza dark_pane"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-21T05:04:35.121826+00:00",
+  "delivery_and_render_seconds": 593.1331144420001,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

@@ -1,0 +1,342 @@
+{
+  "candidate": "clay-planting-kit-showcase-clay-v002",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-planting-kit-showcase",
+  "variant_id": "clay-planting-kit-showcase-v1",
+  "representation_kind": "architectural_clay",
+  "state": "kit_showcase_not_a_catalogue_candidate",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "none: shared planting kit showcase (no catalogue archetype, no locked sources)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 41.0,
+      "depth": 22.0,
+      "height": 3.1
+    },
+    "observed_storeys": 0,
+    "storey_programme": "kit showcase: nine kerbed planting beds and a plaza wall corner on a lawn",
+    "plan": "41 x 22 m lawn, two gravel walks, nine beds with granite kerbs, a paved plaza corner with a 3 m wall and a terrace wall",
+    "facade": "none",
+    "levels_m": [
+      0.0,
+      0.04,
+      0.055,
+      0.065,
+      0.07,
+      0.11,
+      3.08
+    ],
+    "inferred": "every bed is a kit demonstration, not a source reading"
+  },
+  "roof_contract": {
+    "type": "none",
+    "datum_m": 0.0,
+    "crowns_m": []
+  },
+  "identity_contract": {
+    "owner": "shared planting kit showcase: flower heads, perennial drift, arching grasses, shrub masses, groundcover, clipped bedding bands and cushions, Victorian carpet bed, naturalistic perennial bed, lavender and rail clearance, wall-trained climber, parapet cascade, pot plants"
+  },
+  "material_contract": {
+    "profile": "semantic clay planting palette (PK_PALETTE)",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 0,
+    "ground": "review of planting at eye level"
+  },
+  "contact_contract": [
+    "Lawn on grade zero",
+    "Kerbs and mulch on the lawn",
+    "Every plant base sunk 2.5 cm into the mulch",
+    "Plaza paving, walls and pots on the lawn; climber canopy edges dive 2.5 cm into the masonry"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front_corner",
+      "location": [
+        -11.0,
+        -20.5,
+        13.5
+      ],
+      "target": [
+        6.0,
+        0.0,
+        0.0
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        6.0,
+        0.5,
+        60.0
+      ],
+      "target": [
+        6.0,
+        0.501,
+        0.0
+      ],
+      "ortho_scale": 42.0,
+      "whole": false
+    },
+    {
+      "name": "eye_flower_heads",
+      "location": [
+        -9.7,
+        -9.9,
+        1.6
+      ],
+      "target": [
+        -10.5,
+        -6.6,
+        0.35
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "eye_specimen_close",
+      "location": [
+        -9.3,
+        -8.75,
+        1.45
+      ],
+      "target": [
+        -10.4,
+        -6.7,
+        0.55
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "eye_perennial_drift",
+      "location": [
+        -3.3,
+        -9.8,
+        1.6
+      ],
+      "target": [
+        -4.0,
+        -6.6,
+        0.35
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "eye_arching_grass",
+      "location": [
+        2.9,
+        -9.6,
+        1.6
+      ],
+      "target": [
+        2.2,
+        -6.6,
+        0.35
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "eye_shrub_mass",
+      "location": [
+        9.9,
+        -10.3,
+        1.6
+      ],
+      "target": [
+        9.0,
+        -6.6,
+        0.5
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "eye_lavender_rail",
+      "location": [
+        20.7,
+        -10.2,
+        1.6
+      ],
+      "target": [
+        20.0,
+        -6.3,
+        0.45
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "eye_groundcover",
+      "location": [
+        -9.9,
+        -1.9,
+        1.6
+      ],
+      "target": [
+        -10.5,
+        1.0,
+        0.08
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "eye_bedding_band",
+      "location": [
+        -3.4,
+        -1.9,
+        1.6
+      ],
+      "target": [
+        -4.0,
+        1.0,
+        0.08
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "eye_carpet_bed",
+      "location": [
+        0.6,
+        -1.7,
+        1.6
+      ],
+      "target": [
+        4.8,
+        1.3,
+        0.15
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "eye_perennial_bed",
+      "location": [
+        -2.8,
+        3.9,
+        1.6
+      ],
+      "target": [
+        0.5,
+        8.0,
+        0.4
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "eye_b8_rear",
+      "location": [
+        2.0,
+        11.2,
+        1.6
+      ],
+      "target": [
+        0.3,
+        8.6,
+        0.35
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "eye_climber_wall",
+      "location": [
+        20.0,
+        1.6,
+        1.6
+      ],
+      "target": [
+        20.0,
+        7.6,
+        1.9
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "eye_cascade_pots",
+      "location": [
+        23.9,
+        2.6,
+        1.5
+      ],
+      "target": [
+        24.2,
+        5.8,
+        0.65
+      ],
+      "lens": 28,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front_corner",
+    "top",
+    "eye_flower_heads",
+    "eye_specimen_close",
+    "eye_perennial_drift",
+    "eye_arching_grass",
+    "eye_shrub_mass",
+    "eye_lavender_rail",
+    "eye_groundcover",
+    "eye_bedding_band",
+    "eye_carpet_bed",
+    "eye_perennial_bed",
+    "eye_b8_rear",
+    "eye_climber_wall",
+    "eye_cascade_pots"
+  ],
+  "source_contract": {
+    "sources": [],
+    "kit_showcase": true,
+    "note": "no locked sources: kit showcase, not a catalogue candidate"
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_plantkit.py",
+        "sha256": "90d13e6657e0838cf63998660e8b61894d47d97e9028034ea987abbd17b6eca1"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "0e8293dc55317ddb33994664f436146df68c910b9ca7b2c96897981e7e311f53"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-21T04:54:38.923083+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
