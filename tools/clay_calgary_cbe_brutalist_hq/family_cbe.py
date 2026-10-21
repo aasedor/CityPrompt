@@ -61,15 +61,15 @@ def manifest(version):
         ('ground_entrance', (4.0, Y0 - 13.0, 2.0), (4.0, Y0 + INS, 2.6), 35),
         ('arcade_soffit', (X1 - .6, Y0 + 2.45, 1.7), (X0 + 6.0, Y0 + 1.2, SOFF - 1.0), 30),
         ('sculpture_plaza', (SCULPT[0] + 9.0, SCULPT[1] - 9.0, 3.0), (SCULPT[0] - 2.0, SCULPT[1] + 2.0, 3.0), 30),
-        ('east_side', (X1 + 48.0, 0.0, 12.0), (X1, 0.0, 12.0), 40),
+        ('west_side', (X0 - 44.0, 0.0, 34.0), (X0, 0.0, 15.0), 35),     # west coherence view over the brick neighbour (right_side already covers the east face)
         ('roof_penthouse', (-6.0, -34.0, 34.0), (0.0, 2.5, PAR + 1.0), 35),
         ('interior', (2.0, Y0 + 9.0, FLOORS[0] + 1.7), (2.0, Y0, SILL[0] + 1.0), 35),
         ('rear_north', (0.0, Y1 + 46.0, 22.0), (0.0, Y1, 10.0), 40)])
     for c in cams:                       # the locked front and oblique look from the south
         if c['name'] == 'front':
-            c.update(location=(36.0, -47.0, 2.2), target=(2.0, Y0 + 3.0, 12.0), lens=26, whole=False)
+            c.update(location=(60.2, -76.9, 2.0), target=(4.8, -9.0, 11.6), lens=68, whole=False)   # fitted to the locked front's corners, penthouse and plinth (rms about 14 px): long lens, near-parallel verticals
         elif c['name'] == 'front_corner':
-            c.update(location=(34.0, -78.0, 58.0), target=(1.0, -2.0, 8.0), lens=35, whole=False)   # the locked oblique, high in the south
+            c.update(location=(42.7, -52.0, 46.7), target=(1.0, -4.0, 7.0), lens=35, whole=False)   # the locked oblique: about 41 deg east of south, about 32 deg down, south:east face widths about 1.3
         elif c['name'] == 'aerial':
             c.update(location=(52.0, -64.0, 72.0), target=(0.0, -4.0, 6.0), lens=35, whole=False)
         elif c['name'] == 'left_side':
