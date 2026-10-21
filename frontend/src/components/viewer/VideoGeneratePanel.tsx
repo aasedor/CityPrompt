@@ -260,6 +260,7 @@ interface PreparedVideoRequest {
   camera_motion: MotionId;
   duration_seconds: 8;
   custom_prompt: string;
+  use_custom_prompt_only: boolean;
   scene_brief: string;
   details_revision?: number;
   community_3d_claims: Array<{
@@ -384,6 +385,7 @@ export function VideoGeneratePanel({
   const [renderQuality, setRenderQuality] = useState<VideoRenderQuality>('draft');
   const [controlMode, setControlMode] = useState<VideoControlMode>('preview_video');
   const [customPrompt, setCustomPrompt] = useState('');
+  const [useCustomPromptOnly, setUseCustomPromptOnly] = useState(false);
   const [sourceCaptureVersion, setSourceCaptureVersion] = useState(0);
   const [previewProgress, setPreviewProgress] = useState('Preparing your route…');
   const [pilot, setPilot] = useState<VideoPilotState>({
@@ -428,11 +430,11 @@ export function VideoGeneratePanel({
   const { routeControls, setRouteControls, isPreparingControls, prepare: prepareRoutePreview } = useVideoRoutePreview(routeCaptureSignature);
 
   const currentSignature = useMemo(
-    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}:${provider === 'omni' && controlMode === 'preview_video' ? customPrompt.trim() : ''}`,
-    [controlMode, currentSceneRevisionSignature, customPrompt, internalEnhanceQuality, motion, provider, renderQuality, routePoints, sceneContract.signature, seedanceReferenceMode],
+    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}:${provider === 'omni' && controlMode === 'preview_video' ? customPrompt.trim() : ''}:${provider === 'omni' && controlMode === 'preview_video' && useCustomPromptOnly}`,
+    [controlMode, currentSceneRevisionSignature, customPrompt, useCustomPromptOnly, internalEnhanceQuality, motion, provider, renderQuality, routePoints, sceneContract.signature, seedanceReferenceMode],
   );
   const preparedSignature = prepared
-    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}:${prepared.details_revision ?? ""}:${prepared.custom_prompt}`
+    ? `${prepared.provider}:${prepared.seedance_reference_mode}:${prepared.internal_enhance_quality}:${prepared.render_quality}:${prepared.control_mode}:${prepared.camera_motion}:${routeSignature(prepared.route_points)}:${prepared.scene_brief.startsWith(sceneContract.text) ? sceneContract.signature : 'stale'}:${sceneClaimsSignature(prepared.community_3d_claims, prepared.residual_landscape_claim)}:${prepared.details_revision ?? ""}:${prepared.custom_prompt}:${prepared.use_custom_prompt_only}`
     : null;
   const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
   const providerUsage = pilot.provider_usage[provider];
@@ -643,6 +645,7 @@ export function VideoGeneratePanel({
       camera_motion: motion,
       duration_seconds: 8,
       custom_prompt: provider === 'omni' && controlMode === 'preview_video' ? customPrompt.trim() : '',
+      use_custom_prompt_only: provider === 'omni' && controlMode === 'preview_video' && useCustomPromptOnly,
       scene_brief: sceneBrief,
       community_3d_claims: community3DClaims,
       details_revision: detailsRevision,
@@ -650,7 +653,7 @@ export function VideoGeneratePanel({
         residual_landscape_claim: residualLandscapeClaim,
       } : {}),
     };
-  }, [prepareLocalPreview, community3DClaims, customPrompt, detailsRevision, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones]);
+  }, [prepareLocalPreview, community3DClaims, customPrompt, useCustomPromptOnly, detailsRevision, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);
@@ -1107,6 +1110,14 @@ export function VideoGeneratePanel({
                       placeholder="A woman walks her dog along the existing sidewalk."
                       className="w-full resize-y rounded-xl border border-[#151515]/25 bg-white p-3 text-sm text-[#151515] focus:border-[#151515] focus:ring-2 focus:ring-[#c9ff3d] disabled:opacity-50" />
                     <p className="mt-1 text-[10px] text-[#151515]/60">Keep it to one clear appearance or activity detail. The building massing, street layout and camera route should stay recognizable.</p>
+                    <label className="mt-2 flex items-center gap-2 text-xs font-bold text-[#151515]">
+                      <input type="checkbox" checked={useCustomPromptOnly}
+                        disabled={isGenerating || isPreflighting || !customPrompt.trim()}
+                        onChange={event => { setUseCustomPromptOnly(event.target.checked); setPreflight(null); setPrepared(null); }}
+                        className="accent-[#96ba10]" />
+                      Use only my prompt
+                    </label>
+                    <p className="mt-1 text-[10px] text-[#151515]/60">Sends the source video and your exact text, without added appearance or preservation instructions. Design details may change.</p>
                   </div>
                 )}
               </div>

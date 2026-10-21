@@ -100,6 +100,14 @@ describe('free route preview when finished generation is unavailable', () => {
       custom_prompt: 'A woman walks her dog on the sidewalk.', duration_seconds: 8,
     }));
     await waitFor(() => expect(screen.getByRole('button', { name: /Generate trial/ })).toBeEnabled());
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Use only my prompt' }));
+    expect(screen.getByRole('button', { name: /Generate trial/ })).toBeDisabled();
+    fireEvent.click(screen.getByRole('button', { name: 'Run free check' }));
+    await waitFor(() => expect(api.preflight).toHaveBeenCalledTimes(2));
+    expect(api.preflight).toHaveBeenLastCalledWith(expect.objectContaining({
+      use_custom_prompt_only: true, custom_prompt: 'A woman walks her dog on the sidewalk.',
+    }));
+    await waitFor(() => expect(screen.getByRole('button', { name: /Generate trial/ })).toBeEnabled());
     fireEvent.change(prompt, { target: { value: 'Warm evening light.' } });
     expect(screen.getByRole('button', { name: /Generate trial/ })).toBeDisabled();
     expect(api.generate).not.toHaveBeenCalled();

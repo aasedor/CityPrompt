@@ -163,8 +163,15 @@ def build_cinematic_prompt(
     keyframe_count: int = 1,
     provider: str = "omni",
     custom_prompt: str = "",
+    use_custom_prompt_only: bool = False,
 ) -> str:
     """Build the shared preflight/generation prompt for the selected control mode."""
+    if use_custom_prompt_only:
+        if provider != "omni" or control_mode != "preview_video":
+            raise ValueError("Custom-prompt-only mode requires Omni preview video.")
+        if not custom_prompt.strip():
+            raise ValueError("Custom-prompt-only mode requires a non-empty prompt.")
+        return custom_prompt.strip()
     if provider == "omni" and control_mode == "preview_video":
         # Google recommends short edits, rather than a competing storyboard.
         # The source video already contains the inventory and camera motion;

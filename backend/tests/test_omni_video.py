@@ -104,6 +104,19 @@ def test_omni_video_finish_is_concise_and_keeps_custom_detail_separate():
     assert "Do not enclose open façades or add connections between buildings" in prompt
 
 
+def test_omni_preview_can_use_exact_custom_prompt_without_hidden_directions():
+    direction = "Make this a hyper-realistic movie scene with people walking on the sidewalks."
+    values = dict(route_points=[{"x": .4, "y": .6}, {"x": .6, "y": .4}],
+                  camera_motion="bicycle_ride", scene_brief="INTERNAL CONTRACT " * 100,
+                  duration_seconds=8, control_mode="preview_video", provider="omni",
+                  custom_prompt=direction, use_custom_prompt_only=True)
+    assert build_cinematic_prompt(**values) == direction
+    with pytest.raises(ValueError, match="non-empty"):
+        build_cinematic_prompt(**(values | {"custom_prompt": "  "}))
+    with pytest.raises(ValueError, match="Omni.*preview"):
+        build_cinematic_prompt(**(values | {"control_mode": "single_frame"}))
+
+
 def test_omni_video_request_accepts_bounded_optional_scene_details():
     values = dict(project_id=uuid.uuid4(), guide_frame_base64=_jpeg_data_url(),
                   route_points=[{"x": .4, "y": .6}, {"x": .6, "y": .4}])

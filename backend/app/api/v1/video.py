@@ -164,6 +164,7 @@ class VideoPilotRequest(BaseModel):
     camera_motion: CameraMotion = "path_follow"
     duration_seconds: Literal[8] = 8
     custom_prompt: str = Field(default="", max_length=600)
+    use_custom_prompt_only: bool = False
     scene_brief: str = Field(
         default=(
             "Preserve every authored building, open space, and surrounding context exactly as depicted in Image1."
@@ -234,6 +235,7 @@ class VideoAttemptResponse(BaseModel):
     interaction_id: str | None = None
     prompt: str | None = None
     custom_prompt: str = ""
+    use_custom_prompt_only: bool = False
     estimated_cost_usd: float
     fidelity_score: float | None = None
     fidelity_min_score: float | None = None
@@ -699,6 +701,8 @@ def _preflight_values(req: VideoPilotRequest):
             raise ValueError("The bounded Seedance pilot requires preview-video mode.")
         if req.provider == "internal_enhance" and req.control_mode != "preview_video":
             raise ValueError("Internal Enhance requires the deterministic preview-video mode.")
+        if req.use_custom_prompt_only and req.provider != "omni":
+            raise ValueError("Custom-prompt-only mode requires Omni preview video.")
         prompt = (
             build_internal_video_contract(req.scene_brief)
             if req.provider == "internal_enhance"
@@ -711,6 +715,7 @@ def _preflight_values(req: VideoPilotRequest):
                 keyframe_count=len(keyframes) if req.control_mode == "preview_video" else len(keyframes) or 1,
                 provider=req.provider,
                 custom_prompt=req.custom_prompt,
+                use_custom_prompt_only=req.use_custom_prompt_only,
             )
         )
     except (ValueError, KeyError) as exc:
@@ -949,10 +954,14 @@ async def generate_video(
     for existing in attempts:
         if existing.get("request_id") == str(req.request_id):
             request_hashes = {revision_sha256(req.model_dump(mode="json"))}
+            legacy_excluded: set[str] = set()
+            if "use_custom_prompt_only" not in existing and not req.use_custom_prompt_only:
+                legacy_excluded.add("use_custom_prompt_only")
+                request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded)))
             # Requests saved before the optional scene direction existed hashed
             # the same body without that field. Preserve their exact replay.
             if "custom_prompt" not in existing and req.custom_prompt == "":
-                request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude={"custom_prompt"})))
+                request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded | {"custom_prompt"})))
             if existing.get("request_sha256") and (
                 existing["request_sha256"] not in request_hashes
                 or existing.get("requested_by") != str(user.id)
@@ -1050,6 +1059,7 @@ async def generate_video(
         "interaction_id": None,
         "prompt": prompt,
         "custom_prompt": req.custom_prompt if req.provider == "omni" else "",
+        "use_custom_prompt_only": req.use_custom_prompt_only,
         "estimated_cost_usd": estimated_cost,
         "guide_sha256": guide_hash,
         "scene_revision_sha256": scene_revision_sha256,

@@ -80,8 +80,9 @@ async def test_legacy_request_replays_without_new_prompt_or_provider_call(pilot)
         project = await db.get(Project, f.project.id)
         meta = dict(project.metadata_)
         entry = dict(meta["video_pilot_attempts"][0])
-        legacy_body = f.request.model_dump(mode="json", exclude={"custom_prompt"})
+        legacy_body = f.request.model_dump(mode="json", exclude={"custom_prompt", "use_custom_prompt_only"})
         entry.pop("custom_prompt", None)
+        entry.pop("use_custom_prompt_only", None)
         entry["request_sha256"] = video.revision_sha256(legacy_body)
         meta["video_pilot_attempts"] = [entry]
         project.metadata_ = meta
@@ -222,7 +223,8 @@ async def test_custom_video_detail_reaches_preflight_provider_and_saved_history_
     direction = "A woman walks her dog on the existing sidewalk."
     preview = "data:video/webm;base64," + base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode()
     request = f.request.model_copy(update={"control_mode": "preview_video",
-        "preview_video_base64": preview, "preview_video_mime_type": "video/webm", "custom_prompt": direction})
+        "preview_video_base64": preview, "preview_video_mime_type": "video/webm", "custom_prompt": direction,
+        "use_custom_prompt_only": True})
     async with f.sessions() as db:
         user = await db.get(User, f.user.id)
         check = await video.preflight_video(request, user, db)
@@ -230,9 +232,12 @@ async def test_custom_video_detail_reaches_preflight_provider_and_saved_history_
     result = await generate(f, request)
     assert result.attempt.custom_prompt == direction
     assert result.attempt.prompt == check.prompt_preview
+    assert result.attempt.prompt == direction
+    assert result.attempt.use_custom_prompt_only is True
     assert result.attempt.prompt.count(direction) == 1
     sent = f.video_provider.call_args.kwargs["payload"]
     assert sent["input"][-1]["text"] == check.prompt_preview
+    assert len(sent["input"]) == 2
     assert sent["response_format"]["resolution"] == "1080p"
     assert result.attempt.output_media["frame_count"] == 192
     assert result.attempt.source_media["duration_seconds"] == 8.0
