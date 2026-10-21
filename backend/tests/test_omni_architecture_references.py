@@ -8,6 +8,17 @@ from tests.test_people_video import _preview_request, _reference
 from tests.test_omni_video import _jpeg_data_url
 
 
+def test_explicit_skyline_edit_is_not_overridden_by_an_unconditional_size_lock():
+    edit = "Bring only the background skyline closer and taller. Keep the photographic foreground unchanged."
+    req = _preview_request(omni_reference_mode="architecture_references",
+        route_keyframes_base64=[_jpeg_data_url()], custom_prompt=edit, use_custom_prompt_only=True)
+    _, _, _, _, prompt, _ = video._preflight_values(req)
+    assert edit in prompt
+    assert "Video1 controls camera, framing, apparent building sizes" not in prompt
+    assert "Follow the explicit scene edits requested above" in prompt
+    assert "otherwise retain" in prompt
+
+
 @pytest.mark.parametrize("count", [1, 2])
 def test_preview_admits_explicit_architectural_references_without_changing_camera_mode(count):
     req = _preview_request(omni_reference_mode="architecture_references",

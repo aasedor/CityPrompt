@@ -152,7 +152,9 @@ def build_architecture_reference_prompt(prompt: str, count: int, *, has_characte
     direction = (
         identity + f"Use {scene_images} only as architectural identity references, not as first or last frames. "
         "Retain the shown buildings, roof forms, facade openings and skyline landmarks. "
-        "Video1 controls camera, framing, apparent building sizes, timing and motion. "
+        "Video1 controls the camera path, timing and motion. "
+        "Follow the explicit scene edits requested above; otherwise retain its framing and apparent building sizes. "
+        "Preserve everything outside the requested edit. "
         "Keep the photographic finish; do not turn the references into a collage or a new shot."
     )
     if prompt.startswith(prefix + " ") and prompt.endswith(" " + direction):

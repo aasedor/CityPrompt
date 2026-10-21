@@ -1,0 +1,103 @@
+{
+  "schema": "cityprompt.omni-skyline-refinement-pilot@1",
+  "date": "2026-10-21",
+  "branch": "codex/omni-scene-fidelity-pilot",
+  "base_commit": "138429d8b0ca5910af8444f521e6712b84029f5b",
+  "scope": "Local only; no source push or production deployment",
+  "authorization": "One additional four-second Omni trial following the user's request: Let's do another trial",
+  "new_paid_calls": 1,
+  "new_provider_retries": 0,
+  "app_test_tokens_charged": 50,
+  "estimated_output_reserve_usd": 1.0136,
+  "actual_provider_invoice_confirmed": false,
+  "trial": {
+    "label": "D",
+    "attempt_id": "e085a5ee-0c44-43b2-b37d-1d2068788efe",
+    "request_id": "a22d4cbf-684e-5a55-8882-4e6fefd8a7ef",
+    "status": "complete",
+    "model": "gemini-omni-1.1-flash",
+    "mode": "architecture_references",
+    "immediate_input": "C photographic output from the preceding three-trial batch",
+    "source_sha256": "1c7394a5fca0352add466aacfd443dad294be88236fcc50908a271bd12eb78cb",
+    "native_reference_source_sha256": "ecde65dbe289028e8e09e2eb3dc49d19d4b3d4ad181cb70eab7afff2741a922a",
+    "reference_image_sha256": "a3b6a5284ef011ff2b23d1ed29d9a2749249b73dda47d985e6ea594267aa5840",
+    "reference_image_count": 1,
+    "reference_role": "Full native first frame; architecture reference, no crop or distortion",
+    "output_sha256": "6fa508150ab58931dabb407294307ef622db160c252a3b4c3a3d54fc607f46c3",
+    "output_size_bytes": 9003498,
+    "media": {
+      "width": 1920,
+      "height": 1080,
+      "fps": 24,
+      "frame_count": 96,
+      "duration_seconds": 4
+    },
+    "custom_prompt": "Correct only the background skyline. Bring the recognizable Calgary towers much closer and taller in the frame, matching Image1's apparent scale and positions behind the low buildings. Keep the current photographic woman, two-storey foreground building, street, planting, sunlight and camera motion unchanged. Use the reference for skyline structure only, not its polygon appearance. One continuous four-second shot.",
+    "provider_usage": {
+      "total_tokens": 59871,
+      "total_input_tokens": 24670,
+      "total_output_tokens": 34752,
+      "total_thought_tokens": 449,
+      "image_input_tokens": 1100
+    }
+  },
+  "visual_review": {
+    "technical_result": "Passed media validation and browser playback",
+    "creative_goal": "Not achieved; skyline apparent size remains nearly unchanged from C and too distant relative to the original polygon scene",
+    "preserved": "Photographic foreground, woman, two-storey building, blue sky and camera motion",
+    "inspection": "Viewed comparison frames at 0, 1, 2 and 3 seconds and played both four-second comparison videos",
+    "interpretation": "Inconclusive prompt experiment because the submitted wrapper conflicted with the requested skyline edit; not evidence that Omni cannot perform this edit"
+  },
+  "prompt_conflict_and_fix": {
+    "discovered": "After the one paid generation completed",
+    "submitted_conflicting_clause": "Video1 controls camera, framing, apparent building sizes, timing and motion.",
+    "cause": "Unconditional apparent-size preservation opposed the explicit request to enlarge only the background skyline",
+    "local_fix": "Video controls camera path, timing and motion. Explicit scene edits take precedence; retain framing and apparent building sizes otherwise and preserve everything outside the requested edit.",
+    "paid_receipt_changed": false,
+    "corrected_effective_prompt_sha256": "88e7938603c21d43d3597879713313f4f7b18bfa879388e8505a1ee6e0234498",
+    "corrected_payload_validation": "Offline only: video, image and text parts; one source header; unchanged four-second duration; no provider call",
+    "corrected_prompt_paid_test": "Not tested; no extra call or retry made",
+    "next_paid_test_requires_new_authorization": true
+  },
+  "verification": {
+    "backend_tests_passed": 90,
+    "test_suites": [
+      "backend/tests/test_omni_architecture_references.py",
+      "backend/tests/test_omni_video.py",
+      "backend/tests/test_people_video.py",
+      "backend/tests/test_video_recovery.py"
+    ],
+    "test_warnings": "Four existing jose JWT datetime deprecation warnings; pytest-asyncio also reports an unset default fixture loop scope",
+    "regression_red_green": "New explicit skyline-edit regression failed against the old unconditional size lock, then passed after the fix",
+    "full_media_decode": "Output and both comparisons passed ffmpeg decoding",
+    "browser": "Both comparison players reached currentTime=4, duration=4, ended=true, readyState=4, error=null in Edge",
+    "quota": "Read-only check: five historical attempts complete, exactly one new attempt, current one-call allowance exhausted, local test balance 8594",
+    "api": "Local API restarted only after confirming no active video attempts; health endpoint returned HTTP 200",
+    "frontend_changes": false,
+    "production_checks": "Not applicable; production was not changed"
+  },
+  "artifacts": {
+    "external_root": "C:/dev-artifacts/CityPrompt/omni-skyline-refinement-2026-10-21",
+    "player": "http://127.0.0.1:18124/",
+    "output": "d/result.mp4",
+    "immutable_paid_receipt": "d/receipt.json",
+    "browser_screenshot": "qa/browser-d.jpg",
+    "browser_playback_evidence": "browser-playback.json",
+    "edit_comparison": {
+      "path": "Compare-EDIT.mp4",
+      "sha256": "c870988a2cbc34c4f22c3ba6d3ef583a5512bcc00ef136934b0a280b1dc40fc0",
+      "panels": "Exact C input versus D output; 1920x1080 panels, no crop or retiming"
+    },
+    "native_comparison": {
+      "path": "Compare-NATIVE.mp4",
+      "sha256": "8c298f0ad6b6bc540d5206266137ded35f446015fd97f89576991486dfbc92d5",
+      "panels": "Original polygon reference versus D; the polygon video was not D's immediate input"
+    }
+  },
+  "remaining_limitations": [
+    "Skyline scale and exact architecture remain unresolved in the paid output",
+    "Post-generation prompt fix has only automated and offline-payload validation",
+    "Provider motion/fidelity scores are not proof of architectural fidelity",
+    "Local media links require this computer and preview server; no new GitHub release was published"
+  ]
+}
