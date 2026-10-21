@@ -1,0 +1,192 @@
+{
+  "candidate": "clay-planting-kit-showcase-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 498,
+    "vertices": 414948,
+    "polygons": 667084,
+    "triangles": 667084,
+    "path": "clay-planting-kit-showcase-clay-v001-authoring.blend",
+    "bytes": 10239480,
+    "sha256": "2d3446efdd8f431a0764cb9477601f01b8a244c5f6cb911e1354b8a5d6ad6a89"
+  },
+  "runtime": {
+    "path": "clay-planting-kit-showcase-clay-v001.glb",
+    "bytes": 3338232,
+    "sha256": "874354309c9664fa58736df7567804e43156849e06ca41b41614628a64fb7e59",
+    "meshes": 60,
+    "materials": 21,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 475,
+    "vertices": 414948,
+    "polygons": 667084,
+    "triangles": 667084
+  },
+  "original_bounds_m": [
+    [
+      -14.5,
+      -10.5,
+      0.0
+    ],
+    [
+      14.5,
+      11.5,
+      1.616640329360962
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -14.5,
+      -10.5,
+      0.0
+    ],
+    [
+      14.5,
+      11.5,
+      1.616640329360962
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 29.0,
+    "depth": 22.0,
+    "height": 1.4
+  },
+  "native_dimensions_m": {
+    "width": 29.0,
+    "depth": 22.0,
+    "height": 1.616640329360962
+  },
+  "native_bottom_center_m": [
+    0.0,
+    0.5,
+    0.0
+  ],
+  "source_components_by_role": {
+    "grass": 1,
+    "gravel": 1,
+    "granite": 8,
+    "pk_leaf": 2,
+    "pk_leaf2": 2,
+    "pk_leaf_dark": 2,
+    "pk_leaf_silver": 2,
+    "pk_leaf_red": 2,
+    "pk_pink": 3,
+    "pk_purple": 2,
+    "pk_red": 2,
+    "pk_mulch": 8
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front_corner.png",
+    "renders/top.png",
+    "renders/eye_flower_heads.png",
+    "renders/eye_perennial_drift.png",
+    "renders/eye_arching_grass.png",
+    "renders/eye_shrub_mass.png",
+    "renders/eye_groundcover.png",
+    "renders/eye_bedding_band.png",
+    "renders/eye_carpet_bed.png",
+    "renders/eye_perennial_bed.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Planting kit showcase: kerbed beds on a lawn at grade zero",
+      "box": [
+        -14.5,
+        14.5,
+        -10.5,
+        11.5
+      ]
+    }
+  ],
+  "opening_sections": [],
+  "authoring_modules": {
+    "ground": [
+      "ground grass",
+      "ground gravel"
+    ],
+    "beds": [
+      "B1 flower heads kerb",
+      "B1 flower heads soil",
+      "B2 perennial drift kerb",
+      "B2 perennial drift soil",
+      "B3 arching grass kerb",
+      "B3 arching grass soil",
+      "B4 shrub mass kerb",
+      "B4 shrub mass soil",
+      "B5 groundcover kerb",
+      "B5 groundcover soil",
+      "B6 bedding bands kerb",
+      "B6 bedding bands soil",
+      "B7 Halifax carpet bed kerb",
+      "B7 Halifax carpet bed soil",
+      "B8 perennial bed kerb",
+      "B8 perennial bed soil"
+    ],
+    "planting": [
+      "B5 carpet",
+      "B5 carpet dots",
+      "B6 silver",
+      "B6 begonia",
+      "B6 begonia dots",
+      "B6 purple",
+      "B6 purple dots",
+      "B6 centre",
+      "B6 centre dots",
+      "B7 silver",
+      "B7 begonia",
+      "B7 begonia dots",
+      "B7 purple",
+      "B7 purple dots",
+      "B7 pink",
+      "B7 pink dots",
+      "B8 carpet",
+      {
+        "planting_kit": true,
+        "instancing": true,
+        "plants": 149,
+        "instance_nodes": 463,
+        "prototypes": {
+          "hydrangea1": 3,
+          "coneflower1": 18,
+          "coneflower2": 4,
+          "rudbeckia1": 10,
+          "rudbeckia2": 8,
+          "salvia1": 27,
+          "yarrow1": 13,
+          "salvia2": 19,
+          "yarrow2": 4,
+          "feather_reed1": 8,
+          "blue_grass1": 3,
+          "fountain_grass1": 11,
+          "feather_reed2": 14,
+          "blue_grass2": 1,
+          "shrub1": 3,
+          "shrub2": 2,
+          "hydrangea2": 1
+        }
+      }
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-21T03:49:18.812382+00:00",
+  "delivery_and_render_seconds": 1610.040530492,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
