@@ -686,6 +686,16 @@ An old capture-only family allowlist can reject a valid visible junction. Add a
 mixed-family capture-manifest regression for each newly supported street family,
 and verify the complete scene's capture admission before any paid render.
 
+Attest a constant-width street against its validated centreline ribbon, rather
+than the enclosing rectangle of a bent route. The complete authored footprint
+must agree in both directions; a declared width alone is insufficient. Keep
+previously valid recipe dimensions and identity locks stable. Readiness recovery
+must clear obsolete failures when Undo restores a compiled scene or the failed
+object is removed. For details-only scenes, test workflow, actual capture and
+server admission together: a default-off parcel has no landscape to compile,
+while requested, generated, stale and malformed landscapes still need validation.
+See [scene readiness recovery](SCENE_READINESS_RECOVERY_2026-10-22.md).
+
 For a finite street picker, placement and section replacement can run before
 the server issues the locked recipe. Admit only the exact variant/archetype/width
 tuple for that candidate's preview; never let an invalid saved recipe borrow the

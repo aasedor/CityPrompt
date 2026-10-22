@@ -1290,6 +1290,47 @@ def test_paid_project_preflight_requires_matching_current_residual_claim():
     assert geometry_changed.value.detail["billed"] is False
 
 
+@pytest.mark.parametrize('properties', [{}, {'community_3d_automatic_trees': False}])
+@pytest.mark.parametrize('bind_capture_instances', [False, True])
+def test_details_capture_accepts_default_off_boundary_without_landscape_claim(properties, bind_capture_instances):
+    boundary = _zone(uuid.uuid4(), 'site_boundary', properties=properties)
+    request = Direct3DRenderRequest(**{
+        **_request(presentation_mode='scene').model_dump(),
+        'community_3d_claims': [], 'details_revision': 1,
+        'instance_id_manifest': {'#010001': {'instance_id': 'project-details', 'semantic_class': 'landscape'}},
+    })
+    request.residual_landscape_claim = None
+    inventory = direct_api._validate_direct_3d_project_zones(
+        request, [boundary], {}, bind_capture_instances=bind_capture_instances,
+        project_details={'revision': 1, 'props': [{'id': 'saved-bench'}]},
+    )
+    assert [item['instance_id'] for item in inventory] == (['project-details'] if bind_capture_instances else [])
+    with pytest.raises(HTTPException, match='Saved details changed'):
+        direct_api._validate_direct_3d_project_zones(
+            request, [boundary], {}, bind_capture_instances=bind_capture_instances,
+            project_details={'revision': 2, 'props': [{'id': 'saved-bench'}]},
+        )
+
+
+@pytest.mark.parametrize('properties', [
+    {'community_3d_automatic_trees': True},
+    {'community_3d_landscape_mode': 'generated'},
+    {'community_3d_landscape_mode': 'automatic'},
+    {'community_3d_landscape_mode': 'placed_objects_only', 'community_3d_automatic_trees': True},
+    {'community_3d_landscape': {'state': 'stale'}},
+])
+def test_details_capture_rejects_missing_requested_or_stale_landscape(properties):
+    boundary = _zone(uuid.uuid4(), 'site_boundary', properties=properties)
+    request = Direct3DRenderRequest(**{**_request().model_dump(), 'community_3d_claims': [], 'details_revision': 1})
+    request.residual_landscape_claim = None
+    with pytest.raises(HTTPException, match='Residual landscaping') as rejected:
+        direct_api._validate_direct_3d_project_zones(
+            request, [boundary], {}, bind_capture_instances=False,
+            project_details={'revision': 1, 'props': [{'id': 'saved-bench'}]},
+        )
+    assert rejected.value.detail['billed'] is False
+
+
 def test_paid_project_preflight_accepts_explicit_unfilled_site_and_still_checks_sources():
     boundary = _zone(uuid.uuid4(), "site_boundary")
     boundary.properties["community_3d_landscape_mode"] = "placed_objects_only"

@@ -26,7 +26,7 @@ from typing import Annotated, Any, Iterable, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 from shapely import affinity
-from shapely.geometry import box
+from shapely.geometry import LineString, box
 from shapely.geometry.base import BaseGeometry
 
 from app.services.public_realm_catalog import resolve_public_realm_catalog_identity
@@ -2437,6 +2437,7 @@ def _target_from_metric_geometry(
     *,
     target_type: Literal["park_polygon", "street_segment", "street_node"],
     attest_segment_width: bool = False,
+    centerline_metric: BaseGeometry | None = None,
 ) -> PublicRealmTarget:
     if geometry.is_empty or not geometry.is_valid:
         raise ValueError("Public-realm geometry must be non-empty and valid")
@@ -2450,8 +2451,21 @@ def _target_from_metric_geometry(
 
     if target_type == "street_segment":
         declared_width = _positive_number(properties.get("width"))
+        if centerline_metric is not None and declared_width is not None:
+            # A bent constant-width ribbon has a wider bounding rectangle.
+            # Attest the complete footprint against its authored route instead
+            # of interpreting that rectangle as the physical cross-section.
+            ribbon = centerline_metric.buffer(declared_width / 2, cap_style=2, join_style=2, mitre_limit=4)
+            if ribbon.buffer(0.1).covers(geometry) and geometry.buffer(0.1).covers(ribbon):
+                return StreetSegmentTarget(
+                    row_width_m=round(declared_width, 3),
+                    # Keep the established longitudinal target for already
+                    # valid saved recipes; only the width attestation changes.
+                    length_m=round(max(float(geometry.area) / declared_width, long_axis), 3),
+                )
         use_measured_width = attest_segment_width and (
-            properties.get("_plan_street_geometry_source") == "locked_area"
+            centerline_metric is not None
+            or properties.get("_plan_street_geometry_source") == "locked_area"
             or _has_attestable_segment_width(
                 geometry,
                 long_axis=long_axis,
@@ -2705,6 +2719,12 @@ def plan_public_realm_zone_recipe(
         local_metric_crs_for_polygon(geometry_wgs84),
     )
     metric_geometry = project_geometry(geometry_wgs84, transformer)
+    centerline_metric = None
+    if is_street and props.get("plan_centerline") is not None:
+        from app.services.plan_geometry.generator import validate_street_plan_centerline_wgs84
+
+        if validate_street_plan_centerline_wgs84(geometry_wgs84, props["plan_centerline"]):
+            centerline_metric = project_geometry(LineString(props["plan_centerline"]), transformer)
     target = _target_from_metric_geometry(
         metric_geometry,
         props,
@@ -2713,6 +2733,7 @@ def plan_public_realm_zone_recipe(
         # emitted V1 recipe must use the same target policy so a manual compile
         # and Direct's later canonical replan cannot disagree.
         attest_segment_width=True,
+        centerline_metric=centerline_metric,
     )
     exact_variant_id = variant_id or next(
         (

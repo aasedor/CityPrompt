@@ -31,6 +31,21 @@ from app.services.site_engine import (
 from app.services.public_realm_lego import public_realm_fallback_identity, public_realm_recipe_identity
 
 
+def site_has_no_residual_landscape(properties: dict | None) -> bool:
+    """Match the browser's default-off parcel without masking a requested fill.
+
+    Detail-only scenes never invoke physical-zone compilation, so they may
+    not have its explicit placed_objects_only marker. No existing recipe,
+    including stale or malformed metadata, is waived by this default.
+    """
+    properties = properties or {}
+    return (
+        properties.get("community_3d_landscape") is None
+        and properties.get("community_3d_automatic_trees") is not True
+        and properties.get("community_3d_landscape_mode") in (None, "placed_objects_only")
+    )
+
+
 @dataclass(frozen=True)
 class ResidualSourceZone:
     """A physical authored polygon participating in residual subtraction."""

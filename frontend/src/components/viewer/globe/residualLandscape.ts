@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 import type { SiteZone } from '@/types';
 import { resolveCommunity3DKind } from '@/features/community3d/community3d';
+import { siteHasNoResidualLandscape } from '@/features/siteLandscape/automaticSiteTrees';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 
 export type ResidualLandscapeKind =
@@ -184,8 +185,7 @@ export function hasCurrentResidualLandscapeRecipe(zones: SiteZone[], hasSavedDet
     return physicalZones.length > 0 || hasSavedDetails;
   }
   return boundaries.length === 1 && (
-    (boundaries[0].properties?.community_3d_landscape_mode === 'placed_objects_only'
-      && boundaries[0].properties?.community_3d_landscape == null)
+    siteHasNoResidualLandscape(boundaries[0])
     || getResidualLandscapeRecipe(boundaries[0]) !== null
   );
 }

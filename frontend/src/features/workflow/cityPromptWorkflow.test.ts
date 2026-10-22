@@ -33,7 +33,7 @@ function activeBoundary(residual = false): SiteZone {
         boundary_id: 'boundary',
         source_hash: HASH,
       },
-    } : {}),
+    } : { community_3d_automatic_trees: true }),
     is_active_boundary: true,
   };
 }
@@ -61,6 +61,22 @@ describe('deriveCityPromptWorkflow', () => {
     expect(state.currentStep).toBe(4);
     expect(state.canGenerate3D).toBe(false);
     expect(state.renderReason).toBe('Your scene is ready for rendering.');
+  });
+  it('renders details inside a new boundary without requiring opted-out automatic landscaping', () => {
+    const boundary={...activeBoundary(),properties:{}};
+    expect(deriveCityPromptWorkflow([boundary],false,details).canRender).toBe(true);
+    boundary.properties={community_3d_automatic_trees:true};
+    expect(deriveCityPromptWorkflow([boundary],false,details).canRender).toBe(false);
+  });
+  it('identifies the particular object when a saved representation cannot render', () => {
+    const street={...compiledBuilding(),id:'street',name:'Quiet residential lane',zone_type:'road',properties:{
+      community_3d:{...(compiledBuilding().properties!.community_3d as object),kind:'street',generator:'street_section'},
+      road_selected_variant_id:'student_quiet_residential_street_v1',
+    }} as SiteZone;
+    const state=deriveCityPromptWorkflow([compiledBuilding(),street]);
+    expect(state.canRender).toBe(false);
+    expect(state.renderReason).toContain('Quiet residential lane');
+    expect(state.renderReason).toMatch(/length.*width.*variant/i);
   });
   it('does not use details to bypass stale existing zones or landscape', () => {
     expect(deriveCityPromptWorkflow([zone('draft','building')], false, details).canRender).toBe(false);

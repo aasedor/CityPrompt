@@ -1,4 +1,5 @@
-import { CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
+import { assetForZone, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
+import { siteHasNoResidualLandscape } from '@/features/siteLandscape/automaticSiteTrees';
 import type { SiteZone } from '@/types';
 import type { ProjectDetails } from '@/features/parks/projectBenches';
 import {
@@ -27,9 +28,7 @@ export interface CityPromptWorkflowState {
 }
 
 function hasCompiledResidualLandscape(boundary: SiteZone | null): boolean {
-  // Direct placement deliberately leaves unassigned land in its real context.
-  if (boundary?.properties?.community_3d_landscape_mode === 'placed_objects_only'
-      && boundary.properties?.community_3d_landscape == null) return true;
+  if (siteHasNoResidualLandscape(boundary)) return true;
   const raw = (boundary?.properties as Record<string, unknown> | undefined)
     ?.community_3d_landscape;
   if (!raw || typeof raw !== 'object') return false;
@@ -56,11 +55,11 @@ export function deriveCityPromptWorkflow(
   const physicalZones = zones.filter((zone) => (
     zone.coordinates?.length >= 3 && resolveCommunity3DKind(zone) !== null
   ));
-  const compiledZoneCount = physicalZones.filter((zone) => (
-    isCommunity3DCompiled(zone)
-    && hasCommunity3DSourceFingerprint(zone)
+  const pendingZones = physicalZones.filter((zone) => !(
+    isCommunity3DCompiled(zone) && hasCommunity3DSourceFingerprint(zone)
     && hasExecutablePublicRealmRecipe(zone)
-  )).length;
+  ));
+  const compiledZoneCount = physicalZones.length - pendingZones.length;
   const residualLandscapeReady = hasCompiledResidualLandscape(activeBoundary);
   const hasDetails = [details?.benches, details?.trees, details?.props, details?.surfaces]
     .some(items => Boolean(items?.length));
@@ -79,9 +78,17 @@ export function deriveCityPromptWorkflow(
     ? 'Draw a building, park, or street first. A site boundary is optional.'
     : sceneReady ? '3D up to date. Your scene is ready to render.' : CATALOGUE_UPDATE_GUIDANCE;
 
+  const pendingReason = pendingZones.slice(0, 3).map(zone => {
+    const kind = resolveCommunity3DKind(zone);
+    const label = zone.name || assetForZone(zone)?.label || `${kind ?? 'Object'} ${physicalZones.indexOf(zone) + 1}`;
+    return isCommunity3DCompiled(zone) && hasCommunity3DSourceFingerprint(zone)
+      && !hasExecutablePublicRealmRecipe(zone)
+      ? `${label}: the selected ${kind} layout could not be prepared. Check its ${kind === 'street' ? 'route length, width and selected variant' : 'outline size and selected variant'}, then retry the 3D update.`
+      : `${label}: its 3D representation updates automatically. Wait for the update to finish, or use Retry 3D update.`;
+  }).join(' ');
   const renderReason = !hasSceneContent
     ? 'Add a building, park, street, or detail first. A site boundary is optional.'
-    : !allPhysicalZonesCompiled ? CATALOGUE_UPDATE_GUIDANCE
+    : !allPhysicalZonesCompiled ? pendingReason
     : activeBoundary && !residualLandscapeReady ? 'The residual landscaping updates automatically. Wait for 3D saved, or use Retry 3D update if it fails.'
     : 'Your scene is ready for rendering.';
 

@@ -74,6 +74,7 @@ from app.services.residual_landscape import (
     community_3d_source_hash,
     lock_residual_landscape_project,
     residual_landscape_source_hash,
+    site_has_no_residual_landscape,
 )
 
 logger = logging.getLogger(__name__)
@@ -368,8 +369,7 @@ def _validate_direct_3d_project_zones(
     stored = (boundary.properties or {}).get("community_3d_landscape")
     claim = req.residual_landscape_claim
     if (
-        (boundary.properties or {}).get("community_3d_landscape_mode") == "placed_objects_only"
-        and stored is None
+        site_has_no_residual_landscape(boundary.properties)
         and claim is None
     ):
         # Physical source hashes, representation hashes and instance ownership

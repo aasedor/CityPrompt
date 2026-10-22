@@ -1,5 +1,16 @@
 import type { SiteZone, SiteZoneProperties } from '@/types';
 
+/** A default-off parcel has no derived fill to compile. Keep requested,
+ * generated, malformed and stale landscapes subject to recipe validation. */
+export function siteHasNoResidualLandscape(zone: SiteZone | null | undefined): boolean {
+  if (!zone) return false;
+  const properties = zone.properties;
+  const mode = properties?.community_3d_landscape_mode;
+  return properties?.community_3d_landscape == null
+    && properties?.community_3d_automatic_trees !== true
+    && (mode == null || mode === 'placed_objects_only');
+}
+
 /** Site settings are a form draft, but landscape writes and compilation save
  * independently. Saving other settings must retain their latest saved state. */
 export function mergeSavedSiteLandscape(draft: SiteZoneProperties, saved: SiteZoneProperties): SiteZoneProperties {

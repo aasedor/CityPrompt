@@ -18,6 +18,49 @@ const boundary=(state:'compiled'|'stale'):SiteZone=>({id:'boundary',project_id:'
 const wrapper=({children}:{children:ReactNode})=><QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}>{children}</QueryClientProvider>;
 const advance=()=>act(async()=>{await vi.advanceTimersByTimeAsync(750)});
 describe('automatic placement compilation',()=>{
+  it('clears a failed added object after undo restores the already compiled scene',async()=>{
+    const ready=zone(0,true);
+    const broken={...zone(2),id:'broken'};
+    const {result,rerender,unmount}=renderHook(({zones})=>useAutomatic3D('p',zones,false),{
+      initialProps:{zones:[ready]},wrapper,
+    });
+    await advance();
+    vi.mocked(compileMixedCommunity3D).mockRejectedValueOnce(new Error('Unsupported street'));
+    rerender({zones:[ready,broken]});await advance();
+    expect(result.current.status).toBe('error');
+    rerender({zones:[ready]});await advance();
+    expect(result.current.status).toBe('ready');
+    expect(result.current.message).not.toContain('Unsupported street');
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
+    unmount();
+  });
+  it('clears a failed update when the last physical object is removed',async()=>{
+    vi.mocked(compileMixedCommunity3D).mockRejectedValueOnce(new Error('Unsupported street'));
+    const {result,rerender,unmount}=renderHook(({zones})=>useAutomatic3D('p',zones,false),{
+      initialProps:{zones:[zone()]},wrapper,
+    });
+    await advance();expect(result.current.status).toBe('error');
+    rerender({zones:[]});await advance();
+    expect(result.current.status).toBe('idle');
+    expect(result.current.busy).toBe(false);
+    expect(result.current.message).toBe('');
+    unmount();
+  });
+  it('does not strand an empty scene updating after an obsolete request completes',async()=>{
+    let finish!:()=>void;
+    vi.mocked(compileMixedCommunity3D).mockImplementationOnce(()=>new Promise(resolve=>{
+      finish=()=>resolve({plannedMasses:0} as never);
+    }));
+    const {result,rerender,unmount}=renderHook(({zones})=>useAutomatic3D('p',zones,false),{
+      initialProps:{zones:[zone()]},wrapper,
+    });
+    await advance();rerender({zones:[]});
+    vi.mocked(siteZonesApi.list).mockResolvedValue([]);
+    await act(async()=>{finish()});await advance();
+    expect(result.current.status).toBe('idle');
+    expect(result.current.busy).toBe(false);
+    unmount();
+  });
   it.each([false, true])('ignores a rejected temporary boundary with saved boundary=%s', async hasSavedBoundary => {
     const saved = [zone(0, true), ...(hasSavedBoundary ? [boundary('compiled')] : [])];
     const draft = {...boundary('stale'), id:'temp-rejected', is_active_boundary:true,
@@ -224,12 +267,14 @@ describe('automatic placement compilation',()=>{
     expect(authoredPlacementKey([scaled])).not.toBe(authoredPlacementKey([original]));
   });
   it('stops after successful compilation leaves the saved scene unready', async () => {
-    vi.mocked(siteZonesApi.list).mockResolvedValue([zone()]);
-    const {result,unmount} = renderHook(() => useAutomatic3D('p',[zone()],false), {wrapper});
+    const unfinished={...zone(),name:'Unfinished home'};
+    vi.mocked(siteZonesApi.list).mockResolvedValue([unfinished]);
+    const {result,unmount} = renderHook(() => useAutomatic3D('p',[unfinished],false), {wrapper});
     await advance(); await advance(); await advance();
     expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
     expect(result.current.status).toBe('error');
-    expect(result.current.message).toContain('not ready');
+    expect(result.current.message).toContain('Retry 3D update');
+    expect(result.current.message).toContain('Unfinished home');
     unmount();
   });
   it.each(['plaza_archetype_id', 'generation_style_inputs'])('retries a failed custom plaza when %s changes', async field => {

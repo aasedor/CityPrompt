@@ -86,9 +86,18 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
       setStatus('idle'); setMessage('');
     }
     const run = state.current;
-    if (!projectId || !eligible || saving || run.busy || candidates.length === 0 || run.failed === key) return;
-    if (!run.force && run.completed === key && compiled) return;
-    if (!run.force && !run.completed && compiled) { run.completed = key; setStatus('ready'); return; }
+    if (!candidates.length) {
+      // Deleting the failed object (or the last object during a request) is
+      // recovery. An obsolete request must not leave this scene in error/busy.
+      run.failed = ''; run.completed = ''; run.force = false;
+      setStatus('idle'); setMessage('');
+      return;
+    }
+    if (!projectId || !eligible || saving || run.busy) return;
+    if (!run.force && compiled && (run.completed === key || !run.completed)) {
+      run.completed = key; run.failed = ''; setStatus('ready'); setMessage(''); return;
+    }
+    if (run.failed === key) return;
     const timer = window.setTimeout(async () => {
       run.busy = true; run.force = false; setStatus('updating'); setMessage('');
       try {
@@ -118,8 +127,9 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
           client.setQueryData(['site-zones', projectId], saved);
           const savedVisible = saved.filter(zone => !zone.id.startsWith('temp-')
             && !visibility?.hiddenLayers.has(String(zone.properties?._imported_from ?? '')));
-          if (!deriveCityPromptWorkflow(savedVisible).sceneReady) {
-            throw new Error('The saved 3D scene is not ready after its update. Review the objects, then use Retry 3D update.');
+          const readiness = deriveCityPromptWorkflow(savedVisible);
+          if (!readiness.sceneReady) {
+            throw new Error(readiness.renderReason);
           }
           return result;
         });
@@ -155,7 +165,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
       }
     }, 700);
     return () => window.clearTimeout(timer);
-  }, [projectId, key, compiled, eligible, saving, client, attempt]);
+  }, [projectId, key, compiled, eligible, saving, client, attempt, candidates.length]);
 
   const currentAssetError = assetError?.projectId === projectId && zones.some(zone=>zone.id===assetError?.zoneId && (assetError.kind==='street'?nativeStreetRevision(zone):JSON.stringify(zone.properties?.green_space_native_layout ?? null))===assetError.revision) ? assetError : null;
   const visibleStatus = currentAssetError ? 'error' : eligible && !compiled && candidates.length > 0 && status !== 'error' ? 'updating' : status;

@@ -103,6 +103,21 @@ function pixel(texture: THREE.DataTexture, x: number, y: number): number[] {
 }
 
 describe('residual landscape recipe', () => {
+  it('allows a new default-off boundary with details without inventing a landscape claim', () => {
+    expect(hasCurrentResidualLandscapeRecipe([boundary], true)).toBe(true);
+    expect(getCurrentResidualLandscapeClaim([boundary])).toBeNull();
+  });
+
+  it.each([
+    { community_3d_automatic_trees: true },
+    { community_3d_landscape_mode: 'generated' },
+    { community_3d_landscape_mode: 'automatic' },
+    { community_3d_landscape_mode: 'placed_objects_only', community_3d_automatic_trees: true },
+    { community_3d_landscape: { state: 'stale' } },
+  ])('keeps missing requested or stale landscapes blocked: %j', properties => {
+    expect(hasCurrentResidualLandscapeRecipe([{ ...boundary, properties }], true)).toBe(false);
+  });
+
   it('accepts only a current compiled recipe owned by the boundary', () => {
     expect(getResidualLandscapeRecipe(withRecipe(recipe))).toEqual(recipe);
     expect(getCurrentResidualLandscapeClaim([withRecipe(recipe)])).toEqual({

@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import json
 from dataclasses import replace
+from pathlib import Path
 
 import pytest
 from pyproj import CRS
-from shapely.geometry import LineString, Point, box
+from shapely.geometry import LineString, Point, Polygon, box
 
 from app.services.public_realm_lego import (
     ParkPolygonTarget,
@@ -965,14 +966,49 @@ def test_strict_street_attestation_rejects_claimed_width_that_geometry_disproves
 
     # Manual/legacy callers degrade to the procedural renderer instead of
     # persisting a V1 recipe that Direct would later reject.
-    legacy = plan_public_realm_zone_recipe(
-        "road",
-        street,
-        properties,
-        strict=False,
-    )
+    legacy = plan_public_realm_zone_recipe("road", street, properties, strict=False)
     assert legacy is None
 
+
+@pytest.mark.parametrize(("bend_m", "saved_length_m"), [(0.25, 100.09), (0.7, 100.252), (6.0, 102.145)])
+def test_native_street_attests_section_width_along_bent_authored_route(bend_m, saved_length_m):
+    # A bend widens the enclosing rectangle, not the actual 18 m section.
+    line = LineString([(700_000, 5_650_000), (700_050, 5_650_000 + bend_m), (700_100, 5_650_000)])
+    street = _to_wgs84(line.buffer(9, cap_style=2, join_style=2))
+    recipe = plan_public_realm_zone_recipe("road", street, {
+        "road_archetype_id": "student_quiet_residential_street_v1",
+        "road_selected_variant_id": "student_quiet_residential_street_v1",
+        "width": 18,
+        "plan_centerline": list(_to_wgs84(line).coords),
+    }, strict=True)
+    assert recipe is not None
+    assert recipe.target.row_width_m == 18
+    assert recipe.target.length_m == pytest.approx(saved_length_m, abs=0.01)
+    assert public_realm_recipe_identity(recipe) is not None
+
+
+def test_downtown_browser_street_compiles_without_a_family_pending_fallback():
+    source=json.loads((Path(__file__).parent / "fixtures/downtown_bent_street.json").read_text())
+    street=Polygon(source["coordinates"])
+    manual=plan_public_realm_zone_recipe("road",street,source["properties"],strict=False)
+    direct=plan_public_realm_zone_recipe("road",street,source["properties"],strict=True)
+    assert manual is not None
+    assert manual == direct
+    assert manual.target.row_width_m == 18
+    assert manual.target.length_m == pytest.approx(56.63,abs=0.15)
+    assert public_realm_recipe_identity(manual) is not None
+
+
+@pytest.mark.parametrize("bend_m", [0, 6])
+def test_native_street_cannot_use_centerline_to_bless_a_false_width(bend_m):
+    line = LineString([(700_000, 5_650_000), (700_050, 5_650_000 + bend_m), (700_100, 5_650_000)])
+    with pytest.raises(PublicRealmPlanningError):
+        plan_public_realm_zone_recipe("road", _to_wgs84(line.buffer(11, cap_style=2)), {
+            "road_archetype_id": "student_quiet_residential_street_v1",
+            "road_selected_variant_id": "student_quiet_residential_street_v1",
+            "width": 18,
+            "plan_centerline": list(_to_wgs84(line).coords),
+        }, strict=True)
 
 def test_manual_compile_and_direct_replan_share_one_canonical_street_target():
     street = _to_wgs84(box(700_000, 5_650_000, 700_146, 5_650_016))
