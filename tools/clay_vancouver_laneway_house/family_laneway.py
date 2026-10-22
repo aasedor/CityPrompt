@@ -2631,20 +2631,23 @@ def planting():
                          sz=.95)
         if s:
             placed.append((x, y, kit.extent(P['reed_tall'], s, s, .95, (0., 0.))))
-    for x, y, k in ((-3.05, -5.55, 'golden'), (-2.25, -5.5, 'fescue'), (-1.6, -5.65, 'golden'), (-2.7, -6.35, 'fescue'),
-                    (-1.95, -6.3, 'golden'), (-1.3, -6.5, 'fescue'), (-3.45, -6.55, 'golden')):
+    for x, y, k in ((-3.0, -5.6, 'golden'), (-2.25, -5.55, 'fescue'), (-1.55, -5.65, 'golden')):
         s = kit.place_in(P[k], x, y, PSOIL, rnd.uniform(0, math.tau), 1.25 if k == 'golden' else 1.5, region=regs['A'],
                          shrink=(1., .85, .7))
         if s:
             placed.append((x, y, kit.extent(P[k], s, s, s, (0., 0.))))
     # Sword ferns about 0.8 m tall and 1.1-1.3 m across: the arching prototype is scaled in plan and stretched upright.
-    for k, sp, sd in (('A', .95, 41), ('D', .62, 43), ('B', .85, 45), ('E', .75, 47)):     # then the sword-fern masses
+    for k, sp, sd in (('A', .8, 41), ('D', .62, 43), ('B', .85, 45), ('E', .75, 47)):      # then the sword-fern masses
         fill(kit, regs[k], ferns, sp, sd, placed, scales=(.55, .5, .45, .4, .35), drift=3.0, within=real[k], tall=1.05)
     front = [(P['golden'], 1.0), (P['fescue'], .9), (P['fern2'], .6), (P['spiky'], .5), (P['reed'], .4)]
     right = [(P['fern2'], .9), (P['golden'], .9), (P['fescue'], .7), (P['spiky'], .4), (P['shrub'], .2)]
     lush = (1.6, 1.4, 1.2, 1.0, .85, .7, .55, .42)
-    fill(kit, regs['A'], front, .34, 31, placed, scales=lush, within=real['A'])
-    fill(kit, regs['B'], right, .34, 33, placed, scales=lush, within=real['B'])
+    fill(kit, regs['A'], front, .28, 31, placed, scales=lush, within=real['A'])
+    fill(kit, regs['B'], right, .28, 33, placed, scales=lush, within=real['B'])
+    # A low green carpet under the front beds, so the mulch shows only in small gaps (source front and oblique).
+    for k in ('A', 'B'):
+        groundcover(f'Bed {k} groundcover', beds[k][1], PSOIL, kerb=0, height=.04, bump=.02, wave=.7, grid=.5, edge=.12,
+                    role='pk_groundcover', seed=61 + ord(k))
     fill(kit, regs['D'], side, .26, 35, placed, scales=fine, within=real['D'])
     fill(kit, regs['E'], side, .36, 37, placed, scales=fine)
     kit.flush()
