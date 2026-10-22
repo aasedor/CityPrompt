@@ -13,7 +13,12 @@ export function packCatalogue(source) {
   // Strip whitespace only outside strings. Re-stringifying parsed objects loses
   // signed zero, which occurs in authored model offsets and must round-trip.
   const canonical = source.replace(/("(?:\\.|[^"\\])*")|\s+/g, (_match, quoted) => quoted ?? '');
-  const packed = deflateSync(Buffer.from(canonical, 'utf8'), { level: 9 }).toString('base64');
+  const bytes = Buffer.from(canonical, 'utf8');
+  // Two deterministic build-time profiles: smaller hash tables compress the
+  // repeated geometry recipes better, while prose catalogues favour the default.
+  // Keep the smaller stream; browser decoding and every authored value are unchanged.
+  const packed = [8, 6].map(memLevel => deflateSync(bytes, { level: 9, memLevel }))
+    .reduce((a, b) => b.length < a.length ? b : a).toString('base64');
   return `import { unzlibSync, strFromU8 } from 'three/examples/jsm/libs/fflate.module.js';
 const bytes = Uint8Array.from(atob(${JSON.stringify(packed)}), character => character.charCodeAt(0));
 export default JSON.parse(strFromU8(unzlibSync(bytes)));`;

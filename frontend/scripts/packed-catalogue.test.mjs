@@ -4,9 +4,20 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { deflateSync } from 'node:zlib';
 import { packCatalogue, packedCatalogue } from './packed-catalogue.mjs';
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
+
+test('packing uses the smaller of two bounded lossless compression profiles', () => {
+  for (const filename of ['nativeStreetPilots.json', 'buildingArchetypes.json']) {
+    const source = readFileSync(resolve('src/data', filename), 'utf8');
+    const canonical = source.replace(/("(?:\\.|[^"\\])*")|\s+/g, (_match, quoted) => quoted ?? '');
+    const candidates = [8, 6].map(memLevel => deflateSync(Buffer.from(canonical), { level: 9, memLevel }));
+    const smallest = candidates.reduce((a, b) => b.length < a.length ? b : a);
+    assert.ok(packCatalogue(source).includes(JSON.stringify(smallest.toString('base64'))), filename);
+  }
+});
 
 test('the production traffic-safety catalogue preserves all variants and placement contracts in a compact module', async () => {
   const filename = resolve('src/features/parks/trafficSafetyCatalogue.json');
