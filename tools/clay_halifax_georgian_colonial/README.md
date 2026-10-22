@@ -26,7 +26,7 @@ Read from the pixels (metric dimensions and interiors are authored teaching assu
 - envelope about 21 x 17 m, 15.6 m to the highest point; 2 storeys (two storeys on a low stone plinth, with an attic under the hipped roof).
 - storey programme: two storeys on a low stone plinth, with an attic under the hipped roof
 - plan: 21.2 x 14.7 m main block, seven bays by four, a 7.2 m centre pavilion projecting 0.6 m on the south front, two 5.8 x 2.15 m rear wings at the back corners with a recessed court between (top view); 7.5 m portico on a stone platform
-- facade: red brick with a stone plinth, a stone string course and a modillioned white eave cornice; tall six-over-six sashes three panes wide with shouldered stone lintels and stone sills; centre pavilion with four giant stone pilasters and a brick pediment with an oval cartouche; one-storey Tuscan portico of four columns with a low hipped standing-seam roof
+- facade: red brick with a stone plinth, a stone string course and a modillioned white eave cornice; tall nine-over-nine sashes three panes wide with shouldered stone lintels and stone sills; centre pavilion with four giant stone pilasters and a brick pediment with an oval cartouche; one-storey Tuscan portico of four columns with a low hipped standing-seam roof
 - roof: hipped blue-grey slate roof truncated in a flat lead deck with four brick chimney stacks and clay pots at its corners; the pavilion gable and the rear-wing hips run into the main roof
 - inferred: interiors, the rear wings and the north front follow the visible grammar; metric dimensions are authored teaching assumptions
 - levels (m): 0.60, 4.95, 8.95, 9.60
