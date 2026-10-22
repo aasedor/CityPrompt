@@ -16,14 +16,19 @@ export interface NormalizedVideoRoutePoint {
 
 export interface VideoRouteCaptureRequest {
   routePoints: NormalizedVideoRoutePoint[];
-  cameraMotion: 'path_follow' | 'street_walkby' | 'detail_flythrough' | 'bicycle_ride';
+  cameraMotion: 'path_follow' | 'street_walkby' | 'detail_flythrough' | 'bicycle_ride' | 'people_follow';
   renderQuality: VideoRenderQuality;
-  durationSeconds: 8;
+  durationSeconds: 4 | 8;
+  /** Opt-in motion of authored people; ordinary editing remains idle. */
+  animatePeople?: boolean;
   keyframeCount?: number;
   onProgress?: (phase: 'loading' | 'checking' | 'rendering', completed: number, total: number) => void;
 }
 
 export interface VideoRouteCaptureResult {
+  peopleCaptureCount?: number;
+  renderStats?: { drawCalls: number; triangles: number; geometries: number; textures: number;
+    cpuSubmissionMedianMs: number; cpuSubmissionP95Ms: number };
   routeProfile?: { distanceMeters: number; averageSpeedMps: number; eyeHeightMeters?: number };
   keyframesBase64: string[];
   previewVideoBase64: string;
@@ -105,7 +110,7 @@ export function assertBicycleRouteLength(distanceMeters: number, durationSeconds
     throw new Error('Draw a bicycle route with a clear start and finish.');
   }
   if (distanceMeters / durationSeconds > 7) {
-    throw new Error(`This bicycle route is ${Math.round(distanceMeters)} m long. Keep an 8-second ride within 56 m, or frame a smaller part of the site.`);
+    throw new Error(`This bicycle route is ${Math.round(distanceMeters)} m long. Keep a ${durationSeconds}-second ride within ${durationSeconds * 7} m, or frame a smaller part of the site.`);
   }
 }
 

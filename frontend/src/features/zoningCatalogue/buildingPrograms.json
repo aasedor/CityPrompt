@@ -1411,5 +1411,55 @@
       "Changing the occupancy requires a new use check. Setbacks, density, servicing, access, parking and measured bylaw height remain site requirements."
     ],
     "review": "Confirm the municipal programme and applicable use classification. Public-facing civic services must not be relabelled Office solely to obtain a catalogue match."
+  },
+  "classic-concrete-v1": {
+    "revision": "parkade-classic-concrete-clay-v005",
+    "components": [],
+    "assumption": "Open concrete decks, horizontal steel guards, two front glazed stair towers.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact authored form and revision in parkadeFamilyTrial.json. Parking operation, ancillary occupancies and district use routes remain unreviewed."
+    },
+    "review": "Confirm the parkade parking programme, public or private operation and any cafe or mobility uses before selecting a district use classification."
+  },
+  "brick-v1": {
+    "revision": "parkade-urban-brick-clay-v001",
+    "components": [],
+    "assumption": "Brick piers, recessed metal ventilation screens, sheltered pedestrian entrance.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact authored form and revision in parkadeFamilyTrial.json. Parking operation, ancillary occupancies and district use routes remain unreviewed."
+    },
+    "review": "Confirm the parkade parking programme, public or private operation and any cafe or mobility uses before selecting a district use classification."
+  },
+  "green-v1": {
+    "revision": "parkade-green-terraces-clay-v003",
+    "components": [],
+    "assumption": "Stepped planted edges, climbing screens and a separate rooftop garden.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact authored form and revision in parkadeFamilyTrial.json. Parking operation, ancillary occupancies and district use routes remain unreviewed."
+    },
+    "review": "Confirm the parkade parking programme, public or private operation and any cafe or mobility uses before selecting a district use classification."
+  },
+  "solar-v1": {
+    "revision": "parkade-solar-ribbon-clay-v001",
+    "components": [],
+    "assumption": "Sculptural metal fins, solar roof canopy and marked EV bays.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact authored form and revision in parkadeFamilyTrial.json. Parking operation, ancillary occupancies and district use routes remain unreviewed."
+    },
+    "review": "Confirm the parkade parking programme, public or private operation and any cafe or mobility uses before selecting a district use classification."
+  },
+  "courtyard-v1": {
+    "revision": "parkade-mobility-courtyard-clay-v002",
+    "components": [],
+    "assumption": "Open central court, colourful screens, bicycle hub and street-facing cafe.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Exact authored form and revision in parkadeFamilyTrial.json. Parking operation, ancillary occupancies and district use routes remain unreviewed."
+    },
+    "review": "Confirm the parkade parking programme, public or private operation and any cafe or mobility uses before selecting a district use classification."
   }
 }

@@ -1,0 +1,276 @@
+{
+  "schema": "cityprompt.urban-film-trial@1",
+  "date": "2026-10-21",
+  "sourceBranch": "codex/urban-video-cleanup-pilot",
+  "localApplicationOnly": true,
+  "productionDeployment": false,
+  "scene": {
+    "projectId": "8de14703-1201-5f21-8944-2da1058b007c",
+    "preservedEmptyProjectId": "39fdd499-d06f-4ce2-9ad4-2a7dbb756ab8",
+    "site": "Empty block between 4 and 5 Avenue SE near 3 Street SE, Calgary; southern pedestrian bridge excluded",
+    "areaApproxM2": 8143,
+    "buildingCount": 6,
+    "nativeBuildingRecipes": [
+      {
+        "name": "Brick courtyard entrance building",
+        "zone_id": "0d7161db-79c9-4977-b068-8731517ea9ee",
+        "variant": "courtyard_family_brick_modern",
+        "catalog_fingerprint": "61556d3c19e8f01ba4c4297894e4c10c271a189683e90cd52fd4153af0a52f51",
+        "scales": [
+          [
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "status": "placed"
+      },
+      {
+        "name": "Porchlight Townhouse Row",
+        "zone_id": "b54ab526-7159-40ac-bdb3-31fc8f7164bf",
+        "variant": "affordable_porchlight_original",
+        "catalog_fingerprint": "61556d3c19e8f01ba4c4297894e4c10c271a189683e90cd52fd4153af0a52f51",
+        "scales": [
+          [
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "status": "placed"
+      },
+      {
+        "name": "Aspen Walk Apartments",
+        "zone_id": "54885868-6cf1-4488-92d6-303170fb6fd6",
+        "variant": "affordable_aspen_original",
+        "catalog_fingerprint": "61556d3c19e8f01ba4c4297894e4c10c271a189683e90cd52fd4153af0a52f51",
+        "scales": [
+          [
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "status": "placed"
+      },
+      {
+        "name": "Brick-and-timber Courtyard Office",
+        "zone_id": "455d0715-e5db-45a5-99fd-82f6d66bb374",
+        "variant": "brick_timber_two_storey_office",
+        "catalog_fingerprint": "61556d3c19e8f01ba4c4297894e4c10c271a189683e90cd52fd4153af0a52f51",
+        "scales": [
+          [
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "status": "placed"
+      },
+      {
+        "name": "Porchlight Townhouse Row",
+        "zone_id": "8b70fafe-d7b6-4318-82f3-5e148eec0945",
+        "variant": "affordable_porchlight_original",
+        "catalog_fingerprint": "61556d3c19e8f01ba4c4297894e4c10c271a189683e90cd52fd4153af0a52f51",
+        "scales": [
+          [
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "status": "placed"
+      },
+      {
+        "name": "Brick-and-timber Courtyard Office",
+        "zone_id": "6e3ce3a5-8cbd-403f-8a6f-24863fdb9970",
+        "variant": "brick_timber_two_storey_office",
+        "catalog_fingerprint": "61556d3c19e8f01ba4c4297894e4c10c271a189683e90cd52fd4153af0a52f51",
+        "scales": [
+          [
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "status": "placed"
+      }
+    ],
+    "streetLengthM": 120,
+    "streetWidthM": 18,
+    "animatedPeople": 3,
+    "cameraRouteMetres": 4.9,
+    "cameraHeightMetres": 1.6,
+    "averageSpeedKmH": 4.4
+  },
+  "submission": {
+    "id": "b036f88c-833d-4c44-aea9-ae518cf040ff",
+    "request_id": "b41ae301-41e3-45c4-8cdb-5ec58de5f174",
+    "model": "gemini-omni-1.1-flash",
+    "status": "complete",
+    "source_media": {
+      "fps": 24.0,
+      "width": 1920,
+      "height": 1080,
+      "frame_count": 96,
+      "duration_basis": "decoded_frames/fps",
+      "duration_seconds": 4.0
+    },
+    "output_media": {
+      "fps": 24.0,
+      "width": 1920,
+      "height": 1080,
+      "frame_count": 96,
+      "duration_basis": "decoded_frames/fps",
+      "duration_seconds": 4.0
+    },
+    "capture_profile": {
+      "fps": 24,
+      "width": 1920,
+      "height": 1080,
+      "encoder": "webcodecs_h264",
+      "frame_count": 96,
+      "render_width": 2560,
+      "render_height": 1440,
+      "tile_set_held": true,
+      "fixed_timestep": true,
+      "motion_frame_count": 96,
+      "depth_checkpoint_count": 0,
+      "normal_checkpoint_count": 0,
+      "tile_warmup_frame_count": 96,
+      "geometry_checkpoint_count": 0,
+      "instance_checkpoint_count": 0,
+      "material_checkpoint_count": 0,
+      "semantic_checkpoint_count": 0
+    },
+    "provider_usage": {
+      "total_tokens": 57595,
+      "total_input_tokens": 22426,
+      "total_cached_tokens": 0,
+      "total_output_tokens": 34752,
+      "total_thought_tokens": 417,
+      "total_tool_use_tokens": 0,
+      "input_tokens_by_modality": [
+        {
+          "tokens": 82,
+          "modality": "text"
+        },
+        {
+          "tokens": 22344,
+          "modality": "video"
+        }
+      ],
+      "output_tokens_by_modality": [
+        {
+          "tokens": 34752,
+          "modality": "video"
+        }
+      ]
+    },
+    "custom_prompt": "Turn this 3D downtown street animation into live-action cinema. Keep the visible walkers distinct, with the same clothing, positions and natural walking motion. Realistic skin, fabric, grounded footsteps and leafy trees. Preserve the camera, street layout, building facades and recognizable Calgary skyline. Clear blue sky with a few soft white clouds and bright, neutral sunshine. One continuous four-second shot, no cuts.",
+    "fidelity_score": 45.7
+  },
+  "usage": {
+    "authorizedFourSecondTrials": 10,
+    "complete": 8,
+    "unused": 2,
+    "newCallsThisTrial": 1,
+    "automaticRetries": 0,
+    "appTokensConsumed": 50,
+    "estimatedAdmissionCostUsd": 1.0136,
+    "actualProviderBillConfirmed": false
+  },
+  "hashes": {
+    "sourceSha256": "ecde65dbe289028e8e09e2eb3dc49d19d4b3d4ad181cb70eab7afff2741a922a",
+    "resultSha256": "e8fbc35dff8b3ea9d5d0009dc08efef523ad25803dcb6ef4d7f493bf700954bf"
+  },
+  "desktopCaptureMeasurement": {
+    "scope": "Complete urban scene including Google context, at 2560x1440 source render",
+    "drawCalls": 710,
+    "triangles": 2794868,
+    "geometries": 406,
+    "textures": 332,
+    "cpuSubmissionMedianMs": 18.0,
+    "cpuSubmissionP95Ms": 29.8,
+    "gpuTimeMeasured": false,
+    "decodedMemoryMeasured": false,
+    "studentLaptopAndMobile": "not tested"
+  },
+  "visualReview": {
+    "sourceAndAiSampledFrames": 16,
+    "sourceFullDecode": "passed",
+    "aiFullDecode": "passed",
+    "sourceBrowserPlaybackToEnd": true,
+    "aiBrowserPlayback": "passed; both source and result reached ended=true in synchronized local browser player",
+    "photographicFinish": "demonstrated qualitatively",
+    "blueSkyAndSunshine": "demonstrated",
+    "exactArchitecturalFidelity": "not passed",
+    "imageSimilarityBenchmark": 45.7,
+    "changes": [
+      "Facade designs and building material details",
+      "Planting, benches, verge and paving",
+      "Apparent skyline size and spacing",
+      "Character clothing details and hairstyle"
+    ]
+  },
+  "comparison": {
+    "synchronized": true,
+    "sourceAndResultFrames": 96,
+    "comparedPanelFrames": 192,
+    "panelSsimMinimumRequirement": 0.97,
+    "panelSsimMeanRequirement": 0.99,
+    "status": "passed",
+    "cropping": false,
+    "retiming": false
+  },
+  "publication": {
+    "destination": "Existing public media release; application source not pushed",
+    "releaseUrl": "https://github.com/aasedor/CityPrompt/releases/tag/people-video-pilot-2026-10-21",
+    "verifiedRemoteDownloads": true,
+    "existingAssetsPreserved": 20,
+    "assets": [
+      {
+        "name": "08-CityPrompt-Downtown-Calgary-Neighbours.mp4",
+        "bytes": 5170022,
+        "sha256": "e8fbc35dff8b3ea9d5d0009dc08efef523ad25803dcb6ef4d7f493bf700954bf",
+        "url": "https://github.com/aasedor/CityPrompt/releases/download/people-video-pilot-2026-10-21/08-CityPrompt-Downtown-Calgary-Neighbours.mp4"
+      },
+      {
+        "name": "Compare-08-CityPrompt-Downtown-Calgary-Neighbours.mp4",
+        "bytes": 12616433,
+        "sha256": "ce9829de5b953e683674ff914c47ff2716f0ef5ed66d9f9d3c9f65756f003325",
+        "url": "https://github.com/aasedor/CityPrompt/releases/download/people-video-pilot-2026-10-21/Compare-08-CityPrompt-Downtown-Calgary-Neighbours.mp4"
+      },
+      {
+        "name": "Compare-08-CityPrompt-Downtown-Calgary-Neighbours.png",
+        "bytes": 3619285,
+        "sha256": "7a32e97da1d1f0c983f8a9076df7b32002e9482551007cf3fcd0484d30cd52a8",
+        "url": "https://github.com/aasedor/CityPrompt/releases/download/people-video-pilot-2026-10-21/Compare-08-CityPrompt-Downtown-Calgary-Neighbours.png"
+      },
+      {
+        "name": "08-CityPrompt-Downtown-Site.jpg",
+        "bytes": 362544,
+        "sha256": "01e115f9fc9436bb6802829f0a40d24feb1c3cbc20509a0e2f60f766d8431179",
+        "url": "https://github.com/aasedor/CityPrompt/releases/download/people-video-pilot-2026-10-21/08-CityPrompt-Downtown-Site.jpg"
+      },
+      {
+        "name": "SHA256SUMS-downtown.txt",
+        "bytes": 454,
+        "sha256": "36f147f5336f6efbdab8ba34aee0177df7e0610916d6953df53c852cad719780",
+        "url": "https://github.com/aasedor/CityPrompt/releases/download/people-video-pilot-2026-10-21/SHA256SUMS-downtown.txt"
+      }
+    ]
+  },
+  "limitations": [
+    "AI concept visualization rather than exact design validation.",
+    "Native people remain stylized; no pathfinding or crowd collision avoidance.",
+    "1080p delivery dimensions do not establish native model synthesis resolution.",
+    "Manual cleanup trial and performance results do not establish arbitrary-city or student-laptop suitability."
+  ],
+  "evidenceDirectory": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\qa",
+  "evidenceScreenshots": [
+    "urban-video-result-ui.jpg",
+    "urban-side-by-side-browser.jpg",
+    "urban-comparison-browser.png"
+  ]
+}

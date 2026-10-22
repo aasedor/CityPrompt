@@ -8,10 +8,12 @@ ledger before reaching this boundary.
 from __future__ import annotations
 
 import base64
+import asyncio
 import binascii
 import io
 from dataclasses import dataclass
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Awaitable, Callable, Iterable, Mapping, Sequence
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 import httpx
 from PIL import Image
@@ -20,9 +22,15 @@ OMNI_INTERACTIONS_URL = "https://generativelanguage.googleapis.com/v1beta/intera
 MAX_GUIDE_IMAGE_BYTES = 12 * 1024 * 1024
 MAX_ROUTE_IMAGE_BYTES = 36 * 1024 * 1024
 MAX_PREVIEW_VIDEO_BYTES = 24 * 1024 * 1024
+MAX_CHARACTER_REFERENCE_BYTES = 8 * 1024 * 1024
+MAX_CHARACTER_REFERENCE_EDGE = 4096
 MIN_GUIDE_IMAGE_EDGE = 640
 
 MOTION_PROMPTS: dict[str, str] = {
+    "people_follow": (
+        "Keep the primary walking subject's face and upper body recognizable as the camera tracks them "
+        "exactly as shown in the source. Preserve the subject's natural gait, ground contact and stable appearance."
+    ),
     "bicycle_ride": (
         "Create a stabilized forward-facing bicycle ride along the supplied route. Hold the camera 1.6 metres "
         "above the route surface with a natural 35 mm perspective and level verticals. Follow the travel "
@@ -60,6 +68,7 @@ class OmniVideoResult:
     interaction_id: str
     video_bytes: bytes
     mime_type: str
+    usage: dict | None = None
 
 
 @dataclass(frozen=True)
@@ -73,6 +82,105 @@ class OmniVideoContent:
 class PreviewVideo:
     data: bytes
     mime_type: str
+
+
+def decode_character_reference(value: str, declared_mime_type: str) -> GuideImage:
+    """Bound and fully decode one identity image before paid admission."""
+    encoded = value.split(",", 1)[1] if "," in value else value
+    if len(encoded) > 4 * ((MAX_CHARACTER_REFERENCE_BYTES + 2) // 3):
+        raise ValueError("The character reference exceeds the 8 MiB decoded limit.")
+    try:
+        data = base64.b64decode(encoded, validate=True)
+    except (binascii.Error, ValueError) as exc:
+        raise ValueError("The character reference is not valid base64 image data.") from exc
+    if not data:
+        raise ValueError("The character reference is empty.")
+    if len(data) > MAX_CHARACTER_REFERENCE_BYTES:
+        raise ValueError("The character reference exceeds the 8 MiB decoded limit.")
+    try:
+        with Image.open(io.BytesIO(data)) as image:
+            image_format = (image.format or "").upper()
+            if image_format not in {"PNG", "JPEG"}:
+                raise ValueError("The character reference must be PNG or JPEG.")
+            width, height = image.size
+            if not (0 < width <= MAX_CHARACTER_REFERENCE_EDGE and 0 < height <= MAX_CHARACTER_REFERENCE_EDGE):
+                raise ValueError("The character reference must have nonzero dimensions no greater than 4096 px.")
+            if getattr(image, "n_frames", 1) != 1:
+                raise ValueError("The character reference must contain one still image.")
+            image.verify()
+        with Image.open(io.BytesIO(data)) as image:
+            image.load()  # Verify real pixels too, including truncated JPEG scans.
+    except ValueError:
+        raise
+    except Exception as exc:
+        raise ValueError("The character reference is not a readable PNG or JPEG.") from exc
+    mime_type = "image/png" if image_format == "PNG" else "image/jpeg"
+    if mime_type != declared_mime_type:
+        raise ValueError("The character reference MIME type does not match its image content.")
+    return GuideImage(data=data, mime_type=mime_type, width=width, height=height)
+
+
+def build_character_reference_prompt(prompt: str) -> str:
+    """Declare separate Omni source-video and identity-image roles."""
+    # Official Omni guidance: ai.google.dev/gemini-api/docs/omni#prompt-guide
+    prefix = "[# Sources <VIDEO_0>@Video1] [# References <IMAGE_REF_0>@Image1]"
+    direction = (
+        "Use Image1 only for the walking subject's identity and appearance, including face, hair and clothing. "
+        "Preserve Video1's camera, timing, motion, actor positions and architecture. "
+        "Do not use the reference image as a first frame, background or camera layout."
+    )
+    if prompt.startswith(prefix + " ") and prompt.endswith(" " + direction):
+        return prompt
+    return f"{prefix} {prompt} {direction}"
+
+
+def build_architecture_reference_prompt(prompt: str, count: int, *, has_character: bool = False) -> str:
+    """Bind reviewed scene images to architecture, retaining the edit video.
+
+    References are not first/last-frame generation and do not impose a new
+    camera. Reapplying this at the transport boundary must be idempotent.
+    """
+    if count not in (1, 2):
+        raise ValueError("Architectural references require one or two scene images.")
+    total = count + int(has_character)
+    tags = " ".join(f"<IMAGE_REF_{index}>@Image{index + 1}" for index in range(total))
+    prefix = f"[# Sources <VIDEO_0>@Video1] [# References {tags}]"
+    scene_images = " and ".join(f"Image{index + 1}" for index in range(int(has_character), total))
+    identity = (
+        "Use Image1 only for the walking subject's identity and appearance. " if has_character else ""
+    )
+    direction = (
+        identity + f"Use {scene_images} only as architectural identity references, not as first or last frames. "
+        "Retain the shown buildings, roof forms, facade openings and skyline landmarks. "
+        "Video1 controls the camera path, timing and motion. "
+        "Follow the explicit scene edits requested above; otherwise retain its framing and apparent building sizes. "
+        "Preserve everything outside the requested edit. "
+        "Keep the photographic finish; do not turn the references into a collage or a new shot."
+    )
+    if prompt.startswith(prefix + " ") and prompt.endswith(" " + direction):
+        return prompt
+    return f"{prefix} {prompt} {direction}"
+
+
+def build_appearance_reference_prompt(prompt: str, count: int, *, has_character: bool = False) -> str:
+    """Keep the motion video authoritative while separate images guide its finish."""
+    if count not in (1, 2):
+        raise ValueError("Appearance references require one or two scene images.")
+    total = count + int(has_character)
+    tags = " ".join(f"<IMAGE_REF_{index}>@Image{index + 1}" for index in range(total))
+    prefix = f"[# Sources <VIDEO_0>@Video1] [# References {tags}]"
+    scene_images = " and ".join(f"Image{index + 1}" for index in range(int(has_character), total))
+    identity = "Use Image1 only for the walking subject's identity and appearance. " if has_character else ""
+    direction = (
+        identity + f"Use {scene_images} only as appearance references for photographic materials, lighting "
+        "and surface detail, not as first or last frames. "
+        "Video1 controls the camera path, timing, motion, scene layout, building silhouettes and apparent sizes. "
+        "Keep every building and skyline landmark in its original position; do not copy a reference viewpoint "
+        "or introduce its objects. One continuous photographic shot."
+    )
+    if prompt.startswith(prefix + " ") and prompt.endswith(" " + direction):
+        return prompt
+    return f"{prefix} {prompt} {direction}"
 
 
 def decode_guide_image(value: str) -> GuideImage:
@@ -159,8 +267,38 @@ def build_cinematic_prompt(
     control_mode: str = "single_frame",
     keyframe_count: int = 1,
     provider: str = "omni",
+    custom_prompt: str = "",
+    use_custom_prompt_only: bool = False,
 ) -> str:
-    """Build a motion-only prompt used for both preflight and generation."""
+    """Build the shared preflight/generation prompt for the selected control mode."""
+    if camera_motion == "people_follow" and (provider != "omni" or control_mode != "preview_video"):
+        raise ValueError("People-follow tracking requires Omni preview video.")
+    if use_custom_prompt_only:
+        if provider != "omni" or control_mode != "preview_video":
+            raise ValueError("Custom-prompt-only mode requires Omni preview video.")
+        if not custom_prompt.strip():
+            raise ValueError("Custom-prompt-only mode requires a non-empty prompt.")
+        return custom_prompt.strip()
+    if provider == "omni" and control_mode == "preview_video":
+        # Google recommends short edits, rather than a competing storyboard.
+        # The source video already contains the inventory and camera motion;
+        # keep the full scene contract in attempt metadata, not in this prompt.
+        detail = custom_prompt.strip()
+        return " ".join([
+            "Transform this rough 3D source into convincing live-action architectural footage. "
+            "Use the source as a camera and layout guide, not a target rendering style. Keep it one continuous shot.",
+            "Match the source video's camera path, framing, speed and timing exactly."
+            + (" " + MOTION_PROMPTS["people_follow"] if camera_motion == "people_follow" else ""),
+            f"Requested scene detail: {detail}" if detail else
+            "Keep existing people and traffic as shown; do not add new actors.",
+            "Preserve building footprints, heights, roof forms, window openings, parks and street layout. "
+            "Replace viewport shading with physically plausible materials, natural daylight, contact shadows, "
+            "reflections, surface texture and lifelike planting detail. "
+            "Do not enclose open façades or add connections between buildings. "
+            "Keep objects grounded. Any requested people or animals "
+            "must move naturally on existing paths without changing the design.",
+            "No scene cuts, captions, logos or visible route graphics.",
+        ])
     prompt_scene_brief = scene_brief.strip()
     motion_prompt = MOTION_PROMPTS[camera_motion]
     route_description = describe_route(route_points)
@@ -393,7 +531,18 @@ def build_omni_payload(
     route_keyframes: Sequence[tuple[str, str]] | None = None,
     preview_video_base64: str | None = None,
     preview_video_mime_type: str | None = None,
+    character_reference_base64: str | None = None,
+    character_reference_mime_type: str = "image/png",
+    render_quality: str = "draft",
+    omni_reference_mode: str = "video_only",
 ) -> dict[str, Any]:
+    if character_reference_base64 is not None and control_mode != "preview_video":
+        raise ValueError("Character references require Omni preview video.")
+    if omni_reference_mode not in {"video_only", "architecture_references", "appearance_references"}:
+        raise ValueError("Unknown Omni reference mode.")
+    reference_label = "Appearance" if omni_reference_mode == "appearance_references" else "Architectural"
+    if omni_reference_mode != "video_only" and control_mode != "preview_video":
+        raise ValueError(f"{reference_label} references require Omni preview video.")
     if control_mode == "multi_keyframe":
         if not route_keyframes:
             raise ValueError("Multi-keyframe video generation requires route keyframes.")
@@ -416,6 +565,24 @@ def build_omni_payload(
                 "mime_type": preview_video_mime_type,
             }
         ]
+        if character_reference_base64 is not None:
+            reference = decode_character_reference(character_reference_base64, character_reference_mime_type)
+            input_items.append({"type": "image", "data": base64.b64encode(reference.data).decode("ascii"),
+                                "mime_type": reference.mime_type})
+        if omni_reference_mode in {"architecture_references", "appearance_references"}:
+            if not route_keyframes or len(route_keyframes) not in (1, 2):
+                raise ValueError(f"{reference_label} references require one or two scene images.")
+            for value, mime_type in route_keyframes:
+                frame = decode_guide_image(value)
+                if frame.mime_type != mime_type:
+                    raise ValueError(f"The {reference_label.lower()} reference MIME type does not match its image content.")
+                input_items.append({"type": "image", "data": base64.b64encode(frame.data).decode("ascii"),
+                                    "mime_type": frame.mime_type})
+            reference_prompt = (build_appearance_reference_prompt if omni_reference_mode == "appearance_references"
+                                else build_architecture_reference_prompt)
+            prompt = reference_prompt(prompt, len(route_keyframes), has_character=character_reference_base64 is not None)
+        elif character_reference_base64 is not None:
+            prompt = build_character_reference_prompt(prompt)
         task = "edit"
     else:
         encoded = guide_base64.split(",", 1)[1] if "," in guide_base64 else guide_base64
@@ -423,7 +590,8 @@ def build_omni_payload(
         task = "image_to_video"
     input_items.append({"type": "text", "text": prompt})
     response_format = (
-        {"type": "video"}
+        ({"type": "video", "resolution": "1080p" if render_quality == "high" else "720p", "delivery": "uri"}
+         if model == "gemini-omni-1.1-flash" else {"type": "video"})
         if control_mode == "preview_video"
         else {
             "type": "video",
@@ -438,7 +606,8 @@ def build_omni_payload(
         "generation_config": {"video_config": {"task": task}},
         "response_format": response_format,
         "background": False,
-        "store": False,
+        # Google requires retained media for URI delivery, including edit jobs.
+        "store": response_format.get("delivery") == "uri",
         "stream": False,
     }
 
@@ -488,20 +657,26 @@ def parse_omni_video(payload: Mapping[str, Any]) -> OmniVideoResult:
         interaction_id=str(payload.get("id") or ""),
         video_bytes=video_bytes,
         mime_type=output.mime_type,
+        usage=dict(payload["usage"]) if isinstance(payload.get("usage"), Mapping) else None,
     )
 
 
 def _download_url(uri: str) -> str:
     """Turn a Gemini Files metadata URI into its media download endpoint."""
-    if "generativelanguage.googleapis.com/v1beta/files/" in uri and "/download/v1beta/" not in uri:
-        uri = uri.replace(
-            "generativelanguage.googleapis.com/v1beta/files/",
-            "generativelanguage.googleapis.com/download/v1beta/files/",
-        )
-        if ":download" not in uri:
-            uri = f"{uri}:download"
-        return f"{uri}{'&' if '?' in uri else '?'}alt=media"
-    return uri
+    parsed = urlsplit(uri)
+    if (parsed.scheme != "https" or parsed.hostname != "generativelanguage.googleapis.com"
+            or parsed.username or parsed.password or parsed.port not in (None, 443)):
+        raise ValueError("Unsupported Google video download endpoint; no API key was forwarded.")
+    path = parsed.path
+    if path.startswith("/v1beta/files/"):
+        path = "/download" + path
+    if not path.startswith("/download/v1beta/files/"):
+        raise ValueError("Unsupported Google video download path; no API key was forwarded.")
+    if not path.endswith(":download"):
+        path += ":download"
+    query = dict(parse_qsl(parsed.query))
+    query["alt"] = "media"
+    return urlunsplit(("https", parsed.netloc, path, urlencode(query), ""))
 
 
 async def request_omni_video_once(
@@ -509,6 +684,7 @@ async def request_omni_video_once(
     api_key: str,
     payload: Mapping[str, Any],
     timeout_seconds: int,
+    on_interaction: Callable[[str], Awaitable[None]] | None = None,
 ) -> OmniVideoResult:
     """Issue exactly one provider POST. Transport retries are explicitly disabled."""
     timeout = httpx.Timeout(timeout_seconds, connect=20.0)
@@ -523,16 +699,36 @@ async def request_omni_video_once(
             detail = response.text.replace(api_key, "[redacted]")[:800]
             raise RuntimeError(f"Gemini Omni HTTP {response.status_code}: {detail}")
         interaction_payload = response.json()
+        interaction_id = str(interaction_payload.get("id") or "")
+        if interaction_id and on_interaction:
+            await on_interaction(interaction_id)
         output = find_omni_video_content(interaction_payload)
         if output.data:
             return parse_omni_video(interaction_payload)
         if not output.uri or not output.uri.startswith("https://"):
             raise ValueError("Gemini Omni returned an unsupported non-HTTPS video URI.")
 
+        download_url = _download_url(output.uri)
+        path = urlsplit(output.uri).path
+        if "/files/" in path:
+            file_id = path.split("/files/", 1)[1].split(":", 1)[0]
+            metadata_url = f"https://generativelanguage.googleapis.com/v1beta/files/{file_id}"
+            for poll in range(20):
+                metadata = await client.get(metadata_url, headers={"x-goog-api-key": api_key})
+                if metadata.status_code >= 400:
+                    raise RuntimeError(f"Gemini video status HTTP {metadata.status_code}; generation will not be repeated.")
+                state = metadata.json().get("state")
+                if state == "ACTIVE":
+                    break
+                if state == "FAILED":
+                    raise RuntimeError("Google could not process the generated video; generation will not be repeated.")
+                if poll == 19:
+                    raise RuntimeError("Google video is still processing; its interaction ID was retained. Generation will not be repeated.")
+                await asyncio.sleep(3)
         # This GET retrieves the already-created media; it is not a second
         # generation submission and uses the same no-retry transport.
         download = await client.get(
-            _download_url(output.uri),
+            download_url,
             headers={"x-goog-api-key": api_key},
         )
         if download.status_code >= 400:
@@ -544,4 +740,5 @@ async def request_omni_video_once(
             interaction_id=str(interaction_payload.get("id") or ""),
             video_bytes=download.content,
             mime_type=download.headers.get("content-type", output.mime_type).split(";", 1)[0],
+            usage=dict(interaction_payload["usage"]) if isinstance(interaction_payload.get("usage"), Mapping) else None,
         )

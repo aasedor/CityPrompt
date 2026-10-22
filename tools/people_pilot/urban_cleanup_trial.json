@@ -1,0 +1,81 @@
+{
+  "schema": "cityprompt.urban-cleanup-trial@1",
+  "date": "2026-10-21",
+  "localOnly": true,
+  "productionPublished": false,
+  "branch": "codex/urban-video-cleanup-pilot",
+  "baseCommit": "b573c42c65e858af21f4b22789fdb76acab828c0",
+  "design": {
+    "operation": "Manual bounded 3D fragment-discard volumes on Google tile materials",
+    "maxBoxes": 4,
+    "sizeRangeMetres": [0.2, 20],
+    "position": "WGS84 longitude/latitude and absolute ellipsoid elevation",
+    "rotation": "Yaw in the local east/north frame",
+    "storage": "Existing site_boundary.properties.map_cleanup version 1",
+    "recovery": "Restore/remove per box and existing zone undo/redo",
+    "entryPoint": "Local development: Design, More Tools, Map cleanup pilot",
+    "sourceBytesModified": false,
+    "placedModelsModified": false,
+    "alternateContextProvidersModified": false,
+    "automaticDetection": false
+  },
+  "browserTrial": {
+    "projectId": "39fdd499-d06f-4ce2-9ad4-2a7dbb756ab8",
+    "environment": "Local Edge desktop, Google 3D tiles",
+    "target": "Elevated distorted lamp fragment outside the cleared site",
+    "boxMetres": [2, 2, 4],
+    "apply": "passed",
+    "restore": "passed after cached shader uniform fix",
+    "undo": "passed",
+    "redo": "passed",
+    "savedMetadataReload": "passed",
+    "pixelComparison": {
+      "scope": "Same-camera saved browser screenshots; JPEG channel difference >20",
+      "fragmentRoi": [755, 535, 805, 600],
+      "fragmentChangedPixels": 52,
+      "roadRoi": [300, 700, 1300, 1100],
+      "roadChangedPixels": 0,
+      "facadeRoi": [300, 480, 580, 545],
+      "facadeChangedPixels": 0,
+      "limitations": "A small distant fragment; this does not establish arbitrary-city cleanup or laptop performance."
+    }
+  },
+  "verification": {
+    "scopedVitest": {"files": 5, "passed": 58, "failed": 0},
+    "typeCheck": "passed",
+    "configuredViteBuild": "passed; external output, copyPublicDir false",
+    "scopedEslint": "passed",
+    "diffCheck": "passed",
+    "independentReview": "Two Important findings fixed and re-reviewed; no remaining findings",
+    "fullFrontendSuiteBeforeFinalRegressionAdditions": {
+      "passed": 3512,
+      "failed": 2,
+      "filesPassed": 422,
+      "filesFailed": 2,
+      "preExistingUntouchedFailures": [
+        "detailCatalogue.test.ts: historical item-count expectation omits three previously added people",
+        "flexibleParkCard.test.tsx: historical collapsed-card expectation requires text now shown in expanded details"
+      ]
+    },
+    "studentLaptopBenchmark": "not tested",
+    "mobileBenchmark": "not tested"
+  },
+  "evidenceDirectory": "C:/dev-artifacts/CityPrompt/people-video-pilot-2026-10-21/qa",
+  "evidence": [
+    "map-cleanup-visible-hidden.jpg",
+    "map-cleanup-visible-restored.jpg",
+    "map-cleanup-visible-undo.jpg",
+    "map-cleanup-visible-redo.jpg",
+    "urban-staged-skyline.jpg",
+    "urban-recipe-validation.json",
+    "cleanup-full-tests.log",
+    "build.log"
+  ],
+  "limitations": [
+    "Manual small-volume editing, not semantic object deletion or Google mesh repair.",
+    "Any Google geometry inside a box is hidden; operator must avoid wanted context and the road.",
+    "No invented replacement geometry is created in the cleared volume.",
+    "The pilot controls are intentionally local-development only.",
+    "Performance is bounded to four boxes but has not been benchmarked on student laptops."
+  ]
+}

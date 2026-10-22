@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { useNarrowViewport } from '@/hooks/useNarrowViewport';
 import { createPortal } from 'react-dom';
-import { Check, FileText, HelpCircle, Layers, Loader2, RotateCw, Users, X } from 'lucide-react';
+import { Check, FileText, HelpCircle, Layers, Loader2, Maximize2, Minimize2, RotateCw, Users, X } from 'lucide-react';
 
 export function StudioToolSheet({navigation,children}:{navigation:ReactNode;children:ReactNode}) {
   const narrow=useNarrowViewport();
@@ -54,7 +54,10 @@ export function StudioSaveStatus({ saving, draftCount, loadError, onRetry, onRel
   return <p role="status" className="flex items-center gap-2 px-1 py-2 text-sm text-slate-700"><Check size={15} /> Drawings saved</p>;
 }
 
-export function StudioDialog({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
+export function StudioDialog({ title, onClose, children, layout = 'default', expanded = false, onToggleExpand }: {
+  title: string; onClose: () => void; children: ReactNode;
+  layout?: 'default' | 'catalogue'; expanded?: boolean; onToggleExpand?: () => void;
+}) {
   const panel = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -73,13 +76,24 @@ export function StudioDialog({ title, onClose, children }: { title: string; onCl
     document.addEventListener('keydown', keyDown, true);
     return () => { document.removeEventListener('keydown', keyDown, true); previous?.focus(); };
   }, [onClose]);
-  return createPortal(<div className="fixed inset-0 z-[220] flex items-center justify-center bg-slate-950/60 p-3 backdrop-blur-sm sm:p-6" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
-    <div ref={panel} tabIndex={-1} role="dialog" aria-modal="true" aria-label={title} className="max-h-[94dvh] w-full max-w-5xl overflow-y-auto rounded-2xl bg-white shadow-2xl outline-none">
-      <header className="sticky top-0 z-10 flex items-center justify-between border-b bg-white px-5 py-3">
+  const catalogue = layout === 'catalogue';
+  return createPortal(<div className={`fixed inset-0 z-[220] flex items-center justify-center bg-slate-950/60 backdrop-blur-sm ${expanded ? '' : catalogue ? 'p-2 sm:p-4' : 'p-3 sm:p-6'}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+    <div ref={panel} tabIndex={-1} role="dialog" aria-modal="true" aria-label={title} className={`${catalogue
+      ? `flex w-full flex-col overflow-hidden ${expanded ? 'h-dvh max-w-none' : 'h-[94dvh] max-w-[1500px] rounded-2xl'}`
+      : 'max-h-[94dvh] w-full max-w-5xl overflow-y-auto rounded-2xl'} bg-white shadow-2xl outline-none`}>
+      <header className={`sticky top-0 z-10 flex shrink-0 items-center justify-between gap-2 border-b bg-white ${catalogue ? 'px-4 py-2' : 'px-5 py-3'}`}>
         <h1 className="text-lg font-semibold text-slate-900">{title}</h1>
+        <div className="flex items-center gap-1">
+        {onToggleExpand && <button type="button" onClick={onToggleExpand} aria-expanded={expanded}
+          aria-label={expanded ? 'Restore catalogue window' : 'Expand catalogue window'}
+          className="flex min-h-11 items-center gap-2 rounded-lg border border-slate-300 px-3 text-xs font-semibold text-slate-700 hover:bg-lime-100">
+          {expanded ? <Minimize2 size={18} aria-hidden="true" /> : <Maximize2 size={18} aria-hidden="true" />}
+          <span className="hidden sm:inline">{expanded ? 'Restore' : 'Expand'}</span>
+        </button>}
         <button onClick={onClose} aria-label={`Close ${title.toLowerCase()}`} className="flex h-11 w-11 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100"><X size={22} /></button>
+        </div>
       </header>
-      <div className="p-3 sm:p-6">{children}</div>
+      <div className={catalogue ? 'min-h-0 flex-1 p-3 sm:p-4' : 'p-3 sm:p-6'}>{children}</div>
     </div>
   </div>, document.body);
 }

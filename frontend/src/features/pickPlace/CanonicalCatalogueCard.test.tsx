@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom/vitest';
 import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import { afterEach, expect, it, vi } from 'vitest';
 import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
@@ -30,9 +31,31 @@ it('shows the curated copy and variant name while placing the unchanged registry
   const presentation = cataloguePresentationFor(asset.id)!;
   const onPlacement = vi.fn();
   render(<CanonicalCatalogueCard choice={choice} selected={null} onPlacement={onPlacement} onDraw={vi.fn()}/>);
+  fireEvent.click(screen.getByRole('button', { name: `Expand details for ${presentation.label}` }));
   expect(screen.getByText(presentation.description)).toBeDefined();
   expect(screen.queryByText(asset.description!)).toBeNull();
   expect(screen.getByRole('option', { name: presentation.label })).toBeDefined();
-  fireEvent.click(screen.getByRole('button', { name: /Choose & place/ }));
+  fireEvent.click(screen.getByRole('button', { name: 'Choose & place' }));
+  expect(onPlacement).toHaveBeenCalledWith(asset);
+});
+
+it.each(['building', 'park_plaza', 'street_pathway'] as const)('keeps %s browsing visual and reveals information without placing', domain => {
+  const choice = CANONICAL_CHOICES.find(item => item.domain === domain && item.placements.length)!;
+  const asset = choice.placements[0];
+  const presentation = cataloguePresentationFor(asset.id);
+  const label = presentation?.label ?? asset.label;
+  const description = presentation?.description ?? asset.description!;
+  const onPlacement = vi.fn(), onDraw = vi.fn();
+  render(<CanonicalCatalogueCard choice={choice} selected={null} onPlacement={onPlacement} onDraw={onDraw}/>);
+  expect(screen.queryByText(description)).toBeNull();
+  const expand = screen.getByRole('button', { name: `Expand details for ${label}` });
+  expect(expand).toHaveAttribute('aria-expanded', 'false');
+  fireEvent.click(expand);
+  expect(screen.getByText(description)).toBeVisible();
+  expect(onPlacement).not.toHaveBeenCalled();
+  expect(onDraw).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole('button', { name: `Collapse details for ${label}` }));
+  expect(screen.queryByText(description)).toBeNull();
+  fireEvent.click(screen.getByRole('button', { name: name => name.startsWith(`${label} · Choose &`) }));
   expect(onPlacement).toHaveBeenCalledWith(asset);
 });

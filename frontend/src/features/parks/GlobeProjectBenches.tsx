@@ -12,6 +12,7 @@ import { Raycaster } from "three";
 import { Html } from '@react-three/drei';
 import type { SiteZone } from "@/types";
 import { DetailModelInstances } from "./DetailModelInstances";
+import { PeopleModelInstances } from '@/features/people/PeopleModel';
 import type { DetailPlacement } from "./detailInstances";
 import { useSharedSiteGround } from "@/components/viewer/globe/SharedSiteGroundProvider";
 import { authoredCameraGround } from "@/components/viewer/globe/authoredCameraGround";
@@ -89,7 +90,8 @@ export function GlobeProjectBenches({
     for (const b of items) {
       const measured =
         ground.heightAt(b.lng, b.lat) ?? sampled[keyFor(b)] ?? fallbackHeight;
-      const support=detailAsset(b.variant).safety?detailPlacementSupport(b.variant,b,zones.map(zone=>zone.id)):null;
+      const asset = detailAsset(b.variant);
+      const support=(asset.safety || asset.people)?detailPlacementSupport(b.variant,b,zones.map(zone=>zone.id)):null;
       if(support&&!support.ok){unsupported.push(b.id);continue;}
       const height = support?.ok && support.height!==undefined ? support.height : authoredCameraGround(zones, b.lng, b.lat, measured);
       const group = groups.get(b.variant) ?? [];
@@ -109,7 +111,9 @@ export function GlobeProjectBenches({
       </div></Html>}
       {batches.map(([asset, placements]) => (
         <Suspense key={asset} fallback={null}>
-          <DetailModelInstances asset={asset} placements={placements} selectedId={editing?.id} />
+          {detailAsset(asset).people
+            ? <PeopleModelInstances asset={asset} placements={placements} selectedId={editing?.id} />
+            : <DetailModelInstances asset={asset} placements={placements} selectedId={editing?.id} />}
         </Suspense>
       ))}
     </group>

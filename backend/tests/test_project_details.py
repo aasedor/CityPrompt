@@ -201,6 +201,7 @@ def test_expanded_catalogue_accepts_existing_kit_parts_and_matches_frontend():
     choices += json.loads((root / 'frontend/src/features/parks/trafficSafetyCatalogue.json').read_text())
     # Local preview IDs must round-trip before their public picker gate is lifted.
     choices += json.loads((root / 'frontend/src/features/parks/calgarySafetyCatalogue.json').read_text())
+    choices += json.loads((root / 'frontend/src/features/people/peopleCatalogue.json').read_text())
     assert set(endpoint._DETAIL_MODELS['trees']) == {'oak-0','oak-1','oak-2'} | {c['id'] for c in choices if c['kind'] == 'tree'}
     assert set(endpoint._DETAIL_MODELS['props']) == {'picnic-table-accessible','dual-stream-bin','bike-rack-three-stall','drinking-fountain-accessible','boulders','split-rail'} | {c['id'] for c in choices if c['kind'] == 'object'}
     for choice in choices:

@@ -20,7 +20,8 @@ LFS = b"version https://git-lfs.github.com/spec/v1"
 DETAIL_MANIFESTS = ("frontend/src/features/parks/detailCatalogueExtras.json",
                     "frontend/src/features/parks/recoveredDetails.json",
                     "frontend/src/features/parks/trafficSafetyCatalogue.json",
-                    "frontend/src/features/parks/calgarySafetyCatalogue.json")
+                    "frontend/src/features/parks/calgarySafetyCatalogue.json",
+                    "frontend/src/features/people/peopleCatalogue.json")
 SOURCE_MEDIA_PREFIX = "frontend/src/features/landing/media/"
 
 

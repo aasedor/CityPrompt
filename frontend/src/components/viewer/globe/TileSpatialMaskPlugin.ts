@@ -8,6 +8,7 @@ import {
   metersPerDegLon,
 } from '../mapEngine/geoUtils';
 import { normalizeTileMaskRing, pointInTileMaskRing } from './tileMaskGeometry';
+import { validMapCleanupBoxes, type MapCleanupBox } from './mapCleanup';
 
 const MAX_SITE_MASKS = 8;
 const MAX_SITE_EDGES = 32;
@@ -22,6 +23,8 @@ export interface TileSpatialMaskConfig {
   maskCount: number;
   minHeight: number;
   maxHeight: number;
+  cleanupCenters?: THREE.Vector4[];
+  cleanupHalfSizes?: THREE.Vector3[];
   cacheKey: string;
 }
 
@@ -50,6 +53,31 @@ interface SpatialPatchState {
   config: TileSpatialMaskConfig;
 }
 
+// Keep the uniform objects for the material's lifetime. Three may reuse a
+// previously compiled program without calling onBeforeCompile after undo.
+const spatialUniforms = new WeakMap<THREE.Material, Record<string, THREE.IUniform>>();
+
+function updateSpatialUniforms(material: THREE.Material, config: TileSpatialMaskConfig) {
+  const uniforms = spatialUniforms.get(material) ?? {};
+  const values: Record<string, unknown> = {
+    siteMaskWorldToLocal: config.worldToLocal,
+    siteMaskEdges: Array.from({ length: MAX_SITE_EDGES }, (_, i) => config.edges[i] ?? new THREE.Vector4()),
+    siteMaskEdgeCount: config.edges.length,
+    siteMaskRanges: Array.from({ length: MAX_SITE_MASKS }, (_, i) => config.maskRanges[i] ?? new THREE.Vector2()),
+    siteMaskCount: config.maskCount,
+    siteMaskHeightRange: new THREE.Vector2(config.minHeight, config.maxHeight),
+    mapCleanupCount: config.cleanupCenters?.length ?? 0,
+    mapCleanupCenters: Array.from({ length: 4 }, (_, i) => config.cleanupCenters?.[i] ?? new THREE.Vector4()),
+    mapCleanupHalfSizes: Array.from({ length: 4 }, (_, i) => config.cleanupHalfSizes?.[i] ?? new THREE.Vector3()),
+  };
+  for (const [key, value] of Object.entries(values)) {
+    if (uniforms[key]) uniforms[key].value = value;
+    else uniforms[key] = { value };
+  }
+  spatialUniforms.set(material, uniforms);
+  return uniforms;
+}
+
 export function createTileSpatialMaskConfig(
   boundary: SiteZone,
   terrainHeight: number,
@@ -64,10 +92,12 @@ export function createTileSpatialMaskConfig(
 export function createTileSpatialMaskSetConfig(
   boundaries: readonly SiteZone[],
   terrainHeight: number,
+  cleanup: readonly MapCleanupBox[] = [],
 ): TileSpatialMaskConfig | null {
   const usable = boundaries.filter(shouldUseSpatialTileMask);
-  if (usable.length === 0 || usable.length > MAX_SITE_MASKS || !Number.isFinite(terrainHeight)) return null;
-  const allCoordinates = usable.flatMap((boundary) => boundary.coordinates);
+  const boxes = validMapCleanupBoxes(cleanup).filter(box => box.enabled);
+  if ((!usable.length && !boxes.length) || usable.length > MAX_SITE_MASKS || !Number.isFinite(terrainHeight)) return null;
+  const allCoordinates = [...usable.flatMap((boundary) => boundary.coordinates), ...boxes.map(box => [box.lng, box.lat])];
   if (allCoordinates.some(([lng, lat]) => !Number.isFinite(lng) || !Number.isFinite(lat))) return null;
   const centroid = computeCentroid(allCoordinates);
   const mPerLon = metersPerDegLon(centroid[1]);
@@ -100,6 +130,13 @@ export function createTileSpatialMaskSetConfig(
     localToWorld,
   );
   const worldToLocal = localToWorld.clone().invert();
+  const cleanupCenters = boxes.map(box => {
+    const position = new THREE.Vector3();
+    WGS84_ELLIPSOID.getCartographicToPosition(box.lat * DEG_TO_RAD, box.lng * DEG_TO_RAD, box.altitude, position);
+    position.applyMatrix4(worldToLocal);
+    return new THREE.Vector4(position.x, position.y, position.z, box.yaw * DEG_TO_RAD);
+  });
+  const cleanupHalfSizes = boxes.map(box => new THREE.Vector3(box.width / 2, box.depth / 2, box.height / 2));
   // Google photogrammetry and the project terrain can differ by several dozen
   // metres because they do not always use the same vertical datum. World-space
   // fragment clipping does not create the projected side-wall artefacts of the
@@ -115,6 +152,7 @@ export function createTileSpatialMaskSetConfig(
     terrainHeight.toFixed(2),
     ...maskRanges.flatMap((range) => [range.x, range.y]),
     ...edges.flatMap((edge) => [edge.x, edge.y, edge.z, edge.w].map((value) => value.toFixed(6))),
+    ...boxes.map(box => JSON.stringify(box)),
   ].join(':');
   return {
     worldToLocal,
@@ -123,6 +161,8 @@ export function createTileSpatialMaskSetConfig(
     maskCount: maskRanges.length,
     minHeight,
     maxHeight,
+    cleanupCenters,
+    cleanupHalfSizes,
     cacheKey,
   };
 }
@@ -131,13 +171,19 @@ export function isPointInsideSpatialMask(
   point: { x: number; y: number; z: number },
   config: TileSpatialMaskConfig,
 ): boolean {
-  return point.z >= config.minHeight
+  return (point.z >= config.minHeight
     && point.z <= config.maxHeight
     && config.maskRanges.some((range) => (
       pointInTileMaskRing(point, config.edges
         .slice(range.x, range.x + range.y)
         .map((edge) => ({ x: edge.x, y: edge.y })))
-    ));
+    ))) || (config.cleanupCenters ?? []).some((center, index) => {
+      const dx = point.x - center.x, dy = point.y - center.y;
+      const half = config.cleanupHalfSizes![index];
+      return Math.abs(dx * Math.cos(center.w) + dy * Math.sin(center.w)) <= half.x
+        && Math.abs(-dx * Math.sin(center.w) + dy * Math.cos(center.w)) <= half.y
+        && Math.abs(point.z - center.z) <= half.z;
+    });
 }
 
 export function patchMaterialForSpatialMask(
@@ -154,33 +200,17 @@ export function patchMaterialForSpatialMask(
     material.userData[SPATIAL_PATCH_STATE_KEY] = state;
   }
   state.config = config;
+  const uniforms = updateSpatialUniforms(material, config);
 
   const previousOnBeforeCompile = state.onBeforeCompile;
   const previousCacheKey = state.customProgramCacheKey;
   material.onBeforeCompile = (shader, renderer) => {
     previousOnBeforeCompile.call(material, shader, renderer);
-    shader.uniforms.siteMaskWorldToLocal = { value: config.worldToLocal };
     // Three.js uploads GLSL vector arrays at their declared length. Supplying
     // only the active parcel edges leaves undefined entries and can lose the
     // WebGL context while flattening the uniform, so always pad to the fixed
     // shader capacity and use the count uniform to ignore the padding.
-    shader.uniforms.siteMaskEdges = {
-      value: Array.from(
-        { length: MAX_SITE_EDGES },
-        (_, index) => config.edges[index] ?? new THREE.Vector4(),
-      ),
-    };
-    shader.uniforms.siteMaskEdgeCount = { value: config.edges.length };
-    shader.uniforms.siteMaskRanges = {
-      value: Array.from(
-        { length: MAX_SITE_MASKS },
-        (_, index) => config.maskRanges[index] ?? new THREE.Vector2(),
-      ),
-    };
-    shader.uniforms.siteMaskCount = { value: config.maskCount };
-    shader.uniforms.siteMaskHeightRange = {
-      value: new THREE.Vector2(config.minHeight, config.maxHeight),
-    };
+    Object.assign(shader.uniforms, uniforms);
     shader.vertexShader = shader.vertexShader
       .replace(
         '#include <common>',
@@ -221,6 +251,11 @@ export function inheritTileSpatialMask(source: THREE.Material, target: THREE.Mat
 export function unpatchMaterialSpatialMask(material: THREE.Material): void {
   const state = material.userData[SPATIAL_PATCH_STATE_KEY] as SpatialPatchState | undefined;
   if (!state) return;
+  const uniforms = spatialUniforms.get(material);
+  if (uniforms) {
+    uniforms.siteMaskCount.value = 0;
+    uniforms.mapCleanupCount.value = 0;
+  }
   material.onBeforeCompile = state.onBeforeCompile;
   material.customProgramCacheKey = state.customProgramCacheKey;
   delete material.userData[SPATIAL_PATCH_STATE_KEY];

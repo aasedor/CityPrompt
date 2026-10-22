@@ -154,5 +154,10 @@
   "claude_montreal_second_empire_civic": "/archetypes/buildings/montreal-second-empire-civic/variant_0.png",
   "standalone_narrow_sidewalk_v1": "/archetypes/streets/standalone-sidewalks/standalone_narrow_sidewalk_v1.png",
   "standalone_neighbourhood_sidewalk_v1": "/archetypes/streets/standalone-sidewalks/standalone_neighbourhood_sidewalk_v1.png",
-  "standalone_urban_sidewalk_v1": "/archetypes/streets/standalone-sidewalks/standalone_urban_sidewalk_v1.png"
+  "standalone_urban_sidewalk_v1": "/archetypes/streets/standalone-sidewalks/standalone_urban_sidewalk_v1.png",
+  "parkade_classic_concrete": "/archetypes/buildings/parkade-classic-concrete/front.png",
+  "parkade_urban_brick": "/archetypes/buildings/parkade-urban-brick/front.png",
+  "parkade_green_terraces": "/archetypes/buildings/parkade-green-terraces/front.png",
+  "parkade_solar_ribbon": "/archetypes/buildings/parkade-solar-ribbon/front.png",
+  "parkade_mobility_courtyard": "/archetypes/buildings/parkade-mobility-courtyard/front.png"
 }

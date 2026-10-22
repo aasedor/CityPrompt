@@ -191,6 +191,23 @@ describe('Direct 3D presentation adapter', () => {
     vi.mocked(rendersApi.generateDirect3D).mockResolvedValue(response);
   });
 
+  it('keeps the measured, camera-aligned AI finish instead of replacing it with the unaligned original', async () => {
+    const final = { id: 'aligned', image_url: '/aligned.png', prompt: 'finish', created_at: '2026-10-19' };
+    const original = { id: 'raw', image_url: '/raw.png', prompt: 'finish', created_at: '2026-10-19' };
+    vi.mocked(rendersApi.generateDirect3D).mockResolvedValue({
+      ...response, outcome: 'review_required', saved_render: final,
+      provider_original_render: original, provider_image_base64: 'unaligned',
+      diagnostics: { ...response.diagnostics, provider_spatial_pixels_retained: true, returned_safety_strategy: 'provider_full_scene_local_repairs' },
+    });
+    const { result } = renderHook(() => useDirect3DRender());
+    const direct = await result.current.renderDirect3D(capture, {
+      style: 'photorealistic', projectId: 'project-1', community3DClaims,
+    });
+    expect(direct.render.imageUrl).toBe('data:image/png;base64,rendered');
+    expect(direct.render.savedRender).toEqual(final);
+    expect(direct.providerOriginalRender).toEqual(original);
+  });
+
   it('shows the paid AI image while retaining the 3D source for comparison', async () => {
     const original = { id: 'original-1', image_url: '/api/v1/files/original.png', prompt: 'finish', created_at: '2026-09-05', variant: 'provider_original' };
     vi.mocked(rendersApi.generateDirect3D).mockResolvedValue({
@@ -206,7 +223,9 @@ describe('Direct 3D presentation adapter', () => {
     expect(direct.render.providerLabel).toContain('Direct 3D');
     expect(direct.render.imageUrl).toBe('data:image/png;base64,paid-image');
     expect(direct.render.savedRender).toEqual(original);
-    expect(direct.outputFingerprint).toBe(response.output_fingerprint);
+    expect(direct.outputFingerprint).toBe('');
+    expect(direct.diagnostics?.displayed_image_variant).toBe('provider_original');
+    expect(direct.warnings[0]).toContain('not the geometry-checked processed copy');
     expect(direct.sourceImageUrl).toBe(capture.beautyImageBase64);
     expect(direct.outcome).toBe('review_required');
     expect(rendersApi.generateDirect3D).toHaveBeenCalledTimes(1);

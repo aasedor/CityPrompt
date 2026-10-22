@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useGLTF } from "@react-three/drei";
 import type { Mesh } from "three";
 import { detailAsset, type DetailAssetId } from "./detailCatalogue";
+import { PeopleDetailModel } from '@/features/people/PeopleModel';
 
 /** Cached metric GLBs, Y-up to the globe's local Z-up. Never pickable outside editor. */
 export function DetailModel({
@@ -11,6 +12,10 @@ export function DetailModel({
   asset: DetailAssetId;
   yaw: number;
 }) {
+  return detailAsset(asset).people ? <PeopleDetailModel asset={asset} yaw={yaw} /> : <StaticDetailModel asset={asset} yaw={yaw} />;
+}
+
+function StaticDetailModel({ asset, yaw }: { asset: DetailAssetId; yaw: number }) {
   const { scene } = useGLTF(detailAsset(asset).url);
   const clone = useMemo(() => {
     const copy = scene.clone(true);

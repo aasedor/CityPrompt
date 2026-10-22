@@ -18,6 +18,40 @@ vi.mock('react-hot-toast', () => ({ default: Object.assign(vi.fn(), { error: vi.
 import { StreetViewPanel } from './StreetViewPanel';
 
 describe('student street render', () => {
+  it('keeps the clean source and review warnings alongside a processed finish and its AI original', async () => {
+    const saved = { id: 'aligned', image_url: '/aligned.png', prompt: 'finish' };
+    mocks.direct.mockResolvedValue({
+      outcome: 'review_required', sourceImageUrl: '/clean-source.png',
+      warnings: ['Compare roof outlines against the source.'],
+      render: { imageUrl: '/aligned.png', prompt: 'finish', providerLabel: 'Aligned finish', savedRender: saved },
+      providerOriginalRender: { id: 'raw', image_url: '/raw.png', prompt: 'finish' },
+    });
+    render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: {} })} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Render' }));
+    expect(await screen.findByAltText('Original 3D view render')).toHaveAttribute('src', '/clean-source.png');
+    expect(screen.getByText('Compare roof outlines against the source.')).toBeInTheDocument();
+    expect(screen.getByAltText('AI render render')).toHaveAttribute('src', '/raw.png');
+  });
+  it('downloads a large street image as a connected Blob link instead of a data URL', async () => {
+    const png = 'data:image/png;base64,' + btoa('x'.repeat(2_100_000));
+    mocks.direct.mockResolvedValue({ outcome: 'accepted', render: { imageUrl: png, prompt: 'finish' } });
+    const create = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:street-render');
+    const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (this: HTMLAnchorElement) {
+      expect(this.isConnected).toBe(true);
+      expect(this.href).toBe('blob:street-render');
+      expect(this.download).toMatch(/streetview-.*\.png$/);
+    });
+    try {
+      render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: {} })} />);
+      fireEvent.click(screen.getByRole('button', { name: 'Render' }));
+      fireEvent.click(await screen.findByRole('button', { name: 'Download PNG' }));
+      await waitFor(() => expect(create).toHaveBeenCalledOnce());
+      expect(create.mock.calls[0][0]).toMatchObject({ type: 'image/png', size: 2_100_000 });
+      expect(click).toHaveBeenCalledOnce();
+    } finally {
+      create.mockRestore(); click.mockRestore();
+    }
+  });
   it.each(['gpt-image-2.5-sunburst','gemini-nano-banana-2.1'] as const)('uses the captured image and selected %s engine once when geometry passes are unavailable', async model => {
     mocks.imageModels.mockResolvedValue({ default_model: 'gpt-image-2.5-sunburst', models: [{ id: model, available: true }] });
     mocks.classic.mockResolvedValue({ imageUrl: '/street-result.png', prompt: 'image-guided' });

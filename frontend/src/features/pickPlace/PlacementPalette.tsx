@@ -34,6 +34,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
   onPickGenerated?: (model: UserGeneratedBuilding) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [categoryView, setCategoryView] = useState(true);
   const [section, setSection] = useState<Section>('building');
   const [query, setQuery] = useState('');
@@ -82,8 +83,8 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
       {status === 'error' && <button onClick={onRetry} className="mt-1 min-h-11 underline">Retry 3D update</button>}
       {status === 'ready' && canRefreshDetail && <button onClick={onRetry} className="mt-1 min-h-11 underline">Refresh detailed models</button>}
     </div>
-    {open && <StudioDialog title="Community catalogue" onClose={close}>
-      <div className="flex h-[min(70dvh,640px)] min-h-0 flex-col gap-3 text-slate-900">
+    {open && <StudioDialog title="Community catalogue" onClose={close} layout="catalogue" expanded={expanded} onToggleExpand={() => setExpanded(value => !value)}>
+      <div className="h-full min-h-0 space-y-3 overflow-y-auto overscroll-contain text-slate-900">
         <div className="shrink-0 space-y-3">
           <label className="flex items-center gap-2 text-sm font-semibold">Collection
             <select aria-label="Catalogue collection" value={collection} className={filterStyle}
@@ -127,23 +128,19 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
             {showFixedStreetSegments ? 'Hide' : 'Show'} {fixedStreetCount} fixed review segments (placement only)
           </button>}
         </div>
-        <div key={`${section}:${categoryView ? 'categories' : purposeId || 'all'}`} aria-label="Available objects" className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-1">
-          {section === 'street_pathway' && PARKADE_BUILDING_ASSETS.length + PARKADE_TRIAL_ASSETS.length > 0 && <button type="button"
+        <div key={`${section}:${categoryView ? 'categories' : purposeId || 'all'}`} aria-label="Available objects" className="p-1">
+          {section === 'street_pathway' && <div className="mb-3 grid gap-2 sm:grid-cols-2">
+          {PARKADE_BUILDING_ASSETS.length + PARKADE_TRIAL_ASSETS.length > 0 && <button type="button"
             aria-label="Browse parkade buildings" onClick={() => { setSection('building'); choosePurpose('parkades'); }}
-            className="mb-3 flex min-h-20 w-full items-center gap-4 rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-4 text-left text-slate-950 hover:bg-lime-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
-            <span className="rounded-lg border-2 border-slate-900 bg-[#c9ff3d] p-3"><Building2 size={26} aria-hidden="true" /></span>
-            <span className="grid gap-1"><span className="text-base font-extrabold">Parkades</span>
-              <span className="text-sm">Explore multi-level parking buildings.</span>
-              <span className="text-sm font-bold underline">Browse in Buildings</span></span>
+            className="flex min-h-11 items-center gap-3 rounded-xl border-2 border-slate-900 bg-[#fff9ec] px-3 py-2 text-sm font-bold text-slate-950 hover:bg-lime-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+            <Building2 size={22} aria-hidden="true" />Parkades <span className="ml-auto text-xs font-medium">Browse buildings →</span>
           </button>}
-          {section === 'street_pathway' && onDrawParkingLot && <button type="button"
+          {onDrawParkingLot && <button type="button" aria-label="Parking lots · Draw parking lot"
             onClick={() => { close(); onDrawParkingLot(); }}
-            className="mb-3 flex min-h-20 w-full items-center gap-4 rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-4 text-left text-slate-950 hover:bg-lime-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
-            <span className="rounded-lg border-2 border-slate-900 bg-[#c9ff3d] p-3"><ParkingSquare size={26} aria-hidden="true" /></span>
-            <span className="grid gap-1"><span className="text-base font-extrabold">Parking lots</span>
-              <span className="text-sm">Draw an outline with fixed-size bays and connect it to a road.</span>
-              <span className="text-sm font-bold underline">Draw parking lot</span></span>
+            className="flex min-h-11 items-center gap-3 rounded-xl border-2 border-slate-900 bg-[#fff9ec] px-3 py-2 text-sm font-bold text-slate-950 hover:bg-lime-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+            <ParkingSquare size={22} aria-hidden="true" />Parking lots <span className="ml-auto text-xs font-medium">Draw outline →</span>
           </button>}
+          </div>}
           {categoryView ? <CatalogueCategoryTiles domain={section} choices={choices} onChoose={choosePurpose}
             onBrowseAll={() => { clearFilters(); setCategoryView(false); }}
             onGenerated={section === 'building' && onPickGenerated ? () => { clearFilters(); setGroupId('user-generated'); setCategoryView(false); } : undefined} />

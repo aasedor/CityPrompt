@@ -6,6 +6,14 @@ import type { VideoRouteCaptureResult } from './videoRouteControls';
 const guide: VideoRouteCaptureResult = { keyframesBase64: ['start', 'end'], previewVideoBase64: 'local-guide', previewVideoMimeType: 'video/mp4' };
 
 describe('local video guide ownership', () => {
+  it('recaptures a restored single-frame cache when a mode needs several views', async () => {
+    const capture = vi.fn().mockResolvedValue({ ...guide, keyframesBase64: ['one', 'two', 'three'] });
+    const { result } = renderHook(() => useVideoRoutePreview('same-eight-second-route'));
+    act(() => result.current.setRouteControls({ ...guide, signature: 'same-eight-second-route', keyframesBase64: ['restored-first'] }));
+    await act(async () => { await result.current.prepare(capture, 3); });
+    expect(result.current.routeControls?.keyframesBase64).toEqual(['one', 'two', 'three']);
+    expect(capture).toHaveBeenCalledOnce();
+  });
   it('reuses a guide for the same scene but recaptures after a scene revision', async () => {
     const capture = vi.fn().mockResolvedValue(guide);
     const { result, rerender } = renderHook(({ signature }) => useVideoRoutePreview(signature), { initialProps: { signature: 'project:scene1:route1:frame1' } });

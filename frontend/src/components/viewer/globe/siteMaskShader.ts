@@ -1,7 +1,7 @@
 /** Shared polygon test for mesh fragments and Gaussian centres. */
 const MAX_SITE_MASKS = 8;
 const MAX_SITE_EDGES = 32;
-export const siteMaskFragmentDeclarations = `#define MAX_SITE_MASKS ${MAX_SITE_MASKS}\n#define MAX_SITE_EDGES ${MAX_SITE_EDGES}\nuniform vec4 siteMaskEdges[MAX_SITE_EDGES];\nuniform int siteMaskEdgeCount;\nuniform vec2 siteMaskRanges[MAX_SITE_MASKS];\nuniform int siteMaskCount;\nuniform vec2 siteMaskHeightRange;\nvarying vec3 vSiteMaskLocalPosition;`;
+export const siteMaskFragmentDeclarations = `#define MAX_SITE_MASKS ${MAX_SITE_MASKS}\n#define MAX_SITE_EDGES ${MAX_SITE_EDGES}\nuniform vec4 siteMaskEdges[MAX_SITE_EDGES];\nuniform int siteMaskEdgeCount;\nuniform vec2 siteMaskRanges[MAX_SITE_MASKS];\nuniform int siteMaskCount;\nuniform vec2 siteMaskHeightRange;\nuniform int mapCleanupCount;\nuniform vec4 mapCleanupCenters[4];\nuniform vec3 mapCleanupHalfSizes[4];\nvarying vec3 vSiteMaskLocalPosition;`;
 export const siteMaskFragmentTest = `bool insideAnySiteMask = false;
 vec2 sitePoint = vSiteMaskLocalPosition.xy;
 for (int siteMask = 0; siteMask < MAX_SITE_MASKS; siteMask++) {
@@ -31,4 +31,13 @@ for (int siteMask = 0; siteMask < MAX_SITE_MASKS; siteMask++) {
     if (insideCurrentSiteMask || onSiteBoundary) insideAnySiteMask = true;
   }
 }
-if (insideAnySiteMask && vSiteMaskLocalPosition.z >= siteMaskHeightRange.x && vSiteMaskLocalPosition.z <= siteMaskHeightRange.y) discard;`;
+if (insideAnySiteMask && vSiteMaskLocalPosition.z >= siteMaskHeightRange.x && vSiteMaskLocalPosition.z <= siteMaskHeightRange.y) discard;
+for (int cleanupIndex = 0; cleanupIndex < 4; cleanupIndex++) {
+  if (cleanupIndex < mapCleanupCount) {
+    vec4 cleanup = mapCleanupCenters[cleanupIndex];
+    vec3 delta = vSiteMaskLocalPosition - cleanup.xyz;
+    float cs = cos(cleanup.w), sn = sin(cleanup.w);
+    vec3 boxPosition = vec3(delta.x * cs + delta.y * sn, -delta.x * sn + delta.y * cs, delta.z);
+    if (all(lessThanEqual(abs(boxPosition), mapCleanupHalfSizes[cleanupIndex]))) discard;
+  }
+}`;

@@ -10,6 +10,7 @@ export interface ImageAttempt {
 export interface RecoveredImage<T> {
   response: T; source_image_base64: string; style: string;
   fidelity_policy: 'precise' | 'balanced' | 'expressive'; attempt: ImageAttempt;
+  source_request?: unknown;
 }
 type Pending = { key: string; attemptId?: string };
 
@@ -32,7 +33,7 @@ export function createDirect3DAttemptClient(options: {
     if (current?.key === key) options.storage().removeItem(name);
   };
   const capabilities = async () => (await api.get<{ enabled: boolean; images_enabled: boolean; classroom_release?: boolean; video_enabled?: boolean }>(`${ROOT}/capabilities`)).data;
-  const list = async (projectId: string) => (await api.get<ImageAttempt[]>(ROOT, { params: { project_id: projectId } })).data;
+  const list = async (projectId: string, purpose: 'image' | 'video_appearance' = 'image') => (await api.get<ImageAttempt[]>(ROOT, { params: { project_id: projectId, purpose } })).data;
   const recover = async <T>(attempt: ImageAttempt): Promise<RecoveredImage<T>> => {
     const expected = options.account();
     const { data } = await api.get<RecoveredImage<T>>(`${ROOT}/${attempt.id}/result`, { timeout: 120_000 });
@@ -44,6 +45,9 @@ export function createDirect3DAttemptClient(options: {
     const mode = await capabilities();
     if (!mode.images_enabled) throw new Error('AI images are paused. You can still download your exact 3D view.');
     if (!mode.enabled) {
+      if ('purpose' in request && request.purpose === 'video_appearance') {
+        throw new Error('Photographic video guides require saved image jobs. No image was requested.');
+      }
       // Explicit compatibility for deployments without migration/worker 030.
       // An unavailable capability endpoint never falls back to a paid route.
       return (await api.post<T>('/api/v1/render/generate-direct-3d', request, { timeout: 420_000 })).data;

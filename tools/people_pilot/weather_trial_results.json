@@ -1,0 +1,82 @@
+{
+  "schema": "cityprompt.people-weather-trial@1",
+  "take": 7,
+  "baselineTake": 6,
+  "localAppOnly": true,
+  "productionPublished": false,
+  "mediaPublished": true,
+  "attemptId": "8cea8e62-d952-48ff-a1ce-31338e4b2018",
+  "model": "gemini-omni-1.1-flash",
+  "authorizedMaximumCalls": 10,
+  "completedCalls": 7,
+  "unusedCalls": 3,
+  "source": {
+    "bytes": 11232366,
+    "sha256": "30b2cf5dc0457b4e9144f76cf930a2c7931666181843d07851a250e7fb62804f",
+    "fps": 24.0,
+    "width": 1920,
+    "height": 1080,
+    "frame_count": 96,
+    "duration_basis": "decoded_frames/fps",
+    "duration_seconds": 4.0
+  },
+  "output": {
+    "bytes": 7467523,
+    "sha256": "80286897ca4089f4644c14f52e8fa7eb2ec9df9fb6273804785e74aca81ba2bd",
+    "fps": 24.0,
+    "width": 1920,
+    "height": 1080,
+    "frame_count": 96,
+    "duration_basis": "decoded_frames/fps",
+    "duration_seconds": 4.0
+  },
+  "guideAndVideoControlSha256": "a3c72236f9ace1eb238b984af8205e0728ea25ef70a43254b92f712ec286c704",
+  "compiledSceneSha256": "acc5947820200042c6484486f8260564e50945ce2515fcf3d5c72331499e16a7",
+  "onlyPromptChange": {
+    "before": "Warm late-afternoon light.",
+    "after": "Clear blue sky with a few soft white clouds and bright, neutral sunshine."
+  },
+  "prompt": "Turn this 3D street animation into live-action cinema. Keep the three walkers distinct, with the same clothing, positions and natural walking motion. Realistic skin, fabric, grounded footsteps and leafy trees. Preserve the camera, street layout, facades, grass verge and object positions. Clear blue sky with a few soft white clouds and bright, neutral sunshine. One continuous four-second shot, no cuts.",
+  "providerUsage": {
+    "total_tokens": 57522,
+    "total_input_tokens": 22426,
+    "total_cached_tokens": 0,
+    "total_output_tokens": 34752,
+    "total_thought_tokens": 344,
+    "total_tool_use_tokens": 0,
+    "input_tokens_by_modality": [
+      {
+        "tokens": 82,
+        "modality": "text"
+      },
+      {
+        "tokens": 22344,
+        "modality": "video"
+      }
+    ],
+    "output_tokens_by_modality": [
+      {
+        "tokens": 34752,
+        "modality": "video"
+      }
+    ]
+  },
+  "submissionPath": "Manually called existing local app preflight_video/generate_video functions with the disposable fixture owner and normal permission/media/scene/credit checks.",
+  "checks": {
+    "sourceIdenticalToTake6": true,
+    "compiledSceneIdenticalToTake6": true,
+    "freePreflight": "passed",
+    "sourceAndOutputDecodedFrames": 96,
+    "comparisonPanelFramesChecked": 192,
+    "fullDecodes": "passed",
+    "sourceAndOutputBrowserPlayedToEnd": true,
+    "publishedDownloadsSha256": "passed"
+  },
+  "visualResult": "Blue sky, soft white clouds and neutral sunny daylight observed across sampled output frames.",
+  "limitations": [
+    "Exact clothing and architectural fidelity remain approximate; white source shoes become dark.",
+    "Weather success does not guarantee an identical result on a later stochastic generation.",
+    "No global application weather override or production deployment was made."
+  ],
+  "releaseUrl": "https://github.com/aasedor/CityPrompt/releases/tag/people-video-pilot-2026-10-21"
+}

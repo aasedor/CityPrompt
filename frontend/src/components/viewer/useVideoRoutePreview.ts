@@ -14,8 +14,8 @@ export function useVideoRoutePreview(signature: string) {
   const pending = useRef<{ signature: string; promise: Promise<Preview> } | null>(null);
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
 
-  const prepare = useCallback((capture: () => Promise<VideoRouteCaptureResult>): Promise<Preview> => {
-    if (routeControls?.signature === signature) return Promise.resolve(routeControls);
+  const prepare = useCallback((capture: () => Promise<VideoRouteCaptureResult>, minimumKeyframes = 1): Promise<Preview> => {
+    if (routeControls?.signature === signature && routeControls.keyframesBase64.length >= minimumKeyframes) return Promise.resolve(routeControls);
     if (pending.current) {
       if (pending.current.signature === signature) return pending.current.promise;
       return Promise.reject(new Error('The previous preview is finishing. Try again in a moment.'));

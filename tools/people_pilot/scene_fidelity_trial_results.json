@@ -1,0 +1,239 @@
+{
+  "schema": "cityprompt.omni-scene-fidelity-pilot@1",
+  "date": "2026-10-21",
+  "branch": "codex/omni-scene-fidelity-pilot",
+  "base_commit": "cb23b988cb52eba3edea9d5664cf0004fe49357f",
+  "scope": "Local only; no source push or production deployment",
+  "new_paid_calls": 3,
+  "new_provider_retries": 0,
+  "duration_per_output_seconds": 4,
+  "app_test_tokens_charged": 150,
+  "estimated_output_reserve_total_usd": 3.0408,
+  "actual_provider_invoice_confirmed": false,
+  "native_source_sha256": "ecde65dbe289028e8e09e2eb3dc49d19d4b3d4ad181cb70eab7afff2741a922a",
+  "new_capture_used_in_paid_trials": false,
+  "new_capture_observation": "Recaptured after browser interruption, downloaded through UI, fully decoded96frames1920x1080at24fps4s, inspected0/1/2/3-second frames and played in the actual app. Same scene but different short path: another character passes close to camera; QA only, not a paid creative take.",
+  "source_route_metadata_limit": "Paid source retains original take8 camera path. New request route_points are the observed route on the same local scene; exact original normalized points were not persisted. Video controls provider motion.",
+  "capture_detail_limit": "Requested2px SSE; stable drawn coverage is not proof every source tile meets target. Strict final-SSE prototype withdrawn after browser failures. Different camera paths prevent a controlled before/after sharpness claim.",
+  "implemented": [
+    "Opt-in Omni preview-video scene references, one or two captured views",
+    "Explicit source/video versus architecture-image roles, separate from character identity",
+    "Reference bytes use existing validation, storage, hashing and idempotency",
+    "Shared capture readiness ignores hidden active siblings; longer bounded stable coverage without timeout acceptance",
+    "High-quality source requests2px tile error instead of4; navigation profile unchanged"
+  ],
+  "verification": {
+    "backend_tests_passed": 109,
+    "frontend_tests_passed": 29,
+    "type_check": "passed",
+    "targeted_eslint": "passed",
+    "independent_review": "Offscreen tile readiness finding fixed and rechecked; no remaining source review finding",
+    "media": "All inputs/results/comparisons fully decoded,96frames24fps4seconds",
+    "browser": "All four comparison players reached ended=true,currentTime4,duration4,readyState4,error=null in Edge. Three are per-trial input/output pairs; fourth is original-native versus C, no extra generation.",
+    "browser_screenshot": "qa/browser-final.jpg",
+    "local_app_reload": "All four historical attempts visible, latestC plays, local balance8644,3of3new-call cap reached; free capture remains available."
+  },
+  "results": {
+    "a": {
+      "attempt_id": "b843c374-45aa-4d9e-a690-0fc6101872e3",
+      "status": "complete",
+      "model": "gemini-omni-1.1-flash",
+      "reference_images": 0,
+      "mode": "video_only",
+      "source_sha256": "ecde65dbe289028e8e09e2eb3dc49d19d4b3d4ad181cb70eab7afff2741a922a",
+      "reference_sha256": [],
+      "output_sha256": "bbd6a449bfa6cc25bebf5b174de9f7f549f0f21528ed77175bd44228b2ead6f5",
+      "output_media": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 24.0,
+        "frame_count": 96,
+        "duration_seconds": 4.0,
+        "duration_basis": "decoded_frames/fps"
+      },
+      "provider_usage": {
+        "total_tokens": 57738,
+        "total_input_tokens": 22439,
+        "total_cached_tokens": 0,
+        "total_output_tokens": 34752,
+        "total_thought_tokens": 547,
+        "total_tool_use_tokens": 0,
+        "input_tokens_by_modality": [
+          {
+            "tokens": 22344,
+            "modality": "video"
+          },
+          {
+            "tokens": 95,
+            "modality": "text"
+          }
+        ],
+        "output_tokens_by_modality": [
+          {
+            "tokens": 34752,
+            "modality": "video"
+          }
+        ]
+      },
+      "estimated_usd": 1.0136,
+      "prompt": "Transform this 3D downtown walk into live-action cinema with natural people, realistic materials and crisp neutral sunshine. Keep the orange-jacket walker and her motion. Keep the complete low-rise building on the left, its roofline and window rows. Preserve the camera, street and planting layout. The recognizable Calgary towers must remain at the same apparent size and position. Clear blue sky with a few white clouds wherever sky is visible. One continuous four-second shot."
+    },
+    "b": {
+      "attempt_id": "b699dba0-d50f-4be0-ae90-1f866243853a",
+      "status": "complete",
+      "model": "gemini-omni-1.1-flash",
+      "reference_images": 2,
+      "mode": "architecture_references",
+      "source_sha256": "ecde65dbe289028e8e09e2eb3dc49d19d4b3d4ad181cb70eab7afff2741a922a",
+      "reference_sha256": [
+        "a3b6a5284ef011ff2b23d1ed29d9a2749249b73dda47d985e6ea594267aa5840",
+        "6d016f283a82948a6d2fe6bac7ba857e5bb6bb1d4bc34c8206d7b441cad23f15"
+      ],
+      "output_sha256": "fce9b6e873dd7d0bac289c7a18926e22f1ef78088fa27364c18da6c2609b207e",
+      "output_media": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 24.0,
+        "frame_count": 96,
+        "duration_seconds": 4.0,
+        "duration_basis": "decoded_frames/fps"
+      },
+      "provider_usage": {
+        "total_tokens": 60020,
+        "total_input_tokens": 24741,
+        "total_cached_tokens": 0,
+        "total_output_tokens": 34752,
+        "total_thought_tokens": 527,
+        "total_tool_use_tokens": 0,
+        "input_tokens_by_modality": [
+          {
+            "tokens": 22344,
+            "modality": "video"
+          },
+          {
+            "tokens": 197,
+            "modality": "text"
+          },
+          {
+            "tokens": 2200,
+            "modality": "image"
+          }
+        ],
+        "output_tokens_by_modality": [
+          {
+            "tokens": 34752,
+            "modality": "video"
+          }
+        ]
+      },
+      "estimated_usd": 1.0136,
+      "prompt": "Transform this 3D downtown walk into live-action cinema with natural people, realistic materials and crisp neutral sunshine. Keep the orange-jacket walker and her motion. Keep the complete low-rise building on the left, its roofline and window rows. Preserve the camera, street and planting layout. The recognizable Calgary towers must remain at the same apparent size and position. Clear blue sky with a few white clouds wherever sky is visible. One continuous four-second shot."
+    },
+    "c": {
+      "attempt_id": "84252b8b-c640-4d00-a16d-bd6e69826e02",
+      "status": "complete",
+      "model": "gemini-omni-1.1-flash",
+      "reference_images": 1,
+      "mode": "architecture_references",
+      "source_sha256": "bbd6a449bfa6cc25bebf5b174de9f7f549f0f21528ed77175bd44228b2ead6f5",
+      "reference_sha256": [
+        "a3b6a5284ef011ff2b23d1ed29d9a2749249b73dda47d985e6ea594267aa5840"
+      ],
+      "output_sha256": "1c7394a5fca0352add466aacfd443dad294be88236fcc50908a271bd12eb78cb",
+      "output_media": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 24.0,
+        "frame_count": 96,
+        "duration_seconds": 4.0,
+        "duration_basis": "decoded_frames/fps"
+      },
+      "provider_usage": {
+        "total_tokens": 59854,
+        "total_input_tokens": 24664,
+        "total_cached_tokens": 0,
+        "total_output_tokens": 34752,
+        "total_thought_tokens": 438,
+        "total_tool_use_tokens": 0,
+        "input_tokens_by_modality": [
+          {
+            "tokens": 1100,
+            "modality": "image"
+          },
+          {
+            "tokens": 159,
+            "modality": "text"
+          },
+          {
+            "tokens": 23405,
+            "modality": "video"
+          }
+        ],
+        "output_tokens_by_modality": [
+          {
+            "tokens": 34752,
+            "modality": "video"
+          }
+        ]
+      },
+      "estimated_usd": 1.0136,
+      "prompt": "Correct only the low building on the left: restore its two storeys, roof shape and two rows of windows using Image1. Keep the existing live-action photographic appearance, realistic woman, continuous camera movement, planting and daylight. Use the reference only for architectural structure, not its polygon materials or people. Keep the rest of this video unchanged."
+    }
+  },
+  "evaluation": {
+    "criteria": [
+      "Photographic skin, fabrics, facade materials, planting and lighting",
+      "Foreground building remains present with original silhouette/opening rows",
+      "Skyline apparent size and position vs exact source",
+      "Walker identity, foot contact and continuous camera motion",
+      "No introduced cuts, major structure inventions or disappearing buildings"
+    ],
+    "measures": "Qualitative review of full-motion playback and 0/1/2/3-second frames; similarity is not a realism score",
+    "source_capture_limit": "stable drawn coverage; requested2px SSE not a guarantee that Google source meets2px everywhere",
+    "trials": {
+      "a": {
+        "appearance": "Photographic people, facade surface, planting and neutral daylight. Blue sky.",
+        "architecture": "FAILED: two-storey building becomes longer one-storey; skyline reduced and moved farther away; grass verge replaced with paved foreground.",
+        "motion": "Four time samples show continuous movement and grounded footwear; browser playback checked separately.",
+        "technical": "Fully decoded96frames1920x1080at24fps4s"
+      },
+      "b": {
+        "appearance": "Fails photographic target: stylized model person, flat lawn and synthetic vegetation remain.",
+        "architecture": "Improves skyline apparent size and recognizability; keeps two-storey building and site strips. Foreground facade/length changes still visible; not exact architectural lock.",
+        "technical": "Fully decoded96frames1920x1080at24fps4s; two image refs admitted."
+      },
+      "c": {
+        "appearance": "Retains A photographic woman, planting, blue sky and neutral daylight.",
+        "architecture": "Targeted partial improvement: two storeys and gabled roof restored. Building proportions/window arrangement still approximate, original footprint not exact; inherited reduced skyline and paved grass verge remain.",
+        "motion": "Four sampled timepoints preserve continuous camera/walking progression; actual browser playback verified separately.",
+        "technical": "Fully decoded96frames1920x1080at24fps4s; exact edit source=A, one native image reference.",
+        "recommendation": "Best photographic/fidelity compromise of these three, concept-only; not validated exact reconstruction."
+      }
+    },
+    "new_paid_call_count": 3
+  },
+  "local_player": "http://127.0.0.1:18123/",
+  "evidence_root": "C:\\dev-artifacts\\CityPrompt\\omni-scene-fidelity-2026-10-21",
+  "policy_limit": "Google Tiles agreement-specific permission for AI transformation has not been established by this technical pilot.",
+  "research_sources": [
+    "https://developers.google.com/maps/documentation/tile/use-renderer",
+    "https://developers.google.com/maps/documentation/tile/policies",
+    "https://ai.google.dev/gemini-api/docs/omni",
+    "https://deepmind.google/models/gemini-omni/prompt-guide/"
+  ],
+  "updated_free_source": {
+    "sha256": "7a8208be4af21d9924b84cf109536f575cef8ea793633412540009bf2d85fbc4",
+    "bytes": 10827886,
+    "media": {
+      "width": 1920,
+      "height": 1080,
+      "r_frame_rate": "24/1",
+      "duration": "4.000000",
+      "nb_frames": "96"
+    },
+    "full_decode": "passed",
+    "capture": "Actual updated local UI: follow person, animated people, highquality2560x1440 to1920x1080,96preloadposes,4.4m at1.6m camera height",
+    "used_in_paid_trials": false,
+    "download": "Actual browser Download preview control saved default Downloads file; automation event not emitted."
+  }
+}

@@ -32,6 +32,7 @@
     "src/components/viewer/LayoutPreviewPanel.tsx",
     "src/components/viewer/LocalComfyTrialButton.tsx",
     "src/components/viewer/OnboardingTour.tsx",
+    "src/components/viewer/PhotographicVideoGuide.tsx",
     "src/components/viewer/RenderEditModal.tsx",
     "src/components/viewer/RenderResultModal.tsx",
     "src/components/viewer/RenderStyleGuide.tsx",
@@ -96,6 +97,8 @@
     "src/components/viewer/globe/GroundReviewPanel.tsx",
     "src/components/viewer/globe/ImageFidelityReview.tsx",
     "src/components/viewer/globe/ImagePresentationControls.tsx",
+    "src/components/viewer/globe/MapCleanupControls.tsx",
+    "src/components/viewer/globe/MapCleanupPreview.tsx",
     "src/components/viewer/globe/ParkAssemblyGround.tsx",
     "src/components/viewer/globe/RecoverImageAttempts.tsx",
     "src/components/viewer/globe/SharedSiteGroundProvider.tsx",
@@ -132,6 +135,7 @@
     "src/components/viewer/globe/legoMassingGeometry.ts",
     "src/components/viewer/globe/legoModuleReadiness.ts",
     "src/components/viewer/globe/legoStackBudget.ts",
+    "src/components/viewer/globe/mapCleanup.ts",
     "src/components/viewer/globe/meadowFurnitureGeometry.ts",
     "src/components/viewer/globe/meadowPlantingDrifts.ts",
     "src/components/viewer/globe/meadowVegetationGeometry.ts",
@@ -402,6 +406,10 @@
     "src/features/parks/stepFreeParkAccess.ts",
     "src/features/parks/trafficSafetyCatalogue.json",
     "src/features/parks/useDetailPlacement.ts",
+    "src/features/people/PeopleModel.tsx",
+    "src/features/people/peopleAnimation.ts",
+    "src/features/people/peopleCapture.ts",
+    "src/features/people/peopleCatalogue.json",
     "src/features/pickPlace/BrtStopControls.tsx",
     "src/features/pickPlace/BuildingDesignControls.tsx",
     "src/features/pickPlace/CanonicalCatalogueCard.tsx",
@@ -595,10 +603,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 3535,
+    "explicitReferenceCount": 3541,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5319,
-    "requiredLogicalBytes": 12696501098,
+    "requiredFileCount": 5325,
+    "requiredLogicalBytes": 12700868477,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -8147,6 +8155,7 @@
     {
       "url": "/archetypes/buildings/parkade-classic-concrete/front.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -8156,6 +8165,7 @@
     {
       "url": "/archetypes/buildings/parkade-green-terraces/front.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -8165,6 +8175,7 @@
     {
       "url": "/archetypes/buildings/parkade-mobility-courtyard/front.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -8174,6 +8185,7 @@
     {
       "url": "/archetypes/buildings/parkade-solar-ribbon/front.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -8183,6 +8195,7 @@
     {
       "url": "/archetypes/buildings/parkade-urban-brick/front.png",
       "sources": [
+        "src/data/catalogueHeroImages.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -28738,6 +28751,54 @@
         "src/features/parks/calgarySafetyCatalogue.json"
       ],
       "logicalBytes": 2064
+    },
+    {
+      "url": "/street-kits/people-pilot-v1/people-pilot-commuter.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1096500,
+      "lfsOid": "123dd1a32a1f33141fbb52aa7e7ef7eb0d543d06d7517a890ee474a8d2dc06e5"
+    },
+    {
+      "url": "/street-kits/people-pilot-v1/people-pilot-commuter.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 467505,
+      "lfsOid": "b40025e3b25fbd76f8c0c5560f444c9783ff7d46833cc660ce4c0b420efb264d"
+    },
+    {
+      "url": "/street-kits/people-pilot-v1/people-pilot-creative.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1077976,
+      "lfsOid": "8be2a865c978bdf91ec6e1fd6a28c3725293fb10e7bac268fe06da9ac0a8be81"
+    },
+    {
+      "url": "/street-kits/people-pilot-v1/people-pilot-creative.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 460772,
+      "lfsOid": "f685b65cecf09af1918fabe1755e62a4c0a2292c2da450f52db4e2624d1cb86f"
+    },
+    {
+      "url": "/street-kits/people-pilot-v1/people-pilot-neighbour.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 796312,
+      "lfsOid": "8a7f19f6dceed71350c6106c633ecaaa0d5021a804bf4a7ef5f011fd2ad0398f"
+    },
+    {
+      "url": "/street-kits/people-pilot-v1/people-pilot-neighbour.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 468314,
+      "lfsOid": "64d240e161a1dd8a482cc2249dec86a98a3bf2581b8163c6bc49bfa7f555677f"
     },
     {
       "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_bench.glb",

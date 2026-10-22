@@ -44,9 +44,13 @@ from app.services.internal_video import (
 )
 from app.services.omni_video import (
     MAX_ROUTE_IMAGE_BYTES,
+    build_character_reference_prompt,
+    build_architecture_reference_prompt,
+    build_appearance_reference_prompt,
     build_cinematic_prompt,
     build_omni_payload,
     decode_guide_image,
+    decode_character_reference,
     decode_preview_video,
     request_omni_video_once,
 )
@@ -61,6 +65,7 @@ from app.services.scene_revision import compiled_scene_revision_sha256
 from app.services.render_provenance import revision_sha256
 from app.services.render_trial import TRIAL_KEY, reserve_trial_slot, check_trial_available
 from app.services.video_fidelity import FidelityStatus, score_video_fidelity
+from app.services.video_media import inspect_video_media, validate_omni_source_media
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -70,9 +75,9 @@ SEEDANCE_PILOT_MAX_PROVIDER_CALLS = 4
 INTERNAL_ENHANCE_MAX_RUNS: None = None
 VIDEO_CREDIT_COST = 50
 SEEDANCE_VIDEO_CREDIT_COST = 125
-ESTIMATED_OMNI_COST_PER_SECOND_USD = Decimal("0.10")
+ESTIMATED_OMNI_COST_PER_SECOND_USD = Decimal("0.10136")
 
-CameraMotion = Literal["path_follow", "street_walkby", "detail_flythrough", "bicycle_ride"]
+CameraMotion = Literal["path_follow", "street_walkby", "detail_flythrough", "bicycle_ride", "people_follow"]
 ControlMode = Literal["single_frame", "multi_keyframe", "preview_video"]
 VideoProvider = Literal["omni", "seedance_mini", "internal_enhance"]
 SeedanceReferenceMode = Literal["preview_only", "preview_plus_keyframes"]
@@ -94,7 +99,7 @@ class VideoCaptureProfile(BaseModel):
 
     encoder: CaptureEncoder
     fixed_timestep: Literal[True]
-    frame_count: Literal[192]
+    frame_count: Literal[96, 192]
     fps: Literal[24]
     width: int = Field(..., ge=640, le=1920)
     height: int = Field(..., ge=360, le=1080)
@@ -157,11 +162,17 @@ class VideoPilotRequest(BaseModel):
     route_keyframes_base64: list[str] = Field(default_factory=list, max_length=6)
     preview_video_base64: str | None = Field(default=None, max_length=34_000_000)
     preview_video_mime_type: str | None = Field(default=None, max_length=100)
+    character_reference_base64: str | None = Field(default=None, max_length=11_185_000)
+    character_reference_mime_type: Literal["image/png", "image/jpeg"] = "image/png"
     geometry_checkpoints: list[VideoGeometryCheckpoint] = Field(default_factory=list, max_length=6)
     capture_profile: VideoCaptureProfile | None = None
     route_points: list[RoutePoint] = Field(..., min_length=2, max_length=24)
     camera_motion: CameraMotion = "path_follow"
-    duration_seconds: Literal[8] = 8
+    duration_seconds: Literal[4, 8] = 8
+    custom_prompt: str = Field(default="", max_length=600)
+    use_custom_prompt_only: bool = False
+    omni_reference_mode: Literal["video_only", "architecture_references", "appearance_references"] = "video_only"
+    appearance_attempt_id: uuid.UUID | None = None
     scene_brief: str = Field(
         default=(
             "Preserve every authored building, open space, and surrounding context exactly as depicted in Image1."
@@ -221,12 +232,24 @@ class VideoAttemptResponse(BaseModel):
     control_mode: ControlMode = "single_frame"
     camera_motion: str
     duration_seconds: int
+    source_media: dict | None = None
+    output_media: dict | None = None
+    media_warning: str | None = None
+    provider_usage: dict | None = None
     created_at: str
     video_url: str | None = None
     guide_image_url: str | None = None
+    character_reference_url: str | None = None
+    character_reference_sha256: str | None = None
+    character_reference_mime_type: str | None = None
+    character_reference_width: int | None = None
+    character_reference_height: int | None = None
+    character_reference_role: Literal["identity_appearance"] | None = None
     error: str | None = None
     interaction_id: str | None = None
     prompt: str | None = None
+    custom_prompt: str = ""
+    use_custom_prompt_only: bool = False
     estimated_cost_usd: float
     fidelity_score: float | None = None
     fidelity_min_score: float | None = None
@@ -501,6 +524,17 @@ async def _validate_video_scene_revision(
     )
 
 
+async def _validate_appearance_binding(req, db, user, preview, keyframes, scene_sha):
+    if req.appearance_attempt_id is None:
+        return
+    if req.provider != 'omni' or req.control_mode != 'preview_video' or req.omni_reference_mode != 'appearance_references' or preview is None:
+        raise HTTPException(400, 'A photographic guide requires Omni preview-video edit.')
+    from app.services.video_appearance import validate_binding
+    await validate_binding(db, user, req.project_id, req.appearance_attempt_id,
+        source_sha256=hashlib.sha256(preview.data).hexdigest(), scene_sha256=scene_sha,
+        images=[image.data for image in keyframes])
+
+
 async def _update_attempt(db: AsyncSession, project_id: uuid.UUID, attempt_id: str, **updates) -> dict:
     project = await _locked_project(db, project_id)
     meta = dict(project.metadata_ or {})
@@ -659,6 +693,23 @@ def _decode_geometry_checkpoints(req: VideoPilotRequest) -> list[dict[str, Any]]
 
 def _preflight_values(req: VideoPilotRequest):
     try:
+        reference_label = "Appearance" if req.omni_reference_mode == "appearance_references" else "Architectural"
+        if req.omni_reference_mode != "video_only" and (
+            req.provider != "omni" or req.control_mode != "preview_video"
+        ):
+            raise ValueError(f"{reference_label} references require Omni preview video.")
+        if req.camera_motion == "people_follow" and (req.provider != "omni" or req.control_mode != "preview_video"):
+            raise ValueError("People-follow tracking requires Omni preview video.")
+        if (req.duration_seconds == 4 or req.character_reference_base64 is not None) and (
+            req.provider != "omni" or req.control_mode != "preview_video"
+        ):
+            raise ValueError("Four-second clips and character references require Omni preview video.")
+        if req.capture_profile and req.capture_profile.frame_count != req.duration_seconds * 24:
+            raise ValueError("The capture frame count must match the requested duration at 24 fps.")
+        character_reference = (
+            decode_character_reference(req.character_reference_base64, req.character_reference_mime_type)
+            if req.character_reference_base64 is not None else None
+        )
         guide = decode_guide_image(req.guide_frame_base64)
         keyframes = [decode_guide_image(value) for value in req.route_keyframes_base64]
         if sum(len(frame.data) for frame in keyframes) > MAX_ROUTE_IMAGE_BYTES:
@@ -679,7 +730,10 @@ def _preflight_values(req: VideoPilotRequest):
         if req.control_mode == "preview_video":
             if preview is None:
                 raise ValueError("Preview-video mode requires the deterministic route preview.")
-            if req.provider in {"omni", "internal_enhance"} and keyframes:
+            if req.provider == "omni" and req.omni_reference_mode in {"architecture_references", "appearance_references"}:
+                if len(keyframes) not in (1, 2):
+                    raise ValueError(f"{reference_label} references require one or two scene images.")
+            elif req.provider in {"omni", "internal_enhance"} and keyframes:
                 raise ValueError("This preview-video mode sends the route video without route keyframe references.")
             if req.provider == "seedance_mini":
                 expected_keyframes = 3 if req.seedance_reference_mode == "preview_plus_keyframes" else 0
@@ -692,6 +746,8 @@ def _preflight_values(req: VideoPilotRequest):
             raise ValueError("The bounded Seedance pilot requires preview-video mode.")
         if req.provider == "internal_enhance" and req.control_mode != "preview_video":
             raise ValueError("Internal Enhance requires the deterministic preview-video mode.")
+        if req.use_custom_prompt_only and req.provider != "omni":
+            raise ValueError("Custom-prompt-only mode requires Omni preview video.")
         prompt = (
             build_internal_video_contract(req.scene_brief)
             if req.provider == "internal_enhance"
@@ -703,11 +759,39 @@ def _preflight_values(req: VideoPilotRequest):
                 control_mode=req.control_mode,
                 keyframe_count=len(keyframes) if req.control_mode == "preview_video" else len(keyframes) or 1,
                 provider=req.provider,
+                custom_prompt=req.custom_prompt,
+                use_custom_prompt_only=req.use_custom_prompt_only,
             )
         )
+        if req.omni_reference_mode == "architecture_references":
+            prompt = build_architecture_reference_prompt(prompt, len(keyframes),
+                has_character=character_reference is not None)
+        elif req.omni_reference_mode == "appearance_references":
+            prompt = build_appearance_reference_prompt(prompt, len(keyframes),
+                has_character=character_reference is not None)
+        elif character_reference is not None:
+            prompt = build_character_reference_prompt(prompt)
     except (ValueError, KeyError) as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-    return guide, keyframes, preview, geometry_checkpoints, prompt
+    return guide, keyframes, preview, geometry_checkpoints, prompt, character_reference
+
+
+async def _inspect_omni_source(req, preview) -> dict | None:
+    if req.provider != "omni" or preview is None:
+        return None
+    try:
+        media = await asyncio.to_thread(inspect_video_media, preview.data, preview.mime_type)
+        validate_omni_source_media(media, expected_seconds=req.duration_seconds)
+        return media
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+
+
+def _omni_output_cost_estimate(req) -> float:
+    # Edits do not accept a requested output duration. Allow ten output seconds
+    # at the published 720p rate; input billing is additional, not a price cap.
+    seconds = 10 if req.control_mode == "preview_video" else req.duration_seconds
+    return float(ESTIMATED_OMNI_COST_PER_SECOND_USD * seconds)
 
 
 @router.post("/preflight", response_model=VideoPreflightResponse)
@@ -723,7 +807,8 @@ async def preflight_video(
         raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured.")
     if req.provider == "seedance_mini" and not settings.fal_key:
         raise HTTPException(status_code=503, detail="FAL_KEY is not configured.")
-    guide, keyframes, preview, geometry_checkpoints, prompt = _preflight_values(req)
+    guide, keyframes, preview, geometry_checkpoints, prompt, character_reference = _preflight_values(req)
+    await _inspect_omni_source(req, preview)
     if req.provider == "seedance_mini" and preview:
         runtime_error = seedance_runtime_error(preview.mime_type)
         if runtime_error:
@@ -733,6 +818,7 @@ async def preflight_video(
         if runtime_error:
             raise HTTPException(status_code=503, detail=runtime_error)
     scene_revision_sha256 = await _validate_video_scene_revision(req, db)
+    await _validate_appearance_binding(req, db, user, preview, keyframes, scene_revision_sha256)
     project = await db.get(Project, req.project_id)
     if req.provider != "internal_enhance":
         check_trial_available(project, user.id, "video")
@@ -757,7 +843,7 @@ async def preflight_video(
     elif req.provider == "internal_enhance":
         estimated_cost = 0.0
     else:
-        estimated_cost = float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
+        estimated_cost = _omni_output_cost_estimate(req)
     usage = _visible_usage(project, attempts, req.provider)
     return VideoPreflightResponse(
         ready=True,
@@ -772,7 +858,7 @@ async def preflight_video(
         allowance_scope=usage.allowance_scope,
         estimated_cost_usd=estimated_cost,
         model=_provider_model(req.provider, settings, req.internal_enhance_quality),
-        reference_image_count=len(keyframes),
+        reference_image_count=len(keyframes) + int(character_reference is not None),
         geometry_checkpoint_count=len(geometry_checkpoints),
         scene_revision_sha256=scene_revision_sha256,
     )
@@ -798,9 +884,12 @@ async def list_video_attempts(
             # Shared gallery access is distinct from requester-only recovery.
             # Saved pixels survive an interrupted completion check too.
             shared = _public_attempt(item).model_dump()
-            shared.update(prompt=None, error=None, guide_image_url=None,
+            shared.update(prompt=None, custom_prompt="", error=None, guide_image_url=None,
                           interaction_id=None, request_id="", recoverable=False,
-                          negative_prompt=None, generation_settings=None, scene_direction=None)
+                          negative_prompt=None, generation_settings=None, scene_direction=None,
+                          character_reference_url=None, character_reference_sha256=None,
+                          character_reference_mime_type=None, character_reference_width=None,
+                          character_reference_height=None, character_reference_role=None)
             visible.append(shared)
     attempts = visible
     omni_usage = _visible_usage(project, all_attempts, "omni")
@@ -905,7 +994,7 @@ async def generate_video(
         raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured.")
     if req.provider == "seedance_mini" and not settings.fal_key:
         raise HTTPException(status_code=503, detail="FAL_KEY is not configured.")
-    guide, keyframes, preview, geometry_checkpoints, prompt = _preflight_values(req)
+    guide, keyframes, preview, geometry_checkpoints, prompt, character_reference = _preflight_values(req)
     if req.provider == "seedance_mini" and preview:
         runtime_error = seedance_runtime_error(preview.mime_type)
         if runtime_error:
@@ -921,8 +1010,28 @@ async def generate_video(
     attempts = [dict(item) for item in meta.get("video_pilot_attempts", [])]
     for existing in attempts:
         if existing.get("request_id") == str(req.request_id):
+            request_hashes = {revision_sha256(req.model_dump(mode="json"))}
+            legacy_excluded: set[str] = set()
+            if 'appearance_attempt_id' not in existing and req.appearance_attempt_id is None:
+                legacy_excluded.add('appearance_attempt_id')
+                request_hashes.add(revision_sha256(req.model_dump(mode='json', exclude=legacy_excluded)))
+            if "omni_reference_mode" not in existing and req.omni_reference_mode == "video_only":
+                legacy_excluded.add("omni_reference_mode")
+                request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded)))
+            if ("character_reference_sha256" not in existing
+                    and req.character_reference_base64 is None
+                    and req.character_reference_mime_type == "image/png"):
+                legacy_excluded.update({"character_reference_base64", "character_reference_mime_type"})
+                request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded)))
+            if "use_custom_prompt_only" not in existing and not req.use_custom_prompt_only:
+                legacy_excluded.add("use_custom_prompt_only")
+                request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded)))
+            # Requests saved before the optional scene direction existed hashed
+            # the same body without that field. Preserve their exact replay.
+            if "custom_prompt" not in existing and req.custom_prompt == "":
+                request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded | {"custom_prompt"})))
             if existing.get("request_sha256") and (
-                existing["request_sha256"] != revision_sha256(req.model_dump(mode="json"))
+                existing["request_sha256"] not in request_hashes
                 or existing.get("requested_by") != str(user.id)
             ):
                 raise HTTPException(409, "This request ID belongs to a different video. Recover the original attempt.")
@@ -937,7 +1046,11 @@ async def generate_video(
                 ),
             )
 
+    # Existing paid receipts remain replayable even if codec support or source
+    # validation rules change. Only a new submission needs media admission.
+    source_media = await _inspect_omni_source(req, preview)
     scene_revision_sha256 = await _validate_video_scene_revision(req, db)
+    await _validate_appearance_binding(req, db, user, preview, keyframes, scene_revision_sha256)
 
     usage = _provider_usage(attempts, req.provider)
     active_reservations = sum(
@@ -960,6 +1073,8 @@ async def generate_video(
         control_hash.update(frame.data)
     if preview:
         control_hash.update(preview.data)
+    if character_reference is not None:
+        control_hash.update(character_reference.data)
     for checkpoint in geometry_checkpoints:
         for image in checkpoint["images"].values():
             control_hash.update(image.data)
@@ -989,7 +1104,7 @@ async def generate_video(
     elif req.provider == "internal_enhance":
         estimated_cost = 0.0
     else:
-        estimated_cost = float(ESTIMATED_OMNI_COST_PER_SECOND_USD * req.duration_seconds)
+        estimated_cost = _omni_output_cost_estimate(req)
     resource_updates = (
         await _project_internal_resources(db, req.project_id) if req.provider == "internal_enhance" else {}
     )
@@ -1007,16 +1122,28 @@ async def generate_video(
         "control_mode": req.control_mode,
         "camera_motion": req.camera_motion,
         "duration_seconds": req.duration_seconds,
+        "character_reference_sha256": (
+            hashlib.sha256(character_reference.data).hexdigest() if character_reference else None
+        ),
+        "character_reference_mime_type": character_reference.mime_type if character_reference else None,
+        "character_reference_width": character_reference.width if character_reference else None,
+        "character_reference_height": character_reference.height if character_reference else None,
+        "character_reference_role": "identity_appearance" if character_reference else None,
+        "source_media": source_media,
         "created_at": _now(),
         "video_url": None,
         "guide_image_url": None,
         "error": None,
         "interaction_id": None,
         "prompt": prompt,
+        "custom_prompt": req.custom_prompt if req.provider == "omni" else "",
+        "use_custom_prompt_only": req.use_custom_prompt_only,
+        "omni_reference_mode": req.omni_reference_mode,
+        'appearance_attempt_id': str(req.appearance_attempt_id) if req.appearance_attempt_id else None,
         "estimated_cost_usd": estimated_cost,
         "guide_sha256": guide_hash,
         "scene_revision_sha256": scene_revision_sha256,
-        "reference_image_count": len(keyframes),
+        "reference_image_count": len(keyframes) + int(character_reference is not None),
         "geometry_checkpoint_count": len(geometry_checkpoints),
         "fidelity_status": "pending" if preview or len(keyframes) >= 2 else None,
         **resource_updates,
@@ -1058,6 +1185,14 @@ async def generate_video(
             )
             await _upload_to_storage(preview_key, preview.data, preview.mime_type)
             preview_video_url = f"/api/v1/files/{preview_key}"
+        character_reference_url = None
+        if character_reference is not None:
+            extension = "png" if character_reference.mime_type == "image/png" else "jpg"
+            reference_key = (
+                f"projects/{req.project_id}/video-render/{attempt_id}/controls/character-reference.{extension}"
+            )
+            await _upload_to_storage(reference_key, character_reference.data, character_reference.mime_type)
+            character_reference_url = f"/api/v1/files/{reference_key}"
         geometry_checkpoint_controls: list[dict[str, Any]] = []
         for index, checkpoint in enumerate(geometry_checkpoints, start=1):
             base_key = f"projects/{req.project_id}/video-render/{attempt_id}/controls/geometry-{index:02d}"
@@ -1097,6 +1232,7 @@ async def generate_video(
             guide_image_url=guide_url,
             route_keyframe_urls=route_keyframe_urls,
             preview_video_url=preview_video_url,
+            character_reference_url=character_reference_url,
             geometry_checkpoint_controls=geometry_checkpoint_controls,
         )
     except Exception as exc:
@@ -1113,6 +1249,21 @@ async def generate_video(
     # From this committed timestamp onward the attempt consumes one bounded run.
     # Remote calls may incur billing; local runs remain free but are capped while
     # the pilot is being evaluated.
+    # Control persistence awaits storage and releases the earlier reservation
+    # transaction. Recheck under the shared edit lock immediately before debit.
+    try:
+        from app.services.residual_landscape import lock_residual_landscape_project
+        await lock_residual_landscape_project(db, req.project_id)
+        await _locked_project(db, req.project_id)
+        final_scene_sha = await _validate_video_scene_revision(req, db)
+        if final_scene_sha != scene_revision_sha256:
+            raise _video_scene_conflict('The scene changed while saving the video source. Prepare the route again.')
+        await _validate_appearance_binding(req, db, user, preview, keyframes, final_scene_sha)
+    except HTTPException as exc:
+        await db.rollback()
+        await _update_attempt(db, req.project_id, attempt_id, status='preflight_failed',
+            error='The scene or photographic guide changed before dispatch. The provider was not called.')
+        raise exc
     run_marker = (
         {"local_run_started_at": _now()} if req.provider == "internal_enhance" else {"provider_call_started_at": _now()}
     )
@@ -1190,11 +1341,21 @@ async def generate_video(
                 ],
                 preview_video_base64=req.preview_video_base64,
                 preview_video_mime_type=preview.mime_type if preview else None,
+                character_reference_base64=req.character_reference_base64,
+                character_reference_mime_type=req.character_reference_mime_type,
+                render_quality=req.render_quality,
+                omni_reference_mode=req.omni_reference_mode,
             )
+            async def retain_omni_interaction(value: str):
+                nonlocal interaction_id
+                interaction_id = value
+                await _update_attempt(db, req.project_id, attempt_id, interaction_id=value)
+
             result = await request_omni_video_once(
                 api_key=settings.gemini_api_key,
                 payload=payload,
                 timeout_seconds=settings.omni_video_timeout_seconds,
+                on_interaction=retain_omni_interaction,
             )
             interaction_id = result.interaction_id
         # Keep paid pixels and their address before optional scoring. A later
@@ -1204,6 +1365,16 @@ async def generate_video(
         video_url = f"/api/v1/files/{video_key}"
         await _update_attempt(db, req.project_id, attempt_id, video_url=video_url,
                               interaction_id=interaction_id, size_bytes=len(result.video_bytes))
+        media_updates: dict = {"provider_usage": getattr(result, "usage", None)}
+        try:
+            media_updates["output_media"] = await asyncio.to_thread(
+                inspect_video_media, result.video_bytes, result.mime_type)
+            if abs(media_updates["output_media"]["duration_seconds"] - req.duration_seconds) > .1:
+                media_updates["media_warning"] = "The provider changed the clip duration. Compare the complete result with the source."
+        except Exception as media_exc:
+            # Pixels are already saved. A local checker failure is never a
+            # reason to lose paid output or submit another generation.
+            media_updates["media_warning"] = f"Saved video inspection unavailable: {str(media_exc)[:200]}"
         fidelity_updates: dict = {}
         if preview or len(keyframes) >= 2:
             try:
@@ -1235,6 +1406,7 @@ async def generate_video(
             size_bytes=len(result.video_bytes),
             **enhancement_updates,
             **fidelity_updates,
+            **media_updates,
         )
         db.add(
             ApiUsageLog(
@@ -1247,6 +1419,8 @@ async def generate_video(
                 metadata_={
                     "project_id": str(req.project_id),
                     "duration_seconds": req.duration_seconds,
+                    "output_media": media_updates.get("output_media"),
+                    "provider_usage": media_updates.get("provider_usage"),
                     "model": model,
                     "control_mode": req.control_mode,
                     "seedance_reference_mode": req.seedance_reference_mode if req.provider == "seedance_mini" else None,

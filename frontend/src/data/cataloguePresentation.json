@@ -2046,5 +2046,65 @@
       "urban",
       "pedestrian"
     ]
+  },
+  "parkade_classic_concrete": {
+    "label": "Classic Concrete Parkade",
+    "description": "Open concrete decks, horizontal steel guards, two front glazed stair towers. Fixed-size architectural clay concept.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "parkade",
+      "parking",
+      "parking garage",
+      "classic concrete parkade"
+    ]
+  },
+  "parkade_urban_brick": {
+    "label": "Urban Brick Parkade",
+    "description": "Brick piers, recessed metal ventilation screens, sheltered pedestrian entrance. Fixed-size architectural clay concept.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "parkade",
+      "parking",
+      "parking garage",
+      "urban brick parkade"
+    ]
+  },
+  "parkade_green_terraces": {
+    "label": "Green Terraces Parkade",
+    "description": "Stepped planted edges, climbing screens and a separate rooftop garden. Fixed-size architectural clay concept.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "parkade",
+      "parking",
+      "parking garage",
+      "green terraces parkade"
+    ]
+  },
+  "parkade_solar_ribbon": {
+    "label": "Solar Ribbon Parkade",
+    "description": "Sculptural metal fins, solar roof canopy and marked EV bays. Fixed-size architectural clay concept.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "parkade",
+      "parking",
+      "parking garage",
+      "solar ribbon parkade"
+    ]
+  },
+  "parkade_mobility_courtyard": {
+    "label": "Mobility Courtyard Parkade",
+    "description": "Open central court, colourful screens, bicycle hub and street-facing cafe. Fixed-size architectural clay concept.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "parkade",
+      "parking",
+      "parking garage",
+      "mobility courtyard parkade"
+    ]
   }
 }

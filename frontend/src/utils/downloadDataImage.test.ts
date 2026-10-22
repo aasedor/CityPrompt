@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { downloadDataImage } from './downloadDataImage';
+import { downloadDataImage, downloadImage } from './downloadDataImage';
 
 describe('downloadDataImage', () => {
   const originalCreate = URL.createObjectURL;
@@ -10,6 +10,29 @@ describe('downloadDataImage', () => {
     Object.defineProperty(URL, 'revokeObjectURL', { configurable: true, value: originalRevoke });
     vi.restoreAllMocks();
     vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+
+  it('downloads a saved remote image through a Blob rather than navigating away', async () => {
+    vi.useFakeTimers();
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(new Uint8Array([137, 80, 78, 71]), { headers: { 'Content-Type': 'image/png' } })));
+    const create = vi.fn((_blob: Blob) => 'blob:saved-street');
+    Object.defineProperty(URL, 'createObjectURL', { configurable: true, value: create });
+    Object.defineProperty(URL, 'revokeObjectURL', { configurable: true, value: vi.fn() });
+    let clicked: { href: string; connected: boolean } | undefined;
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (this: HTMLAnchorElement) {
+      clicked = { href: this.href, connected: this.isConnected };
+    });
+    await downloadImage('/api/v1/files/saved-street.png', 'street.png');
+    expect(clicked).toEqual({ href: 'blob:saved-street', connected: true });
+    expect(create.mock.calls[0][0]).toMatchObject({ type: 'image/png', size: 4 });
+  });
+
+  it('rejects an unavailable saved image without downloading an error document', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('not found', { status: 404 })));
+    const click = vi.spyOn(HTMLAnchorElement.prototype, 'click');
+    await expect(downloadImage('/missing.png', 'street.png')).rejects.toThrow('404');
+    expect(click).not.toHaveBeenCalled();
   });
 
   it('downloads the exact PNG bytes through a temporary Blob URL', () => {

@@ -33,6 +33,34 @@ function boundary(): SiteZone {
 }
 
 describe('world-coordinate tile masking', () => {
+  const floatingFragment = { id: 'fragment-1', lng: -114, lat: 51, altitude: 1051,
+    width: 4, depth: 2, height: 4, yaw: 0, enabled: true };
+
+  it('can hide a floating fragment without a redevelopment footprint or removing the road below it', () => {
+    const config = createTileSpatialMaskSetConfig([], 1045, [floatingFragment]);
+    expect(config).not.toBeNull();
+    expect(isPointInsideSpatialMask({ x: 0, y: 0, z: 6 }, config!)).toBe(true);
+    expect(isPointInsideSpatialMask({ x: 0, y: 0, z: 0 }, config!)).toBe(false);
+    expect(isPointInsideSpatialMask({ x: 3, y: 0, z: 6 }, config!)).toBe(false);
+    expect(isPointInsideSpatialMask({ x: 0, y: 0, z: 9 }, config!)).toBe(false);
+  });
+
+  it('rotates only the cleanup volume and restores a disabled fragment', () => {
+    const config = createTileSpatialMaskSetConfig([], 1045, [{ ...floatingFragment, yaw: 90 }])!;
+    expect(config).not.toBeNull();
+    expect(isPointInsideSpatialMask({ x: 0, y: 1.8, z: 6 }, config)).toBe(true);
+    expect(isPointInsideSpatialMask({ x: 1.8, y: 0, z: 6 }, config)).toBe(false);
+    expect(createTileSpatialMaskSetConfig([], 1045, [{ ...floatingFragment, enabled: false }])).toBeNull();
+  });
+
+  it('keeps site masking when a cleanup box is invalid and changes identity after a height edit', () => {
+    const original = createTileSpatialMaskSetConfig([boundary()], 1045, [floatingFragment])!;
+    const moved = createTileSpatialMaskSetConfig([boundary()], 1045, [{ ...floatingFragment, altitude: 1056 }])!;
+    expect(original.cacheKey).not.toBe(moved.cacheKey);
+    const invalid = createTileSpatialMaskSetConfig([boundary()], 1045, [{ ...floatingFragment, height: NaN }])!;
+    expect(isPointInsideSpatialMask({ x: 0, y: 0, z: 0 }, invalid)).toBe(true);
+  });
+
   it('uses spatial clipping for a single placed building footprint', () => {
     const building = { ...boundary(), zone_type: 'building' as const };
     expect(shouldUseSpatialTileMask(building)).toBe(true);
@@ -112,6 +140,33 @@ describe('world-coordinate tile masking', () => {
     unpatchMaterialSpatialMask(material);
     expect(material.onBeforeCompile).toBe(originalCompile);
     expect(material.customProgramCacheKey).toBe(originalCacheKey);
+  });
+
+  it('updates already compiled uniform references on A → B → A restoration without recompiling A', () => {
+    const material = new THREE.MeshBasicMaterial();
+    const a = createTileSpatialMaskSetConfig([boundary()], 1045)!;
+    const b = createTileSpatialMaskSetConfig([boundary()], 1045, [floatingFragment])!;
+    const compile = () => {
+      const shader = { uniforms: {} as Record<string, { value: unknown }>,
+        vertexShader: '#include <common>\n#include <project_vertex>',
+        fragmentShader: '#include <clipping_planes_fragment>' };
+      material.onBeforeCompile(shader as never, {} as never);
+      return shader.uniforms;
+    };
+    patchMaterialForSpatialMask(material, a);
+    const cachedA = compile();
+    unpatchMaterialSpatialMask(material);
+    patchMaterialForSpatialMask(material, b);
+    const cachedB = compile();
+    expect(cachedA.mapCleanupCount.value).toBe(1);
+    unpatchMaterialSpatialMask(material);
+    patchMaterialForSpatialMask(material, a);
+    // Three can reuse A's cached GPU program without calling onBeforeCompile.
+    expect(cachedA.mapCleanupCount.value).toBe(0);
+    expect(cachedB.mapCleanupCount.value).toBe(0);
+    expect(cachedB.siteMaskWorldToLocal.value).toEqual(a.worldToLocal);
+    unpatchMaterialSpatialMask(material);
+    material.dispose();
   });
 
   it('pads fixed-length shader arrays and exposes the active mask count', () => {

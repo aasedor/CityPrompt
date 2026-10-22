@@ -21,6 +21,9 @@ import { SurveyGroundSurface } from '@/features/context/SurveyGroundSurface';
 import { GaussianContextLayer } from '@/features/context/GaussianContextLayer';
 import { AlternateContextLayer, GoogleContextVisibility } from '@/features/context/ContextLayers';
 import { contextPilotCaptureProblem } from '@/features/context/contextProvider';
+import { MapCleanupControls } from './MapCleanupControls';
+import { MapCleanupPreview } from './MapCleanupPreview';
+import { readMapCleanupBoxes, type MapCleanupBox } from './mapCleanup';
 import { assetForZone } from '@/features/pickPlace/catalogue';
 import { projectedFrameFraction } from './projectFrameHeight';
 import { useWorkingViewQuality } from './useWorkingViewQuality';
@@ -216,6 +219,7 @@ import {
   type VideoRouteCaptureRequest,
   type VideoRouteCaptureResult,
 } from '../videoRouteControls';
+import { beginPeopleCapture, renderPeopleCaptureFrame } from '@/features/people/peopleCapture';
 import {
   captureDeterministicVideo,
   getCenterCropRect,
@@ -1506,6 +1510,7 @@ interface GlobeSitePlannerMapProps {
   mapToolsTarget?: HTMLElement | null;
   entrancePick?: import('@/features/pickPlace/pickBuildingEntrance').EntrancePickRequest | null;
   onPrepareGround?: (zoneId: string, clear: boolean, height?: number, edges?: import('./preparedSiteEdges').PreparedEdgeProfile | null) => Promise<void>;
+  onSaveMapCleanup?: (zoneId: string, boxes: MapCleanupBox[]) => Promise<void>;
   onFollowParkTerrain?: (profiles: Record<string, ParkTerrainProfile>) => Promise<void>;
   onAutoParkTerrain?: SaveParkGround;
   parkGroundPaused?: boolean;
@@ -1626,6 +1631,7 @@ export function GlobeSitePlannerMap({
   placementDraft,
   onPlacementDraftChange,
   onPrepareGround,
+  onSaveMapCleanup,
   onFollowParkTerrain,
   onAutoParkTerrain,
   parkGroundPaused = false,
@@ -1673,7 +1679,21 @@ export function GlobeSitePlannerMap({
   const [walkBuildingZoneId, setWalkBuildingZoneId] = useState<string | null>(null);
   const walkSavedCameraRef = useRef<{ position: THREE.Vector3; quaternion: THREE.Quaternion; up: THREE.Vector3; pivot: THREE.Vector3 | null } | null>(null);
   const walkPointerRef = useRef<{ x: number; y: number } | null>(null);
-  const interactionPaused = externalInteractionPaused || detailEditing || Boolean(entrancePick) || walkMode !== null;
+  const [showMapCleanup, setShowMapCleanup] = useState(false);
+  const [cleanupPicking, setCleanupPicking] = useState(false);
+  const [cleanupDraft, setCleanupDraft] = useState<MapCleanupBox | null>(null);
+  const cleanupBoundary = getActiveSiteBoundary(allSiteZones);
+  const cleanupBoxes = useMemo(() => readMapCleanupBoxes(allSiteZones), [allSiteZones]);
+  const interactionPaused = externalInteractionPaused || detailEditing || Boolean(entrancePick) || walkMode !== null || cleanupPicking;
+  useEffect(() => {
+    if (externalInteractionPaused || detailEditing || entrancePick || placementDraft || walkMode) setCleanupPicking(false);
+  }, [externalInteractionPaused, detailEditing, entrancePick, placementDraft, walkMode]);
+  useEffect(() => {
+    if (!cleanupPicking) return;
+    const cancel = (event: KeyboardEvent) => { if (event.key === 'Escape') { event.preventDefault(); setCleanupPicking(false); } };
+    window.addEventListener('keydown', cancel, true);
+    return () => window.removeEventListener('keydown', cancel, true);
+  }, [cleanupPicking]);
   const [entrancePickError, setEntrancePickError] = useState('');
   const entrancePointerHitRef = useRef<{buildingId:string;hit?:NativeEntranceHit}|null>(null);
   useEffect(() => { setEntrancePickError(''); }, [entrancePick]);
@@ -3159,7 +3179,8 @@ export function GlobeSitePlannerMap({
     const streetWalkby = request.cameraMotion === 'street_walkby';
     const detailFlythrough = request.cameraMotion === 'detail_flythrough';
     const bicycleRide = request.cameraMotion === 'bicycle_ride';
-    const nearFieldRoute = streetWalkby || detailFlythrough || bicycleRide;
+    const peopleFollow = request.cameraMotion === 'people_follow';
+    const nearFieldRoute = streetWalkby || detailFlythrough || bicycleRide || peopleFollow;
     let previousStreetProjection: ReturnType<typeof applyStreetCameraProjection> = null;
     let routeSurfacePoints: THREE.Vector3[];
     let nearFieldTerrainHeight: number | null = null;
@@ -3258,15 +3279,21 @@ export function GlobeSitePlannerMap({
     let restoreTextureAnisotropy: (() => void) | null = null;
     let releaseTileQueueHold: (() => void) | null = null;
     let streetRenderReadiness: VideoRouteCaptureResult['streetRenderReadiness'];
+    let peopleCapture: ReturnType<typeof beginPeopleCapture> | undefined;
     const waitForRouteContext = () => request.renderQuality === 'high'
       ? waitForVisibleTileCoverage(tileRenderer, {
           stableMs: 750,
-          timeoutMs: 4_000,
-          acceptVisibleCoverageAtTimeout: true,
+          timeoutMs: 45_000,
         })
       : waitForCurrentTiles();
 
     const applyRoutePose = (progress: number) => {
+      if (peopleFollow) {
+        const focus = peopleCapture?.focus();
+        if (!focus) throw new Error('Place a person from Add details → People, then enable their animation before following them.');
+        applyStreetRoutePose(camera, pathCurve, progress, streetUp, 1.6, focus.addScaledVector(streetUp, 1.05));
+        return;
+      }
       if (bicycleRide) {
         applyStreetRoutePose(camera, pathCurve, progress, streetUp, BICYCLE_CAMERA_HEIGHT_METERS);
         return;
@@ -3340,11 +3367,13 @@ export function GlobeSitePlannerMap({
       // High Quality is a true two-pass render. The dry traversal visits every
       // final camera pose and waits for a stable tile window at 25 distributed
       // views before any encoded frame is produced.
-      const warmupFrames = buildVideoWarmupFrames(renderProfile);
+      peopleCapture = beginPeopleCapture(scene, Boolean(request.animatePeople));
+      const warmupFrames = buildVideoWarmupFrames(renderProfile, request.durationSeconds);
       if (request.renderQuality === 'high') {
         for (const warmup of warmupFrames) {
           if (warmup.index % 8 === 0) request.onProgress?.('loading', warmup.index, warmupFrames.length);
-          applyRoutePose(warmup.progress);
+          peopleCapture.pose(warmup.index / 24);
+          applyRoutePose(videoMotionProgress(warmup.progress, request.cameraMotion));
           await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
           if (warmup.settleTiles) {
             const settled = await waitForRouteContext();
@@ -3372,6 +3401,7 @@ export function GlobeSitePlannerMap({
       const geometryCheckpoints: NonNullable<VideoRouteCaptureResult['geometryCheckpoints']> = [];
       for (let index = 0; index < sampledRoute.length; index += 1) {
         request.onProgress?.('checking', index, sampledRoute.length);
+        peopleCapture.pose(index / (sampledRoute.length - 1) * (request.durationSeconds - 1 / 24));
         applyRoutePose(videoMotionProgress(index / (sampledRoute.length - 1), request.cameraMotion));
         await twoFrames();
         const settled = await waitForRouteContext();
@@ -3381,6 +3411,8 @@ export function GlobeSitePlannerMap({
         await waitForSharedGround();
         assertSharedGroundUnchanged(routeGroundSnapshot, sharedGroundRef.current);
         assertStreetGroundReady(scene);
+        peopleCapture.pose(index / (sampledRoute.length - 1) * (request.durationSeconds - 1 / 24));
+        applyRoutePose(videoMotionProgress(index / (sampledRoute.length - 1), request.cameraMotion));
         // Near-field source creation needs a trustworthy beauty checkpoint,
         // not a full semantic/instance pass at every pose. The latter is a
         // metadata product and can fail when a close facade fills the frame;
@@ -3444,24 +3476,29 @@ export function GlobeSitePlannerMap({
         previewContext.drawImage(canvas, sx, sy, sw, sh, 0, 0, previewCanvas.width, previewCanvas.height);
       };
 
+      const cpuSubmissionMs: number[] = [];
       const previewCapture = await captureDeterministicVideo({
         canvas: previewCanvas,
         durationSeconds: request.durationSeconds,
         bitrate: renderProfile.bitrate,
         renderFrame: async (frame) => {
-          if (frame.index % 8 === 0) request.onProgress?.('rendering', frame.index, 192);
-          applyRoutePose(videoMotionProgress(frame.progress, request.cameraMotion));
-          // Give TilesRenderer and the authored R3F layers one render cycle to
-          // respond to this indexed pose, then render that exact camera state.
-          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-          assertSharedGroundUnchanged(routeGroundSnapshot, sharedGroundRef.current);
-          assertStreetGroundReady(scene);
-          renderer.setRenderTarget(null);
-          renderer.render(scene, camera);
-          drawPreviewFrame();
+          if (frame.index % 8 === 0) request.onProgress?.('rendering', frame.index, request.durationSeconds * 24);
+          await renderPeopleCaptureFrame(peopleCapture!, frame.timestampMicroseconds / 1_000_000,
+            () => applyRoutePose(videoMotionProgress(frame.progress, request.cameraMotion)),
+            () => new Promise<void>(resolve => requestAnimationFrame(() => resolve())),
+            () => {
+              assertSharedGroundUnchanged(routeGroundSnapshot, sharedGroundRef.current);
+              assertStreetGroundReady(scene);
+              renderer.setRenderTarget(null);
+              const renderStarted = performance.now();
+              renderer.render(scene, camera);
+              cpuSubmissionMs.push(performance.now() - renderStarted);
+              drawPreviewFrame();
+            });
         },
       });
       const previewBlob = previewCapture.blob;
+      const orderedSubmissionMs = cpuSubmissionMs.sort((a, b) => a - b);
       const previewVideoBase64 = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(String(reader.result));
@@ -3469,11 +3506,16 @@ export function GlobeSitePlannerMap({
         reader.readAsDataURL(previewBlob);
       });
       return {
+        peopleCaptureCount: peopleCapture.count,
+        renderStats: { drawCalls: renderer.info.render.calls, triangles: renderer.info.render.triangles,
+          geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures,
+          cpuSubmissionMedianMs: orderedSubmissionMs[Math.floor(orderedSubmissionMs.length * .5)] ?? 0,
+          cpuSubmissionP95Ms: orderedSubmissionMs[Math.min(orderedSubmissionMs.length - 1, Math.floor(orderedSubmissionMs.length * .95))] ?? 0 },
         keyframesBase64,
         previewVideoBase64,
         previewVideoMimeType: previewBlob.type,
         routeProfile: { distanceMeters: routeDistanceMeters, averageSpeedMps: routeDistanceMeters / request.durationSeconds,
-          ...(bicycleRide ? {eyeHeightMeters: BICYCLE_CAMERA_HEIGHT_METERS} : streetWalkby ? {eyeHeightMeters: 1.7} : detailFlythrough ? {eyeHeightMeters: 6} : {}) },
+          ...(bicycleRide || peopleFollow ? {eyeHeightMeters: BICYCLE_CAMERA_HEIGHT_METERS} : streetWalkby ? {eyeHeightMeters: 1.7} : detailFlythrough ? {eyeHeightMeters: 6} : {}) },
         geometryCheckpoints,
         previewCaptureProfile: {
           encoder: previewCapture.encoder,
@@ -3533,6 +3575,7 @@ export function GlobeSitePlannerMap({
       setSelectedBuildingId(previousSelectedBuildingId);
       setBuildingModelsVisible(previousModelsVisible);
       if (fadePlugin && previousFadeDuration !== null) fadePlugin.fadeDuration = previousFadeDuration;
+      peopleCapture?.restore();
     }
   }, [captureDirect3D, raycastSurfacePoint, waitForCurrentTiles, waitForSharedGround]);
 
@@ -4105,6 +4148,20 @@ export function GlobeSitePlannerMap({
   // Canvas onPointerMissed â€” fires when click doesn't hit any R3F mesh
   // We use this + onCreated to handle globe clicks at the Canvas level
   const handleCanvasClick = useCallback((e: MouseEvent) => {
+    if (cleanupPicking) {
+      const canvas = canvasRef.current, camera = cameraRef.current, tiles = tilesRendererRef.current?.group;
+      if (!canvas || !camera || !tiles || externalInteractionPaused) return;
+      const rect = canvas.getBoundingClientRect(), ray = new THREE.Raycaster();
+      ray.setFromCamera(new THREE.Vector2((e.clientX - rect.left) / rect.width * 2 - 1,
+        -(e.clientY - rect.top) / rect.height * 2 + 1), camera);
+      const hit = ray.intersectObjects(tiles.children, true).find(item => isPlausibleTerrainAnchor(
+        WGS84_ELLIPSOID.getPositionElevation(item.point), terrainElevationRef.current));
+      if (!hit) return;
+      const point = pointToCartographic(hit.point, terrainEllipsoidRef.current);
+      setCleanupDraft({ id: crypto.randomUUID(), lng: point.lon * RAD_TO_DEG, lat: point.lat * RAD_TO_DEG,
+        altitude: WGS84_ELLIPSOID.getPositionElevation(hit.point), width: 4, depth: 4, height: 3, yaw: 0, enabled: true });
+      setCleanupPicking(false); ignoreNextCanvasClickRef.current = false; return;
+    }
     if (detailInteraction && !detailInteraction.moving
       && !externalInteractionPaused && !hasDrawingTool && !placementDraft && !streetViewPegman && !walkMode && !entrancePick && !measureModeActive && !zoningInspection?.editing) {
       const canvas = canvasRef.current;
@@ -4280,7 +4337,7 @@ export function GlobeSitePlannerMap({
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
     requestAnimationFrame(updateCenterConnectionState);
-  }, [zoningInspection?.editing, detailInteraction, walkMode, detailEditing, onPlaceDetail, externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, activeToolProperties, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
+  }, [cleanupPicking, zoningInspection?.editing, detailInteraction, walkMode, detailEditing, onPlaceDetail, externalInteractionPaused, allSiteZones, entrancePick, placementDraft, onPlaceAsset, activeSitePlannerTool, activeToolProperties, cancelDrawing, hasDrawingTool, interactionPaused, linear, markUserInteracted, measureModeActive, onZoneSelected, raycastSurfacePoint, setStreetViewPosition, siteZones, streetViewPegman, terrainElevation, updateCenterConnectionState]);
 
   const handleZoneMeshClick = useCallback((zoneId: string) => {
     if (zoningInspection?.editing) return;
@@ -4646,8 +4703,9 @@ export function GlobeSitePlannerMap({
             {policyMap && <GlobePolicyMap ref={policyMapRef} {...policyMap} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
             {cityPolicyMaps && <GlobeCityPolicyMaps ref={cityPolicyMapsRef} {...cityPolicyMaps} terrainHeight={preparedSiteTerrainHeight ?? terrainElevation} />}
           </group>
-          <TileStencilPatcher zones={tileMaskZones} assemblyZones={allSiteZones} terrainHeight={terrainElevation} />
+          <TileStencilPatcher zones={tileMaskZones} assemblyZones={allSiteZones} terrainHeight={terrainElevation} cleanupBoxes={cleanupBoxes} />
           <GlobeTileMaskLayer zones={tileMaskZones} terrainHeight={terrainElevation} />
+          {!captureOverlaysHidden && showMapCleanup && <MapCleanupPreview box={cleanupDraft} />}
           {/* Camera starts at project location via Canvas camera prop */}
 
           {/* Editable fills/outlines/labels can hide for a clean AI capture,
@@ -4925,6 +4983,11 @@ export function GlobeSitePlannerMap({
           setShowBuildingGroundProblems(false); onZoneSelected(zone.id);
           void requestProjectFrame([{ ...zone, coordinates: zone.coordinates as [number, number][] }], 'manual');
         }} />}
+      {!captureOverlaysHidden && showMapCleanup && cleanupBoundary && onSaveMapCleanup && <MapCleanupControls
+        boxes={cleanupBoxes} draft={cleanupDraft} picking={cleanupPicking} onDraft={setCleanupDraft}
+        onPick={value => { setCleanupPicking(value); if (value) setCleanupDraft(null); }}
+        onSave={boxes => onSaveMapCleanup(cleanupBoundary.id, boxes)}
+        onClose={() => { setShowMapCleanup(false); setCleanupPicking(false); setCleanupDraft(null); }} />}
       {contextPresentation.provider &&
         <ContextControls requested={contextPresentation.requested} onChange={contextPresentation.select}
           geographic={contextPresentation.provider.registration === 'geographic-pilot'}
@@ -5153,7 +5216,7 @@ export function GlobeSitePlannerMap({
         </div>
       )}
 
-      <div className="absolute top-32 left-4 right-4 z-20 flex items-center gap-2 overflow-x-auto [&>*]:shrink-0 sm:top-16 sm:right-4">
+      <div className="pointer-events-none absolute top-32 left-4 right-4 z-20 flex items-center gap-2 overflow-x-auto [&>*]:pointer-events-auto [&>*]:shrink-0 sm:top-16 sm:right-4">
         <div className="rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 py-1.5 shadow-[3px_3px_0_0_#151515] backdrop-blur-xl">
           <span className="text-[11px] font-black uppercase text-[#151515]">3D Globe</span>
         </div>
@@ -5278,6 +5341,7 @@ export function GlobeSitePlannerMap({
           </button>
         )}
         {getActiveSiteBoundary(allSiteZones) && onPrepareGround && <button className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold hover:bg-[#fff9ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" onClick={() => setShowGroundReview(true)}>Review ground</button>}
+        {import.meta.env.DEV && cleanupBoundary && onSaveMapCleanup && <button type="button" className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold" disabled={Boolean(detailEditing || entrancePick || placementDraft || hasDrawingTool || measureModeActive)} onClick={() => { setWalkMode(null); onZoneSelected(null); setShowMapCleanup(true); }}>Map cleanup pilot</button>}
         {siteZones.some(zone=>zone.building_id||zone.building_ids?.length)&&<button type="button" className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold hover:bg-[#fff9ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           onClick={()=>setShowEntranceReview(true)}>Review entrances</button>}
         </>, mapToolsTarget)}

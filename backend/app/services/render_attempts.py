@@ -17,6 +17,7 @@ from app.core.security import check_project_permission
 from app.models.models import RenderAuditLog, User
 from app.models.render_attempt import RenderAttempt
 from app.schemas.direct_3d_render import Direct3DRenderRequest, Direct3DRenderResponse
+from app.schemas.video_appearance import VideoAppearanceRequest
 from app.services.render_attempt_storage import read_evidence, write_evidence
 from app.services.render_provenance import revision_sha256
 from app.services.render_trial import reserve_image_trial_slot
@@ -40,7 +41,7 @@ def describe_attempt(attempt):
     }
 
 
-async def submit_attempt(db, user, req: Direct3DRenderRequest, key: str):
+async def submit_attempt(db, user, req: Direct3DRenderRequest | VideoAppearanceRequest, key: str):
     settings = get_settings()
     await check_project_permission(req.project_id, user, db, required="editor")
     payload = req.model_dump(mode="json")
@@ -113,9 +114,13 @@ def response_from_evidence(evidence):
 async def recover_result(attempt):
     stored = await read_evidence(attempt, "response")
     if stored:
+        if stored.get('purpose') == 'video_appearance':
+            return stored
         return Direct3DRenderResponse.model_validate(stored)
     raw = await read_evidence(attempt, "provider-result")
     if raw:
+        if raw.get('purpose') == 'video_appearance':
+            return raw
         return response_from_evidence(raw)
     return None
 
@@ -138,9 +143,15 @@ async def execute_attempt(db, attempt_id):
         payload = await read_evidence(attempt, "request")
         if payload is None or revision_sha256(payload) != attempt.request_sha256:
             raise HTTPException(409, "The saved image request could not be verified. No image was generated.")
-        req = Direct3DRenderRequest.model_validate(payload)
-        response = await run_direct_3d_render(req, user, db, attempt=attempt)
-        await write_evidence(attempt, "response", response.model_dump(mode="json"))
+        if payload.get('purpose') == 'video_appearance':
+            from app.services.video_appearance import run_appearance_render
+            req = VideoAppearanceRequest.model_validate(payload)
+            response = await run_appearance_render(req, user, db, attempt=attempt)
+            await write_evidence(attempt, 'response', response)
+        else:
+            req = Direct3DRenderRequest.model_validate(payload)
+            response = await run_direct_3d_render(req, user, db, attempt=attempt)
+            await write_evidence(attempt, "response", response.model_dump(mode="json"))
         await db.refresh(attempt, with_for_update=True)
         attempt.status, attempt.error, attempt.finished_at = "completed", None, now()
         await db.commit()

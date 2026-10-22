@@ -82,6 +82,8 @@ export function resolveDirect3DFidelityPolicy(style: string): Direct3DFidelityPo
 }
 
 export interface Direct3DRenderDiagnostics {
+  /** Frontend selection; server safety diagnostics describe the processed copy. */
+  displayed_image_variant?: 'processed' | 'provider_original';
   /** Missing on legacy source-anchored responses. */
   processing_mode?: Direct3DPresentationMode;
   view_lock?: 'source_pixel_locked' | 'camera_registered' | 'not_applicable_layout_guided';
@@ -453,10 +455,13 @@ export function useDirect3DRender() {
     if (requestingUserId) void authApi.me().then(user => {
       if (user.id === requestingUserId && useAuthStore.getState().user?.id === requestingUserId) useAuthStore.getState().setUser(user);
     }).catch(() => { /* The next account refresh will reconcile the balance. */ });
-    // The fidelity result is advisory for presentation. Show the image the user
-    // paid to produce even when the server also retained a clean 3D fallback.
-    // Raw bytes keep the result visible if optional gallery persistence fails.
+    // Keep the registered/occlusion-corrected AI finish when it survived the
+    // server checks. Replacing it with raw provider pixels discards those
+    // corrections. Only prefer the original when the processed copy fell back
+    // to source geometry; the paid image remains available for review.
+    const hasProcessedFinish = response.diagnostics?.provider_spatial_pixels_retained === true;
     const showProviderImage = response.outcome === 'review_required'
+      && !hasProcessedFinish
       && Boolean(response.provider_image_base64 || response.provider_original_render);
     const imageUrl = showProviderImage
       ? response.provider_image_base64
@@ -476,12 +481,20 @@ export function useDirect3DRender() {
           ? `Direct 3D Street · ${imageModelLabel(response.model)}`
           : `Direct 3D · ${imageModelLabel(response.model)}`,
       },
-      diagnostics: response.diagnostics,
+      diagnostics: response.diagnostics ? {
+        ...response.diagnostics,
+        displayed_image_variant: showProviderImage ? 'provider_original' : 'processed',
+      } : null,
       providerOriginalRender: response.provider_original_render ?? undefined,
       captureFingerprint: response.capture_fingerprint,
-      outputFingerprint: response.output_fingerprint,
+      outputFingerprint: showProviderImage
+        ? response.provider_original_render?.output_fingerprint ?? ''
+        : response.output_fingerprint,
       outcome: response.outcome,
-      warnings: [...response.warnings],
+      warnings: showProviderImage ? [
+        'Showing the AI original for review. It is not the geometry-checked processed copy; compare its shapes and positions with the 3D source.',
+        ...response.warnings,
+      ] : [...response.warnings],
       sourceImageUrl: capture.beautyImageBase64.startsWith('data:') ? capture.beautyImageBase64 : `data:image/png;base64,${capture.beautyImageBase64}`,
       fidelityPolicy,
     };

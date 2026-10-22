@@ -14,6 +14,25 @@ from scripts.hosted_assets import DETAIL_MANIFESTS
 
 
 class HostedAssetsTests(unittest.TestCase):
+    def test_people_models_and_thumbnails_have_exact_hosted_payloads(self):
+        name = 'frontend/src/features/people/peopleCatalogue.json'
+        self.assertIn(name, DETAIL_MANIFESTS)
+        rows = json.loads((ROOT / name).read_text())
+        self.assertEqual(len(rows), 3)
+        requirements = detail_requirements(rows)
+        self.assertEqual(len(requirements), 6)
+        for row in rows:
+            self.assertEqual(row['sha256'], row['people']['sha256'])
+            for url in (row['url'], row['thumbnailUrl']):
+                payload = (ROOT / 'frontend/public' / url.lstrip('/')).read_bytes()
+                # CI deliberately retains LFS pointers. Match their locked OID;
+                # runtime preparation verifies the downloaded bytes separately.
+                if payload.startswith(b'version https://git-lfs.github.com/spec/v1'):
+                    digest = payload.decode().split('oid sha256:', 1)[1].splitlines()[0]
+                else:
+                    digest = hashlib.sha256(payload).hexdigest()
+                self.assertEqual(digest, requirements[url]['sha256'])
+
     def test_reviewed_calgary_concepts_are_in_hosted_asset_closure(self):
         name = 'frontend/src/features/parks/calgarySafetyCatalogue.json'
         self.assertIn(name, DETAIL_MANIFESTS)

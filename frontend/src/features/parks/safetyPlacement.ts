@@ -4,6 +4,12 @@ export interface DetailPose {lng:number;lat:number;angle:number;support_zone_id?
 export type DetailSupport = {ok:true;hostId?:string;height?:number}|{ok:false;message:string};
 export function detailPlacementSupport(id:string,pose:DetailPose,zoneIds:readonly string[]):DetailSupport {
   const asset=detailAsset(id);
+  if (asset.people) {
+    // Feet use the rendered sidewalk datum, not the site's unpaved base. This
+    // remains an ordinary detail placement when no level authored road exists.
+    const pavement = safetySurfaceSupport(pose, [-.08, -.08, .08, .08], zoneIds);
+    return pavement.ok ? pavement : { ok: true };
+  }
   if(!asset.safety)return {ok:true};
   if(asset.safety.placement==='sidewalk-attachment')return {ok:false,message:'This curb bulb needs a matching 150 mm sidewalk and replacement of the old curb. A compatible attachment host is not available here.'};
   const bounds=asset.safety.supportBoundsXZ;

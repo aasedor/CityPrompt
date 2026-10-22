@@ -6,6 +6,22 @@ import * as catalogue from './canonicalCatalogue';
 import { PARKADE_BUILDING_ASSETS } from './assetRegistry';
 
 describe('student asset browsing', () => {
+  it('expands the catalogue window without losing the search or placing an object', () => {
+    const onPick = vi.fn();
+    render(<PlacementPalette selected={null} onPick={onPick} onPickCanonical={vi.fn()}
+      onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Buildings' }));
+    fireEvent.change(screen.getByLabelText('Search objects or district code'), { target: { value: 'parkade' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Expand catalogue window' }));
+    expect(screen.getByRole('button', { name: 'Restore catalogue window' })).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByLabelText('Search objects or district code')).toHaveValue('parkade');
+    expect(screen.getAllByRole('article')).toHaveLength(5);
+    fireEvent.click(screen.getByRole('button', { name: 'Restore catalogue window' }));
+    expect(screen.getByRole('button', { name: 'Expand catalogue window' })).toHaveAttribute('aria-expanded', 'false');
+    expect(onPick).not.toHaveBeenCalled();
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
   it('opens the same five native building parkades from Buildings and the Streets shortcut', () => {
     const onPick=vi.fn(), onPickStreet=vi.fn(), onDrawParkingLot=vi.fn();
     render(<PlacementPalette selected={null} onPick={onPick} onPickCanonical={vi.fn()}

@@ -1,0 +1,269 @@
+{
+  "schema": "cityprompt.gpt-appearance-reference-pilot@1",
+  "date": "2026-10-21",
+  "branch": "codex/omni-scene-fidelity-pilot",
+  "base_commit": "56b560ecf28174607d3f64ee6324ecd60488f418",
+  "scope": "Local trial only; no source push or production deployment",
+  "authorization": "User approved one photographic GPT still from the original CityPrompt frame, review, then the still plus original polygon video into Omni",
+  "provider_calls": {
+    "openai_image": 1,
+    "omni_video": 1,
+    "retries": 0
+  },
+  "implementation": [
+    "Opt-in appearance_references mode keeps source-video layout/motion separate from image material and lighting guidance",
+    "Reuses existing reference validation, byte persistence, hashes, quota and idempotency",
+    "Architecture-reference and video-only defaults remain unchanged",
+    "No automatic two-step frontend UI was added; this bounded trial called the existing app API functions from an external local runner"
+  ],
+  "image": {
+    "sha256": "2f02cd7adfcfe8c34469b45fc239c50df23b96065ac66d6e80e7fc7ae14555b4",
+    "width": 1672,
+    "height": 941,
+    "size_bytes": 3517392,
+    "model": "gpt-image-2.5-sunburst",
+    "post_process": false,
+    "provider_calls": 1,
+    "visual_review": "Accepted as an appearance guide before video submission; not architectural certification",
+    "source_sha256": "a3b6a5284ef011ff2b23d1ed29d9a2749249b73dda47d985e6ea594267aa5840",
+    "provider_request_id": "req_af7495253cea40e6a6c6b45817cf187f",
+    "provider_usage": {
+      "input_tokens": 2009,
+      "input_tokens_details": {
+        "image_tokens": 1508,
+        "text_tokens": 501
+      },
+      "output_tokens": 1158,
+      "output_tokens_details": {
+        "image_tokens": 1158,
+        "text_tokens": 0
+      },
+      "total_tokens": 3167
+    },
+    "execution": "Existing CityPrompt Sunburst Images edit API path; no built-in image tool or CLI runner",
+    "custom_prompt": "Turn this exact CityPrompt frame into a convincing live-action photograph of the completed development in crisp neutral daylight. Rebuild the flat materials and coarse photogrammetry surfaces as real glass, masonry, paving and natural planting. Keep the camera, perspective, framing and every building's scale and position unchanged.\n\nThe complete two-storey pitched-roof building left of the woman must retain both window rows, roof form and footprint. The large Calgary glass tower with white diagonal lattice fills the upper central background and continues beyond the top edge: keep it that close and large, with the same occlusion by trees. Keep the other background buildings at their shown sizes. Do not move the skyline into the distance or expose hidden geometry. Keep the plaza, benches, planting beds, trees, lamps and paths in their exact positions. Keep the adult woman viewed from behind in the same pose, orange jacket, dark trousers and white shoes. Preserve other visible people. Make them photographic. Where sky is visible, use clean blue daylight. No added buildings, people, vehicles, signs, camera widening or changed floor counts.",
+    "effective_prompt_sha256": "0452c38ee18bf731ad3a0fc9ea883dce57e89b3378012682a0e4fc720105b5a6",
+    "review": {
+      "image_sha256": "2f02cd7adfcfe8c34469b45fc239c50df23b96065ac66d6e80e7fc7ae14555b4",
+      "accepted_for_video": true,
+      "review_method": "Viewed the native source frame and the full generated still side by side in conversation before video submission",
+      "passed": [
+        "Complete two-storey pitched-roof building remains visible left of the walking subject",
+        "Large white-diagrid glass skyline landmark remains close, tall and cropped by the upper frame",
+        "Main path, lamp row, planting beds, trees, benches and orange-jacket subject retain recognizable layout",
+        "Photographic materials, natural planting and neutral daylight replace the flat polygon appearance"
+      ],
+      "limitations": [
+        "Surface and some facade/planting detail are AI reconstructions, not verified as-built architectural evidence",
+        "Output is 1672 by 941 pixels, approximately the original 16:9 aspect; reference bytes remain unmodified",
+        "A suitable still does not establish that Omni will preserve its skyline or photographic finish in motion"
+      ],
+      "extra_image_generations": 0
+    }
+  },
+  "video": {
+    "sha256": "a721d8b82e260814fdef85919c3c4bd8ed15069ce0d4d5cf1f9f450548e3285a",
+    "size_bytes": 11241464,
+    "media": {
+      "width": 1920,
+      "height": 1080,
+      "fps": 24.0,
+      "frame_count": 96,
+      "duration_seconds": 4.0,
+      "duration_basis": "decoded_frames/fps"
+    },
+    "attempt_id": "99525c23-2f61-4190-8323-78a53b3c9352",
+    "provider_usage": {
+      "total_tokens": 58928,
+      "total_input_tokens": 23618,
+      "total_cached_tokens": 0,
+      "total_output_tokens": 34752,
+      "total_thought_tokens": 558,
+      "total_tool_use_tokens": 0,
+      "input_tokens_by_modality": [
+        {
+          "tokens": 1100,
+          "modality": "image"
+        },
+        {
+          "tokens": 174,
+          "modality": "text"
+        },
+        {
+          "tokens": 22344,
+          "modality": "video"
+        }
+      ],
+      "output_tokens_by_modality": [
+        {
+          "tokens": 34752,
+          "modality": "video"
+        }
+      ]
+    },
+    "estimated_cost_usd": 1.0136,
+    "actual_bill_confirmed": false,
+    "model": "gemini-omni-1.1-flash",
+    "reference_mode": "appearance_references",
+    "source_sha256": "ecde65dbe289028e8e09e2eb3dc49d19d4b3d4ad181cb70eab7afff2741a922a",
+    "reference_sha256": "2f02cd7adfcfe8c34469b45fc239c50df23b96065ac66d6e80e7fc7ae14555b4",
+    "request_id": "e7e7f5c2-d2f0-5c98-bc9e-fe25989a8227",
+    "image_reference_count": 1,
+    "custom_prompt": "Turn this original 3D walk into live-action cinema using Image1 for the photographic finish. Retain Video1's camera, walking motion and exact scene layout. Keep the complete two-storey building on the left and the large Calgary skyline at the same apparent scale and positions. Real people, detailed materials, natural planting and crisp neutral daylight. One continuous four-second shot.",
+    "effective_prompt": "[# Sources <VIDEO_0>@Video1] [# References <IMAGE_REF_0>@Image1] Turn this original 3D walk into live-action cinema using Image1 for the photographic finish. Retain Video1's camera, walking motion and exact scene layout. Keep the complete two-storey building on the left and the large Calgary skyline at the same apparent scale and positions. Real people, detailed materials, natural planting and crisp neutral daylight. One continuous four-second shot. Use Image1 only as appearance references for photographic materials, lighting and surface detail, not as first or last frames. Video1 controls the camera path, timing, motion, scene layout, building silhouettes and apparent sizes. Keep every building and skyline landmark in its original position; do not copy a reference viewpoint or introduce its objects. One continuous photographic shot.",
+    "original_video_reused": true,
+    "previous_ai_output_used_as_source": false,
+    "output_resolution_note": "Requested 1080p; delivered media measured at 1920x1080. Provider documents this output setting as upscaled."
+  },
+  "visual_review": {
+    "inspection": "Viewed full still and native frame before video admission; inspected output at0/1/2/3seconds, native/output comparison, and browser playback",
+    "result": "Stronger subjective result than previous D: large close skyline retained, complete two-storey building present, photographic people/materials/planting throughout sampled frames",
+    "limitations": [
+      "Fine facade, clothing and planting details are reinterpreted",
+      "Camera/actor/prop placement and geometry are not certified pixel-exact",
+      "Different source recipe and prompts from D; this is not a controlled single-variable comparison",
+      "One scene and one paid video do not establish reliability across the student catalogue"
+    ]
+  },
+  "verification": {
+    "backend_tests_passed": 101,
+    "test_suites": [
+      "tests/test_omni_appearance_references.py",
+      "tests/test_omni_architecture_references.py",
+      "tests/test_omni_video.py",
+      "tests/test_people_video.py",
+      "tests/test_video_recovery.py"
+    ],
+    "red_green": "Ten new appearance-mode cases failed before implementation because the declared role was unsupported, then passed",
+    "durable_recovery": "Appearance references persist with exact bytes and mode; replay uses the original attempt and rejects swapped references",
+    "warnings": "Four existing jose JWT datetime deprecations; pytest-asyncio also reports an unset default fixture loop scope",
+    "media": "Source, output and both comparisons fully decoded with ffmpeg; all96framesat24fpsand4seconds",
+    "browser": {
+      "url": "http://127.0.0.1:18125/",
+      "checked_at": "2026-10-22T01:24:09.138Z",
+      "videos": [
+        {
+          "duration": 4,
+          "ended": true,
+          "error": null,
+          "label": "Original CityPrompt video vs new Omni result",
+          "ready": 4,
+          "time": 4
+        },
+        {
+          "duration": 4,
+          "ended": true,
+          "error": null,
+          "label": "Previous trial D vs new GPT to Omni workflow",
+          "ready": 4,
+          "time": 4
+        }
+      ]
+    },
+    "local_api": {
+      "previous_pid": 10868,
+      "new_pid": 28380,
+      "cwd": "C:\\Users\\andre\\.codex\\worktrees\\add-details-recovery\\CityPrompt\\backend",
+      "port": 8012,
+      "health": 200,
+      "health_path": "/health",
+      "appearance_mode_in_live_local_schema": true,
+      "reason": "Load tested appearance-reference mode after all video attempts completed",
+      "verification_note": "Initial probe incorrectly used /api/v1/health and returned404; corrected to the actual /health route discovered in app/main.py. No second restart."
+    },
+    "quota": {
+      "read_only_check": true,
+      "attempt_count": 6,
+      "all_attempts_complete": true,
+      "new_image_calls": 1,
+      "new_video_calls": 1,
+      "image_audit_id": "32802824-6515-4680-a196-6da0b73d1ca6",
+      "image_tokens_charged": 26,
+      "video_tokens_charged": 50,
+      "mode": "appearance_references",
+      "starting_balance": 8594,
+      "current_balance": 924,
+      "weekly_allowance_reset_at": "2026-10-22T01:11:47.946813+00:00",
+      "balance_note": "The existing classic image endpoint reset an overdue weekly allowance to 1000 before charging 26, then the video charged 50. The balance difference is not provider spend. No credit adjustment or paid retry was made.",
+      "immutable_reference_count": 1,
+      "new_video_attempt": "99525c23-2f61-4190-8323-78a53b3c9352"
+    },
+    "preflight": "Image availability/inputs and exact Omni video+image+text payload validated before spending",
+    "production": "Not changed or tested in this local trial"
+  },
+  "artifacts": {
+    "external_root": "C:\\dev-artifacts\\CityPrompt\\omni-gpt-reference-pilot-2026-10-21",
+    "player": "http://127.0.0.1:18125/",
+    "image": "photographic-reference.png",
+    "source_frame": "source-frame.png",
+    "source_video": "source.mp4",
+    "output_video": "result.mp4",
+    "browser_screenshot": "qa/browser-proof.png",
+    "temporal_contact_sheet": "qa/contact.jpg",
+    "native_comparison": {
+      "path": "Compare-NATIVE.mp4",
+      "left": {
+        "width": 1920,
+        "height": 1080,
+        "r_frame_rate": "24/1",
+        "duration": "4.000000",
+        "nb_frames": "96"
+      },
+      "right": {
+        "width": 1920,
+        "height": 1080,
+        "r_frame_rate": "24/1",
+        "duration": "4.000000",
+        "nb_frames": "96"
+      },
+      "comparison": {
+        "width": 3840,
+        "height": 1160,
+        "r_frame_rate": "24/1",
+        "duration": "4.000000",
+        "nb_frames": "96"
+      },
+      "sha256": "643246c0fa1870efb07b9c8ed609c59d3fbdf5bb9284fa17845af72b0cf4c337",
+      "full_decode": "passed",
+      "panels": "Native 1920x1080 panels; no crop or retiming"
+    },
+    "previous_comparison": {
+      "path": "Compare-PREVIOUS.mp4",
+      "left": {
+        "width": 1920,
+        "height": 1080,
+        "r_frame_rate": "24/1",
+        "duration": "4.000000",
+        "nb_frames": "96"
+      },
+      "right": {
+        "width": 1920,
+        "height": 1080,
+        "r_frame_rate": "24/1",
+        "duration": "4.000000",
+        "nb_frames": "96"
+      },
+      "comparison": {
+        "width": 3840,
+        "height": 1160,
+        "r_frame_rate": "24/1",
+        "duration": "4.000000",
+        "nb_frames": "96"
+      },
+      "sha256": "63223c56b91c3b6e6195186cc3262adde941b3bf03fb45a5a507f83ea5507ad3",
+      "full_decode": "passed",
+      "panels": "Native 1920x1080 panels; no crop or retiming"
+    },
+    "prompts": [
+      "image-prompt.txt",
+      "image-effective-prompt.txt",
+      "video-prompt.txt",
+      "video-effective-prompt.txt"
+    ],
+    "media_pushed_to_git": false
+  },
+  "sources": [
+    "https://developers.openai.com/api/reference/resources/images/methods/edit",
+    "https://ai.google.dev/gemini-api/docs/omni#using-tags-in-prompts-to-set-image-and-video-roles"
+  ]
+}
