@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-montreal-plateau-rue",
+  "variant_id": "clay-montreal-plateau-rue-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "montreal_plateau_residential_rue/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/montreal-plateau-residential-rue/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1586791,
+      "sha256": "895785dc3c7d193c7c596c5203a923b51630797dfecf5b212f69bc3a40dbb36b"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/montreal-plateau-residential-rue/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 975204,
+      "sha256": "9aabefe36ee560b2382c8299b75812c8f8e9fa5ef172cf91505635219e53e835"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/montreal-plateau-residential-rue/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 934318,
+      "sha256": "d1dcd41d3e6963fd21b06460c276d597e9f2b66031a4e293aac2eeb6ed75ca59"
+    }
+  ]
+}
