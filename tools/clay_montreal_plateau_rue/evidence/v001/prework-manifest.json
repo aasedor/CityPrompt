@@ -1,0 +1,474 @@
+{
+  "candidate": "clay-montreal-plateau-rue-clay-v001",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-montreal-plateau-rue",
+  "variant_id": "clay-montreal-plateau-rue-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "montreal_plateau_residential_rue/variant_0, modelled as a Plateau Mont-Royal street corner",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 118.0,
+      "depth": 118.0,
+      "height": 13.6
+    },
+    "observed_storeys": 3,
+    "storey_programme": "street option: two residential streets meeting at a corner; the three-storey plex rows are the street walls they are read with",
+    "plan": "19.2 m building line to building line on both streets (top view): 2.6 m front yards, 3.0 m sidewalks, an 8.0 m one-way roadway with parking on the far side",
+    "section_m": {
+      "front_yard": [
+        0.0,
+        -2.6
+      ],
+      "sidewalk": [
+        -2.6,
+        -5.6
+      ],
+      "roadway": [
+        -5.6,
+        -13.6
+      ],
+      "far_sidewalk": [
+        -13.6,
+        -16.6
+      ],
+      "far_yard": [
+        -16.6,
+        -19.2
+      ],
+      "curb_height": 0.15
+    },
+    "facade": "grey limestone and red brick three-storey plexes with coloured door and window frames, iron gallery balconies, curling black iron exterior stairs, bracketed cornices, teal mansard caps and a slate turret spire",
+    "levels_m": [
+      0.0,
+      0.15,
+      0.75,
+      4.0,
+      7.15,
+      10.0,
+      11.4
+    ],
+    "inferred": "the rows across both streets, the block interior, the rear walls and the plex interiors are context and teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "flat membrane roofs behind cornices and side parapets; teal sheet-metal mansard caps with dormers; an octagonal slate turret spire",
+    "datum_m": 10.0,
+    "crowns_m": [
+      13.6
+    ]
+  },
+  "identity_contract": {
+    "owner": "Plateau residential rue: continuous rows of limestone and brick plexes with curling black iron exterior stairs, iron balconies, coloured doors, cornices and teal mansard caps over small front yards and tree-lined sidewalks on narrow one-way streets"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: grey limestone with joints, red brick with mortar courses, black iron, blue, green and red doors and frames, teal sheet metal, slate, pale concrete, dark asphalt",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 3,
+    "ground": "ground-floor flats off the yards",
+    "upper": "second- and third-floor flats reached by the exterior stairs and balconies"
+  },
+  "street_contract": {
+    "kind": "fixed_native_section",
+    "width_m": 19.2,
+    "axis": "two streets meeting at a corner",
+    "junction_finish": "curb returns at the corner",
+    "bands": [
+      "plex_row",
+      "front_yard",
+      "sidewalk_with_tree_pits",
+      "one_way_roadway",
+      "far_curb_parking",
+      "far_sidewalk",
+      "far_front_yard",
+      "context_row"
+    ]
+  },
+  "contact_contract": [
+    "Asphalt at grade zero",
+    "Sidewalks on the asphalt with a 150 mm curb",
+    "Yards and lawns at 180 mm",
+    "Plex walls from grade",
+    "Stair feet on the yard paving",
+    "Trees in sidewalk pits"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -5.3,
+        28.0,
+        1.6
+      ],
+      "target": [
+        2.4,
+        41.5,
+        5.0
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -17.0,
+        -20.0,
+        30.0
+      ],
+      "target": [
+        12.0,
+        10.0,
+        3.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        48.0,
+        -40.0,
+        44.0
+      ],
+      "target": [
+        16.0,
+        14.0,
+        4.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        -1.0,
+        -1.0,
+        120.0
+      ],
+      "target": [
+        9.0,
+        9.0,
+        0.0
+      ],
+      "ortho_scale": 70.0,
+      "whole": false
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -9.5,
+        84.0,
+        9.0
+      ],
+      "target": [
+        0.0,
+        30.0,
+        5.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        84.0,
+        -9.5,
+        9.0
+      ],
+      "target": [
+        30.0,
+        0.0,
+        5.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        62.0,
+        62.0,
+        32.0
+      ],
+      "target": [
+        12.0,
+        12.0,
+        5.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        -30.0,
+        70.0,
+        30.0
+      ],
+      "target": [
+        8.0,
+        24.0,
+        4.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -8.5,
+        33.0,
+        4.4
+      ],
+      "target": [
+        0.0,
+        33.0,
+        5.2
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -6.0,
+        29.0,
+        12.0
+      ],
+      "target": [
+        0.0,
+        26.6,
+        11.4
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -3.4,
+        34.45,
+        5.4
+      ],
+      "target": [
+        0.0,
+        34.45,
+        5.4
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "iron_stair",
+      "location": [
+        -4.8,
+        31.0,
+        3.0
+      ],
+      "target": [
+        -1.0,
+        35.5,
+        2.2
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "balcony_gallery",
+      "location": [
+        -4.6,
+        36.0,
+        5.2
+      ],
+      "target": [
+        0.0,
+        39.5,
+        4.6
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "mansard_caps",
+      "location": [
+        24.0,
+        -7.5,
+        14.5
+      ],
+      "target": [
+        26.0,
+        0.0,
+        11.8
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "corner_building",
+      "location": [
+        -9.0,
+        -9.0,
+        6.5
+      ],
+      "target": [
+        6.0,
+        6.0,
+        6.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "sidewalk_trees",
+      "location": [
+        -8.5,
+        10.5,
+        1.7
+      ],
+      "target": [
+        -3.5,
+        30.0,
+        2.6
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "roof_parapets",
+      "location": [
+        30.0,
+        30.0,
+        26.0
+      ],
+      "target": [
+        10.0,
+        10.0,
+        10.5
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "rear_yards",
+      "location": [
+        40.0,
+        40.0,
+        14.0
+      ],
+      "target": [
+        20.0,
+        20.0,
+        6.0
+      ],
+      "lens": 26,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "iron_stair",
+    "balcony_gallery",
+    "mansard_caps",
+    "corner_building",
+    "sidewalk_trees",
+    "roof_parapets",
+    "rear_yards"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/montreal-plateau-residential-rue/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1586791,
+        "sha256": "895785dc3c7d193c7c596c5203a923b51630797dfecf5b212f69bc3a40dbb36b"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/montreal-plateau-residential-rue/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 975204,
+        "sha256": "9aabefe36ee560b2382c8299b75812c8f8e9fa5ef172cf91505635219e53e835"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/montreal-plateau-residential-rue/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 934318,
+        "sha256": "d1dcd41d3e6963fd21b06460c276d597e9f2b66031a4e293aac2eeb6ed75ca59"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1.webp",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2.webp",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3.webp",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_plateaurue.py",
+        "sha256": "2212bc6f50ff37e2167b0d6d90759316660cd5c9f762c3e1c4f7cf3e6b19aa1d"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "3e6a365450f7c43772b872febe30411ce2987fa907b924980d41040177a2163d"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "cc99ff060eaa999cdb14b5ca7dc6d543d969ba74e6de34771561d969da3a4904"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-22T16:07:23.832715+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

@@ -1,0 +1,4041 @@
+{
+  "candidate": "clay-montreal-plateau-rue-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 655,
+    "vertices": 53534,
+    "polygons": 68728,
+    "triangles": 68728,
+    "path": "clay-montreal-plateau-rue-clay-v001-authoring.blend",
+    "bytes": 9155576,
+    "sha256": "b9f8cf3f0d601a1bf4abc326435a403b624b75adebf00841d32fad500040f462"
+  },
+  "runtime": {
+    "path": "clay-montreal-plateau-rue-clay-v001.glb",
+    "bytes": 3466352,
+    "sha256": "0f0597c31913b01e7749718ee4f6b05ebfa2c9137b271122b78ba1a4f7a9e531",
+    "meshes": 33,
+    "materials": 33,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 33,
+    "vertices": 53534,
+    "polygons": 68728,
+    "triangles": 68728
+  },
+  "original_bounds_m": [
+    [
+      -40.0,
+      -40.0,
+      0.0
+    ],
+    [
+      78.0,
+      78.0,
+      16.100000381469727
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -40.0,
+      -40.0,
+      0.0
+    ],
+    [
+      78.0,
+      78.0,
+      16.100000381469727
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 118.0,
+    "depth": 118.0,
+    "height": 13.6
+  },
+  "native_dimensions_m": {
+    "width": 118.0,
+    "depth": 118.0,
+    "height": 16.100000381469727
+  },
+  "native_bottom_center_m": [
+    19.0,
+    19.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 14,
+    "stone": 19,
+    "stone2": 114,
+    "joint": 8,
+    "brick": 17,
+    "brick2": 8,
+    "mortar": 9,
+    "teal": 16,
+    "slate": 2,
+    "hardware": 36,
+    "glass": 36,
+    "trim": 36,
+    "green": 11,
+    "blue": 12,
+    "red": 9,
+    "timber": 72,
+    "deck": 20,
+    "membrane": 20,
+    "concrete": 4,
+    "sidejoint": 1,
+    "asphalt": 1,
+    "yard": 4,
+    "soil": 1,
+    "lawn": 4,
+    "planting": 132,
+    "interior": 14,
+    "floor": 14,
+    "car": 1,
+    "car2": 1,
+    "car3": 1,
+    "tyre": 1,
+    "dark": 15,
+    "context2": 2
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/iron_stair.png",
+    "renders/balcony_gallery.png",
+    "renders/mansard_caps.png",
+    "renders/corner_building.png",
+    "renders/sidewalk_trees.png",
+    "renders/roof_parapets.png",
+    "renders/rear_yards.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Plateau street corner: plex rows with front yards and iron stairs, sidewalks with tree pits, one-way roadways, curb returns",
+      "box": [
+        -40.0,
+        78.0,
+        -40.0,
+        78.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "corner B 0 3.6",
+      "face": "north street row",
+      "u": 3.6,
+      "z": 1.25,
+      "width": 1.3,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner B 0 6.2",
+      "face": "north street row",
+      "u": 6.2,
+      "z": 1.25,
+      "width": 1.3,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner B 0 8.8",
+      "face": "north street row",
+      "u": 8.8,
+      "z": 1.25,
+      "width": 1.3,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner B 0 11.4",
+      "face": "north street row",
+      "u": 11.4,
+      "z": 1.25,
+      "width": 1.3,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner B door 0",
+      "face": "north street row",
+      "u": 17.5,
+      "z": 0.75,
+      "width": 2.0,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner B 1 3.6",
+      "face": "north street row",
+      "u": 3.6,
+      "z": 4.5,
+      "width": 1.3,
+      "height": 1.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner B 1 6.2",
+      "face": "north street row",
+      "u": 6.2,
+      "z": 4.5,
+      "width": 1.3,
+      "height": 1.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner B 1 8.8",
+      "face": "north street row",
+      "u": 8.8,
+      "z": 4.5,
+      "width": 1.3,
+      "height": 1.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner B 1 11.4",
+      "face": "north street row",
+      "u": 11.4,
+      "z": 4.5,
+      "width": 1.3,
+      "height": 1.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner B door 1",
+      "face": "north street row",
+      "u": 17.5,
+      "z": 4.0,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner B 2 3.6",
+      "face": "north street row",
+      "u": 3.6,
+      "z": 7.65,
+      "width": 1.3,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner B 2 6.2",
+      "face": "north street row",
+      "u": 6.2,
+      "z": 7.65,
+      "width": 1.3,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner B 2 8.8",
+      "face": "north street row",
+      "u": 8.8,
+      "z": 7.65,
+      "width": 1.3,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner B 2 11.4",
+      "face": "north street row",
+      "u": 11.4,
+      "z": 7.65,
+      "width": 1.3,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner B door 2",
+      "face": "north street row",
+      "u": 17.5,
+      "z": 7.15,
+      "width": 2.0,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A 0 2.9",
+      "face": "east street row",
+      "u": 2.9,
+      "z": 1.25,
+      "width": 1.7,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A 0 10.0",
+      "face": "east street row",
+      "u": 10.0,
+      "z": 1.25,
+      "width": 1.3,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A 0 12.6",
+      "face": "east street row",
+      "u": 12.6,
+      "z": 1.25,
+      "width": 1.3,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A 0 15.2",
+      "face": "east street row",
+      "u": 15.2,
+      "z": 1.25,
+      "width": 1.3,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A 1 2.9",
+      "face": "east street row",
+      "u": 2.9,
+      "z": 4.5,
+      "width": 1.7,
+      "height": 1.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A 1 7.4",
+      "face": "east street row",
+      "u": 7.4,
+      "z": 4.5,
+      "width": 1.3,
+      "height": 1.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A 1 10.0",
+      "face": "east street row",
+      "u": 10.0,
+      "z": 4.5,
+      "width": 1.3,
+      "height": 1.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A 1 12.6",
+      "face": "east street row",
+      "u": 12.6,
+      "z": 4.5,
+      "width": 1.3,
+      "height": 1.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A 1 15.2",
+      "face": "east street row",
+      "u": 15.2,
+      "z": 4.5,
+      "width": 1.3,
+      "height": 1.85,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A 2 2.9",
+      "face": "east street row",
+      "u": 2.9,
+      "z": 7.65,
+      "width": 1.7,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A 2 7.4",
+      "face": "east street row",
+      "u": 7.4,
+      "z": 7.65,
+      "width": 1.3,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A 2 10.0",
+      "face": "east street row",
+      "u": 10.0,
+      "z": 7.65,
+      "width": 1.3,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A 2 12.6",
+      "face": "east street row",
+      "u": 12.6,
+      "z": 7.65,
+      "width": 1.3,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A 2 15.2",
+      "face": "east street row",
+      "u": 15.2,
+      "z": 7.65,
+      "width": 1.3,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "corner A door",
+      "face": "east street row",
+      "u": 7.4,
+      "z": 0.75,
+      "width": 1.3,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B turret plex door 0",
+      "face": "north street row",
+      "u": 22.5,
+      "z": 0.75,
+      "width": 2.0,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B turret plex window 0",
+      "face": "north street row",
+      "u": 25.0,
+      "z": 1.25,
+      "width": 1.7,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B turret plex door 1",
+      "face": "north street row",
+      "u": 22.5,
+      "z": 4.0,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B turret plex window 1",
+      "face": "north street row",
+      "u": 25.0,
+      "z": 4.5,
+      "width": 1.7,
+      "height": 1.8499999999999999,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B turret plex door 2",
+      "face": "north street row",
+      "u": 22.5,
+      "z": 7.15,
+      "width": 2.0,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B turret plex window 2",
+      "face": "north street row",
+      "u": 25.0,
+      "z": 7.65,
+      "width": 1.7,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B limestone plex blue doors door 0",
+      "face": "north street row",
+      "u": 31.5,
+      "z": 0.75,
+      "width": 2.0,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B limestone plex blue doors window 0",
+      "face": "north street row",
+      "u": 34.45,
+      "z": 1.25,
+      "width": 1.7,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B limestone plex blue doors door 1",
+      "face": "north street row",
+      "u": 31.5,
+      "z": 4.0,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B limestone plex blue doors window 1",
+      "face": "north street row",
+      "u": 34.45,
+      "z": 4.5,
+      "width": 1.7,
+      "height": 1.8499999999999999,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B limestone plex blue doors door 2",
+      "face": "north street row",
+      "u": 31.5,
+      "z": 7.15,
+      "width": 2.0,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B limestone plex blue doors window 2",
+      "face": "north street row",
+      "u": 34.45,
+      "z": 7.65,
+      "width": 1.7,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B limestone plex green doors door 0",
+      "face": "north street row",
+      "u": 39.5,
+      "z": 0.75,
+      "width": 2.0,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B limestone plex green doors window 0",
+      "face": "north street row",
+      "u": 42.45,
+      "z": 1.25,
+      "width": 1.7,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B limestone plex green doors door 1",
+      "face": "north street row",
+      "u": 39.5,
+      "z": 4.0,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B limestone plex green doors window 1",
+      "face": "north street row",
+      "u": 42.45,
+      "z": 4.5,
+      "width": 1.7,
+      "height": 1.8499999999999999,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B limestone plex green doors door 2",
+      "face": "north street row",
+      "u": 39.5,
+      "z": 7.15,
+      "width": 2.0,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B limestone plex green doors window 2",
+      "face": "north street row",
+      "u": 42.45,
+      "z": 7.65,
+      "width": 1.7,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B brick plex door 0",
+      "face": "north street row",
+      "u": 47.5,
+      "z": 0.75,
+      "width": 2.0,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B brick plex window 0",
+      "face": "north street row",
+      "u": 50.45,
+      "z": 1.25,
+      "width": 1.7,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B brick plex door 1",
+      "face": "north street row",
+      "u": 47.5,
+      "z": 4.0,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B brick plex window 1",
+      "face": "north street row",
+      "u": 50.45,
+      "z": 4.5,
+      "width": 1.7,
+      "height": 1.8499999999999999,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B brick plex door 2",
+      "face": "north street row",
+      "u": 47.5,
+      "z": 7.15,
+      "width": 2.0,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B brick plex window 2",
+      "face": "north street row",
+      "u": 50.45,
+      "z": 7.65,
+      "width": 1.7,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B brick plex north door 0",
+      "face": "north street row",
+      "u": 55.5,
+      "z": 0.75,
+      "width": 2.0,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B brick plex north window 0",
+      "face": "north street row",
+      "u": 58.45,
+      "z": 1.25,
+      "width": 1.7,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B brick plex north door 1",
+      "face": "north street row",
+      "u": 55.5,
+      "z": 4.0,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B brick plex north window 1",
+      "face": "north street row",
+      "u": 58.45,
+      "z": 4.5,
+      "width": 1.7,
+      "height": 1.8499999999999999,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B brick plex north door 2",
+      "face": "north street row",
+      "u": 55.5,
+      "z": 7.15,
+      "width": 2.0,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B brick plex north window 2",
+      "face": "north street row",
+      "u": 58.45,
+      "z": 7.65,
+      "width": 1.7,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B turret plex north door 0",
+      "face": "north street row",
+      "u": 63.5,
+      "z": 0.75,
+      "width": 2.0,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B turret plex north window 0",
+      "face": "north street row",
+      "u": 66.0,
+      "z": 1.25,
+      "width": 1.7,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B turret plex north door 1",
+      "face": "north street row",
+      "u": 63.5,
+      "z": 4.0,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B turret plex north window 1",
+      "face": "north street row",
+      "u": 66.0,
+      "z": 4.5,
+      "width": 1.7,
+      "height": 1.8499999999999999,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B turret plex north door 2",
+      "face": "north street row",
+      "u": 63.5,
+      "z": 7.15,
+      "width": 2.0,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "B turret plex north window 2",
+      "face": "north street row",
+      "u": 66.0,
+      "z": 7.65,
+      "width": 1.7,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 1 door 0",
+      "face": "east street row",
+      "u": 23.5,
+      "z": 0.75,
+      "width": 2.0,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 1 window 0",
+      "face": "east street row",
+      "u": 20.55,
+      "z": 1.25,
+      "width": 1.7,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 1 door 1",
+      "face": "east street row",
+      "u": 23.5,
+      "z": 4.0,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 1 window 1",
+      "face": "east street row",
+      "u": 20.55,
+      "z": 4.5,
+      "width": 1.7,
+      "height": 1.8499999999999999,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 1 door 2",
+      "face": "east street row",
+      "u": 23.5,
+      "z": 7.15,
+      "width": 2.0,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 1 window 2",
+      "face": "east street row",
+      "u": 20.55,
+      "z": 7.65,
+      "width": 1.7,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A limestone plex 2 door 0",
+      "face": "east street row",
+      "u": 31.5,
+      "z": 0.75,
+      "width": 2.0,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A limestone plex 2 window 0",
+      "face": "east street row",
+      "u": 28.55,
+      "z": 1.25,
+      "width": 1.7,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A limestone plex 2 door 1",
+      "face": "east street row",
+      "u": 31.5,
+      "z": 4.0,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A limestone plex 2 window 1",
+      "face": "east street row",
+      "u": 28.55,
+      "z": 4.5,
+      "width": 1.7,
+      "height": 1.8499999999999999,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A limestone plex 2 door 2",
+      "face": "east street row",
+      "u": 31.5,
+      "z": 7.15,
+      "width": 2.0,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A limestone plex 2 window 2",
+      "face": "east street row",
+      "u": 28.55,
+      "z": 7.65,
+      "width": 1.7,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 3 door 0",
+      "face": "east street row",
+      "u": 39.5,
+      "z": 0.75,
+      "width": 2.0,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 3 window 0",
+      "face": "east street row",
+      "u": 36.55,
+      "z": 1.25,
+      "width": 1.7,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 3 door 1",
+      "face": "east street row",
+      "u": 39.5,
+      "z": 4.0,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 3 window 1",
+      "face": "east street row",
+      "u": 36.55,
+      "z": 4.5,
+      "width": 1.7,
+      "height": 1.8499999999999999,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 3 door 2",
+      "face": "east street row",
+      "u": 39.5,
+      "z": 7.15,
+      "width": 2.0,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 3 window 2",
+      "face": "east street row",
+      "u": 36.55,
+      "z": 7.65,
+      "width": 1.7,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 4 door 0",
+      "face": "east street row",
+      "u": 47.5,
+      "z": 0.75,
+      "width": 2.0,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 4 window 0",
+      "face": "east street row",
+      "u": 44.55,
+      "z": 1.25,
+      "width": 1.7,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 4 door 1",
+      "face": "east street row",
+      "u": 47.5,
+      "z": 4.0,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 4 window 1",
+      "face": "east street row",
+      "u": 44.55,
+      "z": 4.5,
+      "width": 1.7,
+      "height": 1.8499999999999999,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 4 door 2",
+      "face": "east street row",
+      "u": 47.5,
+      "z": 7.15,
+      "width": 2.0,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 4 window 2",
+      "face": "east street row",
+      "u": 44.55,
+      "z": 7.65,
+      "width": 1.7,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A limestone plex 5 door 0",
+      "face": "east street row",
+      "u": 55.5,
+      "z": 0.75,
+      "width": 2.0,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A limestone plex 5 window 0",
+      "face": "east street row",
+      "u": 52.55,
+      "z": 1.25,
+      "width": 1.7,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A limestone plex 5 door 1",
+      "face": "east street row",
+      "u": 55.5,
+      "z": 4.0,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A limestone plex 5 window 1",
+      "face": "east street row",
+      "u": 52.55,
+      "z": 4.5,
+      "width": 1.7,
+      "height": 1.8499999999999999,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A limestone plex 5 door 2",
+      "face": "east street row",
+      "u": 55.5,
+      "z": 7.15,
+      "width": 2.0,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A limestone plex 5 window 2",
+      "face": "east street row",
+      "u": 52.55,
+      "z": 7.65,
+      "width": 1.7,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 6 door 0",
+      "face": "east street row",
+      "u": 63.5,
+      "z": 0.75,
+      "width": 2.0,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 6 window 0",
+      "face": "east street row",
+      "u": 60.55,
+      "z": 1.25,
+      "width": 1.7,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 6 door 1",
+      "face": "east street row",
+      "u": 63.5,
+      "z": 4.0,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 6 window 1",
+      "face": "east street row",
+      "u": 60.55,
+      "z": 4.5,
+      "width": 1.7,
+      "height": 1.8499999999999999,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 6 door 2",
+      "face": "east street row",
+      "u": 63.5,
+      "z": 7.15,
+      "width": 2.0,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 6 window 2",
+      "face": "east street row",
+      "u": 60.55,
+      "z": 7.65,
+      "width": 1.7,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 7 door 0",
+      "face": "east street row",
+      "u": 71.5,
+      "z": 0.75,
+      "width": 2.0,
+      "height": 2.45,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 7 window 0",
+      "face": "east street row",
+      "u": 68.55,
+      "z": 1.25,
+      "width": 1.7,
+      "height": 1.9,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 7 door 1",
+      "face": "east street row",
+      "u": 71.5,
+      "z": 4.0,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 7 window 1",
+      "face": "east street row",
+      "u": 68.55,
+      "z": 4.5,
+      "width": 1.7,
+      "height": 1.8499999999999999,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 7 door 2",
+      "face": "east street row",
+      "u": 71.5,
+      "z": 7.15,
+      "width": 2.0,
+      "height": 2.25,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "A brick plex 7 window 2",
+      "face": "east street row",
+      "u": 68.55,
+      "z": 7.65,
+      "width": 1.7,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    }
+  ],
+  "authoring_modules": {
+    "street": [
+      "Street asphalt"
+    ],
+    "sidewalks": [
+      "Sidewalk",
+      "Sidewalk.001",
+      "Sidewalk.002",
+      "Sidewalk.003"
+    ],
+    "yards": [
+      "Front yards",
+      "Block lawn",
+      "Front yards.001",
+      "Block lawn.001",
+      "Front yards.002",
+      "Block lawn.002",
+      "Front yards.003",
+      "Block lawn.003"
+    ],
+    "sidewalk joints": [
+      "sidewalk joints sidejoint"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree limb",
+      "Street tree limb.001",
+      "Street tree limb.002",
+      "Street tree trunk.001",
+      "Street tree limb.003",
+      "Street tree limb.004",
+      "Street tree limb.005",
+      "Street tree trunk.002",
+      "Street tree limb.006",
+      "Street tree limb.007",
+      "Street tree limb.008",
+      "Street tree trunk.003",
+      "Street tree limb.009",
+      "Street tree limb.010",
+      "Street tree limb.011",
+      "Street tree trunk.004",
+      "Street tree limb.012",
+      "Street tree limb.013",
+      "Street tree limb.014",
+      "Street tree trunk.005",
+      "Street tree limb.015",
+      "Street tree limb.016",
+      "Street tree limb.017",
+      "Street tree trunk.006",
+      "Street tree limb.018",
+      "Street tree limb.019",
+      "Street tree limb.020",
+      "Street tree trunk.007",
+      "Street tree limb.021",
+      "Street tree limb.022",
+      "Street tree limb.023",
+      "Street tree trunk.008",
+      "Street tree limb.024",
+      "Street tree limb.025",
+      "Street tree limb.026",
+      "Street tree trunk.009",
+      "Street tree limb.027",
+      "Street tree limb.028",
+      "Street tree limb.029",
+      "Street tree trunk.010",
+      "Street tree limb.030",
+      "Street tree limb.031",
+      "Street tree limb.032",
+      "Street tree trunk.011",
+      "Street tree limb.033",
+      "Street tree limb.034",
+      "Street tree limb.035",
+      "Street tree trunk.012",
+      "Street tree limb.036",
+      "Street tree limb.037",
+      "Street tree limb.038",
+      "Street tree trunk.013",
+      "Street tree limb.039",
+      "Street tree limb.040",
+      "Street tree limb.041",
+      "Street tree trunk.014",
+      "Street tree limb.042",
+      "Street tree limb.043",
+      "Street tree limb.044",
+      "Street tree trunk.015",
+      "Street tree limb.045",
+      "Street tree limb.046",
+      "Street tree limb.047",
+      "Street tree trunk.016",
+      "Street tree limb.048",
+      "Street tree limb.049",
+      "Street tree limb.050",
+      "Street tree trunk.017",
+      "Street tree limb.051",
+      "Street tree limb.052",
+      "Street tree limb.053"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023",
+      "Street tree crown.024",
+      "Street tree crown.025",
+      "Street tree crown.026",
+      "Street tree crown.027",
+      "Street tree crown.028",
+      "Street tree crown.029",
+      "Street tree crown.030",
+      "Street tree crown.031",
+      "Street tree crown.032",
+      "Street tree crown.033",
+      "Street tree crown.034",
+      "Street tree crown.035",
+      "Street tree crown.036",
+      "Street tree crown.037",
+      "Street tree crown.038",
+      "Street tree crown.039",
+      "Street tree crown.040",
+      "Street tree crown.041",
+      "Street tree crown.042",
+      "Street tree crown.043",
+      "Street tree crown.044",
+      "Street tree crown.045",
+      "Street tree crown.046",
+      "Street tree crown.047",
+      "Street tree crown.048",
+      "Street tree crown.049",
+      "Street tree crown.050",
+      "Street tree crown.051",
+      "Street tree crown.052",
+      "Street tree crown.053",
+      "Street tree crown.054",
+      "Street tree crown.055",
+      "Street tree crown.056",
+      "Street tree crown.057",
+      "Street tree crown.058",
+      "Street tree crown.059",
+      "Street tree crown.060",
+      "Street tree crown.061",
+      "Street tree crown.062",
+      "Street tree crown.063",
+      "Street tree crown.064",
+      "Yard shrub",
+      "Yard shrub.001",
+      "Yard shrub.002",
+      "Yard shrub.003",
+      "Yard shrub.004",
+      "Yard shrub.005",
+      "Yard shrub.006",
+      "Yard shrub.007",
+      "Yard shrub.008",
+      "Yard shrub.009",
+      "Yard shrub.010",
+      "Yard shrub.011",
+      "Yard shrub.012",
+      "Yard shrub.013",
+      "Yard shrub.014",
+      "Yard shrub.015",
+      "Yard shrub.016",
+      "Yard shrub.017",
+      "Yard shrub.018",
+      "Yard shrub.019",
+      "Yard shrub.020",
+      "Yard shrub.021",
+      "Yard shrub.022",
+      "Yard shrub.023",
+      "Yard shrub.024",
+      "Yard shrub.025",
+      "Yard shrub.026",
+      "Yard shrub.027",
+      "Yard shrub.028",
+      "Yard shrub.029",
+      "Yard shrub.030",
+      "Yard shrub.031",
+      "Yard shrub.032",
+      "Yard shrub.033",
+      "Yard shrub.034",
+      "Yard shrub.035",
+      "Yard shrub.036",
+      "Yard shrub.037",
+      "Yard shrub.038",
+      "Yard shrub.039",
+      "Yard shrub.040",
+      "Yard shrub.041",
+      "Street tree crown.065",
+      "Street tree crown.066",
+      "Street tree crown.067",
+      "Street tree crown.068",
+      "Street tree crown.069",
+      "Street tree crown.070",
+      "Street tree crown.071",
+      "Street tree crown.072",
+      "Street tree crown.073",
+      "Street tree crown.074",
+      "Street tree crown.075",
+      "Street tree crown.076",
+      "Street tree crown.077",
+      "Street tree crown.078",
+      "Street tree crown.079",
+      "Street tree crown.080",
+      "Street tree crown.081",
+      "Street tree crown.082",
+      "Street tree crown.083",
+      "Street tree crown.084",
+      "Street tree crown.085",
+      "Street tree crown.086",
+      "Street tree crown.087",
+      "Street tree crown.088",
+      "Street tree crown.089"
+    ],
+    "tree pits": [
+      "tree pits soil"
+    ],
+    "front fences": [
+      "front fences stone2",
+      "front fences hardware"
+    ],
+    "parked cars": [
+      "parked cars car",
+      "parked cars dark",
+      "parked cars tyre",
+      "parked cars car2",
+      "parked cars car3"
+    ],
+    "envelope": [
+      "corner north-street carrier stone",
+      "corner north-street carrier brick",
+      "corner east-street carrier stone",
+      "corner east-street carrier brick",
+      "B turret plex facade carrier",
+      "B limestone plex blue doors facade carrier",
+      "B limestone plex green doors facade carrier",
+      "B brick plex facade carrier",
+      "B brick plex north facade carrier",
+      "B turret plex north facade carrier",
+      "A brick plex 1 facade carrier",
+      "A limestone plex 2 facade carrier",
+      "A brick plex 3 facade carrier",
+      "A brick plex 4 facade carrier",
+      "A limestone plex 5 facade carrier",
+      "A brick plex 6 facade carrier",
+      "A brick plex 7 facade carrier"
+    ],
+    "corner north street row": [
+      "north street row corner north street row green",
+      "north street row corner north street row glass",
+      "north street row corner north street row stone2",
+      "north street row corner north street row trim",
+      "north street row corner north street row blue",
+      "north street row corner north street row hardware"
+    ],
+    "corner east street row": [
+      "east street row corner east street row green",
+      "east street row corner east street row glass",
+      "east street row corner east street row stone2",
+      "east street row corner east street row trim"
+    ],
+    "stone joints": [
+      "north street row limestone joints",
+      "east street row limestone joints",
+      "north street row limestone joints.001",
+      "north street row limestone joints.002",
+      "north street row limestone joints.003",
+      "north street row limestone joints.004",
+      "east street row limestone joints.001",
+      "east street row limestone joints.002"
+    ],
+    "brick joints": [
+      "north street row mortar courses",
+      "east street row mortar courses",
+      "north street row mortar courses.001",
+      "north street row mortar courses.002",
+      "east street row mortar courses.001",
+      "east street row mortar courses.002",
+      "east street row mortar courses.003",
+      "east street row mortar courses.004",
+      "east street row mortar courses.005"
+    ],
+    "cornices": [
+      "corner cornice",
+      "north street row console",
+      "north street row console.001",
+      "north street row console.002",
+      "north street row console.003",
+      "north street row console.004",
+      "north street row console.005",
+      "north street row console.006",
+      "east street row console",
+      "east street row console.001",
+      "east street row console.002",
+      "east street row console.003",
+      "east street row console.004",
+      "B turret plex cornice",
+      "north street row console.007",
+      "north street row console.008",
+      "north street row console.009",
+      "north street row console.010",
+      "north street row console.011",
+      "B limestone plex blue doors cornice",
+      "north street row console.012",
+      "north street row console.013",
+      "north street row console.014",
+      "north street row console.015",
+      "north street row console.016",
+      "B limestone plex green doors cornice",
+      "north street row console.017",
+      "north street row console.018",
+      "north street row console.019",
+      "north street row console.020",
+      "north street row console.021",
+      "B brick plex cornice",
+      "north street row console.022",
+      "north street row console.023",
+      "north street row console.024",
+      "north street row console.025",
+      "north street row console.026",
+      "B brick plex north cornice",
+      "north street row console.027",
+      "north street row console.028",
+      "north street row console.029",
+      "north street row console.030",
+      "north street row console.031",
+      "B turret plex north cornice",
+      "north street row console.032",
+      "north street row console.033",
+      "north street row console.034",
+      "north street row console.035",
+      "north street row console.036",
+      "A brick plex 1 cornice",
+      "east street row console.005",
+      "east street row console.006",
+      "east street row console.007",
+      "A limestone plex 2 cornice",
+      "east street row console.008",
+      "east street row console.009",
+      "east street row console.010",
+      "A brick plex 3 cornice",
+      "east street row console.011",
+      "east street row console.012",
+      "east street row console.013",
+      "A brick plex 4 cornice",
+      "east street row console.014",
+      "east street row console.015",
+      "east street row console.016",
+      "A limestone plex 5 cornice",
+      "east street row console.017",
+      "east street row console.018",
+      "east street row console.019",
+      "A brick plex 6 cornice",
+      "east street row console.020",
+      "east street row console.021",
+      "east street row console.022",
+      "A brick plex 7 cornice",
+      "east street row console.023",
+      "east street row console.024",
+      "east street row console.025"
+    ],
+    "corner building works": [
+      "corner building works deck",
+      "corner building works teal",
+      "corner building works hardware",
+      "corner building works brick",
+      "corner building works wall",
+      "corner building works interior",
+      "corner building works floor",
+      "corner building works membrane",
+      "corner building works stone2",
+      "corner building works dark",
+      "corner building works glass",
+      "corner building works stone",
+      "corner building works trim"
+    ],
+    "B turret plex": [
+      "north street row B turret plex trim",
+      "north street row B turret plex glass",
+      "north street row B turret plex green",
+      "north street row B turret plex hardware",
+      "north street row B turret plex stone2",
+      "north street row B turret plex red"
+    ],
+    "B turret plex works": [
+      "B turret plex works deck",
+      "B turret plex works green",
+      "B turret plex works hardware",
+      "B turret plex works stone",
+      "B turret plex works stone2",
+      "B turret plex works slate",
+      "B turret plex works glass",
+      "B turret plex works trim",
+      "B turret plex works wall",
+      "B turret plex works interior",
+      "B turret plex works floor",
+      "B turret plex works membrane",
+      "B turret plex works dark"
+    ],
+    "B limestone plex blue doors": [
+      "north street row B limestone plex blue doors trim",
+      "north street row B limestone plex blue doors glass",
+      "north street row B limestone plex blue doors blue",
+      "north street row B limestone plex blue doors hardware",
+      "north street row B limestone plex blue doors stone2",
+      "north street row B limestone plex blue doors red"
+    ],
+    "B limestone plex blue doors works": [
+      "B limestone plex blue doors works deck",
+      "B limestone plex blue doors works blue",
+      "B limestone plex blue doors works hardware",
+      "B limestone plex blue doors works stone",
+      "B limestone plex blue doors works wall",
+      "B limestone plex blue doors works interior",
+      "B limestone plex blue doors works floor",
+      "B limestone plex blue doors works membrane",
+      "B limestone plex blue doors works dark",
+      "B limestone plex blue doors works stone2",
+      "B limestone plex blue doors works glass",
+      "B limestone plex blue doors works trim"
+    ],
+    "B limestone plex green doors": [
+      "north street row B limestone plex green doors trim",
+      "north street row B limestone plex green doors glass",
+      "north street row B limestone plex green doors green",
+      "north street row B limestone plex green doors hardware",
+      "north street row B limestone plex green doors stone2"
+    ],
+    "B limestone plex green doors works": [
+      "B limestone plex green doors works deck",
+      "B limestone plex green doors works green",
+      "B limestone plex green doors works hardware",
+      "B limestone plex green doors works stone",
+      "B limestone plex green doors works wall",
+      "B limestone plex green doors works interior",
+      "B limestone plex green doors works floor",
+      "B limestone plex green doors works membrane",
+      "B limestone plex green doors works dark",
+      "B limestone plex green doors works stone2",
+      "B limestone plex green doors works glass",
+      "B limestone plex green doors works trim"
+    ],
+    "B brick plex": [
+      "north street row B brick plex trim",
+      "north street row B brick plex glass",
+      "north street row B brick plex red",
+      "north street row B brick plex hardware",
+      "north street row B brick plex stone2",
+      "north street row B brick plex blue"
+    ],
+    "B brick plex works": [
+      "B brick plex works deck",
+      "B brick plex works teal",
+      "B brick plex works hardware",
+      "B brick plex works brick",
+      "B brick plex works wall",
+      "B brick plex works interior",
+      "B brick plex works floor",
+      "B brick plex works membrane",
+      "B brick plex works dark",
+      "B brick plex works stone2",
+      "B brick plex works glass",
+      "B brick plex works trim"
+    ],
+    "B brick plex north": [
+      "north street row B brick plex north trim",
+      "north street row B brick plex north glass",
+      "north street row B brick plex north blue",
+      "north street row B brick plex north hardware",
+      "north street row B brick plex north stone2",
+      "north street row B brick plex north green"
+    ],
+    "B brick plex north works": [
+      "B brick plex north works deck",
+      "B brick plex north works green",
+      "B brick plex north works hardware",
+      "B brick plex north works brick",
+      "B brick plex north works wall",
+      "B brick plex north works interior",
+      "B brick plex north works floor",
+      "B brick plex north works membrane",
+      "B brick plex north works dark",
+      "B brick plex north works stone2",
+      "B brick plex north works glass",
+      "B brick plex north works trim"
+    ],
+    "B turret plex north": [
+      "north street row B turret plex north trim",
+      "north street row B turret plex north glass",
+      "north street row B turret plex north blue",
+      "north street row B turret plex north hardware",
+      "north street row B turret plex north stone2",
+      "north street row B turret plex north red"
+    ],
+    "B turret plex north works": [
+      "B turret plex north works deck",
+      "B turret plex north works teal",
+      "B turret plex north works hardware",
+      "B turret plex north works stone",
+      "B turret plex north works stone2",
+      "B turret plex north works slate",
+      "B turret plex north works glass",
+      "B turret plex north works trim",
+      "B turret plex north works wall",
+      "B turret plex north works interior",
+      "B turret plex north works floor",
+      "B turret plex north works membrane",
+      "B turret plex north works dark"
+    ],
+    "A brick plex 1": [
+      "east street row A brick plex 1 trim",
+      "east street row A brick plex 1 glass",
+      "east street row A brick plex 1 blue",
+      "east street row A brick plex 1 hardware",
+      "east street row A brick plex 1 stone2",
+      "east street row A brick plex 1 red"
+    ],
+    "A brick plex 1 works": [
+      "A brick plex 1 works deck",
+      "A brick plex 1 works teal",
+      "A brick plex 1 works hardware",
+      "A brick plex 1 works brick",
+      "A brick plex 1 works wall",
+      "A brick plex 1 works interior",
+      "A brick plex 1 works floor",
+      "A brick plex 1 works membrane",
+      "A brick plex 1 works dark",
+      "A brick plex 1 works stone2",
+      "A brick plex 1 works glass",
+      "A brick plex 1 works trim"
+    ],
+    "A limestone plex 2": [
+      "east street row A limestone plex 2 trim",
+      "east street row A limestone plex 2 glass",
+      "east street row A limestone plex 2 green",
+      "east street row A limestone plex 2 hardware",
+      "east street row A limestone plex 2 stone2",
+      "east street row A limestone plex 2 teal",
+      "east street row A limestone plex 2 blue"
+    ],
+    "A limestone plex 2 works": [
+      "A limestone plex 2 works deck",
+      "A limestone plex 2 works teal",
+      "A limestone plex 2 works hardware",
+      "A limestone plex 2 works stone",
+      "A limestone plex 2 works wall",
+      "A limestone plex 2 works interior",
+      "A limestone plex 2 works floor",
+      "A limestone plex 2 works membrane",
+      "A limestone plex 2 works dark",
+      "A limestone plex 2 works stone2",
+      "A limestone plex 2 works glass",
+      "A limestone plex 2 works trim"
+    ],
+    "A brick plex 3": [
+      "east street row A brick plex 3 trim",
+      "east street row A brick plex 3 glass",
+      "east street row A brick plex 3 red",
+      "east street row A brick plex 3 hardware",
+      "east street row A brick plex 3 stone2",
+      "east street row A brick plex 3 blue"
+    ],
+    "A brick plex 3 works": [
+      "A brick plex 3 works deck",
+      "A brick plex 3 works teal",
+      "A brick plex 3 works hardware",
+      "A brick plex 3 works brick",
+      "A brick plex 3 works wall",
+      "A brick plex 3 works interior",
+      "A brick plex 3 works floor",
+      "A brick plex 3 works membrane",
+      "A brick plex 3 works dark",
+      "A brick plex 3 works stone2",
+      "A brick plex 3 works glass",
+      "A brick plex 3 works trim"
+    ],
+    "A brick plex 4": [
+      "east street row A brick plex 4 trim",
+      "east street row A brick plex 4 glass",
+      "east street row A brick plex 4 blue",
+      "east street row A brick plex 4 hardware",
+      "east street row A brick plex 4 stone2",
+      "east street row A brick plex 4 teal",
+      "east street row A brick plex 4 green"
+    ],
+    "A brick plex 4 works": [
+      "A brick plex 4 works deck",
+      "A brick plex 4 works teal",
+      "A brick plex 4 works hardware",
+      "A brick plex 4 works brick2",
+      "A brick plex 4 works wall",
+      "A brick plex 4 works interior",
+      "A brick plex 4 works floor",
+      "A brick plex 4 works membrane",
+      "A brick plex 4 works dark",
+      "A brick plex 4 works stone2",
+      "A brick plex 4 works glass",
+      "A brick plex 4 works trim"
+    ],
+    "A limestone plex 5": [
+      "east street row A limestone plex 5 trim",
+      "east street row A limestone plex 5 glass",
+      "east street row A limestone plex 5 green",
+      "east street row A limestone plex 5 hardware",
+      "east street row A limestone plex 5 stone2",
+      "east street row A limestone plex 5 red"
+    ],
+    "A limestone plex 5 works": [
+      "A limestone plex 5 works deck",
+      "A limestone plex 5 works teal",
+      "A limestone plex 5 works hardware",
+      "A limestone plex 5 works stone",
+      "A limestone plex 5 works wall",
+      "A limestone plex 5 works interior",
+      "A limestone plex 5 works floor",
+      "A limestone plex 5 works membrane",
+      "A limestone plex 5 works dark",
+      "A limestone plex 5 works stone2",
+      "A limestone plex 5 works glass",
+      "A limestone plex 5 works trim"
+    ],
+    "A brick plex 6": [
+      "east street row A brick plex 6 trim",
+      "east street row A brick plex 6 glass",
+      "east street row A brick plex 6 red",
+      "east street row A brick plex 6 hardware",
+      "east street row A brick plex 6 stone2",
+      "east street row A brick plex 6 teal",
+      "east street row A brick plex 6 blue"
+    ],
+    "A brick plex 6 works": [
+      "A brick plex 6 works deck",
+      "A brick plex 6 works teal",
+      "A brick plex 6 works hardware",
+      "A brick plex 6 works brick",
+      "A brick plex 6 works wall",
+      "A brick plex 6 works interior",
+      "A brick plex 6 works floor",
+      "A brick plex 6 works membrane",
+      "A brick plex 6 works dark",
+      "A brick plex 6 works stone2",
+      "A brick plex 6 works glass",
+      "A brick plex 6 works trim"
+    ],
+    "A brick plex 7": [
+      "east street row A brick plex 7 trim",
+      "east street row A brick plex 7 glass",
+      "east street row A brick plex 7 blue",
+      "east street row A brick plex 7 hardware",
+      "east street row A brick plex 7 stone2",
+      "east street row A brick plex 7 red"
+    ],
+    "A brick plex 7 works": [
+      "A brick plex 7 works deck",
+      "A brick plex 7 works teal",
+      "A brick plex 7 works hardware",
+      "A brick plex 7 works brick2",
+      "A brick plex 7 works wall",
+      "A brick plex 7 works interior",
+      "A brick plex 7 works floor",
+      "A brick plex 7 works membrane",
+      "A brick plex 7 works dark",
+      "A brick plex 7 works stone2",
+      "A brick plex 7 works glass",
+      "A brick plex 7 works trim"
+    ],
+    "east street caps": [
+      "east street caps stone",
+      "east street caps stone2",
+      "east street caps teal",
+      "east street caps glass",
+      "east street caps trim",
+      "east street caps hardware"
+    ],
+    "context north-west row": [
+      "context north-west row brick",
+      "context north-west row membrane",
+      "context north-west row stone2",
+      "context north-west row glass",
+      "context north-west row trim",
+      "context north-west row deck",
+      "context north-west row hardware",
+      "context north-west row stone",
+      "context north-west row teal",
+      "context north-west row context2",
+      "context north-west row brick2"
+    ],
+    "context south-east row": [
+      "context south-east row stone",
+      "context south-east row membrane",
+      "context south-east row stone2",
+      "context south-east row glass",
+      "context south-east row trim",
+      "context south-east row deck",
+      "context south-east row hardware",
+      "context south-east row brick",
+      "context south-east row teal",
+      "context south-east row brick2",
+      "context south-east row context2"
+    ],
+    "context north-west corner": [
+      "context north-west corner brick2",
+      "context north-west corner membrane",
+      "context north-west corner stone2",
+      "context north-west corner glass",
+      "context north-west corner trim",
+      "context north-west corner deck",
+      "context north-west corner hardware"
+    ],
+    "context south-east corner": [
+      "context south-east corner brick",
+      "context south-east corner membrane",
+      "context south-east corner stone2",
+      "context south-east corner glass",
+      "context south-east corner trim",
+      "context south-east corner deck",
+      "context south-east corner hardware"
+    ],
+    "context south-west east": [
+      "context south-west east stone",
+      "context south-west east membrane",
+      "context south-west east stone2",
+      "context south-west east glass",
+      "context south-west east trim",
+      "context south-west east deck",
+      "context south-west east hardware"
+    ],
+    "context south-west north": [
+      "context south-west north brick2",
+      "context south-west north membrane",
+      "context south-west north stone2",
+      "context south-west north glass",
+      "context south-west north trim",
+      "context south-west north deck",
+      "context south-west north hardware",
+      "context south-west north brick"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-22T17:15:04.755247+00:00",
+  "delivery_and_render_seconds": 4035.510907212,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
