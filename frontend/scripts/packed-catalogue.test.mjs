@@ -9,6 +9,19 @@ import { packCatalogue, packedCatalogue } from './packed-catalogue.mjs';
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
 
+for (const filename of ['streetManual.json', 'nativeStreetModuleBounds.json']) {
+  test(`${filename}: production packing preserves every street rule and exact geometric bound`, async () => {
+    const path = resolve('src/data', filename);
+    const source = readFileSync(path, 'utf8');
+    const transformed = packedCatalogue().transform('', path);
+    assert.notEqual(transformed, null);
+    const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
+    assert.deepEqual(decoded.default, JSON.parse(source));
+    assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * 0.55);
+  });
+}
+
 test('packing uses the smaller of two bounded lossless compression profiles', () => {
   for (const filename of ['nativeStreetPilots.json', 'buildingArchetypes.json']) {
     const source = readFileSync(resolve('src/data', filename), 'utf8');
