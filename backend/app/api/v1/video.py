@@ -172,6 +172,7 @@ class VideoPilotRequest(BaseModel):
     custom_prompt: str = Field(default="", max_length=600)
     use_custom_prompt_only: bool = False
     omni_reference_mode: Literal["video_only", "architecture_references", "appearance_references"] = "video_only"
+    appearance_attempt_id: uuid.UUID | None = None
     scene_brief: str = Field(
         default=(
             "Preserve every authored building, open space, and surrounding context exactly as depicted in Image1."
@@ -523,6 +524,17 @@ async def _validate_video_scene_revision(
     )
 
 
+async def _validate_appearance_binding(req, db, user, preview, keyframes, scene_sha):
+    if req.appearance_attempt_id is None:
+        return
+    if req.provider != 'omni' or req.control_mode != 'preview_video' or req.omni_reference_mode != 'appearance_references' or preview is None:
+        raise HTTPException(400, 'A photographic guide requires Omni preview-video edit.')
+    from app.services.video_appearance import validate_binding
+    await validate_binding(db, user, req.project_id, req.appearance_attempt_id,
+        source_sha256=hashlib.sha256(preview.data).hexdigest(), scene_sha256=scene_sha,
+        images=[image.data for image in keyframes])
+
+
 async def _update_attempt(db: AsyncSession, project_id: uuid.UUID, attempt_id: str, **updates) -> dict:
     project = await _locked_project(db, project_id)
     meta = dict(project.metadata_ or {})
@@ -806,6 +818,7 @@ async def preflight_video(
         if runtime_error:
             raise HTTPException(status_code=503, detail=runtime_error)
     scene_revision_sha256 = await _validate_video_scene_revision(req, db)
+    await _validate_appearance_binding(req, db, user, preview, keyframes, scene_revision_sha256)
     project = await db.get(Project, req.project_id)
     if req.provider != "internal_enhance":
         check_trial_available(project, user.id, "video")
@@ -999,6 +1012,9 @@ async def generate_video(
         if existing.get("request_id") == str(req.request_id):
             request_hashes = {revision_sha256(req.model_dump(mode="json"))}
             legacy_excluded: set[str] = set()
+            if 'appearance_attempt_id' not in existing and req.appearance_attempt_id is None:
+                legacy_excluded.add('appearance_attempt_id')
+                request_hashes.add(revision_sha256(req.model_dump(mode='json', exclude=legacy_excluded)))
             if "omni_reference_mode" not in existing and req.omni_reference_mode == "video_only":
                 legacy_excluded.add("omni_reference_mode")
                 request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded)))
@@ -1034,6 +1050,7 @@ async def generate_video(
     # validation rules change. Only a new submission needs media admission.
     source_media = await _inspect_omni_source(req, preview)
     scene_revision_sha256 = await _validate_video_scene_revision(req, db)
+    await _validate_appearance_binding(req, db, user, preview, keyframes, scene_revision_sha256)
 
     usage = _provider_usage(attempts, req.provider)
     active_reservations = sum(
@@ -1122,6 +1139,7 @@ async def generate_video(
         "custom_prompt": req.custom_prompt if req.provider == "omni" else "",
         "use_custom_prompt_only": req.use_custom_prompt_only,
         "omni_reference_mode": req.omni_reference_mode,
+        'appearance_attempt_id': str(req.appearance_attempt_id) if req.appearance_attempt_id else None,
         "estimated_cost_usd": estimated_cost,
         "guide_sha256": guide_hash,
         "scene_revision_sha256": scene_revision_sha256,
@@ -1231,6 +1249,21 @@ async def generate_video(
     # From this committed timestamp onward the attempt consumes one bounded run.
     # Remote calls may incur billing; local runs remain free but are capped while
     # the pilot is being evaluated.
+    # Control persistence awaits storage and releases the earlier reservation
+    # transaction. Recheck under the shared edit lock immediately before debit.
+    try:
+        from app.services.residual_landscape import lock_residual_landscape_project
+        await lock_residual_landscape_project(db, req.project_id)
+        await _locked_project(db, req.project_id)
+        final_scene_sha = await _validate_video_scene_revision(req, db)
+        if final_scene_sha != scene_revision_sha256:
+            raise _video_scene_conflict('The scene changed while saving the video source. Prepare the route again.')
+        await _validate_appearance_binding(req, db, user, preview, keyframes, final_scene_sha)
+    except HTTPException as exc:
+        await db.rollback()
+        await _update_attempt(db, req.project_id, attempt_id, status='preflight_failed',
+            error='The scene or photographic guide changed before dispatch. The provider was not called.')
+        raise exc
     run_marker = (
         {"local_run_started_at": _now()} if req.provider == "internal_enhance" else {"provider_call_started_at": _now()}
     )

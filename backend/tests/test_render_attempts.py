@@ -81,7 +81,7 @@ async def isolated(monkeypatch):
         monkeypatch.setattr(jobs, "write_evidence", write)
         monkeypatch.setattr(jobs, "read_evidence", read)
         monkeypatch.setattr(direct, "write_evidence", write)
-        monkeypatch.setattr(direct, "_validate_direct_3d_project_zones", lambda *_: [])
+        monkeypatch.setattr(direct, "_validate_direct_3d_project_zones", lambda *_, **_kwargs: [])
         monkeypatch.setattr(direct, "build_render_source_snapshot", lambda *_args, **_kwargs: {"test_snapshot": True})
         monkeypatch.setattr(direct, "_finalize_direct_audit", AsyncMock())
         monkeypatch.setattr(direct, "persist_render_to_gallery", AsyncMock(return_value=None))

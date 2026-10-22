@@ -54,6 +54,22 @@ async def generate(f, request=None):
 
 
 @pytest.mark.asyncio
+async def test_scene_edit_during_control_upload_stops_before_video_spend(pilot, monkeypatch):
+    f = pilot
+    monkeypatch.setattr(video, '_validate_video_scene_revision', AsyncMock(side_effect=[
+        'a' * 64, HTTPException(409, 'The scene changed while the source was being saved.')]))
+    with pytest.raises(HTTPException) as exc:
+        await generate(f)
+    assert exc.value.status_code == 409
+    f.video_provider.assert_not_awaited()
+    async with f.sessions() as db:
+        assert (await db.get(User, f.user.id)).render_credits == 1000
+        entry = (await db.get(Project, f.project.id)).metadata_['video_pilot_attempts'][0]
+        assert entry['status'] == 'preflight_failed'
+        assert not entry.get('provider_call_started_at')
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize("reference_mode", ["architecture_references", "appearance_references"])
 async def test_scene_edit_persists_reference_bytes_and_replay_cannot_swap_them(pilot, reference_mode):
     f = pilot

@@ -3,9 +3,9 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { VideoGeneratePanel } from './VideoGeneratePanel';
 
-const api = vi.hoisted(() => ({ capabilities: vi.fn(), list: vi.fn(), preflight: vi.fn(), generate: vi.fn() }));
+const api = vi.hoisted(() => ({ capabilities: vi.fn(), list: vi.fn(), preflight: vi.fn(), generate: vi.fn(), imageGenerate: vi.fn(), imageList: vi.fn(), imageRecover: vi.fn() }));
 vi.mock('@/services/api', () => ({
-  direct3DAttempts: { capabilities: api.capabilities }, videoRenderApi: api,
+  direct3DAttempts: { capabilities: api.capabilities, list: api.imageList, generate: api.imageGenerate, recover: api.imageRecover }, videoRenderApi: api,
   authApi: { me: vi.fn() }, resolveApiFileUrl: (url: string) => url,
   getApiErrorMessage: (_error: unknown, fallback: string) => fallback,
 }));
@@ -14,6 +14,66 @@ vi.mock('@/features/community3d/community3d', () => ({
 }));
 
 describe('free route preview when finished generation is unavailable', () => {
+  it('restores a paid guide with its exact original MP4 after reload instead of recapturing it', async () => {
+    api.capabilities.mockResolvedValue({ video_enabled: true });
+    api.list.mockResolvedValue({ attempts: [], attempts_used: 0, attempts_remaining: 2, max_attempts: 2 });
+    const attempt = {id:'guide', style:'video-appearance',status:'completed',created_at:'2026-10-21T00:00:00Z'};
+    api.imageList.mockResolvedValue([attempt]);
+    api.imageRecover.mockResolvedValue({ response: {purpose:'video_appearance',attempt_id:'guide',image_base64:'cGhvdG8='},
+      source_request: {project_id:'trial',provider:'omni',control_mode:'preview_video',render_quality:'draft',duration_seconds:4,
+        camera_motion:'path_follow',guide_frame_base64:'original-native-frame',preview_video_base64:'data:video/mp4;base64,b3JpZ2luYWw=',
+        preview_video_mime_type:'video/mp4',route_points:[{x:.3,y:.7},{x:.5,y:.7}],custom_prompt:'Realistic daylight.',
+        route_keyframes_base64:[],community_3d_claims:[],details_revision:1,
+        character_reference_base64:'hidden-old-reference', character_reference_mime_type:'image/png'} });
+    api.preflight.mockResolvedValue({ready:true,provider:'omni',attempts_used:0,attempts_remaining:2,max_attempts:2});
+    const captureRouteControls = vi.fn();
+    render(<VideoGeneratePanel projectId="trial" canvas={null} buildings={[]} siteZones={[]} detailsRevision={1}
+      captureAerialFrame={async () => 'data:image/jpeg;base64,ZnJhbWU='} captureRouteControls={captureRouteControls} onClose={vi.fn()} />);
+    await screen.findByAltText('Captured City Prompt scene');
+    fireEvent.click(screen.getByRole('checkbox',{name:'Photographic finish'}));
+    fireEvent.click(screen.getByText('Recover saved guides'));
+    fireEvent.click(await screen.findByRole('button',{name:/Recover guide$/}));
+    fireEvent.click(await screen.findByRole('button',{name:'Use guide and restore original route'}));
+    await screen.findByText(/Using the original saved route recording/);
+    fireEvent.click(screen.getByRole('button',{name:'Run free check'}));
+    await waitFor(() => expect(api.preflight).toHaveBeenCalledOnce());
+    expect(api.preflight).toHaveBeenCalledWith(expect.objectContaining({
+      appearance_attempt_id:'guide',omni_reference_mode:'appearance_references',use_custom_prompt_only:true,
+      guide_frame_base64:'original-native-frame',route_keyframes_base64:['data:image/png;base64,cGhvdG8='],
+      preview_video_base64:'data:video/mp4;base64,b3JpZ2luYWw='}));
+    expect(captureRouteControls).not.toHaveBeenCalled();
+    expect(api.generate).not.toHaveBeenCalled();
+    expect(api.imageGenerate).not.toHaveBeenCalled();
+    expect(api.preflight.mock.calls[0][0].character_reference_base64).toBeUndefined();
+    fireEvent.change(screen.getByLabelText('Character appearance reference (optional)'), {
+      target: { files: [new File(['new-person'], 'person.png', {type:'image/png'})] },
+    });
+    await screen.findByAltText('Character appearance reference');
+    fireEvent.click(screen.getByRole('button',{name:'Run free check'}));
+    await waitFor(() => expect(api.preflight).toHaveBeenCalledTimes(2));
+    expect(api.preflight.mock.calls[1][0].character_reference_base64).toBe('data:image/png;base64,bmV3LXBlcnNvbg==');
+    fireEvent.click(screen.getByRole('button',{name:'Remove reference'}));
+    fireEvent.click(screen.getByRole('button',{name:'Run free check'}));
+    await waitFor(() => expect(api.preflight).toHaveBeenCalledTimes(3));
+    expect(api.preflight.mock.calls[2][0].character_reference_base64).toBeUndefined();
+    fireEvent.click(screen.getByRole('button',{name:'8 seconds'}));
+    expect(screen.getByRole('button',{name:/Generate trial/})).toBeDisabled();
+  });
+  it('offers photographic finishing only for Omni route edits and requires a reviewed guide before video', async () => {
+    api.capabilities.mockResolvedValue({ video_enabled: true });
+    api.list.mockResolvedValue({ attempts: [], attempts_used: 0, attempts_remaining: 2, max_attempts: 2 });
+    api.imageList.mockResolvedValue([]);
+    render(<VideoGeneratePanel projectId="trial" canvas={null} buildings={[]} siteZones={[]}
+      captureAerialFrame={async () => 'data:image/jpeg;base64,ZnJhbWU='} onClose={vi.fn()} />);
+    await screen.findByAltText('Captured City Prompt scene');
+    fireEvent.click(screen.getByRole('checkbox', {name: 'Photographic finish'}));
+    expect(screen.getByRole('button', {name: /Create photographic guide.*26 tokens/})).toBeVisible();
+    expect(screen.getByText(/Video is a separate paid step after review/)).toBeVisible();
+    expect(api.imageGenerate).not.toHaveBeenCalled();
+    expect(api.generate).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', {name: /Single frame/}));
+    expect(screen.queryByRole('button', {name: /Create photographic guide/})).not.toBeInTheDocument();
+  });
   it('binds scene reference frames to the free check and invalidates it when disabled', async () => {
     api.capabilities.mockResolvedValue({ video_enabled: true });
     api.list.mockResolvedValue({ attempts: [], attempts_used: 0, attempts_remaining: 2, max_attempts: 2 });

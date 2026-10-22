@@ -24,6 +24,7 @@ import toast from 'react-hot-toast';
 
 import { authApi, direct3DAttempts, getApiErrorMessage, resolveApiFileUrl, videoRenderApi } from '@/services/api';
 import { assertNearFieldVideoSourceQuality } from './videoSourceQuality';
+import { PhotographicVideoGuide, videoBytesSha256, type PhotographicGuide } from './PhotographicVideoGuide';
 import { useAuthStore } from '@/store';
 import type { Building, SiteZone } from '@/types';
 import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d';
@@ -262,7 +263,8 @@ interface PreparedVideoRequest {
   duration_seconds: 4 | 8;
   character_reference_base64?: string;
   character_reference_mime_type?: 'image/png' | 'image/jpeg';
-  omni_reference_mode?: 'video_only' | 'architecture_references';
+  omni_reference_mode?: 'video_only' | 'architecture_references' | 'appearance_references';
+  appearance_attempt_id?: string;
   custom_prompt: string;
   use_custom_prompt_only: boolean;
   scene_brief: string;
@@ -386,6 +388,11 @@ export function VideoGeneratePanel({
   const [provider, setProvider] = useState<VideoProvider>('omni');
   const [seedanceReferenceMode, setSeedanceReferenceMode] = useState<SeedanceReferenceMode>('preview_plus_keyframes');
   const [useSceneReferences, setUseSceneReferences] = useState(false);
+  const [usePhotographicFinish, setUsePhotographicFinish] = useState(false);
+  const [photographicGuide, setPhotographicGuide] = useState<PhotographicGuide | null>(null);
+  const [isPreparingGuide, setIsPreparingGuide] = useState(false);
+  const [recoveredAppearance, setRecoveredAppearance] = useState<{ request: PreparedVideoRequest; signature: string } | null>(null);
+  const [pendingAppearanceRestore, setPendingAppearanceRestore] = useState<{request: PreparedVideoRequest; guide: PhotographicGuide} | null>(null);
   const [internalEnhanceQuality, setInternalEnhanceQuality] = useState<InternalEnhanceQuality>('fast');
   const [renderQuality, setRenderQuality] = useState<VideoRenderQuality>('draft');
   const [controlMode, setControlMode] = useState<VideoControlMode>('preview_video');
@@ -441,10 +448,32 @@ export function VideoGeneratePanel({
   );
 
   const { routeControls, setRouteControls, isPreparingControls, prepare: prepareRoutePreview } = useVideoRoutePreview(routeCaptureSignature);
+  const appearanceSignature = `${routeCaptureSignature}:${customPrompt.trim()}`;
+  useEffect(() => {
+    if (!pendingAppearanceRestore) return;
+    const request = pendingAppearanceRestore.request;
+    setRecoveredAppearance({ request, signature: appearanceSignature });
+    setPhotographicGuide({ ...pendingAppearanceRestore.guide, signature: appearanceSignature });
+    setRouteControls({ signature: routeCaptureSignature, keyframesBase64: [request.guide_frame_base64],
+      previewVideoBase64: request.preview_video_base64!, previewVideoMimeType: request.preview_video_mime_type! });
+    setPendingAppearanceRestore(null);
+  }, [pendingAppearanceRestore, appearanceSignature, routeCaptureSignature, setRouteControls]);
+  const restoreAppearanceSource = useCallback((source: unknown, guide: PhotographicGuide) => {
+    const request = source as PreparedVideoRequest;
+    if (request?.project_id !== projectId || request.provider !== 'omni' || request.control_mode !== 'preview_video'
+      || !request.preview_video_base64 || !request.route_points?.length) {
+      setError('The saved original route could not be restored. No video was requested.'); return;
+    }
+    setMotion(request.camera_motion); setDuration(request.duration_seconds); setRenderQuality(request.render_quality);
+    setRoutePoints(request.route_points); setSourceFrame(request.guide_frame_base64);
+    ++referenceSequence.current; setCharacterReference(null);
+    setCustomPrompt(request.custom_prompt); setSourceCaptureVersion(v => v + 1);
+    setPreflight(null); setPrepared(null); setPendingAppearanceRestore({request, guide});
+  }, [projectId]);
 
   const currentSignature = useMemo(
-    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeCaptureSignature}:${sceneContract.signature}:${currentSceneRevisionSignature}:${supportsPeopleEdit ? customPrompt.trim() : ''}:${supportsPeopleEdit && useCustomPromptOnly}:${supportsPeopleEdit ? characterReference?.revision ?? 0 : 0}:${supportsPeopleEdit && useSceneReferences}`,
-    [controlMode, currentSceneRevisionSignature, customPrompt, useCustomPromptOnly, internalEnhanceQuality, motion, provider, renderQuality, routeCaptureSignature, sceneContract.signature, seedanceReferenceMode, supportsPeopleEdit, characterReference, useSceneReferences],
+    () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeCaptureSignature}:${sceneContract.signature}:${currentSceneRevisionSignature}:${supportsPeopleEdit ? customPrompt.trim() : ''}:${supportsPeopleEdit && useCustomPromptOnly}:${supportsPeopleEdit ? characterReference?.revision ?? 0 : 0}:${supportsPeopleEdit && useSceneReferences}:${supportsPeopleEdit && usePhotographicFinish}:${photographicGuide?.attempt_id ?? ''}`,
+    [controlMode, currentSceneRevisionSignature, customPrompt, useCustomPromptOnly, internalEnhanceQuality, motion, provider, renderQuality, routeCaptureSignature, sceneContract.signature, seedanceReferenceMode, supportsPeopleEdit, characterReference, useSceneReferences, usePhotographicFinish, photographicGuide],
   );
   const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
   const providerUsage = pilot.provider_usage[provider];
@@ -593,8 +622,8 @@ export function VideoGeneratePanel({
         frame.startsWith('data:') ? frame : `data:image/png;base64,${frame}`, renderQuality,
       )));
       return { ...captured, keyframesBase64: normalizedKeyframes };
-    });
-  }, [sourceFrame, routePoints, community3DClaims, detailsRevision, siteZones, captureRouteControls, prepareRoutePreview, motion, renderQuality, durationSeconds, animatePeople]);
+    }, controlMode === 'multi_keyframe' ? 2 : provider === 'seedance_mini' && seedanceReferenceMode === 'preview_plus_keyframes' ? 3 : 1);
+  }, [sourceFrame, routePoints, community3DClaims, detailsRevision, siteZones, captureRouteControls, prepareRoutePreview, motion, renderQuality, durationSeconds, animatePeople, controlMode, provider, seedanceReferenceMode]);
 
   const previewLocally = useCallback(async () => {
     setError(null);
@@ -602,11 +631,24 @@ export function VideoGeneratePanel({
     catch (previewError) { setError(getApiErrorMessage(previewError, 'The preview could not be prepared. Try again when the scene is ready.')); }
   }, [prepareLocalPreview]);
 
-  const requestBody = useCallback(async (): Promise<PreparedVideoRequest> => {
+  const requestBody = useCallback(async (includePhotographicGuide = true): Promise<PreparedVideoRequest> => {
     if (!sourceFrame) throw new Error('Capture the scene before validating.');
     if (routePoints.length < 2) throw new Error('Draw a route with a start and finish.');
     if (!community3DClaims || (community3DClaims.length === 0 && detailsRevision === undefined)) {
       throw new Error(isCatalogueOnlyScene(siteZones) ? CATALOGUE_UPDATE_GUIDANCE : 'The 3D scene changed. Close Video Render and update the 3D scene before trying again.');
+    }
+    if (supportsPeopleEdit && usePhotographicFinish && recoveredAppearance?.signature === appearanceSignature) {
+      if (includePhotographicGuide && (!photographicGuide || photographicGuide.signature !== appearanceSignature)) {
+        throw new Error('Review the matching photographic guide first.');
+      }
+      return { ...recoveredAppearance.request,
+        character_reference_base64: characterReference?.dataUrl,
+        character_reference_mime_type: characterReference?.mimeType,
+        route_keyframes_base64: includePhotographicGuide ? [`data:image/png;base64,${photographicGuide!.image_base64}`] : [],
+        omni_reference_mode: includePhotographicGuide ? 'appearance_references' : 'video_only',
+        appearance_attempt_id: includePhotographicGuide ? photographicGuide!.attempt_id : undefined,
+        use_custom_prompt_only: includePhotographicGuide || recoveredAppearance.request.use_custom_prompt_only,
+        custom_prompt: customPrompt.trim() || 'Make this exact scene look like a live-action architectural film with realistic people and materials. Clear blue sky, soft clouds and neutral sunshine.' };
     }
     const activeControls = controlMode !== 'single_frame' ? await prepareLocalPreview() : null;
     if (activeControls?.previewCaptureProfile?.frameCount !== undefined
@@ -625,12 +667,18 @@ export function VideoGeneratePanel({
     // Keep architectural source admission on finished enhancement; a free
     // exact-camera preview may show a sparse park without inventing detail.
     if (motion !== 'path_follow' && allRouteKeyframes.length) await assertNearFieldVideoSourceQuality(allRouteKeyframes);
-    const architectureReferences = supportsPeopleEdit && useSceneReferences;
+    const appearanceReferences = supportsPeopleEdit && usePhotographicFinish && includePhotographicGuide;
+    if (appearanceReferences && (!photographicGuide || photographicGuide.signature !== appearanceSignature)) {
+      throw new Error('Create and review a photographic guide for this scene and route first.');
+    }
+    const architectureReferences = supportsPeopleEdit && useSceneReferences && !usePhotographicFinish;
     if (architectureReferences && !allRouteKeyframes.length) {
       throw new Error('Capture a route preview before using scene reference frames.');
     }
     const routeKeyframes = controlMode === 'multi_keyframe'
       ? allRouteKeyframes
+      : appearanceReferences && photographicGuide
+        ? [`data:image/png;base64,${photographicGuide.image_base64}`]
       : architectureReferences
         ? allRouteKeyframes.length === 1 ? allRouteKeyframes : [allRouteKeyframes[0], allRouteKeyframes[allRouteKeyframes.length - 1]]
       : provider === 'seedance_mini' && seedanceReferenceMode === 'preview_plus_keyframes' && allRouteKeyframes.length >= 3
@@ -646,10 +694,12 @@ export function VideoGeneratePanel({
       seedance_reference_mode: seedanceReferenceMode,
       internal_enhance_quality: internalEnhanceQuality,
       render_quality: renderQuality,
-      guide_frame_base64: routeKeyframes[0] ?? sourceFrame,
+      guide_frame_base64: allRouteKeyframes[0] ?? sourceFrame,
       control_mode: controlMode,
       route_keyframes_base64: routeKeyframes,
       ...(architectureReferences ? { omni_reference_mode: 'architecture_references' as const } : {}),
+      ...(appearanceReferences && photographicGuide ? { omni_reference_mode: 'appearance_references' as const,
+        appearance_attempt_id: photographicGuide.attempt_id } : {}),
       ...(controlMode === 'preview_video' && activeControls ? {
         preview_video_base64: activeControls.previewVideoBase64,
         preview_video_mime_type: activeControls.previewVideoMimeType,
@@ -697,8 +747,8 @@ export function VideoGeneratePanel({
         character_reference_base64: characterReference.dataUrl,
         character_reference_mime_type: characterReference.mimeType,
       } : {}),
-      custom_prompt: provider === 'omni' && controlMode === 'preview_video' ? customPrompt.trim() : '',
-      use_custom_prompt_only: provider === 'omni' && controlMode === 'preview_video' && useCustomPromptOnly,
+      custom_prompt: provider === 'omni' && controlMode === 'preview_video' ? customPrompt.trim() || (appearanceReferences ? 'Make this exact scene look like a live-action architectural film with realistic people and materials. Clear blue sky, soft clouds and neutral sunshine.' : '') : '',
+      use_custom_prompt_only: provider === 'omni' && controlMode === 'preview_video' && (useCustomPromptOnly || appearanceReferences),
       scene_brief: sceneBrief,
       community_3d_claims: community3DClaims,
       details_revision: detailsRevision,
@@ -706,7 +756,19 @@ export function VideoGeneratePanel({
         residual_landscape_claim: residualLandscapeClaim,
       } : {}),
     };
-  }, [prepareLocalPreview, community3DClaims, customPrompt, useCustomPromptOnly, detailsRevision, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones, durationSeconds, supportsPeopleEdit, characterReference, useSceneReferences]);
+  }, [prepareLocalPreview, community3DClaims, customPrompt, useCustomPromptOnly, detailsRevision, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones, durationSeconds, supportsPeopleEdit, characterReference, useSceneReferences, usePhotographicFinish, photographicGuide, appearanceSignature, recoveredAppearance]);
+
+  const prepareAppearance = useCallback(async () => {
+    const body = await requestBody(false);
+    // Validate the real route/scene before buying its still. This is free.
+    await videoRenderApi.preflight(body);
+    if (!body.preview_video_base64) throw new Error('Capture the free route preview first.');
+    return { purpose: 'video_appearance' as const, project_id: projectId,
+      beauty_image_base64: body.guide_frame_base64,
+      source_video_sha256: await videoBytesSha256(body.preview_video_base64), prompt: customPrompt.trim(),
+      details_revision: detailsRevision, community_3d_claims: body.community_3d_claims,
+      residual_landscape_claim: body.residual_landscape_claim, source_request: body };
+  }, [requestBody, projectId, customPrompt, detailsRevision]);
 
   const runPreflight = useCallback(async () => {
     setIsPreflighting(true);
@@ -740,7 +802,7 @@ export function VideoGeneratePanel({
   }, [requestBody, currentSignature]);
 
   const generate = useCallback(async () => {
-    if (!prepared || !hasValidPreflight || !providerCanRun) return;
+    if (!prepared || !hasValidPreflight || !providerCanRun || isPreparingGuide) return;
     const requestingUserId = useAuthStore.getState().user?.id;
     setIsGenerating(true);
     setError(null);
@@ -769,7 +831,7 @@ export function VideoGeneratePanel({
         }
       }).catch(() => { /* Reconciled on the next account refresh. */ });
     }
-  }, [hasValidPreflight, loadPilot, onVideoSaved, prepared, providerCanRun]);
+  }, [hasValidPreflight, loadPilot, onVideoSaved, prepared, providerCanRun, isPreparingGuide]);
 
   const addRouteVertex = (event: ReactMouseEvent<HTMLDivElement>) => {
     if (isGenerating || isPreparingControls || isCapturing || isPreflighting) return;
@@ -947,6 +1009,7 @@ export function VideoGeneratePanel({
               {isPreparingControls ? 'Preparing preview…' : 'Preview route · free'}
             </button>
             <p className="mt-1 text-center text-xs text-white/70">Review the camera journey before generating a finished video.</p>
+            {recoveredAppearance?.signature === appearanceSignature && <p className="mt-2 rounded-lg border border-white/20 p-2 text-xs text-white">Using the original saved route recording. Its exact camera and motion are restored; change the route or recapture the scene to make a new source.</p>}
 
             {routeControls?.signature === routeCaptureSignature && (
               <div className="mt-3 rounded-xl border border-white/10 bg-black/25 p-2">
@@ -1174,9 +1237,16 @@ export function VideoGeneratePanel({
                       </label>
                       <p className="mt-1 text-[10px] text-[#151515]/60">People walk forward from their saved position at 1.2 m/s during capture. Leave a clear path; normal editing stays still.</p>
                     </fieldset>
+                    <label className="mb-2 flex items-center gap-2 text-xs font-bold text-[#151515]">
+                      <input type="checkbox" checked={usePhotographicFinish} disabled={isGenerating || isPreflighting || isPreparingGuide}
+                        onChange={event => { setUsePhotographicFinish(event.target.checked); setPreflight(null); setPrepared(null); }} className="accent-[#96ba10]" />
+                      Photographic finish
+                    </label>
+                    {usePhotographicFinish && <PhotographicVideoGuide projectId={projectId} signature={appearanceSignature}
+                      guide={photographicGuide} prepare={prepareAppearance} onChange={setPhotographicGuide} onBusyChange={setIsPreparingGuide} onRestoreSource={restoreAppearanceSource} />}
                     <label className="mb-1 flex items-center gap-2 text-xs font-bold text-[#151515]">
                       <input type="checkbox" checked={useSceneReferences}
-                        disabled={isGenerating || isPreflighting}
+                        disabled={isGenerating || isPreflighting || usePhotographicFinish}
                         onChange={event => { setUseSceneReferences(event.target.checked); setPreflight(null); setPrepared(null); }}
                         className="accent-[#96ba10]" />
                       Use scene reference frames
@@ -1200,8 +1270,8 @@ export function VideoGeneratePanel({
                       className="w-full resize-y rounded-xl border border-[#151515]/25 bg-white p-3 text-sm text-[#151515] focus:border-[#151515] focus:ring-2 focus:ring-[#c9ff3d] disabled:opacity-50" />
                     <p className="mt-1 text-[10px] text-[#151515]/60">Keep it to one clear appearance or activity detail. The building massing, street layout and camera route should stay recognizable.</p>
                     <label className="mt-2 flex items-center gap-2 text-xs font-bold text-[#151515]">
-                      <input type="checkbox" checked={useCustomPromptOnly}
-                        disabled={isGenerating || isPreflighting || !customPrompt.trim()}
+                      <input type="checkbox" checked={useCustomPromptOnly || usePhotographicFinish}
+                        disabled={isGenerating || isPreflighting || usePhotographicFinish || !customPrompt.trim()}
                         onChange={event => { setUseCustomPromptOnly(event.target.checked); setPreflight(null); setPrepared(null); }}
                         className="accent-[#96ba10]" />
                       Use only my prompt
@@ -1240,7 +1310,7 @@ export function VideoGeneratePanel({
                     <p className="mt-0.5 text-[10px] leading-relaxed text-white/50">{provider === 'internal_enhance' ? `One click = one self-hosted ${internalEnhanceQuality === 'gpu_detail' ? 'model-backed' : 'deterministic'} restoration run at $0.` : 'One click = one paid provider call. There are no automatic retries.'}</p>
                   </div>
                 </div>
-                <button onClick={() => void generate()} disabled={!hasValidPreflight || isGenerating || !providerCanRun} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-white bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-xs font-black uppercase text-[#151515] transition hover:brightness-105 disabled:cursor-not-allowed disabled:grayscale disabled:opacity-40">
+                <button onClick={() => void generate()} disabled={!hasValidPreflight || isGenerating || isPreparingGuide || !providerCanRun} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-white bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-xs font-black uppercase text-[#151515] transition hover:brightness-105 disabled:cursor-not-allowed disabled:grayscale disabled:opacity-40">
                   {isGenerating ? <Loader2 size={15} className="animate-spin" /> : <Film size={15} />}
                   {!videoGenerationEnabled ? 'Finished generation unavailable' : isGenerating
                     ? provider === 'internal_enhance' ? 'Restoring exact City Prompt frames…' : 'Rendering one continuous shot…'

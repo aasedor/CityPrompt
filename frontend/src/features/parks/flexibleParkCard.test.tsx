@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { expect, it, vi } from 'vitest';
 import { PlacementPalette } from '@/features/pickPlace/PlacementPalette';
 
@@ -12,10 +12,11 @@ it('keeps reviewed parks and makes all four flexible parks searchable and drawab
   expect(screen.getByRole('button', { name: /Conservatory botanical garden.*Choose & place/i })).toBeInTheDocument();
   fireEvent.change(screen.getByRole('searchbox', { name: 'Search objects or district code' }), { target: { value: 'Flexible' } });
   expect(screen.getAllByRole('article')).toHaveLength(4);
-  const pocket = screen.getByRole('button', { name: /Flexible pocket park.*Choose & draw park/i });
+  expect(screen.getByRole('button', { name: /Flexible pocket park.*Choose & draw park/i })).toBeInTheDocument();
   const greenway = screen.getByRole('button', { name: /Flexible linear greenway.*Choose & draw park/i });
-  expect(within(pocket).getByText('Flexible 3D · draw your outline')).toBeInTheDocument();
-  expect(within(greenway).getByText('Flexible 3D · draw your outline')).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', {name:'Expand details for Flexible Pocket Park'}));
+  fireEvent.click(screen.getByRole('button', {name:'Expand details for Flexible Linear Greenway'}));
+  expect(screen.getAllByText('Flexible 3D · draw your outline')).toHaveLength(2);
   fireEvent.click(greenway);
   expect(onPick).toHaveBeenCalledWith('flexible_linear_greenway_v1');
 });

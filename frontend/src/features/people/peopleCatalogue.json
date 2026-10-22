@@ -1,23 +1,26 @@
 [
   {
     "id": "people-pilot-commuter", "label": "Maya · commuter", "category": "People", "kind": "object", "color": "#b86b47",
-    "description": "Adult in a rust overshirt, ivory top and charcoal trousers. Idle while editing; optional forward walk during video capture. Leave a clear level path. Local character pilot.",
+    "description": "Adult in a rust overshirt, ivory top and charcoal trousers. Idle while editing; optional forward walk during video capture. Leave a clear level path; no automatic obstacle avoidance.",
     "dimensions": [0.685207, 0.710233, 1.693335], "datumLift": 0,
     "url": "/street-kits/people-pilot-v1/people-pilot-commuter.glb", "thumbnailUrl": "/street-kits/people-pilot-v1/people-pilot-commuter.png",
+    "sha256": "123dd1a32a1f33141fbb52aa7e7ef7eb0d543d06d7517a890ee474a8d2dc06e5", "bytes": 1096500, "thumbnailSha256": "b40025e3b25fbd76f8c0c5560f444c9783ff7d46833cc660ce4c0b420efb264d",
     "people": {"walkClip": "Walk", "idleClip": "Idle", "walkStrideMeters": 1.2933, "sha256": "123dd1a32a1f33141fbb52aa7e7ef7eb0d543d06d7517a890ee474a8d2dc06e5"}
   },
   {
     "id": "people-pilot-neighbour", "label": "Eli · neighbour", "category": "People", "kind": "object", "color": "#344f67",
-    "description": "Adult in a navy overshirt and light trousers. Idle while editing; optional forward walk during video capture. Leave a clear level path. Local character pilot.",
+    "description": "Adult in a navy overshirt and light trousers. Idle while editing; optional forward walk during video capture. Leave a clear level path; no automatic obstacle avoidance.",
     "dimensions": [0.791191, 0.740376, 1.785821], "datumLift": 0,
     "url": "/street-kits/people-pilot-v1/people-pilot-neighbour.glb", "thumbnailUrl": "/street-kits/people-pilot-v1/people-pilot-neighbour.png",
+    "sha256": "8a7f19f6dceed71350c6106c633ecaaa0d5021a804bf4a7ef5f011fd2ad0398f", "bytes": 796312, "thumbnailSha256": "64d240e161a1dd8a482cc2249dec86a98a3bf2581b8163c6bc49bfa7f555677f",
     "people": {"walkClip": "Walk", "idleClip": "Idle", "walkStrideMeters": 1.3252, "sha256": "8a7f19f6dceed71350c6106c633ecaaa0d5021a804bf4a7ef5f011fd2ad0398f"}
   },
   {
     "id": "people-pilot-creative", "label": "Sofia · creative", "category": "People", "kind": "object", "color": "#879b7a",
-    "description": "Adult in a sage coat and dark trousers. Idle while editing; optional forward walk during video capture. Leave a clear level path. Local character pilot.",
+    "description": "Adult in a sage coat and dark trousers. Idle while editing; optional forward walk during video capture. Leave a clear level path; no automatic obstacle avoidance.",
     "dimensions": [0.669992, 0.694463, 1.653129], "datumLift": 0,
     "url": "/street-kits/people-pilot-v1/people-pilot-creative.glb", "thumbnailUrl": "/street-kits/people-pilot-v1/people-pilot-creative.png",
+    "sha256": "8be2a865c978bdf91ec6e1fd6a28c3725293fb10e7bac268fe06da9ac0a8be81", "bytes": 1077976, "thumbnailSha256": "f685b65cecf09af1918fabe1755e62a4c0a2292c2da450f52db4e2624d1cb86f",
     "people": {"walkClip": "Walk", "idleClip": "Idle", "walkStrideMeters": 1.2646, "sha256": "8be2a865c978bdf91ec6e1fd6a28c3725293fb10e7bac268fe06da9ac0a8be81"}
   }
 ]
