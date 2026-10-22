@@ -91,6 +91,9 @@ def main():
     for spec in m['camera_roster']:                    # a near clip plane hides context standing in front of a proof view
         if spec.get('clip_start'):
             cameras[spec['name']].data.clip_start = spec['clip_start']
+            # The cut ground slabs would show the 15 mm void between their undersides and the QA ground plane as a black
+            # line; lift the (excluded) QA ground to 1 mm under grade so the void is sub-pixel.
+            C.bpy.data.objects['QA ground - excluded'].location.z = -.001
     C.bpy.context.scene.cycles.samples = a.samples
     rig = getattr(family, 'LIGHT_RIG', dict(key=(-14, -20, 20), fill=(18, -8, 16), rear=(-8, 20, 18), target=(0, 0, 4.5), gain=2.5))
     for name in ('key', 'fill', 'rear'):

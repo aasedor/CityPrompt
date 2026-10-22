@@ -815,6 +815,14 @@ def site():
     for x0, x1 in ((-20.0, -2.4), (2.4, 26.0)):
         b.box('hedge', (x0 + x1) / 2, 15.3, .45, x1 - x0, .5, .9)                               # north boundary hedge, gap at the path
     b.flush('site')
+    # Hidden end caps inside every ground slab and hedge crossing the right_side clip plane (x 14.4): the plane cuts the slabs,
+    # and the caps, 1-1.4 cm west of it, show slab colour instead of the dark slab interior. In every other view they sit inside.
+    b = Batch()
+    for role, y0, y1, top in (('lawn', -10.84, 15.6, .03), ('concrete', -13.43, -10.83, .14), ('asphalt', -21.0, -13.4, .02),
+                              ('concrete', -23.4, -21.0, .14), ('concrete', 15.6, 17.6, .14), ('asphalt', 17.58, 24.42, .02),
+                              ('hedge', 15.05, 15.55, .9)):
+        b.box(role, 14.388, (y0 + y1) / 2, (top - .002) / 2, .004, y1 - y0 - .004, top - .002)
+    b.flush('right_side clip caps')
     iron_fence((-19.85, -10.75), (-12.4, -10.75), height=1.75, wall=.15, spacing=.2)            # the street railing runs along the west garden only (top view)
     C.rod('Fence end post', (-12.4, -10.75, .15), (-12.4, -10.75, 2.02), .035, 'hardware', 'fence', 6)
     b = Batch()                                                                                  # open front lawns: low stone curb and low box edging
