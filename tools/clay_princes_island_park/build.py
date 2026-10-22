@@ -82,6 +82,17 @@ def keep_instances():
     return n
 
 
+def short_instance_names():
+    """v005 (size cap): planting-kit instance objects get short names (k1, k2, ...). glTF stores one name per node,
+    and about 2,000 kit nodes at about 28 characters each cost some 45 KB; the prototype stays named on the shared
+    mesh (PK <prototype> <role>), so nothing is lost."""
+    k = 0
+    for o in C.objects():
+        if o.get('rlasm_instance'):
+            k += 1; o.name = f'k{k}'
+    return k
+
+
 def glb_size(path):
     """Unique (stored) triangles, meshes and nodes in the delivered GLB."""
     js = C.glb_json(path); acc = js.get('accessors', [])
@@ -128,6 +139,7 @@ def main():
         C.bmesh.ops.delete(bm, geom=[f for f in bm.faces if f.calc_area() <= 1e-10], context='FACES_ONLY')
         bm.to_mesh(obj.data); bm.free(); obj.data.update()
     nodes = keep_instances()
+    short_instance_names()
     kit = family.KIT.stats() if getattr(family, 'KIT', None) else {}
     report = C.deliver(out, m, cameras)
     size = dict(glb_size(out / (m['candidate'] + '.glb')), kit=kit, instance_nodes=nodes,

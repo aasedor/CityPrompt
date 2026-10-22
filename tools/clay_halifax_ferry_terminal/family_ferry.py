@@ -825,9 +825,9 @@ def interiors():
     b.flush('interiors')
     for name, loc in (('concourse', (3.0, -14.0, 3.6)), ('west hall', (-6.0, 2.0, 3.6)), ('lounge south', (3.5, -18.0, 8.5)),
                       ('lounge west', (-6.0, -4.0, 8.5)), ('lounge north', (-6.0, 8.0, 8.5)),
-                      ('east offices', (8.6, 12.0, 8.3)), ('east stores', (8.6, 12.0, 3.4)), ('north offices', (0.0, 19.0, 8.3)),
-                      ('north stores', (0.0, 19.0, 3.4))):
-        C.qa_room_light(name, loc, 110, 3.0)
+                      ('east offices', (8.6, 12.0, 8.3)), ('east stores', (8.6, 12.0, 3.4)), ('north offices', (0.0, 18.95, 8.3)),
+                      ('north stores', (0.0, 18.95, 3.4))):
+        C.qa_room_light(name, loc, 110 if 'east' not in name and 'north' not in name else 60, 3.0 if 'east' not in name and 'north' not in name else 1.2)
     C.CONTACTS.append(dict(name='Concrete fins and frames from grade; roof inside the parapet; glass box on its concrete frames', parapet_m=PARA))
 
 
