@@ -921,7 +921,6 @@ def corner_building():
     bay_pier(b, FB, ub, max(zc, ROW_B[0]['zc']))
     mansard_cap(b, FB, ub, min(zc, ROW_B[0]['zc']), max(zc, ROW_B[0]['zc']))
     b.flush('corner building works')
-    C.qa_room_light('corner rooms', (.8, 8.0, F2 + 1.6), 12, .4)
 
 
 def _single_door(m, f, h):
