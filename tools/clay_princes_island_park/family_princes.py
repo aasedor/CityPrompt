@@ -2435,12 +2435,12 @@ def drift_fill(kit, reg, mix, spacing, seed, scales, sz_cap, placed, drift=2.6, 
     return n
 
 
-def edge_fill(kit, reg, mix, spacing, seed, placed, scales=(.95, .8, .65)):
+def edge_fill(kit, reg, mix, spacing, seed, placed, scales=(1.1, .95, .8, .65)):
     """Second pass: small edging plants in the gaps the big drifts leave along the kerb (a point is a gap if it lies
-    outside 60% of every placed plan radius: the plan radius is the tip of the longest leaf or blade)."""
+    outside 55% of every placed plan radius: the plan radius is the tip of the longest leaf or blade)."""
     rnd = random.Random(seed); n = 0
     for x, y in pk_scatter(reg, spacing, margin=PK_CLEAR, seed=seed + 5):
-        if any(math.hypot(x - a, y - b) < r * .6 for a, b, r in placed):
+        if any(math.hypot(x - a, y - b) < r * .55 for a, b, r in placed):
             continue
         p = mix[n % len(mix)]
         for s in scales:
@@ -2451,10 +2451,8 @@ def edge_fill(kit, reg, mix, spacing, seed, placed, scales=(.95, .8, .65)):
 
 
 def bed_base(name, poly):
-    """The family kerb ring and a low planted ground under the kit carpet (well below every plant base and carpet rim)."""
-    inner = offset(poly, KERB_W)
-    ring_mesh(f'{name} kerb', poly, inner, ZG - .02, ZG + .14, 'curb', 'beds')
-    slab(f'{name} planted ground', offset(poly, .12), ZG - .02, ZG + .06, 'bedcover', 'beds')
+    """The family kerb ring; the kit groundcover laps 1.5 cm under its inner face, so the bed needs no other fill."""
+    ring_mesh(f'{name} kerb', poly, offset(poly, KERB_W), ZG - .02, ZG + .14, 'curb', 'beds')
 
 
 def planting():
@@ -2473,12 +2471,14 @@ def planting():
         poly = outline(pxs); bed_base(f'Bed {name}', poly)
         reg = kit.register_bed(pk_region(poly, KERB_W)); placed = []
         if name in GROVES:
-            groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, grid=.7, edge=.18, seed=40 + i)
-            drift_fill(kit, reg, grove, 1.55, 60 + i, (1.5, 1.25, 1.0, .8), 1.2, placed, drift=3.2)
+            groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, grid=.9, edge=.2, seed=40 + i)
+            drift_fill(kit, reg, grove, 1.1 if name == 'B8' else 2.1, 60 + i, (1.5, 1.25, 1.0, .8), 1.2, placed, drift=3.2)
+            if name == 'B8':                                 # the grove bed beside the promenade is seen close up
+                edge_fill(kit, reg, edge, .7, 60 + i, placed)
         else:
-            groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, grid=.6, edge=.16, seed=40 + i)
+            groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, grid=.8, edge=.18, seed=40 + i)
             drift_fill(kit, reg, front, .9, 60 + i, (1.5, 1.3, 1.1, .9, .75), 1.15, placed)
-            edge_fill(kit, reg, edge, .48, 60 + i, placed)
+            edge_fill(kit, reg, edge, .5, 60 + i, placed)
     rnd = random.Random(77)
     for i, c in enumerate(PITS):                             # tree pits in the south plaza: groundcover and a ring of grasses
         poly = [(c[0] + 1.3 * math.cos(a * math.tau / 32), c[1] + 1.3 * math.sin(a * math.tau / 32)) for a in range(32)]
