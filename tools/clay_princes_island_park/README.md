@@ -1,7 +1,7 @@
 # Prince's Island Park (RLASM v6.1 architectural clay)
 
 Candidate I5 of wave I of 2026-10-20, one of the ten catalogue additions the user approved
-(four buildings, three parks and squares, three streets); a park and open-space option, not a building. State: **stopped at v003 by the stopping rule (the close-up planting finding survived two targeted fixes); v003 is the candidate**. Nothing here is keeper-approved,
+(four buildings, three parks and squares, three streets); a park and open-space option, not a building. State: **reopened by the user for a second pass (v004 replaces the planting with the shared planting kit, `tools/clay_planting_kit_showcase`); v003 remains the candidate until a review beats it**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 

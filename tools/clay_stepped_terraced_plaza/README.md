@@ -1,7 +1,7 @@
 # Stepped terraced plaza (RLASM v6.1 architectural clay)
 
 Candidate G9 of wave G of 2026-10-18, one of ten catalogue types that have quality reference images but
-no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **stopped at v003 by the stopping rule (the bougainvillea finding survived two targeted fixes); v003 is the candidate**. Nothing here is keeper-approved,
+no in-use RLASM model (`docs/showcase/MODEL_GAP_LIST_2026-10-18.md`). State: **reopened by the user for a second pass (v004 replaces the bougainvillea and planting with the shared planting kit, `tools/clay_planting_kit_showcase`); v003 remains the candidate until a review beats it**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
