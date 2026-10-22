@@ -1,0 +1,427 @@
+{
+  "candidate": "clay-halifax-public-gardens-clay-v004",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-halifax-public-gardens",
+  "variant_id": "clay-halifax-public-gardens-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "halifax_public_gardens/variant_0 (halifax_public_gardens_v0)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 43.2,
+      "depth": 57.2,
+      "height": 14.0
+    },
+    "observed_storeys": 0,
+    "storey_programme": "open space: a fenced Victorian public garden with a bandstand; the street blocks are context",
+    "plan": "43.2 x 57.2 m fenced block (top view at about 0.08 m per pixel): axis, cross path, paved bandstand circle, loop path joining the axis in a Y, filleted paving at every junction, four inner leaf-shaped carpet-bed lawns, four outer tree lawns",
+    "facade": "black wrought-iron picket fence on a granite curb, brick gate piers with lanterns and a gilded iron sign arch, white octagonal bandstand with a pink-copper ogee roof",
+    "levels_m": [
+      0.0,
+      0.04,
+      0.07,
+      0.094,
+      1.0
+    ],
+    "inferred": "the north and side entrances, bed planting mixes and the street blocks are teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "open space; octagonal ogee copper bandstand roof",
+    "datum_m": 0.0,
+    "crowns_m": [
+      8.3
+    ]
+  },
+  "identity_contract": {
+    "owner": "fenced Victorian public garden: grand brick-and-iron sign gate, white octagonal bandstand with a copper roof at the centre of a paved circle, oval loop and cross paths framing leaf-shaped carpet beds of hydrangeas, mature shade trees"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: warm brick pavers with granite edging, fresh green lawns, white hydrangeas with lavender, purple and pink flowers on dark mulch, deep green trees, black iron, red brick piers, gold lettering, white bandstand, pink-copper roof",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 0,
+    "ground": "strolling, sitting, bandstand concerts, horticultural display"
+  },
+  "contact_contract": [
+    "Grade-zero streets and lawns",
+    "Paths on the lawn",
+    "Bandstand plinth on the paved circle",
+    "Fence curb and piers on grade"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        7.6,
+        -37.4,
+        1.65
+      ],
+      "target": [
+        -4.6,
+        -10.6,
+        3.6
+      ],
+      "lens": 25,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        0.0,
+        -49.0,
+        27.0
+      ],
+      "target": [
+        0.0,
+        -5.0,
+        0.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        16.0,
+        -52.0,
+        72.0
+      ],
+      "target": [
+        0.0,
+        -2.0,
+        0.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        0.0,
+        -0.6,
+        120.0
+      ],
+      "target": [
+        0.0,
+        -0.599,
+        0.0
+      ],
+      "ortho_scale": 95.6,
+      "whole": false
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -30.5,
+        -6.0,
+        15.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        1.5
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        30.5,
+        6.0,
+        15.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        1.5
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        0.0,
+        38.5,
+        17.0
+      ],
+      "target": [
+        0.0,
+        -2.0,
+        0.0
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        -30.0,
+        39.5,
+        24.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "gate_arch",
+      "location": [
+        1.5,
+        -36.0,
+        2.2
+      ],
+      "target": [
+        0.0,
+        -29.2,
+        5.0
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "gate_piers_fence",
+      "location": [
+        -14.6,
+        -36.0,
+        2.4
+      ],
+      "target": [
+        -6.0,
+        -29.2,
+        1.6
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "bandstand",
+      "location": [
+        2.5,
+        -14.0,
+        1.9
+      ],
+      "target": [
+        0.0,
+        0.0,
+        3.6
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "bandstand_roof",
+      "location": [
+        -6.5,
+        -8.0,
+        9.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        5.2
+      ],
+      "lens": 34,
+      "whole": false
+    },
+    {
+      "name": "carpet_beds",
+      "location": [
+        -1.0,
+        -20.0,
+        3.4
+      ],
+      "target": [
+        -6.5,
+        -8.0,
+        0.3
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "inner_lawn_beds",
+      "location": [
+        2.0,
+        18.0,
+        4.0
+      ],
+      "target": [
+        -6.0,
+        6.5,
+        0.3
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "loop_benches",
+      "location": [
+        -3.0,
+        17.0,
+        2.0
+      ],
+      "target": [
+        -12.5,
+        9.0,
+        0.8
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "mature_trees",
+      "location": [
+        -1.0,
+        -27.0,
+        3.2
+      ],
+      "target": [
+        -13.0,
+        -14.0,
+        6.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "side_entrance",
+      "location": [
+        -27.5,
+        7.0,
+        2.2
+      ],
+      "target": [
+        -21.6,
+        0.0,
+        1.4
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        0.0,
+        36.0,
+        9.0
+      ],
+      "target": [
+        0.0,
+        14.0,
+        1.0
+      ],
+      "lens": 34,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "gate_arch",
+    "gate_piers_fence",
+    "bandstand",
+    "bandstand_roof",
+    "carpet_beds",
+    "inner_lawn_beds",
+    "loop_benches",
+    "mature_trees",
+    "side_entrance",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/halifax-public-gardens/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1556335,
+        "sha256": "e87f7a011833076c985a1ab9c1da22a58ee19d1006d778373e38f9f095998b9e"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/halifax-public-gardens/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 1021819,
+        "sha256": "fe4f13a4732e47f4e7303b8b416a332c898274eecdec49c125db3ed70e342a10"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/halifax-public-gardens/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 928683,
+        "sha256": "adbd6581a714fa2679c94abbdedbd434d6ce5ce84f1a66279cc04ff30daa1b30"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_hpg.py",
+        "sha256": "884e182598b943c9f5f991a4f08a67a3ee4ed2bc3839bf96794383f26a04b958"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "ae1e68e95e87cbdf2f9b49606b42a400d1d879e8457f245cfea1dc4823dbba65"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "5ab61730227057326f19abe4df42a2a9660e19a13e9e4cbfe89395463ae5baf4"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-22T02:29:27.394600+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}
