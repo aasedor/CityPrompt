@@ -561,9 +561,9 @@ def windows_grid(m, lo, hi, z0, z1, floors, per, w=1.1, hh=1.9, role='frame', fr
             for s in (-1, 1):
                 m.box(role, u + s * (w / 2 - .025), -.07, zc, .06, .03, hh - .01)           # sash stiles
             for zr in (z + .03, z + hh - .035, zc):
-                m.box(role, u, -.07, zr, w - .1, .03, .05)                                   # rails and meeting rail
+                m.box(role, u, -.07, zr, w - .1, .024, .05)                                  # rails, 3 mm inside the stile faces
             if w > 1.0:
-                m.box(role, u, -.072, zc, .04, .026, hh - .06)                               # centre muntin
+                m.box(role, u, -.07, zc, .04, .018, hh - .06)                                # centre muntin, inside the rails
 
 
 def curtain(b, axis, c, lo, hi, z0, z1, per, transoms=(), face=0.0, out=-1, pane=.06, mull=.07, depth=.16, glass='glass'):
@@ -600,8 +600,8 @@ def door_leaf(b, axis, c, s, lw, z0, z1, out=-1):
     a0, a1 = s - lw / 2, s + lw / 2
     for e0, e1 in ((a0, a0 + .1), (a1 - .1, a1)):
         put('frame', e0, e1, z0, z1, c - .03, c + .03)
-    put('frame', a0 + .08, a1 - .08, z1 - .1, z1, c - .03, c + .03)
-    put('frame', a0 + .08, a1 - .08, z0, z0 + .25, c - .03, c + .03)
+    put('frame', a0 + .08, a1 - .08, z1 - .1, z1, c - .027, c + .027)                       # rails 3 mm inside the stile faces
+    put('frame', a0 + .08, a1 - .08, z0, z0 + .25, c - .027, c + .027)
     put('glass', a0 + .09, a1 - .09, z0 + .24, z1 - .09, c - .005, c + .005)
     return put
 
@@ -947,7 +947,7 @@ def brick_block():
         m.box('brick', BX0 + .25 + k * .45, -.24, 10.9, .2, .12, .16)                              # dentil course
     eave_cornice(m, BX0 - .05, BX1 + .05, B_EAVE, span_t=.45, proj=.75, role='stone')
     for ue in (BX0 - .05, BX1 + .05):
-        m.box('stone', ue, -.355, B_EAVE - .135, .02, 1.22, .285)                                    # cornice end plates
+        m.box('stone', ue, -.355, B_EAVE - .3025, .02, 1.22, .675)                                   # cornice end plates (bed mould to crown)
     band(m, BX0, BX1, .0, .3, .06, 'stone')
     m.flush('brick block south front')
     # Brick parapet over the cornice (hides the eaves from the street), stone coping and corner finials.
@@ -969,7 +969,7 @@ def brick_block():
     b = Batch()
     disc(b, 'stone', ((px0 + px1) / 2, BY0 - .02, B_EAVE + 1.25), (0, -1), .62, t=.06, n=24)
     disc(b, 'glass', ((px0 + px1) / 2, BY0 - .05, B_EAVE + 1.25), (0, -1), .44, t=.04, n=24)
-    b.box('stone', (px0 + px1) / 2, BY0 - .1, B_EAVE + rise + .35, .5, .4, .6)                          # apex block
+    b.box('stone', (px0 + px1) / 2, BY0 - .18, B_EAVE + rise + .15, .6, .55, .6)                         # apex block, over the rake junction
     b.flush('pediment details')
     pitched_roof('Pediment cross roof', px0 - .1, px1 + .1, BY0 + .5, -12.0, B_EAVE + .05, rise - .4, False, False, 'y', .3, 'tile', 'roof')
     # Plain side and back walls, floors and interior depth behind the windows.
@@ -1139,8 +1139,16 @@ def infill():
     b.flush('service link')
 
 
+def back_room_lights():
+    """Room lights behind the punched windows of the solid north end and the east wall (no unlit voids through glass)."""
+    for name, loc in (('north end ground', (-8.0, 15.4, 2.4)), ('north end upper', (-8.0, 15.4, 6.6)),
+                      ('east rooms upper', (8.0, 11.0, 6.6)), ('east rooms ground', (8.0, 11.0, 2.4))):
+        qa_light('ferry ' + name, loc, 60, 2.0)
+
+
 def build():
     site()
+    back_room_lights()
     terminal_frame()
     canopies()
     south_front()

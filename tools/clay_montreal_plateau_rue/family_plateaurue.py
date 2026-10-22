@@ -656,8 +656,9 @@ def balcony(b, f, a, c, z, depth, fascia, open_end=None):
 def ext_stair(b, f, u_top, dirn, z_top, open_side):
     """Black iron exterior stair: a landing tread flush with the gallery deck just past its open end, a straight
     open-riser flight alongside the facade, then a quarter-turn curl of fanned winders about a central newel toward
-    the sidewalk. The wall-side handrail runs on round the curl to a foot newel at rail height; the street-side rail
-    ends on the central newel at the flight foot."""
+    the sidewalk. Both handrails start on capped stair-head newels standing on the landing tread; the wall-side rail
+    runs on round the curl to a foot newel at rail height and the street-side rail ends on the central newel at the
+    flight foot."""
     rise_total = z_top - YZ
     n1, n2 = 11, 6
     rise = rise_total / (n1 + n2)
@@ -704,7 +705,13 @@ def ext_stair(b, f, u_top, dirn, z_top, open_side):
     stringer(outer); stringer([s_out] + nose_out + ring_i)
     handrail(outer)
     pc = f.p(ccu, ccd, zb)
-    handrail(inner + [pc], pickets=False)
+    # the street-side rail keeps its pitch down to the central newel and dies into its side (no level stub)
+    run = math.hypot(pc[0] - inner[-1][0], pc[1] - inner[-1][1])
+    handrail(inner + [(pc[0], pc[1], zb - rise * run / go)], pickets=False)
+    for s in (s_in, s_out):                                                             # stair-head newels on the landing tread
+        top_h = z_top + .92 + .05                                                       # capped above the rail, which dies into them
+        b.box('hardware', s[0], s[1], (z_top - .02 + top_h) / 2, .08, .08, top_h - (z_top - .02))
+        b.box('hardware', s[0], s[1], top_h + .03, .13, .13, .06)
     for p, q in zip(inner[1:], inner[:-1]):
         L = math.hypot(p[0] - q[0], p[1] - q[1]) or 1.0
         picket(b, p[0], p[1], p[2], p[2] + .9, (p[0] - q[0]) / L, (p[1] - q[1]) / L)
