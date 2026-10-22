@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-vancouver-laneway-house",
+  "variant_id": "clay-vancouver-laneway-house-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "vancouver_laneway_house/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/vancouver-laneway-house/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1408640,
+      "sha256": "6bc2fb3d703006bfaa13a723ad57df90aeba2f1447814d1aa1c3ca07762b8298"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/vancouver-laneway-house/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 978778,
+      "sha256": "e753b3c4369a642d4863d8d530a60bd0469a70f3fa4fdbc0ce774272beb60ca2"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/vancouver-laneway-house/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 852387,
+      "sha256": "a0cc3f3e463a046f7e1fe485889440770f08501c9908f1d8fde85f33f495c6ae"
+    }
+  ]
+}
