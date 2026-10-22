@@ -72,7 +72,7 @@ def manifest(version):
         ('iron_stair', (-4.8, 31.0, 3.0), (-1.0, 35.5, 2.2), 26),
         ('balcony_gallery', (-4.6, 36.0, 5.2), (0.0, 39.5, 4.6), 28),
         ('mansard_caps', (24.0, -7.5, 14.5), (26.0, 0.0, 11.8), 30),
-        ('corner_building', (-9.0, -9.0, 6.5), (6.0, 6.0, 6.0), 26),
+        ('corner_building', (-12.0, -12.0, 7.5), (6.0, 6.0, 8.0), 24),
         ('sidewalk_trees', (-8.5, 10.5, 1.7), (-3.5, 30.0, 2.6), 24),
         ('roof_parapets', (30.0, 30.0, 26.0), (10.0, 10.0, 10.5), 30),
         ('rear_yards', (40.0, 40.0, 14.0), (20.0, 20.0, 6.0), 26)])
@@ -642,7 +642,8 @@ def balcony(b, f, a, c, z, depth, fascia, open_end=None):
     b.box('deck', (x0 + x1) / 2, (y0 + y1) / 2, z - .09, abs(x1 - x0), abs(y1 - y0), .18)
     (x0, y0), (x1, y1) = p(lo - .02, -depth - .03), p(hi + .02, -depth + .05)
     b.box(fascia, (x0 + x1) / 2, (y0 + y1) / 2, z - .15, abs(x1 - x0), abs(y1 - y0), .26)
-    for u in (lo + .1, hi - .1):                                            # iron brackets under the slab
+    us = (lo + .1, hi - .1) if open_end is None else ((lo + .1, hi - .6) if open_end == 'hi' else (lo + .6, hi - .1))
+    for u in us:                                                            # iron brackets under the slab, clear of the stair
         b.beam('hardware', f.p(u, .0, z - .9), f.p(u, -depth + .1, z - .2), .05, .05)
     pts = [p(lo + .03, .0), p(lo + .03, -depth + .04), p(hi - .03, -depth + .04), p(hi - .03, .0)]
     if open_end == 'lo':
@@ -653,48 +654,69 @@ def balcony(b, f, a, c, z, depth, fascia, open_end=None):
 
 
 def ext_stair(b, f, u_top, dirn, z_top, open_side):
-    """Black iron exterior stair: a straight open-riser flight alongside the facade from the balcony end, then a
-    curl of winders turning toward the sidewalk, ending on the yard at the front fence line."""
+    """Black iron exterior stair: a landing tread flush with the gallery deck just past its open end, a straight
+    open-riser flight alongside the facade, then a quarter-turn curl of fanned winders about a central newel toward
+    the sidewalk. The wall-side handrail runs on round the curl to a foot newel at rail height; the street-side rail
+    ends on the central newel at the flight foot."""
     rise_total = z_top - YZ
     n1, n2 = 11, 6
     rise = rise_total / (n1 + n2)
     go = .25
     d_in, d_out = -.3, -1.2
-    dm = (d_in + d_out) / 2
+    # landing tread: 5 mm under the deck top, lapping 5 cm under the deck end (no shared plane, no gap)
+    ul0, ul1 = u_top - dirn * .05, u_top + dirn * go
+    um = (ul0 + ul1) / 2
+    b.beam('hardware', f.p(um, d_in, z_top - .025), f.p(um, d_out, z_top - .025), abs(ul1 - ul0), .04)
     nose_in, nose_out = [], []
     for k in range(1, n1 + 1):
-        u = u_top + dirn * (go * (k - .5))
+        u = u_top + dirn * go * (k + .5)
         z = z_top - rise * k
-        a, c = f.p(u - dirn * go / 2 - dirn * .01, dm, z - .02), f.p(u + dirn * go / 2 + dirn * .01, dm, z - .02)
         b.beam('hardware', f.p(u, d_in, z - .02), f.p(u, d_out, z - .02), go + .02, .04)
         nose_in.append(f.p(u, d_in, z)); nose_out.append(f.p(u, d_out, z))
-    # Curl: centre on the street side of the flight foot; treads swept a quarter turn and a half toward the fence.
-    uf = u_top + dirn * go * n1
+    # curl: centre on the street side of the flight foot; inner radius on the street-side stringer line, outer radius
+    # on the wall-side line, so both rails continue without a jog
+    uf = u_top + dirn * go * (n1 + 1)
     ccu, ccd = uf, d_out - .25
     rin, rout = .25, 1.15
     zb = z_top - rise * n1
-    ring_o = []
-    for i in range(n2):
-        a = math.radians(90.0 * (i + .5) / n2)
+    ring_o, ring_i = [], []
+    nt = n2 - 1                                                                        # the last riser steps onto the yard
+    for i in range(nt):
+        a = math.radians(90.0 * (i + .5) / nt)
         uu, dd = math.sin(a) * dirn, math.cos(a)
         z = zb - rise * (i + 1)
-        b.beam('hardware', f.p(ccu + uu * rin, ccd + dd * rin, z - .02), f.p(ccu + uu * rout, ccd + dd * rout, z - .02), .32, .04)
+        b.beam('hardware', f.p(ccu + uu * rin, ccd + dd * rin, z - .02), f.p(ccu + uu * rout, ccd + dd * rout, z - .02), .3, .04)
         ring_o.append(f.p(ccu + uu * rout, ccd + dd * rout, z))
-    top = f.p(u_top, d_in, z_top), f.p(u_top, d_out, z_top)
-    for side, start in ((nose_in, top[0]), (nose_out + ring_o, top[1])):
-        pts = [start] + side
+        ring_i.append(f.p(ccu + uu * (rin + .03), ccd + dd * (rin + .03), z))
+    def stringer(pts):
         for p0, p1 in zip(pts, pts[1:]):
             b.beam('hardware', (p0[0], p0[1], max(p0[2] - .14, YZ + .12)), (p1[0], p1[1], max(p1[2] - .14, YZ + .12)), .045, .2, ext=.02)
+    def handrail(pts, pickets=True):
+        for p0, p1 in zip(pts, pts[1:]):
             b.beam('hardware', (p0[0], p0[1], p0[2] + .92), (p1[0], p1[1], p1[2] + .92), .05, .045, ext=.02)
-        for p, q in zip(pts[1:], pts[:-1]):
-            L = math.hypot(p[0] - q[0], p[1] - q[1]) or 1.0
-            picket(b, p[0], p[1], p[2], p[2] + .9, (p[0] - q[0]) / L, (p[1] - q[1]) / L)
-    pc = f.p(ccu, ccd, 0)
-    b.box('hardware', pc[0], pc[1], (YZ + zb + .9) / 2, .09, .09, zb + .9 - YZ)            # newel at the curl's centre
-    b.box('hardware', pc[0], pc[1], zb + .95, .15, .15, .1)
-    for k in (n1 // 2, n1):                                                           # posts carrying the flight
-        q = nose_out[k - 1]
-        b.box('hardware', q[0], q[1], (YZ + q[2] - .2) / 2, .07, .07, q[2] - .2 - YZ)
+        if pickets:
+            for p, q in zip(pts[1:], pts[:-1]):
+                L = math.hypot(p[0] - q[0], p[1] - q[1]) or 1.0
+                picket(b, p[0], p[1], p[2], p[2] + .9, (p[0] - q[0]) / L, (p[1] - q[1]) / L)
+    s_in, s_out = f.p(u_top + dirn * .03, d_in, z_top), f.p(u_top + dirn * .03, d_out, z_top)
+    outer = [s_in] + nose_in + ring_o                                                   # wall side, round the curl
+    inner = [s_out] + nose_out                                                          # street side, to the newel
+    stringer(outer); stringer([s_out] + nose_out + ring_i)
+    handrail(outer)
+    pc = f.p(ccu, ccd, zb)
+    handrail(inner + [pc], pickets=False)
+    for p, q in zip(inner[1:], inner[:-1]):
+        L = math.hypot(p[0] - q[0], p[1] - q[1]) or 1.0
+        picket(b, p[0], p[1], p[2], p[2] + .9, (p[0] - q[0]) / L, (p[1] - q[1]) / L)
+    top_c = zb + .92 + .05                                                              # central newel capped at the rail
+    b.box('hardware', pc[0], pc[1], (YZ + top_c) / 2, .09, .09, top_c - YZ)
+    b.box('hardware', pc[0], pc[1], top_c + .03, .14, .14, .06)
+    q = ring_o[-1]                                                                      # foot newel at the end of the wall-side rail
+    top_f = q[2] + .92 + .05
+    b.box('hardware', q[0], q[1], (YZ + top_f) / 2, .08, .08, top_f - YZ)
+    b.box('hardware', q[0], q[1], top_f + .03, .13, .13, .06)
+    q = nose_out[n1 // 2 - 1]                                                           # post carrying the flight
+    b.box('hardware', q[0], q[1], (YZ + q[2] - .2) / 2, .07, .07, q[2] - .2 - YZ)
 
 
 def mansard_cap(b, f, uc, zlo, zhi):
@@ -726,6 +748,20 @@ def bay_pier(b, f, uc, zhi):
         b.box('stone2', (a[0] + c[0]) / 2, (a[1] + c[1]) / 2, z, abs(c[0] - a[0]), abs(c[1] - a[1]), .22)
 
 
+def rear_window(blk, uu, d0, z, hh, w):
+    """Rear window on a wall face at depth d0 (outward +d): a white frame standing 9 cm proud, the glass 6 cm behind
+    the frame face with a meeting rail and a mullion, a stone sill and a plain lintel."""
+    o = .09
+    blk('glass', uu - w / 2, uu + w / 2, d0 - .01, d0 + .03, z, z + hh)                         # glass 6 cm inside the frame face
+    for a, c in ((uu - w / 2 - .09, uu - w / 2 + .01), (uu + w / 2 - .01, uu + w / 2 + .09)):    # jambs
+        blk('trim', a, c, d0 - .01, d0 + o, z - .02, z + hh + .02)
+    blk('trim', uu - w / 2 - .09, uu + w / 2 + .09, d0 - .01, d0 + o, z + hh - .01, z + hh + .09)  # head
+    blk('trim', uu - .025, uu + .025, d0 + .02, d0 + .055, z + .01, z + hh - .02)                # mullion
+    blk('trim', uu - w / 2 + .01, uu + w / 2 - .01, d0 + .02, d0 + .055, z + hh * .55, z + hh * .55 + .05)   # meeting rail
+    blk('stone2', uu - w / 2 - .14, uu + w / 2 + .14, d0 - .01, d0 + .13, z - .12, z - .02)      # sill
+    blk('stone2', uu - w / 2 - .14, uu + w / 2 + .14, d0 - .01, d0 + .05, z + hh + .1, z + hh + .3)   # lintel
+
+
 def body(b, f, u0, u1, zc, mat, rear_lite=True):
     """Everything behind the facade carrier: side and rear walls up to the parapet, the flats' front rooms (a liner
     1.2 m behind the glass, floors), the bulk and the membrane roof."""
@@ -747,14 +783,13 @@ def body(b, f, u0, u1, zc, mat, rear_lite=True):
     blk('stone2', u0, u0 + .3, T, D, zp, zp + .08)                                    # parapet copings
     blk('stone2', u1 - .3, u1, T, D, zp, zp + .08)
     blk('stone2', u0 + .3, u1 - .3, D - .3, D, zp, zp + .08)
-    if rear_lite:                                                                     # rear windows and doors, proud panels
+    if rear_lite:                                                                     # rear windows: framed surround, glass set back
         for z, hh in ((F1 + .3, 2.0), (F2 + .3, 1.9), (F3 + .3, 1.8)):
             for uu in (u0 + 2.2, u1 - 2.2):
-                blk('glass', uu - .6, uu + .6, D, D + .03, z, z + hh)
-                blk('trim', uu - .7, uu + .7, D - .02, D + .015, z - .1, z)
+                rear_window(blk, uu, D, z, hh, 1.2)
 
 
-def plex(spec, f, row):
+def plex(spec, f, row, zl=None, zr=None):
     """One three-storey plex: raised ground floor, door pairs and wide windows on three floors, a gallery balcony and
     a curling iron stair, a third-floor balcony, a bracketed cornice; an optional octagonal turret with a slate spire."""
     u0, u1, zc, mat = spec['u0'], spec['u1'], spec['zc'], spec['mat']
@@ -792,7 +827,11 @@ def plex(spec, f, row):
     balcony(b, f, a2, c2, F3, .9, spec['frame'] if spec['frame'] != 'trim' else 'teal')
     ext_stair(b, f, c2, dirn, F2, None)
     # cornice: consoles at the ends and over the piers
-    face_cornice(f, spec['name'] + ' cornice', u0, u1, zc)
+    # a cornice end facing a lower neighbour (or the row end) runs 3 mm past the party line, so its end cap never
+    # shares a plane with the facade carrier's end face
+    ext0 = .003 if (zl is None or zc > zl) else 0.0
+    ext1 = .003 if (zr is None or zc > zr) else 0.0
+    face_cornice(f, spec['name'] + ' cornice', u0 - ext0, u1 + ext1, zc)
     consoles(f, [u0 + .5, (u0 + u1) / 2, u1 - .5] + ([] if lite else [e + dirn * 1.3, e + dirn * 3.7]), zc)
     if spec.get('turret'):
         tu = u1 - 1.5 if dirn > 0 else u0 + 1.5
@@ -886,7 +925,7 @@ def corner_building():
     ashlar(FA, T + .01, 5.59, YZ, zc - .66, stone_a)
     courses(FA, 5.61, ua - .01, YZ, zc - .66, [h for h in ha if h['u'] > 5.6])
     # mitred cornice round the corner
-    sweep('corner cornice', [(0.0, ub - .002), (0.0, 0.0), (ua - .002, 0.0)], [(-1.0, 0.0), (0.0, -1.0)], cornice_profile(zc), 'stone2')
+    sweep('corner cornice', [(0.0, ub + .003), (0.0, 0.0), (ua + .003, 0.0)], [(-1.0, 0.0), (0.0, -1.0)], cornice_profile(zc), 'stone2')
     consoles(FB, [2.0, 5.0, 7.5, 10.1, 12.7, ub - 1.3, ub - 3.7], zc)
     consoles(FA, [2.0, 5.0, 8.7, 11.3, 13.9], zc)
     b = Batch()
@@ -909,11 +948,12 @@ def corner_building():
     for x, y, w in ((7.0, 9.0, 1.1), (12.0, 13.0, .6), (5.0, 15.0, .6)):
         b.box('dark' if w > .7 else 'hardware', x, y, zr + .37, w, w, .35)
     chimney(b, 9.5, 17.0, zr + .2, zr + 1.3, w=.9, d=.6, pots=2, role='brick', pot='hardware', cap='stone2')
-    for z, hh in ((F1 + .3, 2.0), (F2 + .3, 1.9), (F3 + .3, 1.8)):                      # rear windows, proud panels
+    blk_e = lambda role, u0_, u1_, d0_, d1_, z0_, z1_: b.box(role, (d0_ + d1_) / 2, (u0_ + u1_) / 2, (z0_ + z1_) / 2, d1_ - d0_, u1_ - u0_, z1_ - z0_)
+    blk_n = lambda role, u0_, u1_, d0_, d1_, z0_, z1_: b.box(role, (u0_ + u1_) / 2, (d0_ + d1_) / 2, (z0_ + z1_) / 2, u1_ - u0_, d1_ - d0_, z1_ - z0_)
+    for z, hh in ((F1 + .3, 2.0), (F2 + .3, 1.9), (F3 + .3, 1.8)):                      # rear windows: framed, glass set back
         for y in (16.0, 18.5):
-            b.box('glass', ua + .015, y, z + hh / 2, .03, 1.2, hh)
-        for x in (15.5,):
-            b.box('glass', x, ub + .015, z + hh / 2, 1.2, .03, hh)
+            rear_window(blk_e, y, ua, z, hh, 1.2)
+        rear_window(blk_n, 15.5, ub, z, hh, 1.2)
     # teal mansard caps: the corner, the east-street end and the north-street end
     corner_cap(b, zc)
     bay_pier(b, FA, ua, max(zc, ROW_A[0]['zc']))
@@ -1091,6 +1131,17 @@ def cars():
     b.flush('parked cars')
 
 
+def ctx_window(blk, uu, z, hh, w):
+    """Context window on a street face (outward -d): a white frame standing 8 cm proud, glass 5 cm behind it with a
+    mullion, and a stone sill."""
+    blk('glass', uu - w / 2, uu + w / 2, -.03, .01, z, z + hh)
+    for a_, c_ in ((uu - w / 2 - .08, uu - w / 2 + .01), (uu + w / 2 - .01, uu + w / 2 + .08)):
+        blk('trim', a_, c_, -.08, .01, z - .02, z + hh + .02)
+    blk('trim', uu - w / 2 - .08, uu + w / 2 + .08, -.08, .01, z + hh - .01, z + hh + .08)
+    blk('trim', uu - .025, uu + .025, -.055, -.02, z + .01, z + hh - .02)
+    blk('stone2', uu - w / 2 - .12, uu + w / 2 + .12, -.13, .01, z - .12, z - .02)
+
+
 def context_row(f, u0, u1, zcs, mats, label):
     """Plainer plexes across the streets: bulk, proud windows and doors, a cornice band, balconies, an occasional cap."""
     b = Batch()
@@ -1109,12 +1160,12 @@ def context_row(f, u0, u1, zcs, mats, label):
         for z, hh in ((F1 + .45, 1.9), (F2 + .45, 1.85), (F3 + .45, 1.75)):
             for uu in (a + 2.3, a + 3.6, c - 2.0):
                 if uu < c - 1.2 and uu > a + 1.2:
-                    blk('glass', uu - .55 if uu != a + 3.6 else uu - .45, uu + .55 if uu != a + 3.6 else uu + .45, -.03, .01, z, z + hh)
-                    blk('trim', uu - .65, uu + .65, -.06, .01, z - .12, z)
-        blk('deck', a + 1.2, a + 4.4, -1.1, .02, F2 - .18, F2)
-        blk('hardware', a + 1.2, a + 4.4, -1.12, -1.07, F2, F2 + .95)
-        blk('deck', a + 1.2, a + 4.4, -.85, .02, F3 - .18, F3)
-        blk('hardware', a + 1.2, a + 4.4, -.87, -.82, F3, F3 + .95)
+                    w = 1.1 if uu != a + 3.6 else .9
+                    ctx_window(blk, uu, z, hh, w)
+        for z, dep in ((F2, 1.1), (F3, .85)):                                           # decks with open iron railings
+            blk('deck', a + 1.2, a + 4.4, -dep, .02, z - .18, z)
+            rail(b, [tuple(f.p(a + 1.23, 0.0, 0))[:2], tuple(f.p(a + 1.23, -dep + .04, 0))[:2],
+                     tuple(f.p(a + 4.37, -dep + .04, 0))[:2], tuple(f.p(a + 4.37, 0.0, 0))[:2]], z, spacing=.2)
         if i % 2 == 1 and i < n - 1:
             blk('teal', c - 1.0, c + 1.0, -.3, 1.2, zc, zc + 1.6)
     b.flush(label)
@@ -1143,10 +1194,10 @@ def build():
     sidewalk_details()
     cars()
     corner_building()
-    for s in ROW_B:
-        plex(s, FB, 'B')
-    for s in ROW_A:
-        plex(s, FA, 'A')
+    for row, f, lab in ((ROW_B, FB, 'B'), (ROW_A, FA, 'A')):
+        zs = [CORNER['zc']] + [s['zc'] for s in row] + [None]
+        for i, s in enumerate(row):
+            plex(s, f, lab, zs[i], zs[i + 2])
     b = Batch()
     for s, nxt in zip(ROW_A, ROW_A[1:] + [None]):
         if s.get('cap'):

@@ -71,8 +71,8 @@ def manifest(version):
             c.update(location=(31.0, -33.0, 31.0), target=(0.0, 0.0, 5.0), lens=35)
         elif c['name'] == 'left_side':
             c.update(location=(-44.0, 1.0, 7.0), target=(0.0, 1.0, 6.0), lens=35)
-        elif c['name'] == 'right_side':                                     # from the side path: the stone neighbour stands 4 m east
-            c.update(location=(13.2, -10.4, 1.8), target=(X1, 1.5, 5.6), lens=22)
+        elif c['name'] == 'right_side':                                     # high north-east oblique over the neighbour's eave: the whole east front
+            c.update(location=(25.0, 30.0, 40.0), target=(X1, 0.0, 4.0), lens=32)
         elif c['name'] == 'rear':
             c.update(location=(0.0, 38.0, 9.0), target=(0.0, 4.0, 6.0), lens=35)
         elif c['name'] == 'rear_side':
@@ -493,14 +493,16 @@ def walls():
     register(fp, door, .2, 'entry door', 'hall')
     framed(m, fp, fan, cols=4, rows=1, inset=.2, occupied='hall')
     for s in (-1, 1):                                                                        # stone door architrave, 3 cm proud
-        m.box('stone', s * .73, -.005, (G0 + 3.98) / 2, .22, .05, 3.98 - G0)                   # clear of the cut reveal
-    m.box('stone', 0.0, -.005, 4.06, 1.68, .05, .2)
+        m.box('stone', s * .73, -.005, (G0 + 4.1) / 2, .22, .05, 4.1 - G0)                     # clear of the cut reveal; tops buried in the head
+    m.box('stone', 0.0, -.015, 4.06, 1.68, .07, .2)                                           # head 2 cm prouder than the jambs: no shared face
     # Four giant stone pilasters with bases and capitals.
     for u in (-3.3, -1.1, 1.1, 3.3):
         m.box('stone', u, -.05, (G0 + 8.6) / 2, .5, .14, 8.6 - G0)
         m.box('stone', u, -.08, G0 + .2, .66, .2, .4)
         m.box('stone', u, -.09, 8.76, .7, .22, .42)
         m.box('stone', u, -.07, 8.5, .56, .18, .1)
+    for s in (-1, 1):                                                                        # corner blocks under the raking cornice ends,
+        m.box('trim', s * 3.755, -.24, 9.24, .61, .44, .62)                                   # lapped into the capital, frieze, corona and rake
     m.flush('pavilion')
     for s in (-1, 1):                                                                        # pavilion returns
         fr = C.Face((s * PX, 0, 0), (0, s, 0), (-s, 0, 0), f'pavilion return {s:+d}')
@@ -813,7 +815,13 @@ def site():
     for x0, x1 in ((-20.0, -2.4), (2.4, 26.0)):
         b.box('hedge', (x0 + x1) / 2, 15.3, .45, x1 - x0, .5, .9)                               # north boundary hedge, gap at the path
     b.flush('site')
-    iron_fence((-19.85, -10.75), (-3.2, -10.75), height=1.75, wall=.15, spacing=.2)
+    iron_fence((-19.85, -10.75), (-12.4, -10.75), height=1.75, wall=.15, spacing=.2)            # the street railing runs along the west garden only (top view)
+    C.rod('Fence end post', (-12.4, -10.75, .15), (-12.4, -10.75, 2.02), .035, 'hardware', 'fence', 6)
+    b = Batch()                                                                                  # open front lawns: low stone curb and low box edging
+    for x0, x1 in ((-10.58, -3.02), (5.32, 10.98)):
+        b.box('stone', (x0 + x1) / 2, -10.76, .09, x1 - x0, .2, .18)
+        b.box('hedge', (x0 + x1) / 2, -10.42, .21, x1 - x0 - .3, .4, .42)
+    b.flush('front lawn curbs')
     iron_fence((-19.85, -10.58), (-19.85, 15.0), height=1.75, wall=.15, spacing=.26)
     tree(-1.0, -12.5, 11.0, 2.0)                                  # between the top view (x -4.4) and the front and oblique (x 0 to 1)
     tree(11.4, -12.5, 15.0, 2.8, high=True)
