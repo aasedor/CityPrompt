@@ -1,0 +1,1232 @@
+{
+  "candidate": "clay-vancouver-laneway-house-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 430,
+    "vertices": 108293,
+    "polygons": 131726,
+    "triangles": 131726,
+    "path": "clay-vancouver-laneway-house-clay-v001-authoring.blend",
+    "bytes": 6533580,
+    "sha256": "aa7f366f6c63093d2f89cfa0ae7e0b818334b427a6d34aceebe14dae34f6e6b1"
+  },
+  "runtime": {
+    "path": "clay-vancouver-laneway-house-clay-v001.glb",
+    "bytes": 1858100,
+    "sha256": "af71a233a224977920231036d614eac4c9ca334bad7ef8663f550a2fe17ee0ff",
+    "meshes": 63,
+    "materials": 57,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 272,
+    "vertices": 108293,
+    "polygons": 131726,
+    "triangles": 131726
+  },
+  "original_bounds_m": [
+    [
+      -26.000930786132812,
+      -19.0,
+      0.0
+    ],
+    [
+      24.5,
+      34.0,
+      14.039999008178711
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -26.000930786132812,
+      -19.0,
+      0.0
+    ],
+    [
+      24.5,
+      34.0,
+      14.040000915527344
+    ]
+  ],
+  "max_roundtrip_delta_m": 1.9073486328125e-06,
+  "design_dimensions_m": {
+    "width": 7.4,
+    "depth": 8.1,
+    "height": 8.299999999999999
+  },
+  "native_dimensions_m": {
+    "width": 50.50093078613281,
+    "depth": 53.0,
+    "height": 14.040000915527344
+  },
+  "native_bottom_center_m": [
+    -0.7504653930664062,
+    7.5,
+    0.0
+  ],
+  "source_components_by_role": {
+    "cedar": 15,
+    "cedar_light": 11,
+    "cedar_deep": 9,
+    "cedar_joint": 12,
+    "frame": 5,
+    "glass": 6,
+    "metal": 2,
+    "metal_rib": 2,
+    "fascia": 7,
+    "skylight": 1,
+    "steel": 6,
+    "hardware": 6,
+    "lamp": 6,
+    "door_wood": 4,
+    "concrete": 8,
+    "foundation": 5,
+    "paving": 2,
+    "joint": 1,
+    "curb": 1,
+    "asphalt": 2,
+    "yellow": 1,
+    "lawn": 1,
+    "gravel": 1,
+    "interior": 3,
+    "floor": 7,
+    "furniture": 1,
+    "dark_cloth": 1,
+    "stucco": 1,
+    "shingle": 2,
+    "white": 4,
+    "glass_dark": 1,
+    "fence": 1,
+    "tree": 8,
+    "tree2": 8,
+    "conifer": 8,
+    "bark": 14,
+    "car_blue": 3,
+    "car_dark": 3,
+    "car_glass": 2,
+    "tyre": 8,
+    "tail": 4,
+    "pole": 2,
+    "wire": 6,
+    "pk_mulch": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/glass_close.png",
+    "renders/architecture_close.png",
+    "renders/entry_steps.png",
+    "renders/side_entry.png",
+    "renders/west_wall.png",
+    "renders/roof_seams.png",
+    "renders/garage.png",
+    "renders/interior.png",
+    "renders/garden.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Cedar walls and glazed bay on a concrete plinth; hipped roof on the wall plates; garage roof buried in the rear wall",
+      "eave_m": 6.35,
+      "ridge_m": 8.1,
+      "box": [
+        -3.7,
+        3.7,
+        -4.3,
+        3.8
+      ]
+    },
+    {
+      "name": "Corner laneway house with porch steps, side entry steps, planted beds, sidewalks and curbs on both streets"
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "bay south light 0 lower",
+      "face": "bay south",
+      "u": -2.9475000000000002,
+      "z": 0.51,
+      "width": 1.1949999999999996,
+      "height": 2.51,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -4.300000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room"
+    },
+    {
+      "id": "bay south light 0 upper",
+      "face": "bay south",
+      "u": -2.9475000000000002,
+      "z": 3.44,
+      "width": 1.1949999999999996,
+      "height": 2.0399999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -4.300000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room"
+    },
+    {
+      "id": "bay south light 1 lower",
+      "face": "bay south",
+      "u": -1.6825000000000006,
+      "z": 0.51,
+      "width": 1.1949999999999996,
+      "height": 2.51,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -4.300000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room"
+    },
+    {
+      "id": "bay south light 1 upper",
+      "face": "bay south",
+      "u": -1.6825000000000006,
+      "z": 3.44,
+      "width": 1.1949999999999996,
+      "height": 2.0399999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        0.0,
+        -4.300000190734863,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room"
+    },
+    {
+      "id": "bay west light 0 lower",
+      "face": "bay west",
+      "u": -3.9799999999999995,
+      "z": 0.51,
+      "width": 0.3299999999999999,
+      "height": 2.51,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -3.700000047683716,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room"
+    },
+    {
+      "id": "bay west light 0 upper",
+      "face": "bay west",
+      "u": -3.9799999999999995,
+      "z": 3.44,
+      "width": 0.3299999999999999,
+      "height": 2.0399999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -3.700000047683716,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room"
+    },
+    {
+      "id": "bay west light 1 lower",
+      "face": "bay west",
+      "u": -3.58,
+      "z": 0.51,
+      "width": 0.3299999999999999,
+      "height": 2.51,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -3.700000047683716,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room"
+    },
+    {
+      "id": "bay west light 1 upper",
+      "face": "bay west",
+      "u": -3.58,
+      "z": 3.44,
+      "width": 0.3299999999999999,
+      "height": 2.0399999999999996,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.06,
+      "pane_inset_m": 0.097,
+      "face_origin": [
+        -3.700000047683716,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "living room"
+    },
+    {
+      "id": "front door",
+      "face": "south",
+      "u": -0.10000000000000031,
+      "z": 0.44999999999999996,
+      "width": 0.96,
+      "height": 2.2,
+      "kind": "entry door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.09,
+      "pane_inset_m": 0.127,
+      "face_origin": [
+        0.0,
+        -3.299999952316284,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "entry hall"
+    },
+    {
+      "id": "front sidelight",
+      "face": "south",
+      "u": 0.5799999999999996,
+      "z": 0.44999999999999996,
+      "width": 0.32,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -3.299999952316284,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "entry hall"
+    },
+    {
+      "id": "porch window",
+      "face": "south",
+      "u": 2.15,
+      "z": 0.98,
+      "width": 1.3,
+      "height": 1.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -3.299999952316284,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "living room"
+    },
+    {
+      "id": "balcony sliding wall",
+      "face": "south",
+      "u": 1.375,
+      "z": 3.32,
+      "width": 3.75,
+      "height": 2.23,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.09,
+      "pane_inset_m": 0.127,
+      "face_origin": [
+        0.0,
+        -3.299999952316284,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "sitting room"
+    },
+    {
+      "id": "west tall ground window",
+      "face": "west",
+      "u": -1.7499999999999998,
+      "z": 0.78,
+      "width": 0.5,
+      "height": 2.05,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -3.700000047683716,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stair hall"
+    },
+    {
+      "id": "west tall upper window",
+      "face": "west",
+      "u": -1.7499999999999998,
+      "z": 3.77,
+      "width": 0.5,
+      "height": 1.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -3.700000047683716,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "stair hall"
+    },
+    {
+      "id": "west small upper window",
+      "face": "west",
+      "u": 0.25,
+      "z": 4.52,
+      "width": 0.55,
+      "height": 0.75,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -3.700000047683716,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bathroom"
+    },
+    {
+      "id": "west rear upper window",
+      "face": "west",
+      "u": 2.75,
+      "z": 4.57,
+      "width": 1.15,
+      "height": 0.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -3.700000047683716,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedroom"
+    },
+    {
+      "id": "west rear ground window",
+      "face": "west",
+      "u": 2.75,
+      "z": 1.83,
+      "width": 1.0,
+      "height": 0.6,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -3.700000047683716,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "kitchen"
+    },
+    {
+      "id": "side entry recess",
+      "face": "west",
+      "u": -0.09999999999999964,
+      "z": 0.44999999999999996,
+      "width": 1.5,
+      "height": 2.52,
+      "kind": "recessed side entry",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.9,
+      "pane_inset_m": 0.937,
+      "face_origin": [
+        -3.700000047683716,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "side entry hall"
+    },
+    {
+      "id": "east upper window south",
+      "face": "east",
+      "u": -0.3,
+      "z": 4.22,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        3.700000047683716,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedroom"
+    },
+    {
+      "id": "east upper window north",
+      "face": "east",
+      "u": 2.1,
+      "z": 4.22,
+      "width": 0.9,
+      "height": 1.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        3.700000047683716,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "bedroom"
+    },
+    {
+      "id": "east ground window",
+      "face": "east",
+      "u": 0.9,
+      "z": 1.48,
+      "width": 1.2,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        3.700000047683716,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "kitchen"
+    },
+    {
+      "id": "east small window",
+      "face": "east",
+      "u": 2.6,
+      "z": 1.68,
+      "width": 0.6,
+      "height": 0.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        3.700000047683716,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "kitchen"
+    },
+    {
+      "id": "north upper window west",
+      "face": "north",
+      "u": 1.9,
+      "z": 4.47,
+      "width": 1.1,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        3.799999952316284,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "bedroom"
+    },
+    {
+      "id": "north upper window east",
+      "face": "north",
+      "u": -1.6,
+      "z": 4.47,
+      "width": 1.1,
+      "height": 1.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        3.799999952316284,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "bedroom"
+    },
+    {
+      "id": "garage door",
+      "face": "garage west",
+      "u": 6.9,
+      "z": 0.16,
+      "width": 2.8,
+      "height": 2.2,
+      "kind": "garage door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.13,
+      "pane_inset_m": 0.167,
+      "face_origin": [
+        -2.5999999046325684,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "garage"
+    },
+    {
+      "id": "garage side door",
+      "face": "garage east",
+      "u": 8.399999999999999,
+      "z": 0.18,
+      "width": 0.9,
+      "height": 2.1,
+      "kind": "garage side door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.25,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        2.4000000953674316,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "garage"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "Corner asphalt",
+      "Curb",
+      "Corner sidewalk",
+      "site asphalt",
+      "site paving",
+      "site joint",
+      "site lawn",
+      "site yellow",
+      "site concrete",
+      "site gravel"
+    ],
+    "envelope": [
+      "Foundation",
+      "Fin foundation",
+      "Bay plinth",
+      "Bay end wall",
+      "Front cedar band",
+      "Bay west band",
+      "south carrier",
+      "west carrier",
+      "east carrier",
+      "north carrier",
+      "garage west carrier",
+      "garage east carrier",
+      "garage north carrier"
+    ],
+    "glazed bay": [
+      "glazed bay frame",
+      "glazed bay glass"
+    ],
+    "bay end": [
+      "bay end east bay end cedar_joint",
+      "bay end east bay end cedar_light"
+    ],
+    "front band": [
+      "front band front band cedar_deep",
+      "front band front band cedar_joint",
+      "front band front band cedar_light"
+    ],
+    "bay west band": [
+      "bay west band bay west band cedar_joint",
+      "bay west band bay west band cedar_light"
+    ],
+    "balcony": [
+      "Balcony ceiling",
+      "Balcony slab",
+      "Porch ceiling",
+      "Balcony fascia",
+      "balcony hardware",
+      "balcony steel",
+      "balcony glass"
+    ],
+    "porch": [
+      "Porch landing",
+      "Porch steps"
+    ],
+    "south": [
+      "south south cedar_joint",
+      "south south cedar_deep",
+      "south south cedar_light",
+      "south south frame",
+      "south south door_wood",
+      "south south hardware",
+      "south south steel",
+      "south south glass",
+      "south south fascia"
+    ],
+    "west": [
+      "west west cedar_light",
+      "west west cedar_joint",
+      "west west cedar_deep",
+      "west west frame",
+      "west west glass",
+      "west west fascia",
+      "west west hardware",
+      "west west lamp"
+    ],
+    "downpipe": [
+      "downpipe fascia"
+    ],
+    "side entry": [
+      "side entry cedar_light",
+      "side entry cedar",
+      "side entry door_wood",
+      "side entry hardware",
+      "side entry concrete",
+      "Side entry steps"
+    ],
+    "east": [
+      "east east cedar_joint",
+      "east east cedar_light",
+      "east east cedar_deep",
+      "east east frame",
+      "east east glass",
+      "east east fascia"
+    ],
+    "fin inner": [
+      "fin inner fin inner cedar_joint",
+      "fin inner fin inner cedar_deep"
+    ],
+    "north": [
+      "north north cedar_joint",
+      "north north cedar_deep",
+      "north north cedar_light",
+      "north north frame",
+      "north north glass",
+      "north north fascia"
+    ],
+    "inside": [
+      "Ground floor south",
+      "Ground floor niche",
+      "Ground floor north",
+      "Ground floor bay",
+      "Upper floor",
+      "Upper floor bay",
+      "Ceiling",
+      "Ceiling bay",
+      "Partition"
+    ],
+    "furniture": [
+      "furniture floor",
+      "furniture hardware",
+      "furniture lamp",
+      "furniture dark_cloth",
+      "furniture furniture"
+    ],
+    "roof": [
+      "Roof plate"
+    ],
+    "roof trim": [
+      "roof trim metal_rib",
+      "roof trim fascia",
+      "roof trim skylight",
+      "roof trim cedar"
+    ],
+    "garage": [
+      "Garage foundation"
+    ],
+    "garage west": [
+      "garage west garage west cedar_light",
+      "garage west garage west cedar_joint",
+      "garage west garage west cedar_deep",
+      "garage west garage west hardware"
+    ],
+    "garage east": [
+      "garage east garage east cedar_joint",
+      "garage east garage east cedar_light",
+      "garage east garage east cedar_deep",
+      "garage east garage east door_wood"
+    ],
+    "garage north": [
+      "garage north garage north cedar_deep",
+      "garage north garage north cedar_joint",
+      "garage north garage north cedar_light"
+    ],
+    "garage roof": [
+      "Garage roof plate"
+    ],
+    "garage roof trim": [
+      "garage roof trim metal_rib",
+      "garage roof trim fascia",
+      "garage roof trim cedar"
+    ],
+    "context": [
+      "Neighbour walls",
+      "Neighbour foundation",
+      "Neighbour roof",
+      "Neighbour porch steps",
+      "Neighbour porch roof"
+    ],
+    "neighbour": [
+      "neighbour white",
+      "neighbour glass_dark",
+      "neighbour door_wood",
+      "neighbour concrete",
+      "neighbour steel"
+    ],
+    "fence": [
+      "fence fence",
+      "fence cedar_joint"
+    ],
+    "beds": [
+      "beds pk_mulch"
+    ],
+    "planting": [
+      {
+        "planting_kit": true,
+        "instancing": true,
+        "plants": 108,
+        "instance_nodes": 228,
+        "prototypes": {
+          "lw_japanese_maple": 1,
+          "lw_shrub": 1,
+          "lw_feather_reed": 10,
+          "lw_sword_fern": 39,
+          "lw_blue_fescue": 21,
+          "lw_spiky_grass": 14,
+          "lw_forest_grass": 8,
+          "lw_deer_fern": 14
+        },
+        "clearance_violations": 0,
+        "rejected": 0
+      }
+    ],
+    "trees": [
+      "Tree trunk",
+      "Tree limb",
+      "Tree limb.001",
+      "Tree trunk.001",
+      "Tree limb.002",
+      "Tree limb.003",
+      "Tree trunk.002",
+      "Tree limb.004",
+      "Tree limb.005",
+      "Tree trunk.003",
+      "Tree limb.006",
+      "Tree limb.007",
+      "Conifer trunk",
+      "Conifer trunk.001"
+    ],
+    "garden planting": [
+      "Tree crown",
+      "Tree crown mass",
+      "Tree crown mass.001",
+      "Tree crown mass.002",
+      "Tree crown.001",
+      "Tree crown mass.003",
+      "Tree crown mass.004",
+      "Tree crown mass.005",
+      "Tree crown.002",
+      "Tree crown mass.006",
+      "Tree crown mass.007",
+      "Tree crown mass.008",
+      "Tree crown.003",
+      "Tree crown mass.009",
+      "Tree crown mass.010",
+      "Tree crown mass.011",
+      "Conifer tier",
+      "Conifer tier.001",
+      "Conifer tier.002",
+      "Conifer tier.003",
+      "Conifer tier.004",
+      "Conifer tier.005",
+      "Conifer tier.006",
+      "Conifer tier.007"
+    ],
+    "cars": [
+      "Blue SUV body",
+      "Blue SUV cabin",
+      "Blue SUV roof",
+      "Blue SUV pillar",
+      "Blue SUV wheel",
+      "Blue SUV wheel.001",
+      "Blue SUV wheel.002",
+      "Blue SUV wheel.003",
+      "Blue SUV tail light",
+      "Blue SUV head light",
+      "Blue SUV tail light.001",
+      "Blue SUV head light.001",
+      "Dark sedan body",
+      "Dark sedan cabin",
+      "Dark sedan roof",
+      "Dark sedan pillar",
+      "Dark sedan wheel",
+      "Dark sedan wheel.001",
+      "Dark sedan wheel.002",
+      "Dark sedan wheel.003",
+      "Dark sedan tail light",
+      "Dark sedan head light",
+      "Dark sedan tail light.001",
+      "Dark sedan head light.001"
+    ],
+    "utility": [
+      "Utility pole",
+      "Crossarm",
+      "Insulator",
+      "Wire",
+      "Insulator.001",
+      "Wire.001",
+      "Insulator.002",
+      "Wire.002",
+      "Transformer",
+      "Transformer bracket",
+      "Telecom wire",
+      "Cross-street wire",
+      "Service drop"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "glass_close",
+    "architecture_close",
+    "entry_steps",
+    "side_entry",
+    "west_wall",
+    "roof_seams",
+    "garage",
+    "interior"
+  ],
+  "finished_utc": "2026-10-22T15:10:13.828096+00:00",
+  "delivery_and_render_seconds": 114.98411187899995,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

@@ -1,0 +1,162 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "bay south light 0 lower",
+      "face": "bay south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "bay south light 0 upper",
+      "face": "bay south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "bay south light 1 lower",
+      "face": "bay south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "bay south light 1 upper",
+      "face": "bay south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "bay west light 0 lower",
+      "face": "bay west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "bay west light 0 upper",
+      "face": "bay west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "bay west light 1 lower",
+      "face": "bay west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "bay west light 1 upper",
+      "face": "bay west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front door",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "front sidelight",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "porch window",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "balcony sliding wall",
+      "face": "south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west tall ground window",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west tall upper window",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west small upper window",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west rear upper window",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west rear ground window",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "side entry recess",
+      "face": "west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east upper window south",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east upper window north",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east ground window",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east small window",
+      "face": "east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north upper window west",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north upper window east",
+      "face": "north",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "garage door",
+      "face": "garage west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "garage side door",
+      "face": "garage east",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
