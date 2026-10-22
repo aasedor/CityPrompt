@@ -54,11 +54,12 @@ async def generate(f, request=None):
 
 
 @pytest.mark.asyncio
-async def test_architectural_edit_persists_reference_bytes_and_replay_cannot_swap_them(pilot):
+@pytest.mark.parametrize("reference_mode", ["architecture_references", "appearance_references"])
+async def test_scene_edit_persists_reference_bytes_and_replay_cannot_swap_them(pilot, reference_mode):
     f = pilot
     frames = [_jpeg_data_url(), _jpeg_data_url(width=1920, height=1080)]
     request = f.request.model_copy(update={
-        "control_mode": "preview_video", "omni_reference_mode": "architecture_references",
+        "control_mode": "preview_video", "omni_reference_mode": reference_mode,
         "route_keyframes_base64": frames,
         "preview_video_base64": base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode(),
         "preview_video_mime_type": "video/webm",
@@ -74,7 +75,7 @@ async def test_architectural_edit_persists_reference_bytes_and_replay_cannot_swa
     async with f.sessions() as db:
         project = await db.get(Project, f.project.id)
         entry = project.metadata_["video_pilot_attempts"][0]
-        assert entry["omni_reference_mode"] == "architecture_references"
+        assert entry["omni_reference_mode"] == reference_mode
         assert entry["reference_image_count"] == 2
     replay = await generate(f, request)
     assert replay.attempt.id == result.attempt.id

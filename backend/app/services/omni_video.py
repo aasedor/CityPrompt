@@ -162,6 +162,27 @@ def build_architecture_reference_prompt(prompt: str, count: int, *, has_characte
     return f"{prefix} {prompt} {direction}"
 
 
+def build_appearance_reference_prompt(prompt: str, count: int, *, has_character: bool = False) -> str:
+    """Keep the motion video authoritative while separate images guide its finish."""
+    if count not in (1, 2):
+        raise ValueError("Appearance references require one or two scene images.")
+    total = count + int(has_character)
+    tags = " ".join(f"<IMAGE_REF_{index}>@Image{index + 1}" for index in range(total))
+    prefix = f"[# Sources <VIDEO_0>@Video1] [# References {tags}]"
+    scene_images = " and ".join(f"Image{index + 1}" for index in range(int(has_character), total))
+    identity = "Use Image1 only for the walking subject's identity and appearance. " if has_character else ""
+    direction = (
+        identity + f"Use {scene_images} only as appearance references for photographic materials, lighting "
+        "and surface detail, not as first or last frames. "
+        "Video1 controls the camera path, timing, motion, scene layout, building silhouettes and apparent sizes. "
+        "Keep every building and skyline landmark in its original position; do not copy a reference viewpoint "
+        "or introduce its objects. One continuous photographic shot."
+    )
+    if prompt.startswith(prefix + " ") and prompt.endswith(" " + direction):
+        return prompt
+    return f"{prefix} {prompt} {direction}"
+
+
 def decode_guide_image(value: str) -> GuideImage:
     """Decode and inspect a base64 PNG/JPEG without trusting the data-URL label."""
     encoded = value.split(",", 1)[1] if "," in value else value
@@ -517,10 +538,11 @@ def build_omni_payload(
 ) -> dict[str, Any]:
     if character_reference_base64 is not None and control_mode != "preview_video":
         raise ValueError("Character references require Omni preview video.")
-    if omni_reference_mode not in {"video_only", "architecture_references"}:
+    if omni_reference_mode not in {"video_only", "architecture_references", "appearance_references"}:
         raise ValueError("Unknown Omni reference mode.")
-    if omni_reference_mode == "architecture_references" and control_mode != "preview_video":
-        raise ValueError("Architectural references require Omni preview video.")
+    reference_label = "Appearance" if omni_reference_mode == "appearance_references" else "Architectural"
+    if omni_reference_mode != "video_only" and control_mode != "preview_video":
+        raise ValueError(f"{reference_label} references require Omni preview video.")
     if control_mode == "multi_keyframe":
         if not route_keyframes:
             raise ValueError("Multi-keyframe video generation requires route keyframes.")
@@ -547,17 +569,18 @@ def build_omni_payload(
             reference = decode_character_reference(character_reference_base64, character_reference_mime_type)
             input_items.append({"type": "image", "data": base64.b64encode(reference.data).decode("ascii"),
                                 "mime_type": reference.mime_type})
-        if omni_reference_mode == "architecture_references":
+        if omni_reference_mode in {"architecture_references", "appearance_references"}:
             if not route_keyframes or len(route_keyframes) not in (1, 2):
-                raise ValueError("Architectural references require one or two scene images.")
+                raise ValueError(f"{reference_label} references require one or two scene images.")
             for value, mime_type in route_keyframes:
                 frame = decode_guide_image(value)
                 if frame.mime_type != mime_type:
-                    raise ValueError("The architectural reference MIME type does not match its image content.")
+                    raise ValueError(f"The {reference_label.lower()} reference MIME type does not match its image content.")
                 input_items.append({"type": "image", "data": base64.b64encode(frame.data).decode("ascii"),
                                     "mime_type": frame.mime_type})
-            prompt = build_architecture_reference_prompt(prompt, len(route_keyframes),
-                has_character=character_reference_base64 is not None)
+            reference_prompt = (build_appearance_reference_prompt if omni_reference_mode == "appearance_references"
+                                else build_architecture_reference_prompt)
+            prompt = reference_prompt(prompt, len(route_keyframes), has_character=character_reference_base64 is not None)
         elif character_reference_base64 is not None:
             prompt = build_character_reference_prompt(prompt)
         task = "edit"

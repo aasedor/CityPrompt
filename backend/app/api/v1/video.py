@@ -46,6 +46,7 @@ from app.services.omni_video import (
     MAX_ROUTE_IMAGE_BYTES,
     build_character_reference_prompt,
     build_architecture_reference_prompt,
+    build_appearance_reference_prompt,
     build_cinematic_prompt,
     build_omni_payload,
     decode_guide_image,
@@ -170,7 +171,7 @@ class VideoPilotRequest(BaseModel):
     duration_seconds: Literal[4, 8] = 8
     custom_prompt: str = Field(default="", max_length=600)
     use_custom_prompt_only: bool = False
-    omni_reference_mode: Literal["video_only", "architecture_references"] = "video_only"
+    omni_reference_mode: Literal["video_only", "architecture_references", "appearance_references"] = "video_only"
     scene_brief: str = Field(
         default=(
             "Preserve every authored building, open space, and surrounding context exactly as depicted in Image1."
@@ -680,10 +681,11 @@ def _decode_geometry_checkpoints(req: VideoPilotRequest) -> list[dict[str, Any]]
 
 def _preflight_values(req: VideoPilotRequest):
     try:
-        if req.omni_reference_mode == "architecture_references" and (
+        reference_label = "Appearance" if req.omni_reference_mode == "appearance_references" else "Architectural"
+        if req.omni_reference_mode != "video_only" and (
             req.provider != "omni" or req.control_mode != "preview_video"
         ):
-            raise ValueError("Architectural references require Omni preview video.")
+            raise ValueError(f"{reference_label} references require Omni preview video.")
         if req.camera_motion == "people_follow" and (req.provider != "omni" or req.control_mode != "preview_video"):
             raise ValueError("People-follow tracking requires Omni preview video.")
         if (req.duration_seconds == 4 or req.character_reference_base64 is not None) and (
@@ -716,9 +718,9 @@ def _preflight_values(req: VideoPilotRequest):
         if req.control_mode == "preview_video":
             if preview is None:
                 raise ValueError("Preview-video mode requires the deterministic route preview.")
-            if req.provider == "omni" and req.omni_reference_mode == "architecture_references":
+            if req.provider == "omni" and req.omni_reference_mode in {"architecture_references", "appearance_references"}:
                 if len(keyframes) not in (1, 2):
-                    raise ValueError("Architectural references require one or two scene images.")
+                    raise ValueError(f"{reference_label} references require one or two scene images.")
             elif req.provider in {"omni", "internal_enhance"} and keyframes:
                 raise ValueError("This preview-video mode sends the route video without route keyframe references.")
             if req.provider == "seedance_mini":
@@ -751,6 +753,9 @@ def _preflight_values(req: VideoPilotRequest):
         )
         if req.omni_reference_mode == "architecture_references":
             prompt = build_architecture_reference_prompt(prompt, len(keyframes),
+                has_character=character_reference is not None)
+        elif req.omni_reference_mode == "appearance_references":
+            prompt = build_appearance_reference_prompt(prompt, len(keyframes),
                 has_character=character_reference is not None)
         elif character_reference is not None:
             prompt = build_character_reference_prompt(prompt)
