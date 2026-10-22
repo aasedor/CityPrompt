@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-stepped-terraced-plaza",
+  "variant_id": "clay-stepped-terraced-plaza-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "stepped_terraced_plaza/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/stepped-terraced-plaza/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1223732,
+      "sha256": "ebc35d2d3930e520d789cf54d6ee47d3033d62604efb2b69fc0a71a2a4849025"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/stepped-terraced-plaza/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 809953,
+      "sha256": "4b491e5419a8e2631744fa423c3f589ec099fb38c71ce242ed4a3a40c353039c"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/stepped-terraced-plaza/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 802638,
+      "sha256": "dd114f5db2320dc9c89d43959d2c9c2c637c730a16bd0c3b10128e8a3a12c772"
+    }
+  ]
+}
