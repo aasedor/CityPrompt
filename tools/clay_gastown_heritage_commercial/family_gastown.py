@@ -67,7 +67,7 @@ def manifest(version):
         ('facade_close', (-9.9, -31.0, 8.6), (-9.9, Y0, 8.6), 40),              # a typical south bay through all three floors
         ('roof_skylights', (16.0, -16.0, 30.0), (0.0, 1.0, ROOF), 35),
         ('interior', (-10.0, Y0 + 3.2, F2 + 1.7), (-4.0, Y0, F2 + 2.6), 22),
-        ('rear_north', (-11.5, 30.0, 8.5), (-10.4, Y1, 7.5), 35)])         # down the gap west of the north block: the exposed north wall to grade
+        ('rear_north', (-10.6, 30.0, 8.7), (-10.4, Y1, 8.7), 24)])         # down the gap west of the north block: the exposed north wall from grade to coping
     for c in cams:                       # the locked front and oblique look from the south-east (fitted to the sources)
         if c['name'] == 'front':
             c.update(location=(35.2, -44.8, 1.6), target=(13.5, -19.2, 7.0), lens=49.5, whole=False)
@@ -612,6 +612,7 @@ def shopfront(m, f, h, door=None, dw=1.7):
     a, c = u - w / 2, u + w / 2
     for e in (a + .023, c - .023):                                    # stone jamb liners close the cut from the face to the frame
         m.box('stone', e, (gl - .03) / 2, (G0 + SHOP) / 2, .042, gl + .03, SHOP - G0 - .004)
+    m.box('stone', u, (gl - .03) / 2, G0 - .02, w - .004, gl + .03, .05)                    # cut floor liner, 5 mm above the cut floor
     m.box('frame', a + .05, gl, (G0 + SHOP) / 2, .1, .12, SHOP - G0)
     m.box('frame', c - .05, gl, (G0 + SHOP) / 2, .1, .12, SHOP - G0)
     m.box('frame', u, gl, SHOP - .06, w - .2, .12, .12)
@@ -643,13 +644,14 @@ def shopfront(m, f, h, door=None, dw=1.7):
             m.box('frame', dc + s * (dw / 2 + .03), (gl + dd) / 2, (G0 + 3.37) / 2, .06, dd - gl, 3.37 - G0)
             m.box('glass', dc + s * (dw / 2 + .065), (gl + dd) / 2, (.92 + 3.37) / 2, .01, dd - gl - .1, 3.37 - .92)
         m.box('frame', dc, (gl + dd) / 2, 3.42, dw + .12, dd - gl, .1)
-        m.box('stone', dc, (gl + dd) / 2, G0 - .03, dw + .1, dd - gl + .1, .06)
+        m.box('stone', dc, (gl + dd) / 2, G0 - .015, dw + .1, dd - gl + .1, .06)                 # threshold 15 mm above the shop floor (no shared plane)
         for s in (-1, 1):
             lc = dc + s * dw / 4
             m.box('timber', lc, dd, (G0 + 3.37) / 2, dw / 2 - .03, .07, 3.37 - G0 - .02)
             m.box('glass', lc, dd - .045, 2.2, dw / 2 - .3, .01, 1.7)
             m.box('timber', lc, dd - .05, .9, dw / 2 - .3, .02, .7)
             m.box('hardware', dc + s * .12, dd - .06, 1.6, .03, .03, .5)
+        m.box('timber', dc, dd, (G0 + 3.37) / 2, .05, .08, 3.37 - G0 - .03)                        # meeting stile closes the leaf gap
     register(f, h, gl, 'shopfront', 'shop')
 
 
@@ -732,7 +734,7 @@ def dress(f, holes, kind, label):
             m.box('glass', u, T - .25, 1.95, h['w'] - .5, .01, .9)
             m.box('hardware', u + .45, T - .26, 1.3, .04, .04, .2)
             m.box('stone', u, -.06, top + .17, h['w'] + .5, .12, .34)
-            m.box('stone', u, .3, G0 / 2, h['w'], .6, G0)
+            m.box('stone', u, .27, (G0 + .012) / 2, h['w'] - .004, .6, G0 + .012)                # step 12 mm above the hall floor and cut floor
             register(f, h, T - .2, 'door', 'stair hall')
     m.flush(label)
     b.flush(label + ' fanlights')
@@ -847,7 +849,8 @@ def plain_walls():
         sash(m, f, h, lintel=False)
     m.flush('west wall')
     f = NORTH
-    holes = [hole(f'N f{k} {u:+.1f}', u, z, 1.1, 2.4) for u in (-11.8, -10.4) for k, z in ((2, 6.6), (3, 11.2))]
+    # NORTH runs along -x (u = -x): u 9.6 and 11.2 put the windows at x -9.6 and -11.2, on the exposed wall west of the north block
+    holes = [hole(f'N f{k} {u:+.1f}', u, z, 1.1, 2.4) for u in (9.6, 11.2) for k, z in ((2, 6.6), (3, 11.2))]
     f.wall('north wall carrier', -(X1 - T), -(X0 + T) - EPS, 0.0, PARA, depth=T, role='wall', holes=holes)
     G.brick_courses(f, -(X1 - T) + .02, -(X0 + T) - .02, 1.0, PARA - .3, holes, spacing=.42)
     m = Merge(f)

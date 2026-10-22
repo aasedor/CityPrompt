@@ -749,17 +749,14 @@ def bay_pier(b, f, uc, zhi):
 
 
 def rear_window(blk, uu, d0, z, hh, w):
-    """Rear window on a wall face at depth d0 (outward +d): a white frame standing 9 cm proud, the glass 6 cm behind
-    the frame face with a meeting rail and a mullion, a stone sill and a plain lintel."""
+    """Rear window on a wall face at depth d0 (outward +d), five boxes: a white frame standing 9 cm proud (jambs and
+    head), the glass 6 cm behind the frame face, and a stone sill."""
     o = .09
-    blk('glass', uu - w / 2, uu + w / 2, d0 - .01, d0 + .03, z, z + hh)                         # glass 6 cm inside the frame face
-    for a, c in ((uu - w / 2 - .09, uu - w / 2 + .01), (uu + w / 2 - .01, uu + w / 2 + .09)):    # jambs
-        blk('trim', a, c, d0 - .01, d0 + o, z - .02, z + hh + .02)
-    blk('trim', uu - w / 2 - .09, uu + w / 2 + .09, d0 - .01, d0 + o, z + hh - .01, z + hh + .09)  # head
-    blk('trim', uu - .025, uu + .025, d0 + .02, d0 + .055, z + .01, z + hh - .02)                # mullion
-    blk('trim', uu - w / 2 + .01, uu + w / 2 - .01, d0 + .02, d0 + .055, z + hh * .55, z + hh * .55 + .05)   # meeting rail
-    blk('stone2', uu - w / 2 - .14, uu + w / 2 + .14, d0 - .01, d0 + .13, z - .12, z - .02)      # sill
-    blk('stone2', uu - w / 2 - .14, uu + w / 2 + .14, d0 - .01, d0 + .05, z + hh + .1, z + hh + .3)   # lintel
+    blk('glass', uu - w / 2, uu + w / 2, d0 - .01, d0 + .03, z, z + hh)
+    for a_, c_ in ((uu - w / 2 - .09, uu - w / 2 + .01), (uu + w / 2 - .01, uu + w / 2 + .09)):
+        blk('trim', a_, c_, d0 - .01, d0 + o, z - .02, z + hh + .02)
+    blk('trim', uu - w / 2 - .09, uu + w / 2 + .09, d0 - .01, d0 + o, z + hh - .01, z + hh + .09)
+    blk('stone2', uu - w / 2 - .14, uu + w / 2 + .14, d0 - .01, d0 + .13, z - .12, z - .02)
 
 
 def body(b, f, u0, u1, zc, mat, rear_lite=True):
@@ -1131,14 +1128,30 @@ def cars():
     b.flush('parked cars')
 
 
+def ctx_rail(b, f, ua, ub, dfront, z):
+    """Light context railing: top and bottom rails with pickets at 0.3 m on the front, a top rail and two pickets on
+    each return."""
+    P = lambda u, d: tuple(f.p(u, d, 0))[:2]
+    (ax, ay), (cx, cy) = P(ua, dfront), P(ub, dfront)
+    b.beam('hardware', (ax, ay, z + .95), (cx, cy, z + .95), .05, .045, ext=.025)
+    b.beam('hardware', (ax, ay, z + .1), (cx, cy, z + .1), .03, .03, ext=.015)
+    L = math.hypot(cx - ax, cy - ay); tx, ty = (cx - ax) / L, (cy - ay) / L
+    n = max(2, int(L / .3))
+    for i in range(n + 1):
+        picket(b, ax + (cx - ax) * i / n, ay + (cy - ay) * i / n, z + .085, z + .93, tx, ty)
+    for u in (ua, ub):
+        (px, py), (qx, qy) = P(u, dfront), P(u, 0.0)
+        b.beam('hardware', (px, py, z + .95), (qx, qy, z + .95), .05, .045, ext=.025)
+        L = math.hypot(qx - px, qy - py) or 1.0
+        for k in (1, 2):
+            picket(b, px + (qx - px) * k / 3, py + (qy - py) * k / 3, z + .085, z + .93, (qx - px) / L, (qy - py) / L)
+
+
 def ctx_window(blk, uu, z, hh, w):
-    """Context window on a street face (outward -d): a white frame standing 8 cm proud, glass 5 cm behind it with a
-    mullion, and a stone sill."""
-    blk('glass', uu - w / 2, uu + w / 2, -.03, .01, z, z + hh)
-    for a_, c_ in ((uu - w / 2 - .08, uu - w / 2 + .01), (uu + w / 2 - .01, uu + w / 2 + .08)):
-        blk('trim', a_, c_, -.08, .01, z - .02, z + hh + .02)
-    blk('trim', uu - w / 2 - .08, uu + w / 2 + .08, -.08, .01, z + hh - .01, z + hh + .08)
-    blk('trim', uu - .025, uu + .025, -.055, -.02, z + .01, z + hh - .02)
+    """Context window on a street face (outward -d), three boxes: a white surround 3 cm proud, the glass 3 cm proud of
+    the surround, and a stone sill."""
+    blk('trim', uu - w / 2 - .08, uu + w / 2 + .08, -.03, .01, z - .02, z + hh + .08)
+    blk('glass', uu - w / 2, uu + w / 2, -.06, -.02, z + .02, z + hh)
     blk('stone2', uu - w / 2 - .12, uu + w / 2 + .12, -.13, .01, z - .12, z - .02)
 
 
@@ -1163,8 +1176,7 @@ def context_row(f, u0, u1, zcs, mats, label):
                     ctx_window(blk, uu, z, hh, 1.1 if uu != a + 3.6 else .9)
         for z, dep in ((F2, 1.1), (F3, .85)):                                           # decks with open iron railings
             blk('deck', a + 1.2, a + 4.4, -dep, .02, z - .18, z)
-            rail(b, [tuple(f.p(a + 1.23, 0.0, 0))[:2], tuple(f.p(a + 1.23, -dep + .04, 0))[:2],
-                     tuple(f.p(a + 4.37, -dep + .04, 0))[:2], tuple(f.p(a + 4.37, 0.0, 0))[:2]], z, spacing=.2)
+            ctx_rail(b, f, a + 1.23, a + 4.37, -dep + .04, z)
         if i % 2 == 1 and i < n - 1:
             blk('teal', c - 1.0, c + 1.0, -.3, 1.2, zc, zc + 1.6)
     b.flush(label)
