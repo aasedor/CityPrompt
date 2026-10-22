@@ -41,7 +41,7 @@ overlap, every vertex sits at or above grade, and rooms behind glazing carry low
 lights. Renders are taken from the reimported optimised GLB only.
 
 Camera roster: the eight whole-envelope views plus the ten family detail views
-`facade_close, pediment_portico, porch_columns, glass_close, cornice_chimneys, west_front, roof_deck, rear_wings, interior, garden_fence`.
+`facade_close, architecture_close, porch_columns, glass_close, cornice_chimneys, west_front, roof_deck, rear_wings, interior, garden_fence`.
 
 Run:
 

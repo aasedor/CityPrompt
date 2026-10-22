@@ -42,7 +42,7 @@ BX0, BX1, BY0, BY1 = 11.5, 40.5, -20.8, 4.0           # brick heritage block to 
 B_F2, B_F3, B_WALL, B_EAVE = 4.6, 8.0, 12.6, 12.7     # brick block floors, wall head (under the eaves), cornice top
 TOP = 21.0
 EPS = .002
-PALETTE = dict(wall=(.70, .70, .68), concrete2=(.56, .56, .55), panel=(.80, .81, .81), frame=(.28, .30, .32),
+PALETTE = dict(wall=(.70, .70, .68), concrete2=(.56, .56, .55), panel=(.80, .81, .81), frame=(.32, .34, .36),
     glass=(.14, .19, .22), spandrel=(.62, .68, .71), membrane=(.80, .81, .80), gravel=(.66, .62, .55), louvre=(.70, .71, .71),
     mech=(.84, .84, .82), sign=(.16, .18, .20), brick=(.50, .24, .16), joint=(.33, .27, .24), stone=(.70, .61, .47),
     iron=(.17, .22, .19), tile=(.55, .31, .21), timber=(.40, .26, .14), interior=(.80, .77, .70), floor=(.58, .56, .53),
@@ -55,9 +55,9 @@ def manifest(version):
     h = TOP
     cams = G.camera_roster(TX1 - TX0 + 4.0, TY1 - TY0 + 4.0, PARA, [
         ('entrance_canopy', (5.0, -30.5, 1.7), (5.0, -20.4, 3.0), 28),
-        ('sign_fascia', (3.0, -28.5, 3.4), (3.0, SIGNY, 4.1), 40),
-        ('glass_box', (-6.0, -34.0, 7.5), (3.5, BOXY, 7.2), 35),
-        ('west_canopy', (-16.5, -27.0, 2.0), (-10.5, -5.0, 3.6), 30),
+        ('facade_close', (3.0, -28.5, 3.4), (3.0, SIGNY, 4.1), 40),
+        ('glass_close', (-6.0, -34.0, 7.5), (3.5, BOXY, 7.2), 35),
+        ('architecture_close', (-16.5, -27.0, 2.0), (-10.5, -5.0, 3.6), 30),
         ('roof_boxes', (-23.0, -18.0, 13.5), (-10.0, -7.0, 9.8), 30),
         ('roof_mechanical', (-14.0, -30.0, 22.0), (1.5, 1.0, 9.8), 32),
         ('interior', (6.5, -16.5, 1.7), (-5.0, -21.0, 3.0), 22),
@@ -651,7 +651,7 @@ def south_front():
     # Glass box: concrete end frames to grade, soffit, three tiers of clear glazing, frosted band and the cap.
     for x0, x1 in ((BOXX0 - .5, BOXX0 + .1), (TX1 - .6, TX1)):
         b.box('wall', (x0 + x1) / 2, (BOXY - .1 + TY0 + .4) / 2, (BOXTOP - .03) / 2, x1 - x0, TY0 + .4 - BOXY + .1, BOXTOP - .03)
-    b.box('panel', (BOXX0 + .1 + TX1 - .6) / 2, (BOXY + TY0 + .3) / 2, 4.51, TX1 - .6 - BOXX0 - .1 + .02, TY0 + .3 - BOXY, .22)
+    b.box('panel', (BOXX0 + .1 + TX1 - .6) / 2, (BOXY - .16 + TY0 + .3) / 2, 4.51, TX1 - .6 - BOXX0 - .1 + .02, TY0 + .3 - BOXY + .16, .22)
     curtain(b, 'x', BOXY + .02, BOXX0 + .1, TX1 - .6, 4.62, 8.9, 1.56, transoms=(6.05, 7.45), out=-1, depth=.14)
     curtain(b, 'x', BOXY + .02, BOXX0 + .1, TX1 - .6, 8.9, 9.95, 1.56, out=-1, depth=.1, glass='spandrel')
     b.box('panel', (BOXX0 - .55 + TX1) / 2, (BOXY - .14 + TY0 + .2) / 2, (9.95 + BOXTOP) / 2, TX1 - BOXX0 + .55, TY0 + .2 - BOXY + .14, BOXTOP - 9.95)
@@ -907,7 +907,7 @@ def brick_block():
         m.box('brick', (lo + hi) / 2, -.07, (4.8 + 10.75) / 2, hi - lo, .16, 5.95)
         m.box('stone', (lo + hi) / 2, -.1, 10.62, hi - lo + .1, .22, .26)
         m.box('iron', (lo + hi) / 2, -.06, 2.1, hi - lo - .05, .14, 4.2)
-        m.box('iron', (lo + hi) / 2, -.1, 4.15, hi - lo + .05, .22, .14)
+        m.box('iron', (lo + hi) / 2, -.1, 4.17, hi - lo + .05, .22, .18)
     band(m, BX0, BX1, 4.25, 4.75, .12, 'iron')                                                         # shop fascia
     band(m, BX0, BX1, 4.75, 4.9, .16, 'stone')
     band(m, BX0, BX1, 5.12, 5.24, .1, 'stone')
@@ -954,7 +954,7 @@ def brick_block():
     for k in range(5):
         b.box('timber', BX0 + 3.0 + k * 6.0, BY0 + 1.6, .75, 1.6, .7, .9)                                   # shop counters
     b.flush('brick block shell')
-    for x in (16.0, 26.0, 36.0):
+    for x in (14.0, 22.0, 30.0, 38.0):
         for z in (3.6, 7.2, 10.6):
             qa_light(f'brick block {x:.0f} {z:.0f}', (x, BY0 + 2.0, z), 30, 2.0)
     f = C.Face((0, BY1, 0), (-1, 0, 0), (0, -1, 0), 'brick block north wall')
