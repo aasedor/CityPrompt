@@ -2647,7 +2647,7 @@ def planting():
     # A low green carpet under the front beds, so the mulch shows only in small gaps (source front and oblique).
     for k in ('A', 'B'):
         groundcover(f'Bed {k} groundcover', beds[k][1], PSOIL, kerb=0, height=.04, bump=.02, wave=.7, grid=.5, edge=.12,
-                    role='pk_groundcover', seed=61 + ord(k))
+                    role='pk_leaf_dark', seed=61 + ord(k))
     fill(kit, regs['D'], side, .26, 35, placed, scales=fine, within=real['D'])
     fill(kit, regs['E'], side, .36, 37, placed, scales=fine)
     kit.flush()
