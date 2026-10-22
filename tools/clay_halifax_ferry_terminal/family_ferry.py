@@ -77,7 +77,7 @@ def manifest(version):
         elif c['name'] == 'left_side':
             c.update(location=(-27.0, -3.0, 5.0), target=(-10.0, -3.0, 5.2), lens=22)
         elif c['name'] == 'right_side':
-            c.update(location=(19.5, 14.5, 3.0), target=(10.0, 7.0, 6.0), lens=24)
+            c.update(location=(20.6, 15.9, 6.0), target=(9.0, 2.0, 6.0), lens=20)
         elif c['name'] == 'rear':
             c.update(location=(0.0, 34.5, 4.5), target=(0.0, TY1, 5.0), lens=22)
         elif c['name'] == 'rear_side':
@@ -793,7 +793,8 @@ def interiors():
     b = Batch()
     for x0, x1, y0, y1, z0, z1 in ((-3.0, 9.7, -8.0, -7.8, G0, F1 - .3), (-3.2, -3.0, -8.0, NORTH_SOLID, G0, F1 - .3),
                                    (-2.2, -2.0, -14.0, NORTH_SOLID, F1, ROOF - .5), (-2.0, 9.7, -14.2, -14.0, F1, ROOF - .5),
-                                   (-9.7, -3.2, NORTH_SOLID, NORTH_SOLID + .2, G0, ROOF - .5)):
+                                   (-9.7, -3.2, NORTH_SOLID, NORTH_SOLID + .2, G0, ROOF - .5),
+                                   (7.3, 7.5, 3.8, 19.9, G0, ROOF - .5), (-9.7, 7.3, 17.6, 17.8, G0, ROOF - .5)):
         b.box('interior', (x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2, x1 - x0, y1 - y0, z1 - z0)
     b.box('timber', 3.0, -8.9, .6 + G0, 6.0, .8, 1.1)                                                 # ticket counter
     b.box('panel', 3.0, -8.9, 1.22 + G0, 6.2, .9, .06)
@@ -823,7 +824,9 @@ def interiors():
         b.box('timber', x, -18.28, F1 + .75, 2.4, .06, .55)
     b.flush('interiors')
     for name, loc in (('concourse', (3.0, -14.0, 3.6)), ('west hall', (-6.0, 2.0, 3.6)), ('lounge south', (3.5, -18.0, 8.5)),
-                      ('lounge west', (-6.0, -4.0, 8.5)), ('lounge north', (-6.0, 8.0, 8.5))):
+                      ('lounge west', (-6.0, -4.0, 8.5)), ('lounge north', (-6.0, 8.0, 8.5)),
+                      ('east offices', (8.6, 12.0, 8.3)), ('east stores', (8.6, 12.0, 3.4)), ('north offices', (0.0, 19.0, 8.3)),
+                      ('north stores', (0.0, 19.0, 3.4))):
         C.qa_room_light(name, loc, 110, 3.0)
     C.CONTACTS.append(dict(name='Concrete fins and frames from grade; roof inside the parapet; glass box on its concrete frames', parapet_m=PARA))
 
@@ -938,6 +941,9 @@ def brick_block():
     for k in range(5):
         b.box('timber', BX0 + 3.0 + k * 6.0, BY0 + 1.6, .75, 1.6, .7, .9)                                   # shop counters
     b.flush('brick block shell')
+    for x in (16.0, 26.0, 36.0):
+        for z in (3.6, 7.2, 10.6):
+            C.qa_room_light(f'brick block {x:.0f} {z:.0f}', (x, BY0 + 2.0, z), 30, 2.0)
     f = C.Face((0, BY1, 0), (-1, 0, 0), (0, -1, 0), 'brick block north wall')
     m = Merge(f)
     windows_grid(m, -21.2, -BX0 - .6, 0.0, B_WALL, 3, 2.4, w=1.0, hh=2.1, frame='stone')

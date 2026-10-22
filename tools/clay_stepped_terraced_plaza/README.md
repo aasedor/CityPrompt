@@ -77,6 +77,7 @@ NOT TESTED. The model sits on a level base. Shared terrain registration is not a
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (x)
+## Open blockers after v005 (passed)
 
-x
+- None at P0 or P1. The v005 independent review returned PASS_ZERO_P0_P1 (P0 = 0, P1 = 0, P2 = 11). In the second pass the user reopened, v004 replaced the bougainvilleas with the shared planting kit's wall drape and parapet cascade, widened the strip's foot west and moved the pergola onto the east house; v005 made the east cascade continuous, hid the climber carrier, moved the south-west house door onto level paving and rebuilt the chapel and belfry crosses as closed solids.
+- Largest remaining P2s: the east climber's massing is a little boxy, the west splay covers two terraces where the source shows about four, and the chapel is undersized. Nothing here is keeper-approved.

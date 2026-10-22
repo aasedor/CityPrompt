@@ -73,18 +73,18 @@ def manifest(version):
         ('balcony_gallery', (-4.6, 36.0, 5.2), (0.0, 39.5, 4.6), 28),
         ('mansard_caps', (24.0, -7.5, 14.5), (26.0, 0.0, 11.8), 30),
         ('corner_building', (-9.0, -9.0, 6.5), (6.0, 6.0, 6.0), 26),
-        ('sidewalk_trees', (-12.0, 10.0, 1.7), (-4.0, 30.0, 2.4), 24),
+        ('sidewalk_trees', (-8.5, 10.5, 1.7), (-3.5, 30.0, 2.6), 24),
         ('roof_parapets', (30.0, 30.0, 26.0), (10.0, 10.0, 10.5), 30),
         ('rear_yards', (40.0, 40.0, 14.0), (20.0, 20.0, 6.0), 26)])
     for c in cams:
         if c['name'] == 'front':                                               # the locked front: eye level on the north-street sidewalk, looking north along the row
-            c.update(location=(-6.0, 28.5, 1.6), target=(1.0, 44.0, 5.0), lens=22, whole=False)
+            c.update(location=(-5.3, 28.0, 1.6), target=(2.4, 41.5, 5.0), lens=22, whole=False)
         elif c['name'] == 'front_corner':                                      # the locked oblique: high over the intersection, looking north-east at the corner
             c.update(location=(-17.0, -20.0, 30.0), target=(12.0, 10.0, 3.0), lens=28, whole=False)
         elif c['name'] == 'aerial':
             c.update(location=(48.0, -40.0, 44.0), target=(16.0, 14.0, 4.0), lens=28, whole=False)
         elif c['name'] == 'top':                                               # the locked top view: the block corner at the bottom, rotated 45 degrees
-            c.update(location=(-1.0, -1.0, 120.0), target=(9.0, 9.0, 0.0), ortho_scale=64.0, whole=False)
+            c.update(location=(-1.0, -1.0, 120.0), target=(9.0, 9.0, 0.0), ortho_scale=70.0, whole=False)
         elif c['name'] == 'left_side':                                         # along the north street from the far end
             c.update(location=(-9.5, 84.0, 9.0), target=(0.0, 30.0, 5.0), lens=26, whole=False)
         elif c['name'] == 'right_side':                                        # along the east street from the far end
@@ -799,7 +799,7 @@ def plex(spec, f, row):
         turret(b, f, tu, zc)
     body(b, f, u0, u1, zc, mat)
     b.flush(spec['name'] + ' works')
-    C.qa_room_light(spec['name'] + ' rooms', f.p((u0 + u1) / 2, .8, F2 + 1.6), 40, 2.0)
+    C.qa_room_light(spec['name'] + ' rooms', f.p((u0 + u1) / 2, .8, F2 + 1.6), 12, .4)
 
 
 def turret(b, f, tu, zc):
@@ -921,7 +921,7 @@ def corner_building():
     bay_pier(b, FB, ub, max(zc, ROW_B[0]['zc']))
     mansard_cap(b, FB, ub, min(zc, ROW_B[0]['zc']), max(zc, ROW_B[0]['zc']))
     b.flush('corner building works')
-    C.qa_room_light('corner rooms', (3.0, 3.0, F2 + 1.6), 60, 2.0)
+    C.qa_room_light('corner rooms', (.8, 8.0, F2 + 1.6), 12, .4)
 
 
 def _single_door(m, f, h):
@@ -1057,12 +1057,12 @@ def street_tree2(x, y, height=8.5, spread=2.4):
     """Young street tree: a trunk, three limbs and a rounded crown of smooth leaf masses."""
     z = SWZ
     C.rod('Street tree trunk', (x, y, z), (x, y, z + height * .5), .14, 'timber', 'street planting', 8)
-    blobs = [(0, 0, .80, 1.0), (-.5, -.2, .68, .75), (.5, -.1, .7, .75), (.05, .5, .66, .72)]
+    blobs = [(0, 0, .80, 1.0), (-.45, -.2, .66, .78), (.45, -.1, .68, .78), (.05, .48, .64, .74), (.05, -.3, .93, .62)]
     for i, (dx, dy, hz, s) in enumerate(blobs[1:4]):
         tip = (x + dx * spread * .8, y + dy * spread * .8, z + height * hz)
         C.rod('Street tree limb', (x, y, z + height * .45), tip, .06, 'timber', 'street planting', 6)
     for dx, dy, hz, s in blobs:
-        smooth(A.foliage('Street tree crown', (x + dx * spread, y + dy * spread, z + height * hz), (1.25 * spread * s, 1.25 * spread * s, 1.5 * s), detail=2))
+        smooth(A.foliage('Street tree crown', (x + dx * spread, y + dy * spread, z + height * hz), (1.0 * spread * s, 1.0 * spread * s, .82 * spread * s), detail=2))
 
 
 def shrub2(x, y):
