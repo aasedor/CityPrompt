@@ -77,8 +77,6 @@ NOT TESTED. The model sits on a level base. Shared terrain registration is not a
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (stopped)
+## Open blockers after v004 (x)
 
-- P1 #1: both bougainvilleas still read as loose clusters of faceted balloons with no canopy draping from the roof edge; a west spray floats on the blank south wall, the trunk is a bare pole over the door jamb, and the east plant spans about one terrace against about four (surviving two targeted fixes).
-- P1 #2: the foot of the strip does not widen west; the low west parapet runs on the bougainvillea house's east face line, 20-30% of the strip width east of the source, and the diagonal stair is a short wedge beside a new south-west house.
-- P1 #3: the pergola posts stand on the east seating terraces among the pots and the pergola spans the parapet and side stair; the source puts it on an east house beyond the side stair; a black void at the head of one post.
+x

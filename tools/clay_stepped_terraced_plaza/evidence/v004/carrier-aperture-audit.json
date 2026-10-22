@@ -1,0 +1,450 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "west house 1 door",
+      "face": "west house 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 1 window 0",
+      "face": "west house 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 1 window 1",
+      "face": "west house 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 1 rear window 0",
+      "face": "west house 1 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 1 rear window 1",
+      "face": "west house 1 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 2 door",
+      "face": "west house 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 2 window 0",
+      "face": "west house 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 2 window 1",
+      "face": "west house 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 2 rear window 0",
+      "face": "west house 2 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 2 rear window 1",
+      "face": "west house 2 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 3 door",
+      "face": "west house 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 3 window 0",
+      "face": "west house 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 3 window 1",
+      "face": "west house 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 3 rear window 0",
+      "face": "west house 3 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 3 rear window 1",
+      "face": "west house 3 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 4 door",
+      "face": "west house 4",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 4 window 0",
+      "face": "west house 4",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 4 window 1",
+      "face": "west house 4",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 4 rear window 0",
+      "face": "west house 4 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 4 rear window 1",
+      "face": "west house 4 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 5 door",
+      "face": "west house 5",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 5 window 0",
+      "face": "west house 5",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 5 window 1",
+      "face": "west house 5",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 5 rear window 0",
+      "face": "west house 5 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west house 5 rear window 1",
+      "face": "west house 5 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west corner house door",
+      "face": "west corner house",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west corner house window 0",
+      "face": "west corner house",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west corner house window 1",
+      "face": "west corner house",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west corner house rear window 0",
+      "face": "west corner house rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west corner house rear window 1",
+      "face": "west corner house rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 0 window 0",
+      "face": "east house 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 0 window 1",
+      "face": "east house 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 0 rear window 0",
+      "face": "east house 0 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 0 rear window 1",
+      "face": "east house 0 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 1 window 0",
+      "face": "east house 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 1 window 1",
+      "face": "east house 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 1 rear window 0",
+      "face": "east house 1 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 1 rear window 1",
+      "face": "east house 1 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 2 window 0",
+      "face": "east house 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 2 window 1",
+      "face": "east house 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 2 rear window 0",
+      "face": "east house 2 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 2 rear window 1",
+      "face": "east house 2 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 3 window 0",
+      "face": "east house 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 3 window 1",
+      "face": "east house 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 3 rear window 0",
+      "face": "east house 3 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 3 rear window 1",
+      "face": "east house 3 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 4 window 0",
+      "face": "east house 4",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 4 window 1",
+      "face": "east house 4",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 4 rear window 0",
+      "face": "east house 4 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 4 rear window 1",
+      "face": "east house 4 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 5 window 0",
+      "face": "east house 5",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 5 window 1",
+      "face": "east house 5",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 5 rear window 0",
+      "face": "east house 5 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east house 5 rear window 1",
+      "face": "east house 5 rear",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "chapel door",
+      "face": "chapel south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "chapel window -1",
+      "face": "chapel south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "chapel window +1",
+      "face": "chapel south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "chapel east window 0",
+      "face": "chapel east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "chapel east window 1",
+      "face": "chapel east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "belfry door",
+      "face": "belfry south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "belfry s arch 0",
+      "face": "belfry s stage 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "belfry n arch 0",
+      "face": "belfry n stage 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "belfry e arch 0",
+      "face": "belfry e stage 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "belfry w arch 0",
+      "face": "belfry w stage 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "belfry s arch 1",
+      "face": "belfry s stage 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "belfry n arch 1",
+      "face": "belfry n stage 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "belfry e arch 1",
+      "face": "belfry e stage 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "belfry w arch 1",
+      "face": "belfry w stage 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Top house 1 door",
+      "face": "Top house 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Top house 1 window",
+      "face": "Top house 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Top house 1 upper window",
+      "face": "Top house 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Top house 2 door",
+      "face": "Top house 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Top house 2 window",
+      "face": "Top house 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "Top house 2 upper window",
+      "face": "Top house 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
