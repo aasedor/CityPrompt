@@ -876,23 +876,27 @@ def pediment():
     yf = Y0 - .25
     C.prism('Pediment tympanum', [(xc - PED_W / 2, zb), (xc + PED_W / 2, zb), (xc, zb + PED_RISE)], 'y', yf, Y0 + T, 'stone', 'pediment')
     b = Batch()
-    L = math.hypot(PED_W / 2, PED_RISE)
+    th = math.atan2(PED_RISE, PED_W / 2)
+    lift = .10 / math.cos(th)                                    # cornice centre .10 m above the slope (normal), so its underside overlaps the tympanum
+    ov = .3
     for s in (-1, 1):
-        a = (xc + s * (PED_W / 2 + .3), yf - .25, zb + .06)
-        c = (xc, yf - .25, zb + PED_RISE + .34)
-        b.beam('stone', (a[0], a[1] + .05, a[2]), (c[0], c[1] + .05, c[2]), .5, .34)
-        b.beam('trim', (a[0], a[1], a[2] + .2), (c[0], c[1], c[2] + .2), .42, .12)
+        a0 = (xc + s * (PED_W / 2 + ov), yf - .2, zb - ov * math.tan(th) + lift)
+        c0 = (xc, yf - .2, zb + PED_RISE + lift)
+        b.beam('stone', a0, c0, .5, .34)
+        b.beam('trim', (a0[0], a0[1] - .02, a0[2] + .22), (c0[0], c0[1] - .02, c0[2] + .22), .44, .12)
         b.box('stone', xc + s * (PED_W / 2 + .45), (Y0 - .3 + Y0 + T) / 2, (EAVE + PARA + .5) / 2, .9, T + .3, PARA + .5 - EAVE)   # end pedestals
         b.box('trim', xc + s * (PED_W / 2 + .45), (Y0 - .3 + Y0 + T) / 2, PARA + .57, 1.04, T + .44, .14)
+    za = zb + PED_RISE + lift
+    b.box('stone', xc, yf - .2 + .02, za + .12, .8, .56, .62)                                     # apex block over the cornice mitre
     for k in range(9):                                                                           # acanthus shell in the tympanum
         a = math.pi * (k + .5) / 9
         r = .95
         b.beam('arch', (xc, yf - .06, zb + .35), (xc + r * math.cos(a), yf - .06, zb + .35 + r * math.sin(a)), .12, .1)
-    disc(b, 'arch', (xc, yf, zb + .35), (0, -1), .32, t=.12)
-    frustum(b, 'arch', xc, yf - .1, zb + PED_RISE + .5, zb + PED_RISE + 1.05, .28, .12, 10)        # acroterion crest
-    for s in (-1, 1):
-        b.beam('arch', (xc, yf - .1, zb + PED_RISE + .55), (xc + s * .42, yf - .1, zb + PED_RISE + .95), .12, .14)
-    frustum(b, 'arch', xc, yf - .1, zb + PED_RISE + 1.05, zb + PED_RISE + 1.25, .12, .02, 10)
+    disc(b, 'arch', (xc, yf - .005, zb + .35), (0, -1), .32, t=.12)
+    zc = za + .42                                                                                # palmette crest on the apex block: one solid silhouette, no crevices
+    pal = [(-.33, 0.0), (-.5, .22), (-.64, .44), (-.44, .44), (-.48, .72), (-.27, .62), (-.24, .96), (0.0, 1.18),
+           (.24, .96), (.27, .62), (.48, .72), (.44, .44), (.64, .44), (.5, .22), (.33, 0.0)]
+    C.prism('Pediment crest', [(xc + px, zc - .02 + pz) for px, pz in pal], 'y', yf - .36, yf - .04, 'arch', 'pediment')
     b.flush('pediment')
 
 

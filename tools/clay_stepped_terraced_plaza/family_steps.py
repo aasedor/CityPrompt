@@ -1758,7 +1758,7 @@ def climber_sprays(kit, name='bougainvillea', leaf_role='pk_leaf', bract_roles=(
 
 def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), thickness=.04, bump=.012, wave=.3, grid=.12,
                ramp=.06, carrier_role='pk_shrub_core', trunks=(), trunk_role='pk_bark', seed=1, module='planting', tongues=4,
-               cover=.65, spacing=.21, trails_per_m=5., floor=0., canes=4):
+               cover=.65, spacing=.21, trails_per_m=5., floor=0., canes=4, carrier_inset=0., rim_sprays=0.):
     """Wall-trained climber or parapet cascade (bougainvillea, wisteria, jasmine) over a wall cross-section `profile`
     [(n, z), ...] (n outward from the wall face line p0-p1, `out` its unit outward normal (x, y)), listed from the
     hanging lower end up and over the coping. A hidden dark carrier (carrier_role: a thin heightfield sheet in (u along
@@ -1768,7 +1768,10 @@ def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), th
     stay above `floor`), a woody armature of `canes` canes fanning from each trunk over the wall and coping, and trunks
     [(u, (x, y, z) root), ...] from a pot. The hanging edge sits at s = curtain(u) with `tongues` longer lobes; openings
     [(u0, u1, z0, z1), ...] are cut with a 7 cm margin and sprays and canes keep clear of them. No two closed shells share
-    a volume (the carrier is the only shell). Returns the carrier area in m2."""
+    a volume (the carrier is the only shell). Opt-in (defaults leave the result unchanged): carrier_inset > 0 stops the
+    carrier that far inside the spray envelope, so no carrier rim shows past the leaves at the hem, ends or openings;
+    rim_sprays > 0 adds a row of sprays at that spacing along the envelope's outer edge, at least 0.25 m clear of every
+    opening, to break its outline. Returns the carrier area in m2."""
     from mathutils import Matrix, Vector
     rnd = _pkr.Random(seed); ss, PN, PZ, NN, NZ = _pk_profile(profile)
     L = math.hypot(p1[0] - p0[0], p1[1] - p0[1]); tx, ty = (p1[0] - p0[0]) / L, (p1[1] - p0[1]) / L
@@ -1788,6 +1791,10 @@ def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), th
         keep = keep.difference(_pksh.box(u0 - .17, a - z0p - .17, u1 + .17, b - z0p + .17))
     reg = reg.buffer(-.01).buffer(.01)
     V, F, hz = _pk_field(reg, 0., thickness, bump, wave, grid, ramp, seed, mid=True)
+    if carrier_inset > 0:                               # the carrier stops inside the spray envelope; sprays keep the full hz
+        rc = reg.buffer(-carrier_inset).buffer(-.01).buffer(.01)
+        if not rc.is_empty:
+            V, F, _ = _pk_field(rc, 0., thickness, bump, wave, grid, ramp, seed, mid=True)
 
     def world(u, s, h):
         n = _pknp.interp(s, ss, PN); zz = _pknp.interp(s, ss, PZ); a = _pknp.interp(s, ss, NN); c = _pknp.interp(s, ss, NZ)
@@ -1801,16 +1808,26 @@ def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), th
     if patch is not None:
         _pksh.prepare(patch)
     sreg = keep.intersection(reg.buffer(-.03))
-    nfl = 0
-    for u, s in (pk_scatter(sreg, spacing, seed=seed + 8) if not sreg.is_empty else []):
+    nfl = [0]
+
+    def spray(u, s):
         (x, y, z), (a, c) = world(u, s, hz(u, s) + rnd.uniform(.004, .03))
         N = Vector((out[0] * a, out[1] * a, c)).normalized(); T = Vector((tx, ty, 0.)); B = N.cross(T).normalized()
         ph = rnd.uniform(0, 6.3); X = (T * math.cos(ph) + B * math.sin(ph)).normalized(); Y = N.cross(X)
         e = Matrix((X, Y, N)).transposed().to_euler('XYZ')
         fl = patch is not None and _pksh.contains_xy(patch, u, s)
-        p = sprays['flower'][nfl % len(sprays['flower'])] if fl else sprays['leafy']; nfl += fl
+        p = sprays['flower'][nfl[0] % len(sprays['flower'])] if fl else sprays['leafy']; nfl[0] += fl
         sc = rnd.uniform(.85, 1.15)
         kit.place(p, x, y, z, e.z, sc, sy=sc * rnd.uniform(.85, 1.1), sz=sc * rnd.uniform(.8, 1.1), lean=(e.x, e.y), track=False)
+    for u, s in (pk_scatter(sreg, spacing, seed=seed + 8) if not sreg.is_empty else []):
+        spray(u, s)
+    if rim_sprays > 0 and not sreg.is_empty:            # a row of sprays along the envelope's outer edge, clear of openings
+        holes = [_pksh.box(u0 - .25, a - z0p - .25, u1 + .25, b - z0p + .25) for u0, u1, a, b in openings]
+        for ln in _pksh.get_parts(sreg.buffer(-.02).boundary):
+            for d in _pknp.arange(rnd.uniform(0., rim_sprays), ln.length, rim_sprays):
+                pt = ln.interpolate(float(d)); u, s = pt.x, pt.y
+                if not any(h.contains(pt) for h in holes):
+                    spray(u, s)
     # trailing canes from the hanging edge, clear of the openings and above the floor
     rot0 = math.atan2(out[0], -out[1])
     for u in _pknp.arange(.12, L - .12, 1 / trails_per_m):
@@ -1977,6 +1994,27 @@ def taper(b, role, cx, cy, z0, z1, r0, r1, n=10):
 
 
 
+def cross_solid(b, role, cx, cy, bw, zb0, zb1, aw, za0, za1, t):
+    """A Latin cross as ONE closed solid (a plus-shaped outline in x-z extruded t along y): bar bw wide from zb0 to zb1,
+    arm aw wide from za0 to za1; caps are five quads sharing the four inner corners, so no faces coincide at the
+    crossing."""
+    V, F = b.g.setdefault(role, ([], []))
+    xb0, xb1, xa0, xa1 = cx - bw / 2, cx + bw / 2, cx - aw / 2, cx + aw / 2
+    ring = [(xb0, zb0), (xb1, zb0), (xb1, za0), (xa1, za0), (xa1, za1), (xb1, za1), (xb1, zb1), (xb0, zb1),
+            (xb0, za1), (xa0, za1), (xa0, za0), (xb0, za0)]                   # counter-clockwise in (x, z)
+    o = len(V)
+    for y in (cy - t / 2, cy + t / 2):
+        V.extend((x, y, z) for x, z in ring)
+    quads = [(0, 1, 2, 11), (11, 2, 5, 8), (8, 5, 6, 7), (10, 11, 8, 9), (2, 3, 4, 5)]
+    for q in quads:                                                             # front cap (-y), counter-clockwise in (x, z)
+        F.append(tuple(o + i for i in q))
+        F.append(tuple(o + 12 + i for i in reversed(q)))                       # back cap (+y)
+    n = len(ring)
+    for i in range(n):                                                         # sides
+        j = (i + 1) % n
+        F.append((o + j, o + i, o + 12 + i, o + 12 + j))
+
+
 def cyl8(b, role, cx, cy, z0, z1, r, n=8):
     V, F = b.g.setdefault(role, ([], []))
     o = len(V)
@@ -2062,7 +2100,8 @@ def arch_head(f, h, rise, ring=.26, segs=10, ring_role='arch', dep=None):
 
 
 
-def house(label, x_face, ya, yb, base, h, facing, door=True, deep=7.0, extra=None, door_du=0.0, wins=(-1.9, 1.9), win_z=.9):
+def house(label, x_face, ya, yb, base, h, facing, door=True, deep=7.0, extra=None, door_du=0.0, wins=(-1.9, 1.9), win_z=.9,
+          south_door=None):
     """A white cubic house: a facade with real cuts (blue door, blue-framed windows), a hollow room behind it with
     side, rear and roof shells over a solid hillside base, and windows in its rear wall."""
     if facing > 0:                                                             # faces east (+x)
@@ -2106,7 +2145,18 @@ def house(label, x_face, ya, yb, base, h, facing, door=True, deep=7.0, extra=Non
     C.box(f'{label} base', ((xa + xb) / 2, (ya + yb) / 2, (base - .02) / 2), (xb - xa, yb - ya, base - .02), 'white', 'houses', 0)
     b = Batch()
     for y in (ya + T / 2, yb - T / 2):                                         # side walls of the room
+        if south_door is not None and y == ya + T / 2:
+            continue
         b.box('white', (xa + xb) / 2, y, base - .02 + (h + .02) / 2, xb - xa, T, h + .02)        # down onto the base: no slit
+    if south_door is not None:                                                 # the south side wall with a door onto the plaza
+        s = C.Face((0, ya, 0), (1, 0, 0), (0, 1, 0), label + ' south')
+        dh = hole(f'{label} south door', south_door, base, 1.0, 2.2, kind='door')
+        s.wall(f'{label} south wall', xa, xb - EPS, base - .02, base + h, depth=T, role='wall', holes=[dh])
+        ms = Merge(s)
+        ms.box('blue', dh['u'], .16, dh['z'] + dh['h'] / 2, dh['w'] - .02, .05, dh['h'] - .02)
+        ms.box('glass', dh['u'], .125, dh['z'] + 1.55, .5, .02, .7)
+        register(s, dh, .14, 'house door', 'house')
+        ms.flush(label + ' south')
     b.box('floor', (xa + xb) / 2, (ya + yb) / 2, base - .01, xb - xa, yb - ya - 2 * T, .02)
     b.flush(label + ' room')
     C.box(f'{label} roof', ((bx0 + bx1) / 2, (ya + yb) / 2, base + h + .08), (bx1 - bx0, yb - ya - .04, .16), 'roof', 'houses', 0)
@@ -2157,8 +2207,7 @@ def chapel(cx, cy, base):
     C.box('Chapel nave', (cx - T / 2, cy + T / 2, base + 2.2), (6.0 - T, 4.0 - T, 4.4), 'white', 'chapel', 0)
     b = Batch()
     cyl8(b, 'white', cx, cy, base + 4.4, base + 5.6, 1.9, 16)
-    b.box('white', cx, cy, base + 7.95, .12, .12, .7)
-    b.box('white', cx, cy, base + 8.05, .45, .12, .1)
+    cross_solid(b, 'white', cx, cy, .12, base + 7.6, base + 8.3, .45, base + 8.0, base + 8.1, .12)   # one solid: no crossing void
     b.flush('chapel')
     dome('Chapel dome', cx, cy, base + 5.6, 2.05, 2.2, [(1, 0), (.96, .3), (.8, .62), (.5, .88), (0, 1)], 'dome', 'chapel')
 
@@ -2192,8 +2241,7 @@ def belfry(bx, by):
     taper(b, 'hardware', bx, by, 5.75, 6.45, .4, .22, 12)                      # the bell and its yoke
     b.box('hardware', bx, by, 7.0, .06, .06, 1.1)
     b.box('hardware', bx, by, 7.5, 2.2, .1, .1)
-    b.box('white', bx, by, 11.85, .1, .1, .7)
-    b.box('white', bx, by, 12.0, .4, .1, .1)
+    cross_solid(b, 'white', bx, by, .1, 11.1, 12.2, .4, 11.95, 12.05, .1)     # one solid, its foot 14 cm into the cupola
     b.flush('belfry')
     dome('Belfry cupola', bx, by, 9.84, 1.0, 1.4, [(1, 0), (.9, .4), (.6, .78), (0, 1)], 'dome', 'belfry')
 
@@ -2204,7 +2252,8 @@ def edges():
     for j in range(1, NT // 2):                                                # west houses, each spanning two terraces
         house(f'west house {j}', X0, yk(2 * j), yk(2 * j + 2), lv(2 * j + 1), 3.9 + .5 * (j % 2), 1, deep=6.5 + .8 * (j % 2),
               door_du=-TL / 2, wins=(.4, 2.1), win_z=1.2)
-    house('west corner house', X0 - 8.0, yk(0), yk(2), .04, 4.2, 1, deep=7.0)  # beyond the diagonal west stair and its alley
+    house('west corner house', X0 - 8.0, yk(0), yk(2), .04, 4.2, 1, deep=7.0,  # beyond the diagonal west stair and its alley;
+          door=False, south_door=X0 - 9.4)                                     # its door on the south face, level with the plaza
     for j in range(NT // 2):                                                   # east houses along the side stair
         house(f'east house {j}', X1, yk(2 * j), yk(2 * j + 2), lv(2 * j + 1), 3.6 + .6 * ((j + 1) % 2), -1, door=False, deep=6.5 + .8 * ((j + 1) % 2))
     b = Batch()
@@ -2255,20 +2304,34 @@ def planting():
                [(0., z0), (0., top), (.07, top), (.07, top + .2), (-.33, top + .2), (-.33, top + .16), (-1.15, top + .16)],
                lambda u: .35 + 3.0 * _pk_smooth(min(1., max(0., (u - .45) / 1.0))) + .45 * max(0., (u - 2.9) / 1.4), kit, sprays,
                openings=[(1.0, 2.0, base, base + 2.2), (2.9, 3.9, base + 1.2, base + 2.5)],
-               trunks=[(.3, (px, py, lv(2) + .42))], seed=5, module='planting', floor=lv(2) + .35, tongues=3, cover=.85)
+               trunks=[(.3, (px, py, lv(2) + .42))], seed=5, module='planting', floor=lv(2) + .35, tongues=3, cover=.85,
+               carrier_inset=.12, rim_sprays=.17)
     wall_drape('West bougainvillea south wall', (X0 + .08, yk(2)), (X0 - 2.6, yk(2)), (0., -1.),          # laps 8 cm past the corner
                [(0., z0), (0., top + .16), (-1.0, top + .16)],
                lambda u: .45 + 2.9 * _pk_smooth(min(1., max(0., (u - .35) / 1.1))) + .3 * max(0., (u - 1.6) / 1.0), kit, sprays,
-               seed=6, module='planting', floor=lv(2) + .05, tongues=2, cover=.85)
-    # East bougainvillea: cascades down the inner (west) face of the east parapet over four terraces, over the coping and
-    # a little down its outer face.
-    for k, (ua, ub) in enumerate(((1.4, TL - .05), (.05, TL - .05), (.05, TL - .05), (.05, TL - 1.0))):
-        ptop = lv(k + 1) + .95
-        wall_drape(f'East bougainvillea {k}', (EP, yk(k) + ua), (EP, yk(k) + ub), (-1., 0.),
-                   [(0., ptop - .88), (0., ptop), (.04, ptop), (.04, ptop + .06), (-.44, ptop + .06), (-.44, ptop), (-.40, ptop),
-                    (-.40, ptop - .3)],
-                   (lambda u, k=k: .16 + .12 * math.sin(u * 1.9 + k)), kit, sprays, seed=21 + k, module='planting',
-                   floor=lv(k + 1) + .05, tongues=3, spacing=.15, cover=.85)
+               seed=6, module='planting', floor=lv(2) + .05, tongues=2, cover=.85, carrier_inset=.12, rim_sprays=.17)
+    # East bougainvillea: one cascade over four terraces of the stepped east parapet. Per terrace, a drape on the outer
+    # (side-stair) face hanging to about 0.6 m above the side-stair treads, up over the coping and 0.6 m down the inner
+    # face; at each step a drape up the step-end face from the lower coping onto the higher coping, so no bare pier face
+    # shows between terraces. Carriers stop inside the sprays; a row of rim sprays breaks every edge.
+    spans = ((1.4, TL - .05), (.05, TL - .05), (.05, TL - .05), (.05, TL - 1.0))
+    for k, (ua, ub) in enumerate(spans):
+        ptop, zl, ya, yb = lv(k + 1) + .95, lv(k) + .2, yk(k) + ua, yk(k) + ub
+
+        def hem(u, k=k, ya=ya, zl=zl):                                         # the side-stair tread just ahead, plus 0.62 m
+            y = min(ya + u + .3, yk(k + 1) - 1e-3)
+            return max(.05, stair_level(y) + .62 - zl)
+        wall_drape(f'East bougainvillea {k}', (EP + .4, ya), (EP + .4, yb), (1., 0.),
+                   [(0., zl), (0., ptop), (.04, ptop), (.04, ptop + .06), (-.44, ptop + .06), (-.44, ptop), (-.40, ptop),
+                    (-.40, ptop - .6)],
+                   hem, kit, sprays, seed=21 + k, module='planting', floor=lv(k + 1) + .05, tongues=3, spacing=.14, cover=.85,
+                   carrier_inset=.1, rim_sprays=.17)
+        if k < len(spans) - 1:                                                 # the step-end face up to the next coping
+            pt, y1 = lv(k + 2) + .95, yk(k + 1)
+            wall_drape(f'East bougainvillea step {k}', (EP + .44, y1), (EP - .04, y1), (0., -1.),
+                       [(0., ptop + .07), (0., pt + .06), (-.14, pt + .06)],
+                       .02, kit, sprays, seed=41 + k, module='planting', floor=ptop + .06, tongues=0, spacing=.12, cover=.85,
+                       trails_per_m=0.01, carrier_inset=.08, rim_sprays=.15)
     # Geranium pots: two per east terrace by the parapet (stood off it under the cascade), none on the cross-landing;
     # three and two on the low west parapet's coping.
     for k in range(NT):

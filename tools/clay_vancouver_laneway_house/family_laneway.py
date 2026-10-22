@@ -67,8 +67,8 @@ def manifest(version):
     h = ZR + .2
     cams = G.camera_roster(X1 - X0 + 3.0, Y1 - YF + 3.0, h, [
         ('facade_close', (.8, -12.0, 3.1), (.8, YF, 3.2), 35),
-        ('glazed_corner', (-7.4, -9.6, 2.6), (X0 + 1.1, YF + .4, 2.9), 40),
-        ('balcony_rail', (2.6, -8.6, 4.4), (1.4, YF, 3.7), 40),
+        ('glass_close', (-7.4, -9.6, 2.6), (X0 + 1.1, YF + .4, 2.9), 40),
+        ('architecture_close', (2.6, -8.6, 4.4), (1.4, YF, 3.7), 40),
         ('entry_steps', (.9, -9.0, 1.6), (-.1, YS, 1.25), 35),
         ('side_entry', (-8.2, -.6, 1.7), (X0, YS + 3.0, 1.6), 35),
         ('west_wall', (-13.5, .2, 4.0), (X0, .2, 3.0), 32),
@@ -78,9 +78,9 @@ def manifest(version):
         ('garden', (2.6, -10.4, 1.4), (2.2, -5.6, .45), 35)])
     for c in cams:
         if c['name'] == 'front':                    # the locked front: eye level from the corner, about 26 deg west of the front normal
-            c.update(location=(-10.4, -15.4, 1.65), target=(-.6, -1.0, 4.3), lens=44, whole=False)
+            c.update(location=(-11.2, -15.0, 1.65), target=(-.9, -1.0, 3.5), lens=42, whole=False)
         elif c['name'] == 'front_corner':           # the locked oblique: high from the south-west, about 38 deg west of the front normal
-            c.update(location=(-11.1, -12.0, 13.2), target=(-.2, -.6, 2.6), lens=33, whole=False)
+            c.update(location=(-11.1, -12.0, 13.2), target=(-.2, -.6, 2.6), lens=36, whole=False)
         elif c['name'] == 'aerial':
             c.update(location=(13.0, -15.0, 17.0), target=(0.0, 0.0, 3.0), lens=33, whole=False)
         elif c['name'] == 'left_side':
@@ -1800,7 +1800,7 @@ def climber_sprays(kit, name='bougainvillea', leaf_role='pk_leaf', bract_roles=(
 
 def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), thickness=.04, bump=.012, wave=.3, grid=.12,
                ramp=.06, carrier_role='pk_shrub_core', trunks=(), trunk_role='pk_bark', seed=1, module='planting', tongues=4,
-               cover=.65, spacing=.21, trails_per_m=5., floor=0., canes=4):
+               cover=.65, spacing=.21, trails_per_m=5., floor=0., canes=4, carrier_inset=0., rim_sprays=0.):
     """Wall-trained climber or parapet cascade (bougainvillea, wisteria, jasmine) over a wall cross-section `profile`
     [(n, z), ...] (n outward from the wall face line p0-p1, `out` its unit outward normal (x, y)), listed from the
     hanging lower end up and over the coping. A hidden dark carrier (carrier_role: a thin heightfield sheet in (u along
@@ -1810,7 +1810,10 @@ def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), th
     stay above `floor`), a woody armature of `canes` canes fanning from each trunk over the wall and coping, and trunks
     [(u, (x, y, z) root), ...] from a pot. The hanging edge sits at s = curtain(u) with `tongues` longer lobes; openings
     [(u0, u1, z0, z1), ...] are cut with a 7 cm margin and sprays and canes keep clear of them. No two closed shells share
-    a volume (the carrier is the only shell). Returns the carrier area in m2."""
+    a volume (the carrier is the only shell). Opt-in (defaults leave the result unchanged): carrier_inset > 0 stops the
+    carrier that far inside the spray envelope, so no carrier rim shows past the leaves at the hem, ends or openings;
+    rim_sprays > 0 adds a row of sprays at that spacing along the envelope's outer edge, at least 0.25 m clear of every
+    opening, to break its outline. Returns the carrier area in m2."""
     from mathutils import Matrix, Vector
     rnd = _pkr.Random(seed); ss, PN, PZ, NN, NZ = _pk_profile(profile)
     L = math.hypot(p1[0] - p0[0], p1[1] - p0[1]); tx, ty = (p1[0] - p0[0]) / L, (p1[1] - p0[1]) / L
@@ -1830,6 +1833,10 @@ def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), th
         keep = keep.difference(_pksh.box(u0 - .17, a - z0p - .17, u1 + .17, b - z0p + .17))
     reg = reg.buffer(-.01).buffer(.01)
     V, F, hz = _pk_field(reg, 0., thickness, bump, wave, grid, ramp, seed, mid=True)
+    if carrier_inset > 0:                               # the carrier stops inside the spray envelope; sprays keep the full hz
+        rc = reg.buffer(-carrier_inset).buffer(-.01).buffer(.01)
+        if not rc.is_empty:
+            V, F, _ = _pk_field(rc, 0., thickness, bump, wave, grid, ramp, seed, mid=True)
 
     def world(u, s, h):
         n = _pknp.interp(s, ss, PN); zz = _pknp.interp(s, ss, PZ); a = _pknp.interp(s, ss, NN); c = _pknp.interp(s, ss, NZ)
@@ -1843,16 +1850,26 @@ def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), th
     if patch is not None:
         _pksh.prepare(patch)
     sreg = keep.intersection(reg.buffer(-.03))
-    nfl = 0
-    for u, s in (pk_scatter(sreg, spacing, seed=seed + 8) if not sreg.is_empty else []):
+    nfl = [0]
+
+    def spray(u, s):
         (x, y, z), (a, c) = world(u, s, hz(u, s) + rnd.uniform(.004, .03))
         N = Vector((out[0] * a, out[1] * a, c)).normalized(); T = Vector((tx, ty, 0.)); B = N.cross(T).normalized()
         ph = rnd.uniform(0, 6.3); X = (T * math.cos(ph) + B * math.sin(ph)).normalized(); Y = N.cross(X)
         e = Matrix((X, Y, N)).transposed().to_euler('XYZ')
         fl = patch is not None and _pksh.contains_xy(patch, u, s)
-        p = sprays['flower'][nfl % len(sprays['flower'])] if fl else sprays['leafy']; nfl += fl
+        p = sprays['flower'][nfl[0] % len(sprays['flower'])] if fl else sprays['leafy']; nfl[0] += fl
         sc = rnd.uniform(.85, 1.15)
         kit.place(p, x, y, z, e.z, sc, sy=sc * rnd.uniform(.85, 1.1), sz=sc * rnd.uniform(.8, 1.1), lean=(e.x, e.y), track=False)
+    for u, s in (pk_scatter(sreg, spacing, seed=seed + 8) if not sreg.is_empty else []):
+        spray(u, s)
+    if rim_sprays > 0 and not sreg.is_empty:            # a row of sprays along the envelope's outer edge, clear of openings
+        holes = [_pksh.box(u0 - .25, a - z0p - .25, u1 + .25, b - z0p + .25) for u0, u1, a, b in openings]
+        for ln in _pksh.get_parts(sreg.buffer(-.02).boundary):
+            for d in _pknp.arange(rnd.uniform(0., rim_sprays), ln.length, rim_sprays):
+                pt = ln.interpolate(float(d)); u, s = pt.x, pt.y
+                if not any(h.contains(pt) for h in holes):
+                    spray(u, s)
     # trailing canes from the hanging edge, clear of the openings and above the floor
     rot0 = math.atan2(out[0], -out[1])
     for u in _pknp.arange(.12, L - .12, 1 / trails_per_m):
@@ -2567,7 +2584,7 @@ def conifer(x, y, h, r):
 
 
 def trees():
-    for k, (x, y, r) in enumerate(((-5.0, 18.5, 3.4), (8.5, 17.0, 2.8), (-20.0, 14.0, 3.6), (-20.0, -12.0, 3.0))):
+    for k, (x, y, r) in enumerate(((-5.2, 21.5, 3.4), (10.5, 18.5, 2.8), (-20.0, 14.0, 3.6), (-20.0, -12.0, 3.0))):
         tree(x, y, r, k)
     conifer(12.4, 12.2, 13.0, 2.4)
     conifer(9.6, 14.8, 11.0, 2.0)
@@ -2626,8 +2643,8 @@ def build():
     neighbour()
     planting()
     trees()
-    car('Blue SUV', XC - 1.15, -2.9, 4.6, 1.86, 'car_blue', True)
-    car('Dark sedan', XC - 1.12, 7.4, 4.8, 1.8, 'car_dark', False)
+    car('Blue SUV', XC - 1.15, 6.3, 4.6, 1.86, 'car_blue', True)
+    car('Dark sedan', XC - 1.12, 11.6, 4.8, 1.8, 'car_dark', False)
     pole()
     C.CONTACTS.append(dict(name='Cedar walls and glazed bay on a concrete plinth; hipped roof on the wall plates; garage roof buried in the rear wall',
                            eave_m=EAVE, ridge_m=ZR, box=[X0, X1, YF, Y1]))

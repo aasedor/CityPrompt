@@ -43,7 +43,7 @@ PALETTE = dict(wall=(.56, .29, .21), joint=(.66, .60, .53), stone=(.84, .82, .76
     floor=(.58, .48, .38), timber=(.33, .25, .17), pot=(.70, .40, .28), planting=(.22, .36, .14),
     conifer=(.13, .25, .12), hedge=(.19, .32, .13), lawn=(.34, .47, .22), soil=(.24, .18, .12),
     paving=(.44, .24, .19), concrete=(.70, .69, .66), asphalt=(.27, .27, .28), white=(.95, .95, .93),
-    neighbour=(.55, .53, .49), nbtrim=(.86, .85, .80), pane=(.11, .13, .15))
+    neighbour=(.47, .45, .41), nbtrim=(.86, .85, .80), pane=(.11, .13, .15))
 
 
 def manifest(version):
@@ -654,7 +654,7 @@ def pediment():
     C.prism('Pediment tympanum', [(-PX - .02, 9.58), (PX + .02, 9.58), (0.0, 9.6 + PR + .02)], 'y', YP, YP + .35, 'wall', 'pediment')
     b = Batch()
     for s in (-1, 1):
-        b.beam('trim', (s * 4.1, YP - .2, 9.42), (0.0, YP - .2, 12.78), .5, .42)               # raking cornices
+        b.beam('trim', (s * 4.1, YP - .22, 9.42), (0.0, YP - .22, 12.78), .5, .42)              # raking cornices, 2 cm proud of the corona
         b.beam('trim', (s * 4.0, YP - .45, 9.62), (0.0, YP - .45, 12.98), .14, .16)             # cornice nosing, 5 cm proud of the raking front
     for k in range(1, 5):                                                                       # slate courses on the gable roof
         z = 9.2 + 3.65 * k / 5
@@ -802,7 +802,7 @@ def site():
     b.flush('site')
     iron_fence((-19.85, -10.75), (-3.2, -10.75), height=1.75, wall=.15, spacing=.2)
     iron_fence((-19.85, -10.58), (-19.85, 15.0), height=1.75, wall=.15, spacing=.26)
-    tree(-4.4, -12.5, 16.0, 2.2, high=True)
+    tree(-2.4, -12.5, 11.0, 2.4)
     tree(11.4, -12.5, 15.0, 2.8, high=True)
     tree(-13.0, -4.4, 8.0, 2.0, role='conifer', dense=True)
     tree(12.6, -4.6, 8.0, 1.4)
