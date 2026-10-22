@@ -2075,7 +2075,7 @@ def site():
 def foundations():
     C.box('Foundation', ((X0 - .015 + X1 + .015) / 2, (YS - .015 + Y1 + .019) / 2, .21), (X1 - X0 + .03, Y1 + .034 - YS, .42), 'foundation', 'envelope', 0)
     C.box('Fin foundation', ((X1 - T - .012 + X1 + .015) / 2, (YF - .015 + YS + .05) / 2, .21), (T + .027, YS + .065 - YF, .42), 'foundation', 'envelope', 0)
-    C.box('Bay plinth', ((X0 - .015 + XB + .012) / 2, (YF - .015 + YS + .05) / 2, .21), (XB - X0 + .027, YS + .065 - YF, .42), 'foundation', 'envelope', 0)
+    C.box('Bay plinth', ((X0 - .015 + XB + .012) / 2, (YF - .015 + YS + .05) / 2, .2325), (XB - X0 + .027, YS + .065 - YF, .465), 'foundation', 'envelope', 0)   # 5 mm under the porch landing: no pocket at its side
 
 
 def glazed_bay():
@@ -2553,9 +2553,10 @@ def planting():
     front = [(P['spiky'], .7), (P['fern'], 1.0), (P['fescue'], .5), (P['reed'], .5), (P['golden'], .4)]
     side = [(P['reed'], 1.0), (P['fern'], .8), (P['fescue'], .3)]
     right = [(P['fern'], 1.4), (P['fern2'], .8), (P['golden'], .5), (P['fescue'], .4), (P['shrub'], .2)]
-    fill(kit, regs['A'], front, .36, 31, placed)
+    fine = (1.1, .95, .8, .65, .5, .4, .32)
+    fill(kit, regs['A'], front, .34, 31, placed, scales=fine)
     fill(kit, regs['B'], right, .34, 33, placed)
-    fill(kit, regs['D'], side, .34, 35, placed)
+    fill(kit, regs['D'], side, .3, 35, placed, scales=fine)
     fill(kit, regs['E'], side, .4, 37, placed)
     kit.flush()
     bad = kit.audit(detail=True)
@@ -2619,10 +2620,11 @@ def pole():
     C.beam('Crossarm', (px - 1.2, py, 10.4), (px + 1.2, py, 10.4), .1, .12, 'pole', 'utility')
     for dx in (-1.0, 0.0, 1.0):
         C.rod('Insulator', (px + dx, py, 10.46), (px + dx, py, 10.62), .04, 'white', 'utility', 8)
-        C.rod('Wire', (px + dx, -28.0, 10.6), (px + dx, 34.0, 10.6), .012, 'wire', 'utility', 6)
+        C.rod('Wire', (px + dx, py, 10.6), (px + dx, 34.0, 10.6), .012, 'wire', 'utility', 6)          # the corner pole ends the run: wires go north
     C.rod('Transformer', (px + .42, py, 8.2), (px + .42, py, 9.1), .28, 'steel', 'utility', 14)
     C.beam('Transformer bracket', (px, py, 8.8), (px + .3, py, 8.8), .08, .08, 'steel', 'utility')
-    C.rod('Telecom wire', (px - .16, -28.0, 8.0), (px - .16, 34.0, 8.0), .015, 'wire', 'utility', 6)
+    C.rod('Telecom wire', (px - .16, py, 8.0), (px - .16, 34.0, 8.0), .015, 'wire', 'utility', 6)
+    C.rod('Cross-street wire', (px - 1.0, py, 10.6), (-26.0, py + 1.5, 10.2), .012, 'wire', 'utility', 6)
     C.rod('Service drop', (px + .1, py, 9.0), (X0 + .02, Y1 - .5, 5.8), .012, 'wire', 'utility', 6)
 
 
