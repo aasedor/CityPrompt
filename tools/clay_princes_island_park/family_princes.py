@@ -2478,7 +2478,7 @@ def planting():
         else:
             groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, grid=.8, edge=.18, seed=40 + i)
             drift_fill(kit, reg, front, .9, 60 + i, (1.5, 1.3, 1.1, .9, .75), 1.15, placed)
-            edge_fill(kit, reg, edge, .5, 60 + i, placed)
+            edge_fill(kit, reg, edge, .47, 60 + i, placed)
     rnd = random.Random(77)
     for i, c in enumerate(PITS):                             # tree pits in the south plaza: groundcover and a ring of grasses
         poly = [(c[0] + 1.3 * math.cos(a * math.tau / 32), c[1] + 1.3 * math.sin(a * math.tau / 32)) for a in range(32)]

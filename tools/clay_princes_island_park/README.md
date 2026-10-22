@@ -68,6 +68,13 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
+## Planting (v004, second pass)
+
+From v004 the beds are planted with the shared planting kit (`tools/clay_planting_kit_showcase`, kit v003.1): the module
+is assembled as `head + common + gcommon + plantkit + body`, and `build.py` keeps the kit's linked instances out of
+`clay_core.deliver()`'s per-role join (`keep_instances()`, copied from the kit showcase) and writes
+`evidence/planting-kit-size.json`. The kit clearance audit must be 0 or the build fails.
+
 ## Open blockers after v003 (x)
 
 x
