@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-gastown-heritage-commercial-clay-v002",
+  "glb": "clay-gastown-heritage-commercial-clay-v002.glb",
+  "glb_bytes": 2076416,
+  "glb_sha256": "eef5684fb9b3f145ee1d1387729023a1cc2cf7e82416686f010d7dbaa38029c4",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "east_facade.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "name_frieze_pediment.png": 92,
+    "rear.png": 92,
+    "rear_north.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_skylights.png": 92,
+    "steam_clock.png": 92,
+    "storefronts.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-gastown-heritage-commercial-clay-v002-renders-and-glb.zip",
+  "zip_bytes": 34072680
+}

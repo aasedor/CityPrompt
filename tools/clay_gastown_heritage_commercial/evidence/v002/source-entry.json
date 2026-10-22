@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-gastown-heritage-commercial",
+  "variant_id": "clay-gastown-heritage-commercial-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "gastown_heritage_commercial/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/gastown-heritage-commercial/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1472172,
+      "sha256": "ddd3ab09b0127bb69fdbab398d43a3ba3e17c5a106796a2bd1f8c1ebcdf267f0"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/gastown-heritage-commercial/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 954203,
+      "sha256": "3b43cbf516b938a34a960308522ffe1cab22f6e4985efaf5d2773c7bf3444529"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/gastown-heritage-commercial/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 881317,
+      "sha256": "f9db097bb5223aa1014d5d9438b107f3dfc79b491264ab9e2debf24075cf42f3"
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "S shop 0",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S f2 0",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S f3 0",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S shop 1",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S f2 1",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S f3 1",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S shop 2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S f2 2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S f3 2",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S shop 3",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S f2 3",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S f3 3",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S shop 4",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S f2 4-1",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S f3 4-1",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S f2 4+1",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "S f3 4+1",
+      "face": "south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E shop corner",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E f2 corner",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E f3 corner",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E g 0",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E f2 0",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E f3 0",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E g 1",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E f2 1",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E f3 1",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E g 2",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E f2 2",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E f3 2",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E g 3",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E f2 3",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E f3 3",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E f2 end-1",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E f3 end-1",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E f2 end+1",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E f3 end+1",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E door end",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E g end",
+      "face": "east front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "W f2 -9.0",
+      "face": "west wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "W f3 -9.0",
+      "face": "west wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "W f2 -5.0",
+      "face": "west wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "W f3 -5.0",
+      "face": "west wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "N f2 -11.8",
+      "face": "north wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "N f3 -11.8",
+      "face": "north wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "N f2 -10.4",
+      "face": "north wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "N f3 -10.4",
+      "face": "north wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
