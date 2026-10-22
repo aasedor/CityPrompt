@@ -29,8 +29,9 @@ Nothing here is enrolled, published, runtime-integrated or keeper-approved. Each
 
 ## Results
 
-Five of the ten reached PASS_ZERO_P0_P1, one of them (the CBE headquarters) in a second pass the user
-reopened. The other five stopped with one to three P1s open and no P0.
+Seven of the ten reached PASS_ZERO_P0_P1, three of them in second passes the user reopened: the CBE
+headquarters (cameras re-aimed), and the Halifax Public Gardens and Prince's Island Park with the shared
+planting kit. The other three stopped with one to three P1s open and no P0.
 
 | model | catalogue archetype / variant | family | outcome | candidate | triangles | GLB bytes | candidate review P0 / P1 |
 |---|---|---|---|---|---|---|---|
@@ -39,15 +40,16 @@ reopened. The other five stopped with one to three P1s open and no P0.
 | Old Montreal limestone commercial | old_montreal_limestone_commercial / variant_0 | `tools/clay_old_montreal_limestone_commercial` | **PASS_ZERO_P0_P1** at v004 | v004 | 66,776 | 3,423,736 | 0 / 0 |
 | Inglewood main street | inglewood_main_street / variant_0 | `tools/clay_inglewood_main_street` | **PASS_ZERO_P0_P1** at v004 | v004 | 36,632 | 1,910,720 | 0 / 0 |
 | Calgary Board of Education HQ | calgary_cbe_brutalist_hq / variant_0 | `tools/clay_calgary_cbe_brutalist_hq` | **PASS_ZERO_P0_P1** at v004 (second pass) | v004 | 35,078 | 1,717,448 | 0 / 0 |
-| Halifax Public Gardens | halifax_public_gardens / variant_0 | `tools/clay_halifax_public_gardens` | stopped: the bed-plant finding survived two fixes | v002 | 63,266 | 3,852,788 | 0 / 1 |
-| Prince's Island Park | calgary_princes_island / variant_0 | `tools/clay_princes_island_park` | stopped: the close-up planting finding survived two fixes | v003 | 141,252 | 4,045,264 | 0 / 1 |
+| Halifax Public Gardens | halifax_public_gardens / variant_0 | `tools/clay_halifax_public_gardens` | **PASS_ZERO_P0_P1** at v005 (planting-kit second pass) | v005 | 1,587,314 rendered (instanced) | 4,126,476 | 0 / 0 |
+| Prince's Island Park | calgary_princes_island / variant_0 | `tools/clay_princes_island_park` | **PASS_ZERO_P0_P1** at v005 (planting-kit second pass) | v005 | 4,022,316 rendered (instanced) | 4,184,552 | 0 / 0 |
 | Toronto streetcar street | toronto_streetcar_street / variant_0 | `tools/clay_toronto_streetcar_street` | stopped: v003 and v004, then v005 and v006 in a second pass, did not lower v002's count | v002 | 53,836 | 2,795,968 | 0 / 1 |
 | Market square | market_square / variant_0 | `tools/clay_market_square` | stopped: the tier-band finding survived two fixes | v004 | 59,968 | 3,239,284 | 0 / 2 |
 | Vancouver Special | vancouver_special / variant_0 | `tools/clay_vancouver_special` | stopped: v002 and v003 did not lower v001's count | v001 | 32,456 | 1,865,808 | 0 / 3 |
 
 The candidate GLB of each family is the only tracked file in its `candidates/` folder. Every
-candidate is under the 4 MiB ordinary-blob cap. Prince's Island Park, at 4,045,264 bytes, is the
-closest.
+candidate is under the 4 MiB ordinary-blob cap. Prince's Island Park, at 4,184,552 bytes, is the
+closest. The planting-kit parks render several times more triangles than they store, because each plant
+prototype is stored once and placed as glTF node instances.
 
 ### Trajectory (P0 / P1 per independent review)
 
@@ -58,8 +60,8 @@ closest.
 | Old Montreal | 0 / 2 | 0 / 2 | 0 / 1 | **0 / 0** | | |
 | Inglewood | 0 / 5 | 0 / 1 | 0 / 1 | **0 / 0** | | |
 | CBE HQ | 0 / 3 | 0 / 1 | 0 / 1 | **0 / 0** (second pass) | | |
-| Halifax Public Gardens | 0 / 3 | 0 / 1 | 0 / 1 | (stopped) | | |
-| Prince's Island Park | 0 / 5 | 0 / 2 | 0 / 1 | (stopped) | | |
+| Halifax Public Gardens | 0 / 3 | 0 / 1 | 0 / 1 | 0 / 2 (second pass) | **0 / 0** | |
+| Prince's Island Park | 0 / 5 | 0 / 2 | 0 / 1 | 0 / 4 (second pass) | **0 / 0** | |
 | streetcar street | 0 / 4 | 0 / 1 | 0 / 2 | 0 / 1 | 0 / 1 (second pass) | 0 / 1 (stopped) |
 | market square | 1 / 3 | 0 / 3 | 0 / 3 | 0 / 2 | 0 / 4 | |
 | Vancouver Special | 0 / 3 | 0 / 3 | 0 / 3 | (stopped) | | |
@@ -78,18 +80,20 @@ Each family README lists the blockers of its last review, and the full reviews a
   a new west_side camera to the locked views' angles.
 - **Result:** PASS_ZERO_P0_P1 (P2 = 6). At the source oblique's angle every east-face cell shows a dark pane.
 
-### Halifax Public Gardens v002 (0 / 1)
+### Halifax Public Gardens and Prince's Island Park: passed at v005 with the shared planting kit
 
-- **Open P1:** the carpet-bed, ring-bed and strip-bed plants read as faceted gems.
-- **What happened in v003:** v003 replaced them with small grounded heads in colour bands. At six
-  segments, needed to stay under the size cap, the heads still show hard outlines up close.
-
-### Prince's Island Park v003 (0 / 1)
-
-- **Open P1:** at eye level the planting still reads as primitives: faceted cone flower heads, flat
-  straw-ribbon grasses and bare fill between the mounds.
-- **What does read correctly:** the planting from the air, the sett paving, the sedum roof, the open
-  railings, the wooded far bank and the clear boardwalk.
+- **Before:** both stopped on close-up planting: the Halifax beds read as faceted gems, and Prince's Island read
+  as cone heads, straw ribbons and bare fill.
+- **The kit:** at the user's request, a shared planting kit was built and reviewed once in
+  `tools/clay_planting_kit_showcase` (stopped at v003, 0 / 2: shrub bodies still show between leaves). It
+  instances each plant prototype once, so dense beds fit the 4 MiB cap.
+- **Second pass, Halifax Public Gardens:** v004 (kit plants) fixed the gem finding, but its review (0 / 2) found
+  tube-like pink rims and sparse fill; v005 replaced the rims with dark mulch edges and filled the beds and the
+  bandstand ring with white and mauve drifts. PASS_ZERO_P0_P1 (P2 = 11).
+- **Second pass, Prince's Island Park:** v004 (kit drifts) fixed the primitive look, but its review (0 / 4)
+  found bare margins, a thinned grove bed and black holes at paving joints, benches, doors and the footbridge
+  (the holes present but unrecorded in v003); v005 fixed all four. PASS_ZERO_P0_P1 (P2 = 10), 9.7 KB under the
+  cap.
 
 ### Toronto streetcar street v002 (0 / 1)
 
@@ -136,16 +140,14 @@ Each family README lists the blockers of its last review, and the full reviews a
 
 ## What carried over
 
-- **Planting is the systematic weak point.** All three parks in this wave, and the green bridge in
-  wave H, stopped on close-up planting. The cause is not effort: faceted primitives at the
-  segment counts the 4 MiB cap allows read as gems and cones at eye level. The next park should not
-  start until there is one shared planting kit, reviewed once and reused by every family. It needs:
-  - smooth-shaded flower heads with real curvature;
-  - arching blade grasses;
-  - shrub masses built from overlapping lobes;
-  - a groundcover layer that hides bare fill.
-
-  `docs/HIGH_QUALITY_3D_PARK_MEMORY.md` should record this.
+- **Planting was the systematic weak point, and a shared kit fixed it.** All three parks in this wave, and
+  the green bridge in wave H, first stopped on close-up planting: faceted primitives at the segment counts
+  the 4 MiB cap allows read as gems and cones at eye level. The shared planting kit
+  (`tools/clay_planting_kit_showcase`) instances smooth-shaded prototypes (flower heads, arching grasses,
+  leaf-card shrubs, groundcover, clipped carpet bands, wall drapes, pots) and checks every canopy against
+  kerbs and obstacles. With it, both wave I parks and the wave G stepped plaza passed in their second passes.
+  Its open weakness is shrubs (the body shows between leaves), so kit parks keep shrubs few and behind
+  perennials; the green bridge has not yet been reworked with it.
 - **Cameras decide findings.** The CBE east face and the Vancouver Special side wall were both
   geometry that matched the source but was judged through a camera that did not. The CBE passed in
   its second pass with only its cameras re-aimed. Matching the front and front_corner cameras to the

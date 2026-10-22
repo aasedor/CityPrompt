@@ -24,8 +24,9 @@ Nothing here is enrolled, published, runtime-integrated or keeper-approved. Each
 
 ## Results
 
-Five of the eleven reached PASS_ZERO_P0_P1, one of them (the sandstone block) in a second pass the user
-reopened. The other six stopped with one to five P1s open and no P0.
+Six of the eleven reached PASS_ZERO_P0_P1, two of them in second passes the user reopened: the sandstone
+block, and the stepped plaza with the shared planting kit. The other five stopped with one to five P1s
+open and no P0.
 
 | model | catalogue archetype / variant | family | outcome | candidate | triangles | GLB bytes | candidate review P0 / P1 |
 |---|---|---|---|---|---|---|---|
@@ -37,7 +38,7 @@ reopened. The other six stopped with one to five P1s open and no P0.
 | Regency stucco terrace | regency_stucco_terrace / regency-stucco-terrace-nash | `tools/clay_regency_stucco_terrace` | stopped: v005 and v006 did not lower v004's count | v004 | 70,818 | 3,738,368 | 0 / 1 |
 | Calgary sandstone heritage block | calgary_sandstone_heritage / sandstone_romanesque_revival | `tools/clay_calgary_sandstone_heritage` | **PASS_ZERO_P0_P1** at v006 (second pass) | v006 | 86,876 | 4,190,248 | 0 / 0 |
 | Amsterdam twin-gabled canal warehouse | amsterdam_canal_warehouse / canal_warehouse_spice | `tools/clay_amsterdam_canal_warehouse` | stopped: the valley finding survived two fixes | v003 | 23,762 | 1,151,356 | 0 / 3 |
-| Stepped terraced plaza | stepped_terraced_plaza / stepped_terraced_plaza_v0 | `tools/clay_stepped_terraced_plaza` | stopped: the bougainvillea finding survived two fixes | v003 | 44,282 | 2,734,476 | 0 / 3 |
+| Stepped terraced plaza | stepped_terraced_plaza / stepped_terraced_plaza_v0 | `tools/clay_stepped_terraced_plaza` | **PASS_ZERO_P0_P1** at v005 (planting-kit second pass) | v005 | 753,465 rendered (instanced) | 3,339,416 | 0 / 0 |
 | Amsterdam step-gable canal house | amsterdam_step_gable_house / step_gable_gothic | `tools/clay_step_gable_canal_house` | stopped: the brick-siding finding survived two fixes | v003 | 26,826 | 1,465,984 | 0 / 5 |
 | Montreal Plateau triplex with an iron stair | montreal_plateau_triplex / montreal_triplex_classic_iron | `tools/clay_plateau_stair_triplex` | stopped: the cornice-return and console findings survived two fixes | v003 | 10,340 | 573,924 | 0 / 5 |
 
@@ -56,7 +57,7 @@ candidate is under the 4 MiB ordinary-blob cap.
 | Regency terrace | 1 / 7 | 0 / 2 | 0 / 4 | 0 / 1 | 0 / 2 | 0 / 2 | (stopped) |
 | sandstone block | 0 / 10 | 1 / 2 | 0 / 1 | 0 / 2 | 0 / 1 | **0 / 0** (second pass) | |
 | canal warehouse | 0 / 9 | 0 / 4 | 0 / 3 | (stopped) | | | |
-| stepped plaza | 3 / 9 | 0 / 5 | 0 / 3 | (stopped) | | | |
+| stepped plaza | 3 / 9 | 0 / 5 | 0 / 3 | 0 / 4 (second pass) | **0 / 0** | | |
 | step-gable house | 2 / 12 | 0 / 8 | 0 / 5 | (stopped) | | | |
 | Plateau triplex | 0 / 7 | 0 / 6 | 0 / 5 | (stopped) | | | |
 
@@ -101,13 +102,16 @@ Each family README lists the blockers of its last review, and the full reviews a
   - the roof deck is level with the west ridge and fills about 95% of the span, where the sources
     show a sunken deck at about 56%.
 
-### Stepped terraced plaza v003 (0 / 3)
+### Stepped terraced plaza: passed at v005 in the planting-kit second pass
 
-- **Survived two fixes (P1):** both bougainvilleas still read as loose clusters of faceted balloons,
-  with no canopy draping from the roof edge.
-- **Other open P1s:**
-  - the foot of the strip does not widen west as in the source;
-  - the pergola stands on the seating terraces instead of on the east house beyond the side stair.
+- **Before:** v003 (0 / 3) was the candidate. Both bougainvilleas read as faceted balloons, the foot of the strip
+  did not widen west, and the pergola stood on the seating terraces.
+- **Second pass:** the user reopened the family to use the shared planting kit
+  (`tools/clay_planting_kit_showcase`). v004 replaced the bougainvilleas with the kit's wall drape and parapet
+  cascade, widened the foot west and moved the pergola onto the east house; its review (0 / 4) found the east
+  cascade broken into collars, the climber carrier showing, a black wedge at a door and holes through the
+  crosses (the last present but unrecorded in v003). v005 fixed all four.
+- **Result:** PASS_ZERO_P0_P1 (P2 = 11).
 
 ### Amsterdam step-gable canal house v003 (0 / 5)
 
