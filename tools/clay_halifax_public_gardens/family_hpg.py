@@ -2484,7 +2484,6 @@ def planting():
     b.flush('planting')
     flush_smooth(bp, 'planting plants')
     KIT.flush()
-    print('HPG_KIT_COUNTS', KIT.counts, 'rejected', KIT.rejected)
     bad = KIT.audit(detail=True)
     if bad:
         raise RuntimeError(f'planting kit clearance rule: {len(bad)} placements cross a bed edge or obstacle: {bad}')

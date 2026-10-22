@@ -1779,7 +1779,7 @@ def climber_sprays(kit, name='bougainvillea', leaf_role='pk_leaf', bract_roles=(
 
 def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), thickness=.04, bump=.012, wave=.3, grid=.12,
                ramp=.06, carrier_role='pk_shrub_core', trunks=(), trunk_role='pk_bark', seed=1, module='planting', tongues=4,
-               cover=.65, spacing=.21, trails_per_m=5., floor=0., canes=4):
+               cover=.65, spacing=.21, trails_per_m=5., floor=0., canes=4, carrier_inset=0., rim_sprays=0.):
     """Wall-trained climber or parapet cascade (bougainvillea, wisteria, jasmine) over a wall cross-section `profile`
     [(n, z), ...] (n outward from the wall face line p0-p1, `out` its unit outward normal (x, y)), listed from the
     hanging lower end up and over the coping. A hidden dark carrier (carrier_role: a thin heightfield sheet in (u along
@@ -1789,7 +1789,10 @@ def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), th
     stay above `floor`), a woody armature of `canes` canes fanning from each trunk over the wall and coping, and trunks
     [(u, (x, y, z) root), ...] from a pot. The hanging edge sits at s = curtain(u) with `tongues` longer lobes; openings
     [(u0, u1, z0, z1), ...] are cut with a 7 cm margin and sprays and canes keep clear of them. No two closed shells share
-    a volume (the carrier is the only shell). Returns the carrier area in m2."""
+    a volume (the carrier is the only shell). Opt-in (defaults leave the result unchanged): carrier_inset > 0 stops the
+    carrier that far inside the spray envelope, so no carrier rim shows past the leaves at the hem, ends or openings;
+    rim_sprays > 0 adds a row of sprays at that spacing along the envelope's outer edge, at least 0.25 m clear of every
+    opening, to break its outline. Returns the carrier area in m2."""
     from mathutils import Matrix, Vector
     rnd = _pkr.Random(seed); ss, PN, PZ, NN, NZ = _pk_profile(profile)
     L = math.hypot(p1[0] - p0[0], p1[1] - p0[1]); tx, ty = (p1[0] - p0[0]) / L, (p1[1] - p0[1]) / L
@@ -1809,6 +1812,10 @@ def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), th
         keep = keep.difference(_pksh.box(u0 - .17, a - z0p - .17, u1 + .17, b - z0p + .17))
     reg = reg.buffer(-.01).buffer(.01)
     V, F, hz = _pk_field(reg, 0., thickness, bump, wave, grid, ramp, seed, mid=True)
+    if carrier_inset > 0:                               # the carrier stops inside the spray envelope; sprays keep the full hz
+        rc = reg.buffer(-carrier_inset).buffer(-.01).buffer(.01)
+        if not rc.is_empty:
+            V, F, _ = _pk_field(rc, 0., thickness, bump, wave, grid, ramp, seed, mid=True)
 
     def world(u, s, h):
         n = _pknp.interp(s, ss, PN); zz = _pknp.interp(s, ss, PZ); a = _pknp.interp(s, ss, NN); c = _pknp.interp(s, ss, NZ)
@@ -1822,16 +1829,26 @@ def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), th
     if patch is not None:
         _pksh.prepare(patch)
     sreg = keep.intersection(reg.buffer(-.03))
-    nfl = 0
-    for u, s in (pk_scatter(sreg, spacing, seed=seed + 8) if not sreg.is_empty else []):
+    nfl = [0]
+
+    def spray(u, s):
         (x, y, z), (a, c) = world(u, s, hz(u, s) + rnd.uniform(.004, .03))
         N = Vector((out[0] * a, out[1] * a, c)).normalized(); T = Vector((tx, ty, 0.)); B = N.cross(T).normalized()
         ph = rnd.uniform(0, 6.3); X = (T * math.cos(ph) + B * math.sin(ph)).normalized(); Y = N.cross(X)
         e = Matrix((X, Y, N)).transposed().to_euler('XYZ')
         fl = patch is not None and _pksh.contains_xy(patch, u, s)
-        p = sprays['flower'][nfl % len(sprays['flower'])] if fl else sprays['leafy']; nfl += fl
+        p = sprays['flower'][nfl[0] % len(sprays['flower'])] if fl else sprays['leafy']; nfl[0] += fl
         sc = rnd.uniform(.85, 1.15)
         kit.place(p, x, y, z, e.z, sc, sy=sc * rnd.uniform(.85, 1.1), sz=sc * rnd.uniform(.8, 1.1), lean=(e.x, e.y), track=False)
+    for u, s in (pk_scatter(sreg, spacing, seed=seed + 8) if not sreg.is_empty else []):
+        spray(u, s)
+    if rim_sprays > 0 and not sreg.is_empty:            # a row of sprays along the envelope's outer edge, clear of openings
+        holes = [_pksh.box(u0 - .25, a - z0p - .25, u1 + .25, b - z0p + .25) for u0, u1, a, b in openings]
+        for ln in _pksh.get_parts(sreg.buffer(-.02).boundary):
+            for d in _pknp.arange(rnd.uniform(0., rim_sprays), ln.length, rim_sprays):
+                pt = ln.interpolate(float(d)); u, s = pt.x, pt.y
+                if not any(h.contains(pt) for h in holes):
+                    spray(u, s)
     # trailing canes from the hanging edge, clear of the openings and above the floor
     rot0 = math.atan2(out[0], -out[1])
     for u in _pknp.arange(.12, L - .12, 1 / trails_per_m):
@@ -2301,7 +2318,7 @@ def slab_path(name, pts, width, top, border=.45, step=1.6, sett=.45, bands=0.0):
                     last = ss
             if border > .5:                                  # wide bands: a running joint down the middle, two setts across
                 for (p, n, _), (q, m, _) in zip(fr, fr[1:]):
-                    stripe(b, 'settjoint', (p[0] + n[0] * off, p[1] + n[1] * off), (q[0] + m[0] * off, q[1] + m[1] * off), .022, zs)
+                    stripe(b, 'settjoint', (p[0] + n[0] * off, p[1] + n[1] * off), (q[0] + m[0] * off, q[1] + m[1] * off), .022, zs + .0008)
     last = -9.0
     inner = width / 2 - (border or 0)
     for p, n, s in fr[1:-1]:
@@ -2319,7 +2336,7 @@ def slab_path(name, pts, width, top, border=.45, step=1.6, sett=.45, bands=0.0):
                     d = -inner + 2 * inner * j / k
                     c = (p[0] + n[0] * d, p[1] + n[1] * d)
                     stripe(b, 'settjoint', (c[0] - tx * .38, c[1] - ty * .38), (c[0] + tx * .38, c[1] + ty * .38), .022, zs)
-                stripe(b, 'settjoint', (p[0] + n[0] * inner, p[1] + n[1] * inner), (p[0] - n[0] * inner, p[1] - n[1] * inner), .022, zs)
+                stripe(b, 'settjoint', (p[0] + n[0] * inner, p[1] + n[1] * inner), (p[0] - n[0] * inner, p[1] - n[1] * inner), .022, zs + .0008)
                 last = s
     b.flush(f'{name} joints')
     return fr
@@ -2349,16 +2366,16 @@ def paths():
         for k in range(1, int(l / .45)):
             q = (a[0] + ex * k * .45, a[1] + ey * k * .45)
             stripe(b, 'settjoint', (q[0] + nx * .02, q[1] + ny * .02), (q[0] + nx * .56, q[1] + ny * .56), .022, ZG + .0585)
-        stripe(b, 'settjoint', (a[0] + nx * .29 + ex * .3, a[1] + ny * .29 + ey * .3), (c[0] + nx * .29 - ex * .3, c[1] + ny * .29 - ey * .3), .022, ZG + .0585)
+        stripe(b, 'settjoint', (a[0] + nx * .29 + ex * .3, a[1] + ny * .29 + ey * .3), (c[0] + nx * .29 - ex * .3, c[1] + ny * .29 - ey * .3), .022, ZG + .0593)
     beds = [outline(BEDS['B5'][0])]
     ok = lambda p: inside(p, poly) and not any(inside(p, q) for q in beds) and all(math.dist(p, c) > 1.5 for c in PITS)
     for k in range(-30, 30):                               # slab joints, 1.6 m grid, as flush lines
         for j in range(-30, 30):
             a = (-12.0 + k * 1.6, -24.0 + j * 1.6)
-            for d in ((1.6, 0.0), (0.0, 1.6)):
+            for d, dz in (((1.6, 0.0), 0.0), ((0.0, 1.6), .0008)):     # crossing joints on two levels: no shared plane
                 e = (a[0] + d[0], a[1] + d[1])
                 if ok(a) and ok(e):
-                    stripe(b, 'joint', a, e, .03, ZG + .0555)
+                    stripe(b, 'joint', a, e, .03, ZG + .0555 + dz)
     b.flush('plaza joints')
 
 
@@ -2392,9 +2409,11 @@ def protos(kit):
     grasses of the locked front), pink coneflower, lavender salvia, white panicles and pink astilbe (the pink, lavender
     and white perennial drifts), and two shrub sizes kept to the backs of beds and the grove beds."""
     P = {}
-    P['feather'] = arching_grass(kit, 'pi_feather_reed', blades=56, height=.55, width=.018, role='pk_straw', plume_role='pk_plume',
-                                 plumes=7, plume_height=2.2, seed=91)
-    P['fountain'] = arching_grass(kit, 'pi_fountain_grass', blades=64, height=.58, width=.019, seed=81)
+    # v005: each grass's crown shares its blade role (one instance node fewer per grass, to pay for the margin and
+    # grove planting within the size cap; the crown is a 3 cm dark knot mostly hidden by the blade bases)
+    P['feather'] = arching_grass(kit, 'pi_feather_reed', blades=56, height=.55, width=.018, role='pk_straw', crown_role='pk_straw',
+                                 plume_role='pk_plume', plumes=7, plume_height=2.2, seed=91)
+    P['fountain'] = arching_grass(kit, 'pi_fountain_grass', blades=64, height=.58, width=.019, crown_role='pk_blade', seed=81)
     P['cone'] = flower_head_cluster(kit, 'pi_coneflower', 'daisy', heads=14, height=.68, spread=.42, foliage=.4, head_role='pk_pink',
                                     droop=.35, size=1.3, leaves=30, seed=21)
     P['salvia'] = flower_head_cluster(kit, 'pi_salvia', 'spike', heads=16, height=.52, spread=.38, foliage=.36, head_role='pk_purple',
@@ -2407,7 +2426,13 @@ def protos(kit):
     # a small edging grass: the large drifts keep their whole canopy inside the kerb, so it and small copies of the
     # perennials fill the bed margins
     P['edge_grass'] = arching_grass(kit, 'pi_edge_grass', blades=40, height=.3, width=.013, role='pk_blade_blue',
-                                    crown_role='pk_crown_blue', seed=101)
+                                    crown_role='pk_blade_blue', seed=101)
+    # v005: low leafy edging cushions (white alyssum froth and lavender-blue ageratum puffs over small leaves) planted
+    # in a continuous band along every kerb, so the bed margins read planted to the kerb at eye level
+    P['cush_w'] = bedding_cushion(kit, 'pi_alyssum_edge', radius=.3, height=.15, role='pk_leaf', floret_role='pk_white',
+                                  kind='alyssum', seed=131)
+    P['cush_l'] = bedding_cushion(kit, 'pi_ageratum_edge', radius=.3, height=.16, role='pk_leaf', floret_role='pk_purple',
+                                  kind='ageratum', seed=133)
     return P
 
 
@@ -2450,6 +2475,34 @@ def edge_fill(kit, reg, mix, spacing, seed, placed, scales=(1.1, .95, .8, .65)):
     return n
 
 
+def margin_fill(kit, reg, mix, seed, placed, insets=(.44, .86), spacing=.62, scales=(1.4, 1.25, 1.1, .95, .8, .7), cover=.6):
+    """v005 margin band: low plants on rings `insets` metres inside the kerb's inner line, `spacing` apart, in runs of 3-6
+    of one kind (so they read as planted edging, and neighbouring cushions merge into a band), each at the largest
+    plan scale that passes the kit clearance rule; a ring point already covered by `cover` x the plan radius of a
+    placed plant is skipped. Records into `placed`; returns the number placed."""
+    rnd = random.Random(seed); n = 0; run = 0; cur = None
+    for d in insets:
+        inner = reg.buffer(-d)
+        for g in getattr(inner, 'geoms', [inner]):
+            if g.is_empty or g.geom_type != 'Polygon':
+                continue
+            line = g.exterior; ln = line.length; m = max(3, int(ln / spacing)); off = rnd.uniform(0, ln / m)
+            for i in range(m):
+                q = line.interpolate((off + i * ln / m) % ln); x, y = q.x, q.y
+                if any(math.hypot(x - a, y - b) < r * cover for a, b, r in placed):
+                    continue
+                if run <= 0:
+                    cur = mix[rnd.randrange(len(mix))]; run = rnd.randint(3, 6)
+                run -= 1
+                for s in scales:
+                    sz = s * rnd.uniform(.85, 1.05)
+                    if kit.fits(cur, x, y, s, reg, sy=s, sz=sz):
+                        kit.place(cur, x, y, PSOIL, rnd.uniform(0, math.tau), s, sy=s, sz=sz)
+                        placed.append((x, y, kit.extent(cur, s))); n += 1
+                        break
+    return n
+
+
 def bed_base(name, poly):
     """The family kerb ring; the kit groundcover laps 1.5 cm under its inner face, so the bed needs no other fill."""
     ring_mesh(f'{name} kerb', poly, offset(poly, KERB_W), ZG - .02, ZG + .14, 'curb', 'beds')
@@ -2465,20 +2518,26 @@ def planting():
         kit.add_obstacle(_pksh.Point(x, y).buffer(.25, quad_segs=6), 3.0)
     front = [(P['feather'], 1.5), (P['fountain'], 1.0), (P['cone'], 1.1), (P['salvia'], .8), (P['panicle'], .8), (P['astilbe'], .5),
              (P['sh08'], .3)]
-    grove = [(P['fountain'], 1.0), (P['feather'], .7), (P['sh08'], .9), (P['panicle'], .4), (P['salvia'], .3)]
+    grove = [(P['fountain'], 1.3), (P['feather'], .6), (P['sh08'], .9), (P['astilbe'], .5), (P['panicle'], .35), (P['salvia'], .25)]
     edge = [P['salvia'], P['edge_grass'], P['cone'], P['edge_grass'], P['astilbe']]
+    rim = [P['cush_w'], P['cush_l'], P['edge_grass'], P['cush_w'], P['cush_l'], P['edge_grass'], P['salvia']]
+    grove_rim = [P['fountain'], P['edge_grass'], P['astilbe'], P['fountain']]
     for i, (name, (pxs, dens)) in enumerate(BEDS.items()):
         poly = outline(pxs); bed_base(f'Bed {name}', poly)
         reg = kit.register_bed(pk_region(poly, KERB_W)); placed = []
-        if name in GROVES:
-            groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, grid=.9, edge=.2, seed=40 + i)
-            drift_fill(kit, reg, grove, 1.1 if name == 'B8' else 2.1, 60 + i, (1.5, 1.25, 1.0, .8), 1.2, placed, drift=3.2)
+        if name in GROVES:                                   # v005: a dense layered understorey under the groves (large,
+            groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, bump=.028, wave=.8, grid=.9, edge=.2,
+                        seed=40 + i)                         # wide clumps: few instance nodes for the cover), edged too
+            drift_fill(kit, reg, grove, 1.1 if name == 'B8' else 1.4, 60 + i, (1.9, 1.65, 1.4, 1.15, .95, .8), 1.25, placed, drift=3.6)
+            margin_fill(kit, reg, grove_rim, 160 + i, placed, insets=(.5,), spacing=.85)
             if name == 'B8':                                 # the grove bed beside the promenade is seen close up
                 edge_fill(kit, reg, edge, .7, 60 + i, placed)
         else:
-            groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, grid=.8, edge=.18, seed=40 + i)
+            groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, bump=.028, wave=.8, grid=.8, edge=.18,
+                        seed=40 + i)                         # v005: a gently undulating carpet, never flat felt
             drift_fill(kit, reg, front, .9, 60 + i, (1.5, 1.3, 1.1, .9, .75), 1.15, placed)
-            edge_fill(kit, reg, edge, .47, 60 + i, placed)
+            margin_fill(kit, reg, rim, 160 + i, placed)      # v005: low edging band planted to the kerb
+            edge_fill(kit, reg, edge, .6, 60 + i, placed)
     rnd = random.Random(77)
     for i, c in enumerate(PITS):                             # tree pits in the south plaza: groundcover and a ring of grasses
         poly = [(c[0] + 1.3 * math.cos(a * math.tau / 32), c[1] + 1.3 * math.sin(a * math.tau / 32)) for a in range(32)]
@@ -2599,9 +2658,10 @@ def footbridge():
     xs = [19.6 + (FAR + 1.0 - 19.6) * i / 40 for i in range(41)]
     loft('Footbridge deck', [[(x, YB - 2.0, bridge_z(x) - .55), (x, YB + 2.0, bridge_z(x) - .55), (x, YB + 2.0, bridge_z(x)), (x, YB - 2.0, bridge_z(x))] for x in xs], 'deck', 'footbridge', closed=False)
     b = Batch()
-    for s in (-1, 1):
-        for x0, x1 in zip(xs, xs[1:]):
-            b.beam('deck', (x0, YB + s * 1.9, bridge_z(x0) + .05), (x1, YB + s * 1.9, bridge_z(x1) + .05), .2, .2, ext=.01)
+    for s in (-1, 1):                                       # kerbs lofted in one piece, 2 cm proud of the deck side face
+        ya, yb = sorted((YB + s * 1.82, YB + s * 2.02))
+        loft(f'Footbridge kerb {s:+d}', [[(x, ya, bridge_z(x) - .05), (x, yb, bridge_z(x) - .05), (x, yb, bridge_z(x) + .15),
+                                         (x, ya, bridge_z(x) + .15)] for x in xs], 'deck', 'footbridge', closed=False)
     for x in (31.5, 45.5):                                   # river piers with rounded noses
         zt = bridge_z(x) - .5
         b.box('concrete', x, YB, zt / 2, 1.0, 3.3, zt)
@@ -2670,7 +2730,7 @@ def door_m(m, f, h, inset=.12):
     for s in (-1, 1):
         m.box('trim', u + s * (w / 2 - .03), inset, z + hh / 2, .06, .1, hh)
     m.box('trim', u, inset, z + hh - .03, w - .12, .1, .06)
-    m.box('fascia', u, inset + .05, z + hh / 2 + .01, w - .12, .045, hh - .08)
+    m.box('fascia', u, inset + .05, z - .01 + (hh - .05) / 2, w - .12, .045, hh - .05)   # leaf runs 1 cm into the sill: no open slot under it
     m.box('steel', u + w * .3, inset, z + 1.0, .03, .06, .3)
     register(f, h, inset, 'door', 'pavilion room')
 
@@ -2758,12 +2818,12 @@ def bench(b, x, y, ang):
     for k, z in enumerate((.62, .76)):
         q = P(0.0, .3 + k * .02)
         obox(b, 'bench', q[0], q[1], ZG + z, 2.0, .09, .12, ang)
-    for e in (-.8, .8):
-        for v, h in ((-.18, .44), (.24, .44)):
+    for e in (-.8, .8):                                     # legs stop under the slats and the rail is narrower than the legs:
+        for v in (-.18, .27):                               # no frame face shares a plane with a slat or a leg face
             q = P(e, v)
-            obox(b, 'steel', q[0], q[1], ZG + .04 + h / 2, .06, .06, h, ang)
-        q = P(e, .03); obox(b, 'steel', q[0], q[1], ZG + .42, .06, .5, .05, ang)
-        q = P(e, .3); obox(b, 'steel', q[0], q[1], ZG + .66, .05, .05, .36, ang)
+            obox(b, 'steel', q[0], q[1], ZG + .04 + .395 / 2, .06, .06, .395, ang)
+        q = P(e, .045); obox(b, 'steel', q[0], q[1], ZG + .405, .05, .54, .05, ang)
+        q = P(e, .3); obox(b, 'steel', q[0], q[1], ZG + .55, .05, .05, .5, ang)     # back post runs into the rear leg and ends inside the top back slat
 
 
 def furniture():

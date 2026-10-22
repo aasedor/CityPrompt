@@ -77,7 +77,7 @@ def manifest(version):
         elif c['name'] == 'left_side':
             c.update(location=(-27.0, -3.0, 5.0), target=(-10.0, -3.0, 5.2), lens=22)
         elif c['name'] == 'right_side':
-            c.update(location=(22.0, 15.5, 5.0), target=(10.0, 8.0, 6.5), lens=24)
+            c.update(location=(19.5, 14.5, 3.0), target=(10.0, 7.0, 6.0), lens=24)
         elif c['name'] == 'rear':
             c.update(location=(0.0, 34.5, 4.5), target=(0.0, TY1, 5.0), lens=22)
         elif c['name'] == 'rear_side':
@@ -641,7 +641,7 @@ def south_front():
     b.box('panel', (TX0 + .7 + BOXX0 - .5) / 2, TY0 + .38, (CAN0 - .07 + 4.3) / 2, BOXX0 - .5 - TX0 - .7, .1, 4.3 - CAN0 + .07)
     # Glass box: concrete end frames to grade, soffit, three tiers of clear glazing, frosted band and the cap.
     for x0, x1 in ((BOXX0 - .5, BOXX0 + .1), (TX1 - .6, TX1)):
-        b.box('wall', (x0 + x1) / 2, (BOXY - .1 + TY0 + .4) / 2, BOXTOP / 2, x1 - x0, TY0 + .4 - BOXY + .1, BOXTOP)
+        b.box('wall', (x0 + x1) / 2, (BOXY - .1 + TY0 + .4) / 2, (BOXTOP - .03) / 2, x1 - x0, TY0 + .4 - BOXY + .1, BOXTOP - .03)
     b.box('panel', (BOXX0 + .1 + TX1 - .6) / 2, (BOXY + TY0 + .3) / 2, 4.51, TX1 - .6 - BOXX0 - .1 + .02, TY0 + .3 - BOXY, .22)
     curtain(b, 'x', BOXY + .02, BOXX0 + .1, TX1 - .6, 4.62, 8.9, 1.56, transoms=(6.05, 7.45), out=-1, depth=.14)
     curtain(b, 'x', BOXY + .02, BOXX0 + .1, TX1 - .6, 8.9, 9.95, 1.56, out=-1, depth=.1, glass='spandrel')
@@ -769,7 +769,7 @@ def roof():
     b.flush('roof')
     for k, (x0, x1, y0, y1) in enumerate(((4.8, 7.2, -6.6, -4.7), (4.8, 7.2, -10.7, -8.6), (1.1, 3.6, -12.6, -10.7))):
         pitched_roof(f'Skylight {k}', x0 + .12, x1 - .12, y0 + .12, y1 - .12, ROOF + .46, .45, True, True,
-                     'x' if x1 - x0 >= y1 - y0 else 'y', .0, 'glass', 'roof skylights')
+                     'x' if x1 - x0 >= y1 - y0 else 'y', .0, 'spandrel', 'roof skylights')
     b = Batch()
     for x, y in ((-1.2, -6.0), (2.0, 13.0), (-4.6, 15.6)):                                         # hatches
         b.box('panel', x, y, ROOF + .3, 1.2, 1.0, .6)
@@ -824,7 +824,7 @@ def interiors():
     b.flush('interiors')
     for name, loc in (('concourse', (3.0, -14.0, 3.6)), ('west hall', (-6.0, 2.0, 3.6)), ('lounge south', (3.5, -18.0, 8.5)),
                       ('lounge west', (-6.0, -4.0, 8.5)), ('lounge north', (-6.0, 8.0, 8.5))):
-        C.qa_room_light(name, loc, 70, 3.0)
+        C.qa_room_light(name, loc, 110, 3.0)
     C.CONTACTS.append(dict(name='Concrete fins and frames from grade; roof inside the parapet; glass box on its concrete frames', parapet_m=PARA))
 
 
@@ -899,10 +899,18 @@ def brick_block():
     band(m, BX0, BX1, 8.42, 8.54, .1, 'stone')
     band(m, BX0, BX1, 10.75, 11.0, .2, 'brick')
     for k in range(int((BX1 - BX0) / .45)):
-        m.box('brick', BX0 + .25 + k * .45, -.24, 10.92, .2, .12, .16)                              # dentil course
+        m.box('brick', BX0 + .25 + k * .45, -.24, 10.9, .2, .12, .16)                              # dentil course
     eave_cornice(m, BX0 - .05, BX1 + .05, B_EAVE, span_t=.45, proj=.75, role='stone')
     band(m, BX0, BX1, .0, .3, .06, 'stone')
     m.flush('brick block south front')
+    # Brick parapet over the cornice (hides the eaves from the street), stone coping and corner finials.
+    b = Batch()
+    b.box('brick', (BX0 + BX1) / 2, BY0 + .225, (B_WALL + 13.45) / 2, BX1 - BX0 - .01, .35, 13.45 - B_WALL)
+    b.box('stone', (BX0 + BX1) / 2, BY0 + .225, 13.51, BX1 - BX0 + .1, .51, .12)
+    for x in (BX0 + .4, BX1 - .4):
+        b.box('stone', x, BY0 + .2, 13.9, .95, .9, .8)
+        frustum(b, 'stone', x, BY0 + .2, 14.3, 14.75, .5, .08, 4)
+    b.flush('brick block parapet')
     # Pediment gable over bays 5 and 6 and its little cross roof.
     px0, px1, rise = 27.9, 33.1, 3.4
     C.prism('Brick block pediment', [(px0, B_EAVE - .15), (px1, B_EAVE - .15), ((px0 + px1) / 2, B_EAVE + rise)], 'y', BY0 - .02, BY0 + .43, 'brick', 'pediment')
@@ -936,8 +944,8 @@ def brick_block():
     m.flush('brick block north wall')
     f = C.Face((BX0, 0, 0), (0, -1, 0), (1, 0, 0), 'brick block west wall')
     G.brick_courses(f, -BY1 + .05, -BY0 - .05, 8.2, B_WALL - .1, [], spacing=.45)
-    for x, y, z1 in ((12.4, -2.1, 15.0), (12.4, -12.9, 15.0), (24.4, -13.8, 16.2), (19.6, 3.3, 15.0), (39.6, -1.0, 15.0), (39.6, -12.9, 15.0)):
-        chimney(b, x, y, 12.0, z1, .9, .7, 3, role='brick', pot='pot', cap='stone')
+    for x, y, z1 in ((12.5, -2.1, 15.6), (12.5, -12.9, 15.6), (24.4, -13.8, 17.0), (19.6, 3.2, 15.6), (39.5, -1.0, 15.6), (39.5, -12.9, 15.6)):
+        chimney(b, x, y, 12.0, z1, 1.2, .9, 3, role='brick', pot='pot', cap='stone')
     b.flush('brick block chimneys')
     pitched_roof('Brick block west roof', BX0, 26.5, BY0, BY1, B_EAVE, 6.0, True, True, 'y', .35, 'tile', 'roof')
     pitched_roof('Brick block east roof', 26.5, BX1, BY0, BY1, B_EAVE + .002, 5.6, True, True, 'y', .42, 'tile', 'roof')
