@@ -75,9 +75,9 @@ def manifest(version):
         elif c['name'] == 'aerial':
             c.update(location=(-62.0, 70.0, 58.0), target=(6.0, -4.0, 4.0), lens=40)
         elif c['name'] == 'left_side':
-            c.update(location=(-27.0, -3.0, 5.0), target=(-10.0, -3.0, 5.2), lens=22)
+            c.update(location=(-33.0, 0.0, 12.0), target=(-10.0, 0.0, 5.0), lens=16)
         elif c['name'] == 'right_side':
-            c.update(location=(20.6, 15.9, 6.0), target=(9.6, 7.0, 5.2), lens=22)
+            c.update(location=(32.0, 32.0, 24.0), target=(10.0, 11.0, 5.0), lens=30)
         elif c['name'] == 'rear':
             c.update(location=(0.0, 34.5, 4.5), target=(0.0, TY1, 5.0), lens=22)
         elif c['name'] == 'rear_side':
@@ -543,14 +543,27 @@ def letters(m, text, u0, u1, zc, hgt, d, role='sign'):
 
 
 def windows_grid(m, lo, hi, z0, z1, floors, per, w=1.1, hh=1.9, role='frame', frame='paint'):
-    """Dark window panes with a light frame on a context facade (Merge in face coordinates; the frame is buried 1 cm)."""
+    """Windows on a solid face (Merge in face coordinates): a surround standing 15 cm proud (jambs, head, sill, all
+    lapping 1 cm into the wall) makes the reveal; inside it a lit room plate on the wall, a transmissive pane and a sash
+    with a meeting rail, each layer at its own depth so no two faces share a plane."""
     n = max(1, int((hi - lo) / per))
     for k in range(n):
         u = lo + (hi - lo) * (k + .5) / n
         for j in range(floors):
             z = z0 + (z1 - z0) * j / floors + .9
-            m.box(frame, u, -.025, z + hh / 2, w + .16, .07, hh + .16)
-            m.box(role, u, -.065, z + hh / 2, w, .02, hh)
+            zc = z + hh / 2
+            m.box('interior', u, -.009, zc, w - .02, .01, hh - .02)                       # lit room plate
+            for s in (-1, 1):
+                m.box(frame, u + s * (w / 2 + .05), -.07, zc, .1, .16, hh + .2)          # jambs
+            m.box(frame, u, -.075, z + hh + .06, w + .24, .17, .12)                         # head
+            m.box(frame, u, -.09, z - .08, w + .3, .2, .08)                                 # sill
+            m.box('glass', u, -.05, zc, w - .02, .008, hh - .02)
+            for s in (-1, 1):
+                m.box(role, u + s * (w / 2 - .025), -.07, zc, .06, .03, hh - .01)           # sash stiles
+            for zr in (z + .03, z + hh - .035, zc):
+                m.box(role, u, -.07, zr, w - .1, .03, .05)                                   # rails and meeting rail
+            if w > 1.0:
+                m.box(role, u, -.072, zc, .04, .026, hh - .06)                               # centre muntin
 
 
 def curtain(b, axis, c, lo, hi, z0, z1, per, transoms=(), face=0.0, out=-1, pane=.06, mull=.07, depth=.16, glass='glass'):
@@ -572,6 +585,25 @@ def curtain(b, axis, c, lo, hi, z0, z1, per, transoms=(), face=0.0, out=-1, pane
         put('frame', s - mull / 2, s + mull / 2, z0, z1, c + out * depth, c - out * (pane + .03))
     for zt in (z0 + mull / 2,) + tuple(transoms) + (z1 - mull / 2,):
         put('frame', lo, hi, zt - mull / 2, zt + mull / 2, c + out * (depth - .02), c - out * (pane + .025))
+
+
+def door_leaf(b, axis, c, s, lw, z0, z1, out=-1):
+    """Glazed aluminium door leaf in a vertical plane (axis as in curtain): stiles, top and bottom rails 6 cm deep, a pane
+    held inside them and a pull on the outer side; the pane is embedded in the frame so no edge is open."""
+    def put(role, s0, s1, za, zb, d0, d1):
+        sm, sw = (s0 + s1) / 2, s1 - s0
+        dm, dw = (d0 + d1) / 2, abs(d1 - d0)
+        if axis == 'x':
+            b.box(role, sm, dm, (za + zb) / 2, sw, dw, zb - za)
+        else:
+            b.box(role, dm, sm, (za + zb) / 2, dw, sw, zb - za)
+    a0, a1 = s - lw / 2, s + lw / 2
+    for e0, e1 in ((a0, a0 + .1), (a1 - .1, a1)):
+        put('frame', e0, e1, z0, z1, c - .03, c + .03)
+    put('frame', a0 + .08, a1 - .08, z1 - .1, z1, c - .03, c + .03)
+    put('frame', a0 + .08, a1 - .08, z0, z0 + .25, c - .03, c + .03)
+    put('glass', a0 + .09, a1 - .09, z0 + .24, z1 - .09, c - .005, c + .005)
+    return put
 
 
 def band(m, lo, hi, z0, z1, proj, role='stone'):
@@ -626,11 +658,11 @@ def terminal_frame():
 
 def canopies():
     """The canopy that wraps the SW corner and runs the west front, and the lettered entrance canopy under the box."""
-    pts = [(TX0 - 1.4, NORTH_SOLID), (TX0 - 1.4, TY0 - 1.4), (BOXX0 - .45, TY0 - 1.4), (BOXX0 - .45, TY0 + .06),
-           (TX0 + .06, TY0 + .06), (TX0 + .06, NORTH_SOLID)]
+    pts = [(TX0 - 1.4, NORTH_SOLID + .05), (TX0 - 1.4, TY0 - 1.4), (BOXX0 - .45, TY0 - 1.4), (BOXX0 - .45, TY0 + .06),
+           (TX0 + .06, TY0 + .06), (TX0 + .06, NORTH_SOLID + .05)]
     C.prism('Wrapping canopy', pts, 'z', CAN0, CAN1, 'panel', 'canopies')
     b = Batch()
-    for x0, x1, y0, y1 in ((TX0 - 1.42, TX0 - 1.3, TY0 - 1.42, NORTH_SOLID), (TX0 - 1.3, BOXX0 - .45, TY0 - 1.42, TY0 - 1.3)):
+    for x0, x1, y0, y1 in ((TX0 - 1.42, TX0 - 1.3, TY0 - 1.42, NORTH_SOLID + .05), (TX0 - 1.3, BOXX0 - .45, TY0 - 1.42, TY0 - 1.3)):
         b.box('frame', (x0 + x1) / 2, (y0 + y1) / 2, CAN0 + .05, x1 - x0, y1 - y0, .12)            # drip edge under the fascia
     # Entrance canopy: a deeper slab with a lettered fascia, from the box frame to the brick block.
     b.box('panel', (-2.6 + 9.7) / 2, (SIGNY + TY0 + .05) / 2, (SIGN0 + SIGN1) / 2, 12.3, TY0 + .05 - SIGNY, SIGN1 - SIGN0)
@@ -652,10 +684,10 @@ def south_front():
     for x0, x1 in ((BOXX0 - .5, BOXX0 + .1), (TX1 - .6, TX1)):
         b.box('wall', (x0 + x1) / 2, (BOXY - .1 + TY0 + .4) / 2, (BOXTOP - .03) / 2, x1 - x0, TY0 + .4 - BOXY + .1, BOXTOP - .03)
     b.box('panel', (BOXX0 + .1 + TX1 - .6) / 2, (BOXY - .16 + TY0 + .3) / 2, 4.51, TX1 - .6 - BOXX0 - .1 + .02, TY0 + .3 - BOXY + .16, .22)
-    curtain(b, 'x', BOXY + .02, BOXX0 + .1, TX1 - .6, 4.62, 8.9, 1.56, transoms=(6.05, 7.45), out=-1, depth=.14)
-    curtain(b, 'x', BOXY + .02, BOXX0 + .1, TX1 - .6, 8.9, 9.95, 1.56, out=-1, depth=.1, glass='spandrel')
-    b.box('panel', (BOXX0 - .55 + TX1) / 2, (BOXY - .14 + TY0 + .2) / 2, (9.95 + BOXTOP) / 2, TX1 - BOXX0 + .55, TY0 + .2 - BOXY + .14, BOXTOP - 9.95)
-    b.box('panel', (BOXX0 - .55 + TX1) / 2, (TY0 + .2 + TY0 + 3.2) / 2, (ROOF - .05 + BOXTOP) / 2, TX1 - BOXX0 + .55, 3.0, BOXTOP - ROOF + .05)
+    curtain(b, 'x', BOXY + .02, BOXX0 + .1, TX1 - .6, 4.62, 8.9, 2.5, transoms=(6.05, 7.45), out=-1, depth=.14)
+    curtain(b, 'x', BOXY + .02, BOXX0 + .1, TX1 - .6, 8.9, 9.95, 2.5, out=-1, depth=.1, glass='spandrel')
+    b.box('panel', (BOXX0 - .55 + TX1 + .03) / 2, (BOXY - .14 + TY0 + .2) / 2, (9.95 + BOXTOP) / 2, TX1 + .03 - BOXX0 + .55, TY0 + .2 - BOXY + .14, BOXTOP - 9.95)
+    b.box('panel', (BOXX0 - .55 + TX1 + .03) / 2, (TY0 + .2 + TY0 + 3.2) / 2, (ROOF - .05 + BOXTOP) / 2, TX1 + .03 - BOXX0 + .55, 3.0, BOXTOP - ROOF + .05)
     b.box('frame', (BOXX0 - .55 + TX1) / 2, BOXY - .15, 9.97, TX1 - BOXX0 + .53, .04, .05)              # shadow line under the cap
     # Storefront under the entrance canopy, with two pairs of glass doors.
     sx0, sx1 = BOXX0 + .1, TX1 - .6
@@ -665,12 +697,11 @@ def south_front():
         curtain(b, 'x', gy, a, c, G0, SIGN0 - .05, 1.5, transoms=(3.05,), out=-1, depth=.1)
     for dc in (4.1, 6.3):
         for s in (-1, 1):
-            lc = dc + s * .55
-            b.box('frame', lc, gy + .02, (G0 + 2.75) / 2, 1.1, .08, 2.75 - G0)
-            b.box('glass', lc, gy + .02, (G0 + 2.7) / 2 + .05, .9, .085, 2.45)
-            b.box('hardware', dc + s * .1, gy - .06, 1.2, .04, .04, .9)
-        b.box('frame', dc, gy, 2.8, 2.3, .14, .1)
-        b.box('glass', dc, gy + .02, (2.85 + SIGN0 - .1) / 2, 2.2, .02, SIGN0 - .1 - 2.85)
+            door_leaf(b, 'x', gy, dc + s * .525, 1.05, G0, 2.74)
+            b.box('hardware', dc + s * .1, gy - .08, 1.2, .04, .04, .9)
+    b.box('frame', 5.2, gy, (G0 + 2.86) / 2, .1, .14, 2.86 - G0)                                     # centre post
+    b.box('frame', 5.2, gy, 2.8, 4.24, .12, .1)                                                       # transom, inside the mullions
+    b.box('glass', 5.2, gy, (2.85 + SIGN0 - .1) / 2, 4.2, .01, SIGN0 - .1 - 2.85)
     b.box('frame', 3.05, gy, (G0 + SIGN0) / 2, .1, .14, SIGN0 - G0)
     b.box('frame', 7.35, gy, (G0 + SIGN0) / 2, .1, .14, SIGN0 - G0)
     b.box('panel', (sx0 + sx1) / 2, gy + .08, (SIGN0 - .06 + 4.45) / 2, sx1 - sx0, .1, 4.45 - SIGN0 + .06)
@@ -695,12 +726,10 @@ def west_front():
         curtain(b, 'y', TX0 + .3, a, c, G0, CAN0 - .06, 1.55, transoms=(3.05,), out=-1, depth=.1)
     b.box('panel', TX0 + .36, (y0 + y1) / 2, (CAN0 - .07 + 4.3) / 2, .1, y1 - y0, 4.3 - CAN0 + .07)
     for s in (-1, 1):
-        lc = -9.0 + s * .45
-        b.box('frame', TX0 + .32, lc, (G0 + 2.75) / 2, .08, .9, 2.75 - G0)
-        b.box('glass', TX0 + .32, lc, (G0 + 2.7) / 2 + .05, .085, .7, 2.45)
-        b.box('hardware', TX0 + .24, -9.0 + s * .1, 1.2, .04, .04, .9)
-    b.box('frame', TX0 + .3, -9.0, 2.8, .14, 1.9, .1)
-    b.box('glass', TX0 + .32, -9.0, (2.85 + CAN0 - .1) / 2, .02, 1.8, CAN0 - .1 - 2.85)
+        door_leaf(b, 'y', TX0 + .3, -9.0 + s * .45, .9, G0, 2.74)
+        b.box('hardware', TX0 + .2, -9.0 + s * .1, 1.2, .04, .04, .9)
+    b.box('frame', TX0 + .3, -9.0, 2.8, .12, 1.86, .1)                                               # transom, inside the posts
+    b.box('glass', TX0 + .3, -9.0, (2.85 + CAN0 - .1) / 2, .01, 1.82, CAN0 - .1 - 2.85)
     for y in (-9.95, -8.05):
         b.box('frame', TX0 + .3, y, (G0 + CAN0) / 2, .14, .1, CAN0 - G0)
     b.flush('west front glazing')
@@ -917,6 +946,8 @@ def brick_block():
     for k in range(int((BX1 - BX0) / .45)):
         m.box('brick', BX0 + .25 + k * .45, -.24, 10.9, .2, .12, .16)                              # dentil course
     eave_cornice(m, BX0 - .05, BX1 + .05, B_EAVE, span_t=.45, proj=.75, role='stone')
+    for ue in (BX0 - .05, BX1 + .05):
+        m.box('stone', ue, -.355, B_EAVE - .135, .02, 1.22, .285)                                    # cornice end plates
     band(m, BX0, BX1, .0, .3, .06, 'stone')
     m.flush('brick block south front')
     # Brick parapet over the cornice (hides the eaves from the street), stone coping and corner finials.
@@ -1045,8 +1076,8 @@ def site():
             ('North street', EC, 64.0, NC, 34.0, 'asphalt', .041), ('Far west sidewalk', -34.0, WC, -62.0, 62.0, 'paving', .14),
             ('Far south sidewalk', EC, 64.0, -41.0, -38.0, 'paving', .14), ('Far north apron', EC, 90.0, 34.0, 61.2, 'paving', .1),
             ('South sidewalk', EC, 64.0, SC, TY0, 'paving', .14), ('West sidewalk', EC, TX0, TY0, NC, 'paving', .14),
-            ('North sidewalk', TX0, 64.0, TY1, NC, 'paving', .141), ('Parking court', BX0, 21.4, BY1, 16.4, 'concrete2', .06),
-            ('Rear yard', TX1, 64.0, 16.4, TY1, 'paving', .12), ('Side passage', TX1, BX0, BY1, 16.4, 'paving', .121),
+            ('North sidewalk', TX0, 64.0, TY1, NC, 'paving', .141), ('Parking court', BX0, 21.4, BY1 - .03, 16.4, 'concrete2', .06),
+            ('Rear yard', TX1 - .02, 64.0, 16.4, TY1, 'paving', .12), ('Side passage', TX1 - .02, BX0, BY1 - .03, 16.4, 'paving', .121),
             ('East yard', 36.0, 40.3, BY1, 16.4, 'paving', .122)):
         C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, top / 2), (x1 - x0, y1 - y0, top), role, 'site', 0)
     b = Batch()
