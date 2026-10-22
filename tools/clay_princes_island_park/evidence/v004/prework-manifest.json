@@ -1,0 +1,447 @@
+{
+  "candidate": "clay-princes-island-park-clay-v004",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-princes-island-park",
+  "variant_id": "clay-princes-island-park-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "calgary_princes_island/variant_0, modelled as Prince's Island Park",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 97.0,
+      "depth": 63.0,
+      "height": 14.0
+    },
+    "observed_storeys": 1,
+    "storey_programme": "park: a one-storey pavilion (cafe or washrooms) among paths, beds and trees",
+    "plan": "park 52.6 x 63 m from the west edge to the waterline (top view: pavilion roof about 12.4 x 9.4 m rotated 27 degrees), the Bow 34 m wide, a footbridge at the north to a far bank",
+    "levels_m": {
+      "river": 0.0,
+      "park_grade": 1.0,
+      "boardwalk_deck": 1.45,
+      "pavilion_floor": 1.15,
+      "pavilion_eave": 4.6,
+      "green_roof": 5.1
+    },
+    "facade": "cedar board cladding, glazed south-east face with dark mullions, sedum roof with a dark fascia, timber posts; pale slab paving with sett borders, asphalt cycle paths with yellow dashes, a concrete boardwalk with open picket railings, rip-rap, kerbed planting beds, rounded deciduous trees",
+    "inferred": "the north lawn, footbridge and far bank lie beyond the top view and follow the front and oblique; the skyline is context and not modelled; the river bed below the surface is not modelled"
+  },
+  "roof_contract": {
+    "type": "flat planted sedum roof with a thin dark fascia over the pavilion",
+    "datum_m": 4.6,
+    "crowns_m": [
+      5.15
+    ]
+  },
+  "identity_contract": {
+    "owner": "Prince's Island Park: a green-roofed timber pavilion on a wide slab promenade among lens-shaped beds of grasses and flowers, cycle paths with yellow dashes, a railed boardwalk along a rip-rap bank of the Bow, groves of rounded trees"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: blue-green water, grey rip-rap, greens and golds of grasses and trees with pink, lavender and white flowers, pale slabs and dark granite setts, asphalt and yellow dashes, cedar, dark steel and glass, corten",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 1,
+    "ground": "pavilion room with tables behind the glazed face, porch, paths for walking and cycling, benches, planting"
+  },
+  "open_space_contract": {
+    "kind": "fixed_native_park",
+    "axis": "y",
+    "river_side": "east",
+    "zones": [
+      "river",
+      "riprap",
+      "boardwalk",
+      "east_cycle_path",
+      "pavilion",
+      "promenade",
+      "planting_beds",
+      "west_cycle_path",
+      "groves",
+      "north_lawn",
+      "footbridge"
+    ]
+  },
+  "contact_contract": [
+    "River surface at grade zero",
+    "Island ground solid from the river to the park grade",
+    "Rip-rap from the water to the bank top",
+    "Paths, beds and the pavilion slab on the park ground",
+    "Boardwalk on a solid plinth",
+    "Footbridge on two piers and abutments"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -10.6,
+        -13.6,
+        2.65
+      ],
+      "target": [
+        4.0,
+        6.0,
+        4.0
+      ],
+      "lens": 22,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -2.0,
+        -34.0,
+        16.0
+      ],
+      "target": [
+        3.0,
+        2.0,
+        1.0
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        -1.0,
+        -4.0,
+        78.0
+      ],
+      "target": [
+        -1.0,
+        -0.6,
+        0.0
+      ],
+      "lens": 34,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        19.0,
+        8.5,
+        120.0
+      ],
+      "target": [
+        19.0,
+        8.501,
+        0.0
+      ],
+      "ortho_scale": 100.0
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -62.0,
+        0.0,
+        18.0
+      ],
+      "target": [
+        0.0,
+        4.0,
+        2.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        48.0,
+        -16.0,
+        16.0
+      ],
+      "target": [
+        8.0,
+        6.0,
+        2.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        -4.0,
+        56.0,
+        25.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        2.0
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        62.0,
+        50.0,
+        24.0
+      ],
+      "target": [
+        10.0,
+        6.0,
+        1.5
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "pavilion_close",
+      "location": [
+        -9.0,
+        -9.0,
+        2.7
+      ],
+      "target": [
+        0.5,
+        0.0,
+        3.2
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "glazing_close",
+      "location": [
+        5.2,
+        -10.0,
+        3.2
+      ],
+      "target": [
+        2.6,
+        -4.4,
+        2.9
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "green_roof",
+      "location": [
+        -6.0,
+        -15.5,
+        15.0
+      ],
+      "target": [
+        0.2,
+        0.2,
+        4.9
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "porch_northwest",
+      "location": [
+        -2.0,
+        14.0,
+        2.7
+      ],
+      "target": [
+        1.0,
+        4.0,
+        3.0
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "promenade_beds",
+      "location": [
+        -14.6,
+        16.5,
+        2.7
+      ],
+      "target": [
+        -6.0,
+        -6.0,
+        2.0
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "boardwalk",
+      "location": [
+        13.0,
+        -1.5,
+        2.9
+      ],
+      "target": [
+        18.6,
+        26.0,
+        2.4
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "riprap_bank",
+      "location": [
+        34.0,
+        -14.0,
+        5.0
+      ],
+      "target": [
+        19.0,
+        -2.0,
+        0.8
+      ],
+      "lens": 34,
+      "whole": false
+    },
+    {
+      "name": "bench_plaza",
+      "location": [
+        2.0,
+        -21.5,
+        2.5
+      ],
+      "target": [
+        6.5,
+        -18.5,
+        1.5
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "footbridge",
+      "location": [
+        12.0,
+        43.0,
+        7.0
+      ],
+      "target": [
+        36.0,
+        34.0,
+        1.5
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "west_path",
+      "location": [
+        -23.0,
+        -21.0,
+        2.7
+      ],
+      "target": [
+        -24.0,
+        12.0,
+        1.8
+      ],
+      "lens": 30,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "pavilion_close",
+    "glazing_close",
+    "green_roof",
+    "porch_northwest",
+    "promenade_beds",
+    "boardwalk",
+    "riprap_bank",
+    "bench_plaza",
+    "footbridge",
+    "west_path"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/princes-island-park/variant_0.png",
+        "path": "sources/front.png",
+        "bytes": 1505682,
+        "sha256": "1b888e08c7c12b1ef0c559998fb419479f7d2212bc5f54e786b87336059960e7"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/princes-island-park/variant_0_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 979352,
+        "sha256": "8b979668e4f59df85fdaa84f762aa410fb7eed553300003cb36c929aef1bc694"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/princes-island-park/variant_0_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 1002287,
+        "sha256": "c172c901f34540d22a8f4f0f42cf0a8d0639f92b0dec8688212cab682f894344"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_princes.py",
+        "sha256": "a513941ecaeb698216318b09f88d6d868793f1b16fbd30289fa95e74c7352511"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "bca1f27c575ac30bfce8eee36c77ea5ad4ed06c438965cc4e7c54eeba202b823"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "c8fab3146565ebd14b5de4e19f5e0b86ced580ec6f84a70112b58dec265f36a7"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-22T02:48:06.821361+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

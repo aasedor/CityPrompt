@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-princes-island-park",
+  "variant_id": "clay-princes-island-park-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "calgary_princes_island/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/princes-island-park/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1505682,
+      "sha256": "1b888e08c7c12b1ef0c559998fb419479f7d2212bc5f54e786b87336059960e7"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/princes-island-park/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 979352,
+      "sha256": "8b979668e4f59df85fdaa84f762aa410fb7eed553300003cb36c929aef1bc694"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/princes-island-park/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 1002287,
+      "sha256": "c172c901f34540d22a8f4f0f42cf0a8d0639f92b0dec8688212cab682f894344"
+    }
+  ]
+}

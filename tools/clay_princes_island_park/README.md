@@ -75,6 +75,6 @@ is assembled as `head + common + gcommon + plantkit + body`, and `build.py` keep
 `clay_core.deliver()`'s per-role join (`keep_instances()`, copied from the kit showcase) and writes
 `evidence/planting-kit-size.json`. The kit clearance audit must be 0 or the build fails.
 
-## Open blockers after v003 (x)
+## Open blockers after v004 (x)
 
 x
