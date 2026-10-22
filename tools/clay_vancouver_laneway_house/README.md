@@ -25,7 +25,7 @@ Read from the pixels (metric dimensions and interiors are authored teaching assu
 
 - envelope about 7 x 8 m, 8.3 m to the highest point; 2 storeys (living and dining on the ground floor behind the glazed corner, bedrooms and a sitting room above off the front balcony).
 - storey programme: living and dining on the ground floor behind the glazed corner, bedrooms and a sitting room above off the front balcony
-- plan: 7.4 x 8.1 m under one hipped roof (0.38 m side and 0.30 m end overhangs); a 2.9 x 1.0 m two-storey glazed bay at the south-west corner and a 1.0 m deep porch and balcony recess east of it, closed by a full-height cedar end fin; a 5.0 x 6.0 m one-storey garage against the rear wall
+- plan: 7.4 x 8.1 m under one hipped roof (0.38 m side and 0.30 m end overhangs); a 2.9 x 1.0 m two-storey glazed bay at the south-west corner and a 1.0 m deep porch and balcony recess east of it, closed by a full-height cedar end fin; a 5.0 x 2.6 m one-storey garage and store against the rear wall, its hipped roof ridge running east-west along the rear wall
 - facade: vertical cedar boards of varied tone with fine dark joints on a concrete plinth; heavy black window frames; a deep cedar band under the front roof edge; a horizontal-board panel over the side entry; wood front and side doors
 - inferred: interiors, the east and rear walls and the garage interior are teaching assumptions; the garage, which the front view shows as a low hip-roofed building with a board door behind the house, is placed on the plan of the lower roof in the top view
 - levels (m): 0.48, 3.32, 5.55

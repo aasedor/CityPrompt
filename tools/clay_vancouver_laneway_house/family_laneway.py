@@ -2599,9 +2599,12 @@ def planting():
     kit = KIT = PlantKit('planting', instancing=INSTANCING); P = protos(kit)
     # The side-street beds have no kerb: the sword ferns arch out over the sidewalk edge and back against the cedar
     # wall, as in the sources, so their registered planting regions take in a 0.3 m overhang strip on the sidewalk
-    # and 0.25 m behind the wall face; stems and the scatter stay inside the mulched bed (`real`).
+    # and 0.25 m behind the wall face (the front east bed only the sidewalk strip); stems and the scatter stay inside
+    # the mulched bed (`real`).
     ext = {'A': [(XSW - .3, YSW - .3), (-.87, YSW - .3), (-.87, YF + .02), (X0 + .25, YF + .02), (X0 + .25, NU - .72), (XSW - .3, NU - .72)],
-           'D': [(XSW - .3, NU + .72), (X0 + .25, NU + .72), (X0 + .25, Y1 + .11), (XSW - .3, Y1 + .11)]}
+           'D': [(XSW - .3, NU + .72), (X0 + .25, NU + .72), (X0 + .25, Y1 + .11), (XSW - .3, Y1 + .11)],
+           'B': [(.67, YSW - .3), (XF - .04, YSW - .3), (XF - .04, YF + .02), (X1 - T + .02, YF + .02), (X1 - T + .02, YS + .02),
+                 (XB + 2.23, YS + .02), (XB + 2.23, YF + .02), (.67, YF + .02)]}
     real = {k: _PkPolygon(poly) for k, (boxes, poly) in beds.items()}
     regs = {k: kit.register_bed(_PkPolygon(ext.get(k, poly))) for k, (boxes, poly) in beds.items()}
     placed = []
@@ -2615,10 +2618,10 @@ def planting():
     fine = (1.1, .95, .8, .68, .56, .46, .38, .3)
     ferns = [(P['fern'], 1.3), (P['fern2'], .8)]
     big = (1.1, 1.0, .9, .8, .7)
-    for k, sp, sd in (('A', .62, 41), ('D', .55, 43), ('B', .7, 45), ('E', .7, 47)):     # first the sword-fern masses
+    for k, sp, sd in (('A', .6, 41), ('D', .55, 43), ('B', .6, 45), ('E', .7, 47)):     # first the sword-fern masses
         fill(kit, regs[k], ferns, sp, sd, placed, scales=big, drift=3.0, within=real[k])
     fill(kit, regs['A'], front, .3, 31, placed, scales=fine, within=real['A'])
-    fill(kit, regs['B'], right, .32, 33, placed, scales=fine)
+    fill(kit, regs['B'], right, .3, 33, placed, scales=fine, within=real['B'])
     fill(kit, regs['D'], side, .26, 35, placed, scales=fine, within=real['D'])
     fill(kit, regs['E'], side, .36, 37, placed, scales=fine)
     kit.flush()
