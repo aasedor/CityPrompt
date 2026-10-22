@@ -2544,11 +2544,13 @@ def protos(kit):
     """Laneway garden library: sword and deer ferns, a stiff spiky grass, feather reed grass with plumes, blue fescue,
     golden forest grass, a red Japanese maple and a small green shrub."""
     P = {}
-    P['fern'] = sword_fern(kit, 'lw_sword_fern', seed=7)
-    P['fern2'] = sword_fern(kit, 'lw_sword_fern_b', fronds=14, length=.62, role='pk_leaf2', seed=9)
+    P['fern'] = sword_fern(kit, 'lw_sword_fern', fronds=24, length=1.32, seed=7)                 # mature: about 0.8 m tall, 1.3 m across
+    P['fern2'] = sword_fern(kit, 'lw_sword_fern_b', fronds=18, length=1.0, role='pk_leaf2', seed=9)
     P['spiky'] = arching_grass(kit, 'lw_spiky_grass', blades=26, height=.68, width=.034, role='pk_leaf_dark', seed=27)
     P['reed'] = arching_grass(kit, 'lw_feather_reed', blades=48, height=.6, width=.016, role='pk_blade', plume_role='pk_plume',
                               plumes=6, plume_height=1.9, seed=11)
+    P['reed_tall'] = arching_grass(kit, 'lw_feather_reed_tall', blades=64, height=.82, width=.017, role='pk_blade', plume_role='pk_plume',
+                                   plumes=9, plume_height=1.65, seed=21)   # the clump along the glazed bay: plumes to about 1.35 m
     P['fescue'] = arching_grass(kit, 'lw_blue_fescue', blades=38, height=.24, width=.011, role='pk_blade_blue', crown_role='pk_crown_blue', seed=13)
     P['golden'] = arching_grass(kit, 'lw_forest_grass', blades=40, height=.3, width=.02, role='pk_leaf_light', seed=15)
     P['maple'] = shrub_mass(kit, 'lw_japanese_maple', radius=.95, height=1.85, lobes=7, role='pk_leaf_red', role2='maple_red2',
@@ -2557,7 +2559,7 @@ def protos(kit):
     return P
 
 
-def fill(kit, reg, mix, spacing, seed, placed, scales=(1.1, .95, .8, .65, .5), drift=2.2, within=None):
+def fill(kit, reg, mix, spacing, seed, placed, scales=(1.1, .95, .8, .65, .5), drift=2.2, within=None, tall=None):
     """Dense drifts: Poisson points `spacing` apart (inside `within`, the mulched bed, when the registered region also
     takes in the overhang strip); each takes the species whose noise field (with its weight) is highest there, at the
     largest scale that passes the kit clearance rule; points inside a placed plant are skipped."""
@@ -2570,9 +2572,10 @@ def fill(kit, reg, mix, spacing, seed, placed, scales=(1.1, .95, .8, .65, .5), d
             p = mix[i][0]
             for s in scales:
                 sy = s * rnd.uniform(.9, 1.1); ln = (rnd.uniform(-.05, .05), rnd.uniform(-.05, .05))
-                if kit.fits(p, x, y, s, reg, sy=sy, lean=ln):
-                    kit.place(p, x, y, PSOIL, rnd.uniform(0, math.tau), s, sy=sy, lean=ln)
-                    placed.append((x, y, kit.extent(p, s, sy, s, ln)))
+                sz = s if tall is None else tall * rnd.uniform(.92, 1.08)              # `tall`: absolute height scale (upright vase)
+                if kit.fits(p, x, y, s, reg, sy=sy, sz=sz, lean=ln):
+                    kit.place(p, x, y, PSOIL, rnd.uniform(0, math.tau), s, sy=sy, sz=sz, lean=ln)
+                    placed.append((x, y, kit.extent(p, s, sy, sz, ln)))
                     break
             else:
                 continue
@@ -2618,10 +2621,30 @@ def planting():
     fine = (1.1, .95, .8, .68, .56, .46, .38, .3)
     ferns = [(P['fern'], 1.3), (P['fern2'], .8)]
     big = (1.1, 1.0, .9, .8, .7)
-    for k, sp, sd in (('A', .6, 41), ('D', .55, 43), ('B', .6, 45), ('E', .7, 47)):     # first the sword-fern masses
-        fill(kit, regs[k], ferns, sp, sd, placed, scales=big, drift=3.0, within=real[k])
-    fill(kit, regs['A'], front, .3, 31, placed, scales=fine, within=real['A'])
-    fill(kit, regs['B'], right, .3, 33, placed, scales=fine, within=real['B'])
+    # The bed in front of the glazed bay (source front, oblique and top): a back row of tall feather reed grass along the
+    # bay plinth, rising to the lower third of the glazing, with forest-grass mounds and blue fescue in front of it and
+    # sword ferns limited to the west end and the corner; the front beds are no longer an all-fern carpet.
+    rnd = random.Random(53)
+    for x in (-3.3, -2.62, -1.94):
+        y = YF - .74 + rnd.uniform(-.05, .05)
+        s = kit.place_in(P['reed_tall'], x, y, PSOIL, rnd.uniform(0, math.tau), .74, region=regs['A'], shrink=(1., .9, .8),
+                         sz=.95)
+        if s:
+            placed.append((x, y, kit.extent(P['reed_tall'], s, s, .95, (0., 0.))))
+    for x, y, k in ((-3.05, -5.55, 'golden'), (-2.25, -5.5, 'fescue'), (-1.6, -5.65, 'golden'), (-2.7, -6.35, 'fescue'),
+                    (-1.95, -6.3, 'golden'), (-1.3, -6.5, 'fescue'), (-3.45, -6.55, 'golden')):
+        s = kit.place_in(P[k], x, y, PSOIL, rnd.uniform(0, math.tau), 1.25 if k == 'golden' else 1.5, region=regs['A'],
+                         shrink=(1., .85, .7))
+        if s:
+            placed.append((x, y, kit.extent(P[k], s, s, s, (0., 0.))))
+    # Sword ferns about 0.8 m tall and 1.1-1.3 m across: the arching prototype is scaled in plan and stretched upright.
+    for k, sp, sd in (('A', .95, 41), ('D', .62, 43), ('B', .85, 45), ('E', .75, 47)):     # then the sword-fern masses
+        fill(kit, regs[k], ferns, sp, sd, placed, scales=(.55, .5, .45, .4, .35), drift=3.0, within=real[k], tall=1.05)
+    front = [(P['golden'], 1.0), (P['fescue'], .9), (P['fern2'], .6), (P['spiky'], .5), (P['reed'], .4)]
+    right = [(P['fern2'], .9), (P['golden'], .9), (P['fescue'], .7), (P['spiky'], .4), (P['shrub'], .2)]
+    lush = (1.6, 1.4, 1.2, 1.0, .85, .7, .55, .42)
+    fill(kit, regs['A'], front, .34, 31, placed, scales=lush, within=real['A'])
+    fill(kit, regs['B'], right, .34, 33, placed, scales=lush, within=real['B'])
     fill(kit, regs['D'], side, .26, 35, placed, scales=fine, within=real['D'])
     fill(kit, regs['E'], side, .36, 37, placed, scales=fine)
     kit.flush()
