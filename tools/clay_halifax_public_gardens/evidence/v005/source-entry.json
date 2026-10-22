@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-halifax-public-gardens",
+  "variant_id": "clay-halifax-public-gardens-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "halifax_public_gardens/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/halifax-public-gardens/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1556335,
+      "sha256": "e87f7a011833076c985a1ab9c1da22a58ee19d1006d778373e38f9f095998b9e"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/halifax-public-gardens/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 1021819,
+      "sha256": "fe4f13a4732e47f4e7303b8b416a332c898274eecdec49c125db3ed70e342a10"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/openspaces/halifax-public-gardens/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 928683,
+      "sha256": "adbd6581a714fa2679c94abbdedbd434d6ce5ce84f1a66279cc04ff30daa1b30"
+    }
+  ]
+}
