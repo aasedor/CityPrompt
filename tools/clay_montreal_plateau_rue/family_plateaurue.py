@@ -66,11 +66,11 @@ CORNER = dict(ua=18.0, ub=20.0, zc=11.4)        # corner building: 18 m along ro
 def manifest(version):
     h = 13.6
     cams = G.camera_roster(60.0, 60.0, h, [
-        ('facade_close', (-6.2, 36.0, 4.2), (0.0, 33.0, 5.0), 32),
+        ('facade_close', (-8.5, 33.0, 4.4), (0.0, 33.0, 5.2), 32),
         ('architecture_close', (-6.0, 29.0, 12.0), (0.0, 26.6, 11.4), 30),
-        ('glass_close', (-3.6, 33.6, F2 + 1.4), (0.0, 33.6, F2 + 1.4), 35),
-        ('iron_stair', (-4.6, 39.0, 3.0), (-1.5, 43.0, 2.6), 26),
-        ('balcony_gallery', (-4.4, 46.5, 5.4), (0.0, 49.5, 4.6), 28),
+        ('glass_close', (-3.4, 34.45, F2 + 1.4), (0.0, 34.45, F2 + 1.4), 35),
+        ('iron_stair', (-4.8, 31.0, 3.0), (-1.0, 35.5, 2.2), 26),
+        ('balcony_gallery', (-4.6, 36.0, 5.2), (0.0, 39.5, 4.6), 28),
         ('mansard_caps', (24.0, -7.5, 14.5), (26.0, 0.0, 11.8), 30),
         ('corner_building', (-9.0, -9.0, 6.5), (6.0, 6.0, 6.0), 26),
         ('sidewalk_trees', (-12.0, 10.0, 1.7), (-4.0, 30.0, 2.4), 24),
@@ -78,13 +78,13 @@ def manifest(version):
         ('rear_yards', (40.0, 40.0, 14.0), (20.0, 20.0, 6.0), 26)])
     for c in cams:
         if c['name'] == 'front':                                               # the locked front: eye level on the north-street sidewalk, looking north along the row
-            c.update(location=(-4.3, 28.5, 1.7), target=(-1.0, 54.0, 6.4), lens=21, whole=False)
+            c.update(location=(-6.0, 28.5, 1.6), target=(1.0, 44.0, 5.0), lens=22, whole=False)
         elif c['name'] == 'front_corner':                                      # the locked oblique: high over the intersection, looking north-east at the corner
-            c.update(location=(-26.0, -30.0, 40.0), target=(14.0, 12.0, 2.0), lens=30, whole=False)
+            c.update(location=(-17.0, -20.0, 30.0), target=(12.0, 10.0, 3.0), lens=28, whole=False)
         elif c['name'] == 'aerial':
             c.update(location=(48.0, -40.0, 44.0), target=(16.0, 14.0, 4.0), lens=28, whole=False)
         elif c['name'] == 'top':                                               # the locked top view: the block corner at the bottom, rotated 45 degrees
-            c.update(location=(9.0, 9.0, 140.0), target=(9.0007, 9.0007, 0.0), ortho_scale=64.0, whole=False)
+            c.update(location=(-1.0, -1.0, 120.0), target=(9.0, 9.0, 0.0), ortho_scale=64.0, whole=False)
         elif c['name'] == 'left_side':                                         # along the north street from the far end
             c.update(location=(-9.5, 84.0, 9.0), target=(0.0, 30.0, 5.0), lens=26, whole=False)
         elif c['name'] == 'right_side':                                        # along the east street from the far end
@@ -452,6 +452,18 @@ def frustum(b, role, cx, cy, z0, z1, r0, r1, n=8, phase=.5):
         F.append((o + i, o + j, o + n + j, o + n + i))
 
 
+def quad(b, role, pts):
+    """One flat four-corner face (a picket or a scored joint): two triangles instead of a twelve-triangle box."""
+    V, F = b.g.setdefault(role, ([], []))
+    o = len(V); V.extend(pts); F.append((o, o + 1, o + 2, o + 3))
+
+
+def picket(b, x, y, z0, z1, tx, ty, w=.024, role='hardware'):
+    """Flat bar picket in the plane of its railing (tangent tx, ty)."""
+    hx, hy = tx * w / 2, ty * w / 2
+    quad(b, role, [(x - hx, y - hy, z0), (x + hx, y + hy, z0), (x + hx, y + hy, z1), (x - hx, y - hy, z1)])
+
+
 def hexa(b, role, pts):
     """Eight corners (bottom four then top four, both anticlockwise) as one closed block."""
     b._hex(role, pts)
@@ -616,9 +628,10 @@ def rail(b, pts, z, h=.95, spacing=.14):
         b.beam('hardware', (ax, ay, z + h), (cx, cy, z + h), .05, .045, ext=.025)
         b.beam('hardware', (ax, ay, z + .1), (cx, cy, z + .1), .03, .03, ext=.015)
         n = max(2, int(L / spacing))
+        tx, ty = (cx - ax) / L, (cy - ay) / L
         for i in range(n + 1):
             px, py = ax + (cx - ax) * i / n, ay + (cy - ay) * i / n
-            b.box('hardware', px, py, z + (h + .1) / 2 + .025, .022, .022, h - .1)
+            picket(b, px, py, z + .085, z + h - .02, tx, ty)
 
 
 def balcony(b, f, a, c, z, depth, fascia, open_end=None):
@@ -673,8 +686,9 @@ def ext_stair(b, f, u_top, dirn, z_top, open_side):
         for p0, p1 in zip(pts, pts[1:]):
             b.beam('hardware', (p0[0], p0[1], max(p0[2] - .14, YZ + .12)), (p1[0], p1[1], max(p1[2] - .14, YZ + .12)), .045, .2, ext=.02)
             b.beam('hardware', (p0[0], p0[1], p0[2] + .92), (p1[0], p1[1], p1[2] + .92), .05, .045, ext=.02)
-        for p in pts[1:]:
-            b.box('hardware', p[0], p[1], p[2] + .46, .022, .022, .92)
+        for p, q in zip(pts[1:], pts[:-1]):
+            L = math.hypot(p[0] - q[0], p[1] - q[1]) or 1.0
+            picket(b, p[0], p[1], p[2], p[2] + .9, (p[0] - q[0]) / L, (p[1] - q[1]) / L)
     pc = f.p(ccu, ccd, 0)
     b.box('hardware', pc[0], pc[1], (YZ + zb + .9) / 2, .09, .09, zb + .9 - YZ)            # newel at the curl's centre
     b.box('hardware', pc[0], pc[1], zb + .95, .15, .15, .1)
@@ -973,10 +987,11 @@ def sidewalk_details():
                     (x0, y0), (x1, y1) = W(-YD - SW + .05, t), W(-YD - .05, t + .012)
                 else:
                     (x0, y0), (x1, y1) = W(t, -YD - SW + .05), W(t + .012, -YD - .05)
-                b.box('sidejoint', (x0 + x1) / 2, (y0 + y1) / 2, SWZ + .001, abs(x1 - x0), abs(y1 - y0), .004)
+                z = SWZ + .002
+                quad(b, 'sidejoint', [(x0, y0, z), (x1, y0, z), (x1, y1, z), (x0, y1, z)])
                 t += 1.5
     b.flush('sidewalk joints')
-    trees = [(-4.4, 24.0), (-4.4, 33.5), (-4.4, 42.5), (-4.4, 58.0), (24.0, -4.4), (40.0, -4.4), (56.0, -4.4),
+    trees = [(-4.4, 24.0), (-4.4, 43.0), (-4.4, 58.0), (24.0, -4.4), (40.0, -4.4), (56.0, -4.4),
              (XO + 4.4, 12.0), (XO + 4.4, 36.0), (XO + 4.4, 60.0), (16.0, XO + 4.4), (44.0, XO + 4.4), (8.0, -4.4), (-4.4, 8.0)]
     for x, y in trees:
         b.box('soil', x, y, (SWZ + .012) / 2 + .002, 1.3, 1.3, SWZ + .01)
@@ -1023,10 +1038,13 @@ def fence(b, a, c, height=.95, spacing=.2):
     for z in (YZ + .28, YZ + height - .03):
         b.beam('hardware', (ax, ay, z), (cx, cy, z), .035, .035)
     n = max(2, int(L / spacing))
+    tx, ty = (cx - ax) / L, (cy - ay) / L
     for i in range(n + 1):
         px, py = ax + (cx - ax) * i / n, ay + (cy - ay) * i / n
-        post = i in (0, n)
-        b.box('hardware', px, py, (YZ + .14 + YZ + height + (.08 if post else 0)) / 2, .06 if post else .02, .06 if post else .02, height - .14 + (.08 if post else 0))
+        if i in (0, n) or (spacing > 1.0):
+            b.box('hardware', px, py, (YZ + .14 + YZ + height + .08) / 2, .06, .06, height - .06)
+        else:
+            picket(b, px, py, YZ + .13, YZ + height + .02, tx, ty)
 
 
 def smooth(obj):

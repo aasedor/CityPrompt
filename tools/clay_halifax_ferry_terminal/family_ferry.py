@@ -45,7 +45,7 @@ EPS = .002
 PALETTE = dict(wall=(.70, .70, .68), concrete2=(.56, .56, .55), panel=(.80, .81, .81), frame=(.22, .24, .26),
     glass=(.14, .19, .22), spandrel=(.62, .68, .71), membrane=(.80, .81, .80), gravel=(.66, .62, .55), louvre=(.70, .71, .71),
     mech=(.84, .84, .82), sign=(.16, .18, .20), brick=(.50, .24, .16), joint=(.33, .27, .24), stone=(.70, .61, .47),
-    iron=(.11, .15, .13), tile=(.55, .31, .21), timber=(.40, .26, .14), interior=(.80, .77, .70), floor=(.58, .56, .53),
+    iron=(.17, .22, .19), tile=(.55, .31, .21), timber=(.40, .26, .14), interior=(.80, .77, .70), floor=(.58, .56, .53),
     paving=(.68, .67, .64), asphalt=(.26, .26, .27), curb=(.74, .74, .72), lawn=(.33, .45, .22), soil=(.27, .21, .16),
     paint=(.90, .90, .88), yellow=(.84, .70, .22), redpave=(.56, .31, .25), water=(.24, .37, .45), hardware=(.08, .08, .08),
     planting=(.30, .43, .19), pot=(.62, .58, .52), cream=(.82, .78, .66), brick2=(.56, .32, .23), ctx=(.74, .72, .68))
@@ -621,7 +621,7 @@ def canopies():
            (TX0 + .06, TY0 + .06), (TX0 + .06, NORTH_SOLID)]
     C.prism('Wrapping canopy', pts, 'z', CAN0, CAN1, 'panel', 'canopies')
     b = Batch()
-    for x0, x1, y0, y1 in ((TX0 - 1.42, TX0 - 1.3, TY0 - 1.42, NORTH_SOLID), (TX0 - 1.42, BOXX0 - .45, TY0 - 1.42, TY0 - 1.3)):
+    for x0, x1, y0, y1 in ((TX0 - 1.42, TX0 - 1.3, TY0 - 1.42, NORTH_SOLID), (TX0 - 1.3, BOXX0 - .45, TY0 - 1.42, TY0 - 1.3)):
         b.box('frame', (x0 + x1) / 2, (y0 + y1) / 2, CAN0 + .05, x1 - x0, y1 - y0, .12)            # drip edge under the fascia
     # Entrance canopy: a deeper slab with a lettered fascia, from the box frame to the brick block.
     b.box('panel', (-2.6 + 9.7) / 2, (SIGNY + TY0 + .05) / 2, (SIGN0 + SIGN1) / 2, 12.3, TY0 + .05 - SIGNY, SIGN1 - SIGN0)
@@ -1033,11 +1033,11 @@ def site():
     b = Batch()
     for y0, y1 in ((-19.2, -6.3), (-3.0, 17.3)):                                                      # lawn strips
         b.box('lawn', (-13.6 + TX0 - .02) / 2, (y0 + y1) / 2, .09, TX0 - .02 + 13.6, y1 - y0, .14)
-        b.box('curb', -13.65, (y0 + y1) / 2, .1, .1, y1 - y0 + .1, .1)
-    b.box('curb', EC + .1, (SC + NC) / 2, .075, .2, NC - SC, .15)                                     # curbs
-    b.box('curb', (EC + 64.0) / 2, SC + .1, .076, 64.0 - EC - .4, .2, .152)
-    b.box('curb', (EC + 64.0) / 2, NC - .1, .077, 64.0 - EC - .4, .2, .154)
-    b.box('curb', WC - .1, 0.0, .074, .2, 124.0, .148)
+        b.box('curb', -13.63, (y0 + y1) / 2, .1, .1, y1 - y0 + .1, .1)
+    b.box('curb', EC + .05, (SC + NC) / 2, .075, .2, NC - SC + .1, .15)                                # curbs, 5 cm proud of the walks
+    b.box('curb', (EC + .15 + 64.0) / 2, SC + .05, .076, 64.0 - EC - .15, .2, .152)
+    b.box('curb', (EC + .15 + 64.0) / 2, NC - .05, .077, 64.0 - EC - .15, .2, .154)
+    b.box('curb', WC + .05, 0.0, .074, .2, 124.0, .148)
     b.box('redpave', EC + 1.8, SC + 1.6, .141, 3.2, 2.8, .006)                                         # corner pavers
     b.box('yellow', 2.9, SC + .55, .141, 13.6, .45, .006)                                               # tactile strip
     for k in range(int((64.0 - EC) / 1.5)):                                                            # sidewalk joints
@@ -1081,8 +1081,8 @@ def site():
 def infill():
     """The narrow service link between the terminal and the brick block (a lit roof strip from above)."""
     b = Batch()
-    b.box('concrete2', (TX1 - .05 + BX0 + .1) / 2, (TY0 + .02 + BY1) / 2, 8.0 / 2, BX0 + .1 - TX1 + .05, BY1 - TY0 - .02, 8.0)
-    b.box('membrane', (TX1 - .05 + BX0 + .1) / 2, (TY0 + .1 + BY1 - .1) / 2, 8.02, BX0 - TX1 - .1, BY1 - TY0 - .2, .05)
+    b.box('concrete2', (TX1 - .05 + BX0 + .1) / 2, (TY0 + .02 + BY1) / 2, 10.55 / 2, BX0 + .1 - TX1 + .05, BY1 - TY0 - .02, 10.55)
+    b.box('membrane', (TX1 + .05 + BX0 - .05) / 2, (TY0 + .1 + BY1 - .1) / 2, 10.565, BX0 - TX1 - .1, BY1 - TY0 - .2, .04)
     b.box('panel', (TX1 + BX0) / 2, TY0 - .0, 1.35, 1.0, .06, 2.4)
     b.box('hardware', (TX1 + BX0) / 2 + .3, TY0 - .05, 1.2, .04, .04, .15)
     b.flush('service link')
