@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "halifax_georgian_colonial",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "halifax_georgian_colonial_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "halifax_georgian_colonial",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "halifax_georgian_colonial_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/halifax-georgian-colonial/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1498415,
+      "sha256": "045d4918a6bd8121c6a4c74892b353610370f9af3910f61e6b58b00a7043ad60",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "halifax_georgian_colonial",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "halifax_georgian_colonial_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/halifax-georgian-colonial/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 948192,
+      "sha256": "b8f2b88fca6db22dddfea3c3e6b4449fa0162b6528898d35760550451c0ff185",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "halifax_georgian_colonial",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "halifax_georgian_colonial_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/halifax-georgian-colonial/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 881769,
+      "sha256": "0ef686bee41cd16fd6e4a4a72df3f081cca2763762044d817d1b5ad7a3abcd5c",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "gastown_heritage_commercial",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "gastown_heritage_commercial_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "gastown_heritage_commercial",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "gastown_heritage_commercial_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/gastown-heritage-commercial/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1472172,
+      "sha256": "ddd3ab09b0127bb69fdbab398d43a3ba3e17c5a106796a2bd1f8c1ebcdf267f0",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "gastown_heritage_commercial",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "gastown_heritage_commercial_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/gastown-heritage-commercial/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 954203,
+      "sha256": "3b43cbf516b938a34a960308522ffe1cab22f6e4985efaf5d2773c7bf3444529",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "gastown_heritage_commercial",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "gastown_heritage_commercial_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/gastown-heritage-commercial/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 881317,
+      "sha256": "f9db097bb5223aa1014d5d9438b107f3dfc79b491264ab9e2debf24075cf42f3",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

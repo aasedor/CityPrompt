@@ -1,0 +1,68 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "montreal_plateau_residential_rue",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "montreal_plateau_residential_rue_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1.webp",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2.webp",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3.webp",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "montreal_plateau_residential_rue",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "montreal_plateau_residential_rue_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/streets/montreal-plateau-residential-rue/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1586791,
+      "sha256": "895785dc3c7d193c7c596c5203a923b51630797dfecf5b212f69bc3a40dbb36b",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "montreal_plateau_residential_rue",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "montreal_plateau_residential_rue_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/streets/montreal-plateau-residential-rue/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 975204,
+      "sha256": "9aabefe36ee560b2382c8299b75812c8f8e9fa5ef172cf91505635219e53e835",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "montreal_plateau_residential_rue",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "montreal_plateau_residential_rue_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/streets/montreal-plateau-residential-rue/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 934318,
+      "sha256": "d1dcd41d3e6963fd21b06460c276d597e9f2b66031a4e293aac2eeb6ed75ca59",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

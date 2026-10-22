@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "vancouver_laneway_house",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "vancouver_laneway_house_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "vancouver_laneway_house",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "vancouver_laneway_house_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/vancouver-laneway-house/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1408640,
+      "sha256": "6bc2fb3d703006bfaa13a723ad57df90aeba2f1447814d1aa1c3ca07762b8298",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "vancouver_laneway_house",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "vancouver_laneway_house_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/vancouver-laneway-house/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 978778,
+      "sha256": "e753b3c4369a642d4863d8d530a60bd0469a70f3fa4fdbc0ce774272beb60ca2",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "vancouver_laneway_house",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "vancouver_laneway_house_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/vancouver-laneway-house/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 852387,
+      "sha256": "a0cc3f3e463a046f7e1fe485889440770f08501c9908f1d8fde85f33f495c6ae",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}
