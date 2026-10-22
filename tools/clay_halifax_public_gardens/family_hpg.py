@@ -2313,20 +2313,15 @@ P = {}
 
 
 def hpg_protos(kit):
-    """The garden's kit prototypes: white mophead hydrangeas for the bed spines, purple salvia and lavender for the
-    flanking bands, and begonia, ageratum and alyssum bedding cushions for the rims and the bandstand ring."""
+    """The garden's kit prototypes: white mophead hydrangeas for the bed spines and borders, and purple salvia, lavender and
+    ageratum cushions for the bands either side (the rims and the bandstand ring are clipped carpet bands)."""
     P['hyd'] = flower_head_cluster(kit, 'hpg_hydrangea', 'mophead', heads=8, height=.86, foliage=.46, head_role='pk_white',
                                    leaf_role='pk_leaf', leaves=38, seed=11)
     P['salvia'] = flower_head_cluster(kit, 'hpg_salvia', 'spike', heads=11, height=.46, spread=.24, foliage=.25,
                                       head_role='pk_purple', leaf_w=.5, leaves=28, seed=41)
     P['lav'] = lavender(kit, 'hpg_lavender', radius=.27, height=.48, spikes=26, seed=71)
-    P['pink'] = bedding_cushion(kit, 'hpg_begonia_pink', radius=.27, role='pk_leaf', floret_role='pk_pink', kind='begonia', seed=131)
-    P['magenta'] = bedding_cushion(kit, 'hpg_begonia_magenta', radius=.27, role='pk_leaf_red', floret_role='pk_magenta',
-                                   kind='begonia', seed=134)
     P['ageratum'] = bedding_cushion(kit, 'hpg_ageratum', radius=.26, role='pk_leaf', floret_role='pk_purple2', kind='ageratum',
                                     seed=132)
-    P['alyssum'] = bedding_cushion(kit, 'hpg_alyssum', radius=.25, height=.11, role='pk_leaf2', floret_role='pk_white2',
-                                   kind='alyssum', seed=133)
 
 
 def kit_place(key, x, y, z, region, s=1.0):
@@ -2335,15 +2330,26 @@ def kit_place(key, x, y, z, region, s=1.0):
                         aspect=RNG.uniform(.9, 1.1), lean=(RNG.uniform(-.05, .05), RNG.uniform(-.05, .05)))
 
 
-def carpet_bed(name, spine, width):
-    """A raised soil bed in a long leaf, planted in bands with the shared planting kit (top view: white hydrangeas along
-    the spine, lavender and purple either side, pink and magenta at the rims) over a low groundcover that hides the soil."""
+def clipped(name, outline, z, d_out, d_in, role, height, dots=None, lower=False, seed=1):
+    """One flat clipped carpet-bedding band of the shared kit, kept coarse (flat tops need few vertices): lower=True laps
+    5 cm under the band outside it; dots=(roles, per_m2, radius) seats micro-florets on its visible part."""
+    return bedding_band(name, outline, z, d_out, d_in, role, kerb=.05, height=height, bump=.003, grid=.5, edge=.12, ramp=.025,
+                        lap_out=(.05 if lower else .03), lap_in=0. if d_in is None else .012, seed=seed, module='flower beds',
+                        dots=dots)
+
+
+def carpet_bed(name, spine, width, rim):
+    """A raised soil bed in a long leaf (top view): a clipped carpet-bedding rim of begonia in flower round the edge, a
+    low groundcover band inside it, white mophead hydrangeas along the spine and lavender, ageratum and salvia either
+    side, all from the shared planting kit."""
     pts, left, right = bed_outline(spine, width)
     strip_mesh(name, left[::2] + ([left[-1]] if len(left) % 2 == 0 else []), right[::2] + ([right[-1]] if len(right) % 2 == 0 else []), .02, .10, 'soil', 'flower beds')
     poly = Polygon(left + right[::-1]).buffer(0)
-    groundcover(name + ' underlay', poly.buffer(-.07), .10, kerb=0., height=.035, grid=.6, edge=.3, ramp=.06, seed=len(name),
-                module='flower beds')
+    clipped(name + ' rim', poly, .10, 0., .40, rim, .075, dots=((rim + '2' if rim == 'pk_pink' else 'pk_bract2', 'pk_white2'), 26, .016),
+            seed=len(name))
+    clipped(name + ' ground', poly, .10, .40, None, 'pk_groundcover', .04, lower=True, seed=len(name) + 1)
     region = KIT.register_bed(poly.buffer(-.05))
+    inner = pk_region(poly, .05 + .40)
     sp = LineString(pts)
     L = sp.length
     holes = []
@@ -2357,38 +2363,30 @@ def carpet_bed(name, spine, width):
         s = kit_place('hyd', q.x + RNG.uniform(-.06, .06), q.y + RNG.uniform(-.06, .06), .10, region, min(1.0, hw / .62))
         if s:
             holes.append(q.buffer(P['hyd']['canopy_r'] * s * .92))
-    rest = region.difference(unary_union(holes)) if holes else region
-    for (x, y) in pk_scatter(rest, .44, margin=.12, seed=len(name) + 3):
-        p = Point(x, y)
-        u = sp.project(p) / L
-        t = sp.distance(p) / (width / 2 * max(.05, math.sin(math.pi * u)) ** .55)
-        blk = int(u * 7)
-        if t < .62:
-            key = ('lav', 'ageratum', 'salvia', 'ageratum')[blk % 4]
-            kit_place(key, x, y, .10 if key != 'ageratum' else .115, region, .95 if key != 'ageratum' else 1.15)
-        else:
-            kit_place(('pink', 'magenta')[blk % 2], x, y, .115, region, 1.12)
+    rest = inner.difference(unary_union(holes)) if holes else inner
+    for (x, y) in pk_scatter(rest, .42, seed=len(name) + 3):                  # lavender, ageratum and salvia blocks either side
+        u = sp.project(Point(x, y)) / L
+        key = ('lav', 'ageratum', 'salvia', 'ageratum')[int(u * 7) % 4]
+        kit_place(key, x, y, .10 if key != 'ageratum' else .115, region, .95 if key != 'ageratum' else 1.15)
 
 
 def border(name, x0, x1, y0, y1):
-    """A straight border along the north axis: white hydrangeas alternating with lavender and salvia blocks, edged with
-    alyssum toward the path, over a low groundcover."""
+    """A straight border along the north axis: a clipped ageratum rim, white hydrangeas alternating with pairs of
+    lavender and salvia down its middle over a low groundcover band."""
     C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, .06), (x1 - x0, y1 - y0, .08), 'soil', 'flower beds', 0)
     poly = sbox(x0, y0, x1, y1)
-    groundcover(name + ' underlay', poly.buffer(-.06, join_style=2), .10, kerb=0., height=.035, grid=.6, edge=.3, ramp=.06,
-                seed=len(name), module='flower beds')
+    clipped(name + ' rim', poly, .10, 0., .26, 'pk_purple2', .07, dots=(('pk_lavender', 'pk_white2'), 26, .015), seed=len(name))
+    clipped(name + ' ground', poly, .10, .26, None, 'pk_groundcover', .04, lower=True, seed=len(name) + 1)
     region = KIT.register_bed(poly.buffer(-.04, join_style=2))
     xc = (x0 + x1) / 2
-    nb = int((y1 - y0) / 1.3)
+    nb = int((y1 - y0) / 1.15)
     for k in range(nb):
-        ya, yb = y0 + (y1 - y0) * k / nb, y0 + (y1 - y0) * (k + 1) / nb
+        yc = y0 + (y1 - y0) * (k + .5) / nb
         if k % 2 == 0:
-            kit_place('hyd', xc, (ya + yb) / 2, .10, region, .8)
+            kit_place('hyd', xc, yc, .10, region, .78)
         else:
-            for j in range(3):
-                for dx in (-.27, .27):
-                    key = (('ageratum', 'alyssum', 'ageratum'), ('pink', 'alyssum', 'pink'))[(k // 2) % 2][j]
-                    kit_place(key, xc + dx, ya + (yb - ya) * (j + .5) / 3, .115, region, 1.05)
+            for dy in (-.24, .24):
+                kit_place(('lav', 'salvia')[(k // 2) % 2], xc, yc + dy, .10, region, .9)
 
 
 def shade_tree(name, x, y, h, r):
@@ -2419,8 +2417,10 @@ def planting():
     hpg_protos(KIT)
     # Four inner carpet beds (top view: long leaves across each inner lawn).
     for sx in (-1, 1):
-        carpet_bed(f'South inner bed {"west" if sx < 0 else "east"}', [(sx * 3.3, -22.6), (sx * 3.4, -17.0), (sx * 3.6, -12.4), (sx * 5.0, -8.4), (sx * 9.4, -3.6)], 2.8)
-        carpet_bed(f'North inner bed {"west" if sx < 0 else "east"}', [(sx * 2.7, 12.0), (sx * 5.0, 9.6), (sx * 8.0, 6.8), (sx * 11.4, 3.6)], 3.0)
+        carpet_bed(f'South inner bed {"west" if sx < 0 else "east"}', [(sx * 3.3, -22.6), (sx * 3.4, -17.0), (sx * 3.6, -12.4), (sx * 5.0, -8.4), (sx * 9.4, -3.6)], 2.8,
+                   'pk_pink' if sx < 0 else 'pk_magenta')
+        carpet_bed(f'North inner bed {"west" if sx < 0 else "east"}', [(sx * 2.7, 12.0), (sx * 5.0, 9.6), (sx * 8.0, 6.8), (sx * 11.4, 3.6)], 3.0,
+                   'pk_magenta' if sx < 0 else 'pk_pink')
         border(f'North axis border {"west" if sx < 0 else "east"}', *(sorted((sx * (AXW + .45), sx * (AXW + 1.65)))), YJ + .9, 26.8)
     # The flower ring round the bandstand, broken at the stair.
     a0, a1 = math.radians(-69), math.radians(249)
@@ -2433,13 +2433,10 @@ def planting():
         for i, ((ax, ay), (cx, cy)) in enumerate(zip(pts, pts[1:])):
             b.beam('granite', (ax, ay, .125), (cx, cy, .125), .10 + .004 * (i % 2), .07 + .004 * (i % 2), ext=.02)
     sector = Polygon([(0.0, 0.0)] + arc(0.0, 0.0, BED1 + 1.0, a0 + .05, a1 - .05, .3))
-    ring = Point(0, 0).buffer(BED1 - .06, 96).difference(Point(0, 0).buffer(BED0 + .06, 96)).intersection(sector)
-    groundcover('Bandstand ring underlay', ring, .13, kerb=0., height=.035, grid=.6, edge=.3, ramp=.06, seed=5, module='flower beds')
-    region = KIT.register_bed(Point(0, 0).buffer(BED1 - .05, 96).difference(Point(0, 0).buffer(BED0 + .05, 96)).intersection(sector))
-    for (x, y) in pk_scatter(ring, .43, margin=.1, seed=17):                  # bedding cushions in colour blocks round the ring
-        a = math.atan2(y, x) % (2 * math.pi)
-        key = ('alyssum', 'pink', 'ageratum', 'magenta', 'alyssum', 'salvia')[int(a / .55) % 6]
-        kit_place(key, x, y, .145 if key != 'salvia' else .13, region, 1.05 if key != 'salvia' else .9)
+    ring = Point(0, 0).buffer(BED1, 96).difference(Point(0, 0).buffer(BED0, 96)).intersection(sector)
+    clipped('Bandstand ring edge', ring, .13, 0., .3, 'pk_magenta', .075, dots=(('pk_bract2', 'pk_white2'), 26, .016), seed=5)
+    clipped('Bandstand ring centre', ring, .13, .3, None, 'pk_pink2', .055, dots=(('pk_white2', 'pk_pink'), 26, .015), lower=True,
+            seed=6)
     # Shrubs and hydrangeas along the fence and by the gates (top view: round shrubs at the south corners and gates).
     for (x, y, r, role) in ((-10.6, -27.4, .9, 'shrub'), (10.4, -27.4, .9, 'shrub'), (-19.8, -27.6, .8, 'white'), (-18.4, -27.8, .7, 'pink'),
                             (19.6, -27.6, .8, 'white'), (18.2, -27.8, .7, 'purple'), (-20.2, -1.0 - 3.0, .9, 'shrub'), (20.2, -4.2, .9, 'shrub'),
