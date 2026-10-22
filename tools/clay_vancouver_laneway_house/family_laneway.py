@@ -78,9 +78,9 @@ def manifest(version):
         ('garden', (2.6, -10.4, 1.4), (2.2, -5.6, .45), 35)])
     for c in cams:
         if c['name'] == 'front':                    # the locked front: eye level from the corner, about 26 deg west of the front normal
-            c.update(location=(-6.9, -15.2, 1.65), target=(.5, -.6, 3.45), lens=30, whole=False)
+            c.update(location=(-10.4, -15.4, 1.65), target=(-.6, -1.0, 4.3), lens=44, whole=False)
         elif c['name'] == 'front_corner':           # the locked oblique: high from the south-west, about 38 deg west of the front normal
-            c.update(location=(-9.4, -12.4, 13.2), target=(.1, -.6, 2.7), lens=33, whole=False)
+            c.update(location=(-11.1, -12.0, 13.2), target=(-.2, -.6, 2.6), lens=33, whole=False)
         elif c['name'] == 'aerial':
             c.update(location=(13.0, -15.0, 17.0), target=(0.0, 0.0, 3.0), lens=33, whole=False)
         elif c['name'] == 'left_side':
@@ -2492,7 +2492,7 @@ def fill(kit, reg, mix, spacing, seed, placed, scales=(1.1, .95, .8, .65, .5), d
     highest there, at the largest scale that passes the kit clearance rule; points inside a placed plant are skipped."""
     rnd = random.Random(seed); fields = [_PkNoise(seed + 17 * i, 2 * math.pi / drift) for i in range(len(mix))]
     for x, y in pk_scatter(reg, spacing, margin=PK_CLEAR, seed=seed):
-        if any(math.hypot(x - a, y - c) < r * .6 for a, c, r in placed):
+        if any(math.hypot(x - a, y - c) < r * .5 for a, c, r in placed):
             continue
         order = sorted(range(len(mix)), key=lambda i: -(fields[i](x, y) + 1.4 * math.log(mix[i][1])))
         for i in order[:2]:
@@ -2536,10 +2536,10 @@ def planting():
     front = [(P['spiky'], .7), (P['fern'], 1.0), (P['fescue'], .5), (P['reed'], .5), (P['golden'], .4)]
     side = [(P['reed'], 1.0), (P['fern'], .8), (P['fescue'], .3)]
     right = [(P['fern'], 1.4), (P['fern2'], .8), (P['golden'], .5), (P['fescue'], .4), (P['shrub'], .2)]
-    fill(kit, regs['A'], front, .52, 31, placed)
-    fill(kit, regs['B'], right, .5, 33, placed)
-    fill(kit, regs['D'], side, .48, 35, placed)
-    fill(kit, regs['E'], side, .5, 37, placed)
+    fill(kit, regs['A'], front, .36, 31, placed)
+    fill(kit, regs['B'], right, .34, 33, placed)
+    fill(kit, regs['D'], side, .34, 35, placed)
+    fill(kit, regs['E'], side, .4, 37, placed)
     kit.flush()
     bad = kit.audit(detail=True)
     if bad:
@@ -2553,21 +2553,21 @@ def tree(x, y, r, k, z=.05, role=('tree', 'tree2')):
     C.rod('Tree trunk', (x, y, z - .04), top, .14 + .03 * r, 'bark', 'trees', 8)
     for a in (k * 1.3, k * 1.3 + 2.4):
         C.rod('Tree limb', (x, y, z + H * .35), (x + math.cos(a) * r * .5, y + math.sin(a) * r * .5, z + H * .62), .07 + .015 * r, 'bark', 'trees', 6)
-    smooth(A.foliage('Tree crown', (top[0], top[1], z + H * .72), (r * .85, r * .85, r * .72), role=role[k % 2], detail=2))
+    smooth(A.foliage('Tree crown', (top[0], top[1], z + H * .72), (r * .85, r * .85, r * .72), role=role[k % 2], detail=3))
     for j in range(3):
         a = k * .9 + j * math.tau / 3
         smooth(A.foliage('Tree crown mass', (top[0] + math.cos(a) * r * .5, top[1] + math.sin(a) * r * .5, z + H * (.6 + .04 * j)),
-                         (r * .62, r * .62, r * .52), role=role[(k + j + 1) % 2], detail=2))
+                         (r * .62, r * .62, r * .52), role=role[(k + j + 1) % 2], detail=3))
 
 
 def conifer(x, y, h, r):
     C.rod('Conifer trunk', (x, y, .01), (x, y, h * .4), .16, 'bark', 'trees', 8)
     for i, (f, s) in enumerate(((.3, 1.0), (.52, .78), (.72, .55), (.88, .32))):
-        smooth(A.foliage('Conifer tier', (x, y, h * f), (r * s, r * s, h * .2), role='conifer', detail=2))
+        smooth(A.foliage('Conifer tier', (x, y, h * f), (r * s, r * s, h * .2), role='conifer', detail=3))
 
 
 def trees():
-    for k, (x, y, r) in enumerate(((-3.5, 14.5, 3.4), (5.5, 16.5, 2.8), (-19.5, 5.0, 3.6), (-19.8, -5.0, 3.0), (-5.2, 17.0, 2.6))):
+    for k, (x, y, r) in enumerate(((-5.0, 18.5, 3.4), (8.5, 17.0, 2.8), (-20.0, 14.0, 3.6), (-20.0, -12.0, 3.0))):
         tree(x, y, r, k)
     conifer(12.4, 12.2, 13.0, 2.4)
     conifer(9.6, 14.8, 11.0, 2.0)
