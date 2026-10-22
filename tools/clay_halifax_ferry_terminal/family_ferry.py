@@ -42,7 +42,7 @@ BX0, BX1, BY0, BY1 = 11.5, 40.5, -20.8, 4.0           # brick heritage block to 
 B_F2, B_F3, B_WALL, B_EAVE = 4.6, 8.0, 12.6, 12.7     # brick block floors, wall head (under the eaves), cornice top
 TOP = 21.0
 EPS = .002
-PALETTE = dict(wall=(.70, .70, .68), concrete2=(.56, .56, .55), panel=(.80, .81, .81), frame=(.22, .24, .26),
+PALETTE = dict(wall=(.70, .70, .68), concrete2=(.56, .56, .55), panel=(.80, .81, .81), frame=(.28, .30, .32),
     glass=(.14, .19, .22), spandrel=(.62, .68, .71), membrane=(.80, .81, .80), gravel=(.66, .62, .55), louvre=(.70, .71, .71),
     mech=(.84, .84, .82), sign=(.16, .18, .20), brick=(.50, .24, .16), joint=(.33, .27, .24), stone=(.70, .61, .47),
     iron=(.17, .22, .19), tile=(.55, .31, .21), timber=(.40, .26, .14), interior=(.80, .77, .70), floor=(.58, .56, .53),
@@ -590,7 +590,7 @@ def terminal_frame():
     """Slabs, the corner pier, west fins, parapet bands, copings and the solid north end walls."""
     b = Batch()
     b.box('concrete2', 0.0, 0.0, G0 / 2, TX1 - TX0, TY1 - TY0, G0)                               # hall slab
-    b.box('floor', 0.0, 0.0, F1 - .15, TX1 - TX0 - .5, TY1 - TY0 - .5, .3)                        # upper floor slab
+    b.box('interior', 0.0, 0.0, F1 - .15, TX1 - TX0 - .5, TY1 - TY0 - .5, .3)                     # upper floor slab (pale soffit)
     b.box('interior', 0.0, 0.0, ROOF - .3, TX1 - TX0 - .4, TY1 - TY0 - .4, .42)                   # roof slab (ceiling)
     # SW corner pier and the three full-height west fins under the roof boxes.
     b.box('wall', TX0 + .25, TY0 + .2, PARA / 2, .9, .8, PARA)
@@ -697,20 +697,21 @@ def west_front():
     b.flush('west front glazing')
     # Solid north end of the west front, the north wall and the exposed east wall: concrete carriers with windows.
     for f, u0, u1, holes, label in (
-            (TW, -TY1 + .28, -NORTH_SOLID, [hole('W n door', -17.6, G0, 1.1, 2.3, kind='door'), hole('W n g1', -14.6, 1.2, 1.6, 2.0),
+            (TW, -TY1 + .28, -NORTH_SOLID, [hole('W n door', -17.6, G0 + .01, 1.1, 2.3, kind='door'), hole('W n g1', -14.6, 1.2, 1.6, 2.0),
                                             hole('W n u1', -17.6, 5.9, 1.6, 2.4), hole('W n u2', -14.6, 5.9, 1.6, 2.4)], 'west north end'),
             (TN, -TX1 + .01, -TX0 - .01, [hole(f'N u{k}', -8.0 + 4.0 * k, 5.9, 1.8, 2.4) for k in range(5)] +
-                                         [hole('N load', 5.0, G0, 3.2, 3.3, kind='door'), hole('N door', -1.0, G0, 1.1, 2.3, kind='door'),
+                                         [hole('N load', 5.0, G0 + .01, 3.2, 3.3, kind='door'), hole('N door', -1.0, G0 + .01, 1.1, 2.3, kind='door'),
                                           hole('N g1', -6.0, 1.2, 1.8, 2.0)], 'north wall'),
             (TE, 3.8, TY1 - .28, [hole(f'E u{k}', 6.4 + 4.0 * k, 5.9, 1.8, 2.4) for k in range(4)] +
-                                 [hole('E door', 16.6, G0, 1.1, 2.3, kind='door'), hole('E g1', 8.4, 1.2, 1.8, 2.0)], 'east wall')):
+                                 [hole('E door', 16.6, G0 + .01, 1.1, 2.3, kind='door'), hole('E g1', 8.4, 1.2, 1.8, 2.0)], 'east wall')):
         f.wall(label + ' carrier', u0, u1, 0.0, PARA, depth=T, role='wall', holes=holes)
         m = Merge(f)
         for h in holes:
             if h.get('kind') == 'door':
                 u, top = h['u'], h['z'] + h['h']
-                m.box('frame', u, T - .12, (G0 + top) / 2, h['w'] - .02, .06, top - G0)
-                m.box('sign' if h['w'] > 2 else 'panel', u, T - .15, (G0 + top) / 2, h['w'] - .16, .04, top - G0 - .08)
+                z0 = h['z']
+                m.box('frame', u, T - .12, (z0 + top) / 2, h['w'] - .02, .06, top - z0 - .005)
+                m.box('sign' if h['w'] > 2 else 'panel', u, T - .15, (z0 + top) / 2 - .01, h['w'] - .16, .04, top - z0 - .03)
                 if h['w'] > 2:
                     for k in range(1, 8):
                         m.box('frame', u, T - .175, G0 + (top - G0) * k / 8, h['w'] - .2, .02, .03)
@@ -1087,10 +1088,11 @@ def site():
 def infill():
     """The narrow service link between the terminal and the brick block (a lit roof strip from above)."""
     b = Batch()
-    b.box('concrete2', (TX1 - .05 + BX0 + .1) / 2, (TY0 + .02 + BY1) / 2, 10.55 / 2, BX0 + .1 - TX1 + .05, BY1 - TY0 - .02, 10.55)
-    b.box('membrane', (TX1 + .05 + BX0 - .05) / 2, (TY0 + .1 + BY1 - .1) / 2, 10.565, BX0 - TX1 - .1, BY1 - TY0 - .2, .04)
-    b.box('panel', (TX1 + BX0) / 2, TY0 - .0, 1.35, 1.0, .06, 2.4)
-    b.box('hardware', (TX1 + BX0) / 2 + .3, TY0 - .05, 1.2, .04, .04, .15)
+    y0, y1 = BY0 + .05, BY1 + .05
+    b.box('concrete2', (TX1 - .05 + BX0 + .1) / 2, (y0 + y1) / 2, 10.55 / 2, BX0 + .1 - TX1 + .05, y1 - y0, 10.55)
+    b.box('membrane', (TX1 + .05 + BX0 - .05) / 2, (y0 + y1) / 2, 10.565, BX0 - TX1 - .1, y1 - y0 - .1, .04)
+    b.box('panel', (TX1 + BX0) / 2, y0, 1.35, 1.0, .06, 2.4)
+    b.box('hardware', (TX1 + BX0) / 2 + .3, y0 - .05, 1.2, .04, .04, .15)
     b.flush('service link')
 
 

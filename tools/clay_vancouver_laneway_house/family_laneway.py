@@ -45,7 +45,7 @@ ZE = EAVE - OV * SL                              # top of the roof plate at the 
 ZR = EAVE + RISE                                 # ridge
 WT = EAVE - .08                                  # wall carriers end inside the roof plate
 XE0, XE1, YE0, YE1 = X0 - OV, X1 + OV, YF - OVE, Y1 + OVE      # eave rectangle
-GX0, GX1, GY1 = -2.6, 2.4, Y1 + 6.0              # rear garage (against the rear wall; top view)
+GX0, GX1, GY1 = -2.6, 2.4, Y1 + 2.6              # rear garage (against the rear wall; its north eave about 2.6 m beyond the main eave, top view)
 GH, GEAVE, GRISE, GOV = 2.95, 3.05, 1.1, .3
 XC, YC, R = -6.15, -9.3, 1.6                     # side and front curb faces, corner curb radius
 XSW, YSW = -4.4, -7.3                            # inner edges of the side and front sidewalks
@@ -73,7 +73,7 @@ def manifest(version):
         ('side_entry', (-8.2, -.6, 1.7), (X0, YS + 3.0, 1.6), 35),
         ('west_wall', (-13.5, .2, 4.0), (X0, .2, 3.0), 32),
         ('roof_seams', (-7.8, -6.6, 11.0), (-1.4, .4, 6.9), 40),
-        ('garage', (-5.0, 2.6, 1.8), (GX0, Y1 + 3.1, 1.5), 35),
+        ('garage', (-7.6, Y1 - 1.6, 2.1), (GX0, Y1 + 1.3, 1.6), 35),
         ('interior', (.6, -1.6, FL1 + 1.45), (-3.0, -4.0, FL1 + 1.2), 32),
         ('garden', (2.6, -10.4, 1.4), (2.2, -5.6, .45), 35)])
     for c in cams:
@@ -85,21 +85,21 @@ def manifest(version):
             c.update(location=(13.0, -15.0, 17.0), target=(0.0, 0.0, 3.0), lens=33, whole=False)
         elif c['name'] == 'left_side':
             c.update(location=(-22.0, 1.5, 8.0), target=(X0, 1.5, 3.2), lens=35, whole=False)
-        elif c['name'] == 'right_side':             # the east side yard is 1.5 m wide: seen along it from the front corner of the neighbour
-            c.update(location=(6.2, -11.0, 3.2), target=(X1, .8, 3.3), lens=32, whole=False)
+        elif c['name'] == 'right_side':             # the east side yard is 1.5 m wide: a high south-east oblique over the fence and the neighbour's eave
+            c.update(location=(9.6, -10.6, 13.6), target=(2.4, .9, 3.0), lens=30, whole=False)
         elif c['name'] == 'rear':
             c.update(location=(.5, GY1 + 14.0, 7.5), target=(0.0, Y1 + 1.0, 3.4), lens=32, whole=False)
         elif c['name'] == 'rear_side':
             c.update(location=(-15.0, GY1 + 7.0, 11.0), target=(-.5, 2.5, 3.2), lens=33, whole=False)
         elif c['name'] == 'top':                    # plan view framed like the locked top: side street left, front sidewalk at the bottom
-            c.update(location=(-.6, -1.1, 40.0), target=(-.6, -1.099, 0.0), ortho_scale=19.3, whole=False)
+            c.update(location=(-.6, .2, 40.0), target=(-.6, .201, 0.0), ortho_scale=20.6, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='vancouver_laneway_house/variant_0 (vancouver_laneway_house_v0)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - YF, height=h),
             observed_storeys=2, storey_programme='living and dining on the ground floor behind the glazed corner, bedrooms and a sitting room above off the front balcony',
-            plan='7.4 x 8.1 m under one hipped roof (0.38 m side and 0.30 m end overhangs); a 2.9 x 1.0 m two-storey glazed bay at the south-west corner and a 1.0 m deep porch and balcony recess east of it, closed by a full-height cedar end fin; a 5.0 x 6.0 m one-storey garage against the rear wall',
+            plan='7.4 x 8.1 m under one hipped roof (0.38 m side and 0.30 m end overhangs); a 2.9 x 1.0 m two-storey glazed bay at the south-west corner and a 1.0 m deep porch and balcony recess east of it, closed by a full-height cedar end fin; a 5.0 x 2.6 m one-storey garage and store against the rear wall, its hipped roof ridge running east-west along the rear wall',
             facade='vertical cedar boards of varied tone with fine dark joints on a concrete plinth; heavy black window frames; a deep cedar band under the front roof edge; a horizontal-board panel over the side entry; wood front and side doors',
             levels_m=[FL1, FL2, HG], roof_m=dict(eave=EAVE, ridge=ZR),
             inferred='interiors, the east and rear walls and the garage interior are teaching assumptions; the garage, which the front view shows as a low hip-roofed building with a board door behind the house, is placed on the plan of the lower roof in the top view'),
@@ -1913,11 +1913,17 @@ KIT = None
 INSTANCING = True
 PSOIL = .09                                      # bed soil top; kit plants sink PK_SINK below it
 NU, NW = YS + 3.2, 1.5                           # recessed side entry on the side street: centre (y) and width
+ND = .45                                         # its depth: shallow, so the door shows from the south-west (front, oblique)
+NDU = NU + .17                                   # the door sits toward the north return, as in the front source
 GXM, GHALF = (GX0 + GX1) / 2, (GX1 - GX0) / 2
-GSL = GRISE / GHALF
-GZE, GZR = GEAVE - GOV * GSL, GEAVE + GRISE
-GYS = Y1 - .12                                   # the garage roof's gable end dies inside the rear wall carrier
+GYS = Y1 - .12                                   # the garage roof's upper edge (its ridge) dies inside the rear wall carrier
 GXE0, GXE1, GYE1 = GX0 - GOV, GX1 + GOV, GY1 + GOV
+GTOP, GIN = 1.1, 1.6                             # roof rise; plan inset of the ridge ends from the side eaves (top view)
+GSE = GTOP / GIN                                 # end (hip) slope, steeper
+GSN = GTOP / (GYE1 - GYS)                        # north slope, down from the ridge along the rear wall to the north eave
+GZE = GH - .068                                  # eave plate edge: the wall tops (GH) stay inside the 0.18 m plate on every side
+GZR = GZE + GTOP
+GXR0, GXR1 = GXE0 + GIN, GXE1 - GIN              # ridge ends on the rear wall line (ridge east-west, parallel to it)
 
 
 def zr(x, y):
@@ -1926,8 +1932,9 @@ def zr(x, y):
 
 
 def gzr(x, y):
-    """Top of the garage roof plate (hipped to the north, gabled into the rear wall)."""
-    return min(GZR, GZE + min(GSL * (x - GXE0), GSL * (GXE1 - x), GSL * (GYE1 - y)))
+    """Top of the garage roof plate: a north slope and two steeper hipped ends rising to an east-west ridge buried in the
+    rear wall."""
+    return min(GZR, GZE + min(GSE * (x - GXE0), GSE * (GXE1 - x), GSN * (GYE1 - y)))
 
 
 def smooth(obj):
@@ -2065,7 +2072,7 @@ def site():
     while yy < YF - 1.0:
         b.box('joint', -.1, yy, .111, 1.46, .02, .004)
         yy += 1.0
-    b.box('concrete', (XSW - .02 + GX0 + .02) / 2, Y1 + 3.1, .055, GX0 + .04 - XSW, 3.0, .11)
+    b.box('concrete', (XSW - .02 + GX0 + .02) / 2, Y1 + 1.3, .055, GX0 + .04 - XSW, 2.3, .11)      # garage apron
     b.box('gravel', (X1 + .01 + XF - .04) / 2, (YF + GY1 + .02) / 2, .035, XF - .05 - X1, GY1 + .02 - YF, .07)
     b.box('gravel', (XF + .04 + NX0) / 2, (NY0 + GY1) / 2, .035, NX0 - XF - .04, GY1 - NY0, .07)
     b.box('concrete', 8.0, (YSW - .02 + NY0 - 2.38) / 2, .055, .9, NY0 - 2.38 - YSW + .02, .11)
@@ -2074,8 +2081,9 @@ def site():
 
 def foundations():
     C.box('Foundation', ((X0 - .015 + X1 + .015) / 2, (YS - .015 + Y1 + .019) / 2, .21), (X1 - X0 + .03, Y1 + .034 - YS, .42), 'foundation', 'envelope', 0)
-    C.box('Fin foundation', ((X1 - T - .012 + X1 + .015) / 2, (YF - .015 + YS + .05) / 2, .21), (T + .027, YS + .065 - YF, .42), 'foundation', 'envelope', 0)
-    C.box('Bay plinth', ((X0 - .015 + XB + .012) / 2, (YF - .015 + YS + .05) / 2, .2325), (XB - X0 + .027, YS + .065 - YF, .465), 'foundation', 'envelope', 0)   # 5 mm under the porch landing: no pocket at its side
+    # Fin plinth and bay plinth 4 mm proud of the main foundation and lapped 0.3 m along it: no shared face at the junction.
+    C.box('Fin foundation', ((X1 - T - .012 + X1 + .019) / 2, (YF - .019 + YS + .30) / 2, .21), (T + .031, YS + .319 - YF, .42), 'foundation', 'envelope', 0)
+    C.box('Bay plinth', ((X0 - .019 + XB + .012) / 2, (YF - .019 + YS + .30) / 2, .2325), (XB - X0 + .031, YS + .319 - YF, .465), 'foundation', 'envelope', 0)   # 5 mm under the porch landing: no pocket at its side
 
 
 def glazed_bay():
@@ -2092,8 +2100,8 @@ def glazed_bay():
     xm = (xa + xb) / 2
     for x, w in ((xm, .07), (xb - .025, .07)):
         b.box('frame', x, YF + .06, (zb + zt) / 2, w, .12, zt - zb)
-    for z, h in ((FL1 - .02, .10), (zt - .03, .08), (FL2 + .95, .06)):
-        b.box('frame', (xa + xb) / 2, YF + .06, z, xb - xa, .12, h)
+    for z, h in ((FL1 - .02, .10), (zt - .03, .08), (FL2 + .95, .06)):          # rails and transom 6 mm inside the mullion faces
+        b.box('frame', (xa + xb) / 2, YF + .06, z, xb - xa, .108, h)
     b.box('frame', (xa + xb) / 2, YF + .025, FL2 - .09, xb - xa, .07, .42)
     for z0, z1 in ((FL1 + .03, FL2 - .30), (FL2 + .12, zt - .07)):
         b.box('glass', (xa + xb) / 2, YF + .06, (z0 + z1) / 2, xb - xa + .02, .012, z1 - z0)
@@ -2101,7 +2109,7 @@ def glazed_bay():
     ym = (ya + yb) / 2
     b.box('frame', X0 + .06, ym, (zb + zt) / 2, .12, .07, zt - zb)
     for z, h in ((FL1 - .02, .10), (zt - .03, .08), (FL2 + .95, .06)):
-        b.box('frame', X0 + .06, (ya + yb) / 2, z, .12, yb - ya, h)
+        b.box('frame', X0 + .06, (ya + yb) / 2, z, .108, yb - ya, h)
     b.box('frame', X0 + .025, (ya + yb) / 2, FL2 - .09, .07, yb - ya, .42)
     for z0, z1 in ((FL1 + .03, FL2 - .30), (FL2 + .12, zt - .07)):
         b.box('glass', X0 + .06, (ya + yb) / 2, (z0 + z1) / 2, .012, yb - ya + .02, z1 - z0)
@@ -2149,11 +2157,11 @@ def porch():
     C.box('Porch ceiling', ((x0 + x1) / 2, (YF + .02 + YS) / 2, FL2 - .40), (x1 - x0, YS - YF - .02, .06), 'cedar', 'balcony', 0)
     C.box('Balcony fascia', ((x0 + x1) / 2, YF - .03, FL2 - .23), (x1 - x0, .08, .40), 'steel', 'balcony', 0)
     b = Batch()
-    n = 16
+    n = 8                                                     # paired standoff bolts, not a perforated grid
     for i in range(n):
         x = XB + .15 + (X1 - T - XB - .3) * i / (n - 1)
-        for z in (FL2 - .33, FL2 - .13):
-            b.box('hardware', x, YF - .078, z, .035, .02, .035)
+        for z in (FL2 - .30, FL2 - .16):
+            b.box('hardware', x, YF - .078, z, .04, .02, .04)
     b.box('steel', (XB + X1 - T) / 2, YF + .06, FL2 - .02, X1 - T - XB, .06, .10)
     wp = (X1 - T - XB - .06 - .04) / 3
     for i in range(3):
@@ -2210,7 +2218,7 @@ def west_face():
     window(m, w, su, occupied='bathroom')
     window(m, w, ru, cols=2, occupied='bedroom')
     window(m, w, rg, cols=2, occupied='kitchen')
-    register(w, nc, .9, 'recessed side entry', 'side entry hall')
+    register(w, nc, ND, 'recessed side entry', 'side entry hall')
     m.box('hardware', YS + .75, -.03, FL1 + 1.95, .1, .06, .22)
     m.box('lamp', YS + .75, -.10, FL1 + 1.9, .12, .1, .16)
     m.box('hardware', YS + .75, -.10, FL1 + 2.0, .14, .12, .03)
@@ -2222,18 +2230,34 @@ def west_face():
 
 
 def niche():
-    """The recessed side entry: cedar-lined reveal and ceiling, a wood door at the back, a concrete floor and two steps
-    down across the planting strip to the side sidewalk."""
+    """The recessed side entry: a shallow reveal lined in horizontal cedar boards (both returns, the back wall beside the
+    door and the head), a wood door toward the north return, a concrete floor and two steps down across the planting
+    strip to the side sidewalk. Linings lap 10 mm into the wall carrier and into each other: no open corner at the head."""
     b = Batch()
     u0, u1 = NU - NW / 2, NU + NW / 2
-    zt = FL1 - .03 + 2.52
-    for u in (u0 + .05, u1 - .05):
-        b.box('cedar_light', X0 + .4525, u, (FL1 - .03 + zt) / 2, .895, .1, zt - FL1 + .03)
-    b.box('cedar_light', X0 + .4525, NU, zt + .045, .895, NW, .13)
-    b.box('cedar', X0 + .96, NU, (FL1 - .03 + zt + .1) / 2, .12, NW + .1, zt + .1 - FL1 + .03)
-    b.box('door_wood', X0 + .89, NU + .12, FL1 + 1.05, .03, .92, 2.1)
-    b.box('hardware', X0 + .868, NU + .5, FL1 + 1.05, .02, .03, .8)
-    b.box('concrete', X0 + .44, NU, (FL1 - .02) / 2, .9, NW, FL1 - .02)
+    z0, zt = FL1 - .03, FL1 - .03 + 2.52
+    xd = X0 + ND                                     # face of the back wall
+    for ua, ub in ((u0 - .01, u0 + .1), (u1 - .1, u1 + .01)):      # returns stop 1 cm inside the head lining
+        b.box('cedar', X0 + (.015 + ND) / 2, (ua + ub) / 2, (z0 + zt - .01) / 2, ND + .005, ub - ua, zt - .01 - z0)
+    b.box('cedar', X0 + (.015 + ND) / 2, NU, zt + .04, ND + .005, NW + .016, .14)                 # head: zt - .03 .. zt + .11
+    b.box('cedar', xd + .06, NU, (z0 + zt + .1) / 2, .12, NW + .1, zt + .1 - z0)                   # back wall
+    # Horizontal board joints on both return faces and on the back wall south of the door and over it.
+    z = z0 + .14
+    while z < zt - .05:
+        for u in (u0 + .1 + .002, u1 - .1 - .002):                  # joints sit 1 mm into the lining
+            b.box('cedar_joint', X0 + (.01 + ND) / 2, u, z, ND - .02, .006, .012)
+        b.box('cedar_joint', xd - .002, (u0 + .1 + NDU - .5) / 2, z, .006, NDU - .5 - u0 - .1, .012)
+        if z > z0 + 2.24:
+            b.box('cedar_joint', xd - .002, (NDU - .5 + u1 - .1) / 2, z, .006, u1 - .1 - NDU + .5, .012)
+        z += .14
+    for k, uu in enumerate((u0 + .25, u0 + .43)):
+        b.box('cedar_light', xd - .0015, uu, (z0 + zt) / 2, .004, .17, zt - z0 - .04)
+    # Wood door (0.92 m) in a slim black frame, a long pull, a threshold, a mailbox on the south return.
+    b.box('frame', xd - .012, NDU, z0 + 1.1, .03, .98, 2.2)
+    b.box('door_wood', xd - .035, NDU, z0 + 1.08, .03, .9, 2.12)
+    b.box('hardware', xd - .057, NDU - .34, z0 + 1.1, .02, .03, .8)
+    b.box('hardware', X0 + .24, u0 + .1 + .035, z0 + 1.35, .2, .06, .26)
+    b.box('concrete', X0 + ND / 2, NU, (FL1 - .02) / 2, ND - .01, NW, FL1 - .02)
     b.flush('side entry')
     C.prism('Side entry steps', [(X0 + .02, 0.0), (X0 + .02, .29), (X0 - .35, .29), (X0 - .35, .115), (XSW - .02, .115), (XSW - .02, 0.0)],
             'y', NU - .7, NU + .7, 'concrete', 'side entry')
@@ -2272,7 +2296,7 @@ def interior():
     xi0, xi1 = X0 + T - .02, X1 - T + .02
     yi0, yi1 = YS + .05, Y1 - T + .02
     n0, n1 = NU - NW / 2 - .12, NU + NW / 2 + .12
-    for name, x0, x1, y0, y1 in (('south', xi0, xi1, yi0, n0), ('niche', X0 + 1.02, xi1, n0, n1), ('north', xi0, xi1, n1, yi1)):
+    for name, x0, x1, y0, y1 in (('south', xi0, xi1, yi0, n0), ('niche', X0 + ND + .12, xi1, n0, n1), ('north', xi0, xi1, n1, yi1)):
         C.box(f'Ground floor {name}', ((x0 + x1) / 2, (y0 + y1) / 2, FL1 - .06), (x1 - x0, y1 - y0, .12), 'floor', 'inside', 0)
     C.box('Ground floor bay', ((X0 + .02 + XB - T + .02) / 2, (YF + .12 + yi0) / 2, FL1 - .06), (XB - T - X0, yi0 - YF - .12, .12), 'floor', 'inside', 0)
     for z0, z1, name in ((FL2 - .25, FL2, 'Upper floor'), (5.75, 5.85, 'Ceiling')):
@@ -2337,8 +2361,8 @@ def roof():
             rib(b, (x, YE1 - .03), (x, YE1 - lift / SE + .05))
         x += .46
     for (xa, ya), (xr, yr) in (((XE0, YE0), (0.0, YF + HI)), ((XE1, YE0), (0.0, YF + HI)), ((XE0, YE1), (0.0, Y1 - HI)), ((XE1, YE1), (0.0, Y1 - HI))):
-        b.beam('metal_rib', (xa + (.02 if xa < 0 else -.02), ya + (.02 if ya < 0 else -.02), ZE + .015), (xr, yr, ZR + .015), .13, .06)
-    b.beam('metal_rib', (0.0, YF + HI - .05, ZR + .018), (0.0, Y1 - HI + .05, ZR + .018), .16, .06)
+        b.beam('metal_rib', (xa + (.02 if xa < 0 else -.02), ya + (.02 if ya < 0 else -.02), ZE + .015), (xr, yr, ZR + .015), .09, .05)
+    b.beam('metal_rib', (0.0, YF + HI - .05, ZR + .018), (0.0, Y1 - HI + .05, ZR + .018), .11, .05)
     # Skylight: dark curb following the slope, pale glazing on top.
     def sk(x, y, dz):
         return (x, y, zr(x, y) + dz)
@@ -2363,10 +2387,10 @@ def roof():
 def garage():
     """One-storey cedar garage against the rear wall: board door facing the side street, side door to the east."""
     C.box('Garage foundation', ((GX0 - .015 + GX1 + .015) / 2, (Y1 - .05 + GY1 + .019) / 2, .09), (GX1 - GX0 + .03, GY1 + .069 - Y1, .18), 'foundation', 'garage', 0)
-    gd = hole('garage door', Y1 + 3.1, .16, 2.8, 2.2, kind='garage door')
+    gd = hole('garage door', Y1 + 1.3, .16, 2.0, 2.2, kind='garage door')
     gw = C.Face((GX0, 0, 0), (0, 1, 0), (1, 0, 0), 'garage west')
     gw.wall('garage west carrier', Y1 - .05, GY1 - .01, .12, GH, depth=T, role='cedar', holes=[gd])
-    sd = hole('garage side door', Y1 + 4.6, .18, .9, 2.1, kind='door')
+    sd = hole('garage side door', Y1 + 1.3, .18, .9, 2.1, kind='door')
     ge = C.Face((GX1, 0, 0), (0, 1, 0), (-1, 0, 0), 'garage east')
     ge.wall('garage east carrier', Y1 - .05, GY1 - .01, .12, GH, depth=T, role='cedar', holes=[sd])
     gn = C.Face((0, GY1, 0), (-1, 0, 0), (0, -1, 0), 'garage north')
@@ -2390,27 +2414,27 @@ def garage():
     m = Merge(gn)
     cladding(m, -(GX1 + .004), -(GX0 - .004), .2, GZE - .2, [], seed=25)
     m.flush('garage north')
-    # Roof: hipped to the north, its south gable end buried in the house's rear wall carrier.
+    # Roof (top view): a north slope and two steeper hipped ends rising to a short east-west ridge along the rear wall,
+    # the ridge and the upper edges buried in the house's rear wall carrier.
     strip('Garage roof plate', [(GXE0, GYS), (GXE1, GYS), (GXE1, GYE1), (GXE0, GYE1)],
-          [(GXM, GYS), (GXM, GYS), (GXM, GY1 - GHALF), (GXM, GY1 - GHALF)], GZE, GZR, 'metal', 'garage roof')
+          [(GXR0, GYS), (GXR1, GYS), (GXR1, GYS), (GXR0, GYS)], GZE, GZR, 'metal', 'garage roof')
     b = Batch()
-    top = GZR - GZE
-    y = Y1 + .2
-    while y < GYE1 - .2:
-        lift = min(GSL * (GYE1 - y), top)
-        if lift > .1:
-            rib(b, (GXE0 + .03, y), (GXE0 + lift / GSL - .05, y), gzr)
-            rib(b, (GXE1 - .03, y), (GXE1 - lift / GSL + .05, y), gzr)
-        y += .46
-    x = GXE0 + .25
+    x = GXE0 + .25                                   # seams down the north slope, stopped at the hips
     while x < GXE1 - .2:
-        lift = min(GSL * (x - GXE0), GSL * (GXE1 - x), top)
-        if lift > .1:
-            rib(b, (x, GYE1 - .03), (x, GYE1 - lift / GSL + .05), gzr)
+        yh = max(GYE1 - GSE * min(x - GXE0, GXE1 - x) / GSN, Y1 + .03)
+        if GYE1 - .03 - (yh + .05) > .12:
+            rib(b, (x, GYE1 - .03), (x, yh + .05), gzr)
         x += .46
-    for xa in (GXE0, GXE1):
-        b.beam('metal_rib', (xa + (.02 if xa < GXM else -.02), GYE1 - .02, GZE + .015), (GXM, GY1 - GHALF, GZR + .015), .13, .06)
-    b.beam('metal_rib', (GXM, Y1 - .05, GZR + .018), (GXM, GY1 - GHALF + .05, GZR + .018), .16, .06)
+    y = Y1 + .18                                     # seams down the hipped ends (east-west), stopped at the hips
+    while y < GYE1 - .2:
+        dx = min(GSN * (GYE1 - y) / GSE, GIN)
+        if dx > .15:
+            rib(b, (GXE0 + .03, y), (GXE0 + dx - .05, y), gzr)
+            rib(b, (GXE1 - .03, y), (GXE1 - dx + .05, y), gzr)
+        y += .46
+    for xa, xr in ((GXE0, GXR0), (GXE1, GXR1)):     # hip caps from the north corners up into the rear wall
+        b.beam('metal_rib', (xa + (.02 if xa < GXM else -.02), GYE1 - .02, GZE + .015), (xr, GYS, GZR + .015), .11, .05)
+    b.beam('metal_rib', (GXR0, Y1 + .045, gzr(GXR0, Y1 + .045) + .018), (GXR1, Y1 + .045, gzr(GXR1, Y1 + .045) + .018), .09, .05)   # wall flashing
     for xx in (GXE0 - .0135, GXE1 + .0135):
         b.box('fascia', xx, (Y1 - .02 + GYE1 + .028) / 2, GZE - .0875, .037, GYE1 + .048 - Y1, .225)
     b.box('fascia', GXM, GYE1 + .0125, GZE - .085, GXE1 - GXE0 + .068, .035, .23)
@@ -2487,12 +2511,41 @@ def neighbour():
     f.flush('fence')
 
 
+def sword_fern(kit, name, fronds=18, length=.82, role='pk_leaf', crown_role='pk_crown', seed=7):
+    """Western sword fern: a vase of arching pinnate fronds from a low dark crown. Each frond is a slim rachis carrying
+    18 pairs of keeled leaflets (pinnae) that are short at the base, longest a quarter of the way up and taper to the
+    tip, angled forward and slightly drooping; the fronds arch out and over, so the mass reads as a fountain of
+    fronds, never as strap grass."""
+    rnd = random.Random(seed); parts = {role: PkGeo(), crown_role: PkGeo()}
+    _pk_dome(parts[crown_role], (0., 0., -.02), (.08, .08, .05), -PK_SINK, seed=seed, bump=.004, wave=.05, seg=12, rings=4)
+    for k in range(fronds):
+        phi = 2 * math.pi * (k + rnd.uniform(-.3, .3)) / fronds; q = rnd.random()
+        elev = math.radians(78 - 30 * q); bend = math.radians(75 + 55 * q); L = length * rnd.uniform(.82, 1.1) * (1.06 - .22 * q)
+        pts = _pk_arc((.03 * math.cos(phi), .03 * math.sin(phi), -PK_SINK), phi, elev, bend, L, 11, floor=.04)
+        n = len(pts)
+        _pk_tube(parts[role], pts, .006, .0025, 3)
+        side = (-math.sin(phi), math.cos(phi), 0.)
+        for j in range(18):
+            tq = .1 + .86 * j / 17
+            f = tq * (n - 1); i = min(int(f), n - 2); a = f - i
+            pnt = tuple(pts[i][c] + (pts[i + 1][c] - pts[i][c]) * a for c in range(3))
+            tan = _pk_norm(tuple(pts[i + 1][c] - pts[i][c] for c in range(3)))
+            plen = .105 * (.55 + .45 * min(1., tq * 4)) * (1 - .78 * max(0., tq - .25) / .75)
+            for s in (-1, 1):
+                d = _pk_norm(tuple(side[c] * s * .82 + tan[c] * .5 for c in range(3)))
+                d = _pk_norm((d[0], d[1], d[2] - .18))
+                q1 = tuple(pnt[c] + d[c] * plen * .5 + (.008 if c == 2 else 0.) for c in range(3))
+                q2 = tuple(pnt[c] + d[c] * plen for c in range(3))
+                _pk_blade(parts[role], [pnt, q1, q2], math.atan2(d[1], d[0]), .024 * (1 - .45 * tq), fold=.16)
+    return kit.proto(name, parts)
+
+
 def protos(kit):
     """Laneway garden library: sword and deer ferns, a stiff spiky grass, feather reed grass with plumes, blue fescue,
     golden forest grass, a red Japanese maple and a small green shrub."""
     P = {}
-    P['fern'] = arching_grass(kit, 'lw_sword_fern', blades=24, height=.5, width=.052, role='pk_leaf', crown_role='pk_crown', seed=7)
-    P['fern2'] = arching_grass(kit, 'lw_deer_fern', blades=20, height=.38, width=.045, role='pk_leaf2', seed=9)
+    P['fern'] = sword_fern(kit, 'lw_sword_fern', seed=7)
+    P['fern2'] = sword_fern(kit, 'lw_sword_fern_b', fronds=14, length=.62, role='pk_leaf2', seed=9)
     P['spiky'] = arching_grass(kit, 'lw_spiky_grass', blades=26, height=.68, width=.034, role='pk_leaf_dark', seed=27)
     P['reed'] = arching_grass(kit, 'lw_feather_reed', blades=48, height=.6, width=.016, role='pk_blade', plume_role='pk_plume',
                               plumes=6, plume_height=1.9, seed=11)
@@ -2535,9 +2588,8 @@ def planting():
         'B': ([(.63, YSW - .02, XF - .04, YF + .02), (XB + 2.23, YF + .02, X1 - T + .02, YS + .02)],
               [(.67, YSW), (XF - .04, YSW), (XF - .04, YF + .02), (X1 - T + .02, YF + .02), (X1 - T + .02, YS + .02),
                (XB + 2.23, YS + .02), (XB + 2.23, YF + .02), (.67, YF + .02)]),
-        'D': ([(XSW - .02, NU + .68, X0 + .02, Y1 + .02), (XSW - .02, Y1 + .02, GX0 + .02, Y1 + 1.62)],
-              [(XSW, NU + .72), (X0 + .02, NU + .72), (X0 + .02, Y1 + .02), (GX0 + .02, Y1 + .02), (GX0 + .02, Y1 + 1.58), (XSW, Y1 + 1.58)]),
-        'E': ([(XSW - .02, Y1 + 4.58, GX0 + .02, GY1 + .02)], [(XSW, Y1 + 4.62), (GX0 + .02, Y1 + 4.62), (GX0 + .02, GY1 + .02), (XSW, GY1 + .02)]),
+        'D': ([(XSW - .02, NU + .68, X0 + .02, Y1 + .13)], [(XSW, NU + .72), (X0 + .02, NU + .72), (X0 + .02, Y1 + .11), (XSW, Y1 + .11)]),
+        'E': ([(XSW - .02, Y1 + 2.47, GX0 + .02, Y1 + 4.4)], [(XSW, Y1 + 2.51), (GX0 + .02, Y1 + 2.51), (GX0 + .02, Y1 + 4.38), (XSW, Y1 + 4.38)]),
     }
     for name, (boxes, poly) in beds.items():
         for x0, y0, x1, y1 in boxes:
@@ -2550,14 +2602,14 @@ def planting():
     placed.append((3.1, -5.55, .95))
     kit.place_in(P['shrub'], 3.75, -6.75, PSOIL, 1.3, 1.0, region=regs['B'], shrink=(1., .85, .7))
     placed.append((3.75, -6.75, .45))
-    front = [(P['spiky'], .7), (P['fern'], 1.0), (P['fescue'], .5), (P['reed'], .5), (P['golden'], .4)]
-    side = [(P['reed'], 1.0), (P['fern'], .8), (P['fescue'], .3)]
+    front = [(P['fern'], 1.4), (P['fern2'], .8), (P['spiky'], .6), (P['fescue'], .4), (P['golden'], .4), (P['reed'], .3)]
+    side = [(P['fern'], 1.2), (P['reed'], .9), (P['fern2'], .7), (P['golden'], .4)]
     right = [(P['fern'], 1.4), (P['fern2'], .8), (P['golden'], .5), (P['fescue'], .4), (P['shrub'], .2)]
-    fine = (1.1, .95, .8, .65, .5, .4, .32)
-    fill(kit, regs['A'], front, .34, 31, placed, scales=fine)
-    fill(kit, regs['B'], right, .34, 33, placed)
-    fill(kit, regs['D'], side, .3, 35, placed, scales=fine)
-    fill(kit, regs['E'], side, .4, 37, placed)
+    fine = (1.1, .95, .8, .68, .56, .46, .38, .3)
+    fill(kit, regs['A'], front, .3, 31, placed, scales=fine)
+    fill(kit, regs['B'], right, .32, 33, placed, scales=fine)
+    fill(kit, regs['D'], side, .26, 35, placed, scales=fine)
+    fill(kit, regs['E'], side, .36, 37, placed, scales=fine)
     kit.flush()
     bad = kit.audit(detail=True)
     if bad:

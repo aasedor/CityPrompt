@@ -42,7 +42,7 @@ overlap, every vertex sits at or above grade, and rooms behind glazing carry low
 lights. Renders are taken from the reimported optimised GLB only.
 
 Camera roster: the eight whole-envelope views plus the ten family detail views
-`steam_clock, storefronts, name_frieze_pediment, arched_windows, corner_pier, east_facade, cornice_brackets, roof_skylights, interior, rear_north`.
+`steam_clock, storefronts, name_frieze_pediment, glass_close, architecture_close, east_facade, facade_close, roof_skylights, interior, rear_north`.
 
 Run:
 

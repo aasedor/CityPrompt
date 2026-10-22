@@ -46,7 +46,7 @@ E_PIERS = [(-11.8, -10.6), (-6.4, -5.6), (4.4, 5.3), (10.6, 11.79)]
 E_CORNER = (-10.6, -6.4)
 E_NARROW = [-4.35, -1.85, .65, 3.15]
 E_END = (5.3, 10.6)
-CLOCK = (9.1, -13.6)                                  # the steam clock on the corner sidewalk (top, front)
+CLOCK = (9.1, -13.95)                                 # the steam clock on the corner sidewalk, about 1.9 m off the front (top, front)
 PALETTE = dict(wall=(.52, .23, .15), joint=(.31, .25, .21), stone=(.66, .56, .40), arch=(.61, .52, .37),
     trim=(.80, .75, .64), frame=(.09, .12, .11), glass=(.12, .14, .15), hardware=(.05, .05, .05), timber=(.42, .24, .12),
     sign=(.07, .13, .11), gold=(.78, .62, .30), roof=(.50, .44, .35), membrane=(.66, .61, .53), interior=(.78, .70, .58),
@@ -58,16 +58,16 @@ PALETTE = dict(wall=(.52, .23, .15), joint=(.31, .25, .21), stone=(.66, .56, .40
 def manifest(version):
     h = TOP
     cams = G.camera_roster(X1 - X0 + 3.0, Y1 - Y0 + 3.0, h, [
-        ('steam_clock', (14.5, -20.5, 2.6), (CLOCK[0], CLOCK[1], 3.2), 40),
+        ('steam_clock', (15.0, -22.5, 3.6), (CLOCK[0], CLOCK[1], 4.3), 38),
         ('storefronts', (-1.0, -19.5, 2.2), (-1.0, Y0, 3.0), 30),
         ('name_frieze_pediment', (-2.0, -24.0, 9.0), (0.0, Y0, 16.2), 40),
-        ('arched_windows', (6.0, -19.0, 9.0), (6.0, Y0, 12.5), 40),
-        ('corner_pier', (19.0, -18.0, 5.0), (X1, Y0, 7.0), 35),
+        ('glass_close', (-5.2, -16.2, 12.2), (-5.2, Y0, 12.6), 40),             # one arched top-floor window: reveal, frame, fan
+        ('architecture_close', (18.5, -17.5, 13.0), (X1, Y0, 14.5), 35),        # corner pier capital, frieze and bracketed cornice
         ('east_facade', (24.0, 10.0, 6.0), (X1, -2.0, 8.0), 30),
-        ('cornice_brackets', (16.0, -15.5, 13.0), (X1, Y0 + 2.0, 16.0), 40),
+        ('facade_close', (-9.9, -31.0, 8.6), (-9.9, Y0, 8.6), 40),              # a typical south bay through all three floors
         ('roof_skylights', (16.0, -16.0, 30.0), (0.0, 1.0, ROOF), 35),
         ('interior', (-10.0, Y0 + 3.2, F2 + 1.7), (-4.0, Y0, F2 + 2.6), 22),
-        ('rear_north', (-6.0, 34.0, 22.0), (0.0, Y1, 13.0), 40)])
+        ('rear_north', (-11.5, 30.0, 8.5), (-10.4, Y1, 7.5), 35)])         # down the gap west of the north block: the exposed north wall to grade
     for c in cams:                       # the locked front and oblique look from the south-east (fitted to the sources)
         if c['name'] == 'front':
             c.update(location=(35.2, -44.8, 1.6), target=(13.5, -19.2, 7.0), lens=49.5, whole=False)
@@ -77,10 +77,10 @@ def manifest(version):
             c.update(location=(0.0, -.7, 120.0), target=(0.0, -.699, 0.0), ortho_scale=45.0, whole=False)
         elif c['name'] == 'right_side':
             c.update(location=(27.0, -1.0, 7.0), target=(X1, -1.0, 8.5), lens=18, whole=False)   # from the east street, under the warehouses' eaves
-        elif c['name'] == 'left_side':
-            c.update(location=(-60.0, 4.0, 14.0), target=(X0, 4.0, 9.0), lens=35, whole=False)
-        elif c['name'] == 'rear':
-            c.update(location=(0.0, 62.0, 18.0), target=(0.0, 0.0, 9.0), lens=35, whole=False)
+        elif c['name'] == 'left_side':                                   # elevated over the lower west neighbours: west wall, parapet and footprint
+            c.update(location=(-52.0, 2.0, 36.0), target=(X0 + 4.0, 1.0, 7.0), lens=32, whole=False)
+        elif c['name'] == 'rear':                                        # elevated over the north block: north wall, parapet and footprint
+            c.update(location=(4.0, 52.0, 38.0), target=(1.0, 2.0, 7.0), lens=32, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -610,6 +610,8 @@ def shopfront(m, f, h, door=None, dw=1.7):
     u, w = h['u'], h['w']
     gl = .34                                                          # glass line inset
     a, c = u - w / 2, u + w / 2
+    for e in (a + .023, c - .023):                                    # stone jamb liners close the cut from the face to the frame
+        m.box('stone', e, (gl - .03) / 2, (G0 + SHOP) / 2, .042, gl + .03, SHOP - G0 - .004)
     m.box('frame', a + .05, gl, (G0 + SHOP) / 2, .1, .12, SHOP - G0)
     m.box('frame', c - .05, gl, (G0 + SHOP) / 2, .1, .12, SHOP - G0)
     m.box('frame', u, gl, SHOP - .06, w - .2, .12, .12)
@@ -878,16 +880,18 @@ def pediment():
     b = Batch()
     th = math.atan2(PED_RISE, PED_W / 2)
     lift = .10 / math.cos(th)                                    # cornice centre .10 m above the slope (normal), so its underside overlaps the tympanum
-    ov = .3
+    ov = .12                                                     # raking ends die 0.12 m into the pedestals
     for s in (-1, 1):
         a0 = (xc + s * (PED_W / 2 + ov), yf - .2, zb - ov * math.tan(th) + lift)
         c0 = (xc, yf - .2, zb + PED_RISE + lift)
-        b.beam('stone', a0, c0, .5, .34)
-        b.beam('trim', (a0[0], a0[1] - .02, a0[2] + .22), (c0[0], c0[1] - .02, c0[2] + .22), .44, .12)
-        b.box('stone', xc + s * (PED_W / 2 + .45), (Y0 - .3 + Y0 + T) / 2, (EAVE + PARA + .5) / 2, .9, T + .3, PARA + .5 - EAVE)   # end pedestals
-        b.box('trim', xc + s * (PED_W / 2 + .45), (Y0 - .3 + Y0 + T) / 2, PARA + .57, 1.04, T + .44, .14)
+        yb = Y0 + T - .05                                        # raking cornices run over the full tympanum depth: a closed sloping back
+        ym = (yf - .45 + yb) / 2
+        b.beam('stone', (a0[0], ym, a0[2]), (c0[0], ym, c0[2]), yb - (yf - .45), .34)
+        b.beam('trim', (a0[0], ym - .01, a0[2] + .22), (c0[0], ym - .01, c0[2] + .22), yb - (yf - .45) - .06, .12)
+        b.box('stone', xc + s * (PED_W / 2 + .45), (Y0 - .78 + Y0 + T) / 2, (EAVE + PARA + .5) / 2, .9, T + .78, PARA + .5 - EAVE)   # end pedestals, deeper than the raking cornice
+        b.box('trim', xc + s * (PED_W / 2 + .45), (Y0 - .78 + Y0 + T) / 2, PARA + .57, 1.04, T + .92, .14)
     za = zb + PED_RISE + lift
-    b.box('stone', xc, yf - .2 + .02, za + .12, .8, .56, .62)                                     # apex block over the cornice mitre
+    b.box('stone', xc, (yf - .5 + Y0 + T - .03) / 2, za + .12, .8, Y0 + T - .03 - (yf - .5), .62)   # apex block over the cornice mitre, full depth
     for k in range(9):                                                                           # acanthus shell in the tympanum
         a = math.pi * (k + .5) / 9
         r = .95
@@ -952,43 +956,53 @@ def inside():
 
 def steam_clock():
     """The Gastown steam clock: granite base, bronze pedestal, glazed cabinet with the brass works, a four-faced
-    clock head, a small roof with steam whistles."""
+    clock head above the shop cornice, a small roof with steam whistles (sized from the front source)."""
     x, y = CLOCK
+    SV, SH, Z0 = 1.42, 1.3, .14                                     # vertical and horizontal scale about the sidewalk
+    def Z(z):
+        return Z0 + (z - Z0) * SV
+    class _S:                                                       # scaled proxy over the batch
+        def box(self, role, bx, by, bz, sx, sy, sz):
+            b.box(role, x + (bx - x) * SH, y + (by - y) * SH, Z(bz), sx * SH, sy * SH, sz * SV)
+        def beam(self, role, p0, p1, w, h):
+            P = lambda p: (x + (p[0] - x) * SH, y + (p[1] - y) * SH, Z(p[2]))
+            b.beam(role, P(p0), P(p1), w * SH, h * SH)
     b = Batch()
-    b.box('stone', x, y, .14 + .2, 1.25, 1.25, .4)
-    b.box('bronze', x, y, .54 + .45, 1.0, 1.0, .9)
-    b.box('bronze', x, y, 1.44 + .08, 1.1, 1.1, .16)
+    q = _S()
+    q.box('stone', x, y, .14 + .2, 1.25, 1.25, .4)
+    q.box('bronze', x, y, .54 + .45, 1.0, 1.0, .9)
+    q.box('bronze', x, y, 1.44 + .08, 1.1, 1.1, .16)
     for s in (-1, 1):
         for axis in ('x', 'y'):
             if axis == 'x':
-                b.box('gold', x + s * .505, y, .99, .02, .6, .5)
+                q.box('gold', x + s * .505, y, .99, .02, .6, .5)
             else:
-                b.box('gold', x, y + s * .505, .99, .6, .02, .5)
-    b.box('bronze', x, y, 1.6 + 1.05, .56, .56, 2.1)                                              # cabinet core
+                q.box('gold', x, y + s * .505, .99, .6, .02, .5)
+    q.box('bronze', x, y, 1.6 + 1.05, .56, .56, 2.1)                                              # cabinet core
     for s in (-1, 1):
         for axis in ('x', 'y'):
             dx, dy = (s, 0.0) if axis == 'x' else (0.0, s)
             sx, sy = (.02, .66) if axis == 'x' else (.66, .02)
-            b.box('glass', x + dx * .38, y + dy * .38, 2.65, sx, sy, 1.9)                         # glazed sides
-            b.box('gold', x + dx * .31, y + dy * .31, 2.55, .04 if axis == 'x' else .3, .3 if axis == 'x' else .04, 1.2)   # brass works
-            b.box('bronze', x + dx * .38, y + dy * .38, 1.65, sx + .04 if axis == 'x' else .7, sy + .04 if axis == 'y' else .7, .1)
-            b.box('bronze', x + dx * .38, y + dy * .38, 3.65, sx + .04 if axis == 'x' else .7, sy + .04 if axis == 'y' else .7, .1)
+            q.box('glass', x + dx * .38, y + dy * .38, 2.65, sx, sy, 1.9)                         # glazed sides
+            q.box('gold', x + dx * .31, y + dy * .31, 2.55, .04 if axis == 'x' else .3, .3 if axis == 'x' else .04, 1.2)   # brass works
+            q.box('bronze', x + dx * .38, y + dy * .38, 1.65, sx + .04 if axis == 'x' else .7, sy + .04 if axis == 'y' else .7, .1)
+            q.box('bronze', x + dx * .38, y + dy * .38, 3.65, sx + .04 if axis == 'x' else .7, sy + .04 if axis == 'y' else .7, .1)
     for sx in (-1, 1):
         for sy in (-1, 1):
-            b.box('bronze', x + sx * .38, y + sy * .38, 2.65, .1, .1, 2.1)                         # corner posts
-    b.box('bronze', x, y, 3.78, .98, .98, .16)
-    b.box('bronze', x, y, 3.86 + .42, .92, .92, .84)                                              # clock head
-    b.box('gold', x, y, 4.75, 1.02, 1.02, .1)
-    frustum(b, 'bronze', x, y, 4.8, 5.25, .62, .2, 4)
+            q.box('bronze', x + sx * .38, y + sy * .38, 2.65, .1, .1, 2.1)                         # corner posts
+    q.box('bronze', x, y, 3.78, .98, .98, .16)
+    q.box('bronze', x, y, 3.86 + .42, .92, .92, .84)                                              # clock head
+    q.box('gold', x, y, 4.75, 1.02, 1.02, .1)
+    frustum(b, 'bronze', x, y, Z(4.8), Z(5.25), .62 * SH, .2 * SH, 4)
     for dx in (-.15, 0.0, .15):
-        cyl(b, 'gold', x + dx, y, 5.2, 5.55 + (.1 if dx == 0 else 0), .05, 8)
+        cyl(b, 'gold', x + dx * SH, y, Z(5.2), Z(5.55 + (.1 if dx == 0 else 0)), .05 * SH, 8)
     for nx, ny in ((0, -1), (0, 1), (1, 0), (-1, 0)):
-        c = (x + nx * .46, y + ny * .46, 4.28)
-        disc(b, 'gold', c, (nx, ny), .38, t=.02)
-        disc(b, 'dial', (c[0] + nx * .02, c[1] + ny * .02, c[2]), (nx, ny), .33, t=.015)
+        c = (x + nx * .46 * SH, y + ny * .46 * SH, Z(4.28))
+        disc(b, 'gold', c, (nx, ny), .38 * SH, t=.02)
+        disc(b, 'dial', (c[0] + nx * .02, c[1] + ny * .02, c[2]), (nx, ny), .33 * SH, t=.015)
         tx, ty = -ny, nx
-        b.beam('hardware', (c[0] + nx * .04, c[1] + ny * .04, c[2]), (c[0] + nx * .04 + tx * .2, c[1] + ny * .04 + ty * .2, c[2] + .08), .03, .01)
-        b.beam('hardware', (c[0] + nx * .045, c[1] + ny * .045, c[2]), (c[0] + nx * .045, c[1] + ny * .045, c[2] + .26), .025, .01)
+        b.beam('hardware', (c[0] + nx * .04, c[1] + ny * .04, c[2]), (c[0] + nx * .04 + tx * .26, c[1] + ny * .04 + ty * .26, c[2] + .1), .035, .012)
+        b.beam('hardware', (c[0] + nx * .045, c[1] + ny * .045, c[2]), (c[0] + nx * .045, c[1] + ny * .045, c[2] + .34), .03, .012)
     b.flush('steam clock')
     # Chained bollards on the curb round the clock (front).
     b = Batch()
@@ -1033,7 +1047,7 @@ def context():
     b = Batch()
     for name, x0, x1, y0, y1, h, role in (('west neighbour', -26.0, X0 + .1, Y0 + .05, -1.8, 12.6, 'cream'),
                                           ('north-west block', -26.0, -15.6, -1.8, 16.0, 11.0, 'brick2'),
-                                          ('north block', -8.1, 9.2, Y1 - .1, 24.0, 13.4, 'brick2'),
+                                          ('north block', -8.1, X1 - .05, Y1 - .1, 24.0, 13.4, 'brick2'),
                                           ('east warehouse 1', 31.5, 42.0, -27.0, -12.0, 17.5, 'brick2'),
                                           ('east warehouse 2', 31.5, 42.0, -12.0, 2.0, 20.5, 'wall'),
                                           ('east warehouse 3', 31.5, 42.0, 2.0, 16.0, 15.8, 'brick2'),
