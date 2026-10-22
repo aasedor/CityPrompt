@@ -82,14 +82,22 @@ def keep_instances():
     return n
 
 
+CONSTANT_TAGS = ('rlasm_method', 'representation_kind', 'native_geometry_only')
+
+
 def short_instance_names():
-    """v005 (size cap): planting-kit instance objects get short names (k1, k2, ...). glTF stores one name per node,
-    and about 2,000 kit nodes at about 28 characters each cost some 45 KB; the prototype stays named on the shared
-    mesh (PK <prototype> <role>), so nothing is lost."""
+    """v005 (size cap): planting-kit instance objects get short names (k1, k2, ...), and drop the three tags whose value
+    is the same constant on every clay object (method, representation kind, native-geometry flag). glTF writes every
+    object's tags into its node, and about 2,000 kit nodes carry them at about 130 bytes each; every authored
+    (non-instance) object and the build report still record them, and each instance keeps its semantic role, base
+    role, module, instance flag and archetype/variant ids. The prototype stays named on its shared mesh."""
     k = 0
     for o in C.objects():
         if o.get('rlasm_instance'):
             k += 1; o.name = f'k{k}'
+            for key in CONSTANT_TAGS:
+                if key in o:
+                    del o[key]
     return k
 
 

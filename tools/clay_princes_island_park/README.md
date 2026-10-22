@@ -88,8 +88,10 @@ v005 (kit v003.2, opt-in options unused here) answers the four v004 P1s:
   with the opening; the footbridge kerbs are lofted in one piece, 2 cm proud of the deck side face.
 - **Size cap:** each grass's crown shares its blade role (one instance node per grass), the front drifts carry fewer
   pink coneflowers and more shrub and fountain-grass mass, boardwalk pickets are 200 mm apart (was 170 mm), and kit
-  instance nodes are named `k1`, `k2`, ... (`short_instance_names()` in `build.py`; the prototype stays named on its
-  shared mesh).
+  instance nodes are named `k1`, `k2`, ... and drop the three tags that carry the same constant on every clay object
+  (`rlasm_method`, `representation_kind`, `native_geometry_only`; `short_instance_names()` in `build.py`). Each instance
+  keeps its semantic and base role, module, instance flag and archetype and variant ids; authored objects and the
+  build report keep the constant tags; the prototype stays named on its shared mesh.
 
 ## Open blockers after v004 (x)
 

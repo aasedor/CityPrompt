@@ -2535,16 +2535,16 @@ def planting():
             groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, bump=.028, wave=.8, grid=.9, edge=.2,
                         seed=40 + i)                         # wide clumps: few instance nodes for the cover), edged too
             drift_fill(kit, reg, grove, 1.1 if name == 'B8' else 1.4, 60 + i, (1.9, 1.65, 1.4, 1.15, .95, .8), 1.25, placed, drift=3.6)
-            margin_fill(kit, reg, grove_rim, 160 + i, placed, insets=(.5,), spacing=.85)
+            margin_fill(kit, reg, grove_rim, 160 + i, placed, insets=(.5, .95), spacing=.7, cover=.4)
             if name == 'B8':                                 # the grove bed beside the promenade is seen close up
                 edge_fill(kit, reg, edge, .7, 60 + i, placed)
         else:
             groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, bump=.028, wave=.8, grid=.8, edge=.18,
                         seed=40 + i)                         # v005: a gently undulating carpet, never flat felt
             drift_fill(kit, reg, front, .9, 60 + i, (1.5, 1.3, 1.1, .9, .75), 1.15, placed)
-            margin_fill(kit, reg, rim, 160 + i, placed, spacing=.6, cover=.45)   # v005: low edging band planted to the kerb
-            margin_fill(kit, reg, band, 260 + i, placed, insets=(.27,), spacing=.62, scales=(.85, .75, .65), cover=.5,
-                        near=EYE, reach=8.0)                 # and, where an eye-level camera looks, small cushions at the kerb
+            margin_fill(kit, reg, rim, 160 + i, placed, spacing=.5, cover=.38)   # v005: low edging band planted to the kerb
+            margin_fill(kit, reg, band, 260 + i, placed, insets=(.27,), spacing=.5, scales=(.85, .75, .65), cover=.45,
+                        near=EYE, reach=12.0)                 # and, where an eye-level camera looks, small cushions at the kerb
             edge_fill(kit, reg, edge, .6, 60 + i, placed)
     rnd = random.Random(77)
     for i, c in enumerate(PITS):                             # tree pits in the south plaza: groundcover and a ring of grasses
