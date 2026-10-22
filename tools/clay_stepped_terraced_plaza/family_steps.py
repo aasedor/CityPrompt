@@ -2150,10 +2150,10 @@ def house(label, x_face, ya, yb, base, h, facing, door=True, deep=7.0, extra=Non
         b.box('white', (xa + xb) / 2, y, base - .02 + (h + .02) / 2, xb - xa, T, h + .02)        # down onto the base: no slit
     if south_door is not None:                                                 # the south side wall with a door onto the plaza
         s = C.Face((0, ya, 0), (1, 0, 0), (0, 1, 0), label + ' south')
-        dh = hole(f'{label} south door', south_door, base, 1.0, 2.2, kind='door')
+        dh = hole(f'{label} south door', south_door, base + .01, 1.0, 2.2, kind='door')    # sill 1 cm above the plaza paving
         s.wall(f'{label} south wall', xa, xb - EPS, base - .02, base + h, depth=T, role='wall', holes=[dh])
         ms = Merge(s)
-        ms.box('blue', dh['u'], .16, dh['z'] + dh['h'] / 2, dh['w'] - .02, .05, dh['h'] - .02)
+        ms.box('blue', dh['u'], .16, dh['z'] + (dh['h'] - .03) / 2, dh['w'] - .02, .05, dh['h'] + .01)   # leaf foot 2 cm into the sill
         ms.box('glass', dh['u'], .125, dh['z'] + 1.55, .5, .02, .7)
         register(s, dh, .14, 'house door', 'house')
         ms.flush(label + ' south')

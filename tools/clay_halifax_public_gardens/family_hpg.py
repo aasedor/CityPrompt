@@ -36,7 +36,7 @@ ZG = .04                                        # lawn top
 EPS = .002
 T = .3
 PALETTE = dict(grass=(.34, .50, .20), grass2=(.40, .56, .24), paving=(.64, .53, .48), joint=(.46, .38, .35), granite=(.76, .75, .72),
-    soil=(.25, .18, .12), white=(.93, .93, .89), lavender=(.62, .56, .80), purple=(.44, .31, .60), pink=(.88, .58, .68), magenta=(.74, .30, .52),
+    soil=(.17, .12, .085), white=(.93, .93, .89), lavender=(.62, .56, .80), purple=(.44, .31, .60), pink=(.88, .58, .68), magenta=(.74, .30, .52),
     shrub=(.20, .36, .15), tree=(.26, .44, .17), tree2=(.20, .37, .13), timber=(.33, .24, .17), hardware=(.07, .07, .08), gold=(.80, .63, .28),
     brick=(.60, .30, .22), stone=(.73, .71, .67), copper=(.75, .49, .41), copper2=(.60, .37, .30), paint=(.94, .93, .89), deck=(.60, .58, .54),
     shadow=(.19, .19, .20), glass=(.62, .70, .74), pale=(.98, .92, .70), concrete=(.77, .76, .73), asphalt=(.30, .30, .31), mark=(.92, .92, .90),
@@ -1780,7 +1780,7 @@ def climber_sprays(kit, name='bougainvillea', leaf_role='pk_leaf', bract_roles=(
 
 def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), thickness=.04, bump=.012, wave=.3, grid=.12,
                ramp=.06, carrier_role='pk_shrub_core', trunks=(), trunk_role='pk_bark', seed=1, module='planting', tongues=4,
-               cover=.65, spacing=.21, trails_per_m=5., floor=0., canes=4):
+               cover=.65, spacing=.21, trails_per_m=5., floor=0., canes=4, carrier_inset=0., rim_sprays=0.):
     """Wall-trained climber or parapet cascade (bougainvillea, wisteria, jasmine) over a wall cross-section `profile`
     [(n, z), ...] (n outward from the wall face line p0-p1, `out` its unit outward normal (x, y)), listed from the
     hanging lower end up and over the coping. A hidden dark carrier (carrier_role: a thin heightfield sheet in (u along
@@ -1790,7 +1790,10 @@ def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), th
     stay above `floor`), a woody armature of `canes` canes fanning from each trunk over the wall and coping, and trunks
     [(u, (x, y, z) root), ...] from a pot. The hanging edge sits at s = curtain(u) with `tongues` longer lobes; openings
     [(u0, u1, z0, z1), ...] are cut with a 7 cm margin and sprays and canes keep clear of them. No two closed shells share
-    a volume (the carrier is the only shell). Returns the carrier area in m2."""
+    a volume (the carrier is the only shell). Opt-in (defaults leave the result unchanged): carrier_inset > 0 stops the
+    carrier that far inside the spray envelope, so no carrier rim shows past the leaves at the hem, ends or openings;
+    rim_sprays > 0 adds a row of sprays at that spacing along the envelope's outer edge, at least 0.25 m clear of every
+    opening, to break its outline. Returns the carrier area in m2."""
     from mathutils import Matrix, Vector
     rnd = _pkr.Random(seed); ss, PN, PZ, NN, NZ = _pk_profile(profile)
     L = math.hypot(p1[0] - p0[0], p1[1] - p0[1]); tx, ty = (p1[0] - p0[0]) / L, (p1[1] - p0[1]) / L
@@ -1810,6 +1813,10 @@ def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), th
         keep = keep.difference(_pksh.box(u0 - .17, a - z0p - .17, u1 + .17, b - z0p + .17))
     reg = reg.buffer(-.01).buffer(.01)
     V, F, hz = _pk_field(reg, 0., thickness, bump, wave, grid, ramp, seed, mid=True)
+    if carrier_inset > 0:                               # the carrier stops inside the spray envelope; sprays keep the full hz
+        rc = reg.buffer(-carrier_inset).buffer(-.01).buffer(.01)
+        if not rc.is_empty:
+            V, F, _ = _pk_field(rc, 0., thickness, bump, wave, grid, ramp, seed, mid=True)
 
     def world(u, s, h):
         n = _pknp.interp(s, ss, PN); zz = _pknp.interp(s, ss, PZ); a = _pknp.interp(s, ss, NN); c = _pknp.interp(s, ss, NZ)
@@ -1823,16 +1830,26 @@ def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), th
     if patch is not None:
         _pksh.prepare(patch)
     sreg = keep.intersection(reg.buffer(-.03))
-    nfl = 0
-    for u, s in (pk_scatter(sreg, spacing, seed=seed + 8) if not sreg.is_empty else []):
+    nfl = [0]
+
+    def spray(u, s):
         (x, y, z), (a, c) = world(u, s, hz(u, s) + rnd.uniform(.004, .03))
         N = Vector((out[0] * a, out[1] * a, c)).normalized(); T = Vector((tx, ty, 0.)); B = N.cross(T).normalized()
         ph = rnd.uniform(0, 6.3); X = (T * math.cos(ph) + B * math.sin(ph)).normalized(); Y = N.cross(X)
         e = Matrix((X, Y, N)).transposed().to_euler('XYZ')
         fl = patch is not None and _pksh.contains_xy(patch, u, s)
-        p = sprays['flower'][nfl % len(sprays['flower'])] if fl else sprays['leafy']; nfl += fl
+        p = sprays['flower'][nfl[0] % len(sprays['flower'])] if fl else sprays['leafy']; nfl[0] += fl
         sc = rnd.uniform(.85, 1.15)
         kit.place(p, x, y, z, e.z, sc, sy=sc * rnd.uniform(.85, 1.1), sz=sc * rnd.uniform(.8, 1.1), lean=(e.x, e.y), track=False)
+    for u, s in (pk_scatter(sreg, spacing, seed=seed + 8) if not sreg.is_empty else []):
+        spray(u, s)
+    if rim_sprays > 0 and not sreg.is_empty:            # a row of sprays along the envelope's outer edge, clear of openings
+        holes = [_pksh.box(u0 - .25, a - z0p - .25, u1 + .25, b - z0p + .25) for u0, u1, a, b in openings]
+        for ln in _pksh.get_parts(sreg.buffer(-.02).boundary):
+            for d in _pknp.arange(rnd.uniform(0., rim_sprays), ln.length, rim_sprays):
+                pt = ln.interpolate(float(d)); u, s = pt.x, pt.y
+                if not any(h.contains(pt) for h in holes):
+                    spray(u, s)
     # trailing canes from the hanging edge, clear of the openings and above the floor
     rot0 = math.atan2(out[0], -out[1])
     for u in _pknp.arange(.12, L - .12, 1 / trails_per_m):
@@ -2313,21 +2330,35 @@ P = {}
 
 
 def hpg_protos(kit):
-    """The garden's kit prototypes: white mophead hydrangeas for the bed spines and borders, and purple salvia, lavender and
-    ageratum cushions for the bands either side (the rims and the bandstand ring are clipped carpet bands)."""
+    """The garden's kit prototypes: white mophead hydrangeas for the bed spines and borders, mauve mophead hydrangeas,
+    purple salvia and ageratum cushions massed in the bands either side (their broad mauve heads keep the bands legible
+    from the air, where thin lavender spikes vanished)."""
     P['hyd'] = flower_head_cluster(kit, 'hpg_hydrangea', 'mophead', heads=8, height=.86, foliage=.46, head_role='pk_white',
                                    leaf_role='pk_leaf', leaves=32, seed=11)
     P['salvia'] = flower_head_cluster(kit, 'hpg_salvia', 'spike', heads=11, height=.46, spread=.24, foliage=.25,
                                       head_role='pk_purple', leaf_w=.5, leaves=28, seed=41)
-    P['lav'] = lavender(kit, 'hpg_lavender', radius=.27, height=.48, spikes=26, seed=71)
+    P['mauve'] = flower_head_cluster(kit, 'hpg_hydrangea_mauve', 'mophead', heads=8, height=.80, foliage=.44, size=1.3,
+                                     head_role='pk_purple2', leaf_role='pk_leaf', leaves=26, seed=23)
     P['ageratum'] = bedding_cushion(kit, 'hpg_ageratum', radius=.26, role='pk_leaf', floret_role='pk_purple2', kind='ageratum',
                                     seed=132)
 
 
-def kit_place(key, x, y, z, region, s=1.0):
+def kit_place(key, x, y, z, region, s=1.0, shrink=(1., .85, .72)):
     """One kit plant with a random spin, a small non-uniform scale and lean, held inside its bed by the kit rule."""
     return KIT.place_in(P[key], x, y, z, RNG.uniform(0, 2 * math.pi), s * RNG.uniform(.92, 1.08), region=region,
-                        aspect=RNG.uniform(.9, 1.1), lean=(RNG.uniform(-.05, .05), RNG.uniform(-.05, .05)))
+                        aspect=RNG.uniform(.9, 1.1), lean=(RNG.uniform(-.05, .05), RNG.uniform(-.05, .05)), shrink=shrink)
+
+
+FILL = (1., .85, .72, .6, .5)
+
+
+def kit_fill(key, x, y, z, region, s):
+    """Dense fill: the drift's species, shrunk as far as half size to fit by the bed edge, else a low ageratum cushion,
+    so the bed reads full to its soil margin instead of leaving bare groundcover where the large plants do not fit."""
+    got = kit_place(key, x, y, z if key != 'ageratum' else z + .015, region, s, FILL)
+    if not got and key != 'ageratum':
+        got = kit_place('ageratum', x, y, z + .015, region, 1.0, FILL)
+    return got
 
 
 def clipped(name, outline, z, d_out, d_in, role, height, dots=None, lower=False, seed=1):
@@ -2340,54 +2371,50 @@ def clipped(name, outline, z, d_out, d_in, role, height, dots=None, lower=False,
 
 
 def carpet_bed(name, spine, width, rim):
-    """A raised soil bed in a long leaf (top view): a clipped carpet-bedding rim of bronze-leaved begonia in flower round the edge, a
-    low groundcover band inside it, white mophead hydrangeas along the spine and lavender, ageratum and salvia either
-    side, all from the shared planting kit."""
+    """A raised bed of dark mulch in a long leaf (top view), edged by its own dark soil margin against the lawn (no
+    coloured rim, as the sources show): a low groundcover inside the margin, white mophead hydrangeas along the spine and
+    dense drifts of mauve hydrangeas, ageratum and salvia either side, all from the shared planting kit."""
     pts, left, right = bed_outline(spine, width)
     strip_mesh(name, left[::2] + ([left[-1]] if len(left) % 2 == 0 else []), right[::2] + ([right[-1]] if len(right) % 2 == 0 else []), .02, .10, 'soil', 'flower beds')
     poly = Polygon(left + right[::-1]).buffer(0)
-    clipped(name + ' rim', poly, .10, 0., .34, rim, .075, dots=((rim + '2' if rim == 'pk_pink' else 'pk_bract2', 'pk_leaf_red'), 12, .021),
-            seed=len(name))
-    clipped(name + ' ground', poly, .10, .34, None, 'pk_groundcover', .04, lower=True, seed=len(name) + 1)
+    clipped(name + ' ground', poly, .10, .13, None, 'pk_groundcover', .04, seed=len(name) + 1)
     region = KIT.register_bed(poly.buffer(-.05))
-    inner = pk_region(poly, .05 + .34)
+    inner = pk_region(poly, .05 + .10)
     sp = LineString(pts)
     L = sp.length
     holes = []
-    n = max(2, int(L / 1.05))
+    n = max(2, int(L / .95))
     for k in range(n):                                                         # white hydrangeas along the spine
         u = (k + .5) / n
         q = sp.interpolate(u * L)
         hw = width / 2 * max(.05, math.sin(math.pi * u)) ** .55
-        if hw < .42:
+        if hw < .38:
             continue
-        s = kit_place('hyd', q.x + RNG.uniform(-.06, .06), q.y + RNG.uniform(-.06, .06), .10, region, min(1.0, hw / .62))
+        s = kit_place('hyd', q.x + RNG.uniform(-.06, .06), q.y + RNG.uniform(-.06, .06), .10, region, min(1.1, hw / .58))
         if s:
-            holes.append(q.buffer(P['hyd']['canopy_r'] * s * .92))
+            holes.append(q.buffer(P['hyd']['canopy_r'] * s * .85))
     rest = inner.difference(unary_union(holes)) if holes else inner
-    for (x, y) in pk_scatter(rest, .51, seed=len(name) + 3):                  # lavender, ageratum and salvia blocks either side
+    for (x, y) in pk_scatter(rest, .55, seed=len(name) + 3):                  # mauve drifts with ageratum and salvia either side
         u = sp.project(Point(x, y)) / L
-        key = ('lav', 'ageratum', 'salvia', 'ageratum')[int(u * 7) % 4]
-        kit_place(key, x, y, .10 if key != 'ageratum' else .115, region, .95 if key != 'ageratum' else 1.15)
+        key = ('mauve', 'mauve', 'ageratum', 'mauve', 'salvia', 'mauve')[int(u * 9) % 6]
+        kit_fill(key, x, y, .10, region, {'mauve': 1.0, 'ageratum': 1.3, 'salvia': 1.05}[key])
 
 
 def border(name, x0, x1, y0, y1):
-    """A straight border along the north axis: a clipped ageratum rim, white hydrangeas alternating with pairs of
-    lavender and salvia down its middle over a low groundcover band."""
+    """A straight border along the north axis edged by a dark soil margin: white hydrangeas alternating with mauve
+    hydrangeas and salvia down its middle over a low groundcover band, ageratum along both edges."""
     C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, .06), (x1 - x0, y1 - y0, .08), 'soil', 'flower beds', 0)
     poly = sbox(x0, y0, x1, y1)
-    clipped(name + ' rim', poly, .10, 0., .26, 'pk_purple2', .07, dots=(('pk_lavender', 'pk_white2'), 10, .02), seed=len(name))
-    clipped(name + ' ground', poly, .10, .26, None, 'pk_groundcover', .04, lower=True, seed=len(name) + 1)
+    clipped(name + ' ground', poly, .10, .11, None, 'pk_groundcover', .04, seed=len(name) + 1)
     region = KIT.register_bed(poly.buffer(-.04, join_style=2))
     xc = (x0 + x1) / 2
     nb = int((y1 - y0) / 1.15)
     for k in range(nb):
         yc = y0 + (y1 - y0) * (k + .5) / nb
         if k % 2 == 0:
-            kit_place('hyd', xc, yc, .10, region, .78)
+            kit_place('hyd', xc, yc, .10, region, .82)
         else:
-            for dy in (-.24, .24):
-                kit_place(('lav', 'salvia')[(k // 2) % 2], xc, yc + dy, .10, region, .9)
+            kit_place(('mauve', 'salvia')[(k // 2) % 2], xc, yc, .10, region, .82 if (k // 2) % 2 == 0 else 1.0)
 
 
 def shade_tree(name, x, y, h, r):
@@ -2433,15 +2460,18 @@ def planting():
         pts = arc(0.0, 0.0, r, a0, a1, .4)
         for i, ((ax, ay), (cx, cy)) in enumerate(zip(pts, pts[1:])):
             b.beam('granite', (ax, ay, .125), (cx, cy, .125), .10 + .004 * (i % 2), .07 + .004 * (i % 2), ext=.02)
-    sector = Polygon([(0.0, 0.0)] + arc(0.0, 0.0, BED1 + 1.0, a0 + .05, a1 - .05, .3))
+    for a in (a0, a1):                                                         # granite caps across both ring ends at the stair
+        b.beam('granite', (BED0 * math.cos(a), BED0 * math.sin(a), .125), (BED1 * math.cos(a), BED1 * math.sin(a), .125), .10, .07, ext=.04)
+    sector = Polygon([(0.0, 0.0)] + arc(0.0, 0.0, BED1 + 1.0, a0 + .012, a1 - .012, .3))
     ring = Point(0, 0).buffer(BED1, 32).difference(Point(0, 0).buffer(BED0, 32)).intersection(sector)
-    clipped('Bandstand ring edge', ring, .13, 0., .3, 'pk_magenta', .075, dots=(('pk_bract2', 'pk_leaf_red'), 12, .021), seed=5)
-    clipped('Bandstand ring centre', ring, .13, .3, None, 'pk_pink2', .055, lower=True, seed=6)
+    clipped('Bandstand ring ground', ring, .13, .03, None, 'pk_groundcover', .04, seed=6)
     region = KIT.register_bed(ring.buffer(-.05))
     rm = (BED0 + BED1) / 2
-    for k, (x, y) in enumerate(arc(0.0, 0.0, rm, a0 + .2, a1 - .2, .95)):  # white hydrangeas with lavender and salvia on the ring
-        key = ('hyd', 'lav', 'salvia', 'lav')[k % 4]
-        kit_place(key, x, y, .13, region, .68 if key == 'hyd' else .9)
+    for k, (x, y) in enumerate(arc(0.0, 0.0, rm, a0 + .09, a1 - .09, .66)):  # a continuous mass of white and mauve hydrangeas
+        kit_place(('hyd', 'mauve', 'hyd', 'salvia')[k % 4], x, y, .13, region, (.86, .84, .86, 1.0)[k % 4])
+    for r, d in ((BED0 + .27, .0), (BED1 - .27, .33)):                        # ageratum and salvia along both edges, in the gaps
+        for k, (x, y) in enumerate(arc(0.0, 0.0, r, a0 + .06 + d / r, a1 - .06, .66)):
+            kit_fill(('ageratum', 'ageratum', 'salvia')[k % 3], x, y, .13, region, .95 if k % 3 < 2 else .85)
     # Shrubs and hydrangeas along the fence and by the gates (top view: round shrubs at the south corners and gates).
     for (x, y, r, role) in ((-10.6, -27.4, .9, 'shrub'), (10.4, -27.4, .9, 'shrub'), (-19.8, -27.6, .8, 'white'), (-18.4, -27.8, .7, 'pink'),
                             (19.6, -27.6, .8, 'white'), (18.2, -27.8, .7, 'purple'), (-20.2, -1.0 - 3.0, .9, 'shrub'), (20.2, -4.2, .9, 'shrub'),
@@ -2454,6 +2484,7 @@ def planting():
     b.flush('planting')
     flush_smooth(bp, 'planting plants')
     KIT.flush()
+    print('HPG_KIT_COUNTS', KIT.counts, 'rejected', KIT.rejected)
     bad = KIT.audit(detail=True)
     if bad:
         raise RuntimeError(f'planting kit clearance rule: {len(bad)} placements cross a bed edge or obstacle: {bad}')

@@ -9,7 +9,7 @@ the corners of the deck carrying rows of clay pots; the rear wings have their ow
 the main roof. The centre three bays of the south front form a slightly projecting pavilion with four giant stone
 pilasters and a pediment of brick with an oval cartouche, its slate gable running back into the hip. A one-storey
 Tuscan portico of four columns with a low hipped standing-seam metal roof stands on a stone platform before the
-door. Tall six-over-six sashes (three panes wide) with shouldered stone lintels and stone sills, a stone plinth,
+door. Tall nine-over-nine sashes (three panes wide) with shouldered stone lintels and stone sills, a stone plinth,
 a stone string course at the first floor and a modillioned white eave cornice; dark downpipes. Formal box-hedge
 parterres to the west and north, brick paths, a lawn and low hedges before the front, a tall iron railing along the
 street and the west side, a stone Georgian house to the east, street trees and a dark tree by the west front.
@@ -43,7 +43,7 @@ PALETTE = dict(wall=(.56, .29, .21), joint=(.66, .60, .53), stone=(.84, .82, .76
     floor=(.58, .48, .38), timber=(.33, .25, .17), pot=(.70, .40, .28), planting=(.22, .36, .14),
     conifer=(.13, .25, .12), hedge=(.19, .32, .13), lawn=(.34, .47, .22), soil=(.24, .18, .12),
     paving=(.44, .24, .19), concrete=(.70, .69, .66), asphalt=(.27, .27, .28), white=(.95, .95, .93),
-    neighbour=(.47, .45, .41), nbtrim=(.86, .85, .80), pane=(.11, .13, .15))
+    neighbour=(.47, .45, .41), nbtrim=(.86, .85, .80), pane=(.2, .23, .26))
 
 
 def manifest(version):
@@ -84,7 +84,7 @@ def manifest(version):
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=WY1 - YP, height=h),
             observed_storeys=2, storey_programme='two storeys on a low stone plinth, with an attic under the hipped roof',
             plan='21.2 x 14.7 m main block, seven bays by four, a 7.2 m centre pavilion projecting 0.6 m on the south front, two 5.8 x 2.15 m rear wings at the back corners with a recessed court between (top view); 7.5 m portico on a stone platform',
-            facade='red brick with a stone plinth, a stone string course and a modillioned white eave cornice; tall six-over-six sashes three panes wide with shouldered stone lintels and stone sills; centre pavilion with four giant stone pilasters and a brick pediment with an oval cartouche; one-storey Tuscan portico of four columns with a low hipped standing-seam roof',
+            facade='red brick with a stone plinth, a stone string course and a modillioned white eave cornice; tall nine-over-nine sashes three panes wide with shouldered stone lintels and stone sills; centre pavilion with four giant stone pilasters and a brick pediment with an oval cartouche; one-storey Tuscan portico of four columns with a low hipped standing-seam roof',
             roof='hipped blue-grey slate roof truncated in a flat lead deck with four brick chimney stacks and clay pots at its corners; the pavilion gable and the rear-wing hips run into the main roof',
             levels_m=[G0, F1, FR0, EAVE], roof_m=dict(eave=ZL, deck=ZD, pediment=EAVE + PR, chimneys=15.0),
             inferred='interiors, the rear wings and the north front follow the visible grammar; metric dimensions are authored teaching assumptions'),
@@ -447,7 +447,7 @@ def ring(name, d_out, d_in, z0, z1, role='stone', module='bands'):
 
 
 def sash(m, f, h, occupied='room', lintel=True):
-    """Tall six-over-six sash three panes wide, shouldered stone lintel with a raised centre, stone sill."""
+    """Tall nine-over-nine sash three panes wide, shouldered stone lintel with a raised centre, stone sill."""
     framed(m, f, h, cols=3, rows=6, inset=.12, occupied=occupied)
     m.box('trim', h['u'], .09, h['z'] + h['h'] / 2, h['w'] - .1, .1, .07)                     # meeting rail
     m.box('stone', h['u'], -.05, h['z'] - .07, h['w'] + .2, .14, .14)                         # sill
@@ -566,6 +566,13 @@ def bands():
             px, py = ax + ux * t, ay + uy * t
             cx, cy = px + nx * .235, py + ny * .235
             b.box('trim', cx, cy, 9.24, .12 if abs(ux) > .5 else .41, .41 if abs(ux) > .5 else .12, .24)   # modillion
+    # Blocks filling the re-entrant corners of the bed-mould zone, so no pocket opens under the corona there.
+    n = len(OUTLINE)
+    for i in range(n):
+        (ax, ay), (bx, by), (cx, cy) = OUTLINE[i - 1], OUTLINE[i], OUTLINE[(i + 1) % n]
+        if (bx - ax) * (cy - by) - (by - ay) * (cx - bx) < 0:                                    # clockwise turn: re-entrant corner
+            ox, oy = offset_poly(OUTLINE, .45)[i]
+            b.box('trim', (bx + ox) / 2, (by + oy) / 2, 9.235, abs(ox - bx) + .02, abs(oy - by) + .02, .25)
     b.flush('modillions')
     # Dark downpipes with heads at the corners and beside the pavilion.
     b = Batch()
@@ -648,14 +655,20 @@ def roofs():
         b.flush(f'rear wing slates {s:+d}')
 
 
+def chevron(name, xh, zc, m, tv, y0, y1, role='trim', module='pediment'):
+    """Raking cornice as one mitred inverted-V band: centreline z = zc - m|x|, vertical thickness tv, from y0 to y1."""
+    lo, hi = zc - m * xh, zc
+    pts = [(-xh, lo + tv / 2), (0.0, hi + tv / 2), (xh, lo + tv / 2), (xh, lo - tv / 2), (0.0, hi - tv / 2), (-xh, lo - tv / 2)]
+    return C.prism(name, pts, 'y', y0, y1, role, module)
+
+
 def pediment():
     # Slate gable roof over the pavilion running back into the main hip.
     C.prism('Pavilion gable roof', [(-4.05, 9.2), (4.05, 9.2), (0.0, 12.85)], 'y', YP + .02, -3.0, 'roof', 'roof')
     C.prism('Pediment tympanum', [(-PX - .02, 9.58), (PX + .02, 9.58), (0.0, 9.6 + PR + .02)], 'y', YP, YP + .35, 'wall', 'pediment')
+    chevron('Raking cornice', 4.2, 12.78, 3.36 / 4.1, .543, YP - .47, YP + .03)                   # one mitred piece, 2 cm proud of the corona
+    chevron('Raking cornice nosing', 4.05, 12.98, .84, .209, YP - .52, YP - .38)
     b = Batch()
-    for s in (-1, 1):
-        b.beam('trim', (s * 4.1, YP - .22, 9.42), (-s * .2, YP - .22, 12.78 + .2 * 3.36 / 4.1), .5, .42)   # raking cornices, crossing at the apex
-        b.beam('trim', (s * 4.0, YP - .45, 9.62), (-s * .2, YP - .45, 12.98 + .2 * 3.36 / 4.0), .14, .16)   # cornice nosing, 5 cm proud
     for k in range(1, 5):                                                                       # slate courses on the gable roof
         z = 9.2 + 3.65 * k / 5
         x = 4.05 * (1 - k / 5)
@@ -794,8 +807,8 @@ def site():
     for x0, x1 in ((-10.0, -2.6), (2.6, 10.6)):
         hedge(b, x0, x1, 11.7, 14.8)
         hedge(b, x0 + 1.2, x1 - 1.2, 12.5, 14.0, w=.32, h=.4)
-    for x0, x1 in ((-10.4, -3.78), (3.78, 10.4)):                                              # front hedges against the plinth and the platform
-        b.box('hedge', (x0 + x1) / 2, Y0 - .35, .32, x1 - x0, .6, .64)
+    for x0, x1 in ((-10.4, -3.7), (3.7, 10.4)):                                                # front hedges lapped into the plinth and the platform
+        b.box('hedge', (x0 + x1) / 2, Y0 - .35, .3, x1 - x0, .6, .6)
     b.box('hedge', 18.4, -9.6, .4, 7.0, .6, .8)                                                  # the neighbour's front hedge
     for x0, x1 in ((-20.0, -2.4), (2.4, 26.0)):
         b.box('hedge', (x0 + x1) / 2, 15.3, .45, x1 - x0, .5, .9)                               # north boundary hedge, gap at the path
