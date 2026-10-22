@@ -69,6 +69,26 @@ def prepare(a, manifest, lock):
     return out
 
 
+def keep_instances():
+    """Give every planting-kit instance a role that is not in C.MATS, so deliver()'s `for role in MATS` join skips it; the
+    true role is kept in cityprompt_base_role (and on the shared material). Returns the number of instance nodes.
+    Copied from tools/clay_planting_kit_showcase/build.py."""
+    n = 0
+    for o in C.objects():
+        if o.get('rlasm_instance'):
+            o['cityprompt_base_role'] = o['cityprompt_semantic_role']
+            o['cityprompt_semantic_role'] = o['cityprompt_semantic_role'] + '_instanced'
+            n += 1
+    return n
+
+
+def glb_size(path):
+    """Unique (stored) triangles, meshes and nodes in the delivered GLB."""
+    js = C.glb_json(path); acc = js.get('accessors', [])
+    tris = sum(acc[p['indices']]['count'] // 3 for m in js.get('meshes', []) for p in m['primitives'] if 'indices' in p)
+    return dict(bytes=Path(path).stat().st_size, stored_triangles=tris, meshes=len(js.get('meshes', [])), nodes=len(js.get('nodes', [])))
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--version', type=int, required=True)
@@ -98,12 +118,22 @@ def main():
     print('AUTHORING_START ' + m['candidate'], flush=True)
     family.build()
     print('AUTHORING_COMPLETE ' + m['candidate'], flush=True)
+    seen = set()
     for obj in C.objects():
+        if obj.data.name in seen:                # shared kit meshes are triangulated once
+            continue
+        seen.add(obj.data.name)
         bm = C.bmesh.new(); bm.from_mesh(obj.data)
         C.bmesh.ops.triangulate(bm, faces=list(bm.faces))
         C.bmesh.ops.delete(bm, geom=[f for f in bm.faces if f.calc_area() <= 1e-10], context='FACES_ONLY')
         bm.to_mesh(obj.data); bm.free(); obj.data.update()
-    C.deliver(out, m, cameras)
+    nodes = keep_instances()
+    kit = family.KIT.stats() if getattr(family, 'KIT', None) else {}
+    report = C.deliver(out, m, cameras)
+    size = dict(glb_size(out / (m['candidate'] + '.glb')), kit=kit, instance_nodes=nodes,
+                scene_triangles=report['runtime']['triangles'])
+    C.write_json(out / 'evidence/planting-kit-size.json', size)
+    print('KIT_SIZE ' + json.dumps(size), flush=True)
 
 
 if __name__ == '__main__':
