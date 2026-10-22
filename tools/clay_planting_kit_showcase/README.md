@@ -238,6 +238,7 @@ There are fifteen cameras:
   stopping rule stops the kit at v003. The reviewer judged that v003 would close the stopped planting findings of
   Prince's Island Park, the Halifax Public Gardens and the stepped terraced plaza, but not the planted green bridge.
 - v003.1 kit patch (post-stop, showcase not re-reviewed): canopy clearance measured from each prototype's delivered plan extent
+- v003.2 kit patch (post-stop, showcase not re-reviewed): `wall_drape` gains opt-in `carrier_inset` (stops the hidden backing 8-12 cm inside the leaf cover) and `rim_sprays` (sprays along every drape edge, clear of openings); defaults reproduce v003.1 exactly
 
 ## Open points
 
