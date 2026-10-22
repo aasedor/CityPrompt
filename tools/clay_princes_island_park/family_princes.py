@@ -2399,12 +2399,55 @@ def protos(kit):
                                     droop=.35, size=1.3, leaves=30, seed=21)
     P['salvia'] = flower_head_cluster(kit, 'pi_salvia', 'spike', heads=16, height=.52, spread=.38, foliage=.36, head_role='pk_purple',
                                       leaf_w=.5, leaves=28, seed=41)
-    P['panicle'] = flower_head_cluster(kit, 'pi_white_panicle', 'panicle', heads=9, height=.88, spread=.36, foliage=.38,
+    P['panicle'] = flower_head_cluster(kit, 'pi_white_panicle', 'panicle', heads=7, height=.88, spread=.36, foliage=.38,
                                        head_role='pk_white', leaf_role='pk_leaf_dark', seed=61)
-    P['astilbe'] = flower_head_cluster(kit, 'pi_pink_astilbe', 'panicle', heads=10, height=.64, spread=.34, foliage=.36,
+    P['astilbe'] = flower_head_cluster(kit, 'pi_pink_astilbe', 'panicle', heads=8, height=.64, spread=.34, foliage=.36,
                                        head_role='pk_pink2', leaf_role='pk_leaf_dark', leaf_w=.45, leaves=30, seed=63)
     P['sh08'] = shrub_mass(kit, 'pi_shrub_08', radius=.58, height=.78, lobes=6, seed=122)
+    # a small edging grass: the large drifts keep their whole canopy inside the kerb, so it and small copies of the
+    # perennials fill the bed margins
+    P['edge_grass'] = arching_grass(kit, 'pi_edge_grass', blades=40, height=.3, width=.013, role='pk_blade_blue',
+                                    crown_role='pk_crown_blue', seed=101)
     return P
+
+
+def drift_fill(kit, reg, mix, spacing, seed, scales, sz_cap, placed, drift=2.6, lean=.06):
+    """Dense naturalistic drifts that fill a bed the way the locked views show it (masses meeting, no bare fill): Poisson
+    points `spacing` apart; each takes the species whose low-frequency noise field (with its weight) is highest there,
+    at the largest plan scale in `scales` that passes the kit clearance rule (so the big masses fill the middle and
+    smaller copies of the same species run out to the kerb), with its height scale capped at sz_cap (wide, not tall,
+    clumps). Records (x, y, plan radius) in `placed`; returns the number placed."""
+    rnd = random.Random(seed); fields = [_PkNoise(seed + 17 * i, 2 * math.pi / drift) for i in range(len(mix))]; n = 0
+    for x, y in pk_scatter(reg, spacing, margin=PK_CLEAR, seed=seed):
+        order = sorted(range(len(mix)), key=lambda i: -(fields[i](x, y) + 1.4 * math.log(mix[i][1])))
+        done = False
+        for i in order:
+            p = mix[i][0]
+            for s in scales:
+                sy = s * rnd.uniform(.9, 1.1); sz = min(s, sz_cap) * rnd.uniform(.9, 1.08)
+                ln = (rnd.uniform(-lean, lean), rnd.uniform(-lean, lean))
+                if kit.fits(p, x, y, s, reg, sy=sy, sz=sz, lean=ln):
+                    kit.place(p, x, y, PSOIL, rnd.uniform(0, math.tau), s, sy=sy, sz=sz, lean=ln)
+                    placed.append((x, y, kit.extent(p, s, sy, sz, ln))); n += 1; done = True
+                    break
+            if done:
+                break
+    return n
+
+
+def edge_fill(kit, reg, mix, spacing, seed, placed, scales=(.95, .8, .65)):
+    """Second pass: small edging plants in the gaps the big drifts leave along the kerb (a point is a gap if it lies
+    outside 60% of every placed plan radius: the plan radius is the tip of the longest leaf or blade)."""
+    rnd = random.Random(seed); n = 0
+    for x, y in pk_scatter(reg, spacing, margin=PK_CLEAR, seed=seed + 5):
+        if any(math.hypot(x - a, y - b) < r * .6 for a, b, r in placed):
+            continue
+        p = mix[n % len(mix)]
+        for s in scales:
+            if kit.fits(p, x, y, s, reg):
+                kit.place(p, x, y, PSOIL, rnd.uniform(0, math.tau), s); placed.append((x, y, kit.extent(p, s))); n += 1
+                break
+    return n
 
 
 def bed_base(name, poly):
@@ -2425,17 +2468,17 @@ def planting():
     front = [(P['feather'], 1.5), (P['fountain'], 1.0), (P['cone'], 1.1), (P['salvia'], .8), (P['panicle'], .8), (P['astilbe'], .5),
              (P['sh08'], .3)]
     grove = [(P['fountain'], 1.0), (P['feather'], .7), (P['sh08'], .9), (P['panicle'], .4), (P['salvia'], .3)]
+    edge = [P['salvia'], P['edge_grass'], P['cone'], P['edge_grass'], P['astilbe']]
     for i, (name, (pxs, dens)) in enumerate(BEDS.items()):
         poly = outline(pxs); bed_base(f'Bed {name}', poly)
-        reg = kit.register_bed(pk_region(poly, KERB_W))
+        reg = kit.register_bed(pk_region(poly, KERB_W)); placed = []
         if name in GROVES:
-            groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, grid=.5, edge=.16, seed=40 + i)
-            perennial_drift(kit, poly, PSOIL, grove, kerb=KERB_W, spacing=1.5, seed=60 + i, drift=3.2, scale=(1.1, 1.5),
-                            underlay=None)
+            groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, grid=.7, edge=.18, seed=40 + i)
+            drift_fill(kit, reg, grove, 1.55, 60 + i, (1.5, 1.25, 1.0, .8), 1.2, placed, drift=3.2)
         else:
-            groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, grid=.42, edge=.14, seed=40 + i)
-            perennial_drift(kit, poly, PSOIL, front, kerb=KERB_W, spacing=.8, seed=60 + i, drift=2.6, scale=(1.1, 1.4),
-                            underlay=None)
+            groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, grid=.6, edge=.16, seed=40 + i)
+            drift_fill(kit, reg, front, .9, 60 + i, (1.5, 1.3, 1.1, .9, .75), 1.15, placed)
+            edge_fill(kit, reg, edge, .48, 60 + i, placed)
     rnd = random.Random(77)
     for i, c in enumerate(PITS):                             # tree pits in the south plaza: groundcover and a ring of grasses
         poly = [(c[0] + 1.3 * math.cos(a * math.tau / 32), c[1] + 1.3 * math.sin(a * math.tau / 32)) for a in range(32)]

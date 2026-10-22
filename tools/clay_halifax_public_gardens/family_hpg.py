@@ -2316,7 +2316,7 @@ def hpg_protos(kit):
     """The garden's kit prototypes: white mophead hydrangeas for the bed spines and borders, and purple salvia, lavender and
     ageratum cushions for the bands either side (the rims and the bandstand ring are clipped carpet bands)."""
     P['hyd'] = flower_head_cluster(kit, 'hpg_hydrangea', 'mophead', heads=8, height=.86, foliage=.46, head_role='pk_white',
-                                   leaf_role='pk_leaf', leaves=38, seed=11)
+                                   leaf_role='pk_leaf', leaves=32, seed=11)
     P['salvia'] = flower_head_cluster(kit, 'hpg_salvia', 'spike', heads=11, height=.46, spread=.24, foliage=.25,
                                       head_role='pk_purple', leaf_w=.5, leaves=28, seed=41)
     P['lav'] = lavender(kit, 'hpg_lavender', radius=.27, height=.48, spikes=26, seed=71)
@@ -2333,23 +2333,24 @@ def kit_place(key, x, y, z, region, s=1.0):
 def clipped(name, outline, z, d_out, d_in, role, height, dots=None, lower=False, seed=1):
     """One flat clipped carpet-bedding band of the shared kit, kept coarse (flat tops need few vertices): lower=True laps
     5 cm under the band outside it; dots=(roles, per_m2, radius) seats micro-florets on its visible part."""
-    return bedding_band(name, outline, z, d_out, d_in, role, kerb=.05, height=height, bump=.003, grid=.5, edge=.12, ramp=.025,
+    outline = outline.simplify(.012)                                          # no collinear vertices: they only add bytes
+    return bedding_band(name, outline, z, d_out, d_in, role, kerb=.05, height=height, bump=.003, grid=.7, edge=.3, ramp=.025,
                         lap_out=(.05 if lower else .03), lap_in=0. if d_in is None else .012, seed=seed, module='flower beds',
                         dots=dots)
 
 
 def carpet_bed(name, spine, width, rim):
-    """A raised soil bed in a long leaf (top view): a clipped carpet-bedding rim of begonia in flower round the edge, a
+    """A raised soil bed in a long leaf (top view): a clipped carpet-bedding rim of bronze-leaved begonia in flower round the edge, a
     low groundcover band inside it, white mophead hydrangeas along the spine and lavender, ageratum and salvia either
     side, all from the shared planting kit."""
     pts, left, right = bed_outline(spine, width)
     strip_mesh(name, left[::2] + ([left[-1]] if len(left) % 2 == 0 else []), right[::2] + ([right[-1]] if len(right) % 2 == 0 else []), .02, .10, 'soil', 'flower beds')
     poly = Polygon(left + right[::-1]).buffer(0)
-    clipped(name + ' rim', poly, .10, 0., .40, rim, .075, dots=((rim + '2' if rim == 'pk_pink' else 'pk_bract2', 'pk_white2'), 26, .016),
+    clipped(name + ' rim', poly, .10, 0., .34, rim, .075, dots=((rim + '2' if rim == 'pk_pink' else 'pk_bract2', 'pk_leaf_red'), 12, .021),
             seed=len(name))
-    clipped(name + ' ground', poly, .10, .40, None, 'pk_groundcover', .04, lower=True, seed=len(name) + 1)
+    clipped(name + ' ground', poly, .10, .34, None, 'pk_groundcover', .04, lower=True, seed=len(name) + 1)
     region = KIT.register_bed(poly.buffer(-.05))
-    inner = pk_region(poly, .05 + .40)
+    inner = pk_region(poly, .05 + .34)
     sp = LineString(pts)
     L = sp.length
     holes = []
@@ -2364,7 +2365,7 @@ def carpet_bed(name, spine, width, rim):
         if s:
             holes.append(q.buffer(P['hyd']['canopy_r'] * s * .92))
     rest = inner.difference(unary_union(holes)) if holes else inner
-    for (x, y) in pk_scatter(rest, .42, seed=len(name) + 3):                  # lavender, ageratum and salvia blocks either side
+    for (x, y) in pk_scatter(rest, .51, seed=len(name) + 3):                  # lavender, ageratum and salvia blocks either side
         u = sp.project(Point(x, y)) / L
         key = ('lav', 'ageratum', 'salvia', 'ageratum')[int(u * 7) % 4]
         kit_place(key, x, y, .10 if key != 'ageratum' else .115, region, .95 if key != 'ageratum' else 1.15)
@@ -2375,7 +2376,7 @@ def border(name, x0, x1, y0, y1):
     lavender and salvia down its middle over a low groundcover band."""
     C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, .06), (x1 - x0, y1 - y0, .08), 'soil', 'flower beds', 0)
     poly = sbox(x0, y0, x1, y1)
-    clipped(name + ' rim', poly, .10, 0., .26, 'pk_purple2', .07, dots=(('pk_lavender', 'pk_white2'), 26, .015), seed=len(name))
+    clipped(name + ' rim', poly, .10, 0., .26, 'pk_purple2', .07, dots=(('pk_lavender', 'pk_white2'), 10, .02), seed=len(name))
     clipped(name + ' ground', poly, .10, .26, None, 'pk_groundcover', .04, lower=True, seed=len(name) + 1)
     region = KIT.register_bed(poly.buffer(-.04, join_style=2))
     xc = (x0 + x1) / 2
@@ -2433,10 +2434,14 @@ def planting():
         for i, ((ax, ay), (cx, cy)) in enumerate(zip(pts, pts[1:])):
             b.beam('granite', (ax, ay, .125), (cx, cy, .125), .10 + .004 * (i % 2), .07 + .004 * (i % 2), ext=.02)
     sector = Polygon([(0.0, 0.0)] + arc(0.0, 0.0, BED1 + 1.0, a0 + .05, a1 - .05, .3))
-    ring = Point(0, 0).buffer(BED1, 96).difference(Point(0, 0).buffer(BED0, 96)).intersection(sector)
-    clipped('Bandstand ring edge', ring, .13, 0., .3, 'pk_magenta', .075, dots=(('pk_bract2', 'pk_white2'), 26, .016), seed=5)
-    clipped('Bandstand ring centre', ring, .13, .3, None, 'pk_pink2', .055, dots=(('pk_white2', 'pk_pink'), 26, .015), lower=True,
-            seed=6)
+    ring = Point(0, 0).buffer(BED1, 32).difference(Point(0, 0).buffer(BED0, 32)).intersection(sector)
+    clipped('Bandstand ring edge', ring, .13, 0., .3, 'pk_magenta', .075, dots=(('pk_bract2', 'pk_leaf_red'), 12, .021), seed=5)
+    clipped('Bandstand ring centre', ring, .13, .3, None, 'pk_pink2', .055, lower=True, seed=6)
+    region = KIT.register_bed(ring.buffer(-.05))
+    rm = (BED0 + BED1) / 2
+    for k, (x, y) in enumerate(arc(0.0, 0.0, rm, a0 + .2, a1 - .2, .95)):  # white hydrangeas with lavender and salvia on the ring
+        key = ('hyd', 'lav', 'salvia', 'lav')[k % 4]
+        kit_place(key, x, y, .13, region, .68 if key == 'hyd' else .9)
     # Shrubs and hydrangeas along the fence and by the gates (top view: round shrubs at the south corners and gates).
     for (x, y, r, role) in ((-10.6, -27.4, .9, 'shrub'), (10.4, -27.4, .9, 'shrub'), (-19.8, -27.6, .8, 'white'), (-18.4, -27.8, .7, 'pink'),
                             (19.6, -27.6, .8, 'white'), (18.2, -27.8, .7, 'purple'), (-20.2, -1.0 - 3.0, .9, 'shrub'), (20.2, -4.2, .9, 'shrub'),
