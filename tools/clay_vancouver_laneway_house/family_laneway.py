@@ -2239,7 +2239,7 @@ def niche():
     xd = X0 + ND                                     # face of the back wall
     for ua, ub in ((u0 - .01, u0 + .1), (u1 - .1, u1 + .01)):      # returns stop 1 cm inside the head lining
         b.box('cedar', X0 + (.015 + ND) / 2, (ua + ub) / 2, (z0 + zt - .01) / 2, ND + .005, ub - ua, zt - .01 - z0)
-    b.box('cedar', X0 + (.015 + ND) / 2, NU, zt + .04, ND + .005, NW + .016, .14)                 # head: zt - .03 .. zt + .11
+    b.box('cedar', X0 + (.022 + ND) / 2, NU, zt + .04, ND - .002, NW + .016, .14)                 # head: zt - .03 .. zt + .11, its face 7 mm behind the returns' faces
     b.box('cedar', xd + .06, NU, (z0 + zt + .1) / 2, .12, NW + .1, zt + .1 - z0)                   # back wall
     # Horizontal board joints on both return faces and on the back wall south of the door and over it.
     z = z0 + .14
@@ -2257,7 +2257,7 @@ def niche():
     b.box('door_wood', xd - .035, NDU, z0 + 1.08, .03, .9, 2.12)
     b.box('hardware', xd - .057, NDU - .34, z0 + 1.1, .02, .03, .8)
     b.box('hardware', X0 + .24, u0 + .1 + .035, z0 + 1.35, .2, .06, .26)
-    b.box('concrete', X0 + ND / 2, NU, (FL1 - .02) / 2, ND - .01, NW, FL1 - .02)
+    b.box('concrete', X0 + (.012 + ND - .005) / 2, NU, (FL1 - .02) / 2, ND - .017, NW, FL1 - .02)   # floor edge 7 mm behind the returns' faces
     b.flush('side entry')
     C.prism('Side entry steps', [(X0 + .02, 0.0), (X0 + .02, .29), (X0 - .35, .29), (X0 - .35, .115), (XSW - .02, .115), (XSW - .02, 0.0)],
             'y', NU - .7, NU + .7, 'concrete', 'side entry')
@@ -2557,11 +2557,12 @@ def protos(kit):
     return P
 
 
-def fill(kit, reg, mix, spacing, seed, placed, scales=(1.1, .95, .8, .65, .5), drift=2.2):
-    """Dense drifts: Poisson points `spacing` apart; each takes the species whose noise field (with its weight) is
-    highest there, at the largest scale that passes the kit clearance rule; points inside a placed plant are skipped."""
+def fill(kit, reg, mix, spacing, seed, placed, scales=(1.1, .95, .8, .65, .5), drift=2.2, within=None):
+    """Dense drifts: Poisson points `spacing` apart (inside `within`, the mulched bed, when the registered region also
+    takes in the overhang strip); each takes the species whose noise field (with its weight) is highest there, at the
+    largest scale that passes the kit clearance rule; points inside a placed plant are skipped."""
     rnd = random.Random(seed); fields = [_PkNoise(seed + 17 * i, 2 * math.pi / drift) for i in range(len(mix))]
-    for x, y in pk_scatter(reg, spacing, margin=PK_CLEAR, seed=seed):
+    for x, y in pk_scatter(within if within is not None else reg, spacing, margin=PK_CLEAR, seed=seed):
         if any(math.hypot(x - a, y - c) < r * .5 for a, c, r in placed):
             continue
         order = sorted(range(len(mix)), key=lambda i: -(fields[i](x, y) + 1.4 * math.log(mix[i][1])))
@@ -2596,7 +2597,13 @@ def planting():
             b.box('pk_mulch', (x0 + x1) / 2, (y0 + y1) / 2, PSOIL / 2, x1 - x0, y1 - y0, PSOIL)
     b.flush('beds')
     kit = KIT = PlantKit('planting', instancing=INSTANCING); P = protos(kit)
-    regs = {k: kit.register_bed(_PkPolygon(poly)) for k, (boxes, poly) in beds.items()}
+    # The side-street beds have no kerb: the sword ferns arch out over the sidewalk edge and back against the cedar
+    # wall, as in the sources, so their registered planting regions take in a 0.3 m overhang strip on the sidewalk
+    # and 0.25 m behind the wall face; stems and the scatter stay inside the mulched bed (`real`).
+    ext = {'A': [(XSW - .3, YSW - .3), (-.87, YSW - .3), (-.87, YF + .02), (X0 + .25, YF + .02), (X0 + .25, NU - .72), (XSW - .3, NU - .72)],
+           'D': [(XSW - .3, NU + .72), (X0 + .25, NU + .72), (X0 + .25, Y1 + .11), (XSW - .3, Y1 + .11)]}
+    real = {k: _PkPolygon(poly) for k, (boxes, poly) in beds.items()}
+    regs = {k: kit.register_bed(_PkPolygon(ext.get(k, poly))) for k, (boxes, poly) in beds.items()}
     placed = []
     kit.place_in(P['maple'], 3.1, -5.55, PSOIL, .6, 1.0, region=regs['B'], shrink=(1., .9, .8, .7))
     placed.append((3.1, -5.55, .95))
@@ -2606,9 +2613,13 @@ def planting():
     side = [(P['fern'], 1.2), (P['reed'], .9), (P['fern2'], .7), (P['golden'], .4)]
     right = [(P['fern'], 1.4), (P['fern2'], .8), (P['golden'], .5), (P['fescue'], .4), (P['shrub'], .2)]
     fine = (1.1, .95, .8, .68, .56, .46, .38, .3)
-    fill(kit, regs['A'], front, .3, 31, placed, scales=fine)
+    ferns = [(P['fern'], 1.3), (P['fern2'], .8)]
+    big = (1.1, 1.0, .9, .8, .7)
+    for k, sp, sd in (('A', .62, 41), ('D', .55, 43), ('B', .7, 45), ('E', .7, 47)):     # first the sword-fern masses
+        fill(kit, regs[k], ferns, sp, sd, placed, scales=big, drift=3.0, within=real[k])
+    fill(kit, regs['A'], front, .3, 31, placed, scales=fine, within=real['A'])
     fill(kit, regs['B'], right, .32, 33, placed, scales=fine)
-    fill(kit, regs['D'], side, .26, 35, placed, scales=fine)
+    fill(kit, regs['D'], side, .26, 35, placed, scales=fine, within=real['D'])
     fill(kit, regs['E'], side, .36, 37, placed, scales=fine)
     kit.flush()
     bad = kit.audit(detail=True)

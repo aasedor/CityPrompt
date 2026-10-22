@@ -75,6 +75,22 @@ is assembled as `head + common + gcommon + plantkit + body`, and `build.py` keep
 `clay_core.deliver()`'s per-role join (`keep_instances()`, copied from the kit showcase) and writes
 `evidence/planting-kit-size.json`. The kit clearance audit must be 0 or the build fails.
 
+v005 (kit v003.2, opt-in options unused here) answers the four v004 P1s:
+
+- **Bed margins:** a margin pass plants a low band on rings 0.44 m and 0.86 m inside every kerb (blue edging grass,
+  white alyssum cushions, small salvias, in runs of 3 to 6), and where an eye-level camera is within 8 m, small
+  cushions on a ring 0.27 m inside the kerb; the groundcover undulates (bump 2.8 cm) instead of lying flat.
+- **Grove beds:** the bed between the pavilion and the boardwalk is planted at 1.4 m spacing with large, wide clumps
+  (fountain and feather-reed grass, shrubs, astilbe, panicles) plus an edging ring, instead of 2.1 m.
+- **Black holes:** crossing joint lines sit on two levels 0.8 mm apart (plaza grid, sett running joints, band ends);
+  bench legs stop under the slats, the cross rail is narrower than the legs and the back post clears the slat
+  faces; door leaves run 1 cm into the sill over a solid threshold that covers the sill plane the floor slab shared
+  with the opening; the footbridge kerbs are lofted in one piece, 2 cm proud of the deck side face.
+- **Size cap:** each grass's crown shares its blade role (one instance node per grass), the front drifts carry fewer
+  pink coneflowers and more shrub and fountain-grass mass, boardwalk pickets are 200 mm apart (was 170 mm), and kit
+  instance nodes are named `k1`, `k2`, ... (`short_instance_names()` in `build.py`; the prototype stays named on its
+  shared mesh).
+
 ## Open blockers after v004 (x)
 
 x
