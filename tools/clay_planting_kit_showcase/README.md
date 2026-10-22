@@ -237,6 +237,7 @@ There are fifteen cameras:
   smaller footprint than the delivered canopy. The shrub finding survived two targeted fixes (v002, v003), so the
   stopping rule stops the kit at v003. The reviewer judged that v003 would close the stopped planting findings of
   Prince's Island Park, the Halifax Public Gardens and the stepped terraced plaza, but not the planted green bridge.
+- v003.1 kit patch (post-stop, showcase not re-reviewed): canopy clearance measured from each prototype's delivered plan extent
 
 ## Open points
 

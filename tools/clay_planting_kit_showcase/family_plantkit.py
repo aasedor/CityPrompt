@@ -402,6 +402,8 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 # whorled spikes in a vase-shaped fan; leaf-skinned lumpy bedding cushions; wall climbers built from instanced leafy and
 # flowering sprays (three-bract clusters) over a hidden dark carrier, with trailing canes and a woody armature; pots and
 # opposing near-coincident shell faces are audited with the clearance rule (audit() must be 0).
+# Kit v003.1: canopy clearance is measured from each prototype's delivered plan extent (scale and lean included), so no
+# canopy may cross a kerb's inner line.
 import random as _pkr
 import numpy as _pknp
 import shapely as _pksh
@@ -409,6 +411,7 @@ from shapely.geometry import Polygon as _PkPolygon
 
 PK_SINK = .025                                  # every plant base and carpet edge dives this far below the soil top
 PK_CLEAR = .05                                  # clearance between a plant's buried base and a kerb's inner edge or a rail
+PK_CANOPY_CLEAR = .03                           # a delivered canopy's plan extent stays this far inside the kerb's inner line
 PK_PALETTE = dict(
     pk_leaf=(.21, .37, .14), pk_leaf2=(.31, .47, .19), pk_leaf_dark=(.13, .26, .10), pk_leaf_light=(.40, .55, .22),
     pk_leaf_silver=(.36, .44, .37), pk_leaf_red=(.38, .14, .15), pk_leaf_hairy=(.17, .29, .11), pk_lav_leaf=(.25, .31, .22),
@@ -786,9 +789,10 @@ class PlantKit:
     role and measures its buried base radius (`base_r`: vertices below kerb height) and canopy radius; place() puts a
     prototype at (x, y, z) with spin, non-uniform scale and lean, as linked instances (instancing=True: glTF reuses the
     mesh, ~0.6 KB per node) or merged into per-role batches (instancing=False). fits()/place_in() apply the kit-wide
-    clearance rule: a plant's base stays PK_CLEAR inside every registered bed edge and clear of every obstacle, and only
-    canopy above kerb height may overhang a kerb; a tall obstacle (a rail) keeps the whole canopy clear. audit() counts
-    placements that break the rule (must be 0). Call flush() once after planting."""
+    clearance rule: a plant's base stays PK_CLEAR inside every registered bed edge and clear of every obstacle, and its
+    delivered canopy (extent(): the prototype's plan radius after the placement's non-uniform scale and lean) stays
+    PK_CANOPY_CLEAR inside the kerb's inner line and clear of any tall obstacle (a rail or wall). audit() re-checks every
+    delivered placement with the same rule (must be 0). Call flush() once after planting."""
     def __init__(self, module='planting', instancing=True, kerb_h=.045):
         self.module = module; self.instancing = instancing; self.batch = {}; self.placed = 0; self.nodes = 0
         self.unique_triangles = 0; self.counts = {}; self.kerb_h = kerb_h; self.beds = []; self.obstacles = []
@@ -843,24 +847,43 @@ class PlantKit:
         if top > 0.3 m (a rail or wall) the whole canopy stays clear of it."""
         _pksh.prepare(geom); self.obstacles.append((geom, top))
 
-    def fits(self, p, x, y, s=1., region=None, clear=PK_CLEAR):
-        pt = _pksh.points(x, y); br = p['base_r'] * s + clear
+    @staticmethod
+    def extent(p, s=1., sy=None, sz=None, lean=(0., 0.)):
+        """Delivered plan radius of prototype p about its placement origin: the largest horizontal vertex radius times
+        the larger plan scale, plus the horizontal throw of its top under the lean."""
+        sy = s if sy is None else sy; sz = s if sz is None else sz
+        return p['canopy_r'] * max(s, sy) + p['height'] * sz * math.sin(min(abs(lean[0]) + abs(lean[1]), 1.2))
+
+    def _breaks(self, p, x, y, s, sy, sz, lean, clear, region=None):
+        """The clearance rule shared by fits() and audit(): None when the placement is clean, else the reason."""
+        pt = _pksh.points(x, y); br = p['base_r'] * max(s, s if sy is None else sy) + clear
+        cr = self.extent(p, s, sy, sz, lean) + PK_CANOPY_CLEAR
         for reg in ([region] if region is not None else []) + self.beds:
-            if _pksh.contains_xy(reg, x, y) and reg.boundary.distance(pt) < br:
-                return False
-            if reg is region and not _pksh.contains_xy(reg, x, y):
-                return False
+            inside = _pksh.contains_xy(reg, x, y)
+            if reg is region and not inside:
+                return 'outside its bed'
+            if inside:
+                d = reg.boundary.distance(pt)
+                if d < br:
+                    return 'base crosses kerb'
+                if d < cr:
+                    return 'canopy crosses kerb'
         for geom, top in self.obstacles:
             d = geom.distance(pt)
-            if d < br or (top > .3 and d < p['canopy_r'] * s * .92):
-                return False
-        return True
+            if d < br:
+                return 'base on obstacle'
+            if top > .3 and d < cr:
+                return 'canopy in tall obstacle'
+        return None
+
+    def fits(self, p, x, y, s=1., region=None, clear=PK_CLEAR, sy=None, sz=None, lean=(0., 0.)):
+        return self._breaks(p, x, y, s, sy, sz, lean, clear, region) is None
 
     def place_in(self, p, x, y, z, rot=0., s=1., region=None, shrink=(1., .85, .72), aspect=1., **kw):
         """Place p at (x, y) with scale s (y scale s x aspect) if it fits, trying the given shrink factors, else skip it;
         returns the scale used or 0."""
         for f in shrink:
-            if self.fits(p, x, y, s * f * max(1., aspect), region):
+            if self.fits(p, x, y, s * f, region, sy=s * f * aspect, sz=kw.get('sz'), lean=kw.get('lean', (0., 0.))):
                 self.place(p, x, y, z, rot, s * f, sy=s * f * aspect, **kw)
                 return s * f
         self.rejected += 1
@@ -873,7 +896,7 @@ class PlantKit:
         sz = s if sz is None else sz; sy = s if sy is None else sy
         self.placed += 1; self.counts[p['name']] = self.counts.get(p['name'], 0) + 1
         if track:
-            self.placements.append((x, y, max(s, sy), p))
+            self.placements.append((x, y, s, sy, sz, lean, p))
         for role, (me, g) in p['parts'].items():
             if inst:
                 o = C.bpy.data.objects.new(f"{p['name']} {role} {self.placed}", me)
@@ -904,12 +927,11 @@ class PlantKit:
         carriers) from different meshes that lie within 2 mm of each other with opposing or coincident normals (the
         black-slit and z-fighting signature; see shell_faces()). The count, or with detail=True the offending items."""
         bad = []
-        for x, y, s, p in self.placements:
-            pt = _pksh.points(x, y); br = p['base_r'] * s
-            if any(_pksh.contains_xy(r, x, y) and r.boundary.distance(pt) < br for r in self.beds) or \
-                    any(g.distance(pt) < br or (top > .3 and g.distance(pt) < p['canopy_r'] * s * .9) for g, top in self.obstacles):
-                bad.append((p['name'], round(x, 2), round(y, 2)))
-        pots = [(x, y, p['rim_r'] * s, p['name']) for x, y, s, p in self.placements if p.get('rim_r')]
+        for x, y, s, sy, sz, lean, p in self.placements:
+            why = self._breaks(p, x, y, s, sy, sz, lean, 0.)
+            if why:
+                bad.append((p['name'], why, round(x, 2), round(y, 2)))
+        pots = [(x, y, p['rim_r'] * max(s, sy), p['name']) for x, y, s, sy, sz, lean, p in self.placements if p.get('rim_r')]
         for i in range(len(pots)):
             for j in range(i):
                 (x1, y1, r1, n1), (x2, y2, r2, n2) = pots[i], pots[j]
@@ -1624,10 +1646,10 @@ def perennial_drift(kit, poly, z, mix, kerb=.15, spacing=.42, seed=1, drift=2.4,
     for x, y in pk_scatter(poly, spacing, kerb=kerb, margin=PK_CLEAR, seed=seed):
         order = sorted(range(len(mix)), key=lambda i: -(fields[i](x, y) + 1.4 * math.log(mix[i][1])))
         for i in order:
-            s = rnd.uniform(*scale)
-            if kit.fits(mix[i][0], x, y, s, reg):
-                kit.place(mix[i][0], x, y, z, rnd.uniform(0, 2 * math.pi), s, sy=s * rnd.uniform(.9, 1.1),
-                          sz=s * rnd.uniform(.88, 1.12), lean=(rnd.uniform(-lean, lean), rnd.uniform(-lean, lean)))
+            s = rnd.uniform(*scale); rot = rnd.uniform(0, 2 * math.pi); sy = s * rnd.uniform(.9, 1.1)
+            sz = s * rnd.uniform(.88, 1.12); ln = (rnd.uniform(-lean, lean), rnd.uniform(-lean, lean))
+            if kit.fits(mix[i][0], x, y, s, reg, sy=sy, sz=sz, lean=ln):
+                kit.place(mix[i][0], x, y, z, rot, s, sy=sy, sz=sz, lean=ln)
                 n += 1
                 break
     return n
