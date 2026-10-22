@@ -1092,9 +1092,9 @@ def site():
             ('North sidewalk strip', X0, X1, Y1, 30.0, 'paver', .1)):
         C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, top / 2), (x1 - x0, y1 - y0, top), role, 'site', 0)
     b = Batch()
-    b.box('concrete', (-40.0 + CURB) / 2, SW + .1, .075, CURB + 40.0, .2, .15)                    # curbs, a hair above the walks
-    b.box('concrete', CURB - .1, (SW + .2 + 30.0) / 2, .076, .2, 30.0 - SW - .2, .152)
-    b.box('concrete', 28.1, (-27.0 + 30.0) / 2, .075, .2, 57.0, .15)
+    b.box('concrete', (-40.0 + CURB) / 2, SW + .08, .075, CURB + 40.0, .2, .15)                   # curbs, a hair above the walks, 2 cm proud of the walk faces
+    b.box('concrete', CURB - .08, (SW + .2 + 30.0) / 2, .076, .2, 30.0 - SW - .2, .152)
+    b.box('concrete', 28.08, (-27.0 + 30.0) / 2, .075, .2, 57.0, .15)
     for k in range(1, 38):                                                                       # sett courses
         b.box('joint', (-40.0 + 28.0) / 2, -27.0 + k * (SW + 27.0) / 38, .061, 67.6, .025, .004)
     for k in range(-60, 70):
