@@ -64,3 +64,23 @@ The user authorized exactly one guide and one four-second Omni aerial video,
 combined provider cost ceiling US$2. Record attempts before dispatch and do not
 repeat them automatically. Compare the result with its native source; AI footage
 can reinterpret geometry despite a valid request.
+
+## Hosted build parity follow-up — 2026-10-22
+
+PR #35 merged as `d9ab3d0f58cf023280908b04094f9521f59b4f5f`; its Git tree
+exactly matches the tested candidate. Clean Linux CI passed 2,347 tests with 63
+optional skips. API and worker deployed successfully, but the frontend was held
+by the unchanged total-JavaScript budget (8,464.2 KiB / 8,448 KiB).
+
+The initial local build omitted the optional public `VITE_MAPBOX_TOKEN`.
+`SitePlannerMap` then compiled out its map path: 18.21 kB locally versus 36.05 kB
+with production's configured token. Release builds must include the same browser
+capabilities as production; credentials themselves must never be logged or
+committed. A token-free build does not establish the full-map bundle budget.
+
+The follow-up applies existing lossless catalogue packing to `streetManual.json`
+and `nativeStreetModuleBounds.json`. Source JSON, dimensions, pivots, signed zeros,
+models and functionality are unchanged. Both new decoder tests failed before
+registration, then all 22 packing tests and 26 relevant street tests passed.
+The budget remains unchanged. Full-map production build and hosted promotion
+must pass before claiming the frontend is released.

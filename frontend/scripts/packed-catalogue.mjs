@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
 
-const DATA_CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|streetPathArchetypes|nativeParks|nativeStreetPilots|archetypeReferenceAvailability|legoFamilySignatures|validationCatalogue|buildingWalkDoors|cataloguePresentation|classroomExpansion)\.json$/;
+const DATA_CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|streetPathArchetypes|nativeParks|nativeStreetPilots|archetypeReferenceAvailability|legoFamilySignatures|validationCatalogue|buildingWalkDoors|cataloguePresentation|classroomExpansion|streetManual|nativeStreetModuleBounds)\.json$/;
 
 const FEATURE_CATALOGUES = /\/src\/features\/(?:parks\/(?:detailCatalogueExtras|recoveredDetails|trafficSafetyCatalogue)|zoningCatalogue\/(?:buildingPrograms|parkPrograms|districtRules))\.json$/;
 
