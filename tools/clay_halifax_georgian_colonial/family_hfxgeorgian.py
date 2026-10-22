@@ -71,8 +71,8 @@ def manifest(version):
             c.update(location=(31.0, -33.0, 31.0), target=(0.0, 0.0, 5.0), lens=35)
         elif c['name'] == 'left_side':
             c.update(location=(-44.0, 1.0, 7.0), target=(0.0, 1.0, 6.0), lens=35)
-        elif c['name'] == 'right_side':                                     # high north-east oblique over the neighbour's eave: the whole east front
-            c.update(location=(25.0, 30.0, 40.0), target=(X1, 0.0, 4.0), lens=32)
+        elif c['name'] == 'right_side':                                     # east elevation: the stone neighbour 4 m east is cut away by the near clip plane (context hidden)
+            c.update(location=(40.0, 1.0, 7.0), target=(X1, 1.0, 5.0), lens=35, clip_start=25.75)
         elif c['name'] == 'rear':
             c.update(location=(0.0, 38.0, 9.0), target=(0.0, 4.0, 6.0), lens=35)
         elif c['name'] == 'rear_side':
@@ -824,11 +824,11 @@ def site():
     b.flush('front lawn curbs')
     iron_fence((-19.85, -10.58), (-19.85, 15.0), height=1.75, wall=.15, spacing=.26)
     tree(-1.0, -12.5, 11.0, 2.0)                                  # between the top view (x -4.4) and the front and oblique (x 0 to 1)
-    tree(11.4, -12.5, 15.0, 2.8, high=True)
+    tree(9.8, -12.5, 15.0, 2.8, high=True)                        # crowns stay west of the right_side clip plane (x 14.3)
     tree(-13.0, -4.4, 8.0, 2.0, role='conifer', dense=True)
-    tree(12.6, -4.6, 8.0, 1.4)
+    tree(12.0, -9.4, 8.0, 1.4)                                     # side-path tree south of the east front, clear of it and of the clip plane
     tree(-17.8, 13.0, 12.0, 3.2)
-    tree(14.6, 12.0, 11.0, 2.8)
+    tree(18.0, 12.0, 11.0, 2.8)                                   # in the court north of the neighbour, clear of the east-front proof view
     for x, y, h in ((-15.6, -10.1, 4.4), (-17.4, -10.1, 3.8)):
         cone('Evergreen cone', x, y, h, .45)
     neighbour()

@@ -88,6 +88,9 @@ def main():
     if out is None:
         return
     cameras = C.setup(family.PALETTE, m['camera_roster'], a.resolution)
+    for spec in m['camera_roster']:                    # a near clip plane hides context standing in front of a proof view
+        if spec.get('clip_start'):
+            cameras[spec['name']].data.clip_start = spec['clip_start']
     C.bpy.context.scene.cycles.samples = a.samples
     rig = getattr(family, 'LIGHT_RIG', dict(key=(-14, -20, 20), fill=(18, -8, 16), rear=(-8, 20, 18), target=(0, 0, 4.5), gain=2.5))
     for name in ('key', 'fill', 'rear'):

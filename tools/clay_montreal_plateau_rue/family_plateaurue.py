@@ -1160,8 +1160,7 @@ def context_row(f, u0, u1, zcs, mats, label):
         for z, hh in ((F1 + .45, 1.9), (F2 + .45, 1.85), (F3 + .45, 1.75)):
             for uu in (a + 2.3, a + 3.6, c - 2.0):
                 if uu < c - 1.2 and uu > a + 1.2:
-                    w = 1.1 if uu != a + 3.6 else .9
-                    ctx_window(blk, uu, z, hh, w)
+                    ctx_window(blk, uu, z, hh, 1.1 if uu != a + 3.6 else .9)
         for z, dep in ((F2, 1.1), (F3, .85)):                                           # decks with open iron railings
             blk('deck', a + 1.2, a + 4.4, -dep, .02, z - .18, z)
             rail(b, [tuple(f.p(a + 1.23, 0.0, 0))[:2], tuple(f.p(a + 1.23, -dep + .04, 0))[:2],
