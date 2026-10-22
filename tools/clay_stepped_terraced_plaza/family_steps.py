@@ -2218,7 +2218,7 @@ def edges():
     bz = rz + 2.3
     for x in (X1 + .45, X1 + 2.75):
         b.box('timber', x, yk(3) + .3, (rz - .02 + bz + .05) / 2, .12, .12, bz + .05 - rz + .02)   # posts
-        b.box('timber', x, (yk(3) + .23 + yk(4) + .05) / 2, bz, .14, yk(4) + .05 - yk(3) - .23, .14)  # beams along y into the wall
+        b.box('timber', x, (yk(3) + .28 + yk(4) + .05) / 2, bz, .14, yk(4) + .05 - yk(3) - .28, .14)  # beams along y: front ends inside the front beam
     b.box('timber', (X1 + .35 + X1 + 2.85) / 2, yk(3) + .3, bz + .04, 2.5, .14, .14)            # front beam, raised 4 cm
     for i in range(8):
         b.box('timber', (X1 + .25 + X1 + 2.95) / 2, yk(3) + .55 + i * .32, bz + .115, 2.7, .06, .1)  # slats
@@ -2252,14 +2252,14 @@ def planting():
     kit.place(climber_pot, px, py, lv(2), .4)
     z0 = 2.0
     wall_drape('West bougainvillea facade', (X0, yk(2)), (X0, yk(2) + 4.3), (1., 0.),
-               [(0., z0), (0., top), (.07, top), (.07, top + .2), (-.30, top + .2)],
+               [(0., z0), (0., top), (.07, top), (.07, top + .2), (-.33, top + .2), (-.33, top + .16), (-1.15, top + .16)],
                lambda u: .35 + 3.0 * _pk_smooth(min(1., max(0., (u - .45) / 1.0))) + .45 * max(0., (u - 2.9) / 1.4), kit, sprays,
                openings=[(1.0, 2.0, base, base + 2.2), (2.9, 3.9, base + 1.2, base + 2.5)],
-               trunks=[(.3, (px, py, lv(2) + .42))], seed=5, module='planting', floor=lv(2) + .35, tongues=3)
-    wall_drape('West bougainvillea south wall', (X0, yk(2)), (X0 - 2.6, yk(2)), (0., -1.),
-               [(0., z0), (0., top + .16), (-.45, top + .16)],
+               trunks=[(.3, (px, py, lv(2) + .42))], seed=5, module='planting', floor=lv(2) + .35, tongues=3, cover=.85)
+    wall_drape('West bougainvillea south wall', (X0 + .08, yk(2)), (X0 - 2.6, yk(2)), (0., -1.),          # laps 8 cm past the corner
+               [(0., z0), (0., top + .16), (-1.0, top + .16)],
                lambda u: .45 + 2.9 * _pk_smooth(min(1., max(0., (u - .35) / 1.1))) + .3 * max(0., (u - 1.6) / 1.0), kit, sprays,
-               seed=6, module='planting', floor=lv(2) + .05, tongues=2)
+               seed=6, module='planting', floor=lv(2) + .05, tongues=2, cover=.85)
     # East bougainvillea: cascades down the inner (west) face of the east parapet over four terraces, over the coping and
     # a little down its outer face.
     for k, (ua, ub) in enumerate(((1.4, TL - .05), (.05, TL - .05), (.05, TL - .05), (.05, TL - 1.0))):
@@ -2267,8 +2267,8 @@ def planting():
         wall_drape(f'East bougainvillea {k}', (EP, yk(k) + ua), (EP, yk(k) + ub), (-1., 0.),
                    [(0., ptop - .88), (0., ptop), (.04, ptop), (.04, ptop + .06), (-.44, ptop + .06), (-.44, ptop), (-.40, ptop),
                     (-.40, ptop - .3)],
-                   (lambda u, k=k: .28 + .18 * math.sin(u * 1.9 + k)), kit, sprays, seed=21 + k, module='planting',
-                   floor=lv(k + 1) + .05, tongues=3, spacing=.18)
+                   (lambda u, k=k: .16 + .12 * math.sin(u * 1.9 + k)), kit, sprays, seed=21 + k, module='planting',
+                   floor=lv(k + 1) + .05, tongues=3, spacing=.15, cover=.85)
     # Geranium pots: two per east terrace by the parapet (stood off it under the cascade), none on the cross-landing;
     # three and two on the low west parapet's coping.
     for k in range(NT):
