@@ -2473,7 +2473,11 @@ def edge_fill(kit, reg, mix, spacing, seed, placed, scales=(1.1, .95, .8, .65)):
     return n
 
 
-def margin_fill(kit, reg, mix, seed, placed, insets=(.44, .86), spacing=.62, scales=(1.6, 1.4, 1.25, 1.1, .95, .8, .7), cover=.6):
+EYE = [(-10.6, -13.6), (-14.6, 16.5), (-23.0, -21.0), (-2.0, 14.0), (2.0, -21.5), (-9.0, -9.0), (5.2, -10.0)]   # eye-level cameras
+
+
+def margin_fill(kit, reg, mix, seed, placed, insets=(.44, .86), spacing=.62, scales=(1.6, 1.4, 1.25, 1.1, .95, .8, .7), cover=.6,
+                near=None, reach=10.0):
     """v005 margin band: low plants on rings `insets` metres inside the kerb's inner line, `spacing` apart, in runs of 3-6
     of one kind (so they read as planted edging, and neighbouring cushions merge into a band), each at the largest
     plan scale that passes the kit clearance rule; a ring point already covered by `cover` x the plan radius of a
@@ -2487,6 +2491,8 @@ def margin_fill(kit, reg, mix, seed, placed, insets=(.44, .86), spacing=.62, sca
             line = g.exterior; ln = line.length; m = max(3, int(ln / spacing)); off = rnd.uniform(0, ln / m)
             for i in range(m):
                 q = line.interpolate((off + i * ln / m) % ln); x, y = q.x, q.y
+                if near and min(math.hypot(x - a, y - b) for a, b in near) > reach:
+                    continue
                 if any(math.hypot(x - a, y - b) < r * cover for a, b, r in placed):
                     continue
                 if run <= 0:
@@ -2514,11 +2520,13 @@ def planting():
         kit.add_obstacle(_pksh.Point(x, y).buffer(.22 + .03 * r, quad_segs=6), 3.0)
     for x, y in PITS:
         kit.add_obstacle(_pksh.Point(x, y).buffer(.25, quad_segs=6), 3.0)
-    front = [(P['feather'], 1.5), (P['fountain'], 1.0), (P['cone'], 1.1), (P['salvia'], .8), (P['panicle'], .8), (P['astilbe'], .5),
-             (P['sh08'], .3)]
+    # v005: fewer pink coneflowers (pink as accents, as the top source shows) and more shrub and fountain-grass mass
+    front = [(P['feather'], 1.3), (P['fountain'], 1.3), (P['cone'], .6), (P['salvia'], .8), (P['panicle'], .6), (P['astilbe'], .45),
+             (P['sh08'], .45)]
     grove = [(P['fountain'], 1.3), (P['feather'], .6), (P['sh08'], .9), (P['astilbe'], .5), (P['panicle'], .35), (P['salvia'], .25)]
     edge = [P['salvia'], P['edge_grass'], P['cone'], P['edge_grass'], P['astilbe']]
-    rim = [P['cush_w'], P['edge_grass'], P['cush_w'], P['salvia'], P['edge_grass'], P['cush_w'], P['cone']]
+    rim = [P['edge_grass'], P['cush_w'], P['edge_grass'], P['salvia'], P['edge_grass'], P['cush_w']]
+    band = [P['cush_w'], P['edge_grass'], P['cush_w']]
     grove_rim = [P['fountain'], P['edge_grass'], P['astilbe'], P['fountain']]
     for i, (name, (pxs, dens)) in enumerate(BEDS.items()):
         poly = outline(pxs); bed_base(f'Bed {name}', poly)
@@ -2534,7 +2542,9 @@ def planting():
             groundcover(f'Bed {name} groundcover', poly, PSOIL, kerb=KERB_W, height=.05, bump=.028, wave=.8, grid=.8, edge=.18,
                         seed=40 + i)                         # v005: a gently undulating carpet, never flat felt
             drift_fill(kit, reg, front, .9, 60 + i, (1.5, 1.3, 1.1, .9, .75), 1.15, placed)
-            margin_fill(kit, reg, rim, 160 + i, placed)      # v005: low edging band planted to the kerb
+            margin_fill(kit, reg, rim, 160 + i, placed, spacing=.6, cover=.45)   # v005: low edging band planted to the kerb
+            margin_fill(kit, reg, band, 260 + i, placed, insets=(.27,), spacing=.62, scales=(.85, .75, .65), cover=.5,
+                        near=EYE, reach=8.0)                 # and, where an eye-level camera looks, small cushions at the kerb
             edge_fill(kit, reg, edge, .6, 60 + i, placed)
     rnd = random.Random(77)
     for i, c in enumerate(PITS):                             # tree pits in the south plaza: groundcover and a ring of grasses
@@ -2636,8 +2646,8 @@ def boardwalk():
         for q, r in zip(posts, posts[1:]):
             b.beam('rail', (q[0], q[1], q[2] + 1.0), (r[0], r[1], r[2] + 1.0), .07, .05, ext=.03)
             b.beam('rail', (q[0], q[1], q[2] + .08), (r[0], r[1], r[2] + .08), .04, .04, ext=.03)
-            m = max(2, int(math.dist(q[:2], r[:2]) / .17))
-            for j in range(1, m):                            # slender pickets, about 170 mm apart, from the bottom rail into the top rail
+            m = max(2, int(math.dist(q[:2], r[:2]) / .2))
+            for j in range(1, m):                            # slender pickets, about 200 mm apart (v005: was 170, for the size cap), from the bottom rail into the top rail
                 u = j / m
                 pkx, pky, pkz = q[0] + (r[0] - q[0]) * u, q[1] + (r[1] - q[1]) * u, q[2] + (r[2] - q[2]) * u
                 picket(pk, 'rail', pkx, pky, pkz + .09, pkz + .99)
@@ -2729,6 +2739,7 @@ def door_m(m, f, h, inset=.12):
         m.box('trim', u + s * (w / 2 - .03), inset, z + hh / 2, .06, .1, hh)
     m.box('trim', u, inset, z + hh - .03, w - .12, .1, .06)
     m.box('fascia', u, inset + .05, z - .01 + (hh - .05) / 2, w - .12, .045, hh - .05)   # leaf runs 1 cm into the sill: no open slot under it
+    m.box('trim', u, (inset + .06) / 2 - .02, z - .015, w + .02, inset + .1, .05)          # solid threshold closing the opening's floor in front of the leaf
     m.box('steel', u + w * .3, inset, z + 1.0, .03, .06, .3)
     register(f, h, inset, 'door', 'pavilion room')
 
@@ -2821,7 +2832,7 @@ def bench(b, x, y, ang):
             q = P(e, v)
             obox(b, 'steel', q[0], q[1], ZG + .04 + .395 / 2, .06, .06, .395, ang)
         q = P(e, .045); obox(b, 'steel', q[0], q[1], ZG + .405, .05, .54, .05, ang)
-        q = P(e, .3); obox(b, 'steel', q[0], q[1], ZG + .55, .05, .05, .5, ang)     # back post runs into the rear leg and ends inside the top back slat
+        q = P(e, .31); obox(b, 'steel', q[0], q[1], ZG + .55, .05, .05, .5, ang)    # back post runs into the rear leg and ends inside the top back slat (faces 1 cm clear of the slat faces)
 
 
 def furniture():

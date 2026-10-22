@@ -77,7 +77,7 @@ def manifest(version):
         elif c['name'] == 'left_side':
             c.update(location=(-27.0, -3.0, 5.0), target=(-10.0, -3.0, 5.2), lens=22)
         elif c['name'] == 'right_side':
-            c.update(location=(20.6, 15.9, 6.0), target=(9.0, 2.0, 6.0), lens=20)
+            c.update(location=(20.6, 15.9, 6.0), target=(9.6, 7.0, 5.2), lens=22)
         elif c['name'] == 'rear':
             c.update(location=(0.0, 34.5, 4.5), target=(0.0, TY1, 5.0), lens=22)
         elif c['name'] == 'rear_side':
@@ -579,6 +579,15 @@ def band(m, lo, hi, z0, z1, proj, role='stone'):
     m.box(role, (lo + hi) / 2, (-proj + .01) / 2, (z0 + z1) / 2, hi - lo, proj + .01, z1 - z0)
 
 
+def qa_light(name, loc, power, size):
+    """Neutral inspection light that illuminates the rooms but is hidden from camera and glossy rays (no glowing
+    disks seen through the glazing)."""
+    obj = C.qa_room_light(name, loc, power, size)
+    obj.visible_camera = False
+    obj.visible_glossy = False
+    return obj
+
+
 TS = C.Face((0, TY0, 0), (1, 0, 0), (0, 1, 0), 'terminal south front')
 TW = C.Face((TX0, 0, 0), (0, -1, 0), (1, 0, 0), 'terminal west front')
 TN = C.Face((0, TY1, 0), (-1, 0, 0), (0, -1, 0), 'terminal north wall')
@@ -824,11 +833,14 @@ def interiors():
         b.box('timber', x, -18.5, F1 + .45, 2.4, .5, .1)
         b.box('timber', x, -18.28, F1 + .75, 2.4, .06, .55)
     b.flush('interiors')
-    for name, loc in (('concourse', (3.0, -14.0, 3.6)), ('west hall', (-6.0, 2.0, 3.6)), ('lounge south', (3.5, -18.0, 8.5)),
-                      ('lounge west', (-6.0, -4.0, 8.5)), ('lounge north', (-6.0, 8.0, 8.5)),
-                      ('east offices', (8.6, 12.0, 8.3)), ('east stores', (8.6, 12.0, 3.4)), ('north offices', (0.0, 18.95, 8.3)),
-                      ('north stores', (0.0, 18.95, 3.4))):
-        C.qa_room_light(name, loc, 110 if 'east' not in name and 'north' not in name else 60, 3.0 if 'east' not in name and 'north' not in name else 1.2)
+    for name, loc in (('concourse', (3.0, -14.0, 4.2)), ('west hall', (-6.0, 2.0, 4.2)), ('lounge south', (3.5, -16.0, 8.85)),
+                      ('lounge west', (-6.0, -4.0, 8.85)), ('lounge north', (-6.0, 8.0, 8.85)),
+                      ('east offices', (8.6, 12.0, 8.85)), ('east stores', (8.6, 12.0, 4.2)), ('north offices', (0.0, 18.95, 8.85)),
+                      ('north stores', (0.0, 18.95, 4.2))):
+        small = 'east' in name or 'north' in name
+        qa_light(name, loc, 60 if small else 140, 1.2 if small else 3.0)
+    for k, (x, y) in enumerate(((-8.4, -15.5), (-8.4, -6.5), (-8.4, 5.0), (-6.5, -18.8), (1.5, -18.8), (7.0, -18.8))):
+        qa_light(f'facade {k}', (x, y, 4.2), 70, 1.5)
     C.CONTACTS.append(dict(name='Concrete fins and frames from grade; roof inside the parapet; glass box on its concrete frames', parapet_m=PARA))
 
 
@@ -944,7 +956,7 @@ def brick_block():
     b.flush('brick block shell')
     for x in (16.0, 26.0, 36.0):
         for z in (3.6, 7.2, 10.6):
-            C.qa_room_light(f'brick block {x:.0f} {z:.0f}', (x, BY0 + 2.0, z), 30, 2.0)
+            qa_light(f'brick block {x:.0f} {z:.0f}', (x, BY0 + 2.0, z), 30, 2.0)
     f = C.Face((0, BY1, 0), (-1, 0, 0), (0, -1, 0), 'brick block north wall')
     m = Merge(f)
     windows_grid(m, -21.2, -BX0 - .6, 0.0, B_WALL, 3, 2.4, w=1.0, hh=2.1, frame='stone')
@@ -1033,7 +1045,7 @@ def site():
             ('North street', EC, 64.0, NC, 34.0, 'asphalt', .041), ('Far west sidewalk', -34.0, WC, -62.0, 62.0, 'paving', .14),
             ('Far south sidewalk', EC, 64.0, -41.0, -38.0, 'paving', .14), ('Far north apron', EC, 90.0, 34.0, 61.2, 'paving', .1),
             ('South sidewalk', EC, 64.0, SC, TY0, 'paving', .14), ('West sidewalk', EC, TX0, TY0, NC, 'paving', .14),
-            ('North sidewalk', TX0, 64.0, TY1, NC, 'paving', .141), ('Parking court', BX0, 21.4, BY1, 16.4, 'asphalt', .06),
+            ('North sidewalk', TX0, 64.0, TY1, NC, 'paving', .141), ('Parking court', BX0, 21.4, BY1, 16.4, 'concrete2', .06),
             ('Rear yard', TX1, 64.0, 16.4, TY1, 'paving', .12), ('Side passage', TX1, BX0, BY1, 16.4, 'paving', .121),
             ('East yard', 36.0, 40.3, BY1, 16.4, 'paving', .122)):
         C.box(name, ((x0 + x1) / 2, (y0 + y1) / 2, top / 2), (x1 - x0, y1 - y0, top), role, 'site', 0)
