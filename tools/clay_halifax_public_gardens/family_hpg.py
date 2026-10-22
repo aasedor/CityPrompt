@@ -2337,7 +2337,7 @@ def hpg_protos(kit):
                                    leaf_role='pk_leaf', leaves=32, seed=11)
     P['salvia'] = flower_head_cluster(kit, 'hpg_salvia', 'spike', heads=11, height=.46, spread=.24, foliage=.25,
                                       head_role='pk_purple', leaf_w=.5, leaves=28, seed=41)
-    P['mauve'] = flower_head_cluster(kit, 'hpg_hydrangea_mauve', 'mophead', heads=8, height=.80, foliage=.44, size=1.3,
+    P['mauve'] = flower_head_cluster(kit, 'hpg_hydrangea_mauve', 'mophead', heads=8, height=.80, foliage=.44, size=1.55,
                                      head_role='pk_purple2', leaf_role='pk_leaf', leaves=26, seed=23)
     P['ageratum'] = bedding_cushion(kit, 'hpg_ageratum', radius=.26, role='pk_leaf', floret_role='pk_purple2', kind='ageratum',
                                     seed=132)

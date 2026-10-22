@@ -492,9 +492,9 @@ def walls():
     m.box('hardware', .42, .17, door['z'] + 1.15, .05, .04, .05)
     register(fp, door, .2, 'entry door', 'hall')
     framed(m, fp, fan, cols=4, rows=1, inset=.2, occupied='hall')
-    for s in (-1, 1):                                                                        # stone door architrave
-        m.box('stone', s * .72, -.03, (G0 + 3.98) / 2, .24, .1, 3.98 - G0)
-    m.box('stone', 0.0, -.03, 4.05, 1.68, .1, .2)
+    for s in (-1, 1):                                                                        # stone door architrave, 3 cm proud
+        m.box('stone', s * .73, -.005, (G0 + 3.98) / 2, .22, .05, 3.98 - G0)                   # clear of the cut reveal
+    m.box('stone', 0.0, -.005, 4.06, 1.68, .05, .2)
     # Four giant stone pilasters with bases and capitals.
     for u in (-3.3, -1.1, 1.1, 3.3):
         m.box('stone', u, -.05, (G0 + 8.6) / 2, .5, .14, 8.6 - G0)
@@ -666,8 +666,8 @@ def pediment():
     # Slate gable roof over the pavilion running back into the main hip.
     C.prism('Pavilion gable roof', [(-4.05, 9.2), (4.05, 9.2), (0.0, 12.85)], 'y', YP + .02, -3.0, 'roof', 'roof')
     C.prism('Pediment tympanum', [(-PX - .02, 9.58), (PX + .02, 9.58), (0.0, 9.6 + PR + .02)], 'y', YP, YP + .35, 'wall', 'pediment')
-    chevron('Raking cornice', 4.2, 12.78, 3.36 / 4.1, .543, YP - .47, YP + .03)                   # one mitred piece, 2 cm proud of the corona
-    chevron('Raking cornice nosing', 4.05, 12.98, .84, .209, YP - .52, YP - .38)
+    chevron('Raking cornice', 4.07, 12.78, 3.36 / 4.1, .543, YP - .47, YP + .03)                  # one mitred piece, 2 cm proud of the corona
+    chevron('Raking cornice nosing', 4.0, 12.98, .84, .209, YP - .52, YP - .38)
     b = Batch()
     for k in range(1, 5):                                                                       # slate courses on the gable roof
         z = 9.2 + 3.65 * k / 5
@@ -692,7 +692,7 @@ def portico():
     b = Batch()
     b.box('stone', 0.0, (y_front + YP + .05) / 2, (G0 + .02) / 2, 7.5, YP + .05 - y_front, G0 + .02)   # platform
     for k, (z, y0_) in enumerate(((.413, y_front - .3), (.207, y_front - .6))):                      # two steps
-        b.box('stone', 0.0, (y0_ + y_front + .02 + .3 * k) / 2, z / 2, 7.5, y_front + .02 + .3 * k - y0_, z)
+        b.box('stone', 0.0, (y0_ + y_front + .02 + .3 * k) / 2, z / 2, 7.46 - .04 * k, y_front + .02 + .3 * k - y0_, z)   # each step 2 cm in from the one above
     for x in (-3.3, -1.1, 1.1, 3.3):
         b.box('stone', x, y_col, .68, .56, .56, .14)                                           # plinth
         b.box('stone', x, y_col, 3.89, .6, .6, .16)                                            # abacus
