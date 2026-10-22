@@ -572,7 +572,7 @@ def bands():
     for x, y in ((X0 + .3, Y0 - .05), (X1 - .3, Y0 - .05), (-PX - .25, Y0 - .05), (PX + .25, Y0 - .05),
                  (X0 - .05, -6.9), (X0 - .05, 6.9), (X1 + .05, -6.9), (X1 + .05, 6.9)):
         b.box('hardware', x, y, (.1 + 8.75) / 2, .11, .11, 8.65)
-        b.box('hardware', x, y, 8.82, .24, .2, .24)
+        b.box('hardware', x, y, 8.84, .24, .2, .26)                                             # head, 2 cm into the frieze
     b.flush('downpipes')
 
 
@@ -654,8 +654,8 @@ def pediment():
     C.prism('Pediment tympanum', [(-PX - .02, 9.58), (PX + .02, 9.58), (0.0, 9.6 + PR + .02)], 'y', YP, YP + .35, 'wall', 'pediment')
     b = Batch()
     for s in (-1, 1):
-        b.beam('trim', (s * 4.1, YP - .22, 9.42), (0.0, YP - .22, 12.78), .5, .42)              # raking cornices, 2 cm proud of the corona
-        b.beam('trim', (s * 4.0, YP - .45, 9.62), (0.0, YP - .45, 12.98), .14, .16)             # cornice nosing, 5 cm proud of the raking front
+        b.beam('trim', (s * 4.1, YP - .22, 9.42), (-s * .2, YP - .22, 12.78 + .2 * 3.36 / 4.1), .5, .42)   # raking cornices, crossing at the apex
+        b.beam('trim', (s * 4.0, YP - .45, 9.62), (-s * .2, YP - .45, 12.98 + .2 * 3.36 / 4.0), .14, .16)   # cornice nosing, 5 cm proud
     for k in range(1, 5):                                                                       # slate courses on the gable roof
         z = 9.2 + 3.65 * k / 5
         x = 4.05 * (1 - k / 5)
@@ -794,8 +794,8 @@ def site():
     for x0, x1 in ((-10.0, -2.6), (2.6, 10.6)):
         hedge(b, x0, x1, 11.7, 14.8)
         hedge(b, x0 + 1.2, x1 - 1.2, 12.5, 14.0, w=.32, h=.4)
-    for x0, x1 in ((-10.4, -4.0), (4.0, 10.4)):
-        b.box('hedge', (x0 + x1) / 2, Y0 - .55, .32, x1 - x0, .55, .64)
+    for x0, x1 in ((-10.4, -3.78), (3.78, 10.4)):                                              # front hedges against the plinth and the platform
+        b.box('hedge', (x0 + x1) / 2, Y0 - .35, .32, x1 - x0, .6, .64)
     b.box('hedge', 18.4, -9.6, .4, 7.0, .6, .8)                                                  # the neighbour's front hedge
     for x0, x1 in ((-20.0, -2.4), (2.4, 26.0)):
         b.box('hedge', (x0 + x1) / 2, 15.3, .45, x1 - x0, .5, .9)                               # north boundary hedge, gap at the path
@@ -868,9 +868,9 @@ def neighbour():
     k = rise / half
     zt = ne + rise + .2                                           # plate top at the ridge, 20 cm over the gable apex
     for s in (-1, 1):
-        slope_plate(f'Neighbour slate slope {s:+d}', (xm + s * (half + ov), zt - k * (half + ov)), (xm - s * .05, zt + .05 * k), ny0 - ov, ny1 + ov, t=.22)
+        slope_plate(f'Neighbour slate slope {s:+d}', (xm + s * (half + ov), zt - k * (half + ov)), (xm - s * .05, zt + .05 * k), ny0 - .05, ny1 + .05, t=.22)
     b = Batch()
-    b.beam('course', (xm, ny0 - ov, zt + .02), (xm, ny1 + ov, zt + .02), .14, .1)               # ridge roll
+    b.beam('course', (xm, ny0 - .05, zt + .02), (xm, ny1 + .05, zt + .02), .14, .1)             # ridge roll
     for y in (-5.0, -1.0, 3.0):                                                               # dormers on the west slope
         xd = nx0 + 1.6
         zr = zt - k * (xm - (xd - .2))                                                        # roof at the dormer front
