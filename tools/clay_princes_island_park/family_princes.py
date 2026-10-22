@@ -2427,12 +2427,10 @@ def protos(kit):
     # perennials fill the bed margins
     P['edge_grass'] = arching_grass(kit, 'pi_edge_grass', blades=40, height=.3, width=.013, role='pk_blade_blue',
                                     crown_role='pk_blade_blue', seed=101)
-    # v005: low leafy edging cushions (white alyssum froth and lavender-blue ageratum puffs over small leaves) planted
-    # in a continuous band along every kerb, so the bed margins read planted to the kerb at eye level
-    P['cush_w'] = bedding_cushion(kit, 'pi_alyssum_edge', radius=.3, height=.15, role='pk_leaf', floret_role='pk_white',
+    # v005: a low leafy edging cushion (white alyssum froth over small leaves), planted with the blue edging grass and
+    # small salvias in a continuous band along every kerb, so the bed margins read planted to the kerb at eye level
+    P['cush_w'] = bedding_cushion(kit, 'pi_alyssum_edge', radius=.26, height=.14, role='pk_leaf', floret_role='pk_white',
                                   kind='alyssum', seed=131)
-    P['cush_l'] = bedding_cushion(kit, 'pi_ageratum_edge', radius=.3, height=.16, role='pk_leaf', floret_role='pk_purple',
-                                  kind='ageratum', seed=133)
     return P
 
 
@@ -2475,7 +2473,7 @@ def edge_fill(kit, reg, mix, spacing, seed, placed, scales=(1.1, .95, .8, .65)):
     return n
 
 
-def margin_fill(kit, reg, mix, seed, placed, insets=(.44, .86), spacing=.62, scales=(1.4, 1.25, 1.1, .95, .8, .7), cover=.6):
+def margin_fill(kit, reg, mix, seed, placed, insets=(.44, .86), spacing=.62, scales=(1.6, 1.4, 1.25, 1.1, .95, .8, .7), cover=.6):
     """v005 margin band: low plants on rings `insets` metres inside the kerb's inner line, `spacing` apart, in runs of 3-6
     of one kind (so they read as planted edging, and neighbouring cushions merge into a band), each at the largest
     plan scale that passes the kit clearance rule; a ring point already covered by `cover` x the plan radius of a
@@ -2520,7 +2518,7 @@ def planting():
              (P['sh08'], .3)]
     grove = [(P['fountain'], 1.3), (P['feather'], .6), (P['sh08'], .9), (P['astilbe'], .5), (P['panicle'], .35), (P['salvia'], .25)]
     edge = [P['salvia'], P['edge_grass'], P['cone'], P['edge_grass'], P['astilbe']]
-    rim = [P['cush_w'], P['cush_l'], P['edge_grass'], P['cush_w'], P['cush_l'], P['edge_grass'], P['salvia']]
+    rim = [P['cush_w'], P['edge_grass'], P['cush_w'], P['salvia'], P['edge_grass'], P['cush_w'], P['cone']]
     grove_rim = [P['fountain'], P['edge_grass'], P['astilbe'], P['fountain']]
     for i, (name, (pxs, dens)) in enumerate(BEDS.items()):
         poly = outline(pxs); bed_base(f'Bed {name}', poly)

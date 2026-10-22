@@ -49,9 +49,9 @@ PALETTE = dict(wall=(.56, .29, .21), joint=(.66, .60, .53), stone=(.84, .82, .76
 def manifest(version):
     h = ZD + 2.3
     cams = G.camera_roster(X1 - X0 + 3.0, WY1 - YP + 3.0, h, [
-        ('facade_close', (0.0, -27.0, 5.5), (0.0, Y0, 5.2), 35),
-        ('pediment_portico', (7.0, -18.5, 6.5), (0.0, -8.6, 7.4), 40),
-        ('porch_columns', (-1.6, -13.4, 1.8), (-.4, -9.3, 2.8), 26),
+        ('facade_close', (0.0, -12.25, 1.7), (0.0, Y0, 5.0), 16),
+        ('pediment_portico', (5.5, -10.0, 5.0), (0.0, -8.4, 8.0), 24),
+        ('porch_columns', (-2.6, -11.9, 1.8), (-.4, -9.3, 2.8), 26),
         ('glass_close', (-5.35, -11.8, 4.7), (-5.35, Y0, 4.6), 45),
         ('cornice_chimneys', (-17.0, -15.0, 17.0), (-6.5, -3.5, 12.0), 40),
         ('west_front', (-27.0, -4.5, 5.5), (X0, 0.0, 5.0), 35),
@@ -815,7 +815,7 @@ def site():
     b.flush('site')
     iron_fence((-19.85, -10.75), (-3.2, -10.75), height=1.75, wall=.15, spacing=.2)
     iron_fence((-19.85, -10.58), (-19.85, 15.0), height=1.75, wall=.15, spacing=.26)
-    tree(-2.4, -12.5, 11.0, 2.4)
+    tree(-1.0, -12.5, 11.0, 2.0)                                  # between the top view (x -4.4) and the front and oblique (x 0 to 1)
     tree(11.4, -12.5, 15.0, 2.8, high=True)
     tree(-13.0, -4.4, 8.0, 2.0, role='conifer', dense=True)
     tree(12.6, -4.6, 8.0, 1.4)
