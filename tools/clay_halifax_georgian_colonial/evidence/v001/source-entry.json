@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-halifax-georgian-colonial",
+  "variant_id": "clay-halifax-georgian-colonial-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "halifax_georgian_colonial/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/halifax-georgian-colonial/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1498415,
+      "sha256": "045d4918a6bd8121c6a4c74892b353610370f9af3910f61e6b58b00a7043ad60"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/halifax-georgian-colonial/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 948192,
+      "sha256": "b8f2b88fca6db22dddfea3c3e6b4449fa0162b6528898d35760550451c0ff185"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/halifax-georgian-colonial/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 881769,
+      "sha256": "0ef686bee41cd16fd6e4a4a72df3f081cca2763762044d817d1b5ad7a3abcd5c"
+    }
+  ]
+}
