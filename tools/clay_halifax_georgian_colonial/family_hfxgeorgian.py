@@ -72,7 +72,7 @@ def manifest(version):
         elif c['name'] == 'left_side':
             c.update(location=(-44.0, 1.0, 7.0), target=(0.0, 1.0, 6.0), lens=35)
         elif c['name'] == 'right_side':                                     # east elevation: the stone neighbour 4 m east is cut away by the near clip plane (context hidden)
-            c.update(location=(40.0, 1.0, 6.5), target=(X1, 1.0, 6.5), lens=35, clip_start=25.6)    # level view: the clip plane is x = 14.4, west of the neighbour's eave and trim
+            c.update(location=(40.0, 1.0, 8.0), target=(X1, 1.0, 9.28), lens=40, clip_start=25.78)   # near clip just west of the neighbour's eave; frame bottom above the cut ground
         elif c['name'] == 'rear':
             c.update(location=(0.0, 38.0, 9.0), target=(0.0, 4.0, 6.0), lens=35)
         elif c['name'] == 'rear_side':
@@ -815,14 +815,6 @@ def site():
     for x0, x1 in ((-20.0, -2.4), (2.4, 26.0)):
         b.box('hedge', (x0 + x1) / 2, 15.3, .45, x1 - x0, .5, .9)                               # north boundary hedge, gap at the path
     b.flush('site')
-    # Hidden end caps inside every ground slab and hedge crossing the right_side clip plane (x 14.4): the plane cuts the slabs,
-    # and the caps, 1-1.4 cm west of it, show slab colour instead of the dark slab interior. In every other view they sit inside.
-    b = Batch()
-    for role, y0, y1, top in (('lawn', -10.84, 15.6, .03), ('concrete', -13.43, -10.83, .14), ('asphalt', -21.0, -13.4, .02),
-                              ('concrete', -23.4, -21.0, .14), ('concrete', 15.6, 17.6, .14), ('asphalt', 17.58, 24.42, .02),
-                              ('hedge', 15.05, 15.55, .9)):
-        b.box(role, 14.388, (y0 + y1) / 2, (top - .002) / 2, .004, y1 - y0 - .004, top - .002)
-    b.flush('right_side clip caps')
     iron_fence((-19.85, -10.75), (-12.4, -10.75), height=1.75, wall=.15, spacing=.2)            # the street railing runs along the west garden only (top view)
     C.rod('Fence end post', (-12.4, -10.75, .15), (-12.4, -10.75, 2.02), .035, 'hardware', 'fence', 6)
     b = Batch()                                                                                  # open front lawns: low stone curb and low box edging
@@ -832,9 +824,9 @@ def site():
     b.flush('front lawn curbs')
     iron_fence((-19.85, -10.58), (-19.85, 15.0), height=1.75, wall=.15, spacing=.26)
     tree(-1.0, -12.5, 11.0, 2.0)                                  # between the top view (x -4.4) and the front and oblique (x 0 to 1)
-    tree(11.2, -12.5, 15.0, 2.3, high=True)                       # crowns stay west of the right_side clip plane (x 14.4)
+    tree(11.2, -12.5, 15.0, 2.3, high=True)                       # crowns stay clear of the right_side clip plane
     tree(-13.0, -4.4, 8.0, 2.0, role='conifer', dense=True)
-    tree(12.0, -9.4, 8.0, 1.4)                                     # side-path tree south of the east front, clear of it and of the clip plane
+    tree(11.4, -9.4, 8.0, 1.4)                                     # side-path tree south of the east front, clear of it and of the clip plane
     tree(-17.8, 13.0, 12.0, 3.2)
     tree(19.5, 12.0, 11.0, 2.8)                                   # in the court north of the neighbour, east of the right_side clip plane
     for x, y, h in ((-15.6, -10.1, 4.4), (-17.4, -10.1, 3.8)):
