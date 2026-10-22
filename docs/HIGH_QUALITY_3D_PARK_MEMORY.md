@@ -38,6 +38,28 @@ The versioned catalogue record is in
   do not rely on an image finish to invent the park's identity. Preserve
   metric scale and whole elements when fitting different site shapes.
 
+## Clay-candidate planting: use the shared planting kit (2026-10-22)
+
+Clay park families built with their own planting primitives repeatedly failed
+independent review at eye level: faceted flower heads read as gems or cones,
+flat blades as ribbons, and mounds as gumdrops, at the segment counts the
+4 MiB ordinary-blob cap allows. The shared planting kit in
+`tools/clay_planting_kit_showcase` (kit chunk inside `family_plantkit.py`)
+fixed this for the stepped terraced plaza, the Halifax Public Gardens and
+Prince's Island Park, which all passed with zero P0/P1 after adopting it.
+
+- Instance each plant prototype once (glTF node instances) and copy the
+  showcase `build.py` shim (`keep_instances()`, `glb_size()`) so the per-role
+  join does not merge instances back into geometry.
+- Keep the kit's clearance audit at zero: canopies are checked from their
+  delivered extent against kerbs, walls, rails and pots.
+- Fill beds to the kerb with low edging and groundcover; flat groundcover
+  alone reads as bare fill. Prefer dark mulch edges to raised coloured rims.
+- The kit's open weakness is shrubs (the body shows between leaves), so keep
+  shrubs few and behind perennials.
+- Each instance node costs about 0.6–0.8 KB of glTF JSON; budget node counts
+  in dense parks.
+
 For every new park, compare an aerial view and at least one pedestrian-height
 view against this benchmark. Ask whether the proposed park is as recognizable,
 composed and finished at both scales, while still accurately resembling its
