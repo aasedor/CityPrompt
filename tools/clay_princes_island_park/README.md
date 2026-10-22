@@ -1,7 +1,7 @@
 # Prince's Island Park (RLASM v6.1 architectural clay)
 
 Candidate I5 of wave I of 2026-10-20, one of the ten catalogue additions the user approved
-(four buildings, three parks and squares, three streets); a park and open-space option, not a building. State: **reopened by the user for a second pass (v004 replaces the planting with the shared planting kit, `tools/clay_planting_kit_showcase`); v003 remains the candidate until a review beats it**. Nothing here is keeper-approved,
+(four buildings, three parks and squares, three streets); a park and open-space option, not a building. State: **stopped at v005 by the stopping rule (independent review PASS_ZERO_P0_P1 in the planting-kit second pass the user reopened); v005 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -93,6 +93,6 @@ v005 (kit v003.2, opt-in options unused here) answers the four v004 P1s:
   keeps its semantic and base role, module, instance flag and archetype and variant ids; authored objects and the
   build report keep the constant tags; the prototype stays named on its shared mesh.
 
-## Open blockers after v004 (x)
+## Open blockers after v005 (x)
 
 x
