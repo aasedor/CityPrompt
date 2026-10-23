@@ -33,10 +33,10 @@ YN = L + ENDT                                   # north face of the passage bloc
 XW, XP, XE = -18.5, -12.0, 9.0                  # west face of the west block, west edge of the brick pavilion, east face of the east range
 FZ = .12                                        # tile floor top in the passage and the square
 SHOP = 3.8                                      # shopfront clear height above the floor
-F1, F2 = 5.0, 8.0                               # first- and second-floor levels
-EAVE = 10.8                                     # top of the passage cornices; the glass vault springs here
+F1, F2 = 5.0, 8.3                               # first- and second-floor levels
+EAVE = 12.5                                     # top of the passage cornices; the glass vault springs here
 VX, VH = 5.3, 5.0                               # vault half-span at the eave gutters and vault rise
-CORBEL = 7.9                                    # top of the pilaster corbels that carry the rib legs
+CORBEL = 9.6                                    # top of the pilaster corbels that carry the rib legs
 RIBS = [6.0, 10.8, 15.6, 20.4, 25.2]            # transverse ribs over the pilasters (y)
 BAYS = [(.4, 6.0)] + [(6.0 + 4.8 * i, 10.8 + 4.8 * i) for i in range(5)]
 ROOM, UPR = 3.0, 1.6                            # ground-floor shop depth, upper-room depth behind the facades
@@ -58,16 +58,16 @@ PALETTE = dict(brick=(.58, .30, .19), brick2=(.68, .44, .31), stone=(.80, .71, .
 def manifest(version):
     h = 20.5
     cams = G.camera_roster(60.0, 60.0, h, [
-        ('facade_close', (4.6, 13.2, 5.6), (-HW, 13.2, 5.8), 18),                  # one west bay through all floors
-        ('architecture_close', (-2.2, 17.2, 6.6), (HW, 15.6, 10.0), 28),            # rib leg, corbel, lattice bracket and cornice
-        ('glass_close', (0.0, 11.0, 2.0), (0.0, 18.0, 14.4), 22),                   # the vault glazing and ribs from below
+        ('facade_close', (4.6, 13.2, 6.4), (-HW, 13.2, 6.6), 17),                  # one west bay through all floors
+        ('architecture_close', (-2.2, 17.2, 7.8), (HW, 15.6, 11.4), 28),            # rib leg, corbel, lattice bracket and cornice
+        ('glass_close', (0.0, 11.0, 2.0), (0.0, 18.0, 16.0), 22),                   # the vault glazing and ribs from below
         ('interior', (-.6, 27.6, 1.65), (.5, 0.0, 4.6), 20),                        # eye level near the portal, looking back to the mouth
-        ('roof_vault', (-15.0, 5.0, 23.5), (0.0, 15.0, 13.0), 30),
+        ('roof_vault', (-15.0, 5.0, 25.0), (0.0, 15.0, 14.7), 30),
         ('south_portal', (1.5, -9.0, 1.7), (0.0, 1.0, 7.0), 20),                   # the square: mouth, end arch and pavilions
         ('north_portal', (1.0, YN + 7.2, 1.7), (0.0, YN, 6.0), 22),                # the end wall and portal from the north street
         ('shopfronts', (-3.0, 19.0, 1.8), (HW, 22.8, 2.6), 24),
         ('floor_tiles', (2.5, 7.0, 3.6), (0.0, 16.0, .2), 24),
-        ('pavilion_finial', (-2.5, -8.5, 15.0), (-6.0, .3, 12.7), 30)])
+        ('pavilion_finial', (-2.5, -8.5, 16.7), (-6.0, .3, 14.4), 30)])
     for c in cams:
         if c['name'] == 'front':                                               # the locked front: eye level inside the passage, looking north to the portal
             c.update(location=(.6, 10.5, 1.65), target=(-.2, L, 4.7), lens=20, whole=False)
@@ -428,7 +428,7 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 
 # ---- Barcelona passatge (covered passage) ----
 
-W1Z, W2Z = 5.2, 8.25                                                        # first- and second-floor window sills
+W1Z, W2Z = 5.0, 8.4                                                         # first- and second-floor window sills
 FW = C.Face((-HW, 0, 0), (0, 1, 0), (-1, 0, 0), 'west passage facade')      # u = y, inward -x (into the west block)
 FE = C.Face((HW, 0, 0), (0, 1, 0), (1, 0, 0), 'east passage facade')        # u = y, inward +x (into the east range)
 FSW = C.Face((XP, 0, 0), (1, 0, 0), (0, 1, 0), 'west pavilion south face')  # x = XP + u, inward +y
@@ -576,29 +576,20 @@ def arch_window(m, b, f, name, uc, z, w, rect, wall, balcony=0.0, frame='frame',
         m.box('stone', uc, -.07, z - .065, w + .3, .14, .12)                # sill, 5 mm below the cut
 
 
-RZ, RCROWN, RD = 4.95, 9.95, .3                                           # bay recess sill, crown and depth
-
-
-def bay_recess(m, b, f, name, uc, rw):
-    """Upper bay as one tall round-arched recess that nearly fills the bay between the pilasters: brick reveals
-    0.3 m deep under a stone archivolt and keystone, a stone sill, and in the recessed infill a French window with a
-    shallow balcony on the first floor and an arched window with a balcony on the second."""
-    r = rw / 2; zs = RCROWN - r
+def french_window(m, b, f, name, uc, z, w, rect, balcony):
+    """Tall round-arched French window: two glazed leaves (three panes over a panel) to the springing, a fanlight
+    with fan bars in the round head, frames 0.28 m back in brick reveals, a stone archivolt, imposts and keystone, and
+    a shallow wrought-iron balcony at the sill."""
+    r = w / 2; zs = z + rect
+    framed(m, f, hole(name, uc, z, w, rect), cols=2, rows=3, inset=.28, occupied='flat', frame='frame')
+    m.box('frame', uc, .245, z + .3, w - .16, .04, .46)                     # bottom panels of the leaves
     spandrels(f, name, uc, zs, r, T, 'brick')
-    archivolt(f, name, uc, zs, r, width=.3)
-    m.box('stone', uc, -.05, RCROWN + .26, .4, .12, .52)                    # keystone, its foot on the crown
-    m.box('stone', uc, .11, RZ + .03, rw + .02, .38, .06)                    # stone sill over the recess ledge
+    fanlight(b, f, name, uc, zs, r, inset=.28)
+    archivolt(f, name, uc, zs, r, width=.25)
+    m.box('stone', uc, -.05, zs + r + .15, .32, .12, .3)                    # keystone, its foot on the crown
     for s in (-1, 1):                                                        # imposts at the springing
-        m.box('stone', uc + s * (r + .12), -.04, zs - .08, .5, .1, .16)
-    fr = C.Face(f.p(0, RD, 0), tuple(f.t), tuple(f.n), f.label + ' recess')
-    h1 = hole(name + ' french', uc, 5.25, 2.0, 2.35)
-    h2 = hole(name + ' arched', uc, 8.1, 2.0, .55 + 1.0)
-    carrier(fr, name + ' infill', uc - r, uc + r, RZ, RCROWN, [h1, h2], 'brick', depth=.3)
-    mr = Merge(fr)
-    framed(mr, fr, h1, cols=2, rows=2, inset=.16, occupied='flat', frame='frame')
-    flat_balcony(mr, b, fr, uc, 5.24, 2.6, .45)
-    arch_window(mr, b, fr, name + ' arched', uc, 8.1, 2.0, .55, 'brick', balcony=.4, depth=.3)
-    mr.flush(name + ' recess')
+        m.box('stone', uc + s * (r + .13), -.04, zs - .07, .38, .1, .14)
+    flat_balcony(m, b, f, uc, z - .01, w + .9, balcony)
 
 
 def shopfront(m, f, name, uc, w, sign=True):
@@ -639,25 +630,26 @@ def passage_facade(f, side):
         uc = (u0 + u1) / 2 + (.25 if i == 0 else 0.0)
         ws = 3.0 if i == 0 else 3.4
         holes.append(hole(f'{f.label} shop {i}', uc, FZ, ws, SHOP))
-        rw = 3.0 if i == 0 else 3.2
-        holes.append(hole(f'{f.label} recess {i}', uc, RZ, rw, RCROWN - RZ))
+        holes.append(hole(f'{f.label} first {i}', uc, W1Z, 1.8, 2.0 + .9))
+        holes.append(hole(f'{f.label} second {i}', uc, W2Z, 1.7, 2.0 + .85))
         specs.append((i, u0, u1, uc, ws))
     carrier(f, f.label + ' carrier', .4, L, 0.0, EAVE - .05, holes, 'brick')
-    courses(f, .45, L - .05, .6, EAVE - .7, [dict(h, w=h['w'] + .55, h=h['h'] + .3) for h in holes])
     m = Merge(f); b = Batch()
     for i, u0, u1, uc, ws in specs:
         shopfront(m, f, f'{f.label} shop {i}', uc, ws)
-        bay_recess(m, b, f, f'{f.label} bay {i}', uc, 3.0 if i == 0 else 3.2)
+        french_window(m, b, f, f'{f.label} first {i}', uc, W1Z, 1.8, 2.0, .5)
+        french_window(m, b, f, f'{f.label} second {i}', uc, W2Z, 1.7, 2.0, .45)
     for u in RIBS + [L - .3]:                                               # stone pilasters, ground to cornice
         m.box('stone', u, -.06, (EAVE - .62) / 2, .8 if u < L - 1 else .6, .12, EAVE - .62)
         if u < L - 1:
-            m.box('stone', u, -.24, CORBEL - .26, .62, .48, .52)            # corbel carrying the rib leg
-            m.box('stone', u, -.30, CORBEL - .58, .46, .36, .16)
+            for zc, w, d, h in ((CORBEL - .06, .7, .56, .12), (CORBEL - .3, .52, .48, .36), (CORBEL - .58, .42, .36, .2), (CORBEL - .76, .3, .24, .16)):
+                m.box('stone', u, -d / 2, zc, w, d, h)                       # moulded corbel: abacus, block, scroll, drop
             wall_lantern(b, f, u, FZ + SHOP - 1.0)
     for k in range(int((EAVE - .7) / .6)):                                  # quoins returning from the pavilion corner
         w = .9 if k % 2 == 0 else .6
         m.box('stone', w / 2 - .03, -.03, .3 + .6 * k + .27, w, .1, .53)
-    m.box('stone', (.4 + L) / 2, -.07, F1 - .38, L - .4 - EPS, .14, .18)    # shop cornice band over the signboards
+    m.box('stone', (.4 + L) / 2, -.09, 4.81, L - .4 - EPS, .18, .12)         # shop cornice over the signboards: corona (the balconies sit on it)
+    m.box('stone', (.4 + L) / 2, -.05, 4.70, L - .4 - EPS, .1, .1)           # and its bed moulding
     m.box('stone', (.4 + L) / 2, -.04, .3, L - .4 - EPS, .08, .6)           # stone plinth band
     eave_cornice(m, 0.0, L, EAVE, proj=.7, role='stone')                     # mitred with the pavilion cornice by mouth_corners()
     m.flush(f.label)
@@ -693,20 +685,28 @@ def pavilion_face(f, name, u1, holes_u, pw, wall='brick', corner='east'):
     """South face of a brick pavilion at the mouth: shop, arched first-floor window with a balcony, second-floor
     window, stone quoins at both corners, cornice and parapet."""
     uc = holes_u
-    holes = [hole(name + ' shop', uc, FZ, pw, SHOP), hole(name + ' first', uc, W1Z, 1.5, 1.7 + .75), hole(name + ' second', uc, W2Z, 1.3, 1.1 + .65)]
+    holes = [hole(name + ' shop', uc, FZ, pw, SHOP), hole(name + ' first', uc, W1Z, 1.3, 2.4), hole(name + ' second', uc, W2Z, 1.2, 2.25)]
     carrier(f, name + ' carrier', 0.0, u1, 0.0, EAVE - .05, holes, wall)
     courses(f, .05, u1 - .05, .6, EAVE - .7, [dict(h, w=h['w'] + .55, h=h['h'] + .3) for h in holes])
     m = Merge(f); b = Batch()
     shopfront(m, f, name + ' shop', uc, pw)
-    arch_window(m, b, f, name + ' first', uc, W1Z, 1.5, 1.7, wall, balcony=.55)
-    arch_window(m, b, f, name + ' second', uc, W2Z, 1.3, 1.1, wall)
+    for h in holes[1:]:                                                      # tall windows with a corniced head on consoles
+        framed(m, f, h, cols=2, rows=3, inset=.28, occupied='flat', frame='frame')
+        zt = h['z'] + h['h']
+        m.box('stone', uc, -.05, zt + .14, h['w'] + .4, .1, .28)            # head frieze
+        m.box('stone', uc, -.1, zt + .33, h['w'] + .66, .2, .1)             # head cornice
+        for s in (-1, 1):
+            m.box('stone', uc + s * (h['w'] / 2 + .12), -.07, zt + .1, .14, .14, .36)   # consoles
+    flat_balcony(m, b, f, uc, W1Z - .01, 1.9, .4)
+    m.box('stone', uc, -.07, W2Z - .065, 1.5, .14, .12)                      # second-floor sill
     big, small = (.9, .6) if u1 > 5 else (.6, .4)
     for u in (.0, u1):                                                       # quoins on both corners
         for k in range(int((EAVE - .7) / .6)):
             w = big if k % 2 == 0 else small
             uu = u + (w / 2 - .03 if u == 0.0 else -(w / 2 - .03))
             m.box('stone', uu, -.03, .3 + .6 * k + .27, w, .1, .54)
-    m.box('stone', u1 / 2, -.07, F1 - .38, u1, .14, .18)
+    m.box('stone', u1 / 2, -.09, 4.81, u1, .18, .12)
+    m.box('stone', u1 / 2, -.05, 4.70, u1, .1, .1)
     m.box('stone', u1 / 2, -.04, .3, u1, .08, .6)
     eave_cornice(m, 0.0 if corner == 'west' else -.03, u1 if corner == 'east' else u1 + .03, EAVE, proj=.7, role='stone')
     m.box(wall, u1 / 2, T / 2, EAVE + .4, u1, T, .9)                         # parapet
@@ -842,7 +842,7 @@ def passage_block():
 def north_end_wall():
     """Brick end wall with the great round-arched portal, stone archivolts and keystones on both faces, medallions,
     a cornice and the glazed lunette above it."""
-    pw, rect = 7.0, 5.4
+    pw, rect = 7.6, 6.4
     r = pw / 2; zs = FZ + rect
     holes = [hole('portal', PU, 0.0, pw, zs + r)]
     carrier(FN, 'north end wall', 0.0, 2 * PU, 0.0, EAVE + .15, holes, 'brick', depth=ENDT)
@@ -854,12 +854,13 @@ def north_end_wall():
     for s in (-1, 1):                                                       # imposts, jamb plinths and medallions
         m.box('stone', PU + s * (r + .25), -.05, zs - .1, .6, .12, .22)
         m.box('stone', PU + s * (r + .25), -.04, .5, .55, .1, 1.0)
-        mx, my, mz = FN.p(PU + s * 4.65, -.04, 8.3)
+        mx, my, mz = FN.p(PU + s * 4.62, -.04, 10.6)
         annulus('medallion ring', (mx, my, mz), (0, 1, 0), .32, .46, -.06, .04, 'stone', 'end wall', 24)
         annulus('medallion disc', (mx, my, mz), (0, 1, 0), .001, .32, -.02, .03, 'stone', 'end wall', 24)
         annulus('medallion boss', (mx, my, mz), (0, 1, 0), .001, .13, -.11, -.01, 'stone', 'end wall', 16)
         m.box('stone', PU + s * (r + .49), -.03, (zs - .23) / 2, .92, .06, zs - .23)     # stone pier to the impost
-    m.box('stone', PU, -.04, .3, 2 * PU - 2 * EPS, .08, .6)
+    for a, c in ((.4, PU - r - .62), (PU + r + .62, 2 * PU - .4)):          # stone base either side of the portal
+        m.box('stone', (a + c) / 2, -.04, .6, c - a, .08, 1.2)
     eave_cornice(m, .37, 2 * PU - .37, EAVE + .012, proj=.7, role='stone')
     m.flush('north end wall passage face')
     courses(FNS, .05, 2 * PU - .05, .6, EAVE - .4, [dict(h, w=h['w'] + 1.0, h=h['h'] + .5) for h in holes])
@@ -1005,7 +1006,7 @@ def leg(b, s, y):
             if seg:
                 (x0, z0), (x1, z1) = seg
                 bar(b, y, (s * x0, z0), (s * x1, z1), .035, .03 + .01 * (sign > 0))
-            c += .36 * math.sqrt(2)
+            c += .27 * math.sqrt(2)
     for f in (.35, .65, .9):                                                 # hangers from the strut to the rib
         x = xl + (s * ax - xl) * f
         z0 = zl + (za - zl) * f
@@ -1068,30 +1069,62 @@ def ridge_crest(b, z0, h=.5):
 
 
 def end_arch(b, prof):
-    """Ornamental south end arch: a heavy rib, an inner arch 0.9 m inside it, radial lattice bars, rings in the band,
-    and legs on corbels at the pavilion faces."""
+    """Ornamental south end arch as its own assembly: a deep pointed outer band (outer rib, an inner chord 0.9 m
+    inside it, a zig-zag web and rings the whole way round), a semicircular inner arch springing from the pavilion
+    corners on the leg columns, the spandrel between them filled with radial bars and rings, a crest and an apex
+    finial."""
     y = .25
-    rib(b, prof, y, .2, .28)
     n = len(prof)
-    ks = [k for k in range(1, n - 1) if abs(prof[k][0]) < HW - 2.65]        # the inner band starts clear of the leg brackets
-    inner = []
-    for k in ks:
+    rib(b, prof, y, .22, .3)
+    band = []
+    for k in range(1, n - 1):
         x, z = prof[k]
         nx, nz = normal(prof, k)
-        inner.append((x + nx * 1.0, z + nz * 1.0))
-    for (x0, z0), (x1, z1) in zip(inner, inner[1:]):
-        b.beam('iron', (x0, y, z0), (x1, y, z1), .1, .1, ext=.01)
-    for k, (xi, zi) in zip(ks, inner):
+        band.append((x + nx * 1.05, z + nz * 1.05))
+    for (x0, z0), (x1, z1) in zip(band, band[1:]):
+        b.beam('iron', (x0, y, z0), (x1, y, z1), .16, .14, ext=.01)
+    for k in range(1, n - 2):                                                # zig-zag web of the band
         x, z = prof[k]
         nx, nz = normal(prof, k)
-        b.beam('iron', (x + nx * .2, y, z + nz * .2), (xi, y, zi), .04, .04)
-    for k in ks[1:-1:3]:
+        bar(b, y, (x + nx * .25, z + nz * .25), band[k - 1] if k % 2 else band[k], .05, .045)
+    for k in range(2, n - 2, 2):                                             # rings in the band
         x, z = prof[k]
         nx, nz = normal(prof, k)
-        annulus('end arch ring', (x + nx * .6, y, z + nz * .6), (0, 1, 0), .2, .26, -.03, .03, 'iron', 'vault', 16)
+        annulus('end arch band ring', (x + nx * .66, y, z + nz * .66), (0, 1, 0), .2, .26, -.035, .035, 'iron', 'vault', 12)
+    zc, R = EAVE - 2.0, HW - 1.1                                            # inner semicircle, springing on ties from the leg columns
+    semi = [(R * math.cos(math.radians(a)), zc + R * math.sin(math.radians(a))) for a in range(0, 181, 6)]
+    for (x0, z0), (x1, z1) in zip(semi, semi[1:]):
+        b.beam('iron', (x0, y, z0), (x1, y, z1), .18, .16, ext=.01)
+    bx = [p[0] for p in band]; bz = [p[1] for p in band]
+    def band_z(x):
+        for i in range(len(bx) - 1):
+            if bx[i] <= x <= bx[i + 1]:
+                f = (x - bx[i]) / ((bx[i + 1] - bx[i]) or 1.0)
+                return bz[i] + (bz[i + 1] - bz[i]) * f
+        return None
+    for a in range(12, 169, 12):                                             # radial spandrel bars from the semicircle to the band
+        ca, sa = math.cos(math.radians(a)), math.sin(math.radians(a))
+        x0, z0 = R * ca, zc + R * sa
+        d = .05
+        while d < 4.0:
+            x, z = x0 + ca * d, z0 + sa * d
+            bzx = band_z(x)
+            if (bzx is not None and z >= bzx - .05) or z >= vault_z(abs(x)) - .3:
+                break
+            d += .02
+        if d > .35:
+            bar(b, y, (x0 + ca * .05, z0 + sa * .05), (x0 + ca * d, z0 + sa * d), .05, .05)
+            if d > .9:
+                annulus('end arch spandrel ring', (x0 + ca * d / 2, y, z0 + sa * d / 2), (0, 1, 0), min(.3, d / 2 - .12) - .06, min(.3, d / 2 - .12), -.035, .035, 'iron', 'vault', 12)
     crest(b, prof, y)
-    for s in (-1, 1):
-        leg(b, s, y)
+    xr, zr = prof[n // 2]
+    frustum(b, 'iron', 0.0, y, zr + .2, zr + 1.4, .12, 0.0, 8)               # apex finial
+    annulus('end arch apex ring', (0.0, y, zr + .85), (0, 1, 0), .18, .26, -.035, .035, 'iron', 'vault', 12)
+    for s in (-1, 1):                                                        # leg columns on corbels at the pavilion faces
+        xl = s * (HW - .3)
+        b.beam('iron', (xl, y, CORBEL - .05), (xl, y, EAVE - .74), .16, .18)
+        b.beam('iron', (xl, y, EAVE + .02), (xl, y, EAVE + .2), .16, .18)
+        b.beam('iron', (xl, y, zc), (s * R, y, zc), .1, .1)                  # springing tie into the semicircle
         x, yy, _ = FW.p(.25, -.24, 0) if s < 0 else FE.p(.25, -.24, 0)
         b.box('stone', x, .25, CORBEL - .26, .48, .5, .52)
 
@@ -1136,10 +1169,11 @@ def ground():
     for x0, x1, y0, y1 in walks:
         C.prism('Sidewalk', [(x0, y0), (x1, y0), (x1, y1), (x0, y1)], 'z', .005, .15, 'concrete', 'sidewalks')
     C.prism('Sidewalk', [(XW - SW, YSQ), (XQ, YSQ), (XQ, 0.0), (XW - SW, 0.0)], 'z', .005, .15, 'concrete', 'sidewalks')
-    C.prism('Square tiles', [(XQ, YSQ), (XE + SW, YSQ), (XE + SW, 0.0), (XQ, 0.0)], 'z', .005, FZ, 'tile', 'square')
+    C.prism('Square tiles', [(XQ, YSQ), (XE, YSQ), (XE, 0.0), (XQ, 0.0)], 'z', .005, FZ, 'tile', 'square')
+    C.prism('Sidewalk', [(XE, YSQ), (XE + SW, YSQ), (XE + SW, 0.0), (XE, 0.0)], 'z', .005, .15, 'concrete', 'sidewalks')
     C.prism('Passage tiles', [(-HW, 0.0), (HW, 0.0), (HW, YN), (-HW, YN)], 'z', .005, FZ, 'tile', 'passage floor')
     b = Batch()
-    diamond_bands(b, -HW + .55, HW - .55, .4, L - .4, FZ + .003, 1.5, .11, 'tile2')
+    diamond_bands(b, -HW + .55, HW - .55, .4, L - .4, FZ + .003, 1.0, .08, 'tile2')
     gx = -HW + .55 + .5
     while gx < HW - .6:                                                      # faint inner tile grid
         quad(b, 'joint', [(gx - .01, .4, FZ + .0012), (gx + .01, .4, FZ + .0012), (gx + .01, L - .4, FZ + .0012), (gx - .01, L - .4, FZ + .0012)])
@@ -1149,8 +1183,8 @@ def ground():
         quad(b, 'joint', [(-HW + .55, gy - .01, FZ + .002), (HW - .55, gy - .01, FZ + .002), (HW - .55, gy + .01, FZ + .002), (-HW + .55, gy + .01, FZ + .002)])
         gy += .5
     border(b, -HW + .25, HW - .25, .1, L - .1, FZ + .003, .2, 'tile2')
-    diamond_bands(b, XQ + .5, XE + SW - .5, YSQ + .5, -.5, FZ + .003, 2.0, .16, 'tile2')
-    border(b, XQ + .2, XE + SW - .2, YSQ + .2, -.2, FZ + .003, .28, 'tile2')
+    diamond_bands(b, XQ + .5, XE - .5, YSQ + .5, -.5, FZ + .003, 1.6, .14, 'tile2')
+    border(b, XQ + .2, XE - .2, YSQ + .2, -.2, FZ + .003, .28, 'tile2')
     b.flush('floor patterns')
 
 
@@ -1182,7 +1216,7 @@ def furniture():
     for x in (-4.6, 4.6):                                                    # planters by the portal
         frustum(b, 'pot', x, L - .9, FZ, FZ + .6, .3, .38, 10)
         smooth(A.foliage('Planter shrub', (x, L - .9, FZ + 1.0), (.42, .42, .5), detail=1))
-    for x in (XQ + .8, XE + .7):                                              # lamp posts on the square
+    for x in (XQ + .8, XE - .8):                                              # lamp posts on the square
         y = -6.0
         frustum(b, 'iron', x, y, FZ, FZ + .5, .2, .14, 8)
         b.beam('iron', (x, y, FZ + .5), (x, y, FZ + 3.6), .1, .1)
@@ -1234,10 +1268,10 @@ def ctx_block(x0, x1, y0, y1, h, faces, label):
 
 def context():
     """Stuccoed blocks across the west, east, north and south streets; street trees and parked cars."""
-    ctx_block(XMIN + .01, XWS, YSQ + SW, YN, 19.5, 'e', 'west context')
-    ctx_block(XES, XMAX - .01, YSQ + SW, YN, 18.0, 'w', 'east context')
-    ctx_block(XMIN + .01, XMAX - .01, YNS, YMAX - .01, 20.5, 's', 'north context')
-    ctx_block(XMIN + .01, XMAX - .01, YMIN + .01, YSS, 17.0, 'n', 'south context')
+    ctx_block(XMIN + .01, XWS, YSQ + SW, YN, 17.0, 'es', 'west context')
+    ctx_block(XES, XMAX - .01, YSQ + SW, YN, 16.4, 'ws', 'east context')
+    ctx_block(XMIN + .01, XMAX - .01, YNS, YMAX - .01, 17.6, 's', 'north context')
+    ctx_block(XMIN + .01, XMAX - .01, YMIN + .01, YSS, 16.4, 'n', 'south context')
     for x in (-3.2, 4.0):
         street_tree(x, YNS - 1.0, z=.15, height=7.5, spread=1.7)
     b = Batch()

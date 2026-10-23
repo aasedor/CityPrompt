@@ -38,14 +38,14 @@ F2, F3, F4 = 5.0, 9.4, 13.8                           # upper floor levels
 PARA = 15.6                                           # pool block parapet top
 DECK = 15.0                                           # pool deck surface
 WATER = 15.25                                         # pool water (infinity edge on the west)
-PH_TOP, PH_PARA = 20.4, 20.8                          # penthouse roof, parapet
+PH_TOP, PH_PARA = 19.0, 19.4                          # penthouse roof, parapet
 EB_TOP, EB_PARA = 18.2, 18.6                          # east block roof, parapet
 BOXX1 = -12.6                                         # the south frame box spans X0..BOXX1
 FY = -17.8                                            # the climbing shell's back plane (laps 10 cm into the facade)
 RIM = 21.0                                            # rim top of the climbing shell
 # The climbing shell's outer corners (triangulated from the front and oblique views and the top view).
-SH = dict(G=(-12.5, FY, 0.0), BW=(-17.8, -22.7, 0.0), BS=(-3.0, -26.5, 0.0), BN=(-6.0, FY, 0.0),
-          KW=(-12.0, FY, PARA), KS=(-4.75, -27.55, 9.5), KX=(-6.3, -27.35, PARA),
+SH = dict(G=(-11.1, FY, 0.0), BW=(-17.8, -22.7, 0.0), BS=(-3.0, -26.5, 0.0), BN=(-6.0, FY, 0.0),
+          KW=(-11.1, FY, PARA), KS=(-4.75, -27.55, 9.5), KX=(-6.3, -27.35, PARA),
           RNW=(-7.26, FY, RIM), RSW=(-6.04, -26.71, RIM), RSE=(6.22, -27.72, RIM), RNE=(4.37, FY, RIM))
 SHELL_T = .35                                         # CLT shell thickness
 TOP = RIM + .1
@@ -54,7 +54,7 @@ PALETTE = dict(wall=(.86, .85, .82), precast=(.90, .89, .86), concrete2=(.70, .7
     glass=(.15, .21, .25), interior=(.82, .79, .72), floor=(.60, .57, .52), timber=(.80, .40, .075), timber2=(.88, .58, .2),
     timber_in=(.72, .36, .07), hold=(.10, .10, .11), hold_w=(.91, .90, .86), mat=(.10, .11, .13), shirt=(.20, .60, .70),
     skin=(.78, .60, .47), harness=(.12, .12, .14), paving=(.63, .64, .64), paving2=(.53, .54, .55), granite=(.60, .60, .59),
-    deck=(.80, .74, .64), coping=(.88, .86, .80), water=(.30, .62, .73), water2=(.22, .46, .57), membrane=(.86, .86, .84),
+    deck=(.80, .74, .64), coping=(.88, .86, .80), water=(.08, .52, .66), water2=(.06, .38, .50), membrane=(.86, .86, .84),
     mech=(.78, .78, .76), asphalt=(.26, .26, .27), curb=(.73, .73, .71), paint=(.93, .93, .91), soil=(.26, .20, .15),
     lounger=(.93, .93, .91), hardware=(.08, .08, .08), metal=(.55, .56, .57), brick=(.50, .25, .17), brick2=(.58, .32, .22),
     ctx=(.74, .72, .68), ctx2=(.62, .60, .57), stone=(.78, .74, .66), tree=(.53, .62, .22), tree3=(.66, .70, .16), tree2=(.40, .53, .19),
@@ -2035,22 +2035,35 @@ def fronts():
     corners()
 
 
+def return_x(y):
+    """x of the shell's vertical return face (the plan line BW-G) at y, plus 3 cm into the CLT."""
+    return SH['G'][0] + (y - FY) / (SH['BW'][1] - FY) * (SH['BW'][0] - SH['G'][0]) + .03
+
+
+def to_return(b, role, x0, ya, yb, z0, z1):
+    """A horizontal member from x0 east to the shell's return face, its east end cut along that face."""
+    ya, yb = min(ya, yb), max(ya, yb)
+    b._hex(role, [(x, y, z) for z in (z0, z1) for x, y in ((x0, ya), (return_x(ya), ya), (return_x(yb), yb), (x0, yb))])
+
+
 def south_frame_box():
     """South front of the pool block: a white frame box (two storeys of glass ribbons) projecting 0.75 m over a
     recessed glazed ground floor with two pairs of doors; the parapet band above."""
     b = Batch()
     ax, c, o = 'x', Y0, -1
     s0, s1 = X0, BOXX1
-    fbox(b, 'precast', ax, c, o, s0 + .02, s1 - .02, F2 - .45, F2 + .2, -.3, .78)                      # box bottom
-    fbox(b, 'precast', ax, c, o, s0 + .02, s1 - .02, F4 - .25, F4 + .25, -.3, .78)                     # box top
-    fbox(b, 'precast', ax, c, o, s0, s0 + .5, F2 - .47, F4 + .27, -.3, .80)                            # box ends
-    fbox(b, 'precast', ax, c, o, s1 - .5, s1, F2 - .47, F4 + .27, -.3, .80)
-    fbox(b, 'precast', ax, c, o, s0 + .5, s1 - .5, F3 - .4, F3 + .2, -.3, .74)                         # middle spandrel
+    # The box's east end, its top, bottom and middle spandrel, the parapet band and the coping all die into the shell's
+    # vertical return face along one straight line (each lapped 3 cm into the CLT, so the junction is a single clean edge).
+    to_return(b, 'precast', s0 + .02, Y0 - .78, Y0 + .3, F2 - .45, F2 + .2)                          # box bottom
+    to_return(b, 'precast', s0 + .02, Y0 - .78, Y0 + .3, F4 - .25, F4 + .25)                         # box top
+    fbox(b, 'precast', ax, c, o, s0, s0 + .5, F2 - .47, F4 + .27, -.3, .80)                            # box west end
+    to_return(b, 'precast', s1 - .5, Y0 - .8, Y0 + .3, F2 - .47, F4 + .27)                           # box east end
+    to_return(b, 'precast', s0 + .5, Y0 - .74, Y0 + .3, F3 - .4, F3 + .2)                            # middle spandrel
     for z0, z1 in ((F2 + .2, F3 - .4), (F3 + .2, F4 - .25)):
         glazed(b, ax, c, o, s0 + .5, s1 - .5, z0, z1, 2.4, d=.3)
     fbox(b, 'interior', ax, c, o, s0 + .6, s1 - .6, F2, F4, -4.4, -4.2)
-    fbox(b, 'precast', ax, c, o, s0 - .28, -12.2, F4 + .25, PARA - .05, -.25, .30)                            # parapet band
-    fbox(b, 'coping', ax, c, o, s0 - .32, -12.2, PARA - .07, PARA - .01, -.3, .34)
+    to_return(b, 'precast', s0 - .28, Y0 - .3, Y0 + .25, F4 + .25, PARA - .05)                        # parapet band
+    to_return(b, 'coping', s0 - .32, Y0 - .34, Y0 + .3, PARA - .07, PARA - .01)
     # Ground floor: recessed glazing with two pairs of doors, the corner column.
     gd = -.7
     fbox(b, 'precast', ax, c, o, s0, s0 + .55, 0.0, F2 - .4, gd - .05, .1)
@@ -2092,7 +2105,7 @@ def south_under_shell():
         xs = max(x_lo, XV)
         fbox(b, 'precast', ax, c, o, max(x_lo - .6, shell_edge_x(g0) - .6), xs + .05, g0 - .02, g1 + .02, -.4, -.1)
         if X1 - .4 - xs > 1.0:
-            glazed(b, ax, c, o, xs, X1 - .4, g0, g1, 2.0, d=-.25)
+            glazed(b, ax, c, o, xs, X1 - .4, g0, g1, 2.0, d=-.38)
             fbox(b, 'interior', ax, c, o, xs, X1 - .4, za, zb, -4.4, -4.2)
         fbox(b, 'precast', ax, c, o, X1 - .45, X1, g0, g1 + .02, -.4, .05)                              # east end pier
     fbox(b, 'precast', ax, c, o, max(-12.0, shell_edge_x(F4 - .55) + .02), XE + .2, F4 - .55, PARA - .05, -.4, .05)
@@ -2136,7 +2149,7 @@ def pool_deck():
             b.beam('metal', (px1 - .1, y + dyy, WATER - .5), (px1 + .2, y + dyy, WATER + .9), .045)
             b.beam('metal', (px1 + .2, y + dyy, WATER + .9), (px1 + .45, y + dyy, WATER + .9), .045)
     # Glass balustrades on the parapet: west, south and north edges of the deck.
-    for (x0, y0), (x1, y1) in (((X0 + .12, Y0 + .1), (X0 + .12, Y1 - .1)), ((X0 + .1, Y0 + .12), (-12.0, Y0 + .12)),
+    for (x0, y0), (x1, y1) in (((X0 + .12, Y0 + .1), (X0 + .12, Y1 - .1)), ((X0 + .1, Y0 + .12), (-11.7, Y0 + .12)),
                                ((X0 + .1, Y1 - .12), (XP0, Y1 - .12))):
         L = math.hypot(x1 - x0, y1 - y0)
         ux, uy = (x1 - x0) / L, (y1 - y0) / L
@@ -2191,7 +2204,7 @@ def penthouse():
     fbox(b, 'coping', ax, c, o, -18.1, Y1, PH_PARA - .06, PH_PARA, -.35, .3)
     glazed(b, ax, c, o, -16.9, 2.6, DECK + .1, PH_TOP - .32, 2.2, d=-.15)
     fbox(b, 'interior', ax, c, o, -16.8, 2.5, DECK, PH_TOP - .3, -6.2, -6.0)
-    fbox(b, 'frame', ax, c, o, 5.2, 6.4, DECK + .1, DECK + 2.4, -.04, .03)                              # door
+    fbox(b, 'frame', ax, c, o, 5.2, 6.4, DECK + .1, DECK + 2.8, -.04, .03)                              # door
     fbox(b, 'hardware', ax, c, o, 6.2, 6.25, DECK + 1.0, DECK + 1.15, .03, .08)
     # Other walls: north (on the north front), east (over the east block roof).
     b.box('precast', (XP0 + .05 + XE) / 2, Y1 - .12, (PARA + PH_PARA - .01) / 2, XE - XP0 - .05, .36, PH_PARA - .01 - PARA)
@@ -2424,9 +2437,9 @@ def holds(tris, inner):
         names = set(t)
         P = [SH[k] for k in t]
         if names <= {'BS', 'RSE', 'KS', 'RSW', 'KX'} and 'RSE' in names:                  # south face
-            scatter(P, n, 60, .22)
+            scatter(P, n, 32, .22)
         elif names <= {'BW', 'BS', 'KW', 'KS', 'KX', 'RSW', 'RNW'}:                       # south-west faces: a white route
-            scatter(P, n, 18, .8, band=lambda p: abs((p[0] + 7.5) - .45 * (p[2] - 6.0)) < 3.2)
+            scatter(P, n, 14, .9, band=lambda p: p[0] > -9.8)
         elif names <= {'BS', 'BN', 'RNE', 'RSE'}:                                         # east face
             scatter(P, n, 12, .3, zmin=2.0)
     for t, n in tris:                                                                   # inner faces near the rim
@@ -2458,7 +2471,9 @@ def inside_xz(tri, x, z, m=0.0):
     return all(v >= m for v in s) or all(v <= -m for v in s)
 
 
-CLIMBERS = ((-3.4, 9.4, 'shirt'), (-1.6, 8.4, 'shirt'), (-4.3, 12.6, 'harness'))
+CLIMBERS = ((-3.4, 9.4, 'shirt', ((-.55, .95), (.45, .75), (-.45, -1.5), (.4, -1.35))),           # reaching
+            (-1.6, 8.4, 'shirt', ((-.25, 1.05), (.6, .2), (-.35, -1.45), (.85, -.7))),             # flagged leg
+            (-4.3, 12.6, 'harness', ((-.5, .9), (.35, -.35), (-.3, -1.4), (.3, -1.5))))           # resting, one arm low
 
 
 def climbers(tris):
@@ -2468,7 +2483,7 @@ def climbers(tris):
     south = [(t, n) for t, n in tris if 'RSE' in t and set(t) <= {'KS', 'BS', 'RSE', 'KX', 'RSW'}]
     rnd = random.Random(31)
     b = Batch()
-    for (x, z, shirt) in CLIMBERS:
+    for (x, z, shirt, ends) in CLIMBERS:
         t, n = next((t, n) for t, n in south if inside_xz([SH[k] for k in t], x, z, .9))
         tri = [SH[k] for k in t]
         p = face_point(tri, x, z)
@@ -2479,12 +2494,13 @@ def climbers(tris):
         b.beam('harness', q(0, -.38, .3), q(0, -.24, .3), .4, .26)                            # harness belt
         b.beam('harness', q(-.1, -.95, .27), q(-.1, -.36, .3), .14, .14)                      # legs
         b.beam('harness', q(.1, -.95, .27), q(.1, -.36, .3), .14, .14)
-        b.beam('harness', q(-.12, -.95, .27), q(-.45, -1.5, .07), .12, .12)
-        b.beam('harness', q(.12, -.95, .27), q(.4, -1.35, .07), .12, .12)
-        b.beam('skin', q(-.2, .25, .3), q(-.55, .95, .07), .09, .09)                          # arms
-        b.beam('skin', q(.2, .25, .3), q(.45, .75, .07), .09, .09)
+        (ha, hb, fa, fb) = ends
+        b.beam('harness', q(-.12, -.95, .27), q(fa[0], fa[1], .07), .12, .12)
+        b.beam('harness', q(.12, -.95, .27), q(fb[0], fb[1], .07), .12, .12)
+        b.beam('skin', q(-.2, .25, .3), q(ha[0], ha[1], .07), .09, .09)                       # arms
+        b.beam('skin', q(.2, .25, .3), q(hb[0], hb[1], .07), .09, .09)
         frustum_on(b, 'skin', q(0, .48, .3), up, n, .11, .24)                                 # head
-        for du, dv in ((-.55, .95), (.45, .75), (-.45, -1.5), (.4, -1.35)):                  # holds under hands and feet
+        for du, dv in ends:                                                                  # holds under hands and feet
             hold(b, 'hold', q(du, dv, 0.0), n, .1, .085, rnd)
     b.flush('climbers')
 
@@ -2596,10 +2612,10 @@ def street_trees():
             C.rod('Street tree limb', (x, y, .15 + h * .45), tip, .06, 'bark', 'street trees', 6)
         for j in range(5):
             a = k * 1.3 + j * math.tau / 5
-            r = 1.25 if j else 1.0
-            A.foliage('Street tree crown', (x + 1.1 * math.cos(a) * (j > 0), y + 1.1 * math.sin(a) * (j > 0), .15 + h * (.7 + .06 * (j % 2))),
+            r = .88 if j else .7
+            A.foliage('Street tree crown', (x + .8 * math.cos(a) * (j > 0), y + .8 * math.sin(a) * (j > 0), .15 + h * (.7 + .06 * (j % 2))),
                       (r * 1.5, r * 1.5, r * 1.3), role=('tree', 'tree2')[(k + j) % 2], detail=2)
-        A.foliage('Street tree crown', (x, y, .15 + h * .9), (1.6, 1.6, 1.3), role='tree', detail=2)
+        A.foliage('Street tree crown', (x, y, .15 + h * .86), (1.1, 1.1, .95), role='tree', detail=2)
 
 
 def roof_trees():
@@ -2708,7 +2724,7 @@ def interiors():
             qa_light(f'room {k} top', (x, y, F4 + 3.8), 90, 2.5)
     for y in (-14.0, -4.0, 6.0):
         qa_light(f'penthouse {y:.0f}', (-1.0, y, PH_TOP - .7), 110, 2.5)
-    qa_light('shell hollow', (-2.0, -22.5, 15.0), 30, 4.0)                                            # inside the shell (dim)
+    qa_light('shell hollow', (-1.0, -22.5, 18.0), 40, 8.0)                                            # inside the shell (dim)
 
 
 def window_bands(m, lo, hi, z0, z1, floors, per, role='stone'):
@@ -2773,4 +2789,4 @@ def build():
     C.CONTACTS.append(dict(name='The Overhang climbing building', box=[X0, X1, Y0, Y1]))
 
 
-LIGHT_RIG = dict(key=(-46, -30, 34), fill=(85, -95, 55), rear=(5, 75, 45), target=(-3, -12, 8.0), gain=4.0)
+LIGHT_RIG = dict(key=(-46, -30, 34), fill=(85, -95, 55), rear=(5, 70, 40), target=(-3, -12, 8.0), gain=4.8)
