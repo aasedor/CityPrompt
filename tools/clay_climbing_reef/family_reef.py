@@ -2403,9 +2403,9 @@ def holds(shell, Pi, dent_list):
     step = np.linalg.norm(P[2:-1] - P[:-3], axis=-1).mean(1) / 2           # ring spacing (rings 1 .. K-3)
     rad = np.hypot(P[1:-2, :, 0], P[1:-2, :, 1]).mean(1)
     ks = list(range(1, K - 2)); wk = list(step * rad)                       # area weight of each ring band
-    routes = []                                                         # loose vertical routes from the base up the walls
-    while len(routes) < 46:
-        th = rnd.uniform(0, 2 * math.pi)
+    routes = []; tries = 0                                              # loose vertical routes from the base up the walls
+    while len(routes) < 34 and tries < 5000:
+        tries += 1; th = rnd.uniform(0, 2 * math.pi)
         if any(abs((th - e + math.pi) % (2 * math.pi) - math.pi) < .30 for e in ENTRY_TH):
             continue
         if any(abs((th - r_ + math.pi) % (2 * math.pi) - math.pi) < .07 for r_ in routes):

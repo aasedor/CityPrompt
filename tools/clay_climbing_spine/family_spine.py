@@ -2540,7 +2540,7 @@ def terrace():
         for dx, dy, rx, ry, rz in front + sidel:
             rocks.append((xo - side * dx, Y0 + dy, rx, ry, rz))
     for k, (x, y, rx, ry, rz) in enumerate(rocks):
-        cleft_boulder(f'Terrace boulder {k}', x, y, soil, rx, ry, rz, 70 + k, role=('granite', 'granite2', 'granite3')[k % 3],
+        cleft_boulder(f'Terrace boulder {k}', x, y, soil, rx, ry, rz * (.8 if k % 3 else .95), 70 + k, role=('granite', 'granite2', 'granite3')[k % 3],
                       sink=.25, rot=(k * 1.7) % math.pi)
         kit.add_obstacle(_PkPolygon(pk_ellipse(x, y, max(rx, ry) * 1.05, max(rx, ry) * 1.05)), rz)
     fill_beds(kit, P, beds, soil, 55, spacing=.72)
