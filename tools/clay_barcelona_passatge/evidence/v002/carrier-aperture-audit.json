@@ -1,0 +1,258 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "west passage facade shop 0",
+      "face": "west passage facade",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade bay 0 french",
+      "face": "west passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade bay 0 arched",
+      "face": "west passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade shop 1",
+      "face": "west passage facade",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade bay 1 french",
+      "face": "west passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade bay 1 arched",
+      "face": "west passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade shop 2",
+      "face": "west passage facade",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade bay 2 french",
+      "face": "west passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade bay 2 arched",
+      "face": "west passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade shop 3",
+      "face": "west passage facade",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade bay 3 french",
+      "face": "west passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade bay 3 arched",
+      "face": "west passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade shop 4",
+      "face": "west passage facade",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade bay 4 french",
+      "face": "west passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade bay 4 arched",
+      "face": "west passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade shop 5",
+      "face": "west passage facade",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade bay 5 french",
+      "face": "west passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west passage facade bay 5 arched",
+      "face": "west passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade shop 0",
+      "face": "east passage facade",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade bay 0 french",
+      "face": "east passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade bay 0 arched",
+      "face": "east passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade shop 1",
+      "face": "east passage facade",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade bay 1 french",
+      "face": "east passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade bay 1 arched",
+      "face": "east passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade shop 2",
+      "face": "east passage facade",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade bay 2 french",
+      "face": "east passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade bay 2 arched",
+      "face": "east passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade shop 3",
+      "face": "east passage facade",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade bay 3 french",
+      "face": "east passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade bay 3 arched",
+      "face": "east passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade shop 4",
+      "face": "east passage facade",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade bay 4 french",
+      "face": "east passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade bay 4 arched",
+      "face": "east passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade shop 5",
+      "face": "east passage facade",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade bay 5 french",
+      "face": "east passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east passage facade bay 5 arched",
+      "face": "east passage facade recess",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west pavilion shop",
+      "face": "west pavilion south face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west pavilion first",
+      "face": "west pavilion south face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west pavilion second",
+      "face": "west pavilion south face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east pavilion shop",
+      "face": "east pavilion south face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east pavilion first",
+      "face": "east pavilion south face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east pavilion second",
+      "face": "east pavilion south face",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

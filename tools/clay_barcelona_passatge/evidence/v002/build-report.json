@@ -1,0 +1,1860 @@
+{
+  "candidate": "clay-barcelona-passatge-clay-v002",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 376,
+    "vertices": 56134,
+    "polygons": 67156,
+    "triangles": 67156,
+    "path": "clay-barcelona-passatge-clay-v002-authoring.blend",
+    "bytes": 7309376,
+    "sha256": "15d4bc468edb9a3c3bd0338054903f8e50f862c25b6296771199afd4394bfffe"
+  },
+  "runtime": {
+    "path": "clay-barcelona-passatge-clay-v002.glb",
+    "bytes": 3593652,
+    "sha256": "879c8814a2f77d604ea300c8b50627d59d5e8124d9da6e241b68e697f183b35c",
+    "meshes": 33,
+    "materials": 33,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 33,
+    "vertices": 56134,
+    "polygons": 67156,
+    "triangles": 67156
+  },
+  "original_bounds_m": [
+    [
+      -39.5,
+      -29.0,
+      0.0
+    ],
+    [
+      30.0,
+      52.20000076293945,
+      22.899999618530273
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -39.5,
+      -29.0,
+      0.0
+    ],
+    [
+      30.0,
+      52.20000076293945,
+      22.899999618530273
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 69.5,
+    "depth": 81.2,
+    "height": 20.5
+  },
+  "native_dimensions_m": {
+    "width": 69.5,
+    "depth": 81.20000076293945,
+    "height": 22.899999618530273
+  },
+  "native_bottom_center_m": [
+    -4.75,
+    11.600000381469727,
+    0.0
+  ],
+  "source_components_by_role": {
+    "brick": 78,
+    "stone": 62,
+    "stucco": 5,
+    "stucco2": 4,
+    "mortar": 6,
+    "iron": 55,
+    "frame": 34,
+    "hardware": 4,
+    "glass": 39,
+    "trim": 6,
+    "shopframe": 4,
+    "timber": 16,
+    "sign": 4,
+    "gold": 4,
+    "awning": 3,
+    "lamp": 3,
+    "tile": 2,
+    "tile2": 1,
+    "joint": 1,
+    "terracotta": 5,
+    "white": 5,
+    "interior": 3,
+    "floor": 3,
+    "goods": 2,
+    "asphalt": 1,
+    "concrete": 12,
+    "planting": 8,
+    "pot": 1,
+    "car": 1,
+    "car2": 1,
+    "car3": 1,
+    "tyre": 1,
+    "dark": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/interior.png",
+    "renders/roof_vault.png",
+    "renders/south_portal.png",
+    "renders/north_portal.png",
+    "renders/shopfronts.png",
+    "renders/floor_tiles.png",
+    "renders/pavilion_finial.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Barcelona passatge: glass-vaulted passage on tiles between brick shop facades, end wall portal, tiled square, streets",
+      "box": [
+        -39.5,
+        30.0,
+        -29.0,
+        52.2
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "west passage facade shop 0",
+      "face": "west passage facade",
+      "u": 3.45,
+      "z": 0.12,
+      "width": 3.0,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "west passage facade bay 0 french",
+      "face": "west passage facade recess",
+      "u": 3.45,
+      "z": 5.25,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west passage facade bay 0 arched",
+      "face": "west passage facade recess",
+      "u": 3.45,
+      "z": 8.1,
+      "width": 2.0,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west passage facade shop 1",
+      "face": "west passage facade",
+      "u": 8.4,
+      "z": 0.12,
+      "width": 3.4,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "west passage facade bay 1 french",
+      "face": "west passage facade recess",
+      "u": 8.4,
+      "z": 5.25,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west passage facade bay 1 arched",
+      "face": "west passage facade recess",
+      "u": 8.4,
+      "z": 8.1,
+      "width": 2.0,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west passage facade shop 2",
+      "face": "west passage facade",
+      "u": 13.200000000000001,
+      "z": 0.12,
+      "width": 3.4,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "west passage facade bay 2 french",
+      "face": "west passage facade recess",
+      "u": 13.200000000000001,
+      "z": 5.25,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west passage facade bay 2 arched",
+      "face": "west passage facade recess",
+      "u": 13.200000000000001,
+      "z": 8.1,
+      "width": 2.0,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west passage facade shop 3",
+      "face": "west passage facade",
+      "u": 18.0,
+      "z": 0.12,
+      "width": 3.4,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "west passage facade bay 3 french",
+      "face": "west passage facade recess",
+      "u": 18.0,
+      "z": 5.25,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west passage facade bay 3 arched",
+      "face": "west passage facade recess",
+      "u": 18.0,
+      "z": 8.1,
+      "width": 2.0,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west passage facade shop 4",
+      "face": "west passage facade",
+      "u": 22.799999999999997,
+      "z": 0.12,
+      "width": 3.4,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "west passage facade bay 4 french",
+      "face": "west passage facade recess",
+      "u": 22.799999999999997,
+      "z": 5.25,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west passage facade bay 4 arched",
+      "face": "west passage facade recess",
+      "u": 22.799999999999997,
+      "z": 8.1,
+      "width": 2.0,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west passage facade shop 5",
+      "face": "west passage facade",
+      "u": 27.6,
+      "z": 0.12,
+      "width": 3.4,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "west passage facade bay 5 french",
+      "face": "west passage facade recess",
+      "u": 27.6,
+      "z": 5.25,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west passage facade bay 5 arched",
+      "face": "west passage facade recess",
+      "u": 27.6,
+      "z": 8.1,
+      "width": 2.0,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east passage facade shop 0",
+      "face": "east passage facade",
+      "u": 3.45,
+      "z": 0.12,
+      "width": 3.0,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "east passage facade bay 0 french",
+      "face": "east passage facade recess",
+      "u": 3.45,
+      "z": 5.25,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east passage facade bay 0 arched",
+      "face": "east passage facade recess",
+      "u": 3.45,
+      "z": 8.1,
+      "width": 2.0,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east passage facade shop 1",
+      "face": "east passage facade",
+      "u": 8.4,
+      "z": 0.12,
+      "width": 3.4,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "east passage facade bay 1 french",
+      "face": "east passage facade recess",
+      "u": 8.4,
+      "z": 5.25,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east passage facade bay 1 arched",
+      "face": "east passage facade recess",
+      "u": 8.4,
+      "z": 8.1,
+      "width": 2.0,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east passage facade shop 2",
+      "face": "east passage facade",
+      "u": 13.200000000000001,
+      "z": 0.12,
+      "width": 3.4,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "east passage facade bay 2 french",
+      "face": "east passage facade recess",
+      "u": 13.200000000000001,
+      "z": 5.25,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east passage facade bay 2 arched",
+      "face": "east passage facade recess",
+      "u": 13.200000000000001,
+      "z": 8.1,
+      "width": 2.0,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east passage facade shop 3",
+      "face": "east passage facade",
+      "u": 18.0,
+      "z": 0.12,
+      "width": 3.4,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "east passage facade bay 3 french",
+      "face": "east passage facade recess",
+      "u": 18.0,
+      "z": 5.25,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east passage facade bay 3 arched",
+      "face": "east passage facade recess",
+      "u": 18.0,
+      "z": 8.1,
+      "width": 2.0,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east passage facade shop 4",
+      "face": "east passage facade",
+      "u": 22.799999999999997,
+      "z": 0.12,
+      "width": 3.4,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "east passage facade bay 4 french",
+      "face": "east passage facade recess",
+      "u": 22.799999999999997,
+      "z": 5.25,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east passage facade bay 4 arched",
+      "face": "east passage facade recess",
+      "u": 22.799999999999997,
+      "z": 8.1,
+      "width": 2.0,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east passage facade shop 5",
+      "face": "east passage facade",
+      "u": 27.6,
+      "z": 0.12,
+      "width": 3.4,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "east passage facade bay 5 french",
+      "face": "east passage facade recess",
+      "u": 27.6,
+      "z": 5.25,
+      "width": 2.0,
+      "height": 2.35,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east passage facade bay 5 arched",
+      "face": "east passage facade recess",
+      "u": 27.6,
+      "z": 8.1,
+      "width": 2.0,
+      "height": 0.55,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        5.800000190734863,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west pavilion shop",
+      "face": "west pavilion south face",
+      "u": 3.25,
+      "z": 0.12,
+      "width": 3.0,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "west pavilion first",
+      "face": "west pavilion south face",
+      "u": 3.25,
+      "z": 5.2,
+      "width": 1.5,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "west pavilion second",
+      "face": "west pavilion south face",
+      "u": 3.25,
+      "z": 8.25,
+      "width": 1.3,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -12.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east pavilion shop",
+      "face": "east pavilion south face",
+      "u": 1.75,
+      "z": 0.12,
+      "width": 2.0,
+      "height": 3.8,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "east pavilion first",
+      "face": "east pavilion south face",
+      "u": 1.75,
+      "z": 5.2,
+      "width": 1.5,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "east pavilion second",
+      "face": "east pavilion south face",
+      "u": 1.75,
+      "z": 8.25,
+      "width": 1.3,
+      "height": 1.1,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        5.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    }
+  ],
+  "authoring_modules": {
+    "street": [
+      "Street asphalt"
+    ],
+    "sidewalks": [
+      "Sidewalk",
+      "Sidewalk.001",
+      "Sidewalk.002",
+      "Sidewalk.003",
+      "Sidewalk.004",
+      "Sidewalk.005",
+      "Sidewalk.006",
+      "Sidewalk.007",
+      "Sidewalk.008",
+      "Sidewalk.009",
+      "Sidewalk.010",
+      "Sidewalk.011"
+    ],
+    "square": [
+      "Square tiles"
+    ],
+    "passage floor": [
+      "Passage tiles"
+    ],
+    "floor patterns": [
+      "floor patterns tile2",
+      "floor patterns joint"
+    ],
+    "envelope": [
+      "west passage facade carrier",
+      "west passage facade bay 0 left spandrel",
+      "west passage facade bay 0 right spandrel",
+      "west passage facade bay 0 infill",
+      "west passage facade bay 0 arched left spandrel",
+      "west passage facade bay 0 arched right spandrel",
+      "west passage facade bay 1 left spandrel",
+      "west passage facade bay 1 right spandrel",
+      "west passage facade bay 1 infill",
+      "west passage facade bay 1 arched left spandrel",
+      "west passage facade bay 1 arched right spandrel",
+      "west passage facade bay 2 left spandrel",
+      "west passage facade bay 2 right spandrel",
+      "west passage facade bay 2 infill",
+      "west passage facade bay 2 arched left spandrel",
+      "west passage facade bay 2 arched right spandrel",
+      "west passage facade bay 3 left spandrel",
+      "west passage facade bay 3 right spandrel",
+      "west passage facade bay 3 infill",
+      "west passage facade bay 3 arched left spandrel",
+      "west passage facade bay 3 arched right spandrel",
+      "west passage facade bay 4 left spandrel",
+      "west passage facade bay 4 right spandrel",
+      "west passage facade bay 4 infill",
+      "west passage facade bay 4 arched left spandrel",
+      "west passage facade bay 4 arched right spandrel",
+      "west passage facade bay 5 left spandrel",
+      "west passage facade bay 5 right spandrel",
+      "west passage facade bay 5 infill",
+      "west passage facade bay 5 arched left spandrel",
+      "west passage facade bay 5 arched right spandrel",
+      "east passage facade carrier",
+      "east passage facade bay 0 left spandrel",
+      "east passage facade bay 0 right spandrel",
+      "east passage facade bay 0 infill",
+      "east passage facade bay 0 arched left spandrel",
+      "east passage facade bay 0 arched right spandrel",
+      "east passage facade bay 1 left spandrel",
+      "east passage facade bay 1 right spandrel",
+      "east passage facade bay 1 infill",
+      "east passage facade bay 1 arched left spandrel",
+      "east passage facade bay 1 arched right spandrel",
+      "east passage facade bay 2 left spandrel",
+      "east passage facade bay 2 right spandrel",
+      "east passage facade bay 2 infill",
+      "east passage facade bay 2 arched left spandrel",
+      "east passage facade bay 2 arched right spandrel",
+      "east passage facade bay 3 left spandrel",
+      "east passage facade bay 3 right spandrel",
+      "east passage facade bay 3 infill",
+      "east passage facade bay 3 arched left spandrel",
+      "east passage facade bay 3 arched right spandrel",
+      "east passage facade bay 4 left spandrel",
+      "east passage facade bay 4 right spandrel",
+      "east passage facade bay 4 infill",
+      "east passage facade bay 4 arched left spandrel",
+      "east passage facade bay 4 arched right spandrel",
+      "east passage facade bay 5 left spandrel",
+      "east passage facade bay 5 right spandrel",
+      "east passage facade bay 5 infill",
+      "east passage facade bay 5 arched left spandrel",
+      "east passage facade bay 5 arched right spandrel",
+      "west pavilion carrier",
+      "west pavilion first left spandrel",
+      "west pavilion first right spandrel",
+      "west pavilion second left spandrel",
+      "west pavilion second right spandrel",
+      "east pavilion carrier",
+      "east pavilion first left spandrel",
+      "east pavilion first right spandrel",
+      "east pavilion second left spandrel",
+      "east pavilion second right spandrel",
+      "north end wall",
+      "portal left spandrel",
+      "portal right spandrel"
+    ],
+    "brick joints": [
+      "west passage facade mortar courses",
+      "east passage facade mortar courses",
+      "west pavilion south face mortar courses",
+      "east pavilion south face mortar courses",
+      "north end wall mortar courses",
+      "north end wall street face mortar courses"
+    ],
+    "openings": [
+      "west passage facade bay 0 archivolt",
+      "west passage facade bay 0 arched arch frame",
+      "west passage facade bay 0 arched fanlight",
+      "west passage facade bay 0 arched archivolt",
+      "west passage facade bay 1 archivolt",
+      "west passage facade bay 1 arched arch frame",
+      "west passage facade bay 1 arched fanlight",
+      "west passage facade bay 1 arched archivolt",
+      "west passage facade bay 2 archivolt",
+      "west passage facade bay 2 arched arch frame",
+      "west passage facade bay 2 arched fanlight",
+      "west passage facade bay 2 arched archivolt",
+      "west passage facade bay 3 archivolt",
+      "west passage facade bay 3 arched arch frame",
+      "west passage facade bay 3 arched fanlight",
+      "west passage facade bay 3 arched archivolt",
+      "west passage facade bay 4 archivolt",
+      "west passage facade bay 4 arched arch frame",
+      "west passage facade bay 4 arched fanlight",
+      "west passage facade bay 4 arched archivolt",
+      "west passage facade bay 5 archivolt",
+      "west passage facade bay 5 arched arch frame",
+      "west passage facade bay 5 arched fanlight",
+      "west passage facade bay 5 arched archivolt",
+      "east passage facade bay 0 archivolt",
+      "east passage facade bay 0 arched arch frame",
+      "east passage facade bay 0 arched fanlight",
+      "east passage facade bay 0 arched archivolt",
+      "east passage facade bay 1 archivolt",
+      "east passage facade bay 1 arched arch frame",
+      "east passage facade bay 1 arched fanlight",
+      "east passage facade bay 1 arched archivolt",
+      "east passage facade bay 2 archivolt",
+      "east passage facade bay 2 arched arch frame",
+      "east passage facade bay 2 arched fanlight",
+      "east passage facade bay 2 arched archivolt",
+      "east passage facade bay 3 archivolt",
+      "east passage facade bay 3 arched arch frame",
+      "east passage facade bay 3 arched fanlight",
+      "east passage facade bay 3 arched archivolt",
+      "east passage facade bay 4 archivolt",
+      "east passage facade bay 4 arched arch frame",
+      "east passage facade bay 4 arched fanlight",
+      "east passage facade bay 4 arched archivolt",
+      "east passage facade bay 5 archivolt",
+      "east passage facade bay 5 arched arch frame",
+      "east passage facade bay 5 arched fanlight",
+      "east passage facade bay 5 arched archivolt",
+      "west pavilion first arch frame",
+      "west pavilion first fanlight",
+      "west pavilion first archivolt",
+      "west pavilion second arch frame",
+      "west pavilion second fanlight",
+      "west pavilion second archivolt",
+      "east pavilion first arch frame",
+      "east pavilion first fanlight",
+      "east pavilion first archivolt",
+      "east pavilion second arch frame",
+      "east pavilion second fanlight",
+      "east pavilion second archivolt",
+      "portal passage archivolt",
+      "portal street archivolt"
+    ],
+    "west passage facade bay 0 recess": [
+      "west passage facade recess west passage facade bay 0 recess fra",
+      "west passage facade recess west passage facade bay 0 recess gla",
+      "west passage facade recess west passage facade bay 0 recess sto",
+      "west passage facade recess west passage facade bay 0 recess iro"
+    ],
+    "west passage facade bay 1 recess": [
+      "west passage facade recess west passage facade bay 1 recess fra",
+      "west passage facade recess west passage facade bay 1 recess gla",
+      "west passage facade recess west passage facade bay 1 recess sto",
+      "west passage facade recess west passage facade bay 1 recess iro"
+    ],
+    "west passage facade bay 2 recess": [
+      "west passage facade recess west passage facade bay 2 recess fra",
+      "west passage facade recess west passage facade bay 2 recess gla",
+      "west passage facade recess west passage facade bay 2 recess sto",
+      "west passage facade recess west passage facade bay 2 recess iro"
+    ],
+    "west passage facade bay 3 recess": [
+      "west passage facade recess west passage facade bay 3 recess fra",
+      "west passage facade recess west passage facade bay 3 recess gla",
+      "west passage facade recess west passage facade bay 3 recess sto",
+      "west passage facade recess west passage facade bay 3 recess iro"
+    ],
+    "west passage facade bay 4 recess": [
+      "west passage facade recess west passage facade bay 4 recess fra",
+      "west passage facade recess west passage facade bay 4 recess gla",
+      "west passage facade recess west passage facade bay 4 recess sto",
+      "west passage facade recess west passage facade bay 4 recess iro"
+    ],
+    "west passage facade bay 5 recess": [
+      "west passage facade recess west passage facade bay 5 recess fra",
+      "west passage facade recess west passage facade bay 5 recess gla",
+      "west passage facade recess west passage facade bay 5 recess sto",
+      "west passage facade recess west passage facade bay 5 recess iro"
+    ],
+    "west passage facade": [
+      "west passage facade west passage facade shopframe",
+      "west passage facade west passage facade glass",
+      "west passage facade west passage facade timber",
+      "west passage facade west passage facade hardware",
+      "west passage facade west passage facade sign",
+      "west passage facade west passage facade gold",
+      "west passage facade west passage facade stone"
+    ],
+    "west passage facade iron": [
+      "west passage facade iron iron",
+      "west passage facade iron frame",
+      "west passage facade iron lamp"
+    ],
+    "west passage facade rooms": [
+      "west passage facade rooms floor",
+      "west passage facade rooms interior",
+      "west passage facade rooms timber",
+      "west passage facade rooms goods"
+    ],
+    "east passage facade bay 0 recess": [
+      "east passage facade recess east passage facade bay 0 recess fra",
+      "east passage facade recess east passage facade bay 0 recess gla",
+      "east passage facade recess east passage facade bay 0 recess sto",
+      "east passage facade recess east passage facade bay 0 recess iro"
+    ],
+    "east passage facade bay 1 recess": [
+      "east passage facade recess east passage facade bay 1 recess fra",
+      "east passage facade recess east passage facade bay 1 recess gla",
+      "east passage facade recess east passage facade bay 1 recess sto",
+      "east passage facade recess east passage facade bay 1 recess iro"
+    ],
+    "east passage facade bay 2 recess": [
+      "east passage facade recess east passage facade bay 2 recess fra",
+      "east passage facade recess east passage facade bay 2 recess gla",
+      "east passage facade recess east passage facade bay 2 recess sto",
+      "east passage facade recess east passage facade bay 2 recess iro"
+    ],
+    "east passage facade bay 3 recess": [
+      "east passage facade recess east passage facade bay 3 recess fra",
+      "east passage facade recess east passage facade bay 3 recess gla",
+      "east passage facade recess east passage facade bay 3 recess sto",
+      "east passage facade recess east passage facade bay 3 recess iro"
+    ],
+    "east passage facade bay 4 recess": [
+      "east passage facade recess east passage facade bay 4 recess fra",
+      "east passage facade recess east passage facade bay 4 recess gla",
+      "east passage facade recess east passage facade bay 4 recess sto",
+      "east passage facade recess east passage facade bay 4 recess iro"
+    ],
+    "east passage facade bay 5 recess": [
+      "east passage facade recess east passage facade bay 5 recess fra",
+      "east passage facade recess east passage facade bay 5 recess gla",
+      "east passage facade recess east passage facade bay 5 recess sto",
+      "east passage facade recess east passage facade bay 5 recess iro"
+    ],
+    "east passage facade": [
+      "east passage facade east passage facade shopframe",
+      "east passage facade east passage facade glass",
+      "east passage facade east passage facade timber",
+      "east passage facade east passage facade hardware",
+      "east passage facade east passage facade sign",
+      "east passage facade east passage facade gold",
+      "east passage facade east passage facade stone"
+    ],
+    "east passage facade iron": [
+      "east passage facade iron iron",
+      "east passage facade iron frame",
+      "east passage facade iron lamp"
+    ],
+    "east passage facade rooms": [
+      "east passage facade rooms floor",
+      "east passage facade rooms interior",
+      "east passage facade rooms timber",
+      "east passage facade rooms goods"
+    ],
+    "west pavilion": [
+      "west pavilion south face west pavilion shopframe",
+      "west pavilion south face west pavilion glass",
+      "west pavilion south face west pavilion timber",
+      "west pavilion south face west pavilion hardware",
+      "west pavilion south face west pavilion sign",
+      "west pavilion south face west pavilion gold",
+      "west pavilion south face west pavilion frame",
+      "west pavilion south face west pavilion stone",
+      "west pavilion south face west pavilion iron",
+      "west pavilion south face west pavilion brick"
+    ],
+    "west pavilion iron": [
+      "west pavilion iron frame",
+      "west pavilion iron iron"
+    ],
+    "east pavilion": [
+      "east pavilion south face east pavilion shopframe",
+      "east pavilion south face east pavilion glass",
+      "east pavilion south face east pavilion timber",
+      "east pavilion south face east pavilion hardware",
+      "east pavilion south face east pavilion sign",
+      "east pavilion south face east pavilion gold",
+      "east pavilion south face east pavilion frame",
+      "east pavilion south face east pavilion stone",
+      "east pavilion south face east pavilion iron",
+      "east pavilion south face east pavilion brick"
+    ],
+    "east pavilion iron": [
+      "east pavilion iron frame",
+      "east pavilion iron iron"
+    ],
+    "mouth cornice corners": [
+      "mouth cornice corners stone"
+    ],
+    "passage block": [
+      "passage block stucco",
+      "passage block interior",
+      "passage block floor",
+      "passage block brick",
+      "passage block terracotta",
+      "passage block stone",
+      "passage block white",
+      "passage block timber"
+    ],
+    "outer windows": [
+      "outer windows trim",
+      "outer windows glass",
+      "outer windows stone",
+      "outer windows iron"
+    ],
+    "end wall": [
+      "medallion ring",
+      "medallion disc",
+      "medallion boss",
+      "medallion ring.001",
+      "medallion disc.001",
+      "medallion boss.001"
+    ],
+    "north end wall passage face": [
+      "north end wall north end wall passage face stone"
+    ],
+    "north end wall street face": [
+      "north end wall street face north end wall street face stone"
+    ],
+    "vault": [
+      "North lunette glass",
+      "Glass vault",
+      "bracket scroll",
+      "bracket scroll.001",
+      "bracket scroll.002",
+      "bracket scroll.003",
+      "bracket scroll.004",
+      "bracket scroll.005",
+      "bracket scroll.006",
+      "bracket scroll.007",
+      "bracket scroll.008",
+      "bracket scroll.009",
+      "bracket scroll.010",
+      "bracket scroll.011",
+      "bracket scroll.012",
+      "bracket scroll.013",
+      "bracket scroll.014",
+      "bracket scroll.015",
+      "bracket scroll.016",
+      "bracket scroll.017",
+      "bracket scroll.018",
+      "bracket scroll.019",
+      "end arch ring",
+      "end arch ring.001",
+      "end arch ring.002",
+      "end arch ring.003",
+      "end arch ring.004",
+      "bracket scroll.020",
+      "bracket scroll.021",
+      "bracket scroll.022",
+      "bracket scroll.023"
+    ],
+    "north lunette bars": [
+      "north lunette bars iron"
+    ],
+    "glass vault iron": [
+      "glass vault iron iron",
+      "glass vault iron stone"
+    ],
+    "garden planting": [
+      "Planter shrub",
+      "Planter shrub.001",
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005"
+    ],
+    "furniture": [
+      "furniture timber",
+      "furniture iron",
+      "furniture trim",
+      "furniture pot",
+      "furniture lamp"
+    ],
+    "shopfronts": [
+      "Awning",
+      "Awning.001",
+      "Awning.002"
+    ],
+    "west context": [
+      "west context stucco2",
+      "west context terracotta",
+      "west context stucco",
+      "west context white",
+      "west context trim",
+      "west context glass",
+      "west context stone",
+      "west context iron"
+    ],
+    "east context": [
+      "east context stucco2",
+      "east context terracotta",
+      "east context stucco",
+      "east context white",
+      "east context trim",
+      "east context glass",
+      "east context stone",
+      "east context iron"
+    ],
+    "north context": [
+      "north context stucco2",
+      "north context terracotta",
+      "north context stucco",
+      "north context white",
+      "north context trim",
+      "north context glass",
+      "north context stone",
+      "north context iron"
+    ],
+    "south context": [
+      "south context stucco2",
+      "south context terracotta",
+      "south context stucco",
+      "south context white",
+      "south context trim",
+      "south context glass",
+      "south context stone",
+      "south context iron"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005"
+    ],
+    "parked cars": [
+      "parked cars car",
+      "parked cars dark",
+      "parked cars tyre",
+      "parked cars car2",
+      "parked cars car3"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "interior",
+    "roof_vault"
+  ],
+  "finished_utc": "2026-10-23T12:53:41.721701+00:00",
+  "delivery_and_render_seconds": 2098.478554708,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
