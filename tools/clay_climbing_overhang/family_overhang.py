@@ -31,8 +31,8 @@ import geometry as G
 SLUG = 'clay-climbing-overhang'
 X0, X1, Y0, Y1 = -23.0, 16.0, -18.0, 18.0             # the building (top view, fitted)
 T = .3                                                # precast carrier depth
-XP0, XP1 = -6.0, 7.0                                  # penthouse (x); the pool deck's east edge is XP0
-XE = 7.0                                              # the four-storey east block starts here
+XP0, XP1 = -6.0, 5.5                                  # penthouse (x); the pool deck's east edge is XP0
+XE = 5.5                                              # the four-storey east block starts here
 G0 = .15                                              # ground floor over the plaza
 F2, F3, F4 = 5.0, 9.4, 13.8                           # upper floor levels
 PARA = 15.6                                           # pool block parapet top
@@ -45,19 +45,19 @@ FY = -17.8                                            # the climbing shell's bac
 RIM = 21.0                                            # rim top of the climbing shell
 # The climbing shell's outer corners (triangulated from the front and oblique views and the top view).
 SH = dict(G=(-12.5, FY, 0.0), BW=(-17.8, -22.7, 0.0), BS=(-3.0, -26.5, 0.0), BN=(-6.0, FY, 0.0),
-          KW=(-11.4, FY, 14.0), KS=(-4.75, -27.55, 9.5),
+          KW=(-12.0, FY, PARA), KS=(-4.75, -27.55, 9.5), KX=(-6.3, -27.35, PARA),
           RNW=(-7.26, FY, RIM), RSW=(-6.04, -26.71, RIM), RSE=(6.22, -27.72, RIM), RNE=(4.37, FY, RIM))
 SHELL_T = .35                                         # CLT shell thickness
 TOP = RIM + .1
 EPS = .002
 PALETTE = dict(wall=(.86, .85, .82), precast=(.90, .89, .86), concrete2=(.70, .70, .68), frame=(.22, .24, .26),
-    glass=(.15, .21, .25), interior=(.82, .79, .72), floor=(.60, .57, .52), timber=(.78, .52, .25), timber2=(.88, .69, .43),
-    timber_in=(.80, .57, .31), hold=(.10, .10, .11), hold_w=(.91, .90, .86), mat=(.32, .38, .45), shirt=(.20, .60, .70),
+    glass=(.15, .21, .25), interior=(.82, .79, .72), floor=(.60, .57, .52), timber=(.80, .40, .075), timber2=(.88, .58, .2),
+    timber_in=(.72, .36, .07), hold=(.10, .10, .11), hold_w=(.91, .90, .86), mat=(.10, .11, .13), shirt=(.20, .60, .70),
     skin=(.78, .60, .47), harness=(.12, .12, .14), paving=(.63, .64, .64), paving2=(.53, .54, .55), granite=(.60, .60, .59),
     deck=(.80, .74, .64), coping=(.88, .86, .80), water=(.30, .62, .73), water2=(.22, .46, .57), membrane=(.86, .86, .84),
     mech=(.78, .78, .76), asphalt=(.26, .26, .27), curb=(.73, .73, .71), paint=(.93, .93, .91), soil=(.26, .20, .15),
     lounger=(.93, .93, .91), hardware=(.08, .08, .08), metal=(.55, .56, .57), brick=(.50, .25, .17), brick2=(.58, .32, .22),
-    ctx=(.74, .72, .68), ctx2=(.62, .60, .57), stone=(.78, .74, .66), tree=(.53, .62, .22), tree2=(.40, .53, .19),
+    ctx=(.74, .72, .68), ctx2=(.62, .60, .57), stone=(.78, .74, .66), tree=(.53, .62, .22), tree3=(.66, .70, .16), tree2=(.40, .53, .19),
     bark=(.30, .24, .17), car1=(.56, .58, .61), car2=(.15, .15, .17), car3=(.76, .76, .77), planter=(.80, .79, .76))
 
 
@@ -67,7 +67,7 @@ def manifest(version):
         ('wall_base_contact', (-25.0, -28.0, 1.7), (-11.0, -23.5, 1.4), 24),     # the shell's foot on the plaza
         ('rim_interior', (-1.0, -38.0, 42.0), (0.0, -22.6, 9.0), 38),            # down into the open top
         ('pool_deck', (-16.5, -16.0, 16.7), (-14.0, 6.0, 15.4), 22),             # the deck, pool, loungers and garden
-        ('facade_close', (-33.0, -5.5, 8.5), (X0, -5.5, 8.5), 38),               # a west bay through both upper storeys
+        ('facade_close', (-31.0, -13.5, 8.5), (X0, -13.5, 8.5), 40),               # a west bay through both upper storeys
         ('architecture_close', (-31.0, -29.0, 11.5), (-20.5, Y0, 11.0), 38),     # the frame box corner and parapet band
         ('glass_close', (-17.8, -26.5, 9.4), (-17.8, Y0, 9.4), 38),              # the glass ribbons in the frame box
         ('interior', (-18.5, -12.3, 1.7), (-18.5, Y0, 2.4), 20),                 # the lobby looking out to the plaza
@@ -83,13 +83,13 @@ def manifest(version):
         elif c['name'] == 'top':
             c.update(location=(-5.65, -29.29, 64.45), target=(-3.55, -6.57, 6.0), lens=25.38)
         elif c['name'] == 'aerial':
-            c.update(location=(46.0, 66.0, 72.0), target=(-3.0, -6.0, 8.0), lens=30)
+            c.update(location=(48.0, -72.0, 56.0), target=(-3.0, -10.0, 8.0), lens=30)
         elif c['name'] == 'left_side':
-            c.update(location=(-40.0, 2.0, 13.0), target=(X0, 0.0, 8.0), lens=17)
+            c.update(location=(-40.0, 0.0, 14.0), target=(X0, 0.0, 9.0), lens=13)
         elif c['name'] == 'right_side':
             c.update(location=(33.0, -38.0, 13.0), target=(8.0, -16.0, 9.0), lens=22)
         elif c['name'] == 'rear':
-            c.update(location=(-3.0, 33.5, 14.0), target=(-3.0, Y1, 10.0), lens=15)
+            c.update(location=(-3.5, 33.5, 15.0), target=(-3.5, Y1, 10.0), lens=12)
         elif c['name'] == 'rear_side':
             c.update(location=(-48.0, 62.0, 62.0), target=(-3.0, 0.0, 8.0), lens=30)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -2049,8 +2049,8 @@ def south_frame_box():
     for z0, z1 in ((F2 + .2, F3 - .4), (F3 + .2, F4 - .25)):
         glazed(b, ax, c, o, s0 + .5, s1 - .5, z0, z1, 2.4, d=.3)
     fbox(b, 'interior', ax, c, o, s0 + .6, s1 - .6, F2, F4, -4.4, -4.2)
-    fbox(b, 'precast', ax, c, o, s0 - .28, -12.0, F4 + .25, PARA - .05, -.25, .30)                            # parapet band
-    fbox(b, 'coping', ax, c, o, s0 - .32, -12.0, PARA - .07, PARA - .01, -.3, .34)
+    fbox(b, 'precast', ax, c, o, s0 - .28, -12.2, F4 + .25, PARA - .05, -.25, .30)                            # parapet band
+    fbox(b, 'coping', ax, c, o, s0 - .32, -12.2, PARA - .07, PARA - .01, -.3, .34)
     # Ground floor: recessed glazing with two pairs of doors, the corner column.
     gd = -.7
     fbox(b, 'precast', ax, c, o, s0, s0 + .55, 0.0, F2 - .4, gd - .05, .1)
@@ -2072,6 +2072,9 @@ def shell_edge_x(z):
     return SH['BN'][0] + (SH['RNE'][0] - SH['BN'][0]) * z / RIM
 
 
+XV = 3.6                            # vertical return of the ribbons under the east overhang
+
+
 def south_under_shell():
     """South front from the frame box to the east street, seen beside and under the shell's overhang: flush white
     floor bands and glass ribbons that start just east of the shell's back edge (they step with it), white fillers
@@ -2085,8 +2088,8 @@ def south_under_shell():
         x_lo = XE + .2 if k == 3 else -12.2
         g0, g1 = (G0 if k == 0 else za + .25), zb - .55
         if k > 0:
-            fbox(b, 'precast', ax, c, o, max(x_lo, shell_edge_x(za + .25) + .02), X1, za - .55, za + .25, -.4, .05)
-        xs = max(x_lo, shell_edge_x(g1) + .5)
+            fbox(b, 'precast', ax, c, o, max(x_lo, XV - .1), X1, za - .55, za + .25, -.4, .05)
+        xs = max(x_lo, XV)
         fbox(b, 'precast', ax, c, o, max(x_lo - .6, shell_edge_x(g0) - .6), xs + .05, g0 - .02, g1 + .02, -.4, -.1)
         if X1 - .4 - xs > 1.0:
             glazed(b, ax, c, o, xs, X1 - .4, g0, g1, 2.0, d=-.25)
@@ -2219,13 +2222,14 @@ def east_roof():
 
 
 # ---------------------------------------------------------------- the climbing shell
-SHELL_TRIS = [('KW', 'G', 'BW'), ('KW', 'RSW', 'BW'), ('KW', 'RSW', 'RNW'),          # west faces (the foot flares out)
-              ('KS', 'BS', 'BW'), ('KS', 'RSW', 'BW'),                            # south-west facets over the foot
-              ('KS', 'RSW', 'RSE'), ('KS', 'BS', 'RSE'),                          # south face
-              ('RNE', 'BS', 'RSE'), ('BN', 'RNE', 'BS'),                          # east face, overhanging the facade
-              ('BN', 'RNE', 'RNW'), ('BN', 'KW', 'RNW'), ('BN', 'KW', 'G'),       # back plane, lapped into the facade
-              ('BN', 'G', 'BW'), ('BN', 'BS', 'BW')]                              # foot
-# (the convex hull of the triangulated corners, its level top removed: every fold is a mountain fold)
+SHELL_TRIS = [('KW', 'KX', 'RSW'), ('KW', 'RSW', 'RNW'),           # upper west panel: from the pool-block parapet corner up to the rim
+              ('BW', 'KX', 'KW'),                                   # lower flared west face; the fold KW-KX runs at parapet height
+              ('BW', 'BS', 'KS'), ('BW', 'KS', 'KX'),               # south-west facets over the foot
+              ('KS', 'BS', 'RSE'), ('KS', 'RSE', 'KX'), ('KX', 'RSE', 'RSW'),   # south face
+              ('BS', 'BN', 'RNE'), ('BS', 'RNE', 'RSE'),            # east face, overhanging the facade
+              ('BN', 'G', 'KW'), ('BN', 'KW', 'RNW'), ('BN', 'RNW', 'RNE'),     # back plane, lapped into the facade
+              ('BW', 'KW', 'G'),                                    # return to the facade under the fold
+              ('G', 'BN', 'BS'), ('G', 'BS', 'BW')]                 # foot
 RIM_LOOP = ['RNW', 'RSW', 'RSE', 'RNE']
 
 
@@ -2239,14 +2243,36 @@ def _n(a):
 
 def shell_frame():
     """Outward-wound outer triangles with unit normals, and the inner (offset) vertices of the CLT shell."""
-    cen = tuple(sum(SH[k][i] for k in SH) / len(SH) for i in range(3))
-    tris = []
-    for t in SHELL_TRIS:
+    # Orient the (not convex) folded surface consistently across shared edges, then outward by its signed volume
+    # (closed with the open rim for the volume only).
+    tl = [list(t) for t in SHELL_TRIS]
+    done = {0}; todo = [0]
+    while todo:
+        i = todo.pop()
+        ei = {(tl[i][k], tl[i][(k + 1) % 3]) for k in range(3)}
+        for j in range(len(tl)):
+            if j in done:
+                continue
+            ej = {(tl[j][k], tl[j][(k + 1) % 3]) for k in range(3)}
+            if ei & ej:
+                tl[j] = [tl[j][0], tl[j][2], tl[j][1]]; done.add(j); todo.append(j)
+            elif {(b, a) for a, b in ei} & ej:
+                done.add(j); todo.append(j)
+    cap = [(RIM_LOOP[0], RIM_LOOP[k], RIM_LOOP[k + 1]) for k in (1, 2)]
+    vol = 0.0
+    for t in [tuple(x) for x in tl]:
         a, b_, c = (SH[k] for k in t)
-        n = _n(_x(_v(a, b_), _v(a, c)))
-        if _d(n, _v(cen, a)) < 0:
-            t = (t[0], t[2], t[1]); n = (-n[0], -n[1], -n[2])
-        tris.append((t, n))
+        vol += _d(a, _x(b_, c))
+    edges = {(t[k], t[(k + 1) % 3]) for t in tl for k in range(3)}
+    rim_dir = (RIM_LOOP[1], RIM_LOOP[0]) in edges              # the rim cap closes the surface against the open loop
+    for t in cap:
+        a, b_, c = (SH[k] for k in (t if rim_dir else (t[0], t[2], t[1])))
+        vol += _d(a, _x(b_, c))
+    tris = []
+    for t in tl:
+        t = tuple(t) if vol > 0 else (t[0], t[2], t[1])
+        a, b_, c = (SH[k] for k in t)
+        tris.append((t, _n(_x(_v(a, b_), _v(a, c)))))
     inner = {}
     for k, p in SH.items():
         planes = []
@@ -2291,6 +2317,8 @@ def shell():
     out_f = [f for k, f in enumerate(F) if k % 2 == 0]
     in_f = [f for k, f in enumerate(F) if k % 2 == 1]
     obj = C.mesh('Climbing shell CLT', V, out_f + in_f + caps, 'timber', 'climbing shell')
+    for p in obj.data.polygons:                                        # folded CLT planes: flat shaded
+        p.use_smooth = False
     for p in obj.data.polygons:                                        # inner faces and the rim cap get their own tones
         if p.index >= len(out_f) + len(in_f):
             p.material_index = 2
@@ -2317,9 +2345,9 @@ def shell():
     # The hollow's floor: a crash mat on the inner foot.
     fl = [inner[k] for k in ('G', 'BN', 'BS', 'BW')]
     cx = sum(p[0] for p in fl) / 4; cy = sum(p[1] for p in fl) / 4
-    mat = [(cx + (p[0] - cx) * .9, cy + (p[1] - cy) * .9) for p in fl]
+    mat = [(cx + (p[0] - cx) * .97, cy + (p[1] - cy) * .97) for p in fl]
     b.flush('climbing shell fascia')
-    C.prism('Climbing shell crash mat', mat, 'z', fl[0][2] - .02, fl[0][2] + .3, 'mat', 'climbing shell')
+    C.prism('Climbing shell crash mat', mat, 'z', fl[0][2] - .02, fl[0][2] + .45, 'mat', 'climbing shell')
     C.CONTACTS.append(dict(name='Climbing shell: foot sunk 15 cm into the plaza, back plane lapped 10 cm into the facade', rim_m=RIM))
     return tris, inner
 
@@ -2380,12 +2408,12 @@ def holds(tris, inner):
     for t, n in tris:
         names = set(t)
         P = [SH[k] for k in t]
-        if names <= {'BS', 'RSE', 'KS', 'RSW'}:                                           # south face
-            scatter(P, n, 95, .22)
-        elif names <= {'BW', 'BS', 'KW', 'KS', 'RSW', 'RNW'}:                             # south-west face: a white route
-            scatter(P, n, 26, .8, band=lambda p: abs((p[0] + 7.5) - .45 * (p[2] - 6.0)) < 3.2)
+        if names <= {'BS', 'RSE', 'KS', 'RSW', 'KX'} and 'RSE' in names:                  # south face
+            scatter(P, n, 60, .22)
+        elif names <= {'BW', 'BS', 'KW', 'KS', 'KX', 'RSW', 'RNW'}:                       # south-west faces: a white route
+            scatter(P, n, 18, .8, band=lambda p: abs((p[0] + 7.5) - .45 * (p[2] - 6.0)) < 3.2)
         elif names <= {'BS', 'BN', 'RNE', 'RSE'}:                                         # east face
-            scatter(P, n, 30, .3, zmin=2.0)
+            scatter(P, n, 12, .3, zmin=2.0)
     for t, n in tris:                                                                   # inner faces near the rim
         names = set(t)
         if names & set(RIM_LOOP) and not names <= {'G', 'BN', 'BS', 'BW'}:
@@ -2404,17 +2432,33 @@ def face_point(tri, x, z):
     return (x, y, z)
 
 
+def inside_xz(tri, x, z, m=0.0):
+    """(x, z) inside the triangle's x-z projection, at least m metres from its edges."""
+    P = [(p[0], p[2]) for p in tri]
+    s = []
+    for i in range(3):
+        (x0, z0), (x1, z1) = P[i], P[(i + 1) % 3]
+        L = math.hypot(x1 - x0, z1 - z0) or 1.0
+        s.append(((x1 - x0) * (z - z0) - (z1 - z0) * (x - x0)) / L)
+    return all(v >= m for v in s) or all(v <= -m for v in s)
+
+
+CLIMBERS = ((-3.4, 9.4, 'shirt'), (-1.6, 8.4, 'shirt'), (-4.3, 12.6, 'harness'))
+
+
 def climbers(tris):
-    """Three climbers on the south face (cyan, grey and dark tops): torso, head, arms to holds above, legs to holds
-    below, harness, all 25-30 cm off the face; each hand and foot rests on a hold."""
-    t, n = next((t, n) for t, n in tris if set(t) == {'KS', 'RSE', 'RSW'})
-    tri = [SH[k] for k in t]
+    """Three climbers on the middle of the south face (cyan, cyan and dark tops), each on the facet that contains it:
+    torso, head, arms to holds above, legs to holds below, harness, 25-30 cm off the face; every hand and foot rests
+    on a hold on that facet."""
+    south = [(t, n) for t, n in tris if 'RSE' in t and set(t) <= {'KS', 'BS', 'RSE', 'KX', 'RSW'}]
     rnd = random.Random(31)
     b = Batch()
-    up = _n((n[2] * n[0] * -1, n[2] * n[1] * -1, 1.0 - n[2] * n[2]))                 # up the face, in its plane
-    side = _n(_x(up, n))
-    for (x, z, shirt) in ((-1.4, 12.2, 'shirt'), (.6, 9.4, 'shirt'), (2.6, 8.9, 'harness')):
+    for (x, z, shirt) in CLIMBERS:
+        t, n = next((t, n) for t, n in south if inside_xz([SH[k] for k in t], x, z, .9))
+        tri = [SH[k] for k in t]
         p = face_point(tri, x, z)
+        up = _n((-n[2] * n[0], -n[2] * n[1], 1.0 - n[2] * n[2]))
+        side = _n(_x(up, n))
         q = lambda du, dv, dd: tuple(p[i] + side[i] * du + up[i] * dv + n[i] * dd for i in range(3))
         b.beam(shirt, q(0, -.3, .3), q(0, .3, .3), .36, .22)                                  # torso
         b.beam('harness', q(0, -.38, .3), q(0, -.24, .3), .4, .26)                            # harness belt
@@ -2422,7 +2466,7 @@ def climbers(tris):
         b.beam('harness', q(.1, -.95, .27), q(.1, -.36, .3), .14, .14)
         b.beam('harness', q(-.12, -.95, .27), q(-.45, -1.5, .07), .12, .12)
         b.beam('harness', q(.12, -.95, .27), q(.4, -1.35, .07), .12, .12)
-        b.beam('skin', q(-.2, .25, .3), q(-.55, .95, .07), .09, .09)                           # arms
+        b.beam('skin', q(-.2, .25, .3), q(-.55, .95, .07), .09, .09)                          # arms
         b.beam('skin', q(.2, .25, .3), q(.45, .75, .07), .09, .09)
         frustum_on(b, 'skin', q(0, .48, .3), up, n, .11, .24)                                 # head
         for du, dv in ((-.55, .95), (.45, .75), (-.45, -1.5), (.4, -1.35)):                  # holds under hands and feet
@@ -2452,7 +2496,7 @@ PLAZA_S = -35.5                     # plaza's south edge (south sidewalk beyond)
 WS0, WS1 = -28.0, X0                 # west sidewalk
 ES0, ES1 = X1, 20.5                  # east sidewalk
 PLANTERS = (((-16.5, -33.8), (-5.5, -33.8), (-5.5, -29.2), (-16.5, -29.2)),
-            ((4.0, -33.6), (11.5, -33.6), (11.5, -28.6), (4.0, -28.6)),
+            ((4.0, -33.6), (11.5, -33.6), (11.5, -26.0), (9.0, -26.0), (9.0, -31.0), (4.0, -31.0)),
             ((16.6, -31.0), (17.9, -31.0), (17.9, -19.0), (16.6, -19.0)))
 TREE_PITS = [(-26.6, y) for y in (-30.0, -19.0, -8.0, 3.0, 14.0)] + [(18.6, y) for y in (-7.0, 6.0)]
 
@@ -2506,6 +2550,8 @@ def site():
         b.box('paint', x, y, 5.55, .28, .28, .14)
     for k in range(7):
         cyl(b, 'metal', 13.0 + k * 1.2, PLAZA_S + .4, .15, 1.0, .1, 8)
+    for k in range(5):
+        cyl(b, 'metal', ES1 - .5, PLAZA_S + 1.6 + k * 1.4, .15, 1.0, .1, 8)
     cyl(b, 'metal', -12.0, -19.4, .15, 1.0, .3, 10)
     b.flush('site')
     for name, x, y, role in (('car 1', 22.2, -12.0, 'car1'), ('car 2', 22.2, -21.0, 'car2'),
@@ -2549,12 +2595,33 @@ def roof_trees():
         for j in range(3):
             a = k * 1.7 + j * 2.1
             A.foliage('Roof tree crown', (x + .5 * math.cos(a), y + .5 * math.sin(a), z + 2.6 + .3 * j), (.9, .9, 1.0),
-                      role=('tree', 'tree2')[(j + k) % 2], detail=2)
+                      role=('tree3', 'tree')[(j + k) % 2], detail=2)
 
 
 # ---------------------------------------------------------------- planting (shared kit)
 pk_palette(PALETTE)
 KIT = None
+
+
+def walls(poly, wall, z0, z1, role='granite'):
+    """Planter wall ring of an orthogonal CCW outline, `wall` thick inside it, as one closed mesh (mitred corners)."""
+    n = len(poly)
+    def inward(i):
+        (x0, y0), (x1, y1) = poly[i], poly[(i + 1) % n]
+        L = math.hypot(x1 - x0, y1 - y0)
+        return (-(y1 - y0) / L, (x1 - x0) / L)
+    inner = []
+    for i in range(n):
+        a, e = inward(i - 1), inward(i)
+        inner.append((poly[i][0] + wall * (a[0] + e[0]), poly[i][1] + wall * (a[1] + e[1])))
+    V = [(x, y, z) for z in (z0, z1) for x, y in poly] + [(x, y, z) for z in (z0, z1) for x, y in inner]
+    O0, O1, I0, I1 = 0, n, 2 * n, 3 * n
+    F = []
+    for i in range(n):
+        j = (i + 1) % n
+        F += [(O1 + i, O1 + j, I1 + j, I1 + i), (O0 + j, O0 + i, I0 + i, I0 + j),
+              (O0 + i, O0 + j, O1 + j, O1 + i), (I0 + j, I0 + i, I1 + i, I1 + j)]
+    C.mesh('Planter walls', V, F, role, 'planters')
 
 
 def planting():
@@ -2573,11 +2640,10 @@ def planting():
         wall = .25
         top = .15 + (.55 if i < 2 else .35)
         soil = top - .08
-        xs = [p[0] for p in poly]; ys = [p[1] for p in poly]
-        x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
-        for xa, xb, ya, yb in ((x0, x1, y0, y0 + wall), (x0, x1, y1 - wall, y1), (x0, x0 + wall, y0 + wall, y1 - wall), (x1 - wall, x1, y0 + wall, y1 - wall)):
-            b.box('granite', (xa + xb) / 2, (ya + yb) / 2, (.1 + top) / 2, xb - xa, yb - ya, top - .1)
-        b.box('soil', (x0 + x1) / 2, (y0 + y1) / 2, (.1 + soil - .03) / 2, x1 - x0 - .2, y1 - y0 - .2, soil - .03 - .1)
+        ring = _PkPolygon(poly).difference(_PkPolygon(poly).buffer(-wall, join_style=2))
+        walls(poly, wall, .1, top)
+        inner = _PkPolygon(poly).buffer(-.1, join_style=2)
+        C.prism(f'Planter {i} soil', list(inner.exterior.coords)[:-1], 'z', .1, soil - .03, 'soil', 'planters')
         reg = kit.register_bed(pk_region(poly, wall))
         groundcover(f'Planter {i} groundcover', poly, soil, kerb=wall, height=.05, bump=.02, wave=.7, grid=.5, seed=40 + i)
         mix = (reed, reed, fountain) if i < 2 else (shrub, low, low)
@@ -2627,8 +2693,8 @@ def interiors():
             qa_light(f'room {k} top', (x, y, F4 + 3.8), 90, 2.5)
     for y in (-14.0, -4.0, 6.0):
         qa_light(f'penthouse {y:.0f}', (-1.0, y, PH_TOP - .7), 110, 2.5)
-    for z in (2.0, 8.5, 15.0):                                                                          # inside the shell
-        qa_light(f'shell hollow {z:.0f}', (-6.5 + .25 * z, -22.5, z), 70, 2.0)
+    for z in (6.0,):                                                                                    # inside the shell
+        qa_light(f'shell hollow {z:.0f}', (-6.5 + .25 * z, -22.5, z), 25, 2.0)
 
 
 def window_bands(m, lo, hi, z0, z1, floors, per, role='stone'):
@@ -2693,4 +2759,4 @@ def build():
     C.CONTACTS.append(dict(name='The Overhang climbing building', box=[X0, X1, Y0, Y1]))
 
 
-LIGHT_RIG = dict(key=(-46, -30, 34), fill=(85, -95, 55), rear=(30, 105, 75), target=(-3, -12, 8.0), gain=4.0)
+LIGHT_RIG = dict(key=(-46, -30, 34), fill=(85, -95, 55), rear=(5, 75, 45), target=(-3, -12, 8.0), gain=4.0)
