@@ -450,10 +450,10 @@ def sash(m, f, h, occupied='room', lintel=True):
     """Tall nine-over-nine sash three panes wide, shouldered stone lintel with a raised centre, stone sill."""
     framed(m, f, h, cols=3, rows=6, inset=.12, occupied=occupied)
     m.box('trim', h['u'], .09, h['z'] + h['h'] / 2, h['w'] - .1, .1, .07)                     # meeting rail
-    m.box('stone', h['u'], -.05, h['z'] - .07, h['w'] + .2, .14, .14)                         # sill
+    m.box('stone', h['u'], -.05, h['z'] - .055, h['w'] + .2, .14, .14)                        # sill, top 1.5 cm up into the opening (no shared plane)
     if lintel:
         top = h['z'] + h['h']
-        m.box('stone', h['u'], -.03, top + .13, h['w'] + .36, .1, .26)                       # lintel
+        m.box('stone', h['u'], -.03, top + .115, h['w'] + .36, .1, .26)                      # lintel, soffit 1.5 cm below the head (no shared plane)
         m.box('stone', h['u'], -.04, top + .31, .5, .12, .12)                                # raised centre block
 
 
@@ -700,8 +700,8 @@ def portico():
         b.box('stone', x, y_col, 3.89, .6, .6, .16)                                            # abacus
     b.box('trim', 0.0, (y_col - .27 + y_col + .27) / 2, (3.95 + 4.56) / 2, 7.24, .54, .61)     # entablature
     for s in (-1, 1):
-        b.box('trim', s * 3.34, (-9.1 + YP + .05) / 2, (3.97 + 4.56) / 2, .52, YP + .05 + 9.1, .59)
-    b.box('trim', 0.0, (-9.85 + YP + .05) / 2, (4.55 + 4.72) / 2, 7.7, YP + .05 + 9.85, .17)    # cornice slab and ceiling
+        b.box('trim', s * 3.31, (-9.1 + YP + .07) / 2, (3.97 + 4.56) / 2, .5, YP + .07 + 9.1, .59)   # returns 4 cm inside the pavilion's side planes, 7 cm into its face
+    b.box('trim', 0.0, (-9.85 + YP + .07) / 2, (4.55 + 4.72) / 2, 7.7, YP + .07 + 9.85, .17)    # cornice slab and ceiling, 7 cm into the pavilion face
     b.flush('portico')
     for x in (-3.3, -1.1, 1.1, 3.3):
         C.rod('Portico column base', (x, y_col, .74), (x, y_col, .82), .26, 'stone', 'portico', 20)
@@ -817,10 +817,9 @@ def site():
     b.flush('site')
     iron_fence((-19.85, -10.75), (-12.4, -10.75), height=1.75, wall=.15, spacing=.2)            # the street railing runs along the west garden only (top view)
     C.rod('Fence end post', (-12.4, -10.75, .15), (-12.4, -10.75, 2.02), .035, 'hardware', 'fence', 6)
-    b = Batch()                                                                                  # open front lawns: low stone curb and low box edging
+    b = Batch()                                                                                  # open front lawns behind a low stone curb (box hedges at the house base)
     for x0, x1 in ((-10.58, -3.02), (5.32, 10.98)):
         b.box('stone', (x0 + x1) / 2, -10.76, .09, x1 - x0, .2, .18)
-        b.box('hedge', (x0 + x1) / 2, -10.42, .21, x1 - x0 - .3, .4, .42)
     b.flush('front lawn curbs')
     iron_fence((-19.85, -10.58), (-19.85, 15.0), height=1.75, wall=.15, spacing=.26)
     tree(-1.0, -12.5, 11.0, 2.0)                                  # between the top view (x -4.4) and the front and oblique (x 0 to 1)
