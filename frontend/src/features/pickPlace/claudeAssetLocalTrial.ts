@@ -6,6 +6,10 @@ export function localClaudeAssets(enabled: boolean, includeRetired = false): Pla
   return enabled ? trial.models.filter(row => includeRetired || !row.retired)
     .map(row => row.asset as unknown as PlaceAsset) : [];
 }
-export const LOCAL_CLAUDE_ASSETS = localClaudeAssets(import.meta.env.DEV);
+export function isLocalClaudeTrialEnvironment(isDev: boolean, mode: string): boolean {
+  return isDev && mode === 'development';
+}
+const localTrialEnabled = isLocalClaudeTrialEnvironment(import.meta.env.DEV, import.meta.env.MODE);
+export const LOCAL_CLAUDE_ASSETS = localClaudeAssets(localTrialEnabled);
 /** Retired versions resolve saved scenes but cannot be newly selected. */
-export const LOCAL_CLAUDE_SAVED_ASSETS = localClaudeAssets(import.meta.env.DEV, true);
+export const LOCAL_CLAUDE_SAVED_ASSETS = localClaudeAssets(localTrialEnabled, true);

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { Box3, BoxGeometry, Group, Mesh, MeshStandardMaterial, Vector3 } from 'three';
 import { localClaudeAssets, LOCAL_CLAUDE_ASSETS } from './claudeAssetLocalTrial';
 import { CATALOGUE_ASSETS, validateRegistry } from './assetRegistry';
@@ -9,6 +9,14 @@ import { publicRealmTrialAsset, publicRealmTrialPlacement } from '@/components/v
 import { trimNativeStreetModel } from '@/components/viewer/globe/nativeStreetModelTrim';
 import type { SiteZone } from '@/types';
 import trial from '@/data/claudeAssetLocalTrial.json';
+
+// Exercise the development-only roster explicitly. Ordinary release tests
+// must continue to cover the published catalogue rather than this local pilot.
+vi.mock('./claudeAssetLocalTrial', async () => {
+  const actual = await vi.importActual<typeof import('./claudeAssetLocalTrial')>('./claudeAssetLocalTrial');
+  return { ...actual, LOCAL_CLAUDE_ASSETS: actual.localClaudeAssets(true),
+    LOCAL_CLAUDE_SAVED_ASSETS: actual.localClaudeAssets(true, true) };
+});
 
 const origin = [-114.04677, 51.04542];
 const boundary = { id: 'trial-site', zone_type: 'site_boundary', is_active_boundary: true,
