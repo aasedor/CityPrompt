@@ -85,7 +85,7 @@ export function GlobeProjectBenches({
   const {batches,unsupported} = useMemo(() => {
     // A new registered road snapshot invalidates cached support resolutions.
     void surfaceVersion;
-    const groups = new Map<string, DetailPlacement[]>();
+    const groups = new Map<string, Array<DetailPlacement & {id: string}>>();
     const unsupported:string[]=[];
     for (const b of items) {
       const measured =

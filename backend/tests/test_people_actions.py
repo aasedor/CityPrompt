@@ -42,6 +42,14 @@ def test_furniture_and_unknown_models_do_not_become_people():
             people_action_direction(details(action))
 
 
+def test_walking_direction_improves_biomechanics_without_changing_routes_or_other_actions():
+    direction = people_action_direction(details('walking', 'sitting'))
+    assert 'heel-to-toe' in direction and 'weight transfer' in direction
+    assert 'retain their captured route and speed' in direction
+    assert 'low-polygon joint stiffness' in direction
+    assert 'heel-to-toe' not in people_action_direction(details('sitting', 'standing'))
+
+
 def test_authoritative_direction_fits_after_long_custom_text_and_is_idempotent():
     direction = people_action_direction(details('reading', 'walking'))
     prompt = append_people_action_direction('x' * 32000, direction)

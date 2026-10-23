@@ -10,10 +10,11 @@ import { createPeopleActor } from './peopleAnimation';
 import { PEOPLE_CAPTURE_KEY } from './peopleCapture';
 import { createPeopleActionPose } from './peoplePose';
 import type { PeopleActionId } from './peopleActions';
+import { peopleWalkingProfile } from './peopleWalking';
 
 /** People are loaded only when placed. No per-frame work during normal editing. */
 export function PeopleModelInstances({ asset, placements, selectedId }: {
-  asset: string; placements: DetailPlacement[]; selectedId?: string;
+  asset: string; placements: Array<DetailPlacement & {id: string}>; selectedId?: string;
 }) {
   const model = detailAsset(asset);
   const { scene, animations } = useGLTF(model.url);
@@ -23,9 +24,9 @@ export function PeopleModelInstances({ asset, placements, selectedId }: {
     if (!model.people || !placements.length) return;
     const inverse = WGS84_ELLIPSOID.getEastNorthUpFrame(origin.lat * Math.PI / 180, origin.lng * Math.PI / 180, origin.height, new Matrix4()).invert();
     const disposers: Array<() => void> = [];
-    placements.forEach((placement, index) => {
+    placements.forEach((placement) => {
       const actor = createPeopleActor(scene, animations, model.people!);
-      const actionPose = createPeopleActionPose(actor);
+      const actionPose = createPeopleActionPose(actor,peopleWalkingProfile(placement.id));
       actionPose.sample(placement.people_action);
       const localBounds = new Box3().setFromObject(actionPose.root);
       actor.root.traverse(object => { if ((object as Mesh).isMesh) { object.castShadow = true; object.receiveShadow = true; } });
@@ -37,7 +38,7 @@ export function PeopleModelInstances({ asset, placements, selectedId }: {
       wrapper.userData[PEOPLE_CAPTURE_KEY] = {
         pose(seconds: number) {
           if (!alive) return;
-          actionPose.sample(placement.people_action, seconds, true, index * .31);
+          actionPose.sample(placement.people_action, seconds, true);
           wrapper.updateMatrixWorld(true);
         },
         restore() {

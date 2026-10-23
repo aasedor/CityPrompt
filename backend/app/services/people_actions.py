@@ -43,6 +43,11 @@ def people_action_direction(project_details: dict | None) -> str:
         return ''
     actions = '; '.join(f'{counts[action]} {_ACTION_TEXT[action]}'
                         for action in PEOPLE_ACTIONS if counts[action])
+    walking = (
+        'For visible walking people, use relaxed human weight transfer, heel-to-toe steps, '
+        'opposing arm swing and individual timing; retain their captured route and speed '
+        'while replacing low-polygon joint stiffness. '
+    ) if counts['walking'] else ''
     return (
         'SAVED PEOPLE ACTIONS: For authored people actually visible in the source, preserve each '
         'person\'s identity, captured position and assigned action. Saved action inventory '
@@ -50,6 +55,7 @@ def people_action_direction(project_details: dict | None) -> str:
         'Use each captured pose to associate the action with its person; these saved actions '
         'take precedence over generic crowd or walking directions. Animate the assigned action '
         'naturally in video and depict a faithful moment of it in a still image. '
+        + walking +
         'Do not add actors, reveal offscreen people, duplicate people or invent background activity. '
         'Keep seated people on their authored support and lying people on their placement surface; '
         'do not invent seats, props, routes or interactions. Keep ground contact and occlusion. '
