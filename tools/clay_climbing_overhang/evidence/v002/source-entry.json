@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-climbing-overhang",
+  "variant_id": "clay-climbing-overhang-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "climbing_wall_building/variant_1",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_1.png",
+      "path": "sources/front.png",
+      "bytes": 1349697,
+      "sha256": "345d575a53846738cda1d24794ec0cc409cb5f2335cc624a41c403d83eb5bde8"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_1_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 837723,
+      "sha256": "55c334948355972cab086576da047e5d72f85c4682acc308d9507296cfc538ea"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_1_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 775997,
+      "sha256": "a6854c9b52d8ccd115ab1110b5466f61cec8486b533d4112577a4561ccdd6bb0"
+    }
+  ]
+}
