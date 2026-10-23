@@ -582,19 +582,19 @@
       "label": "Ava \u00b7 White cane \u00b7 teal jacket",
       "category": "People",
       "kind": "object",
-      "description": "Standing person using a white cane. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+      "description": "Standing person using a white cane. Relaxed standing pose. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
       "dimensions": [
-        0.642409,
-        1.106495,
-        1.732742
+        0.592547,
+        1.108032,
+        1.732741
       ],
       "datumLift": 0,
       "color": "#667d79",
-      "url": "/street-kits/people-inclusive-v1/people-inclusive-white-cane.glb",
-      "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-white-cane.png",
-      "sha256": "2cae670c9e7d318e74aaa9248aca75b199091d15769087d28d1f8106ce634813",
-      "bytes": 1391708,
-      "thumbnailSha256": "33a9f6d8eb7a70b08e5b4be0d3219edb08d11e2d22322149e7b2fd090a1c1bf2",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-white-cane.glb",
+      "thumbnailUrl": "/street-kits/people-inclusive-v2/people-inclusive-white-cane.png",
+      "sha256": "1d327720b4f924faf0d69acd84c8651c7983dfcda6cec5908b5bc7bd7cb8a417",
+      "bytes": 1391720,
+      "thumbnailSha256": "39ac2473b962be7871d480dba599fe715a5c913789f9fbdb316e30ebb6a4062f",
       "peopleRepresentation": {
         "defaultAction": "standing",
         "supportedActions": [
@@ -610,19 +610,19 @@
       "label": "Mateo \u00b7 Guide dog \u00b7 camel hoodie",
       "category": "People",
       "kind": "object",
-      "description": "Standing person with a guide dog and harness. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+      "description": "Standing person with a guide dog and harness. Relaxed standing pose. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
       "dimensions": [
-        1.128592,
+        1.072623,
         1.145055,
         1.746202
       ],
       "datumLift": 0,
       "color": "#667d79",
-      "url": "/street-kits/people-inclusive-v1/people-inclusive-guide-dog.glb",
-      "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-guide-dog.png",
-      "sha256": "fdc609c4615359b7bf4e7ab8bc29a59b518f59afe6a9b8bb49c17de8ef517ab9",
-      "bytes": 1001128,
-      "thumbnailSha256": "785a6b5a5219dfeabeecd15f47fd69b019969f0e4a01663868c40a850790e5aa",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-guide-dog.glb",
+      "thumbnailUrl": "/street-kits/people-inclusive-v2/people-inclusive-guide-dog.png",
+      "sha256": "8cec04b26c883b5a07121fd5728409cb7d2d460764ba52941cf466dfc308bc0f",
+      "bytes": 1001132,
+      "thumbnailSha256": "d6f9dc7a6cd8bf6fb75cfce22371a80f50e30ca55540cd8286094bad56dac3aa",
       "peopleRepresentation": {
         "defaultAction": "standing",
         "supportedActions": [
@@ -694,19 +694,19 @@
       "label": "Clara \u00b7 Older adult \u00b7 sage coat",
       "category": "People",
       "kind": "object",
-      "description": "Standing older woman. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+      "description": "Standing older woman. Relaxed standing pose. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
       "dimensions": [
-        0.652314,
-        0.75937,
+        0.601194,
+        0.760944,
         1.702336
       ],
       "datumLift": 0,
       "color": "#667d79",
-      "url": "/street-kits/people-inclusive-v1/people-inclusive-older-woman.glb",
-      "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-older-woman.png",
-      "sha256": "bd391fe154641f288b913a3b1058de508ade3e32b9dda93a674ad8dd4a082616",
-      "bytes": 1357748,
-      "thumbnailSha256": "82670049eb5fea9f3a68bb2eb70fabde7de9a5d47af983323a1b26024c466cb1",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-older-woman.glb",
+      "thumbnailUrl": "/street-kits/people-inclusive-v2/people-inclusive-older-woman.png",
+      "sha256": "be5efe6b7208d295711dc5145189a6f1a67acef316002e971136bb79c2837a5d",
+      "bytes": 1357756,
+      "thumbnailSha256": "53be4468fba4bb7d87521add383a3132a8b51c60f237dc6bee4fa0b5ddbf69cc",
       "peopleRepresentation": {
         "defaultAction": "standing",
         "supportedActions": [
@@ -722,19 +722,19 @@
       "label": "Eli \u00b7 Rollator \u00b7 blue jacket",
       "category": "People",
       "kind": "object",
-      "description": "Standing older man using a rollator. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+      "description": "Standing older man using a rollator. Relaxed standing pose. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
       "dimensions": [
-        0.727201,
-        1.093932,
+        0.676442,
+        1.095803,
         1.785409
       ],
       "datumLift": 0,
       "color": "#667d79",
-      "url": "/street-kits/people-inclusive-v1/people-inclusive-older-man-rollator.glb",
-      "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-older-man-rollator.png",
-      "sha256": "4e291f49fa5f8abdd2ad807bd59f2a76e594f3979b650c688b3e264d3a417b11",
-      "bytes": 1053184,
-      "thumbnailSha256": "86a0adc3d68eefc58e815496990544329d9e51c2a43d74d649379afbdf809852",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-older-man-rollator.glb",
+      "thumbnailUrl": "/street-kits/people-inclusive-v2/people-inclusive-older-man-rollator.png",
+      "sha256": "1e64d65a120c77a896cbc9aacdaa2883aac2951c33aa576f95b97f4186cd99bd",
+      "bytes": 1053192,
+      "thumbnailSha256": "d4ff281079017c189f1ff4932b9045f9bacd39f677832c1974178ff6636cd5eb",
       "peopleRepresentation": {
         "defaultAction": "standing",
         "supportedActions": [
@@ -750,7 +750,7 @@
       "label": "Imani & child \u00b7 Parent and child",
       "category": "People",
       "kind": "object",
-      "description": "Adult and child standing together. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+      "description": "Adult and child standing together. Relaxed standing pose. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
       "dimensions": [
         1.098881,
         0.761801,
@@ -758,11 +758,11 @@
       ],
       "datumLift": 0,
       "color": "#667d79",
-      "url": "/street-kits/people-inclusive-v1/people-inclusive-family-parent-child.glb",
-      "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-family-parent-child.png",
-      "sha256": "e9febea869a75b6914d7639ad03a6a28f3224ee431305e0f7e743aef34896404",
-      "bytes": 2148500,
-      "thumbnailSha256": "ef67c500f1574cbded37b35d3fd31cb327a81fea01b5da17844ea58c20208560",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-family-parent-child.glb",
+      "thumbnailUrl": "/street-kits/people-inclusive-v2/people-inclusive-family-parent-child.png",
+      "sha256": "414087cf41b196e1cf9c8df2d00750a554ce25606545079e00508b49ec805107",
+      "bytes": 2148492,
+      "thumbnailSha256": "356cecd18a33bd3a3b18d913ae8f7c292c01d6a82756e9379b81cae643ac0908",
       "peopleRepresentation": {
         "defaultAction": "standing",
         "supportedActions": [
@@ -778,19 +778,19 @@
       "label": "Noah & baby \u00b7 Parent - striped T-shirt & stroller",
       "category": "People",
       "kind": "object",
-      "description": "Adult and infant in a stroller, with the adult standing. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+      "description": "Adult and infant in a stroller, with the adult standing. Relaxed standing pose. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
       "dimensions": [
-        0.735196,
-        1.394698,
+        0.642883,
+        1.396669,
         1.855912
       ],
       "datumLift": 0,
       "color": "#667d79",
-      "url": "/street-kits/people-inclusive-v1/people-inclusive-family-stroller.glb",
-      "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-family-stroller.png",
-      "sha256": "05700cb3a3266aa82e01c74b24819ef6914e43fa83aca0d673bd34011aa3da79",
-      "bytes": 1048300,
-      "thumbnailSha256": "495902981c76127f5cb2f1a3cf3d8cd511763b50b87f4854da3e86b3139cf08c",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-family-stroller.glb",
+      "thumbnailUrl": "/street-kits/people-inclusive-v2/people-inclusive-family-stroller.png",
+      "sha256": "fa6a8b8ab013a35581bb13ae4d7f616527ce8f9ca3f861c118e59dc34359d581",
+      "bytes": 1048304,
+      "thumbnailSha256": "117dee603a65b1a5e5830178c072ee7a9579785b69d3a22dde24e446b8b15090",
       "peopleRepresentation": {
         "defaultAction": "standing",
         "supportedActions": [
@@ -1222,11 +1222,259 @@
       "url": "/street-kits/people-appearance-v3/people-inclusive-family-stroller.webp",
       "sha256": "456b55eafd0c5b7726a86e72c85d88b4b1e315705a85c61ad683ef69b386cc6f",
       "bytes": 19426
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\runtime\\people-inclusive-white-cane.glb",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-white-cane.glb",
+      "sha256": "1d327720b4f924faf0d69acd84c8651c7983dfcda6cec5908b5bc7bd7cb8a417",
+      "bytes": 1391720
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\qa\\people-inclusive-white-cane.png",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-white-cane.png",
+      "sha256": "39ac2473b962be7871d480dba599fe715a5c913789f9fbdb316e30ebb6a4062f",
+      "bytes": 477138
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\runtime\\people-inclusive-guide-dog.glb",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-guide-dog.glb",
+      "sha256": "8cec04b26c883b5a07121fd5728409cb7d2d460764ba52941cf466dfc308bc0f",
+      "bytes": 1001132
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\qa\\people-inclusive-guide-dog.png",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-guide-dog.png",
+      "sha256": "d6f9dc7a6cd8bf6fb75cfce22371a80f50e30ca55540cd8286094bad56dac3aa",
+      "bytes": 494668
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\runtime\\people-inclusive-older-woman.glb",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-older-woman.glb",
+      "sha256": "be5efe6b7208d295711dc5145189a6f1a67acef316002e971136bb79c2837a5d",
+      "bytes": 1357756
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\qa\\people-inclusive-older-woman.png",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-older-woman.png",
+      "sha256": "53be4468fba4bb7d87521add383a3132a8b51c60f237dc6bee4fa0b5ddbf69cc",
+      "bytes": 469736
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\runtime\\people-inclusive-older-man-rollator.glb",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-older-man-rollator.glb",
+      "sha256": "1e64d65a120c77a896cbc9aacdaa2883aac2951c33aa576f95b97f4186cd99bd",
+      "bytes": 1053192
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\qa\\people-inclusive-older-man-rollator.png",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-older-man-rollator.png",
+      "sha256": "d4ff281079017c189f1ff4932b9045f9bacd39f677832c1974178ff6636cd5eb",
+      "bytes": 504644
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\runtime\\people-inclusive-family-parent-child.glb",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-family-parent-child.glb",
+      "sha256": "414087cf41b196e1cf9c8df2d00750a554ce25606545079e00508b49ec805107",
+      "bytes": 2148492
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\qa\\people-inclusive-family-parent-child.png",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-family-parent-child.png",
+      "sha256": "356cecd18a33bd3a3b18d913ae8f7c292c01d6a82756e9379b81cae643ac0908",
+      "bytes": 485912
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\runtime\\people-inclusive-family-stroller.glb",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-family-stroller.glb",
+      "sha256": "fa6a8b8ab013a35581bb13ae4d7f616527ce8f9ca3f861c118e59dc34359d581",
+      "bytes": 1048304
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\qa\\people-inclusive-family-stroller.png",
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-family-stroller.png",
+      "sha256": "117dee603a65b1a5e5830178c072ee7a9579785b69d3a22dde24e446b8b15090",
+      "bytes": 520273
     }
   ],
   "limitations": [
     "Picker photos are realistic style illustrations; 3D people remain architectural models.",
     "Inclusive eight use authored fixed poses. No automatic navigation or medical equipment certification.",
     "No paid AI acceptance renders or physical student-laptop/mobile measurements in this batch."
-  ]
+  ],
+  "relaxedStandingRevision": {
+    "date": "2026-10-23",
+    "originalsPreserved": true,
+    "models": [
+      {
+        "id": "people-inclusive-white-cane",
+        "source": {
+          "url": "/street-kits/people-inclusive-v1/people-inclusive-white-cane.glb",
+          "sha256": "2cae670c9e7d318e74aaa9248aca75b199091d15769087d28d1f8106ce634813",
+          "bytes": 1391708,
+          "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-white-cane.png",
+          "thumbnailSha256": "33a9f6d8eb7a70b08e5b4be0d3219edb08d11e2d22322149e7b2fd090a1c1bf2",
+          "dimensions": [
+            0.642409,
+            1.106495,
+            1.732742
+          ]
+        },
+        "derivative": {
+          "url": "/street-kits/people-inclusive-v2/people-inclusive-white-cane.glb",
+          "sha256": "1d327720b4f924faf0d69acd84c8651c7983dfcda6cec5908b5bc7bd7cb8a417",
+          "bytes": 1391720,
+          "thumbnailUrl": "/street-kits/people-inclusive-v2/people-inclusive-white-cane.png",
+          "thumbnailSha256": "39ac2473b962be7871d480dba599fe715a5c913789f9fbdb316e30ebb6a4062f",
+          "dimensions": [
+            0.592547,
+            1.108032,
+            1.732741
+          ]
+        },
+        "measurement": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\measurements\\people-inclusive-white-cane.json"
+      },
+      {
+        "id": "people-inclusive-guide-dog",
+        "source": {
+          "url": "/street-kits/people-inclusive-v1/people-inclusive-guide-dog.glb",
+          "sha256": "fdc609c4615359b7bf4e7ab8bc29a59b518f59afe6a9b8bb49c17de8ef517ab9",
+          "bytes": 1001128,
+          "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-guide-dog.png",
+          "thumbnailSha256": "785a6b5a5219dfeabeecd15f47fd69b019969f0e4a01663868c40a850790e5aa",
+          "dimensions": [
+            1.128592,
+            1.145055,
+            1.746202
+          ]
+        },
+        "derivative": {
+          "url": "/street-kits/people-inclusive-v2/people-inclusive-guide-dog.glb",
+          "sha256": "8cec04b26c883b5a07121fd5728409cb7d2d460764ba52941cf466dfc308bc0f",
+          "bytes": 1001132,
+          "thumbnailUrl": "/street-kits/people-inclusive-v2/people-inclusive-guide-dog.png",
+          "thumbnailSha256": "d6f9dc7a6cd8bf6fb75cfce22371a80f50e30ca55540cd8286094bad56dac3aa",
+          "dimensions": [
+            1.072623,
+            1.145055,
+            1.746202
+          ]
+        },
+        "measurement": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\measurements\\people-inclusive-guide-dog.json"
+      },
+      {
+        "id": "people-inclusive-older-woman",
+        "source": {
+          "url": "/street-kits/people-inclusive-v1/people-inclusive-older-woman.glb",
+          "sha256": "bd391fe154641f288b913a3b1058de508ade3e32b9dda93a674ad8dd4a082616",
+          "bytes": 1357748,
+          "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-older-woman.png",
+          "thumbnailSha256": "82670049eb5fea9f3a68bb2eb70fabde7de9a5d47af983323a1b26024c466cb1",
+          "dimensions": [
+            0.652314,
+            0.75937,
+            1.702336
+          ]
+        },
+        "derivative": {
+          "url": "/street-kits/people-inclusive-v2/people-inclusive-older-woman.glb",
+          "sha256": "be5efe6b7208d295711dc5145189a6f1a67acef316002e971136bb79c2837a5d",
+          "bytes": 1357756,
+          "thumbnailUrl": "/street-kits/people-inclusive-v2/people-inclusive-older-woman.png",
+          "thumbnailSha256": "53be4468fba4bb7d87521add383a3132a8b51c60f237dc6bee4fa0b5ddbf69cc",
+          "dimensions": [
+            0.601194,
+            0.760944,
+            1.702336
+          ]
+        },
+        "measurement": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\measurements\\people-inclusive-older-woman.json"
+      },
+      {
+        "id": "people-inclusive-older-man-rollator",
+        "source": {
+          "url": "/street-kits/people-inclusive-v1/people-inclusive-older-man-rollator.glb",
+          "sha256": "4e291f49fa5f8abdd2ad807bd59f2a76e594f3979b650c688b3e264d3a417b11",
+          "bytes": 1053184,
+          "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-older-man-rollator.png",
+          "thumbnailSha256": "86a0adc3d68eefc58e815496990544329d9e51c2a43d74d649379afbdf809852",
+          "dimensions": [
+            0.727201,
+            1.093932,
+            1.785409
+          ]
+        },
+        "derivative": {
+          "url": "/street-kits/people-inclusive-v2/people-inclusive-older-man-rollator.glb",
+          "sha256": "1e64d65a120c77a896cbc9aacdaa2883aac2951c33aa576f95b97f4186cd99bd",
+          "bytes": 1053192,
+          "thumbnailUrl": "/street-kits/people-inclusive-v2/people-inclusive-older-man-rollator.png",
+          "thumbnailSha256": "d4ff281079017c189f1ff4932b9045f9bacd39f677832c1974178ff6636cd5eb",
+          "dimensions": [
+            0.676442,
+            1.095803,
+            1.785409
+          ]
+        },
+        "measurement": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\measurements\\people-inclusive-older-man-rollator.json"
+      },
+      {
+        "id": "people-inclusive-family-parent-child",
+        "source": {
+          "url": "/street-kits/people-inclusive-v1/people-inclusive-family-parent-child.glb",
+          "sha256": "e9febea869a75b6914d7639ad03a6a28f3224ee431305e0f7e743aef34896404",
+          "bytes": 2148500,
+          "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-family-parent-child.png",
+          "thumbnailSha256": "ef67c500f1574cbded37b35d3fd31cb327a81fea01b5da17844ea58c20208560",
+          "dimensions": [
+            1.098881,
+            0.761801,
+            1.770492
+          ]
+        },
+        "derivative": {
+          "url": "/street-kits/people-inclusive-v2/people-inclusive-family-parent-child.glb",
+          "sha256": "414087cf41b196e1cf9c8df2d00750a554ce25606545079e00508b49ec805107",
+          "bytes": 2148492,
+          "thumbnailUrl": "/street-kits/people-inclusive-v2/people-inclusive-family-parent-child.png",
+          "thumbnailSha256": "356cecd18a33bd3a3b18d913ae8f7c292c01d6a82756e9379b81cae643ac0908",
+          "dimensions": [
+            1.098881,
+            0.761801,
+            1.770492
+          ]
+        },
+        "measurement": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\measurements\\people-inclusive-family-parent-child.json"
+      },
+      {
+        "id": "people-inclusive-family-stroller",
+        "source": {
+          "url": "/street-kits/people-inclusive-v1/people-inclusive-family-stroller.glb",
+          "sha256": "05700cb3a3266aa82e01c74b24819ef6914e43fa83aca0d673bd34011aa3da79",
+          "bytes": 1048300,
+          "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-family-stroller.png",
+          "thumbnailSha256": "495902981c76127f5cb2f1a3cf3d8cd511763b50b87f4854da3e86b3139cf08c",
+          "dimensions": [
+            0.735196,
+            1.394698,
+            1.855912
+          ]
+        },
+        "derivative": {
+          "url": "/street-kits/people-inclusive-v2/people-inclusive-family-stroller.glb",
+          "sha256": "fa6a8b8ab013a35581bb13ae4d7f616527ce8f9ca3f861c118e59dc34359d581",
+          "bytes": 1048304,
+          "thumbnailUrl": "/street-kits/people-inclusive-v2/people-inclusive-family-stroller.png",
+          "thumbnailSha256": "117dee603a65b1a5e5830178c072ee7a9579785b69d3a22dde24e446b8b15090",
+          "dimensions": [
+            0.642883,
+            1.396669,
+            1.855912
+          ]
+        },
+        "measurement": "C:\\dev-artifacts\\CityPrompt\\people-relaxed-standing-2026-10-23\\measurements\\people-inclusive-family-stroller.json"
+      }
+    ],
+    "runtimeRiggedPeople": 23,
+    "proof": "Six fixed derivatives loaded through actual Three GLTFLoader; 23 rigged standing poses independently checked; actual browser visual acceptance pending."
+  }
 }

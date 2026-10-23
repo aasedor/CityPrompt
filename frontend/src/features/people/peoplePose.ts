@@ -1,7 +1,7 @@
 import { Box3, Group, Matrix4, Quaternion, Vector3, type Bone, type SkinnedMesh } from 'three';
 import type { PeopleActor } from './peopleAnimation';
 import { peopleAction, type PeopleActionId } from './peopleActions';
-import { createWalkingCorrection } from './peopleWalking';
+import { createStandingCorrection, createWalkingCorrection } from './peopleWalking';
 
 /** Absolute, actor-owned posing. Editing samples once; capture supplies its clock. */
 export function createPeopleActionPose(actor: PeopleActor, walking = {speed:1.2,phase:0}) {
@@ -12,6 +12,7 @@ export function createPeopleActionPose(actor: PeopleActor, walking = {speed:1.2,
   actor.pose(0,'idle');
   const height = Math.max(.1,new Box3().setFromObject(actor.root).getSize(new Vector3()).y), unit=height/1.75;
   const softenWalk = createWalkingCorrection(actor.root,height);
+  const relaxStanding = createStandingCorrection(actor.root,height);
   const floorCorrections = new Map<PeopleActionId,number>();
   const vector=new Vector3(), origin=new Vector3(), target=new Vector3(), current=new Vector3();
   const delta=new Quaternion(), worldRotation=new Quaternion(), parentRotation=new Quaternion();
@@ -54,6 +55,7 @@ export function createPeopleActionPose(actor: PeopleActor, walking = {speed:1.2,
     const locomotion=action==='walking'||action==='running',speed=action==='running'?2.8:walking.speed;
     actor.pose(locomotion ? (capture?seconds:.2) : 0,locomotion?'walk':'idle',speed,phase+(locomotion?walking.phase:0));
     if(action==='walking')softenWalk();
+    if(!locomotion && !['sitting','lying_down','dancing','stretching'].includes(action))relaxStanding();
     const pulse=capture?Math.sin(seconds*3+phase):0;
     if(action==='sitting'){
       for(const [side,x] of [['l',-.1],['r',.1]] as const){

@@ -8,12 +8,14 @@ import argparse,hashlib,json,math,sys
 import bpy
 from mathutils import Vector,Matrix,Quaternion
 sys.path.insert(0,str(Path(__file__).resolve().parent))
-from inclusive_shapes import child_coordinate
+from inclusive_shapes import child_coordinate, relaxed_ankle_target
 
 ROOT=Path('C:/dev-artifacts/CityPrompt/people-inclusive-2026-10-23')
+SOURCE_ROOT=ROOT
 PUBLIC=Path('C:/dev-artifacts/CityPrompt/add-details-recovery-2026-10-12/public')
 EQUIPMENT=ROOT/'sources/kenney/Models/GLB format'
 HUMAN_ROOT=None
+RELAX_STANDING=False
 
 def digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def visible_meshes():return [o for o in bpy.context.scene.objects if o.type=='MESH' and not o.hide_render]
@@ -104,13 +106,41 @@ def load_person(source_id,placement=(0,0,0),scale=1):
     # Blender creates a display-only Icosphere for imported bone custom shapes;
     # it is not in the source GLB scene and must never become model geometry.
     bone_shapes={bone.custom_shape for bone in rig.pose.bones if bone.custom_shape}
-    return {'rig':rig,'objects':objects,'meshes':[o for o in objects if o.type=='MESH' and not o.hide_render and o not in bone_shapes],'source':str(path),'sha256':digest(path)}
+    person={'rig':rig,'objects':objects,'meshes':[o for o in objects if o.type=='MESH' and not o.hide_render and o not in bone_shapes],'source':str(path),'sha256':digest(path)}
+    if RELAX_STANDING:relax_standing(person)
+    return person
 def joint(person,name):return person['rig'].matrix_world@person['rig'].pose.bones[name].head
 def aim(person,name,end,target):
     rig=person['rig'];bone=rig.pose.bones[name];a=joint(person,name);b=joint(person,end);target=Vector(target)
     delta=(b-a).normalized().rotation_difference((target-a).normalized())
     transform=Matrix.Translation(a)@delta.to_matrix().to_4x4()@Matrix.Translation(-a)
     bone.matrix=rig.matrix_world.inverted()@transform@rig.matrix_world@bone.matrix;bpy.context.view_layer.update()
+
+def relax_standing(person):
+    """Two-bone solve: rigid limbs, original support datum and shoe orientation."""
+    rig=person['rig'];low,high=bounds(person['meshes']);height=high.z-low.z
+    before={s:list(joint(person,'foot_'+s)) for s in ['l','r']}
+    def aim_rig(name,end,target):
+        bone=rig.pose.bones[name];a=bone.head.copy();b=rig.pose.bones[end].head.copy()
+        delta=(b-a).normalized().rotation_difference((target-a).normalized())
+        bone.matrix=Matrix.Translation(a)@delta.to_matrix().to_4x4()@Matrix.Translation(-a)@bone.matrix
+        bpy.context.view_layer.update()
+    for side in ['l','r']:
+        hip_world=joint(person,'thigh_'+side);foot_world=joint(person,'foot_'+side)
+        target_world=Vector(relaxed_ankle_target(hip_world,foot_world,side,height))
+        inverse=rig.matrix_world.inverted();target=inverse@target_world
+        hip=rig.pose.bones['thigh_'+side].head.copy();knee=rig.pose.bones['calf_'+side].head.copy();foot=rig.pose.bones['foot_'+side].head.copy()
+        upper=(knee-hip).length;lower=(foot-knee).length;axis=target-hip;distance=axis.length
+        assert abs(upper-lower)+1e-6<distance<upper+lower-1e-6,('unreachable standing ankle',side)
+        axis.normalize();bend=inverse.to_3x3()@Vector((0,-1,0));bend-=axis*bend.dot(axis);bend.normalize()
+        along=(upper*upper-lower*lower+distance*distance)/(2*distance)
+        wanted=hip+axis*along+bend*math.sqrt(max(0,upper*upper-along*along))
+        bone=rig.pose.bones['foot_'+side];rotation=bone.matrix.to_quaternion()
+        aim_rig('thigh_'+side,'calf_'+side,wanted);aim_rig('calf_'+side,'foot_'+side,target)
+        bone.matrix=Matrix.LocRotScale(bone.matrix.translation,rotation,bone.matrix.to_scale())
+        bpy.context.view_layer.update()
+        assert (joint(person,'foot_'+side)-target_world).length<.001,('ankle target mismatch',side,list(joint(person,'foot_'+side)),list(target_world))
+    person['standingStance']={'beforeAnkles':before,'afterAnkles':{s:list(joint(person,'foot_'+s)) for s in ['l','r']},'rule':'hip-width plus 15mm clearance per side at 1.75m; original ankle support height and shoe rotation preserved'}
 def pose_arm(person,side,elbow,hand):
     shoulder=joint(person,'upperarm_'+side);current_elbow=joint(person,'lowerarm_'+side);current_hand=joint(person,'hand_'+side)
     upper=(current_elbow-shoulder).length;lower=(current_hand-current_elbow).length;target=Vector(hand);axis=target-shoulder
@@ -195,6 +225,7 @@ def export_model(name,objects,sources,contacts):
     for o in objects:o.select_set(True)
     low,high=bounds(objects);assert abs(low.z)<.012,(name,'bad datum',low[:]);assert high.z<2.2
     path=ROOT/'runtime'/(name+'.glb')
+    if path.exists():raise ValueError('Preserve immutable model; choose a new --output-root: '+str(path))
     bpy.ops.export_scene.gltf(filepath=str(path),export_format='GLB',use_selection=True,export_yup=True,export_animations=False,export_skins=False,export_materials='EXPORT',export_extras=True,export_apply=True)
     bpy.ops.wm.save_as_mainfile(filepath=str(ROOT/'editable'/(name+'.blend')))
     meshes=sum(len(o.data.polygons) for o in objects);triangles=sum(sum(max(1,len(p.vertices)-2) for p in o.data.polygons) for o in objects)
@@ -209,6 +240,7 @@ def build_manual():
     export_model('people-inclusive-manual-wheelchair',baked,[{'path':person['source'],'sha256':person['sha256']},{'author':'CityPrompt','component':'Original detailed fixed manual wheelchair; tubes, pushrims, spokes, casters, upholstered seat and footplates','referenceOnly':'Kenney CC0 equipment inspected but its block geometry rejected, not included in this derivative'}],contacts)
 def person_source(person):return {'path':person['source'],'sha256':person['sha256']}
 def finish_person_role(role,people,extras,sources,contacts):
+    if RELAX_STANDING:contacts=dict(contacts,standingStances=[p['standingStance'] for p in people])
     baked=freeze([mesh for p in people for mesh in p['meshes']]+[o for o in extras if o.type=='MESH'],role)
     remove([o for p in people for o in p['objects']]+extras)
     export_model('people-inclusive-'+role,baked,[person_source(p) for p in people]+sources,contacts)
@@ -279,6 +311,7 @@ def build_family():
     for obj in child_baked:
         for v in obj.data.vertices:v.co+=correction
     contacts={'parentPalm':list(pp),'childPalmAfterShape':[cp.x+correction.x,cp.y+correction.y,cp.z],'handGapMetres':abs(pp.z-cp.z),'childProportions':shape}
+    if RELAX_STANDING:contacts['standingStances']=[p['standingStance'] for p in [parent,child]]
     assert contacts['handGapMetres']<.006,contacts
     remove(parent['objects']+child['objects']);export_model('people-inclusive-family-parent-child',parent_baked+child_baked,[person_source(parent),person_source(child),{'author':'CityPrompt','component':'Child-specific shorter torso/legs and relatively larger head/face; held-hand pose, fixed two-person group'}],contacts)
 def stroller_geometry():
@@ -308,7 +341,7 @@ def build_stroller():
     extra=stroller_geometry();finish_person_role('family-stroller',[person],extra,[{'author':'CityPrompt','component':'Original stroller frame, four wheels, fabric canopy/basket and stylized swaddled infant'}],contacts)
 def build_guide():
     person=load_person('people-community-mateo');pose_arm(person,'l',(.31,.01,1.12),(.31,-.05,.97));grip=palm(person,'l')
-    dog_file=ROOT/'sources/dog/Animal Pack Vol.2 by @Quaternius/OBJ/Dog.obj';before=set(bpy.context.scene.objects);bpy.ops.wm.obj_import(filepath=str(dog_file));dog=[o for o in bpy.context.scene.objects if o not in before and o.type=='MESH']
+    dog_file=SOURCE_ROOT/'sources/dog/Animal Pack Vol.2 by @Quaternius/OBJ/Dog.obj';before=set(bpy.context.scene.objects);bpy.ops.wm.obj_import(filepath=str(dog_file));dog=[o for o in bpy.context.scene.objects if o not in before and o.type=='MESH']
     low,high=bounds(dog)
     if (high-low).x>(high-low).y:
         for o in dog:o.rotation_euler.z+=math.pi/2
@@ -336,10 +369,14 @@ def build_guide():
     sphere('Guide handle grip',grip,(.032,.020,.020),black)
     harness=[o for o in bpy.context.scene.objects if o not in extra_start]
     person_baked=freeze(person['meshes'],'handler');harness_baked=freeze(harness,'harness');remove(person['objects']+harness)
-    export_model('people-inclusive-guide-dog',person_baked+baked+harness_baked,[person_source(person),{'path':str(dog_file),'sha256':digest(dog_file),'author':'Quaternius CC0','sourceArchiveSha256':'6d8f6789d65dbdb352ebad98a4209f26b41b384e87d81bc05e9ca76139db1248'},{'author':'CityPrompt','component':'Fitted guide harness, rigid handle and coordinated handler grip'}],{'handleGrip':list(grip),'dogHeight':.69,'dogHeadFlippedToForward':flip})
+    contacts={'handleGrip':list(grip),'dogHeight':.69,'dogHeadFlippedToForward':flip}
+    if RELAX_STANDING:contacts['standingStances']=[person['standingStance']]
+    export_model('people-inclusive-guide-dog',person_baked+baked+harness_baked,[person_source(person),{'path':str(dog_file),'sha256':digest(dog_file),'author':'Quaternius CC0','sourceArchiveSha256':'6d8f6789d65dbdb352ebad98a4209f26b41b384e87d81bc05e9ca76139db1248'},{'author':'CityPrompt','component':'Fitted guide harness, rigid handle and coordinated handler grip'}],contacts)
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--only',default='manual-wheelchair');parser.add_argument('--person-root',type=Path);args=parser.parse_args(sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [])
+    parser=argparse.ArgumentParser();parser.add_argument('--only',default='manual-wheelchair');parser.add_argument('--person-root',type=Path);parser.add_argument('--output-root',type=Path);parser.add_argument('--relaxed-standing',action='store_true');args=parser.parse_args(sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else [])
     HUMAN_ROOT=args.person_root
+    if args.output_root:ROOT=args.output_root
+    RELAX_STANDING=args.relaxed_standing
     for name in ['runtime','qa','editable','measurements']:(ROOT/name).mkdir(parents=True,exist_ok=True)
     builders={'manual-wheelchair':build_manual,'power-wheelchair':build_power,'white-cane':build_cane,'guide-dog':build_guide,'older-woman':build_senior,'older-man-rollator':build_rollator,'family-parent-child':build_family,'family-stroller':build_stroller}
     roles=list(builders) if args.only=='all' else [args.only]

@@ -1,6 +1,13 @@
 """Anatomical child morph: raised hands never inherit head enlargement."""
 
 
+def relaxed_ankle_target(hip, foot, side, height):
+    """Blender Z-up: preserve support height and forward position, narrow stance."""
+    if side not in ('l', 'r') or height <= 0:
+        raise ValueError('Expected a positive body height and left/right leg')
+    return hip[0] + (1 if side == 'l' else -1) * .015 * height / 1.75, foot[1], foot[2]
+
+
 def child_coordinate(coordinate, offset=(0, 0, 0), *, is_head=False, datum=0):
     x, y, z = coordinate
     z -= datum

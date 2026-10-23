@@ -11,6 +11,15 @@ export function peopleWalkingProfile(id: string) {
  * lowering its unusually high swing arc. Solve in the skeleton's rigid frame,
  * before body proportions and globe placement; never distort bone lengths. */
 export function createWalkingCorrection(root: Object3D, height: number) {
+  return createLegCorrection(root, height, 'walking');
+}
+
+/** Narrow the source's broad idle stance without changing anatomy or foot pitch. */
+export function createStandingCorrection(root: Object3D, height: number) {
+  return createLegCorrection(root, height, 'standing');
+}
+
+function createLegCorrection(root: Object3D, height: number, mode: 'walking' | 'standing') {
   const legs = ['l','r'].flatMap(side => {
     const hip = root.getObjectByName(`thigh_${side}`), knee = root.getObjectByName(`calf_${side}`), foot = root.getObjectByName(`foot_${side}`);
     if (!hip?.parent || knee?.parent !== hip || foot?.parent !== knee) return [];
@@ -53,14 +62,24 @@ export function createWalkingCorrection(root: Object3D, height: number) {
     root.updateWorldMatrix(true,true); modelInverse.copy(root.matrixWorld).invert();
     for (const {hip,knee,foot,frame,corners} of legs) {
       target.setFromMatrixPosition(foot.matrixWorld).applyMatrix4(modelInverse);
-      const excess = target.y - .12 * height / 1.75;
-      if (excess <= 0) continue; // Source stance/heel strike is unchanged.
-      // Smooth onset avoids a velocity corner where swing meets stance.
-      let clearance=Infinity;
-      for(const corner of corners)clearance=Math.min(clearance,from.copy(corner).applyMatrix4(foot.matrixWorld).applyMatrix4(modelInverse).y);
-      const drop=Math.min(.6 * excess * excess / (excess + .025 * height / 1.75),Math.max(0,clearance-.004));
-      if(drop<1e-6)continue;
-      target.y -= drop;
+      if (mode === 'standing') {
+        hipPoint.setFromMatrixPosition(hip.matrixWorld).applyMatrix4(modelInverse);
+        // The hip already contains this person's body width and proportions.
+        // A small clearance leaves a relaxed stance rather than touching shoes.
+        const side = hip.name.endsWith('_l') ? 1 : -1;
+        const desired = hipPoint.x + side * .015 * height / 1.75;
+        if (Math.abs(target.x - desired) < .01 * height / 1.75) continue;
+        target.x = desired;
+      } else {
+        const excess = target.y - .12 * height / 1.75;
+        if (excess <= 0) continue; // Source stance/heel strike is unchanged.
+        // Smooth onset avoids a velocity corner where swing meets stance.
+        let clearance=Infinity;
+        for(const corner of corners)clearance=Math.min(clearance,from.copy(corner).applyMatrix4(foot.matrixWorld).applyMatrix4(modelInverse).y);
+        const drop=Math.min(.6 * excess * excess / (excess + .025 * height / 1.75),Math.max(0,clearance-.004));
+        if(drop<1e-6)continue;
+        target.y -= drop;
+      }
       inverse.copy(frame.matrixWorld).invert();
       target.applyMatrix4(root.matrixWorld).applyMatrix4(inverse);
       hipPoint.setFromMatrixPosition(hip.matrixWorld).applyMatrix4(inverse);
@@ -71,6 +90,12 @@ export function createWalkingCorrection(root: Object3D, height: number) {
       if (upper < 1e-5 || lower < 1e-5 || distance < 1e-5 || distance >= upper + lower - 1e-6 || distance <= Math.abs(upper-lower)+1e-6) continue;
       axis.copy(target).sub(hipPoint).divideScalar(distance);
       bend.copy(kneePoint).sub(hipPoint).addScaledVector(axis,-bend.dot(axis));
+      if (mode === 'standing') {
+        // A straight source knee has no bend plane. Use the person's forward
+        // direction so the small knee flex bends naturally toward the toes.
+        bend.set(0, 0, 1).transformDirection(matrix.copy(inverse).multiply(root.matrixWorld));
+        bend.addScaledVector(axis, -bend.dot(axis));
+      }
       if (bend.lengthSq() < 1e-10) continue;
       bend.normalize();
       const along = (upper*upper - lower*lower + distance*distance) / (2*distance);
