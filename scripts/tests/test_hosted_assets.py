@@ -18,9 +18,9 @@ class HostedAssetsTests(unittest.TestCase):
         name = 'frontend/src/features/people/peopleCatalogue.json'
         self.assertIn(name, DETAIL_MANIFESTS)
         rows = json.loads((ROOT / name).read_text())
-        self.assertEqual(len(rows), 3)
+        self.assertEqual(len(rows), 23)
         requirements = detail_requirements(rows)
-        self.assertEqual(len(requirements), 6)
+        self.assertEqual(len(requirements), 46)
         for row in rows:
             self.assertEqual(row['sha256'], row['people']['sha256'])
             for url in (row['url'], row['thumbnailUrl']):
@@ -32,6 +32,24 @@ class HostedAssetsTests(unittest.TestCase):
                 else:
                     digest = hashlib.sha256(payload).hexdigest()
                 self.assertEqual(digest, requirements[url]['sha256'])
+
+    def test_inclusive_people_and_realistic_picker_images_are_in_the_hosted_closure(self):
+        for filename, count, file_count in [
+            ('inclusivePeopleCatalogue.json', 8, 16),
+            ('peopleAppearancePreviews.json', 31, 31),
+        ]:
+            name = 'frontend/src/features/people/' + filename
+            self.assertIn(name, DETAIL_MANIFESTS)
+            rows = json.loads((ROOT / name).read_text())
+            self.assertEqual(len(rows), count)
+            requirements = detail_requirements(rows)
+            self.assertEqual(len(requirements), file_count)
+            for url, lock in requirements.items():
+                payload = (ROOT / 'frontend/public' / url.lstrip('/')).read_bytes()
+                digest = (payload.decode().split('oid sha256:', 1)[1].splitlines()[0]
+                          if payload.startswith(b'version https://git-lfs.github.com/spec/v1')
+                          else hashlib.sha256(payload).hexdigest())
+                self.assertEqual(digest, lock['sha256'])
 
     def test_reviewed_calgary_concepts_are_in_hosted_asset_closure(self):
         name = 'frontend/src/features/parks/calgarySafetyCatalogue.json'

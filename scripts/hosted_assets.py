@@ -21,7 +21,9 @@ DETAIL_MANIFESTS = ("frontend/src/features/parks/detailCatalogueExtras.json",
                     "frontend/src/features/parks/recoveredDetails.json",
                     "frontend/src/features/parks/trafficSafetyCatalogue.json",
                     "frontend/src/features/parks/calgarySafetyCatalogue.json",
-                    "frontend/src/features/people/peopleCatalogue.json")
+                    "frontend/src/features/people/peopleCatalogue.json",
+                    "frontend/src/features/people/inclusivePeopleCatalogue.json",
+                    "frontend/src/features/people/peopleAppearancePreviews.json")
 SOURCE_MEDIA_PREFIX = "frontend/src/features/landing/media/"
 
 
