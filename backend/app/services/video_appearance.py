@@ -5,6 +5,7 @@ The original route bytes and saved scene must still match before video spend.
 """
 
 import hashlib
+import re
 
 from fastapi import HTTPException
 from app.core.config import get_settings
@@ -123,11 +124,21 @@ async def run_appearance_render(req: VideoAppearanceRequest, user, db, *, attemp
             **image_options,
         )
         if response.status_code != 200:
+            # Keep only a bounded identifier for diagnosis; never provider prose
+            # or request/credential data in saved evidence or user-facing errors.
+            try:
+                error = response.json()
+            except ValueError:
+                error = None
+            error = error.get("error") if isinstance(error, dict) else None
+            code = error.get("code") if isinstance(error, dict) else None
+            provider_code = code if isinstance(code, str) and re.fullmatch(r"[A-Za-z0-9_.-]{1,80}", code) else None
             billing = (
                 "unproduced" if response.status_code in {400, 401, 403, 404, 409, 413, 415, 422, 429} else "unknown"
             )
             await write_evidence(
-                attempt, "provider-error", {"billing_status": billing, "status_code": response.status_code}
+                attempt, "provider-error", {"billing_status": billing, "status_code": response.status_code,
+                                            "provider_error_code": provider_code}
             )
             raise HTTPException(502, "The photographic guide did not finish. Recover this attempt before trying again.")
         body = response.json()

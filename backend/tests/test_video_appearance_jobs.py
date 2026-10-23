@@ -21,6 +21,28 @@ from tests.test_omni_video import _jpeg_data_url
 isolated = image_job_fixture
 
 
+@pytest.mark.asyncio
+@pytest.mark.parametrize("code,expected", [
+    ("insufficient_quota", "insufficient_quota"),
+    ("rate_limit_exceeded", "rate_limit_exceeded"),
+    ("private detail with spaces", None),
+])
+async def test_failed_guide_keeps_a_safe_provider_code_without_retrying_or_billing(isolated, monkeypatch, code, expected):
+    f = isolated
+    monkeypatch.setattr(appearance, "get_settings", lambda: f.settings)
+    monkeypatch.setattr(appearance, "write_evidence", f.write)
+    monkeypatch.setattr(appearance, "validate_scene", AsyncMock(return_value="c" * 64))
+    provider = AsyncMock(return_value=httpx.Response(429, json={"error": {"code": code, "message": "Do not store private provider prose"}}))
+    monkeypatch.setattr(appearance, "call_image_edit", provider)
+    a = await submit(f, req=request(f))
+    await execute(f, a)
+    evidence = await f.read(a, "provider-error")
+    assert evidence == {"billing_status": "unproduced", "status_code": 429, "provider_error_code": expected}
+    assert provider.await_count == 1
+    async with f.sessions() as db:
+        assert (await db.get(User, f.user.id)).render_credits == 1000
+
+
 def request(f):
     return VideoAppearanceRequest(
         project_id=f.project.id,
