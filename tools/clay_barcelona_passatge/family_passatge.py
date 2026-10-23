@@ -920,8 +920,8 @@ def vault():
     while y < L - .2:                                                        # glazing bars on the glass (flat ribbons)
         for k in range(n - 1):
             (x0, z0), (x1, z1) = prof[k], prof[k + 1]
-            quad(b, 'iron', [(x0, y - .02, z0 + .012), (x1, y - .02, z1 + .012), (x1, y + .02, z1 + .012), (x0, y + .02, z0 + .012)])
-        y += .6
+            quad(b, 'iron', [(x0, y - .025, z0 + .012), (x1, y - .025, z1 + .012), (x1, y + .025, z1 + .012), (x0, y + .025, z0 + .012)])
+        y += .75
     for k in (3, 7, 11, n - 4, n - 8, n - 12):                               # purlins along the vault
         x, z = prof[k]
         b.beam('iron', (x, 0.0, z + .045), (x, L - .03, z + .045), .05, .05)
@@ -951,20 +951,19 @@ def rib(b, prof, y, w, d, off=.13):
         b.beam('iron', (x0 + nx0 * off, y, z0 + nz0 * off), (x1 + nx1 * off, y, z1 + nz1 * off), w, d, ext=.01)
 
 
-def flat_bar(b, y, a, c, w=.045, role='iron', dy=0.0):
-    """Flat iron bar in the rib plane y (a quad facing along the passage) between two (x, z) points."""
+def bar(b, y, a, c, w=.045, t=.04):
+    """Iron bar in the rib plane y between two (x, z) points: a thin box, w wide in the plane and t thick along y, so
+    it reads at grazing angles too."""
     (xa, za), (xc, zc) = a, c
-    l = math.hypot(xc - xa, zc - za) or 1.0
-    px, pz = -(zc - za) / l * w / 2, (xc - xa) / l * w / 2
-    quad(b, role, [(xa - px, y + dy, za - pz), (xc - px, y + dy, zc - pz), (xc + px, y + dy, zc + pz), (xa + px, y + dy, za + pz)])
+    b.beam('iron', (xa, y, za), (xc, y, zc), t, w)
 
 
-def clip_tri(p, d, tri):
-    """Clip the line p + t d to a convex triangle; returns the segment ends or None."""
+def clip_poly(p, d, poly):
+    """Clip the line p + t d to a convex polygon; returns the segment ends or None."""
     t0, t1 = -1e9, 1e9
-    for i in range(3):
-        (ax, az), (bx, bz) = tri[i], tri[(i + 1) % 3]
-        cx, cz = tri[(i + 2) % 3]
+    cx = sum(q[0] for q in poly) / len(poly); cz = sum(q[1] for q in poly) / len(poly)
+    for i in range(len(poly)):
+        (ax, az), (bx, bz) = poly[i], poly[(i + 1) % len(poly)]
         nx, nz = -(bz - az), bx - ax
         if (cx - ax) * nx + (cz - az) * nz < 0:
             nx, nz = -nx, -nz
@@ -979,43 +978,44 @@ def clip_tri(p, d, tri):
             t0 = max(t0, tt)
         else:
             t1 = min(t1, tt)
-    if t1 - t0 < .08:
+    if t1 - t0 < .1:
         return None
     return (p[0] + d[0] * t0, p[1] + d[1] * t0), (p[0] + d[0] * t1, p[1] + d[1] * t1)
 
 
 def leg(b, s, y):
     """Rib leg down the pilaster to its corbel (it stops under the cornice and resumes above it), with an openwork
-    lattice bracket filling the triangle between the leg, the strut and the rib: a diagonal lattice of flat bars, an
-    edge bar under the rib, three hangers and two scroll rings."""
+    lattice bracket filling the panel between the leg, the strut and the rib: a diagonal lattice, an edge bar under the
+    rib, three hangers and two scroll rings."""
     xl = s * (HW - .30)
     b.beam('iron', (xl, y, CORBEL - .05), (xl, y, EAVE - .74), .14, .16)
     b.beam('iron', (xl, y, EAVE + .02), (xl, y, EAVE + .2), .14, .16)
-    ax = HW - 1.75                                                           # where the bracket strut meets the rib
-    za = vault_z(ax) - .2
-    zl = CORBEL + .5
+    ax = HW - 2.6                                                            # where the bracket strut meets the rib
+    za = vault_z(ax) - .22
+    zl = CORBEL + .25
     b.beam('iron', (xl, y, zl), (s * ax, y, za), .1, .12)
-    ztop = EAVE - .78                                                       # top of the bracket at the leg (under the cornice)
-    tri = [(abs(xl) - .07, zl + .1), (abs(xl) - .07, ztop), (ax + .05, za - .05)]
-    flat_bar(b, y, (s * tri[1][0], tri[1][1]), (s * tri[2][0], tri[2][1]), .07)      # upper edge bar
-    for sign in (1, -1):                                                     # diagonal lattice at 0.28 m
-        c = -8.0
-        while c < 8.0:
-            seg = clip_tri((0.0, c), (1.0, sign * 1.0), tri)
+    xw, xi = abs(xl) - .07, HW - .95                                         # leg face, inner edge of the cornice zone
+    poly = [(xw, zl + .12), (xw, EAVE - .8), (xi, vault_z(xi) - .25), (ax + .08, za - .02)]   # convex panel
+    for (p0, p1) in ((poly[1], poly[2]), (poly[2], poly[3])):                                   # edge bars of the panel
+        bar(b, y, (s * p0[0], p0[1]), (s * p1[0], p1[1]), .06, .05)
+    for sign in (1, -1):                                                     # diagonal lattice at 0.3 m
+        c = -12.0
+        while c < 12.0:
+            seg = clip_poly((0.0, c), (1.0, sign * 1.0), poly)
             if seg:
                 (x0, z0), (x1, z1) = seg
-                flat_bar(b, y, (s * x0, z0), (s * x1, z1), .035, dy=.004 * sign)
-            c += .28 * math.sqrt(2)
-    for f in (.3, .55, .8):                                                  # hangers from the strut to the rib
+                bar(b, y, (s * x0, z0), (s * x1, z1), .035, .03 + .01 * (sign > 0))
+            c += .36 * math.sqrt(2)
+    for f in (.35, .65, .9):                                                 # hangers from the strut to the rib
         x = xl + (s * ax - xl) * f
         z0 = zl + (za - zl) * f
         b.beam('iron', (x, y, z0), (x, y, vault_z(abs(x)) - .18), .05, .05)
-    for cx, cz, r in ((abs(xl) - .45, zl + 1.25, .26), (abs(xl) - .42, ztop - .55, .2)):
-        annulus('bracket scroll', (s * cx, y, cz), (0, 1, 0), r - .05, r, -.03, .03, 'iron', 'vault', 12)
+    for cx, cz, r in ((xw - .42, zl + .75, .3), (xw - .35, EAVE - 1.35, .22)):
+        annulus('bracket scroll', (s * cx, y, cz), (0, 1, 0), r - .06, r, -.035, .035, 'iron', 'vault', 12)
 
 
 def girder(b, prof, y, depth=.5):
-    """Main rib as a lattice girder: an inner chord 0.5 m below the outer rib and a zig-zag web of flat bars."""
+    """Main rib as a lattice girder: an inner chord 0.5 m below the outer rib and a zig-zag web of bars."""
     n = len(prof)
     inner = []
     for k in range(1, n - 1):
@@ -1027,42 +1027,43 @@ def girder(b, prof, y, depth=.5):
     for k in range(1, n - 2):
         x, z = prof[k]
         nx, nz = normal(prof, k)
-        o = (x + nx * .2, z + nz * .2)
-        flat_bar(b, y, o, inner[k - 1] if k % 2 else inner[k], .04)
+        bar(b, y, (x + nx * .2, z + nz * .2), inner[k - 1] if k % 2 else inner[k], .04, .035)
 
 
 def crest(b, prof, y, h=.5):
-    """Openwork cresting standing proud of the glazing along a main rib: posts, a top rail, crossed bars and spikes."""
+    """Openwork cresting standing proud of the glazing along a rib: posts, a top rail, a zig-zag and spikes."""
     n = len(prof)
     top = []
     for k in range(1, n - 1):
         x, z = prof[k]
         nx, nz = normal(prof, k)
-        base, tip = (x - nx * .03, z - nz * .03), (x - nx * h, z - nz * h)
-        flat_bar(b, y, base, tip, .04)
+        tip = (x - nx * h, z - nz * h)
+        if k % 2 == 1:
+            bar(b, y, (x - nx * .03, z - nz * .03), tip, .04, .035)                 # posts on every second point
         top.append(tip)
-        if k % 2 == 0:
-            flat_bar(b, y, tip, (x - nx * (h + .22), z - nz * (h + .22)), .05)
+        if k % 4 == 2:
+            bar(b, y, tip, (x - nx * (h + .22), z - nz * (h + .22)), .05, .03)
     for (x0, z0), (x1, z1) in zip(top, top[1:]):
         b.beam('iron', (x0, y, z0), (x1, y, z1), .05, .05, ext=.01)
-    for k in range(1, n - 2):
-        (xa, za), (xb, zb) = prof[k], prof[k + 1]
-        (na, ma), (nb, mb) = normal(prof, k), normal(prof, k + 1)
-        flat_bar(b, y, (xa - na * .05, za - ma * .05), (xb - nb * (h - .02), zb - mb * (h - .02)), .03, dy=.003)
-        flat_bar(b, y, (xa - na * (h - .02), za - ma * (h - .02)), (xb - nb * .05, zb - mb * .05), .03, dy=-.003)
+    for k in range(1, n - 3, 2):
+        (xa, za), (xb, zb) = prof[k], prof[k + 2]
+        (na, ma), (nb, mb) = normal(prof, k), normal(prof, k + 2)
+        lo_a, hi_b = (xa - na * .06, za - ma * .06), (xb - nb * (h - .03), zb - mb * (h - .03))
+        hi_a, lo_b = (xa - na * (h - .03), za - ma * (h - .03)), (xb - nb * .06, zb - mb * .06)
+        bar(b, y, *((lo_a, hi_b) if k % 4 == 1 else (hi_a, lo_b)), w=.03, t=.03)
 
 
 def ridge_crest(b, z0, h=.5):
-    """Continuous ridge cresting along the vault: posts every 0.5 m, a top rail, crossed bars and spikes."""
-    y = 0.0
+    """Continuous ridge cresting along the vault: posts every 0.75 m, a top rail, a zig-zag and spikes every 1.5 m."""
+    y, k = 0.0, 0
     while y <= L - .03 + 1e-6:
-        quad(b, 'iron', [(0.0, y - .02, z0), (0.0, y + .02, z0), (0.0, y + .02, z0 + h), (0.0, y - .02, z0 + h)])
-        if abs((y / 1.0) - round(y / 1.0)) < 1e-6:
-            quad(b, 'iron', [(0.0, y - .03, z0 + h), (0.0, y + .03, z0 + h), (0.0, y + .005, z0 + h + .25), (0.0, y - .005, z0 + h + .25)])
-        if y + .5 <= L - .03 + 1e-6:
-            quad(b, 'iron', [(.003, y, z0 + .02), (.003, y + .5, z0 + h - .02), (.003, y + .5, z0 + h - .06), (.003, y, z0 - .02)])
-            quad(b, 'iron', [(-.003, y, z0 + h - .02), (-.003, y + .5, z0 + .02), (-.003, y + .5, z0 - .02), (-.003, y, z0 + h - .06)])
-        y += .5
+        b.beam('iron', (0.0, y, z0), (0.0, y, z0 + h), .04, .035)
+        if k % 2 == 0:
+            b.beam('iron', (0.0, y, z0 + h), (0.0, y, z0 + h + .25), .05, .03)
+        if y + .75 <= L - .03 + 1e-6:
+            za, zb = (z0 + .04, z0 + h - .04) if k % 2 else (z0 + h - .04, z0 + .04)
+            b.beam('iron', (0.0, y, za), (0.0, y + .75, zb), .03, .03)
+        y += .75; k += 1
     b.beam('iron', (0.0, 0.0, z0 + h), (0.0, L - .03, z0 + h), .05, .05)
 
 
@@ -1072,18 +1073,19 @@ def end_arch(b, prof):
     y = .25
     rib(b, prof, y, .2, .28)
     n = len(prof)
+    ks = [k for k in range(1, n - 1) if abs(prof[k][0]) < HW - 2.65]        # the inner band starts clear of the leg brackets
     inner = []
-    for k in range(1, n - 1):
+    for k in ks:
         x, z = prof[k]
         nx, nz = normal(prof, k)
         inner.append((x + nx * 1.0, z + nz * 1.0))
     for (x0, z0), (x1, z1) in zip(inner, inner[1:]):
         b.beam('iron', (x0, y, z0), (x1, y, z1), .1, .1, ext=.01)
-    for k in range(1, n - 1):
+    for k, (xi, zi) in zip(ks, inner):
         x, z = prof[k]
         nx, nz = normal(prof, k)
-        b.beam('iron', (x + nx * .2, y, z + nz * .2), (inner[k - 1][0], y, inner[k - 1][1]), .04, .04)
-    for k in range(2, n - 2, 3):
+        b.beam('iron', (x + nx * .2, y, z + nz * .2), (xi, y, zi), .04, .04)
+    for k in ks[1:-1:3]:
         x, z = prof[k]
         nx, nz = normal(prof, k)
         annulus('end arch ring', (x + nx * .6, y, z + nz * .6), (0, 1, 0), .2, .26, -.03, .03, 'iron', 'vault', 16)
@@ -1232,8 +1234,8 @@ def ctx_block(x0, x1, y0, y1, h, faces, label):
 
 def context():
     """Stuccoed blocks across the west, east, north and south streets; street trees and parked cars."""
-    ctx_block(XMIN + .01, XWS, YSQ + SW, YN, 19.5, 'ens', 'west context')
-    ctx_block(XES, XMAX - .01, YSQ + SW, YN, 18.0, 'wns', 'east context')
+    ctx_block(XMIN + .01, XWS, YSQ + SW, YN, 19.5, 'e', 'west context')
+    ctx_block(XES, XMAX - .01, YSQ + SW, YN, 18.0, 'w', 'east context')
     ctx_block(XMIN + .01, XMAX - .01, YNS, YMAX - .01, 20.5, 's', 'north context')
     ctx_block(XMIN + .01, XMAX - .01, YMIN + .01, YSS, 17.0, 'n', 'south context')
     for x in (-3.2, 4.0):
