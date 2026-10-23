@@ -1228,6 +1228,18 @@ def _public_realm_recipe_for_zone(
     properties = dict(zone.properties or {})
     strict = bool(isinstance(properties.get("_plan_scenario"), str) and properties.get("_plan_scenario", "").strip())
     source_geometry = _community_source_geometry(zone)
+    if not strict:
+        from app.services.local_claude_trials import validate_local_claude_public_realm
+        try:
+            if validate_local_claude_public_realm(zone.zone_type, source_geometry, properties):
+                # The exact browser-mounted review model owns this fixed scene.
+                # Never compile a second generic park or stretchable road.
+                return None
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail={
+                'code': 'local_trial_incompatible', 'message': str(exc),
+                'zone_id': str(zone.id), 'kind': kind,
+            }) from exc
     migrated_variant_id: str | None = None
     centerline_normalized = False
     if kind == "street":

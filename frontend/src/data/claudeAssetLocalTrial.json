@@ -1,0 +1,369 @@
+{
+  "schema": "cityprompt.claude-local-trial@1",
+  "local_trial_only": true,
+  "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+  "models": [
+    {
+      "candidate": "clay-cmu-dock-warehouse-clay-v006",
+      "category": "building",
+      "source_sha256": "9551998b85a4dd9d1fa40081d53b441d6201344335a83ed98053eae8e9cb2f6e",
+      "review_sha256": "738df58d623c03acba0b50548c20a544315b58bb2a4728894c0ac587091a845f",
+      "asset": {
+        "id": "claude_trial_cmu_dock_warehouse",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "CMU Dock Warehouse",
+        "description": "Complete native scene, including authored surroundings. Fixed dimensions; no stretching or route bending. Prepared level site only. Local review; not published.",
+        "thumbnail": "/validation-assets/claude-local/6c9e95381c52e186218ea835b9df1da33da05de67d80dc031a949d450415183a.png",
+        "model": {
+          "variantId": "cmu_dock_utilitarian",
+          "revision": "clay-cmu-dock-warehouse-clay-v006",
+          "method": "RLASM 6.1"
+        },
+        "calgaryGuide": {
+          "groupId": "industry",
+          "basis": "form_reference"
+        },
+        "zoneType": "building",
+        "reshapeMode": "fixed_native",
+        "width": 60,
+        "depth": 48,
+        "minWidth": 60,
+        "minDepth": 48,
+        "maxSize": 600,
+        "nativeDimensions": [
+          57.0,
+          44.22500038146973,
+          9.475000381469727
+        ],
+        "reshapeDescription": "Complete native scene, including authored surroundings. Fixed dimensions; no stretching or route bending. Prepared level site only. Local review; not published.",
+        "properties": {
+          "validation_fixed_fixture": true,
+          "validation_native_url": "/validation-assets/claude-local/9551998b85a4dd9d1fa40081d53b441d6201344335a83ed98053eae8e9cb2f6e.glb",
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "building_archetype_id": "mid_century_distribution_warehouse",
+          "development_archetype_id": "mid_century_distribution_warehouse",
+          "development_selected_variant_id": "cmu_dock_utilitarian",
+          "development_archetype_label": "CMU Dock Warehouse",
+          "native_plot_axes": true,
+          "floors": 1,
+          "floor_count": 1,
+          "height": 9.475000381469727,
+          "height_m": 9.475000381469727
+        }
+      },
+      "fixture": null,
+      "retired": false
+    },
+    {
+      "candidate": "clay-ice-rink-market-square-clay-v007",
+      "category": "park",
+      "source_sha256": "1a0ca9fbffcb84fa1978280572934f19400145852353907a317c66e116ae3f75",
+      "review_sha256": "fb08ce4676eb98ec83bf003460ba0c9030146ce7a0fffcbdd790cbc65e508cd7",
+      "asset": {
+        "id": "claude_trial_ice_rink_market_square",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Ice Rink Market Square",
+        "description": "Complete native scene, including authored surroundings. Fixed dimensions; no stretching or route bending. Prepared level site only. Local review; not published.",
+        "thumbnail": "/validation-assets/claude-local/9e5324878de2acef40874eaec1ef46ee98b23a122f52831167f13695dc7387e9.png",
+        "model": {
+          "variantId": "outdoor_ice_rink_v0",
+          "revision": "1a0ca9fbffcb84fa1978280572934f19400145852353907a317c66e116ae3f75",
+          "method": "native_validation_fixture"
+        },
+        "calgaryGuide": {
+          "groupId": "play_sport",
+          "basis": "form_reference"
+        },
+        "zoneType": "green_space",
+        "reshapeMode": "fixed_native",
+        "width": 64,
+        "depth": 90,
+        "minWidth": 64,
+        "minDepth": 90,
+        "maxSize": 600,
+        "nativeDimensions": [
+          60.20000076293945,
+          86.0999984741211,
+          18.5
+        ],
+        "reshapeDescription": "Complete native scene, including authored surroundings. Fixed dimensions; no stretching or route bending. Prepared level site only. Local review; not published.",
+        "properties": {
+          "validation_fixed_fixture": true,
+          "validation_native_url": "/validation-assets/claude-local/1a0ca9fbffcb84fa1978280572934f19400145852353907a317c66e116ae3f75.glb",
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "public_realm_trial_asset": "claude_trial_ice_rink_market_square",
+          "green_space_archetype_id": "outdoor_ice_rink",
+          "green_space_selected_variant_id": "outdoor_ice_rink_v0"
+        }
+      },
+      "fixture": {
+        "id": "claude_trial_ice_rink_market_square",
+        "title": "Ice Rink Market Square",
+        "kind": "park",
+        "dimensions": [
+          64,
+          90
+        ],
+        "sha256": "1a0ca9fbffcb84fa1978280572934f19400145852353907a317c66e116ae3f75",
+        "surfaceRegions": [],
+        "url": "/validation-assets/claude-local/1a0ca9fbffcb84fa1978280572934f19400145852353907a317c66e116ae3f75.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      },
+      "retired": true
+    },
+    {
+      "candidate": "clay-inglewood-main-street-clay-v004",
+      "category": "street",
+      "source_sha256": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e",
+      "review_sha256": "781d8f5e132dbb40e595f129e0a76368a12b90c33ddb1ff41ac01ed16808595b",
+      "asset": {
+        "id": "claude_trial_inglewood_main_street",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Inglewood Main Street",
+        "description": "Complete native scene, including authored surroundings. Fixed dimensions; no stretching or route bending. Prepared level site only. Local review; not published.",
+        "thumbnail": "/validation-assets/claude-local/c528164ed6ce8922d904ffe9bb0cc9bac3e19b0592695bb960d7f3f8712834aa.png",
+        "model": {
+          "variantId": "inglewood_main_street_v0",
+          "revision": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e",
+          "method": "native_validation_fixture"
+        },
+        "calgaryGuide": {
+          "groupId": "collector",
+          "basis": "form_reference"
+        },
+        "zoneType": "road",
+        "reshapeMode": "fixed_native",
+        "width": 111,
+        "depth": 102,
+        "minWidth": 111,
+        "minDepth": 102,
+        "maxSize": 600,
+        "nativeDimensions": [
+          108.0,
+          99.0,
+          12.539999961853027
+        ],
+        "reshapeDescription": "Complete native scene, including authored surroundings. Fixed dimensions; no stretching or route bending. Prepared level site only. Local review; not published.",
+        "properties": {
+          "validation_fixed_fixture": true,
+          "validation_native_url": "/validation-assets/claude-local/e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e.glb",
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "public_realm_trial_asset": "claude_trial_inglewood_main_street",
+          "road_archetype_id": "inglewood_main_street",
+          "road_selected_variant_id": "inglewood_main_street_v0"
+        }
+      },
+      "fixture": {
+        "id": "claude_trial_inglewood_main_street",
+        "title": "Inglewood Main Street",
+        "kind": "street",
+        "dimensions": [
+          111,
+          102
+        ],
+        "sha256": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e",
+        "surfaceRegions": [],
+        "url": "/validation-assets/claude-local/e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      },
+      "retired": false
+    },
+    {
+      "candidate": "clay-halifax-public-gardens-clay-v005-park-only-r001",
+      "category": "park",
+      "source_sha256": "a2b8dfc2241bf3681573e81d8ca757dfc0efd0cbb302879696fe436c85f31577",
+      "review_sha256": "b554f11c3162523c7518c8d30f0eccbf9ec0ce8e5c4a49940a97d6f0bfcbb385",
+      "asset": {
+        "id": "claude_trial_halifax_public_gardens_park_only",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Halifax Public Gardens \u2014 park only",
+        "description": "Park-only local trial. Surrounding reference buildings removed; park-owned structures and original paving retained. Fixed native size; prepared level site only. Not published.",
+        "thumbnail": "/validation-assets/claude-local/a08f2e9a011a3d0d3ea8bea0107c8af420f869bce88aac4665726f191052330a.jpg",
+        "model": {
+          "variantId": "halifax_public_gardens_v0",
+          "revision": "d94cefb6028ef823e075e5e9e229bdab8c1d0b8d2a6a24fcb30ab64d4a368250",
+          "method": "native_validation_fixture"
+        },
+        "calgaryGuide": {
+          "groupId": "gardens",
+          "basis": "form_reference"
+        },
+        "zoneType": "green_space",
+        "reshapeMode": "fixed_native",
+        "width": 76,
+        "depth": 94,
+        "minWidth": 76,
+        "minDepth": 94,
+        "maxSize": 600,
+        "nativeDimensions": [
+          72.95524784795771,
+          90.76000213623047,
+          14.460001228760007
+        ],
+        "reshapeDescription": "Park-only local trial. Surrounding reference buildings removed; park-owned structures and original paving retained. Fixed native size; prepared level site only. Not published.",
+        "properties": {
+          "validation_fixed_fixture": true,
+          "validation_native_url": "/validation-assets/claude-local/d94cefb6028ef823e075e5e9e229bdab8c1d0b8d2a6a24fcb30ab64d4a368250.glb",
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "public_realm_trial_asset": "claude_trial_halifax_public_gardens_park_only",
+          "green_space_archetype_id": "halifax_public_gardens",
+          "green_space_selected_variant_id": "halifax_public_gardens_v0"
+        }
+      },
+      "fixture": {
+        "id": "claude_trial_halifax_public_gardens_park_only",
+        "title": "Halifax Public Gardens \u2014 park only",
+        "kind": "park",
+        "dimensions": [
+          76,
+          94
+        ],
+        "sha256": "d94cefb6028ef823e075e5e9e229bdab8c1d0b8d2a6a24fcb30ab64d4a368250",
+        "surfaceRegions": [],
+        "url": "/validation-assets/claude-local/d94cefb6028ef823e075e5e9e229bdab8c1d0b8d2a6a24fcb30ab64d4a368250.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      },
+      "runtime_sha256": "d94cefb6028ef823e075e5e9e229bdab8c1d0b8d2a6a24fcb30ab64d4a368250",
+      "retired": false
+    },
+    {
+      "candidate": "clay-ice-rink-market-square-clay-v007-park-only-r001",
+      "category": "park",
+      "source_sha256": "1a0ca9fbffcb84fa1978280572934f19400145852353907a317c66e116ae3f75",
+      "review_sha256": "fb08ce4676eb98ec83bf003460ba0c9030146ce7a0fffcbdd790cbc65e508cd7",
+      "asset": {
+        "id": "claude_trial_ice_rink_market_square_park_only",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Ice Rink Market Square \u2014 park only",
+        "description": "Park-only local trial. Surrounding reference buildings removed; park-owned structures and original paving retained. Fixed native size; prepared level site only. Not published.",
+        "thumbnail": "/validation-assets/claude-local/395418e0134ab65633bb5cc487f2e963c47278f9b1ecfe6f9687324abc87cab8.jpg",
+        "model": {
+          "variantId": "outdoor_ice_rink_v0",
+          "revision": "6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8",
+          "method": "native_validation_fixture"
+        },
+        "calgaryGuide": {
+          "groupId": "play_sport",
+          "basis": "form_reference"
+        },
+        "zoneType": "green_space",
+        "reshapeMode": "fixed_native",
+        "width": 57,
+        "depth": 77,
+        "minWidth": 57,
+        "minDepth": 77,
+        "maxSize": 600,
+        "nativeDimensions": [
+          53.599998474121094,
+          73.51499938964844,
+          14.989999771118164
+        ],
+        "reshapeDescription": "Park-only local trial. Surrounding reference buildings removed; park-owned structures and original paving retained. Fixed native size; prepared level site only. Not published.",
+        "properties": {
+          "validation_fixed_fixture": true,
+          "validation_native_url": "/validation-assets/claude-local/6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8.glb",
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "public_realm_trial_asset": "claude_trial_ice_rink_market_square_park_only",
+          "green_space_archetype_id": "outdoor_ice_rink",
+          "green_space_selected_variant_id": "outdoor_ice_rink_v0"
+        }
+      },
+      "fixture": {
+        "id": "claude_trial_ice_rink_market_square_park_only",
+        "title": "Ice Rink Market Square \u2014 park only",
+        "kind": "park",
+        "dimensions": [
+          57,
+          77
+        ],
+        "sha256": "6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8",
+        "surfaceRegions": [],
+        "url": "/validation-assets/claude-local/6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      },
+      "runtime_sha256": "6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8",
+      "retired": false
+    },
+    {
+      "candidate": "clay-stepped-terraced-plaza-clay-v005-park-only-r002",
+      "category": "park",
+      "source_sha256": "36631aac2b3a5c42e620473a0993fd38e2a413526b5db9f9b22d43f16453aff4",
+      "review_sha256": "df013056ce4556f45302aac95ab224c273fb88d0f52de88ca6c9e3918c543dce",
+      "asset": {
+        "id": "claude_trial_stepped_terraced_plaza_park_only",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Stepped Terraced Plaza \u2014 park only",
+        "description": "Park-only local trial. Surrounding reference buildings removed; park-owned structures and original paving retained. Fixed native size; prepared level site only. Not published.",
+        "thumbnail": "/validation-assets/claude-local/553b17c51554f497d4a63558091b09ad0e1cf9c4a27b116518b28ad38b3246c8.jpg",
+        "model": {
+          "variantId": "stepped_terraced_plaza_v0",
+          "revision": "c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2",
+          "method": "native_validation_fixture"
+        },
+        "calgaryGuide": {
+          "groupId": "plazas",
+          "basis": "form_reference"
+        },
+        "zoneType": "green_space",
+        "reshapeMode": "fixed_native",
+        "width": 43,
+        "depth": 61,
+        "minWidth": 43,
+        "minDepth": 61,
+        "maxSize": 600,
+        "nativeDimensions": [
+          40.0,
+          58.0,
+          9.40999984741211
+        ],
+        "reshapeDescription": "Park-only local trial. Surrounding reference buildings removed; park-owned structures and original paving retained. Fixed native size; prepared level site only. Not published.",
+        "properties": {
+          "validation_fixed_fixture": true,
+          "validation_native_url": "/validation-assets/claude-local/c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2.glb",
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "public_realm_trial_asset": "claude_trial_stepped_terraced_plaza_park_only",
+          "green_space_archetype_id": "stepped_terraced_plaza",
+          "green_space_selected_variant_id": "stepped_terraced_plaza_v0"
+        }
+      },
+      "fixture": {
+        "id": "claude_trial_stepped_terraced_plaza_park_only",
+        "title": "Stepped Terraced Plaza \u2014 park only",
+        "kind": "park",
+        "dimensions": [
+          43,
+          61
+        ],
+        "sha256": "c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2",
+        "surfaceRegions": [],
+        "url": "/validation-assets/claude-local/c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      },
+      "runtime_sha256": "c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2",
+      "retired": false
+    }
+  ]
+}

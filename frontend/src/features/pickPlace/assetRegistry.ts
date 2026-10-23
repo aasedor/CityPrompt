@@ -13,6 +13,7 @@ import streetCatalogue from '@/data/streetPathArchetypes.json';
 import nativeStreets from '@/data/nativeStreetPilots.json';
 import manualStreets from '@/data/streetManual.json';
 import { reviewedAssetClassification } from './catalogueClassification';
+import { LOCAL_CLAUDE_SAVED_ASSETS } from './claudeAssetLocalTrial';
 import { classifyCalgaryAsset, calgaryGroup, CALGARY_GROUPS, type CalgaryClassification } from '@/features/calgaryCatalogue/guide';
 
 export type PlaceAssetId = string;
@@ -327,7 +328,7 @@ export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, 
     model:{...asset.model,revision:layout.contentRevision,method:'native_park_v2'},
     width:layout.occupiedWidthM,depth:layout.occupiedDepthM,minWidth:layout.occupiedWidthM,minDepth:layout.occupiedDepthM,
     properties:{...properties,green_space_native_layout_id:layout.id,pick_place_automatic_3d:true}};
-}).concat(FLEXIBLE_PARK_ASSETS).map(reviewedAssetClassification);
+}).concat(FLEXIBLE_PARK_ASSETS, LOCAL_CLAUDE_SAVED_ASSETS).map(reviewedAssetClassification);
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {
   return asset.readiness === 'pilot' || asset.readiness === 'ready';

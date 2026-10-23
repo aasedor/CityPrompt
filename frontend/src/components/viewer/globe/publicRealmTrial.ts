@@ -1,6 +1,7 @@
 import type { Object3D } from 'three';
 import type { SiteZone } from '@/types';
 import assets from './publicRealmTrialAssets.json';
+import claudeTrial from '@/data/claudeAssetLocalTrial.json';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
@@ -8,10 +9,11 @@ import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 // The coloured preview underlays are rebuilt on prepared terrain. Fine paving
 // units and painted symbols remain in the native GLB above that owned ground.
 export const TRIAL_GROUND_MATERIALS = new Set(['grass', 'paving', 'soil', 'cycle', 'asphalt']);
-export type PublicRealmTrialAsset = typeof assets[number];
+export type PublicRealmTrialAsset = typeof assets[number] | NonNullable<typeof claudeTrial.models[number]['fixture']>;
+const localClaudeFixtures = claudeTrial.models.flatMap(row => row.fixture ? [row.fixture] : []);
 export function publicRealmTrialAsset(zone: SiteZone): PublicRealmTrialAsset | null {
   if (!import.meta.env.DEV) return null;
-  return assets.find(asset => asset.id === zone.properties?.public_realm_trial_asset) ?? null;
+  return [...assets, ...localClaudeFixtures].find(asset => asset.id === zone.properties?.public_realm_trial_asset) ?? null;
 }
 
 /** A bounded local review contract, deliberately not a catalogue/compiler claim.
@@ -19,6 +21,13 @@ export function publicRealmTrialAsset(zone: SiteZone): PublicRealmTrialAsset | n
  * contain scaling, concave clipping, route bending, or hard-coded site elevation. */
 export function publicRealmTrialPlacement(zone: SiteZone, zones: SiteZone[], fallback: number) {
   const asset = publicRealmTrialAsset(zone);
+  // Identify invalid local fixtures above so they retain their readiness/error
+  // marker; never display current bytes for a different saved revision.
+  if (asset?.id.startsWith('claude_trial_') && (
+    zone.properties?.pick_place_model_revision !== asset.sha256
+    || zone.properties?.validation_native_url !== asset.url
+    || zone.properties?.pick_place_asset !== asset.id
+  )) return null;
   const boundary = getActiveSiteBoundary(zones);
   if (!asset || !boundary || boundary.properties?.community_3d_mask_existing_tiles !== true
     || boundary.properties?.terrain_strategy === 'landscape') return null;

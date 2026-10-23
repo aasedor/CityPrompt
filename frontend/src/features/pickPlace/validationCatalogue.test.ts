@@ -8,6 +8,7 @@ import { publicRealmTrialAsset, publicRealmTrialGroundCells } from '@/components
 import { trimNativeStreetModel } from '@/components/viewer/globe/nativeStreetModelTrim';
 import type { SiteZone } from '@/types';
 import * as THREE from 'three';
+import { LOCAL_CLAUDE_SAVED_ASSETS } from './claudeAssetLocalTrial';
 
 describe('exact local validation catalogue', () => {
   it('resolves every locked validation variant to one placeable catalogue choice', () => {
@@ -48,7 +49,10 @@ describe('exact local validation catalogue', () => {
     }
   });
   it('offers parks through native contracts without legacy fixture flags', () => {
-    const parks=CATALOGUE_ASSETS.filter(a=>a.kind==='object' && a.zoneType==='green_space');
+    // Unpublished fixed-review pilots are tested separately; they must not
+    // change the existing adaptive/native park release contract.
+    const localIds = new Set(LOCAL_CLAUDE_SAVED_ASSETS.map(asset => asset.id));
+    const parks=CATALOGUE_ASSETS.filter(a=>a.kind==='object' && a.zoneType==='green_space' && !localIds.has(a.id));
     expect(parks.length).toBeGreaterThanOrEqual(15);
     for(const park of parks) {
       expect(['native_park_v2','native_validation_fixture','public_realm_park_kit']).toContain(park.model.method);

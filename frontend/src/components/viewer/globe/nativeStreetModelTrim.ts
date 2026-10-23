@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { clipStreetGeometryOutsideJunction, streetJunctionContainsPoint } from './streetJunctionGeometry';
 import { nativeLocalJunction, type NativeStreetJunction, type NativeStreetPlacement } from './nativeStreetJunction';
 import { TRIAL_GROUND_MATERIALS } from './publicRealmTrial';
+import { centreNativeClayClone } from '@/features/legoAssembly/nativeClayPlacement';
 
 type LocalCut = ReturnType<typeof nativeLocalJunction>;
 const toENU = new THREE.Matrix4().makeRotationX(Math.PI / 2);
@@ -97,5 +98,9 @@ export function trimNativeStreetModel(scene: THREE.Object3D, placement: NativeSt
     mesh.castShadow = true; mesh.receiveShadow = true; mesh.renderOrder = 148;
   });
   remove.forEach((object) => object.removeFromParent());
-  return { clone, owned };
+  // Claude's fixed source scenes have asymmetric modelling origins. Reuse the
+  // same measured native placement as the building/hover loaders; old street
+  // modules retain their documented origin and junction contract unchanged.
+  return { clone: 'centerNativeClay' in placement.asset && placement.asset.centerNativeClay
+    ? centreNativeClayClone(clone) : clone, owned };
 }
