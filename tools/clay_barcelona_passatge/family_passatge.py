@@ -1091,7 +1091,7 @@ def end_arch(b, prof):
         x, z = prof[k]
         nx, nz = normal(prof, k)
         annulus('end arch band ring', (x + nx * .66, y, z + nz * .66), (0, 1, 0), .2, .26, -.035, .035, 'iron', 'vault', 12)
-    zc, R = EAVE - 2.0, HW - 1.1                                            # inner semicircle, springing on ties from the leg columns
+    zc, R = EAVE - 2.0, HW - 1.6                                            # inner semicircle, springing on ties from the leg columns
     semi = [(R * math.cos(math.radians(a)), zc + R * math.sin(math.radians(a))) for a in range(0, 181, 6)]
     for (x0, z0), (x1, z1) in zip(semi, semi[1:]):
         b.beam('iron', (x0, y, z0), (x1, y, z1), .18, .16, ext=.01)
@@ -1109,7 +1109,7 @@ def end_arch(b, prof):
         while d < 4.0:
             x, z = x0 + ca * d, z0 + sa * d
             bzx = band_z(x)
-            if (bzx is not None and z >= bzx - .05) or z >= vault_z(abs(x)) - .3:
+            if (bzx is not None and z >= bzx - .05) or z >= vault_z(abs(x)) - .3 or abs(x) >= HW - .38:
                 break
             d += .02
         if d > .3:
