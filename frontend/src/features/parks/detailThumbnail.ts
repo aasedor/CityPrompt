@@ -8,7 +8,8 @@ let release: ReturnType<typeof setTimeout> | undefined;
 let queue: Promise<unknown> = Promise.resolve();
 const images = new Map<string, Promise<string>>();
 export function detailThumbnail(id: string): Promise<string> {
-  const preview = detailAsset(id)?.thumbnailUrl;
+  const asset = detailAsset(id);
+  const preview = asset?.appearancePreview?.url ?? asset?.thumbnailUrl;
   if (preview) return Promise.resolve(preview);
   const cached = images.get(id);
   if (cached) return cached;

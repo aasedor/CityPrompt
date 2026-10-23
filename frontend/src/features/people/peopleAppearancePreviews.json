@@ -1,0 +1,232 @@
+[
+  {
+    "id": "people-pilot-commuter",
+    "name": "Maya",
+    "style": "Relaxed overshirt",
+    "url": "/street-kits/people-appearance-v1/people-pilot-commuter.webp",
+    "sha256": "f0dd1aa4c0c4eb31a9b77fcf7c7b4fc28d26fa52a3b95156130fca5178f4cd3e",
+    "bytes": 9858,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-pilot-neighbour",
+    "name": "Eli",
+    "style": "Smart casual",
+    "url": "/street-kits/people-appearance-v1/people-pilot-neighbour.webp",
+    "sha256": "6532a986a8055c8088ac56d43f832e05ef429c23980bc613281d610449213730",
+    "bytes": 8298,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-pilot-creative",
+    "name": "Sofia",
+    "style": "Summer dress",
+    "url": "/street-kits/people-appearance-v1/people-pilot-creative.webp",
+    "sha256": "05db038c012b8da79534815cbadd568b472ab354991969573a7d6f097effa00a",
+    "bytes": 9856,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-ava",
+    "name": "Ava",
+    "style": "Activewear",
+    "url": "/street-kits/people-appearance-v1/people-community-ava.webp",
+    "sha256": "fa596c11a994bb86b2abb2446a486c713602a2a66f75c79b517f4263a92240a3",
+    "bytes": 9546,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-noah",
+    "name": "Noah",
+    "style": "Urban casual",
+    "url": "/street-kits/people-appearance-v1/people-community-noah.webp",
+    "sha256": "75935a4f28815419265f3bcd13c880026fc48fe8c6098c78a2652619ae649438",
+    "bytes": 9990,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-zara",
+    "name": "Zara",
+    "style": "Contemporary dress",
+    "url": "/street-kits/people-appearance-v1/people-community-zara.webp",
+    "sha256": "91bdc7db7d2f8559002510e8627392842cf5d484b93b7b89d8ff2704db41c192",
+    "bytes": 11868,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-leo",
+    "name": "Leo",
+    "style": "Weekend sport",
+    "url": "/street-kits/people-appearance-v1/people-community-leo.webp",
+    "sha256": "1213e6505569074cf66cb247bbe76715658c3b863cb4de9d8ddc3a4aa8e077d1",
+    "bytes": 10044,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-imani",
+    "name": "Imani",
+    "style": "Office tailoring",
+    "url": "/street-kits/people-appearance-v1/people-community-imani.webp",
+    "sha256": "6725e5a22d703d95d60f2fd7ec7005101f1d7fa60783fcac47a5521a4476ce8b",
+    "bytes": 9890,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-luca",
+    "name": "Luca",
+    "style": "Hoodie & denim",
+    "url": "/street-kits/people-appearance-v1/people-community-luca.webp",
+    "sha256": "3aaa297100c9d660ed6e7b8a43856e7724cb967a2d0356b2582ea8a4bf248f03",
+    "bytes": 11540,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-nina",
+    "name": "Nina",
+    "style": "Minimal knitwear",
+    "url": "/street-kits/people-appearance-v1/people-community-nina.webp",
+    "sha256": "c383d070cee5b38ddc3cfb4cf2bff7e751be2c994199d03ac963a2778178bec1",
+    "bytes": 8900,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-owen",
+    "name": "Owen",
+    "style": "Outdoor casual",
+    "url": "/street-kits/people-appearance-v1/people-community-owen.webp",
+    "sha256": "c898186864d75d5897518756fa27ca33af240fc9d56c5578fdc76765a847b22a",
+    "bytes": 14332,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-amara",
+    "name": "Amara",
+    "style": "Trail ready",
+    "url": "/street-kits/people-appearance-v1/people-community-amara.webp",
+    "sha256": "af7e99671c43f5453141fa05bbbd2ad7e9ad4957208f0f346d78c8d1e17b45e4",
+    "bytes": 11214,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-mateo",
+    "name": "Mateo",
+    "style": "Polo & chinos",
+    "url": "/street-kits/people-appearance-v1/people-community-mateo.webp",
+    "sha256": "30fc9c477f22612630da2b77ff86847e406cbed572c6405d0dddbcb797088df2",
+    "bytes": 9526,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-clara",
+    "name": "Clara",
+    "style": "City coat",
+    "url": "/street-kits/people-appearance-v1/people-community-clara.webp",
+    "sha256": "c5ad29f453769bb0e1711b59689b677c99b3e8e680e701cce47ff60b8ed6afab",
+    "bytes": 9052,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-kai",
+    "name": "Kai",
+    "style": "Summer athletics",
+    "url": "/street-kits/people-appearance-v1/people-community-kai.webp",
+    "sha256": "a50ee095dfc73b2b67ce22a29646078361ae26174c03ba3471e03c6e149f6db3",
+    "bytes": 11486,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-ines",
+    "name": "Ines",
+    "style": "Cropped leather",
+    "url": "/street-kits/people-appearance-v1/people-community-ines.webp",
+    "sha256": "8096c9d05efd08d05abb8808df014986f53d9e49e72b3db595b009ee523dfaeb",
+    "bytes": 12786,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-jules",
+    "name": "Jules",
+    "style": "Bomber streetwear",
+    "url": "/street-kits/people-appearance-v1/people-community-jules.webp",
+    "sha256": "f530d1cfe5ddaaadd3e4db780773fb84ff2d3184c6b7ec4842a01dbe04928d25",
+    "bytes": 10152,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-sana",
+    "name": "Sana",
+    "style": "Creative casual",
+    "url": "/street-kits/people-appearance-v1/people-community-sana.webp",
+    "sha256": "026fda54dfa1599e9e2fa95ba1deb08381959970b20e22f79f59d67318520b39",
+    "bytes": 10252,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-felix",
+    "name": "Felix",
+    "style": "Summer linen",
+    "url": "/street-kits/people-appearance-v1/people-community-felix.webp",
+    "sha256": "80fcb1e191bedc4942583bc735e8b2b714b57ae90df91b1acdbb76a316b7a048",
+    "bytes": 9482,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-rhea",
+    "name": "Rhea",
+    "style": "Linen & denim",
+    "url": "/street-kits/people-appearance-v1/people-community-rhea.webp",
+    "sha256": "eca7d5bbeadf054c539eb6b7764d32b99dfd5d661346f4f0369252c0c578c93c",
+    "bytes": 11528,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-andre",
+    "name": "Andre",
+    "style": "Modern office",
+    "url": "/street-kits/people-appearance-v1/people-community-andre.webp",
+    "sha256": "2422df713472ce773183dcad0569875365c5045ecfa7714bbd8c04e1db68e323",
+    "bytes": 9748,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-elena",
+    "name": "Elena",
+    "style": "Linen jumpsuit",
+    "url": "/street-kits/people-appearance-v1/people-community-elena.webp",
+    "sha256": "026c4994681c3b05bb65a1ddd08480ad7fc68a17e53645c8a4b9f4f374c01f34",
+    "bytes": 9004,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-community-amir",
+    "name": "Amir",
+    "style": "Everyday essentials",
+    "url": "/street-kits/people-appearance-v1/people-community-amir.webp",
+    "sha256": "781c9cbd035a2a8819cfbf47d00239230549b564e9d316ae12ae1df98853e493",
+    "bytes": 9996,
+    "width": 480,
+    "height": 600
+  }
+]

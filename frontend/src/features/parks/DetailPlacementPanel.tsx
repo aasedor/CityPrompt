@@ -22,8 +22,8 @@ function Thumbnail({ asset }: { asset: DetailAsset }) {
     if (root.current) observer.observe(root.current);
     return () => { active = false; observer.disconnect(); };
   }, [asset.id]);
-  return <div ref={root} className="flex h-28 items-center justify-center bg-slate-100 text-xs text-slate-500">
-    {image ? <img src={image} alt={asset.label} className="h-full w-full object-contain" /> : failed ? 'Preview unavailable' : 'Loading preview…'}
+  return <div ref={root} className={`flex ${asset.appearancePreview ? 'h-52' : 'h-28'} items-center justify-center bg-slate-100 text-xs text-slate-500`}>
+    {image ? <img src={image} alt={asset.appearancePreview ? `${asset.appearancePreview.name} · ${asset.appearancePreview.style} · AI appearance preview` : asset.label} className="h-full w-full object-contain" /> : failed ? 'Preview unavailable' : 'Loading preview…'}
   </div>;
 }
 
@@ -43,6 +43,7 @@ export function DetailPlacementPanel({ placement, canEdit, onClose, onArrange }:
   const [view, setView] = useState<'browse' | 'placed'>('browse');
   const showCategories = () => { setCategory('All'); setQuery(''); setCategoryView(true); };
   const options = searchDetails(query, category);
+  const appearanceCount = options.filter(asset => asset.appearancePreview).length;
   const selected = placement.selected ? detailAsset(placement.selected) : null;
   const choose = (id: string | null) => { placement.choose(id); if (narrow && id) setExpandedFor(null); };
   return <aside aria-label="Detail catalogue" className={`fixed bottom-0 inset-x-0 z-[80] flex max-h-[65dvh] flex-col rounded-t-2xl border border-slate-300 bg-[#fff9ec] text-slate-950 shadow-2xl lg:left-auto lg:top-16 lg:w-[420px] lg:max-w-[calc(100vw-3rem)] lg:max-h-none lg:rounded-none ${compact ? '!max-h-[42dvh]' : ''}`}
@@ -78,7 +79,8 @@ export function DetailPlacementPanel({ placement, canEdit, onClose, onArrange }:
       <select aria-label="Item category" value={category} onChange={e => setCategory(e.target.value)} className="min-h-11 w-full rounded-lg border border-slate-400 bg-white px-3 text-sm">
         {['All', ...DETAIL_CATEGORIES].map(c => <option key={c} value={c}>{c === 'All' ? 'All individual items' : c}</option>)}
       </select>
-      <p className="text-xs text-slate-600">{options.length} items · actual 3D model previews</p>
+      <p className="text-xs text-slate-600">{options.length} items · {appearanceCount > 0 ? appearanceCount === options.length ? 'AI appearance previews' : 'model and AI appearance previews' : 'actual 3D model previews'}</p>
+      {appearanceCount > 0 && <p className="rounded-lg border border-lime-200 bg-lime-50 p-2 text-xs text-slate-700">Realistic style previews. Placed people use simplified 3D models; AI results may vary.</p>}
       {options.some(a=>a.safety) && <p className="rounded border border-amber-300 bg-amber-50 p-2 text-xs">Traffic-safety kits are visualization assets, not approved construction or operational traffic-control designs. Amber is static.</p>}
       </>}
     </div>
@@ -87,11 +89,12 @@ export function DetailPlacementPanel({ placement, canEdit, onClose, onArrange }:
       <div className="grid grid-cols-2 gap-3">
         <SafetyVariantCards assets={options.filter(a=>a.safety)} selected={placement.selected} disabled={!canEdit || placement.saving} onChoose={choose} thumbnail={Thumbnail}/>
         {options.filter(asset=>!asset.safety).map(asset => <article key={asset.id} className="overflow-hidden rounded-xl border border-slate-300 bg-white">
-          <button type="button" aria-label={`Choose ${asset.label}`} aria-pressed={placement.selected === asset.id} disabled={!canEdit || placement.saving}
+          <button type="button" aria-label={`Choose ${asset.appearancePreview ? `${asset.appearancePreview.name} · ${asset.appearancePreview.style}` : asset.label}`} aria-pressed={placement.selected === asset.id} disabled={!canEdit || placement.saving}
             onClick={() => choose(asset.id)} className={`w-full text-left hover:bg-lime-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-3px] disabled:opacity-50 ${placement.selected === asset.id ? 'bg-lime-100 ring-2 ring-inset ring-lime-600' : ''}`}>
             <Thumbnail asset={asset} />
-            <span className="block space-y-1 p-3"><span className="block text-sm font-bold">{asset.label}</span>
-              <span className="block line-clamp-2 text-xs text-slate-600">{asset.description}</span>
+            <span className="block space-y-1 p-3"><span className="block text-sm font-bold">{asset.appearancePreview?.name ?? asset.label}</span>
+              <span className="block line-clamp-2 text-xs text-slate-600">{asset.appearancePreview?.style ?? asset.description}</span>
+              {asset.appearancePreview && <span className="block text-[10px] font-semibold uppercase tracking-wide text-slate-500">AI appearance preview</span>}
               <span className="block text-[11px] text-slate-600">{asset.dimensions.map(n => n.toFixed(1)).join(' × ')} m</span>
               <span className="block pt-1 text-xs font-semibold underline">Choose & place</span></span>
           </button>

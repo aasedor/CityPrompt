@@ -3,6 +3,7 @@ import recovered from "./recoveredDetails.json";
 import trafficSafety from "./trafficSafetyCatalogue.json";
 import calgarySafety from "./calgarySafetyCatalogue.json";
 import peopleCatalogue from '../people/peopleCatalogue.json';
+import peopleAppearancePreviews from '../people/peopleAppearancePreviews.json';
 import type { DetailWalkSurface } from "./detailWalking";
 export interface DetailAsset {
   id: string;
@@ -13,6 +14,8 @@ export interface DetailAsset {
   url: string;
   /** Reviewed model capture; avoids decoding GLBs just to browse cards. */
   thumbnailUrl?: string;
+  /** AI appearance/style illustration for picker cards; never a model replacement. */
+  appearancePreview?: {id: string; name: string; style: string; url: string; sha256: string; bytes: number; width: number; height: number};
   color: string;
   kind: "bench" | "tree" | "object";
   /** Translation in source Y-up coordinates, before the globe conversion. */
@@ -49,7 +52,8 @@ const safetyModels = ([...trafficSafety, ...releasedCalgary] as unknown as Detai
   return {...asset, category: 'Traffic & safety', description: placementText(asset.description),
     safety: {...asset.safety!, limitation: placementText(asset.safety!.limitation)}};
 });
-const peopleModels = peopleCatalogue as DetailAsset[];
+const appearanceById = new Map(peopleAppearancePreviews.map(preview => [preview.id, preview]));
+const peopleModels = peopleCatalogue.map(asset => ({...asset, appearancePreview: appearanceById.get(asset.id)})) as DetailAsset[];
 const extraModels = [...extras, ...recovered, ...safetyModels, ...peopleModels] as DetailAsset[];
 /** Existing metric assets only. No user-provided paths or nonuniform scaling. */
 const RUSTIC = "/landscape-pilots/neighborhood-rustic-v5";
@@ -156,7 +160,7 @@ export function searchDetails(query: string, category = "All") {
     (model) =>
       (category === "All" || category === model.category) &&
       words.every((word) =>
-        `${model.label} ${model.description} ${model.category} ${model.safety?.group ?? ''} ${model.safety?.familyLabel ?? ''}`
+        `${model.label} ${model.description} ${model.category} ${model.safety?.group ?? ''} ${model.safety?.familyLabel ?? ''} ${model.appearancePreview?.name ?? ''} ${model.appearancePreview?.style ?? ''}`
           .toLowerCase()
           .includes(word),
       ),

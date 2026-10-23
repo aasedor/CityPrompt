@@ -13,6 +13,10 @@ import calgary from './calgarySafetyCatalogue.json';
 import people from '../people/peopleCatalogue.json';
 
 describe("standalone detail catalogue", () => {
+  it('finds People by the clothing styles shown on their appearance cards', () => {
+    expect(searchDetails('summer dress', 'People').map(asset => asset.id)).toContain('people-pilot-creative');
+    expect(searchDetails('linen jumpsuit', 'People').map(asset => asset.id)).toContain('people-community-elena');
+  });
   it("offers the twenty site-finishing details with bounded geometry", () => {
     const slugs = ['outdoor-stairs', 'accessible-ramp', 'modular-handrail', 'retaining-wall',
       'refuge-island', 'planted-curb-extension', 'tactile-curb-ramp', 'covered-bike-parking',

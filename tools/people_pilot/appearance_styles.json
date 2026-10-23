@@ -1,0 +1,140 @@
+[
+  {
+    "id": "people-pilot-commuter",
+    "name": "Maya",
+    "style": "Relaxed overshirt",
+    "wardrobe": "Keep the approved Maya portrait unchanged."
+  },
+  {
+    "id": "people-pilot-neighbour",
+    "name": "Eli",
+    "style": "Smart casual",
+    "wardrobe": "Navy fine-knit crew-neck sweater worn alone, light cream chinos and brown suede loafers. No open shirt or jacket."
+  },
+  {
+    "id": "people-pilot-creative",
+    "name": "Sofia",
+    "style": "Summer dress",
+    "wardrobe": "Sage green short-sleeve knee-length wrap dress with a fabric waist belt, cream low-profile flats. No jacket, overshirt, trousers or white centre panel."
+  },
+  {
+    "id": "people-community-ava",
+    "name": "Ava",
+    "style": "Activewear",
+    "wardrobe": "Teal short-sleeve technical athletic T-shirt, dark charcoal fitted running leggings, white running trainers. No jacket, no white centre stripe."
+  },
+  {
+    "id": "people-community-noah",
+    "name": "Noah",
+    "style": "Urban casual",
+    "wardrobe": "Plain charcoal fitted short-sleeve T-shirt, olive cargo trousers and black sneakers. No shirt opening or jacket."
+  },
+  {
+    "id": "people-community-zara",
+    "name": "Zara",
+    "style": "Contemporary dress",
+    "wardrobe": "Terracotta belted long-sleeve midi wrap dress and tan ankle boots. No jacket, overshirt or trousers."
+  },
+  {
+    "id": "people-community-leo",
+    "name": "Leo",
+    "style": "Weekend sport",
+    "wardrobe": "Sky-blue quarter-zip athletic sweatshirt with subtle texture, navy tapered joggers and cream trainers. No open shirt or white centre panel."
+  },
+  {
+    "id": "people-community-imani",
+    "name": "Imani",
+    "style": "Office tailoring",
+    "wardrobe": "Tailored sand blazer over an ivory blouse, chocolate high-waisted wide-leg trousers and brown loafers. Clearly tailored formal office clothes, not an overshirt."
+  },
+  {
+    "id": "people-community-luca",
+    "name": "Luca",
+    "style": "Hoodie & denim",
+    "wardrobe": "Forest-green pullover hoodie with cream drawstrings and kangaroo pocket, dark indigo jeans and brown casual sneakers. Bald head and short dark beard. No open shirt."
+  },
+  {
+    "id": "people-community-nina",
+    "name": "Nina",
+    "style": "Minimal knitwear",
+    "wardrobe": "Fitted plum long-sleeve turtleneck sweater, charcoal ankle trousers and white sneakers. No jacket or white centre panel."
+  },
+  {
+    "id": "people-community-owen",
+    "name": "Owen",
+    "style": "Outdoor casual",
+    "wardrobe": "Ochre-and-navy plaid flannel button-down worn fully closed, dark denim jeans and brown lace-up boots. No jacket or exposed white undershirt."
+  },
+  {
+    "id": "people-community-amara",
+    "name": "Amara",
+    "style": "Trail ready",
+    "wardrobe": "Navy fitted short-sleeve sports T-shirt, light khaki hiking trousers and gray trail running shoes. No jacket or white centre panel."
+  },
+  {
+    "id": "people-community-mateo",
+    "name": "Mateo",
+    "style": "Polo & chinos",
+    "wardrobe": "Rust-coloured short-sleeve polo shirt with a neat collar, charcoal chinos and white leather sneakers. No open overshirt."
+  },
+  {
+    "id": "people-community-clara",
+    "name": "Clara",
+    "style": "City coat",
+    "wardrobe": "Reuse the reviewed taupe long coat, ivory knit, green trousers and tan loafers portrait."
+  },
+  {
+    "id": "people-community-kai",
+    "name": "Kai",
+    "style": "Summer athletics",
+    "wardrobe": "Teal sleeveless technical training tank top, black running shorts ending above the knee, white sport socks and running trainers. No jacket or trousers."
+  },
+  {
+    "id": "people-community-ines",
+    "name": "Ines",
+    "style": "Cropped leather",
+    "wardrobe": "Copper-brown cropped leather zip jacket over a charcoal fitted T-shirt, high-waisted blue jeans and black ankle boots. Short cropped hair."
+  },
+  {
+    "id": "people-community-jules",
+    "name": "Jules",
+    "style": "Bomber streetwear",
+    "wardrobe": "Olive green ribbed-cuff bomber jacket zipped closed, off-white jeans and clean white sneakers. Bald head with a short dark beard. No open overshirt."
+  },
+  {
+    "id": "people-community-sana",
+    "name": "Sana",
+    "style": "Creative casual",
+    "wardrobe": "Berry-coloured crew-neck sweatshirt, black pleated midi skirt and white high-top sneakers. No jacket or trousers."
+  },
+  {
+    "id": "people-community-felix",
+    "name": "Felix",
+    "style": "Summer linen",
+    "wardrobe": "Pale sand short-sleeve linen shirt with buttons closed, beige tailored shorts to the knee and tan espadrilles. No jacket or long trousers."
+  },
+  {
+    "id": "people-community-rhea",
+    "name": "Rhea",
+    "style": "Linen & denim",
+    "wardrobe": "Sage-green long-sleeve linen blouse tucked into dark-blue flared jeans, brown ankle boots. No coat or overshirt."
+  },
+  {
+    "id": "people-community-andre",
+    "name": "Andre",
+    "style": "Modern office",
+    "wardrobe": "Well-fitted charcoal two-piece suit, black crew-neck knit top and black leather dress shoes. Dark natural complexion and short buzzed hair. No white undershirt."
+  },
+  {
+    "id": "people-community-elena",
+    "name": "Elena",
+    "style": "Linen jumpsuit",
+    "wardrobe": "Mist-blue sleeveless tailored linen jumpsuit with defined waist and full-length wide legs, white sneakers. No coat or overshirt."
+  },
+  {
+    "id": "people-community-amir",
+    "name": "Amir",
+    "style": "Everyday essentials",
+    "wardrobe": "Bronze-brown textured short-sleeve crew-neck T-shirt, beige chinos and dark-brown desert boots. Bald head and short dark beard. No jacket or overshirt."
+  }
+]

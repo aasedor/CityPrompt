@@ -18,6 +18,10 @@ describe('detail catalogue workflow', () => {
     fireEvent.click(screen.getByRole('button',{name:'Browse People'}));
     expect(screen.getByRole('combobox',{name:'Item category'})).toHaveValue('People');
     expect(screen.getByRole('button',{name:'People · choose a person & action'})).toBeVisible();
+    expect(screen.getByText('23 items · AI appearance previews')).toBeVisible();
+    expect(screen.getByText(/Placed people use simplified 3D models/)).toBeVisible();
+    expect(screen.queryByText(/actual 3D model previews/)).not.toBeInTheDocument();
+    expect(screen.getByRole('button', {name:'Choose Sofia · Summer dress'})).toBeVisible();
   });
   it('collapses the narrow catalogue after choosing an item and can reopen without cancelling placement',()=>{
     vi.stubGlobal('matchMedia',()=>({matches:true,addEventListener:vi.fn(),removeEventListener:vi.fn()}));
