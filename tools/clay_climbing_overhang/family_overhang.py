@@ -32,6 +32,7 @@ SLUG = 'clay-climbing-overhang'
 X0, X1, Y0, Y1 = -23.0, 16.0, -18.0, 18.0             # the building (top view, fitted)
 T = .3                                                # precast carrier depth
 XP0, XP1 = -6.0, 5.5                                  # penthouse (x); the pool deck's east edge is XP0
+PY0 = -15.5                                           # penthouse south face (set back from the south front)
 XE = 5.5                                              # the four-storey east block starts here
 G0 = .15                                              # ground floor over the plaza
 F2, F3, F4 = 5.0, 9.4, 13.8                           # upper floor levels
@@ -44,15 +45,15 @@ BOXX1 = -12.6                                         # the south frame box span
 FY = -17.8                                            # the climbing shell's back plane (laps 10 cm into the facade)
 RIM = 21.0                                            # rim top of the climbing shell
 # The climbing shell's outer corners (triangulated from the front and oblique views and the top view).
-SH = dict(G=(-11.1, FY, 0.0), BW=(-17.8, -22.7, 0.0), BS=(-3.0, -26.5, 0.0), BN=(-6.0, FY, 0.0),
+SH = dict(G=(-15.2, FY, 0.0), BW=(-17.2, -21.3, 0.0), BS=(-3.0, -26.5, 0.0), BN=(-1.0, FY, 0.0),
           KW=(-11.1, FY, PARA), KS=(-4.75, -27.55, 9.5), KX=(-6.3, -27.35, PARA),
           RNW=(-7.26, FY, RIM), RSW=(-6.04, -26.71, RIM), RSE=(6.22, -27.72, RIM), RNE=(4.37, FY, RIM))
 SHELL_T = .35                                         # CLT shell thickness
 TOP = RIM + .1
 EPS = .002
 PALETTE = dict(wall=(.86, .85, .82), precast=(.90, .89, .86), concrete2=(.70, .70, .68), frame=(.22, .24, .26),
-    glass=(.15, .21, .25), interior=(.82, .79, .72), floor=(.60, .57, .52), timber=(.84, .48, .13), timber2=(.90, .64, .27),
-    timber_in=(.76, .42, .11), hold=(.10, .10, .11), hold_w=(.91, .90, .86), mat=(.17, .19, .23), shirt=(.20, .60, .70),
+    glass=(.15, .21, .25), interior=(.82, .79, .72), floor=(.60, .57, .52), timber=(.80, .52, .21), timber2=(.88, .66, .34),
+    timber_in=(.73, .45, .17), shade=(.36, .36, .36), hold=(.10, .10, .11), hold_w=(.91, .90, .86), mat=(.17, .19, .23), shirt=(.20, .60, .70),
     skin=(.78, .60, .47), harness=(.12, .12, .14), paving=(.63, .64, .64), paving2=(.53, .54, .55), granite=(.60, .60, .59),
     deck=(.80, .74, .64), coping=(.88, .86, .80), water=(.08, .52, .66), water2=(.06, .38, .50), membrane=(.86, .86, .84),
     mech=(.78, .78, .76), asphalt=(.26, .26, .27), curb=(.73, .73, .71), paint=(.93, .93, .91), soil=(.26, .20, .15),
@@ -2035,15 +2036,41 @@ def fronts():
     corners()
 
 
-def return_x(y):
-    """x of the shell's vertical return face (the plan line BW-G) at y, plus 3 cm into the CLT."""
-    return SH['G'][0] + (y - FY) / (SH['BW'][1] - FY) * (SH['BW'][0] - SH['G'][0]) + .03
+def shell_section(z):
+    """Plan section of the shell's outer surface at height z (convex hull of the edge crossings)."""
+    pts = []
+    for tr in SHELL_TRIS:
+        q = [SH[k] for k in tr]
+        for i in range(3):
+            a, e = q[i], q[(i + 1) % 3]
+            if (a[2] - z) * (e[2] - z) < 0:
+                s = (z - a[2]) / (e[2] - a[2])
+                pts.append((a[0] + (e[0] - a[0]) * s, a[1] + (e[1] - a[1]) * s))
+            elif abs(a[2] - z) < 1e-9:
+                pts.append((a[0], a[1]))
+    return _pksh.MultiPoint(pts).convex_hull
 
 
-def to_return(b, role, x0, ya, yb, z0, z1):
-    """A horizontal member from x0 east to the shell's return face, its east end cut along that face."""
-    ya, yb = min(ya, yb), max(ya, yb)
-    b._hex(role, [(x, y, z) for z in (z0, z1) for x, y in ((x0, ya), (return_x(ya), ya), (return_x(yb), yb), (x0, yb))])
+def cut_slab(name, role, x0, x1, ya, yb, z0, z1, dz=.5):
+    """A member that dies into the climbing shell: the box x0..x1, ya..yb, z0..z1 minus the shell, in slices at most
+    dz tall, each cut by the shell's section at the slice top shrunk 3 cm (the face leans out going down, so every
+    slice end stays buried in the CLT and the visible junction is the shell face itself)."""
+    n = max(1, math.ceil((z1 - z0) / dz - 1e-9))
+    for k in range(n):
+        za, zb = z0 + (z1 - z0) * k / n, z0 + (z1 - z0) * (k + 1) / n
+        g = _pksh.box(x0, min(ya, yb), x1, max(ya, yb)).difference(shell_section(zb).buffer(-.03))
+        for part in getattr(g, 'geoms', [g]):
+            if part.geom_type == 'Polygon' and part.area > 1e-4:
+                pts = list(part.exterior.coords)[:-1]
+                if not part.exterior.is_ccw:
+                    pts = pts[::-1]
+                C.prism(name, pts, 'z', za, zb, role, 'south frame box')
+
+
+def face_x(z, y):
+    """Westmost x of the shell's section at height z along the line y (the shell's west face there)."""
+    g = shell_section(z).intersection(_pksh.LineString([(-40.0, y), (40.0, y)]))
+    return g.bounds[0] if not g.is_empty else 40.0
 
 
 def south_frame_box():
@@ -2054,29 +2081,30 @@ def south_frame_box():
     s0, s1 = X0, BOXX1
     # The box's east end, its top, bottom and middle spandrel, the parapet band and the coping all die into the shell's
     # vertical return face along one straight line (each lapped 3 cm into the CLT, so the junction is a single clean edge).
-    to_return(b, 'precast', s0 + .02, Y0 - .78, Y0 + .3, F2 - .45, F2 + .2)                          # box bottom
-    to_return(b, 'precast', s0 + .02, Y0 - .78, Y0 + .3, F4 - .25, F4 + .25)                         # box top
+    cut_slab('Frame box bottom', 'precast', s0 + .02, -8.0, Y0 - .78, Y0 + .3, F2 - .45, F2 + .2)
+    cut_slab('Frame box top', 'precast', s0 + .02, -8.0, Y0 - .78, Y0 + .3, F4 - .25, F4 + .25)
     fbox(b, 'precast', ax, c, o, s0, s0 + .5, F2 - .47, F4 + .27, -.3, .80)                            # box west end
-    to_return(b, 'precast', s1 - .5, Y0 - .8, Y0 + .3, F2 - .47, F4 + .27)                           # box east end
-    to_return(b, 'precast', s0 + .5, Y0 - .74, Y0 + .3, F3 - .4, F3 + .2)                            # middle spandrel
+    cut_slab('Frame box middle spandrel', 'precast', s0 + .5, -8.0, Y0 - .74, Y0 + .3, F3 - .4, F3 + .2)
     for z0, z1 in ((F2 + .2, F3 - .4), (F3 + .2, F4 - .25)):
-        glazed(b, ax, c, o, s0 + .5, s1 - .5, z0, z1, 1.9, d=.3)
+        xe = min(s1 - .5, face_x(z0, Y0 - .3) - .45)                                    # ribbons stop short of the shell
+        glazed(b, ax, c, o, s0 + .5, xe, z0, z1, 1.9, d=.3)
+        cut_slab('Frame box east post', 'precast', xe - .02, -8.0, Y0 - .8, Y0 + .3, z0 - .02, z1 + .02)
     fbox(b, 'interior', ax, c, o, s0 + .6, s1 - .6, F2, F4, -4.4, -4.2)
-    to_return(b, 'precast', s0 - .28, Y0 - .3, Y0 + .25, F4 - .01, PARA - .05)                        # parapet band
-    to_return(b, 'coping', s0 - .32, Y0 - .34, Y0 + .3, PARA - .07, PARA - .01)
+    cut_slab('Parapet band', 'precast', s0 - .28, -8.0, Y0 - .3, Y0 + .25, F4 - .01, PARA - .07)
+    cut_slab('Parapet coping', 'coping', s0 - .32, -8.0, Y0 - .34, Y0 + .3, PARA - .07, PARA - .01)
     # Ground floor: recessed glazing with two pairs of doors, the corner column.
     gd = -.7
     fbox(b, 'precast', ax, c, o, s0, s0 + .55, 0.0, F2 - .4, gd - .05, .1)
-    pieces = [(s0 + .55, -21.0), (-19.0, -18.5), (-16.5, s1)]
+    pieces = [(s0 + .55, -22.0), (-20.0, -19.8), (-17.8, s1)]
     for a, e in pieces:
         glazed(b, ax, c, o, a, e, G0, F2 - .45, 1.2, d=gd, transoms=(3.3,))
-    for sc in (-20.0, -17.5):
+    for sc in (-21.0, -18.8):
         door_pair(b, ax, c, o, sc, G0, 3.1, gd)
         fbox(b, 'frame', ax, c, o, sc - 1.0, sc + 1.0, 3.1, 3.2, gd - .03, gd + .03)
         glazed(b, ax, c, o, sc - .97, sc + .97, 3.2, F2 - .45, 9, d=gd)
     fbox(b, 'precast', ax, c, o, s0, s1, F2 - .5, F2 - .45, gd - .3, gd + .02)
     fbox(b, 'interior', ax, c, o, s0 + .6, s1, G0, F2 - .5, -7.0, -6.8)
-    b.box('concrete2', -18.75, Y0 - .25, G0 + .005, 5.4, .9, .01)                                       # entrance mat
+    b.box('concrete2', -19.9, Y0 - .25, G0 + .005, 5.4, .9, .01)                                        # entrance mat
     b.flush('south frame box')
 
 
@@ -2098,8 +2126,9 @@ def south_under_shell():
     fbox(b, 'precast', ax, c, o, -12.7, -10.5, 0.0, PARA, -.5, -.1)                                     # beside the return
     # Plain white wall under the overhang, from behind the shell's back edge to the ribbons: one box per height zone
     # (stacked, never overlapping, so no two front faces share a plane).
-    fbox(b, 'precast', ax, c, o, shell_edge_x(0.0) - .6, XV + .05, 0.0, F4 + .25, -.4, -.1)
-    fbox(b, 'precast', ax, c, o, XE - .02, XV + .05, F4 + .25, EB_TOP - .5, -.4, -.1)
+    fbox(b, 'precast', ax, c, o, shell_edge_x(0.0) - .6, XE - .02, 0.0, PARA - .07, -.4, -.1)
+    fbox(b, 'coping', ax, c, o, shell_edge_x(PARA) - .6, XE - .02, PARA - .07, PARA - .01, -.42, -.08)
+    fbox(b, 'precast', ax, c, o, XE - .02, XV + .05, 0.0, EB_TOP - .55, -.4, -.1)
     levels = [(G0, F2), (F2, F3), (F3, F4), (F4, EB_TOP)]
     for k, (za, zb) in enumerate(levels):
         x_lo = XE + .2 if k == 3 else -12.2
@@ -2111,13 +2140,12 @@ def south_under_shell():
             glazed(b, ax, c, o, xs, X1 - .4, g0, g1, 2.0, d=-.38)
             fbox(b, 'interior', ax, c, o, xs, X1 - .4, za, zb, -4.4, -4.2)
         fbox(b, 'precast', ax, c, o, X1 - .45, X1, g0, g1 + .02, -.4, .05)                              # east end pier
-    fbox(b, 'precast', ax, c, o, max(-12.0, shell_edge_x(F4 - .55) + .02), XE + .2, F4 - .55, PARA - .05, -.4, .05)
-    fbox(b, 'coping', ax, c, o, max(-12.0, shell_edge_x(PARA)), XE + .2, PARA - .06, PARA, -.45, .09)
-    fbox(b, 'precast', ax, c, o, XE + .2, X1, EB_TOP - .55, EB_PARA - .05, -.4, .3)                       # east block parapet
-    fbox(b, 'coping', ax, c, o, XE + .2, X1, EB_PARA - .07, EB_PARA - .01, -.45, .34)
-    fbox(b, 'precast', ax, c, o, max(XP0, shell_edge_x(PARA) - .4), XE + .2, PARA - .05, PH_TOP - .3, -.5, -.08)   # penthouse
-    fbox(b, 'precast', ax, c, o, max(XP0, shell_edge_x(PH_TOP) - .4), XE + .2, PH_TOP - .3, PH_PARA - .05, -.5, .25)
-    fbox(b, 'coping', ax, c, o, max(XP0, shell_edge_x(PH_PARA) - .4), XE + .2, PH_PARA - .06, PH_PARA, -.55, .3)
+    fbox(b, 'precast', ax, c, o, XE + .2, X1, EB_TOP - .55, EB_PARA - .07, -.4, .3)                       # east block parapet
+    fbox(b, 'coping', ax, c, o, XE - .02, X1, EB_PARA - .07, EB_PARA - .01, -.45, .34)
+    fbox(b, 'precast', ax, c, o, XE - .02, XE + .2, EB_TOP - .55, EB_PARA - .07, -.4, .3)                # east block parapet
+    b.box('precast', XE + .15, (Y0 + .1 + PY0 + .1) / 2, (PARA - .3 + EB_PARA - .07) / 2, .3, PY0 - Y0, EB_PARA - .07 - PARA + .3)
+    b.box('coping', XE + .15, (Y0 - .3 + PY0 + .1) / 2, EB_PARA - .04, .42, PY0 - Y0 + .4, .06)     # east block's west end
+    b.box('membrane', (XP0 + XE) / 2, (Y0 + .35 + PY0) / 2, DECK - .03, XE - XP0, PY0 - Y0 - .3, .06)        # roof south of the penthouse
     b.flush('south front under the shell')
 
 
@@ -2200,20 +2228,23 @@ def penthouse():
     roof with a parapet, an air-handling unit with a fan and small plant."""
     b = Batch()
     ax, c, o = 'y', XP0, -1
-    fbox(b, 'precast', ax, c, o, -18.1, Y1, DECK - .3, DECK + .1, -.3, .05)                             # base kerb
+    fbox(b, 'precast', ax, c, o, PY0, Y1, DECK - .3, DECK + .1, -.3, .05)                             # base kerb
     fbox(b, 'precast', ax, c, o, 2.6, Y1, DECK, PH_TOP - .3, -.3, 0.0)                                  # solid north wall
-    fbox(b, 'precast', ax, c, o, -18.1, -16.9, DECK, PH_TOP - .3, -.3, 0.0)
-    fbox(b, 'precast', ax, c, o, -18.1, Y1, PH_TOP - .32, PH_PARA - .05, -.3, .25)                      # parapet band
-    fbox(b, 'coping', ax, c, o, -18.1, Y1, PH_PARA - .06, PH_PARA, -.35, .3)
-    glazed(b, ax, c, o, -16.9, 2.6, DECK + .1, PH_TOP - .32, 2.2, d=-.15)
-    fbox(b, 'interior', ax, c, o, -16.8, 2.5, DECK, PH_TOP - .3, -6.2, -6.0)
+    fbox(b, 'precast', ax, c, o, PY0, PY0 + 1.2, DECK, PH_TOP - .3, -.3, 0.0)
+    fbox(b, 'precast', ax, c, o, PY0, Y1, PH_TOP - .32, PH_PARA - .05, -.3, .25)                      # parapet band
+    fbox(b, 'coping', ax, c, o, PY0 - .05, Y1, PH_PARA - .06, PH_PARA, -.35, .3)
+    glazed(b, ax, c, o, PY0 + 1.2, 2.6, DECK + .1, PH_TOP - .32, 2.2, d=-.15)
+    fbox(b, 'interior', ax, c, o, PY0 + 1.3, 2.5, DECK, PH_TOP - .3, -6.2, -6.0)
     fbox(b, 'frame', ax, c, o, 5.2, 6.4, DECK + .1, DECK + 2.8, -.04, .03)                              # door
     fbox(b, 'hardware', ax, c, o, 6.2, 6.25, DECK + 1.0, DECK + 1.15, .03, .08)
-    # Other walls: north (on the north front), east (over the east block roof).
+    # Other walls: south (set back from the front), north (on the north front), east (over the east block roof).
+    b.box('precast', (XP0 + XE) / 2, PY0 + .15, (DECK - .3 + PH_TOP - .3) / 2, XE - XP0 - .02, .3, PH_TOP - DECK)
+    b.box('precast', (XP0 + XE) / 2, PY0 + .1, (PH_TOP - .32 + PH_PARA - .05) / 2, XE - XP0 + .02, .4, PH_PARA - .05 - PH_TOP + .32)
+    b.box('coping', (XP0 + XE) / 2, PY0 + .1, PH_PARA - .03, XE - XP0 + .1, .5, .06)
     b.box('precast', (XP0 + .05 + XE) / 2, Y1 - .12, (PARA + PH_PARA - .01) / 2, XE - XP0 - .05, .36, PH_PARA - .01 - PARA)
-    b.box('precast', XE + .15, (Y0 + Y1) / 2, (EB_TOP + PH_PARA - .01) / 2, .3, Y1 - Y0 - .2, PH_PARA - .01 - EB_TOP)
+    b.box('precast', XE + .15, (PY0 + Y1) / 2, (EB_TOP + PH_PARA - .01) / 2, .3, Y1 - PY0 - .1, PH_PARA - .01 - EB_TOP)
     # Roof.
-    b.box('membrane', (XP0 + XE) / 2, (-18.1 + Y1) / 2, PH_TOP - .05, XE - XP0 - .2, Y1 + 18.1 - .2, .1)
+    b.box('membrane', (XP0 + XE) / 2, (PY0 + Y1) / 2, PH_TOP - .05, XE - XP0 - .2, Y1 - PY0 - .2, .1)
     b.box('mech', -.6, 9.5, PH_TOP + .8, 3.0, 3.4, 1.6)
     frustum(b, 'hardware', -.6, 8.9, PH_TOP + 1.6, PH_TOP + 1.66, .9, .9, 16)
     b.box('frame', -.6, 8.9, PH_TOP + 1.68, 1.9, .06, .04)
@@ -2379,6 +2410,12 @@ def shell():
     hull = _PkPolygon(pts).convex_hull.buffer(.1, join_style=2)
     C.prism('Climbing shell bouldering deck', list(hull.exterior.coords)[:-1][::-1] if hull.exterior.is_ccw is False else list(hull.exterior.coords)[:-1],
             'z', zm - .35, zm + .1, 'mat', 'climbing shell')
+    foot = _PkPolygon([(SH[k][0], SH[k][1]) for k in ('G', 'BN', 'BS', 'BW')])                     # a soft dark contact band
+    band = foot.buffer(.45, join_style=2).difference(foot.buffer(-.02, join_style=2)).difference(_pksh.box(-40, FY - .05, 40, 40))
+    for part in getattr(band, 'geoms', [band]):
+        if part.geom_type == 'Polygon' and part.area > .01:
+            pts = list(part.exterior.coords)[:-1]
+            C.prism('Climbing shell contact shade', pts if part.exterior.is_ccw else pts[::-1], 'z', .1495, .1565, 'shade', 'climbing shell')
     C.CONTACTS.append(dict(name='Climbing shell: foot sunk 15 cm into the plaza, back plane lapped 10 cm into the facade', rim_m=RIM))
     return tris, inner
 
@@ -2432,7 +2469,7 @@ def holds(tris, inner):
     b = Batch()
     placed = []
 
-    def scatter(tri, n, count, white, zmin=.6, zmax=RIM - .8, inner_face=False, band=None):
+    def scatter(tri, n, count, white, zmin=.6, zmax=RIM - .8, inner_face=False, band=None, big=1.0):
         a, b_, c = tri
         done = 0; tries = 0
         while done < count and tries < count * 40:
@@ -2445,7 +2482,7 @@ def holds(tris, inner):
             if any((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2 + (p[2] - q[2]) ** 2 < .36 ** 2 for q in placed):
                 continue
             placed.append(p); done += 1
-            r = rnd.uniform(.07, .17); h = rnd.uniform(.05, .11)
+            r = rnd.uniform(.07, .17) * big; h = rnd.uniform(.05, .11)
             role = 'hold_w' if rnd.random() < white else 'hold'
             hold(b, role, p, n, r, h, rnd)
     for t, n in tris:
@@ -2454,7 +2491,7 @@ def holds(tris, inner):
         if names <= {'BS', 'RSE', 'KS', 'RSW', 'KX'} and 'RSE' in names:                  # south face
             scatter(P, n, 32, .22)
         elif names in ({'BW', 'BS', 'KS'}, {'BW', 'KS', 'KX'}, {'KW', 'KX', 'RSW'}):         # west faces: plain timber except
-            scatter(P, n, 6, .9, band=lambda p: fold_dist(p) < 1.7)                          # a white band along the west/south fold
+            scatter(P, n, 9, .9, band=lambda p: fold_dist(p) < 1.7, zmin=.4, big=1.5)        # a white band along the west/south fold
         elif names <= {'BS', 'BN', 'RNE', 'RSE'}:                                         # east face
             scatter(P, n, 12, .3, zmin=2.0)
     for t, n in tris:                                                                   # inner faces near the rim

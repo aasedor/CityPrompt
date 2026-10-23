@@ -4,15 +4,19 @@ barcelona_passatge / variant_0 ("Morning Light Through Glass").
 Read from the pixels (the top view governs the plan): a straight pedestrian passage, about 11 m between its facades
 and about 30 m long (2.5 widths in the top view), cut north-south through a city block and roofed by a pointed glass
 vault on transverse wrought-iron ribs; each rib drops onto a pilaster corbel through an openwork lattice bracket
-(front). The vault springs from the cornices of the two passage facades: three storeys of red-orange brick with
-cream stone pilasters, belt courses and arch surrounds, a row of shopfronts with timber frames, plate glass and dark
-green signboards with gilt lettering under a stone shop cornice, tall round-arched French windows with wrought-iron
-balconies on the first and second floors, and wall lanterns on the pilasters (front). The north end is a brick end
-wall with a great round-arched portal in a stone archivolt, stone medallions either side and a glazed lunette above
-it; the portal opens onto a street with a pale stuccoed apartment house and bare trees (front). The south mouth opens
-onto a small square paved in a diamond lattice between two brick pavilions with stone quoins, cornices and corner
-finials, under an ornamental iron end arch with a lattice band; the vault ribs carry crests along the outside
-(oblique). The passage floor is pale hydraulic tile in a grey diamond lattice with a border; two back-to-back
+(front). The vault springs from the cornices of the two passage facades, about 10.8 m up: cream stone pilasters
+divide each facade into bays; the tall shop storey has timber shopfronts with plate glass under dark green
+signboards with gilt lettering and a stone entablature at about 6 m; above it each bay is one deep recessed round
+arch in red-orange brick (brick soffit and reveals) with a tall French window and fanlight at its back and one
+wrought-iron balcony on the entablature; the vault brackets spring from corbels at the arch springing; wall lanterns
+hang on the pilasters (front). The north end is a brick end wall about as tall as it is wide, with a round-arched
+portal about half its width in a stone archivolt between stone piers, a continuous stone impost band in line with
+the shop entablature, a stone medallion in each brick field, a small stone-framed side doorway and a glazed lunette
+above; the portal opens onto a street with a pale stuccoed apartment house and bare trees (front). The south mouth
+opens onto a small square paved in a diamond lattice between two two-storey pavilions (a cream stone shop storey, a
+brick upper storey with one window and a small balcony, cornice, brick attic with urn finials and quoins), under an
+ornamental iron end arch with a deep band, an inner round arch and a ringed spandrel; the vault ribs carry crests
+along the outside (oblique). The passage floor is pale hydraulic tile in a grey diamond lattice with a border; two back-to-back
 benches stand on the axis, a cafe has tables near the portal, and canvas awnings hang over two shops (front). The
 west block has a flat terracotta roof deck behind a balustrade along the vault, with white rooftop rooms and a
 pergola; the east range is a narrow brick strip on the east street (oblique, top). Cream stuccoed five- and
@@ -32,11 +36,11 @@ ENDT = 1.2                                      # north end wall thickness
 YN = L + ENDT                                   # north face of the passage block
 XW, XP, XE = -18.5, -12.0, 9.0                  # west face of the west block, west edge of the brick pavilion, east face of the east range
 FZ = .12                                        # tile floor top in the passage and the square
-SHOP = 3.8                                      # shopfront clear height above the floor
-F1, F2 = 5.0, 8.3                               # first- and second-floor levels
-EAVE = 12.5                                     # top of the passage cornices; the glass vault springs here
+SHOP = 4.4                                      # shopfront clear height above the floor (the shop zone runs to the entablature at 6 m)
+F1 = 6.0                                        # upper floor level: top of the shop entablature, base of the arched bays
+EAVE = 10.8                                     # top of the passage cornices; the glass vault springs here (end wall about 10.7 m in the front)
 VX, VH = 5.3, 5.0                               # vault half-span at the eave gutters and vault rise
-CORBEL = 9.6                                    # top of the pilaster corbels that carry the rib legs
+CORBEL = 8.35                                   # top of the pilaster corbels that carry the rib legs, at the arch springing
 RIBS = [6.0, 10.8, 15.6, 20.4, 25.2]            # transverse ribs over the pilasters (y)
 BAYS = [(.4, 6.0)] + [(6.0 + 4.8 * i, 10.8 + 4.8 * i) for i in range(5)]
 ROOM, UPR = 3.0, 1.6                            # ground-floor shop depth, upper-room depth behind the facades
@@ -45,7 +49,7 @@ XWS, XES, YNS = XW - 2 * SW - RW, XE + 2 * SW + RW, YN + 2 * SW + RW   # opposit
 YSQ, YSS = -10.0, -17.0                         # south edge of the square, opposite building line on the south street
 XMIN, XMAX, YMIN, YMAX = XWS - 12.0, XES + 12.0, YSS - 12.0, YNS + 12.0
 EPS = .002
-PALETTE = dict(brick=(.58, .30, .19), brick2=(.68, .44, .31), stone=(.80, .71, .55), stucco=(.86, .79, .65),
+PALETTE = dict(brick=(.55, .26, .15), brick2=(.68, .44, .31), stone=(.80, .71, .55), stucco=(.86, .79, .65),
     stucco2=(.80, .72, .58), mortar=(.76, .64, .52), iron=(.17, .21, .19), frame=(.15, .20, .17), hardware=(.06, .06, .07),
     glass=(.62, .68, .68), trim=(.88, .86, .80), shopframe=(.36, .20, .10), timber=(.52, .33, .18), sign=(.07, .17, .13),
     gold=(.80, .62, .28), awning=(.88, .82, .68), lamp=(.95, .90, .72), tile=(.80, .76, .68), tile2=(.44, .44, .43), joint=(.70, .66, .58),
@@ -58,16 +62,16 @@ PALETTE = dict(brick=(.58, .30, .19), brick2=(.68, .44, .31), stone=(.80, .71, .
 def manifest(version):
     h = 20.5
     cams = G.camera_roster(60.0, 60.0, h, [
-        ('facade_close', (4.6, 13.2, 6.4), (-HW, 13.2, 6.6), 17),                  # one west bay through all floors
-        ('architecture_close', (-2.2, 17.2, 7.8), (HW, 15.6, 11.4), 28),            # rib leg, corbel, lattice bracket and cornice
-        ('glass_close', (0.0, 11.0, 2.0), (0.0, 18.0, 16.0), 22),                   # the vault glazing and ribs from below
+        ('facade_close', (4.6, 13.2, 5.6), (-HW, 13.2, 5.8), 18),                  # one west bay through all floors
+        ('architecture_close', (-2.2, 17.2, 6.6), (HW, 15.6, 10.0), 28),            # rib leg, corbel, lattice bracket and cornice
+        ('glass_close', (0.0, 11.0, 2.0), (0.0, 18.0, 14.4), 22),                   # the vault glazing and ribs from below
         ('interior', (-.6, 27.6, 1.65), (.5, 0.0, 4.6), 20),                        # eye level near the portal, looking back to the mouth
-        ('roof_vault', (-15.0, 5.0, 25.0), (0.0, 15.0, 14.7), 30),
+        ('roof_vault', (-15.0, 5.0, 23.5), (0.0, 15.0, 13.0), 30),
         ('south_portal', (1.5, -9.0, 1.7), (0.0, 1.0, 7.0), 20),                   # the square: mouth, end arch and pavilions
         ('north_portal', (1.0, YN + 7.2, 1.7), (0.0, YN, 6.0), 22),                # the end wall and portal from the north street
         ('shopfronts', (-3.0, 19.0, 1.8), (HW, 22.8, 2.6), 24),
         ('floor_tiles', (2.5, 7.0, 3.6), (0.0, 16.0, .2), 24),
-        ('pavilion_finial', (-2.5, -8.5, 16.7), (-6.0, .3, 14.4), 30)])
+        ('pavilion_finial', (-2.5, -8.5, 15.0), (-6.0, .3, 12.7), 30)])
     for c in cams:
         if c['name'] == 'front':                                               # the locked front: eye level inside the passage, looking north to the portal
             c.update(location=(.6, 10.5, 1.65), target=(-.2, L, 4.7), lens=20, whole=False)
@@ -90,17 +94,17 @@ def manifest(version):
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='barcelona_passatge/variant_0 (Morning Light Through Glass), modelled as a glass-vaulted passage through an Eixample-era block',
         measurement_contract=dict(dimensions_m=dict(width=XMAX - XMIN, depth=YMAX - YMIN, height=h),
-            observed_storeys=3, storey_programme='street option: a covered pedestrian passage; the three-storey brick facades with shops below and flats above are the walls it is read with',
+            observed_storeys=2, storey_programme='street option: a covered pedestrian passage; the brick facades (a tall shop storey and one tier of deep arched bays with balconies) are the walls it is read with',
             plan=f'{2 * HW:.0f} m between the passage facades and {L:.0f} m from the open south mouth to the end wall (top view); a {ENDT} m brick end wall with a round-arched portal to the north street; a tiled square in front of the mouth',
-            section_m=dict(passage_width=2 * HW, floor=FZ, shop_head=FZ + SHOP, first_floor=F1, second_floor=F2, eave=EAVE, vault_crown=EAVE + .12 + VH),
-            facade='red-orange brick with cream stone pilasters, belts and arch surrounds; timber shopfronts with green gilt-lettered signboards; round-arched French windows with wrought-iron balconies; wall lanterns',
+            section_m=dict(passage_width=2 * HW, floor=FZ, shop_head=FZ + SHOP, shop_entablature=F1, arch_springing=CORBEL, eave=EAVE, vault_crown=EAVE + .12 + VH),
+            facade='red-orange brick with cream stone pilasters and a stone shop entablature; timber shopfronts with green gilt-lettered signboards; above, one deep recessed round brick arch per bay with a tall French window and fanlight at its back and one wrought-iron balcony at its base; wall lanterns',
             vault='pointed glass vault on five transverse wrought-iron ribs with lattice brackets on pilaster corbels, dense glazing bars, three purlins a side, crests on the ribs, a glazed north lunette and an ornamental south end arch',
-            levels_m=[0.0, FZ, F1, F2, EAVE, EAVE + .12 + VH],
+            levels_m=[0.0, FZ, FZ + SHOP, F1, CORBEL, EAVE, EAVE + .12 + VH],
             inferred='shop interiors, upper rooms, the outer faces of the passage block and the surrounding blocks are context and teaching assumptions; metric dimensions are authored from the pixel ratios'),
         roof_contract=dict(type='pointed glass vault on iron ribs between the passage cornices; flat terracotta roof decks with parapets, a balustrade along the vault and rooftop rooms', datum_m=EAVE, crowns_m=[EAVE + .12 + VH]),
         identity_contract=dict(owner='Barcelona covered passage: a pointed glass vault on ornate wrought-iron ribs over a diamond-tiled pedestrian passage between brick shop facades with arched balconied windows, closed by an arched brick portal and opening onto a tiled square between brick pavilions'),
         material_contract=dict(profile='source-palette clay: red-orange brick, cream stone, dark green-black iron, pale glass, timber shopfronts, green and gilt signs, pale tile with grey lattice bands, terracotta roof decks, cream stucco', textured_keeper=False),
-        programme_contract=dict(storeys=3, ground='shops and a cafe opening onto the passage', upper='flats with balconies over the passage'),
+        programme_contract=dict(storeys=2, ground='shops and a cafe opening onto the passage', upper='flats with balconies over the passage'),
         street_contract=dict(kind='fixed_native_section', width_m=2 * HW, axis='north-south pedestrian passage through the block', junction_finish='open south mouth onto a tiled square; arched portal onto the north street',
                              bands=['shop_facade', 'tiled_passage_floor', 'shop_facade', 'glass_vault_overhead', 'square_at_the_mouth', 'surrounding_streets']),
         contact_contract=['Asphalt at grade zero', 'Tile floor and square at 120 mm, sidewalks at 150 mm', 'Facades and pavilions from grade', 'Vault on the cornice gutters, ribs on the pilaster corbels', 'Benches, tables and lamp posts on the tiles'],
@@ -428,7 +432,8 @@ def chimney(b, x, y, z0, z1, w=.9, d=.6, pots=2, role='brick', pot='pot', cap='s
 
 # ---- Barcelona passatge (covered passage) ----
 
-W1Z, W2Z = 5.0, 8.4                                                         # first- and second-floor window sills
+FD = .6                                                                     # passage facade depth: the arched bays are recessed this deep
+RZ, RCROWN = F1, 9.95                                                       # bay arch base (on the shop entablature) and crown
 FW = C.Face((-HW, 0, 0), (0, 1, 0), (-1, 0, 0), 'west passage facade')      # u = y, inward -x (into the west block)
 FE = C.Face((HW, 0, 0), (0, 1, 0), (1, 0, 0), 'east passage facade')        # u = y, inward +x (into the east range)
 FSW = C.Face((XP, 0, 0), (1, 0, 0), (0, 1, 0), 'west pavilion south face')  # x = XP + u, inward +y
@@ -576,7 +581,7 @@ def arch_window(m, b, f, name, uc, z, w, rect, wall, balcony=0.0, frame='frame',
         m.box('stone', uc, -.07, z - .065, w + .3, .14, .12)                # sill, 5 mm below the cut
 
 
-def french_window(m, b, f, name, uc, z, w, rect, balcony):
+def french_window(m, b, f, name, uc, z, w, rect, balcony, plain=False):
     """Tall round-arched French window: two glazed leaves (three panes over a panel) to the springing, a fanlight
     with fan bars in the round head, frames 0.28 m back in brick reveals, a stone archivolt, imposts and keystone, and
     a shallow wrought-iron balcony at the sill."""
@@ -585,11 +590,39 @@ def french_window(m, b, f, name, uc, z, w, rect, balcony):
     m.box('frame', uc, .245, z + .3, w - .16, .04, .46)                     # bottom panels of the leaves
     spandrels(f, name, uc, zs, r, T, 'brick')
     fanlight(b, f, name, uc, zs, r, inset=.28)
-    archivolt(f, name, uc, zs, r, width=.25)
-    m.box('stone', uc, -.05, zs + r + .15, .32, .12, .3)                    # keystone, its foot on the crown
-    for s in (-1, 1):                                                        # imposts at the springing
-        m.box('stone', uc + s * (r + .13), -.04, zs - .07, .38, .1, .14)
-    flat_balcony(m, b, f, uc, z - .01, w + .9, balcony)
+    if not plain:
+        archivolt(f, name, uc, zs, r, width=.25)
+        m.box('stone', uc, -.05, zs + r + .15, .32, .12, .3)                # keystone, its foot on the crown
+        for s in (-1, 1):                                                    # imposts at the springing
+            m.box('stone', uc + s * (r + .13), -.04, zs - .07, .38, .1, .14)
+    if balcony:
+        flat_balcony(m, b, f, uc, z - .01, w + .9, balcony)
+
+
+def bay_arch(m, b, f, name, uc, rw):
+    """Upper bay as one deep recessed round arch in brick: a brick arch ring, brick soffit and reveals through the
+    0.6 m facade depth, a tall French window with a fanlight in the brick infill at the back of the recess, a stone
+    recess floor, and one wrought-iron balcony standing on the shop entablature."""
+    r = rw / 2; zs = RCROWN - r
+    spandrels(f, name, uc, zs, r, FD, 'brick')
+    archivolt(f, name, uc, zs, r, width=.32, role='brick2')
+    m.box('stone', uc, .32, RZ + .06, rw, .56, .12)                         # recess floor at the balcony level
+    fr = C.Face(f.p(0, FD, 0), tuple(f.t), tuple(f.n), f.label + ' recess')
+    ww, wz = 2.4, RZ + .13
+    wrect = zs + .05 - wz
+    carrier(fr, name + ' infill', uc - r, uc + r, RZ, RCROWN, [hole(name + ' french', uc, wz, ww, wrect + ww / 2)], 'brick', depth=T)
+    mr = Merge(fr)
+    french_window(mr, b, fr, name + ' french', uc, wz, ww, wrect, 0.0, plain=True)
+    mr.flush(name + ' recess')
+    flat_balcony(m, b, f, uc, RZ + .12, rw + .1, .55)
+
+
+def entablature(m, a, c):
+    """Stone shop entablature over the signboards, its top at the upper floor level: frieze, bed moulding and a
+    corona projecting 0.18 m that the balconies stand on."""
+    m.box('stone', (a + c) / 2, -.03, (FZ + SHOP + .73 + F1 - .22) / 2, c - a - EPS, .06, F1 - .22 - (FZ + SHOP + .73))
+    m.box('stone', (a + c) / 2, -.05, F1 - .17, c - a - EPS, .1, .1)
+    m.box('stone', (a + c) / 2, -.09, F1 - .06, c - a - EPS, .18, .12)
 
 
 def shopfront(m, f, name, uc, w, sign=True):
@@ -597,12 +630,14 @@ def shopfront(m, f, name, uc, w, sign=True):
     green signboard with a gilt name band above the cut."""
     framed(m, f, hole(name, uc, FZ, w, SHOP), cols=3, rows=1, inset=.22, occupied='shop', frame='shopframe')
     m.box('shopframe', uc, .21, FZ + SHOP * .76, w - .14, .08, .07)          # transom bar
-    m.box('timber', uc, .15, FZ + .32, w - .16, .08, .5)                     # panelled timber bulkhead in front of the glass
-    m.box('shopframe', uc, .105, FZ + .6, w - .14, .03, .06)                  # bulkhead capping rail
+    m.box('timber', uc, .15, FZ + .36, w - .16, .08, .58)                    # panelled timber bulkhead in front of the glass
+    m.box('shopframe', uc, .105, FZ + .68, w - .14, .03, .06)                 # bulkhead capping rail
+    for s in (-1, 0, 1):                                                     # raised panels on the bulkhead
+        m.box('shopframe', uc + s * (w - .3) / 3, .102, FZ + .36, (w - .5) / 3, .02, .36)
     m.box('hardware', uc + w / 6 - .12, .15, FZ + 1.1, .04, .04, .3)        # door pull on the middle light
     if sign:
         m.box('sign', uc, -.06, FZ + SHOP + .45, w + .2, .08, .56)
-        m.box('gold', uc, -.104, FZ + SHOP + .45, w * .62, .012, .15)
+        m.box('gold', uc, -.104, FZ + SHOP + .45, w * .62, .012, .15)       # the sign top meets the entablature frieze
 
 
 def wall_lantern(b, f, u, z):
@@ -630,26 +665,23 @@ def passage_facade(f, side):
         uc = (u0 + u1) / 2 + (.25 if i == 0 else 0.0)
         ws = 3.0 if i == 0 else 3.4
         holes.append(hole(f'{f.label} shop {i}', uc, FZ, ws, SHOP))
-        holes.append(hole(f'{f.label} first {i}', uc, W1Z, 1.8, 2.0 + .9))
-        holes.append(hole(f'{f.label} second {i}', uc, W2Z, 1.7, 2.0 + .85))
+        holes.append(hole(f'{f.label} arch {i}', uc, RZ, 3.0 if i == 0 else 3.2, RCROWN - RZ))
         specs.append((i, u0, u1, uc, ws))
-    carrier(f, f.label + ' carrier', .4, L, 0.0, EAVE - .05, holes, 'brick')
+    carrier(f, f.label + ' carrier', .4, L, 0.0, EAVE - .05, holes, 'brick', depth=FD)
     m = Merge(f); b = Batch()
     for i, u0, u1, uc, ws in specs:
         shopfront(m, f, f'{f.label} shop {i}', uc, ws)
-        french_window(m, b, f, f'{f.label} first {i}', uc, W1Z, 1.8, 2.0, .5)
-        french_window(m, b, f, f'{f.label} second {i}', uc, W2Z, 1.7, 2.0, .45)
+        bay_arch(m, b, f, f'{f.label} bay {i}', uc, 3.0 if i == 0 else 3.2)
     for u in RIBS + [L - .3]:                                               # stone pilasters, ground to cornice
         m.box('stone', u, -.06, (EAVE - .62) / 2, .8 if u < L - 1 else .6, .12, EAVE - .62)
         if u < L - 1:
             for zc, w, d, h in ((CORBEL - .06, .7, .56, .12), (CORBEL - .3, .52, .48, .36), (CORBEL - .58, .42, .36, .2), (CORBEL - .76, .3, .24, .16)):
                 m.box('stone', u, -d / 2, zc, w, d, h)                       # moulded corbel: abacus, block, scroll, drop
             wall_lantern(b, f, u, FZ + SHOP - 1.0)
-    for k in range(int((EAVE - .7) / .6)):                                  # quoins returning from the pavilion corner
+    for k in range(int((EAVE - .7 - RZ) / .6)):                             # quoins returning from the pavilion corner (brick storey)
         w = .9 if k % 2 == 0 else .6
-        m.box('stone', w / 2 - .03, -.03, .3 + .6 * k + .27, w, .1, .53)
-    m.box('stone', (.4 + L) / 2, -.09, 4.81, L - .4 - EPS, .18, .12)         # shop cornice over the signboards: corona (the balconies sit on it)
-    m.box('stone', (.4 + L) / 2, -.05, 4.70, L - .4 - EPS, .1, .1)           # and its bed moulding
+        m.box('stone', w / 2 - .03, -.03, RZ + .3 + .6 * k + .27, w, .1, .53)
+    entablature(m, 0.0, L)
     m.box('stone', (.4 + L) / 2, -.04, .3, L - .4 - EPS, .08, .6)           # stone plinth band
     eave_cornice(m, 0.0, L, EAVE, proj=.7, role='stone')                     # mitred with the pavilion cornice by mouth_corners()
     m.flush(f.label)
@@ -660,14 +692,13 @@ def passage_facade(f, side):
         (x0, y0, _), (x1, y1, _) = f.p(ua, da, 0), f.p(ub, db, 0)
         rb.box(role, (x0 + x1) / 2, (y0 + y1) / 2, (za + zb) / 2, abs(x1 - x0), abs(y1 - y0), zb - za)
     blk('floor', .4, L, T - .02, ROOM, FZ - .1, FZ)
-    blk('interior', .4, L, T - .02, ROOM + .02, 4.3, 4.5)
-    for z in (F1, F2):
-        blk('floor', .4, L, T - .02, UPR, z - .2, z)
+    blk('interior', .4, L, FD - .02, ROOM + .02, 4.8, 5.0)
+    blk('floor', .4, L, FD - .02, UPR, F1 - .2, F1)
     blk('interior', .4, L, T - .02, UPR, EAVE - .5, EAVE - .3)
-    blk('interior', .4, L, UPR, UPR + .02, 4.5, EAVE - .3)                  # upper-room liner
-    blk('interior', .4, L, ROOM, ROOM + .02, FZ, 4.5)                       # shop back wall
+    blk('interior', .4, L, UPR, UPR + .02, 5.0, EAVE - .3)                  # upper-room liner
+    blk('interior', .4, L, ROOM, ROOM + .02, FZ, 5.0)                       # shop back wall
     for u in RIBS:
-        blk('interior', u - .08, u + .08, T - .02, ROOM, FZ, 4.3)           # shop partitions
+        blk('interior', u - .08, u + .08, FD - .02, ROOM, FZ, 4.8)          # shop partitions
         blk('interior', u - .08, u + .08, T - .02, UPR, F1, EAVE - .5)
     for i, u0, u1, uc, ws in specs:                                          # goods shelves on the shop back walls
         blk('timber', uc - 1.3, uc + 1.3, ROOM - .45, ROOM, FZ + .9, FZ + .96)
@@ -677,37 +708,37 @@ def passage_facade(f, side):
     rb.flush(f.label + ' rooms')
     for i, u0, u1, uc, ws in specs:
         C.qa_room_light(f'{f.label} shop {i}', f.p(uc, 1.6, 3.6), 45, 1.2)
-        C.qa_room_light(f'{f.label} flat {i}', f.p(uc, .9, F1 + 2.2), 8, .5)
-        C.qa_room_light(f'{f.label} flat2 {i}', f.p(uc, .9, F2 + 1.9), 6, .5)
+        C.qa_room_light(f'{f.label} flat {i}', f.p(uc, 1.3, F1 + 2.2), 10, .5)
 
 
 def pavilion_face(f, name, u1, holes_u, pw, wall='brick', corner='east'):
-    """South face of a brick pavilion at the mouth: shop, arched first-floor window with a balcony, second-floor
-    window, stone quoins at both corners, cornice and parapet."""
+    """South face of a two-storey pavilion at the mouth: a cream stone shop storey with a shopfront, signboard and
+    entablature, one brick upper storey with a tall window under a corniced head on consoles and a small balcony,
+    quoins on the brick storey, cornice and a brick attic parapet."""
     uc = holes_u
-    holes = [hole(name + ' shop', uc, FZ, pw, SHOP), hole(name + ' first', uc, W1Z, 1.3, 2.4), hole(name + ' second', uc, W2Z, 1.2, 2.25)]
-    carrier(f, name + ' carrier', 0.0, u1, 0.0, EAVE - .05, holes, wall)
-    courses(f, .05, u1 - .05, .6, EAVE - .7, [dict(h, w=h['w'] + .55, h=h['h'] + .3) for h in holes])
+    hs, hw = hole(name + ' shop', uc, FZ, pw, SHOP), hole(name + ' upper', uc, F1 + .4, 1.4, 2.9)
+    carrier(f, name + ' stone storey', 0.0, u1, 0.0, F1, [hs], 'stone')
+    carrier(f, name + ' brick storey', 0.0, u1, F1, EAVE - .05, [hw], wall)
     m = Merge(f); b = Batch()
     shopfront(m, f, name + ' shop', uc, pw)
-    for h in holes[1:]:                                                      # tall windows with a corniced head on consoles
-        framed(m, f, h, cols=2, rows=3, inset=.28, occupied='flat', frame='frame')
-        zt = h['z'] + h['h']
-        m.box('stone', uc, -.05, zt + .14, h['w'] + .4, .1, .28)            # head frieze
-        m.box('stone', uc, -.1, zt + .33, h['w'] + .66, .2, .1)             # head cornice
-        for s in (-1, 1):
-            m.box('stone', uc + s * (h['w'] / 2 + .12), -.07, zt + .1, .14, .14, .36)   # consoles
-    flat_balcony(m, b, f, uc, W1Z - .01, 1.9, .4)
-    m.box('stone', uc, -.07, W2Z - .065, 1.5, .14, .12)                      # second-floor sill
+    framed(m, f, hw, cols=2, rows=3, inset=.28, occupied='flat', frame='frame')
+    zt = hw['z'] + hw['h']
+    m.box('stone', uc, -.05, zt + .14, hw['w'] + .4, .1, .28)              # head frieze
+    m.box('stone', uc, -.1, zt + .33, hw['w'] + .66, .2, .1)               # head cornice
+    for s in (-1, 1):
+        m.box('stone', uc + s * (hw['w'] / 2 + .12), -.07, zt + .1, .14, .14, .36)     # consoles
+    flat_balcony(m, b, f, uc, hw['z'] - .01, 1.9, .4)
     big, small = (.9, .6) if u1 > 5 else (.6, .4)
-    for u in (.0, u1):                                                       # quoins on both corners
-        for k in range(int((EAVE - .7) / .6)):
+    for u in (.0, u1):                                                       # quoins on the brick storey
+        for k in range(int((EAVE - .7 - F1) / .6)):
             w = big if k % 2 == 0 else small
             uu = u + (w / 2 - .03 if u == 0.0 else -(w / 2 - .03))
-            m.box('stone', uu, -.03, .3 + .6 * k + .27, w, .1, .54)
-    m.box('stone', u1 / 2, -.09, 4.81, u1, .18, .12)
-    m.box('stone', u1 / 2, -.05, 4.70, u1, .1, .1)
-    m.box('stone', u1 / 2, -.04, .3, u1, .08, .6)
+            m.box('stone', uu, -.03, F1 + .3 + .6 * k + .27, w, .1, .54)
+    entablature(m, 0.0 if corner == 'west' else -.03, u1 if corner == 'east' else u1 + .03)
+    for k in range(int((F1 - .9) / .45)):                                   # rusticated joints on the stone storey, around the shop
+        z = .6 + .45 * k
+        for a, c in band_runs(.01, u1 - .01, z - .02, z + .02, [dict(hs, w=hs['w'] + .1, h=hs['h'] + .9)]):
+            m.box('stone', (a + c) / 2, -.012, z, c - a, .025, .03)
     eave_cornice(m, 0.0 if corner == 'west' else -.03, u1 if corner == 'east' else u1 + .03, EAVE, proj=.7, role='stone')
     m.box(wall, u1 / 2, T / 2, EAVE + .4, u1, T, .9)                         # parapet
     m.box('stone', u1 / 2, T / 2, EAVE + .9, u1 + .1, T + .1, .1)
@@ -719,7 +750,8 @@ def mouth_corners(b):
     mouth: the two cornices butt at the corner and these fill the outer quadrant, so the profiles turn without
     overlap or step."""
     for s in (-1, 1):
-        for zc, h, out in ((EAVE - .62, .26, .4), (EAVE - .13, .26, .88), (EAVE, .06, .83)):
+        for zc, h, out in ((EAVE - .62, .26, .4), (EAVE - .13, .26, .88), (EAVE, .06, .83),
+                           ((FZ + SHOP + .73 + F1 - .22) / 2, F1 - .22 - (FZ + SHOP + .73), .06), (F1 - .17, .1, .1), (F1 - .06, .12, .18)):
             b.box('stone', s * (HW - out / 2), -out / 2, zc, out, out, h)
 
 
@@ -781,14 +813,14 @@ def passage_block():
     b.box('stucco', (XW + T + XP) / 2, T / 2, (EAVE + .9) / 2, XP - XW - T, T, EAVE + .9)
     b.box('stucco', (XW - HW - T) / 2, YN - T / 2, (EAVE + .9) / 2, -HW - T - XW, T, EAVE + .9)
     b.box('interior', (XW + T - HW - ROOM - .02) / 2, (1.62 + YN - T) / 2, (EAVE - .3) / 2, -HW - ROOM - .02 - XW - T, YN - T - 1.62, EAVE - .3)
-    b.box('interior', -HW - (ROOM + UPR) / 2 - .01, (1.62 + YN - T) / 2, (4.5 + EAVE - .3) / 2, ROOM - UPR + .02, YN - T - 1.62, EAVE - .3 - 4.5)
-    for z in (F1, F2):
+    b.box('interior', -HW - (ROOM + UPR) / 2 - .01, (1.62 + YN - T) / 2, (5.0 + EAVE - .3) / 2, ROOM - UPR + .02, YN - T - 1.62, EAVE - .3 - 5.0)
+    for z in (F1,):
         b.box('floor', (XP - HW - UPR) / 2, (T - .02 + 1.62) / 2, z - .1, -HW - UPR - XP, 1.64 - T, .2)
         b.box('floor', (XE + HW + UPR) / 2 - .2, (T - .02 + 1.62) / 2, z - .1, XE - HW - UPR - .4, 1.64 - T, .2)
     # east range outer walls (brick) and core
     b.box('brick', XE - T / 2, (T + YN - T) / 2, (EAVE + .6) / 2, T, YN - 2 * T, EAVE + .6)
     b.box('brick', (HW + T + XE) / 2, YN - T / 2, (EAVE + .6) / 2, XE - HW - T, T, EAVE + .6)
-    b.box('interior', (HW + UPR + XE - T) / 2, (1.62 + YN - T) / 2, (4.5 + EAVE - .3) / 2, XE - T - HW - UPR, YN - T - 1.62, EAVE - .3 - 4.5)
+    b.box('interior', (HW + UPR + XE - T) / 2, (1.62 + YN - T) / 2, (5.0 + EAVE - .3) / 2, XE - T - HW - UPR, YN - T - 1.62, EAVE - .3 - 5.0)
     # roof decks, parapet copings, balustrade along the vault on the west block, brick parapet on the east range
     b.box('terracotta', (XW + T - HW - T + .02) / 2, (T + YN - T) / 2, EAVE - .21, -HW - T + .02 - XW - T, YN - 2 * T, .18)
     b.box('terracotta', (HW + T - .02 + XE - T) / 2, (T + YN - T) / 2, EAVE - .21, XE - T - HW - T + .02, YN - 2 * T, .18)
@@ -831,39 +863,45 @@ def passage_block():
                                                  (HW + T, YN, 1, 0, 0, 1, 1.55, 1.55, 3.0)):
         u = u0
         while u <= u1 + 1e-6:
-            for k, (z, hh) in enumerate(((1.0, 2.4), (F1 + .4, 2.3), (F2 + .35, 2.0))):
+            for k, (z, hh) in enumerate(((1.0, 2.4), (F1 + .4, 2.6))):
                 proud_window(w, (x0 + tx * u, y0 + ty * u), (tx, ty), (nx, ny), z, 1.1, hh, balcony=k > 0)
             u += step
     w.flush('outer windows')
-    for k, (x, z) in enumerate(((-9.0, 3.0), (7.3, 3.0), (-9.0, F1 + 2.0), (7.3, F1 + 2.0), (-9.0, F2 + 1.8), (7.3, F2 + 1.8))):
+    for k, (x, z) in enumerate(((-9.0, 3.0), (7.3, 3.0), (-9.0, F1 + 2.0), (7.3, F1 + 2.0))):
         C.qa_room_light(f'pavilion rooms {k}', (x, 1.0, z), 30 if z < 4 else 8, .6)
 
 
 def north_end_wall():
-    """Brick end wall with the great round-arched portal, stone archivolts and keystones on both faces, medallions,
-    a cornice and the glazed lunette above it."""
-    pw, rect = 7.6, 6.4
-    r = pw / 2; zs = FZ + rect
-    holes = [hole('portal', PU, 0.0, pw, zs + r)]
+    """Brick end wall measured from the locked front: a round-arched portal about half the wall width (5.8 m clear,
+    springing at the 6 m impost, crown about 8.9 m) in a stone archivolt with a keystone, full-height stone piers on
+    bases, a continuous stone impost band in line with the shop entablature, a stone medallion centred in each brick
+    field, a small stone-framed side doorway on the west, a cornice and the glazed lunette above."""
+    pw = 5.8
+    r = pw / 2; zs = F1
+    dw, du = 1.0, PU - 4.65                                                 # side doorway: width and centre (u)
+    holes = [hole('portal', PU, 0.0, pw, zs + r), hole('side door', du, 0.0, dw, 3.0)]
     carrier(FN, 'north end wall', 0.0, 2 * PU, 0.0, EAVE + .15, holes, 'brick', depth=ENDT)
-    courses(FN, .45, 2 * PU - .45, .6, EAVE - .7, [dict(h, w=h['w'] + 1.0, h=h['h'] + .5) for h in holes])
+    courses(FN, .45, 2 * PU - .45, .6, EAVE - .7, [dict(h, w=h['w'] + 2.3, h=h['h'] + .5) for h in holes])
     spandrels(FN, 'portal', PU, zs, r, ENDT, 'brick', n=18)
     m = Merge(FN); b = Batch()
     archivolt(FN, 'portal passage', PU, zs, r, width=.45, n=18)
     m.box('stone', PU, -.06, zs + r + .32, .55, .14, .64)
-    for s in (-1, 1):                                                       # imposts, jamb plinths and medallions
-        m.box('stone', PU + s * (r + .25), -.05, zs - .1, .6, .12, .22)
-        m.box('stone', PU + s * (r + .25), -.04, .5, .55, .1, 1.0)
-        mx, my, mz = FN.p(PU + s * 4.62, -.04, 10.6)
-        annulus('medallion ring', (mx, my, mz), (0, 1, 0), .32, .46, -.06, .04, 'stone', 'end wall', 24)
-        annulus('medallion disc', (mx, my, mz), (0, 1, 0), .001, .32, -.02, .03, 'stone', 'end wall', 24)
-        annulus('medallion boss', (mx, my, mz), (0, 1, 0), .001, .13, -.11, -.01, 'stone', 'end wall', 16)
-        m.box('stone', PU + s * (r + .49), -.03, (zs - .23) / 2, .92, .06, zs - .23)     # stone pier to the impost
-    for a, c in ((.4, PU - r - .62), (PU + r + .62, 2 * PU - .4)):          # stone base either side of the portal
-        m.box('stone', (a + c) / 2, -.04, .6, c - a, .08, 1.2)
+    for s in (-1, 1):                                                       # stone piers on bases, medallions
+        m.box('stone', PU + s * (r + .5), -.04, (zs - .18) / 2, 1.0, .08, zs - .18)
+        m.box('stone', PU + s * (r + .5), -.08, .3, 1.16, .16, .6)
+        mx, my, mz = FN.p(PU + s * 4.7, -.04, 8.0)
+        annulus('medallion ring', (mx, my, mz), (0, 1, 0), .4, .56, -.06, .04, 'stone', 'end wall', 24)
+        annulus('medallion disc', (mx, my, mz), (0, 1, 0), .001, .4, -.02, .03, 'stone', 'end wall', 24)
+        annulus('medallion boss', (mx, my, mz), (0, 1, 0), .001, .16, -.12, -.01, 'stone', 'end wall', 16)
+    for a, c in ((.37, PU - r), (PU + r, 2 * PU - .37)):                    # continuous impost band, in line with the shop entablature
+        m.box('stone', (a + c) / 2, -.06, zs, c - a, .12, .36)
+    for s in (-1, 1):                                                       # side doorway surround
+        m.box('stone', du + s * (dw / 2 + .1), -.04, 1.6, .2, .08, 3.2)
+    m.box('stone', du, -.05, 3.25, dw + .5, .1, .3)
+    m.box('stone', PU + r + 1.0 + (2 * PU - .4 - PU - r - 1.0) / 2, -.04, .3, 2 * PU - .4 - PU - r - 1.0, .08, .6)   # plinth, east field
     eave_cornice(m, .37, 2 * PU - .37, EAVE + .012, proj=.7, role='stone')
     m.flush('north end wall passage face')
-    courses(FNS, .05, 2 * PU - .05, .6, EAVE - .4, [dict(h, w=h['w'] + 1.0, h=h['h'] + .5) for h in holes])
+    courses(FNS, .05, 2 * PU - .05, .6, EAVE - .4, [dict(h, u=2 * PU - h['u'], w=h['w'] + 1.0, h=h['h'] + .5) for h in holes])
     ms = Merge(FNS)
     archivolt(FNS, 'portal street', PU, zs, r, width=.45, n=18)
     ms.box('stone', PU, -.06, zs + r + .32, .55, .14, .64)
@@ -1006,7 +1044,7 @@ def leg(b, s, y):
             if seg:
                 (x0, z0), (x1, z1) = seg
                 bar(b, y, (s * x0, z0), (s * x1, z1), .035, .03 + .01 * (sign > 0))
-            c += .27 * math.sqrt(2)
+            c += .21 * math.sqrt(2)
     for f in (.35, .65, .9):                                                 # hangers from the strut to the rib
         x = xl + (s * ax - xl) * f
         z0 = zl + (za - zl) * f
@@ -1226,9 +1264,9 @@ def furniture():
             b.box('lamp', x + s * .45, y, FZ + 3.55, .2, .2, .34)
             b.box('iron', x + s * .45, y, FZ + 3.76, .26, .26, .06)
     b.flush('furniture')
-    awning(FE, 22.8 - 1.8, 22.8 + 1.8)
-    awning(FE, 27.6 - 1.8, 27.6 + 1.8)
-    awning(FW, 18.0 - 1.8, 18.0 + 1.8)
+    awning(FE, 22.8 - 1.7, 22.8 + 1.7)                                       # clipped to the shop openings
+    awning(FE, 27.6 - 1.7, 27.6 + 1.7)
+    awning(FW, 18.0 - 1.7, 18.0 + 1.7)
 
 
 def car(b, x, y, ux, uy, role):
