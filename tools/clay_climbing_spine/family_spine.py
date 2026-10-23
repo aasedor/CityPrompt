@@ -50,7 +50,7 @@ PALETTE = dict(glass=(.13, .10, .075), spandrel=(.10, .085, .07), bronze=(.50, .
     rock=(.62, .53, .41), rock2=(.47, .40, .31), hold=(.42, .38, .33), concrete=(.80, .78, .74), coping=(.88, .87, .84),
     canopy=(.90, .89, .86), stone=(.70, .68, .64), copper=(.66, .38, .20), timber=(.62, .45, .28), hardware=(.18, .18, .19),
     steel=(.55, .55, .55), interior=(.80, .76, .68), floor=(.48, .43, .36), core=(.66, .64, .60), roof=(.86, .86, .84),
-    membrane=(.80, .80, .78), metal=(.70, .71, .72), duct=(.76, .77, .78), granite=(.67, .59, .47), granite2=(.60, .53, .42), granite3=(.73, .65, .53),
+    membrane=(.80, .80, .78), metal=(.70, .71, .72), duct=(.76, .77, .78), granite=(.64, .56, .45), granite2=(.57, .50, .40), granite3=(.70, .62, .50),
     paver=(.70, .69, .66), paver2=(.62, .61, .58), kerb=(.76, .75, .72), asphalt=(.25, .25, .26), line=(.86, .85, .80),
     mulch=(.26, .20, .14), brick=(.62, .44, .30), brick2=(.52, .30, .22), tan=(.74, .62, .46), white=(.84, .83, .80),
     ctxglass=(.36, .44, .50), lamp=(.22, .22, .23), tree=(.24, .38, .16), tree2=(.30, .44, .19), bark=(.30, .23, .16))
@@ -2562,9 +2562,9 @@ def terrace():
     # strip; the tallest rise ~2.5 m over the coping.
     def seat(x, y):
         return soil if any(_PkPolygon(p).contains(_pksh.points(x, y)) for p in beds.values()) else zp
-    cluster = [(2.3, 2.1, 2.0, 1.6, 3.8), (6.1, 1.9, 1.5, 1.3, 3.0), (2.2, 5.4, 1.7, 1.4, 3.2), (5.3, 4.9, 1.2, 1.0, 2.5),
-               (9.4, 2.0, 1.4, 1.2, 3.4), (2.4, 8.4, .9, .8, 3.9), (14.5, 2.0, 1.5, 1.25, 3.0), (2.3, 14.0, 1.6, 1.3, 2.8),
-               (2.2, 19.5, 1.3, 1.1, 2.4)]
+    cluster = [(2.5, 2.0, 2.3, 1.55, 4.8), (6.8, 1.95, 1.7, 1.45, 4.0), (2.4, 5.6, 1.9, 1.5, 4.3), (5.9, 5.2, 1.3, 1.1, 3.2),
+               (10.4, 2.0, 1.6, 1.4, 4.5), (2.5, 8.9, 1.0, .9, 4.6), (15.2, 2.0, 1.7, 1.4, 3.9), (2.4, 14.2, 1.8, 1.4, 3.6),
+               (2.3, 19.6, 1.4, 1.2, 3.1)]
     n = 0
     for side in (-1, 1):
         xo = X0 if side < 0 else X1
@@ -2723,6 +2723,19 @@ def plaza_garden():
         x, y = polar(a, r) if a is not None else (18.2, Y0 - 7.0)
         stone(f'Garden boulder {k}', x, y, beds[bed][1], rx, ry, rz, k + 2, rot=k * 1.3)
         kit.add_obstacle(_PkPolygon(pk_ellipse(x, y, max(rx, ry) * 1.05, max(rx, ry) * 1.05)), rz)
+    rnd = random.Random(404); placed = [(polar(a, r) if a is not None else (18.2, Y0 - 7.0), max(rx, ry)) for bed, a, r, rx, ry, rz in rocks]
+    m = 0
+    for bed in ('A', 'B'):
+        reg = pk_region(beds[bed][0], beds[bed][2] + .25)
+        for x, y in pk_scatter(reg, 1.0, seed=31 + ord(bed)):
+            r = rnd.uniform(.25, .45)
+            if any(math.hypot(x - a, y - b) < r + q + .15 for (a, b), q in placed):
+                continue
+            stone(f'Garden cobble {m}', x, y, beds[bed][1], r, r * rnd.uniform(.75, .95), r * rnd.uniform(.7, 1.1), m + 5, rot=rnd.uniform(0, 3.1))
+            kit.add_obstacle(_PkPolygon(pk_ellipse(x, y, r * 1.05, r * 1.05)), r)
+            placed.append(((x, y), r)); m += 1
+            if m >= 24:
+                break
     for k, (poly, soil, kerb, top) in beds.items():
         fill_beds(kit, PROTOS, {k: poly}, soil, 77, spacing=.36, shrubby=True)
         groundcover(f'Plaza bed {k} groundcover', poly, soil, kerb=kerb, height=.07, bump=.03, wave=.6, grid=.6, role='pk_leaf_dark',
