@@ -10,7 +10,8 @@ import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 // units and painted symbols remain in the native GLB above that owned ground.
 export const TRIAL_GROUND_MATERIALS = new Set(['grass', 'paving', 'soil', 'cycle', 'asphalt']);
 export type PublicRealmTrialAsset = typeof assets[number] | NonNullable<typeof claudeTrial.models[number]['fixture']>;
-const localClaudeFixtures = claudeTrial.models.flatMap(row => row.fixture ? [row.fixture] : []);
+const localClaudeFixtures = import.meta.env.DEV
+  ? claudeTrial.models.flatMap(row => row.fixture ? [row.fixture] : []) : [];
 export function publicRealmTrialAsset(zone: SiteZone): PublicRealmTrialAsset | null {
   if (!import.meta.env.DEV) return null;
   return [...assets, ...localClaudeFixtures].find(asset => asset.id === zone.properties?.public_realm_trial_asset) ?? null;
