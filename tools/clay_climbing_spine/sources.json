@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "climbing_wall_building",
+  "variant_id": "variant_2",
+  "catalogue_variant_id": "climbing_spine",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_0.png",
+    "variant_0_angle_60.jpg",
+    "variant_0_angle_90.jpg",
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "climbing_wall_building",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "climbing_spine",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_2.png",
+      "file": "variant_2.png",
+      "bytes": 1420825,
+      "sha256": "6dc35f50b0835b370396357f550a80eb18d643d80a90e72941b3c4f4c21f256e",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "climbing_wall_building",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "climbing_spine",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_2_angle_60.jpg",
+      "file": "variant_2_angle_60.jpg",
+      "bytes": 905088,
+      "sha256": "a5a39a8c97f8f831f1538eec96e967d4be10dcb3e96d89196c18e58f75c349e6",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "climbing_wall_building",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "climbing_spine",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_2_angle_90.jpg",
+      "file": "variant_2_angle_90.jpg",
+      "bytes": 840417,
+      "sha256": "9239bd487ba29a757dded892881ae4d6754d61b59709e81b01d172d25849496d",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}
