@@ -54,6 +54,7 @@ PALETTE = dict(reef0=(.008, .11, .14), reef1=(.02, .19, .23), reef2=(.02, .31, .
     frame=(.10, .13, .14), hardware=(.06, .06, .06), floor=(.20, .25, .30), mat=(.11, .17, .26), interior=(.70, .70, .66),
     apron=(.64, .47, .29), curb=(.70, .55, .36), shellpath=(.90, .88, .85), shell2=(.80, .76, .70), shell3=(.97, .96, .94), concrete=(.50, .48, .44), lawn=(.20, .31, .10),
     mulch=(.22, .15, .09), hold_r=(.72, .10, .08), hold_y=(.90, .70, .10), hold_b=(.08, .22, .62), hold_p=(.42, .16, .55),
+    reef1p=(0.017, 0.160, 0.193), reef2p=(0.017, 0.260, 0.302), reef3p=(0.000, 0.378, 0.437), reef4p=(0.034, 0.487, 0.504), reef5p=(0.168, 0.571, 0.521), reef6p=(0.302, 0.638, 0.554), reef7p=(0.386, 0.689, 0.596), reef8p=(0.470, 0.722, 0.630),
     hold_o=(.88, .40, .08), hold_g=(.20, .55, .18), bark=(.30, .23, .16), tree=(.20, .33, .12), tree2=(.27, .40, .15),
     tree3=(.34, .45, .18), wall=(.5, .5, .5), trim=(.84, .85, .82), stone=(.6, .6, .58), timber=(.42, .30, .18))
 
@@ -1954,7 +1955,7 @@ def _bumps():
         r = rnd.uniform(1.2, 2.6)
         if any(math.hypot(x - dx, y - dy) < dr + r * .9 + .4 for (dx, dy), dr in DOMES):
             continue
-        out.append((x, y, r, rnd.choice((-1, 1)) * rnd.uniform(.12, .26)))
+        out.append((x, y, r, rnd.choice((-1, 1)) * rnd.uniform(.06, .14)))
     return out
 
 
@@ -2058,31 +2059,39 @@ EW, EH = 3.5, 2.6                                   # entrance clear width and h
 
 
 def pockets(shell):
-    """Rounded rock-like pockets, as the sources show them: numerous round to mildly oval hollows 0.9-1.6 m across and
-    0.33-0.5 m deep, cut by spherical caps aligned with the skin normal (so every rim is a clean, crisp circle and the
-    lower lip catches the light), lined one band darker than the skin round them; spread over every wall band with a
-    few on the roll-over and roof shoulders, kept out of the bay creases (no grazing slits), clear of the skylight pads
-    and the entrances, never reaching the inner skin. Returns (sphere centre, radius, lining role, mouth point,
-    mouth radius, normal, oval stretch)."""
-    rnd = random.Random(17); out = []; tries = 0
+    """Rounded rock-like pockets, placed as measured in the locked views: the locked front shows about 15 pockets and the
+    locked oblique about 17 on the visible faces (about half the shell), so about 32 in all; they sit mostly on the upper
+    wall and the roll-over shoulder, a few on the mid wall, very few on the dark lower wall and none at the base tuck.
+    Mouths 0.6-1.6 m across, round to vertically elongated ovals (aspect 1-1.6), 0.38-0.5 m deep. Each is a spherical cap
+    cut along the skin normal (tilted outward on the shoulder so its inner wall faces the viewer), lined in a slightly
+    darker shade of its own band colour, its rim then filleted. Kept out of the bay creases, clear of the skylight pads
+    and the entrances. Returns (sphere centre, radius, lining role, mouth point, mouth half-length, axis, aspect, up)."""
+    rnd = random.Random(29); out = []; tries = 0
     P, N = shell.P, shell.N
-    while len(out) < 72 and tries < 40000:
-        tries += 1
-        th = rnd.uniform(0, 2 * math.pi)
-        z = rnd.uniform(.9, 5.2) if len(out) < 62 else rnd.uniform(5.4, 6.3)
-        if any(abs((th - e + math.pi) % (2 * math.pi) - math.pi) < .36 for e in ENTRY_TH):
-            continue                                                 # the bay creases and the entrances in them
-        k, i = shell.grid_index(th, z); p = P[k, i].copy(); n = N[k, i].copy()
-        a = rnd.uniform(.45, .8) if z < 5.4 else rnd.uniform(.42, .6)        # mouth radius
-        D = min(T - .12, rnd.uniform(.36, .5) if z < 5.4 else rnd.uniform(.3, .4))
-        if any(np.linalg.norm(p - q[3]) < a + q[4] + .28 for q in out):
-            continue
-        if any(math.hypot(p[0] - x, p[1] - y) < R + a + 1.9 for (x, y), R in DOMES):
-            continue
-        Rp = (a * a + D * D) / (2 * D)
-        c = p + n * (Rp - D)
-        b = band(shell.zprof[k])
-        out.append((c, Rp, 'reef0' if b == 0 else ROLES[b - 1], p, a, n, rnd.uniform(1.0, 1.25)))
+    for z0, z1, cnt in ((4.3, 5.3, 13), (5.3, 6.1, 10), (2.6, 4.3, 6), (1.4, 2.6, 3)):   # upper wall, shoulder, mid, low
+        got = 0
+        while got < cnt and tries < 60000:
+            tries += 1
+            th = rnd.uniform(0, 2 * math.pi); z = rnd.uniform(z0, z1)
+            if any(abs((th - e + math.pi) % (2 * math.pi) - math.pi) < .36 for e in ENTRY_TH):
+                continue                                             # the bay creases and the entrances in them
+            k, i = shell.grid_index(th, z); p = P[k, i].copy(); n = N[k, i].copy()
+            shoulder = z >= 5.3
+            if shoulder:                                             # tilt toward the horizontal so the hollow faces out
+                h = np.array([p[0], p[1], 0.0]); h /= np.linalg.norm(h); ax = n + h * .9; ax /= np.linalg.norm(ax)
+            else:
+                ax = n
+            a = rnd.uniform(.32, .58) if shoulder else rnd.uniform(.30, .80)
+            asp = rnd.uniform(1.0, 1.6)
+            D = min(T - .1, rnd.uniform(.45, .5) if shoulder else rnd.uniform(.38, .5))
+            if any(np.linalg.norm(p - q[3]) < a * asp + q[4] + .45 for q in out):
+                continue
+            if any(math.hypot(p[0] - x, p[1] - y) < R + a * asp + 1.9 for (x, y), R in DOMES):
+                continue
+            Rp = (a * a + D * D) / (2 * D)
+            c = p + ax * (Rp - D)
+            up = np.array([0.0, 0.0, 1.0]) - ax * ax[2]; up /= (np.linalg.norm(up) or 1)
+            out.append((c, Rp, ROLES[band(shell.zprof[k])] + 'p', p, a * asp, ax, asp, up)); got += 1
     return out
 
 
@@ -2184,14 +2193,14 @@ def cut_openings(obj, pocket_list):
     skylight holes and the four arched entrances (reveals deep teal, hidden by the collars and the tunnel linings)."""
     cutters = []
     from mathutils import Vector
-    for j, (c, Rp, role, p, a, n, stretch) in enumerate(pocket_list):
-        C.bpy.ops.mesh.primitive_uv_sphere_add(segments=28, ring_count=14, radius=Rp, location=(0, 0, 0))
+    from mathutils import Matrix
+    for j, (c, Rp, role, p, a, ax, asp, up) in enumerate(pocket_list):
+        C.bpy.ops.mesh.primitive_uv_sphere_add(segments=32, ring_count=16, radius=Rp, location=(0, 0, 0))
         sp = C.bpy.context.object; sp.name = f'Pocket cutter {j}'
-        sp.scale = (stretch, 1.0, 1.0)                               # mildly oval along a random tangent
-        sp.rotation_euler = Vector(tuple(float(v) for v in n)).to_track_quat('Z', 'X').to_euler()
-        sp.rotation_euler.rotate_axis('Z', (j * 2.39996) % math.pi)
-        sp.location = tuple(float(v) for v in c)
-        C.bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+        X = Vector(tuple(float(v) for v in up)); Z = Vector(tuple(float(v) for v in ax)); Y = Z.cross(X)
+        rot = Matrix((X, Y, Z)).transposed().to_4x4()
+        sp.matrix_world = Matrix.Translation(Vector(tuple(float(v) for v in c))) @ rot @ Matrix.Diagonal((asp, 1.0, 1.0, 1.0))
+        C.bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)   # elongated up the wall
         sp.data.materials.append(C.MATS[role])
         for f_ in sp.data.polygons:
             f_.use_smooth = True
@@ -2220,10 +2229,37 @@ def cut_openings(obj, pocket_list):
     C.bpy.ops.object.modifier_apply(modifier=mod.name)
     C.remove_cutter(cutter)
     C.normalise(obj.data)
-    crisp(obj, by_material=True, angle=70.0)            # reveals and band edges crisp; the pocket hollows stay smooth
+    fillet_pockets(obj)
+    crisp(obj, by_material=True, angle=70.0, soft=pocket_pairs(obj))   # reveals and band edges crisp; pocket rims soft
 
 
-def crisp(obj, by_material=False, angle=35.0):
+def pocket_pairs(obj):
+    """Material index pairs (band, its pocket lining) whose shared edges stay smooth."""
+    names = [m.name for m in obj.data.materials]
+    pairs = set()
+    for i, nm in enumerate(names):
+        if nm.endswith('P') and nm[:-1] in names:
+            pairs.add(frozenset((i, names.index(nm[:-1]))))
+    return pairs
+
+
+def fillet_pockets(obj):
+    """Round each pocket rim: bevel the edges where a pocket lining meets the skin (7 cm, two segments), smooth-shaded."""
+    lining = {i for i, m in enumerate(obj.data.materials) if m.name.endswith('P')}
+    bm = C.bmesh.new(); bm.from_mesh(obj.data)
+    rim = [e for e in bm.edges if len(e.link_faces) == 2 and
+           (e.link_faces[0].material_index in lining) != (e.link_faces[1].material_index in lining)]
+    try:
+        res = C.bmesh.ops.bevel(bm, geom=rim, offset=.07, offset_type='OFFSET', segments=2, profile=.5, affect='EDGES',
+                                clamp_overlap=True)
+        for f in res['faces']:
+            f.smooth = True
+    except Exception as error:
+        print('POCKET_FILLET_SKIPPED ' + str(error), flush=True)
+    bm.to_mesh(obj.data); bm.free(); obj.data.update()
+
+
+def crisp(obj, by_material=False, angle=35.0, soft=()):
     """Sharp edges at creases (dihedral above `angle`), between flat and smooth faces and, by_material, between
     materials, so smooth shading never bends across a cut rim, a pocket lip or an arch reveal; the contour band edges
     read as crisp contour lines."""
@@ -2232,6 +2268,9 @@ def crisp(obj, by_material=False, angle=35.0):
     for ed in bm.edges:
         fl = ed.link_faces
         if len(fl) != 2:
+            continue
+        pair = frozenset((fl[0].material_index, fl[1].material_index))
+        if pair in soft and fl[0].smooth and fl[1].smooth:
             continue
         if (fl[0].smooth != fl[1].smooth or ed.calc_face_angle(0.0) > lim
                 or (by_material and fl[0].material_index != fl[1].material_index)):
@@ -2277,7 +2316,7 @@ def skylights():
             p.use_smooth = True
 
 
-def arch_line(w, h, grow=0.0, z0=0.0, n=20):
+def arch_line(w, h, grow=0.0, z0=0.0, n=48):
     """Open arch line: right jamb foot, up and over the semicircular head, down to the left jamb foot."""
     r = w / 2 + grow; zs = h - w / 2
     return [(r, z0)] + [(r * math.cos(math.pi * j / n), zs + r * math.sin(math.pi * j / n)) for j in range(n + 1)] + [(-r, z0)]
@@ -2341,7 +2380,7 @@ def holds(shell, Pi, dent_list):
     rnd = random.Random(11); roles = ('hold_r', 'hold_y', 'hold_b', 'hold_p', 'hold_o', 'hold_g')
     G_ = {r: ([], []) for r in roles}
 
-    holes = [(q[3], q[4] + .12) for q in dent_list]                  # holds stay out of the pocket hollows
+    holes = [(q[3], q[4] + .15) for q in dent_list]                  # holds stay out of the pocket hollows
 
     def add(p, n, sz, role):
         n = n / (np.linalg.norm(n) or 1); a = np.cross(n, [0, 0, 1.0])
@@ -2364,10 +2403,25 @@ def holds(shell, Pi, dent_list):
     step = np.linalg.norm(P[2:-1] - P[:-3], axis=-1).mean(1) / 2           # ring spacing (rings 1 .. K-3)
     rad = np.hypot(P[1:-2, :, 0], P[1:-2, :, 1]).mean(1)
     ks = list(range(1, K - 2)); wk = list(step * rad)                       # area weight of each ring band
+    routes = []                                                         # loose vertical routes from the base up the walls
+    while len(routes) < 46:
+        th = rnd.uniform(0, 2 * math.pi)
+        if any(abs((th - e + math.pi) % (2 * math.pi) - math.pi) < .30 for e in ENTRY_TH):
+            continue
+        if any(abs((th - r_ + math.pi) % (2 * math.pi) - math.pi) < .07 for r_ in routes):
+            continue
+        routes.append(th)
+    for th in routes:
+        top = rnd.uniform(3.6, 5.2)
+        for z in np.arange(.35, top, .34):
+            k, i = shell.grid_index(th + rnd.uniform(-.012, .012), z + rnd.uniform(-.1, .1))
+            if any(np.linalg.norm(P[k, i] - c) < r for c, r in holes):
+                continue
+            add(P[k, i], N[k, i], rnd.uniform(.05, .11), roles[rnd.randrange(6)]); n_out += 1
     while n_out < 600:
         k = rnd.choices(ks, wk)[0]; i = rnd.randrange(NT)
         z = P[k, i, 2]
-        if not (.3 < z < 5.6):
+        if not (.3 < z < 4.2):
             continue
         th = shell.th[i]
         if any(abs((th - e + math.pi) % (2 * math.pi) - math.pi) < .24 and z < 3.2 for e in ENTRY_TH):
@@ -2497,11 +2551,11 @@ def shell_paths():
             s = Ln * k / m; p = line.interpolate(s); q = line.interpolate(min(Ln, s + .05)); q0 = line.interpolate(max(0, s - .05))
             tx, ty = q.x - q0.x, q.y - q0.y; tl = math.hypot(tx, ty) or 1; nx, ny = -ty / tl, tx / tl
             flare = 1.3 * max(0.0, 1 - s / 2.6) ** 2
-            wl = 1.4 + flare / 2 + .14 * math.sin(2.1 * s + g) + .07 * math.sin(5.3 * s + 1.7 * g)
-            wr = 1.4 + flare / 2 + .14 * math.sin(1.7 * s - g + .5) + .07 * math.sin(4.7 * s - g)
+            wl = 1.4 + flare / 2 + .10 * math.sin(1.3 * s + g) + .03 * math.sin(3.1 * s + 1.7 * g)
+            wr = 1.4 + flare / 2 + .10 * math.sin(1.1 * s - g + .5) + .03 * math.sin(2.9 * s - g)
             left.append((p.x + nx * wl, p.y + ny * wl)); right.append((p.x - nx * wr, p.y - ny * wr))
         pts = left + right[::-1]
-        poly = _PkPolygon(pts).buffer(0).simplify(.03)
+        poly = _PkPolygon(pts).buffer(.3, quad_segs=8).buffer(-.3, quad_segs=8).simplify(.01)   # soft organic edges
         polys.append(poly)
         C.prism(f'Shell path {g:+.0f}', [tuple(c) for c in list(poly.exterior.coords)[:-1]], 'z', 0.0, .045, 'shellpath', 'paths')
         for x, y in pk_scatter(poly.buffer(-.05), .2, seed=int(g * 10) % 997 + 3)[:560]:
@@ -2537,7 +2591,7 @@ def site(paths):
         if not g.is_empty:
             beds.append(g.buffer(-1.2).buffer(1.2, quad_segs=8).simplify(.02))     # rounded bed ends
     for j, g in enumerate(beds):
-        g = g.simplify(.06)
+        g = g.simplify(.012)
         pts = list(g.exterior.coords)[:-1]
         C.prism(f'Meadow bed {j}', pts, 'z', 0.0, BED_Z, 'mulch', 'beds')
     return beds
@@ -2550,7 +2604,8 @@ INSTANCING = True
 # Trees stand on the diagonals, clear of the four elevation views' sight lines and of the shell paths (the sources show
 # small trees in the meadow beds and larger ones beyond the ring path).
 TREES = [(14.6, 14.6, 1.6), (-14.6, 14.6, 1.7), (24.5, 14.0, 3.0), (-20.0, 20.0, 3.2), (-20.0, -20.0, 3.0), (13.5, -25.0, 2.8),
-         (25.0, -14.5, 2.6), (-25.0, -14.0, 2.6)]
+         (25.0, -14.5, 2.6), (-25.0, -14.0, 2.6), (17.0, 24.0, 3.0), (-24.5, 15.0, 3.2), (-15.0, -25.5, 2.8),
+         (27.0, -19.0, 2.6)]
 
 
 def protos(kit):
