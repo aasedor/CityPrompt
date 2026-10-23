@@ -93,6 +93,6 @@ v005 (kit v003.2, opt-in options unused here) answers the four v004 P1s:
   keeps its semantic and base role, module, instance flag and archetype and variant ids; authored objects and the
   build report keep the constant tags; the prototype stays named on its shared mesh.
 
-## Open blockers after v005 (x)
+## Open blockers after v005 (passed)
 
-x
+Candidate: `clay-princes-island-park-clay-v005.glb`. None: the v005 independent review returned zero P0 and zero P1. Its P2 polish items are in `evidence/v005/independent-review.md`.

@@ -68,6 +68,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (x)
+## Open blockers after v003 (passed)
 
-x
+Candidate: `clay-montreal-plateau-rue-clay-v003.glb`. The v003 independent review (`evidence/v003/independent-review.md`) left these P0/P1 findings open:
+
+- **P0** (—): none Likely fix: —
+- **P1** (—): none. The v002 P1 is fixed (see section 5). Likely fix: —

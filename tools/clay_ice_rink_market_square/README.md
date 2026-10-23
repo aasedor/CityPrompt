@@ -77,6 +77,6 @@ NOT TESTED. The model sits on a level base. Shared terrain registration is not a
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v007 (x)
+## Open blockers after v007 (passed)
 
-x
+Candidate: `clay-ice-rink-market-square-clay-v007.glb`. None: the v007 independent review returned zero P0 and zero P1. Its P2 polish items are in `evidence/v007/independent-review.md`.

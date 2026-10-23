@@ -68,6 +68,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (x)
+## Open blockers after v003 (stopped)
 
-x
+Candidate: `clay-vancouver-special-clay-v001.glb`. The v003 independent review (`evidence/v003/independent-review.md`) left these P0/P1 findings open:
+
+- **P1** (front_corner vs locked oblique; front vs locked front; rear; roof_ridge): The front gable is too steep for a "low wide" Vancouver Special gable. In the matched oblique, apex rise above the line joining the two eave tips is 0.195 of the tip-to-tip span in front_corner (tips 234,367 / 991,608; apex 556,314) against 0.13 in the locked oblique (tips 167,277 / 782,497; apex 420,282). The two... Likely fix: Lower the roof to about 15° (3.25:12), keeping eave height, overhang depth, the centred front-to-back ridge, fascia depth and outrigger spacing (re-space outriggers along the shorter rake). Re-render front,...
+- **P1** (front_corner, aerial, top, roof_ridge, left_side, right_side, rear_side; phone-01): The roof reads as a light pinkish taupe, not the source's medium-dark brown-grey asphalt. Median roof luminance is about 135–143 (front_corner 141,136,132; top W 148,143,138, E 138,133,129) against 90–115 in the sources (oblique 93,91,89; top E 93,91,88, W 126,114,102). This holds even though the render's white... Likely fix: Set the shingle material to the sampled source colour (about sRGB 95,90,86 for field shingles, with the ridge cap slightly darker), and keep the course geometry. Acceptance: in front_corner, the roof median luminance...
+- **P1** (architecture_close (x≈1056–1062, y≈482–515), front (x≈900–905, y≈157–162)): At the front-east eave (the hero corner), there is a near-black slit about 3 px wide and 30 px tall where the downpipe outlet stub drops out of the gutter, between the gutter's inner face and the outlet's west side. Luminance falls to 8 (72 px under 30). The v002 must-hold says no black faces on any downpipe... Likely fix: Centre the outlet stub in the drop hole and make the hole no larger than the stub, or cap the gap with a brown gutter-bottom plate. Give any interior gutter face the brown trim material. Acceptance: minimum luminance...
+
+The candidate v001's own open findings are in `evidence/v001/independent-review.md`.

@@ -68,6 +68,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v006 (x)
+## Open blockers after v006 (stopped)
 
-x
+Candidate: `clay-toronto-streetcar-street-clay-v002.glb`. The v006 independent review (`evidence/v006/independent-review.md`) left these P0/P1 findings open:
+
+- **P1** (top (primary)): Dark slot behind the east corner block. A near-black line, about 6 px wide (about 0.5 m at 12.6 px/m), runs north-south between the east corner block's rear parapet and the pale east context block. It spans x 1286-1292, y 704-859. Its core is RGB about 31-37 and it fades to the shaded back lane at its north end. At... Likely fix: Close the slot the way v006 closed the slab gaps. Either deepen the East corner block to 28.8 m (rear face at x 42.2, 0.2 m into the neighbour), or start the neighbour box at x 41.2. For the same reason, also butt...
+
+The candidate v002's own open findings are in `evidence/v002/independent-review.md`.

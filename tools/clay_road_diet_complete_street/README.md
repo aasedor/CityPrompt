@@ -68,6 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (x)
+## Open blockers after v003 (passed)
 
-x
+Candidate: `clay-road-diet-complete-street-clay-v003.glb`. None: the v003 independent review returned zero P0 and zero P1. Its P2 polish items are in `evidence/v003/independent-review.md`.

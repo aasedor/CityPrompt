@@ -70,6 +70,10 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004 (x)
+## Open blockers after v004 (stopped)
 
-x
+Candidate: `clay-halifax-ferry-terminal-clay-v002.glb`. The v004 independent review (`evidence/v004/independent-review.md`) left these P0/P1 findings open:
+
+- **P1** (roof_boxes, left_side, lawn_bench, architecture_close, interior): Black patch and intersecting stair at the head of the lounge stair. (a) On the lounge floor, at the south end of the west lounge row behind fin 1, there is a hard-edged near-black triangle (roof_boxes) or band (left_side). It extends beyond the end of the bench and the pedestal. (b) Directly below it, a thin... Likely fix: The upper floor slab is a single unbroken plate (z 4.3-4.6), with no cut for the stair. A separate stair-head landing block (about 1.8 x 1.4 m) sits inside the slab. Its top and bottom faces are exactly coplanar with...
+
+The candidate v002's own open findings are in `evidence/v002/independent-review.md`.

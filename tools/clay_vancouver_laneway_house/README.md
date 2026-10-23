@@ -72,6 +72,20 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (x)
+## Open blockers after v003 (stopped)
 
-x
+Candidate: `clay-vancouver-laneway-house-clay-v002.glb`. The v003 independent review (`evidence/v003/independent-review.md`) left these P0/P1 findings open:
+
+- **P1** (front_corner, front, west_wall, left_side (against source oblique and front)): The sword-fern hedge along the side-street wall is missing (a regression from v002). See the N7 detail below this table. Likely fix: The fern cap of "40-50% per front bed" and the "sparser fern pass in the bay-front bed" were applied to the whole L-shaped bed, including its west leg along the side-street wall. The ferns' slots there went to grass...
+- **P1** (entry_steps, garden, front, front_corner, garage (against source front and oblique)): The enlarged sword-fern prototype reads as bare thorny canes or bramble, not as leafy sword fern. See the N8 detail below this table. Likely fix: The frond was lengthened to 1.32 m and given an upright stretch while the pinna count and size stayed the same. The pinnae are therefore spaced out and look tiny relative to the rachis.
+- **P1** (**partly fixed; superseded by new P1s N7 and N8**): Fixed: the tall feather-reed and grass mass at the bay. front x 590-830; front_corner `fc_bayfront_bed.png`; entry_steps x 0-110; glass_close x 870-1000, y 850-1080. Blue fescue is present in all front views. Fern height in the east bed is now about 0.8 m (garden, entry_steps). Not fixed: the ferns' leafy mass. The...
+- **P1** (**still fixed**): side_entry: both head corners are closed cedar, minimum luma 11.4 (`side_entry_head.png`). No change from v002.
+- **P1** (**still fixed**): glass_close: minimum luma 8.3; nodes continuous (`glass_nodes.png`). facade_close: only the thin black frame edge at x 383-385.
+- **P1** (**still fixed**): Continuous plinth at the fin base in right_side (`right_side_fin_base.png`) and aerial.
+- **P1** (**still fixed** (P2 residual N2)): In front, the boarded return and the door panel with its black head are visible (`front_sideentry.png`). front_corner shows the same.
+- **P1** (**still fixed**): top: north slope with north-south seams and hipped ends; rear and rear_side agree.
+- **P1** (**regressed in part (N7)**): v002 had fern rosettes in both west beds. v003 has none in the west-wall strip, and the north-of-side-steps bed is about half bare soil again.
+- **P1** (**still fixed**): Whole roof and front facade in frame.
+- **P1** (**still fixed**): Whole garage in frame.
+
+The candidate v002's own open findings are in `evidence/v002/independent-review.md`.

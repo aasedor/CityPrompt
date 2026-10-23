@@ -68,6 +68,13 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005 (x)
+## Open blockers after v005 (stopped)
 
-x
+Candidate: `clay-market-square-clay-v004.glb`. The v005 independent review (`evidence/v005/independent-review.md`) left these P0/P1 findings open:
+
+- **P1** (left_side, right_side, rear, rear_north, rear_side, meadow_beds, front, front_corner, aerial): Landform is a mesa, not raised meadow beds. - Each flank above the bowl is a flat meadow plateau at about the wing-top level, roughly 3.6 m above the plaza. - Sheer coursed-stone cliffs bound the plateaus on the outer flanks: the wall is about 210 px tall in left_side against a lawn at plaza level. - A wall runs... Likely fix: Make each side bed one meadow surface that slopes from the low plaza-edge wall (about 0.8 m with coping) up to the backs of the wings. Then: - delete the south-facing cross wall; - lower the outer flank and north...
+- **P1** (aerial, front_corner, top, front): The bowl still reads as a pale six-step flight, not two stone seating bands with pale walks. - Measured on the axis in top: terrace (153,154,153), band 2 (154,151,144), walk (160,161,160), band 1 (158,155,148), plaza (157,159,158). The "warm-stone bands" differ from the walks by about 6 to 8 RGB units, so the walk... Likely fix: Keep the geometry (2.55 m band, 1.0 m walk), but separate the materials: - give the seat treads the warm-grey stone value of the risers, or narrow the pale concrete to a nosing strip of about 0.10–0.15 m; - keep the...
+- **P1** (aerial, top, front_corner, left_side, right_side (vs source oblique, top, front)): Stage side steps are missing. - In the source oblique and top, a short stair flight rises northward at each pavilion end, between the slatted side wall and the cheek wall, to the meadow behind. The source front also shows step faces behind the right cheek wall. - In the render, flat pale terrace strips run up to a... Likely fix: Add one flight of about 4–5 steps in each gap between pavilion return and cheek wall, using the same stone risers and pale treads. It climbs from the upper-terrace level to the back meadow, with the cheek wall as its...
+- **P1** (front_corner (both band ends), aerial (both ends), left_side, meadow_beds): The ends of the steps overrun the bed walls. - Dark raw end faces and tread-nosing stubs stick out past the diagonal bed-wall plane at every band and walk end. In front_corner there is a dark L-shaped stub at about x 120–150, y 685–700, and a dark vertical sliver about 40 px tall where the band-2 walk meets the... Likely fix: Clip every tread, riser and walk to the inner face of the bed wall, or add a stacked-stone end cheek with coping that the steps die into. Then confirm in front_corner and aerial that no end face is visible past a...
+
+The candidate v004's own open findings are in `evidence/v004/independent-review.md`.

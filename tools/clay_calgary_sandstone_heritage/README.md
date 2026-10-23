@@ -68,6 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v006 (x)
+## Open blockers after v006 (passed)
 
-x
+Candidate: `clay-calgary-sandstone-heritage-clay-v006.glb`. None: the v006 independent review returned zero P0 and zero P1. Its P2 polish items are in `evidence/v006/independent-review.md`.
