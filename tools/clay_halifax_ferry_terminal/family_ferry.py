@@ -841,7 +841,7 @@ def interiors():
     for x in (-1.0, 1.4, 3.8, 6.2):                                                                   # benches
         for y in (-17.0, -14.5, -12.0):
             b.box('timber', x, y, .45 + G0, 1.9, .5, .08)
-            b.box('timber', x, y + .22, .75 + G0, 1.9, .06, .55)
+            b.box('timber', x, y + .23, .75 + G0, 1.86, .06, .55)                                   # back 1 cm proud of the seat edge, ends inset
             b.box('hardware', x, y, .22 + G0, 1.7, .08, .44)
     for k in range(24):                                                                               # stair to the lounge
         y = -17.9 + k * .3
@@ -857,7 +857,7 @@ def interiors():
     for x in (-6.5, -4.0):                                                                            # lounge seating rows
         for y in (-8.0, -3.0, 2.0, 7.0):
             b.box('timber', x, y, F1 + .45, .5, 3.2, .1)
-            b.box('timber', x - .22, y, F1 + .75, .06, 3.2, .55)
+            b.box('timber', x - .23, y, F1 + .75, .06, 3.16, .55)                                   # back 1 cm proud of the seat edge, ends inset
     for x in (0.0, 3.0, 6.0):
         b.box('timber', x, -18.5, F1 + .45, 2.4, .5, .1)
         b.box('timber', x, -18.28, F1 + .75, 2.4, .06, .55)
@@ -1115,7 +1115,7 @@ def site():
         b.box('soil', x, y, .145, 1.3, 1.3, .01)
     # Bench, bin, light poles.
     b.box('timber', -14.25, -14.6, .62, .5, 1.9, .07)
-    b.box('timber', -14.47, -14.6, .92, .06, 1.9, .5)
+    b.box('timber', -14.48, -14.6, .92, .06, 1.86, .5)                                                # back 1 cm proud of the seat edge, ends inset
     for y in (-15.4, -13.8):
         b.box('hardware', -14.25, y, .38, .5, .06, .5)
     cyl(b, 'frame', -14.2, -12.6, .13, 1.05, .28, 10)
