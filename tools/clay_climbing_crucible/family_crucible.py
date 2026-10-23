@@ -49,11 +49,11 @@ HALL = X1 - 9.0                                       # back wall of the glazed 
 # Roof track (top): a stadium loop; straights between CX0 and CX1 on CY, centre-line radius RT, band width TW.
 CX0, CX1, CY, RT, TW = -38.0, 30.8, -7.4, 8.3, 4.0
 PAV = (-12.0, -5.6, 10.0, 6.0, 4.0)                    # roof pavilion: centre x, y, length, depth, height
-AMPH = (8.0, -7.4, 4.8)                                # sunken half-round seating bowl: centre x, y, radius
+AMPH = (8.0, -6.6, 5.0)                                # sunken half-round seating bowl: centre x, y, radius
 PALETTE = dict(wall=(.13, .13, .14), hex=(.24, .24, .25), hex2=(.28, .28, .29), hexd=(.14, .14, .15), joint=(.07, .07, .08),
-    led=(1.0, .60, .10), hold=(.10, .09, .08), hold2=(.86, .52, .14), hold3=(.55, .58, .60),
+    led=(1.0, .70, .16), hold=(.82, .50, .16), hold2=(.92, .78, .40), hold3=(.80, .80, .76), hold4=(.12, .10, .09),
     corten=(.55, .25, .10), corten2=(.50, .225, .09), corten3=(.60, .28, .11), cjoint=(.33, .15, .07), coping=(.58, .58, .56),
-    frame=(.16, .17, .18), glass=(.14, .18, .21), interior=(.80, .76, .68), hallwall=(.36, .35, .33), floor=(.56, .52, .46),
+    frame=(.16, .17, .18), mullion=(.62, .64, .65), glass=(.14, .18, .21), interior=(.80, .76, .68), hallwall=(.36, .35, .33), floor=(.56, .52, .46),
     roof=(.42, .42, .40), track=(.66, .23, .18), lane=(.94, .93, .90), paving=(.70, .70, .67), soil=(.30, .26, .18),
     meadow=(.48, .45, .26), lawn=(.30, .42, .18), path=(.66, .55, .40), rubber=(.06, .06, .07), kerb=(.86, .86, .84),
     boulder=(.66, .65, .62), steel=(.88, .88, .86), concrete=(.66, .65, .62), asphalt=(.27, .27, .28),
@@ -2232,22 +2232,36 @@ def route_lines():
     pts, ns = sample(FACET, fp)
     ribbon(pg, pts, ns)
     pg.flush('route lines')
+    # v004: holds in two dense lanes along the eastern routes (source front and oblique): one between the first and
+    # second eastern lines, one between the last line and the fold; each hold about a quarter to a third of a panel,
+    # mostly amber, cream and pale grey so they read against the charcoal panels, with a few dark ones.
     rnd = random.Random(5)
     pg = Poly()
-    for k in range(170):
-        a = rnd.uniform(.6, .93) if k % 12 else rnd.uniform(.08, .45)
-        bb = rnd.uniform(.04, .9)
-        c = wall_q(a, bb); n = wall_n(a, bb); e1, e2 = facet_basis(n)
-        s = rnd.uniform(.09, .17); m = rnd.choice((5, 6, 7)); a0 = rnd.uniform(0, math.tau)
-        base = [vadd(vadd(vadd(c, e1, s * rnd.uniform(.7, 1.15) * math.cos(a0 + math.tau * i / m)),
-                          e2, s * rnd.uniform(.7, 1.15) * math.sin(a0 + math.tau * i / m)), n, .02) for i in range(m)]
-        apex = vadd(vadd(c, e1, s * rnd.uniform(-.25, .25)), n, .02 + s * rnd.uniform(.6, 1.0))
-        role = 'hold2' if k % 7 == 0 else 'hold3' if k % 11 == 0 else 'hold'
-        pg.add(role, base + [apex], [tuple(range(m - 1, -1, -1))] + [(i, (i + 1) % m, m) for i in range(m)])
+
+    def a_at(line, b):
+        pts = sorted(line, key=lambda q: q[1])
+        for (a0, b0), (a1, b1) in zip(pts, pts[1:]):
+            if b0 <= b <= b1:
+                return a0 + (a1 - a0) * (b - b0) / max(b1 - b0, 1e-6)
+        return pts[0][0] if b < pts[0][1] else pts[-1][0]
+    lanes = [(LINES[2], LINES[3], 120), (LINES[5], None, 110), (LINES[3], LINES[4], 30)]
+    for la, lb, count in lanes:
+        for k in range(count):
+            bb = .03 + .92 * (k + rnd.random()) / count
+            a0_ = a_at(la, bb); a1_ = a_at(lb, bb) if lb else .995
+            lo, hi = min(a0_, a1_), max(a0_, a1_)
+            a = lo + (hi - lo) * rnd.uniform(.18, .82)
+            c = wall_q(a, bb); n = wall_n(a, bb); e1, e2 = facet_basis(n)
+            s = rnd.uniform(.17, .27); m = rnd.choice((5, 6, 7)); a0 = rnd.uniform(0, math.tau)
+            base = [vadd(vadd(vadd(c, e1, s * rnd.uniform(.75, 1.15) * math.cos(a0 + math.tau * i / m)),
+                              e2, s * rnd.uniform(.75, 1.15) * math.sin(a0 + math.tau * i / m)), n, .02) for i in range(m)]
+            apex = vadd(vadd(c, e1, s * rnd.uniform(-.25, .25)), n, .02 + s * rnd.uniform(.55, .85))
+            role = ('hold', 'hold', 'hold2', 'hold3', 'hold4')[k % 5]
+            pg.add(role, base + [apex], [tuple(range(m - 1, -1, -1))] + [(i, (i + 1) % m, m) for i in range(m)])
     pg.flush('climbing holds')
 
 
-def corten_face(f, lo, hi, z0, z1, holes=(), seed=1, pw=1.6, ph=1.75):
+def corten_face(f, lo, hi, z0, z1, holes=(), seed=1, pw=1.6, ph=2.1):
     """Weathering-steel panel grid on a Corten face: darker joint strips 7 mm proud, and about a quarter of the panels
     overlaid 4 mm proud in a lighter or darker tone (the mottling of the sources)."""
     m = Merge(f)
@@ -2307,7 +2321,7 @@ def blocks():
     # West block.
     yS = P3[1]
     f = C.Face((0, yS, 0), (1, 0, 0), (0, 1, 0), 'west block south')
-    holes = [hole('W window', X0 + 3.6, 19.6, 2.2, 2.4), hole('W slot', X0 + 6.9, 21.6, .8, 3.4), hole('W door', XW - 2.6, .15, 1.6, 2.6)]
+    holes = [hole('W window', X0 + 3.6, 19.6, 2.2, 2.4), hole('W slot', X0 + 6.9, 21.6, .8, 3.4), hole('W door', DOOR_X, .15, 1.6, 2.6)]
     f.wall('west block south carrier', X0, XW, 0.0, EAVE, depth=T, role='corten', holes=holes)
     m = Merge(f)
     for h in holes[:2]:
@@ -2324,7 +2338,7 @@ def blocks():
     C.box('West block east wall', (XW - T / 2, (yS + T + yE) / 2, EAVE / 2), (T, yE - yS - T, EAVE), 'corten', 'envelope', 0)
     for z in (.15, 9.0, 18.0):
         C.box(f'West block floor {z:.0f}', ((X0 + XW) / 2, yS + T + room / 2, z - .15 if z > 1 else z / 2), (XW - X0 - 2 * T - .02, room - .02, .3 if z > 1 else z), 'floor', 'inside', 0)
-    for x, z in ((X0 + 4.0, 19.0), (XW - 2.6, 1.0)):
+    for x, z in ((X0 + 4.0, 19.0), (DOOR_X, 1.0)):
         C.qa_room_light(f'West block room {x:.0f} {z:.0f}', (x, yS + T + room / 2, z + 2.2), 60, 1.6)
     f2 = C.Face((X0, 0, 0), (0, -1, 0), (1, 0, 0), 'west block west face')
     corten_face(f2, -Y1, -yS, 0.0, EAVE, seed=22)
@@ -2358,13 +2372,13 @@ def east_end():
     b.box('corten2', X1 + .6 + .004, (ys0 + yn0) / 2, ZB0 + .5, .012, yn0 - ys0 - .2, .05)                           # band joint line
     # Upper curtain wall: one pane plane, mullions every 2.55 m and transoms every 1.82 m outside it.
     b.box('glass', GL_UP, (ys0 + yn0) / 2, (ZU0 + ZU1) / 2, .02, yn0 - ys0 + .02, ZU1 - ZU0 + .02)
-    nb = 17; ZT_R = (0, .12, .27, .34, .48, .62, .69, .83, 1.0)          # v002: ~1.5 m bays, tall panes, uneven transoms (source)
+    nb = 21; ZT_R = (0, .27, .53, .78, 1.0)          # v004: 21 slender columns (~1.2 m) and four tiers of tall panes, measured on the oblique
     for k in range(nb + 1):
         y = ys0 + (yn0 - ys0) * k / nb
-        b.box('frame', GL_UP - .13, y, (ZU0 + ZU1) / 2, .22, .09 if 0 < k < nb else .2, ZU1 - ZU0)
+        b.box('mullion', GL_UP - .16, y, (ZU0 + ZU1) / 2, .28, .11 if 0 < k < nb else .2, ZU1 - ZU0)      # dominant pale vertical mullions (source)
     for f in ZT_R:
         z = ZU0 + (ZU1 - ZU0) * f
-        b.box('frame', GL_UP - .12, (ys0 + yn0) / 2, z, .2, yn0 - ys0, .07 if 0 < f < 1 else .16)
+        b.box('mullion', GL_UP - .1, (ys0 + yn0) / 2, z, .16, yn0 - ys0, .08 if 0 < f < 1 else .16)
     # Ground floor: recessed glazing with mullions, a transom and two pairs of glazed doors near the north end.
     b.box('glass', GL_GF, (ys0 + yn0) / 2, (ZG0 + ZG1) / 2, .02, yn0 - ys0 + .02, ZG1 - ZG0)
     doors = (Y1 - 10.0, Y1 - 6.2)
@@ -2393,9 +2407,13 @@ def east_end():
     b = Batch()
     b.box('hallwall', (HALL + GL_GF) / 2, Y1 - T - .012, ZT / 2, GL_GF - HALL, .03, ZT - .6)
     b.box('hallwall', (HALL + GL_GF) / 2, YF + T + .012, ZT / 2, GL_GF - HALL, .03, ZT - .6)
+    b.box('hallwall', GL_GF - .035, (YF + T + YF + 1.2) / 2, ZT / 2, .03, 1.2 - T, ZT - .6)        # v004: frame columns' hall faces
+    b.box('hallwall', GL_GF - .035, (Y1 - 1.6 + Y1 - T) / 2, ZT / 2, .03, 1.6 - T, ZT - .6)
+    b.box('hallwall', (GL_GF + GL_UP) / 2, YF + 1.2 + .015, (ZB1 + ZT) / 2, GL_UP - GL_GF - .02, .03, ZT - ZB1 - .4)   # column faces between the glass lines
+    b.box('hallwall', (GL_GF + GL_UP) / 2, Y1 - 1.6 - .015, (ZB1 + ZT) / 2, GL_UP - GL_GF - .02, .03, ZT - ZB1 - .4)
     b.flush('hall interior')
     for z, y in ((4.0, -7.0), (18.0, YF + 8.0), (18.0, Y1 - 8.0)):
-        C.qa_room_light(f'Hall soft {z:.0f} {y:+.0f}', ((HALL + GL_UP) / 2, y, z), 45, 8.0)
+        C.qa_room_light(f'Hall soft {z:.0f} {y:+.0f}', ((HALL + GL_UP) / 2, y, z), 65, 8.0)
 
 
 def parapets():
@@ -2561,6 +2579,8 @@ def roof():
     # Paths and the north walkway.
     for k, poly in enumerate(union_polys([path_poly(pts, w) for _, pts, w in INNER_PATHS])):     # one slab per merged path (no shared tops)
         slab(f'Roof path {k}', poly, ZR - .01, ZR + .12, 'paving', 'roof')
+    yd = P9[1] + PT; yc = T1[1] + PT                                     # v004: pale walkway inside the south coping (source)
+    slab('South walkway', [(XW, yd - .02), (FOLD, yc - .02), (FOLD, -17.85), (XW, -17.85)], ZR - .01, ZR + .12, 'paving', 'roof')
     slab('North walkway', [(X0 + T - .02, Y1 - T - 2.6), (GL_UP - .17, Y1 - T - 2.6), (GL_UP - .17, Y1 - T + .02), (X0 + T - .02, Y1 - T + .02)], ZR - .01, ZR + .12, 'paving', 'roof')
     # The second run across the west end (top): a curved strip from the north straight to the south straight, its top
     # 1 mm under the loop's so the two never share a plane, with its own lane lines.
@@ -2590,7 +2610,8 @@ def roof_planting(kit, P):
         _Pt(ax, ay).buffer(ar + .35, quad_segs=12).intersection(_P([(ax, ay - ar - 1), (ax + ar + 1, ay - ar - 1), (ax + ar + 1, ay + ar + 1), (ax, ay + ar + 1)])),
         _P([(ax - 2.24, ay - ar - .34), (ax + .02, ay - ar - .34), (ax + .02, ay + ar + .34), (ax - 2.24, ay + ar + .34)]),
         _L(chord_line()).buffer(TW / 2 + .02, cap_style=2),
-        _P([(X0 + 2.4, Y1 - T - 5.3), (X0 + 7.6, Y1 - T - 5.3), (X0 + 7.6, Y1 - T - 3.5), (X0 + 2.4, Y1 - T - 3.5)])] +
+        _P([(X0 + 2.4, Y1 - T - 5.3), (X0 + 7.6, Y1 - T - 5.3), (X0 + 7.6, Y1 - T - 3.5), (X0 + 2.4, Y1 - T - 3.5)]),
+        _P([(XW - .02, P9[1] + PT - .1), (FOLD + .02, T1[1] + PT - .1), (FOLD + .02, -17.83), (XW - .02, -17.83)])] +
         [_P(path_poly(pts, w + .04)) for _, pts, w in INNER_PATHS])
     beds = [('outer', roofp.difference(outer).difference(hard)), ('inner', inner.difference(hard))]
     rnd = random.Random(41)
@@ -2653,7 +2674,8 @@ def wx(a):
 APRON = [(wx(.485), YF), (wx(.415), YF - 7.4), (wx(.445), YF - 11.4), (wx(.864), YF - 10.4), (XE, YF)]
 BED_W = [(XW + .4, YF - .5), (wx(.46), YF - .5), (wx(.40), YF - 6.6), (wx(.30), YF - 7.4), (wx(.15), YF - 6.4), (XW + .6, YF - 5.4), (XW - .6, YF - 2.4)]
 BED_E = [(XE + .4, YF - .5), (X1 - .4, YF - .5), (X1 - .4, YF - 3.4), (XE + 3.0, YF - 3.4)]
-BED_W2 = [(X0 + 1.0, YF - .5), (-40.0, YF - .5), (-40.0, YF - 3.5), (X0 + 1.0, YF - 3.5)]               # v003: west block front bed
+DOOR_X = (X0 + XW) / 2                                                                            # v004: west door mid-block (source)
+BED_W2 = [(X0 + 1.0, YF - .5), (DOOR_X - 3.6, YF - .5), (DOOR_X - 3.6, YF - 3.0), (X0 + 1.0, YF - 3.0)]               # v003: west block front bed
 BED_SW = [(-36.0 + 6.0 * math.cos(t_) + .8 * math.sin(3 * t_), YF - 22.0 + 4.0 * math.sin(t_)) for t_ in (math.tau * i / 40 for i in range(40))]
 BEDS = [('Bed W', BED_W), ('Bed E', BED_E), ('Bed W2', BED_W2), ('Bed SW', BED_SW)]
 
@@ -2686,15 +2708,20 @@ def site():
     for p in pts[1:-1]:
         A.foliage('Bouldering frame joint', p, (.09, .09, .09), role='steel', detail=1)
     C.rod('Bouldering frame leg', (fx - .2, fy + .2, APRON_Z), (fx - .4, fy + .1, 2.5), .07, 'steel', 'site', 10)
+    pts2 = [(fx - 1.0, fy + 1.4, APRON_Z), (fx - .9, fy + 1.3, 1.7), (fx + .3, fy + .6, 2.2), (fx + 1.5, fy + .3, 1.4), (fx + 2.4, fy - .1, 1.9), (fx + 3.2, fy - .6, APRON_Z)]
+    for p, q in zip(pts2, pts2[1:]):                                       # v004: a second, wavier bent tube (S-plan, source)
+        C.rod('Bouldering frame tube', p, q, .08, 'steel', 'site', 10)
+    for p in pts2[1:-1]:
+        A.foliage('Bouldering frame joint', p, (.09, .09, .09), role='steel', detail=1)
     b = Batch()
-    frustum(b, 'wall', fx + 2.2, fy - 2.4, APRON_Z - .01, APRON_Z + .16, .95, .85, 24)
+    frustum(b, 'joint', fx + 2.2, fy - 2.4, APRON_Z - .01, APRON_Z + .16, .95, .85, 24)
     frustum(b, 'hold3', fx + 2.2, fy - 2.4, APRON_Z + .16, APRON_Z + .18, .86, .80, 24)      # v003: dark disc, lighter rim
     b.flush('apron disc')
     paths = []
-    for name, pts_, w in (('Path', [(-58.0, YF - 15.0), (-58.0, YF - 12.6), (-48.0, YF - 9.4), (XW - 2.0, YF - 8.4), (wx(.2), YF - 9.0), (wx(.33), YF - 9.6), (wx(.41), YF - 8.2)], 2.4),
-                          ('Path to the west door', [(-48.0, YF - 9.4), (-38.0, YF - 4.0), (XW - 2.6, P3[1] - .3)], 2.0)):
-        paths.append(path_poly(chaikin(pts_, 3), w))                       # v002: a smooth curving path
-    paths.append([(-48.0 + 1.8 * math.cos(t_), YF - 9.4 + 1.8 * math.sin(t_)) for t_ in (math.tau * i / 24 for i in range(24))])   # v003: fillet the spur junction
+    for name, pts_, w in (('Path', [(-58.0, YF - 16.0), (-52.0, YF - 10.6), (-44.0, YF - 9.2), (XW - 2.0, YF - 11.4), (wx(.2), YF - 9.2), (wx(.33), YF - 10.6), (wx(.41), YF - 8.2)], 2.4),
+                          ('Path to the west door', [(-46.5, YF - 9.4), (-42.0, YF - 4.6), (DOOR_X, P3[1] - .3)], 2.0)):
+        paths.append(path_poly(chaikin(pts_, 4), w))                       # v004: a continuous S-curve                       # v002: a smooth curving path
+    paths.append([(-46.5 + 1.6 * math.cos(t_), YF - 9.6 + 1.6 * math.sin(t_)) for t_ in (math.tau * i / 24 for i in range(24))])   # fillet the spur junction
     for k, poly in enumerate(union_polys(paths)):
         slab(f'Path {k}', poly, LAWN_Z - .02, PATH_Z, 'path', 'site')
     for name, poly in BEDS:
@@ -2720,7 +2747,7 @@ def site():
     for i, (x, y) in enumerate(lawn):
         boulder(f'Lawn boulder {i}', x + rnd.uniform(-1, 1), y + rnd.uniform(-1, 1), rnd.uniform(.8, 1.4), rnd)
     for i, (x, y) in enumerate([(wx(.06), YF - 3.0), (wx(.15), YF - 4.2), (wx(.25), YF - 3.4), (wx(.36), YF - 2.4), (wx(.09), YF - 1.2),
-                                (-46.0, YF - 2.0), (-43.0, YF - 2.6), (-39.0, YF - 21.0), (-33.0, YF - 23.0), (-36.0, YF - 19.5)]):
+                                (-47.0, YF - 1.8), (-44.5, YF - 2.2), (-39.0, YF - 21.0), (-33.0, YF - 23.0), (-36.0, YF - 19.5)]):
         boulder(f'Bed boulder {i}', x, y, rnd.uniform(.8, 1.1), rnd)
 
 
