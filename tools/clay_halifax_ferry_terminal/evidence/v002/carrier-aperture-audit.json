@@ -1,0 +1,354 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "W n door",
+      "face": "terminal west front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "W n g1",
+      "face": "terminal west front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "W n u1",
+      "face": "terminal west front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "W n u2",
+      "face": "terminal west front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "N u0",
+      "face": "terminal north wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "N u1",
+      "face": "terminal north wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "N u2",
+      "face": "terminal north wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "N u3",
+      "face": "terminal north wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "N u4",
+      "face": "terminal north wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "N load",
+      "face": "terminal north wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "N door",
+      "face": "terminal north wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "N g1",
+      "face": "terminal north wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E u0",
+      "face": "terminal east wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E u1",
+      "face": "terminal east wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E u2",
+      "face": "terminal east wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E u3",
+      "face": "terminal east wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E door",
+      "face": "terminal east wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E g1",
+      "face": "terminal east wall",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B shop 0",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 0-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 0-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 0+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 0+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B shop 1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 1-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 1-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 1+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 1+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B shop 2",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 2-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 2-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 2+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 2+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B shop 3",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 3-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 3-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 3+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 3+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B shop 4",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 4-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 4-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 4+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 4+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B shop 5",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 5-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 5-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 5+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 5+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B shop 6",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 6-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 6-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 6+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 6+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B shop 7",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 7-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 7-1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f2 7+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "B f3 7+1",
+      "face": "brick block south front",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}
