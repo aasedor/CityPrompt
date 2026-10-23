@@ -36,12 +36,15 @@ separate checkpoints for the user's decision.
 
 ## Results
 
+Three of the five passed with zero P0 and P1: Gastown, the Halifax Georgian colonial house and the Plateau rue.
+The ferry terminal and the laneway house stopped with one P1 open each and no P0.
+
 | model | catalogue archetype | family | outcome | candidate | GLB bytes | candidate review P0 / P1 |
 |---|---|---|---|---|---|---|
 | Gastown heritage commercial block | gastown_heritage_commercial | `tools/clay_gastown_heritage_commercial` | **PASS_ZERO_P0_P1** at v003 | v003 | 2,083,784 | 0 / 0 |
 | Halifax Georgian colonial house | halifax_georgian_colonial | `tools/clay_halifax_georgian_colonial` | **PASS_ZERO_P0_P1** at v003 | v003 | 1,378,820 | 0 / 0 |
 | Montreal Plateau residential rue | montreal_plateau_residential_rue | `tools/clay_montreal_plateau_rue` | **PASS_ZERO_P0_P1** at v003 | v003 | 4,027,580 | 0 / 0 |
-| Halifax ferry terminal | halifax_ferry_terminal | `tools/clay_halifax_ferry_terminal` | v004 under review (v003 tied v002) | v002 | 2,638,692 | 0 / 1 |
+| Halifax ferry terminal | halifax_ferry_terminal | `tools/clay_halifax_ferry_terminal` | stopped: v003 and v004 did not lower v002's count | v002 | 2,638,692 | 0 / 1 |
 | Vancouver laneway house | vancouver_laneway_house | `tools/clay_vancouver_laneway_house` | stopped: the planting finding survived two fixes | v002 | 2,087,620 | 0 / 1 |
 
 The candidate GLB of each family is the only tracked file in its `candidates/` folder, and every candidate is
@@ -54,7 +57,7 @@ under the 4 MiB ordinary-blob cap. The Plateau rue, at 4,027,580 bytes, is the c
 | Gastown | 0 / 5 | 0 / 3 | **0 / 0** | |
 | Halifax Georgian colonial | 0 / 3 | 0 / 1 | **0 / 0** | |
 | Plateau rue | 0 / 6 | 0 / 1 | **0 / 0** | |
-| Halifax ferry terminal | 0 / 7 | 0 / 1 | 0 / 1 | under review |
+| Halifax ferry terminal | 0 / 7 | 0 / 1 | 0 / 1 | 0 / 1 (stopped) |
 | Vancouver laneway house | 0 / 8 | 0 / 1 | 0 / 2 (stopped) | |
 
 ## What each family needed
@@ -100,7 +103,7 @@ under the 4 MiB ordinary-blob cap. The Plateau rue, at 4,027,580 bytes, is the c
   rising through each deck.
 - **v003 (0 / 0):** capped stair-head newels end both handrails.
 
-### Halifax ferry terminal: v004 under review, v002 is the candidate
+### Halifax ferry terminal: stopped, v002 is the candidate
 
 - **v001 (0 / 7):**
   - black voids at open member ends;
@@ -113,7 +116,11 @@ under the 4 MiB ordinary-blob cap. The Plateau rue, at 4,027,580 bytes, is the c
   unrecorded in v001).
 - **v003 (0 / 1):** closed the bench joint. Its review found the upper-lounge seating rows floating 0.4 m above the
   floor with no legs (present but unrecorded in v001 and v002). It ties v002, so v002 stays the candidate.
-- under review_LINE
+- **v004 (0 / 1):** put the lounge seats on pedestals. Its review then found a dark unlit patch at the stair
+  head, where the stair rises into the solid upper slab with no stairwell opening (present but unrecorded since
+  v002). Two consecutive reviews did not lower v002's count, so the family stops. Its README records the likely
+  fix: carry v004's seat fixes, cut a stairwell opening, remove the coplanar landing block, and end the
+  handrails on newels with a guard.
 
 ### Vancouver laneway house: stopped, v002 is the candidate
 
@@ -135,7 +142,7 @@ under the 4 MiB ordinary-blob cap. The Plateau rue, at 4,027,580 bytes, is the c
   found a defect that was already present in an earlier version but unrecorded:
   - Gastown: recess floors;
   - Georgian colonial: portico slot;
-  - ferry terminal: bench joint and floating seats;
+  - ferry terminal: bench joint, floating seats and the stair head;
   - Plateau rue: the stair-head bar, which v001 had flagged only partly.
 
   Each new finding is real, but the count makes a version look worse than it is.
@@ -151,8 +158,8 @@ under the 4 MiB ordinary-blob cap. The Plateau rue, at 4,027,580 bytes, is the c
   `glass_close` renders. Every later family was renamed before its first build.
 - **Do not prune build folders that are still in use.** A disk cleanup removed a locked source from a running
   build, and the reviewer correctly flagged it. Clean only folders whose evidence is already preserved.
-- **Planting from scratch is still the weak point.** The laneway house was the only wave J family to stop, and it
-  stopped on planting. It used the shared planting kit, but with a family-specific fern prototype that did not
+- **Planting from scratch is still the weak point.** The laneway house stopped on planting (the ferry terminal
+  stopped on late-found geometry). It used the shared planting kit, but with a family-specific fern prototype that did not
   hold up when enlarged.
 
 ## Branch hygiene
