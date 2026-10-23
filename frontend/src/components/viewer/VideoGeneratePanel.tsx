@@ -1,4 +1,5 @@
 import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
+import { withPeopleDirection } from '@/features/people/peopleActions';
 import {
   Check,
   Clapperboard,
@@ -650,7 +651,7 @@ export function VideoGeneratePanel({
         omni_reference_mode: includePhotographicGuide ? 'appearance_references' : 'video_only',
         appearance_attempt_id: includePhotographicGuide ? photographicGuide!.attempt_id : undefined,
         use_custom_prompt_only: includePhotographicGuide || recoveredAppearance.request.use_custom_prompt_only,
-        scene_brief: [recoveredAppearance.request.scene_brief || sceneContract.text, peopleDirection].filter(Boolean).join('\n'),
+        scene_brief: withPeopleDirection(recoveredAppearance.request.scene_brief || sceneContract.text, peopleDirection),
         custom_prompt: customPrompt.trim() || 'Make this exact scene look like a live-action architectural film with realistic people and materials. Clear blue sky, soft clouds and neutral sunshine.' };
     }
     const activeControls = controlMode !== 'single_frame' ? await prepareLocalPreview() : null;
@@ -753,7 +754,7 @@ export function VideoGeneratePanel({
       } : {}),
       custom_prompt: provider === 'omni' && controlMode === 'preview_video' ? customPrompt.trim() || (appearanceReferences ? 'Make this exact scene look like a live-action architectural film with realistic people and materials. Clear blue sky, soft clouds and neutral sunshine.' : '') : '',
       use_custom_prompt_only: provider === 'omni' && controlMode === 'preview_video' && (useCustomPromptOnly || appearanceReferences),
-      scene_brief: [sceneBrief, peopleDirection].filter(Boolean).join('\n'),
+      scene_brief: withPeopleDirection(sceneBrief, peopleDirection),
       community_3d_claims: community3DClaims,
       details_revision: detailsRevision,
       ...(residualLandscapeClaim ? {

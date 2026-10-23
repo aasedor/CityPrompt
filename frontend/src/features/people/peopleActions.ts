@@ -41,9 +41,18 @@ export function peopleActionForAsset(asset: DetailAsset | undefined, value?: unk
 }
 
 /** Bounded, conditional direction: saved actors never create offscreen extras. */
+const PEOPLE_DIRECTION_PREFIX = 'Saved people direction (apply only to these actors when visible in the captured scene):';
+
+/** Recovery replaces the generated suffix rather than accumulating inventories. */
+export function withPeopleDirection(brief: string, direction: string): string {
+  const suffix = brief.indexOf(`\n${PEOPLE_DIRECTION_PREFIX}`);
+  const base = brief.startsWith(PEOPLE_DIRECTION_PREFIX) ? '' : suffix >= 0 ? brief.slice(0, suffix) : brief;
+  return [base, direction].filter(Boolean).join('\n');
+}
+
 export function buildPeopleDirection(props: readonly { id?:string; variant: string; people_action?: PeopleActionId }[] = []): string {
   const counts = new Map<PeopleActionId, number>();
-  const representations: string[] = [];
+  const representations = new Map<string, { count: number; description: string; personCount: number }>();
   props.forEach(prop => {
     const asset = detailAsset(prop.variant);
     if (!isPeopleAsset(asset)) return;
@@ -52,9 +61,13 @@ export function buildPeopleDirection(props: readonly { id?:string; variant: stri
     // A group action identifies the authored pose, not every member's activity:
     // the standing stroller parent's infant must never be described as standing.
     if (!representation || representation.personCount === 1) counts.set(action, (counts.get(action) ?? 0) + 1);
-    if (representation) representations.push(`${prop.id ?? asset.id}: ${representation.description} (${representation.personCount} ${representation.personCount === 1 ? 'person' : 'people'}; fixed pose)`);
+    if (representation) representations.set(asset.id, {
+      count: (representations.get(asset.id)?.count ?? 0) + 1,
+      description: representation.description, personCount: representation.personCount,
+    });
   });
-  if (!counts.size && !representations.length) return '';
+  if (!counts.size && !representations.size) return '';
   const actionSummary = PEOPLE_ACTIONS.filter(action => counts.has(action.id)).map(action => `${counts.get(action.id)} ${action.label.toLowerCase()}`).join('; ');
-  return `Saved people direction (apply only to these actors when visible in the captured scene):${actionSummary ? ` ${actionSummary}.` : ''}${representations.length ? ` Authored representations: ${representations.join('; ')}. Preserve the mobility aids, guide dog and family group arrangements present in each representation.` : ''} Preserve each person's saved position, appearance and scene support. Do not invent offscreen people or seats. These actions also apply when no additional people are requested.`;
+  const representationSummary = [...representations].map(([id, row]) => `${row.count} × ${id}: ${row.description} (${row.personCount} ${row.personCount === 1 ? 'person' : 'people'} per representation; fixed pose)`).join('; ');
+  return `${PEOPLE_DIRECTION_PREFIX}${actionSummary ? ` ${actionSummary}.` : ''}${representationSummary ? ` Authored representations: ${representationSummary}. Preserve the mobility aids, guide dog and family group arrangements present in each representation.` : ''} Preserve each person's saved position, appearance and scene support. Do not invent offscreen people or seats. These actions also apply when no additional people are requested.`;
 }
