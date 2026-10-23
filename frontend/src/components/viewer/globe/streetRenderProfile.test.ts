@@ -10,9 +10,29 @@ import {
   projectStreetRouteToGround,
   restoreStreetCameraProjection,
   verticalFovForHorizontalSensor,
+  manualStreetFocusHeight,
 } from './streetRenderProfile';
 
 describe('streetRenderProfile', () => {
+  it('keeps full-height people in a close manual route instead of aiming above their heads', () => {
+    const camera = new THREE.PerspectiveCamera(STREET_RENDER_VERTICAL_FOV_DEGREES, 16 / 9, .1, 1000);
+    const curve = new THREE.CatmullRomCurve3([new THREE.Vector3(0, 0, 8), new THREE.Vector3(0, 0, 6)]);
+    const focus = new THREE.Vector3(0, manualStreetFocusHeight({ hasPeople: true, hasBuildings: false }), 0);
+    for (const progress of [0, .5, 1]) {
+      applyStreetRoutePose(camera, curve, progress, new THREE.Vector3(0, 1, 0), undefined, focus);
+      camera.updateProjectionMatrix();
+      for (const height of [0, 1.85]) {
+        const projected = new THREE.Vector3(0, height, 0).project(camera);
+        expect(Math.abs(projected.y)).toBeLessThan(1);
+      }
+    }
+    expect(manualStreetFocusHeight({ hasPeople: true, hasBuildings: true })).toBe(7);
+    expect(manualStreetFocusHeight({ hasPeople: false, hasBuildings: false })).toBe(7);
+  });
+  it('retains architectural framing for a saved building without a linked zone', () => {
+    const savedBuilding = { id: 'saved-house', model_url: '/house.glb', footprint_coordinates: [[0, 0], [8, 0], [8, 8], [0, 0]] };
+    expect(manualStreetFocusHeight({ hasPeople: true, hasBuildings: false, savedBuildings: [savedBuilding] })).toBe(7);
+  });
   it('converts a full-frame 35 mm lens to the vertical Three.js field of view', () => {
     expect(verticalFovForHorizontalSensor(35, 16 / 9)).toBeCloseTo(32.27, 1);
     expect(STREET_RENDER_VERTICAL_FOV_DEGREES).toBeCloseTo(32.27, 1);

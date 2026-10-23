@@ -7,6 +7,8 @@ import { GlobePavingSurfaces } from '@/features/parks/GlobePavingSurfaces';
 import { GlobeParkParcelGuide } from '@/features/parks/GlobeParkParcelGuide';
 import type { PavingSurface } from '@/features/parks/pavingSurfaces';
 import type {ProjectBench, ProjectTree, ProjectProp} from '@/features/parks/projectBenches';
+import { detailAsset } from '@/features/parks/detailCatalogue';
+import { isPeopleAsset } from '@/features/people/peopleActions';
 import { assertNativeStreetsReady, waitForNativeStreetsReady, expectsNativeStreet } from './nativeStreetReadiness';
 import { hasNativePark } from '@/features/parks/nativeParkRegistry';
 import { frameLandscapeContext } from '@/features/siteLandscape/landscapeContext';
@@ -134,7 +136,7 @@ import { buildingWalkEntrance, setBuildingWalkingDoorsOpen } from '@/features/le
 import { updateWalkBuildingInspection, endBuildingInspection } from '@/features/legoAssembly/buildingInspection';
 import { lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
 import { useWalkKeyboard } from './useWalkKeyboard';
-import { STREET_RENDER_EYE_HEIGHT_METERS } from './streetRenderProfile';
+import { STREET_RENDER_EYE_HEIGHT_METERS, manualStreetFocusHeight } from './streetRenderProfile';
 import { SceneSettledMonitor } from './useSceneSettled';
 import { isPlausibleTerrainAnchor } from './globeTerrainUtils';
 import {
@@ -3276,7 +3278,11 @@ export function GlobeSitePlannerMap({
       ? new THREE.Vector3()
       : camera.position.clone().sub(centerWorld);
     const streetFocusWorld = streetWalkby && !request.automaticRoute
-      ? centerWorld.clone().addScaledVector(streetUp, 7)
+      ? centerWorld.clone().addScaledVector(streetUp, manualStreetFocusHeight({
+          hasPeople: Boolean(projectProps?.some(prop => isPeopleAsset(detailAsset(prop.variant)))),
+          hasBuildings: terrainZonesRef.current.some(zone => resolveCommunity3DKind(zone) === 'building'),
+          savedBuildings: buildings,
+        }))
       : null;
     const previousReferenceVisibility = referenceOverlayGroup.current?.visible;
     const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
@@ -3603,7 +3609,7 @@ export function GlobeSitePlannerMap({
       if (fadePlugin && previousFadeDuration !== null) fadePlugin.fadeDuration = previousFadeDuration;
       peopleCapture?.restore();
     }
-  }, [captureDirect3D, raycastSurfacePoint, waitForCurrentTiles, waitForSharedGround]);
+  }, [captureDirect3D, raycastSurfacePoint, waitForCurrentTiles, waitForSharedGround, projectProps, buildings]);
 
   // Scene hygiene for street-level captures (same pattern as captureDirect3D:
   // flip clean state, two frames for React to commit, restore in finally).

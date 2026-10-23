@@ -20,6 +20,17 @@ export const STREET_RENDER_SENSOR_WIDTH_MM = 36;
 export const STREET_RENDER_FRAME_ASPECT = 16 / 9;
 export const STREET_RENDER_MAX_ROUTE_DISTANCE_METERS = 80;
 
+/** People-only close-ups need a torso-height target; retain the existing
+ * architectural framing when an authored building is present. */
+export function manualStreetFocusHeight({ hasPeople, hasBuildings, savedBuildings = [] }: {
+  hasPeople: boolean;
+  hasBuildings: boolean;
+  savedBuildings?: readonly object[];
+}): number {
+  // Saved GLBs may render from their own footprint without a linked zone.
+  return hasPeople && !hasBuildings && savedBuildings.length === 0 ? 1.05 : 7;
+}
+
 /** Three.js PerspectiveCamera.fov is vertical, while photographic 35 mm lens
  * descriptions conventionally refer to a 36 mm-wide full-frame sensor. */
 export function verticalFovForHorizontalSensor(
