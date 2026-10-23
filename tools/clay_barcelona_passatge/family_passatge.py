@@ -48,7 +48,7 @@ EPS = .002
 PALETTE = dict(brick=(.58, .30, .19), brick2=(.68, .44, .31), stone=(.80, .71, .55), stucco=(.86, .79, .65),
     stucco2=(.80, .72, .58), mortar=(.76, .64, .52), iron=(.17, .21, .19), frame=(.15, .20, .17), hardware=(.06, .06, .07),
     glass=(.62, .68, .68), trim=(.88, .86, .80), shopframe=(.36, .20, .10), timber=(.52, .33, .18), sign=(.07, .17, .13),
-    gold=(.80, .62, .28), awning=(.88, .82, .68), lamp=(.95, .90, .72), tile=(.80, .76, .68), tile2=(.44, .44, .43),
+    gold=(.80, .62, .28), awning=(.88, .82, .68), lamp=(.95, .90, .72), tile=(.80, .76, .68), tile2=(.44, .44, .43), joint=(.70, .66, .58),
     terracotta=(.73, .46, .33), white=(.90, .89, .86), interior=(.86, .73, .54), floor=(.55, .42, .30),
     goods=(.62, .30, .20), asphalt=(.25, .25, .26), concrete=(.72, .70, .66), curb=(.66, .65, .62), planting=(.30, .43, .20),
     pot=(.60, .40, .28), car=(.66, .67, .69), car2=(.24, .27, .30), car3=(.78, .76, .70), tyre=(.07, .07, .07),
@@ -76,7 +76,7 @@ def manifest(version):
         elif c['name'] == 'aerial':
             c.update(location=(40.0, -30.0, 45.0), target=(0.0, 15.0, 5.0), lens=26, whole=False)
         elif c['name'] == 'top':                                               # the locked top view: north up, the vault right of centre
-            c.update(location=(-.7, 13.0, 120.0), target=(-.7, 13.001, 0.0), ortho_scale=58.6, whole=False)
+            c.update(location=(-.7, 13.8, 120.0), target=(-.7, 13.801, 0.0), ortho_scale=60.0, whole=False)
         elif c['name'] == 'left_side':                                         # high over the west context: west face, roof deck and vault
             c.update(location=(-26.0, 15.0, 52.0), target=(-8.0, 15.0, 3.0), lens=28, whole=False)
         elif c['name'] == 'right_side':                                        # high over the east context: east range and vault
@@ -537,10 +537,12 @@ def fanlight(b, f, name, uc, zs, r, inset=.16, frame='frame', n=14):
         b.beam(frame, f.p(uc, inset - .005, zs + .02), f.p(uc + (r - .07) * ca, inset - .005, zs + (r - .07) * sa), .035, .045)
 
 
-def flat_balcony(m, b, f, u, z, w, depth, spacing=.12):
-    """Cantilevered balcony: stone slab, iron top, mid and bottom rails and end frames as boxes, pickets as flat bars
-    (one quad each) so the dense ironwork of the sources stays inside the size budget."""
-    m.box('stone', u, -depth / 2 + .02, z - .10, w, depth + .04, .20)
+def flat_balcony(m, b, f, u, z, w, depth, spacing=.09, slab=.12):
+    """Cantilevered balcony: a thin stone slab with a moulded edge, iron top, mid and bottom rails and end frames as
+    boxes, pickets and a band of crossed scroll bars as flat bars (one quad each) to keep the dense ironwork of the
+    sources inside the size budget."""
+    m.box('stone', u, -depth / 2 + .02, z - slab / 2, w, depth + .04, slab)
+    m.box('stone', u, -depth - .01, z - slab - .03, w - .1, .08, .07)          # moulded edge under the slab
     m.box('iron', u, -depth + .04, z + .98, w, .05, .05)
     m.box('iron', u, -depth + .04, z + .12, w, .03, .03)
     m.box('iron', u, -depth + .04, z + .55, w, .025, .025)
@@ -551,15 +553,20 @@ def flat_balcony(m, b, f, u, z, w, depth, spacing=.12):
     n = max(4, int(w / spacing))
     for i in range(1, n):
         uu = u - w / 2 + w * i / n
-        quad(b, 'iron', [f.p(uu - .012, -depth + .04, z), f.p(uu + .012, -depth + .04, z), f.p(uu + .012, -depth + .04, z + .96), f.p(uu - .012, -depth + .04, z + .96)])
+        quad(b, 'iron', [f.p(uu - .012, -depth + .04, z), f.p(uu + .012, -depth + .04, z), f.p(uu + .012, -depth + .04, z + .55), f.p(uu - .012, -depth + .04, z + .55)])
+    k = max(2, int(w / .32))
+    for i in range(k):                                                        # crossed scroll bars in the upper band
+        a, c = u - w / 2 + w * i / k, u - w / 2 + w * (i + 1) / k
+        for (ua, za), (ub, zb) in (((a, z + .56), (c, z + .96)), ((a, z + .96), (c, z + .56))):
+            quad(b, 'iron', [f.p(ua - .012, -depth + .045, za), f.p(ua + .012, -depth + .045, za), f.p(ub + .012, -depth + .045, zb), f.p(ub - .012, -depth + .045, zb)])
 
 
-def arch_window(m, b, f, name, uc, z, w, rect, wall, balcony=0.0, frame='frame'):
+def arch_window(m, b, f, name, uc, z, w, rect, wall, balcony=0.0, frame='frame', depth=T):
     """Round-arched French window: clear cut to the crown, spandrels, framed lower lights with a transom at the
     springing, a fanlight, a stone archivolt and keystone, and a wrought-iron balcony (or a stone sill)."""
     r = w / 2; zs = z + rect
     framed(m, f, hole(name, uc, z, w, rect), cols=2, rows=1, inset=.16, occupied='flat', frame=frame)
-    spandrels(f, name, uc, zs, r, T, wall)
+    spandrels(f, name, uc, zs, r, depth, wall)
     fanlight(b, f, name, uc, zs, r, frame=frame)
     archivolt(f, name, uc, zs, r)
     m.box('stone', uc, -.05, zs + r + .23, .34, .12, .44)                   # keystone, its foot on the crown
@@ -569,12 +576,38 @@ def arch_window(m, b, f, name, uc, z, w, rect, wall, balcony=0.0, frame='frame')
         m.box('stone', uc, -.07, z - .065, w + .3, .14, .12)                # sill, 5 mm below the cut
 
 
+RZ, RCROWN, RD = 4.95, 9.95, .3                                           # bay recess sill, crown and depth
+
+
+def bay_recess(m, b, f, name, uc, rw):
+    """Upper bay as one tall round-arched recess that nearly fills the bay between the pilasters: brick reveals
+    0.3 m deep under a stone archivolt and keystone, a stone sill, and in the recessed infill a French window with a
+    shallow balcony on the first floor and an arched window with a balcony on the second."""
+    r = rw / 2; zs = RCROWN - r
+    spandrels(f, name, uc, zs, r, T, 'brick')
+    archivolt(f, name, uc, zs, r, width=.3)
+    m.box('stone', uc, -.05, RCROWN + .26, .4, .12, .52)                    # keystone, its foot on the crown
+    m.box('stone', uc, .11, RZ + .03, rw + .02, .38, .06)                    # stone sill over the recess ledge
+    for s in (-1, 1):                                                        # imposts at the springing
+        m.box('stone', uc + s * (r + .12), -.04, zs - .08, .5, .1, .16)
+    fr = C.Face(f.p(0, RD, 0), tuple(f.t), tuple(f.n), f.label + ' recess')
+    h1 = hole(name + ' french', uc, 5.25, 2.0, 2.35)
+    h2 = hole(name + ' arched', uc, 8.1, 2.0, .55 + 1.0)
+    carrier(fr, name + ' infill', uc - r, uc + r, RZ, RCROWN, [h1, h2], 'brick', depth=.3)
+    mr = Merge(fr)
+    framed(mr, fr, h1, cols=2, rows=2, inset=.16, occupied='flat', frame='frame')
+    flat_balcony(mr, b, fr, uc, 5.24, 2.6, .45)
+    arch_window(mr, b, fr, name + ' arched', uc, 8.1, 2.0, .55, 'brick', balcony=.4, depth=.3)
+    mr.flush(name + ' recess')
+
+
 def shopfront(m, f, name, uc, w, sign=True):
     """Timber shopfront inside a clear cut: three lights over a panelled bulkhead, a transom, a door stile, and a dark
     green signboard with a gilt name band above the cut."""
     framed(m, f, hole(name, uc, FZ, w, SHOP), cols=3, rows=1, inset=.22, occupied='shop', frame='shopframe')
     m.box('shopframe', uc, .21, FZ + SHOP * .76, w - .14, .08, .07)          # transom bar
-    m.box('shopframe', uc, .20, FZ + .36, w - .16, .06, .58)                 # bulkhead panel in front of the glass
+    m.box('timber', uc, .15, FZ + .32, w - .16, .08, .5)                     # panelled timber bulkhead in front of the glass
+    m.box('shopframe', uc, .105, FZ + .6, w - .14, .03, .06)                  # bulkhead capping rail
     m.box('hardware', uc + w / 6 - .12, .15, FZ + 1.1, .04, .04, .3)        # door pull on the middle light
     if sign:
         m.box('sign', uc, -.06, FZ + SHOP + .45, w + .2, .08, .56)
@@ -606,29 +639,27 @@ def passage_facade(f, side):
         uc = (u0 + u1) / 2 + (.25 if i == 0 else 0.0)
         ws = 3.0 if i == 0 else 3.4
         holes.append(hole(f'{f.label} shop {i}', uc, FZ, ws, SHOP))
-        holes.append(hole(f'{f.label} first {i}', uc, W1Z, 1.6, 1.7 + .8))
-        holes.append(hole(f'{f.label} second {i}', uc, W2Z, 1.4, 1.1 + .7))
+        rw = 3.0 if i == 0 else 3.2
+        holes.append(hole(f'{f.label} recess {i}', uc, RZ, rw, RCROWN - RZ))
         specs.append((i, u0, u1, uc, ws))
     carrier(f, f.label + ' carrier', .4, L, 0.0, EAVE - .05, holes, 'brick')
     courses(f, .45, L - .05, .6, EAVE - .7, [dict(h, w=h['w'] + .55, h=h['h'] + .3) for h in holes])
     m = Merge(f); b = Batch()
     for i, u0, u1, uc, ws in specs:
         shopfront(m, f, f'{f.label} shop {i}', uc, ws)
-        arch_window(m, b, f, f'{f.label} first {i}', uc, W1Z, 1.6, 1.7, 'brick', balcony=.62)
-        arch_window(m, b, f, f'{f.label} second {i}', uc, W2Z, 1.4, 1.1, 'brick', balcony=.42)
+        bay_recess(m, b, f, f'{f.label} bay {i}', uc, 3.0 if i == 0 else 3.2)
     for u in RIBS + [L - .3]:                                               # stone pilasters, ground to cornice
         m.box('stone', u, -.06, (EAVE - .62) / 2, .8 if u < L - 1 else .6, .12, EAVE - .62)
         if u < L - 1:
             m.box('stone', u, -.24, CORBEL - .26, .62, .48, .52)            # corbel carrying the rib leg
             m.box('stone', u, -.30, CORBEL - .58, .46, .36, .16)
-            wall_lantern(b, f, u, FZ + SHOP - .6)
+            wall_lantern(b, f, u, FZ + SHOP - 1.0)
     for k in range(int((EAVE - .7) / .6)):                                  # quoins returning from the pavilion corner
         w = .9 if k % 2 == 0 else .6
         m.box('stone', w / 2 - .03, -.03, .3 + .6 * k + .27, w, .1, .53)
     m.box('stone', (.4 + L) / 2, -.07, F1 - .38, L - .4 - EPS, .14, .18)    # shop cornice band over the signboards
-    m.box('stone', (.4 + L) / 2, -.05, F2 - .2, L - .4 - EPS, .10, .14)     # second-floor belt (shallower than the pilasters)
     m.box('stone', (.4 + L) / 2, -.04, .3, L - .4 - EPS, .08, .6)           # stone plinth band
-    eave_cornice(m, -.03, L, EAVE, proj=.7, role='stone')
+    eave_cornice(m, 0.0, L, EAVE, proj=.7, role='stone')                     # mitred with the pavilion cornice by mouth_corners()
     m.flush(f.label)
     b.flush(f.label + ' iron')
     # rooms: shops 3 m deep with partitions, upper rooms 1.6 m deep, floors and ceilings (the core behind is lined)
@@ -658,7 +689,7 @@ def passage_facade(f, side):
         C.qa_room_light(f'{f.label} flat2 {i}', f.p(uc, .9, F2 + 1.9), 6, .5)
 
 
-def pavilion_face(f, name, u1, holes_u, pw, wall='brick'):
+def pavilion_face(f, name, u1, holes_u, pw, wall='brick', corner='east'):
     """South face of a brick pavilion at the mouth: shop, arched first-floor window with a balcony, second-floor
     window, stone quoins at both corners, cornice and parapet."""
     uc = holes_u
@@ -677,20 +708,29 @@ def pavilion_face(f, name, u1, holes_u, pw, wall='brick'):
             m.box('stone', uu, -.03, .3 + .6 * k + .27, w, .1, .54)
     m.box('stone', u1 / 2, -.07, F1 - .38, u1, .14, .18)
     m.box('stone', u1 / 2, -.04, .3, u1, .08, .6)
-    eave_cornice(m, -.03, u1 + .03, EAVE + .012, proj=.7, role='stone')
+    eave_cornice(m, 0.0 if corner == 'west' else -.03, u1 if corner == 'east' else u1 + .03, EAVE, proj=.7, role='stone')
     m.box(wall, u1 / 2, T / 2, EAVE + .4, u1, T, .9)                         # parapet
     m.box('stone', u1 / 2, T / 2, EAVE + .9, u1 + .1, T + .1, .1)
     m.flush(name); b.flush(name + ' iron')
+
+
+def mouth_corners(b):
+    """Square corner blocks completing each cornice layer where a pavilion cornice meets a passage cornice at the
+    mouth: the two cornices butt at the corner and these fill the outer quadrant, so the profiles turn without
+    overlap or step."""
+    for s in (-1, 1):
+        for zc, h, out in ((EAVE - .62, .26, .4), (EAVE - .13, .26, .88), (EAVE, .06, .83)):
+            b.box('stone', s * (HW - out / 2), -out / 2, zc, out, out, h)
 
 
 def finial(b, x, y, z):
     """Corner finial on the pavilion parapet: a stone pedestal, a moulded base and an urn with a flame."""
     b.box('stone', x, y, z + .55, .8, .8, 1.1)
     b.box('stone', x, y, z + 1.15, .95, .95, .12)
-    frustum(b, 'stone', x, y, z + 1.21, z + 1.45, .26, .3, 10)
-    frustum(b, 'stone', x, y, z + 1.45, z + 1.9, .3, .38, 10)
-    frustum(b, 'stone', x, y, z + 1.9, z + 2.05, .38, .2, 10)
-    frustum(b, 'stone', x, y, z + 2.05, z + 2.55, .14, 0.0, 10)
+    for z0, z1, r0, r1 in ((1.21, 1.3, .2, .14), (1.3, 1.45, .14, .26), (1.45, 1.65, .26, .36), (1.65, 1.85, .36, .3),
+                           (1.85, 1.97, .3, .16), (1.97, 2.03, .16, .24), (2.03, 2.12, .24, .14), (2.12, 2.24, .1, .07)):
+        frustum(b, 'stone', x, y, z + z0, z + z1, r0, r1, 12)                # foot, bellied body, neck, lid and knob
+    frustum(b, 'stone', x, y, z + 2.24, z + 2.32, .1, .02, 12)
 
 
 def aa(b, role, c, t, n, along, out, z0, z1, off=0.0):
@@ -705,10 +745,12 @@ def proud_window_lite(b, c, t, n, z, w, hh, balcony=False):
     P = lambda a, o, zz: (c[0] + tx * a + nx * o, c[1] + ty * a + ny * o, zz)
     quad(b, 'trim', [P(-w / 2 - .14, .015, z - .08), P(w / 2 + .14, .015, z - .08), P(w / 2 + .14, .015, z + hh + .08), P(-w / 2 - .14, .015, z + hh + .08)])
     quad(b, 'glass', [P(-w / 2, .03, z), P(w / 2, .03, z), P(w / 2, .03, z + hh), P(-w / 2, .03, z + hh)])
-    if balcony:
-        aa(b, 'stone', c, t, n, w + .5, .6, z - .14, z - .01, .28)
-        b.beam('iron', P(-w / 2 - .22, .55, z + .9), P(w / 2 + .22, .55, z + .9), .045, .04)
-        b.beam('iron', P(-w / 2 - .22, .55, z + .3), P(w / 2 + .22, .55, z + .3), .03, .03)
+    if balcony:                                                              # slab top and edge, two rails: single faces at sill level
+        a0, a1 = -w / 2 - .25, w / 2 + .25
+        quad(b, 'stone', [P(a0, .02, z - .02), P(a1, .02, z - .02), P(a1, .58, z - .02), P(a0, .58, z - .02)])
+        quad(b, 'stone', [P(a0, .58, z - .14), P(a1, .58, z - .14), P(a1, .58, z - .02), P(a0, .58, z - .02)])
+        quad(b, 'iron', [P(a0, .56, z + .86), P(a1, .56, z + .86), P(a1, .56, z + .92), P(a0, .56, z + .92)])
+        quad(b, 'iron', [P(a0, .56, z + .1), P(a1, .56, z + .1), P(a1, .56, z + .14), P(a0, .56, z + .14)])
 
 
 def proud_window(b, c, t, n, z, w, hh, balcony=False):
@@ -731,7 +773,8 @@ def passage_block():
     passage_facade(FW, 'w')
     passage_facade(FE, 'e')
     pavilion_face(FSW, 'west pavilion', -HW - XP, (-HW - XP) / 2, 3.0)
-    pavilion_face(FSE, 'east pavilion', XE - HW, (XE - HW) / 2, 2.0)
+    pavilion_face(FSE, 'east pavilion', XE - HW, (XE - HW) / 2, 2.0, corner='west')
+    cb = Batch(); mouth_corners(cb); cb.flush('mouth cornice corners')
     b = Batch()
     # west block outer walls (stucco), the core behind the rooms (lined in the interior tone), floors of the south rooms
     b.box('stucco', XW + T / 2, (0.0 + YN - T) / 2, (EAVE + .9) / 2, T, YN - T, EAVE + .9)
@@ -814,6 +857,8 @@ def north_end_wall():
         mx, my, mz = FN.p(PU + s * 4.65, -.04, 8.3)
         annulus('medallion ring', (mx, my, mz), (0, 1, 0), .32, .46, -.06, .04, 'stone', 'end wall', 24)
         annulus('medallion disc', (mx, my, mz), (0, 1, 0), .001, .32, -.02, .03, 'stone', 'end wall', 24)
+        annulus('medallion boss', (mx, my, mz), (0, 1, 0), .001, .13, -.11, -.01, 'stone', 'end wall', 16)
+        m.box('stone', PU + s * (r + .49), -.03, (zs - .23) / 2, .92, .06, zs - .23)     # stone pier to the impost
     m.box('stone', PU, -.04, .3, 2 * PU - 2 * EPS, .08, .6)
     eave_cornice(m, .37, 2 * PU - .37, EAVE + .012, proj=.7, role='stone')
     m.flush('north end wall passage face')
@@ -870,7 +915,7 @@ def vault():
     loft('Glass vault', [[(x, y, z) for x, z in ring] for y in (0.0, L - .03)], 'glass', 'vault', closed=False)
     b = Batch()
     for s in (-1, 1):                                                        # eave gutters on the cornices
-        b.box('iron', s * (HW - .15), (L - .04) / 2, EAVE + .14, .5, L + .04, .22)   # 4 cm proud of the pavilion faces
+        b.box('iron', s * (HW - .15), (L - .04) / 2, EAVE + .175, .5, L + .04, .29)  # eaves gutter box, 4 cm proud of the pavilion faces
     y = .3
     while y < L - .2:                                                        # glazing bars on the glass (flat ribbons)
         for k in range(n - 1):
@@ -881,14 +926,13 @@ def vault():
         x, z = prof[k]
         b.beam('iron', (x, 0.0, z + .045), (x, L - .03, z + .045), .05, .05)
     xr, zr = prof[n // 2]
-    b.beam('iron', (0.0, -.15, zr + .07), (0.0, L - .03, zr + .07), .16, .12)  # ridge cap
+    b.beam('iron', (0.0, -.15, zr + .09), (0.0, L - .03, zr + .09), .3, .18)   # ridge cap roll
+    ridge_crest(b, zr + .18)
     for yr in RIBS:
         rib(b, prof, yr, .12, .22)
-        for k in range(n - 1):                                                # crest on the outside of the rib
-            (x0, z0), (x1, z1) = prof[k], prof[k + 1]
-            nx0, nz0 = normal(prof, k); nx1, nz1 = normal(prof, k + 1)
-            b.beam('iron', (x0 - nx0 * .16, yr, z0 - nz0 * .16), (x1 - nx1 * .16, yr, z1 - nz1 * .16), .04, .22)
-        frustum(b, 'iron', 0.0, yr, zr + .1, zr + .7, .07, 0.0, 6)          # ridge finial
+        girder(b, prof, yr)
+        crest(b, prof, yr)
+        frustum(b, 'iron', 0.0, yr, zr + .1, zr + .95, .08, 0.0, 6)         # ridge finial
         for s in (-1, 1):
             leg(b, s, yr)
     for yr in [3.2] + [r + 2.4 for r in RIBS]:                               # lighter intermediate ribs on the gutters
@@ -907,25 +951,119 @@ def rib(b, prof, y, w, d, off=.13):
         b.beam('iron', (x0 + nx0 * off, y, z0 + nz0 * off), (x1 + nx1 * off, y, z1 + nz1 * off), w, d, ext=.01)
 
 
+def flat_bar(b, y, a, c, w=.045, role='iron', dy=0.0):
+    """Flat iron bar in the rib plane y (a quad facing along the passage) between two (x, z) points."""
+    (xa, za), (xc, zc) = a, c
+    l = math.hypot(xc - xa, zc - za) or 1.0
+    px, pz = -(zc - za) / l * w / 2, (xc - xa) / l * w / 2
+    quad(b, role, [(xa - px, y + dy, za - pz), (xc - px, y + dy, zc - pz), (xc + px, y + dy, zc + pz), (xa + px, y + dy, za + pz)])
+
+
+def clip_tri(p, d, tri):
+    """Clip the line p + t d to a convex triangle; returns the segment ends or None."""
+    t0, t1 = -1e9, 1e9
+    for i in range(3):
+        (ax, az), (bx, bz) = tri[i], tri[(i + 1) % 3]
+        cx, cz = tri[(i + 2) % 3]
+        nx, nz = -(bz - az), bx - ax
+        if (cx - ax) * nx + (cz - az) * nz < 0:
+            nx, nz = -nx, -nz
+        num = (p[0] - ax) * nx + (p[1] - az) * nz
+        den = d[0] * nx + d[1] * nz
+        if abs(den) < 1e-9:
+            if num < 0:
+                return None
+            continue
+        tt = -num / den
+        if den > 0:
+            t0 = max(t0, tt)
+        else:
+            t1 = min(t1, tt)
+    if t1 - t0 < .08:
+        return None
+    return (p[0] + d[0] * t0, p[1] + d[1] * t0), (p[0] + d[0] * t1, p[1] + d[1] * t1)
+
+
 def leg(b, s, y):
-    """Rib leg down the pilaster to its corbel, with an openwork lattice bracket between the leg and the rib."""
+    """Rib leg down the pilaster to its corbel (it stops under the cornice and resumes above it), with an openwork
+    lattice bracket filling the triangle between the leg, the strut and the rib: a diagonal lattice of flat bars, an
+    edge bar under the rib, three hangers and two scroll rings."""
     xl = s * (HW - .30)
-    b.beam('iron', (xl, y, CORBEL - .05), (xl, y, EAVE + .16), .14, .16)
+    b.beam('iron', (xl, y, CORBEL - .05), (xl, y, EAVE - .74), .14, .16)
+    b.beam('iron', (xl, y, EAVE + .02), (xl, y, EAVE + .2), .14, .16)
     ax = HW - 1.75                                                           # where the bracket strut meets the rib
     za = vault_z(ax) - .2
-    b.beam('iron', (xl, y, CORBEL + .5), (s * ax, y, za), .1, .12)
+    zl = CORBEL + .5
+    b.beam('iron', (xl, y, zl), (s * ax, y, za), .1, .12)
+    ztop = EAVE - .78                                                       # top of the bracket at the leg (under the cornice)
+    tri = [(abs(xl) - .07, zl + .1), (abs(xl) - .07, ztop), (ax + .05, za - .05)]
+    flat_bar(b, y, (s * tri[1][0], tri[1][1]), (s * tri[2][0], tri[2][1]), .07)      # upper edge bar
+    for sign in (1, -1):                                                     # diagonal lattice at 0.28 m
+        c = -8.0
+        while c < 8.0:
+            seg = clip_tri((0.0, c), (1.0, sign * 1.0), tri)
+            if seg:
+                (x0, z0), (x1, z1) = seg
+                flat_bar(b, y, (s * x0, z0), (s * x1, z1), .035, dy=.004 * sign)
+            c += .28 * math.sqrt(2)
     for f in (.3, .55, .8):                                                  # hangers from the strut to the rib
         x = xl + (s * ax - xl) * f
-        z0 = CORBEL + .5 + (za - CORBEL - .5) * f
+        z0 = zl + (za - zl) * f
         b.beam('iron', (x, y, z0), (x, y, vault_z(abs(x)) - .18), .05, .05)
-    cx = s * (HW - .65)
-    zst = CORBEL + .5 + (za - CORBEL - .5) * (abs(cx) - abs(xl)) / (abs(s * ax) - abs(xl))
-    cz = (zst + vault_z(abs(cx)) - .24) / 2
-    annulus('bracket ring', (cx, y, cz), (0, 1, 0), .26, .33, -.025, .025, 'iron', 'vault', 14)
-    annulus('bracket rosette', (cx, y, cz), (0, 1, 0), .001, .09, -.03, .03, 'iron', 'vault', 8)
-    zs = CORBEL + .5 + (za - CORBEL - .5) * (abs(cx) - abs(xl)) / (abs(s * ax) - abs(xl))
-    b.beam('iron', (cx, y, cz - .3), (cx, y, zs), .04, .04)                  # ring to strut
-    b.beam('iron', (cx, y, cz + .3), (cx, y, vault_z(abs(cx)) - .18), .04, .04)   # ring to rib
+    for cx, cz, r in ((abs(xl) - .45, zl + 1.25, .26), (abs(xl) - .42, ztop - .55, .2)):
+        annulus('bracket scroll', (s * cx, y, cz), (0, 1, 0), r - .05, r, -.03, .03, 'iron', 'vault', 12)
+
+
+def girder(b, prof, y, depth=.5):
+    """Main rib as a lattice girder: an inner chord 0.5 m below the outer rib and a zig-zag web of flat bars."""
+    n = len(prof)
+    inner = []
+    for k in range(1, n - 1):
+        x, z = prof[k]
+        nx, nz = normal(prof, k)
+        inner.append((x + nx * (.13 + depth), z + nz * (.13 + depth)))
+    for (x0, z0), (x1, z1) in zip(inner, inner[1:]):
+        b.beam('iron', (x0, y, z0), (x1, y, z1), .09, .08, ext=.01)
+    for k in range(1, n - 2):
+        x, z = prof[k]
+        nx, nz = normal(prof, k)
+        o = (x + nx * .2, z + nz * .2)
+        flat_bar(b, y, o, inner[k - 1] if k % 2 else inner[k], .04)
+
+
+def crest(b, prof, y, h=.5):
+    """Openwork cresting standing proud of the glazing along a main rib: posts, a top rail, crossed bars and spikes."""
+    n = len(prof)
+    top = []
+    for k in range(1, n - 1):
+        x, z = prof[k]
+        nx, nz = normal(prof, k)
+        base, tip = (x - nx * .03, z - nz * .03), (x - nx * h, z - nz * h)
+        flat_bar(b, y, base, tip, .04)
+        top.append(tip)
+        if k % 2 == 0:
+            flat_bar(b, y, tip, (x - nx * (h + .22), z - nz * (h + .22)), .05)
+    for (x0, z0), (x1, z1) in zip(top, top[1:]):
+        b.beam('iron', (x0, y, z0), (x1, y, z1), .05, .05, ext=.01)
+    for k in range(1, n - 2):
+        (xa, za), (xb, zb) = prof[k], prof[k + 1]
+        (na, ma), (nb, mb) = normal(prof, k), normal(prof, k + 1)
+        flat_bar(b, y, (xa - na * .05, za - ma * .05), (xb - nb * (h - .02), zb - mb * (h - .02)), .03, dy=.003)
+        flat_bar(b, y, (xa - na * (h - .02), za - ma * (h - .02)), (xb - nb * .05, zb - mb * .05), .03, dy=-.003)
+
+
+def ridge_crest(b, z0, h=.5):
+    """Continuous ridge cresting along the vault: posts every 0.5 m, a top rail, crossed bars and spikes."""
+    y = 0.0
+    while y <= L - .03 + 1e-6:
+        quad(b, 'iron', [(0.0, y - .02, z0), (0.0, y + .02, z0), (0.0, y + .02, z0 + h), (0.0, y - .02, z0 + h)])
+        if abs((y / 1.0) - round(y / 1.0)) < 1e-6:
+            quad(b, 'iron', [(0.0, y - .03, z0 + h), (0.0, y + .03, z0 + h), (0.0, y + .005, z0 + h + .25), (0.0, y - .005, z0 + h + .25)])
+        if y + .5 <= L - .03 + 1e-6:
+            quad(b, 'iron', [(.003, y, z0 + .02), (.003, y + .5, z0 + h - .02), (.003, y + .5, z0 + h - .06), (.003, y, z0 - .02)])
+            quad(b, 'iron', [(-.003, y, z0 + h - .02), (-.003, y + .5, z0 + .02), (-.003, y + .5, z0 - .02), (-.003, y, z0 + h - .06)])
+        y += .5
+    b.beam('iron', (0.0, 0.0, z0 + h), (0.0, L - .03, z0 + h), .05, .05)
 
 
 def end_arch(b, prof):
@@ -949,10 +1087,9 @@ def end_arch(b, prof):
         x, z = prof[k]
         nx, nz = normal(prof, k)
         annulus('end arch ring', (x + nx * .6, y, z + nz * .6), (0, 1, 0), .2, .26, -.03, .03, 'iron', 'vault', 16)
+    crest(b, prof, y)
     for s in (-1, 1):
-        xi, zi = inner[0] if s < 0 else inner[-1]
-        b.beam('iron', (s * (HW - .3), y, CORBEL - .05), (s * (HW - .3), y, EAVE + .16), .16, .18)
-        b.beam('iron', (s * (HW - .3), y, CORBEL + .6), (xi, y, zi), .1, .1)
+        leg(b, s, y)
         x, yy, _ = FW.p(.25, -.24, 0) if s < 0 else FE.p(.25, -.24, 0)
         b.box('stone', x, .25, CORBEL - .26, .48, .5, .52)
 
@@ -984,22 +1121,34 @@ def border(b, x0, x1, y0, y1, z, w, role):
     quad(b, role, [(x1 - w, y0 + w, z), (x1, y0 + w, z), (x1, y1 - w, z), (x1 - w, y1 - w, z)])
 
 
+XQ = XP - 1.0                                                                # west edge of the square (pavilion width)
+
+
 def ground():
     """Asphalt at grade zero, sidewalks with curbs, the tiled passage floor and the tiled square at the mouth."""
     C.prism('Street asphalt', [(XMIN, YMIN), (XMAX, YMIN), (XMAX, YMAX), (XMIN, YMAX)], 'z', 0.0, .02, 'asphalt', 'street')
     walks = [(XW - SW, XW, 0.0, YN), (XE, XE + SW, 0.0, YN), (XW - SW, XE + SW, YN, YN + SW),          # around the passage block
              (XWS, XWS + SW, YSQ, YN + SW), (XMIN + .01, XWS, YSQ, YSQ + SW), (XMIN + .01, XWS, YN, YN + SW),   # west context
              (XES - SW, XES, YSQ, YN + SW), (XES, XMAX - .01, YSQ, YSQ + SW), (XES, XMAX - .01, YN, YN + SW),   # east context
-             (XMIN + .01, XMAX - .01, YNS - SW, YNS), (XMIN + .01, XMAX - .01, YMIN + .01, YSS + SW)]                 # north and south contexts
+             (XMIN + .01, XMAX - .01, YNS - SW, YNS), (XMIN + .01, XMAX - .01, YSS, YSS + SW)]                       # north and south contexts
     for x0, x1, y0, y1 in walks:
         C.prism('Sidewalk', [(x0, y0), (x1, y0), (x1, y1), (x0, y1)], 'z', .005, .15, 'concrete', 'sidewalks')
-    C.prism('Square tiles', [(XW - SW, YSQ), (XE + SW, YSQ), (XE + SW, 0.0), (XW - SW, 0.0)], 'z', .005, FZ, 'tile', 'square')
+    C.prism('Sidewalk', [(XW - SW, YSQ), (XQ, YSQ), (XQ, 0.0), (XW - SW, 0.0)], 'z', .005, .15, 'concrete', 'sidewalks')
+    C.prism('Square tiles', [(XQ, YSQ), (XE + SW, YSQ), (XE + SW, 0.0), (XQ, 0.0)], 'z', .005, FZ, 'tile', 'square')
     C.prism('Passage tiles', [(-HW, 0.0), (HW, 0.0), (HW, YN), (-HW, YN)], 'z', .005, FZ, 'tile', 'passage floor')
     b = Batch()
-    diamond_bands(b, -HW + .55, HW - .55, .4, L - .4, FZ + .003, 2.2, .14, 'tile2')
+    diamond_bands(b, -HW + .55, HW - .55, .4, L - .4, FZ + .003, 1.5, .11, 'tile2')
+    gx = -HW + .55 + .5
+    while gx < HW - .6:                                                      # faint inner tile grid
+        quad(b, 'joint', [(gx - .01, .4, FZ + .0012), (gx + .01, .4, FZ + .0012), (gx + .01, L - .4, FZ + .0012), (gx - .01, L - .4, FZ + .0012)])
+        gx += .5
+    gy = .9
+    while gy < L - .45:
+        quad(b, 'joint', [(-HW + .55, gy - .01, FZ + .002), (HW - .55, gy - .01, FZ + .002), (HW - .55, gy + .01, FZ + .002), (-HW + .55, gy + .01, FZ + .002)])
+        gy += .5
     border(b, -HW + .25, HW - .25, .1, L - .1, FZ + .003, .2, 'tile2')
-    diamond_bands(b, XW - SW + .5, XE + SW - .5, YSQ + .5, -.5, FZ + .003, 3.0, .2, 'tile2')
-    border(b, XW - SW + .2, XE + SW - .2, YSQ + .2, -.2, FZ + .003, .28, 'tile2')
+    diamond_bands(b, XQ + .5, XE + SW - .5, YSQ + .5, -.5, FZ + .003, 2.0, .16, 'tile2')
+    border(b, XQ + .2, XE + SW - .2, YSQ + .2, -.2, FZ + .003, .28, 'tile2')
     b.flush('floor patterns')
 
 
@@ -1031,7 +1180,7 @@ def furniture():
     for x in (-4.6, 4.6):                                                    # planters by the portal
         frustum(b, 'pot', x, L - .9, FZ, FZ + .6, .3, .38, 10)
         smooth(A.foliage('Planter shrub', (x, L - .9, FZ + 1.0), (.42, .42, .5), detail=1))
-    for x in (XW - .7, XE + .7):                                             # lamp posts on the square
+    for x in (XQ + .8, XE + .7):                                              # lamp posts on the square
         y = -6.0
         frustum(b, 'iron', x, y, FZ, FZ + .5, .2, .14, 8)
         b.beam('iron', (x, y, FZ + .5), (x, y, FZ + 3.6), .1, .1)
@@ -1064,7 +1213,8 @@ def ctx_block(x0, x1, y0, y1, h, faces, label):
     b.box('terracotta', (x0 + x1) / 2, (y0 + y1) / 2, h + .03, x1 - x0 - .6, y1 - y0 - .6, .06)
     for a0, b0, a1, b1 in ((x0, y0, x1, y0 + .3), (x0, y1 - .3, x1, y1), (x0, y0 + .3, x0 + .3, y1 - .3), (x1 - .3, y0 + .3, x1, y1 - .3)):
         b.box('stucco', (a0 + a1) / 2, (b0 + b1) / 2, h + .45, a1 - a0, b1 - b0, .9)
-    b.box('white', x0 + (x1 - x0) * .35, y0 + (y1 - y0) * .4, h + 1.2, 3.0, 3.5, 2.4)
+    for fx, fy, sx, sy in ((.35, .4, 3.0, 3.5), (.75, .7, 4.0, 2.6), (.15, .8, 2.4, 2.4)):     # rooftop rooms
+        b.box('white', x0 + (x1 - x0) * fx, y0 + (y1 - y0) * fy, h + 1.2, sx, sy, 2.4)
     for face in faces:
         if face in 'ns':
             n = (0, -1) if face == 's' else (0, 1); t_ = (1, 0); yf = y0 if face == 's' else y1
@@ -1085,6 +1235,7 @@ def context():
     ctx_block(XMIN + .01, XWS, YSQ + SW, YN, 19.5, 'ens', 'west context')
     ctx_block(XES, XMAX - .01, YSQ + SW, YN, 18.0, 'wns', 'east context')
     ctx_block(XMIN + .01, XMAX - .01, YNS, YMAX - .01, 20.5, 's', 'north context')
+    ctx_block(XMIN + .01, XMAX - .01, YMIN + .01, YSS, 17.0, 'n', 'south context')
     for x in (-3.2, 4.0):
         street_tree(x, YNS - 1.0, z=.15, height=7.5, spread=1.7)
     b = Batch()
