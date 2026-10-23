@@ -1102,7 +1102,7 @@ def end_arch(b, prof):
                 f = (x - bx[i]) / ((bx[i + 1] - bx[i]) or 1.0)
                 return bz[i] + (bz[i + 1] - bz[i]) * f
         return None
-    for a in range(12, 169, 12):                                             # radial spandrel bars from the semicircle to the band
+    for i, a in enumerate(range(8, 173, 8)):                                 # radial spandrel bars from the semicircle to the band
         ca, sa = math.cos(math.radians(a)), math.sin(math.radians(a))
         x0, z0 = R * ca, zc + R * sa
         d = .05
@@ -1112,10 +1112,11 @@ def end_arch(b, prof):
             if (bzx is not None and z >= bzx - .05) or z >= vault_z(abs(x)) - .3:
                 break
             d += .02
-        if d > .35:
-            bar(b, y, (x0 + ca * .05, z0 + sa * .05), (x0 + ca * d, z0 + sa * d), .05, .05)
-            if d > .9:
-                annulus('end arch spandrel ring', (x0 + ca * d / 2, y, z0 + sa * d / 2), (0, 1, 0), min(.3, d / 2 - .12) - .06, min(.3, d / 2 - .12), -.035, .035, 'iron', 'vault', 12)
+        if d > .3:
+            bar(b, y, (x0 + ca * .05, z0 + sa * .05), (x0 + ca * d, z0 + sa * d), .06, .05)
+            if d > .8 and i % 2:
+                ro = min(.42, d / 2 - .1)
+                annulus('end arch spandrel ring', (x0 + ca * d / 2, y, z0 + sa * d / 2), (0, 1, 0), ro - .07, ro, -.035, .035, 'iron', 'vault', 14)
     crest(b, prof, y)
     xr, zr = prof[n // 2]
     frustum(b, 'iron', 0.0, y, zr + .2, zr + 1.4, .12, 0.0, 8)               # apex finial
