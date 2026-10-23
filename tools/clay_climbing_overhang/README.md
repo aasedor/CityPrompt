@@ -1,7 +1,7 @@
 # Climbing wall building: The Overhang (RLASM v6.1 architectural clay)
 
 Candidate K2 of wave K of 2026-10-23, one of five catalogue additions the user asked for
-(all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **candidate under review**. Nothing here is keeper-approved,
+(all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **stopped at v004 by the stopping rule (v003 and v004 did not lower v002's count); v002 (0 P0 / 2 P1) is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -71,11 +71,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003
+## Open blockers after v004 (stopped)
 
-Candidate: `clay-climbing-overhang-clay-v002.glb`. The v003 independent review (`evidence/v003/independent-review.md`) left these P0/P1 findings open:
+Candidate: `clay-climbing-overhang-clay-v002.glb`. The v004 independent review (`evidence/v004/independent-review.md`) left these P0/P1 findings open:
 
-- **P1** (front, front_corner, left_side, rear_side vs source front/oblique): The west (street) facade of the pool block has 10 fin bays from the north corner to the SW corner pier (counted in front and left_side). The same facade in the source front and oblique shows about 12–13 narrower bays (oblique crop: 12 full windows visible before the far end). Render bays are about 20–25% wider, so... Likely fix: Re-module the west facade to 12 bays (13 if the far end allows) along the same length, keeping the fin depth, the spandrel bands and the two-pane tall recessed windows. Re-render front, front_corner, left_side and...
-- **P1** (front, front_corner, rim_interior, plaza_planters vs source front/oblique/top): About 50 white holds are scattered across the shell's upper flare face (just below the rim, west side) and the large west face. In the source, the flare face and most of the big west face are plain timber. Their white holds form a narrow diagonal band along the west/south fold, and the dark holds sit on the south... Likely fix: Remove the white holds from the flare face and the outer two-thirds of the west face. Keep about 15–20 white holds in a ≈1.5–2 m band along the west/south fold. Leave the south-face dark-hold density and the climbers...
+- **P0** (front, front_corner, aerial, entrance, wall_base_contact, right_side, phone-01): Envelope and contact of the shell foot. In front and front_corner the shell's west and south faces taper to a single sharp point on the plaza, about 2 m in front of the entrance doors. The shell reads as an inverted crystal balanced on its tip. right_side and entrance show that its only ground line is a short wedge... Likely fix: Re-author the shell's lowest section as a base polygon on the plaza. The long side should run E–W, parallel to and just in front of the south facade, from the east door jamb to roughly under the rim's east end. The...
+- **P1** (right_side, climbing_face, (aerial)): Stray plate and stepped parapet on the white wall under the east overhang. There is a free-standing white rectangular plate, a leftover spandrel or band piece, at about third-storey level on the otherwise plain wall. Its west end runs behind or into the shell's east face. Above it, where the wall meets the shell,... Likely fix: Delete the orphan plate. Make the parapet cap over the under-overhang wall continuous with the east-block parapet (same height and projection), or end it cleanly against the shell. Re-render right_side and climbing_face.
 
 The candidate v002's own open findings are in `evidence/v002/independent-review.md`.
