@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-climbing-overhang-clay-v003",
+  "glb": "clay-climbing-overhang-clay-v003.glb",
+  "glb_bytes": 2883944,
+  "glb_sha256": "f758eb97594bc2412e9caff94604c5a2e23e5fa52113e96f0f9408172bb44c01",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "climbing_face.png": 92,
+    "entrance.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "plaza_planters.png": 92,
+    "pool_deck.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "rim_interior.png": 92,
+    "top.png": 92,
+    "wall_base_contact.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-climbing-overhang-clay-v003-renders-and-glb.zip",
+  "zip_bytes": 35799858
+}
