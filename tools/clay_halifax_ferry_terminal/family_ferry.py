@@ -858,9 +858,11 @@ def interiors():
         for y in (-8.0, -3.0, 2.0, 7.0):
             b.box('timber', x, y, F1 + .45, .5, 3.2, .1)
             b.box('timber', x - .23, y, F1 + .75, .06, 3.16, .55)                                   # back 1 cm proud of the seat edge, ends inset
+            b.box('hardware', x, y, F1 + .20, .08, 2.8, .44)                                        # pedestal, 2 cm into the floor and the seat
     for x in (0.0, 3.0, 6.0):
         b.box('timber', x, -18.5, F1 + .45, 2.4, .5, .1)
         b.box('timber', x, -18.28, F1 + .75, 2.4, .06, .55)
+        b.box('hardware', x, -18.5, F1 + .20, 2.0, .08, .44)                                        # pedestal, 2 cm into the floor and the seat
     b.flush('interiors')
     for name, loc in (('concourse', (3.0, -14.0, 4.2)), ('west hall', (-6.0, 2.0, 4.2)), ('lounge south', (3.5, -16.0, 8.85)),
                       ('lounge west', (-6.0, -4.0, 8.85)), ('lounge north', (-6.0, 8.0, 8.85)),
