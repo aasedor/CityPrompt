@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-montreal-plateau-rue-clay-v003",
+  "glb": "clay-montreal-plateau-rue-clay-v003.glb",
+  "glb_bytes": 4027580,
+  "glb_sha256": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "balcony_gallery.png": 92,
+    "corner_building.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "iron_stair.png": 92,
+    "left_side.png": 92,
+    "mansard_caps.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "rear_yards.png": 92,
+    "right_side.png": 92,
+    "roof_parapets.png": 92,
+    "sidewalk_trees.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-montreal-plateau-rue-clay-v003-renders-and-glb.zip",
+  "zip_bytes": 36743456
+}

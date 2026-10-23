@@ -1,7 +1,7 @@
 # Montreal Plateau residential rue (RLASM v6.1 architectural clay)
 
 Candidate J5 of wave J of 2026-10-22, one of five catalogue additions the user asked to be chosen
-(four buildings and one street); a street or path option, not a building. State: **candidate under review**. Nothing here is keeper-approved,
+(four buildings and one street); a street or path option, not a building. State: **stopped at v003 by the stopping rule (independent review PASS_ZERO_P0_P1); v003 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -68,6 +68,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (x)
+## Open blockers after v003 (x)
 
 x
