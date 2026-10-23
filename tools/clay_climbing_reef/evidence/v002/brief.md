@@ -1,0 +1,31 @@
+You are the independent holistic reviewer for one RLASM v6.1 architectural-clay candidate.
+You did not build it. You have no relationship with the builder. Be adversarial and specific.
+
+Candidate directory: /tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/dev-artifacts/CityPrompt/reef/v002
+- Locked sources (the only truth): sources/front.png, sources/oblique.jpg, sources/top.jpg
+- Renders: renders/*.png (18 views; whole-envelope: front, front_corner, aerial, top, left_side, right_side, rear, rear_side;
+  details: facade_close, architecture_close, glass_close, facade_close, architecture_close, glass_close, interior, entrance_sw, entrance_se, curb_gap, roof_skylights, climbing_pockets, meadow_path)
+- Phone boards: boards/*.png
+
+Rules (from the method):
+- Judge only rendered pixels against locked source pixels. Ignore metadata, counts, hashes and the builder's notes as proof.
+- The building is The Reef, an organic bouldering community centre (climbing_wall_building / variant_3) in a meadow park: one low, continuous, climbable fibreglass shell shaped like a four-lobed coral reef or starfish in plan (the top view governs the plan: about 30 m east-west by 27 m north-south, lobes north (the narrowest), east, south and west (the longest) with soft concave bays between them); the shell rises from a slightly tucked-in dark base in near-vertical bulging walls about 5 m high and rolls over into a gently undulating, lumpy roof plateau about 7 m up; it is banded in wavy horizontal contour layers, deep teal at the base through teal and aquamarine to pale seafoam/mint on the roof, the band edges reading as contour lines on the roof; the walls are pocked with rounded rock-like pockets and covered in small multicoloured climbing holds; the roof carries twelve circular skylight domes on white rims, one large dome at the centre and eleven small ones on the lobes; dark arched cave-like entrances open at the foot of the bays (two visible in the sources, between the south lobe and its neighbours; the north-east and north-west bays carry matching entrances for coherence); a sand-coloured rubber crash-pad apron follows the outline inside a low rounded sand-coloured curb broken by four diagonal gaps where white crushed-shell paths arrive; around it native meadow beds of grasses, palmetto clumps and shrubs on dark mulch, small trees, a concrete ring path about 46 m across, lawns and more meadow and trees beyond. The interior bouldering hall is not visible in the sources (judge it only for coherence); people and climbers and the far roads and houses are not modelled; judge faces that no source shows only for coherence with the visible grammar, not for fidelity.
+- This is clay: untextured source-palette colours. Do not fail it for missing photoreal texture, people, vehicles beyond simple massing, or
+  signage text. Do fail it for wrong geometry, wrong rhythm, missing or extra storeys, missing identity elements (low organic four-lobed starfish shell, wavy teal-to-seafoam contour bands, rounded pockets and multicoloured holds, the field of skylight domes on white rims with the large central dome, arched cave-like entrances in the bays, the sand crash-pad apron and curb with four gaps, white shell paths, meadow and ring path),
+  openings without visible depth/returns, floating or intersecting parts, elements that read as a different building, or an invalid camera
+  (target occluded, asset clipped, nothing legible).
+- Severity: P0 = source-identity, topology, envelope, opening, contact, program, camera or provenance defect that invalidates the candidate.
+  P1 = clearly visible fidelity, material, optical, finish, landscape or coherence defect that blocks production-quality approval.
+  P2 = polish only.
+
+Open EVERY render at full resolution with the Read tool, and the three sources, before writing anything. Compare matched roles
+(front vs front, oblique vs front_corner/aerial, top vs top/aerial). Then inspect every detail view for contact and depth.
+
+Write your review to /tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/dev-artifacts/CityPrompt/reef/v002/review/independent-review.md as markdown with exactly these sections:
+1. Verdict: one of PASS_ZERO_P0_P1 / VISUAL_REWORK_REQUIRED, with one sentence.
+2. Findings table: | # | severity | view(s) | symptom (what the pixels show) | likely cause | finite fix |  (list every P0 and P1; P2s briefly)
+3. Source conformance checklist: silhouette and plan (four lobes, their relative sizes and the bays, top view), wall height and roll-over to the plateau, contour bands (count, colours, wavy edges), pockets (size, number, distribution), climbing holds, skylight domes (count 12, positions, the large central dome, rims), entrances (position in the bays, arched form), apron and curb (outline, four gaps), shell paths, meadow beds and planting, trees, ring path, lawn, materials hierarchy. Mark each conforms / deviates / not visible, with the view you used.
+4. Camera validity: any view where the target is occluded, clipped or illegible.
+Do not modify any file other than /tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/dev-artifacts/CityPrompt/reef/v002/review/independent-review.md. Do not run the build.
+
+Context for this review (v002 of the family; v001 was reviewed at 0 P0 / 6 P1): v002 rebuilt the skylights as level white collars on flattened roof pads with low lens domes, open underneath, the collars ending just above the inner skin; turned each entrance into a deep arched tunnel lined in shell teal with dark tinted glazing and thin dark doors set about 2 m in (no black outer frame ring); moved the interior boulders off the entrance axes and hid the inspection light emitters from camera; replaced the sphere-cut pockets with fewer, smoothly dished oval and kidney hollows kept out of the bay creases; gave the shell paths irregular flaring edges, a near-white crushed-shell material with flakes, and a darker warm ring path. Also: brighter, more saturated bands with an extra plateau contour, a lighter base tuck, a trimmed threshold, a lawn to the frame edges, and the phone board now pairs locked top with render top. Judge every view afresh.

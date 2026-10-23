@@ -1,0 +1,30 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "entrance_0",
+      "face": "Entrance 0",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "entrance_1",
+      "face": "Entrance 1",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "entrance_2",
+      "face": "Entrance 2",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "entrance_3",
+      "face": "Entrance 3",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

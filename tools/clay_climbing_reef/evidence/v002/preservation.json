@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-climbing-reef-clay-v002",
+  "glb": "clay-climbing-reef-clay-v002.glb",
+  "glb_bytes": 3337072,
+  "glb_sha256": "e64e11085caccdf14eb86219b335df9a8018980e4de8f3617dd6e6878937c7a8",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "climbing_pockets.png": 92,
+    "curb_gap.png": 92,
+    "entrance_se.png": 92,
+    "entrance_sw.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "meadow_path.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_skylights.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-climbing-reef-clay-v002-renders-and-glb.zip",
+  "zip_bytes": 39366159
+}
