@@ -58,7 +58,7 @@ PALETTE = dict(wall=(.86, .85, .82), precast=(.90, .89, .86), concrete2=(.70, .7
     mech=(.78, .78, .76), asphalt=(.26, .26, .27), curb=(.73, .73, .71), paint=(.93, .93, .91), soil=(.26, .20, .15),
     lounger=(.93, .93, .91), hardware=(.08, .08, .08), metal=(.55, .56, .57), brick=(.50, .25, .17), brick2=(.58, .32, .22),
     ctx=(.74, .72, .68), ctx2=(.62, .60, .57), stone=(.78, .74, .66), tree=(.53, .62, .22), tree2=(.40, .53, .19),
-    bark=(.30, .24, .17), car1=(.56, .58, .61), car2=(.10, .10, .12), car3=(.76, .76, .77), planter=(.80, .79, .76))
+    bark=(.30, .24, .17), car1=(.56, .58, .61), car2=(.15, .15, .17), car3=(.76, .76, .77), planter=(.80, .79, .76))
 
 
 def manifest(version):
@@ -83,7 +83,7 @@ def manifest(version):
         elif c['name'] == 'top':
             c.update(location=(-5.65, -29.29, 64.45), target=(-3.55, -6.57, 6.0), lens=25.38)
         elif c['name'] == 'aerial':
-            c.update(location=(58.0, 52.0, 48.0), target=(-3.0, -4.0, 8.0), lens=32)
+            c.update(location=(46.0, 66.0, 72.0), target=(-3.0, -6.0, 8.0), lens=30)
         elif c['name'] == 'left_side':
             c.update(location=(-40.0, 2.0, 13.0), target=(X0, 0.0, 8.0), lens=17)
         elif c['name'] == 'right_side':
@@ -1977,22 +1977,23 @@ def door_pair(b, axis, c, out, s, z0, z1, d):
 
 
 # ---------------------------------------------------------------- precast fronts
-def precast_front(b, axis, c, out, lo, hi, bays, levels, top, ground=True, fin_w=.55, ground_d=.6, room=4.2):
+def precast_front(b, axis, c, out, lo, hi, bays, levels, top, ground=True, fin_w=.55, ground_d=.6, room=4.2, cop_dz=0.0):
     """White precast front: full-height fins at the bay lines, spandrel bands at each floor, a parapet band up to
     `top`, tall recessed windows between them; a recessed glazed ground floor behind square columns. levels =
-    [F2, F3, ...]; the last level is the base of the parapet band."""
+    [F2, F3, ...]; the last level is the base of the parapet band. cop_dz lowers this front's coping where it overlaps
+    a neighbouring front's coping at a corner (no shared top faces)."""
     wb = (hi - lo) / bays
     fins = [lo + k * wb for k in range(bays + 1)]
     zb = levels[-1]
     for k, s in enumerate(fins):
         s0, s1 = max(lo, s - fin_w / 2), min(hi, s + fin_w / 2)
-        fbox(b, 'precast', axis, c, out, s0, s1, levels[0] - .55, zb + .02, -.25, .42)
+        fbox(b, 'precast', axis, c, out, s0, s1, levels[0] - .57, zb + .02, -.25, .42)
         if ground:
             fbox(b, 'precast', axis, c, out, s0 + .02, s1 - .02, 0.0, levels[0] - .5, -ground_d - .05, .08)
     for z in levels[:-1]:                                      # spandrels end 2 cm inside the end fins (no shared end faces)
         fbox(b, 'precast', axis, c, out, lo + .02, hi - .02, z - .55, z + .25, -.25, .38)
     fbox(b, 'precast', axis, c, out, lo - .02, hi + .02, zb, top - .05, -.25, .30)
-    fbox(b, 'coping', axis, c, out, lo - .04, hi + .04, top - .06, top, -.3, .34)
+    fbox(b, 'coping', axis, c, out, lo - .04, hi + .04, top - .06 + cop_dz, top + cop_dz, -.3, .34)
     for j, z in enumerate(levels[:-1]):
         z1 = levels[j + 1]
         for k in range(bays):
@@ -2026,8 +2027,8 @@ def fronts():
     b = Batch()
     precast_front(b, 'y', X0, -1, Y0, Y1, 10, [F2, F3, F4], PARA)                                        # west front
     precast_front(b, 'y', X1, 1, Y0, Y1, 10, [F2, F3, F4, EB_TOP], EB_PARA)                              # east front (4 storeys)
-    precast_front(b, 'x', Y1, 1, X0, XE, 8, [F2, F3, F4], PARA)                                         # north front, pool block
-    precast_front(b, 'x', Y1, 1, XE, X1, 3, [F2, F3, F4, EB_TOP], EB_PARA)                               # north front, east block
+    precast_front(b, 'x', Y1, 1, X0, XE, 8, [F2, F3, F4], PARA, cop_dz=-.01)                            # north front, pool block
+    precast_front(b, 'x', Y1, 1, XE, X1, 3, [F2, F3, F4, EB_TOP], EB_PARA, cop_dz=-.01)                  # north front, east block
     b.flush('precast fronts')
     south_frame_box()
     south_under_shell()
@@ -2042,14 +2043,14 @@ def south_frame_box():
     s0, s1 = X0, BOXX1
     fbox(b, 'precast', ax, c, o, s0 + .02, s1 - .02, F2 - .45, F2 + .2, -.3, .78)                      # box bottom
     fbox(b, 'precast', ax, c, o, s0 + .02, s1 - .02, F4 - .25, F4 + .25, -.3, .78)                     # box top
-    fbox(b, 'precast', ax, c, o, s0, s0 + .5, F2 - .45, F4 + .25, -.3, .80)                            # box ends
-    fbox(b, 'precast', ax, c, o, s1 - .5, s1, F2 - .45, F4 + .25, -.3, .80)
+    fbox(b, 'precast', ax, c, o, s0, s0 + .5, F2 - .47, F4 + .27, -.3, .80)                            # box ends
+    fbox(b, 'precast', ax, c, o, s1 - .5, s1, F2 - .47, F4 + .27, -.3, .80)
     fbox(b, 'precast', ax, c, o, s0 + .5, s1 - .5, F3 - .4, F3 + .2, -.3, .74)                         # middle spandrel
     for z0, z1 in ((F2 + .2, F3 - .4), (F3 + .2, F4 - .25)):
         glazed(b, ax, c, o, s0 + .5, s1 - .5, z0, z1, 2.4, d=.3)
     fbox(b, 'interior', ax, c, o, s0 + .6, s1 - .6, F2, F4, -4.4, -4.2)
     fbox(b, 'precast', ax, c, o, s0 - .28, -12.0, F4 + .25, PARA - .05, -.25, .30)                            # parapet band
-    fbox(b, 'coping', ax, c, o, s0 - .32, -12.0, PARA - .06, PARA, -.3, .34)
+    fbox(b, 'coping', ax, c, o, s0 - .32, -12.0, PARA - .07, PARA - .01, -.3, .34)
     # Ground floor: recessed glazing with two pairs of doors, the corner column.
     gd = -.7
     fbox(b, 'precast', ax, c, o, s0, s0 + .55, 0.0, F2 - .4, gd - .05, .1)
@@ -2094,7 +2095,7 @@ def south_under_shell():
     fbox(b, 'precast', ax, c, o, max(-12.0, shell_edge_x(F4 - .55) + .02), XE + .2, F4 - .55, PARA - .05, -.4, .05)
     fbox(b, 'coping', ax, c, o, max(-12.0, shell_edge_x(PARA)), XE + .2, PARA - .06, PARA, -.45, .09)
     fbox(b, 'precast', ax, c, o, XE + .2, X1, EB_TOP - .55, EB_PARA - .05, -.4, .3)                       # east block parapet
-    fbox(b, 'coping', ax, c, o, XE + .2, X1, EB_PARA - .06, EB_PARA, -.45, .34)
+    fbox(b, 'coping', ax, c, o, XE + .2, X1, EB_PARA - .07, EB_PARA - .01, -.45, .34)
     fbox(b, 'precast', ax, c, o, max(XP0, shell_edge_x(PARA) - .4), XE + .2, PARA - .05, PH_TOP - .3, -.5, -.08)   # penthouse
     fbox(b, 'precast', ax, c, o, max(XP0, shell_edge_x(PH_TOP) - .4), XE + .2, PH_TOP - .3, PH_PARA - .05, -.5, .25)
     fbox(b, 'coping', ax, c, o, max(XP0, shell_edge_x(PH_PARA) - .4), XE + .2, PH_PARA - .06, PH_PARA, -.55, .3)
@@ -2126,8 +2127,6 @@ def pool_deck():
     for x0, x1, y0, y1 in ((px1, px1 + .45, py0 - .45, py1 + .45), (px0 - .02, px1, py0 - .45, py0), (px0 - .02, px1, py1, py1 + .45)):
         b.box('coping', (x0 + x1) / 2, (y0 + y1) / 2, (DECK - .2 + WATER + .06) / 2, x1 - x0, y1 - y0, WATER + .06 - DECK + .2)
     b.box('water2', px0 - .85, (py0 + py1) / 2, DECK - .2, 1.7, py1 - py0 + .9, .2)                   # overflow trough
-    b.box('coping', px0 - .85, py0 - .7, DECK - .1, 1.75, .5, .2)
-    b.box('coping', px0 - .85, py1 + .7, DECK - .1, 1.75, .5, .2)
     b.box('glass', px0 - .03, (py0 + py1) / 2, (DECK - .2 + WATER - .005) / 2, .05, py1 - py0, WATER - .005 - DECK + .2)   # infinity weir
     for y in (py0 + 1.0, py1 - 1.0):                                                                  # pool ladders
         for dyy in (-.25, .25):
@@ -2192,8 +2191,8 @@ def penthouse():
     fbox(b, 'frame', ax, c, o, 5.2, 6.4, DECK + .1, DECK + 2.4, -.04, .03)                              # door
     fbox(b, 'hardware', ax, c, o, 6.2, 6.25, DECK + 1.0, DECK + 1.15, .03, .08)
     # Other walls: north (on the north front), east (over the east block roof).
-    b.box('precast', (XP0 + XE) / 2, Y1 - .15, (PARA + PH_PARA) / 2, XE - XP0, .3, PH_PARA - PARA)
-    b.box('precast', XE + .15, (Y0 + Y1) / 2, (EB_TOP + PH_PARA) / 2, .3, Y1 - Y0 - .2, PH_PARA - EB_TOP)
+    b.box('precast', (XP0 + .05 + XE) / 2, Y1 - .12, (PARA + PH_PARA - .01) / 2, XE - XP0 - .05, .36, PH_PARA - .01 - PARA)
+    b.box('precast', XE + .15, (Y0 + Y1) / 2, (EB_TOP + PH_PARA - .01) / 2, .3, Y1 - Y0 - .2, PH_PARA - .01 - EB_TOP)
     # Roof.
     b.box('membrane', (XP0 + XE) / 2, (-18.1 + Y1) / 2, PH_TOP - .05, XE - XP0 - .2, Y1 + 18.1 - .2, .1)
     b.box('mech', -.6, 9.5, PH_TOP + .8, 3.0, 3.4, 1.6)
