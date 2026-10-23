@@ -29,5 +29,6 @@ describe('street copy',()=>{
   it('rejects invalid offsets and legacy fixed assemblies',()=>{
     for(const offsets of [[0,0],[NaN,20],[1001,0]])expect(()=>duplicateStreet(source,...offsets as [number,number])).toThrow();
     expect(()=>duplicateStreet({...source,properties:{...source.properties,validation_fixed_fixture:true}},50,0)).toThrow(/fixed/);
+    expect(()=>duplicateStreet({...source,properties:{...source.properties,public_realm_release_asset:'claude_public_realm:fixed:123'}},50,0)).toThrow(/fixed/);
   });
 });

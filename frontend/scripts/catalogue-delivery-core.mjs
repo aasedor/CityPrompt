@@ -62,6 +62,7 @@ export function catalogueRequirements(choices, heroImage, data) {
     // where discovery deliberately uses a source hero override.
     if(asset.thumbnail!==checks[0].url) checks.push({url:asset.thumbnail,kind:'image',sha256:asset.thumbnail.match(/\/([a-f0-9]{64})\.png$/)?.[1]});
     let representation = '';
+    let fixedRelease;
     const park = data.parks.find(row => row.id === asset.properties.green_space_native_layout_id);
     const street = data.streets.find(row => row.id === asset.model.variantId);
     // Promoted buildings use the library's reviewed candidate name as their
@@ -71,7 +72,24 @@ export function catalogueRequirements(choices, heroImage, data) {
       && row.archetype_id === choice.option.id
       && (entry?.sha256 ? row.model.sha256 === entry.sha256
         : row.model.sha256 === asset.model.revision || row.candidate === asset.model.revision));
-    if (park) {
+    if (asset.model.method === 'fixed_public_realm_v1' || asset.id.startsWith('claude_public_realm:')) {
+      fixedRelease = (data.fixedPublicRealm ?? []).find(row => row.asset.id === asset.id);
+      const lock = fixedRelease;
+      if (!lock || !/^[a-f0-9]{64}$/.test(lock.runtime_sha256)
+        || asset.model.method !== 'fixed_public_realm_v1' || asset.model.revision !== lock.runtime_sha256
+        || asset.model.variantId !== lock.asset.model.variantId || asset.definitionVersion !== lock.asset.definitionVersion
+        || asset.width !== lock.asset.width || asset.depth !== lock.asset.depth
+        || asset.properties.public_realm_release_asset !== asset.id
+        || asset.properties.native_public_realm_url !== lock.fixture.url
+        || Object.entries(lock.asset.properties).some(([key,value])=>asset.properties[key]!==value)
+        || lock.fixture.sha256 !== lock.runtime_sha256 || lock.fixture.id !== asset.id
+        || lock.fixture.url !== `/${lock.category === 'park' ? 'park' : 'street'}-kits/claude-20261023/${lock.runtime_sha256}.glb`) {
+        throw new Error('Unbound fixed public-realm fixture: ' + choice.id);
+      }
+      representation = 'fixed_public_realm';
+      checks.push({url:lock.fixture.url,kind:'glb',sha256:lock.runtime_sha256});
+      if (asset.thumbnail === checks[0].url) checks[0].sha256 = lock.thumbnail_sha256;
+    } else if (park) {
       representation = 'native_park';
       checks.push(...Object.values(park.assets).map(row => ({url:row.url,kind:'glb',sha256:row.sha256})));
     } else if (street) {
@@ -90,7 +108,7 @@ export function catalogueRequirements(choices, heroImage, data) {
       representation = 'exact_fixture';
       checks.push({url:asset.properties.validation_native_url || entry.local_url,kind:'glb',sha256:entry?.sha256 || asset.model.revision});
     } else throw new Error('No executable representation: ' + choice.id);
-    requirements.push({id:asset.id,label:asset.label,domain:choice.domain,variantId:asset.model.variantId,representation,local_trial_only:Boolean(library?.local_trial_only),checks});
+    requirements.push({id:asset.id,label:asset.label,domain:choice.domain,variantId:asset.model.variantId,representation,local_trial_only:Boolean(library?.local_trial_only || (fixedRelease && fixedRelease.status !== 'ready')),checks});
   }
   return requirements;
 }

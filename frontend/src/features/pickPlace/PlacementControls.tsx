@@ -1,3 +1,4 @@
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import { useCallback, useEffect, useId, useState } from 'react';
 import { placeAsset } from './catalogue';
 import type { PlacementDraft } from './GlobePlacementPreview';
@@ -63,7 +64,7 @@ export function PlacementControls({ draft, onChange, getPreviewDegrees }: {
         <input aria-label={`Placement ${key}`} aria-describedby={hintId} type="number" step="any"
           min={key === 'degrees' ? undefined : key === 'width' ? minWidth : minDepth}
           max={key === 'degrees' ? undefined : key === 'width' ? maxWidth : maxDepth}
-          disabled={asset?.properties.validation_fixed_fixture === true && key !== 'degrees'}
+          disabled={isFixedNativeScene(asset?.properties) && key !== 'degrees'}
           value={values[key]} onChange={event => update(key, event.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 p-1" />
       </label>)}
     </div>

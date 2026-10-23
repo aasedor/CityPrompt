@@ -1,0 +1,153 @@
+{
+  "candidate": "clay-cmu-dock-warehouse-clay-v006",
+  "model_sha256": "9551998b85a4dd9d1fa40081d53b441d6201344335a83ed98053eae8e9cb2f6e",
+  "reviewer": "Independent source-locked Claude reviewer (role as recorded in the preserved original review)",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "inspected_files": [
+    {
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/mid-century-distribution-warehouse/variant_0.png",
+      "sha256": "6c9e95381c52e186218ea835b9df1da33da05de67d80dc031a949d450415183a"
+    },
+    {
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/mid-century-distribution-warehouse/variant_0_angle_60.jpg",
+      "sha256": "1618e8e8aac9fab29fee45d6cd93ef6b9713c8b66a18df2b08a72de4f6e62dab"
+    },
+    {
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/mid-century-distribution-warehouse/variant_0_angle_90.jpg",
+      "sha256": "c8c0dc60c289633e8d6889791628e91d3c6492c507ee501681f6b4a6290be86d"
+    }
+  ],
+  "record_kind": "faithful_structured_transcription_of_prior_independent_review",
+  "transcribed_on": "2026-10-23",
+  "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+  "floor_count_provenance": {
+    "source_prework_observed_storeys": 1
+  },
+  "source_review": {
+    "path": "source-package/evidence/v006/independent-review.md",
+    "sha256": "738df58d623c03acba0b50548c20a544315b58bb2a4728894c0ac587091a845f",
+    "text": "# Independent holistic review: clay-cmu-dock-warehouse v006 (RLASM v6.1 architectural clay)\n\nReviewer: independent (not the builder). Basis: rendered pixels against the locked source pixels only. I opened all three locked sources (`sources/front.png`, `sources/oblique.jpg`, `sources/top.jpg`), all 18 renders at full resolution and the four phone boards. Zoomed crops were written only to the new folder `/tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/wh-v006-indep-crops-k7q2/`. I did not use builder metadata, counts, hashes or notes as proof.\n\n## 1. Verdict\n\n**PASS_ZERO_P0_P1**: the v006 pixels show a single-storey beige CMU box on a dock-height base, with the correct south-face dock band, entry, landing and east-face fenestration (now one low window and three evenly spaced high windows matching the oblique). No identity, topology, contact or camera defect remains; only polish-level deviations are left.\n\nCounts: P0 = 0, P1 = 0, P2 = 7\n\n## 2. Findings table\n\n| # | severity | view(s) | symptom (what the pixels show) | likely cause | finite fix |\n|---|---|---|---|---|---|\n| 1 | P2 | dock_doors, facade_close, front vs source front/oblique | Each sectional dock door has a row of four small, evenly spaced lites. The source doors show two wider lites, one toward each jamb (clearest in the source front crop and in the oblique). | Generic lite-row parameter (count 4, centred) | Set the lite count to 2, place them at about 1/4 and 3/4 of the door width and widen each lite slightly |\n| 2 | P2 | top, facade_close, front vs source top/front | The four dock surrounds sit almost edge to edge, with a gap of about 5% of the surround width. In the source they are separated by visible strips of beige CMU (about 7% to 25% of the surround width in the top view). The band's overall extent (about 10% to 62% of the south face) matches. | Surround width or pitch tuned to fill the band | Hold the band extent and reduce each surround's width by about 8%, or enlarge the gaps to about 0.15 of the surround width |\n| 3 | P2 | entry_canopy, glass_close, top vs source oblique/top | The canopy is a plain solid slab. In the oblique and top sources its upper face is ribbed or louvred. The flat profile, rod hangers and coverage are correct. | Slab primitive with no top relief | Optionally add 6 to 8 shallow transverse ribs on the top face. Keep the flat silhouette. |\n| 4 | P2 | glass_close, front, architecture_close vs source front/oblique/top | The wide entry window has three lights (two mullions). The source shows two lights with one central mullion. Size, head height, sill and spacing to the door all match. | Default mullion count | Set the mullion count to 1 (centred) |\n| 5 | P2 | east_windows, right_side, front_corner vs source oblique | The east clerestories are single-pane. In the oblique the high windows read as 2x2 divided lights (the rear north window already uses that grammar). | Muntin grid not applied to the east clerestory type | Apply the 2x2 muntin grid to the three east high windows |\n| 6 | P2 | front, left_side, right_side, rear, rear_side, aerial | The front camera is wider than the locked front: the building fills about 62% of the frame width against about 90% in the source. The elevation-type views show the building at about 28% of the frame width. Everything stays legible and nothing is clipped. | Conservative framing distance | Tighten the front FOV or distance to match the source framing. Optionally frame the elevations to about 60% of the width. |\n| 7 | P2 | right_side, east_windows vs source oblique | The low east window sits slightly farther from the south-east corner (about 8% of the face length) than in the oblique, where it almost touches the corner reveal. | Corner offset parameter | Reduce the corner offset by about half |\n\n## 3. Source conformance checklist\n\n| Item | Status | View(s) used | Notes |\n|---|---|---|---|\n| Silhouette | conforms | front, front_corner, aerial, top, rear_side | Single flat-roofed rectangular box with no setbacks, matching the oblique and top sources |\n| Height and proportions | conforms | top, right_side, rear, front | Plan aspect about 1.31 (top: 445 x 340 px) against the source's about 1.3. Single storey. The south-face length-to-height ratio at the west end is about 3.4 against the front source's about 3.3. |\n| CMU coursing | conforms | facade_close, glass_close, entry_canopy, rear_north, architecture_close | Beige running-bond CMU with horizontal coursing and visible head joints on every face. No regression. |\n| Dock bays: doors | conforms | front, facade_close, dock_doors | Four overhead sectional doors with horizontal panel joints. The door aspect (about 0.45 W:H) and height relative to the surround match the front source. Door height has not regressed. |\n| Dock bays: lites | deviates (P2 #1) | dock_doors | A row of four small lites against two in the source |\n| Dock bays: surrounds | conforms (spacing P2 #2) | facade_close, dock_doors, front | Dark steel surrounds with a projecting head and jamb pads. The door is recessed with a visible jamb return. |\n| Dock bays: bumpers | conforms | facade_close, dock_doors | Black bumper blocks below each leveller lip, in contact with the dock face |\n| Dock bays: guides | conforms | facade_close, front, front_corner | A yellow guide post at each jamb of all four bays, standing on the apron. No regression. |\n| Dock bays: dock height and base | conforms | facade_close, front | A raised concrete dock plinth runs under the band. Leveller lips sit at dock height. The surrounds rise to about 0.47 of wall height, as in the source. No regression. |\n| Dock band position and rhythm | conforms | top, front | The band runs from about 10% to 62% of the south face, the same as the source top. Four equal bays. No regression. |\n| Entry: door and sidelight | conforms | glass_close, front | An aluminium-framed glazed door and sidelight of similar width, recessed in the CMU |\n| Entry: canopy | conforms (top relief P2 #3) | entry_canopy, glass_close, front, front_corner | Flat canopy about 2.1 times the door-plus-sidelight width, biased west, as in the source |\n| Entry: rods | conforms | entry_canopy, front, front_corner | Two dark rods run from wall anchor plates to the canopy's outer edge, in contact at both ends |\n| Entry: window | conforms (mullions P2 #4) | glass_close, front | Window-to-door width about 1.5 against the source's 1.42. The door-to-window gap matches (about 0.55 of door width). The head is slightly above the door head. Projecting sill. Entry spacing has not regressed. |\n| Landing and steps | conforms | front, front_corner, top | A long cast-concrete landing runs from just east of dock 4 to the window's east end, with steps at its west end descending west, as in the source top. The door sill meets the landing. No regression. |\n| East windows | conforms (P2 #5, #7) | front, front_corner, right_side, east_windows, architecture_close | One low two-light window near the south corner and **three** high clerestories. In front_corner their positions along the face are 0.46, 0.69 and 0.87; in the oblique they are 0.47, 0.71 and 0.89. |\n| Parapet and coping | conforms | parapet_corner, roof_units, rear_north, front | A low flat parapet with a thin, pale, continuous metal coping and a beige inner parapet face. Clean corner mitre. No regression. |\n| Roof: membrane | conforms | top, roof_units, front_corner | Grey membrane with seam lines |\n| Roof: rooftop units | conforms | top, roof_units, aerial | Two RTUs side by side, central and slightly north of centre, as in the source top |\n| Roof: vent domes | conforms | top, front_corner | Four small domes near the roof corners, as in the source top |\n| Roof: pipe vents | conforms | roof_units, parapet_corner, top | Several thin pipe vents |\n| Apron and site | conforms | front, front_corner, aerial, top | Street on the south. A concrete dock apron and sidewalk. An asphalt lane with parking stalls on the east and an asphalt drive on the west. Massing-level cars and trees only. |\n| Materials hierarchy | conforms | all | Beige CMU dominant, dark dock surrounds, pale coping, grey membrane, light concrete landing and apron, yellow guides, aluminium frames. Untextured, source-palette clay. |\n| North and west faces (no source; coherence only) | conforms | rear, rear_north, left_side, rear_side | High square windows in the same grammar, and a hollow-metal rear door on a concrete stoop with steps and handrails, all in contact. The rear door has not regressed. |\n\n## 4. Camera validity\n\nAll 18 cameras are valid. In every view the target is visible and unoccluded, the asset is not clipped where the view's role needs it, and the subject is legible:\n- front: the east face runs off the right edge, as it also does in the locked front. The south face is complete.\n- front_corner, aerial, rear_side: the whole envelope is visible.\n- top: true nadir, the whole plan is visible, and the trees do not overlap the roof.\n- left_side, right_side, rear: the whole face is visible but small (P2 #6).\n- Details (facade_close, architecture_close, glass_close, dock_doors, entry_canopy, roof_units, east_windows, parapet_corner, interior, rear_north): each frames its named target and none is occluded. dock_doors and facade_close crop off the outer bays on purpose.\n- interior: the camera is inside the envelope and shows a legible racked aisle with a far-wall clerestory. There is no clipping through the envelope.\n\nCameras have not regressed.\n\n## 5. Previous-version findings: resolved in the pixels?\n\n| Previous finding | Status in v006 pixels | Evidence |\n|---|---|---|\n| v005 P1: the east face showed two high windows against three in the oblique, leaving the north 40% blank | **RESOLVED** | front_corner, right_side, architecture_close, parapet_corner and front all show three evenly spaced high windows. front_corner positions 0.46, 0.69 and 0.87 against the oblique's 0.47, 0.71 and 0.89. The north part of the face is no longer blank. |\n| Dock band extent and rhythm | not regressed | top: about 10% to 62% of the face, four equal bays |\n| Entry spacing | not regressed | glass_close, front |\n| Landing | not regressed | front, front_corner, top |\n| Cameras | not regressed | Section 4 |\n| Door height (dock doors) | not regressed | front, dock_doors |\n| Dock base | not regressed | facade_close |\n| Coping | not regressed | parapet_corner, rear_north |\n| Head joints | not regressed | facade_close, glass_close, rear_north |\n| Guide posts | not regressed | facade_close, front |\n| Rear door | not regressed | rear_north, rear, rear_side |\n"
+  },
+  "preserved_evidence": [
+    {
+      "path": "source-package/evidence/v006/renders/aerial.jpg",
+      "bytes": 62808,
+      "sha256": "af8c1ace8fb14dfc75118128ca0791163e67f572f9fcf47b21bf8fc4fb0b8756"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/architecture_close.jpg",
+      "bytes": 147571,
+      "sha256": "a04a51468d815830af74c67866f444b47b975b7e2e9648ab6e45885460430706"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/dock_doors.jpg",
+      "bytes": 90780,
+      "sha256": "3df9694240f250ef479bb01f8cdf6db3d6f56d7a6535676bf51e285817554f64"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/east_windows.jpg",
+      "bytes": 129049,
+      "sha256": "46e03ae11556c641988447dda38202e5c931516e5072702bfbeb1946cea34ab0"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/entry_canopy.jpg",
+      "bytes": 117176,
+      "sha256": "1319c02f5bacf543ad1136f93ea39ebe4f4893c2a99843d8bc73207b456dce17"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/facade_close.jpg",
+      "bytes": 125390,
+      "sha256": "96d2930e8ddd2b579eb27cc0a765db0e5f5be40b3b9539de566ec8105a9e467f"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/front.jpg",
+      "bytes": 84046,
+      "sha256": "b0708c7940dc1c02fe1f6030beeb47c6959a3b90c348b47284580305cf4c3035"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/front_corner.jpg",
+      "bytes": 92739,
+      "sha256": "791fc6a5f5d7bff8b534be44fb222aaacfd206d907e638bb1bb9a4ca68d6a3eb"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/glass_close.jpg",
+      "bytes": 105686,
+      "sha256": "d2c7d06512898a5249d80f3da1b585fcb45e8b6b4bb26264ba8e19f40ffd6beb"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/interior.jpg",
+      "bytes": 135200,
+      "sha256": "528796c090cb5679f7cc72980048839228ca4743e935d5df293e2c97313fffd2"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/left_side.jpg",
+      "bytes": 37145,
+      "sha256": "8825f8b0356116130e8559d74efe397b6a902de41be1cc601da23cc52db25c17"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/parapet_corner.jpg",
+      "bytes": 124930,
+      "sha256": "27996d00def89acdedbb1f3169e97ac389e29d41f1bc6ed49ff8c09a76f354a5"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/rear.jpg",
+      "bytes": 40241,
+      "sha256": "120c71d47cec7c6ce2f7a5063f3afc21ddf8a59cac19a8511ebf7093afb8ca74"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/rear_north.jpg",
+      "bytes": 77398,
+      "sha256": "049788f4e97dc01496f3288481943ccd4eb3af638ded7b689ffeeea7830d422e"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/rear_side.jpg",
+      "bytes": 49715,
+      "sha256": "1c75ccbcc88c0ea0cfe3f2cb7870eb6a333a3f130831f18c5f8a63c62412efd7"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/right_side.jpg",
+      "bytes": 39405,
+      "sha256": "7d685cbcc8ee932a828c748f5f5b6163bc7a077ce8d88dd37853f91f1d64733f"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/roof_units.jpg",
+      "bytes": 50029,
+      "sha256": "cc8f7a744ef7ff9598d5215092d63d663a11f07fb0c357ec753d9a99cb71cb89"
+    },
+    {
+      "path": "source-package/evidence/v006/renders/top.jpg",
+      "bytes": 49257,
+      "sha256": "963234d75d74f5ce287f574db176b9a4a53fada37c1a38d1f3ad35b7af35740c"
+    },
+    {
+      "path": "source-package/evidence/v006/boards/phone-01-source-vs-render.jpg",
+      "bytes": 269148,
+      "sha256": "7c1bc762971cc70d909cd07c20e4c7aa565e4c6714c1523cbd444f6ac86ba34c"
+    },
+    {
+      "path": "source-package/evidence/v006/boards/phone-02-details.jpg",
+      "bytes": 175764,
+      "sha256": "772862f8c58f9189d780989eae09b30805e1717a7b59fa019e2f82b9b40962d9"
+    },
+    {
+      "path": "source-package/evidence/v006/boards/phone-03-details.jpg",
+      "bytes": 146322,
+      "sha256": "4e413deb280617f4a5c379d9564e52bd7589cbd82e61d8df01a7bcd286b88e78"
+    },
+    {
+      "path": "source-package/evidence/v006/boards/phone-04-details.jpg",
+      "bytes": 56959,
+      "sha256": "a43e4ccf7545e99f0a4671bdc0be7f85abe24664397233cf7677c997a6509c40"
+    }
+  ],
+  "evidence_limitations": "Original reviewer inspected PNG renders and phone boards. Source branch preserved JPEG derivatives, recorded in preservation.json; this transcription does not claim a new visual review of those JPEGs. Authored metric assumptions and hidden views remain as disclosed in original prework and review.",
+  "keeper_approval_implied": false,
+  "runtime_acceptance_implied": false,
+  "publication_approval_implied": false
+}

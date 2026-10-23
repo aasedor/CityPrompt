@@ -3,12 +3,21 @@ import { nativeStreetPilot, placeNativeStreetModules } from './nativeStreetPilot
 import { buildNativeStreetProgram, type NativeStreetProgram } from './nativeStreetProgram';
 import { CATALOGUE_ASSETS, validateRegistry } from '@/features/pickPlace/assetRegistry';
 import { CANONICAL_CHOICES, filterCanonicalChoices } from '@/features/pickPlace/canonicalCatalogue';
+import { CLAUDE_BUILDING_RELEASE_ASSETS } from '@/features/pickPlace/claudeBuildingRelease';
 
 describe('three additional native street programs', () => {
   it('offers the consolidated classroom selection with distinct exact identities', () => {
     expect(CATALOGUE_ASSETS.filter(a => a.kind === 'street')).toHaveLength(44);
-    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'building')).toHaveLength(79);
-    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'green_space')).toHaveLength(38);
+    expect(CLAUDE_BUILDING_RELEASE_ASSETS).toHaveLength(18);
+    const buildingReleaseIds = new Set(CLAUDE_BUILDING_RELEASE_ASSETS.map(a => a.id));
+    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'building' && !buildingReleaseIds.has(a.id))).toHaveLength(79);
+    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'building')).toHaveLength(97);
+    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'green_space' && a.model.method !== 'fixed_public_realm_v1')).toHaveLength(38);
+    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'green_space')).toHaveLength(41);
+    const fixed = CATALOGUE_ASSETS.filter(a => a.model.method === 'fixed_public_realm_v1');
+    expect(fixed).toHaveLength(12);
+    expect(fixed.filter(a => a.kind === 'object' && a.zoneType === 'road')).toHaveLength(9);
+    expect(fixed.filter(a => a.kind === 'object' && a.zoneType === 'green_space')).toHaveLength(3);
     expect(validateRegistry(CATALOGUE_ASSETS)).toEqual([]);
     expect(new Set(CANONICAL_CHOICES.map(c => c.id)).size).toBe(CANONICAL_CHOICES.length);
   });

@@ -138,6 +138,9 @@ def test_verify_install_checks_full_explicit_runtime_binding(monkeypatch, field,
     monkeypatch.setattr(boto3, "client", MagicMock())
     monkeypatch.setattr(seed, "remote_hash", lambda *args: "a" * 64)
     monkeypatch.setattr(seed, "clay_seed_rows", lambda payload: iter([row]))
+    # Strict existing bindings and ordinary conflicts must not require optional
+    # legacy review evidence. Its file is opened only for an attested exception.
+    monkeypatch.setattr(seed, "verified_seed_review", MagicMock(side_effect=AssertionError("unexpected legacy review read")))
     args = SimpleNamespace(endpoint="local", access_key="test", secret_key="test", database_url="local",
                            bucket="test", clay_library=Path("seed/trial/library.json") if explicit else None)
     payload = {"entries": [{"candidate": "one", "variant_id": "one",

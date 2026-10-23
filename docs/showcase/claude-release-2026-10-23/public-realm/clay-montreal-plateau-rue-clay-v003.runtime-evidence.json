@@ -1,0 +1,238 @@
+{
+  "schema": "cityprompt.fixed-public-realm-proposed-runtime-evidence@1",
+  "proposal_only": false,
+  "candidate": "clay-montreal-plateau-rue-clay-v003",
+  "asset_id": "claude_public_realm:montreal-plateau-rue:92722fb6162c",
+  "runtime_sha256": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde",
+  "scope": "Actual single-asset ordinary desktop app placement/rotation/native controls/save/reload/free capture on prepared field plus separate isolated desktop1/5-instance production-loader diagnostic.",
+  "ordinary_UI_snapshot": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\claude-model-discovery-2026-10-22\\quality\\holistic-review-20261023\\activation-proposal-20261023\\ordinary-ui-evidence.snapshot.json",
+    "role": "root_actual_twelve_model_UI_matrix",
+    "sha256": "e2842e619d496d8952f0611e838a64b93097340189d8d9d57f88cb0c5b6582e7",
+    "bytes": 25963
+  },
+  "observed_model_row": {
+    "candidate": "clay-montreal-plateau-rue-clay-v003",
+    "id": "claude_public_realm:montreal-plateau-rue:92722fb6162c",
+    "label": "Montreal Plateau Rue — fixed native",
+    "dimensions": [
+      121,
+      121
+    ],
+    "runtime_sha256": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde",
+    "url": "/street-kits/claude-20261023/92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde.glb",
+    "status": "passed",
+    "picker_controls": [
+      {
+        "disabled": true,
+        "label": "Placement width",
+        "value": "121"
+      },
+      {
+        "disabled": true,
+        "label": "Placement depth",
+        "value": "121"
+      },
+      {
+        "disabled": false,
+        "label": "Placement degrees",
+        "value": "0"
+      }
+    ],
+    "placement": "ordinary UI",
+    "yaw_initial": 15,
+    "yaw": 16,
+    "controls": [
+      {
+        "disabled": true,
+        "label": "Plot width (m)",
+        "value": "121.0"
+      },
+      {
+        "disabled": true,
+        "label": "Plot depth (m)",
+        "value": "121.0"
+      },
+      {
+        "disabled": false,
+        "label": "Rotation (degrees)",
+        "value": "16"
+      }
+    ],
+    "saved_reload": true,
+    "api_readback": "clay-montreal-plateau-rue-clay-v003-api-readback.json",
+    "free_capture": "montreal-final-actual-app-capture.png",
+    "preview": "montreal-final-actual-app-preview.jpg",
+    "png_bytes": 3529218,
+    "preview_exact_3d": true,
+    "checked_utc": "2026-10-23T21:42:00.430Z",
+    "api_exact_identity": true,
+    "api_no_fallback": true,
+    "png": {
+      "width": 2048,
+      "height": 714,
+      "bytes": 3529218,
+      "sha256": "014926207314b57f1ce2f4ed9d04609c66c2bfdd760da38a8e8d95b2028d8973"
+    },
+    "native_dimensions_exact": true
+  },
+  "api_readback": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\clay-montreal-plateau-rue-clay-v003-api-readback.json",
+    "role": "GET_only_exact_saved_identity_no_fallback",
+    "sha256": "059c53f1be8a47eb414bb36516483631102b3b7749356daabb6cf0ce4ae06a98",
+    "bytes": 2193
+  },
+  "actual_capture": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\montreal-final-actual-app-capture.png",
+    "role": "free_exact3D_PNG_hash_checked",
+    "sha256": "014926207314b57f1ce2f4ed9d04609c66c2bfdd760da38a8e8d95b2028d8973",
+    "bytes": 3529218
+  },
+  "actual_preview": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\montreal-final-actual-app-preview.jpg",
+    "role": "functional_capture_preview",
+    "sha256": "d8c41fdb6d0fe19a19c024c5a8bb6dc86f51b1af3ebffb966b932989ef026a06",
+    "bytes": 558768
+  },
+  "shared_rink_move_delete_undo_redo": {
+    "scope": "Shared mechanism exercised on rink only; not separately repeated on every model",
+    "observations": {
+      "move": {
+        "status": "passed",
+        "model": "clay-ice-rink-market-square-clay-v007-park-only-r001",
+        "screen_drag": [
+          [
+            1700,
+            705
+          ],
+          [
+            1720,
+            705
+          ]
+        ],
+        "size": [
+          57,
+          77
+        ],
+        "yaw": 16,
+        "screenshot": "rink-rigid-move-selected.jpg"
+      },
+      "delete_undo_redo": {
+        "status": "passed",
+        "sequence": [
+          "delete",
+          "undo",
+          "redo",
+          "undo"
+        ],
+        "model": "clay-ice-rink-market-square-clay-v007-park-only-r001",
+        "screenshot": "rink-delete-undo.jpg",
+        "api_verified": {
+          "redo_public_realm_zone_count": 0,
+          "undo_restored_exact_identity": true,
+          "boundary_retained": true
+        }
+      }
+    },
+    "files": [
+      {
+        "path": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\rink-rigid-move-selected.jpg",
+        "role": "shared_rink_UI_move",
+        "sha256": "616c5bb74c865a005cedd8c678764cdca0a1b40d87828d796d263a851acc605e",
+        "bytes": 942611
+      },
+      {
+        "path": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\rink-delete-undo.jpg",
+        "role": "shared_rink_UI_delete_undo_redo",
+        "sha256": "2a7d8c1080b6c220b57018463f70de79669f8e2f7fbbedd2a7fb2cbda0158541",
+        "bytes": 985286
+      }
+    ]
+  },
+  "isolated_desktop_performance": {
+    "snapshot": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-model-discovery-2026-10-22\\quality\\holistic-review-20261023\\activation-proposal-20261023\\isolated-desktop-performance.snapshot.json",
+      "role": "actual1_and5_instance_benchmark",
+      "sha256": "80fe8df21d2960c0604e6d15164fc304947ee92f30e0950b9a7eb534abc92b97",
+      "bytes": 116131
+    },
+    "model_metrics": [
+      {
+        "copies": 1,
+        "renderer": {
+          "calls": 67,
+          "triangles": 163632,
+          "lines": 0,
+          "points": 0,
+          "geometries": 33,
+          "textures": 1
+        },
+        "cpu_submission": {
+          "samples": 120,
+          "mean_ms": 2.355833333606521,
+          "p50_ms": 1.7000000029802322,
+          "p95_ms": 5.399999991059303,
+          "max_ms": 10.299999997019768
+        },
+        "raf_interval": {
+          "samples": 120,
+          "mean_ms": 17.776666666567326,
+          "p50_ms": 17.799999997019768,
+          "p95_ms": 18.299999997019768,
+          "max_ms": 18.599999994039536
+        },
+        "gpu_time_measured": false,
+        "viewport": {
+          "width": 3417,
+          "height": 1109,
+          "dpr": 1
+        }
+      },
+      {
+        "copies": 5,
+        "renderer": {
+          "calls": 335,
+          "triangles": 818160,
+          "lines": 0,
+          "points": 0,
+          "geometries": 33,
+          "textures": 1
+        },
+        "cpu_submission": {
+          "samples": 120,
+          "mean_ms": 7.031666666517655,
+          "p50_ms": 6.5,
+          "p95_ms": 11.099999994039536,
+          "max_ms": 14.5
+        },
+        "raf_interval": {
+          "samples": 120,
+          "mean_ms": 17.6125,
+          "p50_ms": 17.5,
+          "p95_ms": 18.200000002980232,
+          "max_ms": 25.200000002980232
+        },
+        "gpu_time_measured": false,
+        "viewport": {
+          "width": 3417,
+          "height": 1109,
+          "dpr": 1
+        }
+      }
+    ]
+  },
+  "limits": [
+    "Desktop ordinary app UI only, 3432px viewport width, DPR1, Balanced detail,30degree oblique",
+    "Wide prepared field captures confirm loaded presence; no detailed architectural pixel approval",
+    "Walking, traffic, route connectivity, mobile/student hardware, multiasset scenes not tested in this matrix",
+    "No production approval; raw prepared Halifax/Prince and held Stepped Terraced Plaza excluded",
+    "All model placement/edit/delete writes through UI; API helper used GET only",
+    "CPU submission and RAF intervals do not measure GPU time.",
+    "No detailed globe performance matrix, student laptop/mobile test, or combined12-asset scene benchmark."
+  ],
+  "source_or_catalogue_written": false,
+  "publication_approved": false,
+  "gate_status": "passed",
+  "adopted_by": "/root",
+  "adopted_at": "2026-10-23T22:15:31.879420+00:00"
+}

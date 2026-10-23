@@ -4,17 +4,36 @@ import { ZONING_CATALOGUE_BUILDINGS } from './ZoningCatalogueCard';
 import type { ZoneInspection } from './types';
 import catalogue from '@/features/referenceLayers/calgaryBylawCatalogue.json';
 import { OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS } from '@/features/pickPlace/assetRegistry';
+import { CLAUDE_BUILDING_RELEASE_ASSETS } from '@/features/pickPlace/claudeBuildingRelease';
+import release from '@/data/claudeBuildingRelease.json';
 
 const zone = (designation: string): ZoneInspection => ({ id: 'z', label: designation, source: 'Test', district: { designation } });
 const model = (variant: string) => ZONING_CATALOGUE_BUILDINGS.find(a => a.model.variantId === variant)!;
 const result = (variant: string, designation: string) => matchBuilding(model(variant), zone(designation));
 
 describe('catalogue zoning screening', () => {
-  it('reviews every exact current building revision without reviving legacy models', () => {
-    expect(ZONING_CATALOGUE_BUILDINGS).toHaveLength(34 + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length + FINAL_FIVE_BUILDING_ASSETS.length + CLAUDE_FIVE_TRIAL_ASSETS.length + PARKADE_BUILDING_ASSETS.length);
-    expect(Object.keys(BUILDING_PROGRAMS).sort()).toEqual(ZONING_CATALOGUE_BUILDINGS.map(a => a.model.variantId).sort());
-    for (const a of ZONING_CATALOGUE_BUILDINGS) expect(BUILDING_PROGRAMS[a.model.variantId].revision).toBe(a.model.revision);
+  it('retains every reviewed exact building programme while adding only the explicit release cohort', () => {
+    expect(ZONING_CATALOGUE_BUILDINGS).toHaveLength(34 + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length + FINAL_FIVE_BUILDING_ASSETS.length + CLAUDE_FIVE_TRIAL_ASSETS.length + PARKADE_BUILDING_ASSETS.length + CLAUDE_BUILDING_RELEASE_ASSETS.length);
+    const releaseIds = new Set(release.entries.map(entry => entry.asset_id));
+    const reviewed = ZONING_CATALOGUE_BUILDINGS.filter(asset => !releaseIds.has(asset.id));
+    expect(Object.keys(BUILDING_PROGRAMS).sort()).toEqual(reviewed.map(a => a.model.variantId).sort());
+    for (const a of reviewed) expect(BUILDING_PROGRAMS[a.model.variantId].revision).toBe(a.model.revision);
     expect(Object.keys(DISTRICT_RULES).sort()).toEqual(catalogue.districts.map(d => d.code).sort());
+  });
+  it('keeps all 18 activated building revisions unclassified until their actual occupancy is reviewed', () => {
+    expect(release.entries).toHaveLength(18);
+    expect(CLAUDE_BUILDING_RELEASE_ASSETS.map(asset => asset.id).sort()).toEqual(release.entries.map(entry => entry.asset_id).sort());
+    for (const entry of release.entries) {
+      const asset = ZONING_CATALOGUE_BUILDINGS.find(candidate => candidate.id === entry.asset_id)!;
+      expect(asset).toMatchObject({ readiness: 'ready', model: { variantId: entry.variant_id, revision: entry.candidate } });
+      expect(BUILDING_PROGRAMS[entry.variant_id]).toBeUndefined();
+      for (const code of Object.keys(DISTRICT_RULES)) {
+        const match = matchBuilding(asset, zone(code));
+        expect(match).toMatchObject({ status: 'review', program: undefined, uses: [] });
+        expect(match.reasons).toContain('This exact model revision needs a use classification.');
+        expect(match.height).toBe(asset.nativeDimensions![2]);
+      }
+    }
   });
   it('keeps all five parkade revisions available but explicitly unclassified for zoning', () => {
     expect(PARKADE_BUILDING_ASSETS).toHaveLength(5);

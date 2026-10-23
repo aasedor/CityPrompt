@@ -70,7 +70,7 @@ function NativeJunctionGround({ junction }: { junction: NativeStreetJunction }) 
   </group>;
 }
 
-/** Unreleased fixed-size candidates, only enabled in local development. */
+/** Exact released fixed scenes and separately gated local review candidates. */
 export function GlobePublicRealmTrialLayer({ zones, terrainHeight }: { zones: SiteZone[]; terrainHeight: number }) {
   const junctions = useMemo(() => nativeStreetJunctions(zones, terrainHeight), [zones, terrainHeight]);
   const placements = useMemo(() => new Map(zones.map(zone =>

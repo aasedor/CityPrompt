@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import type { SiteZone } from '@/types';
 import { CANONICAL_CHOICES } from './canonicalCatalogue';
-import { canonicalStreetAsset, streetDesignUpdate } from './canonicalStreetPlacement';
+import { canonicalStreetAsset, canonicalStreetForZone, streetDesignUpdate } from './canonicalStreetPlacement';
 import { streetAssetForZone, streetCoordinateUpdate } from './streetPlacement';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
@@ -9,13 +9,28 @@ import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
 import { LEGACY_SECTION_STREET_ASSETS } from './assetRegistry';
 
 it('uses the rendered section width for every current eligible street variant', () => {
-  for (const choice of CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway')) {
+  for (const choice of CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway' && c.placements.every(a => a.kind === 'street'))) {
     for (const variant of choice.option.variants ?? [undefined]) {
       const asset = canonicalStreetAsset({ choice, variant });
       expect(asset.sectionWidth).toBeGreaterThan(0);
       expect(resolvePilotStreetSectionProfile({ properties: asset.properties })?.rowM).toBe(asset.sectionWidth);
       expect(streetAssetForZone({ zone_type: 'road', properties: asset.properties })?.sectionWidth).toBe(asset.sectionWidth);
     }
+  }
+});
+
+it('rejects fixed native scenes before they can inherit a procedural section or preset', () => {
+  const fixed = CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway'
+    && c.placements.some(a => a.model.method === 'fixed_public_realm_v1'));
+  expect(fixed).toHaveLength(9);
+  for (const choice of fixed) {
+    const asset = choice.placements[0];
+    const properties = { ...asset.properties, pick_place_street_section: asset.model.variantId };
+    expect(() => canonicalStreetAsset({ choice, variant: choice.option.variants![0] })).toThrow(/fixed native/i);
+    expect(canonicalStreetForZone({ zone_type: 'road', properties })).toBeUndefined();
+    const zone = { id: asset.id, project_id: 'project', color: '#777', sort_order: 0, created_at: '', updated_at: '',
+      zone_type: 'road', coordinates: [[-114, 51], [-113.999, 51]], properties } as SiteZone;
+    expect(() => streetDesignUpdate(zone, LEGACY_SECTION_STREET_ASSETS[0])).toThrow(/fixed native/i);
   }
 });
 

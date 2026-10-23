@@ -1,0 +1,155 @@
+{
+  "candidate": "clay-energy-centre-clay-v010",
+  "model_sha256": "1c4849fedf76e226f5b0dc545f61c7c3350debb4ff845c5010d5931224eb05c3",
+  "reviewer": "Independent source-locked Claude reviewer (role as recorded in the preserved original review)",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "inspected_files": [
+    {
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/central-utilities-plant-energy-centre/variant_1.png",
+      "sha256": "dfd3da0973e43083af84897c60d500d781394c89d2833d327f9d478c35d98263"
+    },
+    {
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/central-utilities-plant-energy-centre/variant_1_angle_60.jpg",
+      "sha256": "3900dbadbd2854e5b7148f03286c3c38e299edcd70e511dbe1e843bfca8d44e2"
+    },
+    {
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/central-utilities-plant-energy-centre/variant_1_angle_90.jpg",
+      "sha256": "407ae3df4a3e243f49c26f36a4d94159dc8e02dce049eac29d24c22e037184fa"
+    }
+  ],
+  "record_kind": "faithful_structured_transcription_of_prior_independent_review",
+  "transcribed_on": "2026-10-23",
+  "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+  "floor_count_provenance": {
+    "inherited_local_fixture_count": 3,
+    "source_prework_observed_storeys": 2,
+    "basis": "Canonical package uses the source prework observed-storeys count, not the old discovery-fixture estimate. Mixed wings and roof plant remain fixed authored geometry; see original programme/review."
+  },
+  "source_review": {
+    "path": "source-package/evidence/v010/independent-review.md",
+    "sha256": "c6251427e6a0dadf617639d532e02c1aaaed14331c8c8386eee3fe46e97d9c80",
+    "text": "# Independent holistic review: clay energy centre v010 (RLASM v6.1)\n\nReviewer: independent (not the builder). Evidence: the 3 locked sources, all 18 renders at full resolution, and the 4 phone boards, opened with Read. I did not use any build report, builder note, metadata or hash as proof.\n\n## 1. Verdict\n\n**PASS_ZERO_P0_P1**: the pixels show the full source identity, with correct topology, storeys, bay rhythm and roof plant, and the v009 P1 is fixed (the concrete bands now meet level at the identity corner). Only polish items remain.\n\nCounts: P0 = 0, P1 = 0, P2 = 9\n\n## 2. Findings table\n\n| # | severity | view(s) with pixel regions | symptom (what the pixels show) | likely cause | finite fix |\n|---|---|---|---|---|---|\n| - | P0 | - | None found. | - | - |\n| - | P1 | - | None found. | - | - |\n| 1 | P2 | front (lower wall y 456-833 against corten y 372-833); left_side | The lower volume reads about 12-15 % short against the corten block compared with the locked front. This was carried over from v008/v009 and downgraded because the locked front and top disagree on it. | The lower-volume height was chosen as a compromise between the sources. | Optional: raise the lower parapet about 0.5-1 m if a later version is allowed. |\n| 2 | P2 | top (corten 740-1105 x 178-900 against lower 335-740 x 178-900) against source top (corten 168-722 against lower 190-712) | The corten block is exactly as long north-south as the lower volume. In the source it projects slightly past it at both ends. | Both volumes share one footprint depth. | Lengthen the corten block about 2-4 % at its north and south ends. |\n| 3 | P2 | top (flue cluster at about 600,635); roof_plant | The three-flue cluster sits south of centre. The source top puts it nearer the centre of the lower roof (about 548,520), just east of the hourglass stack. | Placement offset. | Move the flue plinth about 8 % of the roof depth north. |\n| 4 | P2 | stack_contact (800-890, 490-650); roof_plant (940-1000, 420-600) | The flues have dark conical rain caps. The source flues read as plain open silver pipes. | Cap geometry was added. | Drop the caps or tint them in the flue colour. |\n| 5 | P2 | front (735-748 x 460-830); front_corner (880-890, 640-760 in the 2x crop) | A thin buff-brick strip separates the south glazing from the corten block. In the source front the south glass band runs straight into the corten. | The brick frame return was carried around the east end. | Trim the east end pier to the frame thickness or remove it. |\n| 6 | P2 | corten_block (848-1092 x 75-1080) | The slot window has a dark return on its left jamb only. The glass reads nearly flush, so its depth is weak in close-up. | The glass inset is shallow. | Inset the slot glass about 150-200 mm and add a visible head/jamb return. |\n| 7 | P2 | plant_window; interior; glass_close | The plant showcase holds sparse massing (one teal box, two pipe runs, plain boxes). The source shows dense teal pumps and pipework behind the glass. It is legible as plant, but thin. | Low interior plant count. | Add 2-3 more pump/manifold masses and vertical pipe drops in each glazed bay. |\n| 8 | P2 | rear_service (620-935 x 485-500) | A light grey sliver shows at the top-left of the louvre opening. The louvre has depth, but its top blade/frame does not close the void. | The louvre frame is shorter than the opening. | Extend the top frame or blade to the head of the opening. |\n| 9 | P2 | front (role match) | The front render is a square-on south elevation. The locked front is a south-west corner perspective, and front_corner carries that comparison. | The camera role definition. | Optional: tilt the front camera about 25-30 deg toward the west to mirror the source. |\n\n## 3. Source conformance checklist\n\n| Item | Status | View used |\n|---|---|---|\n| Silhouette (low two-storey brick volume on the west, taller corten block on the east, stack rising well above both) | conforms (lower height P2 #1) | front, front_corner, aerial, rear |\n| Storey count (lower volume two storeys, corten one tall block) | conforms | front, left_side |\n| Bay rhythm and glazing (west face: door bay with clerestory, tall glazed entrance bay, brick pier, corner bay with glass/concrete/glass; south face: continuous upper band, two lower bays with a pilaster and a door at the east end) | conforms | left_side, front, front_corner against source front/oblique |\n| Concrete panel (corner bay and south band, level datums) | conforms. Measured: west corner bay concrete 32-64 % of wall height (y 609-732 on a 470-855 wall); south face 32-65 % (y 589-712 on a 456-833 wall); west upper glass about 24 % of the wall | left_side, front, front_corner |\n| Entrance (recessed glazed doors with a dark canopy in the west face, brick jambs with returns) | conforms | glass_close, corner_entry, left_side |\n| Corten block and slot (dark vertical-seam cladding, narrow tall slot, louvre on the west face above the lower roof) | conforms (slot depth P2 #6) | front, architecture_close, corten_block |\n| Roof plant and stack (two three-fan banks on the west edge, duct runs, three-flue cluster, hourglass-framed stack on a plinth, two units on the corten roof) | conforms (flue position and caps P2 #3, #4); all parts sit on plinths or supports with no floating parts | top, roof_plant, stack_contact, aerial |\n| Materials hierarchy (buff brick frame > glass plant showcase > board-formed concrete panels > dark corten > pale membrane roof) | conforms | front_corner, facade_close |\n| North and east faces (no source) | coherent: corten and brick with a service door and louvre, same grammar | rear, rear_side, right_side, rear_service |\n\n## 4. Camera validity\n\nNo view is invalid. In every view the target is unoccluded, unclipped and legible. The trees partly overlap the west corner bay's lower glass in front_corner and the corten slot base in corten_block, but they hide no identity element. facade_close, architecture_close and the detail views crop deliberately and keep their subjects legible.\n\n## Previous-version findings\n\n- **v009 P1 (concrete bands misaligned across the identity corner):** RESOLVED in the pixels. In left_side the west corner bay's concrete runs from 32 % to 64 % of the wall height, and the upper glass band is about 24 % of the wall, not the old 11 %. In front the south band runs from 32 % to 65 %. In the front_corner close crop the two bands meet level on either side of the brick corner pier, which matches the source oblique and source front.\n- **v008 lower-volume height (downgraded to P2 in v009):** unchanged at about 12-15 % short, so it stays P2 (#1).\n"
+  },
+  "preserved_evidence": [
+    {
+      "path": "source-package/evidence/v010/renders/aerial.jpg",
+      "bytes": 89069,
+      "sha256": "6ce6e6a3fa3f68337f430fb0c840144991f4f13e5935a0db5674cf1d22393f85"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/architecture_close.jpg",
+      "bytes": 131642,
+      "sha256": "c2ebdde46049106b091f34cb9020be74eb2077fb59036d34f2688df42940c9d6"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/corner_entry.jpg",
+      "bytes": 137530,
+      "sha256": "cda52e7840ea71f5ac6f9aaf9204235123b1a3da0a55a2a6fdefcb130c16755a"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/corten_block.jpg",
+      "bytes": 124604,
+      "sha256": "8a8e3f5b620fc95241889ecfd3c5e02e0349e5d6fe17d0381ac49fb4f286145d"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/facade_close.jpg",
+      "bytes": 161789,
+      "sha256": "680237bcfb92b97e09d7600e0a5b6e4432adc4f002ccadd899aa59953d078ff1"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/front.jpg",
+      "bytes": 85188,
+      "sha256": "11737e46c890725bcd278347b1458c41fe5c2fe55f2c7213c7720f7613d6a0c8"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/front_corner.jpg",
+      "bytes": 101496,
+      "sha256": "dfd8a4eab57ef811031e645a60e16015528669b1423597b3a7ba719c149fdfbe"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/glass_close.jpg",
+      "bytes": 163312,
+      "sha256": "38e047f6a433d130bc1bca110aa16c358f4d98945ed9ab3fa1f4b0993df3775d"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/interior.jpg",
+      "bytes": 83329,
+      "sha256": "5bcf8157b5ea3b6768b28e6b09f80fcad7d79209ff70b47a2dacba60e9e9c1b8"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/left_side.jpg",
+      "bytes": 81538,
+      "sha256": "73ba966eca02b81feabe31ce1a4173fafe400eb373f4206ee593f1c8033d1cc1"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/plant_window.jpg",
+      "bytes": 105156,
+      "sha256": "1a23a3a31f65c268eafdcc24204396a8b18d0bd78ac0e9eed0f1d84667af8fb9"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/rear.jpg",
+      "bytes": 70270,
+      "sha256": "a53c5e75c7865f31d2fbcf2af57336a7e47c0068fa0c0c7e4eee8b066b82fa32"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/rear_service.jpg",
+      "bytes": 196633,
+      "sha256": "91fa690ed88481b0016ead11de0ec8b387b3a679e8d7d28f4847d2dc27c70a2f"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/rear_side.jpg",
+      "bytes": 84492,
+      "sha256": "a6d12f6f540552a23421703fca0689a4072cc4e553cc0ff821abb4acc5e9952b"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/right_side.jpg",
+      "bytes": 81508,
+      "sha256": "6382750dae31b31719d03d0c6009ab87982a3c8b57a293ae4b7a3c5636125dc8"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/roof_plant.jpg",
+      "bytes": 137178,
+      "sha256": "9043f5b8c85f3f82179e306696d04aa4e17a33752f24d99343e30ef930fc9417"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/stack_contact.jpg",
+      "bytes": 129676,
+      "sha256": "ca7d99f85a08cc96fd748a6642044bc236466f19c8bca5e272720129611dd104"
+    },
+    {
+      "path": "source-package/evidence/v010/renders/top.jpg",
+      "bytes": 78060,
+      "sha256": "b48fc57840b506d3e6f7c8ae63204dba5d97cd71f609b4328d0a1642c5e7e59c"
+    },
+    {
+      "path": "source-package/evidence/v010/boards/phone-01-source-vs-render.jpg",
+      "bytes": 314269,
+      "sha256": "8b52a3ab850a3117c80b308ab6932ea8aa50886241a8528e95e8f743b1ce65e1"
+    },
+    {
+      "path": "source-package/evidence/v010/boards/phone-02-details.jpg",
+      "bytes": 196541,
+      "sha256": "e911d16dca5a16131d4635a741ee21188b67e446ab18e11dba77545af8dfbb3f"
+    },
+    {
+      "path": "source-package/evidence/v010/boards/phone-03-details.jpg",
+      "bytes": 167626,
+      "sha256": "5663fdb49700be6c0a4ecb97c55d247871a8fdbc029825be8ba65ccb44f1658c"
+    },
+    {
+      "path": "source-package/evidence/v010/boards/phone-04-details.jpg",
+      "bytes": 72143,
+      "sha256": "3f0726e9b8fcb12173ebc9f08039345690f4a44d8ce8829176ac6da904e0412a"
+    }
+  ],
+  "evidence_limitations": "Original reviewer inspected PNG renders and phone boards. Source branch preserved JPEG derivatives, recorded in preservation.json; this transcription does not claim a new visual review of those JPEGs. Authored metric assumptions and hidden views remain as disclosed in original prework and review.",
+  "keeper_approval_implied": false,
+  "runtime_acceptance_implied": false,
+  "publication_approval_implied": false
+}

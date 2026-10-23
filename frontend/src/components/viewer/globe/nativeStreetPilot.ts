@@ -1,3 +1,4 @@
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import sourcePilots from '@/data/nativeStreetPilots.json';
 import { CANAL_ROUTE_POLICY } from './canalRoute';
 import bounds from '@/data/nativeStreetModuleBounds.json';
@@ -57,7 +58,7 @@ export function nativeStreetLocalRouteProblem(pilot: NativeStreetPilot, route: S
 
 /** Available before the first route point so students can resolve ground first. */
 export function nativeStreetPreparationProblem(zone:Pick<SiteZone,'properties'>,boundary?:SiteZone|null):string|null {
-  if(zone.properties?.validation_fixed_fixture)return null;
+  if(isFixedNativeScene(zone.properties))return null;
   const pilot=nativeStreetPilot(String(zone.properties?.road_selected_variant_id)),program=pilot?.program;
   if(!program)return null;
   if(program.preparedLevelOnly && (!boundary || boundary.properties?.terrain_strategy==='landscape'
@@ -68,7 +69,7 @@ export function nativeStreetPreparationProblem(zone:Pick<SiteZone,'properties'>,
 }
 
 export function nativeStreetRouteProblem(zone:Pick<SiteZone,'coordinates'|'properties'>,boundary?:SiteZone|null):string|null {
-  if(zone.properties?.validation_fixed_fixture)return null;
+  if(isFixedNativeScene(zone.properties))return null;
   const pilot=nativeStreetPilot(String(zone.properties?.road_selected_variant_id)),program=pilot?.program;
   if(!program)return null;
   const preparation=nativeStreetPreparationProblem(zone,boundary);
@@ -83,7 +84,7 @@ export function nativeStreetRouteProblem(zone:Pick<SiteZone,'coordinates'|'prope
  * Section cards may request a draft profile before there is a saved recipe. */
 export function nativeStreetPilotForZone(zone: Pick<SiteZone, 'zone_type' | 'properties'>, preview = false): NativeStreetPilot | undefined {
   if (zone.zone_type !== 'road') return undefined;
-  if (zone.properties?.validation_fixed_fixture) return undefined;
+  if (isFixedNativeScene(zone.properties)) return undefined;
   const selected = pilots.find(pilot => pilot.id === zone.properties?.road_selected_variant_id);
   if (selected) {
     if (zone.properties?.road_archetype_id !== selected.sourceArchetypeId || zone.properties?.width !== selected.widthM) return undefined;

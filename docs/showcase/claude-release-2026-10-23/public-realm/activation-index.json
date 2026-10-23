@@ -1,0 +1,170 @@
+{
+  "schema": "cityprompt.fixed-public-realm-activation@1",
+  "adopted_by": "/root",
+  "adopted_at": "2026-10-23T22:15:31.879420+00:00",
+  "scope": "12 exact fixed-native variants on prepared level sites; no mobile/natural-terrain certification",
+  "production_deployed": false,
+  "authorization_quote": "Yes, publish these additional reviewed assets",
+  "source_proposal_sha256": "ce0cea402ae3982fa8c0ed4fc0293b610030c595f788528c9061cc756e4bbe95",
+  "rows": [
+    {
+      "candidate": "clay-cable-stayed-cycle-ring-clay-v003",
+      "runtime_sha256": "c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11",
+      "visual_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-cable-stayed-cycle-ring-clay-v003.visual-evidence.json",
+        "sha256": "2f82dfdd52eaec1d927f001e66236f36cb75610caf492b136d38db38745c728e"
+      },
+      "runtime_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-cable-stayed-cycle-ring-clay-v003.runtime-evidence.json",
+        "sha256": "26a01dd80c57f688f0613076a416fcee0a421baf3a5a1d64965a7cfd4db8cdcd"
+      }
+    },
+    {
+      "candidate": "clay-calgary-riverwalk-clay-v003",
+      "runtime_sha256": "22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930",
+      "visual_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-calgary-riverwalk-clay-v003.visual-evidence.json",
+        "sha256": "6fa15c69a2961271f43d89ff2628ef7fb2575adadd5b90046c296f7e36164bea"
+      },
+      "runtime_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-calgary-riverwalk-clay-v003.runtime-evidence.json",
+        "sha256": "8212bb80fd0c92dcee502d44f16322ef54f095cd5d00adc74ef03aa33abdb80e"
+      }
+    },
+    {
+      "candidate": "clay-halifax-public-gardens-clay-v005-park-only-r001-gpu-r001",
+      "runtime_sha256": "9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79",
+      "visual_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-halifax-public-gardens-clay-v005-park-only-r001-gpu-r001.visual-evidence.json",
+        "sha256": "0c5cb39b63e221b19912ff16390ab66947e0ae7b7d3ad9651cfd80c06c140232"
+      },
+      "runtime_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-halifax-public-gardens-clay-v005-park-only-r001-gpu-r001.runtime-evidence.json",
+        "sha256": "cfc934946e03961519f2d983e7fb6a216cec7d56fbc7ea90dca0bd0dd2c4256a"
+      }
+    },
+    {
+      "candidate": "clay-ice-rink-market-square-clay-v007-park-only-r001",
+      "runtime_sha256": "6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8",
+      "visual_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-ice-rink-market-square-clay-v007-park-only-r001.visual-evidence.json",
+        "sha256": "31fda9231a60edc3cb35de3b3ca43c45bf605b12d3f21c1da80b9bb0302f3a48"
+      },
+      "runtime_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-ice-rink-market-square-clay-v007-park-only-r001.runtime-evidence.json",
+        "sha256": "e165edb093e105408166a81634833e248921ed0b230094e997a37a9f0a676a69"
+      }
+    },
+    {
+      "candidate": "clay-inglewood-main-street-clay-v004",
+      "runtime_sha256": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e",
+      "visual_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-inglewood-main-street-clay-v004.visual-evidence.json",
+        "sha256": "6c71460c34caaac5daed48f83daaa5c7d3f6ecbd4537d53050eec27b83041131"
+      },
+      "runtime_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-inglewood-main-street-clay-v004.runtime-evidence.json",
+        "sha256": "56f888e203e9d13f85f490e8b69cfc001586b0ca55f82f06c6debdc8a5a5d70e"
+      }
+    },
+    {
+      "candidate": "clay-montreal-plateau-rue-clay-v003",
+      "runtime_sha256": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde",
+      "visual_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-montreal-plateau-rue-clay-v003.visual-evidence.json",
+        "sha256": "3ef4154e32f36101d668bfc96b0714ba3c3e140b6570c725c7a3a09026c4b757"
+      },
+      "runtime_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-montreal-plateau-rue-clay-v003.runtime-evidence.json",
+        "sha256": "4a614b392926ae6159f038b8ca04c3493f1a2cbaae5e438247cc8134a2b46f2f"
+      }
+    },
+    {
+      "candidate": "clay-princes-island-park-clay-v005-gpu-r001",
+      "runtime_sha256": "498a973435fc8bc077084d3ee630babc55574a7365fdbd978a1cea742525a0ec",
+      "visual_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-princes-island-park-clay-v005-gpu-r001.visual-evidence.json",
+        "sha256": "469960fa9e55ed663231bf9b48173aa957fac01364c0afbfd6969e7ef35dd0fb"
+      },
+      "runtime_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-princes-island-park-clay-v005-gpu-r001.runtime-evidence.json",
+        "sha256": "d35924661791c05939e2ce3564bec7a0d02de7118952cf982d64f8e194c35e35"
+      }
+    },
+    {
+      "candidate": "clay-rail-through-truss-clay-v005",
+      "runtime_sha256": "db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813",
+      "visual_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-rail-through-truss-clay-v005.visual-evidence.json",
+        "sha256": "188c7e08b94f7e5f89b8c92bc881b575a2c8e2e023434d5e3feb77267ca9bc99"
+      },
+      "runtime_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-rail-through-truss-clay-v005.runtime-evidence.json",
+        "sha256": "044386352fc37d3392b2015693d14c1dff4d88033a18c9dde4f9311d31996b36"
+      }
+    },
+    {
+      "candidate": "clay-road-diet-complete-street-clay-v003",
+      "runtime_sha256": "bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696",
+      "visual_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-road-diet-complete-street-clay-v003.visual-evidence.json",
+        "sha256": "01bf0506c6fd98ea0d450269007b0eef356e8dcf41c334a630960f2cb871c498"
+      },
+      "runtime_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-road-diet-complete-street-clay-v003.runtime-evidence.json",
+        "sha256": "7b74d7ad69fc4f4805a2dca54baa2c641c086183872f6dd3ed28b4cd902aa209"
+      }
+    },
+    {
+      "candidate": "clay-steel-truss-road-bridge-clay-v002",
+      "runtime_sha256": "d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30",
+      "visual_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-steel-truss-road-bridge-clay-v002.visual-evidence.json",
+        "sha256": "83b35cada3ddb6a1dec515c582312a8e6d9120ad366e99d291e4133abb68c375"
+      },
+      "runtime_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-steel-truss-road-bridge-clay-v002.runtime-evidence.json",
+        "sha256": "418b854b1f13c31f0feb1c70457331d8e2d1145c9c37eebeb2867abe9a046e09"
+      }
+    },
+    {
+      "candidate": "clay-swooping-cycle-flyover-clay-v003",
+      "runtime_sha256": "4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4",
+      "visual_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-swooping-cycle-flyover-clay-v003.visual-evidence.json",
+        "sha256": "34dcc2e00dcf6c82fd3065a4cc874d35d50c8d74f457badba7c5de163604242e"
+      },
+      "runtime_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-swooping-cycle-flyover-clay-v003.runtime-evidence.json",
+        "sha256": "9ae768c0b4c71720ac408e3d22d4354754c99b116914023d779adc14272970ee"
+      }
+    },
+    {
+      "candidate": "clay-weathering-steel-footbridge-clay-v003",
+      "runtime_sha256": "2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2",
+      "visual_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-weathering-steel-footbridge-clay-v003.visual-evidence.json",
+        "sha256": "f17ce6e3469ef1171104ef1c2f84e615d0400094966b27119241d145fdc71a95"
+      },
+      "runtime_evidence": {
+        "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/clay-weathering-steel-footbridge-clay-v003.runtime-evidence.json",
+        "sha256": "c1be21021dc3e144132a8f1386c2573072f2be8ea7bfb5ffba98bd2d928fea34"
+      }
+    }
+  ],
+  "ordinary-ui-evidence.snapshot.json": {
+    "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/ordinary-ui-evidence.snapshot.json",
+    "sha256": "e2842e619d496d8952f0611e838a64b93097340189d8d9d57f88cb0c5b6582e7"
+  },
+  "isolated-desktop-performance.snapshot.json": {
+    "repo_path": "docs/showcase/claude-release-2026-10-23/public-realm/isolated-desktop-performance.snapshot.json",
+    "sha256": "80fe8df21d2960c0604e6d15164fc304947ee92f30e0950b9a7eb534abc92b97"
+  },
+  "browsing_metadata_correction": {
+    "candidate": "clay-inglewood-main-street-clay-v004",
+    "old_group": "main",
+    "group": "street_other",
+    "reason": "Reuse existing Other streets and global inspiration; original main group did not exist. Geometry,fixture and placement identities are unchanged.",
+    "regression": "Inglewood actual browseAssets search/category failed before correction; all12 ready variants now tested."
+  }
+}

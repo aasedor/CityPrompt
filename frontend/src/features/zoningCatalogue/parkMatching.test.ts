@@ -1,17 +1,26 @@
 import { describe, expect, it } from 'vitest';
-import { matchCatalogue, matchPark, PARK_PROGRAMS } from './matching';
+import { DISTRICT_RULES, matchCatalogue, matchPark, PARK_PROGRAMS } from './matching';
 import { ZONING_CATALOGUE_PARKS } from './ZoningCatalogueCard';
 import type { ZoneInspection } from './types';
+import { PUBLIC_REALM_RELEASE_ASSETS } from '@/features/pickPlace/publicRealmRelease';
+
+const releaseParkIds = [
+  'claude_public_realm:halifax-public-gardens-park-only:9282a9ffd6a3',
+  'claude_public_realm:ice-rink-market-square-park-only:6a578c3c8e3c',
+  'claude_public_realm:princes-island-park:498a973435fc',
+];
 
 const zone = (designation: string): ZoneInspection => ({ id: 'park-zone', label: designation, source: 'Test', district: { designation } });
 const park = (variant: string) => ZONING_CATALOGUE_PARKS.find(a => a.id.startsWith('native-park:') && a.model.variantId === variant)!;
 const result = (variant: string, code: string) => matchPark(park(variant), zone(code));
 
 describe('park land-use screening', () => {
-  it('classifies every current native and flexible layout by placement, variant and revision', () => {
-    expect(ZONING_CATALOGUE_PARKS).toHaveLength(38);
-    expect(Object.keys(PARK_PROGRAMS).sort()).toEqual(ZONING_CATALOGUE_PARKS.map(a => a.id).sort());
-    for (const asset of ZONING_CATALOGUE_PARKS) {
+  it('preserves every reviewed native and flexible layout while adding the exact released parks', () => {
+    expect(ZONING_CATALOGUE_PARKS).toHaveLength(41);
+    const reviewed = ZONING_CATALOGUE_PARKS.filter(asset => !releaseParkIds.includes(asset.id));
+    expect(reviewed).toHaveLength(38);
+    expect(Object.keys(PARK_PROGRAMS).sort()).toEqual(reviewed.map(a => a.id).sort());
+    for (const asset of reviewed) {
       expect(PARK_PROGRAMS[asset.id]).toMatchObject({ variantId: asset.model.variantId, revision: asset.model.revision });
       expect(PARK_PROGRAMS[asset.id].components.length).toBeGreaterThan(0);
     }
@@ -19,6 +28,24 @@ describe('park land-use screening', () => {
     expect(pocket).toHaveLength(2);
     expect(new Set(pocket.map(a => a.model.revision)).size).toBe(2);
     expect(matchCatalogue(pocket, zone('R-CG')).map(m => m.status)).toEqual(['permitted', 'permitted']);
+  });
+  it('keeps the three exact released park layouts under use review in every district', () => {
+    const released = PUBLIC_REALM_RELEASE_ASSETS.filter(asset => asset.zoneType === 'green_space');
+    expect(released.map(asset => asset.id).sort()).toEqual([...releaseParkIds].sort());
+    expect(ZONING_CATALOGUE_PARKS.filter(asset => releaseParkIds.includes(asset.id)).map(asset => ({
+      id: asset.id, variantId: asset.model.variantId, revision: asset.model.revision,
+    }))).toEqual(released.map(asset => ({ id: asset.id, variantId: asset.model.variantId, revision: asset.model.revision })));
+    for (const asset of released) {
+      expect(asset.readiness).toBe('ready');
+      expect(PARK_PROGRAMS[asset.id]).toBeUndefined();
+      for (const code of Object.keys(DISTRICT_RULES)) {
+        const match = matchPark(asset, zone(code));
+        expect(match).toMatchObject({ status: 'review', program: undefined, uses: [] });
+        expect(match.reasons).toContain('This exact park layout needs a use classification.');
+        expect(match.height).toBeUndefined();
+        expect(match.limit).toBeUndefined();
+      }
+    }
   });
   it('permits the same recreational garden in several districts without inventing Natural Area status', () => {
     for (const code of ['S-SPR', 'R-CG', 'R-C1', 'R-Gm', 'M-G', 'MU-2']) {

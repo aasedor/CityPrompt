@@ -1,0 +1,153 @@
+{
+  "candidate": "clay-toronto-bay-and-gable-house-clay-v004",
+  "model_sha256": "c11761d97f80e7462c88fb7d68b2d44eaaaa3010601fe23f32a4e624720186c8",
+  "reviewer": "Independent source-locked Claude reviewer (role as recorded in the preserved original review)",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "inspected_files": [
+    {
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/toronto-bay-and-gable-house/variant_0.png",
+      "sha256": "d95d3c86850b2d98b3e04a4c0b69ea6747979598bff2eb39903e9bec779372f7"
+    },
+    {
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/toronto-bay-and-gable-house/variant_0_angle_60.jpg",
+      "sha256": "de99a823f3eba0c67dac7ffd0d7539193394d1d375f758cd00f0d35c7b962a94"
+    },
+    {
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/toronto-bay-and-gable-house/variant_0_angle_90.jpg",
+      "sha256": "8997950a8420a55a25da21241f20a73c5698812f496a9b517961cd36e28c3433"
+    }
+  ],
+  "record_kind": "faithful_structured_transcription_of_prior_independent_review",
+  "transcribed_on": "2026-10-23",
+  "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+  "floor_count_provenance": {
+    "source_prework_observed_storeys": 2
+  },
+  "source_review": {
+    "path": "source-package/evidence/v004/independent-review.md",
+    "sha256": "6ebce8927b7c597ddcf47845c0d657a2d1d494fa2659a3845236407df5acd053",
+    "text": "# Independent holistic review: bayg v004 (Toronto bay-and-gable house, RLASM v6.1 architectural clay)\n\nReviewer: independent, adversarial. Basis: only the rendered pixels of the 18 PNGs in `renders/`, the four phone boards, and the three locked sources (`sources/front.png`, `sources/oblique.jpg`, `sources/top.jpg`). I opened every one with the Read tool. Zoomed crops are in the new folder `/tmp/claude-0/-home-user-CityPrompt/18c9e177-8a96-5987-8fce-7444c75d018c/scratchpad/crops-v004-rev-1376413929/`. I did not use the builder's notes, metadata or hashes as proof.\n\n## 1. Verdict\n\n**PASS_ZERO_P0_P1**: both v003 P1s are fixed in the pixels. The stair spans the porch front from post to post in front of the door with no guard across the door, and front_corner and aerial both look from the south-west with the whole envelope in frame. Every earlier fix still holds. What remains is polish only.\n\nCounts: P0 = 0, P1 = 0, P2 = 14\n\n## 2. Findings table\n\n| # | severity | view(s) | symptom (what the pixels show) | likely cause | finite fix |\n|---|---|---|---|---|---|\n| 1 | P2 | all whole-envelope and detail views | The brick is still a light salmon/coral (median about RGB 165,120,100, saturation about 0.40). The source's sunlit and shaded red brick is about 0.60–0.78 saturation and darker. The claimed P2 #9 change is only partly visible. The foundation is now a usable mid grey. | Brick base colour is too light and desaturated for the source palette | Lower the value and raise the saturation of the brick base colour toward the source's sunlit brick (about RGB 175,90,60). Keep the joint lines. |\n| 2 | P2 | bay_window, front_corner, aerial, porch_entrance | Small pure-black voids: (a) triangular slits where the bay's water-table cap meets the main-wall water table at both bay re-entrant corners; (b) a black square where the porch, bay and wall meet at the porch's north-west corner (aerial, front_corner); (c) a black slit under the front door threshold. | Mitres and caps not closed; the porch floor or threshold does not meet the wall | Extend or mitre the water-table caps into the main band. Close the threshold with a sill or floor board, and fill the porch/bay corner. |\n| 3 | P2 | bay_window | The bay's slate skirt roof and the porch's west hip slope run into each other at the bay's east corner. The skirt fascia ends abruptly where the porch slope comes through, and the porch's west fascia sticks out under the skirt. | Two roof solids overlap with no designed junction | Stop the porch's west hip at the bay face, or lower it so it dies against the bay below the skirt with a flashing strip. Trim the fascia stub. |\n| 4 | P2 | porch_frieze, porch_entrance | The side spindle friezes hang one band lower than the front frieze, so they read as a second, lower frieze at the posts. There is a thin dark seam between the west post's cap block and the beam block. | Side frieze and beam offset down by one member depth; cap and beam blocks do not touch | Bring the side frieze tops level with the front frieze and close the cap-to-beam gap. |\n| 5 | P2 | porch_frieze, front | The rear east porch post is a plain cylinder, while the front posts are turned. | Simplified back post | Use the turned-post profile for the back post. |\n| 6 | P2 | porch_entrance, front_corner | The door sits hard against the bay at the porch's west end, about one third of the way across the porch. In the oblique the door is closer to the middle of the porch's back wall. | Door x position | Move the door about 0.3–0.5 m east. The stair already spans the full porch, so it stays in front of the door. |\n| 7 | P2 | front_corner, aerial | The porch roof is a steep pyramid-like hip rising to a point at the wall under the upper sill. The source porch roof is a lower-pitched hip with a short ridge. | Porch roof pitch too steep | Lower the porch roof pitch and give it a short ridge. |\n| 8 | P2 | gable_bargeboard, front | The finial is a blocky stacked square post rather than the source's slender spike. | Simplified finial profile | Taper the finial to a slender turned spike with a small ball or collar. |\n| 9 | P2 | west_side | The rear wing's gutter end box sticks out past the foot of the west gable bargeboard. | Gutter length | Trim the gutter to stop at the bargeboard foot, or return it. |\n| 10 | P2 | foundation_fence, rear_north, bay_window | A black dot sits at each basement-window muntin crossing. | Muntin bars do not overlap at the cross | Overlap the bars or add a small hub. |\n| 11 | P2 | rear_north; top, left_side, right_side, rear | rear_north cuts off the bottom step of the rear stair at the frame's bottom edge. The top, left_side, right_side and rear views are framed loosely, so the house fills only about a third of the frame width. All are still legible. | Framing margins | Pull rear_north back slightly. Optionally tighten the elevation and top framings to the envelope. |\n| 12 | P2 | (coverage) | The brief's detail list names facade_close, architecture_close and glass_close, but no such PNGs exist. Only 18 renders are present, which matches the brief's own count of 18. bay_window, gable_bargeboard and porch_entrance cover that content. | List/template mismatch in the brief or capture plan | Make the capture plan and brief agree, or render the three views. |\n| 13 | P2 | interior | The interior is a generic empty room with a fireplace. It is coherent with the east chimney but has little identity. | Concept-level interior | Optional. Add a bay-window wall or stair cue. |\n| 14 | P2 | top | The front block is nearly square in plan (about 230 × 245 px). In the source top it is a little wider than deep. The L plan, the offset of the rear wing and its width ratio (about 0.71) all match. | Front block depth slightly too large | Optional. Reduce the front block depth by about 10% and lengthen the rear wing to match. |\n\nThere are no P0 or P1 findings.\n\n## 3. Source conformance checklist\n\n| Item | Status | View(s) used |\n|---|---|---|\n| Silhouette | conforms. Steep front cross gable over a two-storey canted bay, west and east gables, rear hipped wing, east chimney. The matched role pairs line up. | front vs source front; front_corner and aerial vs oblique |\n| Storey count and proportions | conforms. Raised ground floor, upper floor and attic in the gable (2.5 storeys). The gable apex height to façade width ratio is about 1.5, close to the source's 1.6. The bay is about 45% of the façade width (source about 49%). | front, bay_window |\n| Brick and joints | deviates (P2 #1). The red brick and coursing are present, but the colour is too light and too salmon. | all |\n| Stone foundation and basement windows | conforms. Grey coursed foundation; recessed basement windows with muntins on the bay front and the west and rear walls (dot artefact, P2 #10). | foundation_fence, west_side, rear_north |\n| Canted bay: three faces | conforms | bay_window, front_corner |\n| Canted bay: tall one-over-one sashes | conforms | bay_window |\n| Canted bay: amber stained transoms | conforms (west and centre faces both floors; the east faces are not visible in the sources) | bay_window, front |\n| Canted bay: stone bands | conforms. One mitred sill band and one lintel band per level wrap the bay. | bay_window |\n| Canted bay: slate skirt roof | conforms (junction with the porch roof is P2 #3) | bay_window, front |\n| Front gable: bargeboard with roundels and drops | conforms. It lies on the rakes and no boards poke through. | gable_bargeboard, front, front_corner |\n| Front gable: curved fretwork arch | conforms (inside the gable) | gable_bargeboard |\n| Front gable: finial | conforms in place, simplified profile (P2 #8) | gable_bargeboard |\n| Front gable: pendant | conforms (drop at the apex inside the arch) | gable_bargeboard |\n| Front gable: triple attic window | conforms (narrow-wide-narrow with amber upper lights) | gable_bargeboard, front |\n| Front gable: base | conforms. Stands on the bay's front plane over a moulded cornice on knee brackets and consoles, with no slate ledge. | gable_bargeboard, front |\n| Porch: turned posts | conforms (front posts; back post plain, P2 #5) | porch_entrance, porch_frieze |\n| Porch: spindle frieze | conforms (side frieze level, P2 #4) | porch_frieze, porch_entrance |\n| Porch: corner brackets | conforms. Brace ends are clean at the rail and at the post. | porch_frieze, porch_entrance |\n| Porch: iron balustrade | conforms. Porch west and east sides only; none across the front. | porch_entrance, front_corner, aerial |\n| Porch: hipped roof | conforms in type, pitch too steep (P2 #7) | front_corner, aerial |\n| Door and transom | conforms. Dark green door with raised panels and an amber transom; position slightly west (P2 #6). | porch_entrance |\n| Stair and walk | conforms. Stone stair spans post to post in front of the door, four risers, one iron handrail on the east flank. Brick walk is as wide as the stair. The fence stops at the stair foot just west of the walk. | porch_entrance, front, front_corner, aerial, top |\n| Roof: cross gable | conforms | front, top, roof_chimney |\n| Roof: west and east gables | conforms | west_gable, right_side, rear_side |\n| Roof: rear hip | conforms. The ridge dies into the main north slope. | top, aerial, rear_side, rear_north |\n| Roof: eaves and voids | conforms. One eave line; no black voids at hip corners or valleys. | aerial, rear_side |\n| Roof: chimney | conforms. Brick chimney at the east gable apex. | roof_chimney, right_side, front |\n| West side windows and gable window | conforms. Tall sashes with stone sills and lintels (3 + 2 per floor). Paired tall attic sashes in the west gable. Upper lintels clear the eaves. | west_side, west_gable, left_side |\n| Fence | conforms. Low iron fence along the front lawn and down the west lawn edge, as in the source top. | foundation_fence, front, top |\n| Lawn, sidewalks and trees | conforms. Corner lot, south street and west side street, sidewalks, street trees (low-poly, acceptable for clay). | top, front_corner, aerial |\n| Materials hierarchy | conforms with P2. Brick, buff stone bands, grey foundation, grey slate, tan millwork, dark iron and green door all read in the right hierarchy. The brick hue is weak (P2 #1). | all |\n| Plan | conforms. L plan following the source top: wide front block, narrower rear wing offset slightly west, porch east of the bay. Small depth deviation (P2 #14). | top vs source top |\n\n## 4. Camera validity\n\n- front: valid. The whole house, porch, stair and fence are in frame, viewed from the south-south-west. It matches the source front's role.\n- front_corner: valid. Viewed from the south-west at an elevated angle, like the source oblique. The chimney, all roofs, the porch, the stair, the brick walk and the front fence are fully inside the frame with margin at every edge. Only street and tree context leaves the frame.\n- aerial: valid. Viewed from the south-west at a steeper angle. The whole envelope, including the chimney, porch, stair, walk and fence, is inside the frame with margin. It is no longer south-east.\n- top: valid and legible, but loosely framed (P2 #11).\n- left_side, right_side, rear: valid and legible, but loosely framed (P2 #11).\n- rear_side: valid.\n- rear_north: valid. The rear stair's bottom step touches the bottom frame edge (P2 #11).\n- Detail views (bay_window, gable_bargeboard, porch_entrance, porch_frieze, west_side, west_gable, roof_chimney, foundation_fence, interior): all valid. The target is unoccluded and legible. In west_side and west_gable, trees overlap the edges without hiding the target.\n- No view has the target occluded, the asset clipped or nothing legible.\n\n## 5. Previous-version findings: resolved in the pixels?\n\n**v003 P1 #1 (stair east of the door, running past the east post; iron guard across the door): RESOLVED.**\n- porch_entrance: the top step spans from the west front post to the east front post (about x 320–1170, against posts at about 330 and 1170), and the door sits behind it.\n- Iron rails appear only on the porch's west and east sides, plus one handrail down the stair's east flank.\n- The rail that seems to cross the door in front.png is the west side rail. It runs north–south and is seen near the horizon, so it reads as horizontal. front_corner and aerial confirm it runs from the wall to the west post.\n- top and aerial show the brick walk as wide as the stair, with the fence stopping just west of it.\n\n**v003 P1 #2 (front_corner and aerial clipped; aerial from the south-east): RESOLVED.**\n- Both views now look from the south-west, matching the source oblique.\n- front_corner holds the chimney (top about y 215), every roof edge, the stair, the walk and the fence (bottom about y 985) inside the 1440×1080 frame.\n- aerial holds the whole envelope with wide margins.\n\n**v002 P1s, confirmed fixed in v003: STILL HOLD.**\n- The gable projects over the bay on its cornice: it stands on the bay's front plane over the moulded cornice on knee brackets, with no slate ledge (gable_bargeboard, front).\n- Porch brace ends are clean at the rail and at the post (porch_frieze, porch_entrance).\n\n**Other earlier fixes: ALL STILL HOLD.**\n- The fretwork arch is inside the gable and the bargeboards lie on the rakes.\n- Every roof runs to one eave line. The rear hip ridge dies into the main north slope, with no black voids at hip corners or valleys (aerial, rear_side, top).\n- The plan is an L following the source top.\n- The west gable has paired tall attic sashes.\n- One mitred stone band per level wraps the bay.\n- The door has raised panels. Stained transoms appear only on the bay and the door. Upper lintels clear the eaves (west_side zoom: the rear wing lintels sit just below the gutter without touching).\n\n**Claimed P2 change (more saturated brick, darker foundation): PARTLY RESOLVED.**\n- The foundation reads as a mid grey distinct from the stone bands.\n- The brick is still noticeably lighter and less saturated than the source (P2 #1).\n"
+  },
+  "preserved_evidence": [
+    {
+      "path": "source-package/evidence/v004/renders/aerial.jpg",
+      "bytes": 94010,
+      "sha256": "59c01e592e08827c62a2ec6ce7392e2d11207931ae5c942275ab90a33be0199c"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/bay_window.jpg",
+      "bytes": 199613,
+      "sha256": "fed96d340a00d58c5c2daef8f2b7a8b13e7dfc7b4cb9331b51124ffbecf7bcdf"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/foundation_fence.jpg",
+      "bytes": 173944,
+      "sha256": "4522767844dbcd296c4aab4dfce1aa210b1bb8a2e8d5209fe83fee0e775e44fb"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/front.jpg",
+      "bytes": 162402,
+      "sha256": "00e1d95a1760f0fbb3f95516e1612bd226bbc4743b9f24f3a4ab541b0b9a9fee"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/front_corner.jpg",
+      "bytes": 110953,
+      "sha256": "c8f6f71fad50e9030a6851921493c04a38fffb29f261050cde01f25fb0b38ba9"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/gable_bargeboard.jpg",
+      "bytes": 123670,
+      "sha256": "66a9dc38941df3b28aaf0fcee737ccf42a2c07c04459798962799eda6ec2fa99"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/interior.jpg",
+      "bytes": 64813,
+      "sha256": "810382293586c945151173da5fdec60a4b51c4ffa9845dd1d381e3a9b8afaab6"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/left_side.jpg",
+      "bytes": 65805,
+      "sha256": "c199e2e8b58afc3e36044ccda321a994f6b91bccd3c0e3994e28cb50483ef19f"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/porch_entrance.jpg",
+      "bytes": 165678,
+      "sha256": "f31f071ac6eeca60bd2f165fe767d1bbb9cdc3234e360d725a151a383dc55b31"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/porch_frieze.jpg",
+      "bytes": 141596,
+      "sha256": "c35c1633a7e59ea5012358c91cef63a0d88a44775dab3577984fe3c881011540"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/rear.jpg",
+      "bytes": 65144,
+      "sha256": "08215c809fda5c241c92c9fa9932a81523f792e5cbee4945c5728714ee1e1b0e"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/rear_north.jpg",
+      "bytes": 137824,
+      "sha256": "eecacdf3aba4afab456ea37936aaf8a2aaa2801a2e19a704aa384338c7e90462"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/rear_side.jpg",
+      "bytes": 82530,
+      "sha256": "f2465e74da289d78a84559befcd50cc54efeeae461f7b106be56490e0f133fb9"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/right_side.jpg",
+      "bytes": 62132,
+      "sha256": "53f2d4cdb010427abb0b9216869b9d60363ab6ab986eb3d5c0c4ad24606b6df5"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/roof_chimney.jpg",
+      "bytes": 89738,
+      "sha256": "032e0e2a535891dbfe58380a7ce218cc0ce6a223936784d03f54506a6b70eea2"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/top.jpg",
+      "bytes": 55572,
+      "sha256": "0bb73cf165f309992b0492b15df09e41fb027d57e59236b4f7cd53f65b45fc3f"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/west_gable.jpg",
+      "bytes": 120300,
+      "sha256": "577b41b8577cdc6a0fb8bef0e53e62a7b52a4a3b4892c44e08927b1625c24212"
+    },
+    {
+      "path": "source-package/evidence/v004/renders/west_side.jpg",
+      "bytes": 177919,
+      "sha256": "686ad5c103ed288bcb20394bc4d8e43ec3b2e396a1b650833cf1e4a207b602ef"
+    },
+    {
+      "path": "source-package/evidence/v004/boards/phone-01-source-vs-render.jpg",
+      "bytes": 388571,
+      "sha256": "db9142a775485359902d18e7a5309657a941766accd08686898cf616652452ee"
+    },
+    {
+      "path": "source-package/evidence/v004/boards/phone-02-details.jpg",
+      "bytes": 231780,
+      "sha256": "5d7bfc0082e22f72e333b4e81149dec35ce2a5eb912b769596e7f6b78cbe3772"
+    },
+    {
+      "path": "source-package/evidence/v004/boards/phone-03-details.jpg",
+      "bytes": 164439,
+      "sha256": "99427cc742c5953e8874e5969efceb883c116be004d14ced00dfed60b10507fb"
+    },
+    {
+      "path": "source-package/evidence/v004/boards/phone-04-details.jpg",
+      "bytes": 73224,
+      "sha256": "af92610fcbe81e94f13a7699970112ca4d9b866c433a737088f6b6d3f6ca2a5a"
+    }
+  ],
+  "evidence_limitations": "Original reviewer inspected PNG renders and phone boards. Source branch preserved JPEG derivatives, recorded in preservation.json; this transcription does not claim a new visual review of those JPEGs. Authored metric assumptions and hidden views remain as disclosed in original prework and review.",
+  "keeper_approval_implied": false,
+  "runtime_acceptance_implied": false,
+  "publication_approval_implied": false
+}

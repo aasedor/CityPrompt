@@ -13,6 +13,8 @@ import { catalogueStyleIds, catalogueStyleLabel } from './catalogueFacets';
 import { cataloguePresentationFor } from './cataloguePresentation';
 import { CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS } from './assetRegistry';
 import { LOCAL_CLAUDE_ASSETS } from './claudeAssetLocalTrial';
+import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
+import { PUBLIC_REALM_RELEASE_ASSETS } from './publicRealmRelease';
 
 export interface CanonicalChoice {
   id: string; domain: CatalogueDomain; option: AestheticOption;
@@ -92,6 +94,7 @@ export function resolveCatalogueRoster(entries: CatalogueRosterEntry[], assets =
     const photoUrl = (domain === 'building' && asset.model.method === 'RLASM 6.1')
       || (domain === 'street_pathway' && asset.model.method === 'native_street_modules_v1')
       || LOCAL_CLAUDE_ASSETS.some(local => local.id === asset.id)
+      || PUBLIC_REALM_RELEASE_ASSETS.some(release => release.id === asset.id)
       ? asset.thumbnail : referenceImage(domain, entry.archetype_id, entry.variant_id, asset.thumbnail);
     choices.push({ id: `${domain}:${entry.archetype_id}:${entry.variant_id}`, domain, placements: [asset], option: {
       ...source, categoryId: styleSource?.categoryId, generationTags: styleSource?.generationTags,
@@ -105,12 +108,15 @@ export function resolveCatalogueRoster(entries: CatalogueRosterEntry[], assets =
 
 // Local validation roster: no legacy variants or generic massing fallbacks in discovery.
 const resolvedRoster = resolveCatalogueRoster([...validation.entries, ...expansion.entries,
-  ...LOCAL_CLAUDE_ASSETS.map(asset => ({
+  ...[...LOCAL_CLAUDE_ASSETS.filter(asset =>
+    !CLAUDE_BUILDING_RELEASE_ASSETS.some(release => release.id === asset.id)
+    && !PUBLIC_REALM_RELEASE_ASSETS.some(release => release.zoneType === asset.zoneType && release.model.variantId === asset.model.variantId)),
+  ...PUBLIC_REALM_RELEASE_ASSETS].map(asset => ({
     domain: asset.zoneType === 'building' ? 'building' : asset.zoneType === 'road' ? 'street' : 'park',
     archetype_id: String(asset.properties.development_archetype_id ?? asset.properties.road_archetype_id ?? asset.properties.green_space_archetype_id),
     variant_id: asset.model.variantId, placement_id: asset.id,
   })),
-  ...[...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS].map(asset => ({ domain: 'building',
+  ...[...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS].map(asset => ({ domain: 'building',
     archetype_id: String(asset.properties.development_archetype_id),
     variant_id: asset.model.variantId, placement_id: asset.id }))]);
 /** Supplemental choices must share the reviewed registry's exact identity and

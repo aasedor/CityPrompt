@@ -1,3 +1,4 @@
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import { hasNativePark, hasExecutableNativeParkRecipe } from '@/features/parks/nativeParkRegistry';
 import type { Building, SiteZone, SiteZoneProperties } from '@/types';
 import { resolveParkLegoContract } from '@/components/viewer/globe/parkLegoFamilies';
@@ -302,7 +303,7 @@ export function hasExecutablePublicRealmRecipe(zone: SiteZone): boolean {
   // Apply may invalidate only the derived recipe while authored inputs remain
   // identical. Native streets must then recompile instead of inheriting the
   // manual/legacy ready state from a stale community_3d marker.
-  if (kind === 'street' && props.validation_fixed_fixture !== true
+  if (kind === 'street' && !isFixedNativeScene(props)
     && nativeStreetVariantIds.has(String(props.road_selected_variant_id))) {
     return fallback == null && validateStreetRecipeProperties(props).valid;
   }

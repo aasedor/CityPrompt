@@ -6,6 +6,12 @@ import type { SiteZone } from '@/types';
 import { ReshapePanel } from './ReshapePanel';
 import { rectangleAt, rectangleDimensions } from './geometry';
 import { placeAsset, placementProperties } from './catalogue';
+import release from '@/data/publicRealmRelease20261023.json';
+vi.mock('./publicRealmRelease', async () => {
+ const actual=await vi.importActual<typeof import('./publicRealmRelease')>('./publicRealmRelease');
+ const assets=actual.publicRealmReleaseRows(true).map(row=>row.asset);
+ return {...actual,PUBLIC_REALM_RELEASE_ASSETS:assets,PUBLIC_REALM_RELEASE_SAVED_ASSETS:assets};
+});
 afterEach(cleanup);
 
 it('points native-house students to the working Move handle', () => {
@@ -114,4 +120,19 @@ it('rotates a fixed model without rounding away its saved fractional footprint',
   const actual = rectangleDimensions(onReshape.mock.calls[0][0]);
   expect(actual.width).toBeCloseTo(asset.width + 0.04, 5);
   expect(actual.depth).toBeCloseTo(asset.depth + 0.04, 5);
+});
+
+
+it('withholds terrace controls from fixed park and street scenes while retaining ordinary buildings', () => {
+ for (const zoneType of ['green_space','road']) {
+  const row=release.models.find(row=>(row.status==='ready'||row.status==='runtime_trial')&&row.asset.zoneType===zoneType)!;
+  const asset=placeAsset(row.asset.id);
+  const zone={id:'fixed-'+zoneType,zone_type:zoneType,properties:placementProperties(asset),coordinates:rectangleAt([-114,51],asset.width,asset.depth)} as SiteZone;
+  render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={vi.fn()} onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} onTerrace={vi.fn()}/>);
+  expect(screen.queryByRole('button',{name:'Terrace & path'})).toBeNull();cleanup();
+ }
+ const asset=placeAsset('infill_home');
+ const zone={id:'house',zone_type:'building',properties:placementProperties(asset),coordinates:rectangleAt([-114,51],12,16)} as SiteZone;
+ render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={vi.fn()} onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} onTerrace={vi.fn()}/>);
+ expect(screen.getByRole('button',{name:'Terrace & path'})).toBeTruthy();
 });

@@ -9,13 +9,13 @@ const zone = (designation: string): ZoneInspection => ({ id: 'zone', label: 'Hom
 describe('zoning catalogue panel', () => {
   it('updates both lists when a student rezones, preserving the correct bylaw links', () => {
     const { rerender } = render(<CatalogueMatches zone={zone('R-CG')} />);
-    expect(screen.getByRole('heading', { name: 'Discretionary use candidates (6)' })).toBeInTheDocument();
     const list = screen.getByRole('region', { name: 'Discretionary use candidates' });
+    expect(within(list).getByRole('heading', { name: 'Discretionary use candidates (6)' })).toBeInTheDocument();
     expect(within(list).getByRole('heading', { name: 'Juniper Courtyard Cottages' })).toBeInTheDocument();
     expect(within(list).getByRole('link', { name: 'Semi-detached Dwelling · s.527(2)' })).toHaveAttribute('href', expect.stringContaining('#section527'));
     rerender(<CatalogueMatches zone={zone('R-G')} />);
-    expect(screen.getByRole('heading', { name: 'Permitted use candidates (10)' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Discretionary use candidates (0)' })).toBeInTheDocument();
+    expect(within(screen.getByRole('region', { name: 'Permitted use candidates' })).getByRole('heading', { name: 'Permitted use candidates (10)' })).toBeInTheDocument();
+    expect(within(screen.getByRole('region', { name: 'Discretionary use candidates' })).getByRole('heading', { name: 'Discretionary use candidates (0)' })).toBeInTheDocument();
   });
   it('shows the declared program, conditions and evidence alongside the actual use definition', () => {
     render(<CatalogueMatches zone={zone('R-G')} />);
@@ -56,7 +56,7 @@ describe('zoning catalogue panel', () => {
   });
   it('opens park districts on the park list with cited use definitions and an explicit height scope', () => {
     render(<CatalogueMatches zone={zone('S-SPR')} />);
-    expect(screen.getByRole('button', { name: 'Parks (38)' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Parks (41)' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('heading', { name: 'Permitted use candidates (35)' })).toBeInTheDocument();
     expect(screen.getByText(/Land use only\. Buildings, shelters/)).toBeInTheDocument();
     expect(screen.getAllByRole('link', { name: 'What “Park” means · s.249' })[0]).toHaveAttribute('href', expect.stringContaining('&alpha=P#section249'));
@@ -65,7 +65,7 @@ describe('zoning catalogue panel', () => {
   });
   it('updates park permission lists on rezoning and keeps buildings separately selectable', () => {
     const { rerender } = render(<CatalogueMatches zone={zone('R-CG')} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Parks (38)' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Parks (41)' }));
     expect(screen.getByRole('heading', { name: 'Permitted use candidates (28)' })).toBeInTheDocument();
     rerender(<CatalogueMatches zone={zone('S-R')} />);
     expect(screen.getByRole('heading', { name: 'Discretionary use candidates (8)' })).toBeInTheDocument();

@@ -1,7 +1,7 @@
 {
   "schema": "cityprompt.rlasm-architectural-clay-library@1",
   "created_at": "2026-09-06T00:00:00Z",
-  "updated_at": "2026-10-19",
+  "updated_at": "2026-10-23",
   "method": "RLASM",
   "method_version": "6.1",
   "delivery_format": "architectural_clay",
@@ -10043,6 +10043,2094 @@
           "close_and_occluded_capture": true,
           "no_console_errors": true
         }
+      }
+    },
+    {
+      "candidate": "clay-arched-mill-mixed-use-clay-v005",
+      "family": "claude-arched-mill-mixed-use",
+      "archetype_id": "industrial_brick_mixed_use",
+      "archetype_label": "Arched Mill Mixed Use",
+      "variant_id": "industrial_brick_original_mill",
+      "variant_label": "Arched Mill Mixed Use",
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 22.0,
+        "depth": 22.0,
+        "height": 27.0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0.png",
+          "bytes": 1277361,
+          "sha256": "049dffded31d819bbb63a8f99da90487eea5360efbac26945e77bd69901b1d94"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0_angle_60.jpg",
+          "bytes": 924408,
+          "sha256": "b19c286b8e77439bbefe0b75cfc933afd45c338173f5a6c9167fee37d23e61b1"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0_angle_90.jpg",
+          "bytes": 840178,
+          "sha256": "8f81fee2055fb580d55f58f32a91a165f33e4a6552b8b19411f5a38a170b0807"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-arched-mill-mixed-use-clay-v005",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_arched_mill_mixed_use",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "mixed",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 41,
+        "depth": 37,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "218c0f8d8a84c34169af41490f8d0284e0bf2ac48dfe9a423b0985533c39ffdc",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "218c0f8d8a84c34169af41490f8d0284e0bf2ac48dfe9a423b0985533c39ffdc",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-arched-mill-mixed-use-clay-v005\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_arched_mill_mixed_use/evidence/v005",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-arched-mill-mixed-use-clay-v005.glb",
+        "bytes": 744024,
+        "sha256": "218c0f8d8a84c34169af41490f8d0284e0bf2ac48dfe9a423b0985533c39ffdc",
+        "native_dimensions_m": {
+          "width": 38.0,
+          "height": 25.700000762939453,
+          "depth": 34.0
+        },
+        "mesh_count": 16,
+        "material_count": 16,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-arched-mill-mixed-use-clay-v005.json",
+        "sha256": "ba9cf2f4ef5a686ce41e556ed931da0f22aaf553e45f2cf64c59e95888cb26bf",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-brick-podium-condo-tower-clay-v006",
+      "family": "claude-brick-podium-condo-tower",
+      "archetype_id": "condo_podium_tower",
+      "archetype_label": "Brick Podium Condo Tower",
+      "variant_id": "brick_podium_glass_tower",
+      "variant_label": "Brick Podium Condo Tower",
+      "native_floors": 13,
+      "design_dimensions_m": {
+        "width": 42.0,
+        "depth": 32.0,
+        "height": 51.0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/condo-podium-tower/variant_0.png",
+          "bytes": 1239794,
+          "sha256": "247f085b7d208f1fd80395f5b5d8d7934e696acd4994ec61228255f5d0a8511a"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/condo-podium-tower/variant_0_angle_60.jpg",
+          "bytes": 1008232,
+          "sha256": "4fded6c1a678e8d3bd1246e9300fff6950cfa54cd8209212272a0476b68ab1c6"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/condo-podium-tower/variant_0_angle_90.jpg",
+          "bytes": 949163,
+          "sha256": "f1e657ae0de180307adead2cc299184682f2b31fa26f5e58d64b0d5758b7bc4d"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-brick-podium-condo-tower-clay-v006",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_brick_podium_condo_tower",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "towers",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 57,
+        "depth": 47,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "1ce717fb6f9246312cb359b4808e726088447f12d2c571954cb33a6a91dd0869",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "1ce717fb6f9246312cb359b4808e726088447f12d2c571954cb33a6a91dd0869",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-brick-podium-condo-tower-clay-v006\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_brick_podium_condo_tower/evidence/v006",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-brick-podium-condo-tower-clay-v006.glb",
+        "bytes": 1024756,
+        "sha256": "1ce717fb6f9246312cb359b4808e726088447f12d2c571954cb33a6a91dd0869",
+        "native_dimensions_m": {
+          "width": 54.0,
+          "height": 50.099998474121094,
+          "depth": 44.0
+        },
+        "mesh_count": 18,
+        "material_count": 18,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-brick-podium-condo-tower-clay-v006.json",
+        "sha256": "7d592bfc7b695c7ddf13a06038842a113bb3cbd4675601f0a96830bd1b969bb3",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-calgary-cbe-brutalist-hq-clay-v004",
+      "family": "claude-calgary-cbe-brutalist-hq",
+      "archetype_id": "calgary_cbe_brutalist_hq",
+      "archetype_label": "Calgary CBE Brutalist Hq",
+      "variant_id": "calgary_cbe_original",
+      "variant_label": "Calgary CBE Brutalist Hq",
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 37.800000000000004,
+        "depth": 35.1,
+        "height": 27.05
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-board-of-education-hq/variant_0.png",
+          "bytes": 1299315,
+          "sha256": "9def4af92fce9930bde0dd5652d58feefe6756e81849f115bca3e8bea95755cf"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-board-of-education-hq/variant_0_angle_60.jpg",
+          "bytes": 875513,
+          "sha256": "596e75b3b905efd11db9c746686fcb8186d3358085c835e5c71e688d4e8a228a"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-board-of-education-hq/variant_0_angle_90.jpg",
+          "bytes": 859525,
+          "sha256": "205aefd0b79e3ea7dcd09f62abb8fdc7cd4d5b562cff9a95a5fca223de8c06a4"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-calgary-cbe-brutalist-hq-clay-v004",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_calgary_cbe_brutalist_hq",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "offices",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 88,
+        "depth": 93,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "a0836dc6e11577f734452f01e087fe1ee3c08c57ccfe63addd95f0428eb91433",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "a0836dc6e11577f734452f01e087fe1ee3c08c57ccfe63addd95f0428eb91433",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-calgary-cbe-brutalist-hq-clay-v004\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_calgary_cbe_brutalist_hq/evidence/v004",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-calgary-cbe-brutalist-hq-clay-v004.glb",
+        "bytes": 1717448,
+        "sha256": "a0836dc6e11577f734452f01e087fe1ee3c08c57ccfe63addd95f0428eb91433",
+        "native_dimensions_m": {
+          "width": 84.9000015258789,
+          "height": 28.3700008392334,
+          "depth": 89.54999923706055
+        },
+        "mesh_count": 22,
+        "material_count": 22,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-calgary-cbe-brutalist-hq-clay-v004.json",
+        "sha256": "71102dea99bd533959cbf6dbf37a7587e9a52d751ba2a3c332585bf1088bdeaa",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-campus-shed-office-clay-v009",
+      "family": "claude-campus-shed-office",
+      "archetype_id": "corporate_office_campus_headquarters",
+      "archetype_label": "Campus Shed Office",
+      "variant_id": "industrial_warehouse_campus_hq",
+      "variant_label": "Campus Shed Office",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 42.0,
+        "depth": 39.0,
+        "height": 10.4
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_3.png",
+          "bytes": 1138281,
+          "sha256": "3ce78a7c03f7df3149a8f65eec4b94b873b4ef43095ddec1f1eb5cbb93d9d1ef"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_3_angle_60.jpg",
+          "bytes": 855073,
+          "sha256": "bc245ef2958bade88418458fbbcd86ab88d71d5497c6a47ccefbb8d6e495a10b"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/corporate-office-campus-headquarters/variant_3_angle_90.jpg",
+          "bytes": 806931,
+          "sha256": "5fb4cae8ed1cf21d78edbe77e763541d06ef8f495ccad48e7a8d05918132c4be"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-campus-shed-office-clay-v009",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_campus_shed_office",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "offices",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 52,
+        "depth": 43,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "3da93f5933a04669806e0192d9c9871af8bfbd5699ce7e15bba7cc8639d01a95",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "3da93f5933a04669806e0192d9c9871af8bfbd5699ce7e15bba7cc8639d01a95",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-campus-shed-office-clay-v009\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_campus_shed_office/evidence/v009",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-campus-shed-office-clay-v009.glb",
+        "bytes": 1111200,
+        "sha256": "3da93f5933a04669806e0192d9c9871af8bfbd5699ce7e15bba7cc8639d01a95",
+        "native_dimensions_m": {
+          "width": 48.5895132778808,
+          "height": 11.020000457763672,
+          "depth": 39.34000015258789
+        },
+        "mesh_count": 17,
+        "material_count": 17,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-campus-shed-office-clay-v009.json",
+        "sha256": "c49c0994030efd5fa8554e997453e90fd470546f2252fa71503ef24bf7a5faa1",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-cmu-dock-warehouse-clay-v006",
+      "family": "claude-cmu-dock-warehouse",
+      "archetype_id": "mid_century_distribution_warehouse",
+      "archetype_label": "CMU Dock Warehouse",
+      "variant_id": "cmu_dock_utilitarian",
+      "variant_label": "CMU Dock Warehouse",
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 30.0,
+        "depth": 23.0,
+        "height": 10.0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/mid-century-distribution-warehouse/variant_0.png",
+          "bytes": 1123308,
+          "sha256": "6c9e95381c52e186218ea835b9df1da33da05de67d80dc031a949d450415183a"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/mid-century-distribution-warehouse/variant_0_angle_60.jpg",
+          "bytes": 777019,
+          "sha256": "1618e8e8aac9fab29fee45d6cd93ef6b9713c8b66a18df2b08a72de4f6e62dab"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/mid-century-distribution-warehouse/variant_0_angle_90.jpg",
+          "bytes": 778752,
+          "sha256": "c8c0dc60c289633e8d6889791628e91d3c6492c507ee501681f6b4a6290be86d"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-cmu-dock-warehouse-clay-v006",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_cmu_dock_warehouse",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "industry",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 60,
+        "depth": 48,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "9551998b85a4dd9d1fa40081d53b441d6201344335a83ed98053eae8e9cb2f6e",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "9551998b85a4dd9d1fa40081d53b441d6201344335a83ed98053eae8e9cb2f6e",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-cmu-dock-warehouse-clay-v006\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_cmu_dock_warehouse/evidence/v006",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-cmu-dock-warehouse-clay-v006.glb",
+        "bytes": 1115380,
+        "sha256": "9551998b85a4dd9d1fa40081d53b441d6201344335a83ed98053eae8e9cb2f6e",
+        "native_dimensions_m": {
+          "width": 57.0,
+          "height": 9.475000381469727,
+          "depth": 44.22500038146973
+        },
+        "mesh_count": 21,
+        "material_count": 21,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-cmu-dock-warehouse-clay-v006.json",
+        "sha256": "bf24d9f6a5e98b880e4518b284affa73e1fa60b2fcda46cd590929d5ff63e014",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-courtyard-primary-school-clay-v009",
+      "family": "claude-courtyard-primary-school",
+      "archetype_id": "ecole_republicaine",
+      "archetype_label": "Courtyard Primary School",
+      "variant_id": "ecole-republicaine-art-deco",
+      "variant_label": "Courtyard Primary School",
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 40.0,
+        "depth": 46.0,
+        "height": 13.0
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/ecole-republicaine/variant_3.png",
+          "bytes": 1323463,
+          "sha256": "353d70cf1e6d860e840bcb57cf9e10dbdaf558f17c5127e78c8e79655c68e467"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/ecole-republicaine/variant_3_angle_60.jpg",
+          "bytes": 990119,
+          "sha256": "ad3f15097e602c85aabe104deecfc293a9eb4fbc33bee7de15489d418cb12bf6"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/ecole-republicaine/variant_3_angle_90.jpg",
+          "bytes": 904476,
+          "sha256": "c833b66c8e3184baeef6f16471dc2693f2f33a235778423333e18814001cbca3"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-courtyard-primary-school-clay-v009",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_courtyard_primary_school",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 49,
+        "depth": 54,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "8ab45251a971c91aeb217447f2f96fef8e98bdc2e8d2ecefe328d206175a3bd7",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "8ab45251a971c91aeb217447f2f96fef8e98bdc2e8d2ecefe328d206175a3bd7",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-courtyard-primary-school-clay-v009\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_courtyard_primary_school/evidence/v009",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-courtyard-primary-school-clay-v009.glb",
+        "bytes": 1009176,
+        "sha256": "8ab45251a971c91aeb217447f2f96fef8e98bdc2e8d2ecefe328d206175a3bd7",
+        "native_dimensions_m": {
+          "width": 46.0,
+          "height": 12.979000091552734,
+          "depth": 50.03000068664551
+        },
+        "mesh_count": 21,
+        "material_count": 21,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-courtyard-primary-school-clay-v009.json",
+        "sha256": "196b9ac375eb87f0f83212dd2038895127f17b48d29255cf7290380ac00d0fad",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-ctrain-elevated-station-clay-v004",
+      "family": "claude-ctrain-elevated-station",
+      "archetype_id": "calgary_ctrain_station",
+      "archetype_label": "CTrain Elevated Station",
+      "variant_id": "ctrain_downtown_platform",
+      "variant_label": "CTrain Elevated Station",
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 72.0,
+        "depth": 72.0,
+        "height": 18.6
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-ctrain-station/variant_0.png",
+          "bytes": 1429334,
+          "sha256": "6f2d08e5f54d240f44b323cb48f351a17e09fec0d82067542c4660c556be08bd"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-ctrain-station/variant_0_angle_60.jpg",
+          "bytes": 935570,
+          "sha256": "eb69fb9869a125e60faac611fb39cecc023680bef31fafbe797965c2c88a75b5"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-ctrain-station/variant_0_angle_90.jpg",
+          "bytes": 862998,
+          "sha256": "526e800497081f31b210690cd53f4ae1dd1adbd8a0264463e049ed764f6b70e0"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-ctrain-elevated-station-clay-v004",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_ctrain_elevated_station",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "infrastructure",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 83,
+        "depth": 103,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "d51715e11ca257c68b18214c1a7a4c9f7815f60b7b810d0c7bd1be5c92f48962",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "d51715e11ca257c68b18214c1a7a4c9f7815f60b7b810d0c7bd1be5c92f48962",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-ctrain-elevated-station-clay-v004\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_ctrain_elevated_station/evidence/v004",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-ctrain-elevated-station-clay-v004.glb",
+        "bytes": 1094572,
+        "sha256": "d51715e11ca257c68b18214c1a7a4c9f7815f60b7b810d0c7bd1be5c92f48962",
+        "native_dimensions_m": {
+          "width": 80.0,
+          "height": 18.700000762939453,
+          "depth": 100.0
+        },
+        "mesh_count": 21,
+        "material_count": 21,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-ctrain-elevated-station-clay-v004.json",
+        "sha256": "c8761a9d0f9020915c5fcd07a82430b4798cad327926d78b0c0b9523d97c0ef2",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-energy-centre-clay-v010",
+      "family": "claude-energy-centre",
+      "archetype_id": "central_utilities_plant_energy_centre",
+      "archetype_label": "Energy Centre",
+      "variant_id": "transparent_plant_showcase_urban",
+      "variant_label": "Energy Centre",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 44.0,
+        "depth": 42.0,
+        "height": 23.9
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/central-utilities-plant-energy-centre/variant_1.png",
+          "bytes": 1265310,
+          "sha256": "dfd3da0973e43083af84897c60d500d781394c89d2833d327f9d478c35d98263"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/central-utilities-plant-energy-centre/variant_1_angle_60.jpg",
+          "bytes": 888964,
+          "sha256": "3900dbadbd2854e5b7148f03286c3c38e299edcd70e511dbe1e843bfca8d44e2"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/central-utilities-plant-energy-centre/variant_1_angle_90.jpg",
+          "bytes": 805970,
+          "sha256": "407ae3df4a3e243f49c26f36a4d94159dc8e02dce049eac29d24c22e037184fa"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-energy-centre-clay-v010",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_energy_centre",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "infrastructure",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 48,
+        "depth": 42,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "1c4849fedf76e226f5b0dc545f61c7c3350debb4ff845c5010d5931224eb05c3",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "1c4849fedf76e226f5b0dc545f61c7c3350debb4ff845c5010d5931224eb05c3",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-energy-centre-clay-v010\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_energy_centre/evidence/v010",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-energy-centre-clay-v010.glb",
+        "bytes": 653220,
+        "sha256": "1c4849fedf76e226f5b0dc545f61c7c3350debb4ff845c5010d5931224eb05c3",
+        "native_dimensions_m": {
+          "width": 44.09647641933048,
+          "height": 23.80500030517578,
+          "depth": 38.03000068664551
+        },
+        "mesh_count": 17,
+        "material_count": 17,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-energy-centre-clay-v010.json",
+        "sha256": "4b020db9a624858a0c13a200c1f0bb1ca7b3be84f942569f42cd9bc1435186fa",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-garden-court-senior-residence-clay-v006",
+      "family": "claude-garden-court-senior-residence",
+      "archetype_id": "senior_living_complex",
+      "archetype_label": "Garden Court Senior Residence",
+      "variant_id": "senior_garden_courtyard",
+      "variant_label": "Garden Court Senior Residence",
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 74.0,
+        "depth": 64.0,
+        "height": 16.85
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/senior_living_complex/variant_0.png",
+          "bytes": 1532839,
+          "sha256": "a227bca8b295ca796e24b8bc5b4b8fdf49b0551277bf0f62a7e580800a84bf66"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/senior_living_complex/variant_0_angle_60.jpg",
+          "bytes": 907010,
+          "sha256": "4c73f5e4c3e4b0fdf3e86a19d291eb3ad63240d86f38b6485e75fc0c38ea5899"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/senior_living_complex/variant_0_angle_90.jpg",
+          "bytes": 869994,
+          "sha256": "9cac74459ec9ee0543396e0c009d6de56e6aeab59b077002aa80f07f36f02979"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-garden-court-senior-residence-clay-v006",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_garden_court_senior_residence",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "apartments",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 93,
+        "depth": 91,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "17e50488c4753c0c91de4a88724d31f335757464cf1cbc96ca48bf9e6e00f8df",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "17e50488c4753c0c91de4a88724d31f335757464cf1cbc96ca48bf9e6e00f8df",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-garden-court-senior-residence-clay-v006\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_garden_court_senior_residence/evidence/v006",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-garden-court-senior-residence-clay-v006.glb",
+        "bytes": 4030900,
+        "sha256": "17e50488c4753c0c91de4a88724d31f335757464cf1cbc96ca48bf9e6e00f8df",
+        "native_dimensions_m": {
+          "width": 90.0,
+          "height": 15.050000190734863,
+          "depth": 88.0
+        },
+        "mesh_count": 20,
+        "material_count": 20,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-garden-court-senior-residence-clay-v006.json",
+        "sha256": "1801fcf77914ae71a746c9b47d43ce0ab7ce7884cc162e539507127582caa5ea",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-gastown-heritage-commercial-clay-v003",
+      "family": "claude-gastown-heritage-commercial",
+      "archetype_id": "gastown_heritage_commercial",
+      "archetype_label": "Gastown Heritage Commercial",
+      "variant_id": "gastown_italianate",
+      "variant_label": "Gastown Heritage Commercial",
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 26.0,
+        "depth": 23.6,
+        "height": 19.5
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/gastown-heritage-commercial/variant_0.png",
+          "bytes": 1472172,
+          "sha256": "ddd3ab09b0127bb69fdbab398d43a3ba3e17c5a106796a2bd1f8c1ebcdf267f0"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/gastown-heritage-commercial/variant_0_angle_60.jpg",
+          "bytes": 954203,
+          "sha256": "3b43cbf516b938a34a960308522ffe1cab22f6e4985efaf5d2773c7bf3444529"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/gastown-heritage-commercial/variant_0_angle_90.jpg",
+          "bytes": 881317,
+          "sha256": "f9db097bb5223aa1014d5d9438b107f3dfc79b491264ab9e2debf24075cf42f3"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-gastown-heritage-commercial-clay-v003",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_gastown_heritage_commercial",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "shops",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 85,
+        "depth": 65,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "657f66a2df048e606aebe626a76a77e66f93ec1992c2fb1f207833336fd67f14",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "657f66a2df048e606aebe626a76a77e66f93ec1992c2fb1f207833336fd67f14",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-gastown-heritage-commercial-clay-v003\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_gastown_heritage_commercial/evidence/v003",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-gastown-heritage-commercial-clay-v003.glb",
+        "bytes": 2083784,
+        "sha256": "657f66a2df048e606aebe626a76a77e66f93ec1992c2fb1f207833336fd67f14",
+        "native_dimensions_m": {
+          "width": 82.0,
+          "height": 20.559999465942383,
+          "depth": 61.39999961853027
+        },
+        "mesh_count": 27,
+        "material_count": 27,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-gastown-heritage-commercial-clay-v003.json",
+        "sha256": "2806091ac7042b146eef6a0736317480fd9603e4d1a1d356356e53f49ac599ed",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-halifax-georgian-colonial-clay-v003",
+      "family": "claude-halifax-georgian-colonial",
+      "archetype_id": "halifax_georgian_colonial",
+      "archetype_label": "Halifax Georgian Colonial",
+      "variant_id": "georgian_clapboard_original",
+      "variant_label": "Halifax Georgian Colonial",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 21.2,
+        "depth": 17.45,
+        "height": 15.64
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/halifax-georgian-colonial/variant_0.png",
+          "bytes": 1498415,
+          "sha256": "045d4918a6bd8121c6a4c74892b353610370f9af3910f61e6b58b00a7043ad60"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/halifax-georgian-colonial/variant_0_angle_60.jpg",
+          "bytes": 948192,
+          "sha256": "b8f2b88fca6db22dddfea3c3e6b4449fa0162b6528898d35760550451c0ff185"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/halifax-georgian-colonial/variant_0_angle_90.jpg",
+          "bytes": 881769,
+          "sha256": "0ef686bee41cd16fd6e4a4a72df3f081cca2763762044d817d1b5ad7a3abcd5c"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-halifax-georgian-colonial-clay-v003",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_halifax_georgian_colonial",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "detached",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 55,
+        "depth": 51,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "0359e7171c1b642ab82cb2b73451834ed90227b70f61a605efa5e274b033d7f3",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "0359e7171c1b642ab82cb2b73451834ed90227b70f61a605efa5e274b033d7f3",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-halifax-georgian-colonial-clay-v003\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_halifax_georgian_colonial/evidence/v003",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-halifax-georgian-colonial-clay-v003.glb",
+        "bytes": 1378820,
+        "sha256": "0359e7171c1b642ab82cb2b73451834ed90227b70f61a605efa5e274b033d7f3",
+        "native_dimensions_m": {
+          "width": 51.39999961853027,
+          "height": 16.5,
+          "depth": 47.81999969482422
+        },
+        "mesh_count": 24,
+        "material_count": 24,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-halifax-georgian-colonial-clay-v003.json",
+        "sha256": "a4b7c5cd8095385dd733f90a01c41325ab1c706c465b069e0f50668b5e8a4e83",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-halifax-waterfront-warehouse-clay-v006",
+      "family": "claude-halifax-waterfront-warehouse",
+      "archetype_id": "halifax_waterfront_warehouse",
+      "archetype_label": "Halifax Waterfront Warehouse",
+      "variant_id": "warehouse_privateers_wharf",
+      "variant_label": "Halifax Waterfront Warehouse",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 24.2,
+        "depth": 17.0,
+        "height": 13.4
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0.png",
+          "bytes": 1280609,
+          "sha256": "ad42ba20d97281337b2a501af57cee64418b3df0486b3fa6c881cd317ef4784c"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0_angle_60.jpg",
+          "bytes": 918623,
+          "sha256": "9b2a732476ea85a955d4047463bf7ea34dfed211e8e0f69fdd5b6b9c1ee49efb"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/halifax-waterfront-warehouse/variant_0_angle_90.jpg",
+          "bytes": 818721,
+          "sha256": "721b8ef5aff6c9e45b9f1bd0beb6df81219675471aece32fc4826f219a1bcdf3"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-halifax-waterfront-warehouse-clay-v006",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_halifax_waterfront_warehouse",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "shops",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 63,
+        "depth": 47,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "de39e474c1e41add78aad6bc5f54d162fe81be3c71258ca7fba9de00b79660e3",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "de39e474c1e41add78aad6bc5f54d162fe81be3c71258ca7fba9de00b79660e3",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-halifax-waterfront-warehouse-clay-v006\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_halifax_waterfront_warehouse/evidence/v006",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-halifax-waterfront-warehouse-clay-v006.glb",
+        "bytes": 845444,
+        "sha256": "de39e474c1e41add78aad6bc5f54d162fe81be3c71258ca7fba9de00b79660e3",
+        "native_dimensions_m": {
+          "width": 60.0,
+          "height": 13.300000190734863,
+          "depth": 43.39999961853027
+        },
+        "mesh_count": 21,
+        "material_count": 21,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-halifax-waterfront-warehouse-clay-v006.json",
+        "sha256": "af58333592f973de802c0c6d20923c48dcd8f52266b24af6d9a3d70eb3c95eb1",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-led-grow-block-clay-v007",
+      "family": "claude-led-grow-block",
+      "archetype_id": "vertical_farm_indoor_agriculture",
+      "archetype_label": "LED Grow Block",
+      "variant_id": "dark_panel_led_grow_block",
+      "variant_label": "LED Grow Block",
+      "native_floors": 6,
+      "design_dimensions_m": {
+        "width": 22.0,
+        "depth": 23.0,
+        "height": 30.400000000000002
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/vertical-farm-indoor-agriculture/variant_1.png",
+          "bytes": 1127172,
+          "sha256": "dcc6de1743ecbe970748a9330ef4242aad3cc9c7955c69681954c06ea14637c6"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/vertical-farm-indoor-agriculture/variant_1_angle_60.jpg",
+          "bytes": 922578,
+          "sha256": "198be7669524d9cb1d9f34e73c2aa2e1514ac3fac9120b5c9a9c421906c80fa2"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/vertical-farm-indoor-agriculture/variant_1_angle_90.jpg",
+          "bytes": 879218,
+          "sha256": "d30ef53d33d3f5d8dc43c236b394a09d664991038f4cac329294ae81127c1aca"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-led-grow-block-clay-v007",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_led_grow_block",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "indoor_food",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 33,
+        "depth": 34,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "f7ee7d1ee6a39c6ac8b8283279400b7810b741888b15c9ccb8b336c8dd53cdf7",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "f7ee7d1ee6a39c6ac8b8283279400b7810b741888b15c9ccb8b336c8dd53cdf7",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-led-grow-block-clay-v007\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_led_grow_block/evidence/v007",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-led-grow-block-clay-v007.glb",
+        "bytes": 790632,
+        "sha256": "f7ee7d1ee6a39c6ac8b8283279400b7810b741888b15c9ccb8b336c8dd53cdf7",
+        "native_dimensions_m": {
+          "width": 29.696476800800205,
+          "height": 32.65999984741211,
+          "depth": 30.255247130201496
+        },
+        "mesh_count": 18,
+        "material_count": 18,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-led-grow-block-clay-v007.json",
+        "sha256": "f698f06a3ecfa3c75d5a625c854a13719f53f52f500d781d46f47354631e1d1f",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-mews-coach-house-clay-v006",
+      "family": "claude-mews-coach-house",
+      "archetype_id": "london_mews_house",
+      "archetype_label": "Mews Coach House",
+      "variant_id": "london-mews-house-original-stable",
+      "variant_label": "Mews Coach House",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 15.2,
+        "depth": 7.4,
+        "height": 11.1
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/london-mews-house/variant_0.png",
+          "bytes": 1447859,
+          "sha256": "8032e120df23417ef56d938d6ad1d832ba7fae7078241007eb56544166344a2d"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/london-mews-house/variant_0_angle_60.jpg",
+          "bytes": 1041599,
+          "sha256": "4514710e2328d10f443c0dbab37d3168d62e654d3d8f9e8146a9d30c54ac47c5"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/london-mews-house/variant_0_angle_90.jpg",
+          "bytes": 957191,
+          "sha256": "3a78fd0666cc8add5c001e2a9dac28e24e94f53780da2f260663ff3c0b803b5e"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-mews-coach-house-clay-v006",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_mews_coach_house",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "detached",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 32,
+        "depth": 28,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "619b1fd4b87a680b7011624299ded7ac38ddd72a82d6e93eb00b69879f5de893",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "619b1fd4b87a680b7011624299ded7ac38ddd72a82d6e93eb00b69879f5de893",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-mews-coach-house-clay-v006\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_mews_coach_house/evidence/v006",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-mews-coach-house-clay-v006.glb",
+        "bytes": 2708724,
+        "sha256": "619b1fd4b87a680b7011624299ded7ac38ddd72a82d6e93eb00b69879f5de893",
+        "native_dimensions_m": {
+          "width": 28.207500457763672,
+          "height": 14.5,
+          "depth": 24.506999969482422
+        },
+        "mesh_count": 21,
+        "material_count": 21,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-mews-coach-house-clay-v006.json",
+        "sha256": "6b1a6ac257cb4ca81d03e786828b854478f78628c99edfcd7babde78b9e2deba",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-old-montreal-limestone-commercial-clay-v004",
+      "family": "claude-old-montreal-limestone-commercial",
+      "archetype_id": "old_montreal_limestone_commercial",
+      "archetype_label": "Old Montreal Limestone Commercial",
+      "variant_id": "old_mtl_french_colonial",
+      "variant_label": "Old Montreal Limestone Commercial",
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 107.0,
+        "depth": 48.7,
+        "height": 42.5
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/old-montreal-limestone-commercial/variant_0.png",
+          "bytes": 1509189,
+          "sha256": "af691c0c7a1f20be366f6b00683bacc526267a0bd77c873e10ad19a812efd432"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/old-montreal-limestone-commercial/variant_0_angle_60.jpg",
+          "bytes": 923080,
+          "sha256": "b158c78db9eb6550aa5743e9280e938c5a57a4a5017f7c2b1a7fa78ec44aa8db"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/old-montreal-limestone-commercial/variant_0_angle_90.jpg",
+          "bytes": 874520,
+          "sha256": "f5653065c75c4e0190c72051d6ff7189930c2a40f0afea51186afce67e661c56"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-old-montreal-limestone-commercial-clay-v004",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_old_montreal_limestone_commercial",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "shops",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 131,
+        "depth": 83,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "eee62a12874fc1248a17383fe5f6c98e41b01511a50e1e44533db25b538ad3a8",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "eee62a12874fc1248a17383fe5f6c98e41b01511a50e1e44533db25b538ad3a8",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-old-montreal-limestone-commercial-clay-v004\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_old_montreal_limestone_commercial/evidence/v004",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-old-montreal-limestone-commercial-clay-v004.glb",
+        "bytes": 3423736,
+        "sha256": "eee62a12874fc1248a17383fe5f6c98e41b01511a50e1e44533db25b538ad3a8",
+        "native_dimensions_m": {
+          "width": 128.0,
+          "height": 42.5,
+          "depth": 80.0
+        },
+        "mesh_count": 18,
+        "material_count": 18,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-old-montreal-limestone-commercial-clay-v004.json",
+        "sha256": "74a255574583ce2aa3d8ba19e0133b2a71a6c7fe7e18d912f3945d0bab80df83",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-plus15-glass-office-tower-clay-v006",
+      "family": "claude-plus15-glass-office-tower",
+      "archetype_id": "calgary_plus_15_connected_tower",
+      "archetype_label": "Plus15 Glass Office Tower",
+      "variant_id": "plus15_contemporary_glass",
+      "variant_label": "Plus15 Glass Office Tower",
+      "native_floors": 17,
+      "design_dimensions_m": {
+        "width": 36.0,
+        "depth": 65.0,
+        "height": 84.00000000000001
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-plus-15-connected-tower/variant_2.png",
+          "bytes": 1238687,
+          "sha256": "71df1f82ca1a50801ec72244ace874eba9351744bd0bb8dbb69c29cf4ef36c61"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-plus-15-connected-tower/variant_2_angle_60.jpg",
+          "bytes": 962177,
+          "sha256": "c5063f2e71b7a5f02f34498498b5b3d02054e076e84460d47ada4979f691fcb7"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-plus-15-connected-tower/variant_2_angle_90.jpg",
+          "bytes": 810860,
+          "sha256": "7fabe18811a690141b6751eab629e4c6a0530abef1b17e675376846e01dcf9f0"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-plus15-glass-office-tower-clay-v006",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_plus15_glass_office_tower",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "offices",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 55,
+        "depth": 86,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "1f12b3c94ed7405e43fde35450b31a7e5561b937fd854ff8a0c92bc65db35851",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "1f12b3c94ed7405e43fde35450b31a7e5561b937fd854ff8a0c92bc65db35851",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-plus15-glass-office-tower-clay-v006\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_plus15_glass_office_tower/evidence/v006",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-plus15-glass-office-tower-clay-v006.glb",
+        "bytes": 910328,
+        "sha256": "1f12b3c94ed7405e43fde35450b31a7e5561b937fd854ff8a0c92bc65db35851",
+        "native_dimensions_m": {
+          "width": 52.0,
+          "height": 82.66000366210938,
+          "depth": 83.0
+        },
+        "mesh_count": 15,
+        "material_count": 15,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-plus15-glass-office-tower-clay-v006.json",
+        "sha256": "301390d9a1aec50fcc9941bb9841452cda1e871a41075d5a8d4e2bbaf2f750f0",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-slab-balcony-tower-clay-v007",
+      "family": "claude-slab-balcony-tower",
+      "archetype_id": "west_end_mid_century_tower",
+      "archetype_label": "Slab Balcony Tower",
+      "variant_id": "midcentury_concrete_slab",
+      "variant_label": "Slab Balcony Tower",
+      "native_floors": 13,
+      "design_dimensions_m": {
+        "width": 25.2,
+        "depth": 25.2,
+        "height": 47.20000000000001
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/west-end-mid-century-tower/variant_0.png",
+          "bytes": 1359002,
+          "sha256": "2162c09765e0642250189af1e05892839e6b609995a5449fcf806f811378bfad"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/west-end-mid-century-tower/variant_0_angle_60.jpg",
+          "bytes": 962210,
+          "sha256": "5f73a8002e4e03e73e8ee3e9026e12e30cf9945e54dbabe58be9fc6332239512"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/west-end-mid-century-tower/variant_0_angle_90.jpg",
+          "bytes": 860456,
+          "sha256": "b5030b8a17f908b961657d9180aec913770a9d7a3ff64da234ecae9ca5ba8851"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-slab-balcony-tower-clay-v007",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_slab_balcony_tower",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "towers",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 41,
+        "depth": 41,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "042c09a9198f60fb0116ab93b6fd073309717a24a59925f31c2db1aed67d7d40",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "042c09a9198f60fb0116ab93b6fd073309717a24a59925f31c2db1aed67d7d40",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-slab-balcony-tower-clay-v007\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_slab_balcony_tower/evidence/v007",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-slab-balcony-tower-clay-v007.glb",
+        "bytes": 1020940,
+        "sha256": "042c09a9198f60fb0116ab93b6fd073309717a24a59925f31c2db1aed67d7d40",
+        "native_dimensions_m": {
+          "width": 37.357473373413086,
+          "height": 47.0,
+          "depth": 37.20000076293945
+        },
+        "mesh_count": 16,
+        "material_count": 16,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-slab-balcony-tower-clay-v007.json",
+        "sha256": "5b97c5707aa077d4df9756bd02e169654e660f9cb22add56d50a25370636eb9e",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-toronto-bay-and-gable-house-clay-v004",
+      "family": "claude-toronto-bay-and-gable",
+      "archetype_id": "toronto_bay_and_gable_house",
+      "archetype_label": "Toronto Bay And Gable",
+      "variant_id": "toronto_bay_gable_yellow_brick",
+      "variant_label": "Toronto Bay And Gable",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 7.6,
+        "depth": 11.0,
+        "height": 11.35
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/toronto-bay-and-gable-house/variant_0.png",
+          "bytes": 1488963,
+          "sha256": "d95d3c86850b2d98b3e04a4c0b69ea6747979598bff2eb39903e9bec779372f7"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/toronto-bay-and-gable-house/variant_0_angle_60.jpg",
+          "bytes": 1002820,
+          "sha256": "de99a823f3eba0c67dac7ffd0d7539193394d1d375f758cd00f0d35c7b962a94"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/toronto-bay-and-gable-house/variant_0_angle_90.jpg",
+          "bytes": 913422,
+          "sha256": "8997950a8420a55a25da21241f20a73c5698812f496a9b517961cd36e28c3433"
+        }
+      ],
+      "external_evidence": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\buildings\\clay-toronto-bay-and-gable-house-clay-v004",
+      "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+      "limitations": [
+        "Fixed native assembly; no continuous resizing, repeated floors or detached-home repetition.",
+        "Authored surroundings are included in the full native envelope.",
+        "General terrain and access are unverified; see runtime review.",
+        "Local artifact path is not a collaborator-accessible evidence backup."
+      ],
+      "picker": {
+        "id": "claude_trial_toronto_bay_and_gable",
+        "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+        "group_id": "detached",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+        "width": 27,
+        "depth": 29,
+        "max_size": 600
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Two items. The people’s stance is odd with their legs so far apart, have them stand naturally and relaxed.\n\nPlease do the final checks and updates on the Claude buildings.\n\nIt would be great to have both the people update and the Claude archetypes as part of this update.",
+        "date": "2026-10-23",
+        "model_sha256": "c11761d97f80e7462c88fb7d68b2d44eaaaa3010601fe23f32a4e624720186c8",
+        "scope_context": {
+          "prior_conditional_push_quote": "Once all of these fixes have been trialed in local, please push them to the live version",
+          "latest_exclusion_quote": "If there are 3D models that just don’t work that Claude created, feel free to exclude them",
+          "interpretation": "Conditional activation after completed prepared-site app checks and independent capture review. This records user publication authorization, not human pixel approval or accessibility certification.",
+          "additional_asset_publication_quote": "Yes, publish these additional reviewed assets"
+        }
+      },
+      "local_trial": {
+        "model_sha256": "c11761d97f80e7462c88fb7d68b2d44eaaaa3010601fe23f32a4e624720186c8",
+        "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+        "tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+        "tested_at": "2026-10-23T23:20:47.880919+00:00",
+        "evidence": [
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-ordinary-ui-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-native-planning-preflight.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\all-eighteen-local-api-binding-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\fresh-local-model-readbacks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-browser-qa-runs\\20261023T204121Z-fcd3902f\\pixel-observations.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-globe-path-qa-runs\\20261023T205836Z-7a3dc7bd\\pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\promotion-trial-templates-2026-10-23\\clay-toronto-bay-and-gable-house-clay-v004\\runtime-review.json",
+          "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_toronto_bay_and_gable/evidence/v004",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-final-app-checks.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\building-app-pixel-review.json",
+          "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\mixed-community-trial.json"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        }
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-toronto-bay-and-gable-house-clay-v004.glb",
+        "bytes": 911108,
+        "sha256": "c11761d97f80e7462c88fb7d68b2d44eaaaa3010601fe23f32a4e624720186c8",
+        "native_dimensions_m": {
+          "width": 23.550000190734863,
+          "height": 12.420000076293945,
+          "depth": 25.34999942779541
+        },
+        "mesh_count": 24,
+        "material_count": 24,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-toronto-bay-and-gable-house-clay-v004.json",
+        "sha256": "33179a5f2784c5b371c3fad952985b12a3f57a860a0b34ad0bf434adec58158a",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
       }
     }
   ],

@@ -1,0 +1,153 @@
+{
+  "candidate": "clay-led-grow-block-clay-v007",
+  "model_sha256": "f7ee7d1ee6a39c6ac8b8283279400b7810b741888b15c9ccb8b336c8dd53cdf7",
+  "reviewer": "Independent source-locked Claude reviewer (role as recorded in the preserved original review)",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "inspected_files": [
+    {
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/vertical-farm-indoor-agriculture/variant_1.png",
+      "sha256": "dcc6de1743ecbe970748a9330ef4242aad3cc9c7955c69681954c06ea14637c6"
+    },
+    {
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/vertical-farm-indoor-agriculture/variant_1_angle_60.jpg",
+      "sha256": "198be7669524d9cb1d9f34e73c2aa2e1514ac3fac9120b5c9a9c421906c80fa2"
+    },
+    {
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/vertical-farm-indoor-agriculture/variant_1_angle_90.jpg",
+      "sha256": "d30ef53d33d3f5d8dc43c236b394a09d664991038f4cac329294ae81127c1aca"
+    }
+  ],
+  "record_kind": "faithful_structured_transcription_of_prior_independent_review",
+  "transcribed_on": "2026-10-23",
+  "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+  "floor_count_provenance": {
+    "source_prework_observed_storeys": 6
+  },
+  "source_review": {
+    "path": "source-package/evidence/v007/independent-review.md",
+    "sha256": "1fd009bb56e8a9c26881da6ecc6f22796317a973eeabcc401aeeefadc24fc2b2",
+    "text": "# Independent RLASM v6.1 holistic review — farm / v007 (clay-led-grow-block)\n\nReviewer: independent, pixels only (sources/front.png, sources/oblique.jpg, sources/top.jpg; renders/*.png x18; boards/*.png x4). No build code, reports, README or VERSIONS read. Pixel coordinates below are (x, y) in the 1440x1080 render frame or the stated source frame.\n\n## 1. Verdict\n\n**PASS_ZERO_P0_P1** — 0 P0, 0 P1, 8 P2. The v006 P1 (slots reading as punched windows in a rigid grid) is resolved in the pixels: every slot is now one continuous recessed channel from just under the parapet to the ground-floor head, broken only by dark inserts at heights that differ column to column, and continuing as unlit glazed slots through the ground floor; the only residue is a finish nuance on the inserts (P2 #1).\n\n## 2. Findings table\n\n| # | severity | view(s) | symptom (what the pixels show) | likely cause | finite fix |\n|---|----------|---------|-------------------------------|--------------|------------|\n| 1 | P2 | facade_close (785-835, 505-555); glass_close (1030-1150, 540-605); slot_close (610-680, 400-460); interior (630-780, 750-830) and (1285-1430, 330-420) | The transom inserts are opaque charcoal blocks that fill the channel from the glass plane out to the cladding face; the side reveal stops at each block. Source front (320-560, 150-330 crop) and oblique (640-1000, 230-480) show the inserts as dark glazed panels sitting at the glass plane, with the reveal running uninterrupted past them. At envelope scale (front.png) the reading matches the source (black bars in continuous channels), so this is finish only. | Insert modelled as a solid box the full reveal depth. | Replace each insert with a dark-glass panel at the lit-glass plane (same depth as the magenta glazing); keep the reveal continuous past it. |\n| 2 | P2 | top (glasshouses 420-525, 530-635, 645-750, 790-895, 905-1010); aerial (380-1060, 120-700); roof_greenhouses; parapet_corner (820-920, 200-370) | Five gabled glasshouses, correct count, N-S ridges, correct position and the wider central gap all conform. But the bars are ~105 px wide with 5-10 px gaps (40 px centre gap) on a 625 px roof, whereas the locked top shows bars ~70-75 px wide with 25-50 px walkways (x 367-445, 468-540, 570-640, 691-760, 795-865 on a 600 px roof); the render reads as a near-continuous glass block. Each gable end also carries an opaque light-grey panel where the source ends are glazed. | Bar width set from roof width / 5 rather than from the source bar:gap ratio; end door modelled as a solid panel. | Reduce bar width to ~2/3 of current and open ~0.4-bar walkways, keeping the wider gap between bars 3 and 4; glaze the gable ends (thin frame, no solid panel). |\n| 3 | P2 | front (415-1030, 800-910); front_corner (420-1040, 640-960); architecture_close; aerial | Front (west) face ground floor is dark cladding with six unlit glazed slots, concrete only at the entrance-corner wrap (front 950-1030). This matches the locked front (left face, 300-580, 545-640) but the governing oblique shows that same face with a full concrete plinth and three small unlit windows (oblique 330-620, 620-800). Recorded source conflict; the brief's own description accepts glazed ground-floor slots, so not blocking. | Builder followed the front source for this face. | If oblique-fidelity is wanted: concrete plinth across the west face with three small unlit openings; otherwise leave. |\n| 4 | P2 | aerial (655-905, 130-380); top (535-785, 225-465); left_side (445-660, 85-210); penthouse_contact | Penthouse is a single open-topped box with a small dark door on its south wall (aerial 740-760, 470-520). Both top (450-660, 245-320) and oblique (615-800, 130-200) show a two-tier penthouse: the open-topped equipment box plus a lower, solid-roofed annex on its glasshouse side. Position, footprint share and equipment inside conform. | Annex omitted. | Add the lower annex (~half the box height, same width, dark cladding) on the south side of the box. |\n| 5 | P2 | architecture_close (0-1200, 700-745) and corner notch (405-440, 720-745); facade_close (0-1200, 700-740); entrance_contact (330-600, 150-170) | A projecting horizontal lip runs round the building at the first-floor line, with a small stepped notch where the two lips meet at the corner. Sources show a flush joint with at most a slight setback of the plinth (front 300-580 at y 540; oblique left face at y 620-640). | Ground-floor volume inset below a projecting upper shell. | Remove the lip; make upper cladding and ground-floor cladding flush (or recess the plinth 50-100 mm, no overhang). |\n| 6 | P2 | top (285-1120, 120-985); aerial (400-1060, 600-980); entrance_contact (430-520, 855-900) | Ground pad is cross-shaped with notched corners, and the pavement edge steps back directly in front of the entrance portal, which reads as a broken kerb. Sources show a continuous pavement and kerb. | Pad built from overlapping rectangles. | One rectangular pad with a continuous kerb line. |\n| 7 | P2 | entrance_contact (430-950, 255-790); right_side (440-580, 810-910) | Entrance portal is recessed about a third of its width; the locked front (655-725, 560-660) shows a shallow recess with the glazing close to the plinth face. Glazing also shows grey rectangular reflection patches (430-540, 400-470 and 710-790, 410-440). Doors, handles, mullion grid and concrete surround conform. | Reveal depth over-stated; environment reflection on glass. | Pull the glazing forward to ~1/3 of the present depth; neutral clay glass without reflection patches. |\n| 8 | P2 | penthouse_contact (140-1200, 620-760) | The deck at the base of the penthouse is a near-black field; the base contact line is traceable (crop confirms the wall lands on the deck) but barely legible. Sources show a light deck. Not a camera failure. | Hard shadow with no fill. | Add fill light or raise deck albedo for the contact views. |\n\n### 2b. Prior-version findings, judged from the v007 pixels\n\n| Prior finding | Status in v007 | Evidence |\n|---------------|----------------|----------|\n| v006 P1 — slots read as thirty punched windows per face in a rigid grid, every break on the same floor line, solid cladding with a full reveal return closing each opening at every storey; sources show one continuous recessed channel per column from just under the parapet to grade, continuing as unlit glazed slots through the ground floor, broken only by dark transom inserts about every 1.5 storeys at heights staggered column to column | **Resolved** (residual P2 #1 on insert finish) | front.png: six channels x 490-950 run unbroken from y 220 to the ground-floor head y 790; inserts at y 375/555/720, 320/495/670, 435/610, 380/545/715, 320/495/670, 430/600 — no common floor line, pitch 165-180 px ≈ 1.5 storeys of ~115 px; ground floor continues as unlit grey glazed slots y 800-910 on the same centres. facade_close and slot_close confirm the reveal runs the full height with the lit glass set back. Same reading on left_side, rear, right_side. |\n| v005 P1 — east-face slot schedule | **Resolved** | right_side.png: seven columns x 490-940 with col 3 dark-glass from head to y 590 then lit, col 4 lit to y 580 then dark, col 5 dark to y 480 then lit; both sources show seven columns with one long dark column and one shortened column on the entrance face (front source crop 580-940, 0-560; oblique 640-1000, 230-480). Consistent in aerial (right face) and rear_side (left face). |\n| v005 P1 — entrance-corner concrete | **Resolved** | entrance_contact: concrete plinth with recessed glazed portal at the corner, wrapping one bay onto the front face; front.png 950-1030, 800-910; aerial near corner 700-745, 860-925 shows the wrap and the dark portal recess. |\n| v006 P2s (seven, not itemised in the brief) | Not assessable individually | The brief does not name them; the P2s above are this review's own. |\n\n## 3. Source conformance checklist\n\n| Item | Status | View used / evidence |\n|------|--------|----------------------|\n| Silhouette | conforms | front_corner and aerial vs oblique: near-cube block, flat parapet with rail, penthouse box at rear-left, gabled glasshouse row at the front half of the roof. Height:width on front.png 730:615 ≈ 1.19, plausible against the oblique. |\n| Storey count | conforms | front.png: ground floor 110 px (800-910) + lit zone 570 px (220-790) = 5 grow levels + plinth; oblique's five-row reading honoured. |\n| Slot rhythm | conforms | front/left_side/rear: six continuous channels per face, slot:pitch ≈ 25:88 vs source ≈ 13:45; right_side (entrance face): seven columns with dark-glass segments matching both sources' entrance face; inserts staggered column to column. |\n| Plinth and entrance | conforms (with recorded conflict, P2 #3) | right_side 420-1030, 800-910 concrete with two small slit windows; entrance_contact portal; wrap onto front at 950-1030. West-face ground floor follows the front source rather than the oblique. |\n| Glasshouses | conforms in count, orientation, position; deviates in bar width / walkway gaps (P2 #2) | top.png 420-1010, 535-830; five bars, N-S ridges, wider gap between 3 and 4 as in the source. |\n| Penthouse and beds | conforms (position, footprint share, four beds, equipment); deviates in the missing lower annex (P2 #4) | top.png penthouse 535-785, 225-465 (open-topped, fan/tank blocks inside); four beds 800-980, 275-465 running N-S; two planter strips 435-690 and 755-1005 at y 500-525. |\n| Parapet and rail | conforms | parapet_corner: light coping, thin post-and-top-rail guard on the coping, continuous round the roof (roof_greenhouses, beds, penthouse_contact). |\n| Materials hierarchy | conforms | charcoal vertical-seam cladding, grey concrete plinth, magenta lit glazing with rack trays, unlit grey ground-floor glass, light coping, transparent glasshouse envelopes, green beds — matches the source palette at clay level. |\n| North and east faces (not in any source) | coherent | rear: six regular channels, concrete plinth, roller door and two slit windows; left_side: six channels, dark-clad ground floor with glazed slots — same grammar, no alien elements. |\n\n## 4. Camera validity\n\nAll 18 views are valid: target framed, asset unclipped, content legible.\n\n- Whole-envelope (front, front_corner, aerial, top, left_side, right_side, rear, rear_side): full asset in frame, no clipping.\n- Details (facade_close, architecture_close, glass_close, entrance_contact, slot_close, roof_greenhouses, penthouse_contact, parapet_corner, interior, beds): each shows its named target with visible depth and contact. interior shows the rack trays through the slot glass; beds shows the four beds, their boxes landing on the deck, and the rail.\n- Only caveat: penthouse_contact's contact zone is under-exposed (P2 #8); the contact line is still traceable in the pixels, so the camera is not invalid.\n"
+  },
+  "preserved_evidence": [
+    {
+      "path": "source-package/evidence/v007/renders/aerial.jpg",
+      "bytes": 112378,
+      "sha256": "5573150fa37a8d0fd87b7b141a5c555be9f56caac4ae341f7f7d57fbbaf50213"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/architecture_close.jpg",
+      "bytes": 135256,
+      "sha256": "e2f5a2bd44c342bdc0b432cc0ea8870346610145e1bab353dc69977b918bf6a6"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/beds.jpg",
+      "bytes": 129742,
+      "sha256": "d3638f178ed87361ec34cc5adb7833e0c46719420359a379876cc4988b141dff"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/entrance_contact.jpg",
+      "bytes": 103522,
+      "sha256": "811fadc3a8518f6cd8bee6de5d6f6cddf6ae10f646950b117c29232a6f747142"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/facade_close.jpg",
+      "bytes": 134702,
+      "sha256": "aa6acb6687941bd67aa8e2ca5a012899149ca44874f64f18fdf1794b32e6a570"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/front.jpg",
+      "bytes": 98322,
+      "sha256": "db4c97d5625a633b155bdbf034e22b47bfecb3adfcece193aacf461473875743"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/front_corner.jpg",
+      "bytes": 109431,
+      "sha256": "0a7d9dbc3db0785875a1cb561d94da93128fb1fbe362ba19000069aa82107c6b"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/glass_close.jpg",
+      "bytes": 89136,
+      "sha256": "025b182bf830af8e7982d0721fdc21648e7f6c42760da709471888c5c0e0d1fa"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/interior.jpg",
+      "bytes": 85931,
+      "sha256": "9f8639be0da7200e2fb70def3cd106633b8a5916f34cd27171e633f37cb060d9"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/left_side.jpg",
+      "bytes": 92092,
+      "sha256": "0ab5c977d66171f1741f8ad644290af8379b0b682163e8cde42803d10ea1fafd"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/parapet_corner.jpg",
+      "bytes": 147246,
+      "sha256": "a59d42eb180b33578fa45a84dac2e37f08df99fc4302ebb8dbb7947f19ffb586"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/penthouse_contact.jpg",
+      "bytes": 84003,
+      "sha256": "6cef50cbcc7b8a332172b16dc02782a606a313338d4d9ef5ae96d233bd0ab8bb"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/rear.jpg",
+      "bytes": 84229,
+      "sha256": "44ec35358c301481327a1df0986a0036c9664eaf72c77f46afac498cc8213f23"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/rear_side.jpg",
+      "bytes": 109525,
+      "sha256": "1980dbc58004d7bd907c4548867ca02bcc17e1ff402dbfbd45d4ae34d7699d46"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/right_side.jpg",
+      "bytes": 89349,
+      "sha256": "e3f67de0e5a0f6a916acca06c47bf7e4b5bfb21e183ef389f9e6015622e7b0b0"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/roof_greenhouses.jpg",
+      "bytes": 140715,
+      "sha256": "de4a2e25e2d46d4cb8f8d4da0f0ae8d4bfd47bc666cfaa17697c2f4c51d5a66c"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/slot_close.jpg",
+      "bytes": 106143,
+      "sha256": "3fdc299537cf7e38c54359dcf6ec94ce7a21f2500762ea0d3656f2f152a4d633"
+    },
+    {
+      "path": "source-package/evidence/v007/renders/top.jpg",
+      "bytes": 94666,
+      "sha256": "c03f307da85ba5f7fa5222943282abfda2ae5821e405f1db660d6b22ce29a6e4"
+    },
+    {
+      "path": "source-package/evidence/v007/boards/phone-01-source-vs-render.jpg",
+      "bytes": 326183,
+      "sha256": "9f98f7c93f5917d07771cfea1988dff4a03adf4c0198b8357a48b4728af3b095"
+    },
+    {
+      "path": "source-package/evidence/v007/boards/phone-02-details.jpg",
+      "bytes": 195047,
+      "sha256": "9b31444fdd9641b4b49cdc7c12dc8217fc73d181c9f7ec41c8c8041b0a054395"
+    },
+    {
+      "path": "source-package/evidence/v007/boards/phone-03-details.jpg",
+      "bytes": 177928,
+      "sha256": "ade36f70e142b91303098b432c940b2cf2e6d1210ae7db15efd9befafcfe5243"
+    },
+    {
+      "path": "source-package/evidence/v007/boards/phone-04-details.jpg",
+      "bytes": 88241,
+      "sha256": "3db1b56ef5717e8a9338161361e61b4960f89ff28739a7f239a1c588baa269eb"
+    }
+  ],
+  "evidence_limitations": "Original reviewer inspected PNG renders and phone boards. Source branch preserved JPEG derivatives, recorded in preservation.json; this transcription does not claim a new visual review of those JPEGs. Authored metric assumptions and hidden views remain as disclosed in original prework and review.",
+  "keeper_approval_implied": false,
+  "runtime_acceptance_implied": false,
+  "publication_approval_implied": false
+}

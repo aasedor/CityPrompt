@@ -16,6 +16,11 @@ const line = [[0,0],[70,0]].map(ll);
 const zone:SiteZone = {id:'street',project_id:'pilot',color:'#777777',sort_order:0,created_at:'2026-09-05',updated_at:'2026-09-05',zone_type:'road',coordinates:bufferLineToPolygon(line,16), properties:{...CALGARY_LOCAL_PLACEMENT.properties,plan_centerline:line}};
 
 describe('fixed sections across street types', () => {
+  it('does not reinterpret a saved fixed native release as an editable section route', () => {
+    const fixed = { ...zone, properties: { ...zone.properties, public_realm_release_asset: 'claude_public_realm:fixed:123' } };
+    expect(streetAssetForZone(fixed)).toBeUndefined();
+    expect(isFixedSectionStreet(fixed)).toBe(false);
+  });
   it.each(STREET_ASSETS.map(asset => [asset.label, asset] as const))('%s retains its section through route edits and reopening', (_, asset) => {
     const width = asset.sectionWidth;
     // A bend requires two full-width arms. The old 70 m fixture cannot

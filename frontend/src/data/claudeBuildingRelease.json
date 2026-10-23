@@ -1,0 +1,132 @@
+{
+  "schema": "cityprompt.claude-building-release@1",
+  "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+  "entries": [
+    {
+      "asset_id": "claude_trial_arched_mill_mixed_use",
+      "archetype_id": "industrial_brick_mixed_use",
+      "variant_id": "industrial_brick_original_mill",
+      "candidate": "clay-arched-mill-mixed-use-clay-v005",
+      "model_sha256": "218c0f8d8a84c34169af41490f8d0284e0bf2ac48dfe9a423b0985533c39ffdc"
+    },
+    {
+      "asset_id": "claude_trial_brick_podium_condo_tower",
+      "archetype_id": "condo_podium_tower",
+      "variant_id": "brick_podium_glass_tower",
+      "candidate": "clay-brick-podium-condo-tower-clay-v006",
+      "model_sha256": "1ce717fb6f9246312cb359b4808e726088447f12d2c571954cb33a6a91dd0869"
+    },
+    {
+      "asset_id": "claude_trial_calgary_cbe_brutalist_hq",
+      "archetype_id": "calgary_cbe_brutalist_hq",
+      "variant_id": "calgary_cbe_original",
+      "candidate": "clay-calgary-cbe-brutalist-hq-clay-v004",
+      "model_sha256": "a0836dc6e11577f734452f01e087fe1ee3c08c57ccfe63addd95f0428eb91433"
+    },
+    {
+      "asset_id": "claude_trial_campus_shed_office",
+      "archetype_id": "corporate_office_campus_headquarters",
+      "variant_id": "industrial_warehouse_campus_hq",
+      "candidate": "clay-campus-shed-office-clay-v009",
+      "model_sha256": "3da93f5933a04669806e0192d9c9871af8bfbd5699ce7e15bba7cc8639d01a95"
+    },
+    {
+      "asset_id": "claude_trial_cmu_dock_warehouse",
+      "archetype_id": "mid_century_distribution_warehouse",
+      "variant_id": "cmu_dock_utilitarian",
+      "candidate": "clay-cmu-dock-warehouse-clay-v006",
+      "model_sha256": "9551998b85a4dd9d1fa40081d53b441d6201344335a83ed98053eae8e9cb2f6e"
+    },
+    {
+      "asset_id": "claude_trial_courtyard_primary_school",
+      "archetype_id": "ecole_republicaine",
+      "variant_id": "ecole-republicaine-art-deco",
+      "candidate": "clay-courtyard-primary-school-clay-v009",
+      "model_sha256": "8ab45251a971c91aeb217447f2f96fef8e98bdc2e8d2ecefe328d206175a3bd7"
+    },
+    {
+      "asset_id": "claude_trial_ctrain_elevated_station",
+      "archetype_id": "calgary_ctrain_station",
+      "variant_id": "ctrain_downtown_platform",
+      "candidate": "clay-ctrain-elevated-station-clay-v004",
+      "model_sha256": "d51715e11ca257c68b18214c1a7a4c9f7815f60b7b810d0c7bd1be5c92f48962"
+    },
+    {
+      "asset_id": "claude_trial_energy_centre",
+      "archetype_id": "central_utilities_plant_energy_centre",
+      "variant_id": "transparent_plant_showcase_urban",
+      "candidate": "clay-energy-centre-clay-v010",
+      "model_sha256": "1c4849fedf76e226f5b0dc545f61c7c3350debb4ff845c5010d5931224eb05c3"
+    },
+    {
+      "asset_id": "claude_trial_garden_court_senior_residence",
+      "archetype_id": "senior_living_complex",
+      "variant_id": "senior_garden_courtyard",
+      "candidate": "clay-garden-court-senior-residence-clay-v006",
+      "model_sha256": "17e50488c4753c0c91de4a88724d31f335757464cf1cbc96ca48bf9e6e00f8df"
+    },
+    {
+      "asset_id": "claude_trial_gastown_heritage_commercial",
+      "archetype_id": "gastown_heritage_commercial",
+      "variant_id": "gastown_italianate",
+      "candidate": "clay-gastown-heritage-commercial-clay-v003",
+      "model_sha256": "657f66a2df048e606aebe626a76a77e66f93ec1992c2fb1f207833336fd67f14"
+    },
+    {
+      "asset_id": "claude_trial_halifax_georgian_colonial",
+      "archetype_id": "halifax_georgian_colonial",
+      "variant_id": "georgian_clapboard_original",
+      "candidate": "clay-halifax-georgian-colonial-clay-v003",
+      "model_sha256": "0359e7171c1b642ab82cb2b73451834ed90227b70f61a605efa5e274b033d7f3"
+    },
+    {
+      "asset_id": "claude_trial_halifax_waterfront_warehouse",
+      "archetype_id": "halifax_waterfront_warehouse",
+      "variant_id": "warehouse_privateers_wharf",
+      "candidate": "clay-halifax-waterfront-warehouse-clay-v006",
+      "model_sha256": "de39e474c1e41add78aad6bc5f54d162fe81be3c71258ca7fba9de00b79660e3"
+    },
+    {
+      "asset_id": "claude_trial_led_grow_block",
+      "archetype_id": "vertical_farm_indoor_agriculture",
+      "variant_id": "dark_panel_led_grow_block",
+      "candidate": "clay-led-grow-block-clay-v007",
+      "model_sha256": "f7ee7d1ee6a39c6ac8b8283279400b7810b741888b15c9ccb8b336c8dd53cdf7"
+    },
+    {
+      "asset_id": "claude_trial_mews_coach_house",
+      "archetype_id": "london_mews_house",
+      "variant_id": "london-mews-house-original-stable",
+      "candidate": "clay-mews-coach-house-clay-v006",
+      "model_sha256": "619b1fd4b87a680b7011624299ded7ac38ddd72a82d6e93eb00b69879f5de893"
+    },
+    {
+      "asset_id": "claude_trial_old_montreal_limestone_commercial",
+      "archetype_id": "old_montreal_limestone_commercial",
+      "variant_id": "old_mtl_french_colonial",
+      "candidate": "clay-old-montreal-limestone-commercial-clay-v004",
+      "model_sha256": "eee62a12874fc1248a17383fe5f6c98e41b01511a50e1e44533db25b538ad3a8"
+    },
+    {
+      "asset_id": "claude_trial_plus15_glass_office_tower",
+      "archetype_id": "calgary_plus_15_connected_tower",
+      "variant_id": "plus15_contemporary_glass",
+      "candidate": "clay-plus15-glass-office-tower-clay-v006",
+      "model_sha256": "1f12b3c94ed7405e43fde35450b31a7e5561b937fd854ff8a0c92bc65db35851"
+    },
+    {
+      "asset_id": "claude_trial_slab_balcony_tower",
+      "archetype_id": "west_end_mid_century_tower",
+      "variant_id": "midcentury_concrete_slab",
+      "candidate": "clay-slab-balcony-tower-clay-v007",
+      "model_sha256": "042c09a9198f60fb0116ab93b6fd073309717a24a59925f31c2db1aed67d7d40"
+    },
+    {
+      "asset_id": "claude_trial_toronto_bay_and_gable",
+      "archetype_id": "toronto_bay_and_gable_house",
+      "variant_id": "toronto_bay_gable_yellow_brick",
+      "candidate": "clay-toronto-bay-and-gable-house-clay-v004",
+      "model_sha256": "c11761d97f80e7462c88fb7d68b2d44eaaaa3010601fe23f32a4e624720186c8"
+    }
+  ]
+}

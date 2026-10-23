@@ -24,6 +24,7 @@ import { placementDraftProperties } from './generatedPlacement';
 import { rectangleAt, rectangleDimensions } from './geometry';
 import { snapPlacement } from './snapPlacement';
 import { streetFacingDegrees } from './streetFacing';
+import { nativePlacementPreviewUrl } from './nativePlacementPreview';
 
 export interface PlacementDraft {
   assetId: PlaceAssetId; width: number; depth: number; degrees: number;
@@ -82,7 +83,8 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange, onRotation
   const asset=draft.generatedModel?null:placeAsset(draft.assetId);
   const nativePark=nativeParkLayouts.find(p=>p.id===asset?.properties.green_space_native_layout_id);
   const projectId=zones[0]?.project_id;
-  const request=asset && !asset.properties.validation_native_url
+  const nativePreviewUrl=nativePlacementPreviewUrl(asset);
+  const request=asset && !nativePreviewUrl && asset.model.method !== 'fixed_public_realm_v1'
     ? placementPlanRequest(asset,draft.width,draft.depth,projectId) : null;
   const {data:plan}=useQuery({queryKey:['placement-home-plan',request],
     queryFn:()=>legoAssemblyApi.plan(request!),
@@ -132,15 +134,15 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange, onRotation
       <mesh position={[0,0,.1]}><planeGeometry args={[draft.width,draft.depth]}/><meshBasicMaterial color={invalid?'#ef4444':'#c9ff3d'} transparent opacity={.3} side={THREE.DoubleSide} depthWrite={false}/></mesh>
       <PreviewFallback key={draft.assetId} fallback={fallback}><Suspense fallback={fallback}>
         {draft.generatedModel ? <GeneratedModelPreview model={draft.generatedModel} width={draft.width} depth={draft.depth}/>
-          : asset?.zoneType==='building' && typeof asset.properties.validation_native_url === 'string'
-            ? <ReviewFixture url={asset.properties.validation_native_url}/>
+          : asset?.zoneType==='building' && nativePreviewUrl
+            ? <ReviewFixture url={nativePreviewUrl}/>
           : asset?.zoneType==='building' ? plan ? plan.instances.map((instance,index)=><group key={`${instance.asset_id}-${index}`}
           position={[instance.position[0],-instance.position[1],instance.position[2]]} rotation={[0,0,-instance.rotation_degrees*Math.PI/180]}
           scale={instance.scale ?? [1,1,1]}>
           <Home url={instance.model_url}/></group>) : fallback
           : nativePark ? <NativeParkModel layout={nativePark}/>
-          : asset && typeof asset.properties.validation_native_url === 'string'
-            ? <ReviewFixture url={asset.properties.validation_native_url}/>
+          : asset && nativePreviewUrl
+            ? <ReviewFixture url={nativePreviewUrl}/>
           : isParkTrio(previewZone)
             ? <GlobeParkTrioPilot zone={previewZone} centroid={ORIGIN} terrainZ={flatGround}/>
             : asset?.id === 'neighbourhood_park'

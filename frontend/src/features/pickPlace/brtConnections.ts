@@ -1,3 +1,4 @@
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import type {SiteZone} from '@/types';
 import {extractZoneCenterline,effectiveRoadWidth} from '@/utils/roadGeometry';
 import {BRT_VARIANT,BRT_STOP_BOUNDS} from '@/components/viewer/globe/brtStreetProgram';
@@ -20,7 +21,7 @@ export function brtConnectionProblem(candidate:Pick<SiteZone,'coordinates'|'prop
   const next=[...zones.filter(z=>z.id!==candidate.id),{...candidate,id:candidate.id??'draft-brt-check',zone_type:candidate.zone_type??'road'} as SiteZone];
   if(!next.some(z=>z.properties?.road_selected_variant_id===BRT_VARIANT && z.properties?.road_native_stops?.length))return null;
   for(const zone of next){
-    if(zone.properties?.road_selected_variant_id!==BRT_VARIANT || zone.properties?.validation_fixed_fixture)continue;
+    if(zone.properties?.road_selected_variant_id!==BRT_VARIANT || isFixedNativeScene(zone.properties))continue;
     const line=extractZoneCenterline(zone);if(line.length<2)continue;
     const a=line[0],b=line[line.length-1],sx=111320*Math.cos(a[1]*Math.PI/180);
     const dx=(b[0]-a[0])*sx,dy=(b[1]-a[1])*111320,length=Math.hypot(dx,dy);if(length<1)continue;

@@ -1,3 +1,4 @@
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import type { SiteZone } from '@/types';
 import type { WalkPose } from './walkNavigation';
 import { extractZoneCenterline } from '@/utils/roadGeometry';
@@ -36,7 +37,7 @@ export function elevatedRailLiftDestination(zones: SiteZone[], pose: WalkPose): 
 export function constrainElevatedRailWalk(zones: SiteZone[], previous: WalkPose, proposed: WalkPose): WalkPose {
   let result=proposed;
   for(const zone of zones){
-    if(zone.zone_type!=='road'||!isElevatedRail(zone.properties?.road_selected_variant_id)||zone.properties?.validation_fixed_fixture)continue;
+    if(zone.zone_type!=='road'||!isElevatedRail(zone.properties?.road_selected_variant_id)||isFixedNativeScene(zone.properties))continue;
     const line=extractZoneCenterline(zone);if(line.length<2)continue;
     const a=line[0],b=line[line.length-1],sx=metersPerDegLon(a[1]);
     const dx=(b[0]-a[0])*sx,dy=(b[1]-a[1])*METERS_PER_DEG_LAT,length=Math.hypot(dx,dy);

@@ -1,0 +1,153 @@
+{
+  "candidate": "clay-gastown-heritage-commercial-clay-v003",
+  "model_sha256": "657f66a2df048e606aebe626a76a77e66f93ec1992c2fb1f207833336fd67f14",
+  "reviewer": "Independent source-locked Claude reviewer (role as recorded in the preserved original review)",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "inspected_files": [
+    {
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/gastown-heritage-commercial/variant_0.png",
+      "sha256": "ddd3ab09b0127bb69fdbab398d43a3ba3e17c5a106796a2bd1f8c1ebcdf267f0"
+    },
+    {
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/gastown-heritage-commercial/variant_0_angle_60.jpg",
+      "sha256": "3b43cbf516b938a34a960308522ffe1cab22f6e4985efaf5d2773c7bf3444529"
+    },
+    {
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/gastown-heritage-commercial/variant_0_angle_90.jpg",
+      "sha256": "f9db097bb5223aa1014d5d9438b107f3dfc79b491264ab9e2debf24075cf42f3"
+    }
+  ],
+  "record_kind": "faithful_structured_transcription_of_prior_independent_review",
+  "transcribed_on": "2026-10-23",
+  "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+  "floor_count_provenance": {
+    "source_prework_observed_storeys": 3
+  },
+  "source_review": {
+    "path": "source-package/evidence/v003/independent-review.md",
+    "sha256": "df0caca70645ec4b5a8d31ce11b4c2ce1fd99300321f76a6bc4a1e57a16e56d4",
+    "text": "# Independent RLASM v6.1 holistic review: Gastown heritage commercial block, clay v003\n\nReviewer: independent source-locked reviewer. I did not build this model. I opened all three locked sources, all 18\nrenders and the four phone boards at full resolution with the Read tool, and I judged from the pixels. I also opened\nthe v002 renders, and I made pixel diffs and side-by-side crops against them to confirm what changed. My zoomed and\nannotated crops are in `review/crops_bojfdg/`. In crops named `black_*`, every pixel with max(R,G,B) <= 4 is painted\nmagenta. Crops named `pair_*` show v002 on the left and v003 on the right. I sampled pixel values with read-only\nscripts kept outside the candidate folder. I changed no other file, did not touch git, and rendered nothing.\n\n**Provenance.** `sources/` now holds `front.png`, `oblique.jpg` and `top.jpg`. Their sha256 values match the values\nrecorded in `source-entry.json` byte for byte: front `ddd3ab09…cf267f0` (the same as the catalogue original\n`variant_0.png`), oblique `3b43cbf5…44529` and top `f9db097b…cf42f3`. Phone board 01 shows the locked front.\n\n## 1. Verdict\n\nVerdict: PASS_ZERO_P0_P1\n\nCounts: P0=0 P1=0 P2=11\n\nAll three v002 P1s are fixed in the pixels:\n\n- Every recess floor reads as lit stone.\n- The north-wall windows sit on the exposed wall west of the north block, and they are seen from grade to coping.\n- The locked front source is present and verified.\n\nThe five v001 fixes still hold. The diff against v002 is confined to the door recesses, the north wall and the\nrear_north camera, and I found no regression. The 11 remaining items are polish only. All of them were already\npresent in v002.\n\n## 2. Findings\n\nNo P0 and no P1. P2 items:\n\n| # | severity | view(s) | finding (what the pixels show) | evidence | likely cause | suggested fix |\n|---|---|---|---|---|---|---|\n| 1 | P2 | storefronts, front, steam_clock, east_facade, right_side, front_corner | **The glazed side returns of the door recesses still read near-black** (v002 P2 #5, not fixed). I judge this to be shading and unlit display space seen through glass, **not geometry**. The pixels have a soft gradient: luminance 2–9 across the panel, rising toward the open street side. The panels sit inside the frame members. The only exact zeros are 1–4 px seam lines where the panel meets the frame, and small wedges in the top inner corner. Nothing about them reads as a hole: there is no hard-edged zero field and no alternating pattern. | east_facade x 419–451, y 831–1009: row y 900 reads 1.0, 6.6, 7.5, 7.9, 7.8, 6.9, 6.6, 5.9, 5.9, 8.8. front x 982–1008, y 773–806: values 1–8 with a gradient. Crops `black_east_facade_cornershop_x3.png`, `black_steam_clock_cafe_x3.png`, `black_steam_clock_ironGifts_x2.png`, `black_front_groundfloor_x2.png`. | The display zone behind the returns is unlit. | Light the display zone behind the returns, or give them a back panel in the interior colour. |\n| 2 | P2 | storefronts, front | **The recess-head soffits read as a near-black band.** This is pre-existing (v002 storefronts row 496 reads 3–8) and was not reported before. Under the transom bar of each recessed door is a band about 12 px tall at close range. It reads luminance 4–10, darker toward the corners. A zero crease 1 px tall runs along the transom rail, and a small zero wedge sits in each inner corner. This is genuine occlusion on a downward-facing surface inside a three-sided recess: it has a gradient and a warm hue (RGB about 10,8,5). It is not an open slot. | storefronts y 491–503, x 110–360. Row y 494: 3, 5, 6, 8, 9, 8, 8, 9, 9, 9, 10, 9, 8, 9, 9, 6. Crop `black_storefronts_headL_x4.png`. | The soffit is lit only by bounce from the sidewalk. | Give the soffit a lighter stone or timber finish, or add a small fill light in the recess. |\n| 3 | P2 | architecture_close | At the corner of the cornice soffit, red-brown carrier brick still shows above the corner block (v002 P2 #7, not fixed). | architecture_close about (702–765, 262–285). Crop `arch_soffit_corner_x4.png`. | The frieze top stops short of the soffit at the corner, and there is no corner modillion. | Add a corner modillion or block, or carry the frieze up to the soffit. |\n| 4 | P2 | glass_close, facade_close, name_frieze_pediment | The arched top-floor window frame still stops at the springing line, so the fan muntins sit in a bare arch. The arch ring's facets show at close range (v002 P2 #8, not fixed). | glass_close y 0–330: no frame member follows the semicircular head. | The frame is built rectangular, and the fan is added separately. | Run the frame round the head. Add segments to the arch ring. |\n| 5 | P2 | front_corner | At the oblique, the frieze still reads \"GASTOWN LOMMERLE BUILDIHG\" (v002 P2 #9, not fixed). Frontal views read correctly. | Crop `fc_pediment_frieze_x2.png`. | Low-resolution block glyphs for C, N and G. | Refine the C, N and G glyphs. |\n| 6 | P2 | top, roof_skylights, front_corner | The small skylight is still a mini pyramid. The sources show a small ridged or hipped glazed box (v002 P2 #10, not fixed). | top (720–785, 410–455) vs source top (590–635, 337–375). | A generic library part. | Model it as a hipped glazed box. |\n| 7 | P2 | top | The west lane is still a near-black strip, luminance mean 33, min 15. It is shadowed ground in a narrow canyon, not a gap, because it fades toward the open north end (v001 #6, not fixed). | Crop `top_west_lane_x1.png`. | Unpaved ground plane and low ambient light in the rig. | Pave the lane and raise the top-view fill light. |\n| 8 | P2 | aerial, rear_side | The context blocks are featureless boxes, and the subject fills about 25% of the aerial frame (v001 #8, not fixed). | aerial, rear_side frames. | Context massing only. | Add window grids to the context blocks, or tighten the aerial framing. |\n| 9 | P2 | front, front_corner | The safety margins are still thin (v001 #13, not fixed). In front, the east lamp is cut at the right edge. In front_corner, the clock base runs off the bottom edge. | Crop `front_right_edge_x3.png`. front_corner rows y 1060–1079 at x 600–700 are clock base and sidewalk. | Framing from nominal extents. | Pull both cameras back about 5%. |\n| 10 | P2 | boards/phone-01 | The board still pairs \"Locked top\" with \"Render aerial\" rather than with the top render (v001 #12, not fixed). The front panel is now correct. | phone-01, bottom row. | Board layout. | Pair locked top with render top. |\n| 11 | P2 | top, roof_skylights | Soft radial shadow arcs still sweep across the roof, which points to a near point or area light (v001 #14, not fixed). | top roof field. | QA lighting rig. | Use a distant sun with sky fill. |\n\n**How I separated defect blacks from shadow and glass.** I scanned every render for connected clusters of pixels\nwith max(R,G,B) <= 4. Every cluster of 15 px or more falls into one of these groups:\n\n- dim glazed recess returns and transom panes (#1);\n- recess-head soffit shading (#2);\n- dark joinery or lamp-post edges, 1–4 px wide;\n- the inside of the near window frame in the interior view, a dark frame seen from the unlit side.\n\nNone of them is a hard-edged zero field set in an otherwise lit plane. None shows the v001-style alternating ladder,\nand none is a horizontal surface open to the sky. The v002 recess floors were exactly that kind of surface. Totals of\npixels at max <= 6 fell from v002 to v003: storefronts 16,588 → 5,349, front_corner 2,540 → 735, steam_clock\n8,890 → 6,964 and right_side 5,838 → 4,288. (The v002 renders are JPEGs, so I used a tolerance of 6.)\n\n## 3. Source conformance checklist\n\n| item | mark | view(s) used | note |\n|---|---|---|---|\n| Silhouette and storey count | conforms | front, front_corner, right_side vs source front and oblique | Three storeys with frieze, bracketed cornice and a crested pediment. |\n| Plan (top view, near-square, party walls) | conforms | top vs source top | Outer footprint about 840 × 785 px (ratio 1.07; source 1.09). The west wall abuts the cream neighbour in its south half and faces the lane in its north half. The north block starts about 0.20 of the width east of the west face (source 0.19), which leaves the exposed north-wall strip. Chimney, penthouse, small skylight and both pyramids fall within about 0.03 of their source plan positions. |\n| Bay rhythm, south (five bays) | conforms | front, front_corner, facade_close | Four single bays, then a wider corner bay with paired windows. The pediment is over bay 3. |\n| Bay rhythm, east (corner bay, four narrow bays, paired-arch end bay) | conforms | right_side, east_facade | Wide corner bay; four narrow sash bays on three floors; a pilastered end bay with paired arched windows over paired sashes, and a side door. |\n| Rusticated sandstone corner and end piers | conforms | front, right_side, architecture_close, east_facade | South-west, corner and north-east piers are rusticated to full height. The corner-shop jamb liner is lit throughout. |\n| Brick pilasters and carved capital panels | conforms | front, facade_close, name_frieze_pediment | Square stone boss panels at the arch springing and at frieze level. The simplified carving is acceptable for clay. |\n| Window types per floor | conforms (P2 #4) | front, facade_close, glass_close, right_side | Arched three-light windows on the top floor; three-light windows with small-paned transoms below; paired windows in the corner bays; narrow sashes on the east. |\n| Sill and lintel bands | conforms | front, right_side, facade_close | Continuous sill and lintel bands; capped lintels on the east. |\n| Lettered frieze | conforms (P2 #5) | name_frieze_pediment, front | Reads \"GASTOWN COMMERCE BUILDING\" frontally. |\n| Modillion cornice and dentils | conforms (P2 #3) | architecture_close, right_side, name_frieze_pediment | Block modillions with dentil pairs, a deep soffit, and returns at both street ends. |\n| Pediment (shell, crest, pedestals) | conforms | name_frieze_pediment, front_corner, roof_skylights | Shell and acanthus crest present. The rakes die into both pedestals with a closed sloping back, and there is no wedge or doubled edge. |\n| Shopfronts (bulkheads, glass, transoms, recessed doors, signboards, shop cornice) | conforms (P2 #1, #2) | storefronts, steam_clock, front_corner, east_facade, right_side | Panelled bulkheads, plate glass, small-paned transoms, glazed timber double doors, dark fascias with gilt lettering, and a moulded shop cornice. The corner shop wraps onto the east. The recess floors are now lit stone with a proud threshold, and a meeting stile closes the leaves. |\n| Roof (parapet coping, chimney, penthouse, skylights) | conforms (P2 #6) | top, roof_skylights, front_corner vs source top and oblique | Brick chimney; clapboard penthouse with door and window; two glazed pyramids and a small skylight; all inside a stone-coped parapet. |\n| Steam clock | conforms | front, steam_clock, front_corner, top | Stone and bronze base with plaques, glazed cabinet with works, four-faced head, small roof and whistles. The head is above the shop cornice, and the clock stands about 2 m off the facade. |\n| Bollards and chains | conforms | front, steam_clock, top | Chained bollards along the curb by the clock. |\n| Globe lamps | conforms | front, right_side, east_facade, top | Five globes on two tiers, on both sidewalks. |\n| Paving (brick sidewalks, setts, asphalt) | conforms (P2 #7) | front, top, aerial | Brick sidewalks, grey setts on the south street, and asphalt with a centre line on the east street. |\n| Neighbours | conforms with P2 deviations (#7, #8) | front, top, left_side, rear, rear_north | The lower cream west neighbour is correct. The north block runs to the east line and leaves the exposed west strip of the north wall, as in the source top. The context blocks are blank boxes. |\n| Materials hierarchy | conforms | all | Red brick body, buff sandstone dressings, dark green joinery, timber doors, bronze and brass clock, and a light roof membrane. Matches the source palette. |\n| Opening depth and returns | conforms (P2 #1, #2) | storefronts, glass_close, front_corner, rear, rear_north | Window reveals and occupied depth read correctly. Door recesses have lit floors. The north-wall windows have sills and reveals in clear masonry, and they meet no neighbour mass. |\n\n## 4. Camera validity\n\n- **front**: valid. The full south front and the visible east front are in frame. The east lamp is cut at the right edge (P2 #9).\n- **front_corner**: valid matched oblique, with the target legible. The clock base runs off the bottom edge (P2 #9).\n- **aerial**: valid. The subject is small, and the context boxes dominate (P2 #8).\n- **top**: valid true top. The whole footprint, the roof items and the street edges are in frame.\n- **left_side**: valid. The elevated view shows the west party wall from coping to neighbour roofs, plus the parapet and roof. Grade is properly hidden by the adjoining neighbours.\n- **right_side**: valid. The full east elevation is in frame, with grade and cornice.\n- **rear**: valid. It shows the north party wall from coping to the north-block roof, the roof footprint and the back of the pediment. The new north-wall windows show at the west end, beside the north block.\n- **rear_side**: valid but weak. The subject is small and partly screened by the boxes across the street.\n- **rear_north**: **valid now.** The camera is level and frames the exposed north wall west of the north block. The stone coping is in frame at the top (y ≈ 80–95), and the wall foot meets the brick ground at y ≈ 995. Four windows (two per floor, second and third storeys) sit in clear brick between the north block's west face (x ≈ 600) and the lane (x ≈ 860). Crops `rear_north_base_x2.png`, `rear_north_top_x2.png`.\n- **facade_close, architecture_close, glass_close, steam_clock, storefronts, name_frieze_pediment, east_facade, roof_skylights, interior**: all present, legible and correctly targeted.\n\nNo view has an occluded target, a clipped asset that hides the subject, or illegible content.\n\n## 5. Previous findings\n\n### v002 (0 P0 / 3 P1)\n\n| v002 finding | status | pixel evidence |\n|---|---|---|\n| P1 #1: pure-black recess floors at every recessed door | **fixed** | storefronts recess floors, y 958–981: luminance min 46, mean 70–84 under both door pairs. At v002's zero band (x 110–340 and 660–915, y 961–984), no pixel is <= 4. front_corner, at v002's five floor boxes: mean luminance 73, 71, 72, 54 and 46, 10th percentile 21–48. The only zeros left there (5–15 px per box) are jamb seam lines and transom glass, not the floor. right_side side-door step, (1097–1171, 984–996): luminance min 19, mean 55, stone RGB about (74,60,47). Crops `storefronts_cafe_sill_x3.png`, `black_storefronts_doors.png`, `black_front_corner_shops_x2.png`, `right_side_sidedoor_x4.png`, `pair_v002_v003_right_side_cornershop.png`. |\n| P1 #2: north-wall windows buried in the north block | **fixed** | In rear, v002's sliver window heads at x 427–495, y 533–541 are gone: luminance min 76–89, plain brick and north-block roof. Crops `rear_north_wall_east_end_x4.png` and `v002_rear_north_wall_east_end_x4.png`. The windows now sit at the west end of the north wall, beside the north block: rear x 1005–1075. rear_north shows all four in clear brick, with sills, about 1 m from the north block's west face. rear_side also shows them above the north-block roof line (`pair_v002_v003_rear_side_north_windows.png`). That partial view is an occlusion from the camera angle, and rear_north shows the openings are clear. |\n| P1 #3: locked front source missing; phone-01 front panel broken | **fixed** | `sources/front.png` is present. Its sha256 `ddd3ab09…cf267f0` matches the recorded hash and the catalogue original. The phone-01 \"Locked front\" panel shows the source image. |\n| P2 #4: rear_north missed grade and coping | fixed | See section 4. |\n| P2 #5: dim glazed recess returns | not fixed | Finding #1. |\n| P2 #6: light slit between door leaves | fixed | storefronts x 785–797, y 600–940: max luminance 60. The door surface is continuous (about 53–58) with no bright slit, so a meeting stile is present. |\n| P2 #7: soffit corner brick patch | not fixed | Finding #3. |\n| P2 #8: arch-head frame and facets | not fixed | Finding #4. |\n| P2 #9: frieze glyphs at the oblique | not fixed | Finding #5. |\n| P2 #10: small skylight is a pyramid | not fixed | Finding #6. |\n| P2 #11: lane, context boxes, margins, board pairing | not fixed | Findings #7–#10. |\n| P2 #12: roof shadow arcs | not fixed | Finding #11. |\n\n### v001 (0 P0 / 5 P1): do the fixes still hold?\n\n| v001 finding | status | pixel evidence |\n|---|---|---|\n| P1 #1: pure-black slot ladder in the east corner-shop jamb | **still fixed** | east_facade jamb x 398–416, y 790–1010: minimum max-channel 9, mean RGB (54,43,32), and no row contains a zero pixel. In right_side, the jamb region is pixel-identical to v002 apart from the floor fix (`pair_v002_v003_right_side_cornershop.png`). |\n| P1 #2: pediment rake overshoot, wedge and doubled edge | **still fixed** | name_frieze_pediment, front_corner and roof_skylights are unchanged from v002 (diff: 0 px above 25 in name_frieze_pediment and roof_skylights). The rakes die into the pedestals with a closed back. Crop `fc_pediment_frieze_x2.png`. |\n| P1 #3: steam clock undersized, too low and too close | **still fixed** | The clock geometry is unchanged; the front and steam_clock diffs touch only the door recesses. The head sits above the shop cornice, and in top the clock stands about 2 m off the facade at 0.85 of the block width (source 0.84). |\n| P1 #4: missing facade_close, architecture_close, glass_close | **still fixed** | All three are present at 1440 × 1080 and correctly targeted. |\n| P1 #5: left_side and rear blocked by neighbours | **still fixed** | Both cameras are elevated and valid (section 4). |\n\n**Regression check.** I diffed each v003 render against its v002 counterpart, counting pixels whose luminance\ndiffers by more than 25. All 18 views were checked. The changed pixels fall in three places only:\n\n- the door-recess floors and thresholds (storefronts, front, front_corner, steam_clock, east_facade, right_side, facade_close and aerial);\n- the north-wall windows (rear, rear_side, and a two-pixel row of sill in top);\n- the re-aimed rear_north camera.\n\nSix views have zero changed pixels: architecture_close, glass_close, interior, left_side, name_frieze_pediment and roof_skylights.\nOne small cluster in right_side (x 1240, y 320) is a JPEG highlight artefact in v002, not a v003 change. I found no\nregression.\n"
+  },
+  "preserved_evidence": [
+    {
+      "path": "source-package/evidence/v003/renders/aerial.jpg",
+      "bytes": 90518,
+      "sha256": "21eb66f49039f3322852d52870ac601308a54bdc075c2c888ab1c3eb01c1fc2c"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/architecture_close.jpg",
+      "bytes": 146795,
+      "sha256": "14e5fc3350cb826d586e5a81bac047f3c372e5e54fa06c292719904c04671646"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/east_facade.jpg",
+      "bytes": 144889,
+      "sha256": "17b5543313137da954dd203a2e0d3e0f2abe78d34ca076340834c4e2fbd40943"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/facade_close.jpg",
+      "bytes": 134149,
+      "sha256": "ee89be20d29c8304d12df4b25d706a1d94de77fee2d10c64d38cce1a49154c12"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/front.jpg",
+      "bytes": 211151,
+      "sha256": "4574143d253cb627ee823cefa067c2e08b41c5cee7293dd0f24a0c1f4585c56d"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/front_corner.jpg",
+      "bytes": 227644,
+      "sha256": "28ad16a219eaec89f481d9fd516a895f268368f60b1c8072fa294489eafea61f"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/glass_close.jpg",
+      "bytes": 80756,
+      "sha256": "d50dab71f23709d9174151d86380e9d527cc18a84dad5913705911ba8cd3a06e"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/interior.jpg",
+      "bytes": 76843,
+      "sha256": "05437450023df03e2c0ecdbd822df132db42c6e75743a59efde29d3333700b37"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/left_side.jpg",
+      "bytes": 128217,
+      "sha256": "5d94c8433d8537409e1597f1e2b71341bef1874617e83619c9887e560223a490"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/name_frieze_pediment.jpg",
+      "bytes": 128876,
+      "sha256": "64cbcfba7183ecead6862157c77d0dac928af5a519a5c9994b21923b71790963"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/rear.jpg",
+      "bytes": 104096,
+      "sha256": "7f4509d2704be1d9a696b5dfbe5a5cd89383a222feff8b0262e8055e602d159a"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/rear_north.jpg",
+      "bytes": 56649,
+      "sha256": "a80657186bf958df36e7b7315ffbd266064f8f2aa46ca3b6ab45ac4f93d8757f"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/rear_side.jpg",
+      "bytes": 71914,
+      "sha256": "5af137eda2767d496754d5421a3284f033076468e6e75fea4a1270d5cbc94da2"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/right_side.jpg",
+      "bytes": 152454,
+      "sha256": "647cc097d2c220acf02d877b52e3a3db3e31341c27bea3415bea059404ae2d89"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/roof_skylights.jpg",
+      "bytes": 109414,
+      "sha256": "55d86d3d96b9344fc26236e58f41b93380a1b5d0eb43f84bd178c7477d7d8531"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/steam_clock.jpg",
+      "bytes": 163412,
+      "sha256": "85162204713cc76cb9407bdae1332833f3cb7d83e7f42b73655e494fe925c04f"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/storefronts.jpg",
+      "bytes": 132336,
+      "sha256": "65925bb5940f153ff467021435b7bc99ae5ce93206cef5ee77acf90dbe379fd6"
+    },
+    {
+      "path": "source-package/evidence/v003/renders/top.jpg",
+      "bytes": 112514,
+      "sha256": "c791a969e995b98e7a6d52ea912dede7eaa28373a1fbb1a88bfc704222f58cdf"
+    },
+    {
+      "path": "source-package/evidence/v003/boards/phone-01-source-vs-render.jpg",
+      "bytes": 402903,
+      "sha256": "34d38cf221584d2cdc190057ad98a9b75e73efd2b06b9b7332704860ac86660f"
+    },
+    {
+      "path": "source-package/evidence/v003/boards/phone-02-details.jpg",
+      "bytes": 224366,
+      "sha256": "8fdc9040ed48c3396290fbad93db28dcb2911ce38ad958b9c365544b22cc98cb"
+    },
+    {
+      "path": "source-package/evidence/v003/boards/phone-03-details.jpg",
+      "bytes": 184758,
+      "sha256": "27bc4c4c6ff3d999bd03a481432b33955f56914aa85d4f422ed97f1650a7a0b2"
+    },
+    {
+      "path": "source-package/evidence/v003/boards/phone-04-details.jpg",
+      "bytes": 91511,
+      "sha256": "c81ad3cfe98bfda36ef9f12cc43530012f9d9c66b061a72ba5135d46248c98dd"
+    }
+  ],
+  "evidence_limitations": "Original reviewer inspected PNG renders and phone boards. Source branch preserved JPEG derivatives, recorded in preservation.json; this transcription does not claim a new visual review of those JPEGs. Authored metric assumptions and hidden views remain as disclosed in original prework and review.",
+  "keeper_approval_implied": false,
+  "runtime_acceptance_implied": false,
+  "publication_approval_implied": false
+}

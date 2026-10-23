@@ -1,0 +1,56 @@
+{
+  "schema": "cityprompt.claude-building-promotion-verification@1",
+  "checked_at": "2026-10-23T23:28:28.766268+00:00",
+  "checks": {
+    "python_seed_promotion": {
+      "status": "passed",
+      "tests": 69,
+      "files": [
+        "test_catalogue_promotion.py",
+        "test_published_building_trio.py",
+        "test_seed_model_library_manifest.py",
+        "test_seed_legacy_metadata_attestation.py"
+      ]
+    },
+    "frontend_catalogue": {
+      "status": "passed",
+      "tests": 121,
+      "files": [
+        "publishedBuildingAssets.test.ts",
+        "assetRegistry.test.ts",
+        "catalogue.test.ts",
+        "canonicalCatalogue.test.ts",
+        "claudeBuildingRelease.test.ts"
+      ]
+    },
+    "typescript": {
+      "status": "passed",
+      "command": "node node_modules/typescript/bin/tsc --noEmit"
+    },
+    "hydrated_catalogue": {
+      "status": "passed",
+      "building_count": 81,
+      "command": "python -m tools.catalogue_promotion check"
+    },
+    "native_model_contract": {
+      "status": "generated_and_drift_check_passed",
+      "exact_new_current_records": 18
+    },
+    "scoped_diff_check": {
+      "status": "passed"
+    },
+    "runtime_asset_manifest": {
+      "status": "not_generated_missing_sparse_public_inputs",
+      "missing_direct_references": 380,
+      "existing_manifest_unchanged": true,
+      "owner": "Root hosted-asset closure",
+      "scope": "No historical hydration or held public-realm model import was attempted to bypass this gate."
+    }
+  },
+  "source_hashes": {
+    "seed/model-library/rlasm-architectural-clay/library.json": "3c4e4e5f8776155c679270038d6dda99f141d2f6b791829ef6fab09a7f2252a1",
+    "frontend/src/features/pickPlace/publishedBuildingAssets.ts": "e49bfd8af7ad3de3828aebbfb62ed89542844ab644591b3d26e88315578a7d67",
+    "backend/app/data/native_model_contract.json": "461633e94fcfccb55fb88db763b5a81f74626e6ff48432a7480d03bc7987de1b"
+  },
+  "no_staging_commit_push_production_writes": true
+}

@@ -2521,6 +2521,726 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "floor_count": 4,
       "native_plot_axes": true
     }
+  },
+  {
+    "id": "claude_trial_arched_mill_mixed_use",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Arched Mill Mixed Use",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/industrial_brick_mixed_use/variant_0.png",
+    "model": {
+      "variantId": "industrial_brick_original_mill",
+      "revision": "clay-arched-mill-mixed-use-clay-v005",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "mixed",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 41.0,
+    "depth": 37.0,
+    "minWidth": 41.0,
+    "minDepth": 37.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      38.0,
+      34.0,
+      25.700000762939453
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "industrial_brick_mixed_use",
+      "development_archetype_id": "industrial_brick_mixed_use",
+      "development_selected_variant_id": "industrial_brick_original_mill",
+      "development_archetype_label": "Arched Mill Mixed Use",
+      "floors": 4,
+      "floor_count": 4,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_brick_podium_condo_tower",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Brick Podium Condo Tower",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/condo-podium-tower/variant_0.png",
+    "model": {
+      "variantId": "brick_podium_glass_tower",
+      "revision": "clay-brick-podium-condo-tower-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "towers",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 57.0,
+    "depth": 47.0,
+    "minWidth": 57.0,
+    "minDepth": 47.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      54.0,
+      44.0,
+      50.099998474121094
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "condo_podium_tower",
+      "development_archetype_id": "condo_podium_tower",
+      "development_selected_variant_id": "brick_podium_glass_tower",
+      "development_archetype_label": "Brick Podium Condo Tower",
+      "floors": 13,
+      "floor_count": 13,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_calgary_cbe_brutalist_hq",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Calgary CBE Brutalist Hq",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/calgary-board-of-education-hq/variant_0.png",
+    "model": {
+      "variantId": "calgary_cbe_original",
+      "revision": "clay-calgary-cbe-brutalist-hq-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "offices",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 88.0,
+    "depth": 93.0,
+    "minWidth": 88.0,
+    "minDepth": 93.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      84.9000015258789,
+      89.54999923706055,
+      28.3700008392334
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "calgary_cbe_brutalist_hq",
+      "development_archetype_id": "calgary_cbe_brutalist_hq",
+      "development_selected_variant_id": "calgary_cbe_original",
+      "development_archetype_label": "Calgary CBE Brutalist Hq",
+      "floors": 4,
+      "floor_count": 4,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_campus_shed_office",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Campus Shed Office",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/corporate-office-campus-headquarters/variant_3.png",
+    "model": {
+      "variantId": "industrial_warehouse_campus_hq",
+      "revision": "clay-campus-shed-office-clay-v009",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "offices",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 52.0,
+    "depth": 43.0,
+    "minWidth": 52.0,
+    "minDepth": 43.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      48.5895132778808,
+      39.34000015258789,
+      11.020000457763672
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "corporate_office_campus_headquarters",
+      "development_archetype_id": "corporate_office_campus_headquarters",
+      "development_selected_variant_id": "industrial_warehouse_campus_hq",
+      "development_archetype_label": "Campus Shed Office",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_cmu_dock_warehouse",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "CMU Dock Warehouse",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/mid-century-distribution-warehouse/variant_0.png",
+    "model": {
+      "variantId": "cmu_dock_utilitarian",
+      "revision": "clay-cmu-dock-warehouse-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "industry",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 60.0,
+    "depth": 48.0,
+    "minWidth": 60.0,
+    "minDepth": 48.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      57.0,
+      44.22500038146973,
+      9.475000381469727
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "mid_century_distribution_warehouse",
+      "development_archetype_id": "mid_century_distribution_warehouse",
+      "development_selected_variant_id": "cmu_dock_utilitarian",
+      "development_archetype_label": "CMU Dock Warehouse",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_courtyard_primary_school",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Courtyard Primary School",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/ecole-republicaine/variant_3.png",
+    "model": {
+      "variantId": "ecole-republicaine-art-deco",
+      "revision": "clay-courtyard-primary-school-clay-v009",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 49.0,
+    "depth": 54.0,
+    "minWidth": 49.0,
+    "minDepth": 54.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      46.0,
+      50.03000068664551,
+      12.979000091552734
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "ecole_republicaine",
+      "development_archetype_id": "ecole_republicaine",
+      "development_selected_variant_id": "ecole-republicaine-art-deco",
+      "development_archetype_label": "Courtyard Primary School",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_ctrain_elevated_station",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "CTrain Elevated Station",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/calgary-ctrain-station/variant_0.png",
+    "model": {
+      "variantId": "ctrain_downtown_platform",
+      "revision": "clay-ctrain-elevated-station-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "infrastructure",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 83.0,
+    "depth": 103.0,
+    "minWidth": 83.0,
+    "minDepth": 103.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      80.0,
+      100.0,
+      18.700000762939453
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "calgary_ctrain_station",
+      "development_archetype_id": "calgary_ctrain_station",
+      "development_selected_variant_id": "ctrain_downtown_platform",
+      "development_archetype_label": "CTrain Elevated Station",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_energy_centre",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Energy Centre",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/central-utilities-plant-energy-centre/variant_1.png",
+    "model": {
+      "variantId": "transparent_plant_showcase_urban",
+      "revision": "clay-energy-centre-clay-v010",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "infrastructure",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 48.0,
+    "depth": 42.0,
+    "minWidth": 48.0,
+    "minDepth": 42.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      44.09647641933048,
+      38.03000068664551,
+      23.80500030517578
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "central_utilities_plant_energy_centre",
+      "development_archetype_id": "central_utilities_plant_energy_centre",
+      "development_selected_variant_id": "transparent_plant_showcase_urban",
+      "development_archetype_label": "Energy Centre",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_garden_court_senior_residence",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Garden Court Senior Residence",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/senior_living_complex/variant_0.png",
+    "model": {
+      "variantId": "senior_garden_courtyard",
+      "revision": "clay-garden-court-senior-residence-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "apartments",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 93.0,
+    "depth": 91.0,
+    "minWidth": 93.0,
+    "minDepth": 91.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      90.0,
+      88.0,
+      15.050000190734863
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "senior_living_complex",
+      "development_archetype_id": "senior_living_complex",
+      "development_selected_variant_id": "senior_garden_courtyard",
+      "development_archetype_label": "Garden Court Senior Residence",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_gastown_heritage_commercial",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Gastown Heritage Commercial",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/gastown-heritage-commercial/variant_0.png",
+    "model": {
+      "variantId": "gastown_italianate",
+      "revision": "clay-gastown-heritage-commercial-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "shops",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 85.0,
+    "depth": 65.0,
+    "minWidth": 85.0,
+    "minDepth": 65.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      82.0,
+      61.39999961853027,
+      20.559999465942383
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "gastown_heritage_commercial",
+      "development_archetype_id": "gastown_heritage_commercial",
+      "development_selected_variant_id": "gastown_italianate",
+      "development_archetype_label": "Gastown Heritage Commercial",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_halifax_georgian_colonial",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Halifax Georgian Colonial",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/halifax-georgian-colonial/variant_0.png",
+    "model": {
+      "variantId": "georgian_clapboard_original",
+      "revision": "clay-halifax-georgian-colonial-clay-v003",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "detached",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 55.0,
+    "depth": 51.0,
+    "minWidth": 55.0,
+    "minDepth": 51.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      51.39999961853027,
+      47.81999969482422,
+      16.5
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "halifax_georgian_colonial",
+      "development_archetype_id": "halifax_georgian_colonial",
+      "development_selected_variant_id": "georgian_clapboard_original",
+      "development_archetype_label": "Halifax Georgian Colonial",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_halifax_waterfront_warehouse",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Halifax Waterfront Warehouse",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/halifax-waterfront-warehouse/variant_0.png",
+    "model": {
+      "variantId": "warehouse_privateers_wharf",
+      "revision": "clay-halifax-waterfront-warehouse-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "shops",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 63.0,
+    "depth": 47.0,
+    "minWidth": 63.0,
+    "minDepth": 47.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      60.0,
+      43.39999961853027,
+      13.300000190734863
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "halifax_waterfront_warehouse",
+      "development_archetype_id": "halifax_waterfront_warehouse",
+      "development_selected_variant_id": "warehouse_privateers_wharf",
+      "development_archetype_label": "Halifax Waterfront Warehouse",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_led_grow_block",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "LED Grow Block",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/vertical-farm-indoor-agriculture/variant_1.png",
+    "model": {
+      "variantId": "dark_panel_led_grow_block",
+      "revision": "clay-led-grow-block-clay-v007",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "indoor_food",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 33.0,
+    "depth": 34.0,
+    "minWidth": 33.0,
+    "minDepth": 34.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      29.696476800800205,
+      30.255247130201496,
+      32.65999984741211
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "vertical_farm_indoor_agriculture",
+      "development_archetype_id": "vertical_farm_indoor_agriculture",
+      "development_selected_variant_id": "dark_panel_led_grow_block",
+      "development_archetype_label": "LED Grow Block",
+      "floors": 6,
+      "floor_count": 6,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_mews_coach_house",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Mews Coach House",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/london-mews-house/variant_0.png",
+    "model": {
+      "variantId": "london-mews-house-original-stable",
+      "revision": "clay-mews-coach-house-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "detached",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 32.0,
+    "depth": 28.0,
+    "minWidth": 32.0,
+    "minDepth": 28.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      28.207500457763672,
+      24.506999969482422,
+      14.5
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "london_mews_house",
+      "development_archetype_id": "london_mews_house",
+      "development_selected_variant_id": "london-mews-house-original-stable",
+      "development_archetype_label": "Mews Coach House",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_old_montreal_limestone_commercial",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Old Montreal Limestone Commercial",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/old-montreal-limestone-commercial/variant_0.png",
+    "model": {
+      "variantId": "old_mtl_french_colonial",
+      "revision": "clay-old-montreal-limestone-commercial-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "shops",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 131.0,
+    "depth": 83.0,
+    "minWidth": 131.0,
+    "minDepth": 83.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      128.0,
+      80.0,
+      42.5
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "old_montreal_limestone_commercial",
+      "development_archetype_id": "old_montreal_limestone_commercial",
+      "development_selected_variant_id": "old_mtl_french_colonial",
+      "development_archetype_label": "Old Montreal Limestone Commercial",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_plus15_glass_office_tower",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Plus15 Glass Office Tower",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/calgary-plus-15-connected-tower/variant_2.png",
+    "model": {
+      "variantId": "plus15_contemporary_glass",
+      "revision": "clay-plus15-glass-office-tower-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "offices",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 55.0,
+    "depth": 86.0,
+    "minWidth": 55.0,
+    "minDepth": 86.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      52.0,
+      83.0,
+      82.66000366210938
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "calgary_plus_15_connected_tower",
+      "development_archetype_id": "calgary_plus_15_connected_tower",
+      "development_selected_variant_id": "plus15_contemporary_glass",
+      "development_archetype_label": "Plus15 Glass Office Tower",
+      "floors": 17,
+      "floor_count": 17,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_slab_balcony_tower",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Slab Balcony Tower",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/west-end-mid-century-tower/variant_0.png",
+    "model": {
+      "variantId": "midcentury_concrete_slab",
+      "revision": "clay-slab-balcony-tower-clay-v007",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "towers",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 41.0,
+    "depth": 41.0,
+    "minWidth": 41.0,
+    "minDepth": 41.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      37.357473373413086,
+      37.20000076293945,
+      47.0
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "west_end_mid_century_tower",
+      "development_archetype_id": "west_end_mid_century_tower",
+      "development_selected_variant_id": "midcentury_concrete_slab",
+      "development_archetype_label": "Slab Balcony Tower",
+      "floors": 13,
+      "floor_count": 13,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_trial_toronto_bay_and_gable",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Toronto Bay And Gable",
+    "description": "Complete authored architectural-clay scene at native size, including its original surroundings. Prepared level site only.",
+    "thumbnail": "/archetypes/buildings/toronto-bay-and-gable-house/variant_0.png",
+    "model": {
+      "variantId": "toronto_bay_gable_yellow_brick",
+      "revision": "clay-toronto-bay-and-gable-house-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "detached",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 27.0,
+    "depth": 29.0,
+    "minWidth": 27.0,
+    "minDepth": 29.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      23.550000190734863,
+      25.34999942779541,
+      12.420000076293945
+    ],
+    "reshapeDescription": "Move and rotate the complete scene. Its building and surrounding geometry keep their authored dimensions.",
+    "properties": {
+      "building_archetype_id": "toronto_bay_and_gable_house",
+      "development_archetype_id": "toronto_bay_and_gable_house",
+      "development_selected_variant_id": "toronto_bay_gable_yellow_brick",
+      "development_archetype_label": "Toronto Bay And Gable",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
   }
 ];
 

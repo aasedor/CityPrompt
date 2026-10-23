@@ -159,7 +159,27 @@ def upload_explicit_objects(s3, bucket, objects, hashes):
     return len(missing)
 
 
-def verify_existing_row(expected, stored):
+def seed_metadata_digest(metadata):
+    """Seal the complete historical JSON value independently of object-key order."""
+    return hashlib.sha256(json.dumps(metadata, sort_keys=True, separators=(",", ":"),
+                                     ensure_ascii=False, allow_nan=False).encode("utf-8")).hexdigest()
+
+
+def verified_seed_review(entry, *, repo_root=REPO_ROOT):
+    """Read only the review bytes already pinned by this canonical entry."""
+    path = (repo_root / entry["review"]["repo_path"]).resolve()
+    if not path.is_relative_to(repo_root.resolve()) or hashlib.sha256(path.read_bytes()).hexdigest() != entry["review"]["sha256"]:
+        raise ValueError("Independent seed review bytes do not match the canonical entry")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def verify_existing_row(expected, stored, *, review=None, verified_model_sha256=None):
+    """Accept canonical metadata, or one fully sealed unchanged historical row.
+
+    Compatibility never updates a row. It requires the hashed canonical review,
+    its original raw review, exact historical metadata, and separately verified
+    stored GLB bytes. Only the documented provenance/family differences vary.
+    """
     metadata = stored["metadata"]
     if isinstance(metadata, str):
         metadata = json.loads(metadata)
@@ -167,9 +187,43 @@ def verify_existing_row(expected, stored):
     if isinstance(lod_urls, str):
         lod_urls = json.loads(lod_urls)
     if (stored["model_url"] != expected["model_url"] or stored["is_public"] is not True
-            or lod_urls != expected["lod_urls"]
-            or not isinstance(metadata, dict)
-            or any(metadata.get(key) != expected["metadata"].get(key) for key in ("rlasm", "lego"))):
+            or lod_urls != expected["lod_urls"] or not isinstance(metadata, dict)):
+        raise ValueError("Refusing conflicting existing clay database binding")
+    if all(metadata.get(key) == expected["metadata"].get(key) for key in ("rlasm", "lego")):
+        return
+    canonical, legacy = expected["metadata"], metadata
+    if not all(isinstance(legacy.get(key), dict) for key in ("rlasm", "lego")):
+        raise ValueError("Refusing conflicting existing clay database binding")
+    rlasm, lego = canonical.get("rlasm", {}), canonical.get("lego", {})
+    review = review if isinstance(review, dict) else {}
+    attestation = review.get("legacy_seed_metadata_attestation") or {}
+    source = review.get("source_review") or {}
+    candidate, model_hash = rlasm.get("candidate"), rlasm.get("model_sha256")
+    storage_key = f"library/rlasm-architectural-clay/{candidate}.glb"
+    # Exact digest plus unchanged runtime fields; this is not a general family
+    # or reviewer allowlist. The source-specific values live in two sealed reviews.
+    rlasm_provenance = {"review_sha256", "review_status", "design_dimensions_m", "source_delivery", "import_scope"}
+    unchanged_rlasm = {k: v for k, v in legacy.get("rlasm", {}).items() if k not in rlasm_provenance}
+    expected_rlasm = {k: v for k, v in rlasm.items() if k not in rlasm_provenance}
+    unchanged_lego = {k: v for k, v in legacy.get("lego", {}).items() if k != "family"}
+    expected_lego = {k: v for k, v in lego.items() if k != "family"}
+    if (not isinstance(attestation, dict)
+            or attestation.get("schema") != "cityprompt.clay-legacy-seed-attestation@1"
+            or attestation.get("candidate") != candidate or attestation.get("row_id") != expected["id"]
+            or attestation.get("storage_key") != storage_key
+            or expected["model_url"] != "/api/v1/files/" + storage_key
+            or attestation.get("model_sha256") != model_hash or verified_model_sha256 != model_hash
+            or review.get("candidate") != candidate or review.get("model_sha256") != model_hash
+            or review.get("architectural_clay_pass") is not True or review.get("holistic_review_performed") is not True
+            or review.get("unresolved_p0") != 0 or review.get("unresolved_p1") != 0
+            or not isinstance(source, dict) or not isinstance(source.get("text"), str)
+            or hashlib.sha256(source["text"].encode("utf-8")).hexdigest() != source.get("sha256")
+            or source.get("sha256") != legacy.get("rlasm", {}).get("review_sha256")
+            or attestation.get("source_review_sha256") != source.get("sha256")
+            or attestation.get("native_floors") != lego.get("native_floors")
+            or attestation.get("native_dimensions_m") != rlasm.get("native_dimensions_m")
+            or attestation.get("legacy_metadata_sha256") != seed_metadata_digest(metadata)
+            or unchanged_rlasm != expected_rlasm or unchanged_lego != expected_lego):
         raise ValueError("Refusing conflicting existing clay database binding")
 
 
@@ -197,7 +251,8 @@ def verify_install(args, payload):
         with engine.connect() as conn:
             for entry, row in zip(payload["entries"], clay_seed_rows(payload)):
                 key = "library/rlasm-architectural-clay/" + pathlib.PurePosixPath(entry["model"]["path"]).name
-                if remote_hash(s3, args.bucket, key) != entry["model"]["sha256"]:
+                verified_hash = remote_hash(s3, args.bucket, key)
+                if verified_hash != entry["model"]["sha256"]:
                     raise ValueError(f"Stored GLB mismatch: {entry['candidate']}")
                 stored = (
                     conn.execute(
@@ -210,7 +265,13 @@ def verify_install(args, payload):
                 if not stored or stored["model_url"] != row["model_url"] or not stored["is_public"]:
                     raise ValueError(f"Missing or incorrect public binding: {entry['candidate']}")
                 if explicit:
-                    verify_existing_row(row, stored)
+                    try:
+                        verify_existing_row(row, stored)
+                    except ValueError:
+                        if not entry.get("review"):
+                            raise
+                        verify_existing_row(row, stored, review=verified_seed_review(entry),
+                                            verified_model_sha256=verified_hash)
                 metadata = stored["metadata"]
                 if isinstance(metadata, str):
                     metadata = json.loads(metadata)
@@ -321,6 +382,7 @@ def insert_rows(args: argparse.Namespace, clay_payload: dict) -> int:
         print("   (dry run -- nothing written)")
         return 0
 
+    clay_entries = {entry["candidate"]: entry for entry in clay_payload["entries"]}
     engine = sa.create_engine(args.database_url)
     inserted = skipped = replaced = 0
     col_list = ", ".join(f'"{c}"' for c in columns)
@@ -340,7 +402,22 @@ def insert_rows(args: argparse.Namespace, clay_payload: dict) -> int:
                 if getattr(args, "clay_library", None):
                     stored = conn.execute(sa.text("SELECT model_url, is_public, metadata, lod_urls FROM model_library WHERE id = :id"),
                                           {"id": rid}).mappings().one()
-                    verify_existing_row(row, stored)
+                    try:
+                        verify_existing_row(row, stored)
+                    except ValueError:
+                        entry = clay_entries[row["metadata"]["rlasm"]["candidate"]]
+                        review = verified_seed_review(entry)
+                        if not review.get("legacy_seed_metadata_attestation"):
+                            raise
+                        # --rows-only must prove the same exact stored GLB too;
+                        # an earlier upload check cannot stand in for this read.
+                        import boto3
+                        client = boto3.client("s3", endpoint_url=args.endpoint,
+                                              aws_access_key_id=args.access_key,
+                                              aws_secret_access_key=args.secret_key)
+                        key = "library/rlasm-architectural-clay/" + pathlib.PurePosixPath(entry["model"]["path"]).name
+                        verify_existing_row(row, stored, review=review,
+                                            verified_model_sha256=remote_hash(client, args.bucket, key))
                 if not args.replace:
                     skipped += 1
                     continue

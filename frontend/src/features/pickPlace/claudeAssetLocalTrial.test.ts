@@ -9,6 +9,7 @@ import { publicRealmTrialAsset, publicRealmTrialPlacement } from '@/components/v
 import { trimNativeStreetModel } from '@/components/viewer/globe/nativeStreetModelTrim';
 import type { SiteZone } from '@/types';
 import trial from '@/data/claudeAssetLocalTrial.json';
+import { PUBLIC_REALM_RELEASE_ASSETS } from './publicRealmRelease';
 
 // Exercise the development-only roster explicitly. Ordinary release tests
 // must continue to cover the published catalogue rather than this local pilot.
@@ -40,7 +41,12 @@ describe('bounded Claude local model trial', () => {
     expect(validateRegistry(CATALOGUE_ASSETS)).toEqual([]);
     for (const asset of LOCAL_CLAUDE_ASSETS) {
       expect(CATALOGUE_ASSETS.filter(a => a.id === asset.id)).toHaveLength(1);
-      expect(CANONICAL_CHOICES.filter(c => c.placements.some(a => a.id === asset.id))).toHaveLength(1);
+      const release = PUBLIC_REALM_RELEASE_ASSETS.find(a => a.zoneType === asset.zoneType && a.model.variantId === asset.model.variantId);
+      expect(CANONICAL_CHOICES.filter(c => c.placements.some(a => a.id === asset.id))).toHaveLength(release ? 0 : 1);
+      if (release) {
+        expect(CANONICAL_CHOICES.filter(c => c.placements.some(a => a.id === release.id))).toHaveLength(1);
+        expect(assetForZone({ properties: placementProperties(asset) })?.id).toBe(asset.id);
+      }
       expect(asset.reshapeMode).toBe('fixed_native');
       expect(asset.properties.validation_fixed_fixture).toBe(true);
       expect(asset.width).toBeGreaterThanOrEqual(asset.nativeDimensions![0] + 3);

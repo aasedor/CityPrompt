@@ -1,0 +1,153 @@
+{
+  "candidate": "clay-courtyard-primary-school-clay-v009",
+  "model_sha256": "8ab45251a971c91aeb217447f2f96fef8e98bdc2e8d2ecefe328d206175a3bd7",
+  "reviewer": "Independent source-locked Claude reviewer (role as recorded in the preserved original review)",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "inspected_files": [
+    {
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/ecole-republicaine/variant_3.png",
+      "sha256": "353d70cf1e6d860e840bcb57cf9e10dbdaf558f17c5127e78c8e79655c68e467"
+    },
+    {
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/ecole-republicaine/variant_3_angle_60.jpg",
+      "sha256": "ad3f15097e602c85aabe104deecfc293a9eb4fbc33bee7de15489d418cb12bf6"
+    },
+    {
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/ecole-republicaine/variant_3_angle_90.jpg",
+      "sha256": "c833b66c8e3184baeef6f16471dc2693f2f33a235778423333e18814001cbca3"
+    }
+  ],
+  "record_kind": "faithful_structured_transcription_of_prior_independent_review",
+  "transcribed_on": "2026-10-23",
+  "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+  "floor_count_provenance": {
+    "source_prework_observed_storeys": 3
+  },
+  "source_review": {
+    "path": "source-package/evidence/v009/independent-review.md",
+    "sha256": "4b2ab5cc9a17bfcc63d46a782d7836b7b1d655aedcf6f8febb06a8e2ec07396c",
+    "text": "# Independent holistic review: clay-courtyard-primary-school v009 (RLASM v6.1)\n\nReviewer basis: the three locked sources (sources/front.png, sources/oblique.jpg, sources/top.jpg), all 18 renders at full resolution plus enlarged crops, and the four phone boards. I did not read any build reports, metadata or builder notes. The pixel coordinates below refer to the 1440x1080 renders unless a source is named.\n\n## 1. Verdict\n\n**PASS_ZERO_P0_P1.** The brick U, the playground, the coloured fins, the corten third storey, the deep corten canopy over the concrete corner wall, the street-facing lined entrance and the railed roofs all match the locked sources. Every remaining defect is polish.\n\nCounts: P0 = 0, P1 = 0, P2 = 7\n\n## 2. Findings table\n\n| # | severity | view(s) with pixel regions | symptom (what the pixels show) | likely cause | finite fix |\n|---|---|---|---|---|---|\n| 1 | P2 | facade_close x735-810 y600-760; entrance_passage x820-910 y465-670; playground x1290-1410 y370-560; canopy_contact x1345-1440 y650-770 | The open concrete stair in the passage climbs to the passage soffit. No stairwell void or landing shows at its head, so the top flight seems to run into the ceiling. | The stair mesh was placed without cutting a slab opening, or the opening is not visible from below. | Cut a visible stairwell void in the first-floor slab above the top flight (or put the stair behind the lobby glazing), and give the stair a landing that meets the slab edge. |\n| 2 | P2 | front x675-720 y448-492; aerial x650-710 y465-500; penthouse_terrace x1125-1295 y565-720; top x683-725 y560-600 | A brick-coloured roof box about one storey tall stands on the terrace at the north-west corner of the courtyard and breaks the front roofline. The top source shows no such box there (top.jpg ~x480-500 y440-470 is plain paving). | A stair or lift overrun was added on the builder's own initiative. | Lower it to a flush hatch or skylight, or move it behind the corten block where it does not break the front silhouette. |\n| 3 | P2 | top x395-585 y615-915; aerial x190-560 y450-600 | The west wing roof is one uniform gravel field. Both sources show two raised skylight or rooflight boxes on it (oblique.jpg x215-330 y330-380; top.jpg x315-440 y555-660). | The rooflight volumes were left out. | Add the two low raised rooflight boxes with concrete upstands where the sources show them. |\n| 4 | P2 | front_corner x920-1000 y600-680; courtyard x1085-1225 y660-945; architecture_close x500-530 y830-1020 | The canopy rests on two or three chunky square concrete posts. The oblique source shows one slender column (oblique.jpg x512-522 y610-680) plus the corner wall. | The post section and count are generic. | Use a single slender round or square steel column at the outer canopy corner, plus the concrete wall. |\n| 5 | P2 | right_side x340-415 y607-672; rear_side x235-260 y600-650 (gap between the corner wall's north end and the entrance block) | The canopied forecourt between the corner wall and the entrance block is open to the east pavement, and there is no fence or gate across it. The oblique source also shows paving here (oblique.jpg x800-860 y640-700), so the geometry is fine. Only the enclosure of the yard is unclear. | The yard-security line was not continued across the forecourt. | Add a low fence or gate on the line of the forecourt behind the wall, or confirm that the open forecourt is intended. |\n| 6 | P2 | rear x783-795 y600-670; rear_side x1000-1300 y560-700 | The step in the north boundary between the hall and the north-west block leaves a narrow notch. Two storeys of fin-dressed windows face into that notch beside a party wall, and a yellow fin shows through the gap in the rear elevation. | The facade grammar was applied to every exposed face. | Make the notch face blank brick (party-wall grammar), or close the notch so the hall meets the north boundary. |\n| 7 | P2 | front x345-660 y420-485; penthouse_terrace x0-1015 y385-850; left_side x240-712 y418-495 | The corten storey is a smooth, uniform orange. The oblique source shows vertical standing-seam panels with a darker weathered tone (oblique.jpg x440-620 y230-330). | Flat clay material, with no panel module beyond faint joints. | Strengthen the vertical panel joints, or step the module slightly, to read as corten cassettes. Clay finish only. |\n\nThere are no P0 or P1 findings.\n\n## 3. Source conformance checklist\n\n| item | status | views used |\n|---|---|---|\n| Silhouette | conforms. The corner plot is mid-block, with party walls to the west and north, the lower U in front and the corten box at the north-west. The only extra element in the front roofline is the roof box in finding 2. | front, front_corner, aerial vs front.png and oblique.jpg; top vs top.jpg |\n| Storey count | conforms. The wings are two storeys, the hall is two storeys and the corten third storey sits over the north-west block only. | front, right_side, left_side, rear |\n| Courtyard and wings | conforms. The brick U opens south to the playground. Its proportions match top.jpg: the courtyard is about 0.34 of the plot width in the render against 0.33 in the source. The playground has a green mat and play houses. | top, aerial, courtyard, playground |\n| Entrance passage and canopy | conforms. The corner concrete wall sits wholly under the deep corten fascia, with the fascia overhanging it on the south and east (aerial crop, right_side crop, entrance_passage). The east face of the entrance block now has a concrete-lined opening with visible returns and recessed glazed doors under the brick upper storey. The ground floor of the passage is open toward the yard. | entrance_passage, facade_close, right_side, rear_side, aerial, canopy_contact |\n| Fins and glazing | conforms. Strip windows carry red, yellow, green and teal fins on both storeys of the courtyard and street faces. Courtyard classrooms have full-height glazing, the frames are recessed and the fins have depth. | glass_close, fins_close, interior, courtyard, right_side |\n| Corten storey | conforms. The south face is solid corten with a door and the east face is a glazed band, matching oblique.jpg. The roof has rails and plant boxes. | aerial, rear_side, penthouse_terrace, architecture_close |\n| Roofs and rails | conforms, with minor deviations. Gravel roofs and the paved hall terrace have perimeter rails. The west wing rooflights are missing (finding 3) and there is an extra roof box (finding 2). | top, aerial, penthouse_terrace |\n| Materials hierarchy | conforms. Tan brick is the field, light concrete forms the slab bands, parapets and corner wall, corten forms the canopy and third storey, and the fins are coloured. The corten finish is slightly flat (finding 7). | all |\n\n## 4. Camera validity\n\nAll 18 views are valid. No target is occluded, no asset is clipped and every view is legible. left_side and rear show party-wall elevations, which are correctly blank. The detail views (entrance_passage, canopy_contact, facade_close, playground) each frame their subject without obstruction.\n\n## 5. Previous-version findings\n\n- **v008 P1, passage read as a slot beside the wall, with a classroom window on the entrance block's east ground floor:** RESOLVED. right_side (x428-522 y597-672, crop at 4x) shows a lined concrete opening under the brick upper storey and the first-floor band. It has a visible left return and three-panel glazed doors set back inside it. rear_side (x260-305 y600-650) and aerial (x845-890 y750-800) show the same recess from the north-east and south-east. There is no classroom window between the corner and the opening. The ground-floor windows begin only beyond it, as in front.png x850-970.\n- **v008 P1, corner concrete wall read as a separate box as tall as the canopy, with its top exposed:** RESOLVED. In entrance_passage (x965-1175 y420-760) the wall rises to the canopy soffit, and the corten fascia passes over it to the corner at x1215. In aerial (crop x605-800) the wall's top is entirely covered by the canopy deck. In right_side (x305-365 y607-672) the fascia overhangs the wall on the street face. The yard fence returns to the wall's south-west corner (aerial x710-760 y820-880).\n- **v007 findings previously verified (deep fascia, ground-floor fins, corten storey glazed band):** still resolved in v009 pixels. The fascia is deep in facade_close and canopy_contact. Ground-floor fins appear in courtyard, interior and right_side. The east glazed band shows in aerial x700-880 y370-470 and rear_side x800-1000 y440-530.\n- **v008 P2s (not individually named in the brief):** not assessed individually. The current P2 list above stands on its own.\n"
+  },
+  "preserved_evidence": [
+    {
+      "path": "source-package/evidence/v009/renders/aerial.jpg",
+      "bytes": 117353,
+      "sha256": "bb1da322dc5e0705162fa7fd807e26db71fc0555bd2769d80cc097305fe75f9b"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/architecture_close.jpg",
+      "bytes": 149569,
+      "sha256": "3a6827ab4ddd0ad9e2132d7b9f295570601d752c89bef53ae016081abaef6ebf"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/canopy_contact.jpg",
+      "bytes": 173391,
+      "sha256": "0c4f2af522eb5f6d1b202b653883957165681fe225c98fb84facea6476950861"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/courtyard.jpg",
+      "bytes": 171956,
+      "sha256": "d5ada15b27e8aa373ce21ee8c77786a99f7317803ed715c50b184b86254d29e5"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/entrance_passage.jpg",
+      "bytes": 162056,
+      "sha256": "dd6b56e0cd5f0d91319793d21a4545a983fc38794876136d44a9976a14092942"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/facade_close.jpg",
+      "bytes": 139180,
+      "sha256": "94d63cde0e55eed1c728830a8cb15ad9477ee419d74971d3149c3e2c3ad7dd44"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/fins_close.jpg",
+      "bytes": 146746,
+      "sha256": "6d0ae9d96b86c1b5dc33ca5e05ef151fec6fe33066c0e5ce3c6af259fe0153cc"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/front.jpg",
+      "bytes": 75219,
+      "sha256": "87d38a720a68731e6624f0416724c2ca13e4d39fc940e8bfab8cb2e2e34ee765"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/front_corner.jpg",
+      "bytes": 79956,
+      "sha256": "2efa95d19fae9592507f6dbc2e94f5d8f4de1a15ee33b3ac01919e9577fc56d5"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/glass_close.jpg",
+      "bytes": 124508,
+      "sha256": "c6b2dbefb0f4f211e9b66a79fc21f9a42dcb1f4e056b7298ed1f3efe5b2fcf57"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/interior.jpg",
+      "bytes": 97995,
+      "sha256": "6f48109d557efb13801e6c4fdb530f4b694e0ac43c7eeff4495f30109b3bfab7"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/left_side.jpg",
+      "bytes": 44928,
+      "sha256": "91931ef28c4a4621b61101d08796854494fc51f2d427610314d1abac74b92717"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/penthouse_terrace.jpg",
+      "bytes": 109636,
+      "sha256": "47199bb221b38a30a5c34bc09ed1a421e1b6586af85c682cf659490e450aefc3"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/playground.jpg",
+      "bytes": 180922,
+      "sha256": "a139045edc5bf2ff206ddab509e77ff9eb71918ec350a13d07c80bec422a1120"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/rear.jpg",
+      "bytes": 48604,
+      "sha256": "4e5d5807cd5255934f4663767533cf1d3e168522d3ba2dddd5fcf8e06ecd5980"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/rear_side.jpg",
+      "bytes": 91686,
+      "sha256": "225e31e28856ee85823712abd29291272a2381bb6c9bc4e7fe0e4154d87caafa"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/right_side.jpg",
+      "bytes": 70054,
+      "sha256": "033d66233e5b5262d8c6a4fa22b035d83f3cd72ac60f35adb60210206e871a26"
+    },
+    {
+      "path": "source-package/evidence/v009/renders/top.jpg",
+      "bytes": 71467,
+      "sha256": "55504b7cae21b97dd7ba6ebbd0b78bad394e4c39aaa4c42611c82f2747af6bbb"
+    },
+    {
+      "path": "source-package/evidence/v009/boards/phone-01-source-vs-render.jpg",
+      "bytes": 336516,
+      "sha256": "50fec1715c59d3b9a8fee8ed3de276d67b6cf9e8076d7c22c303140cbd31e72e"
+    },
+    {
+      "path": "source-package/evidence/v009/boards/phone-02-details.jpg",
+      "bytes": 242769,
+      "sha256": "2188876195b912172bf7da44896b740fbd1177d34ffc7efd7d31a9a03e7e8ff1"
+    },
+    {
+      "path": "source-package/evidence/v009/boards/phone-03-details.jpg",
+      "bytes": 188908,
+      "sha256": "c7a0a63747779e6696f688554200c0e79abafe2ac8455c6fc6974e30ccd986cc"
+    },
+    {
+      "path": "source-package/evidence/v009/boards/phone-04-details.jpg",
+      "bytes": 70664,
+      "sha256": "c0aab98fcc7a812c26aca34016c37e43f72a55f2033e125deec221b26c2222e1"
+    }
+  ],
+  "evidence_limitations": "Original reviewer inspected PNG renders and phone boards. Source branch preserved JPEG derivatives, recorded in preservation.json; this transcription does not claim a new visual review of those JPEGs. Authored metric assumptions and hidden views remain as disclosed in original prework and review.",
+  "keeper_approval_implied": false,
+  "runtime_acceptance_implied": false,
+  "publication_approval_implied": false
+}

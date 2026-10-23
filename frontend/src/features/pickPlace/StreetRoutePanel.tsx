@@ -1,3 +1,4 @@
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import { StreetDesignControls } from './StreetDesignControls';
 import { addStreetBend, streetAssetForZone, streetSectionWidth } from './streetPlacement';
@@ -49,7 +50,7 @@ export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete,
     </div>}
     {asset && <StreetCrossSection asset={asset} expanded />}
     <div className="grid grid-cols-2 gap-2"><button className={button} disabled={disabled || !bend} onClick={()=>bend && onReshape(bend)}>Add bend point</button><button className={button} disabled={disabled} onClick={onDelete}>Delete street</button></div>
-    {onDuplicate && !zone.properties?.validation_fixed_fixture && <StreetDuplicateControls key={zone.id} disabled={disabled} width={width} onDuplicate={onDuplicate} />}
+    {onDuplicate && !isFixedNativeScene(zone.properties) && <StreetDuplicateControls key={zone.id} disabled={disabled} width={width} onDuplicate={onDuplicate} />}
     {!bend && !isBrt && (!specialist || canal) && <p className="mt-2 text-xs text-slate-600">Extend a segment to {2 * width} m before adding another point.</p>}
     {asset && <CalgaryGuideDetails classification={asset.calgaryGuide} />}
     {onConnections && <button className={`${button} mt-3 w-full`} onClick={onConnections}>Connections</button>}

@@ -4,6 +4,7 @@ import { CANONICAL_CHOICES, type CanonicalSelection } from './canonicalCatalogue
 import { streetDesignUpdate } from './canonicalStreetPlacement';
 import type { StreetAsset } from './assetRegistry';
 import { streetAssetForZone } from './streetPlacement';
+import { isFixedNativeScene } from './fixedNativeScene';
 
 // Fixed street fixtures remain placeable, but cannot supply a route cross-section.
 const choices = CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway').map(choice => {
@@ -31,6 +32,7 @@ export function StreetDesignControls({ zone, disabled, onSave }: {
   });
   const [variantId, setVariantId] = useState(String(zone.properties?.road_selected_variant_id ?? ''));
   const [query, setQuery] = useState('');
+  if (isFixedNativeScene(zone.properties)) return null;
   const choice = choices.find(c => c.id === choiceId);
   const variant = choice?.option.variants?.find(v => v.id === variantId);
   const selected = choice ? selectedAsset({ choice, variant }) : undefined;

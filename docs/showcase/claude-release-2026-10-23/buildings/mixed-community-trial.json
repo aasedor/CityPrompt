@@ -1,0 +1,23 @@
+{
+  "schema": "cityprompt.mixed-scene-trial@1",
+  "project_url": "http://127.0.0.1:5184/projects/51644163-cb8d-43e0-96d8-688cb43750bb",
+  "created_via": "Ordinary picker and map controls; pre-existing disposable prepared boundary reused. Three building plots including moved EnergyCentre, ArchedMill and Mews; fixed HalifaxPark and RoadDietStreet; two People placements.",
+  "checks": {
+    "building_move_undo_redo": "passed",
+    "people_rotate_save_delete_undo": "passed",
+    "reload_same_five_geometry_placements": "passed_exact_api_snapshot",
+    "reload_two_people_and_rotation": "passed_ordinary_PlacedItems_UI",
+    "free_exact_export": "passed",
+    "console_warn_error": []
+  },
+  "limitations": [
+    "Fixed authored scenes including source surroundings; no automatically connected public road or operational traffic design.",
+    "Not a laptop/mobile hardware performance benchmark; prepared level site only.",
+    "AI image quality is separate and pending."
+  ],
+  "evidence": [
+    "mixed-scene-before-reload.json",
+    "mixed-scene-after-reload.json",
+    "mixed-community-free-capture.png"
+  ]
+}

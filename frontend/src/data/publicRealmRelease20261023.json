@@ -1,0 +1,1199 @@
+{
+  "schema": "cityprompt.fixed-public-realm-release@1",
+  "release_id": "claude-20261023",
+  "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+  "models": [
+    {
+      "candidate": "clay-cable-stayed-cycle-ring-clay-v003",
+      "category": "street",
+      "source_sha256": "c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11",
+      "review_sha256": "8a2e261ed6b98f73fa88123d3d5e5925082cccd8dc80b69c76553eea67dad527",
+      "runtime_sha256": "c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11",
+      "thumbnail_sha256": "c3bbebd85c5bc1553088d0d23ee5ad838facb5ddcd1c6b1ddf693fbb7e775f66",
+      "status": "ready",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11",
+        "evidence_sha256": "2f82dfdd52eaec1d927f001e66236f36cb75610caf492b136d38db38745c728e",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "passed",
+        "runtime_sha256": "c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11",
+        "evidence_sha256": "26a01dd80c57f688f0613076a416fcee0a421baf3a5a1d64965a7cfd4db8cdcd"
+      },
+      "asset": {
+        "id": "claude_public_realm:cable-stayed-cycle-ring:c1ef7008750f",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Cable Stayed Cycle Ring - fixed native",
+        "description": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/street-kits/claude-20261023/c3bbebd85c5bc1553088d0d23ee5ad838facb5ddcd1c6b1ddf693fbb7e775f66.png",
+        "model": {
+          "variantId": "dedicated_cycle_bridge_v1",
+          "revision": "c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "street_other",
+          "basis": "form_reference"
+        },
+        "zoneType": "road",
+        "reshapeMode": "fixed_native",
+        "width": 227,
+        "depth": 227,
+        "minWidth": 227,
+        "minDepth": 227,
+        "maxSize": 600,
+        "nativeDimensions": [
+          224.0,
+          224.0,
+          60.0
+        ],
+        "reshapeDescription": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "road_archetype_id": "dedicated_cycle_bridge",
+          "road_selected_variant_id": "dedicated_cycle_bridge_v1",
+          "public_realm_release_asset": "claude_public_realm:cable-stayed-cycle-ring:c1ef7008750f",
+          "native_public_realm_url": "/street-kits/claude-20261023/c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11.glb"
+        },
+        "maxWidth": 227,
+        "maxDepth": 227
+      },
+      "fixture": {
+        "id": "claude_public_realm:cable-stayed-cycle-ring:c1ef7008750f",
+        "title": "Cable Stayed Cycle Ring — fixed native",
+        "kind": "street",
+        "dimensions": [
+          227,
+          227
+        ],
+        "sha256": "c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11",
+        "surfaceRegions": [],
+        "url": "/street-kits/claude-20261023/c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      }
+    },
+    {
+      "candidate": "clay-calgary-riverwalk-clay-v003",
+      "category": "street",
+      "source_sha256": "22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930",
+      "review_sha256": "b27ea4e53d0ff005f55d1907882161e62f2162c2a38adfde7fae0ea5197e87b4",
+      "runtime_sha256": "22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930",
+      "thumbnail_sha256": "16b0c7932cb4ebc6c2db6dbee45a5c6dde3a203be04d7a6e44fb0a5abb7adb13",
+      "status": "ready",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930",
+        "evidence_sha256": "6fa15c69a2961271f43d89ff2628ef7fb2575adadd5b90046c296f7e36164bea",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "passed",
+        "runtime_sha256": "22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930",
+        "evidence_sha256": "8212bb80fd0c92dcee502d44f16322ef54f095cd5d00adc74ef03aa33abdb80e"
+      },
+      "asset": {
+        "id": "claude_public_realm:calgary-riverwalk:22a0bc53f02c",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Calgary Riverwalk - fixed native",
+        "description": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/street-kits/claude-20261023/16b0c7932cb4ebc6c2db6dbee45a5c6dde3a203be04d7a6e44fb0a5abb7adb13.png",
+        "model": {
+          "variantId": "bow_river_pathway_v0",
+          "revision": "22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "street_other",
+          "basis": "form_reference"
+        },
+        "zoneType": "road",
+        "reshapeMode": "fixed_native",
+        "width": 102,
+        "depth": 91,
+        "minWidth": 102,
+        "minDepth": 91,
+        "maxSize": 600,
+        "nativeDimensions": [
+          98.60000038146973,
+          88.0,
+          19.899999618530273
+        ],
+        "reshapeDescription": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "road_archetype_id": "bow_river_pathway",
+          "road_selected_variant_id": "bow_river_pathway_v0",
+          "public_realm_release_asset": "claude_public_realm:calgary-riverwalk:22a0bc53f02c",
+          "native_public_realm_url": "/street-kits/claude-20261023/22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930.glb"
+        },
+        "maxWidth": 102,
+        "maxDepth": 91
+      },
+      "fixture": {
+        "id": "claude_public_realm:calgary-riverwalk:22a0bc53f02c",
+        "title": "Calgary Riverwalk — fixed native",
+        "kind": "street",
+        "dimensions": [
+          102,
+          91
+        ],
+        "sha256": "22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930",
+        "surfaceRegions": [],
+        "url": "/street-kits/claude-20261023/22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      }
+    },
+    {
+      "candidate": "clay-halifax-public-gardens-clay-v005-park-only-r001",
+      "category": "park",
+      "source_sha256": "a2b8dfc2241bf3681573e81d8ca757dfc0efd0cbb302879696fe436c85f31577",
+      "review_sha256": "b554f11c3162523c7518c8d30f0eccbf9ec0ce8e5c4a49940a97d6f0bfcbb385",
+      "runtime_sha256": "d94cefb6028ef823e075e5e9e229bdab8c1d0b8d2a6a24fcb30ab64d4a368250",
+      "thumbnail_sha256": "a08f2e9a011a3d0d3ea8bea0107c8af420f869bce88aac4665726f191052330a",
+      "status": "prepared",
+      "visual_review": {
+        "status": "pending",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "d94cefb6028ef823e075e5e9e229bdab8c1d0b8d2a6a24fcb30ab64d4a368250",
+        "evidence_sha256": null,
+        "unresolved_p0": null,
+        "unresolved_p1": null
+      },
+      "runtime_review": {
+        "status": "pending",
+        "runtime_sha256": "d94cefb6028ef823e075e5e9e229bdab8c1d0b8d2a6a24fcb30ab64d4a368250",
+        "evidence_sha256": null
+      },
+      "asset": {
+        "id": "claude_public_realm:halifax-public-gardens-park-only:d94cefb6028e",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Halifax Public Gardens - fixed native",
+        "description": "Complete park layout with park-owned structures and paving. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/park-kits/claude-20261023/a08f2e9a011a3d0d3ea8bea0107c8af420f869bce88aac4665726f191052330a.jpg",
+        "model": {
+          "variantId": "halifax_public_gardens_v0",
+          "revision": "d94cefb6028ef823e075e5e9e229bdab8c1d0b8d2a6a24fcb30ab64d4a368250",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "gardens",
+          "basis": "form_reference"
+        },
+        "zoneType": "green_space",
+        "reshapeMode": "fixed_native",
+        "width": 76,
+        "depth": 94,
+        "minWidth": 76,
+        "minDepth": 94,
+        "maxSize": 600,
+        "nativeDimensions": [
+          72.95524784795771,
+          90.76000213623047,
+          14.460001228760007
+        ],
+        "reshapeDescription": "Complete park layout with park-owned structures and paving. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "green_space_archetype_id": "halifax_public_gardens",
+          "green_space_selected_variant_id": "halifax_public_gardens_v0",
+          "public_realm_release_asset": "claude_public_realm:halifax-public-gardens-park-only:d94cefb6028e",
+          "native_public_realm_url": "/park-kits/claude-20261023/d94cefb6028ef823e075e5e9e229bdab8c1d0b8d2a6a24fcb30ab64d4a368250.glb"
+        },
+        "maxWidth": 76,
+        "maxDepth": 94
+      },
+      "fixture": {
+        "id": "claude_public_realm:halifax-public-gardens-park-only:d94cefb6028e",
+        "title": "Halifax Public Gardens — fixed native",
+        "kind": "park",
+        "dimensions": [
+          76,
+          94
+        ],
+        "sha256": "d94cefb6028ef823e075e5e9e229bdab8c1d0b8d2a6a24fcb30ab64d4a368250",
+        "surfaceRegions": [],
+        "url": "/park-kits/claude-20261023/d94cefb6028ef823e075e5e9e229bdab8c1d0b8d2a6a24fcb30ab64d4a368250.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      },
+      "provenance": {
+        "superseded_by_candidate": "clay-halifax-public-gardens-clay-v005-park-only-r001-gpu-r001",
+        "superseded_by_asset_id": "claude_public_realm:halifax-public-gardens-park-only:9282a9ffd6a3",
+        "automatic_saved_identity_substitution": false,
+        "saved_claim_behavior": "Existing unsupported marker, exact raw identity retained; not a production-approved retired row."
+      }
+    },
+    {
+      "candidate": "clay-halifax-public-gardens-clay-v005-park-only-r001-gpu-r001",
+      "category": "park",
+      "source_sha256": "a2b8dfc2241bf3681573e81d8ca757dfc0efd0cbb302879696fe436c85f31577",
+      "review_sha256": "b554f11c3162523c7518c8d30f0eccbf9ec0ce8e5c4a49940a97d6f0bfcbb385",
+      "runtime_sha256": "9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79",
+      "thumbnail_sha256": "a08f2e9a011a3d0d3ea8bea0107c8af420f869bce88aac4665726f191052330a",
+      "status": "ready",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79",
+        "evidence_sha256": "0c5cb39b63e221b19912ff16390ab66947e0ae7b7d3ad9651cfd80c06c140232",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "passed",
+        "runtime_sha256": "9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79",
+        "evidence_sha256": "cfc934946e03961519f2d983e7fb6a216cec7d56fbc7ea90dca0bd0dd2c4256a"
+      },
+      "asset": {
+        "id": "claude_public_realm:halifax-public-gardens-park-only:9282a9ffd6a3",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Halifax Public Gardens - fixed native",
+        "description": "Complete park layout with park-owned structures and paving. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/park-kits/claude-20261023/a08f2e9a011a3d0d3ea8bea0107c8af420f869bce88aac4665726f191052330a.jpg",
+        "model": {
+          "variantId": "halifax_public_gardens_v0",
+          "revision": "9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "gardens",
+          "basis": "form_reference"
+        },
+        "zoneType": "green_space",
+        "reshapeMode": "fixed_native",
+        "width": 76,
+        "depth": 94,
+        "minWidth": 76,
+        "minDepth": 94,
+        "maxSize": 600,
+        "nativeDimensions": [
+          72.95524784795771,
+          90.76000213623047,
+          14.460001228760007
+        ],
+        "reshapeDescription": "Complete park layout with park-owned structures and paving. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "green_space_archetype_id": "halifax_public_gardens",
+          "green_space_selected_variant_id": "halifax_public_gardens_v0",
+          "public_realm_release_asset": "claude_public_realm:halifax-public-gardens-park-only:9282a9ffd6a3",
+          "native_public_realm_url": "/park-kits/claude-20261023/9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79.glb"
+        },
+        "maxWidth": 76,
+        "maxDepth": 94
+      },
+      "fixture": {
+        "id": "claude_public_realm:halifax-public-gardens-park-only:9282a9ffd6a3",
+        "title": "Halifax Public Gardens — fixed native",
+        "kind": "park",
+        "dimensions": [
+          76,
+          94
+        ],
+        "sha256": "9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79",
+        "surfaceRegions": [],
+        "url": "/park-kits/claude-20261023/9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      },
+      "provenance": {
+        "operation": "EXT_mesh_gpu_instancing of repeated static plants only",
+        "geometry_changed": false,
+        "materials_changed": false,
+        "parent_candidate": "clay-halifax-public-gardens-clay-v005-park-only-r001",
+        "parent_asset_id": "claude_public_realm:halifax-public-gardens-park-only:d94cefb6028e",
+        "parent_runtime_sha256": "d94cefb6028ef823e075e5e9e229bdab8c1d0b8d2a6a24fcb30ab64d4a368250",
+        "derivation_evidence_sha256": "cca24cf0240a050d0db85fef1b7903a1f62ada6bb80d12d7e324ce411462a6c7",
+        "independent_preservation_review_sha256": "5208c21791abcf612034191100a78b81a61a3a0c74864275c60cc17a2ab7cdb9",
+        "thumbnail_reused_from_parent": true,
+        "automatic_saved_identity_substitution": false
+      }
+    },
+    {
+      "candidate": "clay-ice-rink-market-square-clay-v007-park-only-r001",
+      "category": "park",
+      "source_sha256": "1a0ca9fbffcb84fa1978280572934f19400145852353907a317c66e116ae3f75",
+      "review_sha256": "fb08ce4676eb98ec83bf003460ba0c9030146ce7a0fffcbdd790cbc65e508cd7",
+      "runtime_sha256": "6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8",
+      "thumbnail_sha256": "395418e0134ab65633bb5cc487f2e963c47278f9b1ecfe6f9687324abc87cab8",
+      "status": "ready",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8",
+        "evidence_sha256": "31fda9231a60edc3cb35de3b3ca43c45bf605b12d3f21c1da80b9bb0302f3a48",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "passed",
+        "runtime_sha256": "6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8",
+        "evidence_sha256": "e165edb093e105408166a81634833e248921ed0b230094e997a37a9f0a676a69"
+      },
+      "asset": {
+        "id": "claude_public_realm:ice-rink-market-square-park-only:6a578c3c8e3c",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Ice Rink Market Square - fixed native",
+        "description": "Complete park layout with park-owned structures and paving. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/park-kits/claude-20261023/395418e0134ab65633bb5cc487f2e963c47278f9b1ecfe6f9687324abc87cab8.jpg",
+        "model": {
+          "variantId": "outdoor_ice_rink_v0",
+          "revision": "6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "play_sport",
+          "basis": "form_reference"
+        },
+        "zoneType": "green_space",
+        "reshapeMode": "fixed_native",
+        "width": 57,
+        "depth": 77,
+        "minWidth": 57,
+        "minDepth": 77,
+        "maxSize": 600,
+        "nativeDimensions": [
+          53.599998474121094,
+          73.51499938964844,
+          14.989999771118164
+        ],
+        "reshapeDescription": "Complete park layout with park-owned structures and paving. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "green_space_archetype_id": "outdoor_ice_rink",
+          "green_space_selected_variant_id": "outdoor_ice_rink_v0",
+          "public_realm_release_asset": "claude_public_realm:ice-rink-market-square-park-only:6a578c3c8e3c",
+          "native_public_realm_url": "/park-kits/claude-20261023/6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8.glb"
+        },
+        "maxWidth": 57,
+        "maxDepth": 77
+      },
+      "fixture": {
+        "id": "claude_public_realm:ice-rink-market-square-park-only:6a578c3c8e3c",
+        "title": "Ice Rink Market Square — fixed native",
+        "kind": "park",
+        "dimensions": [
+          57,
+          77
+        ],
+        "sha256": "6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8",
+        "surfaceRegions": [],
+        "url": "/park-kits/claude-20261023/6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      }
+    },
+    {
+      "candidate": "clay-inglewood-main-street-clay-v004",
+      "category": "street",
+      "source_sha256": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e",
+      "review_sha256": "781d8f5e132dbb40e595f129e0a76368a12b90c33ddb1ff41ac01ed16808595b",
+      "runtime_sha256": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e",
+      "thumbnail_sha256": "c528164ed6ce8922d904ffe9bb0cc9bac3e19b0592695bb960d7f3f8712834aa",
+      "status": "ready",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e",
+        "evidence_sha256": "6c71460c34caaac5daed48f83daaa5c7d3f6ecbd4537d53050eec27b83041131",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "passed",
+        "runtime_sha256": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e",
+        "evidence_sha256": "56f888e203e9d13f85f490e8b69cfc001586b0ca55f82f06c6debdc8a5a5d70e"
+      },
+      "asset": {
+        "id": "claude_public_realm:inglewood-main-street:e1106da0a1bc",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Inglewood Main Street - fixed native",
+        "description": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/street-kits/claude-20261023/c528164ed6ce8922d904ffe9bb0cc9bac3e19b0592695bb960d7f3f8712834aa.png",
+        "model": {
+          "variantId": "inglewood_main_street_v0",
+          "revision": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "street_other",
+          "basis": "form_reference"
+        },
+        "zoneType": "road",
+        "reshapeMode": "fixed_native",
+        "width": 111,
+        "depth": 102,
+        "minWidth": 111,
+        "minDepth": 102,
+        "maxSize": 600,
+        "nativeDimensions": [
+          108.0,
+          99.0,
+          12.539999961853027
+        ],
+        "reshapeDescription": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "road_archetype_id": "inglewood_main_street",
+          "road_selected_variant_id": "inglewood_main_street_v0",
+          "public_realm_release_asset": "claude_public_realm:inglewood-main-street:e1106da0a1bc",
+          "native_public_realm_url": "/street-kits/claude-20261023/e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e.glb"
+        },
+        "maxWidth": 111,
+        "maxDepth": 102
+      },
+      "fixture": {
+        "id": "claude_public_realm:inglewood-main-street:e1106da0a1bc",
+        "title": "Inglewood Main Street — fixed native",
+        "kind": "street",
+        "dimensions": [
+          111,
+          102
+        ],
+        "sha256": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e",
+        "surfaceRegions": [],
+        "url": "/street-kits/claude-20261023/e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      }
+    },
+    {
+      "candidate": "clay-montreal-plateau-rue-clay-v003",
+      "category": "street",
+      "source_sha256": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde",
+      "review_sha256": "dd2bc4b53e19a9c1d1431170022955b783cfa9734201b2da4ca79ffba08c493a",
+      "runtime_sha256": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde",
+      "thumbnail_sha256": "895785dc3c7d193c7c596c5203a923b51630797dfecf5b212f69bc3a40dbb36b",
+      "status": "ready",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde",
+        "evidence_sha256": "3ef4154e32f36101d668bfc96b0714ba3c3e140b6570c725c7a3a09026c4b757",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "passed",
+        "runtime_sha256": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde",
+        "evidence_sha256": "4a614b392926ae6159f038b8ca04c3493f1a2cbaae5e438247cc8134a2b46f2f"
+      },
+      "asset": {
+        "id": "claude_public_realm:montreal-plateau-rue:92722fb6162c",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Montreal Plateau Rue - fixed native",
+        "description": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/street-kits/claude-20261023/895785dc3c7d193c7c596c5203a923b51630797dfecf5b212f69bc3a40dbb36b.png",
+        "model": {
+          "variantId": "montreal_plateau_residential_rue_v0",
+          "revision": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "street_other",
+          "basis": "form_reference"
+        },
+        "zoneType": "road",
+        "reshapeMode": "fixed_native",
+        "width": 121,
+        "depth": 121,
+        "minWidth": 121,
+        "minDepth": 121,
+        "maxSize": 600,
+        "nativeDimensions": [
+          118.0,
+          118.0,
+          16.100000381469727
+        ],
+        "reshapeDescription": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "road_archetype_id": "montreal_plateau_residential_rue",
+          "road_selected_variant_id": "montreal_plateau_residential_rue_v0",
+          "public_realm_release_asset": "claude_public_realm:montreal-plateau-rue:92722fb6162c",
+          "native_public_realm_url": "/street-kits/claude-20261023/92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde.glb"
+        },
+        "maxWidth": 121,
+        "maxDepth": 121
+      },
+      "fixture": {
+        "id": "claude_public_realm:montreal-plateau-rue:92722fb6162c",
+        "title": "Montreal Plateau Rue — fixed native",
+        "kind": "street",
+        "dimensions": [
+          121,
+          121
+        ],
+        "sha256": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde",
+        "surfaceRegions": [],
+        "url": "/street-kits/claude-20261023/92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      }
+    },
+    {
+      "candidate": "clay-princes-island-park-clay-v005",
+      "category": "park",
+      "source_sha256": "8b948d4cd1edbbb6b7a022e744831ee0cb0f7d6c308f51490b8f22e8f693798d",
+      "review_sha256": "3741cc738c1b00cec1b38009c5aa32c329cccd222c3d595c964070fdc8219304",
+      "runtime_sha256": "8b948d4cd1edbbb6b7a022e744831ee0cb0f7d6c308f51490b8f22e8f693798d",
+      "thumbnail_sha256": "1b888e08c7c12b1ef0c559998fb419479f7d2212bc5f54e786b87336059960e7",
+      "status": "prepared",
+      "visual_review": {
+        "status": "pending",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "8b948d4cd1edbbb6b7a022e744831ee0cb0f7d6c308f51490b8f22e8f693798d",
+        "evidence_sha256": null,
+        "unresolved_p0": null,
+        "unresolved_p1": null
+      },
+      "runtime_review": {
+        "status": "pending",
+        "runtime_sha256": "8b948d4cd1edbbb6b7a022e744831ee0cb0f7d6c308f51490b8f22e8f693798d",
+        "evidence_sha256": null
+      },
+      "asset": {
+        "id": "claude_public_realm:princes-island-park:8b948d4cd1ed",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Princes Island Park - fixed native",
+        "description": "Complete park layout with park-owned structures and paving. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/park-kits/claude-20261023/1b888e08c7c12b1ef0c559998fb419479f7d2212bc5f54e786b87336059960e7.png",
+        "model": {
+          "variantId": "calgary_princes_island_v0",
+          "revision": "8b948d4cd1edbbb6b7a022e744831ee0cb0f7d6c308f51490b8f22e8f693798d",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "plazas",
+          "basis": "form_reference"
+        },
+        "zoneType": "green_space",
+        "reshapeMode": "fixed_native",
+        "width": 104,
+        "depth": 71,
+        "minWidth": 104,
+        "minDepth": 71,
+        "maxSize": 600,
+        "nativeDimensions": [
+          100.71962366112166,
+          67.70213668763427,
+          13.575874387745216
+        ],
+        "reshapeDescription": "Complete park layout with park-owned structures and paving. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "green_space_archetype_id": "calgary_princes_island",
+          "green_space_selected_variant_id": "calgary_princes_island_v0",
+          "public_realm_release_asset": "claude_public_realm:princes-island-park:8b948d4cd1ed",
+          "native_public_realm_url": "/park-kits/claude-20261023/8b948d4cd1edbbb6b7a022e744831ee0cb0f7d6c308f51490b8f22e8f693798d.glb"
+        },
+        "maxWidth": 104,
+        "maxDepth": 71
+      },
+      "fixture": {
+        "id": "claude_public_realm:princes-island-park:8b948d4cd1ed",
+        "title": "Princes Island Park — fixed native",
+        "kind": "park",
+        "dimensions": [
+          104,
+          71
+        ],
+        "sha256": "8b948d4cd1edbbb6b7a022e744831ee0cb0f7d6c308f51490b8f22e8f693798d",
+        "surfaceRegions": [],
+        "url": "/park-kits/claude-20261023/8b948d4cd1edbbb6b7a022e744831ee0cb0f7d6c308f51490b8f22e8f693798d.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      },
+      "provenance": {
+        "superseded_by_candidate": "clay-princes-island-park-clay-v005-gpu-r001",
+        "superseded_by_asset_id": "claude_public_realm:princes-island-park:498a973435fc",
+        "automatic_saved_identity_substitution": false,
+        "saved_claim_behavior": "Existing unsupported marker, exact raw identity retained; not production-approved retired bytes."
+      }
+    },
+    {
+      "candidate": "clay-princes-island-park-clay-v005-gpu-r001",
+      "category": "park",
+      "source_sha256": "8b948d4cd1edbbb6b7a022e744831ee0cb0f7d6c308f51490b8f22e8f693798d",
+      "review_sha256": "3741cc738c1b00cec1b38009c5aa32c329cccd222c3d595c964070fdc8219304",
+      "runtime_sha256": "498a973435fc8bc077084d3ee630babc55574a7365fdbd978a1cea742525a0ec",
+      "thumbnail_sha256": "1b888e08c7c12b1ef0c559998fb419479f7d2212bc5f54e786b87336059960e7",
+      "status": "ready",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "498a973435fc8bc077084d3ee630babc55574a7365fdbd978a1cea742525a0ec",
+        "evidence_sha256": "469960fa9e55ed663231bf9b48173aa957fac01364c0afbfd6969e7ef35dd0fb",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "passed",
+        "runtime_sha256": "498a973435fc8bc077084d3ee630babc55574a7365fdbd978a1cea742525a0ec",
+        "evidence_sha256": "d35924661791c05939e2ce3564bec7a0d02de7118952cf982d64f8e194c35e35"
+      },
+      "asset": {
+        "id": "claude_public_realm:princes-island-park:498a973435fc",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Princes Island Park - fixed native",
+        "description": "Complete park layout with park-owned structures and paving. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/park-kits/claude-20261023/1b888e08c7c12b1ef0c559998fb419479f7d2212bc5f54e786b87336059960e7.png",
+        "model": {
+          "variantId": "calgary_princes_island_v0",
+          "revision": "498a973435fc8bc077084d3ee630babc55574a7365fdbd978a1cea742525a0ec",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "plazas",
+          "basis": "form_reference"
+        },
+        "zoneType": "green_space",
+        "reshapeMode": "fixed_native",
+        "width": 104,
+        "depth": 71,
+        "minWidth": 104,
+        "minDepth": 71,
+        "maxSize": 600,
+        "nativeDimensions": [
+          100.71962366112166,
+          67.70213668763427,
+          13.575874387745216
+        ],
+        "reshapeDescription": "Complete park layout with park-owned structures and paving. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "green_space_archetype_id": "calgary_princes_island",
+          "green_space_selected_variant_id": "calgary_princes_island_v0",
+          "public_realm_release_asset": "claude_public_realm:princes-island-park:498a973435fc",
+          "native_public_realm_url": "/park-kits/claude-20261023/498a973435fc8bc077084d3ee630babc55574a7365fdbd978a1cea742525a0ec.glb"
+        },
+        "maxWidth": 104,
+        "maxDepth": 71
+      },
+      "fixture": {
+        "id": "claude_public_realm:princes-island-park:498a973435fc",
+        "title": "Princes Island Park — fixed native",
+        "kind": "park",
+        "dimensions": [
+          104,
+          71
+        ],
+        "sha256": "498a973435fc8bc077084d3ee630babc55574a7365fdbd978a1cea742525a0ec",
+        "surfaceRegions": [],
+        "url": "/park-kits/claude-20261023/498a973435fc8bc077084d3ee630babc55574a7365fdbd978a1cea742525a0ec.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      },
+      "provenance": {
+        "operation": "EXT_mesh_gpu_instancing of repeated static plants only",
+        "geometry_changed": false,
+        "materials_changed": false,
+        "parent_candidate": "clay-princes-island-park-clay-v005",
+        "parent_asset_id": "claude_public_realm:princes-island-park:8b948d4cd1ed",
+        "parent_runtime_sha256": "8b948d4cd1edbbb6b7a022e744831ee0cb0f7d6c308f51490b8f22e8f693798d",
+        "derivation_evidence_sha256": "552d8d36936452c8dbb9895033c26308e2da0bacad6d64ac9502430dc56b9697",
+        "six_view_pixel_preservation_sha256": "aab2d8154e62163408ac8cefc50736385cb809d47b0a058b88285457563095ad",
+        "thumbnail_reused_from_parent": true,
+        "automatic_saved_identity_substitution": false,
+        "independent_preservation_review_sha256": "72fa1c80c7f732a793d8f2061843f974ffb889406afb488a5dbf8cad18faf1c6"
+      }
+    },
+    {
+      "candidate": "clay-rail-through-truss-clay-v005",
+      "category": "street",
+      "source_sha256": "db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813",
+      "review_sha256": "3e85d3bc9ba526cfb94aa45af706c51d38e35f5113d858c2be6f3036b59c0d9a",
+      "runtime_sha256": "db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813",
+      "thumbnail_sha256": "05a81c56f62e11f4d84f294e68dff98c7cdfd1de3ac48fbf4a8ab2577ea2f3a3",
+      "status": "ready",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813",
+        "evidence_sha256": "188c7e08b94f7e5f89b8c92bc881b575a2c8e2e023434d5e3feb77267ca9bc99",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "passed",
+        "runtime_sha256": "db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813",
+        "evidence_sha256": "044386352fc37d3392b2015693d14c1dff4d88033a18c9dde4f9311d31996b36"
+      },
+      "asset": {
+        "id": "claude_public_realm:rail-through-truss:db0886ff6186",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Rail Through Truss - fixed native",
+        "description": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/street-kits/claude-20261023/05a81c56f62e11f4d84f294e68dff98c7cdfd1de3ac48fbf4a8ab2577ea2f3a3.png",
+        "model": {
+          "variantId": "rail_transit_viaduct_v2",
+          "revision": "db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "street_other",
+          "basis": "form_reference"
+        },
+        "zoneType": "road",
+        "reshapeMode": "fixed_native",
+        "width": 77,
+        "depth": 136,
+        "minWidth": 77,
+        "minDepth": 136,
+        "maxSize": 600,
+        "nativeDimensions": [
+          73.04000091552734,
+          132.0399932861328,
+          19.399999618530273
+        ],
+        "reshapeDescription": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "road_archetype_id": "rail_transit_viaduct",
+          "road_selected_variant_id": "rail_transit_viaduct_v2",
+          "public_realm_release_asset": "claude_public_realm:rail-through-truss:db0886ff6186",
+          "native_public_realm_url": "/street-kits/claude-20261023/db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813.glb"
+        },
+        "maxWidth": 77,
+        "maxDepth": 136
+      },
+      "fixture": {
+        "id": "claude_public_realm:rail-through-truss:db0886ff6186",
+        "title": "Rail Through Truss — fixed native",
+        "kind": "street",
+        "dimensions": [
+          77,
+          136
+        ],
+        "sha256": "db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813",
+        "surfaceRegions": [],
+        "url": "/street-kits/claude-20261023/db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      }
+    },
+    {
+      "candidate": "clay-road-diet-complete-street-clay-v003",
+      "category": "street",
+      "source_sha256": "bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696",
+      "review_sha256": "cc93a16d509cb6fd764582bffa1ac90c830283532063ef88e211fcc6148f4816",
+      "runtime_sha256": "bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696",
+      "thumbnail_sha256": "27c582cd87e4208c2387d35a38e5654623dfb55c9a8a005400f9797e4cb31b2d",
+      "status": "ready",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696",
+        "evidence_sha256": "01bf0506c6fd98ea0d450269007b0eef356e8dcf41c334a630960f2cb871c498",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "passed",
+        "runtime_sha256": "bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696",
+        "evidence_sha256": "7b74d7ad69fc4f4805a2dca54baa2c641c086183872f6dd3ed28b4cd902aa209"
+      },
+      "asset": {
+        "id": "claude_public_realm:road-diet-complete-street:bdd53e3b94bd",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Road Diet Complete Street - fixed native",
+        "description": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/street-kits/claude-20261023/27c582cd87e4208c2387d35a38e5654623dfb55c9a8a005400f9797e4cb31b2d.png",
+        "model": {
+          "variantId": "road_diet_complete_street_v0",
+          "revision": "bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "street_other",
+          "basis": "form_reference"
+        },
+        "zoneType": "road",
+        "reshapeMode": "fixed_native",
+        "width": 99,
+        "depth": 131,
+        "minWidth": 99,
+        "minDepth": 131,
+        "maxSize": 600,
+        "nativeDimensions": [
+          96.0,
+          128.0,
+          14.329999923706055
+        ],
+        "reshapeDescription": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "road_archetype_id": "road_diet_complete_street",
+          "road_selected_variant_id": "road_diet_complete_street_v0",
+          "public_realm_release_asset": "claude_public_realm:road-diet-complete-street:bdd53e3b94bd",
+          "native_public_realm_url": "/street-kits/claude-20261023/bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696.glb"
+        },
+        "maxWidth": 99,
+        "maxDepth": 131
+      },
+      "fixture": {
+        "id": "claude_public_realm:road-diet-complete-street:bdd53e3b94bd",
+        "title": "Road Diet Complete Street — fixed native",
+        "kind": "street",
+        "dimensions": [
+          99,
+          131
+        ],
+        "sha256": "bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696",
+        "surfaceRegions": [],
+        "url": "/street-kits/claude-20261023/bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      }
+    },
+    {
+      "candidate": "clay-steel-truss-road-bridge-clay-v002",
+      "category": "street",
+      "source_sha256": "d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30",
+      "review_sha256": "94cc215d4ea537479709c749f2c0143a341202723d35dc74456819a48cd91490",
+      "runtime_sha256": "d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30",
+      "thumbnail_sha256": "42e7507fd4b69a758111c3a44c39ba6afa0778da2e4cc621ea51cd60b207cfa6",
+      "status": "ready",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30",
+        "evidence_sha256": "83b35cada3ddb6a1dec515c582312a8e6d9120ad366e99d291e4133abb68c375",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "passed",
+        "runtime_sha256": "d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30",
+        "evidence_sha256": "418b854b1f13c31f0feb1c70457331d8e2d1145c9c37eebeb2867abe9a046e09"
+      },
+      "asset": {
+        "id": "claude_public_realm:steel-truss-road-bridge:d01804b356b2",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Steel Truss Road Bridge - fixed native",
+        "description": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/street-kits/claude-20261023/42e7507fd4b69a758111c3a44c39ba6afa0778da2e4cc621ea51cd60b207cfa6.png",
+        "model": {
+          "variantId": "urban_vehicular_bridge_v1",
+          "revision": "d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "street_other",
+          "basis": "form_reference"
+        },
+        "zoneType": "road",
+        "reshapeMode": "fixed_native",
+        "width": 124,
+        "depth": 123,
+        "minWidth": 124,
+        "minDepth": 123,
+        "maxSize": 600,
+        "nativeDimensions": [
+          120.04999923706055,
+          120.0,
+          23.75
+        ],
+        "reshapeDescription": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "road_archetype_id": "urban_vehicular_bridge",
+          "road_selected_variant_id": "urban_vehicular_bridge_v1",
+          "public_realm_release_asset": "claude_public_realm:steel-truss-road-bridge:d01804b356b2",
+          "native_public_realm_url": "/street-kits/claude-20261023/d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30.glb"
+        },
+        "maxWidth": 124,
+        "maxDepth": 123
+      },
+      "fixture": {
+        "id": "claude_public_realm:steel-truss-road-bridge:d01804b356b2",
+        "title": "Steel Truss Road Bridge — fixed native",
+        "kind": "street",
+        "dimensions": [
+          124,
+          123
+        ],
+        "sha256": "d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30",
+        "surfaceRegions": [],
+        "url": "/street-kits/claude-20261023/d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      }
+    },
+    {
+      "candidate": "clay-stepped-terraced-plaza-clay-v005-park-only-r002",
+      "category": "park",
+      "source_sha256": "36631aac2b3a5c42e620473a0993fd38e2a413526b5db9f9b22d43f16453aff4",
+      "review_sha256": "df013056ce4556f45302aac95ab224c273fb88d0f52de88ca6c9e3918c543dce",
+      "runtime_sha256": "c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2",
+      "thumbnail_sha256": "553b17c51554f497d4a63558091b09ad0e1cf9c4a27b116518b28ad38b3246c8",
+      "status": "prepared",
+      "visual_review": {
+        "status": "rework_required",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2",
+        "evidence_sha256": "efdcca333325c47e284b6d3140444b450fbd5b58472442d8a85475ed63b82009",
+        "unresolved_p0": 0,
+        "unresolved_p1": 1
+      },
+      "runtime_review": {
+        "status": "pending",
+        "runtime_sha256": "c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2",
+        "evidence_sha256": null
+      },
+      "asset": {
+        "id": "claude_public_realm:stepped-terraced-plaza-park-only:c564869a31be",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Stepped Terraced Plaza - fixed native",
+        "description": "Complete park layout with park-owned structures and paving. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/park-kits/claude-20261023/553b17c51554f497d4a63558091b09ad0e1cf9c4a27b116518b28ad38b3246c8.jpg",
+        "model": {
+          "variantId": "stepped_terraced_plaza_v0",
+          "revision": "c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "plazas",
+          "basis": "form_reference"
+        },
+        "zoneType": "green_space",
+        "reshapeMode": "fixed_native",
+        "width": 43,
+        "depth": 61,
+        "minWidth": 43,
+        "minDepth": 61,
+        "maxSize": 600,
+        "nativeDimensions": [
+          40.0,
+          58.0,
+          9.40999984741211
+        ],
+        "reshapeDescription": "Complete park layout with park-owned structures and paving. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "green_space_archetype_id": "stepped_terraced_plaza",
+          "green_space_selected_variant_id": "stepped_terraced_plaza_v0",
+          "public_realm_release_asset": "claude_public_realm:stepped-terraced-plaza-park-only:c564869a31be",
+          "native_public_realm_url": "/park-kits/claude-20261023/c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2.glb"
+        },
+        "maxWidth": 43,
+        "maxDepth": 61
+      },
+      "fixture": {
+        "id": "claude_public_realm:stepped-terraced-plaza-park-only:c564869a31be",
+        "title": "Stepped Terraced Plaza — fixed native",
+        "kind": "park",
+        "dimensions": [
+          43,
+          61
+        ],
+        "sha256": "c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2",
+        "surfaceRegions": [],
+        "url": "/park-kits/claude-20261023/c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      }
+    },
+    {
+      "candidate": "clay-swooping-cycle-flyover-clay-v003",
+      "category": "street",
+      "source_sha256": "4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4",
+      "review_sha256": "2ee5c9c632931aff3eaf10cbe1376a76bdc1a1c7a83b49cc389d8f9718ce605d",
+      "runtime_sha256": "4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4",
+      "thumbnail_sha256": "ed500b98870febb7f8a37e5d373a1c02c2c241e57ef0a3f1a14b68ddc6111cdd",
+      "status": "ready",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4",
+        "evidence_sha256": "34dcc2e00dcf6c82fd3065a4cc874d35d50c8d74f457badba7c5de163604242e",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "passed",
+        "runtime_sha256": "4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4",
+        "evidence_sha256": "9ae768c0b4c71720ac408e3d22d4354754c99b116914023d779adc14272970ee"
+      },
+      "asset": {
+        "id": "claude_public_realm:swooping-cycle-flyover:4c075a5a31b0",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Swooping Cycle Flyover - fixed native",
+        "description": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/street-kits/claude-20261023/ed500b98870febb7f8a37e5d373a1c02c2c241e57ef0a3f1a14b68ddc6111cdd.png",
+        "model": {
+          "variantId": "dedicated_cycle_bridge_v0",
+          "revision": "4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "street_other",
+          "basis": "form_reference"
+        },
+        "zoneType": "road",
+        "reshapeMode": "fixed_native",
+        "width": 453,
+        "depth": 233,
+        "minWidth": 453,
+        "minDepth": 233,
+        "maxSize": 600,
+        "nativeDimensions": [
+          450.0,
+          230.0,
+          27.15999984741211
+        ],
+        "reshapeDescription": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "road_archetype_id": "dedicated_cycle_bridge",
+          "road_selected_variant_id": "dedicated_cycle_bridge_v0",
+          "public_realm_release_asset": "claude_public_realm:swooping-cycle-flyover:4c075a5a31b0",
+          "native_public_realm_url": "/street-kits/claude-20261023/4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4.glb"
+        },
+        "maxWidth": 453,
+        "maxDepth": 233
+      },
+      "fixture": {
+        "id": "claude_public_realm:swooping-cycle-flyover:4c075a5a31b0",
+        "title": "Swooping Cycle Flyover — fixed native",
+        "kind": "street",
+        "dimensions": [
+          453,
+          233
+        ],
+        "sha256": "4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4",
+        "surfaceRegions": [],
+        "url": "/street-kits/claude-20261023/4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      }
+    },
+    {
+      "candidate": "clay-weathering-steel-footbridge-clay-v003",
+      "category": "street",
+      "source_sha256": "2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2",
+      "review_sha256": "571e4acb5d7b33c3873e1d1cdd9f2435ad1adba3480fe50c8f4fe521f8857e09",
+      "runtime_sha256": "2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2",
+      "thumbnail_sha256": "05d426a55b9f63d2a0d997eec0745e2ebccd4e75359d3948939861600d75b3a7",
+      "status": "ready",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2",
+        "evidence_sha256": "f17ce6e3469ef1171104ef1c2f84e615d0400094966b27119241d145fdc71a95",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "passed",
+        "runtime_sha256": "2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2",
+        "evidence_sha256": "c1be21021dc3e144132a8f1386c2573072f2be8ea7bfb5ffba98bd2d928fea34"
+      },
+      "asset": {
+        "id": "claude_public_realm:weathering-steel-footbridge:2384d6eed060",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Weathering Steel Footbridge - fixed native",
+        "description": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "thumbnail": "/street-kits/claude-20261023/05d426a55b9f63d2a0d997eec0745e2ebccd4e75359d3948939861600d75b3a7.png",
+        "model": {
+          "variantId": "urban_pedestrian_footbridge_v0",
+          "revision": "2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "street_other",
+          "basis": "form_reference"
+        },
+        "zoneType": "road",
+        "reshapeMode": "fixed_native",
+        "width": 133,
+        "depth": 113,
+        "minWidth": 133,
+        "minDepth": 113,
+        "maxSize": 600,
+        "nativeDimensions": [
+          130.0,
+          110.0,
+          26.600000381469727
+        ],
+        "reshapeDescription": "Complete fixed street scene, including authored surroundings. Native size; move and rotate only. Prepared level site required. No stretching or route bending.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "road_archetype_id": "urban_pedestrian_footbridge",
+          "road_selected_variant_id": "urban_pedestrian_footbridge_v0",
+          "public_realm_release_asset": "claude_public_realm:weathering-steel-footbridge:2384d6eed060",
+          "native_public_realm_url": "/street-kits/claude-20261023/2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2.glb"
+        },
+        "maxWidth": 133,
+        "maxDepth": 113
+      },
+      "fixture": {
+        "id": "claude_public_realm:weathering-steel-footbridge:2384d6eed060",
+        "title": "Weathering Steel Footbridge — fixed native",
+        "kind": "street",
+        "dimensions": [
+          133,
+          113
+        ],
+        "sha256": "2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2",
+        "surfaceRegions": [],
+        "url": "/street-kits/claude-20261023/2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2.glb",
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      }
+    }
+  ]
+}

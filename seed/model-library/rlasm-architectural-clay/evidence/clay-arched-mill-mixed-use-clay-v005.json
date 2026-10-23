@@ -1,0 +1,153 @@
+{
+  "candidate": "clay-arched-mill-mixed-use-clay-v005",
+  "model_sha256": "218c0f8d8a84c34169af41490f8d0284e0bf2ac48dfe9a423b0985533c39ffdc",
+  "reviewer": "Independent source-locked Claude reviewer (role as recorded in the preserved original review)",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "inspected_files": [
+    {
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0.png",
+      "sha256": "049dffded31d819bbb63a8f99da90487eea5360efbac26945e77bd69901b1d94"
+    },
+    {
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0_angle_60.jpg",
+      "sha256": "b19c286b8e77439bbefe0b75cfc933afd45c338173f5a6c9167fee37d23e61b1"
+    },
+    {
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/industrial_brick_mixed_use/variant_0_angle_90.jpg",
+      "sha256": "8f81fee2055fb580d55f58f32a91a165f33e4a6552b8b19411f5a38a170b0807"
+    }
+  ],
+  "record_kind": "faithful_structured_transcription_of_prior_independent_review",
+  "transcribed_on": "2026-10-23",
+  "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+  "floor_count_provenance": {
+    "source_prework_observed_storeys": 4
+  },
+  "source_review": {
+    "path": "source-package/evidence/v005/independent-review.md",
+    "sha256": "75c49a1157a37f1e88b4aaded47faf32c9c6ecbfb5b480bb897b7ab71e240648",
+    "text": "# Independent RLASM v6.1 holistic review: mill v005\n\nReviewer: independent (did not build). Evidence: sources/front.png, sources/oblique.jpg, sources/top.jpg; all 18 renders at 1440x1080; boards phone-01..04. No build code, reports or builder notes were read.\n\n## 1. Verdict\n\n**PASS_ZERO_P0_P1** (P0 = 0, P1 = 0, P2 = 8). The v004 P1 is fixed in the pixels. On both eave faces the top-storey windows now show segmental arched heads with a brick head and a strip of brick below the dentil course. Every remaining defect is polish. None of them changes identity, topology, openings, contact or camera validity.\n\n## 2. Findings table\n\nNo P0 or P1 findings.\n\n| # | severity | view(s) | symptom (what the pixels show) | likely cause | finite fix |\n|---|---|---|---|---|---|\n| 1 | P2 | front (gable ~x400-1040, apex y~328, eave coping y~435); rear; chimney_contact | Gable rise is about 107 px over a 458 px wall height (ratio ~0.23). The source front gable gives about 112 px over ~365 px (ratio ~0.31). The roof is about 25% flatter than the source, and the raked gable silhouette reads squat. | Main roof pitch set too low | Raise the ridge so rise/eave height is ~0.30 (roughly 33-35 deg). Re-seat the gable coping and pilaster tops to the new rake. |\n| 2 | P2 | top (roof field x720-1000), aerial, rear_side | The slate field is a light blue-grey, average about (115,119,125). The source slate is dark charcoal, about (75,74,82) in top.jpg. Contrast between slate and glass pavilion is weaker than in the source. | Slate palette value too light | Darken the slate swatch about 30-35% toward the source charcoal. Keep it cooler than the brick. |\n| 3 | P2 | roof_pavilion (x310-975, y400-560); left_side (x160-1080, y330-440); front_corner | The glazed pavilion reads as a flat-topped box with only a very shallow hipped top. In the oblique source, the glass roof is a clearly raked plane rising from the front glazed wall toward the ridge. | Pavilion roof pitch too low | Give the pavilion roof a monopitch, or a raked plane parallel to the main slope at a visibly steeper angle, with glazing bars running down the slope. |\n| 4 | P2 | top (rooflights x780-910, y360-610), aerial, rear_side | All four rooflights sit as two pairs on the slope opposite the pavilion. In top.jpg two rooflights sit beside the pavilion on its own slope (~x600-660) and two sit on the other slope (~x705-770), staggered rather than in a grid. | Rooflight layout not traced from the top source | Move one pair to the strip between the pavilion and the ridge. Stagger the other pair to match top.jpg. |\n| 5 | P2 | roof_pavilion (~x800-835, y695-715; visible in zoom) | A small terracotta wedge shows between the pavilion terrace deck edge and the cut edge of the slate field. Bare substrate is visible at the slate cut. | Slate cut-out around the deck not closed against the deck upstand | Extend the slate or the deck upstand to close the wedge, or add a flashing strip along the cut. |\n| 6 | P2 | front (whole-envelope set) | The front camera is a square-on gable elevation. The locked front source is a street-level south-west three-quarter view of the corner, showing the eave face and gable together. corner_entry covers the street corner but is a close crop, not a whole-envelope match. | Camera role not matched to the source front | Add or replace with a street-level three-quarter camera matching the source front composition (corner near left-centre, about 35 mm, eye ~1.6 m). |\n| 7 | P2 | interior (left window head, x30-300, y85-95) | A dark trapezoid sits between the flat top of the glazing frame and the soffit of the segmental arch. The arch void is unglazed and reads as a black sliver. | Glazing and frame are rectangular, while the arched head opening is taller | Fit the glass and frame head to the segmental arch, or add an arched fanlight panel. |\n| 8 | P2 | front (gable apex ~x720, y~330), fr zoom | At the ridge, the two raking coping pieces meet with a tiny dark notch rather than a closed apex or apex stone. | Coping segments mitred short at the apex | Extend and mitre the copings to meet, or add a small apex block. |\n\n## 3. Source conformance checklist\n\n| item | status | view used | note |\n|---|---|---|---|\n| Silhouette | conforms (minor deviation, see P2-1) | front vs source front; front_corner vs oblique | Near-square four-storey block, gable on the short face and chimney rising behind at the NE corner. The rake is somewhat low. |\n| Storey count | conforms | left_side, front, rear, corner_entry | Ground floor plus three upper storeys. The stone band sits over the ground floor. |\n| Bay rhythm and pilasters | conforms | left_side (4 bays), front (4 bays + door), corner_entry | Full-height pilasters frame each bay. The gable-face pilasters run up into the rake as in the source. The ground-floor door is at the right end of the gable face as in the source. |\n| Arched openings | conforms | facade_close, arched_windows, shopfront, glass_close, corner_entry, architecture_close | Segmental arched heads with brick heads on all three upper storeys, the top storey included. Arched shopfronts with dark frames sit between piers. Reveals and returns are visible. |\n| Cornice and band | conforms | architecture_close, left_side, corner_entry, facade_close | Stone sill band over the ground floor. The dentil cornice under the eave parapet ends cleanly against the corner pier. |\n| Roof and gables | deviates (P2 only) | front, top, aerial, chimney_contact | Slate roof pitched from a ridge on the long axis to raked coped gable parapets. Pitch, tone and rooflight layout are polish deviations (P2-1, P2-2, P2-4). |\n| Pavilion and chimney | conforms (pavilion roof pitch P2-3) | roof_pavilion, left_side, front_corner, chimney_contact | Glazed pavilion with a terrace rail on the front slope at the western end. A tall square brick chimney with a stone cap sits at the NE corner, with clean roof contact and no float or intersection gap. |\n| Materials hierarchy | conforms | all | Brick body, pale stone sills, band, cornice and coping, dark window frames, grey slate and clear glass. The ordering matches the source. Slate is slightly light (P2-2). |\n\nNorth face (right_side, rear_yard): no source shows it. It follows the visible grammar (arched windows, pilasters, band, cornice, service door) and is coherent.\n\n## 4. Camera validity\n\nAll 18 views are valid. The target is never fully occluded or clipped and every view is legible. In shopfront, a tree trunk covers the left edge (x80-300) but the arched shopfront stays fully readable. In corner_entry and facade_close the trees overlap only peripheral bays. Only P2-6 is noted: the whole-envelope front is not a three-quarter match to the source front.\n\n## 5. v004 findings status (judged from v005 pixels)\n\n| v004 finding | sev | status | evidence |\n|---|---|---|---|\n| Top-storey windows on both eave faces read as plain rectangles running into the dentil course | P1 | **resolved** | left_side y~505-570: arched heads with a brick head and a brick strip under the dentils. architecture_close x100-610 y445-500. chimney_contact x820-1100 y850-900. right_side y~505. |\n| Glasshouse roof pitch low | P2 | not resolved | roof_pavilion and left_side show a near-flat top (P2-3) |\n| Rooflight positions | P2 | not resolved | top shows a 2x2 grid all on the non-pavilion slope (P2-4) |\n| Cornice ends cut square past the gable plane | P2 | resolved | architecture_close ~x685 y350-400: the cornice stops against the corner pier and does not pass the gable plane |\n| Small gap at the slate cut | P2 | not resolved | roof_pavilion wedge at ~x800-835 y695-715 (P2-5) |\n| Main roof pitch and slate tone | P2 | not resolved | P2-1 and P2-2 |\n| No street-level south-west three-quarter front camera | P2 | partly | corner_entry adds a street-level corner close-up. There is still no whole-envelope three-quarter view (P2-6). |\n| Dark sliver at one interior window head | P2 | not resolved | interior x30-300 y85-95 (P2-7) |\n"
+  },
+  "preserved_evidence": [
+    {
+      "path": "source-package/evidence/v005/renders/aerial.jpg",
+      "bytes": 80167,
+      "sha256": "fa2a004c58aee6a77f3e232eff6f422fa9b6a8c27f3bae4a982cce33af0b2bf6"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/arched_windows.jpg",
+      "bytes": 122715,
+      "sha256": "d3b26b0caec7a7cd467cdadff469a365216444119eeb6cd1efe71a3aa63840c9"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/architecture_close.jpg",
+      "bytes": 167850,
+      "sha256": "789ac660e3dbab9774c74e545cb1c784919fba77de103881a52761f4c05394e0"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/chimney_contact.jpg",
+      "bytes": 138932,
+      "sha256": "f244fe45337362b588498366b1907a2f4637e0e36d4d7cf9f87aa841a2a5ae27"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/corner_entry.jpg",
+      "bytes": 157875,
+      "sha256": "a63b79d74d9e6339e5103f896c3da2109e7dfdb33dcb64d5e1f3e8bf155665f6"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/facade_close.jpg",
+      "bytes": 147650,
+      "sha256": "31699d22ced2eab45e1ad443d48b6367c73e224d1099cd6826fd4d20066d559f"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/front.jpg",
+      "bytes": 87083,
+      "sha256": "a4759cd5e71d04567c1f8da3c2a518eef5ad4ef14d59503302f5426a18d86914"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/front_corner.jpg",
+      "bytes": 87374,
+      "sha256": "0e3e9eeefad6c3fe88a760e936a281728b6a06c0e1aef8da7216bf69b4455e2f"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/glass_close.jpg",
+      "bytes": 73548,
+      "sha256": "634f603d85034fd51fb3bfed1564addf341f8c092494bdae3b2f07ff07784e99"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/interior.jpg",
+      "bytes": 63186,
+      "sha256": "fda8247f330bf881d1dd650fec047cb79193fb8cf96e94acb34a98fad46d6c81"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/left_side.jpg",
+      "bytes": 97177,
+      "sha256": "c487f67f954f872c9772bd6acdafa906264d409bb824f45d3279d8f0dcdf0e81"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/rear.jpg",
+      "bytes": 77864,
+      "sha256": "23bc522782a1871227296b50dcbb8476b75bf224fd1bd4cfe081f2c89ca5682b"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/rear_side.jpg",
+      "bytes": 80396,
+      "sha256": "3dd120df4bce46931bea9d05cde9a1d39620a6c096400a8553ba31af2102a6ad"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/rear_yard.jpg",
+      "bytes": 143879,
+      "sha256": "ad411bc2354a9be0bd6bfc1c3e8828e088fc39c83a261410f4e33974ea68d23e"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/right_side.jpg",
+      "bytes": 83801,
+      "sha256": "47ec3ba7db327e2624cc65dbbd34300163ae07b80bc71bcb46cfdbf2d3b0fed5"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/roof_pavilion.jpg",
+      "bytes": 139663,
+      "sha256": "ef35ac696e56a41642b9c74d7be5ec013d4de90376f158f176acea66210c5046"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/shopfront.jpg",
+      "bytes": 89043,
+      "sha256": "c49f81d110967dc8d29ee227a5bfc82ba389361ed2857078f32f3c0d5195c4b8"
+    },
+    {
+      "path": "source-package/evidence/v005/renders/top.jpg",
+      "bytes": 71062,
+      "sha256": "22e23e96fb2ba76a56c8abe4336bf63e92fb7d808c4eb63e5cd9547f85256837"
+    },
+    {
+      "path": "source-package/evidence/v005/boards/phone-01-source-vs-render.jpg",
+      "bytes": 303509,
+      "sha256": "c828ca621911747b797edb83e1de59d6a9518b65d1f2a3fd60596ce6249dc181"
+    },
+    {
+      "path": "source-package/evidence/v005/boards/phone-02-details.jpg",
+      "bytes": 220944,
+      "sha256": "5c6b2d08b81567b73696be66630d2ac47ad3d19765d1bdf4199b9fd6e5945b34"
+    },
+    {
+      "path": "source-package/evidence/v005/boards/phone-03-details.jpg",
+      "bytes": 172915,
+      "sha256": "57c7295155b44e8d5e50d75c38d911ca7ec307c032a11109642f4d3d1de0015a"
+    },
+    {
+      "path": "source-package/evidence/v005/boards/phone-04-details.jpg",
+      "bytes": 77820,
+      "sha256": "378ea3cb1d96ddc6fc89cc10c90294105f32b379c843758871e1fe0a35305b2f"
+    }
+  ],
+  "evidence_limitations": "Original reviewer inspected PNG renders and phone boards. Source branch preserved JPEG derivatives, recorded in preservation.json; this transcription does not claim a new visual review of those JPEGs. Authored metric assumptions and hidden views remain as disclosed in original prework and review.",
+  "keeper_approval_implied": false,
+  "runtime_acceptance_implied": false,
+  "publication_approval_implied": false
+}

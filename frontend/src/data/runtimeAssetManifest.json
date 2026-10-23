@@ -277,6 +277,8 @@
     "src/data/cataloguePresentation.json",
     "src/data/classroomExpansion.json",
     "src/data/classroomStarter.json",
+    "src/data/claudeAssetLocalTrial.json",
+    "src/data/claudeBuildingRelease.json",
     "src/data/claudeFiveTrial.json",
     "src/data/communityBuildingBatch.json",
     "src/data/finalFiveBuildingBatch.json",
@@ -291,6 +293,7 @@
     "src/data/parkKitManifest.ts",
     "src/data/parkKitRecipes.ts",
     "src/data/parkadeFamilyTrial.json",
+    "src/data/publicRealmRelease20261023.json",
     "src/data/savedModelRevisions.json",
     "src/data/sharedParkEquipment.ts",
     "src/data/sportsParkDimensions.json",
@@ -407,9 +410,14 @@
     "src/features/parks/trafficSafetyCatalogue.json",
     "src/features/parks/useDetailPlacement.ts",
     "src/features/people/PeopleModel.tsx",
+    "src/features/people/inclusivePeopleCatalogue.json",
+    "src/features/people/peopleActions.ts",
     "src/features/people/peopleAnimation.ts",
+    "src/features/people/peopleAppearancePreviews.json",
     "src/features/people/peopleCapture.ts",
     "src/features/people/peopleCatalogue.json",
+    "src/features/people/peoplePose.ts",
+    "src/features/people/peopleWalking.ts",
     "src/features/pickPlace/BrtStopControls.tsx",
     "src/features/pickPlace/BuildingDesignControls.tsx",
     "src/features/pickPlace/CanonicalCatalogueCard.tsx",
@@ -446,15 +454,20 @@
     "src/features/pickPlace/catalogueDeletion.ts",
     "src/features/pickPlace/catalogueFacets.ts",
     "src/features/pickPlace/cataloguePresentation.ts",
+    "src/features/pickPlace/claudeAssetLocalTrial.ts",
+    "src/features/pickPlace/claudeBuildingRelease.ts",
     "src/features/pickPlace/duplicateStreet.ts",
+    "src/features/pickPlace/fixedNativeScene.ts",
     "src/features/pickPlace/generatedPlacement.ts",
     "src/features/pickPlace/geometry.ts",
     "src/features/pickPlace/nativeBuildingContract.ts",
+    "src/features/pickPlace/nativePlacementPreview.ts",
     "src/features/pickPlace/parkOutline.ts",
     "src/features/pickPlace/pedestrianConnections.ts",
     "src/features/pickPlace/pickBuildingEntrance.ts",
     "src/features/pickPlace/pickerCategories.ts",
     "src/features/pickPlace/pickerHeroImages.ts",
+    "src/features/pickPlace/publicRealmRelease.ts",
     "src/features/pickPlace/publicRoadConnection.ts",
     "src/features/pickPlace/publicRoadSuggestions.ts",
     "src/features/pickPlace/publishedBuildingAssets.ts",
@@ -603,10 +616,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 3541,
+    "explicitReferenceCount": 3652,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5325,
-    "requiredLogicalBytes": 12700868477,
+    "requiredFileCount": 5441,
+    "requiredLogicalBytes": 12460088480,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -2268,7 +2281,9 @@
       "url": "/archetypes/buildings/calgary-board-of-education-hq/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1299315,
       "lfsOid": "9def4af92fce9930bde0dd5652d58feefe6756e81849f115bca3e8bea95755cf"
@@ -2313,7 +2328,9 @@
       "url": "/archetypes/buildings/calgary-ctrain-station/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1429334,
       "lfsOid": "6f2d08e5f54d240f44b323cb48f351a17e09fec0d82067542c4660c556be08bd"
@@ -2515,7 +2532,9 @@
       "url": "/archetypes/buildings/calgary-plus-15-connected-tower/variant_2.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1238687,
       "lfsOid": "71df1f82ca1a50801ec72244ace874eba9351744bd0bb8dbb69c29cf4ef36c61"
@@ -2777,7 +2796,9 @@
       "url": "/archetypes/buildings/central-utilities-plant-energy-centre/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1265310,
       "lfsOid": "dfd3da0973e43083af84897c60d500d781394c89d2833d327f9d478c35d98263"
@@ -3549,7 +3570,9 @@
       "url": "/archetypes/buildings/condo-podium-tower/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1239794,
       "lfsOid": "247f085b7d208f1fd80395f5b5d8d7934e696acd4994ec61228255f5d0a8511a"
@@ -3978,7 +4001,9 @@
       "url": "/archetypes/buildings/corporate-office-campus-headquarters/variant_3.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1138281,
       "lfsOid": "3ce78a7c03f7df3149a8f65eec4b94b873b4ef43095ddec1f1eb5cbb93d9d1ef"
@@ -4588,7 +4613,9 @@
       "url": "/archetypes/buildings/ecole-republicaine/variant_3.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1323463,
       "lfsOid": "353d70cf1e6d860e840bcb57cf9e10dbdaf558f17c5127e78c8e79655c68e467"
@@ -5050,7 +5077,9 @@
       "url": "/archetypes/buildings/gastown-heritage-commercial/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1472172,
       "lfsOid": "ddd3ab09b0127bb69fdbab398d43a3ba3e17c5a106796a2bd1f8c1ebcdf267f0"
@@ -5379,7 +5408,9 @@
       "url": "/archetypes/buildings/halifax-georgian-colonial/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1498415,
       "lfsOid": "045d4918a6bd8121c6a4c74892b353610370f9af3910f61e6b58b00a7043ad60"
@@ -5514,7 +5545,9 @@
       "url": "/archetypes/buildings/halifax-waterfront-warehouse/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1280609,
       "lfsOid": "ad42ba20d97281337b2a501af57cee64418b3df0486b3fa6c881cd317ef4784c"
@@ -5953,7 +5986,9 @@
       "url": "/archetypes/buildings/industrial_brick_mixed_use/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1277361
     },
@@ -6346,7 +6381,9 @@
       "url": "/archetypes/buildings/london-mews-house/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1447859,
       "lfsOid": "8032e120df23417ef56d938d6ad1d832ba7fae7078241007eb56544166344a2d"
@@ -6663,7 +6700,9 @@
       "url": "/archetypes/buildings/mid-century-distribution-warehouse/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1123308,
       "lfsOid": "6c9e95381c52e186218ea835b9df1da33da05de67d80dc031a949d450415183a"
@@ -7768,7 +7807,9 @@
       "url": "/archetypes/buildings/old-montreal-limestone-commercial/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1509189,
       "lfsOid": "af691c0c7a1f20be366f6b00683bacc526267a0bd77c873e10ad19a812efd432"
@@ -9065,7 +9106,9 @@
       "url": "/archetypes/buildings/senior_living_complex/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1532839,
       "lfsOid": "a227bca8b295ca796e24b8bc5b4b8fdf49b0551277bf0f62a7e580800a84bf66"
@@ -9566,7 +9609,9 @@
       "url": "/archetypes/buildings/toronto-bay-and-gable-house/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1488963,
       "lfsOid": "d95d3c86850b2d98b3e04a4c0b69ea6747979598bff2eb39903e9bec779372f7"
@@ -10344,7 +10389,9 @@
       "url": "/archetypes/buildings/vertical-farm-indoor-agriculture/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1127172,
       "lfsOid": "dcc6de1743ecbe970748a9330ef4242aad3cc9c7955c69681954c06ea14637c6"
@@ -10675,7 +10722,9 @@
       "url": "/archetypes/buildings/west-end-mid-century-tower/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1359002,
       "lfsOid": "2162c09765e0642250189af1e05892839e6b609995a5449fcf806f811378bfad"
@@ -25270,6 +25319,54 @@
       "lfsOid": "d87f224052b24759109f3ddb026209063c077561ebcb42dfe17f29d881bc60d0"
     },
     {
+      "url": "/park-kits/claude-20261023/1b888e08c7c12b1ef0c559998fb419479f7d2212bc5f54e786b87336059960e7.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 1505682
+    },
+    {
+      "url": "/park-kits/claude-20261023/395418e0134ab65633bb5cc487f2e963c47278f9b1ecfe6f9687324abc87cab8.jpg",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 17870
+    },
+    {
+      "url": "/park-kits/claude-20261023/498a973435fc8bc077084d3ee630babc55574a7365fdbd978a1cea742525a0ec.glb",
+      "sources": [
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 3069288,
+      "lfsOid": "498a973435fc8bc077084d3ee630babc55574a7365fdbd978a1cea742525a0ec"
+    },
+    {
+      "url": "/park-kits/claude-20261023/6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8.glb",
+      "sources": [
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 3481504,
+      "lfsOid": "6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8"
+    },
+    {
+      "url": "/park-kits/claude-20261023/9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79.glb",
+      "sources": [
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 3931888,
+      "lfsOid": "9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79"
+    },
+    {
+      "url": "/park-kits/claude-20261023/a08f2e9a011a3d0d3ea8bea0107c8af420f869bce88aac4665726f191052330a.jpg",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 18368
+    },
+    {
       "url": "/park-kits/community-garden-allotments/compost-bins.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -28753,52 +28850,870 @@
       "logicalBytes": 2064
     },
     {
-      "url": "/street-kits/people-pilot-v1/people-pilot-commuter.glb",
+      "url": "/street-kits/claude-20261023/05a81c56f62e11f4d84f294e68dff98c7cdfd1de3ac48fbf4a8ab2577ea2f3a3.png",
       "sources": [
-        "src/features/people/peopleCatalogue.json"
+        "src/data/catalogueHeroImages.json",
+        "src/data/publicRealmRelease20261023.json"
       ],
-      "logicalBytes": 1096500,
-      "lfsOid": "123dd1a32a1f33141fbb52aa7e7ef7eb0d543d06d7517a890ee474a8d2dc06e5"
+      "logicalBytes": 1216789,
+      "lfsOid": "05a81c56f62e11f4d84f294e68dff98c7cdfd1de3ac48fbf4a8ab2577ea2f3a3"
     },
     {
-      "url": "/street-kits/people-pilot-v1/people-pilot-commuter.png",
+      "url": "/street-kits/claude-20261023/05d426a55b9f63d2a0d997eec0745e2ebccd4e75359d3948939861600d75b3a7.png",
       "sources": [
-        "src/features/people/peopleCatalogue.json"
+        "src/data/catalogueHeroImages.json",
+        "src/data/publicRealmRelease20261023.json"
       ],
-      "logicalBytes": 467505,
-      "lfsOid": "b40025e3b25fbd76f8c0c5560f444c9783ff7d46833cc660ce4c0b420efb264d"
+      "logicalBytes": 1431655,
+      "lfsOid": "05d426a55b9f63d2a0d997eec0745e2ebccd4e75359d3948939861600d75b3a7"
     },
     {
-      "url": "/street-kits/people-pilot-v1/people-pilot-creative.glb",
+      "url": "/street-kits/claude-20261023/16b0c7932cb4ebc6c2db6dbee45a5c6dde3a203be04d7a6e44fb0a5abb7adb13.png",
       "sources": [
-        "src/features/people/peopleCatalogue.json"
+        "src/data/catalogueHeroImages.json",
+        "src/data/publicRealmRelease20261023.json"
       ],
-      "logicalBytes": 1077976,
-      "lfsOid": "8be2a865c978bdf91ec6e1fd6a28c3725293fb10e7bac268fe06da9ac0a8be81"
+      "logicalBytes": 1674303,
+      "lfsOid": "16b0c7932cb4ebc6c2db6dbee45a5c6dde3a203be04d7a6e44fb0a5abb7adb13"
     },
     {
-      "url": "/street-kits/people-pilot-v1/people-pilot-creative.png",
+      "url": "/street-kits/claude-20261023/22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930.glb",
       "sources": [
-        "src/features/people/peopleCatalogue.json"
+        "src/data/publicRealmRelease20261023.json"
       ],
-      "logicalBytes": 460772,
-      "lfsOid": "f685b65cecf09af1918fabe1755e62a4c0a2292c2da450f52db4e2624d1cb86f"
+      "logicalBytes": 3766080,
+      "lfsOid": "22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930"
     },
     {
-      "url": "/street-kits/people-pilot-v1/people-pilot-neighbour.glb",
+      "url": "/street-kits/claude-20261023/2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2.glb",
       "sources": [
-        "src/features/people/peopleCatalogue.json"
+        "src/data/publicRealmRelease20261023.json"
       ],
-      "logicalBytes": 796312,
-      "lfsOid": "8a7f19f6dceed71350c6106c633ecaaa0d5021a804bf4a7ef5f011fd2ad0398f"
+      "logicalBytes": 1442444,
+      "lfsOid": "2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2"
     },
     {
-      "url": "/street-kits/people-pilot-v1/people-pilot-neighbour.png",
+      "url": "/street-kits/claude-20261023/27c582cd87e4208c2387d35a38e5654623dfb55c9a8a005400f9797e4cb31b2d.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 1577164,
+      "lfsOid": "27c582cd87e4208c2387d35a38e5654623dfb55c9a8a005400f9797e4cb31b2d"
+    },
+    {
+      "url": "/street-kits/claude-20261023/42e7507fd4b69a758111c3a44c39ba6afa0778da2e4cc621ea51cd60b207cfa6.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 1315817,
+      "lfsOid": "42e7507fd4b69a758111c3a44c39ba6afa0778da2e4cc621ea51cd60b207cfa6"
+    },
+    {
+      "url": "/street-kits/claude-20261023/4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4.glb",
+      "sources": [
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 3850284,
+      "lfsOid": "4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4"
+    },
+    {
+      "url": "/street-kits/claude-20261023/895785dc3c7d193c7c596c5203a923b51630797dfecf5b212f69bc3a40dbb36b.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 1586791,
+      "lfsOid": "895785dc3c7d193c7c596c5203a923b51630797dfecf5b212f69bc3a40dbb36b"
+    },
+    {
+      "url": "/street-kits/claude-20261023/92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde.glb",
+      "sources": [
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 4027580,
+      "lfsOid": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde"
+    },
+    {
+      "url": "/street-kits/claude-20261023/bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696.glb",
+      "sources": [
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 3189736,
+      "lfsOid": "bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696"
+    },
+    {
+      "url": "/street-kits/claude-20261023/c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11.glb",
+      "sources": [
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 1941156,
+      "lfsOid": "c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11"
+    },
+    {
+      "url": "/street-kits/claude-20261023/c3bbebd85c5bc1553088d0d23ee5ad838facb5ddcd1c6b1ddf693fbb7e775f66.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 1220653,
+      "lfsOid": "c3bbebd85c5bc1553088d0d23ee5ad838facb5ddcd1c6b1ddf693fbb7e775f66"
+    },
+    {
+      "url": "/street-kits/claude-20261023/c528164ed6ce8922d904ffe9bb0cc9bac3e19b0592695bb960d7f3f8712834aa.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 1322295,
+      "lfsOid": "c528164ed6ce8922d904ffe9bb0cc9bac3e19b0592695bb960d7f3f8712834aa"
+    },
+    {
+      "url": "/street-kits/claude-20261023/d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30.glb",
+      "sources": [
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 3282652,
+      "lfsOid": "d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30"
+    },
+    {
+      "url": "/street-kits/claude-20261023/db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813.glb",
+      "sources": [
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 3906840,
+      "lfsOid": "db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813"
+    },
+    {
+      "url": "/street-kits/claude-20261023/e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e.glb",
+      "sources": [
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 1910720,
+      "lfsOid": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e"
+    },
+    {
+      "url": "/street-kits/claude-20261023/ed500b98870febb7f8a37e5d373a1c02c2c241e57ef0a3f1a14b68ddc6111cdd.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/publicRealmRelease20261023.json"
+      ],
+      "logicalBytes": 1373407,
+      "lfsOid": "ed500b98870febb7f8a37e5d373a1c02c2c241e57ef0a3f1a14b68ddc6111cdd"
+    },
+    {
+      "url": "/street-kits/people-appearance-v1/people-community-amir.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 9996
+    },
+    {
+      "url": "/street-kits/people-appearance-v1/people-community-andre.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 9748
+    },
+    {
+      "url": "/street-kits/people-appearance-v1/people-community-clara.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 9052
+    },
+    {
+      "url": "/street-kits/people-appearance-v1/people-community-elena.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 9004
+    },
+    {
+      "url": "/street-kits/people-appearance-v1/people-community-imani.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 9890
+    },
+    {
+      "url": "/street-kits/people-appearance-v1/people-community-ines.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 12786
+    },
+    {
+      "url": "/street-kits/people-appearance-v1/people-community-luca.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 11540
+    },
+    {
+      "url": "/street-kits/people-appearance-v1/people-community-mateo.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 9526
+    },
+    {
+      "url": "/street-kits/people-appearance-v1/people-community-owen.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 14332
+    },
+    {
+      "url": "/street-kits/people-appearance-v1/people-community-zara.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 11868
+    },
+    {
+      "url": "/street-kits/people-appearance-v1/people-pilot-commuter.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 9858
+    },
+    {
+      "url": "/street-kits/people-appearance-v1/people-pilot-creative.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 9856
+    },
+    {
+      "url": "/street-kits/people-appearance-v1/people-pilot-neighbour.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 8298
+    },
+    {
+      "url": "/street-kits/people-appearance-v2/people-community-amara.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 15004
+    },
+    {
+      "url": "/street-kits/people-appearance-v2/people-community-ava.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 13422
+    },
+    {
+      "url": "/street-kits/people-appearance-v2/people-community-felix.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 13740
+    },
+    {
+      "url": "/street-kits/people-appearance-v2/people-community-jules.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 15156
+    },
+    {
+      "url": "/street-kits/people-appearance-v2/people-community-kai.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 13604
+    },
+    {
+      "url": "/street-kits/people-appearance-v2/people-community-leo.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 12730
+    },
+    {
+      "url": "/street-kits/people-appearance-v2/people-community-nina.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 10250
+    },
+    {
+      "url": "/street-kits/people-appearance-v2/people-community-noah.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 14150
+    },
+    {
+      "url": "/street-kits/people-appearance-v2/people-community-rhea.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 13182
+    },
+    {
+      "url": "/street-kits/people-appearance-v2/people-community-sana.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 12612
+    },
+    {
+      "url": "/street-kits/people-appearance-v3/people-inclusive-family-parent-child.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 14204
+    },
+    {
+      "url": "/street-kits/people-appearance-v3/people-inclusive-family-stroller.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 19426
+    },
+    {
+      "url": "/street-kits/people-appearance-v3/people-inclusive-guide-dog.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 16124
+    },
+    {
+      "url": "/street-kits/people-appearance-v3/people-inclusive-manual-wheelchair.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 21734
+    },
+    {
+      "url": "/street-kits/people-appearance-v3/people-inclusive-older-man-rollator.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 18340
+    },
+    {
+      "url": "/street-kits/people-appearance-v3/people-inclusive-older-woman.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 8976
+    },
+    {
+      "url": "/street-kits/people-appearance-v3/people-inclusive-power-wheelchair.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 19584
+    },
+    {
+      "url": "/street-kits/people-appearance-v3/people-inclusive-white-cane.webp",
+      "sources": [
+        "src/features/people/peopleAppearancePreviews.json"
+      ],
+      "logicalBytes": 10506
+    },
+    {
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-manual-wheelchair.glb",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 1554884,
+      "lfsOid": "b3ce624cd0729c0b1b1328af3d267c48c763041621f33d9c6478947d64dcc608"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-manual-wheelchair.png",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 535090,
+      "lfsOid": "145a2b70de0137f9a8a69b7d191a5385909a17cea4aa4ad42290580d58c45437"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-power-wheelchair.glb",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 1054260,
+      "lfsOid": "accdf6772937cfc732aa73332fa686ad691ec992eda91f1efa0f2cb98594099e"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-power-wheelchair.png",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 527927,
+      "lfsOid": "87a6a28ea671679f22158f4815eb5520983957bf71399e9c3da64a0d2dc7ad2a"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-family-parent-child.glb",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 2148492,
+      "lfsOid": "414087cf41b196e1cf9c8df2d00750a554ce25606545079e00508b49ec805107"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-family-parent-child.png",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 485912,
+      "lfsOid": "356cecd18a33bd3a3b18d913ae8f7c292c01d6a82756e9379b81cae643ac0908"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-family-stroller.glb",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 1048304,
+      "lfsOid": "fa6a8b8ab013a35581bb13ae4d7f616527ce8f9ca3f861c118e59dc34359d581"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-family-stroller.png",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 520273,
+      "lfsOid": "117dee603a65b1a5e5830178c072ee7a9579785b69d3a22dde24e446b8b15090"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-guide-dog.glb",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 1001132,
+      "lfsOid": "8cec04b26c883b5a07121fd5728409cb7d2d460764ba52941cf466dfc308bc0f"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-guide-dog.png",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 494668,
+      "lfsOid": "d6f9dc7a6cd8bf6fb75cfce22371a80f50e30ca55540cd8286094bad56dac3aa"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-older-man-rollator.glb",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 1053192,
+      "lfsOid": "1e64d65a120c77a896cbc9aacdaa2883aac2951c33aa576f95b97f4186cd99bd"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-older-man-rollator.png",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 504644,
+      "lfsOid": "d4ff281079017c189f1ff4932b9045f9bacd39f677832c1974178ff6636cd5eb"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-older-woman.glb",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 1357756,
+      "lfsOid": "be5efe6b7208d295711dc5145189a6f1a67acef316002e971136bb79c2837a5d"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-older-woman.png",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 469736,
+      "lfsOid": "53be4468fba4bb7d87521add383a3132a8b51c60f237dc6bee4fa0b5ddbf69cc"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-white-cane.glb",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 1391720,
+      "lfsOid": "1d327720b4f924faf0d69acd84c8651c7983dfcda6cec5908b5bc7bd7cb8a417"
+    },
+    {
+      "url": "/street-kits/people-inclusive-v2/people-inclusive-white-cane.png",
+      "sources": [
+        "src/features/people/inclusivePeopleCatalogue.json"
+      ],
+      "logicalBytes": 477138,
+      "lfsOid": "39ac2473b962be7871d480dba599fe715a5c913789f9fbdb316e30ebb6a4062f"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-amara.glb",
       "sources": [
         "src/features/people/peopleCatalogue.json"
       ],
-      "logicalBytes": 468314,
-      "lfsOid": "64d240e161a1dd8a482cc2249dec86a98a3bf2581b8163c6bc49bfa7f555677f"
+      "logicalBytes": 1768976,
+      "lfsOid": "b02be500af55de09a30302d3b736c1512ec19a369d8b64d9578dd3b8cbbe053a"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-amara.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 480110,
+      "lfsOid": "5b145a66c00502afc0886fdc33ed97259eab47ab7c14188c0c8c1e13d82f9eb6"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-amir.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1166684,
+      "lfsOid": "4a1b3c24becb3d2441ee007bef94c4233f22c28ea566bcd23619bb10c0d79521"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-amir.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 468203,
+      "lfsOid": "3442b8d97a6e44f326296d66f9ae44315e453d7ba1c5e1912ea801bcbb6fa591"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-andre.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1277616,
+      "lfsOid": "acd747c263cb7198feab4b5242d94ca52678f6c878bfcff6d0e561f12f0d7691"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-andre.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 474982,
+      "lfsOid": "87a20a0f7ec27e440ad4286d062ea1026d7010d0f08b2fcbef668ab00dfb4d4a"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-ava.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1670820,
+      "lfsOid": "c841a8ab8c0e18011a4d6f81f4346d92f2907778c222932ad2bdde5b8b0a19ca"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-ava.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 466539,
+      "lfsOid": "6ceeb1e3edbb747d7a6a9a037c9103084981038e156f197511fdce5e14120212"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-clara.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1740676,
+      "lfsOid": "5afb7c0f36f65f7af675184daa7532963d7b2638d740917922ecb02ff40c5f2f"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-clara.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 467368,
+      "lfsOid": "1aabb4d1b371f6ec6335c2ca2a13932edf8f1ae1d30bb0e8ff6e99115f4c427d"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-elena.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1568040,
+      "lfsOid": "8f984ce4e2279d96588a19e10bc16fd2b3f1f0f6d7102455ab70149596b6471e"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-elena.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 451825,
+      "lfsOid": "16cb68c812fd06e2509067464174af6c3fadd447ad6bbfcd6ca828e5969593bb"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-felix.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1246292,
+      "lfsOid": "ceb2fe5971830e9df08c26af1032d0c25dec2877e18aab648517edebdf3e5e3a"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-felix.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 467301,
+      "lfsOid": "023ca48aacc9d658a16b06a3a3db652b6b1ef08f51b3ee167fafe7463203431b"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-imani.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1604444,
+      "lfsOid": "63131ce40393851fd63063857131b827b85412b2415871701596900f7763f6f9"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-imani.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 467917,
+      "lfsOid": "321215bb484a8efb7a68c46a59f46a6a78a1fb29f1528b2fd01c3ccfe1e3783f"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-ines.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1564984,
+      "lfsOid": "0c2bccd8ffd1e4e316eae6cdc1b912a418c4abc4d36dc49a04500059567c1791"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-ines.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 468591,
+      "lfsOid": "a0fe6fb4262f5b85bbd2839416d27a137994adcd673f8937874fc04d24febb3a"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-jules.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1289780,
+      "lfsOid": "9bc0e329b5ebc323dcaa6cef95924f2d9f35a4c098dee289777ddd7eb6bd8e06"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-jules.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 473414,
+      "lfsOid": "c8aefac95305d06ac6a9f1e29c1b80de1e3e57c1076809e86d5f93b99924e165"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-kai.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1257364,
+      "lfsOid": "729750a661c026dedad6cff6f81bf723b809263690f28c1da7ec14a843ec02b9"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-kai.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 473634,
+      "lfsOid": "0e9076128b8e0994721e77e31f120dd12bad2478fd49c21d48f18d5bec92056e"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-leo.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1259208,
+      "lfsOid": "168fb6654d49a0a7fee315c7cb045d39d8ca743cd4dde08d329b621091d84f28"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-leo.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 475018,
+      "lfsOid": "904a36fa1ce052e8dd9892c1d58fc2cbed46e2086955de373e5f671933f4934f"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-luca.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1210212,
+      "lfsOid": "aa905ffd7356a130b47265e5cc880fd44de30592a71e28ec5730575d6a354704"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-luca.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 474650,
+      "lfsOid": "7f67c11dfd14102d4791a0f594d1e17dcb2ba6c3627ab944a7d25f9fbca939ae"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-mateo.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1190712,
+      "lfsOid": "d4b0db52049e2573bf44b4421fb0bd668ef54adaeae861cf0e5e792156cd0a31"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-mateo.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 468423,
+      "lfsOid": "44996ad7fdb8742957bbb33680368db17d022696f4675cc431326b25487adfe9"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-nina.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1507256,
+      "lfsOid": "a9abd8f8a83c08a4b65cf36db7ec5682bf607844c1c62cc89bc97a990f4387e5"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-nina.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 465188,
+      "lfsOid": "d654773e0592c8673742a34f085d9a441401356240fc9fd469990b3b4bf38081"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-noah.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1177224,
+      "lfsOid": "470f788d5798045bde035eb30e0db68105d89e216f08847900cb6519e183b080"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-noah.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 465822,
+      "lfsOid": "e5bf41553f317f91ca7c56e411979df9caa841480bfe21f590596c65ea6ca10d"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-owen.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1198656,
+      "lfsOid": "f81f1f10c068cb17fca27314e839ec288b0f89cd4fe86119b4b68b05b29665fd"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-owen.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 505199,
+      "lfsOid": "84ffbe277fea35bcf1821297eb6fe24308670dc7368abb4c5b85b662c7c2edca"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-rhea.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1619108,
+      "lfsOid": "18e4eefa76b2da8d637ef0444fb796153f2d2b62667db130e52a68024776bcb9"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-rhea.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 465692,
+      "lfsOid": "55ed875f0a512acf273e8aa342b018aad295d860703af959a3d6040b6d33483f"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-sana.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1524616,
+      "lfsOid": "e0969a1861b1aecedd2576ca316c5086bac3cef014b20b105b011b0b09f892fb"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-sana.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 467387,
+      "lfsOid": "0b7b0b4bb2671824c2bc6491d14c263dafd034e0d55e7a14d89e1ff6b7de4428"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-zara.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1613152,
+      "lfsOid": "60c17309786aa4e34867ac6c22f7719664dedd4c88bbc13e3276ba5674c0f44c"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-community-zara.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 473345,
+      "lfsOid": "b0e24ddd0a3231988bd2a1840556106107a80f9e835929e752d38cb9f865a68b"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-commuter.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1759428,
+      "lfsOid": "7b87f5489e5147829819ade494c726a9b6b3a1e69ce7004b8215906fc2ce295c"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-commuter.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 472622,
+      "lfsOid": "4aca93d68846cf6b31239c239b247ef4fd17ae4961c45306c64f133a42e5dc6f"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-creative.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1593720,
+      "lfsOid": "88ea8b8e0e3d911a12adf93c92ab6d4bb4f734b87dd613e1e55beef4ad6b83fb"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-creative.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 466258,
+      "lfsOid": "e283139b97734ad6eaf1d93d2e1a7cc8b5e7eea0fbd3c950ca8679afb969e8a2"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-neighbour.glb",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 1205056,
+      "lfsOid": "dbb2189bcf3ee3156fd23919cbcfd1bfce3dd9bd8ec45e706a3d93f86134f3e3"
+    },
+    {
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-neighbour.png",
+      "sources": [
+        "src/features/people/peopleCatalogue.json"
+      ],
+      "logicalBytes": 466875,
+      "lfsOid": "da33e0306b0c1bc65a9a6adcf129cc4f3b603ccb943874a0b4a693aecf551e6a"
     },
     {
       "url": "/street-kits/pilots/amsterdam_gracht_v1/canal_bench.glb",
@@ -30977,6 +31892,12 @@
       ]
     },
     {
+      "url": "/park-kits/claude-20261023/",
+      "sources": [
+        "src/features/pickPlace/publicRealmRelease.ts"
+      ]
+    },
+    {
       "url": "/park-kits/shared-park-equipment-v1",
       "sources": [
         "src/data/sharedParkEquipment.ts",
@@ -31000,6 +31921,12 @@
       "url": "/park-skins/skate-park/adaptive-v1",
       "sources": [
         "src/components/viewer/globe/GlobeSkateParkAssembly.tsx"
+      ]
+    },
+    {
+      "url": "/street-kits/claude-20261023/",
+      "sources": [
+        "src/features/pickPlace/publicRealmRelease.ts"
       ]
     }
   ],
@@ -31111,9 +32038,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 497,
-      "logicalBytes": 422280960,
-      "pathDigest": "9f2096feda13efdc83fddc21a029efc72ef2af37e4a0f033509f444788ee8c85"
+      "fileCount": 133,
+      "logicalBytes": 57030396,
+      "pathDigest": "2f6abdf2b0aa7f26b3d525592187b81ead6c2f928c821796f38936d7fbfed213"
     },
     {
       "name": "public-realm-skins",
@@ -31151,9 +32078,9 @@
         "/street-kits/pilots/"
       ],
       "reason": "Versioned native street modules and locked references; module URLs are resolved from the delivery manifest.",
-      "fileCount": 174,
-      "logicalBytes": 92353281,
-      "pathDigest": "f42ba76385d374b65f41a1d041f36b4ba4440ae1adbbd5a9bbac2ff329e498ec"
+      "fileCount": 179,
+      "logicalBytes": 110266248,
+      "pathDigest": "944010e4da5d6339e68c663483aa5a9bfc12224b0f7c6e1d6fa6befd44cee048"
     },
     {
       "name": "sports-park-modules",
@@ -31167,8 +32094,8 @@
     }
   ],
   "cleanupCandidates": {
-    "unclassifiedRuntimeFileCount": 21470,
-    "unclassifiedRuntimePathDigest": "46fd8aa6887d28f74a9eb4646530d4ee632543afd5ab4b36ba429051b1c3f69f",
+    "unclassifiedRuntimeFileCount": 21536,
+    "unclassifiedRuntimePathDigest": "adc337d2e8bcf6e40af6885585feb294765a8616b3dd37172d1e6cff32f92a3e",
     "unclassifiedRuntimePathSample": [
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_60.jpg",
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_90.jpg",

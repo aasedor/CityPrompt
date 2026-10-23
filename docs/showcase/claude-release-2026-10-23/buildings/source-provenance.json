@@ -1,0 +1,286 @@
+{
+  "schema": "cityprompt.claude-building-source-provenance@1",
+  "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
+  "audited_remote_head": "3a98ff9d7b3315b278da9262089cc23e4b74734d",
+  "decision": "All18 exact reviewed model/review/source/media trees unchanged; only13 README outcome corrections. Retain18 pinned versions; do not import five new blocked WaveK families.",
+  "verified_package_files": 575,
+  "locked_reference_records": 54,
+  "rows": [
+    {
+      "candidate": "clay-arched-mill-mixed-use-clay-v005",
+      "family_path": "tools/clay_arched_mill_mixed_use",
+      "model_sha256": "218c0f8d8a84c34169af41490f8d0284e0bf2ac48dfe9a423b0985533c39ffdc",
+      "source_review_sha256": "75c49a1157a37f1e88b4aaded47faf32c9c6ecbfb5b480bb897b7ab71e240648",
+      "current_canonical_review_sha256": "ba9cf2f4ef5a686ce41e556ed931da0f22aaf553e45f2cf64c59e95888cb26bf",
+      "family_changes": [
+        "M\ttools/clay_arched_mill_mixed_use/README.md"
+      ],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_arched_mill_mixed_use/evidence/v005",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-brick-podium-condo-tower-clay-v006",
+      "family_path": "tools/clay_brick_podium_condo_tower",
+      "model_sha256": "1ce717fb6f9246312cb359b4808e726088447f12d2c571954cb33a6a91dd0869",
+      "source_review_sha256": "245fec3f4c198347239ce73c5111bdcedd9b64c8c3391ca317fdea12d1b30187",
+      "current_canonical_review_sha256": "7d592bfc7b695c7ddf13a06038842a113bb3cbd4675601f0a96830bd1b969bb3",
+      "family_changes": [
+        "M\ttools/clay_brick_podium_condo_tower/README.md"
+      ],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_brick_podium_condo_tower/evidence/v006",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-calgary-cbe-brutalist-hq-clay-v004",
+      "family_path": "tools/clay_calgary_cbe_brutalist_hq",
+      "model_sha256": "a0836dc6e11577f734452f01e087fe1ee3c08c57ccfe63addd95f0428eb91433",
+      "source_review_sha256": "b75c4a22379948e511e30a70dce925c95654aa4a551fa1203977720f5710f171",
+      "current_canonical_review_sha256": "71102dea99bd533959cbf6dbf37a7587e9a52d751ba2a3c332585bf1088bdeaa",
+      "family_changes": [
+        "M\ttools/clay_calgary_cbe_brutalist_hq/README.md"
+      ],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_calgary_cbe_brutalist_hq/evidence/v004",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-campus-shed-office-clay-v009",
+      "family_path": "tools/clay_campus_shed_office",
+      "model_sha256": "3da93f5933a04669806e0192d9c9871af8bfbd5699ce7e15bba7cc8639d01a95",
+      "source_review_sha256": "9a5a9a636b3f68f5530d2f056a5634315a57659be82396acf481980e00cf3ba8",
+      "current_canonical_review_sha256": "c49c0994030efd5fa8554e997453e90fd470546f2252fa71503ef24bf7a5faa1",
+      "family_changes": [
+        "M\ttools/clay_campus_shed_office/README.md"
+      ],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_campus_shed_office/evidence/v009",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-cmu-dock-warehouse-clay-v006",
+      "family_path": "tools/clay_cmu_dock_warehouse",
+      "model_sha256": "9551998b85a4dd9d1fa40081d53b441d6201344335a83ed98053eae8e9cb2f6e",
+      "source_review_sha256": "738df58d623c03acba0b50548c20a544315b58bb2a4728894c0ac587091a845f",
+      "current_canonical_review_sha256": "bf24d9f6a5e98b880e4518b284affa73e1fa60b2fcda46cd590929d5ff63e014",
+      "family_changes": [],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_cmu_dock_warehouse/evidence/v006",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-courtyard-primary-school-clay-v009",
+      "family_path": "tools/clay_courtyard_primary_school",
+      "model_sha256": "8ab45251a971c91aeb217447f2f96fef8e98bdc2e8d2ecefe328d206175a3bd7",
+      "source_review_sha256": "4b2ab5cc9a17bfcc63d46a782d7836b7b1d655aedcf6f8febb06a8e2ec07396c",
+      "current_canonical_review_sha256": "196b9ac375eb87f0f83212dd2038895127f17b48d29255cf7290380ac00d0fad",
+      "family_changes": [
+        "M\ttools/clay_courtyard_primary_school/README.md"
+      ],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_courtyard_primary_school/evidence/v009",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-ctrain-elevated-station-clay-v004",
+      "family_path": "tools/clay_ctrain_elevated_station",
+      "model_sha256": "d51715e11ca257c68b18214c1a7a4c9f7815f60b7b810d0c7bd1be5c92f48962",
+      "source_review_sha256": "ed8326277ca7f26ef3cda767fef1806d426f2826ac3ab63164e5d3ab0c76461e",
+      "current_canonical_review_sha256": "c8761a9d0f9020915c5fcd07a82430b4798cad327926d78b0c0b9523d97c0ef2",
+      "family_changes": [],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_ctrain_elevated_station/evidence/v004",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-energy-centre-clay-v010",
+      "family_path": "tools/clay_energy_centre",
+      "model_sha256": "1c4849fedf76e226f5b0dc545f61c7c3350debb4ff845c5010d5931224eb05c3",
+      "source_review_sha256": "c6251427e6a0dadf617639d532e02c1aaaed14331c8c8386eee3fe46e97d9c80",
+      "current_canonical_review_sha256": "4b020db9a624858a0c13a200c1f0bb1ca7b3be84f942569f42cd9bc1435186fa",
+      "family_changes": [
+        "M\ttools/clay_energy_centre/README.md"
+      ],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_energy_centre/evidence/v010",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-garden-court-senior-residence-clay-v006",
+      "family_path": "tools/clay_garden_court_senior_residence",
+      "model_sha256": "17e50488c4753c0c91de4a88724d31f335757464cf1cbc96ca48bf9e6e00f8df",
+      "source_review_sha256": "7463f09951ebec063c475fc167eb39c993be3db01d1993d9f9a68d1d9ae52e6c",
+      "current_canonical_review_sha256": "1801fcf77914ae71a746c9b47d43ce0ab7ce7884cc162e539507127582caa5ea",
+      "family_changes": [],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_garden_court_senior_residence/evidence/v006",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-gastown-heritage-commercial-clay-v003",
+      "family_path": "tools/clay_gastown_heritage_commercial",
+      "model_sha256": "657f66a2df048e606aebe626a76a77e66f93ec1992c2fb1f207833336fd67f14",
+      "source_review_sha256": "df0caca70645ec4b5a8d31ce11b4c2ce1fd99300321f76a6bc4a1e57a16e56d4",
+      "current_canonical_review_sha256": "2806091ac7042b146eef6a0736317480fd9603e4d1a1d356356e53f49ac599ed",
+      "family_changes": [
+        "M\ttools/clay_gastown_heritage_commercial/README.md"
+      ],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_gastown_heritage_commercial/evidence/v003",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-halifax-georgian-colonial-clay-v003",
+      "family_path": "tools/clay_halifax_georgian_colonial",
+      "model_sha256": "0359e7171c1b642ab82cb2b73451834ed90227b70f61a605efa5e274b033d7f3",
+      "source_review_sha256": "b927a72cda0cdb499745823aaa4281f1f1d2cc3574f1d949a4e7c2c8390985fa",
+      "current_canonical_review_sha256": "a4b7c5cd8095385dd733f90a01c41325ab1c706c465b069e0f50668b5e8a4e83",
+      "family_changes": [
+        "M\ttools/clay_halifax_georgian_colonial/README.md"
+      ],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_halifax_georgian_colonial/evidence/v003",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-halifax-waterfront-warehouse-clay-v006",
+      "family_path": "tools/clay_halifax_waterfront_warehouse",
+      "model_sha256": "de39e474c1e41add78aad6bc5f54d162fe81be3c71258ca7fba9de00b79660e3",
+      "source_review_sha256": "9fe3186e333925206a57226ce5c07d5fb541e3da16230ef8e9301e91ae29af98",
+      "current_canonical_review_sha256": "af58333592f973de802c0c6d20923c48dcd8f52266b24af6d9a3d70eb3c95eb1",
+      "family_changes": [],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_halifax_waterfront_warehouse/evidence/v006",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-led-grow-block-clay-v007",
+      "family_path": "tools/clay_led_grow_block",
+      "model_sha256": "f7ee7d1ee6a39c6ac8b8283279400b7810b741888b15c9ccb8b336c8dd53cdf7",
+      "source_review_sha256": "1fd009bb56e8a9c26881da6ecc6f22796317a973eeabcc401aeeefadc24fc2b2",
+      "current_canonical_review_sha256": "f698f06a3ecfa3c75d5a625c854a13719f53f52f500d781d46f47354631e1d1f",
+      "family_changes": [
+        "M\ttools/clay_led_grow_block/README.md"
+      ],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_led_grow_block/evidence/v007",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-mews-coach-house-clay-v006",
+      "family_path": "tools/clay_mews_coach_house",
+      "model_sha256": "619b1fd4b87a680b7011624299ded7ac38ddd72a82d6e93eb00b69879f5de893",
+      "source_review_sha256": "11a6eb2ff2b5231c70ec2f8bc19477c5d5ab7181484c8637bc46b05b0a4c21f8",
+      "current_canonical_review_sha256": "6b1a6ac257cb4ca81d03e786828b854478f78628c99edfcd7babde78b9e2deba",
+      "family_changes": [],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_mews_coach_house/evidence/v006",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-old-montreal-limestone-commercial-clay-v004",
+      "family_path": "tools/clay_old_montreal_limestone_commercial",
+      "model_sha256": "eee62a12874fc1248a17383fe5f6c98e41b01511a50e1e44533db25b538ad3a8",
+      "source_review_sha256": "1f011f835895225ebb4edcff205d15b3c46f53574924ff89bc5ea7389aa6ebc7",
+      "current_canonical_review_sha256": "74a255574583ce2aa3d8ba19e0133b2a71a6c7fe7e18d912f3945d0bab80df83",
+      "family_changes": [
+        "M\ttools/clay_old_montreal_limestone_commercial/README.md"
+      ],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_old_montreal_limestone_commercial/evidence/v004",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-plus15-glass-office-tower-clay-v006",
+      "family_path": "tools/clay_plus15_glass_office_tower",
+      "model_sha256": "1f12b3c94ed7405e43fde35450b31a7e5561b937fd854ff8a0c92bc65db35851",
+      "source_review_sha256": "c1af97275d6b16b7fdaeb6ad58fd5ea2ad8958f9ecf888e5b097f48fac6b2d0f",
+      "current_canonical_review_sha256": "301390d9a1aec50fcc9941bb9841452cda1e871a41075d5a8d4e2bbaf2f750f0",
+      "family_changes": [
+        "M\ttools/clay_plus15_glass_office_tower/README.md"
+      ],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_plus15_glass_office_tower/evidence/v006",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-slab-balcony-tower-clay-v007",
+      "family_path": "tools/clay_slab_balcony_tower",
+      "model_sha256": "042c09a9198f60fb0116ab93b6fd073309717a24a59925f31c2db1aed67d7d40",
+      "source_review_sha256": "8477248b2dc79121c627da5daf775c180c5fa370555c129447bc55ac1e213018",
+      "current_canonical_review_sha256": "5b97c5707aa077d4df9756bd02e169654e660f9cb22add56d50a25370636eb9e",
+      "family_changes": [
+        "M\ttools/clay_slab_balcony_tower/README.md"
+      ],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_slab_balcony_tower/evidence/v007",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    },
+    {
+      "candidate": "clay-toronto-bay-and-gable-house-clay-v004",
+      "family_path": "tools/clay_toronto_bay_and_gable",
+      "model_sha256": "c11761d97f80e7462c88fb7d68b2d44eaaaa3010601fe23f32a4e624720186c8",
+      "source_review_sha256": "6ebce8927b7c597ddcf47845c0d657a2d1d494fa2659a3845236407df5acd053",
+      "current_canonical_review_sha256": "33179a5f2784c5b371c3fad952985b12a3f57a860a0b34ad0bf434adec58158a",
+      "family_changes": [
+        "M\ttools/clay_toronto_bay_and_gable/README.md"
+      ],
+      "models_reviews_sources_media_unchanged": true,
+      "evidence_directory_permalink": "https://github.com/aasedor/CityPrompt/tree/2e6f4860b75545aebe5a9cccabb845f3943ba8e9/tools/clay_toronto_bay_and_gable/evidence/v004",
+      "backup_scope": "Git-preserved JPEG copies and original raw review are hash verified; original reviewed PNG ZIP is not present. JPEGs are not pixel-identical PNG originals."
+    }
+  ],
+  "excluded_wave_k": [
+    {
+      "family": "tools/clay_climbing_crucible",
+      "state_excerpt": "# Climbing wall building: The Crucible (RLASM v6.1 architectural clay)  Candidate K1 of wave K of 2026-10-23, one of five catalogue additions the user asked for (all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **stopped at v003 by the stopping rule (the east curtain-wall finding, first raised at v001, recurred after targeted fixes in v002 and v003); v003 (0 P0 / 2 P1) is the candidate, not keeper-approved**. Nothing here is keeper-approved, runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need the user's decision.  ## Source lock (Phase A) ",
+      "candidate_glbs": [
+        "tools/clay_climbing_crucible/candidates/clay-climbing-crucible-clay-v003.glb"
+      ],
+      "imported": false,
+      "reason": "Outside reviewed bounded18. Independent reviews retain P1 findings; stopped is not zero-P1 approval.",
+      "readme_permalink": "https://github.com/aasedor/CityPrompt/blob/3a98ff9d7b3315b278da9262089cc23e4b74734d/tools/clay_climbing_crucible/README.md"
+    },
+    {
+      "family": "tools/clay_climbing_overhang",
+      "state_excerpt": "# Climbing wall building: The Overhang (RLASM v6.1 architectural clay)  Candidate K2 of wave K of 2026-10-23, one of five catalogue additions the user asked for (all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **stopped at v004 by the stopping rule (v003 and v004 did not lower v002's count); v002 (0 P0 / 2 P1) is the candidate, not keeper-approved**. Nothing here is keeper-approved, runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need the user's decision.  ## Source lock (Phase A) ",
+      "candidate_glbs": [
+        "tools/clay_climbing_overhang/candidates/clay-climbing-overhang-clay-v002.glb"
+      ],
+      "imported": false,
+      "reason": "Outside reviewed bounded18. Independent reviews retain P1 findings; stopped is not zero-P1 approval.",
+      "readme_permalink": "https://github.com/aasedor/CityPrompt/blob/3a98ff9d7b3315b278da9262089cc23e4b74734d/tools/clay_climbing_overhang/README.md"
+    },
+    {
+      "family": "tools/clay_climbing_spine",
+      "state_excerpt": "# Climbing wall building: The Spine (RLASM v6.1 architectural clay)  Candidate K3 of wave K of 2026-10-23, one of five catalogue additions the user asked for (all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **stopped at v003 by the stopping rule (v002 and v003 did not lower v001's count, and the spine-relief finding survived two targeted fixes); v001 (0 P0 / 4 P1) is the candidate, not keeper-approved**. Nothing here is keeper-approved, runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need the user's decision.  ## Source lock (Phase A) ",
+      "candidate_glbs": [
+        "tools/clay_climbing_spine/candidates/clay-climbing-spine-clay-v001.glb"
+      ],
+      "imported": false,
+      "reason": "Outside reviewed bounded18. Independent reviews retain P1 findings; stopped is not zero-P1 approval.",
+      "readme_permalink": "https://github.com/aasedor/CityPrompt/blob/3a98ff9d7b3315b278da9262089cc23e4b74734d/tools/clay_climbing_spine/README.md"
+    },
+    {
+      "family": "tools/clay_climbing_reef",
+      "state_excerpt": "# Climbing wall building: The Reef (RLASM v6.1 architectural clay)  Candidate K4 of wave K of 2026-10-23, one of five catalogue additions the user asked for (all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **stopped at v003 by the stopping rule (the climbing-pocket finding survived two targeted fixes); v002 (0 P0 / 1 P1) is the candidate, not keeper-approved**. Nothing here is keeper-approved, runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need the user's decision.  ## Source lock (Phase A) ",
+      "candidate_glbs": [
+        "tools/clay_climbing_reef/candidates/clay-climbing-reef-clay-v002.glb"
+      ],
+      "imported": false,
+      "reason": "Outside reviewed bounded18. Independent reviews retain P1 findings; stopped is not zero-P1 approval.",
+      "readme_permalink": "https://github.com/aasedor/CityPrompt/blob/3a98ff9d7b3315b278da9262089cc23e4b74734d/tools/clay_climbing_reef/README.md"
+    },
+    {
+      "family": "tools/clay_barcelona_passatge",
+      "state_excerpt": "# Barcelona passatge (covered passage) (RLASM v6.1 architectural clay)  Candidate K5 of wave K of 2026-10-23, one of five catalogue additions the user asked for (all four variants of the climbing wall building, and the covered passage); a street or path option, not a building. State: **stopped at v003 by the stopping rule (the upper-bay finding survived two targeted fixes); v002 (0 P0 / 2 P1) is the candidate, not keeper-approved**. Nothing here is keeper-approved, runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need the user's decision.  ## Source lock (Phase A) ",
+      "candidate_glbs": [
+        "tools/clay_barcelona_passatge/candidates/clay-barcelona-passatge-clay-v002.glb"
+      ],
+      "imported": false,
+      "reason": "Outside reviewed bounded18. Independent reviews retain P1 findings; stopped is not zero-P1 approval.",
+      "readme_permalink": "https://github.com/aasedor/CityPrompt/blob/3a98ff9d7b3315b278da9262089cc23e4b74734d/tools/clay_barcelona_passatge/README.md"
+    }
+  ]
+}

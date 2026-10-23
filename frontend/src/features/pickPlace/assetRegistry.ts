@@ -14,6 +14,8 @@ import nativeStreets from '@/data/nativeStreetPilots.json';
 import manualStreets from '@/data/streetManual.json';
 import { reviewedAssetClassification } from './catalogueClassification';
 import { LOCAL_CLAUDE_SAVED_ASSETS } from './claudeAssetLocalTrial';
+import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
+import { PUBLIC_REALM_RELEASE_SAVED_ASSETS } from './publicRealmRelease';
 import { classifyCalgaryAsset, calgaryGroup, CALGARY_GROUPS, type CalgaryClassification } from '@/features/calgaryCatalogue/guide';
 
 export type PlaceAssetId = string;
@@ -302,7 +304,7 @@ export const PARKADE_BUILDING_ASSETS = CATALOGUE_BUILDING_ASSETS.filter(asset =>
 export const PARKADE_TRIAL_ASSETS: PlaceAsset[] = import.meta.env.DEV
   ? (parkadeFamilyTrial.assets as unknown as PlaceAsset[]).filter(asset =>
     !PARKADE_BUILDING_ASSETS.some(published => published.id === asset.id)) : [];
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
   // Exact local validation buildings already declare their delivered GLB.
   // Keep that binding reproducible rather than depending on an unrelated
   // developer database having a matching Model Library row.
@@ -328,7 +330,8 @@ export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, 
     model:{...asset.model,revision:layout.contentRevision,method:'native_park_v2'},
     width:layout.occupiedWidthM,depth:layout.occupiedDepthM,minWidth:layout.occupiedWidthM,minDepth:layout.occupiedDepthM,
     properties:{...properties,green_space_native_layout_id:layout.id,pick_place_automatic_3d:true}};
-}).concat(FLEXIBLE_PARK_ASSETS, LOCAL_CLAUDE_SAVED_ASSETS).map(reviewedAssetClassification);
+}).concat(FLEXIBLE_PARK_ASSETS, PUBLIC_REALM_RELEASE_SAVED_ASSETS, LOCAL_CLAUDE_SAVED_ASSETS.filter(asset =>
+  !CLAUDE_BUILDING_RELEASE_ASSETS.some(release => release.id === asset.id))).map(reviewedAssetClassification);
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {
   return asset.readiness === 'pilot' || asset.readiness === 'ready';

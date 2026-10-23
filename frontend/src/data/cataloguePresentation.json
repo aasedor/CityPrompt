@@ -1966,32 +1966,89 @@
   "claude_scottish_baronial_hotel": {
     "label": "Scottish Baronial Railway Hotel",
     "description": "A grand railway hotel with a pointed entrance passage, courtyard and turreted skyline. Five levels sit beneath steep roofs and stepped gables.",
-    "styleIds": ["historical"],
-    "searchTags": ["building", "historical", "scottish", "baronial", "railway", "hotel", "courtyard", "turrets"]
+    "styleIds": [
+      "historical"
+    ],
+    "searchTags": [
+      "building",
+      "historical",
+      "scottish",
+      "baronial",
+      "railway",
+      "hotel",
+      "courtyard",
+      "turrets"
+    ]
   },
   "claude_parisian_corner_with_dome": {
     "label": "Zinc Dome Corner Block",
     "description": "A Parisian corner block with recessed windows, a mansard roof and a zinc dome marking the street corner.",
-    "styleIds": ["parisian"],
-    "searchTags": ["building", "parisian", "corner", "mixed_use", "zinc", "dome", "mansard"]
+    "styleIds": [
+      "parisian"
+    ],
+    "searchTags": [
+      "building",
+      "parisian",
+      "corner",
+      "mixed_use",
+      "zinc",
+      "dome",
+      "mansard"
+    ]
   },
   "claude_grand_magasin": {
     "label": "Grand Magasin",
     "description": "A Belle Époque department store with tall glazed bays, a rounded corner entrance and a glass dome above the roofline.",
-    "styleIds": ["parisian", "historical"],
-    "searchTags": ["building", "parisian", "historical", "belle_epoque", "department_store", "shops", "retail", "glass", "dome"]
+    "styleIds": [
+      "parisian",
+      "historical"
+    ],
+    "searchTags": [
+      "building",
+      "parisian",
+      "historical",
+      "belle_epoque",
+      "department_store",
+      "shops",
+      "retail",
+      "glass",
+      "dome"
+    ]
   },
   "claude_barcelona_mercat": {
     "label": "Modernista Market Hall",
     "description": "A broad market hall with an arched entrance, glazed walls and repeated roof bays inspired by Barcelona's Modernista markets.",
-    "styleIds": ["historical"],
-    "searchTags": ["building", "historical", "modernista", "barcelona", "market", "hall", "shops", "glazed"]
+    "styleIds": [
+      "historical"
+    ],
+    "searchTags": [
+      "building",
+      "historical",
+      "modernista",
+      "barcelona",
+      "market",
+      "hall",
+      "shops",
+      "glazed"
+    ]
   },
   "claude_montreal_second_empire_civic": {
     "label": "Second Empire City Hall",
     "description": "A formal city hall with a central clock tower, mansard roofs and dormer windows above symmetrical civic wings.",
-    "styleIds": ["historical", "civic_monumental"],
-    "searchTags": ["building", "historical", "civic_monumental", "second_empire", "montreal", "city_hall", "clock_tower", "mansard"]
+    "styleIds": [
+      "historical",
+      "civic_monumental"
+    ],
+    "searchTags": [
+      "building",
+      "historical",
+      "civic_monumental",
+      "second_empire",
+      "montreal",
+      "city_hall",
+      "clock_tower",
+      "mansard"
+    ]
   },
   "calgary_skeletal_draft3_v1": {
     "label": "Skeletal Road — Surface Layout",
@@ -2105,6 +2162,351 @@
       "parking",
       "parking garage",
       "mobility courtyard parkade"
+    ]
+  },
+  "claude_trial_arched_mill_mixed_use": {
+    "label": "Arched Mill Mixed Use",
+    "description": "A brick mill conversion with tall arched storefronts and a paved forecourt. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "industrial",
+      "brick",
+      "mixed",
+      "use"
+    ]
+  },
+  "claude_trial_brick_podium_condo_tower": {
+    "label": "Brick Podium Condo Tower",
+    "description": "A residential tower with glass balconies above a brick podium and glazed shops. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "condo",
+      "podium",
+      "tower"
+    ]
+  },
+  "claude_trial_calgary_cbe_brutalist_hq": {
+    "label": "Calgary CBE Brutalist HQ",
+    "description": "A Calgary civic office with concrete terraces, a broad plaza and neighbouring context masses. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "calgary",
+      "cbe",
+      "brutalist",
+      "hq"
+    ]
+  },
+  "claude_trial_campus_shed_office": {
+    "label": "Campus Shed Office",
+    "description": "A low office campus with a sawtooth roof, glazed entrance and projecting canopy. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "corporate",
+      "office",
+      "campus",
+      "headquarters"
+    ]
+  },
+  "claude_trial_cmu_dock_warehouse": {
+    "label": "CMU Dock Warehouse",
+    "description": "A concrete-block warehouse with loading docks, personnel stairs and a vehicle apron. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "mid",
+      "century",
+      "distribution",
+      "warehouse"
+    ]
+  },
+  "claude_trial_courtyard_primary_school": {
+    "label": "Courtyard Primary School",
+    "description": "A courtyard school with low classroom wings and a landscaped approach. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "ecole",
+      "republicaine"
+    ]
+  },
+  "claude_trial_ctrain_elevated_station": {
+    "label": "CTrain Elevated Station",
+    "description": "An elevated CTrain station fragment with platforms, track, columns and stair towers. Connecting routes require separate design. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "calgary",
+      "ctrain",
+      "station"
+    ]
+  },
+  "claude_trial_energy_centre": {
+    "label": "Energy Centre",
+    "description": "A two-storey energy centre with glazed plant spaces and a service apron. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "central",
+      "utilities",
+      "plant",
+      "energy",
+      "centre"
+    ]
+  },
+  "claude_trial_garden_court_senior_residence": {
+    "label": "Garden Court Senior Residence",
+    "description": "A senior residence arranged around a planted court with sheltered entrance arcades. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "senior",
+      "living",
+      "complex"
+    ]
+  },
+  "claude_trial_gastown_heritage_commercial": {
+    "label": "Gastown Heritage Commercial",
+    "description": "A brick heritage commercial block with shopfront glazing and a raised plaza edge. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "gastown",
+      "heritage",
+      "commercial"
+    ]
+  },
+  "claude_trial_halifax_georgian_colonial": {
+    "label": "Halifax Georgian Colonial",
+    "description": "A Georgian house with a central entrance, symmetrical windows and a front garden. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "halifax",
+      "georgian",
+      "colonial"
+    ]
+  },
+  "claude_trial_halifax_waterfront_warehouse": {
+    "label": "Halifax Waterfront Warehouse",
+    "description": "A waterfront warehouse with deep shopfront glazing and a paved entrance apron. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "halifax",
+      "waterfront",
+      "warehouse"
+    ]
+  },
+  "claude_trial_led_grow_block": {
+    "label": "LED Grow Block",
+    "description": "An indoor agriculture block with magenta grow-light windows and a service forecourt. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "vertical",
+      "farm",
+      "indoor",
+      "agriculture"
+    ]
+  },
+  "claude_trial_mews_coach_house": {
+    "label": "Mews Coach House",
+    "description": "A compact mews home with a garage, side entrance and courtyard paving. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "london",
+      "mews",
+      "house"
+    ]
+  },
+  "claude_trial_old_montreal_limestone_commercial": {
+    "label": "Old Montreal Limestone Commercial",
+    "description": "A pale limestone commercial landmark with a dome and columned entrance portico. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "old",
+      "montreal",
+      "limestone",
+      "commercial"
+    ]
+  },
+  "claude_trial_plus15_glass_office_tower": {
+    "label": "Plus 15 Glass Office Tower",
+    "description": "A glazed office tower with a Plus 15 bridge fragment. Bridge connections require separate design. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "calgary",
+      "plus",
+      "15",
+      "connected",
+      "tower"
+    ]
+  },
+  "claude_trial_slab_balcony_tower": {
+    "label": "Slab Balcony Tower",
+    "description": "A slab apartment tower with projecting balconies and ground-level passages. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "west",
+      "end",
+      "mid",
+      "century",
+      "tower"
+    ]
+  },
+  "claude_trial_toronto_bay_and_gable": {
+    "label": "Toronto Bay And Gable",
+    "description": "A narrow Toronto home with a front bay, steep gable, entrance stoop and garden fence. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "styleIds": [],
+    "searchTags": [
+      "building",
+      "toronto",
+      "bay",
+      "and",
+      "gable",
+      "house"
+    ]
+  },
+  "claude_public_realm:cable-stayed-cycle-ring:c1ef7008750f": {
+    "label": "Cable Stayed Cycle Ring",
+    "description": "An elevated circular cycle route supported by cable-stayed pylons. Move and rotate the complete layout on a prepared level site; dimensions and built-in approaches remain unchanged.",
+    "styleIds": [],
+    "searchTags": [
+      "street",
+      "cable",
+      "stayed",
+      "cycle",
+      "ring"
+    ]
+  },
+  "claude_public_realm:calgary-riverwalk:22a0bc53f02c": {
+    "label": "Calgary Riverwalk",
+    "description": "A riverside promenade with seating, planting and its authored riverfront setting. Move and rotate the complete layout on a prepared level site; dimensions and built-in approaches remain unchanged.",
+    "styleIds": [],
+    "searchTags": [
+      "street",
+      "calgary",
+      "riverwalk"
+    ]
+  },
+  "claude_public_realm:halifax-public-gardens-park-only:9282a9ffd6a3": {
+    "label": "Halifax Public Gardens",
+    "description": "A formal garden with paths, planting and park-owned structures; surrounding city buildings have been removed. Move and rotate the complete layout on a prepared level site; dimensions and built-in approaches remain unchanged.",
+    "styleIds": [],
+    "searchTags": [
+      "park",
+      "halifax",
+      "public",
+      "gardens",
+      "only"
+    ]
+  },
+  "claude_public_realm:ice-rink-market-square-park-only:6a578c3c8e3c": {
+    "label": "Ice Rink Market Square",
+    "description": "A seasonal ice rink with a central tree and market stalls; surrounding city buildings have been removed. Move and rotate the complete layout on a prepared level site; dimensions and built-in approaches remain unchanged.",
+    "styleIds": [],
+    "searchTags": [
+      "park",
+      "ice",
+      "rink",
+      "market",
+      "square",
+      "only"
+    ]
+  },
+  "claude_public_realm:inglewood-main-street:e1106da0a1bc": {
+    "label": "Inglewood Main Street",
+    "description": "A main-street scene with shopfronts, road space and pedestrian edges. Move and rotate the complete layout on a prepared level site; dimensions and built-in approaches remain unchanged.",
+    "styleIds": [],
+    "searchTags": [
+      "street",
+      "inglewood",
+      "main"
+    ]
+  },
+  "claude_public_realm:montreal-plateau-rue:92722fb6162c": {
+    "label": "Montreal Plateau Rue",
+    "description": "A Montreal street scene with its original frontages and pedestrian edges. Move and rotate the complete layout on a prepared level site; dimensions and built-in approaches remain unchanged.",
+    "styleIds": [],
+    "searchTags": [
+      "street",
+      "montreal",
+      "plateau",
+      "rue"
+    ]
+  },
+  "claude_public_realm:princes-island-park:498a973435fc": {
+    "label": "Princes Island Park",
+    "description": "A landscape with paths, trees, lawns and park-owned structures. Move and rotate the complete layout on a prepared level site; dimensions and built-in approaches remain unchanged.",
+    "styleIds": [],
+    "searchTags": [
+      "park",
+      "princes",
+      "island"
+    ]
+  },
+  "claude_public_realm:rail-through-truss:db0886ff6186": {
+    "label": "Rail Through Truss",
+    "description": "A railway bridge with a through-truss frame and its authored approaches. Move and rotate the complete layout on a prepared level site; dimensions and built-in approaches remain unchanged.",
+    "styleIds": [],
+    "searchTags": [
+      "street",
+      "rail",
+      "through",
+      "truss"
+    ]
+  },
+  "claude_public_realm:road-diet-complete-street:bdd53e3b94bd": {
+    "label": "Road Diet Complete Street",
+    "description": "A complete street section with reallocated road space and pedestrian edges. Move and rotate the complete layout on a prepared level site; dimensions and built-in approaches remain unchanged.",
+    "styleIds": [],
+    "searchTags": [
+      "street",
+      "road",
+      "diet",
+      "complete"
+    ]
+  },
+  "claude_public_realm:steel-truss-road-bridge:d01804b356b2": {
+    "label": "Steel Truss Road Bridge",
+    "description": "A road bridge with a steel truss and its original approaches. Move and rotate the complete layout on a prepared level site; dimensions and built-in approaches remain unchanged.",
+    "styleIds": [],
+    "searchTags": [
+      "street",
+      "steel",
+      "truss",
+      "road",
+      "bridge"
+    ]
+  },
+  "claude_public_realm:swooping-cycle-flyover:4c075a5a31b0": {
+    "label": "Swooping Cycle Flyover",
+    "description": "A sweeping elevated cycle route with its original structure and approaches. Move and rotate the complete layout on a prepared level site; dimensions and built-in approaches remain unchanged.",
+    "styleIds": [],
+    "searchTags": [
+      "street",
+      "swooping",
+      "cycle",
+      "flyover"
+    ]
+  },
+  "claude_public_realm:weathering-steel-footbridge:2384d6eed060": {
+    "label": "Weathering Steel Footbridge",
+    "description": "A pedestrian bridge with weathering-steel structure and its authored approaches. Move and rotate the complete layout on a prepared level site; dimensions and built-in approaches remain unchanged.",
+    "styleIds": [],
+    "searchTags": [
+      "street",
+      "weathering",
+      "steel",
+      "footbridge"
     ]
   }
 }

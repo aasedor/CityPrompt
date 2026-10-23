@@ -55,6 +55,7 @@ from app.services.direct_3d_render import (
     prepare_direct_3d_capture,
 )
 from app.services.direct_3d_identity import direct_3d_zone_design_identity
+from app.services.fixed_public_realm import validate_fixed_public_realm
 from app.services.public_realm_lego import (
     PUBLIC_REALM_FALLBACK_PROPERTY,
     PUBLIC_REALM_RECIPE_PROPERTY,
@@ -219,6 +220,11 @@ def _validate_direct_3d_project_zones(
         stored_source_hash = stored_meta.get("source_hash")
         try:
             source_geometry = _direct_source_geometry(zone)
+            if kind in {"park", "street"}:
+                # A matching saved hash is not publication authority. Registry
+                # approval, environment and native footprint may have changed
+                # since this exact browser-owned scene was compiled.
+                validate_fixed_public_realm(zone.zone_type, source_geometry, zone.properties or {})
             current_source_hash = community_3d_source_hash(
                 zone.zone_type,
                 source_geometry,

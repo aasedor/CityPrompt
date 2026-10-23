@@ -279,6 +279,23 @@ def community_3d_source_properties(
     common = {
         "custom_style": _semantic_custom_style(props),
     }
+    if kind in {"park", "street"} and (
+        props.get("public_realm_release_asset")
+        or str(props.get("pick_place_asset", "")).startswith("claude_public_realm:")
+    ):
+        # These are executable identity fields for an exact fixed model, not
+        # refreshable provenance URLs. Keep their exact values so changing a
+        # runtime revision/claim invalidates the compiled proof before capture.
+        common["fixed_public_realm"] = {
+            key: props.get(key)
+            for key in (
+                "pick_place_asset",
+                "public_realm_release_asset",
+                "pick_place_model_revision",
+                "pick_place_definition_version",
+                "native_public_realm_url",
+            )
+        }
     if kind == "building":
         profile = props.get("development_style_profile")
         profile_keys = {
@@ -653,11 +670,13 @@ def community_3d_source_hash(
         "design": community_3d_source_properties(zone_type, properties),
     }
     # Geometric normalization intentionally erases the starting vertex. For
-    # placed native assets that edge owns frontage, so a 180-degree turn must
-    # invalidate a compiled recipe even though the occupied polygon is equal.
+    # placed native assets that edge owns heading, so a 180-degree turn must
+    # invalidate compiled proof even though the occupied polygon is equal.
     props = properties or {}
-    if payload["kind"] == "building" and (
+    if (payload["kind"] == "building" and (
         props.get("native_home_plot") is True or props.get("native_plot_axes") is True
+    )) or (
+        payload["kind"] in {"park", "street"} and "fixed_public_realm" in payload["design"]
     ):
         if geometry.geom_type == "Polygon" and len(geometry.exterior.coords) == 5:
             payload["authored_front_edge"] = [

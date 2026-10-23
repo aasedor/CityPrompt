@@ -1,0 +1,36 @@
+{
+  "schema": "cityprompt.fixed-public-realm-proposed-visual-evidence@1",
+  "proposal_only": false,
+  "candidate": "clay-montreal-plateau-rue-clay-v003",
+  "asset_id": "claude_public_realm:montreal-plateau-rue:92722fb6162c",
+  "runtime_sha256": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde",
+  "scope": "complete_runtime_derivative",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "basis": {
+    "source_locked_holistic_review": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-model-discovery-2026-10-22\\quality\\holistic-review-20261023\\clay-montreal-plateau-rue-clay-v003.json",
+      "role": "raw_exact_source_clay_holistic_review",
+      "sha256": "605d2b9257955c0d802e701d4241282a2fbb930f70ae9e1dc73ccb2dfa88b917",
+      "bytes": 12980
+    },
+    "independent_root_preservation_review": null,
+    "ordinary_UI_loaded_presence": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-model-discovery-2026-10-22\\quality\\holistic-review-20261023\\activation-proposal-20261023\\ordinary-ui-evidence.snapshot.json",
+      "role": "actual_UI_evidence",
+      "sha256": "e2842e619d496d8952f0611e838a64b93097340189d8d9d57f88cb0c5b6582e7",
+      "bytes": 25963
+    }
+  },
+  "attribution": "Holistic raw review by /root/claude_publicrealm_release with authorship/limits disclosed; GPU derivative preservation independently inspected by root. UI record assembled from actual root ordinary app trials.",
+  "scope_limits": [
+    "Architectural clay and fixed-native scene fidelity, with disclosed P2 polish; no textured keeper claim.",
+    "Functional 2048x714 wide-field PNGs are loaded-presence/capture evidence, not detailed architectural pixel review.",
+    "GPU derivative preservation derives from exact geometry/material/transform lineage plus independently inspected matched images; no invented all-angle in-globe review."
+  ],
+  "source_or_catalogue_written": false,
+  "publication_approved": false,
+  "gate_status": "passed",
+  "adopted_by": "/root",
+  "adopted_at": "2026-10-23T22:15:31.879420+00:00"
+}

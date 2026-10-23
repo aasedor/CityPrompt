@@ -1,0 +1,25 @@
+{
+  "schema": "cityprompt.claude-building-promotion-evidence@1",
+  "status": "SOURCE_PROMOTED_18_PREPARED_LEVEL_SITE",
+  "candidate_count": 18,
+  "canonical_library_count": 81,
+  "original63_preserved": true,
+  "immutable_models_reviews_ids_preserved": true,
+  "git_push_and_live_deployment": "separate; not performed by this promotion",
+  "files": [
+    "app-trial-and-pixel-review.json",
+    "source-provenance.json",
+    "mixed-community-trial.json",
+    "verification.json"
+  ],
+  "external_receipt_hashes": {
+    "building-final-app-checks.json": "537f516fbff7efeae9cbb16e1544b095380174001f3ed4fc531c1dde0c990153",
+    "building-app-pixel-review.json": "7c050159ca087f31fa0e3f02de6fe35fdb85ffa4b88b0ce0baa8c9bc7397dc41",
+    "mixed-community-trial.json": "6f9a3610b6e918aa902266f1da43d2d790780554d24148b884e977acdb79b99a",
+    "building-promotion-dry-run.json": "f92ab8c05700302b6b49ca048906462f0d075722fd9f36f8bb9d620a740203f9",
+    "building-promotion-applied.json": "22d394b274f59f9cb9631bed8cd67f30835f38d1faf6333ac06c5655a4564c28",
+    "building-promotion-preservation.json": "e495c2790b4e8eb6d4b0b1352caadf45fa5e6749863dcda4f408e41238ebc56f"
+  },
+  "media": "Current app PNGs and original PNG ZIP remain external. Source raw reviews and preserved JPEG review media have pinned Git links. These JSON snapshots do not claim binary runtime capture backup.",
+  "runtime_inventory": "Sparse tree generation blocked by380 missing refs; existing manifest unchanged. Root hosted-closure owner must supply complete public input and verify."
+}

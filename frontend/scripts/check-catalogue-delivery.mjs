@@ -62,7 +62,7 @@ const libraryRows=libraryPaths.flatMap(path=>read(resolve(repo,path)).entries.ma
   if(sourcePath.startsWith('../')) throw new Error('Seed model escapes repository');
   return {...row,sourcePath};
 }));
-const data = {entries,parks:source('nativeParks.json').layouts,streets:source('nativeStreetPilots.json'),
+const data = {entries,fixedPublicRealm:source('publicRealmRelease20261023.json').models,parks:source('nativeParks.json').layouts,streets:source('nativeStreetPilots.json'),
   library:libraryRows,
   kits:[...sharedKits,...starter.dependencies.filter(row=>row.location==='public'&&row.path.endsWith('.glb')&&/park-kits|landscape-pilots/.test(row.path)).map(row=>({url:'/'+row.path,kind:'glb',sha256:row.sha256}))]};
 const rows = catalogueRequirements(choices,heroImage,data);
@@ -117,7 +117,7 @@ if (output) writeFileSync(output,JSON.stringify(report,null,2)+'\n');
 if (packetDirectory && report.failures.length===0 && !metadataOnly) {
   const directory=resolve(packetDirectory);
   if(directory.startsWith(repo)) throw new Error('Keep generated packets outside the source tree');
-  const sources=['src/data/claudeFiveTrial.json','src/data/validationCatalogue.json','src/data/classroomExpansion.json','src/data/catalogueOctober2026.json','src/data/nativeParks.json','src/data/nativeStreetPilots.json','src/data/streetManual.json','src/data/flexibleParks.json','src/data/sharedParkEquipment.ts','src/data/neighborhoodParkV0StickerKit.json','src/data/savedModelRevisions.json','public/park-kits/shared-park-equipment-v1/kit_manifest.json','src/features/pickPlace/pickerHeroImages.ts','src/features/pickPlace/assetRegistry.ts','src/features/pickPlace/publishedBuildingAssets.ts','src/features/pickPlace/canonicalCatalogue.ts','src/features/pickPlace/catalogueClassification.ts'];
+  const sources=['src/data/claudeFiveTrial.json','src/data/publicRealmRelease20261023.json','src/data/validationCatalogue.json','src/data/classroomExpansion.json','src/data/catalogueOctober2026.json','src/data/nativeParks.json','src/data/nativeStreetPilots.json','src/data/streetManual.json','src/data/flexibleParks.json','src/data/sharedParkEquipment.ts','src/data/neighborhoodParkV0StickerKit.json','src/data/savedModelRevisions.json','public/park-kits/shared-park-equipment-v1/kit_manifest.json','src/features/pickPlace/pickerHeroImages.ts','src/features/pickPlace/assetRegistry.ts','src/features/pickPlace/publishedBuildingAssets.ts','src/features/pickPlace/canonicalCatalogue.ts','src/features/pickPlace/catalogueClassification.ts'];
   const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
   const normalize=file=>readFileSync(file,'utf8').replace(/\r\n?/g,'\n');
   const receipt={schema:'cityprompt.catalogue-packet@1',catalogue_activation:false,sourceInputs:[

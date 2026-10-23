@@ -63,9 +63,19 @@ def test_shipped_contract_covers_current_release_including_published_parkades():
     rows = verify.load_expected(root / "backend/app/data/native_model_contract.json",
                                 root / "seed/model-library/rlasm-architectural-clay/library.json",
                                 [root / "seed/claude-five-trial/library.json"])
-    assert len(rows) == 64
+    release = json.loads((root / "frontend/src/data/claudeBuildingRelease.json").read_text(encoding="utf-8"))
+    additions = {entry["asset_id"]: entry for entry in release["entries"]}
+    assert len(additions) == 18
+    assert len(rows) == 64 + len(additions)
     assert sum(row["local_trial_only"] for row in rows) == 0
-    assert len({row["asset_id"] for row in rows}) == 64
+    assert len({row["asset_id"] for row in rows}) == len(rows)
+    added_rows = [row for row in rows if row["asset_id"] in additions]
+    assert len(added_rows) == len(additions)
+    assert len([row for row in rows if row["asset_id"] not in additions]) == 64
+    for row in added_rows:
+        entry = additions[row["asset_id"]]
+        assert (row["candidate"], row["variant_id"], row["sha256"]) == (
+            entry["candidate"], entry["variant_id"], entry["model_sha256"])
     parkades = json.loads((root / "seed/model-library/rlasm-architectural-clay/parkades-release-v001.json").read_text())
     wanted = {entry["candidate"]: entry["model"]["sha256"] for entry in parkades["entries"]}
     actual = {row["candidate"]: row["sha256"] for row in rows if row["candidate"] in wanted}

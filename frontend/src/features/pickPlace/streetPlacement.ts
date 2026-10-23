@@ -5,6 +5,7 @@ import { metersPerDegLon, METERS_PER_DEG_LAT } from '@/components/viewer/mapEngi
 import { canonicalStreetForZone } from './canonicalStreetPlacement';
 import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
 import { isSpecialistStreet } from '@/components/viewer/globe/specialistStreetProgram';
+import { isFixedNativeScene } from './fixedNativeScene';
 
 export const CALGARY_LOCAL_PLACEMENT = LOCAL_STREET_ASSET;
 export const CALGARY_LOCAL_WIDTH_M = LOCAL_STREET_ASSET.sectionWidth;
@@ -14,7 +15,7 @@ export function isCalgaryLocalRoute(zone: Pick<SiteZone, 'zone_type' | 'properti
 }
 
 export function streetAssetForZone(zone: Pick<SiteZone, 'zone_type' | 'properties'>) {
-  if (zone.zone_type !== 'road') return undefined;
+  if (zone.zone_type !== 'road' || isFixedNativeScene(zone.properties)) return undefined;
   // A finite classroom picker must not remove editing support from an existing
   // Calgary Local route saved before the candidate-only catalogue was enabled.
   return [...STREET_ASSETS, ...LEGACY_SECTION_STREET_ASSETS].find(asset => zone.properties?.pick_place_street_section === asset.model.variantId

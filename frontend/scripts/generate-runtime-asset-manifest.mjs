@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, extname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { productionRuntimeSourceText } from './runtime-release-source.mjs';
 
 const frontendRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const repoRoot = resolve(frontendRoot, '..');
@@ -244,7 +245,7 @@ for (const dependency of starter.dependencies) {
 const urlPattern = /\/(?:archetypes|assets|entourage|families|images|park-kits|park-skins|landscape-pilots|street-kits|native-park-assets)\/[^\s"'`<>)\]}]+/g;
 for (const filePath of sourceFiles) {
   if (catalogPaths.has(filePath)) continue;
-  const text = sourceText(filePath);
+  const text = productionRuntimeSourceText(sourcePath(filePath), sourceText(filePath));
   for (const rawMatch of text.matchAll(urlPattern)) {
     if (rawMatch.index > 0 && text[rawMatch.index - 1] === '@') continue;
     const url = rawMatch[0].replace(/[.,;:]+$/, '').split(/[?#]/, 1)[0];

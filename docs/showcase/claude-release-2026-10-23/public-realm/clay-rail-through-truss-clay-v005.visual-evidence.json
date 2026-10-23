@@ -1,0 +1,36 @@
+{
+  "schema": "cityprompt.fixed-public-realm-proposed-visual-evidence@1",
+  "proposal_only": false,
+  "candidate": "clay-rail-through-truss-clay-v005",
+  "asset_id": "claude_public_realm:rail-through-truss:db0886ff6186",
+  "runtime_sha256": "db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813",
+  "scope": "complete_runtime_derivative",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "basis": {
+    "source_locked_holistic_review": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-model-discovery-2026-10-22\\quality\\holistic-review-20261023\\clay-rail-through-truss-clay-v005.json",
+      "role": "raw_exact_source_clay_holistic_review",
+      "sha256": "a354538e9aa70147e6246d823996c07243c5936160e0cfec1c8881b4cd1ffd0c",
+      "bytes": 12884
+    },
+    "independent_root_preservation_review": null,
+    "ordinary_UI_loaded_presence": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-model-discovery-2026-10-22\\quality\\holistic-review-20261023\\activation-proposal-20261023\\ordinary-ui-evidence.snapshot.json",
+      "role": "actual_UI_evidence",
+      "sha256": "e2842e619d496d8952f0611e838a64b93097340189d8d9d57f88cb0c5b6582e7",
+      "bytes": 25963
+    }
+  },
+  "attribution": "Holistic raw review by /root/claude_publicrealm_release with authorship/limits disclosed; GPU derivative preservation independently inspected by root. UI record assembled from actual root ordinary app trials.",
+  "scope_limits": [
+    "Architectural clay and fixed-native scene fidelity, with disclosed P2 polish; no textured keeper claim.",
+    "Functional 2048x714 wide-field PNGs are loaded-presence/capture evidence, not detailed architectural pixel review.",
+    "GPU derivative preservation derives from exact geometry/material/transform lineage plus independently inspected matched images; no invented all-angle in-globe review."
+  ],
+  "source_or_catalogue_written": false,
+  "publication_approved": false,
+  "gate_status": "passed",
+  "adopted_by": "/root",
+  "adopted_at": "2026-10-23T22:15:31.879420+00:00"
+}

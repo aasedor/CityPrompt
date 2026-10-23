@@ -5,14 +5,21 @@ import claudeTrial from '@/data/claudeAssetLocalTrial.json';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
+import { publicRealmReleaseRow, publicRealmReleaseAllowed, type PublicRealmReleaseFixture } from '@/features/pickPlace/publicRealmRelease';
 
 // The coloured preview underlays are rebuilt on prepared terrain. Fine paving
 // units and painted symbols remain in the native GLB above that owned ground.
 export const TRIAL_GROUND_MATERIALS = new Set(['grass', 'paving', 'soil', 'cycle', 'asphalt']);
-export type PublicRealmTrialAsset = typeof assets[number] | NonNullable<typeof claudeTrial.models[number]['fixture']>;
+export type PublicRealmTrialAsset = typeof assets[number] | NonNullable<typeof claudeTrial.models[number]['fixture']> | PublicRealmReleaseFixture;
 const localClaudeFixtures = import.meta.env.DEV
   ? claudeTrial.models.flatMap(row => row.fixture ? [row.fixture] : []) : [];
 export function publicRealmTrialAsset(zone: SiteZone): PublicRealmTrialAsset | null {
+  const savedRelease = String(zone.properties?.pick_place_asset).startsWith('claude_public_realm:');
+  const claim = zone.properties?.public_realm_release_asset ?? (savedRelease ? zone.properties?.pick_place_asset : undefined);
+  if (zone.properties?.public_realm_release_asset !== undefined || savedRelease) return publicRealmReleaseRow(claim)?.fixture ?? {
+    id: String(claim), title: 'Unavailable fixed public-realm model', kind: zone.zone_type === 'road' ? 'street' : 'park',
+    dimensions: [0, 0], sha256: '', url: '', surfaceRegions: [], preserveNativeGround: true, centerNativeClay: true,
+  };
   if (!import.meta.env.DEV) return null;
   return [...assets, ...localClaudeFixtures].find(asset => asset.id === zone.properties?.public_realm_trial_asset) ?? null;
 }
@@ -22,6 +29,17 @@ export function publicRealmTrialAsset(zone: SiteZone): PublicRealmTrialAsset | n
  * contain scaling, concave clipping, route bending, or hard-coded site elevation. */
 export function publicRealmTrialPlacement(zone: SiteZone, zones: SiteZone[], fallback: number) {
   const asset = publicRealmTrialAsset(zone);
+  if (asset && (zone.properties?.public_realm_release_asset !== undefined || asset.id.startsWith('claude_public_realm:'))) {
+    const row = publicRealmReleaseRow(asset.id);
+    const properties = zone.properties ?? {};
+    if (!row || !publicRealmReleaseAllowed(row) || zone.zone_type !== row.asset.zoneType
+      || properties.pick_place_asset !== asset.id || properties.public_realm_release_asset !== asset.id
+      || properties.pick_place_model_revision !== asset.sha256 || properties.native_public_realm_url !== asset.url
+      || properties.pick_place_definition_version !== row.asset.definitionVersion
+      || Object.entries(row.asset.properties).some(([key, value]) => properties[key] !== value)
+      || properties.validation_fixed_fixture != null || properties.validation_native_url != null || properties.public_realm_trial_asset != null
+      || properties._plan_scenario) return null;
+  }
   // Identify invalid local fixtures above so they retain their readiness/error
   // marker; never display current bytes for a different saved revision.
   if (asset?.id.startsWith('claude_trial_') && (
@@ -69,6 +87,6 @@ export function publicRealmTrialGroundCells(asset: PublicRealmTrialAsset) {
 export function assertPublicRealmTrialsReady(scene: Object3D | null) {
   scene?.traverse(object => {
     const state = object.userData.publicRealmTrialStatus;
-    if (state && state !== 'ready') throw new Error('The local public-realm model is not ready. Keep its full native rectangle inside a prepared site and wait for its 3D asset to load.');
+    if (state && state !== 'ready') throw new Error('The fixed public-realm model is not ready. Keep its full native rectangle inside a prepared site and wait for its 3D asset to load.');
   });
 }

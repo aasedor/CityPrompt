@@ -3,6 +3,8 @@ import { CANONICAL_CHOICES, CANONICAL_DOMAINS, UNAVAILABLE_CATALOGUE_ENTRIES, re
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
 import { LOCAL_CLAUDE_ASSETS } from './claudeAssetLocalTrial';
+import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
+import { PUBLIC_REALM_RELEASE_ASSETS } from './publicRealmRelease';
 import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS } from './assetRegistry';
 
 describe('canonical discovery and identity', () => {
@@ -17,7 +19,10 @@ describe('canonical discovery and identity', () => {
   it('discovers exactly the current eligible parents in each domain', () => {
     expect(UNAVAILABLE_CATALOGUE_ENTRIES).toEqual([]);
     const roster = [...validation.entries, ...expansion.entries];
-    expect(CANONICAL_CHOICES).toHaveLength(roster.length + CLAUDE_FIVE_TRIAL_ASSETS.length + PARKADE_BUILDING_ASSETS.length + PARKADE_TRIAL_ASSETS.length + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length + FINAL_FIVE_BUILDING_ASSETS.length + MANUAL_STREET_ASSETS.length + FLEXIBLE_PARK_ASSETS.length + PATHWAY_ASSETS.length + LOCAL_CLAUDE_ASSETS.length);
+    const remainingLocal = LOCAL_CLAUDE_ASSETS.filter(asset =>
+      !CLAUDE_BUILDING_RELEASE_ASSETS.some(release => release.id === asset.id)
+      && !PUBLIC_REALM_RELEASE_ASSETS.some(release => release.zoneType === asset.zoneType && release.model.variantId === asset.model.variantId));
+    expect(CANONICAL_CHOICES).toHaveLength(roster.length + CLAUDE_FIVE_TRIAL_ASSETS.length + PARKADE_BUILDING_ASSETS.length + PARKADE_TRIAL_ASSETS.length + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length + FINAL_FIVE_BUILDING_ASSETS.length + MANUAL_STREET_ASSETS.length + FLEXIBLE_PARK_ASSETS.length + PATHWAY_ASSETS.length + remainingLocal.length + CLAUDE_BUILDING_RELEASE_ASSETS.length + PUBLIC_REALM_RELEASE_ASSETS.length);
     for (const entry of roster) {
       const choice = CANONICAL_CHOICES.find(c => c.option.id === entry.archetype_id && c.placements[0]?.model.variantId === entry.variant_id);
       expect(choice, entry.variant_id).toBeDefined();

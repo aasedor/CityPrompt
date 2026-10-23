@@ -1,3 +1,4 @@
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import type { SiteZone } from '@/types';
 import bounds from '@/data/nativeStreetModuleBounds.json';
 import { extractZoneCenterline } from '@/utils/roadGeometry';
@@ -6,7 +7,7 @@ import { BRIDGE_VARIANT } from './specialistStreetProgram';
 import type { NativeStreetPose } from './nativeStreetPilot';
 
 const bridges = (zones: SiteZone[]) => zones.filter(z => z.zone_type === 'road'
-  && z.properties?.road_selected_variant_id === BRIDGE_VARIANT && !z.properties?.validation_fixed_fixture);
+  && z.properties?.road_selected_variant_id === BRIDGE_VARIANT && !isFixedNativeScene(z.properties));
 
 /** Neighbour edits change overhead reservations even when this road is unchanged. */
 export const bridgeClearanceKey = (zones: SiteZone[]) => JSON.stringify(bridges(zones)

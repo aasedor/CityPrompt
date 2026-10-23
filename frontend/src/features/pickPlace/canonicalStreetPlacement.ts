@@ -4,6 +4,7 @@ import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/stre
 import { CANONICAL_CHOICES, canonicalDrawing, type CanonicalSelection } from './canonicalCatalogue';
 import type { StreetAsset } from './assetRegistry';
 import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
+import { isFixedNativeScene } from './fixedNativeScene';
 
 const cache = new Map<string, StreetAsset>();
 
@@ -11,6 +12,10 @@ const cache = new Map<string, StreetAsset>();
 export function canonicalStreetAsset(selection: CanonicalSelection): StreetAsset {
   const { choice, variant } = selection;
   if (choice.domain !== 'street_pathway') throw new Error('Choose a street archetype.');
+  if (isFixedNativeScene(choice.option.propertyPresets) || choice.placements.some(asset =>
+    (!variant || asset.model.variantId === variant.id) && asset.kind === 'object' && asset.zoneType === 'road')) {
+    throw new Error('Fixed native scenes support placement only, without a procedural street section.');
+  }
   const id = `canonical-street:${choice.option.id}:${variant?.id ?? ''}`;
   const cached = cache.get(id);
   if (cached) return cached;
@@ -34,7 +39,7 @@ export function canonicalStreetAsset(selection: CanonicalSelection): StreetAsset
 
 export function canonicalStreetForZone(zone: Pick<SiteZone, 'zone_type' | 'properties'>): StreetAsset | undefined {
   const props = zone.properties;
-  if (zone.zone_type !== 'road' || !props?.pick_place_street_section) return undefined;
+  if (zone.zone_type !== 'road' || isFixedNativeScene(props) || !props?.pick_place_street_section) return undefined;
   const choice = CANONICAL_CHOICES.find(c => c.domain === 'street_pathway' && c.option.id === props.road_archetype_id);
   if (!choice || props.pick_place_street_section !== props.road_selected_variant_id) return undefined;
   const variant = choice.option.variants?.find(v => v.id === props.road_selected_variant_id);
@@ -44,6 +49,7 @@ export function canonicalStreetForZone(zone: Pick<SiteZone, 'zone_type' | 'prope
 
 /** Centreline, identity and buffered footprint must change in one undoable write. */
 export function streetDesignUpdate(zone: SiteZone, asset: StreetAsset): { coordinates: number[][]; properties: SiteZoneProperties } {
+  if (isFixedNativeScene(zone.properties)) throw new Error('Fixed native scenes cannot adopt a procedural street preset.');
   const savedControls = parsePersistedCenterline(zone.properties?.plan_route_controls);
   const controls = savedControls ?? extractZoneCenterline(zone);
   const line = savedControls && savedControls.length >= 3

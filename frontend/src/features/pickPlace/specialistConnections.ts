@@ -1,3 +1,4 @@
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import type {SiteZone} from '@/types';
 import {extractZoneCenterline,effectiveRoadWidth} from '@/utils/roadGeometry';
 import {CANAL_VARIANT,BRIDGE_VARIANT,isSpecialistStreet} from '@/components/viewer/globe/specialistStreetProgram';
@@ -19,7 +20,7 @@ export function specialistConnectionProblem(candidate:Pick<SiteZone,'coordinates
   const next=[...zones.filter(z=>z.id!==candidate.id),{...candidate,id:candidate.id??'draft',zone_type:candidate.zone_type??'road'} as SiteZone];
   for(const zone of next){
     const variant=zone.properties?.road_selected_variant_id;
-    if(!isSpecialistStreet(variant)||zone.properties?.validation_fixed_fixture)continue;
+    if(!isSpecialistStreet(variant)||isFixedNativeScene(zone.properties))continue;
     const route=extractZoneCenterline(zone);if(route.length<2)continue;
     const spans=variant===CANAL_VARIANT?route.slice(1).map((p,i)=>[route[i],p]):[[route[0],route[route.length-1]]];
     for(const [a,b] of spans){

@@ -27,6 +27,8 @@ describe('local student validation discovery',()=>{
     expect(screen.getAllByRole('article')).toHaveLength(12);
     fireEvent.click(screen.getAllByRole('button',{name:'Streets'})[1]);
     fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
+    expect(screen.queryByRole('button', { name: /Place fixed review segment/ })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Show 9 fixed review segments (placement only)' }));
     const streets = CANONICAL_CHOICES.filter(choice => choice.domain === 'street_pathway');
     for (const [index, choice] of streets.entries()) {
       if (index > 0) {
@@ -37,15 +39,23 @@ describe('local student validation discovery',()=>{
         fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
       }
       const asset = choice.placements[0];
-      expect(asset.kind).toBe('street');
       fireEvent.click(screen.getByRole('button', { name: `Expand details for ${cataloguePresentationFor(asset.id)?.label ?? asset.label}` }));
       const article = screen.getByLabelText(`Variant for ${cataloguePresentationFor(asset.id)?.label ?? asset.label}`).closest('article')!;
-      fireEvent.click(within(article).getByRole('button', { name: 'Choose & draw route' }));
-      expect(onPickStreet).toHaveBeenLastCalledWith(asset);
+      if (asset.kind === 'street') {
+        fireEvent.click(within(article).getByRole('button', { name: 'Choose & draw route' }));
+        expect(onPickStreet).toHaveBeenLastCalledWith(asset);
+      } else {
+        expect(asset.zoneType).toBe('road');
+        expect(asset.reshapeMode).toBe('fixed_native');
+        expect(asset.model.method).toBe('fixed_public_realm_v1');
+        expect(within(article).queryByRole('button', { name: 'Choose & draw route' })).not.toBeInTheDocument();
+        fireEvent.click(within(article).getByRole('button', { name: 'Place fixed review segment' }));
+        expect(onPick).toHaveBeenLastCalledWith(asset.id);
+      }
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     }
-    expect(onPickStreet).toHaveBeenCalledTimes(streets.length);
-    expect(onPick).not.toHaveBeenCalled();
+    expect(onPickStreet).toHaveBeenCalledTimes(streets.filter(c => c.placements[0].kind === 'street').length);
+    expect(onPick).toHaveBeenCalledTimes(9);
     expect(onPickCanonical).not.toHaveBeenCalled();
   }, 60000);
   it('leaves street drawing in Streets and reserves the primary action for walking',()=>{

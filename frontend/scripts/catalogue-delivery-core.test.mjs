@@ -58,3 +58,22 @@ test('separate trial manifest retains exact repository model path and publicatio
  assert.equal(result.checks[1].sourcePath,row.sourcePath);
  assert.equal(result.local_trial_only,true);
 });
+
+
+test('fixed public realm delivery requires its exact release fixture before other representations', async()=>{
+ const {readFileSync}=await import('node:fs');
+ const manifest=JSON.parse(readFileSync(new URL('../src/data/publicRealmRelease20261023.json',import.meta.url)));
+ for (const row of manifest.models) {
+  const choice={id:row.asset.id,domain:row.category,option:{id:'test'},placements:[structuredClone(row.asset)]};
+  const data={entries:[{archetype_id:'test',variant_id:row.asset.model.variantId,local_url:'/wrong.glb',sha256:'b'.repeat(64)}],parks:[],streets:[{id:row.asset.model.variantId,modules:{wrong:{url:'/wrong.glb',sha256:'b'.repeat(64)}}}],library:[],fixedPublicRealm:manifest.models};
+  const result=catalogueRequirements([choice],(_id,fallback)=>fallback,data)[0];
+  assert.equal(result.representation,'fixed_public_realm');
+  assert.deepEqual(result.checks.filter(c=>c.kind==='glb'),[{url:row.fixture.url,kind:'glb',sha256:row.runtime_sha256}]);
+  assert.equal(result.local_trial_only,row.status !== 'ready');
+  for (const mutate of [a=>a.model.revision='b'.repeat(64),a=>a.properties.native_public_realm_url='/wrong.glb',a=>a.model.variantId='other',a=>a.width+=1]) {
+   const invalid=structuredClone(choice); mutate(invalid.placements[0]);
+   assert.throws(()=>catalogueRequirements([invalid],(_id,fallback)=>fallback,data),/fixed public.realm/i);
+  }
+  assert.throws(()=>catalogueRequirements([choice],(_id,fallback)=>fallback,{...data,fixedPublicRealm:[]}),/fixed public.realm/i);
+ }
+});

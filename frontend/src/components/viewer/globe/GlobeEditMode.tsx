@@ -1,3 +1,4 @@
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 /**
  * GlobeEditMode.tsx — Zone editing UI for the 3D globe.
  *
@@ -675,7 +676,7 @@ export function GlobeEditMode({
       if (!lngLat || !originalCoordsRef.current) return;
 
       const asset = assetForZone(zone);
-      let newCoords = zone.properties?.validation_fixed_fixture === true ? originalCoordsRef.current
+      let newCoords = isFixedNativeScene(zone.properties) ? originalCoordsRef.current
         : isFixedSectionStreet(zone)
         ? reshapeStreetPoint(originalCoordsRef.current, index, lngLat, streetSectionWidth(zone))
         : asset && asset.reshapeMode !== 'authored_footprint' && zone.zone_type !== 'green_space' && originalCoordsRef.current.length === 4
@@ -756,7 +757,7 @@ export function GlobeEditMode({
             frustumCulled={false}
             onPointerDown={handleBodyPointerDown}
             onContextMenu={event=>{
-              if(!([BRT_VARIANT,TRAM_VARIANT].includes(String(zone.properties?.road_selected_variant_id)) || hasElevatedStation(zone.properties?.road_selected_variant_id)) || zone.properties?.validation_fixed_fixture)return;
+              if(!([BRT_VARIANT,TRAM_VARIANT].includes(String(zone.properties?.road_selected_variant_id)) || hasElevatedStation(zone.properties?.road_selected_variant_id)) || isFixedNativeScene(zone.properties))return;
               event.stopPropagation();event.nativeEvent.preventDefault();
               const point=pointerToLatLng(event.nativeEvent as unknown as PointerEvent);
               const route=extractZoneCenterline(zone);if(!point || route.length<2)return;

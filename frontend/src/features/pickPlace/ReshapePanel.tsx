@@ -1,3 +1,4 @@
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import { ParkLayoutControls } from '@/features/parks/ParkLayoutControls';
 import { hasNativePark } from '@/features/parks/nativeParkRegistry';
 import { flexibleParkFitProblem, isFlexiblePark } from '@/features/parks/flexibleParkFit';
@@ -27,7 +28,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
   onUpdateDesign?: (properties: SiteZoneProperties) => void;
 }) {
   const asset = assetForZone(zone)!;
-  const fixedFixture = zone.properties?.validation_fixed_fixture === true;
+  const fixedFixture = isFixedNativeScene(zone.properties);
   const isPark = zone.zone_type === 'green_space' && !fixedFixture;
   const keepOutline = isPark || asset.reshapeMode === 'authored_footprint';
   const dimensions = keepOutline ? parkOutlineDimensions(zone.coordinates) : rectangleDimensions(zone.coordinates);
@@ -58,7 +59,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
   const button = 'min-h-11 rounded-lg border border-slate-700 bg-white px-3 text-sm font-semibold text-slate-900 disabled:opacity-40';
   return <aside aria-label="Reshape object" className="absolute bottom-4 inset-x-4 top-auto z-40 max-h-[42dvh] overflow-y-auto overscroll-contain rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-3 shadow-xl sm:left-auto sm:w-72 sm:bottom-4 sm:top-28 sm:max-h-none">
     <div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">{asset.label}</h2><button aria-label="Close reshape" onClick={onClose} className="flex h-11 w-11 items-center justify-center text-slate-900"><X size={18}/></button></div>
-    <p className="mb-3 text-xs text-slate-600">{fixedFixture ? 'Fixed review model: move and rotate only. Extension is pending.' : isFlexiblePark(zone.properties) ? 'Drag white corners to make an irregular park. Add an outline point for more bends; the planted layout adapts when saved.' : isPark ? 'Drag the park to move it. Drag individual white corners to fit its outline to the site; use the orange handle to turn it.' : zone.properties?.native_home_plot === true ? 'Drag the Move handle on the selected plot to move this house. Use a corner to reshape or the orange handle to turn it.' : zone.properties?.native_plot_axes === true ? 'Drag the Move handle on the selected plot to move this building. Use a corner to reshape or the orange handle to turn it.' : 'Drag the object to move it. Drag a corner to reshape; use the orange handle to turn it.'}</p>
+    <p className="mb-3 text-xs text-slate-600">{fixedFixture ? 'Fixed native model: move and rotate only.' : isFlexiblePark(zone.properties) ? 'Drag white corners to make an irregular park. Add an outline point for more bends; the planted layout adapts when saved.' : isPark ? 'Drag the park to move it. Drag individual white corners to fit its outline to the site; use the orange handle to turn it.' : zone.properties?.native_home_plot === true ? 'Drag the Move handle on the selected plot to move this house. Use a corner to reshape or the orange handle to turn it.' : zone.properties?.native_plot_axes === true ? 'Drag the Move handle on the selected plot to move this building. Use a corner to reshape or the orange handle to turn it.' : 'Drag the object to move it. Drag a corner to reshape; use the orange handle to turn it.'}</p>
     {!isPark && !fixedFixture && onUpdateDesign && <BuildingDesignControls key={JSON.stringify([zone.id, zone.properties?.development_subcategory, zone.properties?.development_archetype_id, zone.properties?.development_selected_variant_id, zone.properties?.floors, zone.properties?.floor_count, zone.properties?.height, zone.properties?.height_m, zone.properties?.building_footprint_scale])} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
     {onUpdateParkLayout && <ParkLayoutControls key={`${zone.id}:${zone.updated_at}`} zone={zone} zones={zones} disabled={disabled} onSave={onUpdateParkLayout}/>}
     {isPark && !hasNativePark(zone) && onUpdateDesign && <ParkComponentControls key={`${zone.id}:${zone.properties?.skate_spectator_edge}`} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
@@ -94,7 +95,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
     </form>
     <div className="mt-2 grid grid-cols-2 gap-2"><button className={button} disabled={disabled} onClick={()=>onDuplicate(asset.id,Number(dimensions.width.toFixed(3)),Number(dimensions.depth.toFixed(3)),Number(dimensions.degrees.toFixed(3)))}>Place another</button><button className={button} disabled={disabled} onClick={onDelete}>Delete</button></div>
     {onConnections && <button onClick={onConnections} className={`${button} mt-3 w-full`}>Connections</button>}
-    {onTerrace && !hasNativePark(zone) && <button onClick={onTerrace} className={`${button} mt-2 w-full`}>Terrace & path</button>}
+    {onTerrace && !fixedFixture && !hasNativePark(zone) && <button onClick={onTerrace} className={`${button} mt-2 w-full`}>Terrace & path</button>}
     <button onClick={onMore} className="mt-2 min-h-11 text-xs text-slate-700 underline">More settings</button>
   </aside>;
 }

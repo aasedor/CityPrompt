@@ -1228,6 +1228,15 @@ def _public_realm_recipe_for_zone(
     properties = dict(zone.properties or {})
     strict = bool(isinstance(properties.get("_plan_scenario"), str) and properties.get("_plan_scenario", "").strip())
     source_geometry = _community_source_geometry(zone)
+    from app.services.fixed_public_realm import validate_fixed_public_realm
+    try:
+        if validate_fixed_public_realm(zone.zone_type, source_geometry, properties):
+            return None  # The exact fixed native browser model owns this scene.
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail={
+            'code': 'fixed_public_realm_incompatible', 'message': str(exc),
+            'zone_id': str(zone.id), 'kind': kind,
+        }) from exc
     if not strict:
         from app.services.local_claude_trials import validate_local_claude_public_realm
         try:
@@ -1398,13 +1407,25 @@ def _stamp_community_3d(
         "street": "street_section",
     }[kind]
     properties = dict(zone.properties or {})
+    source_geometry = _community_source_geometry(zone)
     if kind in {"park", "street"}:
+        # A None recipe also represents an exact browser-owned fixed scene.
+        # Revalidate its bytes and rectangle here before excluding a fallback;
+        # a saved namespace claim alone cannot grant detailed-model readiness.
+        from app.services.fixed_public_realm import validate_fixed_public_realm
+        try:
+            fixed_native_scene = validate_fixed_public_realm(zone.zone_type, source_geometry, properties)
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail={
+                'code': 'fixed_public_realm_incompatible', 'message': str(exc),
+                'zone_id': str(zone.id), 'kind': kind,
+            }) from exc
         if public_realm_recipe is None:
             # A family-pending archetype uses the historical source-fitted
             # procedural representation, but an older exact V1 recipe must
             # never survive an explicit recompile to a different selection.
             properties.pop(PUBLIC_REALM_RECIPE_PROPERTY, None)
-            fallback = public_realm_fallback_marker(zone.zone_type, properties)
+            fallback = None if fixed_native_scene else public_realm_fallback_marker(zone.zone_type, properties)
             if fallback is None:
                 properties.pop(PUBLIC_REALM_FALLBACK_PROPERTY, None)
             else:
@@ -1412,7 +1433,6 @@ def _stamp_community_3d(
         else:
             properties[PUBLIC_REALM_RECIPE_PROPERTY] = public_realm_recipe
             properties.pop(PUBLIC_REALM_FALLBACK_PROPERTY, None)
-    source_geometry = _community_source_geometry(zone)
     source_hash = community_3d_source_hash(
         zone.zone_type,
         source_geometry,

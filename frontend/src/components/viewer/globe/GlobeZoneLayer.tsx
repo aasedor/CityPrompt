@@ -1,3 +1,4 @@
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import { useSiteLandscapeTexture } from '@/features/siteLandscape/useSiteLandscapeTexture';
 /**
  * GlobeZoneLayer.tsx — Renders SiteForge zones on the 3D tile globe.
@@ -1423,7 +1424,7 @@ export function GlobeZoneLayer({
   const preparedRoadOpenings = useMemo(() => preparedPublicRoadMasks(zones).map(zone => zone.coordinates), [zones]);
   const groundCutouts = useMemo(() => [...(preparedGroundCutouts ?? []), ...(streetPreviewCutout ? [streetPreviewCutout] : []), ...parkGroundOwners.map(zone => zone.coordinates),
     ...zones.filter(zone=>zone.zone_type==='road' && zone.properties?.road_selected_variant_id==='amsterdam_gracht_v1'
-      && !zone.properties?.validation_fixed_fixture).map(zone=>zone.coordinates)], [preparedGroundCutouts, parkGroundOwners,zones,streetPreviewCutout]);
+      && !isFixedNativeScene(zone.properties)).map(zone=>zone.coordinates)], [preparedGroundCutouts, parkGroundOwners,zones,streetPreviewCutout]);
   const sectionGroundIds = useMemo(() => new Set(selectDetailedStreetZones(zones.filter(zone =>
     resolveCommunity3DKind(zone) === 'street' && zone.coordinates.length >= 4 && shouldRenderCommunityGround(zone)))
     .filter(streetSectionOwnsGround)

@@ -13,10 +13,14 @@ it('lets a student choose a supported width and see the resulting type before sa
   const zone = { id: 'street', project_id: 'project', color: '#777', sort_order: 0, created_at: '', updated_at: '', zone_type: 'road', coordinates: bufferLineToPolygon(line, initial.sectionWidth), properties: { ...initial.properties, plan_centerline: line } } as SiteZone;
   const save = vi.fn(); render(<StreetDesignControls zone={zone} disabled={false} onSave={save} />);
   // Import and render the actual mixed roster: fixed fixtures must not crash route controls.
-  expect(CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway')).toHaveLength(STREET_ASSETS.length);
+  const routeChoices = CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway' && c.placements.every(a => a.kind === 'street'));
+  expect(routeChoices).toHaveLength(STREET_ASSETS.length);
   const types = screen.getByLabelText('Street type') as HTMLSelectElement;
   expect(Array.from(types.options, option => option.value).sort()).toEqual(
-    CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway').map(c => c.id).sort());
+    routeChoices.map(c => c.id).sort());
+  for (const choice of CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway' && c.placements.some(a => a.kind === 'object'))) {
+    expect(Array.from(types.options, option => option.value)).not.toContain(choice.id);
+  }
   fireEvent.change(screen.getByLabelText('Street width'), { target: { value: String(target.sectionWidth) } });
   const selected = CANONICAL_CHOICES.find(choice => choice.id === types.value)!.placements[0];
   if (selected.kind !== 'street') throw new Error('Expected a street selection');
@@ -29,6 +33,22 @@ it('lets a student choose a supported width and see the resulting type before sa
   fireEvent.click(screen.getByRole('button', { name: 'Apply street' }));
   expect(save.mock.calls[0][0].properties).toMatchObject({ road_archetype_id: target.properties.road_archetype_id,
     road_selected_variant_id: target.model.variantId, width: target.sectionWidth, plan_centerline: line });
+});
+
+it('offers no street preset or width controls for a saved fixed native segment', () => {
+  const fixed = CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway'
+    && c.placements.some(a => a.model.method === 'fixed_public_realm_v1'));
+  expect(fixed).toHaveLength(9);
+  for (const choice of fixed) {
+    const asset = choice.placements[0];
+    const zone = { id: asset.id, project_id: 'project', color: '#777', sort_order: 0, created_at: '', updated_at: '',
+      zone_type: 'road', coordinates: [], properties: asset.properties } as SiteZone;
+    const save = vi.fn();
+    const view = render(<StreetDesignControls zone={zone} disabled={false} onSave={save} />);
+    expect(view.container.querySelector('form')).toBeNull();
+    expect(save).not.toHaveBeenCalled();
+    view.unmount();
+  }
 });
 
 it.each(['student_main_street_v1', 'student_market_street_v1'])('retains %s and its exact width when the student applies unchanged settings', variantId => {

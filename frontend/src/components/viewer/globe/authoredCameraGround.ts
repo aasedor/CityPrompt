@@ -1,3 +1,4 @@
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import { canalRoute, canalWalkingHeight } from './canalRoute';
 import { readNativePark, nativeParkFitProblem } from '@/features/parks/nativeParkRegistry';
 import { nativePavingProbe } from '@/features/parks/nativeParkAccess';
@@ -23,7 +24,7 @@ export function authoredCameraGround(zones: SiteZone[], lng: number, lat: number
   const contains = (zone: SiteZone) => sharedSiteGroundContains(zone.coordinates as [number, number][], lng, lat);
   for (const zone of zones.filter(contains)) {
     const variant=String(zone.properties?.road_selected_variant_id);
-    if(zone.zone_type==='road' && !zone.properties?.validation_fixed_fixture && isSpecialistStreet(variant)){
+    if(zone.zone_type==='road' && !isFixedNativeScene(zone.properties) && isSpecialistStreet(variant)){
       const route=extractZoneCenterline(zone),a=route[0],b=route[route.length-1];
       if(variant==='amsterdam_gracht_v1' && a){
         const sx=metersPerDegLon(a[1]);

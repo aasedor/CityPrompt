@@ -1,3 +1,4 @@
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import { envelopeFits, envelopesOverlap } from '@/components/viewer/globe/neighborhoodParkLayout';
 import type { SiteZone } from '@/types';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngine/geoUtils';
@@ -23,7 +24,7 @@ export function rectangleDimensions(coords: number[][]) {
 
 /** Keep the opposite corner fixed, preserve right angles and native-size limits. */
 export function resizeRectangleCorner(coords: number[][], corner: number, pointer: number[], asset: PlaceAsset) {
-  if (asset.properties.validation_fixed_fixture === true) return coords;
+  if (isFixedNativeScene(asset.properties)) return coords;
   const { degrees } = rectangleDimensions(coords);
   const fixed = coords[(corner+2)%4], yaw = degrees*Math.PI/180, c=Math.cos(yaw), s=Math.sin(yaw);
   const east=(pointer[0]-fixed[0])*metersPerDegLon(fixed[1]), north=(pointer[1]-fixed[1])*METERS_PER_DEG_LAT;

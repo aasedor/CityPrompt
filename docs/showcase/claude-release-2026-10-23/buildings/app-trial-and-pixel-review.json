@@ -1,0 +1,1216 @@
+{
+  "schema": "cityprompt.claude-building-app-evidence@1",
+  "scope": "18 variants on one pre-existing disposable plot inside unchanged 330x210 prepared boundary; desktop Edge ordinary UI; no production approval",
+  "evidence_root": "C:/dev-artifacts/CityPrompt/claude-live-release-2026-10-23",
+  "rows": [
+    {
+      "candidate": "clay-arched-mill-mixed-use-clay-v005",
+      "picker_id": "claude_trial_arched_mill_mixed_use",
+      "archetype_id": "industrial_brick_mixed_use",
+      "variant_id": "industrial_brick_original_mill",
+      "native_floors": 4,
+      "model": {
+        "path": "models/clay-arched-mill-mixed-use-clay-v005.glb",
+        "bytes": 744024,
+        "sha256": "218c0f8d8a84c34169af41490f8d0284e0bf2ac48dfe9a423b0985533c39ffdc",
+        "native_dimensions_m": {
+          "width": 38.0,
+          "height": 25.700000762939453,
+          "depth": 34.0
+        },
+        "mesh_count": 16,
+        "material_count": 16,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-arched-mill-mixed-use-clay-v005.json",
+        "sha256": "ba9cf2f4ef5a686ce41e556ed931da0f22aaf553e45f2cf64c59e95888cb26bf",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T23:03:22.054495+00:00",
+        "observations": "Actual wide export retains complete mill roof, chimney and native apron. New ordinary Walk free export on enlarged unscaled plot shows arched transparent storefronts with visible interior depth, side door and a solid paved threshold touching prepared ground. Tree/front mass naturally obscures rear surfaces and upper roof is cropped truthfully. No visible floating void or buried door in these inspected views.",
+        "images": [
+          {
+            "artifact_file": "building-final-01-actual-app-capture.png",
+            "sha256": "5136a83b4037a5648b97a88fa12da8f0240dee7ac831b9dc208cc3b907d7b0dd",
+            "bytes": 2582271
+          },
+          {
+            "artifact_file": "building-final-01-walk-ground-capture.png",
+            "sha256": "16f6569216cf4d37d4d3023242d303de22bdcb03561635e6117af2ace9086e83",
+            "bytes": 486034
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-brick-podium-condo-tower-clay-v006",
+      "picker_id": "claude_trial_brick_podium_condo_tower",
+      "archetype_id": "condo_podium_tower",
+      "variant_id": "brick_podium_glass_tower",
+      "native_floors": 13,
+      "model": {
+        "path": "models/clay-brick-podium-condo-tower-clay-v006.glb",
+        "bytes": 1024756,
+        "sha256": "1ce717fb6f9246312cb359b4808e726088447f12d2c571954cb33a6a91dd0869",
+        "native_dimensions_m": {
+          "width": 54.0,
+          "height": 50.099998474121094,
+          "depth": 44.0
+        },
+        "mesh_count": 18,
+        "material_count": 18,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-brick-podium-condo-tower-clay-v006.json",
+        "sha256": "7d592bfc7b695c7ddf13a06038842a113bb3cbd4675601f0a96830bd1b969bb3",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T23:03:22.135849+00:00",
+        "observations": "Aerial export retains the complete tower and brick podium at native scale. Actual close pedestrian export preserves transparent shopfronts, corner glazing and glass balcony rails, with apron contacting prepared ground without a visible suspended base or buried threshold. Authored trees partly occlude doors and facade, and upper tower is truthfully outside close frame. No external-access certification.",
+        "images": [
+          {
+            "artifact_file": "building-final-02-actual-app-capture.png",
+            "sha256": "ec515bd4351e18b5bbe3563bc47079d158ff58a4dc0e65ba47e3e30da6526812",
+            "bytes": 2708807
+          },
+          {
+            "artifact_file": "building-final-02-walk-ground-capture.png",
+            "sha256": "b92cdda57abf1fe3cc229c5142faa791e6892e6559176fcc9f7542a09064e36c",
+            "bytes": 606038
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-calgary-cbe-brutalist-hq-clay-v004",
+      "picker_id": "claude_trial_calgary_cbe_brutalist_hq",
+      "archetype_id": "calgary_cbe_brutalist_hq",
+      "variant_id": "calgary_cbe_original",
+      "native_floors": 4,
+      "model": {
+        "path": "models/clay-calgary-cbe-brutalist-hq-clay-v004.glb",
+        "bytes": 1717448,
+        "sha256": "a0836dc6e11577f734452f01e087fe1ee3c08c57ccfe63addd95f0428eb91433",
+        "native_dimensions_m": {
+          "width": 84.9000015258789,
+          "height": 28.3700008392334,
+          "depth": 89.54999923706055
+        },
+        "mesh_count": 22,
+        "material_count": 22,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-calgary-cbe-brutalist-hq-clay-v004.json",
+        "sha256": "71102dea99bd533959cbf6dbf37a7587e9a52d751ba2a3c332585bf1088bdeaa",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T23:03:22.202905+00:00",
+        "observations": "Actual wide view preserves complete CBE block, neighbouring mass and native road/crosswalk garden scene. New pedestrian free export shows recessed glazing, ground entrances, plaza and roadway against the prepared field with no visible floating or buried base. Trees partly occlude ground facade. The whole authored street remains fixed scene content; it is not an automatically connected public road.",
+        "images": [
+          {
+            "artifact_file": "building-final-03-actual-app-capture.png",
+            "sha256": "69985790e9ff036eb5f3d9507e50dc9e69dcbc72d71e48714d8dce9d51a0cc64",
+            "bytes": 2579421
+          },
+          {
+            "artifact_file": "building-final-03-walk-ground-capture.png",
+            "sha256": "168e4d9649b22408cf71fd7f44ff5680b9bec92fab93dd81e80e458d1a440d23",
+            "bytes": 432596
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-campus-shed-office-clay-v009",
+      "picker_id": "claude_trial_campus_shed_office",
+      "archetype_id": "corporate_office_campus_headquarters",
+      "variant_id": "industrial_warehouse_campus_hq",
+      "native_floors": 2,
+      "model": {
+        "path": "models/clay-campus-shed-office-clay-v009.glb",
+        "bytes": 1111200,
+        "sha256": "3da93f5933a04669806e0192d9c9871af8bfbd5699ce7e15bba7cc8639d01a95",
+        "native_dimensions_m": {
+          "width": 48.5895132778808,
+          "height": 11.020000457763672,
+          "depth": 39.34000015258789
+        },
+        "mesh_count": 17,
+        "material_count": 17,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-campus-shed-office-clay-v009.json",
+        "sha256": "c49c0994030efd5fa8554e997453e90fd470546f2252fa71503ef24bf7a5faa1",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T23:03:22.278373+00:00",
+        "observations": "Actual aerial retains the complete sawtooth campus shed at native scale. Pedestrian free export shows the full frontage, canopy, stair, guarded ramp and doors, with solid retaining/plinth geometry meeting its apron and prepared ground. Ramp and canopy naturally occlude rear areas. No visible suspended base or buried door; exact ramp slope and accessibility are not certified.",
+        "images": [
+          {
+            "artifact_file": "building-final-04-actual-app-capture.png",
+            "sha256": "8c2ccf43ea72345e6262954b7058c07728613d9f66e34ec60acfd262c3700984",
+            "bytes": 2498852
+          },
+          {
+            "artifact_file": "building-final-04-walk-ground-capture.png",
+            "sha256": "55a3aa4365dddd7c177b10de88d9ced5af4257a495d2d860277f4da83cec4c31",
+            "bytes": 358294
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-cmu-dock-warehouse-clay-v006",
+      "picker_id": "claude_trial_cmu_dock_warehouse",
+      "archetype_id": "mid_century_distribution_warehouse",
+      "variant_id": "cmu_dock_utilitarian",
+      "native_floors": 1,
+      "model": {
+        "path": "models/clay-cmu-dock-warehouse-clay-v006.glb",
+        "bytes": 1115380,
+        "sha256": "9551998b85a4dd9d1fa40081d53b441d6201344335a83ed98053eae8e9cb2f6e",
+        "native_dimensions_m": {
+          "width": 57.0,
+          "height": 9.475000381469727,
+          "depth": 44.22500038146973
+        },
+        "mesh_count": 21,
+        "material_count": 21,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-cmu-dock-warehouse-clay-v006.json",
+        "sha256": "bf24d9f6a5e98b880e4518b284affa73e1fa60b2fcda46cd590929d5ff63e014",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T23:04:03.788601+00:00",
+        "observations": "Actual aerial retains complete CMU warehouse, loading apron and separate authored roadway. Pedestrian export makes four loading doors, bollards and side personnel-entry stair readable, with solid foundation and apron meeting prepared ground. Loading dock height is intentional source geometry; no public truck connection or accessibility certification. Front mass hides rear plant naturally, no visible suspended base or burial.",
+        "images": [
+          {
+            "artifact_file": "building-final-05-actual-app-capture.png",
+            "sha256": "e29b714a64a001b1ef2120be526a8d480e55ad6973671084ded57d2bc0d49572",
+            "bytes": 2484559
+          },
+          {
+            "artifact_file": "building-final-05-walk-ground-capture.png",
+            "sha256": "b258991619f0f5c19332c408b4eb6882dc2d515f3aacadb992115b581a3c7790",
+            "bytes": 437410
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-courtyard-primary-school-clay-v009",
+      "picker_id": "claude_trial_courtyard_primary_school",
+      "archetype_id": "ecole_republicaine",
+      "variant_id": "ecole-republicaine-art-deco",
+      "native_floors": 3,
+      "model": {
+        "path": "models/clay-courtyard-primary-school-clay-v009.glb",
+        "bytes": 1009176,
+        "sha256": "8ab45251a971c91aeb217447f2f96fef8e98bdc2e8d2ecefe328d206175a3bd7",
+        "native_dimensions_m": {
+          "width": 46.0,
+          "height": 12.979000091552734,
+          "depth": 50.03000068664551
+        },
+        "mesh_count": 21,
+        "material_count": 21,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-courtyard-primary-school-clay-v009.json",
+        "sha256": "196b9ac375eb87f0f83212dd2038895127f17b48d29255cf7290380ac00d0fad",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T23:04:03.860899+00:00",
+        "observations": "Aerial export retains complete courtyard-school wings and enclosed play court. Actual walking export preserves the glazed entry, visible stair/interior depth, coloured facade fins, boundary gate and solid ground-level apron without visible burial or a suspended base. Tree/front wing naturally occlude courtyard; its complete layout remains visible in aerial. External network/accessibility not certified.",
+        "images": [
+          {
+            "artifact_file": "building-final-06-actual-app-capture.png",
+            "sha256": "66107dc8bf91fff9f5ec221f39c6935b11537a7dfff42517d29aae87f72ba18a",
+            "bytes": 2506801
+          },
+          {
+            "artifact_file": "building-final-06-walk-ground-capture.png",
+            "sha256": "0f8e12fae5bfe8e48737dbc8d0b02576ce641eb8b0d1df71aa07613448788d2f",
+            "bytes": 447495
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-ctrain-elevated-station-clay-v004",
+      "picker_id": "claude_trial_ctrain_elevated_station",
+      "archetype_id": "calgary_ctrain_station",
+      "variant_id": "ctrain_downtown_platform",
+      "native_floors": 3,
+      "model": {
+        "path": "models/clay-ctrain-elevated-station-clay-v004.glb",
+        "bytes": 1094572,
+        "sha256": "d51715e11ca257c68b18214c1a7a4c9f7815f60b7b810d0c7bd1be5c92f48962",
+        "native_dimensions_m": {
+          "width": 80.0,
+          "height": 18.700000762939453,
+          "depth": 100.0
+        },
+        "mesh_count": 21,
+        "material_count": 21,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-ctrain-elevated-station-clay-v004.json",
+        "sha256": "c8761a9d0f9020915c5fcd07a82430b4798cad327926d78b0c0b9523d97c0ef2",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T23:04:03.929768+00:00",
+        "observations": "Actual aerial retains station hall, elevated tracks/platform, pedestrian bridge, stairs and roads at fixed native scale. Pedestrian export shows bridge abutments and supporting columns grounded at prepared level, transparent stair towers and openings beneath bridge, with natural bridge occlusion of rear hall. No visible suspended footing or buried entrance. This is an authored station concept fragment, not connected operational railway or certified access.",
+        "images": [
+          {
+            "artifact_file": "building-final-07-actual-app-capture.png",
+            "sha256": "f295068c3eaa8de8be37eb235101aa9d2958627f2766bc506970f15e70b50606",
+            "bytes": 2538913
+          },
+          {
+            "artifact_file": "building-final-07-walk-ground-capture.png",
+            "sha256": "3c116eb2c7ca7f9e7ff2accfe6a1c9dee5032462dac8f53e0af02c32053147a0",
+            "bytes": 610477
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-energy-centre-clay-v010",
+      "picker_id": "claude_trial_energy_centre",
+      "archetype_id": "central_utilities_plant_energy_centre",
+      "variant_id": "transparent_plant_showcase_urban",
+      "native_floors": 2,
+      "model": {
+        "path": "models/clay-energy-centre-clay-v010.glb",
+        "bytes": 653220,
+        "sha256": "1c4849fedf76e226f5b0dc545f61c7c3350debb4ff845c5010d5931224eb05c3",
+        "native_dimensions_m": {
+          "width": 44.09647641933048,
+          "height": 23.80500030517578,
+          "depth": 38.03000068664551
+        },
+        "mesh_count": 17,
+        "material_count": 17,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-energy-centre-clay-v010.json",
+        "sha256": "4b020db9a624858a0c13a200c1f0bb1ca7b3be84f942569f42cd9bc1435186fa",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T23:04:04.003464+00:00",
+        "observations": "Aerial capture preserves the complete two-floor Energy Centre, tall plant volume and roof equipment. Walking export shows transparent ground glass and plant/interior depth, entrance and solid native apron meeting the prepared field without visible floating void or buried door. Tall right volume naturally hides rear geometry. Upper plant cropping is truthful close framing; no general-terrain/accessibility certification.",
+        "images": [
+          {
+            "artifact_file": "building-final-08-actual-app-capture.png",
+            "sha256": "28b1883e79503d3bf097c3a6fc6f87970798334ef569a8d014610ecba3fce411",
+            "bytes": 2571319
+          },
+          {
+            "artifact_file": "building-final-08-walk-ground-capture.png",
+            "sha256": "5923a973e7a10879945bb36dfad7aa5f11706db5ee4660966e139828542816ec",
+            "bytes": 489480
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-garden-court-senior-residence-clay-v006",
+      "picker_id": "claude_trial_garden_court_senior_residence",
+      "archetype_id": "senior_living_complex",
+      "variant_id": "senior_garden_courtyard",
+      "native_floors": 3,
+      "model": {
+        "path": "models/clay-garden-court-senior-residence-clay-v006.glb",
+        "bytes": 4030900,
+        "sha256": "17e50488c4753c0c91de4a88724d31f335757464cf1cbc96ca48bf9e6e00f8df",
+        "native_dimensions_m": {
+          "width": 90.0,
+          "height": 15.050000190734863,
+          "depth": 88.0
+        },
+        "mesh_count": 20,
+        "material_count": 20,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-garden-court-senior-residence-clay-v006.json",
+        "sha256": "1801fcf77914ae71a746c9b47d43ce0ab7ce7884cc162e539507127582caa5ea",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T22:28:36.194307+00:00",
+        "observations": "Aerial shows the complete courtyard scene within its native pad and prepared field. The actual pedestrian capture shows the front plinth meeting that pad without a visible floating gap or buried door; front mass naturally occludes rear courtyard and wings. Side arcade threshold remains visible. Roof cropped at close distance is truthful framing. No visible integration blocker within these two views.",
+        "images": [
+          {
+            "artifact_file": "building-final-09-actual-app-capture.png",
+            "sha256": "fb6a5342c669efe3eb9308d5a54d750a49de365a46aae79c6e14b19d38e267b4",
+            "bytes": 2524726
+          },
+          {
+            "artifact_file": "building-final-09-walk-ground-capture.png",
+            "sha256": "9bec61a9df0d18fd5abfdf99fd552037c6ae1868f8d456a0217b04d39af0c45e",
+            "bytes": 328090
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-gastown-heritage-commercial-clay-v003",
+      "picker_id": "claude_trial_gastown_heritage_commercial",
+      "archetype_id": "gastown_heritage_commercial",
+      "variant_id": "gastown_italianate",
+      "native_floors": 3,
+      "model": {
+        "path": "models/clay-gastown-heritage-commercial-clay-v003.glb",
+        "bytes": 2083784,
+        "sha256": "657f66a2df048e606aebe626a76a77e66f93ec1992c2fb1f207833336fd67f14",
+        "native_dimensions_m": {
+          "width": 82.0,
+          "height": 20.559999465942383,
+          "depth": 61.39999961853027
+        },
+        "mesh_count": 27,
+        "material_count": 27,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-gastown-heritage-commercial-clay-v003.json",
+        "sha256": "2806091ac7042b146eef6a0736317480fd9603e4d1a1d356356e53f49ac599ed",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T22:32:26.980780+00:00",
+        "observations": "The exact aerial capture shows the complete commerce building with authored neighbouring masses and plaza. The actual low front capture makes the shop doors, arched glazing, clock and paved thresholds readable; the foundation/raised plaza edge is solid against the prepared ground, without a visible floating void. Front/context geometry naturally occludes rear surfaces. The raised outer pad edge is retained source geometry; external access connections and accessibility are not certified by this view.",
+        "images": [
+          {
+            "artifact_file": "building-final-10-actual-app-capture.png",
+            "sha256": "97396aee294e7844238bdf293b5e290f2890f09f9c7d5062d2c9bdee50bfe092",
+            "bytes": 2551798
+          },
+          {
+            "artifact_file": "building-final-10-walk-ground-capture.png",
+            "sha256": "30f9e3ecdd38ac0b18cdb240b40244a65c7b890b6968232e5ca205ee08f62792",
+            "bytes": 411081
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-halifax-georgian-colonial-clay-v003",
+      "picker_id": "claude_trial_halifax_georgian_colonial",
+      "archetype_id": "halifax_georgian_colonial",
+      "variant_id": "georgian_clapboard_original",
+      "native_floors": 2,
+      "model": {
+        "path": "models/clay-halifax-georgian-colonial-clay-v003.glb",
+        "bytes": 1378820,
+        "sha256": "0359e7171c1b642ab82cb2b73451834ed90227b70f61a605efa5e274b033d7f3",
+        "native_dimensions_m": {
+          "width": 51.39999961853027,
+          "height": 16.5,
+          "depth": 47.81999969482422
+        },
+        "mesh_count": 24,
+        "material_count": 24,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-halifax-georgian-colonial-clay-v003.json",
+        "sha256": "a4b7c5cd8095385dd733f90a01c41325ab1c706c465b069e0f50668b5e8a4e83",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T22:32:27.382977+00:00",
+        "observations": "The actual aerial capture retains the complete Georgian house, neighbouring context and native street/garden pad. The low front view shows the door/portico, plinth and garden meeting the authored ground without visible burial or floating void. An authored tree naturally obscures part of the pediment/front bay while the entrance remains readable, providing an honest partly occluded capture. Other elevations and external access certification are outside these two inspected views.",
+        "images": [
+          {
+            "artifact_file": "building-final-11-actual-app-capture.png",
+            "sha256": "8714ad3003d470ecd680b19190285572f860365f098ea00c4efb37df83c023db",
+            "bytes": 2533181
+          },
+          {
+            "artifact_file": "building-final-11-walk-ground-capture.png",
+            "sha256": "ef315bc0c8f7c9b1b1f9ea4645aba5a691a0df7179f3fd08c8ae06d7faf354f6",
+            "bytes": 455454
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-halifax-waterfront-warehouse-clay-v006",
+      "picker_id": "claude_trial_halifax_waterfront_warehouse",
+      "archetype_id": "halifax_waterfront_warehouse",
+      "variant_id": "warehouse_privateers_wharf",
+      "native_floors": 2,
+      "model": {
+        "path": "models/clay-halifax-waterfront-warehouse-clay-v006.glb",
+        "bytes": 845444,
+        "sha256": "de39e474c1e41add78aad6bc5f54d162fe81be3c71258ca7fba9de00b79660e3",
+        "native_dimensions_m": {
+          "width": 60.0,
+          "height": 13.300000190734863,
+          "depth": 43.39999961853027
+        },
+        "mesh_count": 21,
+        "material_count": 21,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-halifax-waterfront-warehouse-clay-v006.json",
+        "sha256": "af58333592f973de802c0c6d20923c48dcd8f52266b24af6d9a3d70eb3c95eb1",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T22:36:40.262091+00:00",
+        "observations": "The exact aerial capture shows the complete waterfront warehouse and native street/crosswalk pad. The pedestrian front capture preserves transparent storefront glazing and visible interior depth, with central threshold and paving meeting the authored apron without a visible floating gap or burial. Front facade naturally hides the rear roof/interior; the aerial retains those masses. Prepared level site only; outside connections and accessibility are not certified.",
+        "images": [
+          {
+            "artifact_file": "building-final-12-actual-app-capture.png",
+            "sha256": "4a8b64d3b3ba94886b3cbb2689576ad71f87eba660dd802ab2ce76c0aac8fbbd",
+            "bytes": 2506718
+          },
+          {
+            "artifact_file": "building-final-12-walk-ground-capture.png",
+            "sha256": "3ec1112221137d4be1fd67643cd4f5d844bb6996114f2ac8d950a1691bf200e4",
+            "bytes": 391963
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-led-grow-block-clay-v007",
+      "picker_id": "claude_trial_led_grow_block",
+      "archetype_id": "vertical_farm_indoor_agriculture",
+      "variant_id": "dark_panel_led_grow_block",
+      "native_floors": 6,
+      "model": {
+        "path": "models/clay-led-grow-block-clay-v007.glb",
+        "bytes": 790632,
+        "sha256": "f7ee7d1ee6a39c6ac8b8283279400b7810b741888b15c9ccb8b336c8dd53cdf7",
+        "native_dimensions_m": {
+          "width": 29.696476800800205,
+          "height": 32.65999984741211,
+          "depth": 30.255247130201496
+        },
+        "mesh_count": 18,
+        "material_count": 18,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-led-grow-block-clay-v007.json",
+        "sha256": "f698f06a3ecfa3c75d5a625c854a13719f53f52f500d781d46f47354631e1d1f",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T22:44:53.451881+00:00",
+        "observations": "Actual wide capture shows the complete narrow tower, rooftop equipment and native apron. The pedestrian capture shows magenta glazing and transparent entrance bays retained; solid apron meets the prepared ground without a visible suspended void or buried threshold. Front mass occludes rear surfaces and the close frame crops the upper tower truthfully. Fixed native geometry on a level prepared site only.",
+        "images": [
+          {
+            "artifact_file": "building-final-13-actual-app-capture.png",
+            "sha256": "c2d26a7bc7ea4299587631e23fa6afc2ea317e538e4d2a4b8b80166b6160ffcf",
+            "bytes": 2624214
+          },
+          {
+            "artifact_file": "building-final-13-walk-ground-capture.png",
+            "sha256": "12da6ca9fb09b30bedb803652bd244bf117c46d9604a21ec777be90d2882972d",
+            "bytes": 464617
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-mews-coach-house-clay-v006",
+      "picker_id": "claude_trial_mews_coach_house",
+      "archetype_id": "london_mews_house",
+      "variant_id": "london-mews-house-original-stable",
+      "native_floors": 2,
+      "model": {
+        "path": "models/clay-mews-coach-house-clay-v006.glb",
+        "bytes": 2708724,
+        "sha256": "619b1fd4b87a680b7011624299ded7ac38ddd72a82d6e93eb00b69879f5de893",
+        "native_dimensions_m": {
+          "width": 28.207500457763672,
+          "height": 14.5,
+          "depth": 24.506999969482422
+        },
+        "mesh_count": 21,
+        "material_count": 21,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-mews-coach-house-clay-v006.json",
+        "sha256": "6b1a6ac257cb4ca81d03e786828b854478f78628c99edfcd7babde78b9e2deba",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T22:44:53.529512+00:00",
+        "observations": "Actual wide capture retains the small mews house and road pad at native scale. Pedestrian capture shows both side doors, red central garage, windows and grounded paved base. An authored tree partly occludes the left facade while entrances remain readable. No visible burial or floating void within these inspected views; external connections and accessibility remain untested.",
+        "images": [
+          {
+            "artifact_file": "building-final-14-actual-app-capture.png",
+            "sha256": "b86c6c6f4f27eb0934cc052a5287fba5b4743cbab1380d55563b83ec47f1a8d6",
+            "bytes": 2520663
+          },
+          {
+            "artifact_file": "building-final-14-walk-ground-capture.png",
+            "sha256": "4214bd950006fc4c793cd35cff94d499df431ad4326b7cb0e82ea1f365d16d17",
+            "bytes": 491547
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-old-montreal-limestone-commercial-clay-v004",
+      "picker_id": "claude_trial_old_montreal_limestone_commercial",
+      "archetype_id": "old_montreal_limestone_commercial",
+      "variant_id": "old_mtl_french_colonial",
+      "native_floors": 3,
+      "model": {
+        "path": "models/clay-old-montreal-limestone-commercial-clay-v004.glb",
+        "bytes": 3423736,
+        "sha256": "eee62a12874fc1248a17383fe5f6c98e41b01511a50e1e44533db25b538ad3a8",
+        "native_dimensions_m": {
+          "width": 128.0,
+          "height": 42.5,
+          "depth": 80.0
+        },
+        "mesh_count": 18,
+        "material_count": 18,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-old-montreal-limestone-commercial-clay-v004.json",
+        "sha256": "74a255574583ce2aa3d8ba19e0133b2a71a6c7fe7e18d912f3945d0bab80df83",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T22:44:53.603858+00:00",
+        "observations": "Actual aerial capture retains the complete domed civic composition and native forecourt. Pedestrian capture shows the front portico, solid stairs/plinth, wing entrances and tree-lined forecourt meeting the prepared pad without a suspended gap or buried facade. Trees naturally obscure portions of the wings. Source clay colour is very pale with low contrast, recorded as a visual limitation rather than a missing mesh. No arbitrary-terrain or accessibility certification.",
+        "images": [
+          {
+            "artifact_file": "building-final-15-actual-app-capture.png",
+            "sha256": "3fb5ddb7ccfa79a89fdf8f34ae09f5da6e71dd3624aa0842b2d2e1f140a7cc9e",
+            "bytes": 2658236
+          },
+          {
+            "artifact_file": "building-final-15-walk-ground-capture.png",
+            "sha256": "aad10752e94cf6fa7573ee3d4db225b2860b8f9a80d181f1838ad1e47aad0198",
+            "bytes": 369308
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-plus15-glass-office-tower-clay-v006",
+      "picker_id": "claude_trial_plus15_glass_office_tower",
+      "archetype_id": "calgary_plus_15_connected_tower",
+      "variant_id": "plus15_contemporary_glass",
+      "native_floors": 17,
+      "model": {
+        "path": "models/clay-plus15-glass-office-tower-clay-v006.glb",
+        "bytes": 910328,
+        "sha256": "1f12b3c94ed7405e43fde35450b31a7e5561b937fd854ff8a0c92bc65db35851",
+        "native_dimensions_m": {
+          "width": 52.0,
+          "height": 82.66000366210938,
+          "depth": 83.0
+        },
+        "mesh_count": 15,
+        "material_count": 15,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-plus15-glass-office-tower-clay-v006.json",
+        "sha256": "301390d9a1aec50fcc9941bb9841452cda1e871a41075d5a8d4e2bbaf2f750f0",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T22:46:36.122819+00:00",
+        "observations": "Actual aerial capture shows full tower and authored Plus15 connection, abutment and apron. Pedestrian capture retains glass bridge and entrance glazing; the large authored abutment naturally occludes the left front, while tower/paved ground contact remains visible without a suspended gap or buried facade. Detached native connection is a concept fragment requiring contextual design, not an automatic working connection or certified accessible route. Close crop is deliberate.",
+        "images": [
+          {
+            "artifact_file": "building-final-16-actual-app-capture.png",
+            "sha256": "5d59e4d7469eb0172d79feef7882c4e74c35977cdd3a47326fb3ddc774a53838",
+            "bytes": 2827170
+          },
+          {
+            "artifact_file": "building-final-16-walk-ground-capture.png",
+            "sha256": "baf9a4d145b512284d4e64546527ae83edcd55aff325a10d6cb3a3002756a967",
+            "bytes": 282271
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-slab-balcony-tower-clay-v007",
+      "picker_id": "claude_trial_slab_balcony_tower",
+      "archetype_id": "west_end_mid_century_tower",
+      "variant_id": "midcentury_concrete_slab",
+      "native_floors": 13,
+      "model": {
+        "path": "models/clay-slab-balcony-tower-clay-v007.glb",
+        "bytes": 1020940,
+        "sha256": "042c09a9198f60fb0116ab93b6fd073309717a24a59925f31c2db1aed67d7d40",
+        "native_dimensions_m": {
+          "width": 37.357473373413086,
+          "height": 47.0,
+          "depth": 37.20000076293945
+        },
+        "mesh_count": 16,
+        "material_count": 16,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-slab-balcony-tower-clay-v007.json",
+        "sha256": "5b97c5707aa077d4df9756bd02e169654e660f9cb22add56d50a25370636eb9e",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T22:49:10.066929+00:00",
+        "observations": "Exact aerial capture shows the complete thirteen-floor balcony tower and native apron. Pedestrian view retains transparent balcony panels, ground entrance and passage, with visible solid plinth/paving contact on the prepared ground. Tree and projecting balconies naturally occlude part of the facade; upper floors are truthfully out of frame. No visible burial or floating void in these two inspected views; material is intentionally pale architectural clay.",
+        "images": [
+          {
+            "artifact_file": "building-final-17-actual-app-capture.png",
+            "sha256": "db9099c45fad00fcc643258eb468496fe3541ba696cd1565c4d6bb1d7c7415ae",
+            "bytes": 2698121
+          },
+          {
+            "artifact_file": "building-final-17-walk-ground-capture.png",
+            "sha256": "f7835d2fe26e17c3ff1d9a54e20ca6bf4a919684612f051c22288270f9cfcf99",
+            "bytes": 552250
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    },
+    {
+      "candidate": "clay-toronto-bay-and-gable-house-clay-v004",
+      "picker_id": "claude_trial_toronto_bay_and_gable",
+      "archetype_id": "toronto_bay_and_gable_house",
+      "variant_id": "toronto_bay_gable_yellow_brick",
+      "native_floors": 2,
+      "model": {
+        "path": "models/clay-toronto-bay-and-gable-house-clay-v004.glb",
+        "bytes": 911108,
+        "sha256": "c11761d97f80e7462c88fb7d68b2d44eaaaa3010601fe23f32a4e624720186c8",
+        "native_dimensions_m": {
+          "width": 23.550000190734863,
+          "height": 12.420000076293945,
+          "depth": 25.34999942779541
+        },
+        "mesh_count": 24,
+        "material_count": 24,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-toronto-bay-and-gable-house-clay-v004.json",
+        "sha256": "33179a5f2784c5b371c3fad952985b12a3f57a860a0b34ad0bf434adec58158a",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "trial_checks": {
+        "catalogue_card": true,
+        "exact_variant": true,
+        "ground_contact": true,
+        "small_and_large_plot": true,
+        "rotation": true,
+        "save_reload": true,
+        "close_and_occluded_capture": true,
+        "no_console_errors": true
+      },
+      "trial_tested_by": "Ordinary app controls: /root/standing_pose_review and /root; actual capture pixel review: /root",
+      "trial_tested_at": "2026-10-23T23:20:47.880919+00:00",
+      "runtime_gate_scope": "prepared-level-desktop-fixed-native-v1",
+      "pixel_review": {
+        "reviewer": "/root",
+        "reviewed_at": "2026-10-23T22:50:42.648155+00:00",
+        "observations": "Actual aerial capture retains the complete small bay-and-gable house, garden and street pad. Pedestrian capture shows the front door, stoop, gate, brick bay and roof trim with a solid foundation/approach against the authored ground. Gate/tree and projecting bay naturally obscure portions of the scene; no visible floating base or buried entrance within these two views. Its authored front route is visible but public network and accessibility are not certified.",
+        "images": [
+          {
+            "artifact_file": "building-final-18-actual-app-capture.png",
+            "sha256": "7b2ecb965ced39ffff5839544b0f6e228f98fb8b5a8b90e742082110c46eea2d",
+            "bytes": 2507082
+          },
+          {
+            "artifact_file": "building-final-18-walk-ground-capture.png",
+            "sha256": "0226d4e8a70dfc8906c2399edd08a7915911b1fcd92cd5a433770c1b6e7911b1",
+            "bytes": 495065
+          }
+        ],
+        "ground_contact": "pass_scoped_prepared_level_site",
+        "close_and_occluded_capture": "pass_scoped_visible_front_and_natural_occlusion",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "limits": [
+          "No uninspected elevations, arbitrary terrain, accessibility or mobile certification.",
+          "Original architectural-clay source decision and exact geometry/material followups remain separate evidence."
+        ]
+      }
+    }
+  ],
+  "runtime_gate_scopes": {
+    "prepared-level-desktop-fixed-native-v1": {
+      "C1_identity": "PASS bounded: exact card/variant/native floors, per-model min/large API bytes and saved reload; actual aerial and pedestrian free captures.",
+      "C2_dimensions": "PASS bounded: measured full authored envelope, native metre scale, actual min/150x130 plots and15/16degree saved rotation; arbitrary extremes not tested.",
+      "C3_ground_footprint": "PASS prepared-level visible scope: exact actual-app low/aerial pixels reviewed by root; authored surroundings retained. Natural slopes and hidden contacts NOT TESTED.",
+      "C4_freshness": "PASS ordinary edits/reload/source-hash scope; forced late terrain callback races NOT TESTED.",
+      "C5_access": "PASS visible concept frontage/threshold scope only; no automatically connected external public network advertised. All entrances, surveyed route/accessibility and hidden joins NOT TESTED.",
+      "C6_edits": "PASS bounded: per-variant apply/rotate/save/reload plus shared warehouse and mixed-scene move/Undo/Redo; exact saved IDs retained.",
+      "C7_recovery": "PASS ordinary shared delete/Undo/Redo/reload scope; forced conflicting saves, interrupted navigation and per-variant failed measurements NOT TESTED follow-ups.",
+      "C8_capture": "PASS actual per-model aerial/pedestrian free exact export, natural occlusion/cropping pixel review plus108geometry/27material diagnostic evidence. Paid AI fidelity separate, NOT TESTED.",
+      "C9_controls": "PASS assisted desktop ordinary picker/placement/edit/export scope; novice/mobile/touch/minimum-viewport acceptance NOT TESTED.",
+      "B1_native_envelope": "PASS bounded min/large/native rotation and offline doubled/undersize. No model stretching/repeated floors; every allowed extreme angle/maximum plot NOT TESTED.",
+      "B2_entrances": "PASS visible concept frontage/door/plinth scope from exact app/source evidence; complete surveyed entrance geometry and automatic public-route connectivity NOT TESTED or advertised.",
+      "B3_stair_settings": "NOT TESTED follow-up: the shared Connections dialog can offer native-step picking for revision-locked fixed buildings. These18 trials did not exercise it; no exact-source entrance picking/stair/automatic-route acceptance is claimed.",
+      "B4_landing_route": "NOT TESTED follow-up: generated landing/route fit and recovery for these exact source scenes. Authored visible stairs/plinths reviewed at concept level only; external network/accessibility unaccepted.",
+      "B5_concept_access": "PASS visible native concept massing/steps/plinths/aprons, no glaring visible grounding defect; full accessible routes/rail details/engineering remain follow-up.",
+      "S_streets": "N/A building package; separate fixed public-realm evidence owns streets in mixed scene.",
+      "P_parks": "N/A building package; separate fixed public-realm evidence owns parks in mixed scene."
+    }
+  },
+  "scope_note": "Review records report actual named reviewers. Bounded prepared-level desktop checks are not universal terrain, hidden elevation, native-step picking/accessibility, mobile or AI fidelity approval."
+}

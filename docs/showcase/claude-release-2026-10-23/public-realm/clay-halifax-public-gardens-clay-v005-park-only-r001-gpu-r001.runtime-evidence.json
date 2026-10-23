@@ -1,0 +1,238 @@
+{
+  "schema": "cityprompt.fixed-public-realm-proposed-runtime-evidence@1",
+  "proposal_only": false,
+  "candidate": "clay-halifax-public-gardens-clay-v005-park-only-r001-gpu-r001",
+  "asset_id": "claude_public_realm:halifax-public-gardens-park-only:9282a9ffd6a3",
+  "runtime_sha256": "9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79",
+  "scope": "Actual single-asset ordinary desktop app placement/rotation/native controls/save/reload/free capture on prepared field plus separate isolated desktop1/5-instance production-loader diagnostic.",
+  "ordinary_UI_snapshot": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\claude-model-discovery-2026-10-22\\quality\\holistic-review-20261023\\activation-proposal-20261023\\ordinary-ui-evidence.snapshot.json",
+    "role": "root_actual_twelve_model_UI_matrix",
+    "sha256": "e2842e619d496d8952f0611e838a64b93097340189d8d9d57f88cb0c5b6582e7",
+    "bytes": 25963
+  },
+  "observed_model_row": {
+    "candidate": "clay-halifax-public-gardens-clay-v005-park-only-r001-gpu-r001",
+    "id": "claude_public_realm:halifax-public-gardens-park-only:9282a9ffd6a3",
+    "label": "Halifax Public Gardens — fixed native",
+    "dimensions": [
+      76,
+      94
+    ],
+    "runtime_sha256": "9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79",
+    "url": "/park-kits/claude-20261023/9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79.glb",
+    "status": "passed",
+    "picker_controls": [
+      {
+        "disabled": true,
+        "label": "Placement width",
+        "value": "76"
+      },
+      {
+        "disabled": true,
+        "label": "Placement depth",
+        "value": "94"
+      },
+      {
+        "disabled": false,
+        "label": "Placement degrees",
+        "value": "0"
+      }
+    ],
+    "placement": "ordinary UI",
+    "yaw_initial": 15,
+    "yaw": 16,
+    "controls": [
+      {
+        "disabled": true,
+        "label": "Plot width (m)",
+        "value": "76.0"
+      },
+      {
+        "disabled": true,
+        "label": "Plot depth (m)",
+        "value": "94.0"
+      },
+      {
+        "disabled": false,
+        "label": "Rotation (degrees)",
+        "value": "16"
+      }
+    ],
+    "saved_reload": true,
+    "api_readback": "clay-halifax-public-gardens-clay-v005-park-only-r001-gpu-r001-api-readback.json",
+    "free_capture": "halifax-optimized-final-actual-app-capture.png",
+    "preview": "halifax-optimized-final-actual-app-preview.jpg",
+    "png_bytes": 3536259,
+    "preview_exact_3d": true,
+    "checked_utc": "2026-10-23T21:38:28.145Z",
+    "api_exact_identity": true,
+    "api_no_fallback": true,
+    "png": {
+      "width": 2048,
+      "height": 714,
+      "bytes": 3536259,
+      "sha256": "ac9d5ffa66d8ddac5917dd447fbfff35ef82ca8f3c71e4a32e5368c1368bb8da"
+    },
+    "native_dimensions_exact": true
+  },
+  "api_readback": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\clay-halifax-public-gardens-clay-v005-park-only-r001-gpu-r001-api-readback.json",
+    "role": "GET_only_exact_saved_identity_no_fallback",
+    "sha256": "2ce902723541ebb5144a94de9488d0e29b29c2be0c000a09bec45c7ff6a27495",
+    "bytes": 2234
+  },
+  "actual_capture": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\halifax-optimized-final-actual-app-capture.png",
+    "role": "free_exact3D_PNG_hash_checked",
+    "sha256": "ac9d5ffa66d8ddac5917dd447fbfff35ef82ca8f3c71e4a32e5368c1368bb8da",
+    "bytes": 3536259
+  },
+  "actual_preview": {
+    "path": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\halifax-optimized-final-actual-app-preview.jpg",
+    "role": "functional_capture_preview",
+    "sha256": "b4eb6aad2b1cf8b583db18438c30938fab51df85d10dd8299f91fe7c41c68dae",
+    "bytes": 561661
+  },
+  "shared_rink_move_delete_undo_redo": {
+    "scope": "Shared mechanism exercised on rink only; not separately repeated on every model",
+    "observations": {
+      "move": {
+        "status": "passed",
+        "model": "clay-ice-rink-market-square-clay-v007-park-only-r001",
+        "screen_drag": [
+          [
+            1700,
+            705
+          ],
+          [
+            1720,
+            705
+          ]
+        ],
+        "size": [
+          57,
+          77
+        ],
+        "yaw": 16,
+        "screenshot": "rink-rigid-move-selected.jpg"
+      },
+      "delete_undo_redo": {
+        "status": "passed",
+        "sequence": [
+          "delete",
+          "undo",
+          "redo",
+          "undo"
+        ],
+        "model": "clay-ice-rink-market-square-clay-v007-park-only-r001",
+        "screenshot": "rink-delete-undo.jpg",
+        "api_verified": {
+          "redo_public_realm_zone_count": 0,
+          "undo_restored_exact_identity": true,
+          "boundary_retained": true
+        }
+      }
+    },
+    "files": [
+      {
+        "path": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\rink-rigid-move-selected.jpg",
+        "role": "shared_rink_UI_move",
+        "sha256": "616c5bb74c865a005cedd8c678764cdca0a1b40d87828d796d263a851acc605e",
+        "bytes": 942611
+      },
+      {
+        "path": "C:\\dev-artifacts\\CityPrompt\\claude-live-release-2026-10-23\\rink-delete-undo.jpg",
+        "role": "shared_rink_UI_delete_undo_redo",
+        "sha256": "2a7d8c1080b6c220b57018463f70de79669f8e2f7fbbedd2a7fb2cbda0158541",
+        "bytes": 985286
+      }
+    ]
+  },
+  "isolated_desktop_performance": {
+    "snapshot": {
+      "path": "C:\\dev-artifacts\\CityPrompt\\claude-model-discovery-2026-10-22\\quality\\holistic-review-20261023\\activation-proposal-20261023\\isolated-desktop-performance.snapshot.json",
+      "role": "actual1_and5_instance_benchmark",
+      "sha256": "80fe8df21d2960c0604e6d15164fc304947ee92f30e0950b9a7eb534abc92b97",
+      "bytes": 116131
+    },
+    "model_metrics": [
+      {
+        "copies": 1,
+        "renderer": {
+          "calls": 38,
+          "triangles": 1585082,
+          "lines": 0,
+          "points": 0,
+          "geometries": 38,
+          "textures": 0
+        },
+        "cpu_submission": {
+          "samples": 120,
+          "mean_ms": 0.45833333345750965,
+          "p50_ms": 0.3999999910593033,
+          "p95_ms": 1.0999999940395355,
+          "max_ms": 2.7000000029802322
+        },
+        "raf_interval": {
+          "samples": 120,
+          "mean_ms": 17.678333333383005,
+          "p50_ms": 17.700000002980232,
+          "p95_ms": 18.200000002980232,
+          "max_ms": 19
+        },
+        "gpu_time_measured": false,
+        "viewport": {
+          "width": 3417,
+          "height": 1109,
+          "dpr": 1
+        }
+      },
+      {
+        "copies": 5,
+        "renderer": {
+          "calls": 190,
+          "triangles": 7925410,
+          "lines": 0,
+          "points": 0,
+          "geometries": 38,
+          "textures": 0
+        },
+        "cpu_submission": {
+          "samples": 120,
+          "mean_ms": 1.3066666670143605,
+          "p50_ms": 1.1000000089406967,
+          "p95_ms": 3,
+          "max_ms": 4.600000008940697
+        },
+        "raf_interval": {
+          "samples": 120,
+          "mean_ms": 17.69333333335817,
+          "p50_ms": 17.700000002980232,
+          "p95_ms": 19.299999997019768,
+          "max_ms": 29.399999991059303
+        },
+        "gpu_time_measured": false,
+        "viewport": {
+          "width": 3417,
+          "height": 1109,
+          "dpr": 1
+        }
+      }
+    ]
+  },
+  "limits": [
+    "Desktop ordinary app UI only, 3432px viewport width, DPR1, Balanced detail,30degree oblique",
+    "Wide prepared field captures confirm loaded presence; no detailed architectural pixel approval",
+    "Walking, traffic, route connectivity, mobile/student hardware, multiasset scenes not tested in this matrix",
+    "No production approval; raw prepared Halifax/Prince and held Stepped Terraced Plaza excluded",
+    "All model placement/edit/delete writes through UI; API helper used GET only",
+    "CPU submission and RAF intervals do not measure GPU time.",
+    "No detailed globe performance matrix, student laptop/mobile test, or combined12-asset scene benchmark."
+  ],
+  "source_or_catalogue_written": false,
+  "publication_approved": false,
+  "gate_status": "passed",
+  "adopted_by": "/root",
+  "adopted_at": "2026-10-23T22:15:31.879420+00:00"
+}

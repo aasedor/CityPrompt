@@ -1,3 +1,4 @@
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import type { SiteZone, SiteZoneProperties } from '@/types';
 import { extractZoneCenterline, parsePersistedCenterline } from '@/utils/roadGeometry';
 import { metersPerDegLon, METERS_PER_DEG_LAT } from '@/components/viewer/mapEngine/geoUtils';
@@ -9,7 +10,7 @@ export function duplicateStreet(zone: SiteZone, eastM: number, northM: number) {
     throw new Error('Move the copy at least 1 m, and keep each offset within 1,000 m.');
   }
   const line = extractZoneCenterline(zone);
-  if (zone.zone_type !== 'road' || line.length < 2 || zone.properties?.validation_fixed_fixture) {
+  if (zone.zone_type !== 'road' || line.length < 2 || isFixedNativeScene(zone.properties)) {
     throw new Error('Duplicate a drawn street route. Original fixed review models keep their separate bindings.');
   }
   const lngDelta = eastM / metersPerDegLon(line[0][1]), latDelta = northM / METERS_PER_DEG_LAT;

@@ -1,0 +1,877 @@
+{
+  "schema": "cityprompt.public-realm-ordinary-ui-checks@1",
+  "project_id": "4c3762da-aa8a-4b4c-838c-d3ea1f2f8222",
+  "scope": "Local disposable prepared700x500field; actual ordinary app UI; no paid generation, no production approval",
+  "models": [
+    {
+      "candidate": "clay-cable-stayed-cycle-ring-clay-v003",
+      "id": "claude_public_realm:cable-stayed-cycle-ring:c1ef7008750f",
+      "label": "Cable Stayed Cycle Ring — fixed native",
+      "dimensions": [
+        227,
+        227
+      ],
+      "runtime_sha256": "c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11",
+      "url": "/street-kits/claude-20261023/c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11.glb",
+      "status": "passed",
+      "picker_controls": [
+        {
+          "disabled": true,
+          "label": "Placement width",
+          "value": "227"
+        },
+        {
+          "disabled": true,
+          "label": "Placement depth",
+          "value": "227"
+        },
+        {
+          "disabled": false,
+          "label": "Placement degrees",
+          "value": "0"
+        }
+      ],
+      "placement": "ordinary UI",
+      "yaw_initial": 15,
+      "yaw": 16,
+      "controls": [
+        {
+          "disabled": true,
+          "label": "Plot width (m)",
+          "value": "227.0"
+        },
+        {
+          "disabled": true,
+          "label": "Plot depth (m)",
+          "value": "227.0"
+        },
+        {
+          "disabled": false,
+          "label": "Rotation (degrees)",
+          "value": "16"
+        }
+      ],
+      "saved_reload": true,
+      "api_readback": "cycle-ring-final-api-readback.json",
+      "free_capture": "cycle-ring-final-actual-app-capture.png",
+      "preview": "cycle-ring-final-actual-app-preview.jpg",
+      "png_bytes": 3528140,
+      "preview_exact_3d": true,
+      "checked_utc": "2026-10-23T21:37:11.187Z",
+      "api_exact_identity": true,
+      "api_no_fallback": true,
+      "png": {
+        "width": 2048,
+        "height": 714,
+        "bytes": 3528140,
+        "sha256": "6da06158730bdb527bdf239eaf105d14ba6cc6fd106a93492ae924265b6095f3"
+      },
+      "native_dimensions_exact": true
+    },
+    {
+      "candidate": "clay-calgary-riverwalk-clay-v003",
+      "id": "claude_public_realm:calgary-riverwalk:22a0bc53f02c",
+      "label": "Calgary Riverwalk — fixed native",
+      "dimensions": [
+        102,
+        91
+      ],
+      "runtime_sha256": "22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930",
+      "url": "/street-kits/claude-20261023/22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930.glb",
+      "status": "passed",
+      "placement": "ordinary UI",
+      "controls": [
+        {
+          "disabled": true,
+          "label": "Plot width (m)",
+          "value": "102.0"
+        },
+        {
+          "disabled": true,
+          "label": "Plot depth (m)",
+          "value": "91.0"
+        },
+        {
+          "disabled": false,
+          "label": "Rotation (degrees)",
+          "value": "16"
+        }
+      ],
+      "saved_reload": true,
+      "yaw": 16,
+      "free_capture": "calgary-riverwalk-final-actual-app-capture.png",
+      "preview": "calgary-riverwalk-final-actual-app-preview.jpg",
+      "preview_exact_3d": true,
+      "checked_utc": "2026-10-23T21:47:55.701Z",
+      "picker_controls": [
+        {
+          "disabled": true,
+          "label": "Placement width",
+          "value": "102"
+        },
+        {
+          "disabled": true,
+          "label": "Placement depth",
+          "value": "91"
+        },
+        {
+          "disabled": false,
+          "label": "Placement degrees",
+          "value": "0"
+        }
+      ],
+      "yaw_initial": 15,
+      "api_readback": "clay-calgary-riverwalk-clay-v003-api-readback.json",
+      "png_bytes": 3531458,
+      "api_exact_identity": true,
+      "api_no_fallback": true,
+      "png": {
+        "width": 2048,
+        "height": 714,
+        "bytes": 3531458,
+        "sha256": "ffc6bf2a4c42b486d12c1dbf183f6da56d9efc4bfcf499649d70c27c90084435"
+      },
+      "native_dimensions_exact": true
+    },
+    {
+      "candidate": "clay-halifax-public-gardens-clay-v005-park-only-r001-gpu-r001",
+      "id": "claude_public_realm:halifax-public-gardens-park-only:9282a9ffd6a3",
+      "label": "Halifax Public Gardens — fixed native",
+      "dimensions": [
+        76,
+        94
+      ],
+      "runtime_sha256": "9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79",
+      "url": "/park-kits/claude-20261023/9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79.glb",
+      "status": "passed",
+      "picker_controls": [
+        {
+          "disabled": true,
+          "label": "Placement width",
+          "value": "76"
+        },
+        {
+          "disabled": true,
+          "label": "Placement depth",
+          "value": "94"
+        },
+        {
+          "disabled": false,
+          "label": "Placement degrees",
+          "value": "0"
+        }
+      ],
+      "placement": "ordinary UI",
+      "yaw_initial": 15,
+      "yaw": 16,
+      "controls": [
+        {
+          "disabled": true,
+          "label": "Plot width (m)",
+          "value": "76.0"
+        },
+        {
+          "disabled": true,
+          "label": "Plot depth (m)",
+          "value": "94.0"
+        },
+        {
+          "disabled": false,
+          "label": "Rotation (degrees)",
+          "value": "16"
+        }
+      ],
+      "saved_reload": true,
+      "api_readback": "clay-halifax-public-gardens-clay-v005-park-only-r001-gpu-r001-api-readback.json",
+      "free_capture": "halifax-optimized-final-actual-app-capture.png",
+      "preview": "halifax-optimized-final-actual-app-preview.jpg",
+      "png_bytes": 3536259,
+      "preview_exact_3d": true,
+      "checked_utc": "2026-10-23T21:38:28.145Z",
+      "api_exact_identity": true,
+      "api_no_fallback": true,
+      "png": {
+        "width": 2048,
+        "height": 714,
+        "bytes": 3536259,
+        "sha256": "ac9d5ffa66d8ddac5917dd447fbfff35ef82ca8f3c71e4a32e5368c1368bb8da"
+      },
+      "native_dimensions_exact": true
+    },
+    {
+      "candidate": "clay-ice-rink-market-square-clay-v007-park-only-r001",
+      "id": "claude_public_realm:ice-rink-market-square-park-only:6a578c3c8e3c",
+      "label": "Ice Rink Market Square — fixed native",
+      "dimensions": [
+        57,
+        77
+      ],
+      "runtime_sha256": "6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8",
+      "url": "/park-kits/claude-20261023/6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8.glb",
+      "status": "passed",
+      "picker_controls": [
+        {
+          "disabled": true,
+          "label": "Placement width",
+          "value": "57"
+        },
+        {
+          "disabled": true,
+          "label": "Placement depth",
+          "value": "77"
+        },
+        {
+          "disabled": false,
+          "label": "Placement degrees",
+          "value": "0"
+        }
+      ],
+      "placement": "ordinary UI",
+      "yaw_initial": 15,
+      "yaw": 16,
+      "controls": [
+        {
+          "disabled": true,
+          "label": "Plot width (m)",
+          "value": "57.0"
+        },
+        {
+          "disabled": true,
+          "label": "Plot depth (m)",
+          "value": "77.0"
+        },
+        {
+          "disabled": false,
+          "label": "Rotation (degrees)",
+          "value": "16"
+        }
+      ],
+      "saved_reload": true,
+      "api_readback": "clay-ice-rink-market-square-clay-v007-park-only-r001-api-readback.json",
+      "free_capture": "rink-final-actual-app-capture.png",
+      "preview": "rink-final-actual-app-preview.jpg",
+      "png_bytes": 3537522,
+      "preview_exact_3d": true,
+      "checked_utc": "2026-10-23T21:39:31.585Z",
+      "api_exact_identity": true,
+      "api_no_fallback": true,
+      "png": {
+        "width": 2048,
+        "height": 714,
+        "bytes": 3537522,
+        "sha256": "d6d79b7a18b2fb1415235e66a52c56ed60b0597cb0926089d8276574bf8a29be"
+      },
+      "native_dimensions_exact": true
+    },
+    {
+      "candidate": "clay-inglewood-main-street-clay-v004",
+      "id": "claude_public_realm:inglewood-main-street:e1106da0a1bc",
+      "label": "Inglewood Main Street — fixed native",
+      "dimensions": [
+        111,
+        102
+      ],
+      "runtime_sha256": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e",
+      "url": "/street-kits/claude-20261023/e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e.glb",
+      "status": "passed",
+      "picker_controls": [
+        {
+          "disabled": true,
+          "label": "Placement width",
+          "value": "111"
+        },
+        {
+          "disabled": true,
+          "label": "Placement depth",
+          "value": "102"
+        },
+        {
+          "disabled": false,
+          "label": "Placement degrees",
+          "value": "0"
+        }
+      ],
+      "placement": "ordinary UI",
+      "yaw_initial": 15,
+      "yaw": 16,
+      "controls": [
+        {
+          "disabled": true,
+          "label": "Plot width (m)",
+          "value": "111.0"
+        },
+        {
+          "disabled": true,
+          "label": "Plot depth (m)",
+          "value": "102.0"
+        },
+        {
+          "disabled": false,
+          "label": "Rotation (degrees)",
+          "value": "16"
+        }
+      ],
+      "saved_reload": true,
+      "api_readback": "clay-inglewood-main-street-clay-v004-api-readback.json",
+      "free_capture": "inglewood-final-actual-app-capture.png",
+      "preview": "inglewood-final-actual-app-preview.jpg",
+      "png_bytes": 3535412,
+      "preview_exact_3d": true,
+      "checked_utc": "2026-10-23T21:41:17.385Z",
+      "api_exact_identity": true,
+      "api_no_fallback": true,
+      "png": {
+        "width": 2048,
+        "height": 714,
+        "bytes": 3535412,
+        "sha256": "92b7c99aea4ae87e0d670a0a3ba243ee13010796fb6a55cedbd03e5e4d3dfc33"
+      },
+      "native_dimensions_exact": true
+    },
+    {
+      "candidate": "clay-montreal-plateau-rue-clay-v003",
+      "id": "claude_public_realm:montreal-plateau-rue:92722fb6162c",
+      "label": "Montreal Plateau Rue — fixed native",
+      "dimensions": [
+        121,
+        121
+      ],
+      "runtime_sha256": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde",
+      "url": "/street-kits/claude-20261023/92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde.glb",
+      "status": "passed",
+      "picker_controls": [
+        {
+          "disabled": true,
+          "label": "Placement width",
+          "value": "121"
+        },
+        {
+          "disabled": true,
+          "label": "Placement depth",
+          "value": "121"
+        },
+        {
+          "disabled": false,
+          "label": "Placement degrees",
+          "value": "0"
+        }
+      ],
+      "placement": "ordinary UI",
+      "yaw_initial": 15,
+      "yaw": 16,
+      "controls": [
+        {
+          "disabled": true,
+          "label": "Plot width (m)",
+          "value": "121.0"
+        },
+        {
+          "disabled": true,
+          "label": "Plot depth (m)",
+          "value": "121.0"
+        },
+        {
+          "disabled": false,
+          "label": "Rotation (degrees)",
+          "value": "16"
+        }
+      ],
+      "saved_reload": true,
+      "api_readback": "clay-montreal-plateau-rue-clay-v003-api-readback.json",
+      "free_capture": "montreal-final-actual-app-capture.png",
+      "preview": "montreal-final-actual-app-preview.jpg",
+      "png_bytes": 3529218,
+      "preview_exact_3d": true,
+      "checked_utc": "2026-10-23T21:42:00.430Z",
+      "api_exact_identity": true,
+      "api_no_fallback": true,
+      "png": {
+        "width": 2048,
+        "height": 714,
+        "bytes": 3529218,
+        "sha256": "014926207314b57f1ce2f4ed9d04609c66c2bfdd760da38a8e8d95b2028d8973"
+      },
+      "native_dimensions_exact": true
+    },
+    {
+      "candidate": "clay-princes-island-park-clay-v005-gpu-r001",
+      "id": "claude_public_realm:princes-island-park:498a973435fc",
+      "label": "Princes Island Park — fixed native",
+      "dimensions": [
+        104,
+        71
+      ],
+      "runtime_sha256": "498a973435fc8bc077084d3ee630babc55574a7365fdbd978a1cea742525a0ec",
+      "url": "/park-kits/claude-20261023/498a973435fc8bc077084d3ee630babc55574a7365fdbd978a1cea742525a0ec.glb",
+      "status": "passed",
+      "picker_controls": [
+        {
+          "disabled": true,
+          "label": "Placement width",
+          "value": "104"
+        },
+        {
+          "disabled": true,
+          "label": "Placement depth",
+          "value": "71"
+        },
+        {
+          "disabled": false,
+          "label": "Placement degrees",
+          "value": "0"
+        }
+      ],
+      "placement": "ordinary UI",
+      "yaw_initial": 15,
+      "yaw": 16,
+      "controls": [
+        {
+          "disabled": true,
+          "label": "Plot width (m)",
+          "value": "104.0"
+        },
+        {
+          "disabled": true,
+          "label": "Plot depth (m)",
+          "value": "71.0"
+        },
+        {
+          "disabled": false,
+          "label": "Rotation (degrees)",
+          "value": "16"
+        }
+      ],
+      "saved_reload": true,
+      "api_readback": "clay-princes-island-park-clay-v005-gpu-r001-api-readback.json",
+      "free_capture": "prince-optimized-final-actual-app-capture.png",
+      "preview": "prince-optimized-final-actual-app-preview.jpg",
+      "png_bytes": 3537890,
+      "preview_exact_3d": true,
+      "checked_utc": "2026-10-23T21:42:49.942Z",
+      "api_exact_identity": true,
+      "api_no_fallback": true,
+      "png": {
+        "width": 2048,
+        "height": 714,
+        "bytes": 3537890,
+        "sha256": "a66ac2454561ca31acf5bd1ad8f91bc2bc433fbadf9930a158225492ecbf1efc"
+      },
+      "native_dimensions_exact": true
+    },
+    {
+      "candidate": "clay-rail-through-truss-clay-v005",
+      "id": "claude_public_realm:rail-through-truss:db0886ff6186",
+      "label": "Rail Through Truss — fixed native",
+      "dimensions": [
+        77,
+        136
+      ],
+      "runtime_sha256": "db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813",
+      "url": "/street-kits/claude-20261023/db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813.glb",
+      "status": "passed",
+      "picker_controls": [
+        {
+          "disabled": true,
+          "label": "Placement width",
+          "value": "77"
+        },
+        {
+          "disabled": true,
+          "label": "Placement depth",
+          "value": "136"
+        },
+        {
+          "disabled": false,
+          "label": "Placement degrees",
+          "value": "0"
+        }
+      ],
+      "placement": "ordinary UI",
+      "yaw_initial": 15,
+      "yaw": 16,
+      "controls": [
+        {
+          "disabled": true,
+          "label": "Plot width (m)",
+          "value": "77.0"
+        },
+        {
+          "disabled": true,
+          "label": "Plot depth (m)",
+          "value": "136.0"
+        },
+        {
+          "disabled": false,
+          "label": "Rotation (degrees)",
+          "value": "16"
+        }
+      ],
+      "saved_reload": true,
+      "api_readback": "clay-rail-through-truss-clay-v005-api-readback.json",
+      "free_capture": "rail-truss-final-actual-app-capture.png",
+      "preview": "rail-truss-final-actual-app-preview.jpg",
+      "png_bytes": 3529876,
+      "preview_exact_3d": true,
+      "checked_utc": "2026-10-23T21:43:35.235Z",
+      "api_exact_identity": true,
+      "api_no_fallback": true,
+      "png": {
+        "width": 2048,
+        "height": 714,
+        "bytes": 3529876,
+        "sha256": "764749000ae3a6b8b38297c85831cd1578023fcd8b4902acdf52ea86c50a4907"
+      },
+      "native_dimensions_exact": true
+    },
+    {
+      "candidate": "clay-road-diet-complete-street-clay-v003",
+      "id": "claude_public_realm:road-diet-complete-street:bdd53e3b94bd",
+      "label": "Road Diet Complete Street — fixed native",
+      "dimensions": [
+        99,
+        131
+      ],
+      "runtime_sha256": "bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696",
+      "url": "/street-kits/claude-20261023/bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696.glb",
+      "status": "passed",
+      "picker_controls": [
+        {
+          "disabled": true,
+          "label": "Placement width",
+          "value": "99"
+        },
+        {
+          "disabled": true,
+          "label": "Placement depth",
+          "value": "131"
+        },
+        {
+          "disabled": false,
+          "label": "Placement degrees",
+          "value": "0"
+        }
+      ],
+      "placement": "ordinary UI",
+      "yaw_initial": 15,
+      "yaw": 16,
+      "controls": [
+        {
+          "disabled": true,
+          "label": "Plot width (m)",
+          "value": "99.0"
+        },
+        {
+          "disabled": true,
+          "label": "Plot depth (m)",
+          "value": "131.0"
+        },
+        {
+          "disabled": false,
+          "label": "Rotation (degrees)",
+          "value": "16"
+        }
+      ],
+      "saved_reload": true,
+      "api_readback": "clay-road-diet-complete-street-clay-v003-api-readback.json",
+      "free_capture": "road-diet-final-actual-app-capture.png",
+      "preview": "road-diet-final-actual-app-preview.jpg",
+      "png_bytes": 3536968,
+      "preview_exact_3d": true,
+      "checked_utc": "2026-10-23T21:44:25.544Z",
+      "api_exact_identity": true,
+      "api_no_fallback": true,
+      "png": {
+        "width": 2048,
+        "height": 714,
+        "bytes": 3536968,
+        "sha256": "2483379947bdb6543ab911be432a298af845f77af020e36e95da0cfb342d99b6"
+      },
+      "native_dimensions_exact": true
+    },
+    {
+      "candidate": "clay-steel-truss-road-bridge-clay-v002",
+      "id": "claude_public_realm:steel-truss-road-bridge:d01804b356b2",
+      "label": "Steel Truss Road Bridge — fixed native",
+      "dimensions": [
+        124,
+        123
+      ],
+      "runtime_sha256": "d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30",
+      "url": "/street-kits/claude-20261023/d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30.glb",
+      "status": "passed",
+      "picker_controls": [
+        {
+          "disabled": true,
+          "label": "Placement width",
+          "value": "124"
+        },
+        {
+          "disabled": true,
+          "label": "Placement depth",
+          "value": "123"
+        },
+        {
+          "disabled": false,
+          "label": "Placement degrees",
+          "value": "0"
+        }
+      ],
+      "placement": "ordinary UI",
+      "yaw_initial": 15,
+      "yaw": 16,
+      "controls": [
+        {
+          "disabled": true,
+          "label": "Plot width (m)",
+          "value": "124.0"
+        },
+        {
+          "disabled": true,
+          "label": "Plot depth (m)",
+          "value": "123.0"
+        },
+        {
+          "disabled": false,
+          "label": "Rotation (degrees)",
+          "value": "16"
+        }
+      ],
+      "saved_reload": true,
+      "api_readback": "clay-steel-truss-road-bridge-clay-v002-api-readback.json",
+      "free_capture": "steel-truss-final-actual-app-capture.png",
+      "preview": "steel-truss-final-actual-app-preview.jpg",
+      "png_bytes": 3530787,
+      "preview_exact_3d": true,
+      "checked_utc": "2026-10-23T21:45:16.882Z",
+      "api_exact_identity": true,
+      "api_no_fallback": true,
+      "png": {
+        "width": 2048,
+        "height": 714,
+        "bytes": 3530787,
+        "sha256": "497697a9e1cf6b51f4655484fd25e04474056f6e2230c3e3ff8acc5e9fc9fbc7"
+      },
+      "native_dimensions_exact": true
+    },
+    {
+      "candidate": "clay-swooping-cycle-flyover-clay-v003",
+      "id": "claude_public_realm:swooping-cycle-flyover:4c075a5a31b0",
+      "label": "Swooping Cycle Flyover — fixed native",
+      "dimensions": [
+        453,
+        233
+      ],
+      "runtime_sha256": "4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4",
+      "url": "/street-kits/claude-20261023/4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4.glb",
+      "status": "passed",
+      "picker_controls": [
+        {
+          "disabled": true,
+          "label": "Placement width",
+          "value": "453"
+        },
+        {
+          "disabled": true,
+          "label": "Placement depth",
+          "value": "233"
+        },
+        {
+          "disabled": false,
+          "label": "Placement degrees",
+          "value": "0"
+        }
+      ],
+      "placement": "ordinary UI",
+      "yaw_initial": 15,
+      "yaw": 16,
+      "controls": [
+        {
+          "disabled": true,
+          "label": "Plot width (m)",
+          "value": "453.0"
+        },
+        {
+          "disabled": true,
+          "label": "Plot depth (m)",
+          "value": "233.0"
+        },
+        {
+          "disabled": false,
+          "label": "Rotation (degrees)",
+          "value": "16"
+        }
+      ],
+      "saved_reload": true,
+      "api_readback": "clay-swooping-cycle-flyover-clay-v003-api-readback.json",
+      "free_capture": "swooping-flyover-final-actual-app-capture.png",
+      "preview": "swooping-flyover-final-actual-app-preview.jpg",
+      "png_bytes": 3494702,
+      "preview_exact_3d": true,
+      "checked_utc": "2026-10-23T21:46:06.817Z",
+      "api_exact_identity": true,
+      "api_no_fallback": true,
+      "png": {
+        "width": 2048,
+        "height": 714,
+        "bytes": 3494702,
+        "sha256": "afb0c514f3b46511cc654a58d7d125b0cfb5a21d334be91342d9ebb046bb1f62"
+      },
+      "native_dimensions_exact": true
+    },
+    {
+      "candidate": "clay-weathering-steel-footbridge-clay-v003",
+      "id": "claude_public_realm:weathering-steel-footbridge:2384d6eed060",
+      "label": "Weathering Steel Footbridge — fixed native",
+      "dimensions": [
+        133,
+        113
+      ],
+      "runtime_sha256": "2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2",
+      "url": "/street-kits/claude-20261023/2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2.glb",
+      "status": "passed",
+      "picker_controls": [
+        {
+          "disabled": true,
+          "label": "Placement width",
+          "value": "133"
+        },
+        {
+          "disabled": true,
+          "label": "Placement depth",
+          "value": "113"
+        },
+        {
+          "disabled": false,
+          "label": "Placement degrees",
+          "value": "0"
+        }
+      ],
+      "placement": "ordinary UI",
+      "yaw_initial": 15,
+      "yaw": 16,
+      "controls": [
+        {
+          "disabled": true,
+          "label": "Plot width (m)",
+          "value": "133.0"
+        },
+        {
+          "disabled": true,
+          "label": "Plot depth (m)",
+          "value": "113.0"
+        },
+        {
+          "disabled": false,
+          "label": "Rotation (degrees)",
+          "value": "16"
+        }
+      ],
+      "saved_reload": true,
+      "api_readback": "clay-weathering-steel-footbridge-clay-v003-api-readback.json",
+      "free_capture": "weathering-footbridge-final-actual-app-capture.png",
+      "preview": "weathering-footbridge-final-actual-app-preview.jpg",
+      "png_bytes": 3519096,
+      "preview_exact_3d": true,
+      "checked_utc": "2026-10-23T21:46:54.379Z",
+      "api_exact_identity": true,
+      "api_no_fallback": true,
+      "png": {
+        "width": 2048,
+        "height": 714,
+        "bytes": 3519096,
+        "sha256": "ca449d7a8dc5c32fae12be5b082bca26643de1bf492b3da47cd7fbd7b22567b8"
+      },
+      "native_dimensions_exact": true
+    }
+  ],
+  "shared": {
+    "move": {
+      "status": "passed",
+      "model": "clay-ice-rink-market-square-clay-v007-park-only-r001",
+      "screen_drag": [
+        [
+          1700,
+          705
+        ],
+        [
+          1720,
+          705
+        ]
+      ],
+      "size": [
+        57,
+        77
+      ],
+      "yaw": 16,
+      "screenshot": "rink-rigid-move-selected.jpg"
+    },
+    "delete_undo_redo": {
+      "status": "passed",
+      "sequence": [
+        "delete",
+        "undo",
+        "redo",
+        "undo"
+      ],
+      "model": "clay-ice-rink-market-square-clay-v007-park-only-r001",
+      "screenshot": "rink-delete-undo.jpg",
+      "api_verified": {
+        "redo_public_realm_zone_count": 0,
+        "undo_restored_exact_identity": true,
+        "boundary_retained": true
+      }
+    }
+  },
+  "validation": {
+    "model_count": 12,
+    "passed": 12,
+    "failed": 0,
+    "not_tested": 0,
+    "all_api_identity_exact": true,
+    "all_no_fallback": true,
+    "all_native_size_controls_disabled": true,
+    "all_yaw15_to16_saved_reload": true,
+    "all_exact_free_png": true,
+    "all_native_dimensions_exact": true
+  },
+  "limitations": [
+    "Desktop ordinary app UI only, 3432px viewport width, DPR1, Balanced detail,30degree oblique",
+    "Wide prepared field captures confirm loaded presence; no detailed architectural pixel approval",
+    "Walking, traffic, route connectivity, mobile/student hardware, multiasset scenes not tested in this matrix",
+    "No production approval; raw prepared Halifax/Prince and held Stepped Terraced Plaza excluded",
+    "All model placement/edit/delete writes through UI; API helper used GET only"
+  ],
+  "checked_utc": "2026-10-23T21:47:55.851Z",
+  "token_balance_observed": {
+    "before": 192,
+    "after": 192
+  },
+  "environment": {
+    "browser": "Microsoft Edge155 on Windows desktop",
+    "viewport_css": {
+      "width": 3432,
+      "height": 1260
+    },
+    "canvas_css": {
+      "width": 3432,
+      "height": 1196
+    },
+    "canvas_pixels": {
+      "width": 3432,
+      "height": 1196
+    },
+    "canvas_pixel_ratio": 1,
+    "detail": "Balanced",
+    "view": "30degree oblique",
+    "capture_png": {
+      "width": 2048,
+      "height": 714
+    }
+  },
+  "browser_handoff": {
+    "tab_id": "1263575033",
+    "final_asset": "clay-calgary-riverwalk-clay-v003",
+    "final_yaw": 16,
+    "state": "free exact3D capture preview open"
+  }
+}
