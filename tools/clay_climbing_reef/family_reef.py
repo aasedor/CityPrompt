@@ -2475,9 +2475,10 @@ def site(paths):
 pk_palette(PALETTE)
 KIT = None
 INSTANCING = True
-TREES = [(-13.6, 10.6, 2.2), (-18.6, 8.9, 1.8), (-19.0, -8.0, 2.4), (19.6, -8.6, 2.2), (-13.8, -16.2, 2.0), (10.0, -16.8, 1.9),
-         (14.5, 13.8, 2.0), (-27.0, 15.0, 3.2), (-29.0, -3.0, 2.8), (27.5, -9.0, 3.0), (26.0, 13.5, 3.4), (8.0, 28.5, 3.0),
-         (-9.0, 28.0, 3.4), (-20.0, -21.0, 3.0), (17.0, -24.5, 2.8)]
+# Trees stand on the diagonals, clear of the four elevation views' sight lines and of the shell paths (the sources show
+# small trees in the meadow beds and larger ones beyond the ring path).
+TREES = [(14.6, 14.6, 1.6), (-14.6, 14.6, 1.7), (24.5, 14.0, 3.0), (-20.0, 20.0, 3.2), (-20.0, -20.0, 3.0), (13.5, -25.0, 2.8),
+         (25.0, -14.5, 2.6), (-25.0, -14.0, 2.6)]
 
 
 def protos(kit):
