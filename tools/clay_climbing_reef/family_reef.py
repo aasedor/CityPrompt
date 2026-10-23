@@ -32,7 +32,7 @@ ZW = 5.0                                            # wall shoulder: near-vertic
 DOME_Z = 7.3                                        # fitted visible dome centres (front and oblique camera fits)
 RING_R0, RING_R1 = 22.0, 24.0                       # concrete ring path, inner and outer radius
 SITE_R = 32.0
-APRON_Z, CURB_Z, BED_Z = .06, .50, .10              # rubber apron top, curb top, mulch bed top
+APRON_Z, CURB_Z, BED_Z = .06, .50, .085             # rubber apron top, curb top, mulch bed top
 # Outline of the shell base (top view pixels, clockwise from the north lobe tip).
 SHELL_PX = [(620, 121), (662, 138), (690, 172), (708, 220), (728, 262), (765, 295), (830, 322), (895, 345), (935, 370),
             (952, 410), (947, 455), (925, 495), (880, 530), (815, 552), (755, 575), (722, 610), (712, 660), (690, 720),
@@ -49,8 +49,8 @@ DOMES_PX = [(603, 428, 40), (620, 212, 22), (613, 305, 19), (680, 312, 19), (550
             (830, 398, 23), (347, 413, 23), (450, 442, 19), (573, 560, 19), (653, 549, 19), (610, 632, 23)]
 GAPS = (113.0, 41.5, -44.7, -137.0)                 # curb gaps (degrees about the origin) where the shell paths arrive
 ENTRANCES = (-135.0, -50.0, 45.0, 132.0)            # arched entrances at the foot of the four bays (searched to the bay minima)
-PALETTE = dict(reef1=(.02, .17, .20), reef2=(.03, .28, .31), reef3=(.03, .41, .45), reef4=(.08, .53, .53),
-    reef5=(.20, .64, .58), reef6=(.34, .74, .64), reef7=(.48, .81, .70), reef8=(.62, .86, .76), reef_inner=(.52, .66, .63), rim=(.93, .93, .91), glass=(.30, .36, .40), dome=(.58, .64, .68), tint=(.025, .03, .035),
+PALETTE = dict(reef0=(.008, .11, .14), reef1=(.02, .19, .23), reef2=(.02, .31, .36), reef3=(.0, .45, .52), reef4=(.04, .58, .60),
+    reef5=(.20, .68, .62), reef6=(.36, .76, .66), reef7=(.46, .82, .71), reef8=(.56, .86, .75), reef_inner=(.52, .66, .63), rim=(.93, .93, .91), glass=(.30, .36, .40), dome=(.58, .64, .68), tint=(.025, .03, .035),
     frame=(.10, .13, .14), hardware=(.06, .06, .06), floor=(.20, .25, .30), mat=(.11, .17, .26), interior=(.70, .70, .66),
     apron=(.64, .47, .29), curb=(.70, .55, .36), shellpath=(.90, .88, .85), shell2=(.80, .76, .70), shell3=(.97, .96, .94), concrete=(.50, .48, .44), lawn=(.20, .31, .10),
     mulch=(.22, .15, .09), hold_r=(.72, .10, .08), hold_y=(.90, .70, .10), hold_b=(.08, .22, .62), hold_p=(.42, .16, .55),
@@ -1932,7 +1932,7 @@ R_SHELL = polar_fit(SHELL_PX, 8)
 R_APRON = polar_fit(APRON_PX, 8)
 DOMES = [(W(u, v), r / PX) for u, v, r in DOMES_PX]
 BUMPS = []
-NT = 384                                            # shell segments round the outline
+NT = 288                                            # shell segments round the outline
 # Meridian profile of the shell: (fraction of the outline radius, height). Tucked base, bulging near-vertical wall to the
 # shoulder, roll-over, gently domed plateau (front, oblique).
 PROFILE = [(.975, 0.0), (.986, .35), (.995, .9), (1.0, 1.6), (.998, 2.6), (.99, 3.5), (.975, 4.3), (.955, 4.9),
@@ -2054,41 +2054,36 @@ def bay_minimum(deg):
 ENTRY_TH = [bay_minimum(d) for d in ENTRANCES]
 BUMPS = _bumps()
 PADS = []                                           # (centre, radius, pad height) per skylight, filled by build()
-EW, EH = 2.8, 2.6                                   # entrance clear width and height (a low, wide cave-like arch)
+EW, EH = 3.5, 2.6                                   # entrance clear width and height (a low, wide cave-like arch)
 
 
 def pockets(shell):
-    """Rounded rock-like pockets: softly dished scoops pressed into the outer skin along its normal (a smooth bump with a
-    rounded lip, never reaching the inner skin), oval or kidney-shaped, kept out of the bay creases and off the plateau."""
-    rnd = random.Random(7); out = []; tries = 0
+    """Rounded rock-like pockets, as the sources show them: numerous round to mildly oval hollows 0.9-1.6 m across and
+    0.33-0.5 m deep, cut by spherical caps aligned with the skin normal (so every rim is a clean, crisp circle and the
+    lower lip catches the light), lined one band darker than the skin round them; spread over every wall band with a
+    few on the roll-over and roof shoulders, kept out of the bay creases (no grazing slits), clear of the skylight pads
+    and the entrances, never reaching the inner skin. Returns (sphere centre, radius, lining role, mouth point,
+    mouth radius, normal, oval stretch)."""
+    rnd = random.Random(17); out = []; tries = 0
     P, N = shell.P, shell.N
-    while len(out) < 36 and tries < 12000:
+    while len(out) < 72 and tries < 40000:
         tries += 1
-        th = rnd.uniform(0, 2 * math.pi); z = rnd.uniform(1.1, 4.8) if len(out) < 30 else rnd.uniform(5.0, 5.5)
-        if any(abs((th - e + math.pi) % (2 * math.pi) - math.pi) < .34 for e in ENTRY_TH):
-            continue                                                 # the bay creases (and the entrances in them)
-        k, i = shell.grid_index(th, z); c = P[k, i].copy(); n = N[k, i].copy()
-        Ra = rnd.uniform(.6, 1.05); Rb = Ra * rnd.uniform(.6, .9); D = rnd.uniform(.34, .48)
-        if any(np.linalg.norm(c - q[0]) < max(Ra, q[2]) + q[2] * .6 + Ra * .6 + .3 for q in out):
+        th = rnd.uniform(0, 2 * math.pi)
+        z = rnd.uniform(.9, 5.2) if len(out) < 62 else rnd.uniform(5.4, 6.3)
+        if any(abs((th - e + math.pi) % (2 * math.pi) - math.pi) < .36 for e in ENTRY_TH):
+            continue                                                 # the bay creases and the entrances in them
+        k, i = shell.grid_index(th, z); p = P[k, i].copy(); n = N[k, i].copy()
+        a = rnd.uniform(.45, .8) if z < 5.4 else rnd.uniform(.42, .6)        # mouth radius
+        D = min(T - .12, rnd.uniform(.36, .5) if z < 5.4 else rnd.uniform(.3, .4))
+        if any(np.linalg.norm(p - q[3]) < a + q[4] + .28 for q in out):
             continue
-        if any(math.hypot(c[0] - x, c[1] - y) < R + Ra + 1.9 for (x, y), R in DOMES):
+        if any(math.hypot(p[0] - x, p[1] - y) < R + a + 1.9 for (x, y), R in DOMES):
             continue
-        out.append((c, n, Ra, Rb, rnd.uniform(0, math.pi), D, rnd.random() < .35))
-    for c, n, Ra, Rb, phi, D, kidney in out:
-        th_c = math.atan2(c[1], c[0]); th_h = np.array([-math.sin(th_c), math.cos(th_c), 0.0])
-        b = np.cross(n, th_h); b /= np.linalg.norm(b) or 1
-        u_ = th_h * math.cos(phi) + b * math.sin(phi); v_ = -th_h * math.sin(phi) + b * math.cos(phi)
-        rel = P - c
-        x_ = rel @ u_; y_ = rel @ v_; h_ = rel @ n
-        q = (x_ / Ra) ** 2 + (y_ / Rb) ** 2
-        w = smoothstep(0, .75, 1 - q)                                # a dished hollow with a broad rounded lip
-        if kidney:                                                   # a second lobe offset along the long axis
-            q2 = ((x_ - Ra * .75) / (Ra * .7)) ** 2 + (y_ / (Rb * .8)) ** 2
-            w = np.maximum(w, .85 * smoothstep(0, .75, 1 - q2))
-        w[np.abs(h_) > .8] = 0                                       # only the skin round the pocket, never across a bay
-        w[-1] = 0; w[:3] = 0
-        P -= N * (D * w)[..., None]
-    return [(q[0], max(q[2], q[3]) * (1.8 if q[6] else 1.0)) for q in out]
+        Rp = (a * a + D * D) / (2 * D)
+        c = p + n * (Rp - D)
+        b = band(shell.zprof[k])
+        out.append((c, Rp, 'reef0' if b == 0 else ROLES[b - 1], p, a, n, rnd.uniform(1.0, 1.25)))
+    return out
 
 
 def shell_mesh(shell, Pi):
@@ -2184,10 +2179,24 @@ def pads(x, y, z):
     return z
 
 
-def cut_openings(obj):
-    """One exact boolean: the twelve skylight holes and the four arched entrances (reveals deep teal, hidden by the
-    collars and the tunnel linings)."""
+def cut_openings(obj, pocket_list):
+    """One exact boolean: the pockets (each lined in its own darker band material, its rim a crisp edge), the twelve
+    skylight holes and the four arched entrances (reveals deep teal, hidden by the collars and the tunnel linings)."""
     cutters = []
+    from mathutils import Vector
+    for j, (c, Rp, role, p, a, n, stretch) in enumerate(pocket_list):
+        C.bpy.ops.mesh.primitive_uv_sphere_add(segments=28, ring_count=14, radius=Rp, location=(0, 0, 0))
+        sp = C.bpy.context.object; sp.name = f'Pocket cutter {j}'
+        sp.scale = (stretch, 1.0, 1.0)                               # mildly oval along a random tangent
+        sp.rotation_euler = Vector(tuple(float(v) for v in n)).to_track_quat('Z', 'X').to_euler()
+        sp.rotation_euler.rotate_axis('Z', (j * 2.39996) % math.pi)
+        sp.location = tuple(float(v) for v in c)
+        C.bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+        sp.data.materials.append(C.MATS[role])
+        for f_ in sp.data.polygons:
+            f_.use_smooth = True
+        sp['pocket'] = True
+        cutters.append(sp)
     for (x, y), R in DOMES:
         c = C.rod('Skylight cutter', (x, y, 4.6), (x, y, 9.5), R, 'reef1', 'construction cutter', 48)
         cutters.append(c)
@@ -2196,12 +2205,13 @@ def cut_openings(obj):
         O = e * rho * 1.03
         cutters.append(prism_local('Entrance cutter', O, e, t, arch_poly(EW, EH, z0=-.12), -.55, 1.75, 'reef1', 'construction cutter'))
     for c in cutters:
-        for p in c.data.polygons:
-            p.use_smooth = False
+        if not c.get('pocket'):
+            for p in c.data.polygons:
+                p.use_smooth = False
     C.bpy.ops.object.select_all(action='DESELECT')
     for c in cutters:
         c.select_set(True)
-    C.bpy.context.view_layer.objects.active = cutters[0]
+    C.bpy.context.view_layer.objects.active = next(c for c in cutters if not c.get('pocket'))   # a registered cutter
     C.bpy.ops.object.join()
     cutter = C.bpy.context.object
     C.bpy.context.view_layer.objects.active = obj
@@ -2293,11 +2303,11 @@ def entrances(obj):
             depth.append(hit[3] - 1.5 if hit[0] is not None else None)
         known = [d for d in depth if d is not None]
         depth = [d if d is not None else min(known) for d in depth]
-        dback = max(depth) + T + 1.35; dglass = dback - .12
+        dback = max(depth) + T + .18; dglass = dback - .12       # the tunnel ends just past the inner skin
         n = len(outer); V = []
         for line in (outer, inner):
             for (u, z), d in zip(line, depth):
-                p = O - e * (d + .03) + t * u; V.append((float(p[0]), float(p[1]), float(z)))
+                p = O - e * (d + .22) + t * u; V.append((float(p[0]), float(p[1]), float(z)))   # lining set back: the mouth is the skin's own edge
         for line in (outer, inner):
             for (u, z) in line:
                 p = O - e * dback + t * u; V.append((float(p[0]), float(p[1]), float(z)))
@@ -2320,17 +2330,18 @@ def entrances(obj):
         for s in (-1, 1):
             mg.box('frame', s * .85, dglass - .02, .10 + .95, .05, .04, 1.9)            # door jambs
             mg.box('hardware', s * .1, dglass - .045, 1.15, .025, .03, .6)              # pull handles
-        d0 = min(depth) + .05
-        mg.box('apron', 0.0, (d0 + dback) / 2, .0525, 2 * (EW / 2 - .18) + .1, dback - d0, .105)   # tunnel floor and threshold
+        d0 = min(depth) + .30
+        mg.box('apron', 0.0, (d0 + dback) / 2, .035, 2 * (EW / 2 - .18) + .1, dback - d0, .07)      # tunnel floor, 1 cm above the apron
         mg.flush(f'entrance {j}')
 
 
 def holds(shell, Pi, dent_list):
-    """Multicoloured climbing holds: small four-sided lumps seated 4 cm into the skin, outside and inside."""
+    """Multicoloured climbing holds: small rounded six-sided nubs seated 4 cm into the skin, scattered uniformly by
+    area over the walls (outside) and the lower inner skin (inside), clear of the pocket hollows and entrances."""
     rnd = random.Random(11); roles = ('hold_r', 'hold_y', 'hold_b', 'hold_p', 'hold_o', 'hold_g')
     G_ = {r: ([], []) for r in roles}
 
-    holes = [(c, r * .9) for c, r in dent_list]                      # holds stay out of the pocket hollows
+    holes = [(q[3], q[4] + .12) for q in dent_list]                  # holds stay out of the pocket hollows
 
     def add(p, n, sz, role):
         n = n / (np.linalg.norm(n) or 1); a = np.cross(n, [0, 0, 1.0])
@@ -2340,16 +2351,21 @@ def holds(shell, Pi, dent_list):
         ang = rnd.uniform(0, math.pi); ca, sa = math.cos(ang), math.sin(ang)
         a, b = a * ca + b * sa, b * ca - a * sa
         V, F = G_[role]; o = len(V); h = rnd.uniform(.04, .07); sx = sz * rnd.uniform(.7, 1.2)
-        for d, f in ((-.04, 1.0), (h, .5)):
-            for du, dv in ((1, 0), (0, 1), (-1, 0), (0, -1)):
-                q = p + n * d + (a * du * sx + b * dv * sz) * f
+        for d, f in ((-.04, 1.0), (h, .55)):
+            for m in range(6):
+                ang6 = m * math.pi / 3
+                q = p + n * d + (a * math.cos(ang6) * sx + b * math.sin(ang6) * sz) * f
                 V.append(tuple(float(c) for c in q))
-        F += [(o + 3, o + 2, o + 1, o), (o + 4, o + 5, o + 6, o + 7)] + [(o + i, o + (i + 1) % 4, o + 4 + (i + 1) % 4, o + 4 + i) for i in range(4)]
+        F += [tuple(o + m for m in range(5, -1, -1)), tuple(o + 6 + m for m in range(6))]
+        F += [(o + m, o + (m + 1) % 6, o + 6 + (m + 1) % 6, o + 6 + m) for m in range(6)]
 
     P, N = shell.P, shell.N
     K = P.shape[0]; n_out = 0
-    while n_out < 720:
-        k = rnd.randrange(1, K - 2); i = rnd.randrange(NT)
+    step = np.linalg.norm(P[2:-1] - P[:-3], axis=-1).mean(1) / 2           # ring spacing (rings 1 .. K-3)
+    rad = np.hypot(P[1:-2, :, 0], P[1:-2, :, 1]).mean(1)
+    ks = list(range(1, K - 2)); wk = list(step * rad)                       # area weight of each ring band
+    while n_out < 600:
+        k = rnd.choices(ks, wk)[0]; i = rnd.randrange(NT)
         z = P[k, i, 2]
         if not (.3 < z < 5.6):
             continue
@@ -2360,8 +2376,8 @@ def holds(shell, Pi, dent_list):
             continue
         add(P[k, i], N[k, i], rnd.uniform(.05, .11), roles[rnd.randrange(6)]); n_out += 1
     n_in = 0
-    while n_in < 240:
-        k = rnd.randrange(2, K - 2); i = rnd.randrange(NT)
+    while n_in < 200:
+        k = rnd.choices(ks, wk)[0]; i = rnd.randrange(NT)
         z = Pi[k, i, 2]
         if not (.4 < z < 4.4):
             continue
@@ -2488,11 +2504,12 @@ def shell_paths():
         poly = _PkPolygon(pts).buffer(0).simplify(.03)
         polys.append(poly)
         C.prism(f'Shell path {g:+.0f}', [tuple(c) for c in list(poly.exterior.coords)[:-1]], 'z', 0.0, .045, 'shellpath', 'paths')
-        for x, y in pk_scatter(poly.buffer(-.05), .2, seed=int(g * 10) % 997 + 3)[:720]:
+        for x, y in pk_scatter(poly.buffer(-.05), .2, seed=int(g * 10) % 997 + 3)[:560]:
             role = 'shell2' if rnd.random() < .55 else 'shell3'; V, F = specks[role]; o = len(V)
-            r = rnd.uniform(.03, .06); a0 = rnd.uniform(0, math.tau)        # a flat flake 2 mm above the path
-            V += [(x + r * math.cos(a0 + k * 2.1), y + r * math.sin(a0 + k * 2.1), .047) for k in range(3)]
-            F.append((o, o + 1, o + 2))
+            a0 = rnd.uniform(0, math.tau)                                   # a small irregular flat flake 2 mm above the path
+            V += [(x + rnd.uniform(.012, .028) * math.cos(a0 + k * 1.571 + rnd.uniform(-.4, .4)),
+                   y + rnd.uniform(.012, .028) * math.sin(a0 + k * 1.571 + rnd.uniform(-.4, .4)), .047) for k in range(4)]
+            F.append((o, o + 1, o + 2, o + 3))
     for role, (V, F) in specks.items():
         if F:
             C.mesh(f'Crushed shell {role}', V, F, role, 'paths')
@@ -2502,9 +2519,9 @@ def shell_paths():
 def site(paths):
     """Lawn disc under everything, the concrete ring path, and the mulch meadow beds inside and beyond it."""
     th = np.linspace(0, 2 * math.pi, 160, endpoint=False)
-    C.prism('Park lawn', [(70.0 * math.cos(a), 70.0 * math.sin(a)) for a in th], 'z', 0.0, .03, 'lawn', 'site')   # to the frame edges
+    C.prism('Park lawn', [(150.0 * math.cos(a), 150.0 * math.sin(a)) for a in th], 'z', 0.0, .03, 'lawn', 'site')   # past every frame edge
     band_mesh('Ring path', [(RING_R1 * math.cos(a), RING_R1 * math.sin(a)) for a in th],
-              [(RING_R0 * math.cos(a), RING_R0 * math.sin(a)) for a in th], 0.0, .06, 'concrete', 'paths')
+              [(RING_R0 * math.cos(a), RING_R0 * math.sin(a)) for a in th], 0.0, .095, 'concrete', 'paths')   # 1 cm above the beds that lap under it
     th2 = np.linspace(0, 2 * math.pi, 240, endpoint=False)
     apron = _PkPolygon([(float((r - .12) * math.cos(a)), float((r - .12) * math.sin(a))) for r, a in zip(polar(R_APRON, th2), th2)])
     inner = _pksh.Point(0, 0).buffer(RING_R0 + .05, quad_segs=48).difference(apron)
@@ -2518,8 +2535,9 @@ def site(paths):
         sector = _PkPolygon([(0, 0)] + [(40 * math.cos(math.radians(a)), 40 * math.sin(math.radians(a))) for a in np.linspace(a0, a1, 24)])
         g = outer_ring.intersection(sector)
         if not g.is_empty:
-            beds.append(g.simplify(.02))
+            beds.append(g.buffer(-1.2).buffer(1.2, quad_segs=8).simplify(.02))     # rounded bed ends
     for j, g in enumerate(beds):
+        g = g.simplify(.06)
         pts = list(g.exterior.coords)[:-1]
         C.prism(f'Meadow bed {j}', pts, 'z', 0.0, BED_Z, 'mulch', 'beds')
     return beds
@@ -2559,7 +2577,7 @@ def planting(beds):
             order = sorted(range(len(mix)), key=lambda i: -(fields[i](x, y) + 1.4 * math.log(mix[i][1])))
             for i in order[:2]:
                 p = mix[i][0]; done = False
-                for s in ((1.4, 1.2, 1.0, .85) if p is P['palmetto'] else (1.9, 1.6, 1.3, 1.05) if p is P['shrub'] else (1.6, 1.35, 1.1, .9)):   # palmetto fronds droop to the soil
+                for s in ((1.2, 1.0, .85) if p is P['palmetto'] else (1.9, 1.6, 1.3, 1.05) if p is P['shrub'] else (1.6, 1.35, 1.1, .9)):   # palmetto fronds droop to the soil
                     sz = s * rnd.uniform(.85, 1.08)
                     if kit.fits(p, x, y, s, reg, sz=sz):
                         kit.place(p, x, y, BED_Z, rnd.uniform(0, math.tau), s, sz=sz); done = True
@@ -2596,9 +2614,8 @@ def build():
     shell = Shell()
     Pi = shell.inner()                    # the inner skin follows the outer skin T inside it (pockets never reach it)
     dent_list = pockets(shell)
-    shell.normals()
     obj = shell_mesh(shell, Pi)
-    cut_openings(obj)
+    cut_openings(obj, dent_list)
     dome_glazing()
     skylights()
     tint_glazing()
@@ -2620,4 +2637,4 @@ def build():
     C.CONTACTS.append(dict(name='The Reef bouldering shell on its apron in the meadow park', box=[-15.6, 14.4, -14.4, 12.6]))
 
 
-LIGHT_RIG = dict(key=(-40, -50, 48), fill=(50, -25, 30), rear=(10, 55, 42), target=(0, 0, 3.0), gain=3.0)
+LIGHT_RIG = dict(key=(-40, -50, 48), fill=(50, -25, 30), rear=(10, 55, 42), target=(0, 0, 3.0), gain=3.3)
