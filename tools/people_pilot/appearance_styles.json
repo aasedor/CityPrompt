@@ -20,14 +20,14 @@
   {
     "id": "people-community-ava",
     "name": "Ava",
-    "style": "Activewear",
-    "wardrobe": "Teal short-sleeve technical athletic T-shirt, dark charcoal fitted running leggings, white running trainers. No jacket, no white centre stripe."
+    "style": "Relaxed trackwear",
+    "wardrobe": "A cropped zip-front teal track jacket with subtle cream piping, worn mostly zipped over a neutral fitted tank, loose charcoal parachute trousers with adjustable ankle hems, silver and cream mesh trainers, and a small crescent shoulder bag. Fit adult woman. Relaxed weight shift, one hand at the bag strap, other arm loose."
   },
   {
     "id": "people-community-noah",
     "name": "Noah",
-    "style": "Urban casual",
-    "wardrobe": "Plain charcoal fitted short-sleeve T-shirt, olive cargo trousers and black sneakers. No shirt opening or jacket."
+    "style": "Relaxed streetwear",
+    "wardrobe": "Heavyweight boxy washed-charcoal T-shirt, wide light denim, off-white/forest-green retro sneakers, dark crossbody sling and a subtle silver watch."
   },
   {
     "id": "people-community-zara",
@@ -38,8 +38,8 @@
   {
     "id": "people-community-leo",
     "name": "Leo",
-    "style": "Weekend sport",
-    "wardrobe": "Sky-blue quarter-zip athletic sweatshirt with subtle texture, navy tapered joggers and cream trainers. No open shirt or white centre panel."
+    "style": "Striped rugby",
+    "wardrobe": "A roomy burgundy and cream broad-striped long-sleeve rugby shirt with a white rugby collar, chocolate brown barrel-leg chinos, colour-block blue and cream retro trainers, and a navy baseball cap. No logos. Lean athletic adult. Stand naturally with arms loosely folded, face toward camera."
   },
   {
     "id": "people-community-imani",
@@ -57,7 +57,7 @@
     "id": "people-community-nina",
     "name": "Nina",
     "style": "Minimal knitwear",
-    "wardrobe": "Fitted plum long-sleeve turtleneck sweater, charcoal ankle trousers and white sneakers. No jacket or white centre panel."
+    "wardrobe": "A cropped softly textured plum crew-neck knit sweater, high-waisted flowing charcoal wide-leg tailored trousers, an understated black leather belt, polished dark burgundy chunky loafers, and a slim tan shoulder bag. Natural relaxed upright posture with one hand lightly resting on the bag. Not office skinny trousers."
   },
   {
     "id": "people-community-owen",
@@ -68,8 +68,8 @@
   {
     "id": "people-community-amara",
     "name": "Amara",
-    "style": "Trail ready",
-    "wardrobe": "Navy fitted short-sleeve sports T-shirt, light khaki hiking trousers and gray trail running shoes. No jacket or white centre panel."
+    "style": "Campus denim",
+    "wardrobe": "A cheerful young adult university student, age about 20–24. A cropped medium-blue denim jacket over a pale lemon crew-neck T-shirt, relaxed black straight-leg jeans, cream low-profile sneakers, and an olive backpack slung over one shoulder. Hair in the reference's distinctive dark buns, preserve complexion and recognisable features. Friendly warm smile and open relaxed posture, looking slightly toward camera. No generic open overshirt or central white stripe."
   },
   {
     "id": "people-community-mateo",
@@ -86,8 +86,8 @@
   {
     "id": "people-community-kai",
     "name": "Kai",
-    "style": "Summer athletics",
-    "wardrobe": "Teal sleeveless technical training tank top, black running shorts ending above the knee, white sport socks and running trainers. No jacket or trousers."
+    "style": "Campus sport",
+    "wardrobe": "A cheerful young adult university student, age about 21–24. A teal heavyweight relaxed T-shirt, stone-coloured loose shorts ending just above the knees, white crew socks and retro blue/cream sneakers, a plain navy backpack worn over both shoulders. Short dark buzz cut and reference complexion. Healthy fit ordinary build, not a bodybuilder pose. Easy natural grin and lively eyes, one hand casually holding a backpack strap."
   },
   {
     "id": "people-community-ines",
@@ -98,26 +98,26 @@
   {
     "id": "people-community-jules",
     "name": "Jules",
-    "style": "Bomber streetwear",
-    "wardrobe": "Olive green ribbed-cuff bomber jacket zipped closed, off-white jeans and clean white sneakers. Bald head with a short dark beard. No open overshirt."
+    "style": "Vintage workwear",
+    "wardrobe": "A short boxy faded tobacco-brown canvas chore jacket over a muted grey vintage washed T-shirt without readable graphics, loose indigo carpenter jeans with workwear pockets, dark brown suede casual shoes and a muted olive knitted beanie. Keep his bald/shaved head under beanie and short dark beard. Relaxed open posture with both hands naturally resting at the hips, no identical hands-in-pockets pose."
   },
   {
     "id": "people-community-sana",
     "name": "Sana",
-    "style": "Creative casual",
-    "wardrobe": "Berry-coloured crew-neck sweatshirt, black pleated midi skirt and white high-top sneakers. No jacket or trousers."
+    "style": "Campus creative",
+    "wardrobe": "A cheerful young adult university student, age about 21–24. A roomy dusty berry sweatshirt with sleeves naturally pushed up, relaxed dark-blue wide-leg jeans, white high-top canvas sneakers, a cream canvas tote on one shoulder and two plain notebooks held naturally. Short dark hairstyle and complexion recognisably based on the reference. Warm approachable smile with eyes engaged; no solemn fashion-model expression."
   },
   {
     "id": "people-community-felix",
     "name": "Felix",
-    "style": "Summer linen",
-    "wardrobe": "Pale sand short-sleeve linen shirt with buttons closed, beige tailored shorts to the knee and tan espadrilles. No jacket or long trousers."
+    "style": "Campus hoodie",
+    "wardrobe": "A cheerful young adult university student, age about 21–25. A roomy forest-green pullover hoodie without logos, relaxed washed-blue carpenter jeans, light grey/cream skate-style sneakers, a dark canvas backpack on one shoulder and a closed plain laptop held securely under the other arm. Light brown/blond side-parted hair and fair reference complexion. Natural warm smile with relaxed shoulders, no rigid fashion-model stance."
   },
   {
     "id": "people-community-rhea",
     "name": "Rhea",
-    "style": "Linen & denim",
-    "wardrobe": "Sage-green long-sleeve linen blouse tucked into dark-blue flared jeans, brown ankle boots. No coat or overshirt."
+    "style": "Summer denim",
+    "wardrobe": "An ivory ribbed sleeveless tank tucked into a high-waisted dark indigo A-line denim midi skirt with a front walking slit below the knees, flat tan leather sandals, an olive canvas tote held casually in one hand and subtle small gold earrings. Fit adult woman, upright natural stance, gaze toward camera. No blouse, trousers, overshirt or jacket."
   },
   {
     "id": "people-community-andre",

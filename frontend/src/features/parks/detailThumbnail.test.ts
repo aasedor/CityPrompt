@@ -8,7 +8,8 @@ it('uses realistic People appearance previews without changing source model data
   const load = vi.spyOn(GLTFLoader.prototype, 'loadAsync');
   for (const actor of people) {
     const asset = detailAsset(actor.id);
-    expect(await detailThumbnail(actor.id)).toMatch(/people-appearance-v1\/.+\.webp$/);
+    expect(await detailThumbnail(actor.id)).toBe(asset.appearancePreview?.url);
+    expect(asset.appearancePreview?.url).toMatch(/people-appearance-v\d+\/.+\.webp$/);
     expect(asset.url).toBe(actor.url);
     expect(asset.people).toEqual(actor.people);
     expect(asset.thumbnailUrl).toBe(actor.thumbnailUrl);
