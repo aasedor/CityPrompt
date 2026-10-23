@@ -47,7 +47,7 @@ SIDE = 4.5                                            # side sidewalks
 EPS = .002
 FLOORS = [BASE + FH * i for i in range(NF)]
 PALETTE = dict(glass=(.13, .10, .075), spandrel=(.10, .085, .07), bronze=(.50, .34, .17), frame=(.20, .16, .12),
-    rock=(.67, .60, .49), rock2=(.64, .57, .46), hold=(.42, .38, .33), concrete=(.80, .78, .74), coping=(.88, .87, .84),
+    rock=(.62, .53, .41), rock2=(.47, .40, .31), hold=(.42, .38, .33), concrete=(.80, .78, .74), coping=(.88, .87, .84),
     canopy=(.90, .89, .86), stone=(.70, .68, .64), copper=(.66, .38, .20), timber=(.62, .45, .28), hardware=(.18, .18, .19),
     steel=(.55, .55, .55), interior=(.80, .76, .68), floor=(.48, .43, .36), core=(.66, .64, .60), roof=(.86, .86, .84),
     membrane=(.80, .80, .78), metal=(.70, .71, .72), duct=(.76, .77, .78), granite=(.67, .59, .47), granite2=(.60, .53, .42), granite3=(.73, .65, .53),
@@ -2249,7 +2249,7 @@ def plinth(z):
     return 1.3 * max(0., 1 - z / PLINTH) ** 1.4
 
 
-def spine_perimeter(step=.4):
+def spine_perimeter(step=.5):
     """Exposed perimeter of the spine, from the notch back on the west side round the front to the notch back on
     the east side: (x, y, face normal, mitre normal, s, relief weight, swell weight). The relief weight is 0 on the
     arrises and at the notch walls; the swell weight is 0 only at the notch walls, so the foot bulges round the
@@ -2279,7 +2279,7 @@ def spine():
     per = spine_perimeter()
     zs = [0.0]
     while zs[-1] < SPTOP - .3:
-        zs.append(min(SPTOP, zs[-1] + .4))
+        zs.append(min(SPTOP, zs[-1] + .55))
     if zs[-1] < SPTOP:
         zs.append(SPTOP)
     rings = []
@@ -2331,7 +2331,7 @@ def carved(rings, per):
                     bx, by = per[j][2] + per[j + 1][2], per[j][3] + per[j + 1][3]
                     bl = math.hypot(bx, by) or 1.
                     face = abs(nn[0] * bx / bl + nn[1] * by / bl)          # winding-agnostic: |cos| to the face normal
-                    (dark if face < .75 else light).append(tri)
+                    (dark if face < .8 else light).append(tri)
                 else:
                     light.append(tri)
     fs_bottom = tuple(range(m - 1, -1, -1)); fs_top = tuple((len(rings) - 1) * m + j for j in range(m))
@@ -2370,6 +2370,34 @@ def cleft_boulder(name, cx, cy, z0, rx, ry, rz, seed, role='granite', sink=.15, 
     hull = _Hull(out)
     used = sorted(set(i for f in hull.simplices for i in f)); idx = {v: j for j, v in enumerate(used)}
     return C.mesh(name, [out[i] for i in used], [tuple(idx[i] for i in f) for f in hull.simplices], role, 'boulders')
+
+
+STONES = []
+
+
+def stone_protos(n=9):
+    """v004: one set of unit cleft-granite prototypes (three per stone tone), shared as mesh datablocks; every roof and
+    garden boulder is a linked instance with its own scale and spin (glTF: one mesh, many nodes)."""
+    roles = ('granite', 'granite2', 'granite3')
+    for k in range(n):
+        o = cleft_boulder(f'Stone prototype {k}', 0., 0., 0., 1., 1., 1., 300 + 7 * k, role=roles[k % 3], sink=.1)
+        me = o.data
+        C.bpy.data.objects.remove(o, do_unlink=True)
+        STONES.append(me)
+
+
+def stone(name, x, y, z, rx, ry, rz, k, rot=0.):
+    """A linked instance of stone prototype k at (x, y) seated on z (the prototype's flat base is sunk 0.1 x rz)."""
+    me = STONES[k % len(STONES)]
+    o = C.bpy.data.objects.new(name, me)
+    C.bpy.context.collection.objects.link(o)
+    o.location = (x, y, z); o.rotation_euler = (0., 0., rot); o.scale = (rx, ry, rz)
+    role = me.materials[0]['cityprompt_semantic_role']
+    for key, v in (('rlasm_building_object', True), ('rlasm_method', C.METHOD), ('cityprompt_semantic_role', role),
+                   ('cityprompt_lego_module', 'boulders'), ('representation_kind', 'architectural_clay'),
+                   ('native_geometry_only', True), ('rlasm_instance', True)):
+        o[key] = v
+    return o
 
 
 def round_boulder(name, cx, cy, z0, rx, ry, rz, seed, role='granite', sink=.1, lat=9, lon=16):
@@ -2529,23 +2557,25 @@ def terrace():
     }
     for k, poly in beds.items():
         pk_bed(f'Terrace bed {k}', poly, soil, kerb=.16, kerb_top=soil + .06, kerb_bottom=zp - .03, kerb_role='concrete', kit=kit)
-    # Measured on the source front and oblique: about 11 granite boulders per wing, spread along the street edge and
-    # down the side strip, 1.5-3.6 m tall (2-3 m showing over the coping), about a third upright slabs.
-    rocks = []
+    # Measured on the source front and oblique: a tight cluster of six big stones on each wing's street corner
+    # (2.4-3.8 m tall, 0.3-0.6 m apart, two upright slabs), one more along the street edge and two down the side
+    # strip; the tallest rise ~2.5 m over the coping.
+    def seat(x, y):
+        return soil if any(_PkPolygon(p).contains(_pksh.points(x, y)) for p in beds.values()) else zp
+    cluster = [(2.3, 2.1, 2.0, 1.6, 3.8), (6.1, 1.9, 1.5, 1.3, 3.0), (2.2, 5.4, 1.7, 1.4, 3.2), (5.3, 4.9, 1.2, 1.0, 2.5),
+               (9.4, 2.0, 1.4, 1.2, 3.4), (2.4, 8.4, .9, .8, 3.9), (14.5, 2.0, 1.5, 1.25, 3.0), (2.3, 14.0, 1.6, 1.3, 2.8),
+               (2.2, 19.5, 1.3, 1.1, 2.4)]
+    n = 0
     for side in (-1, 1):
         xo = X0 if side < 0 else X1
-        front = [(2.3, 2.0, 2.0, 1.4, 3.2), (6.1, 2.2, 1.6, 1.3, 3.6), (9.8, 1.9, 2.1, 1.35, 2.6), (14.4, 2.1, 1.7, 1.3, 3.3),
-                 (17.7, 1.9, 1.3, 1.1, 2.2)]
-        sidel = [(2.3, 7.6, 1.9, 1.5, 3.0), (2.3, 12.8, 1.5, 1.2, 3.4), (2.2, 19.2, 1.8, 1.4, 2.7)]
-        for dx, dy, rx, ry, rz in front + sidel:
-            rocks.append((xo - side * dx, Y0 + dy, rx, ry, rz))
-    for k, (x, y, rx, ry, rz) in enumerate(rocks):
-        cleft_boulder(f'Terrace boulder {k}', x, y, soil, rx, ry, rz * (.8 if k % 3 else .95), 70 + k, role=('granite', 'granite2', 'granite3')[k % 3],
-                      sink=.25, rot=(k * 1.7) % math.pi)
-        kit.add_obstacle(_PkPolygon(pk_ellipse(x, y, max(rx, ry) * 1.05, max(rx, ry) * 1.05)), rz)
+        for dx, dy, rx, ry, rz in cluster:
+            x, y = xo - side * dx, Y0 + dy
+            stone(f'Terrace boulder {n}', x, y, seat(x, y), rx, ry, rz, n, rot=(n * 1.7) % math.pi)
+            kit.add_obstacle(_PkPolygon(pk_ellipse(x, y, max(rx, ry) * 1.05, max(rx, ry) * 1.05)), rz)
+            n += 1
     fill_beds(kit, P, beds, soil, 55, spacing=.72)
     for k, poly in beds.items():
-        groundcover(f'Terrace bed {k} groundcover', poly, soil, kerb=.16, height=.05, bump=.02, wave=.6, grid=.6, role='bedgreen',
+        groundcover(f'Terrace bed {k} groundcover', poly, soil, kerb=.16, height=.05, bump=.02, wave=.6, grid=.9, role='bedgreen',
                     seed=90 + ord(k[0]), dots=(('pk_yellow', 'pk_yellow2'), 2.5, .03))
     return kit
 
@@ -2681,20 +2711,20 @@ def plaza_garden():
 
     def polar(a, r):
         return fx + r * 1.15 * math.cos(math.radians(a)), fy + r * .85 * math.sin(math.radians(a))
-    # Measured on the source front base crop: one ~2.6 m stone against the foot, three upright stones by the foot,
-    # about a dozen 0.6-1.4 m stones through the beds.
-    rocks = [('A', 206, 5.9, 1.4, 1.2, 2.6), ('A', 184, 5.4, .55, .5, 1.6), ('A', 228, 5.4, .6, .5, 1.5), ('A', 194, 7.6, .8, .7, .9),
-             ('A', 236, 7.6, .9, .75, .85), ('A', 252, 6.1, .6, .5, .7), ('A', 214, 8.4, .5, .45, .6), ('A', 176, 7.6, .55, .5, .6),
-             ('B', 290, 5.6, .6, .5, 1.4), ('B', 300, 7.1, .9, .8, 1.0), ('B', 322, 6.6, .8, .7, .8), ('B', 340, 5.8, .6, .5, .7),
-             ('B', 312, 8.0, .5, .45, .55), ('B', 346, 7.6, .5, .45, .5),
-             ('G3', None, None, 1.1, .9, 1.05)]
+    # Measured on the source front base crop: one ~3 m stone against the foot, upright stones by the foot and
+    # about twenty 0.6-1.5 m stones packed through both beds.
+    rocks = [('A', 206, 5.9, 1.75, 1.5, 3.0), ('A', 184, 5.4, .7, .6, 1.9), ('A', 228, 5.5, .75, .6, 1.8), ('A', 194, 7.4, 1.0, .85, 1.1),
+             ('A', 238, 7.4, 1.1, .9, 1.0), ('A', 254, 6.0, .75, .6, .85), ('A', 214, 8.4, .6, .55, .7), ('A', 175, 7.5, .7, .6, .75),
+             ('A', 222, 7.0, .55, .5, .6), ('A', 200, 8.6, .5, .45, .55), ('A', 246, 8.5, .55, .5, .6), ('A', 186, 8.7, .45, .4, .5),
+             ('A', 168, 6.4, .5, .45, .6), ('B', 290, 5.6, .75, .6, 1.7), ('B', 300, 7.1, 1.1, 1.0, 1.2), ('B', 322, 6.6, 1.0, .85, 1.0),
+             ('B', 340, 5.8, .75, .6, .85), ('B', 312, 8.0, .6, .55, .65), ('B', 346, 7.6, .6, .55, .6), ('B', 284, 8.0, .5, .45, .55),
+             ('B', 330, 8.2, .5, .45, .5), ('B', 306, 5.7, .5, .45, .6), ('G3', None, None, 1.35, 1.1, 1.25)]
     for k, (bed, a, r, rx, ry, rz) in enumerate(rocks):
         x, y = polar(a, r) if a is not None else (18.2, Y0 - 7.0)
-        cleft_boulder(f'Garden boulder {k}', x, y, beds[bed][1], rx * 1.25, ry * 1.25, rz * 1.2, 120 + k, role=('granite', 'granite2', 'granite3')[k % 3],
-                      sink=.2, rot=k * 1.3)
-        kit.add_obstacle(_PkPolygon(pk_ellipse(x, y, rx * 1.05, ry * 1.05)), rz)
+        stone(f'Garden boulder {k}', x, y, beds[bed][1], rx, ry, rz, k + 2, rot=k * 1.3)
+        kit.add_obstacle(_PkPolygon(pk_ellipse(x, y, max(rx, ry) * 1.05, max(rx, ry) * 1.05)), rz)
     for k, (poly, soil, kerb, top) in beds.items():
-        fill_beds(kit, PROTOS, {k: poly}, soil, 77, spacing=.45, shrubby=True)
+        fill_beds(kit, PROTOS, {k: poly}, soil, 77, spacing=.36, shrubby=True)
         groundcover(f'Plaza bed {k} groundcover', poly, soil, kerb=kerb, height=.07, bump=.03, wave=.6, grid=.6, role='pk_leaf_dark',
                     seed=150 + len(k) + ord(k[0]))
 
@@ -2745,6 +2775,7 @@ def build():
     global KIT, PROTOS
     KIT = PlantKit('planting', instancing=INSTANCING)
     PROTOS = protos(KIT)
+    stone_protos()
     site()
     tower()
     coping_and_liners()

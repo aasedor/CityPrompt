@@ -2060,7 +2060,7 @@ EW, EH = 3.5, 2.6                                   # entrance clear width and h
 
 def pockets(shell):
     """Rounded rock-like pockets, placed as measured in the locked views: the locked front shows about 15 pockets and the
-    locked oblique about 17 on the visible faces (about half the shell), so about 32 in all; they sit mostly on the upper
+    locked oblique about 12 on the visible faces (about half the shell), so about 28 in all; they sit mostly on the upper
     wall and the roll-over shoulder, a few on the mid wall, very few on the dark lower wall and none at the base tuck.
     Mouths 0.6-1.6 m across, round to vertically elongated ovals (aspect 1-1.6), 0.38-0.5 m deep. Each is a spherical cap
     cut along the skin normal (tilted outward on the shoulder so its inner wall faces the viewer), lined in a slightly
@@ -2068,7 +2068,7 @@ def pockets(shell):
     and the entrances. Returns (sphere centre, radius, lining role, mouth point, mouth half-length, axis, aspect, up)."""
     rnd = random.Random(29); out = []; tries = 0
     P, N = shell.P, shell.N
-    for z0, z1, cnt in ((4.3, 5.3, 13), (5.3, 6.1, 10), (2.6, 4.3, 6), (1.4, 2.6, 3)):   # upper wall, shoulder, mid, low
+    for z0, z1, cnt in ((4.3, 5.3, 12), (5.3, 6.1, 8), (2.6, 4.3, 5), (1.4, 2.6, 3)):    # upper wall, shoulder, mid, low
         got = 0
         while got < cnt and tries < 60000:
             tries += 1
