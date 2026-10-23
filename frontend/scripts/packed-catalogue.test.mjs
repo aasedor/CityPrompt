@@ -4,10 +4,44 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import ts from 'typescript';
 import { deflateSync } from 'node:zlib';
 import { packCatalogue, packedCatalogue } from './packed-catalogue.mjs';
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
+
+test('fixed public-realm packing preserves exact review gates, variants and native placement', async () => {
+  const path = resolve('src/data/publicRealmRelease20261023.json');
+  const source = readFileSync(path, 'utf8');
+  const transformed = packedCatalogue().transform('', path);
+  assert.notEqual(transformed, null);
+  const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
+  assert.deepEqual(decoded.default, JSON.parse(source));
+  assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * .55);
+});
+
+test('generated building packing preserves all entries and the exact ready-only export', async () => {
+  const path = resolve('src/features/pickPlace/publishedBuildingAssets.ts');
+  const source = readFileSync(path, 'utf8');
+  const referenceCode = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext } }).outputText;
+  const reference = await import(`data:text/javascript,${encodeURIComponent(referenceCode)}`);
+  const transformed = packedCatalogue().transform('', path);
+  assert.notEqual(transformed, null);
+  const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
+  assert.deepEqual(decoded.CATALOGUE_BUILDING_ASSETS, reference.CATALOGUE_BUILDING_ASSETS);
+  assert.deepEqual(decoded.PUBLISHED_BUILDING_ASSETS, reference.PUBLISHED_BUILDING_ASSETS);
+  assert.ok(module.length < referenceCode.length * .55);
+});
+
+test('building packing rejects changes to generated export semantics', async () => {
+  const { packPublishedBuildingCatalogue } = await import('./packed-catalogue.mjs');
+  assert.equal(typeof packPublishedBuildingCatalogue, 'function');
+  const source = readFileSync(resolve('src/features/pickPlace/publishedBuildingAssets.ts'), 'utf8');
+  assert.throws(() => packPublishedBuildingCatalogue(source.replace("asset.readiness === 'ready'", "asset.readiness === 'pilot'")), /generated building catalogue/i);
+  assert.throws(() => packPublishedBuildingCatalogue(source + '\nexport const another = true;'), /generated building catalogue/i);
+});
 
 for (const filename of ['peopleCatalogue.json', 'inclusivePeopleCatalogue.json', 'peopleAppearancePreviews.json']) {
   test(`${filename}: production People packing preserves exact models, wardrobe and image locks`, async () => {
