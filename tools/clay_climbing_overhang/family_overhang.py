@@ -2143,8 +2143,8 @@ def south_under_shell():
     fbox(b, 'precast', ax, c, o, XE + .2, X1, EB_TOP - .55, EB_PARA - .07, -.4, .3)                       # east block parapet
     fbox(b, 'coping', ax, c, o, XE - .02, X1, EB_PARA - .07, EB_PARA - .01, -.45, .34)
     fbox(b, 'precast', ax, c, o, XE - .02, XE + .2, EB_TOP - .55, EB_PARA - .07, -.4, .3)                # east block parapet
-    b.box('precast', XE + .15, (Y0 + .1 + PY0 + .1) / 2, (PARA - .3 + EB_PARA - .07) / 2, .3, PY0 - Y0, EB_PARA - .07 - PARA + .3)
-    b.box('coping', XE + .15, (Y0 - .3 + PY0 + .1) / 2, EB_PARA - .04, .42, PY0 - Y0 + .4, .06)     # east block's west end
+    b.box('precast', XE + .15, (Y0 + .2 + PY0 + .1) / 2, (PARA - .3 + EB_PARA - .07) / 2, .3, PY0 - Y0 - .1, EB_PARA - .07 - PARA + .3)
+    b.box('coping', XE + .15, (Y0 - .3 + PY0 + .1) / 2, EB_PARA - .05, .42, PY0 - Y0 + .4, .06)     # east block's west end
     b.box('membrane', (XP0 + XE) / 2, (Y0 + .35 + PY0) / 2, DECK - .03, XE - XP0, PY0 - Y0 - .3, .06)        # roof south of the penthouse
     b.flush('south front under the shell')
 
@@ -2238,9 +2238,9 @@ def penthouse():
     fbox(b, 'frame', ax, c, o, 5.2, 6.4, DECK + .1, DECK + 2.8, -.04, .03)                              # door
     fbox(b, 'hardware', ax, c, o, 6.2, 6.25, DECK + 1.0, DECK + 1.15, .03, .08)
     # Other walls: south (set back from the front), north (on the north front), east (over the east block roof).
-    b.box('precast', (XP0 + XE) / 2, PY0 + .15, (DECK - .3 + PH_TOP - .3) / 2, XE - XP0 - .02, .3, PH_TOP - DECK)
+    b.box('precast', (XP0 + XE) / 2, PY0 + .13, (DECK - .3 + PH_TOP - .3) / 2, XE - XP0 - .02, .3, PH_TOP - DECK)
     b.box('precast', (XP0 + XE) / 2, PY0 + .1, (PH_TOP - .32 + PH_PARA - .05) / 2, XE - XP0 + .02, .4, PH_PARA - .05 - PH_TOP + .32)
-    b.box('coping', (XP0 + XE) / 2, PY0 + .1, PH_PARA - .03, XE - XP0 + .1, .5, .06)
+    b.box('coping', (XP0 + XE) / 2, PY0 + .1, PH_PARA - .04, XE - XP0 + .1, .5, .06)
     b.box('precast', (XP0 + .05 + XE) / 2, Y1 - .12, (PARA + PH_PARA - .01) / 2, XE - XP0 - .05, .36, PH_PARA - .01 - PARA)
     b.box('precast', XE + .15, (PY0 + Y1) / 2, (EB_TOP + PH_PARA - .01) / 2, .3, Y1 - PY0 - .1, PH_PARA - .01 - EB_TOP)
     # Roof.
