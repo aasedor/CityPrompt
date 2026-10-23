@@ -1897,9 +1897,9 @@ def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), th
     return float(reg.area)
 # ---- The Crucible climbing wall building ----
 
-DW = 0.0                                              # the west block's south face sits DW north of the east block's (both on YF in v001)
-S2 = SET + 3.5                                        # set-back of the wall top where it meets the east block (the folded, darker facet)
-FOLD = XE - 10.0                                      # x of the fold at the coping: the main facet's top ends here (front, oblique, top)
+SETW = 1.8                                            # the wall top leans back 1.8 m at the west block (landmark fit)
+OVER = 3.0                                            # ... and overhangs 3 m south of the foot line at the fold (landmark fit)
+FOLD = XE - 7.5                                       # x of the fold at the coping (front, oblique, top)
 HEX_R = .80                                           # hexagonal panel circumradius (pointy-top; 1.6 m tall, 1.4 m wide: the front view's cell size)
 HEX_GAP = .05                                         # dark joint between panels
 ZR = ZT + .03                                         # roof membrane top
@@ -1931,40 +1931,48 @@ def lerp(a, b, t):
     return tuple(a[i] + (b[i] - a[i]) * t for i in range(len(a)))
 
 
-# Wall geometry. The main facet is one plane through the foot line (P3 to B) leaning back by SET over EAVE; it ends
-# at the fold T1 -> B. The folded facet B, T2, T1 meets the east block with a larger set-back S2 (it faces south-east and
-# upward, so it reads darker under the western light).
-P3 = (XW, YF + DW, 0.0)
-B = (XE, YF, 0.0)
-FDIR = vunit(vsub(B, P3))
-NH = (-FDIR[1], FDIR[0], 0.0)                         # horizontal normal into the building
+# Wall geometry (landmark fit of the front and oblique). The main facet is a gently twisted surface: its foot runs
+# along YF from the west block to the east block's corner, its top from 1.8 m behind the foot at the west block to an
+# overhang 3 m in front of it at the fold T1. The folded facet is the vertical triangle from the fold to the east
+# block's south-west edge: it faces south-south-east, away from the western light, so it reads darker (sources).
+P3 = (XW - .03, YF, 0.0)
+P10 = (XE, YF, 0.0)
+P9 = (XW - .03, YF + SETW, EAVE)
+T1 = (FOLD, YF - OVER, EAVE)
+P4 = (XE, YF, EAVE)
+T2 = P4
 
 
-def top_at(x):
-    """Point of the main facet's top line (z = EAVE) at a given x."""
-    o = vadd(vadd(P3, NH, SET), (0, 0, EAVE))
-    t = (x - o[0]) / FDIR[0]
-    return vadd(o, FDIR, t)
+def wall_q(a, b):
+    """Point of the main facet: a along the foot (0 west block, 1 east block), b up (0 foot, 1 coping)."""
+    return lerp(lerp(P3, P10, a), lerp(P9, T1, a), b)
 
 
-P9 = top_at(XW)
-T1 = top_at(FOLD)
-T2 = (XE, YF + S2, EAVE)
-MAIN_N = vunit(vcross(vsub(B, P3), vsub(P9, P3)))     # outward normal of the main facet (south and up)
-if MAIN_N[1] > 0:
-    MAIN_N = tuple(-v for v in MAIN_N)
-DARK_N = vunit(vcross(vsub(T2, B), vsub(T1, B)))
+def wall_n(a, b):
+    """Outward (south) unit normal of the main facet at (a, b)."""
+    da = vsub(lerp(P10, T1, b), lerp(P3, P9, b))
+    db = vsub(lerp(P9, T1, a), lerp(P3, P10, a))
+    n = vunit(vcross(da, db))
+    return n if n[1] < 0 else tuple(-v for v in n)
+
+
+DARK_N = vunit(vcross(vsub(P4, P10), vsub(T1, P10)))
 if DARK_N[1] > 0:
     DARK_N = tuple(-v for v in DARK_N)
+WALL_L = math.dist(P3, P10)
+WALL_H = math.dist(lerp(P3, P10, .5), lerp(P9, T1, .5))
 
 
 def wall_ab(a, b):
-    """Point on the climbing wall from bilinear source coordinates (a along the foot, b up the slope; front view quad
-    P3, B, T1, P9). a > 1 continues onto the folded facet toward T2."""
+    """Point on the climbing wall from bilinear source coordinates (front view quad P3, P10, T1, P9); a > 1 continues
+    onto the folded facet toward the east block's corner."""
     if a <= 1.0:
-        return lerp(lerp(P3, B, a), lerp(P9, T1, a), b)
-    top = lerp(T1, T2, min(1.0, (a - 1.0) / .14))
-    return lerp(B, top, b)
+        return wall_q(a, b)
+    return lerp(P10, lerp(T1, P4, min(1.0, (a - 1.0) / .14)), b)
+
+
+def wall_nab(a, b):
+    return wall_n(min(a, 1.0), b) if a <= 1.0 else DARK_N
 
 
 class Poly:
@@ -2032,22 +2040,66 @@ def hex_tiles(pg, pts3, n, seed, roles=('hex', 'hex2'), d0=.006, d1=.032, origin
         row += 1
 
 
+def surface_hexes(pg, seed, d0=.006, d1=.032):
+    """Hexagonal panels over the twisted main facet: the grid is laid out in metres of the facet's (a, b) parameters,
+    clipped to it with a joint at its edges, and each panel is mapped onto the surface and lifted along the local
+    normal (a thin plate, open at its base)."""
+    from shapely.geometry import Polygon as _P, box as _box
+    face = _box(0, 0, WALL_L, WALL_H).buffer(-HEX_GAP / 2, join_style=2)
+    w = math.sqrt(3) * HEX_R; r = HEX_R - HEX_GAP / math.sqrt(3)
+    rnd = random.Random(seed); row = 0; yy = -1.5 * HEX_R
+    while yy < WALL_H + 1.5 * HEX_R:
+        xx = -w + (w / 2 if row % 2 else 0.0)
+        while xx < WALL_L + w:
+            hx = _P([(xx + r * math.cos(math.radians(90 + 60 * k)), yy + r * math.sin(math.radians(90 + 60 * k))) for k in range(6)])
+            c = hx.intersection(face)
+            if not c.is_empty and c.geom_type == 'Polygon' and c.area > .02:
+                ring = list(c.exterior.coords)[:-1]
+                if not _P(ring).exterior.is_ccw:
+                    ring = ring[::-1]
+                cu, cv = c.centroid.x / WALL_L, c.centroid.y / WALL_H
+                n = wall_n(cu, cv)
+                pts = [wall_q(u / WALL_L, v / WALL_H) for u, v in ring]
+                if vdot(vcross(vsub(pts[1], pts[0]), vsub(pts[2], pts[0])), n) < 0:
+                    pts = pts[::-1]
+                pg.plate('hex2' if rnd.random() < .28 else 'hex', pts, n, d0, d1)
+            xx += w
+        yy += 1.5 * HEX_R
+        row += 1
+
+
 def hall():
-    """The climbing hall between the blocks: a closed solid whose south faces are the main and folded facets (the dark
-    joint backing behind the panels), a parapet strip on the coping line, the roof at ZT and the north wall."""
-    xw, xe = XW - .03, XE + .03
-    a = vadd(P3, FDIR, (xw - P3[0]) / FDIR[0]); b = vadd(P3, FDIR, (xe - P3[0]) / FDIR[0])
-    d = top_at(xw); c = T1
-    e = lerp(T1, T2, (xe - T1[0]) / (T2[0] - T1[0]))
-    dp, cp, ep = [vadd(p, (0, PT, 0)) for p in (d, c, e)]
-    dpp, cpp, epp = [(p[0], p[1], ZT) for p in (dp, cp, ep)]
-    f, g = (xw, Y1, 0.0), (xe, Y1, 0.0)
-    h, i = (xw, Y1, ZT), (xe, Y1, ZT)
-    V = [a, b, c, d, e, dp, cp, ep, dpp, cpp, epp, f, g, h, i]
-    ix = {k: n for n, k in enumerate('abcdeDCEXYZfghi')}     # D C E = parapet inner top, X Y Z = parapet inner foot
-    F = ['afgb', 'abcd', 'bec', 'dcCD', 'ceEC', 'DCYX', 'CEZY', 'XYZih', 'fhig', 'adDXhf', 'bgiZEe']
-    C.mesh('Climbing hall', V, [tuple(ix[k] for k in s) for s in F], 'joint', 'envelope')
-    # North wall cladding of the hall (charcoal panels with vertical joints; no source shows it).
+    """The climbing hall between the blocks: a closed solid whose south faces are the twisted main facet (a grid
+    following the surface, the dark joint behind the panels) and the folded facet, with a parapet strip on the coping
+    line, the roof at ZT and the north wall."""
+    nu, nv = 24, 10
+    V = []; F = []
+    G = [[None] * (nv + 1) for _ in range(nu + 1)]
+    for i in range(nu + 1):
+        for j in range(nv + 1):
+            G[i][j] = len(V); V.append(wall_q(i / nu, j / nv))
+    for i in range(nu):
+        for j in range(nv):
+            F.append((G[i][j], G[i + 1][j], G[i + 1][j + 1], G[i][j + 1]))
+    top = [V[G[i][nv]] for i in range(nu + 1)] + [P4]
+    D = []; X = []
+    for p in top:
+        D.append(len(V)); V.append((p[0], p[1] + PT, EAVE))
+    for p in top:
+        X.append(len(V)); V.append((p[0], p[1] + PT, ZT))
+    tid = [G[i][nv] for i in range(nu + 1)]; ip4 = len(V); V.append(P4); tid.append(ip4)
+    f_, g_, h_, i_ = (len(V), len(V) + 1, len(V) + 2, len(V) + 3)
+    V += [(P3[0], Y1, 0.0), (XE, Y1, 0.0), (P3[0], Y1, ZT), (XE, Y1, ZT)]
+    F.append((G[nu][0], ip4, G[nu][nv]))                                            # folded facet
+    for k in range(len(top) - 1):
+        F.append((tid[k], tid[k + 1], D[k + 1], D[k]))                               # parapet top
+        F.append((D[k], D[k + 1], X[k + 1], X[k]))                                   # parapet inner face
+    F.append(tuple(X) + (i_, h_))                                                    # roof
+    F.append(tuple(G[i][0] for i in range(nu + 1)) + (g_, f_))                       # bottom
+    F.append((f_, h_, i_, g_))                                                       # north
+    F.append((f_,) + tuple(G[0][j] for j in range(nv + 1)) + (D[0], X[0], h_))      # west
+    F.append((G[nu][0], g_, i_, X[-1], D[-1], ip4))                                  # east
+    C.mesh('Climbing hall', V, F, 'joint', 'envelope')
     C.box('Hall north parapet', ((XW + XE) / 2, Y1 - T / 2, (ZT - .1 + EAVE) / 2), (XE - XW, T, EAVE - ZT + .1), 'wall', 'envelope', 0)
     C.box('Hall north cladding', ((XW + XE) / 2, Y1 + .015, ZT / 2 + .01), (XE - XW - .02, .05, ZT - .02), 'wall', 'envelope', 0)
     b2 = Batch()
@@ -2055,33 +2107,30 @@ def hall():
         b2.box('joint', XW + 2.0 * k, Y1 + .045, ZT / 2, .04, .012, ZT - .1)
     b2.flush('hall north joints')
     pg = Poly()
-    hex_tiles(pg, [P3, B, T1, P9], MAIN_N, 11, origin=P3)
-    hex_tiles(pg, [B, T2, T1], DARK_N, 12, roles=('hex', 'hex'), origin=B, rnd_role=0.0)
+    surface_hexes(pg, 11)
+    hex_tiles(pg, [P10, P4, T1], DARK_N, 12, roles=('hex', 'hex'), origin=P10, rnd_role=0.0)
     pg.flush('climbing wall panels')
-    # Dark backing plates and panels on the blocks' exposed returns: the west block's east face south of the facet edge
-    # (faces east) and the east block's west face south of the folded facet's edge (faces west).
+    # Dark backing plate and panels on the west block's return (its east face south of the facet edge, facing east).
     pg = Poly()
-    wtri = [P3, (XW, P3[1], EAVE), P9]
-    etri = [B, T2, (XE, YF, EAVE)]
+    wtri = [(XW, YF, 0.0), (XW, YF, EAVE), (XW, P9[1], EAVE)]
     pg.plate('joint', wtri, (1, 0, 0), -.01, .004)
-    pg.plate('joint', etri, (-1, 0, 0), -.01, .004)
     pg.flush('return backing')
     pg = Poly()
-    hex_tiles(pg, wtri, (1.0, 0.0, 0.0), 13, origin=P3, d0=.008, d1=.03)
-    hex_tiles(pg, etri, (-1.0, 0.0, 0.0), 14, origin=B, d0=.008, d1=.03)
+    hex_tiles(pg, wtri, (1.0, 0.0, 0.0), 13, origin=wtri[0], d0=.008, d1=.03)
     pg.flush('return panels')
-    # Coping on the hall parapet (top edge P9 -> T1 -> T2), 8 cm proud of the facets.
+    # Coping on the hall parapet (top edge P9 -> T1 -> P4), 8 cm proud of the facets.
     b2 = Batch()
-    for p, q in ((d, c), (c, e)):
+    for p, q in ((top[0], T1), (T1, P4)):
         mid = lerp(p, q, .5)
         L = math.dist(p[:2], q[:2])
         ang = math.atan2(q[1] - p[1], q[0] - p[0])
-        cy = PT / 2 - .04
         corners = []
         for z in (EAVE - .001, EAVE + .12):
             for su, sv in ((-1, -1), (1, -1), (1, 1), (-1, 1)):
-                du, dv = su * (L / 2 + .06), cy + sv * (PT / 2 + .08)
-                corners.append((mid[0] + du * math.cos(ang) - dv * math.sin(ang), mid[1] + du * math.sin(ang) + dv * math.cos(ang), z))
+                du = su * (L / 2 + .06)
+                y0, y1 = -.12, PT + .04                                     # plan offsets across the edge (south -, north +)
+                dv = y0 if sv < 0 else y1
+                corners.append((mid[0] + du * math.cos(ang), mid[1] + du * math.sin(ang) + dv, z))
         b2._hex('coping', corners)
     b2.flush('hall coping')
 
@@ -2099,9 +2148,7 @@ def route_lines():
     b = Batch()
     for line in LINES:
         for (a0, b0), (a1, b1) in zip(line, line[1:]):
-            n0 = MAIN_N if a0 <= 1.0 else DARK_N
-            n1 = MAIN_N if a1 <= 1.0 else DARK_N
-            n = vunit(vadd(n0, n1))
+            n = vunit(vadd(wall_nab(a0, b0), wall_nab(a1, b1)))
             p = wall_ab(a0, b0); q = wall_ab(a1, b1)
             ax = vunit(vsub(q, p)); p = vadd(p, ax, -.07); q = vadd(q, ax, .07)
             side = vunit(vcross(n, ax))
@@ -2113,7 +2160,7 @@ def route_lines():
     for k in range(170):
         a = rnd.uniform(.58, .93) if k % 5 else rnd.uniform(.05, .45)
         bb = rnd.uniform(.04, .9)
-        p = vadd(wall_ab(a, bb), MAIN_N, .05)
+        p = vadd(wall_ab(a, bb), wall_n(a, bb), .05)
         s = rnd.uniform(.14, .30)
         role = 'hold2' if k % 7 == 0 else 'hold3' if k % 11 == 0 else 'hold'
         b.box(role, p[0], p[1], p[2], s, s * .8, s * .7)
@@ -2212,8 +2259,6 @@ def blocks():
     m.flush('east block openings')
     corten_face(f, XE, X1, 0.0, EAVE, holes, seed=31)
     C.qa_room_light('East block vestibule', (XE + 2.0, YF + T + 1.4, 2.6), 50, 1.4)
-    ye = T2[1] + PT
-    C.box('East block west wall', (XE + T / 2, (YF + T + ye) / 2, EAVE / 2), (T, ye - YF - T, EAVE), 'corten', 'envelope', 0)
     C.box('East block core', ((XE + T - .01 + HALL) / 2, (YF + T + 3.0 + Y1 - T + .01) / 2, ZT / 2), (HALL - XE - T + .01, Y1 - YF - 2 * T - 3.0 + .01, ZT), 'interior', 'envelope', 0)
     C.box('East block north wall', ((XE + X1) / 2, Y1 - T / 2, EAVE / 2), (X1 - XE, T, EAVE), 'corten', 'envelope', 0)
     f3 = C.Face((0, Y1, 0), (-1, 0, 0), (0, -1, 0), 'east block north face')
@@ -2267,8 +2312,8 @@ def east_end():
             b.box('interior', HALL + 2.5, y, (z0 + z1) / 2, .2, 4.0, z1 - z0 - .02)
     b.flush('hall interior')
     for z in FLOORS:
-        for y in (YF + 6.0, 0.0, Y1 - 6.0):
-            C.qa_room_light(f'Hall {z:.0f} {y:+.0f}', ((HALL + GL_UP) / 2, y, z + (4.0 if z < 1 else 3.8)), 160, 3.0)
+        for y in (YF + 5.0, (YF + Y1) / 2, Y1 - 5.0):
+            C.qa_room_light(f'Hall {z:.0f} {y:+.0f}', ((HALL + GL_UP) / 2, y, z + (4.0 if z < 1 else 3.8)), 70, 3.0)
 
 
 def parapets():
@@ -2282,8 +2327,6 @@ def parapets():
     yE = P9[1] + PT
     b.box('coping', XW - T / 2 - .03, (yS + T + yE) / 2, (zc0 + zc1) / 2 + .001, T + .1, yE - yS - T - .16, zc1 - zc0 - .002)
     b.box('coping', (XE + X1) / 2, YF + T / 2, (zc0 + zc1) / 2, X1 - XE + .16, T + .16, zc1 - zc0)
-    ye = T2[1] + PT
-    b.box('coping', XE + T / 2 + .03, (YF + T + ye) / 2, (zc0 + zc1) / 2 + .001, T + .1, ye - YF - T - .16, zc1 - zc0 - .002)
     b.box('coping', (GL_UP - .15 + X1) / 2, (YF + T + Y1 - T) / 2, (zc0 + zc1) / 2 + .001, X1 - GL_UP + .31, Y1 - YF - 2 * T - .16, zc1 - zc0 - .002)
     # North walkway rail on the parapet.
     for k in range(int((X1 - X0 - 2) / 2.4) + 1):
@@ -2297,12 +2340,10 @@ def parapets():
 
 def roof_poly(lap=0.0):
     """Roof inside the parapets (lap > 0 shrinks it, lap < 0 laps it under the parapets)."""
-    yS = P3[1]
-    yd = P9[1] + PT; yc = T1[1] + PT; ye = T2[1] + PT
+    yd = P9[1] + PT; yc = T1[1] + PT
     xe_in = GL_UP - .15
-    return [(X0 + T + lap, yS + T + lap), (XW - T - lap, yS + T + lap), (XW - T - lap, yd + lap), (FOLD, yc + lap),
-            (XE + T + lap, ye + lap + (yc - ye) * 0), (XE + T + lap, YF + T + lap), (xe_in - lap, YF + T + lap),
-            (xe_in - lap, Y1 - T - lap), (X0 + T + lap, Y1 - T - lap)]
+    return [(X0 + T + lap, YF + T + lap), (XW - T - lap, YF + T + lap), (XW - T - lap, yd + lap), (FOLD, yc + lap),
+            (XE + lap, YF + T + lap), (xe_in - lap, YF + T + lap), (xe_in - lap, Y1 - T - lap), (X0 + T + lap, Y1 - T - lap)]
 
 
 def stadium(cx0, cx1, cy, r, n=28):
@@ -2643,4 +2684,4 @@ def build():
     C.CONTACTS.append(dict(name='The Crucible climbing wall building', box=[X0, X1, YF, Y1]))
 
 
-LIGHT_RIG = dict(key=(-110, -70, 60), fill=(110, -60, 50), rear=(30, 120, 80), target=(0, -4, 10.0), gain=7.0)
+LIGHT_RIG = dict(key=(-120, -60, 55), fill=(140, 40, 50), rear=(20, 120, 80), target=(0, -6, 10.0), gain=7.0)

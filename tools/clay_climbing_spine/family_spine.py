@@ -62,7 +62,7 @@ def manifest(version):
         ('boulder_garden', (18.0, -44.0, 6.0), (2.3, -18.5, 1.8), 30),               # spine foot, boulders and curved planters
         ('rest_balconies', (30.0, -50.0, 30.0), (9.0, Y0, 31.0), 50),           # the balcony stack against the spine
         ('roof_terrace', (-38.0, -34.0, 76.0), (-9.0, -5.0, ROOF + 1.5), 32),        # U terrace, beds and boulders
-        ('retail_base', (-15.0, -33.0, 3.4), (-13.0, Y0, 4.0), 34),                  # canopy and shopfronts
+        ('retail_base', (-21.0, -31.5, 3.4), (-15.0, Y0, 4.0), 34),                  # canopy and shopfronts
         ('facade_close', (-16.5, -50.0, 30.0), (-16.5, Y0, 30.0), 42),               # one curtain-wall bay through several floors
         ('architecture_close', (10.0, -27.0, 22.0), (2.3, SPY0, 24.0), 32),           # carved spine faces and holds
         ('glass_close', (19.0, -24.0, 21.0), (19.0, Y0, 21.5), 34),                  # vision glass, fins and transoms
@@ -84,9 +84,9 @@ def manifest(version):
         elif c['name'] == 'right_side':                                  # over the white block across the east street, south of the glass tower
             c.update(location=(80.0, -30.0, 62.0), target=(X1, 0.0, 30.0), lens=24, whole=False)
         elif c['name'] == 'left_side':                                   # over the walk-ups across the west street
-            c.update(location=(-80.0, 2.0, 52.0), target=(X0, 0.0, 30.0), lens=24, whole=False)
+            c.update(location=(-82.0, 2.0, 56.0), target=(X0, 0.0, 33.0), lens=20, whole=False)
         elif c['name'] == 'rear':                                        # over the white mid-rise to the north
-            c.update(location=(8.0, 78.0, 82.0), target=(0.0, Y1, 28.0), lens=24, whole=False)
+            c.update(location=(8.0, 70.0, 95.0), target=(0.0, Y1, 25.0), lens=24, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
