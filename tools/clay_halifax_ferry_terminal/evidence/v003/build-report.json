@@ -1,0 +1,2221 @@
+{
+  "candidate": "clay-halifax-ferry-terminal-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 292,
+    "vertices": 32374,
+    "polygons": 49908,
+    "triangles": 49908,
+    "path": "clay-halifax-ferry-terminal-clay-v003-authoring.blend",
+    "bytes": 5679136,
+    "sha256": "ea058217947454425a576857287ef6bd5174d8f692fbfca0959a36b8ad8ea642"
+  },
+  "runtime": {
+    "path": "clay-halifax-ferry-terminal-clay-v003.glb",
+    "bytes": 2638692,
+    "sha256": "127779ee4082fc1f1fc9c385988f48096bde21e99ccf7008a646afe3630ff220",
+    "meshes": 34,
+    "materials": 34,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 34,
+    "vertices": 32374,
+    "polygons": 49908,
+    "triangles": 49908
+  },
+  "original_bounds_m": [
+    [
+      -60.0,
+      -63.0,
+      0.0
+    ],
+    [
+      90.0,
+      150.0,
+      18.700000762939453
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -60.0,
+      -63.0,
+      0.0
+    ],
+    [
+      90.0,
+      150.0,
+      18.700000762939453
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 20.0,
+    "depth": 40.8,
+    "height": 10.6
+  },
+  "native_dimensions_m": {
+    "width": 150.0,
+    "depth": 213.0,
+    "height": 18.700000762939453
+  },
+  "native_bottom_center_m": [
+    15.0,
+    43.5,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 5,
+    "concrete2": 7,
+    "panel": 14,
+    "frame": 24,
+    "glass": 20,
+    "spandrel": 4,
+    "membrane": 4,
+    "gravel": 1,
+    "louvre": 1,
+    "mech": 2,
+    "sign": 9,
+    "brick": 38,
+    "joint": 2,
+    "stone": 44,
+    "iron": 1,
+    "tile": 4,
+    "timber": 28,
+    "interior": 16,
+    "floor": 2,
+    "paving": 10,
+    "asphalt": 3,
+    "curb": 1,
+    "lawn": 1,
+    "soil": 2,
+    "paint": 12,
+    "yellow": 1,
+    "redpave": 1,
+    "water": 1,
+    "hardware": 10,
+    "planting": 18,
+    "pot": 1,
+    "cream": 2,
+    "brick2": 2,
+    "ctx": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/entrance_canopy.png",
+    "renders/facade_close.png",
+    "renders/glass_close.png",
+    "renders/architecture_close.png",
+    "renders/roof_boxes.png",
+    "renders/roof_mechanical.png",
+    "renders/interior.png",
+    "renders/brick_neighbour.png",
+    "renders/lawn_bench.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Concrete fins and frames from grade; roof inside the parapet; glass box on its concrete frames",
+      "parapet_m": 10.0
+    },
+    {
+      "name": "Brick heritage block walls from grade; hipped tile roofs on the cornice",
+      "eave_m": 12.7
+    },
+    {
+      "name": "Halifax ferry terminal beside a brick heritage block",
+      "box": [
+        -10.0,
+        10.0,
+        -20.4,
+        20.4
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "W n door",
+      "face": "terminal west front",
+      "u": -17.6,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "service room"
+    },
+    {
+      "id": "W n g1",
+      "face": "terminal west front",
+      "u": -14.6,
+      "z": 1.2,
+      "width": 1.6,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "W n u1",
+      "face": "terminal west front",
+      "u": -17.6,
+      "z": 5.9,
+      "width": 1.6,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "W n u2",
+      "face": "terminal west front",
+      "u": -14.6,
+      "z": 5.9,
+      "width": 1.6,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        -10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "N u0",
+      "face": "terminal north wall",
+      "u": -8.0,
+      "z": 5.9,
+      "width": 1.8,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        20.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "N u1",
+      "face": "terminal north wall",
+      "u": -4.0,
+      "z": 5.9,
+      "width": 1.8,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        20.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "N u2",
+      "face": "terminal north wall",
+      "u": 0.0,
+      "z": 5.9,
+      "width": 1.8,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        20.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "N u3",
+      "face": "terminal north wall",
+      "u": 4.0,
+      "z": 5.9,
+      "width": 1.8,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        20.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "N u4",
+      "face": "terminal north wall",
+      "u": 8.0,
+      "z": 5.9,
+      "width": 1.8,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        20.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "N load",
+      "face": "terminal north wall",
+      "u": 5.0,
+      "z": 0.16,
+      "width": 3.2,
+      "height": 3.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        20.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "service room"
+    },
+    {
+      "id": "N door",
+      "face": "terminal north wall",
+      "u": -1.0,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        0.0,
+        20.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "service room"
+    },
+    {
+      "id": "N g1",
+      "face": "terminal north wall",
+      "u": -6.0,
+      "z": 1.2,
+      "width": 1.8,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        0.0,
+        20.399999618530273,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "E u0",
+      "face": "terminal east wall",
+      "u": 6.4,
+      "z": 5.9,
+      "width": 1.8,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "E u1",
+      "face": "terminal east wall",
+      "u": 10.4,
+      "z": 5.9,
+      "width": 1.8,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "E u2",
+      "face": "terminal east wall",
+      "u": 14.4,
+      "z": 5.9,
+      "width": 1.8,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "E u3",
+      "face": "terminal east wall",
+      "u": 18.4,
+      "z": 5.9,
+      "width": 1.8,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "E door",
+      "face": "terminal east wall",
+      "u": 16.6,
+      "z": 0.16,
+      "width": 1.1,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.15,
+      "pane_inset_m": 0.187,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "service room"
+    },
+    {
+      "id": "E g1",
+      "face": "terminal east wall",
+      "u": 8.4,
+      "z": 1.2,
+      "width": 1.8,
+      "height": 2.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.16,
+      "pane_inset_m": 0.197,
+      "face_origin": [
+        10.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B shop 0",
+      "face": "brick block south front",
+      "u": 13.3125,
+      "z": 0.3,
+      "width": 3.0,
+      "height": 3.75,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.3,
+      "pane_inset_m": 0.33699999999999997,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "B f2 0-1",
+      "face": "brick block south front",
+      "u": 12.4625,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 0-1",
+      "face": "brick block south front",
+      "u": 12.4625,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f2 0+1",
+      "face": "brick block south front",
+      "u": 14.1625,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 0+1",
+      "face": "brick block south front",
+      "u": 14.1625,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B shop 1",
+      "face": "brick block south front",
+      "u": 16.9375,
+      "z": 0.3,
+      "width": 3.0,
+      "height": 3.75,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.3,
+      "pane_inset_m": 0.33699999999999997,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "B f2 1-1",
+      "face": "brick block south front",
+      "u": 16.0875,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 1-1",
+      "face": "brick block south front",
+      "u": 16.0875,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f2 1+1",
+      "face": "brick block south front",
+      "u": 17.7875,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 1+1",
+      "face": "brick block south front",
+      "u": 17.7875,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B shop 2",
+      "face": "brick block south front",
+      "u": 20.5625,
+      "z": 0.3,
+      "width": 3.0,
+      "height": 3.75,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.3,
+      "pane_inset_m": 0.33699999999999997,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "B f2 2-1",
+      "face": "brick block south front",
+      "u": 19.7125,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 2-1",
+      "face": "brick block south front",
+      "u": 19.7125,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f2 2+1",
+      "face": "brick block south front",
+      "u": 21.4125,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 2+1",
+      "face": "brick block south front",
+      "u": 21.4125,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B shop 3",
+      "face": "brick block south front",
+      "u": 24.1875,
+      "z": 0.3,
+      "width": 3.0,
+      "height": 3.75,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.3,
+      "pane_inset_m": 0.33699999999999997,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "B f2 3-1",
+      "face": "brick block south front",
+      "u": 23.3375,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 3-1",
+      "face": "brick block south front",
+      "u": 23.3375,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f2 3+1",
+      "face": "brick block south front",
+      "u": 25.0375,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 3+1",
+      "face": "brick block south front",
+      "u": 25.0375,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B shop 4",
+      "face": "brick block south front",
+      "u": 27.8125,
+      "z": 0.3,
+      "width": 3.0,
+      "height": 3.75,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.3,
+      "pane_inset_m": 0.33699999999999997,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "B f2 4-1",
+      "face": "brick block south front",
+      "u": 26.9625,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 4-1",
+      "face": "brick block south front",
+      "u": 26.9625,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f2 4+1",
+      "face": "brick block south front",
+      "u": 28.6625,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 4+1",
+      "face": "brick block south front",
+      "u": 28.6625,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B shop 5",
+      "face": "brick block south front",
+      "u": 31.4375,
+      "z": 0.3,
+      "width": 3.0,
+      "height": 3.75,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.3,
+      "pane_inset_m": 0.33699999999999997,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "B f2 5-1",
+      "face": "brick block south front",
+      "u": 30.5875,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 5-1",
+      "face": "brick block south front",
+      "u": 30.5875,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f2 5+1",
+      "face": "brick block south front",
+      "u": 32.2875,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 5+1",
+      "face": "brick block south front",
+      "u": 32.2875,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B shop 6",
+      "face": "brick block south front",
+      "u": 35.0625,
+      "z": 0.3,
+      "width": 3.0,
+      "height": 3.75,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.3,
+      "pane_inset_m": 0.33699999999999997,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "B f2 6-1",
+      "face": "brick block south front",
+      "u": 34.2125,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 6-1",
+      "face": "brick block south front",
+      "u": 34.2125,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f2 6+1",
+      "face": "brick block south front",
+      "u": 35.9125,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 6+1",
+      "face": "brick block south front",
+      "u": 35.9125,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B shop 7",
+      "face": "brick block south front",
+      "u": 38.6875,
+      "z": 0.3,
+      "width": 3.0,
+      "height": 3.75,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.3,
+      "pane_inset_m": 0.33699999999999997,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "B f2 7-1",
+      "face": "brick block south front",
+      "u": 37.8375,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 7-1",
+      "face": "brick block south front",
+      "u": 37.8375,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f2 7+1",
+      "face": "brick block south front",
+      "u": 39.5375,
+      "z": 5.3,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    },
+    {
+      "id": "B f3 7+1",
+      "face": "brick block south front",
+      "u": 39.5375,
+      "z": 8.6,
+      "width": 1.0,
+      "height": 2.2,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        -20.799999237060547,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "office"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "West street",
+      "South street",
+      "North street",
+      "Far west sidewalk",
+      "Far south sidewalk",
+      "Far north apron",
+      "South sidewalk",
+      "West sidewalk",
+      "North sidewalk",
+      "Parking court",
+      "Rear yard",
+      "Side passage",
+      "East yard",
+      "site lawn",
+      "site curb",
+      "site redpave",
+      "site yellow",
+      "site concrete2",
+      "site paint",
+      "site soil",
+      "site timber",
+      "site hardware",
+      "site frame",
+      "site panel"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017"
+    ],
+    "terminal frame": [
+      "terminal frame concrete2",
+      "terminal frame interior",
+      "terminal frame wall",
+      "terminal frame panel"
+    ],
+    "canopies": [
+      "Wrapping canopy",
+      "canopies frame",
+      "canopies panel"
+    ],
+    "entrance canopy fascia": [
+      "entrance canopy fascia entrance canopy fascia sign"
+    ],
+    "south front": [
+      "south front glass",
+      "south front frame",
+      "south front panel",
+      "south front wall",
+      "south front spandrel",
+      "south front hardware",
+      "south front concrete2"
+    ],
+    "west front glazing": [
+      "west front glazing glass",
+      "west front glazing frame",
+      "west front glazing panel",
+      "west front glazing hardware"
+    ],
+    "envelope": [
+      "west north end carrier",
+      "north wall carrier",
+      "east wall carrier",
+      "brick block south front carrier"
+    ],
+    "west north end": [
+      "terminal west front west north end frame",
+      "terminal west front west north end panel",
+      "terminal west front west north end hardware",
+      "terminal west front west north end glass"
+    ],
+    "north wall": [
+      "terminal north wall north wall frame",
+      "terminal north wall north wall glass",
+      "terminal north wall north wall panel",
+      "terminal north wall north wall sign",
+      "terminal north wall north wall hardware"
+    ],
+    "east wall": [
+      "terminal east wall east wall frame",
+      "terminal east wall east wall glass",
+      "terminal east wall east wall panel",
+      "terminal east wall east wall hardware"
+    ],
+    "roof": [
+      "roof concrete2",
+      "roof membrane",
+      "roof gravel",
+      "roof louvre",
+      "roof frame",
+      "roof mech",
+      "roof hardware",
+      "roof panel",
+      "Pediment cross roof",
+      "Brick block west roof",
+      "Brick block east roof",
+      "Brick wing roof"
+    ],
+    "roof skylights": [
+      "Skylight 0",
+      "Skylight 1",
+      "Skylight 2"
+    ],
+    "roof furniture": [
+      "roof furniture panel",
+      "roof furniture frame",
+      "roof furniture hardware",
+      "roof furniture paint",
+      "roof furniture cream"
+    ],
+    "interiors": [
+      "interiors interior",
+      "interiors timber",
+      "interiors panel",
+      "interiors sign",
+      "interiors hardware",
+      "interiors floor"
+    ],
+    "service link": [
+      "service link concrete2",
+      "service link membrane",
+      "service link panel",
+      "service link hardware"
+    ],
+    "brick joints": [
+      "brick block south front measured mortar courses",
+      "brick block west wall measured mortar courses"
+    ],
+    "arches": [
+      "B f2 0-1 head infill",
+      "B f2 0-1 hood",
+      "B f3 0-1 head infill",
+      "B f3 0-1 hood",
+      "B f2 0+1 head infill",
+      "B f2 0+1 hood",
+      "B f3 0+1 head infill",
+      "B f3 0+1 hood",
+      "B f2 1-1 head infill",
+      "B f2 1-1 hood",
+      "B f3 1-1 head infill",
+      "B f3 1-1 hood",
+      "B f2 1+1 head infill",
+      "B f2 1+1 hood",
+      "B f3 1+1 head infill",
+      "B f3 1+1 hood",
+      "B f2 2-1 head infill",
+      "B f2 2-1 hood",
+      "B f3 2-1 head infill",
+      "B f3 2-1 hood",
+      "B f2 2+1 head infill",
+      "B f2 2+1 hood",
+      "B f3 2+1 head infill",
+      "B f3 2+1 hood",
+      "B f2 3-1 head infill",
+      "B f2 3-1 hood",
+      "B f3 3-1 head infill",
+      "B f3 3-1 hood",
+      "B f2 3+1 head infill",
+      "B f2 3+1 hood",
+      "B f3 3+1 head infill",
+      "B f3 3+1 hood",
+      "B f2 4-1 head infill",
+      "B f2 4-1 hood",
+      "B f3 4-1 head infill",
+      "B f3 4-1 hood",
+      "B f2 4+1 head infill",
+      "B f2 4+1 hood",
+      "B f3 4+1 head infill",
+      "B f3 4+1 hood",
+      "B f2 5-1 head infill",
+      "B f2 5-1 hood",
+      "B f3 5-1 head infill",
+      "B f3 5-1 hood",
+      "B f2 5+1 head infill",
+      "B f2 5+1 hood",
+      "B f3 5+1 head infill",
+      "B f3 5+1 hood",
+      "B f2 6-1 head infill",
+      "B f2 6-1 hood",
+      "B f3 6-1 head infill",
+      "B f3 6-1 hood",
+      "B f2 6+1 head infill",
+      "B f2 6+1 hood",
+      "B f3 6+1 head infill",
+      "B f3 6+1 hood",
+      "B f2 7-1 head infill",
+      "B f2 7-1 hood",
+      "B f3 7-1 head infill",
+      "B f3 7-1 hood",
+      "B f2 7+1 head infill",
+      "B f2 7+1 hood",
+      "B f3 7+1 head infill",
+      "B f3 7+1 hood"
+    ],
+    "brick block south front": [
+      "brick block south front brick block south front iron",
+      "brick block south front brick block south front glass",
+      "brick block south front brick block south front frame",
+      "brick block south front brick block south front stone",
+      "brick block south front brick block south front timber",
+      "brick block south front brick block south front brick"
+    ],
+    "brick block parapet": [
+      "brick block parapet brick",
+      "brick block parapet stone"
+    ],
+    "pediment": [
+      "Brick block pediment",
+      "Pediment raking coping",
+      "Pediment raking coping.001"
+    ],
+    "pediment details": [
+      "pediment details stone",
+      "pediment details glass"
+    ],
+    "brick block shell": [
+      "brick block shell brick",
+      "brick block shell stone",
+      "brick block shell interior",
+      "brick block shell floor",
+      "brick block shell timber"
+    ],
+    "brick block north wall": [
+      "brick block north wall brick block north wall interior",
+      "brick block north wall brick block north wall stone",
+      "brick block north wall brick block north wall glass",
+      "brick block north wall brick block north wall frame"
+    ],
+    "brick block chimneys": [
+      "brick block chimneys brick",
+      "brick block chimneys stone",
+      "brick block chimneys pot"
+    ],
+    "back blocks": [
+      "back blocks brick2",
+      "back blocks soil",
+      "back blocks membrane",
+      "back blocks stone"
+    ],
+    "east block south front": [
+      "east block south front east block south front interior",
+      "east block south front east block south front stone",
+      "east block south front east block south front glass",
+      "east block south front east block south front frame",
+      "east block south front east block south front sign"
+    ],
+    "brick wing west face": [
+      "brick wing west face brick wing west face interior",
+      "brick wing west face brick wing west face stone",
+      "brick wing west face brick wing west face glass",
+      "brick wing west face brick wing west face frame"
+    ],
+    "brick wing north face": [
+      "brick wing north face brick wing north face interior",
+      "brick wing north face brick wing north face stone",
+      "brick wing north face brick wing north face glass",
+      "brick wing north face brick wing north face frame"
+    ],
+    "context": [
+      "context brick2",
+      "context membrane",
+      "context mech",
+      "context cream",
+      "context ctx"
+    ],
+    "west block 1 east face": [
+      "west block 1 east face west block 1 east face interior",
+      "west block 1 east face west block 1 east face paint",
+      "west block 1 east face west block 1 east face glass",
+      "west block 1 east face west block 1 east face frame",
+      "west block 1 east face west block 1 east face sign"
+    ],
+    "west block 2 east face": [
+      "west block 2 east face west block 2 east face interior",
+      "west block 2 east face west block 2 east face paint",
+      "west block 2 east face west block 2 east face glass",
+      "west block 2 east face west block 2 east face frame",
+      "west block 2 east face west block 2 east face sign"
+    ],
+    "west block 3 east face": [
+      "west block 3 east face west block 3 east face interior",
+      "west block 3 east face west block 3 east face paint",
+      "west block 3 east face west block 3 east face glass",
+      "west block 3 east face west block 3 east face frame",
+      "west block 3 east face west block 3 east face sign"
+    ],
+    "west block 4 east face": [
+      "west block 4 east face west block 4 east face interior",
+      "west block 4 east face west block 4 east face paint",
+      "west block 4 east face west block 4 east face glass",
+      "west block 4 east face west block 4 east face frame",
+      "west block 4 east face west block 4 east face sign"
+    ],
+    "north block 1 south face": [
+      "north block 1 south face north block 1 south face interior",
+      "north block 1 south face north block 1 south face paint",
+      "north block 1 south face north block 1 south face glass",
+      "north block 1 south face north block 1 south face frame"
+    ],
+    "north block 2 south face": [
+      "north block 2 south face north block 2 south face interior",
+      "north block 2 south face north block 2 south face paint",
+      "north block 2 south face north block 2 south face glass",
+      "north block 2 south face north block 2 south face frame"
+    ],
+    "north block 3 south face": [
+      "north block 3 south face north block 3 south face interior",
+      "north block 3 south face north block 3 south face paint",
+      "north block 3 south face north block 3 south face glass",
+      "north block 3 south face north block 3 south face frame"
+    ],
+    "north block 4 south face": [
+      "north block 4 south face north block 4 south face interior",
+      "north block 4 south face north block 4 south face paint",
+      "north block 4 south face north block 4 south face glass",
+      "north block 4 south face north block 4 south face frame"
+    ],
+    "south-west block east face": [
+      "south-west block east face south-west block east face interior",
+      "south-west block east face south-west block east face paint",
+      "south-west block east face south-west block east face glass",
+      "south-west block east face south-west block east face frame",
+      "south-west block east face south-west block east face sign"
+    ],
+    "harbour": [
+      "harbour water",
+      "harbour concrete2",
+      "harbour paving",
+      "harbour paint",
+      "harbour frame",
+      "harbour panel"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-23T01:35:50.540707+00:00",
+  "delivery_and_render_seconds": 1288.0453928610004,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
