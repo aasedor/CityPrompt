@@ -50,7 +50,7 @@ HALL = X1 - 9.0                                       # back wall of the glazed 
 CX0, CX1, CY, RT, TW = -38.0, 30.8, -7.4, 8.3, 4.0
 PAV = (-12.0, -5.6, 10.0, 6.0, 4.0)                    # roof pavilion: centre x, y, length, depth, height
 AMPH = (8.0, -7.4, 4.8)                                # sunken half-round seating bowl: centre x, y, radius
-PALETTE = dict(wall=(.13, .13, .14), hex=(.17, .17, .18), hex2=(.21, .21, .22), joint=(.08, .08, .09),
+PALETTE = dict(wall=(.13, .13, .14), hex=(.24, .24, .25), hex2=(.28, .28, .29), hexd=(.14, .14, .15), joint=(.07, .07, .08),
     led=(1.0, .60, .10), hold=(.10, .09, .08), hold2=(.86, .52, .14), hold3=(.55, .58, .60),
     corten=(.55, .25, .10), corten2=(.50, .225, .09), corten3=(.60, .28, .11), cjoint=(.33, .15, .07), coping=(.58, .58, .56),
     frame=(.16, .17, .18), glass=(.20, .27, .30), interior=(.80, .76, .68), floor=(.56, .52, .46),
@@ -80,7 +80,7 @@ def manifest(version):
         elif c['name'] == 'front_corner':
             c.update(location=(245.6, -192.1, 118.4), target=(40.8, -33.4, 28.3), lens=135.1, whole=False)
         elif c['name'] == 'top':
-            c.update(location=(46.2, -79.7, 196.0), target=(12.5, -20.6, 56.4), lens=62.0, whole=False)
+            c.update(location=(46.2, -79.7, 196.0), target=(9.0, -16.0, 56.4), lens=76.0, whole=False)
         elif c['name'] == 'rear':                                       # elevated over the north yard: north wall, parapet and roof edge
             c.update(location=(0.0, 135.0, 72.0), target=(0.0, -6.0, 10.0), lens=42.0, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
@@ -2115,7 +2115,7 @@ def hall():
     F.append((f_,) + tuple(G[0][j] for j in range(nv + 1)) + (D[0], X[0], h_))      # west
     F.append((G[nu][0], g_, i_, X[-1], D[-1], ip4))                                  # east
     C.mesh('Climbing hall', V, F, 'joint', 'envelope')
-    C.box('Hall north parapet', ((XW + XE) / 2, Y1 - T / 2, (ZT - .1 + EAVE) / 2), (XE - XW, T, EAVE - ZT + .1), 'wall', 'envelope', 0)
+    C.box('Hall north parapet', ((XW + XE) / 2, Y1 - T / 2, (ZT - .1 + EAVE) / 2), (XE - XW, T, EAVE - ZT + .1), 'corten', 'envelope', 0)
     C.box('Hall north cladding', ((XW + XE) / 2, Y1 + .015, ZT / 2 + .01), (XE - XW - .02, .05, ZT - .02), 'wall', 'envelope', 0)
     b2 = Batch()
     for k in range(1, int((XE - XW) / 2.0)):
@@ -2123,7 +2123,7 @@ def hall():
     b2.flush('hall north joints')
     pg = Poly()
     surface_hexes(pg, 11)
-    hex_tiles(pg, [P10, P4, T1], DARK_N, 12, roles=('hex', 'hex'), origin=P10, rnd_role=0.0)
+    hex_tiles(pg, [P10, P4, T1], DARK_N, 12, roles=('hexd', 'hexd'), origin=P10, rnd_role=0.0)
     pg.flush('climbing wall panels', raw=True)
     # Dark backing plate and panels on the west block's return (its east face south of the facet edge, facing east).
     pg = Poly()
@@ -2135,12 +2135,12 @@ def hall():
     pg.flush('return panels', raw=True)
     # Coping on the hall parapet (top edge P9 -> T1 -> P4), 8 cm proud of the facets.
     b2 = Batch()
-    for p, q in ((top[0], T1), (T1, P4)):
+    for p, q, zt in ((top[0], T1, EAVE + .124), (T1, P4, EAVE + .128)):        # tops 4 and 8 mm over the block coping (no shared planes)
         mid = lerp(p, q, .5)
         L = math.dist(p[:2], q[:2])
         ang = math.atan2(q[1] - p[1], q[0] - p[0])
         corners = []
-        for z in (EAVE - .001, EAVE + .12):
+        for z in (EAVE - .001, zt):
             for su, sv in ((-1, -1), (1, -1), (1, 1), (-1, 1)):
                 du = su * (L / 2 + .06)
                 y0, y1 = -.12, PT + .04                                     # plan offsets across the edge (south -, north +)
@@ -2162,12 +2162,13 @@ def route_lines():
              [(1.0, .97), (1.07, .63), (.985, .34), (1.04, .27), (.995, .01)]]
     b = Batch()
     for line in LINES:
-        for (a0, b0), (a1, b1) in zip(line, line[1:]):
+        for s_i, ((a0, b0), (a1, b1)) in enumerate(zip(line, line[1:])):
             n = vunit(vadd(wall_nab(a0, b0), wall_nab(a1, b1)))
             p = wall_ab(a0, b0); q = wall_ab(a1, b1)
             ax = vunit(vsub(q, p)); p = vadd(p, ax, -.07); q = vadd(q, ax, .07)
             side = vunit(vcross(n, ax))
-            pts = [vadd(vadd(c, side, su * .08), n, d) for c in (p, q) for su, d in ((-1, .02), (1, .02), (1, .065), (-1, .065))]
+            dd = .004 * (s_i % 2)                                           # consecutive strips 4 mm apart where they lap at a bend
+            pts = [vadd(vadd(c, side, su * (.08 - dd / 2)), n, d + dd) for c in (p, q) for su, d in ((-1, .02), (1, .02), (1, .065), (-1, .065))]
             b._hex('led', pts)
     b.flush('route lines')
     rnd = random.Random(5)
@@ -2196,7 +2197,7 @@ def corten_face(f, lo, hi, z0, z1, holes=(), seed=1, pw=1.6, ph=1.75):
     for r in range(1, rows):
         z = z0 + r * ph
         for a, c in runs(lo + .02, hi - .02, z - .02, z + .02, holes):
-            m.box('cjoint', (a + c) / 2, -.003, z, c - a, .008, .03)
+            m.box('cjoint', (a + c) / 2, -.0025, z, c - a, .007, .03)     # 1 mm less proud than the verticals (crossings never share a plane)
     for k in range(n):
         for r in range(rows):
             if rnd.random() > .22:
@@ -2305,7 +2306,7 @@ def east_end():
     for k in range(16):
         y = ys0 + (yn0 - ys0) * k / 15
         b.box('frame', GL_GF - .1, y, (ZG0 + ZG1) / 2, .16, .12 if 0 < k < 15 else .2, ZG1 - ZG0)
-    b.box('frame', GL_GF - .1, (ys0 + yn0) / 2, 3.4, .16, yn0 - ys0, .1)
+    b.box('frame', GL_GF - .09, (ys0 + yn0) / 2, 3.4, .14, yn0 - ys0, .1)
     for yc in (Y1 - 10.0, Y1 - 6.2):
         b.box('frame', GL_GF - .12, yc, ZG0 + 1.3, .14, 2.6, .08)
         b.box('frame', GL_GF - .12, yc, ZG0 + 2.62, .14, 2.6, .1)
@@ -2319,8 +2320,6 @@ def east_end():
         x1 = GL_GF + .1 if z < 1 else GL_UP - .02
         C.box(f'Hall floor {z:.1f}', ((HALL + x1) / 2, (YF + T + Y1 - T) / 2, z - .2 if z > 1 else z / 2), (x1 - HALL, Y1 - YF - 2 * T - .02, .4 if z > 1 else z), 'floor', 'inside', 0)
     b = Batch()
-    for z in FLOORS[1:]:
-        b.box('frame', GL_UP - .3, (ys0 + yn0) / 2, z - .25, .5, yn0 - ys0 - .02, .5)                      # slab edges seen through the glass
     for z0, z1 in ((.15, 9.0 - .4), (9.0, 14.5 - .4), (14.5, 20.0 - .4), (20.0, ZT - .5)):
         for k in range(4):                                                                                   # equipment and partitions
             y = YF + 6.0 + k * 9.0
@@ -2337,12 +2336,12 @@ def parapets():
     b = Batch()
     zc0, zc1 = EAVE - .001, EAVE + .12
     b.box('coping', (X0 + XW) / 2, yS + T / 2, (zc0 + zc1) / 2, XW - X0 + .16, T + .16, zc1 - zc0)
-    b.box('coping', X0 + T / 2, (yS + T + Y1 - T) / 2, (zc0 + zc1) / 2 + .001, T + .16, Y1 - yS - 2 * T - .16, zc1 - zc0 - .002)
+    b.box('coping', X0 + T / 2, (yS + T + Y1 - T) / 2, (zc0 + zc1) / 2 - .001, T + .16, Y1 - yS - 2 * T - .16, zc1 - zc0 - .002)
     b.box('coping', (X0 + X1) / 2, Y1 - T / 2, (zc0 + zc1) / 2, X1 - X0 + .16, T + .16, zc1 - zc0)
     yE = P9[1] + PT
-    b.box('coping', XW - T / 2 - .03, (yS + T + yE) / 2, (zc0 + zc1) / 2 + .001, T + .1, yE - yS - T - .16, zc1 - zc0 - .002)
+    b.box('coping', XW - T / 2 - .03, (yS + T + yE) / 2, (zc0 + zc1) / 2 - .001, T + .1, yE - yS - T - .16, zc1 - zc0 - .002)
     b.box('coping', (XE + X1) / 2, YF + T / 2, (zc0 + zc1) / 2, X1 - XE + .16, T + .16, zc1 - zc0)
-    b.box('coping', (GL_UP - .15 + X1) / 2, (YF + T + Y1 - T) / 2, (zc0 + zc1) / 2 + .001, X1 - GL_UP + .31, Y1 - YF - 2 * T - .16, zc1 - zc0 - .002)
+    b.box('coping', (GL_UP - .15 + X1) / 2, (YF + T + Y1 - T) / 2, (zc0 + zc1) / 2 - .001, X1 - GL_UP + .31, Y1 - YF - 2 * T - .16, zc1 - zc0 - .002)
     # North walkway rail on the parapet.
     for k in range(int((X1 - X0 - 2) / 2.4) + 1):
         x = X0 + 1.0 + 2.4 * k
@@ -2388,6 +2387,14 @@ def ring_mesh(name, outer, inner, z0, z1, role, module):
 def slab(name, poly, z0, z1, role, module):
     """Flat slab over a simple polygon (point list, any orientation)."""
     return C.prism(name, poly, 'z', z0, z1, role, module)
+
+
+def union_polys(polys):
+    """Merge overlapping slab outlines so two slabs of one role never share a top plane."""
+    from shapely.geometry import Polygon as _P
+    from shapely.ops import unary_union
+    u = unary_union([_P(p) for p in polys])
+    return [[tuple(c) for c in list(g.exterior.coords)[:-1]] for g in getattr(u, 'geoms', [u])]
 
 
 def path_poly(pts, w):
@@ -2459,7 +2466,7 @@ def roof():
     ax, ay, ar = AMPH
     slab('Bowl floor', [(ax + (ar + .4) * math.cos(t), ay + (ar + .4) * math.sin(t)) for t in (math.tau * i / 48 for i in range(48))], ZR - .01, ZR + .14, 'paving', 'roof')
     for k in range(4):
-        r0 = 2.2 + k * 1.0; r1 = r0 + 1.0
+        r0 = 1.4 + k * (ar - 1.4) / 4; r1 = r0 + (ar - 1.4) / 4
         arc_o = [(ax + r1 * math.cos(t), ay + r1 * math.sin(t)) for t in (-math.pi / 2 + math.pi * i / 24 for i in range(25))]
         arc_i = [(ax + r0 * math.cos(t), ay + r0 * math.sin(t)) for t in (-math.pi / 2 + math.pi * i / 24 for i in range(25))]
         slab(f'Bowl tier {k}', arc_o + arc_i[::-1], ZR + .1, ZR + .14 + .32 * (k + 1), 'paving', 'roof')
@@ -2467,8 +2474,8 @@ def roof():
     arc_i = [(ax + ar * math.cos(t), ay + ar * math.sin(t)) for t in (-math.pi / 2 + math.pi * i / 24 for i in range(25))]
     slab('Bowl back wall', arc_o + arc_i[::-1], ZR + .1, ZR + 1.9, 'pavilion', 'roof')
     # Paths and the north walkway.
-    for name, pts, w in INNER_PATHS:
-        slab(name, path_poly(pts, w), ZR - .01, ZR + .12, 'paving', 'roof')
+    for k, poly in enumerate(union_polys([path_poly(pts, w) for _, pts, w in INNER_PATHS])):     # one slab per merged path (no shared tops)
+        slab(f'Roof path {k}', poly, ZR - .01, ZR + .12, 'paving', 'roof')
     slab('North walkway', [(X0 + T - .02, Y1 - T - 2.6), (GL_UP - .17, Y1 - T - 2.6), (GL_UP - .17, Y1 - T + .02), (X0 + T - .02, Y1 - T + .02)], ZR - .01, ZR + .12, 'paving', 'roof')
     # The second run across the west end (top): a curved strip from the north straight to the south straight, its top
     # 1 mm under the loop's so the two never share a plane, with its own lane lines.
@@ -2508,14 +2515,14 @@ def roof_planting(kit, P):
             groundcover(f'Roof meadow {name} {i}', g, ZR + .02, kerb=0, height=.07, bump=.035, wave=1.6, grid=.8, edge=.3, ramp=.12,
                         role='meadow', seed=60 + i)
             rg = kit.register_bed(pk_region(g, .05))
-            for x, y in pk_scatter(rg, 1.2, margin=.1, seed=70 + i):
+            for x, y in pk_scatter(rg, 1.0, margin=.1, seed=70 + i):
                 r = rnd.random(); acc = 0.0
                 for p, wgt in mix:
                     acc += wgt
                     if r <= acc:
                         break
-                for s in (1.9, 1.6, 1.3, 1.0):
-                    sz = s * rnd.uniform(.85, 1.15)
+                for s in (2.1, 1.75, 1.4, 1.05):
+                    sz = s * rnd.uniform(.95, 1.3)
                     if kit.fits(p, x, y, s, rg, sz=sz):
                         kit.place(p, x, y, ZR + .02, rnd.uniform(0, math.tau), s, sz=sz)
                         break
@@ -2564,8 +2571,8 @@ BED_E = [(XE + .4, YF - .5), (X1 - .4, YF - .5), (X1 - .4, YF - 3.4), (XE + 3.0,
 
 def site():
     """Lawn, the rubber fall-zone apron with its white edge, frame and disc, paths, beds, boulders and the east plaza."""
-    lawn = [(-70.0, -62.0), (X1 + 4.0, -62.0), (X1 + 4.0, YF), (XW, YF)] + ([(XW, P3[1])] if abs(P3[1] - YF) > .01 else []) + \
-        [(X0, P3[1]), (X0, Y1 + 6.0), (-70.0, Y1 + 6.0)]
+    lawn = [(-58.0, -62.0), (X1 + 4.0, -62.0), (X1 + 4.0, YF), (XW, YF)] + ([(XW, P3[1])] if abs(P3[1] - YF) > .01 else []) + \
+        [(X0, P3[1]), (X0, Y1 + 6.0), (-58.0, Y1 + 6.0)]
     slab('Lawn', lawn, 0.0, LAWN_Z, 'lawn', 'site')
     slab('North yard', [(X0, Y1), (X1 + 22.0, Y1), (X1 + 22.0, Y1 + 14.0), (X0, Y1 + 14.0)], 0.0, .05, 'concrete', 'site')
     from shapely.geometry import Polygon as _P
@@ -2579,7 +2586,8 @@ def site():
         if area < 0:
             nx, ny = -nx, -ny
         zc = (LAWN_Z - .02 + KERB_Z) / 2
-        b.beam('kerb', (x0 + nx * .11, y0 + ny * .11, zc), (x1 + nx * .11, y1 + ny * .11, zc), .22, KERB_Z - LAWN_Z + .02, ext=.11)
+        dz = .003 * (i % 2)                                                # alternate runs 3 mm apart where they overlap at corners
+        b.beam('kerb', (x0 + nx * .11, y0 + ny * .11, zc + dz / 2), (x1 + nx * .11, y1 + ny * .11, zc + dz / 2), .22 - .002 * (i % 2), KERB_Z - LAWN_Z + .02 + dz, ext=.11)
     b.flush('apron edge')
     # Bent steel bouldering frame and a dark disc on the apron (front, top).
     fx, fy = wx(.56), YF - 5.4
@@ -2592,9 +2600,12 @@ def site():
     b = Batch()
     frustum(b, 'hold', fx + 2.2, fy - 2.4, APRON_Z - .01, APRON_Z + .16, .95, .85, 24)
     b.flush('apron disc')
-    for name, pts_, w in (('Path', [(-70.0, YF - 16.0), (-58.0, YF - 12.6), (-48.0, YF - 9.4), (XW - 2.0, YF - 8.4), (wx(.2), YF - 9.0), (wx(.33), YF - 9.6), (wx(.41), YF - 8.2)], 2.4),
+    paths = []
+    for name, pts_, w in (('Path', [(-58.0, YF - 15.0), (-58.0, YF - 12.6), (-48.0, YF - 9.4), (XW - 2.0, YF - 8.4), (wx(.2), YF - 9.0), (wx(.33), YF - 9.6), (wx(.41), YF - 8.2)], 2.4),
                           ('Path to the west door', [(-48.0, YF - 9.4), (-38.0, YF - 4.0), (XW - 2.6, P3[1] - .3)], 2.0)):
-        slab(name, path_poly(pts_, w), LAWN_Z - .02, PATH_Z, 'path', 'site')
+        paths.append(path_poly(pts_, w))
+    for k, poly in enumerate(union_polys(paths)):
+        slab(f'Path {k}', poly, LAWN_Z - .02, PATH_Z, 'path', 'site')
     for name, poly in (('Bed W', BED_W), ('Bed E', BED_E)):
         slab(name, poly, LAWN_Z - .02, .14, 'mulch', 'site')
     slab('East plaza', [(GL_GF - .02, YF + 1.2), (X1, YF + 1.2), (X1, YF - 4.0), (X1 + 22.0, YF - 12.0), (X1 + 22.0, Y1 + 4.0), (X1, Y1 + 4.0), (X1, Y1 - 1.6), (GL_GF - .02, Y1 - 1.6)], 0.0, PLAZA_Z, 'paving', 'site')
@@ -2649,7 +2660,7 @@ def context():
     for x0, x1 in WH:
         pitched_roof(f'Warehouse roof {x0:.0f}', x0, x1, wy0, wy1, 14.0, 7.0, False, False, 'y', .4, 'slate', 'context')
         for y in (wy0, wy1):
-            C.prism(f'Warehouse gable {x0:.0f} {y:.0f}', [(x0, 14.0), (x1, 14.0), ((x0 + x1) / 2, 21.0)], 'y', y - .2 if y == wy0 else y - .3, y + .3 if y == wy0 else y + .2, 'brick', 'context')
+            C.prism(f'Warehouse gable {x0:.0f} {y:.0f}', [(x0, 14.0), (x1, 14.0), ((x0 + x1) / 2, 21.0)], 'y', y - .46 if y == wy0 else y - .3, y + .3 if y == wy0 else y + .46, 'brick', 'context')   # encloses the roof plate's gable closure
 
 
 def cyl(b, role, cx, cy, z0, z1, r, n=12):
