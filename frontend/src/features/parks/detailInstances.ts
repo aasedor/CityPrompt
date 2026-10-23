@@ -4,6 +4,7 @@ import { WGS84_ELLIPSOID } from "3d-tiles-renderer";
 import { DIRECT_3D_CAPTURE_CONTEXT_USER_DATA } from "@/components/viewer/globe/direct3dCapture";
 
 export interface DetailPlacement {
+  people_action?: import('@/features/people/peopleActions').PeopleActionId;
   id?: string;
   lng: number;
   lat: number;

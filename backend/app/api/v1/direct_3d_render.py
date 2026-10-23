@@ -140,8 +140,7 @@ def _has_building_plot_landscape(zone: SiteZone, all_zones: list[SiteZone]) -> b
 
 
 async def _current_render_details(req, db):
-    if getattr(req, "details_revision", None) is None:
-        return None
+    """An omitted capture revision claims empty details; always check current state."""
     project = (await db.execute(
         select(Project).where(Project.id == req.project_id).execution_options(populate_existing=True)
     )).scalar_one_or_none()
@@ -169,6 +168,10 @@ def _validate_direct_3d_project_zones(
     ]
     all_physical_zones = physical_community_3d_zones(zones)
     details_revision = getattr(req, "details_revision", None)
+    if details_revision is None and project_details and any(
+        project_details.get(key) for key in ("benches", "trees", "props", "surfaces")
+    ):
+        raise _direct_state_conflict("Saved details changed. Reload the scene before rendering.")
     if details_revision is not None:
         if (not project_details or project_details.get("revision") != details_revision
             or not any(project_details.get(key) for key in ("benches", "trees", "props", "surfaces"))):
@@ -345,6 +348,12 @@ def _validate_direct_3d_project_zones(
         server_inventory,
         available_buildings,
     )
+    from app.services.people_actions import people_action_direction
+
+    if project_details:
+        for item in server_inventory:
+            if item.get('instance_id') == 'project-details':
+                item['people_action_direction'] = people_action_direction(project_details)
     if len(boundaries) > 1:
         raise _direct_state_conflict(
             "Direct 3D requires one authoritative site boundary. Resolve duplicate "

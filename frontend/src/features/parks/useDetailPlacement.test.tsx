@@ -6,6 +6,26 @@ import type { ProjectDetails } from './projectBenches';
 
 const initial: ProjectDetails = { version: 1, revision: 4, can_edit: true, benches: [], trees: [], props: [], surfaces: [] };
 describe('persistent detail placement', () => {
+  it('saves, moves, copies and undoes a person action without changing another person', async () => {
+    const person = {id:'reader',lng:-114,lat:51,angle:0,variant:'people-pilot-commuter',people_action:'reading' as const};
+    const save=vi.fn(async(data:ProjectDetails)=>({...data,revision:data.revision+1}));
+    const {result}=renderHook(()=>useDetailPlacement({...initial,props:[person]},save,'detail-project'));
+    act(()=>result.current.selectItem(person.id));
+    await act(()=>result.current.setPeopleAction('waving'));
+    expect(save.mock.calls[0][0].props![0].people_action).toBe('waving');
+    expect(result.current.editing?.people_action).toBe('waving');
+    await act(()=>result.current.rotateBy(15));
+    expect(save.mock.calls[1][0].props![0].people_action).toBe('waving');
+    act(()=>result.current.choose(person.variant,result.current.editing?.people_action));
+    expect(result.current.selectedAction).toBe('waving');
+    await act(()=>result.current.place([-114.001,51.001]));
+    expect(save.mock.calls[2][0].props).toHaveLength(2);
+    expect(save.mock.calls[2][0].props![1].people_action).toBe('waving');
+    await act(()=>useUndoRedoStore.getState().undo());
+    await act(()=>useUndoRedoStore.getState().undo());
+    await act(()=>useUndoRedoStore.getState().undo());
+    expect(save.mock.calls[save.mock.calls.length-1][0].props).toEqual([person]);
+  });
   it('refuses unsupported placement and edits while still allowing deletion',async()=>{
     const save=vi.fn(async(data:ProjectDetails)=>({...data,revision:data.revision+1}));
     const validate=vi.fn(()=>({ok:false as const,message:'The footprint crosses a gap.'}));

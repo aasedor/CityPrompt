@@ -1,0 +1,1496 @@
+{
+  "schemaVersion": 1,
+  "initiative": "people-actions-2026-10-22",
+  "localOnly": true,
+  "coordinates": {
+    "unit": "metre",
+    "up": "+Y",
+    "forward": "+Z",
+    "feetY": 0
+  },
+  "sources": [
+    {
+      "title": "Universal Base Characters Standard",
+      "creator": "Quaternius",
+      "officialPage": "https://quaternius.com/packs/universalbasecharacters.html",
+      "officialDownloadPage": "https://quaternius.itch.io/universal-base-characters",
+      "downloadMethod": "Official public No thanks, just take me to the downloads, Standard file only; no sign-in or payment.",
+      "archiveFile": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\characters\\sources\\universal-base-characters-standard.zip",
+      "archiveByteSize": 128968391,
+      "archiveSha256": "fdbf1804c90dfc1ea03e992bff7da2dfd1a79318e13270a660180f9308455f40",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseFile": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\characters\\sources\\universal-base-characters\\Universal Base Characters[Standard]\\License_Standard.txt",
+      "licenseSha256": "0f4beaf0fe360a7732e58bbe3dbf60a2422367fbea60cb9ea4add968f383268e"
+    },
+    {
+      "title": "Universal Animation Library Standard",
+      "creator": "Quaternius",
+      "officialPage": "https://quaternius.com/packs/universalanimationlibrary.html",
+      "officialDownloadPage": "https://quaternius.itch.io/universal-animation-library",
+      "downloadMethod": "Official public No thanks, just take me to the downloads, Standard file only; no sign-in or payment.",
+      "archiveFile": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\characters\\sources\\universal-animation-library-standard.zip",
+      "archiveByteSize": 15904933,
+      "archiveSha256": "cc73fc4e495b82958207316596317a3f40b9fa38065bde1027937452da537724",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "licenseFile": "C:\\dev-artifacts\\CityPrompt\\people-video-pilot-2026-10-21\\characters\\sources\\universal-animation-library\\Universal Animation Library[Standard]\\License.txt",
+      "licenseSha256": "6d01f55c6e4c49a2c9963e147e561945ae2c83958c8ca667d90a6bffdbfac061"
+    }
+  ],
+  "immutableOriginalsVerified": [
+    {
+      "id": "people-pilot-commuter",
+      "sha256": "123dd1a32a1f33141fbb52aa7e7ef7eb0d543d06d7517a890ee474a8d2dc06e5",
+      "bytes": 1096500
+    },
+    {
+      "id": "people-pilot-creative",
+      "sha256": "8be2a865c978bdf91ec6e1fd6a28c3725293fb10e7bac268fe06da9ac0a8be81",
+      "bytes": 1077976
+    },
+    {
+      "id": "people-pilot-neighbour",
+      "sha256": "8a7f19f6dceed71350c6106c633ecaaa0d5021a804bf4a7ef5f011fd2ad0398f",
+      "bytes": 796312
+    }
+  ],
+  "buildFiles": [
+    {
+      "path": "tools/people_pilot/build_characters.py",
+      "sha256": "c7240c730291c25697f79ac156a0bd4bb1b14786617b736ef48dcb0811b9c2c4"
+    },
+    {
+      "path": "tools/people_pilot/build_community.py",
+      "sha256": "c5a18cb8cb5b6689918b63c46bdf4fcab94feb20187ce785a366637dcda01a05",
+      "generationSourceArchive": "C:\\dev-artifacts\\CityPrompt\\people-actions-2026-10-22\\characters\\sources\\build_community.used.py",
+      "checkpointSha256": "26b4e2a79ea9da950c000307b673ef5df9fe93950006b51b7bff7844c69f976a",
+      "checkpointNote": "Removed a redundant final blank line after generation; executable source unchanged. sha256 retains the exact generation input."
+    },
+    {
+      "path": "tools/people_pilot/community_shapes.py",
+      "sha256": "cf618e9d2099a2ff5272ddf467e655e88c31ed79bf566c595550776f11ed1685"
+    },
+    {
+      "path": "tools/people_pilot/community_designs.json",
+      "sha256": "168bb459a7df70681d0fde95768668a6bedff1e83872acc488b7a78c43ffcc44"
+    },
+    {
+      "path": "tools/people_pilot/measure_community.py",
+      "sha256": "9a6ce51dd6a880bd285ef9a1a69e781281606bdcc58c298901c9cb44b54bf512"
+    },
+    {
+      "path": "tools/people_pilot/render_community_views.py",
+      "sha256": "6c2610c876827f02a6b8195e1ae779bb6fe1cc65aa69ad027a3e8ad51c322f48"
+    },
+    {
+      "path": "tools/people_pilot/promote_community.py",
+      "sha256": "65d5865b19615bcb11b359008c298e887162ed5c904372206a44a86875b838af"
+    }
+  ],
+  "authorship": "CC0 Quaternius adult anatomy/hair/motion; derived garment topology, fitted/tapered silhouettes, shoulder closures, face-width variations, palette and measured foot grounding.",
+  "limitations": [
+    "Stylized low polygon faces; two source adult anatomical bases, not twenty independently sculpted anatomies.",
+    "Long sleeves and full trousers throughout; garments vary in fit, collar, hem and coat silhouette.",
+    "Approximate ankle-range walk calibration; no cloth simulation or pathfinding.",
+    "Decoded costs exclude renderer overhead, GPU allocator overhead and browser caches.",
+    "Walk/Idle grounding sampled at 41 times each. Procedural action pose QA is a separate runtime gate.",
+    "The fifteen runtime actions use deterministic procedural poses over these rigs. Running uses a faster Walk clip; no native Run or fifteen-clip action library is included.",
+    "Walking needs clear level paths; no automatic obstacle avoidance, chair detection or pathfinding. Sitting needs a student-provided seat."
+  ],
+  "actors": [
+    {
+      "id": "people-community-ava",
+      "design": {
+        "name": "Ava",
+        "gender": "Female",
+        "hair": "Hair_Buns",
+        "height": 1.76,
+        "jacket": "#286b66",
+        "shirt": "#e4ded1",
+        "trousers": "#262b35",
+        "shoes": "#e7e2d7",
+        "hair_color": "#33241f",
+        "skin": "#9c684b",
+        "outfit": "fitted track jacket",
+        "fit": 0.91,
+        "hem": 0.0,
+        "leg_fit": 0.87,
+        "body_width": 0.94,
+        "body_depth": 0.98,
+        "face_width": 1.03,
+        "coat": false,
+        "collar": "stand",
+        "id": "people-community-ava"
+      },
+      "sha256": "e71b0b90e3d1d73771d809389ce545abda152923539b474e5bad6de7ce446bef",
+      "bytes": 1135364,
+      "triangles": 14756,
+      "bones": 65,
+      "meshPrimitives": 17,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 961516,
+      "estimatedDecodedBytes": 1664728,
+      "dimensions": [
+        0.6590729355812073,
+        0.7122158706188202,
+        1.7327432548627257
+      ],
+      "walkStrideMeters": 1.2969295978546143,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -6.547197699546814e-06,
+          "soleYMax": -3.632158041000366e-07
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0019440120086073875,
+          "soleYMax": 0.006625781301409006
+        }
+      ],
+      "thumbnailSha256": "824cbefff0795979553a6f431b29ac4b5987b25363093f7cc76d0d8d0a1c4aa1"
+    },
+    {
+      "id": "people-community-noah",
+      "design": {
+        "name": "Noah",
+        "gender": "Male",
+        "hair": "Hair_Buzzed",
+        "height": 1.89,
+        "jacket": "#343c4b",
+        "shirt": "#e4dbc4",
+        "trousers": "#6b7567",
+        "shoes": "#e0dfd9",
+        "hair_color": "#251e1a",
+        "skin": "#b98260",
+        "outfit": "slim utility jacket",
+        "fit": 0.94,
+        "hem": 0.02,
+        "leg_fit": 0.91,
+        "body_width": 1.02,
+        "body_depth": 1.0,
+        "face_width": 0.98,
+        "coat": false,
+        "collar": "fold",
+        "id": "people-community-noah"
+      },
+      "sha256": "03a5b33cafd3673a1a404b2215422da341d51bd6d264c2483cd0ffdc1bc88f48",
+      "bytes": 825444,
+      "triangles": 12062,
+      "bones": 65,
+      "meshPrimitives": 18,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 651008,
+      "estimatedDecodedBytes": 1354220,
+      "dimensions": [
+        0.8501046597957611,
+        0.7799092531204224,
+        1.8563465336337686
+      ],
+      "walkStrideMeters": 1.395971640944481,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -3.589317202568054e-06,
+          "soleYMax": 2.60770320892334e-08
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0021451804786920547,
+          "soleYMax": 0.006058363243937492
+        }
+      ],
+      "thumbnailSha256": "ee08f66cc2c5ec5849ee41b8b94aa212ee7b834831f0b12945ad9f0aea2c4d75"
+    },
+    {
+      "id": "people-community-zara",
+      "design": {
+        "name": "Zara",
+        "gender": "Female",
+        "hair": "Hair_Long",
+        "height": 1.71,
+        "jacket": "#b3664c",
+        "shirt": "#ece6dc",
+        "trousers": "#343440",
+        "shoes": "#d5c6af",
+        "hair_color": "#211c1b",
+        "skin": "#664633",
+        "outfit": "longline terracotta coat",
+        "fit": 0.96,
+        "hem": 0.05,
+        "leg_fit": 0.93,
+        "body_width": 0.95,
+        "body_depth": 0.98,
+        "face_width": 1.05,
+        "coat": true,
+        "collar": "fold",
+        "id": "people-community-zara"
+      },
+      "sha256": "fa8068cf4cb9ef9626aac381c0a7bcc3099dafee2fcfe36bbcb528aad3d4aa90",
+      "bytes": 1113688,
+      "triangles": 14442,
+      "bones": 65,
+      "meshPrimitives": 17,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 939692,
+      "estimatedDecodedBytes": 1642904,
+      "dimensions": [
+        0.6478581428527832,
+        0.6927270889282227,
+        1.682690316811204
+      ],
+      "walkStrideMeters": 1.261440560221672,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -6.021000444889069e-06,
+          "soleYMax": -1.7136335372924805e-07
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.001890759915113449,
+          "soleYMax": 0.006444647908210754
+        }
+      ],
+      "thumbnailSha256": "7b62f1e5c4072327406733974865d4843f3654192752a1f485d82392777c3de5"
+    },
+    {
+      "id": "people-community-leo",
+      "design": {
+        "name": "Leo",
+        "gender": "Male",
+        "hair": "Hair_SimpleParted",
+        "height": 1.82,
+        "jacket": "#5b7692",
+        "shirt": "#e5ded3",
+        "trousers": "#273744",
+        "shoes": "#b4a48d",
+        "hair_color": "#52362a",
+        "skin": "#d2a17d",
+        "outfit": "blue athletic knit",
+        "fit": 0.9,
+        "hem": 0.0,
+        "leg_fit": 0.86,
+        "body_width": 0.98,
+        "body_depth": 0.96,
+        "face_width": 1.03,
+        "coat": false,
+        "collar": "stand",
+        "id": "people-community-leo"
+      },
+      "sha256": "809f22d938c35ea6fb6a5ec70157c0dbf82e21c41d19dd10ca512ae93fdb7170",
+      "bytes": 846152,
+      "triangles": 12581,
+      "bones": 65,
+      "meshPrimitives": 19,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 671078,
+      "estimatedDecodedBytes": 1374290,
+      "dimensions": [
+        0.7753674685955048,
+        0.7107603251934052,
+        1.7858381634578109
+      ],
+      "walkStrideMeters": 1.2721974551677704,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -3.398396074771881e-06,
+          "soleYMax": 7.729977369308472e-08
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0020380299538373947,
+          "soleYMax": 0.005751247052103281
+        }
+      ],
+      "thumbnailSha256": "878f751b192845fcdc5d8e9b7466b1cf892c85cbb2445e09701f65ac4b5ac6c0"
+    },
+    {
+      "id": "people-community-imani",
+      "design": {
+        "name": "Imani",
+        "gender": "Female",
+        "hair": "Hair_BuzzedFemale",
+        "height": 1.8,
+        "jacket": "#d2bb91",
+        "shirt": "#eee7d9",
+        "trousers": "#62533f",
+        "shoes": "#e5ded0",
+        "hair_color": "#2b211c",
+        "skin": "#704a37",
+        "outfit": "sand tailored overshirt",
+        "fit": 0.95,
+        "hem": 0.025,
+        "leg_fit": 0.92,
+        "body_width": 1.0,
+        "body_depth": 0.98,
+        "face_width": 0.96,
+        "coat": false,
+        "collar": "fold",
+        "id": "people-community-imani"
+      },
+      "sha256": "2fad55fe6db24dcb53b452dd13dd8189a77b1f85b3599ac33671efea1c0a1d83",
+      "bytes": 959916,
+      "triangles": 12254,
+      "bones": 65,
+      "meshPrimitives": 16,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 786808,
+      "estimatedDecodedBytes": 1490020,
+      "dimensions": [
+        0.7203907668590546,
+        0.7317696511745453,
+        1.7704938929527998
+      ],
+      "walkStrideMeters": 1.332537516951561,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -6.3925981521606445e-06,
+          "soleYMax": -1.3317912817001343e-07
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0019968273118138313,
+          "soleYMax": 0.006808123085647821
+        }
+      ],
+      "thumbnailSha256": "afd14cb8d4d8f99ff936f960623f0eb46372bed7006df7c5b5047b1f64b2e133"
+    },
+    {
+      "id": "people-community-luca",
+      "design": {
+        "name": "Luca",
+        "gender": "Male",
+        "hair": "Hair_Beard",
+        "height": 1.86,
+        "jacket": "#405d48",
+        "shirt": "#ece8d9",
+        "trousers": "#a59a7c",
+        "shoes": "#3a352e",
+        "hair_color": "#30251d",
+        "skin": "#aa7851",
+        "outfit": "forest weekend jacket",
+        "fit": 1.02,
+        "hem": 0.04,
+        "leg_fit": 1.06,
+        "body_width": 1.04,
+        "body_depth": 1.03,
+        "face_width": 1.04,
+        "coat": false,
+        "collar": "fold",
+        "id": "people-community-luca"
+      },
+      "sha256": "e9fd86a9e5669ad501a2d9af2a2e19895d3fb4eafafa561c83e54b57ddf60c6f",
+      "bytes": 833436,
+      "triangles": 12266,
+      "bones": 65,
+      "meshPrimitives": 18,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 658992,
+      "estimatedDecodedBytes": 1362204,
+      "dimensions": [
+        0.8546271920204163,
+        0.7958319783210754,
+        1.8264644807204604
+      ],
+      "walkStrideMeters": 1.4176968187093735,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -3.67872416973114e-06,
+          "soleYMax": -9.220093488693237e-08
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0021160319447517395,
+          "soleYMax": 0.005973219405859709
+        }
+      ],
+      "thumbnailSha256": "29bebe97bc8735c335ec7712bf16bb766903a3a2b7530bb7050a4a2a92bf98b1"
+    },
+    {
+      "id": "people-community-nina",
+      "design": {
+        "name": "Nina",
+        "gender": "Female",
+        "hair": "Hair_SimpleParted",
+        "height": 1.66,
+        "jacket": "#715e81",
+        "shirt": "#e2d8dc",
+        "trousers": "#30313b",
+        "shoes": "#d2c6bf",
+        "hair_color": "#51352a",
+        "skin": "#d6ad8d",
+        "outfit": "plum fitted zip top",
+        "fit": 0.9,
+        "hem": 0.0,
+        "leg_fit": 0.84,
+        "body_width": 0.93,
+        "body_depth": 0.95,
+        "face_width": 0.98,
+        "coat": false,
+        "collar": "stand",
+        "id": "people-community-nina"
+      },
+      "sha256": "9de268992ec157b46a0dd138f92be9ed9d7b1bd19b51baa1f4f2537cd74acf9a",
+      "bytes": 980876,
+      "triangles": 12773,
+      "bones": 65,
+      "meshPrimitives": 17,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 806878,
+      "estimatedDecodedBytes": 1510090,
+      "dimensions": [
+        0.5948618948459625,
+        0.6298511326313019,
+        1.6304279509931803
+      ],
+      "walkStrideMeters": 1.146947056055069,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -5.842186510562897e-06,
+          "soleYMax": -1.5273690223693848e-07
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0017726672813296318,
+          "soleYMax": 0.006045623682439327
+        }
+      ],
+      "thumbnailSha256": "936548f4d12c6a8c804dcf5dce1c8fcb37eeaba3e47c7c38709fbfcfd1247899"
+    },
+    {
+      "id": "people-community-owen",
+      "design": {
+        "name": "Owen",
+        "gender": "Male",
+        "hair": "Hair_Buzzed",
+        "height": 1.93,
+        "jacket": "#9a6f4c",
+        "shirt": "#e6ded0",
+        "trousers": "#313b40",
+        "shoes": "#d7d3c6",
+        "hair_color": "#583b28",
+        "skin": "#ddaf83",
+        "outfit": "ochre longline jacket",
+        "fit": 0.98,
+        "hem": 0.1,
+        "leg_fit": 0.97,
+        "body_width": 1.02,
+        "body_depth": 1.01,
+        "face_width": 1.02,
+        "coat": false,
+        "collar": "fold",
+        "id": "people-community-owen"
+      },
+      "sha256": "c05968246d704a93e6fa90adc6ee8f017991c3d09e983e7bb2f0b643373a16aa",
+      "bytes": 825756,
+      "triangles": 12062,
+      "bones": 65,
+      "meshPrimitives": 18,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 651008,
+      "estimatedDecodedBytes": 1354220,
+      "dimensions": [
+        0.868097186088562,
+        0.8043785989284515,
+        1.895634226500988
+      ],
+      "walkStrideMeters": 1.4397679269313812,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -3.3248215913772583e-06,
+          "soleYMax": 3.734603524208069e-07
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.002191496081650257,
+          "soleYMax": 0.006186618469655514
+        }
+      ],
+      "thumbnailSha256": "c8d6d60d985a9b0ef3925cc72a6298010924df27a6bf94c1a08f025a87d5cca8"
+    },
+    {
+      "id": "people-community-amara",
+      "design": {
+        "name": "Amara",
+        "gender": "Female",
+        "hair": "Hair_Buns",
+        "height": 1.84,
+        "jacket": "#3c4f6d",
+        "shirt": "#e9e2d3",
+        "trousers": "#7b7667",
+        "shoes": "#e6e0d5",
+        "hair_color": "#191817",
+        "skin": "#50392d",
+        "outfit": "navy training jacket",
+        "fit": 0.92,
+        "hem": 0.01,
+        "leg_fit": 0.88,
+        "body_width": 1.01,
+        "body_depth": 0.99,
+        "face_width": 0.95,
+        "coat": false,
+        "collar": "stand",
+        "id": "people-community-amara"
+      },
+      "sha256": "a70330161f0f0681c365c04adac614869e7a1af5350df71f9a48aa5904312173",
+      "bytes": 1135908,
+      "triangles": 14756,
+      "bones": 65,
+      "meshPrimitives": 17,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 961516,
+      "estimatedDecodedBytes": 1664728,
+      "dimensions": [
+        0.7403419315814972,
+        0.7521867454051971,
+        1.8114263014867902
+      ],
+      "walkStrideMeters": 1.3697147518396378,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -6.734393537044525e-06,
+          "soleYMax": -2.1047890186309814e-07
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.002032484859228134,
+          "soleYMax": 0.006926768459379673
+        }
+      ],
+      "thumbnailSha256": "35d40372214f1a763f9b82e754dba10877a8f1688ea4ebbe97e004f7fa850879"
+    },
+    {
+      "id": "people-community-mateo",
+      "design": {
+        "name": "Mateo",
+        "gender": "Male",
+        "hair": "Hair_SimpleParted",
+        "height": 1.78,
+        "jacket": "#8d5546",
+        "shirt": "#e5d8be",
+        "trousers": "#343746",
+        "shoes": "#d8c7ab",
+        "hair_color": "#241c18",
+        "skin": "#956745",
+        "outfit": "rust slim overshirt",
+        "fit": 0.92,
+        "hem": 0.035,
+        "leg_fit": 0.9,
+        "body_width": 0.96,
+        "body_depth": 0.97,
+        "face_width": 1.06,
+        "coat": false,
+        "collar": "fold",
+        "id": "people-community-mateo"
+      },
+      "sha256": "8148f0b477c6e4be54cb92ffa5f78c06eb3896929b23cc102d0eef6b5157b7f2",
+      "bytes": 843932,
+      "triangles": 12533,
+      "bones": 65,
+      "meshPrimitives": 18,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 668966,
+      "estimatedDecodedBytes": 1372178,
+      "dimensions": [
+        0.7428502440452576,
+        0.7023810148239136,
+        1.7466051680967212
+      ],
+      "walkStrideMeters": 1.2572008520364761,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -3.2437965273857117e-06,
+          "soleYMax": 9.12696123123169e-08
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0019927192479372025,
+          "soleYMax": 0.005624812096357346
+        }
+      ],
+      "thumbnailSha256": "a479d3ec2e2837868a21608590864b0bf8cb7dc4403678eb9ba64fd1fb009053"
+    },
+    {
+      "id": "people-community-clara",
+      "design": {
+        "name": "Clara",
+        "gender": "Female",
+        "hair": "Hair_Long",
+        "height": 1.73,
+        "jacket": "#a89a83",
+        "shirt": "#f0e7d5",
+        "trousers": "#454d47",
+        "shoes": "#54483b",
+        "hair_color": "#a87548",
+        "skin": "#e0b99a",
+        "outfit": "taupe open coat",
+        "fit": 1.02,
+        "hem": 0.06,
+        "leg_fit": 1.02,
+        "body_width": 0.97,
+        "body_depth": 1.02,
+        "face_width": 1.01,
+        "coat": true,
+        "collar": "fold",
+        "id": "people-community-clara"
+      },
+      "sha256": "3503d4fe2e59653e843b5df69489151d56d3475e3083a17da75949a28d0b0390",
+      "bytes": 1113740,
+      "triangles": 14442,
+      "bones": 65,
+      "meshPrimitives": 17,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 939692,
+      "estimatedDecodedBytes": 1642904,
+      "dimensions": [
+        0.6692341566085815,
+        0.7294343709945679,
+        1.7023376692086458
+      ],
+      "walkStrideMeters": 1.3282838314771652,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -6.209127604961395e-06,
+          "soleYMax": -1.7043203115463257e-07
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.001912861131131649,
+          "soleYMax": 0.00651996536180377
+        }
+      ],
+      "thumbnailSha256": "dc740ca47d0163ee6b1684f292485e03318a52adca8f9b969a86f54728934fe6"
+    },
+    {
+      "id": "people-community-kai",
+      "design": {
+        "name": "Kai",
+        "gender": "Male",
+        "hair": "Hair_Buzzed",
+        "height": 1.84,
+        "jacket": "#3c7a80",
+        "shirt": "#e9e1cf",
+        "trousers": "#303c40",
+        "shoes": "#e4e0d9",
+        "hair_color": "#171717",
+        "skin": "#b08b6b",
+        "outfit": "teal fitted track top",
+        "fit": 0.89,
+        "hem": 0.0,
+        "leg_fit": 0.85,
+        "body_width": 0.98,
+        "body_depth": 0.95,
+        "face_width": 0.95,
+        "coat": false,
+        "collar": "stand",
+        "id": "people-community-kai"
+      },
+      "sha256": "08d1c8497fbcf5fcf1a233026d4b8e5a8ba38593ac12018e43c2b4fe4fec5d06",
+      "bytes": 828512,
+      "triangles": 12110,
+      "bones": 65,
+      "meshPrimitives": 19,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 653120,
+      "estimatedDecodedBytes": 1356332,
+      "dimensions": [
+        0.7951598167419434,
+        0.721312016248703,
+        1.8072369890287519
+      ],
+      "walkStrideMeters": 1.2910856306552887,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -3.291293978691101e-06,
+          "soleYMax": 1.51805579662323e-07
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0020894231274724007,
+          "soleYMax": 0.005898069590330124
+        }
+      ],
+      "thumbnailSha256": "6d75ded1cd156271cca17286c3fc98ef699ed7a8919176565a677ae66534f600"
+    },
+    {
+      "id": "people-community-ines",
+      "design": {
+        "name": "Ines",
+        "gender": "Female",
+        "hair": "Hair_BuzzedFemale",
+        "height": 1.69,
+        "jacket": "#9d684f",
+        "shirt": "#e7dbca",
+        "trousers": "#d4c8ab",
+        "shoes": "#eee7d9",
+        "hair_color": "#342821",
+        "skin": "#b7845c",
+        "outfit": "copper cropped jacket",
+        "fit": 0.93,
+        "hem": -0.025,
+        "leg_fit": 0.94,
+        "body_width": 0.96,
+        "body_depth": 0.99,
+        "face_width": 1.06,
+        "coat": false,
+        "collar": "fold",
+        "id": "people-community-ines"
+      },
+      "sha256": "79d8ddc8ce95ac4d766a0275a789cc0d87d65de9238f73094d08136ce911428d",
+      "bytes": 959880,
+      "triangles": 12254,
+      "bones": 65,
+      "meshPrimitives": 16,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 786808,
+      "estimatedDecodedBytes": 1490020,
+      "dimensions": [
+        0.6493127644062042,
+        0.6940602958202362,
+        1.6622972479090095
+      ],
+      "walkStrideMeters": 1.2638674825429916,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -6.063841283321381e-06,
+          "soleYMax": -9.592622518539429e-08
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0018756892532110214,
+          "soleYMax": 0.0063912938348948956
+        }
+      ],
+      "thumbnailSha256": "5e4e085d965b41cd894078dc965adf642dcaf9215bc00d17d5eda95b31de4f2d"
+    },
+    {
+      "id": "people-community-jules",
+      "design": {
+        "name": "Jules",
+        "gender": "Male",
+        "hair": "Hair_Beard",
+        "height": 1.91,
+        "jacket": "#767b72",
+        "shirt": "#d5ccb8",
+        "trousers": "#454641",
+        "shoes": "#bcb29c",
+        "hair_color": "#5b4a3b",
+        "skin": "#c89977",
+        "outfit": "olive relaxed overshirt",
+        "fit": 1.04,
+        "hem": 0.055,
+        "leg_fit": 1.09,
+        "body_width": 1.06,
+        "body_depth": 1.04,
+        "face_width": 0.99,
+        "coat": false,
+        "collar": "fold",
+        "id": "people-community-jules"
+      },
+      "sha256": "2c97dfa275b122634048cf290cb7924dce65bd7ff9b57aa8301be425b0172248",
+      "bytes": 833740,
+      "triangles": 12266,
+      "bones": 65,
+      "meshPrimitives": 18,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 658992,
+      "estimatedDecodedBytes": 1362204,
+      "dimensions": [
+        0.8944774568080902,
+        0.8271588087081909,
+        1.875538820400834
+      ],
+      "walkStrideMeters": 1.469941884279251,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -3.573484718799591e-06,
+          "soleYMax": 1.862645149230957e-09
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0021730726584792137,
+          "soleYMax": 0.006133864633738995
+        }
+      ],
+      "thumbnailSha256": "462d985a31eaeddfb3c7c6d046f84c1c0a89cd38a697bf3cb34d779ff5b257fc"
+    },
+    {
+      "id": "people-community-sana",
+      "design": {
+        "name": "Sana",
+        "gender": "Female",
+        "hair": "Hair_SimpleParted",
+        "height": 1.78,
+        "jacket": "#884f64",
+        "shirt": "#ece3da",
+        "trousers": "#283840",
+        "shoes": "#d1c8b9",
+        "hair_color": "#201c1a",
+        "skin": "#9e7655",
+        "outfit": "berry athletic knit",
+        "fit": 0.9,
+        "hem": 0.005,
+        "leg_fit": 0.86,
+        "body_width": 0.97,
+        "body_depth": 0.96,
+        "face_width": 1.02,
+        "coat": false,
+        "collar": "stand",
+        "id": "people-community-sana"
+      },
+      "sha256": "589069cf6a41354a39b8096f021ca09eefc01b1aa9ed4584b1440f5ab2938f4b",
+      "bytes": 981384,
+      "triangles": 12773,
+      "bones": 65,
+      "meshPrimitives": 17,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 806878,
+      "estimatedDecodedBytes": 1510090,
+      "dimensions": [
+        0.66529980301857,
+        0.6824915707111359,
+        1.748316460289061
+      ],
+      "walkStrideMeters": 1.2428038269281387,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -6.079673767089844e-06,
+          "soleYMax": -1.862645149230957e-09
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0019008973613381386,
+          "soleYMax": 0.00648221280425787
+        }
+      ],
+      "thumbnailSha256": "9afb47317d58dd60ce23ba4836abe0f65f5bfa0d38da9c3980db69bcb84d207b"
+    },
+    {
+      "id": "people-community-felix",
+      "design": {
+        "name": "Felix",
+        "gender": "Male",
+        "hair": "Hair_SimpleParted",
+        "height": 1.8,
+        "jacket": "#c2ad8c",
+        "shirt": "#eee4cf",
+        "trousers": "#60727a",
+        "shoes": "#e4dacf",
+        "hair_color": "#a0784a",
+        "skin": "#ddb28e",
+        "outfit": "linen utility jacket",
+        "fit": 0.96,
+        "hem": 0.025,
+        "leg_fit": 1.0,
+        "body_width": 0.96,
+        "body_depth": 1.0,
+        "face_width": 0.96,
+        "coat": false,
+        "collar": "fold",
+        "id": "people-community-felix"
+      },
+      "sha256": "d19014391e2069d8015935067a579a6d2e39681a7fe555d7e6a7ac9c22f706df",
+      "bytes": 843800,
+      "triangles": 12533,
+      "bones": 65,
+      "meshPrimitives": 18,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 668966,
+      "estimatedDecodedBytes": 1372178,
+      "dimensions": [
+        0.7511957287788391,
+        0.7322406470775604,
+        1.7661748491227627
+      ],
+      "walkStrideMeters": 1.310648337006569,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -3.411434590816498e-06,
+          "soleYMax": 5.587935447692871e-08
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0020142700523138046,
+          "soleYMax": 0.005687965080142021
+        }
+      ],
+      "thumbnailSha256": "da79c64e1f8c7e94d2e7a66851c447e7ef208c917b2f97f2ed9a0d787b308698"
+    },
+    {
+      "id": "people-community-rhea",
+      "design": {
+        "name": "Rhea",
+        "gender": "Female",
+        "hair": "Hair_Buns",
+        "height": 1.65,
+        "jacket": "#67745b",
+        "shirt": "#e9dfc8",
+        "trousers": "#363d39",
+        "shoes": "#d7c9ad",
+        "hair_color": "#57402d",
+        "skin": "#c79570",
+        "outfit": "sage short utility coat",
+        "fit": 0.95,
+        "hem": 0.04,
+        "leg_fit": 0.9,
+        "body_width": 0.94,
+        "body_depth": 0.98,
+        "face_width": 0.97,
+        "coat": true,
+        "collar": "fold",
+        "id": "people-community-rhea"
+      },
+      "sha256": "390adfe571148345cb4b6464d93cca75c77a3525def7e451264531d228ae99ab",
+      "bytes": 1137984,
+      "triangles": 14820,
+      "bones": 65,
+      "meshPrimitives": 17,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 963904,
+      "estimatedDecodedBytes": 1667116,
+      "dimensions": [
+        0.6178798377513885,
+        0.6677035689353943,
+        1.6243938487023115
+      ],
+      "walkStrideMeters": 1.2158768326044083,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -5.759298801422119e-06,
+          "soleYMax": -3.073364496231079e-08
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0018211929127573967,
+          "soleYMax": 0.00621300283819437
+        }
+      ],
+      "thumbnailSha256": "acc737dfd65cf7c30c52854142019c3bf6388d17b9fdc8b308a079a42f0da0f2"
+    },
+    {
+      "id": "people-community-andre",
+      "design": {
+        "name": "Andre",
+        "gender": "Male",
+        "hair": "Hair_Buzzed",
+        "height": 1.88,
+        "jacket": "#4c515e",
+        "shirt": "#c9bba3",
+        "trousers": "#a19c8a",
+        "shoes": "#ece6d8",
+        "hair_color": "#28221d",
+        "skin": "#614332",
+        "outfit": "charcoal sport jacket",
+        "fit": 0.9,
+        "hem": 0.0,
+        "leg_fit": 0.87,
+        "body_width": 1.01,
+        "body_depth": 0.97,
+        "face_width": 1.05,
+        "coat": false,
+        "collar": "stand",
+        "id": "people-community-andre"
+      },
+      "sha256": "42a04100974bccc9092fdec5393afcdb5da57bddb9fd3fccdbf104c63ecc15d6",
+      "bytes": 828992,
+      "triangles": 12110,
+      "bones": 65,
+      "meshPrimitives": 19,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 653120,
+      "estimatedDecodedBytes": 1356332,
+      "dimensions": [
+        0.8373165428638458,
+        0.7525095641613007,
+        1.8465248383581638
+      ],
+      "walkStrideMeters": 1.3469291776418686,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -3.462657332420349e-06,
+          "soleYMax": 1.862645149230957e-08
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.002133800648152828,
+          "soleYMax": 0.006026096176356077
+        }
+      ],
+      "thumbnailSha256": "545fd1e3dd1eec20b7303ad3862ac9117594fc731061f716722fc8fd5952b6e4"
+    },
+    {
+      "id": "people-community-elena",
+      "design": {
+        "name": "Elena",
+        "gender": "Female",
+        "hair": "Hair_Long",
+        "height": 1.81,
+        "jacket": "#8a9b9a",
+        "shirt": "#e9e2d6",
+        "trousers": "#485b65",
+        "shoes": "#e6ded2",
+        "hair_color": "#51372a",
+        "skin": "#c6a183",
+        "outfit": "mist blue longline jacket",
+        "fit": 0.97,
+        "hem": 0.09,
+        "leg_fit": 0.98,
+        "body_width": 0.98,
+        "body_depth": 1.0,
+        "face_width": 0.94,
+        "coat": false,
+        "collar": "fold",
+        "id": "people-community-elena"
+      },
+      "sha256": "2334dbf0eb06aa02fcccb77587521bab73ccb12c2d31c2d0b821de13f94e6a8b",
+      "bytes": 1108728,
+      "triangles": 14330,
+      "bones": 65,
+      "meshPrimitives": 16,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 935192,
+      "estimatedDecodedBytes": 1638404,
+      "dimensions": [
+        0.7073993384838104,
+        0.7482013702392578,
+        1.7809969950467348
+      ],
+      "walkStrideMeters": 1.3624580800533295,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -6.465241312980652e-06,
+          "soleYMax": -1.5925616025924683e-07
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0020013609901070595,
+          "soleYMax": 0.006821406539529562
+        }
+      ],
+      "thumbnailSha256": "aba44c6d5dfad72932fa503b7b65fd1b8e30263508b2fa54dd38188fd2e78ac2"
+    },
+    {
+      "id": "people-community-amir",
+      "design": {
+        "name": "Amir",
+        "gender": "Male",
+        "hair": "Hair_Beard",
+        "height": 1.83,
+        "jacket": "#73624e",
+        "shirt": "#e7dcc5",
+        "trousers": "#293a44",
+        "shoes": "#c8bba6",
+        "hair_color": "#29201b",
+        "skin": "#a87a52",
+        "outfit": "bronze tapered overshirt",
+        "fit": 0.94,
+        "hem": 0.045,
+        "leg_fit": 0.88,
+        "body_width": 1.0,
+        "body_depth": 0.98,
+        "face_width": 1.01,
+        "coat": false,
+        "collar": "fold",
+        "id": "people-community-amir"
+      },
+      "sha256": "42c9a927edc74688ec04cdebf30f306e66de2e154e0e131c50bf27e6211afe75",
+      "bytes": 833604,
+      "triangles": 12266,
+      "bones": 65,
+      "meshPrimitives": 18,
+      "materials": 8,
+      "textures": [
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 15099
+        },
+        {
+          "width": 256,
+          "height": 256,
+          "bytes": 35958
+        }
+      ],
+      "decodedAccessorBytes": 658992,
+      "estimatedDecodedBytes": 1362204,
+      "dimensions": [
+        0.8085027635097504,
+        0.7414443790912628,
+        1.7969914712011814
+      ],
+      "walkStrideMeters": 1.3271202892065048,
+      "clips": [
+        {
+          "name": "Idle",
+          "duration": 2.5,
+          "sampleCount": 41,
+          "soleYMin": -3.3257529139518738e-06,
+          "soleYMax": 8.66129994392395e-08
+        },
+        {
+          "name": "Walk",
+          "duration": 1.3333333333333333,
+          "sampleCount": 41,
+          "soleYMin": -0.0020821588113904,
+          "soleYMax": 0.00587709853425622
+        }
+      ],
+      "thumbnailSha256": "15913e57048538c0f444ba8bc0acec7f75ffcb5f4980d4682097abdcccb4a359"
+    }
+  ],
+  "performance": {
+    "actorCount": 20,
+    "totalGLBBytes": 18970836,
+    "totalTriangles": 260389,
+    "totalEstimatedDecodedBytes": 29547366,
+    "minGLBBytes": 825444,
+    "maxGLBBytes": 1137984
+  },
+  "visualReview": {
+    "authority": "Assistant actual-model visual QA; local concept use only",
+    "allTwentyThumbnailsReviewed": true,
+    "representativePortraitWalkBackIds": [
+      "ava",
+      "noah",
+      "zara",
+      "jules"
+    ],
+    "verdict": "Coherent stylized adult entourage; measured ground contact and closed male necklines. Simple shoulder/collar seams remain visible at close range.",
+    "boards": [
+      {
+        "path": "C:\\dev-artifacts\\CityPrompt\\people-actions-2026-10-22\\characters\\qa\\community-contact-sheet.jpg",
+        "sha256": "36489b5549437a8d7b71f46dad5d1e8a23f14b87b57a7d0cef6f644647d89424"
+      },
+      {
+        "path": "C:\\dev-artifacts\\CityPrompt\\people-actions-2026-10-22\\characters\\qa\\community-portrait-review.jpg",
+        "sha256": "4184306219bb1e274a397369bb3a5198b3d314be6c465c00ad0588b8839c4ed3"
+      },
+      {
+        "path": "C:\\dev-artifacts\\CityPrompt\\people-actions-2026-10-22\\characters\\qa\\community-walk-back-review.jpg",
+        "sha256": "937293e3a2e77392a3046be3b625fd85fb757231cdfd5f53e346529c47fb86b9"
+      }
+    ]
+  }
+}

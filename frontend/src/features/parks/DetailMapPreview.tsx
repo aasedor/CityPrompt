@@ -9,6 +9,7 @@ import { useSharedSiteGround } from '@/components/viewer/globe/SharedSiteGroundP
 import { authoredCameraGround } from '@/components/viewer/globe/authoredCameraGround';
 import { detailAsset } from './detailCatalogue';
 import { DetailModelInstances } from './DetailModelInstances';
+import { PeopleModelInstances } from '@/features/people/PeopleModel';
 import type { useDetailPlacement } from './useDetailPlacement';
 import { detailPlacementSupport } from './safetyPlacement';
 import { useSafetySurfaceVersion } from './safetySupport';
@@ -58,7 +59,9 @@ export function DetailMapPreview({ interaction, zones, surfaceAt, fallbackHeight
   return <group userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
     {/* Saved instances stay visible; only placement/movement needs a cursor ghost. */}
     {follows && <group userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
-      <Suspense fallback={null}><DetailModelInstances asset={asset} placements={[{ id: 'detail-preview:cursor', lng, lat, height, angle: interaction.angle }]} /></Suspense>
+      <Suspense fallback={null}>{detailAsset(asset).people
+        ? <PeopleModelInstances asset={asset} placements={[{ id: 'detail-preview:cursor', lng, lat, height, angle: interaction.angle, people_action:interaction.selected ? interaction.selectedAction : item?.people_action }]} />
+        : <DetailModelInstances asset={asset} placements={[{ id: 'detail-preview:cursor', lng, lat, height, angle: interaction.angle }]} />}</Suspense>
     </group>}
     <group userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
       <EastNorthUpFrame lat={lat * Math.PI / 180} lon={lng * Math.PI / 180} height={height + 0.12}>

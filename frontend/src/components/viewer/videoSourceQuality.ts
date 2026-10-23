@@ -10,11 +10,14 @@ const MAX_DOMINANT_COLOR_RATIO = 0.47;
 /** Detect catastrophic near-field source frames before a provider can turn
  * clipped Google photogrammetry or a blank surface into invented buildings.
  * This is deliberately conservative: a paid enhancement is allowed only
- * when every sampled source frame contains enough architectural structure. */
+ * when every sampled source frame contains readable structure. Sparse authored
+ * people on open ground do not have a facade's edge density; they still require
+ * visible contrast and cannot bypass the blank/solid-plane checks. */
 export function assessVideoSourceFramePixels(
   pixels: Uint8ClampedArray,
   width: number,
   height: number,
+  options: {authoredPeople?:boolean} = {},
 ): VideoSourceFrameQuality {
   if (pixels.length !== width * height * 4 || width < 2 || height < 2) {
     throw new Error('Video source quality requires a valid RGBA frame.');
@@ -45,11 +48,17 @@ export function assessVideoSourceFramePixels(
   }
   const edgeRatio = edgePixels / ((width - 1) * (height - 1));
   const dominantColorRatio = dominantColorCount / (width * height);
+  // Count substantial regions rather than antialiasing/noise along a clipped
+  // plane's edge. A mounted person can be offscreen, so its presence alone must
+  // never waive this orientation-independent blank/flat-plane guard.
+  const substantialColorBins = [...colorBins.values()]
+    .filter(count => count >= width * height * 0.02).length;
   return {
     edgeRatio,
     dominantColorRatio,
-    usable: edgeRatio >= MIN_EDGE_RATIO
-      && dominantColorRatio <= MAX_DOMINANT_COLOR_RATIO,
+    usable: edgeRatio >= (options.authoredPeople ? .02 : MIN_EDGE_RATIO)
+      && dominantColorRatio <= (options.authoredPeople ? .85 : MAX_DOMINANT_COLOR_RATIO)
+      && (!options.authoredPeople || substantialColorBins >= 4),
   };
 }
 
@@ -69,6 +78,7 @@ async function decodeFramePixels(dataUrl: string): Promise<ImageData> {
 
 export async function assertNearFieldVideoSourceQuality(
   framesBase64: string[],
+  options: {authoredPeople?:boolean} = {},
 ): Promise<void> {
   for (let index = 0; index < framesBase64.length; index += 1) {
     const imageData = await decodeFramePixels(framesBase64[index]);
@@ -76,6 +86,7 @@ export async function assertNearFieldVideoSourceQuality(
       imageData.data,
       imageData.width,
       imageData.height,
+      options,
     );
     if (!quality.usable) {
       throw new Error(

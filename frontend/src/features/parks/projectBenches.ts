@@ -1,6 +1,7 @@
 import type { Location, SiteZone } from "@/types";
 import type { DetailPropVariant } from "./detailCatalogue";
 import type { PavingSurface } from './pavingSurfaces';
+import type { PeopleActionId } from '@/features/people/peopleActions';
 import {
   benchContext,
   type BenchContext,
@@ -34,6 +35,7 @@ export interface ProjectTree extends ProjectBench {
 }
 export interface ProjectProp extends ProjectBench {
   variant: DetailPropVariant;
+  people_action?: PeopleActionId;
 }
 
 export function readProjectDetails(
@@ -49,6 +51,7 @@ export function readProjectDetails(
     ...(data.props ?? []).map((p) => ({
       ...readProjectBenches([p], context)[0],
       propVariant: p.variant,
+      ...(p.people_action ? { people_action: p.people_action } : {}),
     })),
   ];
 }
@@ -72,6 +75,7 @@ export function saveProjectDetails(
       .map((i) => ({
         ...saveProjectBenches([i], context)[0],
         variant: i.propVariant!,
+        ...(i.people_action ? { people_action: i.people_action } : {}),
       })),
   };
 }

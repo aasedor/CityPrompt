@@ -1788,7 +1788,9 @@ def _project_preflight_db(monkeypatch):
     db = AsyncMock()
     zones_result = MagicMock()
     zones_result.scalars.return_value.all.return_value = [_zone(TEST_ZONE_ID, "building")]
-    db.execute = AsyncMock(side_effect=[zones_result, empty_result])
+    details_result = MagicMock()
+    details_result.scalar_one_or_none.return_value = None
+    db.execute = AsyncMock(side_effect=[zones_result, empty_result, details_result])
     return db
 
 

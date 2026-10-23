@@ -25,6 +25,7 @@ import { usePavingEditor } from "./PavingEditor";
 import type { PavingSurface } from "./pavingSurfaces";
 import { parkingRoads, parkingDetailFootprints } from './parkingDriveway';
 import { saveProjectDetails } from './projectBenches';
+import { PEOPLE_ACTIONS, peopleAction, type PeopleActionId } from '@/features/people/peopleActions';
 import type { PublicRoadContext } from '@/features/pickPlace/publicRoadSuggestions';
 import { readNativePark, nativeParkFootprint } from "./nativeParkRegistry";
 import {
@@ -803,6 +804,14 @@ export function BenchLayoutEditor({
                       : "Bench"}{" "}
                   {benches.findIndex((b) => b.id === active.id) + 1} selected
                 </p>
+                {active.propVariant && detailAsset(active.propVariant).people && <label className="block text-sm font-semibold">Person's action
+                  <select aria-label="Person action" disabled={locked} value={peopleAction(active.people_action).id}
+                    onChange={event=>change(benches.map(item=>item.id===active.id?{...item,people_action:event.target.value as PeopleActionId}:item))}
+                    className="mt-1 min-h-11 w-full rounded-lg border border-slate-400 bg-white p-2">
+                    {PEOPLE_ACTIONS.map(action=><option key={action.id} value={action.id}>{action.label}</option>)}
+                  </select>
+                  <span className="mt-1 block text-xs font-normal">Saved for images and videos. Seats and routes are placed separately.</span>
+                </label>}
                 <button
                   className={`${button} w-full`}
                   disabled={locked}

@@ -70,6 +70,15 @@ async def run_appearance_render(req: VideoAppearanceRequest, user, db, *, attemp
         raise HTTPException(400, str(exc)) from exc
     scene_sha = await validate_scene(req, db)
     prompt = PHOTOGRAPHIC_DIRECTION + req.prompt.strip()
+    if req.source_request is not None:
+        from app.api.v1.video import VideoPilotRequest, _saved_people_prompt
+        from app.models.models import Project
+
+        # validate_scene bound this exact source request, not the guide's
+        # client-authored prose or optional duplicate scene claims.
+        source_request = VideoPilotRequest.model_validate(req.source_request)
+        project = await db.get(Project, source_request.project_id)
+        prompt = _saved_people_prompt(source_request, project, prompt)
     await write_evidence(
         attempt,
         "source",

@@ -50,11 +50,11 @@ export const DEFAULT_VIDEO_ROUTE: VideoRoutePoint[] = [
   { x: 0.50, y: 0.50 },
 ];
 
-/** Short pedestrian-height move parallel to the visible frontage. */
+/** Centre the automatic pedestrian move on the site; its world length is bounded at capture. */
 export const DEFAULT_STREET_VIDEO_ROUTE: VideoRoutePoint[] = [
-  { x: 0.40, y: 0.66 },
-  { x: 0.45, y: 0.65 },
-  { x: 0.50, y: 0.65 },
-  { x: 0.55, y: 0.64 },
-  { x: 0.60, y: 0.64 },
+  { x: 0.48, y: 0.50 },
+  { x: 0.49, y: 0.50 },
+  { x: 0.50, y: 0.50 },
+  { x: 0.51, y: 0.50 },
+  { x: 0.52, y: 0.50 },
 ];

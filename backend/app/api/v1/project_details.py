@@ -14,6 +14,7 @@ from shapely.geometry import Point, Polygon
 from app.core.database import get_db
 from app.core.security import check_project_permission, require_auth
 from app.models.models import Project, User
+from app.services.people_actions import PeopleAction, is_people_model
 
 router = APIRouter()
 
@@ -43,6 +44,13 @@ class Tree(Bench):
 class Prop(Bench):
     variant: str
     support_zone_id: str | None = Field(default=None, pattern=r'^[\w-]{1,80}$')
+    people_action: PeopleAction | None = None
+
+    @model_validator(mode='after')
+    def action_requires_person(self):
+        if self.people_action is not None and not is_people_model(self.variant):
+            raise ValueError('People actions require a people model')
+        return self
 
     @field_validator('variant')
     @classmethod

@@ -15,6 +15,25 @@ function pixels(width: number, height: number, colorAt: (x: number, y: number) =
 }
 
 describe('video source quality', () => {
+  it('rejects two clipped flat planes at any boundary angle even with authored people elsewhere', () => {
+    const frame = pixels(96, 54, (x, y) => x / 96 < y / 54
+      ? [210, 210, 210] : [100, 110, 120]);
+    expect(assessVideoSourceFramePixels(frame, 96, 54, { authoredPeople: true }).usable).toBe(false);
+  });
+  it('accepts a readable person on open ground without requiring a dense architectural facade',()=>{
+    const frame=pixels(96,54,(x,y)=>{
+      if(x>=42&&x<=50&&y>=17&&y<=24)return [150,95,65];
+      if(x>=40&&x<=52&&y>=25&&y<=38)return [190,75,40];
+      if(x>=42&&x<=45&&y>=39)return [35,40,55];
+      if(x>=48&&x<=51&&y>=39)return [35,40,55];
+      return y<27?[155,195,225]:[90,125,55];
+    });
+    expect(assessVideoSourceFramePixels(frame,96,54).usable).toBe(false);
+    expect(assessVideoSourceFramePixels(frame,96,54,{authoredPeople:true}).usable).toBe(true);
+    const clipped=pixels(96,54,(x)=>x<48?[210,210,210]:[100,110,120]);
+    expect(assessVideoSourceFramePixels(clipped,96,54,{authoredPeople:true}).usable).toBe(false);
+    expect(assessVideoSourceFramePixels(pixels(96,54,()=>[220,220,220]),96,54,{authoredPeople:true}).usable).toBe(false);
+  });
   it('rejects a blank or clipped foreground frame', () => {
     const frame = pixels(24, 16, () => [220, 220, 220]);
     expect(assessVideoSourceFramePixels(frame, 24, 16)).toMatchObject({

@@ -10,6 +10,12 @@ import {
 import { benchPlacementProblem } from "./benchDetails";
 
 describe("independent project benches", () => {
+  it('preserves a saved person action through the geographic arrangement editor', () => {
+    const props = [{ id: 'reader', lng: -114.1, lat: 51.05, angle: 30, variant: 'people-pilot-commuter', people_action: 'reading' as const }];
+    const context = projectBenchContext(projectBenchFrame([], props));
+    const result = saveProjectDetails(readProjectDetails({version:1,revision:2,can_edit:true,benches:[],props}, context),context);
+    expect(result.props).toEqual(props);
+  });
   it('round trips catalogue object variants without converting them into benches',()=>{
     const benches=[{id:'bench',lng:-114.1,lat:51.05,angle:0}];
     const trees=[{id:'tree',lng:-114.101,lat:51.051,angle:15,variant:'oak-0' as const}];

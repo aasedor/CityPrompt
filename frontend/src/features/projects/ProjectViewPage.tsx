@@ -54,6 +54,7 @@ import { generatedPlacementDraft, placementDraftProperties } from '@/features/pi
 import { HistoryPanel } from '@/components/viewer/HistoryPanel';
 import { GlobeAIRenderPanel } from '@/components/viewer/globe/GlobeAIRenderPanel';
 import { VideoGeneratePanel, type VideoAttempt } from '@/components/viewer/VideoGeneratePanel';
+import { buildPeopleDirection } from '@/features/people/peopleActions';
 import { captureCompleteVideoFrame, type VideoCaptureScene } from '@/components/viewer/videoCaptureInventory';
 import type { VideoRouteCaptureRequest, VideoRouteCaptureResult } from '@/components/viewer/videoRouteControls';
 import { nearestAspectRatio, useGlobeAIRender } from '@/components/viewer/globe/useGlobeAIRender';
@@ -1522,6 +1523,7 @@ export function ProjectViewPage() {
             captureRouteControls={captureVideoRouteControls}
             detailsRevision={renderDetailsRevision}
             onVideoSaved={rememberSavedVideo}
+            peopleDirection={buildPeopleDirection(projectDetails.data?.props)}
             onClose={() => setShowVideoRender(false)}
           />
         )}

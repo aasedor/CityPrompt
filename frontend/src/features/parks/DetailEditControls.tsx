@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { detailAsset } from './detailCatalogue';
 import type { DetailInteraction } from './DetailMapPreview';
+import { PEOPLE_ACTIONS, peopleAction, type PeopleActionId } from '@/features/people/peopleActions';
 
 export function DetailEditControls({ placement, compact = false }: { placement: DetailInteraction; compact?: boolean }) {
   useEffect(() => {
@@ -22,6 +23,15 @@ export function DetailEditControls({ placement, compact = false }: { placement: 
   if (!placement.editing) return <p className="text-xs text-slate-600">{compact ? 'Tap the map to place · Stop placing to select an item.' : 'Q / E to rotate · Click to place · Esc to stop. Click a placed item to select it, or use Placed items.'}</p>;
   return <div aria-label="Selected detail" className="space-y-3 rounded-xl border-2 border-slate-900 bg-lime-50 p-3">
     <p className="text-sm font-bold">Selected: {detailAsset(placement.editing.variant).label}</p>
+    {detailAsset(placement.editing.variant).people && <div className="space-y-1">
+      <label className="block text-xs font-bold">Person's action
+        <select aria-label="Person action" value={peopleAction(placement.editing.people_action).id} disabled={placement.saving || placement.moving}
+          onChange={event => void placement.setPeopleAction(event.target.value as PeopleActionId)} className="mt-1 min-h-11 w-full rounded-lg border border-slate-400 bg-white px-2 text-sm">
+          {PEOPLE_ACTIONS.map(action => <option key={action.id} value={action.id}>{action.label}</option>)}
+        </select>
+      </label>
+      <p className="text-xs text-slate-600">Saved for images and videos. Position seated people beside your own seat; actions do not find seats or routes automatically.</p>
+    </div>}
     {!compact && <p className="text-xs">{placement.moving ? 'Move the preview, then click to save its position.' : 'Move, rotate or delete this item. Changes save automatically.'}</p>}
     <div className="flex gap-2">
       <button disabled={placement.saving || placement.moving} onClick={() => void placement.rotateBy(-15)} aria-label="Rotate left 15°" className="min-h-11 flex-1 rounded-lg border border-slate-400 bg-white px-2 text-sm">Rotate left 15°</button>
@@ -32,7 +42,7 @@ export function DetailEditControls({ placement, compact = false }: { placement: 
     <div className="flex flex-wrap gap-2">
       <button disabled={placement.saving} onClick={() => placement.setMoving(!placement.moving)} className="min-h-11 rounded-lg border-2 border-slate-900 bg-[#c9ff3d] px-3 font-semibold">{placement.moving ? 'Stop moving' : 'Move item'}</button>
       {!compact && <button disabled={placement.saving} onClick={() => void placement.saveEdit()} className="min-h-11 rounded bg-lime-300 px-3">Save changes</button>}
-      {!compact && <button disabled={placement.saving} onClick={() => placement.choose(placement.editing!.variant)} className="min-h-11 rounded border px-3">Place a copy</button>}
+      {!compact && <button disabled={placement.saving} onClick={() => placement.choose(placement.editing!.variant, placement.editing!.people_action)} className="min-h-11 rounded border px-3">Place a copy</button>}
       <button disabled={placement.saving} onClick={() => void placement.removeItem()} className="min-h-11 rounded-lg border border-red-300 bg-red-50 px-3 text-red-800">Delete item</button>
       <button disabled={placement.saving} onClick={() => placement.choose(null)} className="min-h-11 rounded border px-3">Done</button>
     </div>

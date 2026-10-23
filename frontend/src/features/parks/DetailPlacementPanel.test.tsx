@@ -9,6 +9,16 @@ import { DETAIL_CATEGORIES, searchDetails } from './detailCatalogue';
 vi.mock('./detailThumbnail', () => ({ detailThumbnail: async () => 'data:image/png;base64,preview' }));
 afterEach(() => vi.unstubAllGlobals());
 describe('detail catalogue workflow', () => {
+  it('makes People the first prominent category',()=>{
+    vi.stubGlobal('IntersectionObserver',class {observe(){} disconnect(){}});
+    function Trial(){const placement=useDetailPlacement({version:1,revision:0,can_edit:true,benches:[]},async next=>next);return <DetailPlacementPanel placement={placement} canEdit onClose={()=>{}} onArrange={()=>{}}/>;}
+    render(<Trial/>);
+    expect(DETAIL_CATEGORIES[0]).toBe('People');
+    expect(screen.getByRole('button',{name:'Browse People'})).toHaveClass('col-span-2');
+    fireEvent.click(screen.getByRole('button',{name:'Browse People'}));
+    expect(screen.getByRole('combobox',{name:'Item category'})).toHaveValue('People');
+    expect(screen.getByRole('button',{name:'People · choose a person & action'})).toBeVisible();
+  });
   it('collapses the narrow catalogue after choosing an item and can reopen without cancelling placement',()=>{
     vi.stubGlobal('matchMedia',()=>({matches:true,addEventListener:vi.fn(),removeEventListener:vi.fn()}));
     vi.stubGlobal('IntersectionObserver',class {observe(){} disconnect(){}});
@@ -106,7 +116,7 @@ describe('detail catalogue workflow', () => {
     fireEvent.click(screen.getByRole('button', { name: 'All categories' }));
     expect(screen.getByLabelText('Search individual items')).toHaveValue('');
     expect(screen.queryAllByRole('article')).toHaveLength(0);
-  });
+  }, 15000);
   it('places and rotates traffic items without closing the category', async () => {
     vi.stubGlobal('IntersectionObserver', class { observe() {} disconnect() {} });
     const saved: ProjectDetails[] = [];

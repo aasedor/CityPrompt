@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 1,
+  "localOnly": true,
+  "published": false,
+  "archiveFile": "C:\\dev-artifacts\\CityPrompt\\people-actions-2026-10-22\\people-community-v1-local-assets.zip",
+  "archiveSha256": "3dfae7d22746d6d448297fa1ee77508992ebfa6c5e3dba496285c2f34338cb93",
+  "archiveBytes": 16215420,
+  "portableRepositorySource": false,
+  "license": "CC0-1.0",
+  "creator": "Quaternius with CityPrompt garment/shape derivatives",
+  "provenance": "tools/people_pilot/community_provenance.json",
+  "files": [
+    {
+      "url": "/street-kits/people-community-v1/people-community-ava.glb",
+      "path": "public/street-kits/people-community-v1/people-community-ava.glb",
+      "sha256": "e71b0b90e3d1d73771d809389ce545abda152923539b474e5bad6de7ce446bef",
+      "bytes": 1135364
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-ava.png",
+      "path": "public/street-kits/people-community-v1/people-community-ava.png",
+      "sha256": "824cbefff0795979553a6f431b29ac4b5987b25363093f7cc76d0d8d0a1c4aa1",
+      "bytes": 464407
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-noah.glb",
+      "path": "public/street-kits/people-community-v1/people-community-noah.glb",
+      "sha256": "03a5b33cafd3673a1a404b2215422da341d51bd6d264c2483cd0ffdc1bc88f48",
+      "bytes": 825444
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-noah.png",
+      "path": "public/street-kits/people-community-v1/people-community-noah.png",
+      "sha256": "ee08f66cc2c5ec5849ee41b8b94aa212ee7b834831f0b12945ad9f0aea2c4d75",
+      "bytes": 465308
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-zara.glb",
+      "path": "public/street-kits/people-community-v1/people-community-zara.glb",
+      "sha256": "fa8068cf4cb9ef9626aac381c0a7bcc3099dafee2fcfe36bbcb528aad3d4aa90",
+      "bytes": 1113688
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-zara.png",
+      "path": "public/street-kits/people-community-v1/people-community-zara.png",
+      "sha256": "7b62f1e5c4072327406733974865d4843f3654192752a1f485d82392777c3de5",
+      "bytes": 468596
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-leo.glb",
+      "path": "public/street-kits/people-community-v1/people-community-leo.glb",
+      "sha256": "809f22d938c35ea6fb6a5ec70157c0dbf82e21c41d19dd10ca512ae93fdb7170",
+      "bytes": 846152
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-leo.png",
+      "path": "public/street-kits/people-community-v1/people-community-leo.png",
+      "sha256": "878f751b192845fcdc5d8e9b7466b1cf892c85cbb2445e09701f65ac4b5ac6c0",
+      "bytes": 465583
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-imani.glb",
+      "path": "public/street-kits/people-community-v1/people-community-imani.glb",
+      "sha256": "2fad55fe6db24dcb53b452dd13dd8189a77b1f85b3599ac33671efea1c0a1d83",
+      "bytes": 959916
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-imani.png",
+      "path": "public/street-kits/people-community-v1/people-community-imani.png",
+      "sha256": "afd14cb8d4d8f99ff936f960623f0eb46372bed7006df7c5b5047b1f64b2e133",
+      "bytes": 460509
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-luca.glb",
+      "path": "public/street-kits/people-community-v1/people-community-luca.glb",
+      "sha256": "e9fd86a9e5669ad501a2d9af2a2e19895d3fb4eafafa561c83e54b57ddf60c6f",
+      "bytes": 833436
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-luca.png",
+      "path": "public/street-kits/people-community-v1/people-community-luca.png",
+      "sha256": "29bebe97bc8735c335ec7712bf16bb766903a3a2b7530bb7050a4a2a92bf98b1",
+      "bytes": 467513
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-nina.glb",
+      "path": "public/street-kits/people-community-v1/people-community-nina.glb",
+      "sha256": "9de268992ec157b46a0dd138f92be9ed9d7b1bd19b51baa1f4f2537cd74acf9a",
+      "bytes": 980876
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-nina.png",
+      "path": "public/street-kits/people-community-v1/people-community-nina.png",
+      "sha256": "936548f4d12c6a8c804dcf5dce1c8fcb37eeaba3e47c7c38709fbfcfd1247899",
+      "bytes": 459215
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-owen.glb",
+      "path": "public/street-kits/people-community-v1/people-community-owen.glb",
+      "sha256": "c05968246d704a93e6fa90adc6ee8f017991c3d09e983e7bb2f0b643373a16aa",
+      "bytes": 825756
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-owen.png",
+      "path": "public/street-kits/people-community-v1/people-community-owen.png",
+      "sha256": "c8d6d60d985a9b0ef3925cc72a6298010924df27a6bf94c1a08f025a87d5cca8",
+      "bytes": 466832
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-amara.glb",
+      "path": "public/street-kits/people-community-v1/people-community-amara.glb",
+      "sha256": "a70330161f0f0681c365c04adac614869e7a1af5350df71f9a48aa5904312173",
+      "bytes": 1135908
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-amara.png",
+      "path": "public/street-kits/people-community-v1/people-community-amara.png",
+      "sha256": "35d40372214f1a763f9b82e754dba10877a8f1688ea4ebbe97e004f7fa850879",
+      "bytes": 465443
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-mateo.glb",
+      "path": "public/street-kits/people-community-v1/people-community-mateo.glb",
+      "sha256": "8148f0b477c6e4be54cb92ffa5f78c06eb3896929b23cc102d0eef6b5157b7f2",
+      "bytes": 843932
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-mateo.png",
+      "path": "public/street-kits/people-community-v1/people-community-mateo.png",
+      "sha256": "a479d3ec2e2837868a21608590864b0bf8cb7dc4403678eb9ba64fd1fb009053",
+      "bytes": 468861
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-clara.glb",
+      "path": "public/street-kits/people-community-v1/people-community-clara.glb",
+      "sha256": "3503d4fe2e59653e843b5df69489151d56d3475e3083a17da75949a28d0b0390",
+      "bytes": 1113740
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-clara.png",
+      "path": "public/street-kits/people-community-v1/people-community-clara.png",
+      "sha256": "dc740ca47d0163ee6b1684f292485e03318a52adca8f9b969a86f54728934fe6",
+      "bytes": 461866
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-kai.glb",
+      "path": "public/street-kits/people-community-v1/people-community-kai.glb",
+      "sha256": "08d1c8497fbcf5fcf1a233026d4b8e5a8ba38593ac12018e43c2b4fe4fec5d06",
+      "bytes": 828512
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-kai.png",
+      "path": "public/street-kits/people-community-v1/people-community-kai.png",
+      "sha256": "6d75ded1cd156271cca17286c3fc98ef699ed7a8919176565a677ae66534f600",
+      "bytes": 462015
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-ines.glb",
+      "path": "public/street-kits/people-community-v1/people-community-ines.glb",
+      "sha256": "79d8ddc8ce95ac4d766a0275a789cc0d87d65de9238f73094d08136ce911428d",
+      "bytes": 959880
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-ines.png",
+      "path": "public/street-kits/people-community-v1/people-community-ines.png",
+      "sha256": "5e4e085d965b41cd894078dc965adf642dcaf9215bc00d17d5eda95b31de4f2d",
+      "bytes": 456813
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-jules.glb",
+      "path": "public/street-kits/people-community-v1/people-community-jules.glb",
+      "sha256": "2c97dfa275b122634048cf290cb7924dce65bd7ff9b57aa8301be425b0172248",
+      "bytes": 833740
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-jules.png",
+      "path": "public/street-kits/people-community-v1/people-community-jules.png",
+      "sha256": "462d985a31eaeddfb3c7c6d046f84c1c0a89cd38a697bf3cb34d779ff5b257fc",
+      "bytes": 462677
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-sana.glb",
+      "path": "public/street-kits/people-community-v1/people-community-sana.glb",
+      "sha256": "589069cf6a41354a39b8096f021ca09eefc01b1aa9ed4584b1440f5ab2938f4b",
+      "bytes": 981384
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-sana.png",
+      "path": "public/street-kits/people-community-v1/people-community-sana.png",
+      "sha256": "9afb47317d58dd60ce23ba4836abe0f65f5bfa0d38da9c3980db69bcb84d207b",
+      "bytes": 464508
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-felix.glb",
+      "path": "public/street-kits/people-community-v1/people-community-felix.glb",
+      "sha256": "d19014391e2069d8015935067a579a6d2e39681a7fe555d7e6a7ac9c22f706df",
+      "bytes": 843800
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-felix.png",
+      "path": "public/street-kits/people-community-v1/people-community-felix.png",
+      "sha256": "da79c64e1f8c7e94d2e7a66851c447e7ef208c917b2f97f2ed9a0d787b308698",
+      "bytes": 456060
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-rhea.glb",
+      "path": "public/street-kits/people-community-v1/people-community-rhea.glb",
+      "sha256": "390adfe571148345cb4b6464d93cca75c77a3525def7e451264531d228ae99ab",
+      "bytes": 1137984
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-rhea.png",
+      "path": "public/street-kits/people-community-v1/people-community-rhea.png",
+      "sha256": "acc737dfd65cf7c30c52854142019c3bf6388d17b9fdc8b308a079a42f0da0f2",
+      "bytes": 462046
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-andre.glb",
+      "path": "public/street-kits/people-community-v1/people-community-andre.glb",
+      "sha256": "42a04100974bccc9092fdec5393afcdb5da57bddb9fd3fccdbf104c63ecc15d6",
+      "bytes": 828992
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-andre.png",
+      "path": "public/street-kits/people-community-v1/people-community-andre.png",
+      "sha256": "545fd1e3dd1eec20b7303ad3862ac9117594fc731061f716722fc8fd5952b6e4",
+      "bytes": 463782
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-elena.glb",
+      "path": "public/street-kits/people-community-v1/people-community-elena.glb",
+      "sha256": "2334dbf0eb06aa02fcccb77587521bab73ccb12c2d31c2d0b821de13f94e6a8b",
+      "bytes": 1108728
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-elena.png",
+      "path": "public/street-kits/people-community-v1/people-community-elena.png",
+      "sha256": "aba44c6d5dfad72932fa503b7b65fd1b8e30263508b2fa54dd38188fd2e78ac2",
+      "bytes": 460360
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-amir.glb",
+      "path": "public/street-kits/people-community-v1/people-community-amir.glb",
+      "sha256": "42c9a927edc74688ec04cdebf30f306e66de2e154e0e131c50bf27e6211afe75",
+      "bytes": 833604
+    },
+    {
+      "url": "/street-kits/people-community-v1/people-community-amir.png",
+      "path": "public/street-kits/people-community-v1/people-community-amir.png",
+      "sha256": "15913e57048538c0f444ba8bc0acec7f75ffcb5f4980d4682097abdcccb4a359",
+      "bytes": 466951
+    }
+  ],
+  "limitation": "External local archive. Hosted asset preparation requires an approved portable pinned source integration before deployment."
+}

@@ -8,11 +8,13 @@ import { PeopleDetailModel } from '@/features/people/PeopleModel';
 export function DetailModel({
   asset,
   yaw,
+  peopleAction,
 }: {
   asset: DetailAssetId;
   yaw: number;
+  peopleAction?: import('@/features/people/peopleActions').PeopleActionId;
 }) {
-  return detailAsset(asset).people ? <PeopleDetailModel asset={asset} yaw={yaw} /> : <StaticDetailModel asset={asset} yaw={yaw} />;
+  return detailAsset(asset).people ? <PeopleDetailModel asset={asset} yaw={yaw} peopleAction={peopleAction} /> : <StaticDetailModel asset={asset} yaw={yaw} />;
 }
 
 function StaticDetailModel({ asset, yaw }: { asset: DetailAssetId; yaw: number }) {

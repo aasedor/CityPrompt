@@ -3,6 +3,7 @@ import { detailAsset, type DetailAssetId } from './detailCatalogue';
 import type { ProjectDetails, ProjectBench } from './projectBenches';
 import { useUndoRedoStore } from '@/store/undoRedo';
 import type { DetailPose, DetailSupport } from './safetyPlacement';
+import { peopleAction, type PeopleActionId } from '@/features/people/peopleActions';
 
 type ItemCollection = 'benches' | 'trees' | 'props';
 /** Compare all persisted fields, independent of JSON property insertion order. */
@@ -20,7 +21,8 @@ export function useDetailPlacement(data: ProjectDetails | undefined, save: (next
   const generation = useRef(0);
   const [selected, setSelected] = useState<DetailAssetId | null>(null);
   const [angle, setAngle] = useState(0);
-  const [editing, setEditing] = useState<(ProjectBench & { variant: DetailAssetId }) | null>(null);
+  const [selectedAction, setSelectedAction] = useState<PeopleActionId>('standing');
+  const [editing, setEditing] = useState<(ProjectBench & { variant: DetailAssetId; people_action?: PeopleActionId }) | null>(null);
   const [moving, setMoving] = useState(false);
   const [saving, setSaving] = useState(false), [error, setError] = useState(''), [status, setStatus] = useState('');
   const unavailable = () => busy.current || useUndoRedoStore.getState()._isSystemAction;
@@ -65,7 +67,7 @@ export function useDetailPlacement(data: ProjectDetails | undefined, save: (next
       current.current = data;
     }
   }, [data, projectId]);
-  const choose = (id: DetailAssetId | null) => { if (unavailable()) return; setSelected(id); setEditing(null); setMoving(false); setError(''); setStatus(''); };
+  const choose = (id: DetailAssetId | null, action?: PeopleActionId) => { if (unavailable()) return; setSelected(id); setSelectedAction(peopleAction(action).id); setEditing(null); setMoving(false); setError(''); setStatus(''); };
   const selectItem = (id: string) => {
     if (unavailable() || !current.current?.can_edit) return;
     const source = current.current;
@@ -73,9 +75,10 @@ export function useDetailPlacement(data: ProjectDetails | undefined, save: (next
     if (!item) return;
     setSelected(null); setEditing(item); setAngle(item.angle); setMoving(false); setError(''); setStatus('');
   };
-  const updateItem = async (position?: [number, number], remove = false, nextAngle = angle) => {
+  const updateItem = async (position?: [number, number], remove = false, nextAngle = angle, nextAction?: PeopleActionId) => {
     const source = current.current;
     if (!source?.can_edit || !editing || unavailable() || !Number.isFinite(nextAngle)) return;
+    if (nextAction !== undefined && (!detailAsset(editing.variant).people || !peopleAction(nextAction))) return;
     const key = (['benches', 'trees', 'props'] as const).find(k => source[k]?.some(i => i.id === editing.id));
     if (!key) return;
     const before = source[key]?.find(i => i.id === editing.id);
@@ -85,15 +88,16 @@ export function useDetailPlacement(data: ProjectDetails | undefined, save: (next
     const requestGeneration = generation.current;
     const update = <T extends ProjectBench>(items: T[]) => items.filter(i => !remove || i.id !== editing.id).map(i => i.id === editing.id
       ? { ...i, angle: ((nextAngle % 360) + 360) % 360, lng: position?.[0] ?? editing.lng, lat: position?.[1] ?? editing.lat,
+        ...(nextAction ? {people_action:nextAction} : {}),
         ...('hostId' in support && support.hostId ? {support_zone_id:support.hostId}: {}) } : i);
     busy.current = true; setSaving(true); setError('');
     try {
       const saved = await save({ ...source, benches: update(source.benches), trees: update(source.trees ?? []), props: update(source.props ?? []) });
       if (scope.current === requestScope && generation.current === requestGeneration) {
-        record(key, before, saved[key]?.find(i => i.id === editing.id), remove ? 'Delete detail' : 'Move or rotate detail');
+        record(key, before, saved[key]?.find(i => i.id === editing.id), remove ? 'Delete detail' : nextAction ? 'Change person action' : 'Move or rotate detail');
         current.current = saved; setMoving(false);
         if (remove) setEditing(null);
-        else setEditing({ ...editing, lng: position?.[0] ?? editing.lng, lat: position?.[1] ?? editing.lat, angle: ((nextAngle % 360) + 360) % 360 });
+        else setEditing({ ...editing, ...(nextAction ? {people_action:nextAction} : {}), lng: position?.[0] ?? editing.lng, lat: position?.[1] ?? editing.lat, angle: ((nextAngle % 360) + 360) % 360 });
         setAngle(((nextAngle % 360) + 360) % 360);
         setStatus(remove ? 'Item removed and saved.' : 'Item changes saved.');
       }
@@ -113,6 +117,7 @@ export function useDetailPlacement(data: ProjectDetails | undefined, save: (next
     if (items.length >= 256) { setError('This category is full. Remove an item in Arrange details to make room.'); return; }
     const item = { id: `${asset.kind}-${crypto.randomUUID()}`, lng: position[0], lat: position[1], angle,
       ...(asset.kind === 'bench' ? {} : { variant: selected }),
+      ...(asset.people ? {people_action:selectedAction} : {}),
       ...('hostId' in support && support.hostId ? {support_zone_id:support.hostId}: {}) };
     const requestScope = scope.current;
     const requestGeneration = generation.current;
@@ -130,6 +135,7 @@ export function useDetailPlacement(data: ProjectDetails | undefined, save: (next
   };
   const source=current.current;
   const items=source ? [...source.benches.map(item=>({...item,variant:'timber-bench' as const})),...(source.trees??[]),...(source.props??[])] : [];
-  return { items, rotateBy:(delta:number)=>updateItem(undefined,false,angle+delta), selected, choose, angle, setAngle, saving, error, status, place, editing, selectItem, moving, setMoving,
+  return { items, rotateBy:(delta:number)=>updateItem(undefined,false,angle+delta), selected, selectedAction, choose, angle, setAngle, saving, error, status, place, editing, selectItem, moving, setMoving,
+    setPeopleAction:(action:PeopleActionId)=>updateItem(undefined,false,angle,action),
     saveEdit: () => updateItem(), removeItem: () => updateItem(undefined, true) };
 }

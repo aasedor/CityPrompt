@@ -145,7 +145,7 @@ export const DETAIL_CATALOGUE: readonly DetailAsset[] = [
   ...extraModels.filter((m) => m.kind === "tree"),
 ] as const;
 export const DETAIL_CATEGORIES = [
-  ...new Set(DETAIL_CATALOGUE.map((m) => m.category)),
+  'People', ...new Set(DETAIL_CATALOGUE.map((m) => m.category).filter(category => category !== 'People')),
 ];
 export type DetailAssetId = (typeof DETAIL_CATALOGUE)[number]["id"];
 export const detailAsset = (id: DetailAssetId) =>

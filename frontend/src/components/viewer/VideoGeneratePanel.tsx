@@ -31,6 +31,8 @@ import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d'
 import { getCurrentResidualLandscapeClaim } from './globe/residualLandscape';
 import {
   appendRoutePoint,
+  DEFAULT_VIDEO_ROUTE,
+  DEFAULT_STREET_VIDEO_ROUTE,
   normalizedRoutePoint,
   routeSignature,
   routeSvgPoints,
@@ -50,29 +52,17 @@ import {
 } from './videoRenderQuality';
 
 const MOTIONS = [
-  { id: 'path_follow', name: 'Drone fly-through', detail: 'Slow + high oblique' },
-  { id: 'street_walkby', name: 'Street walk-by', detail: 'Slow + pedestrian height' },
+  { id: 'path_follow', name: 'Aerial', detail: 'Slow + high oblique' },
+  { id: 'street_walkby', name: 'Street', detail: 'Slow + pedestrian height' },
   { id: 'detail_flythrough', name: 'Low detail fly-through', detail: '6 m · between buildings' },
   { id: 'bicycle_ride', name: 'Bicycle ride', detail: '1.6 m · forward view · up to 56 m' },
   { id: 'people_follow', name: 'Follow a person', detail: '1.6 m · tracks the first placed person' },
 ] as const;
 
-const CONTROL_MODES: Array<{ id: VideoControlMode; name: string; detail: string }> = [
-  { id: 'preview_video', name: 'Preview-video edit', detail: 'Recommended · exact camera and motion' },
-  { id: 'multi_keyframe', name: 'Route keyframes', detail: 'Experimental · 6 exact City Prompt views' },
-  { id: 'single_frame', name: 'Single frame', detail: 'Original baseline method' },
-];
-
 type MotionId = typeof MOTIONS[number]['id'];
 type VideoProvider = 'omni' | 'seedance_mini' | 'internal_enhance';
 type SeedanceReferenceMode = 'preview_only' | 'preview_plus_keyframes';
 type InternalEnhanceQuality = 'fast' | 'gpu_detail';
-
-const PROVIDERS: Array<{ id: VideoProvider; name: string; detail: string }> = [
-  { id: 'omni', name: 'Gemini Omni 1.1', detail: 'Experimental video edit · paid generation' },
-  { id: 'seedance_mini', name: 'Seedance Mini', detail: 'fal pilot · maximum 4 calls' },
-  { id: 'internal_enhance', name: 'Internal Enhance', detail: 'Self-hosted · exact skins · $0' },
-];
 
 function providerName(provider?: VideoProvider | 'kling' | 'comfyui'): string {
   if (provider === 'comfyui') return 'Wan · local';
@@ -282,6 +272,7 @@ interface PreparedVideoRequest {
 }
 
 interface VideoGeneratePanelProps {
+  peopleDirection?: string;
   detailsRevision?: number;
   projectId: string;
   canvas: HTMLCanvasElement | null;
@@ -368,6 +359,7 @@ async function captureSceneFrame(
 }
 
 export function VideoGeneratePanel({
+  peopleDirection = '',
   detailsRevision,
   projectId,
   canvas,
@@ -382,24 +374,26 @@ export function VideoGeneratePanel({
 }: VideoGeneratePanelProps) {
   const [sourceFrame, setSourceFrame] = useState<string | null>(null);
   const [isCapturing, setIsCapturing] = useState(true);
-  const [routePoints, setRoutePoints] = useState<VideoRoutePoint[]>([]);
+  const [routePoints, setRoutePoints] = useState<VideoRoutePoint[]>(() => [...DEFAULT_VIDEO_ROUTE]);
   const [motion, setMotion] = useState<MotionId>('path_follow');
   const [videoGenerationEnabled, setVideoGenerationEnabled] = useState(false);
-  const [provider, setProvider] = useState<VideoProvider>('omni');
-  const [seedanceReferenceMode, setSeedanceReferenceMode] = useState<SeedanceReferenceMode>('preview_plus_keyframes');
+  // New clips always use Omni route editing; the wider types keep saved history readable.
+  const [provider] = useState<VideoProvider>('omni');
+  const [seedanceReferenceMode] = useState<SeedanceReferenceMode>('preview_plus_keyframes');
   const [useSceneReferences, setUseSceneReferences] = useState(false);
   const [usePhotographicFinish, setUsePhotographicFinish] = useState(false);
   const [photographicGuide, setPhotographicGuide] = useState<PhotographicGuide | null>(null);
   const [isPreparingGuide, setIsPreparingGuide] = useState(false);
   const [recoveredAppearance, setRecoveredAppearance] = useState<{ request: PreparedVideoRequest; signature: string } | null>(null);
   const [pendingAppearanceRestore, setPendingAppearanceRestore] = useState<{request: PreparedVideoRequest; guide: PhotographicGuide} | null>(null);
-  const [internalEnhanceQuality, setInternalEnhanceQuality] = useState<InternalEnhanceQuality>('fast');
+  const [internalEnhanceQuality] = useState<InternalEnhanceQuality>('fast');
   const [renderQuality, setRenderQuality] = useState<VideoRenderQuality>('draft');
-  const [controlMode, setControlMode] = useState<VideoControlMode>('preview_video');
+  const [controlMode] = useState<VideoControlMode>('preview_video');
+  const [routeEditing, setRouteEditing] = useState(false);
   const [customPrompt, setCustomPrompt] = useState('');
   const [useCustomPromptOnly, setUseCustomPromptOnly] = useState(false);
   const [duration, setDuration] = useState<4 | 8>(8);
-  const [animatePeople, setAnimatePeople] = useState(false);
+  const [animatePeople, setAnimatePeople] = useState(true);
   const [characterReference, setCharacterReference] = useState<{ dataUrl: string; mimeType: 'image/png' | 'image/jpeg'; name: string; revision: number } | null>(null);
   const [referenceLoading, setReferenceLoading] = useState(false);
   const referenceSequence = useRef(0);
@@ -439,8 +433,8 @@ export function VideoGeneratePanel({
     [siteZones],
   );
   const currentSceneRevisionSignature = useMemo(
-    () => `${sceneClaimsSignature(community3DClaims, residualLandscapeClaim)}:${detailsRevision ?? ""}`,
-    [community3DClaims, residualLandscapeClaim, detailsRevision],
+    () => `${sceneClaimsSignature(community3DClaims, residualLandscapeClaim)}:${detailsRevision ?? ""}:${peopleDirection}`,
+    [community3DClaims, residualLandscapeClaim, detailsRevision, peopleDirection],
   );
   const routeCaptureSignature = useMemo(
     () => `${projectId}:${sourceCaptureVersion}:${renderQuality}:${motion}:${durationSeconds}:${animatePeople}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}`,
@@ -475,7 +469,13 @@ export function VideoGeneratePanel({
     () => `${provider}:${seedanceReferenceMode}:${internalEnhanceQuality}:${renderQuality}:${controlMode}:${motion}:${routeCaptureSignature}:${sceneContract.signature}:${currentSceneRevisionSignature}:${supportsPeopleEdit ? customPrompt.trim() : ''}:${supportsPeopleEdit && useCustomPromptOnly}:${supportsPeopleEdit ? characterReference?.revision ?? 0 : 0}:${supportsPeopleEdit && useSceneReferences}:${supportsPeopleEdit && usePhotographicFinish}:${photographicGuide?.attempt_id ?? ''}`,
     [controlMode, currentSceneRevisionSignature, customPrompt, useCustomPromptOnly, internalEnhanceQuality, motion, provider, renderQuality, routeCaptureSignature, sceneContract.signature, seedanceReferenceMode, supportsPeopleEdit, characterReference, useSceneReferences, usePhotographicFinish, photographicGuide],
   );
-  const hasValidPreflight = Boolean(preflight?.ready && preparedSignature === currentSignature);
+  const latestSignature = useRef(currentSignature);
+  latestSignature.current = currentSignature;
+  const submission = useRef<{ body: PreparedVideoRequest; signature: string | null; requestId: string } | null>(null);
+  const submissionInFlight = useRef(false);
+  const hasValidCost = typeof preflight?.estimated_cost_usd === 'number'
+    && Number.isFinite(preflight.estimated_cost_usd) && preflight.estimated_cost_usd >= 0;
+  const hasValidPreflight = Boolean(preflight?.ready && hasValidCost && preparedSignature === currentSignature);
   const providerUsage = pilot.provider_usage[provider];
   const providerCanRun = videoGenerationEnabled && (providerUsage.attempts_remaining === null
     || providerUsage.attempts_remaining > 0);
@@ -582,7 +582,8 @@ export function VideoGeneratePanel({
     setMotion(nextMotion);
     if (nextMotion === 'people_follow') setAnimatePeople(true);
     setRouteControls(null);
-    setRoutePoints([]);
+    setRoutePoints([...(nextMotion === 'path_follow' ? DEFAULT_VIDEO_ROUTE : DEFAULT_STREET_VIDEO_ROUTE)]);
+    setRouteEditing(false);
     setPreflight(null);
     setPrepared(null);
   }, [setRouteControls]);
@@ -616,6 +617,7 @@ export function VideoGeneratePanel({
       setPreviewProgress('Preparing your route…');
       const captured = await captureRouteControls({
         routePoints, cameraMotion: motion, renderQuality, durationSeconds, animatePeople, keyframeCount: 6,
+        automaticRoute: motion === 'street_walkby' && routeSignature(routePoints) === routeSignature(DEFAULT_STREET_VIDEO_ROUTE),
         onProgress: (phase, completed, total) => setPreviewProgress(`${phase === 'loading' ? 'Loading the surroundings' : phase === 'checking' ? 'Checking route views' : 'Creating your preview'} · ${Math.round(completed / total * 100)}%`),
       });
       const normalizedKeyframes = await Promise.all(captured.keyframesBase64.map(frame => normalizeImageFrame(
@@ -648,6 +650,7 @@ export function VideoGeneratePanel({
         omni_reference_mode: includePhotographicGuide ? 'appearance_references' : 'video_only',
         appearance_attempt_id: includePhotographicGuide ? photographicGuide!.attempt_id : undefined,
         use_custom_prompt_only: includePhotographicGuide || recoveredAppearance.request.use_custom_prompt_only,
+        scene_brief: [recoveredAppearance.request.scene_brief || sceneContract.text, peopleDirection].filter(Boolean).join('\n'),
         custom_prompt: customPrompt.trim() || 'Make this exact scene look like a live-action architectural film with realistic people and materials. Clear blue sky, soft clouds and neutral sunshine.' };
     }
     const activeControls = controlMode !== 'single_frame' ? await prepareLocalPreview() : null;
@@ -666,7 +669,8 @@ export function VideoGeneratePanel({
     const allRouteKeyframes = activeControls?.keyframesBase64 ?? [];
     // Keep architectural source admission on finished enhancement; a free
     // exact-camera preview may show a sparse park without inventing detail.
-    if (motion !== 'path_follow' && allRouteKeyframes.length) await assertNearFieldVideoSourceQuality(allRouteKeyframes);
+    if (motion !== 'path_follow' && allRouteKeyframes.length) await assertNearFieldVideoSourceQuality(allRouteKeyframes,
+      {authoredPeople: (activeControls?.peopleCaptureCount ?? 0) > 0 && community3DClaims.length === 0});
     const appearanceReferences = supportsPeopleEdit && usePhotographicFinish && includePhotographicGuide;
     if (appearanceReferences && (!photographicGuide || photographicGuide.signature !== appearanceSignature)) {
       throw new Error('Create and review a photographic guide for this scene and route first.');
@@ -749,19 +753,20 @@ export function VideoGeneratePanel({
       } : {}),
       custom_prompt: provider === 'omni' && controlMode === 'preview_video' ? customPrompt.trim() || (appearanceReferences ? 'Make this exact scene look like a live-action architectural film with realistic people and materials. Clear blue sky, soft clouds and neutral sunshine.' : '') : '',
       use_custom_prompt_only: provider === 'omni' && controlMode === 'preview_video' && (useCustomPromptOnly || appearanceReferences),
-      scene_brief: sceneBrief,
+      scene_brief: [sceneBrief, peopleDirection].filter(Boolean).join('\n'),
       community_3d_claims: community3DClaims,
       details_revision: detailsRevision,
       ...(residualLandscapeClaim ? {
         residual_landscape_claim: residualLandscapeClaim,
       } : {}),
     };
-  }, [prepareLocalPreview, community3DClaims, customPrompt, useCustomPromptOnly, detailsRevision, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones, durationSeconds, supportsPeopleEdit, characterReference, useSceneReferences, usePhotographicFinish, photographicGuide, appearanceSignature, recoveredAppearance]);
+  }, [peopleDirection, prepareLocalPreview, community3DClaims, customPrompt, useCustomPromptOnly, detailsRevision, controlMode, internalEnhanceQuality, motion, projectId, provider, renderQuality, residualLandscapeClaim, routePoints, sceneContract, seedanceReferenceMode, sourceFrame, siteZones, durationSeconds, supportsPeopleEdit, characterReference, useSceneReferences, usePhotographicFinish, photographicGuide, appearanceSignature, recoveredAppearance]);
 
   const prepareAppearance = useCallback(async () => {
     const body = await requestBody(false);
     // Validate the real route/scene before buying its still. This is free.
-    await videoRenderApi.preflight(body);
+    const check = await videoRenderApi.preflight(body) as PreflightResult;
+    if (!check.ready) throw new Error('Preview the current scene successfully before creating a photographic guide.');
     if (!body.preview_video_base64) throw new Error('Capture the free route preview first.');
     return { purpose: 'video_appearance' as const, project_id: projectId,
       beauty_image_base64: body.guide_frame_base64,
@@ -776,6 +781,10 @@ export function VideoGeneratePanel({
     try {
       const body = await requestBody();
       const result = await videoRenderApi.preflight(body) as PreflightResult;
+      if (latestSignature.current !== currentSignature) throw new Error('The scene changed during the free check. Preview the current scene again.');
+      if (!result.ready || typeof result.estimated_cost_usd !== 'number' || !Number.isFinite(result.estimated_cost_usd) || result.estimated_cost_usd < 0) {
+        throw new Error('The free check did not return a valid cost quote. Preview again before generating.');
+      }
       setPrepared(body);
       setPreparedSignature(currentSignature);
       setPreflight(result);
@@ -802,16 +811,23 @@ export function VideoGeneratePanel({
   }, [requestBody, currentSignature]);
 
   const generate = useCallback(async () => {
-    if (!prepared || !hasValidPreflight || !providerCanRun || isPreparingGuide) return;
+    if (!prepared || !hasValidPreflight || !providerCanRun || isPreparingGuide || submissionInFlight.current) return;
+    submissionInFlight.current = true;
+    // An uncertain response can already have reserved a paid attempt. A free
+    // recheck of unchanged inputs must replay that same request, never buy twice.
+    if (submission.current?.signature !== preparedSignature) {
+      submission.current = {body: prepared, signature: preparedSignature, requestId: crypto.randomUUID()};
+    }
     const requestingUserId = useAuthStore.getState().user?.id;
     setIsGenerating(true);
     setError(null);
     try {
       const result = await videoRenderApi.generate({
-        ...prepared,
-        request_id: crypto.randomUUID(),
+        ...submission.current!.body,
+        request_id: submission.current!.requestId,
         confirm_paid_submission: true,
       }) as { attempt: VideoAttempt; attempts_used: number; attempts_remaining: number | null };
+      submission.current = null;
       setSelectedAttempt(result.attempt);
       setPreflight(null);
       setPrepared(null);
@@ -822,6 +838,7 @@ export function VideoGeneratePanel({
       setError(getApiErrorMessage(generationError, 'The video submission failed.'));
       await loadPilot();
     } finally {
+      submissionInFlight.current = false;
       setIsGenerating(false);
       // A failed/uncertain response may still have reserved a paid call. Refresh
       // server accounting without hiding saved video or restoring a signed-out user.
@@ -831,7 +848,7 @@ export function VideoGeneratePanel({
         }
       }).catch(() => { /* Reconciled on the next account refresh. */ });
     }
-  }, [hasValidPreflight, loadPilot, onVideoSaved, prepared, providerCanRun, isPreparingGuide]);
+  }, [hasValidPreflight, loadPilot, onVideoSaved, prepared, preparedSignature, providerCanRun, isPreparingGuide]);
 
   const addRouteVertex = (event: ReactMouseEvent<HTMLDivElement>) => {
     if (isGenerating || isPreparingControls || isCapturing || isPreflighting) return;
@@ -899,10 +916,10 @@ export function VideoGeneratePanel({
           </div>
           <div className="min-w-0">
             <h2 className="text-sm font-black uppercase tracking-[0.14em] sm:text-base">Video Render</h2>
-            <p className="truncate text-[11px] text-white/55">Draw the path. Animate the captured scene. Preserve every building.</p>
+            <p className="truncate text-[11px] text-white/55">Omni 1.1 · Choose a shot, preview, then generate.</p>
           </div>
           {videoGenerationEnabled ? <div className="ml-auto hidden items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 sm:flex">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-white/50">{providerUsage.allowance_scope === 'trial' ? 'Paid trial · all providers' : provider === 'internal_enhance' ? 'Local runs' : provider === 'seedance_mini' ? 'Seedance calls' : 'Omni calls'}</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-white/50">Videos used</span>
             <div className="flex gap-1">
               {usedDots.map((used, index) => (
                 <span key={index} className={`h-2 w-2 rounded-full ${used ? 'bg-[#ff6b57]' : 'bg-white/20'}`} />
@@ -923,26 +940,14 @@ export function VideoGeneratePanel({
           <section className="flex min-h-[430px] flex-col border-b-2 border-[#151515] bg-[#0d1718] p-3 lg:min-h-0 lg:overflow-y-auto lg:border-b-0 lg:border-r-2 lg:p-5">
             <div className="mb-3 flex flex-wrap items-center gap-2 text-white">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[10px] font-black uppercase tracking-wider">
-                <MapPinned size={12} /> Flight path
+                <MapPinned size={12} /> Camera journey
               </span>
-              <span className="text-[11px] text-white/45">
-                {motion === 'bicycle_ride' ? `Click clear ground to add each cycling vertex · up to ${durationSeconds * 7} m in ${durationSeconds} seconds` : motion === 'street_walkby'
-                  ? 'Click ground to add each vertex · the camera faces the site'
-                  : motion === 'detail_flythrough'
-                    ? 'Click ground between buildings · each click adds a low-flight vertex'
-                    : 'Click to add each flight-path vertex · 2 points minimum'}
-              </span>
-              <span className="rounded-full bg-white/10 px-2 py-1 text-[9px] font-black uppercase text-white/55">
-                {routePoints.length} {routePoints.length === 1 ? 'vertex' : 'vertices'}
-              </span>
-              <button onClick={() => {
-                setRouteControls(null);
-                setRoutePoints([]);
-                setPreflight(null);
-                setPrepared(null);
-              }} disabled={isGenerating || isPreparingControls} className="ml-auto inline-flex items-center gap-1 rounded-full border border-white/15 px-2.5 py-1 text-[10px] font-bold text-white/65 hover:bg-white/10">
-                <RefreshCw size={11} /> Reset route
-              </button>
+              <span className="text-[11px] text-white/65">A short route is ready from your current view. Edit it under Advanced.</span>
+              {routeEditing && <button type="button" onClick={() => {
+                setRouteControls(null); setRoutePoints([]); setPreflight(null); setPrepared(null);
+              }} disabled={isGenerating || isPreparingControls} className="ml-auto rounded-full border border-white/25 px-3 py-2 text-xs text-white">
+                <RefreshCw size={11} className="inline" /> Reset route
+              </button>}
             </div>
 
             <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-2xl border border-white/15 bg-black shadow-2xl">
@@ -966,7 +971,7 @@ export function VideoGeneratePanel({
                   <button onClick={() => void capture()} className="rounded-full bg-white px-4 py-2 text-xs font-black uppercase text-[#151515]">Try capture again</button>
                 </div>
               )}
-              {sourceFrame && (
+              {sourceFrame && routeEditing && (
                 <div
                   className="absolute inset-0 cursor-crosshair touch-none"
                   onClick={addRouteVertex}
@@ -1003,12 +1008,6 @@ export function VideoGeneratePanel({
               )}
             </div>
 
-            <button type="button" onClick={() => void previewLocally()}
-              disabled={isCapturing || isPreparingControls || isPreflighting || isGenerating || !sourceFrame || routePoints.length < 2}
-              className="mt-3 min-h-11 rounded-xl border-2 border-[#c9ff3d] bg-[#c9ff3d] px-4 py-2 text-sm font-bold text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:opacity-40">
-              {isPreparingControls ? 'Preparing preview…' : 'Preview route · free'}
-            </button>
-            <p className="mt-1 text-center text-xs text-white/70">Review the camera journey before generating a finished video.</p>
             {recoveredAppearance?.signature === appearanceSignature && <p className="mt-2 rounded-lg border border-white/20 p-2 text-xs text-white">Using the original saved route recording. Its exact camera and motion are restored; change the route or recapture the scene to make a new source.</p>}
 
             {routeControls?.signature === routeCaptureSignature && (
@@ -1073,241 +1072,181 @@ export function VideoGeneratePanel({
               </div>
             )}
 
-            <div className="mt-4 grid min-h-0 gap-3 sm:grid-cols-[1.15fr_0.85fr]">
-              <div>
-                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-white/45">Motion control</p>
-                <div className="grid grid-cols-3 gap-1.5">
-                  {CONTROL_MODES.map((item) => (
-                    <button key={item.id} aria-pressed={controlMode === item.id} onClick={() => {
-                      if (provider !== 'omni' && item.id !== 'preview_video') return;
-                      setControlMode(item.id);
-                      if (item.id !== 'preview_video' && motion === 'people_follow') selectMotion('bicycle_ride');
-                      setPreflight(null);
-                      setPrepared(null);
-                    }} disabled={isGenerating || isCapturing || isPreparingControls || (provider !== 'omni' && item.id !== 'preview_video')} className={`rounded-xl border px-2 py-2 text-left transition disabled:cursor-not-allowed disabled:opacity-30 ${controlMode === item.id ? 'border-[#c9ff3d] bg-[#c9ff3d]/15 text-white' : 'border-white/10 bg-white/[0.04] text-white/55 hover:bg-white/[0.08]'}`}>
-                      <span className="block text-[10px] font-bold">{item.name}</span>
-                      <span className="mt-0.5 block text-[8px] leading-tight opacity-55">{item.detail}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-white/45">Camera behavior</p>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {MOTIONS.map((item) => (
-                    <button key={item.id} aria-pressed={motion === item.id} onClick={() => selectMotion(item.id)} disabled={isGenerating || isCapturing || isPreparingControls || (item.id === 'people_follow' && !supportsPeopleEdit)} className={`rounded-xl border px-2.5 py-2 text-left transition disabled:opacity-30 ${motion === item.id ? 'border-[#28c7e8] bg-[#28c7e8]/15 text-white' : 'border-white/10 bg-white/[0.04] text-white/55 hover:bg-white/[0.08]'}`}>
-                      <span className="block text-[11px] font-bold">{item.name}</span>
-                      <span className="block text-[9px] opacity-55">{item.detail}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+
           </section>
 
           <aside className="flex min-h-0 flex-col bg-[#f7f2e8] lg:overflow-y-auto">
             <div className="space-y-4 p-4 sm:p-5">
-              {!videoGenerationEnabled && <p role="status" className="rounded-lg border border-slate-300 bg-white p-3 text-sm">Finished video generation is unavailable on this server. Draw a route, preview it locally and download the exact 3D journey for free.</p>}
-              <div>
-                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">Source render quality</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {Object.values(VIDEO_RENDER_QUALITY_PROFILES).map((item) => (
-                    <button key={item.id} type="button" aria-pressed={renderQuality === item.id} onClick={() => {
-                      setRenderQuality(item.id);
-                      setRouteControls(null);
-                      setPreflight(null);
-                      setPrepared(null);
-                      setError(null);
-                      void capture(item.id);
-                    }} disabled={isGenerating || isPreflighting || isPreparingControls || isCapturing} className={`rounded-xl border-2 p-2.5 text-left transition disabled:opacity-40 ${renderQuality === item.id ? 'border-[#151515] bg-[#fff0bf] shadow-[2px_2px_0_0_#151515]' : 'border-[#151515]/15 bg-white/45 hover:bg-white'}`}>
-                      <span className="block text-[10px] font-black">{item.label}</span>
-                      <span className="mt-0.5 block text-[8px] leading-tight text-[#151515]/50">{item.detail}</span>
-                    </button>
-                  ))}
-                </div>
-                <p className="mt-1.5 text-[8px] font-semibold leading-relaxed text-[#151515]/45">
-                  High Quality performs a complete dry traversal, holds Google context tiles, renders at 1440p, and downsamples to 1080p before any local or API animation step.
-                </p>
-              </div>
-
-              <div>
-                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">Video provider</p>
+              {!videoGenerationEnabled && <p role="status" className="rounded-lg border border-slate-300 bg-white p-3 text-sm">Finished video generation is unavailable on this server. Preview the current view locally and download the exact 3D journey for free.</p>}
+              <fieldset disabled={isGenerating || isPreparingControls || isPreflighting || isPreparingGuide}>
+                <legend className="mb-2 text-sm font-black">1. Choose a shot</legend>
                 <div className="grid grid-cols-3 gap-2">
-                  {PROVIDERS.map((item) => (
-                    <button key={item.id} type="button" aria-pressed={provider === item.id} onClick={() => {
-                      setProvider(item.id);
-                      if (item.id !== 'omni') setControlMode('preview_video');
-                      if (item.id !== 'omni' && motion === 'people_follow') selectMotion('bicycle_ride');
-                      setPreflight(null);
-                      setPrepared(null);
-                      setError(null);
-                    }} disabled={!videoGenerationEnabled || isGenerating || isPreflighting} className={`rounded-xl border-2 p-2.5 text-left transition disabled:opacity-40 ${provider === item.id ? 'border-[#151515] bg-white shadow-[2px_2px_0_0_#151515]' : 'border-[#151515]/15 bg-white/45 hover:bg-white'}`}>
-                      <span className="block text-[10px] font-black">{item.name}</span>
-                      <span className="mt-0.5 block text-[8px] leading-tight text-[#151515]/50">{item.detail}</span>
+                  {MOTIONS.filter(item => ['path_follow', 'street_walkby', 'people_follow'].includes(item.id)).map(item => (
+                    <button key={item.id} type="button" aria-pressed={motion === item.id} onClick={() => selectMotion(item.id)}
+                      className={`min-h-14 rounded-xl border-2 px-2 py-2 text-xs font-bold ${motion === item.id ? 'border-[#151515] bg-[#c9ff3d]' : 'border-[#151515]/20 bg-white'}`}>
+                      {item.name}
                     </button>
                   ))}
                 </div>
-                {provider === 'seedance_mini' && (
-                  <div className="mt-2 rounded-xl border border-[#151515]/15 bg-[#eef8ff] p-2.5">
-                    <p className="mb-1.5 text-[9px] font-black uppercase tracking-wider text-[#151515]/50">Reference package</p>
-                    <div className="grid grid-cols-2 gap-1.5">
-                      {([
-                        { id: 'preview_plus_keyframes' as const, label: 'Preview + 3 views', detail: 'Recommended' },
-                        { id: 'preview_only' as const, label: 'Preview only', detail: 'Baseline' },
-                      ]).map((item) => (
-                        <button key={item.id} type="button" aria-pressed={seedanceReferenceMode === item.id} onClick={() => {
-                          setSeedanceReferenceMode(item.id);
-                          setPreflight(null);
-                          setPrepared(null);
-                        }} disabled={isGenerating || isPreflighting} className={`rounded-lg border px-2 py-1.5 text-left ${seedanceReferenceMode === item.id ? 'border-[#28c7e8] bg-white' : 'border-[#151515]/10 bg-white/40'}`}>
-                          <span className="block text-[9px] font-black">{item.label}</span>
-                          <span className="block text-[8px] text-[#151515]/45">{item.detail}</span>
-                        </button>
-                      ))}
-                    </div>
-                    <p className="mt-2 text-[8px] font-semibold leading-relaxed text-[#315d73]">Hard server cap: {providerUsage.attempts_used}/{providerUsage.max_attempts} Seedance submissions. No automatic generation retries.</p>
-                  </div>
-                )}
-                {provider === 'internal_enhance' && (
-                  <div className="mt-2 rounded-xl border border-[#151515]/15 bg-[#edf8e7] p-2.5">
-                    <p className="text-[9px] font-black uppercase tracking-wider text-[#285b22]">Source-locked local cleanup</p>
-                    <p className="mt-1 text-[9px] font-semibold leading-relaxed text-[#315d3a]">Uses the exact route-preview pixels containing City Prompt’s render-locked GLB skins and park assets. No paid API, no scene generation, and no automatic retries.</p>
-                    <div className="mt-2 grid grid-cols-2 gap-1.5">
-                      {([
-                        { id: 'fast' as const, label: 'Fast Cleanup', detail: 'Recommended · seconds' },
-                        { id: 'gpu_detail' as const, label: 'GPU Detail', detail: 'Queued · 15–25 min' },
-                      ]).map((item) => (
-                        <button key={item.id} type="button" aria-pressed={internalEnhanceQuality === item.id} onClick={() => {
-                          setInternalEnhanceQuality(item.id);
-                          setPreflight(null);
-                          setPrepared(null);
-                        }} disabled={isGenerating || isPreflighting} className={`rounded-lg border px-2 py-1.5 text-left ${internalEnhanceQuality === item.id ? 'border-[#285b22] bg-white' : 'border-[#151515]/10 bg-white/40'}`}>
-                          <span className="block text-[9px] font-black">{item.label}</span>
-                          <span className="block text-[8px] text-[#151515]/45">{item.detail}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
+              </fieldset>
               <div>
-                <div className="mb-2 flex items-center justify-between">
-                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">Scene lock</p>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-[#fff0bf] px-2 py-1 text-[9px] font-black uppercase text-[#705000]"><ShieldCheck size={11} /> Continuity constrained</span>
-                </div>
-                <div className="rounded-xl border border-[#151515]/15 bg-white/65 p-3">
-                  <p className="text-xs font-black leading-relaxed text-[#151515]/80">{sceneContract.summary}</p>
-                  <p className="mt-1 text-[10px] font-semibold leading-relaxed text-[#151515]/55">
-                    {provider === 'omni' && controlMode === 'preview_video'
-                      ? 'The source guides the camera and layout. Omni targets live-action architectural footage with lifelike materials, lighting and planting. Optional scene details can add activity. Review every result for design changes.'
-                      : 'The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, lighting, Google context buildings, and open-space program. City Prompt adds no moving traffic or pedestrians; any baked Google context remains part of the captured surroundings.'}
-                  </p>
-                  <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
-                    {provider === 'internal_enhance'
-                      ? motion === 'street_walkby'
-                        ? 'Internal Enhance processes the deterministic route locally. Original GLBs, PBR skins, open-space assets, vegetation, and lighting remain authoritative inside the proposal; captured Google Tiles remain the surrounding context.'
-                        : 'Internal Enhance processes the deterministic route video locally. Its captured render-locked building skins, open-space assets, Google context, geometry, and timing remain authoritative.'
-                      : provider === 'seedance_mini'
-                      ? seedanceReferenceMode === 'preview_plus_keyframes'
-                        ? 'Seedance receives the exact City Prompt route preview plus three chronological geometry checkpoints.'
-                        : 'Seedance receives the exact City Prompt route preview as its sole visual authority.'
-                      : controlMode === 'multi_keyframe'
-                      ? 'Omni receives six ordered City Prompt views of the same scene, with no style or archetype reference images.'
-                      : controlMode === 'preview_video'
-                        ? 'Omni 1.1 edits the exact route recording. High quality requests 1080p output (Google upscales it); inspect the saved video’s actual resolution.'
-                        : 'Omni receives one authoritative image plus conservative camera-motion instructions.'}
-                  </p>
-                  <p className="mt-2 rounded-lg bg-[#fff0bf] px-2 py-1.5 text-[9px] font-bold leading-relaxed text-[#705000]">
-                    {provider === 'internal_enhance'
-                      ? 'No scene generation: this pass only denoises, sharpens, stabilizes tone, and optionally super-resolves detail already present. The fidelity gate still checks every saved result.'
-                      : `AI concept visualization: ${providerName(provider)} can still reinterpret geometry between frames. Verify the video against the 3D scene before using it for design decisions.`}
-                  </p>
-                </div>
-                {provider === 'omni' && controlMode === 'preview_video' && (
-                  <div className="mt-3">
-                    <fieldset disabled={isGenerating || isPreflighting || isPreparingControls} className="mb-3 rounded-xl border border-[#151515]/15 p-3 text-[#151515]">
-                      <legend className="px-1 text-xs font-bold">Clip length</legend>
-                      <div className="flex gap-2">{([4, 8] as const).map(seconds => <button type="button" key={seconds}
-                        aria-pressed={duration === seconds} onClick={() => setDuration(seconds)}
-                        className={`min-h-10 flex-1 rounded-lg border border-[#151515] text-xs font-bold ${duration === seconds ? 'bg-[#c9ff3d]' : 'bg-white'}`}>{seconds} seconds</button>)}</div>
-                      <label className="mt-3 flex items-center gap-2 text-xs font-bold">
-                        <input type="checkbox" checked={animatePeople} disabled={motion === 'people_follow'} onChange={event => setAnimatePeople(event.target.checked)} className="accent-[#96ba10]" />
-                        Animate placed people
-                      </label>
-                      <p className="mt-1 text-[10px] text-[#151515]/60">People walk forward from their saved position at 1.2 m/s during capture. Leave a clear path; normal editing stays still.</p>
-                    </fieldset>
-                    <label className="mb-2 flex items-center gap-2 text-xs font-bold text-[#151515]">
-                      <input type="checkbox" checked={usePhotographicFinish} disabled={isGenerating || isPreflighting || isPreparingGuide}
-                        onChange={event => { setUsePhotographicFinish(event.target.checked); setPreflight(null); setPrepared(null); }} className="accent-[#96ba10]" />
-                      Photographic finish
-                    </label>
-                    {usePhotographicFinish && <PhotographicVideoGuide projectId={projectId} signature={appearanceSignature}
-                      guide={photographicGuide} prepare={prepareAppearance} onChange={setPhotographicGuide} onBusyChange={setIsPreparingGuide} onRestoreSource={restoreAppearanceSource} />}
-                    <label className="mb-1 flex items-center gap-2 text-xs font-bold text-[#151515]">
-                      <input type="checkbox" checked={useSceneReferences}
-                        disabled={isGenerating || isPreflighting || usePhotographicFinish}
-                        onChange={event => { setUseSceneReferences(event.target.checked); setPreflight(null); setPrepared(null); }}
-                        className="accent-[#96ba10]" />
-                      Use scene reference frames
-                    </label>
-                    <p className="mb-3 text-[10px] text-[#151515]/60">Adds up to two captured views to guide buildings and skyline. The source video still controls camera and motion. Fidelity remains approximate.</p>
-                    <label htmlFor="video-character-reference" className="mb-1 block text-xs font-bold text-[#151515]">Character appearance reference (optional)</label>
-                    <input id="video-character-reference" type="file" accept="image/png,image/jpeg" disabled={isGenerating || isPreflighting || referenceLoading}
-                      onChange={event => void selectCharacterReference(event.target.files?.[0])}
-                      className="w-full rounded-lg border border-[#151515]/25 bg-white p-2 text-xs text-[#151515] file:mr-2 file:rounded file:border-0 file:bg-[#e8f6bc] file:p-2" />
-                    <p className="mt-1 text-[10px] text-[#151515]/60">A PNG/JPEG up to 8 MB and 4096 px. Guides appearance only; the route video controls motion and layout.</p>
-                    {characterReference && <div className="my-2 flex items-center gap-2 text-xs text-[#151515]">
-                      <img src={characterReference.dataUrl} alt="Character appearance reference" className="h-20 w-20 rounded-lg border object-contain" />
-                      <span className="min-w-0 flex-1 truncate">{characterReference.name}</span>
-                      <button type="button" disabled={isGenerating || isPreflighting} onClick={() => { ++referenceSequence.current; setCharacterReference(null); }} className="min-h-10 rounded-lg border px-2">Remove reference</button>
-                    </div>}
-                    <label htmlFor="video-custom-prompt" className="mb-1 block text-xs font-bold text-[#151515]">Custom prompt (optional)</label>
-                    <textarea id="video-custom-prompt" value={customPrompt} maxLength={600} rows={3}
-                      disabled={isGenerating || isPreflighting}
-                      onChange={event => { setCustomPrompt(event.target.value); setPreflight(null); setPrepared(null); }}
-                      placeholder="A woman walks her dog along the existing sidewalk."
-                      className="w-full resize-y rounded-xl border border-[#151515]/25 bg-white p-3 text-sm text-[#151515] focus:border-[#151515] focus:ring-2 focus:ring-[#c9ff3d] disabled:opacity-50" />
-                    <p className="mt-1 text-[10px] text-[#151515]/60">Keep it to one clear appearance or activity detail. The building massing, street layout and camera route should stay recognizable.</p>
-                    <label className="mt-2 flex items-center gap-2 text-xs font-bold text-[#151515]">
-                      <input type="checkbox" checked={useCustomPromptOnly || usePhotographicFinish}
-                        disabled={isGenerating || isPreflighting || usePhotographicFinish || !customPrompt.trim()}
-                        onChange={event => { setUseCustomPromptOnly(event.target.checked); setPreflight(null); setPrepared(null); }}
-                        className="accent-[#96ba10]" />
-                      Use only my prompt
-                    </label>
-                    <p className="mt-1 text-[10px] text-[#151515]/60">Uses your text with reference-role instructions when references are enabled. Design details may change.</p>
-                  </div>
-                )}
+                <label htmlFor="video-custom-prompt" className="mb-1 block text-xs font-bold text-[#151515]">Custom prompt (optional)</label>
+                <textarea id="video-custom-prompt" value={customPrompt} maxLength={600} rows={3}
+                  disabled={isGenerating || isPreflighting}
+                  onChange={event => { setCustomPrompt(event.target.value); setPreflight(null); setPrepared(null); }}
+                  placeholder="A woman walks her dog along the existing sidewalk."
+                  className="w-full resize-y rounded-xl border border-[#151515]/25 bg-white p-3 text-sm text-[#151515] focus:border-[#151515] focus:ring-2 focus:ring-[#c9ff3d] disabled:opacity-50" />
+                <p className="mt-1 text-[10px] text-[#151515]/60">Keep it to one clear appearance or activity detail. The building massing, street layout and camera route should stay recognizable.</p>
               </div>
+              <details className="rounded-xl border border-[#151515]/20 p-3">
+                <summary className="cursor-pointer text-sm font-bold">Advanced</summary>
+                <div className="mt-3 space-y-4">
+                <label className="flex items-center gap-2 text-xs font-bold">
+                  <input type="checkbox" checked={routeEditing} disabled={isGenerating || isPreparingControls || isPreflighting}
+                    onChange={event => setRouteEditing(event.target.checked)} /> Edit route on preview
+                </label>
+                <div className="flex gap-2">{MOTIONS.filter(item => ['bicycle_ride', 'detail_flythrough'].includes(item.id)).map(item => (
+                  <button type="button" key={item.id} aria-pressed={motion === item.id} onClick={() => selectMotion(item.id)} disabled={isGenerating || isPreparingControls || isPreflighting}
+                    className="min-h-10 rounded-lg border px-2 text-xs">{item.name}</button>
+                ))}</div>
+                <div>
+                  <p className="mb-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">Source render quality</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {Object.values(VIDEO_RENDER_QUALITY_PROFILES).map((item) => (
+                      <button key={item.id} type="button" aria-pressed={renderQuality === item.id} onClick={() => {
+                        setRenderQuality(item.id);
+                        setRouteControls(null);
+                        setPreflight(null);
+                        setPrepared(null);
+                        setError(null);
+                        void capture(item.id);
+                      }} disabled={isGenerating || isPreflighting || isPreparingControls || isCapturing} className={`rounded-xl border-2 p-2.5 text-left transition disabled:opacity-40 ${renderQuality === item.id ? 'border-[#151515] bg-[#fff0bf] shadow-[2px_2px_0_0_#151515]' : 'border-[#151515]/15 bg-white/45 hover:bg-white'}`}>
+                        <span className="block text-[10px] font-black">{item.label}</span>
+                        <span className="mt-0.5 block text-[8px] leading-tight text-[#151515]/50">{item.detail}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <p className="mt-1.5 text-[8px] font-semibold leading-relaxed text-[#151515]/45">
+                    High Quality performs a complete dry traversal, holds Google context tiles, renders at 1440p, and downsamples to 1080p before any local or API animation step.
+                  </p>
+                </div>
+
+
+                <div>
+                  <div className="mb-2 flex items-center justify-between">
+                    <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#151515]/45">Scene lock</p>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-[#fff0bf] px-2 py-1 text-[9px] font-black uppercase text-[#705000]"><ShieldCheck size={11} /> Continuity constrained</span>
+                  </div>
+                  <div className="rounded-xl border border-[#151515]/15 bg-white/65 p-3">
+                    <p className="text-xs font-black leading-relaxed text-[#151515]/80">{sceneContract.summary}</p>
+                    <p className="mt-1 text-[10px] font-semibold leading-relaxed text-[#151515]/55">
+                      {provider === 'omni' && controlMode === 'preview_video'
+                        ? 'The source guides the camera and layout. Omni targets live-action architectural footage with lifelike materials, lighting and planting. Optional scene details can add activity. Review every result for design changes.'
+                        : 'The captured pixels lock authored massing, roofs, courtyards, facade rhythm, materials, lighting, Google context buildings, and open-space program. City Prompt adds no moving traffic or pedestrians; any baked Google context remains part of the captured surroundings.'}
+                    </p>
+                    <p className="mt-1 text-[10px] font-bold leading-relaxed text-[#151515]/55">
+                      {provider === 'internal_enhance'
+                        ? motion === 'street_walkby'
+                          ? 'Internal Enhance processes the deterministic route locally. Original GLBs, PBR skins, open-space assets, vegetation, and lighting remain authoritative inside the proposal; captured Google Tiles remain the surrounding context.'
+                          : 'Internal Enhance processes the deterministic route video locally. Its captured render-locked building skins, open-space assets, Google context, geometry, and timing remain authoritative.'
+                        : provider === 'seedance_mini'
+                        ? seedanceReferenceMode === 'preview_plus_keyframes'
+                          ? 'Seedance receives the exact City Prompt route preview plus three chronological geometry checkpoints.'
+                          : 'Seedance receives the exact City Prompt route preview as its sole visual authority.'
+                        : controlMode === 'multi_keyframe'
+                        ? 'Omni receives six ordered City Prompt views of the same scene, with no style or archetype reference images.'
+                        : controlMode === 'preview_video'
+                          ? 'Omni 1.1 edits the exact route recording. High quality requests 1080p output (Google upscales it); inspect the saved video’s actual resolution.'
+                          : 'Omni receives one authoritative image plus conservative camera-motion instructions.'}
+                    </p>
+                    <p className="mt-2 rounded-lg bg-[#fff0bf] px-2 py-1.5 text-[9px] font-bold leading-relaxed text-[#705000]">
+                      {provider === 'internal_enhance'
+                        ? 'No scene generation: this pass only denoises, sharpens, stabilizes tone, and optionally super-resolves detail already present. The fidelity gate still checks every saved result.'
+                        : `AI concept visualization: ${providerName(provider)} can still reinterpret geometry between frames. Verify the video against the 3D scene before using it for design decisions.`}
+                    </p>
+                  </div>
+                  {provider === 'omni' && controlMode === 'preview_video' && (
+                    <div className="mt-3">
+                      <fieldset disabled={isGenerating || isPreflighting || isPreparingControls} className="mb-3 rounded-xl border border-[#151515]/15 p-3 text-[#151515]">
+                        <legend className="px-1 text-xs font-bold">Clip length</legend>
+                        <div className="flex gap-2">{([4, 8] as const).map(seconds => <button type="button" key={seconds}
+                          aria-pressed={duration === seconds} onClick={() => setDuration(seconds)}
+                          className={`min-h-10 flex-1 rounded-lg border border-[#151515] text-xs font-bold ${duration === seconds ? 'bg-[#c9ff3d]' : 'bg-white'}`}>{seconds} seconds</button>)}</div>
+                        <label className="mt-3 flex items-center gap-2 text-xs font-bold">
+                          <input type="checkbox" checked={animatePeople} disabled={motion === 'people_follow'} onChange={event => setAnimatePeople(event.target.checked)} className="accent-[#96ba10]" />
+                          Animate placed people
+                        </label>
+                        <p className="mt-1 text-[10px] text-[#151515]/60">Uses the saved actions of placed people during capture. Moving people need a clear path; normal editing stays still.</p>
+                      </fieldset>
+                      <label className="mb-2 flex items-center gap-2 text-xs font-bold text-[#151515]">
+                        <input type="checkbox" checked={usePhotographicFinish} disabled={isGenerating || isPreflighting || isPreparingGuide}
+                          onChange={event => { setUsePhotographicFinish(event.target.checked); setPreflight(null); setPrepared(null); }} className="accent-[#96ba10]" />
+                        Photographic finish
+                      </label>
+                      {usePhotographicFinish && <PhotographicVideoGuide projectId={projectId} signature={appearanceSignature}
+                        guide={photographicGuide} prepare={prepareAppearance} onChange={setPhotographicGuide} onBusyChange={setIsPreparingGuide} onRestoreSource={restoreAppearanceSource} />}
+                      <label className="mb-1 flex items-center gap-2 text-xs font-bold text-[#151515]">
+                        <input type="checkbox" checked={useSceneReferences}
+                          disabled={isGenerating || isPreflighting || usePhotographicFinish}
+                          onChange={event => { setUseSceneReferences(event.target.checked); setPreflight(null); setPrepared(null); }}
+                          className="accent-[#96ba10]" />
+                        Use scene reference frames
+                      </label>
+                      <p className="mb-3 text-[10px] text-[#151515]/60">Adds up to two captured views to guide buildings and skyline. The source video still controls camera and motion. Fidelity remains approximate.</p>
+                      <label htmlFor="video-character-reference" className="mb-1 block text-xs font-bold text-[#151515]">Character appearance reference (optional)</label>
+                      <input id="video-character-reference" type="file" accept="image/png,image/jpeg" disabled={isGenerating || isPreflighting || referenceLoading}
+                        onChange={event => void selectCharacterReference(event.target.files?.[0])}
+                        className="w-full rounded-lg border border-[#151515]/25 bg-white p-2 text-xs text-[#151515] file:mr-2 file:rounded file:border-0 file:bg-[#e8f6bc] file:p-2" />
+                      <p className="mt-1 text-[10px] text-[#151515]/60">A PNG/JPEG up to 8 MB and 4096 px. Guides appearance only; the route video controls motion and layout.</p>
+                      {characterReference && <div className="my-2 flex items-center gap-2 text-xs text-[#151515]">
+                        <img src={characterReference.dataUrl} alt="Character appearance reference" className="h-20 w-20 rounded-lg border object-contain" />
+                        <span className="min-w-0 flex-1 truncate">{characterReference.name}</span>
+                        <button type="button" disabled={isGenerating || isPreflighting} onClick={() => { ++referenceSequence.current; setCharacterReference(null); }} className="min-h-10 rounded-lg border px-2">Remove reference</button>
+                      </div>}
+                      <label className="mt-2 flex items-center gap-2 text-xs font-bold text-[#151515]">
+                        <input type="checkbox" checked={useCustomPromptOnly || usePhotographicFinish}
+                          disabled={isGenerating || isPreflighting || usePhotographicFinish || !customPrompt.trim()}
+                          onChange={event => { setUseCustomPromptOnly(event.target.checked); setPreflight(null); setPrepared(null); }}
+                          className="accent-[#96ba10]" />
+                        Use only my prompt
+                      </label>
+                      <p className="mt-1 text-[10px] text-[#151515]/60">Uses your text with reference-role instructions when references are enabled. Design details may change.</p>
+                    </div>
+                  )}
+                </div>
+
+                </div>
+              </details>
 
               <div className="rounded-2xl border-2 border-[#151515] bg-white p-3 shadow-[3px_3px_0_0_#151515]">
                 <div className="flex items-start gap-2">
                   <div className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${hasValidPreflight ? 'bg-[#c9ff3d]' : 'bg-[#eee8dc]'}`}>
-                    {hasValidPreflight ? <Check size={14} strokeWidth={3} /> : <span className="text-[10px] font-black">1</span>}
+                    {hasValidPreflight ? <Check size={14} strokeWidth={3} /> : <span className="text-[10px] font-black">2</span>}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-black uppercase">Zero-cost preflight</p>
-                    <p className="mt-0.5 text-[10px] leading-relaxed text-[#151515]/50">Prepares route controls, then checks every input, quota, auth, and final prompt. No provider is called.</p>
+                    <p className="text-xs font-black uppercase">Preview · free</p>
+                    <p className="mt-0.5 text-[10px] leading-relaxed text-[#151515]/50">Preview your camera journey and check that this scene can be rendered. No credits are used.</p>
                   </div>
                 </div>
-                <button onClick={() => void runPreflight()} disabled={isCapturing || isPreparingControls || isPreflighting || isGenerating || referenceLoading || !sourceFrame || routePoints.length < 2 || !providerCanRun} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#151515] bg-[#f7f2e8] px-3 py-2 text-xs font-black uppercase transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40">
-                  {isPreflighting ? <Loader2 size={14} className="animate-spin" /> : <ShieldCheck size={14} />}
-                  {isPreflighting ? 'Checking…' : hasValidPreflight ? 'Run check again' : 'Run free check'}
+                <button type="button" onClick={() => void (videoGenerationEnabled ? runPreflight() : previewLocally())}
+                  disabled={isCapturing || isPreparingControls || isPreflighting || isGenerating || referenceLoading || isPreparingGuide || !sourceFrame || routePoints.length < 2}
+                  className="mt-3 min-h-11 w-full rounded-xl border-2 border-[#c9ff3d] bg-[#c9ff3d] px-4 py-2 text-sm font-bold text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:opacity-40">
+                  {isPreparingControls || isPreflighting ? 'Preparing preview…' : 'Preview · free'}
                 </button>
+                <p className="mt-1 text-center text-xs text-[#151515]/70">Review the camera journey before the paid step.</p>
                 {hasValidPreflight && preflight && (
                   <div className="mt-2 flex items-center gap-2 rounded-lg bg-[#edf8e7] px-2.5 py-2 text-[10px] font-bold text-[#285b22]">
-                    <Check size={12} /> Ready · {preflight.width}×{preflight.height} · {controlMode === 'multi_keyframe' ? `${preflight.reference_image_count} route images` : controlMode === 'preview_video' ? 'route-video edit' : 'single frame'} · {preflight.model}
+                    <Check size={12} /> Ready · {preflight.width}×{preflight.height} · Omni 1.1
                   </div>
                 )}
               </div>
 
               <div className="rounded-2xl border-2 border-[#151515] bg-[#151515] p-3 text-white shadow-[3px_3px_0_0_#ff6b57]">
                 <div className="flex items-start gap-2">
-                  <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/10 text-[10px] font-black">2</div>
+                  <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/10 text-[10px] font-black">3</div>
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-black uppercase">{provider === 'internal_enhance' ? `Run ${internalEnhanceQuality === 'gpu_detail' ? 'GPU Detail' : 'Fast Cleanup'}` : `Generate with ${providerName(provider)}`}</p>
-                    <p className="mt-0.5 text-[10px] leading-relaxed text-white/50">{provider === 'internal_enhance' ? `One click = one self-hosted ${internalEnhanceQuality === 'gpu_detail' ? 'model-backed' : 'deterministic'} restoration run at $0.` : 'One click = one paid provider call. There are no automatic retries.'}</p>
+                    <p className="mt-0.5 text-[10px] leading-relaxed text-white/50">Generate one finished video at the estimated cost below. There are no automatic paid retries.</p>
                   </div>
                 </div>
                 <button onClick={() => void generate()} disabled={!hasValidPreflight || isGenerating || isPreparingGuide || !providerCanRun} className="mt-3 flex w-full items-center justify-center gap-2 rounded-full border-2 border-white bg-gradient-to-r from-[#28c7e8] to-[#c9ff3d] px-3 py-2.5 text-xs font-black uppercase text-[#151515] transition hover:brightness-105 disabled:cursor-not-allowed disabled:grayscale disabled:opacity-40">
@@ -1317,8 +1256,8 @@ export function VideoGeneratePanel({
                     : provider === 'internal_enhance'
                       ? `${internalEnhanceQuality === 'gpu_detail' ? 'Run GPU pass' : 'Run fast pass'} · unlimited local runs · est. $0.00`
                       : providerCanRun
-                        ? `Generate trial ${providerUsage.attempts_used + 1} of ${providerUsage.max_attempts} · est. $${(preflight?.estimated_cost_usd ?? (provider === 'seedance_mini' ? 1.98 : 1.0136)).toFixed(2)}`
-                        : `${providerUsage.max_attempts}-trial cap reached`}
+                        ? `Generate video · est. $${(hasValidCost ? preflight!.estimated_cost_usd.toFixed(2) : '—')}`
+                        : 'Video limit reached'}
                 </button>
                 {provider === 'omni' && controlMode === 'preview_video' && <p className="mt-2 text-[10px] text-white/60">Output estimate allows 10 seconds at the published 720p rate; input charges are extra. This is not a billing cap. Actual duration and dimensions are checked after generation.</p>}
                 {isGenerating && <p className="mt-2 text-center text-[10px] text-white/45">{provider === 'internal_enhance' ? 'Keep this panel open while the local frame restoration finishes.' : 'Keep this panel open. High-quality video can take several minutes.'}</p>}

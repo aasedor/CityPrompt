@@ -30,6 +30,7 @@ export const DETAIL_TREE_MODELS = DETAIL_CATALOGUE.filter(
 }));
 export type DetailTreeVariant = (typeof DETAIL_TREE_MODELS)[number]["id"];
 export interface DetailBench {
+  people_action?: import('@/features/people/peopleActions').PeopleActionId;
   id: string;
   point: ParkPoint;
   yaw: number;

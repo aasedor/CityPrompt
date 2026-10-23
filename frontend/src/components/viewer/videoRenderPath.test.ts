@@ -55,6 +55,6 @@ describe('videoRenderPath', () => {
 
   it('keeps the street walk-by short and near pedestrian eye-line', () => {
     expect(DEFAULT_STREET_VIDEO_ROUTE[0].x).toBeLessThan(DEFAULT_STREET_VIDEO_ROUTE[DEFAULT_STREET_VIDEO_ROUTE.length - 1].x);
-    expect(DEFAULT_STREET_VIDEO_ROUTE.every(({ y }) => y >= 0.6 && y <= 0.7)).toBe(true);
+    expect(DEFAULT_STREET_VIDEO_ROUTE.every(({ y }) => y >= 0.48 && y <= 0.52)).toBe(true);
   });
 });

@@ -57,6 +57,8 @@ export function DetailPlacementPanel({ placement, canEdit, onClose, onArrange }:
       <button type="button" aria-pressed={view === 'browse'} onClick={() => setView('browse')} className={`min-h-11 flex-1 rounded-full border-2 border-slate-900 text-sm font-bold ${view === 'browse' ? 'bg-[#c9ff3d]' : 'bg-white'}`}>Browse catalogue</button>
       <button type="button" aria-pressed={view === 'placed'} onClick={() => { setView('placed'); placement.choose(null); }} className={`min-h-11 flex-1 rounded-full border-2 border-slate-900 text-sm font-bold ${view === 'placed' ? 'bg-[#c9ff3d]' : 'bg-white'}`}>Placed items ({placement.items.length})</button>
     </div>
+    {!categoryView && <button type="button" onClick={() => {setView('browse');setCategory('People');setQuery('');setCategoryView(false);}}
+      className="mx-3 mt-3 min-h-11 shrink-0 rounded-xl border-2 border-slate-900 bg-lime-100 px-3 text-left text-sm font-extrabold">People · choose a person & action</button>}
     <div ref={scrollArea} className="min-h-0 flex-1 overflow-y-auto">
     {placement.editing && <div className="p-3"><DetailEditControls placement={placement} /></div>}
     {view === 'placed' ? <div className="space-y-2 p-3">

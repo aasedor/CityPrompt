@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom/vitest';
 import { act, fireEvent, render, renderHook, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { DetailEditControls } from './DetailEditControls';
@@ -5,6 +6,17 @@ import { useDetailPlacement } from './useDetailPlacement';
 import type { ProjectDetails } from './projectBenches';
 
 describe('detail duplication', () => {
+  it('offers all fifteen saved actions for a selected person', async () => {
+    const data:ProjectDetails={version:1,revision:1,can_edit:true,benches:[],props:[{id:'person',variant:'people-pilot-commuter',lng:-114,lat:51,angle:0}]};
+    const save=vi.fn(async(next:ProjectDetails)=>({...next,revision:next.revision+1}));
+    function Editor(){const placement=useDetailPlacement(data,save);return <><button onClick={()=>placement.selectItem('person')}>Select person</button><DetailEditControls placement={placement}/></>;}
+    render(<Editor/>);fireEvent.click(screen.getByRole('button',{name:'Select person'}));
+    const action=screen.getByRole('combobox',{name:'Person action'});
+    expect(action.querySelectorAll('option')).toHaveLength(15);
+    await act(async()=>fireEvent.change(action,{target:{value:'sitting'}}));
+    expect(save.mock.calls[0][0].props![0].people_action).toBe('sitting');
+    expect(screen.getByRole('combobox',{name:'Person action'})).toHaveValue('sitting');
+  });
   it('rotates immediately with a button and deletes with the keyboard, but never while typing', async () => {
     const data: ProjectDetails = {version:1,revision:1,can_edit:true,benches:[{id:'bench',lng:-114,lat:51,angle:0}]};
     const save=vi.fn(async(next:ProjectDetails)=>({...next,revision:next.revision+1}));

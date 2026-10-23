@@ -410,6 +410,70 @@ async def test_custom_video_detail_reaches_preflight_provider_and_saved_history_
 
 
 @pytest.mark.asyncio
+async def test_saved_people_actions_reach_custom_only_preflight_provider_and_idempotent_receipt(pilot):
+    f = pilot
+    async with f.sessions() as db:
+        project = await db.get(Project, f.project.id)
+        project.metadata_ = {**project.metadata_, 'scene_details': {
+            'revision': 3, 'props': [{'id': 'person', 'variant': 'people-pilot-commuter',
+                                     'people_action': 'reading'}]}}
+        await db.commit()
+    preview = 'data:video/webm;base64,' + base64.b64encode(b'\x1aE\xdf\xa3' + b'0' * 1024).decode()
+    request = f.request.model_copy(update={'control_mode': 'preview_video', 'details_revision': 3,
+        'preview_video_base64': preview, 'preview_video_mime_type': 'video/webm',
+        'custom_prompt': 'Warm sunset.', 'use_custom_prompt_only': True})
+    async with f.sessions() as db:
+        user = await db.get(User, f.user.id)
+        preflight = await video.preflight_video(request, user, db)
+    f.video_provider.assert_not_awaited()
+    assert 'reading' in preflight.prompt_preview and 'SAVED PEOPLE ACTIONS:' in preflight.prompt_preview
+    assert 'offscreen' in preflight.prompt_preview
+    result = await generate(f, request)
+    assert result.attempt.prompt == preflight.prompt_preview
+    sent = f.video_provider.call_args.kwargs['payload']['input'][-1]['text']
+    assert sent == preflight.prompt_preview
+    async with f.sessions() as db:
+        project = await db.get(Project, f.project.id)
+        project.metadata_ = {**project.metadata_, 'scene_details': {
+            'revision': 4, 'props': [{'variant': 'people-pilot-commuter', 'people_action': 'walking'}]}}
+        await db.commit()
+    replay = await generate(f, request)
+    assert replay.attempt.id == result.attempt.id
+    assert replay.attempt.prompt == preflight.prompt_preview
+    f.video_provider.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_no_details_capture_cannot_buy_after_person_added_but_existing_receipt_replays(pilot):
+    f = pilot
+    original = await generate(f)
+    async with f.sessions() as db:
+        project = await db.get(Project, f.project.id)
+        project.metadata_ = {**project.metadata_, 'scene_details': {
+            'version': 1, 'revision': 1, 'props': [{'id': 'person',
+                'variant': 'people-pilot-commuter', 'people_action': 'reading'}]}}
+        credits = (await db.get(User, f.user.id)).render_credits
+        await db.commit()
+    async with f.sessions() as db:
+        user = await db.get(User, f.user.id)
+        with pytest.raises(HTTPException) as preflight_error:
+            await video.preflight_video(f.request, user, db)
+        assert preflight_error.value.status_code == 409
+    with pytest.raises(HTTPException) as generate_error:
+        await generate(f, f.request.model_copy(update={'request_id': uuid.uuid4()}))
+    assert generate_error.value.status_code == 409
+    replay = await generate(f)
+    assert replay.attempt.id == original.attempt.id
+    assert replay.attempt.prompt == original.attempt.prompt
+    f.video_provider.assert_awaited_once()
+    async with f.sessions() as db:
+        assert (await db.get(User, f.user.id)).render_credits == credits
+        project = await db.get(Project, f.project.id)
+        assert len(project.metadata_['video_pilot_attempts']) == 1
+        assert len(project.metadata_[TRIAL_KEY]['video_requests']) == 1
+
+
+@pytest.mark.asyncio
 async def test_invalid_omni_recording_is_refused_without_admission_or_paid_call(pilot, monkeypatch):
     f = pilot
     monkeypatch.setattr(video, "inspect_video_media", lambda *_: {"width": 1280,

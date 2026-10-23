@@ -166,6 +166,7 @@ import {
 import {
   getCurrentCommunity3DBuildingIds,
   isCommunity3DCompiled,
+  resolveCommunity3DKind,
   shouldMaskCommunityGroundTiles,
 } from '@/features/community3d/community3d';
 import { useCleanPresentationAfterCommunity3DCompile } from '@/features/community3d/community3dPresentation';
@@ -210,6 +211,8 @@ import {
 import {
   videoMotionProgress,
   assertBicycleRouteLength,
+  automaticStreetRouteRange,
+  automaticStreetRouteCandidates,
   BICYCLE_CAMERA_HEIGHT_METERS,
   normalizedVideoPointToNdc,
   resampleVideoRoute,
@@ -3189,12 +3192,29 @@ export function GlobeSitePlannerMap({
       // point against that exact scene projection before switching to the
       // pedestrian lens. This anchors a street route to real road/sidewalk
       // elevations instead of an artificial plane beneath the aerial camera.
-      const routeHits = sampledRoute.map((point) => {
+      const projectRoute = (points: typeof sampledRoute) => points.map((point) => {
         const ndc = normalizedVideoPointToNdc(point, sourceAspect);
         const hit = raycastSurfacePoint(ndc.x, ndc.y);
         if (!hit) throw new Error('Part of the drawn route does not intersect the visible 3D city. Draw the route over the ground or buildings.');
         return { ...hit, height: authoredCameraGround(terrainZonesRef.current, hit.lngLat[0], hit.lngLat[1], hit.height) };
       });
+      const insideZone = (zone:SiteZone,lngLat:[number,number]) => {
+        if(zone.coordinates.length<3)return false;
+        const ring=[...zone.coordinates,zone.coordinates[0]];
+        return booleanPointInPolygon(turfPoint(lngLat),turfPolygon([ring]));
+      };
+      let routeHits: ReturnType<typeof projectRoute> | undefined;
+      if(streetWalkby&&request.automaticRoute){
+        const zones=terrainZonesRef.current, boundaries=zones.filter(zone=>zone.zone_type==='site_boundary');
+        for(const candidate of automaticStreetRouteCandidates(resampleVideoRoute(request.routePoints,24))){
+          try{
+            const hits=projectRoute(candidate);
+            if(hits.every(hit=>(!boundaries.length||boundaries.some(zone=>insideZone(zone,hit.lngLat)))
+              &&!zones.some(zone=>resolveCommunity3DKind(zone)==='building'&&insideZone(zone,hit.lngLat)))){routeHits=hits;break;}
+          }catch{/* Try the next nearby corridor without moving the camera. */}
+        }
+        if(!routeHits)throw new Error('No clear automatic walking route was found. Open Advanced and draw a short route on an open street or path. No credits were used.');
+      }else routeHits=projectRoute(sampledRoute);
       nearFieldTerrainHeight = nearFieldRoute
         ? stableNearFieldTerrainHeight(routeHits.map((hit) => hit.height))
         : null;
@@ -3216,7 +3236,13 @@ export function GlobeSitePlannerMap({
       restoreStreetCameraProjection(camera, previousStreetProjection);
       throw error;
     }
-    const pathCurve = new THREE.CatmullRomCurve3(routeSurfacePoints, false, 'centripetal');
+    let pathCurve = new THREE.CatmullRomCurve3(routeSurfacePoints, false, 'centripetal');
+    if (streetWalkby && request.automaticRoute) {
+      const [start, end] = automaticStreetRouteRange(pathCurve.getLength(), request.durationSeconds);
+      const sourceCurve = pathCurve;
+      pathCurve = new THREE.CatmullRomCurve3(
+        Array.from({length:6},(_,index)=>sourceCurve.getPointAt(start+(end-start)*index/5)), false, 'centripetal');
+    }
     const routeDistanceMeters = pathCurve.getLength();
     // Validate before changing lens/renderer state so a too-long ride leaves
     // the student's camera intact and starts no expensive frame capture.
@@ -3249,7 +3275,7 @@ export function GlobeSitePlannerMap({
     const cameraOffset = nearFieldRoute
       ? new THREE.Vector3()
       : camera.position.clone().sub(centerWorld);
-    const streetFocusWorld = streetWalkby
+    const streetFocusWorld = streetWalkby && !request.automaticRoute
       ? centerWorld.clone().addScaledVector(streetUp, 7)
       : null;
     const previousReferenceVisibility = referenceOverlayGroup.current?.visible;

@@ -8,6 +8,8 @@ import { detailPlacementMatrix, type DetailPlacement } from '@/features/parks/de
 import { DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA } from '@/components/viewer/globe/direct3dCapture';
 import { createPeopleActor } from './peopleAnimation';
 import { PEOPLE_CAPTURE_KEY } from './peopleCapture';
+import { createPeopleActionPose } from './peoplePose';
+import type { PeopleActionId } from './peopleActions';
 
 /** People are loaded only when placed. No per-frame work during normal editing. */
 export function PeopleModelInstances({ asset, placements, selectedId }: {
@@ -23,9 +25,11 @@ export function PeopleModelInstances({ asset, placements, selectedId }: {
     const disposers: Array<() => void> = [];
     placements.forEach((placement, index) => {
       const actor = createPeopleActor(scene, animations, model.people!);
-      actor.pose(0, 'idle');
+      const actionPose = createPeopleActionPose(actor);
+      actionPose.sample(placement.people_action);
+      const localBounds = new Box3().setFromObject(actionPose.root);
       actor.root.traverse(object => { if ((object as Mesh).isMesh) { object.castShadow = true; object.receiveShadow = true; } });
-      const wrapper = new Group(), mover = new Group();
+      const wrapper = new Group(), mover = actionPose.root;
       wrapper.matrix.copy(detailPlacementMatrix(placement, inverse, model.offset, model.datumLift));
       wrapper.matrixAutoUpdate = false;
       wrapper.userData = { projectDetailId: placement.id, fixedMetricObject: true, semanticRole: asset };
@@ -33,20 +37,19 @@ export function PeopleModelInstances({ asset, placements, selectedId }: {
       wrapper.userData[PEOPLE_CAPTURE_KEY] = {
         pose(seconds: number) {
           if (!alive) return;
-          actor.pose(seconds, 'walk', 1.2, index * .31);
-          mover.position.z = seconds * 1.2;
+          actionPose.sample(placement.people_action, seconds, true, index * .31);
           wrapper.updateMatrixWorld(true);
         },
         restore() {
           if (!alive) return;
-          mover.position.z = 0; actor.pose(0, 'idle'); wrapper.updateMatrixWorld(true);
+          actionPose.sample(placement.people_action); wrapper.updateMatrixWorld(true);
         },
         focus: () => mover.getWorldPosition(new Vector3()),
       };
-      mover.add(actor.root); wrapper.add(mover); host.add(wrapper);
+      wrapper.add(mover); host.add(wrapper);
       let outline: LineSegments<EdgesGeometry, LineBasicMaterial> | null = null;
       if (placement.id === selectedId) {
-        const bounds = new Box3().setFromObject(actor.root), size = bounds.getSize(new Vector3()).addScalar(.08);
+        const bounds = localBounds, size = bounds.getSize(new Vector3()).addScalar(.08);
         const box = new BoxGeometry(size.x, size.y, size.z);
         outline = new LineSegments(new EdgesGeometry(box), new LineBasicMaterial({ color: '#c9ff3d', depthTest: false, depthWrite: false }));
         box.dispose(); outline.position.copy(bounds.getCenter(new Vector3()));
@@ -62,15 +65,15 @@ export function PeopleModelInstances({ asset, placements, selectedId }: {
   </EastNorthUpFrame>;
 }
 
-export function PeopleDetailModel({ asset, yaw }: { asset: string; yaw: number }) {
+export function PeopleDetailModel({ asset, yaw, peopleAction }: { asset: string; yaw: number; peopleAction?: PeopleActionId }) {
   const model = detailAsset(asset), { scene, animations } = useGLTF(model.url);
   const host = useMemo(() => new Group(), []);
   useEffect(() => {
     const actor = createPeopleActor(scene, animations, model.people!);
-    actor.pose(0, 'idle');
+    const actionPose = createPeopleActionPose(actor); actionPose.sample(peopleAction);
     actor.root.traverse(object => { if ((object as Mesh).isMesh) { object.castShadow = true; object.receiveShadow = true; object.raycast = () => {}; } });
-    host.add(actor.root);
-    return () => { host.remove(actor.root); actor.dispose(); };
-  }, [scene, animations, model, host]);
+    host.add(actionPose.root);
+    return () => { host.remove(actionPose.root); actor.dispose(); };
+  }, [scene, animations, model, host, peopleAction]);
   return <group position={[0, 0, model.datumLift ?? 0]} rotation={[0, 0, yaw]}><group rotation={[Math.PI / 2, 0, 0]}><primitive object={host} dispose={null} /></group></group>;
 }

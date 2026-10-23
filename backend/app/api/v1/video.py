@@ -524,6 +524,20 @@ async def _validate_video_scene_revision(
     )
 
 
+def _saved_people_prompt(req, project, prompt: str) -> str:
+    """Only current revision-bound saved details may influence a new provider request."""
+    details = (project.metadata_ or {}).get('scene_details') if project else None
+    if req.details_revision is None:
+        if details and any(details.get(key) for key in ('benches', 'trees', 'props', 'surfaces')):
+            raise _video_scene_conflict('Saved details changed. Reload the scene before rendering.')
+        return prompt
+    if not details or details.get('revision') != req.details_revision:
+        raise _video_scene_conflict('Saved details changed. Reload the scene before rendering.')
+    from app.services.people_actions import append_people_action_direction, people_action_direction
+
+    return append_people_action_direction(prompt, people_action_direction(details))
+
+
 async def _validate_appearance_binding(req, db, user, preview, keyframes, scene_sha):
     if req.appearance_attempt_id is None:
         return
@@ -820,6 +834,7 @@ async def preflight_video(
     scene_revision_sha256 = await _validate_video_scene_revision(req, db)
     await _validate_appearance_binding(req, db, user, preview, keyframes, scene_revision_sha256)
     project = await db.get(Project, req.project_id)
+    prompt = _saved_people_prompt(req, project, prompt)
     if req.provider != "internal_enhance":
         check_trial_available(project, user.id, "video")
     attempts = list((project.metadata_ or {}).get("video_pilot_attempts", [])) if project else []
@@ -1052,6 +1067,7 @@ async def generate_video(
     scene_revision_sha256 = await _validate_video_scene_revision(req, db)
     await _validate_appearance_binding(req, db, user, preview, keyframes, scene_revision_sha256)
 
+    prompt = _saved_people_prompt(req, project, prompt)
     usage = _provider_usage(attempts, req.provider)
     active_reservations = sum(
         1 for attempt in attempts if attempt.get("status") == "reserved" and _attempt_provider(attempt) == req.provider

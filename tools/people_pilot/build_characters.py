@@ -195,7 +195,7 @@ def setup_render(root, name):
     bpy.ops.render.render(write_still=True)
 
 
-def build(root, design):
+def build(root, design, before_export=None):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     scene = bpy.context.scene; scene.render.fps = 24
     anim_file = next((root / 'sources/universal-animation-library').rglob('UAL1_Standard.glb'))
@@ -292,6 +292,8 @@ def build(root, design):
     bpy.ops.object.select_all(action='SELECT')
     rig.animation_data.action = None
     for track in rig.animation_data.nla_tracks: track.mute = False
+    if before_export is not None:
+        before_export()
     runtime = root / 'runtime'; runtime.mkdir(exist_ok=True)
     bpy.ops.export_scene.gltf(filepath=str(runtime / (design['id'] + '.glb')), export_format='GLB', use_selection=True,
         export_yup=True, export_animations=True, export_animation_mode='NLA_TRACKS', export_nla_strips=True,

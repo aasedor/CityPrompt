@@ -21,6 +21,8 @@ export interface VideoRouteCaptureRequest {
   durationSeconds: 4 | 8;
   /** Opt-in motion of authored people; ordinary editing remains idle. */
   animatePeople?: boolean;
+  /** New default street shot: a centre-anchored, metre-bounded pedestrian move. */
+  automaticRoute?: boolean;
   keyframeCount?: number;
   onProgress?: (phase: 'loading' | 'checking' | 'rendering', completed: number, total: number) => void;
 }
@@ -71,6 +73,21 @@ export interface VideoRouteCaptureResult {
 }
 
 const clamp01 = (value: number) => Math.max(0, Math.min(1, value));
+
+/** Crop a default world route at its centre; never stretch a student's geometry. */
+export function automaticStreetRouteRange(distanceMeters:number,durationSeconds:number):[number,number] {
+  if(!Number.isFinite(distanceMeters)||distanceMeters<=0||!Number.isFinite(durationSeconds)||durationSeconds<=0)
+    throw new Error('The automatic street route needs a finite ground distance and duration.');
+  const fraction=Math.min(1,durationSeconds*1.6/distanceMeters);
+  return [(1-fraction)/2,(1+fraction)/2];
+}
+
+/** Finite nearby alternatives; the globe accepts only a clear supported corridor. */
+export function automaticStreetRouteCandidates(points:NormalizedVideoRoutePoint[]):NormalizedVideoRoutePoint[][] {
+  return [[0,0],[0,.12],[0,-.12],[.12,0],[-.12,0],[0,.24],[0,-.24],[.24,0],[-.24,0]]
+    .map(([dx,dy])=>points.map(point=>({x:point.x+dx,y:point.y+dy})))
+    .filter(candidate=>candidate.every(point=>point.x>=0&&point.x<=1&&point.y>=0&&point.y<=1));
+}
 
 /** Count the complete bundles sent to the API, not temporary preview passes.
  * Draft captures may render semantic masks without producing a depth bundle. */

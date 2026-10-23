@@ -112,6 +112,54 @@ def session(metadata=None):
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize('action', ['standing', 'walking', 'running', 'sitting', 'talking',
+    'lying_down', 'waving', 'using_phone', 'reading', 'waiting', 'looking_around',
+    'pointing', 'stretching', 'dancing', 'cheering'])
+async def test_people_actions_save_reload_and_legacy_updates_preserve(monkeypatch, action):
+    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
+    db, row = session({'keep': True})
+    prop = {'id': 'person-1', 'lng': -114.1, 'lat': 51.05, 'angle': 90,
+            'variant': 'people-pilot-commuter', 'people_action': action}
+    saved = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(
+        expected_revision=0, benches=[], props=[prop]), SimpleNamespace(), db)
+    assert saved['props'] == [prop]
+    loaded = endpoint.DetailResponse(**await endpoint.get_details(uuid.uuid4(), SimpleNamespace(), db))
+    assert loaded.model_dump(exclude_none=True)['props'] == [prop]
+    legacy = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(
+        expected_revision=1, benches=[]), SimpleNamespace(), db)
+    assert legacy['props'] == [prop]
+    assert row.metadata_['keep'] is True
+
+
+@pytest.mark.parametrize('patch', [
+    {'people_action': 'flying'}, {'people_action': ''}, {'people_action': 3},
+    {'variant': 'dual-stream-bin', 'people_action': 'walking'},
+])
+def test_people_action_rejects_unknown_values_and_actions_on_furniture(patch):
+    with pytest.raises(ValidationError):
+        endpoint.Prop(**{'id': 'person', 'lng': -114.1, 'lat': 51.05, 'angle': 0,
+                         'variant': 'people-pilot-commuter', **patch})
+
+
+def test_legacy_people_have_no_synthetic_saved_action():
+    prop = endpoint.Prop(id='person', lng=-114.1, lat=51.05, angle=0,
+                         variant='people-pilot-commuter')
+    assert 'people_action' not in prop.model_dump(exclude_none=True)
+
+
+def test_all_registered_people_support_actions_and_unknown_characters_are_rejected():
+    people_ids = [model for model in endpoint._DETAIL_MODELS['props'] if model.startswith('people-')]
+    assert len(people_ids) == 23
+    for model in people_ids:
+        prop = endpoint.Prop(id='person', lng=-114.1, lat=51.05, angle=0,
+                             variant=model, people_action='reading')
+        assert prop.people_action == 'reading'
+    with pytest.raises(ValidationError, match='Unknown detail model'):
+        endpoint.Prop(id='person', lng=-114.1, lat=51.05, angle=0,
+                      variant='people-community-forged', people_action='reading')
+
+
+@pytest.mark.asyncio
 async def test_independent_benches_save_without_any_zone_and_preserve_metadata(monkeypatch):
     permission = AsyncMock(return_value='editor')
     monkeypatch.setattr(endpoint, 'check_project_permission', permission)

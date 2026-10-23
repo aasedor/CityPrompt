@@ -34,10 +34,11 @@ export function DetailCategoryTiles({ onChoose, onBrowseAll }: { onChoose: (cate
       <button type="button" onClick={onBrowseAll} className="min-h-11 rounded-full border-2 border-[#232323] bg-white px-3 text-xs font-bold hover:bg-[#c9ff3d]">Browse all items</button></div>
     <div className="grid grid-cols-2 gap-3 pb-2">
       {DETAIL_CATEGORIES.map((category,index) => <button key={category} type="button" aria-label={`Browse ${category}`} onClick={() => onChoose(category)}
-        className="group flex flex-col rounded-2xl border-2 border-[#232323] bg-[#fff9ec] px-3 pb-3 pt-2 text-left shadow-[3px_3px_0_#232323] hover:bg-[#eef9cc] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+        className={`group flex flex-col rounded-2xl border-2 border-[#232323] px-3 pb-3 pt-2 text-left shadow-[3px_3px_0_#232323] hover:bg-[#eef9cc] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${category === 'People' ? 'col-span-2 bg-lime-100' : 'bg-[#fff9ec]'}`}>
         <span className="flex w-full items-center justify-between gap-1"><span className={`rounded-full border border-[#232323] px-2 py-1 text-[10px] font-bold ${index%2?'bg-[#b5e4e2]':'bg-[#c9ff3d]'}`}>{searchDetails('',category).length} items</span><ArrowUpRight size={18} aria-hidden="true"/></span>
         <span className="w-full transition-transform duration-200 motion-safe:group-hover:-translate-y-1"><DetailIllustration category={category}/></span>
         <span className="mt-1 text-sm font-extrabold leading-snug">{category}</span>
+        {category === 'People' && <span className="mt-1 text-xs">Bring your community to life. Select a placed person to choose their action for photos and videos.</span>}
       </button>)}
     </div>
   </div>;
