@@ -1,7 +1,7 @@
 # Climbing wall building: The Reef (RLASM v6.1 architectural clay)
 
 Candidate K4 of wave K of 2026-10-23, one of five catalogue additions the user asked for
-(all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **candidate under review**. Nothing here is keeper-approved,
+(all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **stopped at v003 by the stopping rule (the climbing-pocket finding survived two targeted fixes); v002 (0 P0 / 1 P1) is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -70,6 +70,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (x)
+## Open blockers after v003 (stopped)
 
-x
+Candidate: `clay-climbing-reef-clay-v002.glb`. The v003 independent review (`evidence/v003/independent-review.md`) left these P0/P1 findings open:
+
+- **P1** (front, front_corner, left_side, right_side, rear, rear_side, climbing_pockets, facade_close, top; board phone-01): Pocket rhythm, density and distribution do not match the source. Render front shows roughly 45-55 pockets on the three visible lobe faces. Source front shows about 16-18 on the same faces. The render's pockets sit in a near-regular field on every band, including the lowest dark band and the tucked base. In... Likely fix: Cut to about 30-36 pockets in total. Put about 70% of them on the upper wall band and the roll-over shoulder. Allow no more than 2-3 per lobe face on the two lowest bands, and none within 0.6 m of the base tuck. Vary...
+- **P1** (front (x 560-720, y 490-560), front_corner (x 600-700, y 560-640), roof_skylights (x 180-250, y 680-740; x 560-640, y 950-1030; x 990-1040, y 950-1030; x 1230-1270, y 600-640), architecture_close (x 370-450, y 500-580; x 880-950, y 490-550), top (ring of teal spots around the plan edge)): Roll-over and shoulder pockets read as flat teal decals or translucent raised bubbles, not hollows. Their edges are soft and ghosted, with no shadowed inner wall or lip highlight. The saturated teal lining against the pale seafoam band does all the work, so they read as polka dots. In front and roof_skylights... Likely fix: On the roll-over and roof, keep the lining in the host band's hue with only a value step (10-15% darker). Deepen those caps to at least 0.45 m, or tilt them toward the wall normal so an inner wall is visible. Add a...
+
+The candidate v002's own open findings are in `evidence/v002/independent-review.md`.
