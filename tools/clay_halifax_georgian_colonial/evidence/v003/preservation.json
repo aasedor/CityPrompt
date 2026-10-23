@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-halifax-georgian-colonial-clay-v003",
+  "glb": "clay-halifax-georgian-colonial-clay-v003.glb",
+  "glb_bytes": 1378820,
+  "glb_sha256": "0359e7171c1b642ab82cb2b73451834ed90227b70f61a605efa5e274b033d7f3",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "cornice_chimneys.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "garden_fence.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "porch_columns.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "rear_wings.png": 92,
+    "right_side.png": 92,
+    "roof_deck.png": 92,
+    "top.png": 92,
+    "west_front.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-halifax-georgian-colonial-clay-v003-renders-and-glb.zip",
+  "zip_bytes": 36087419
+}
