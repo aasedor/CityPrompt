@@ -31,8 +31,8 @@ import geometry as G
 SLUG = 'clay-climbing-overhang'
 X0, X1, Y0, Y1 = -23.0, 16.0, -18.0, 18.0             # the building (top view, fitted)
 T = .3                                                # precast carrier depth
-XP0, XP1 = -6.0, 5.0                                  # penthouse and the pool deck's east edge (x)
-XE = 5.0                                              # the four-storey east block starts here
+XP0, XP1 = -6.0, 7.0                                  # penthouse (x); the pool deck's east edge is XP0
+XE = 7.0                                              # the four-storey east block starts here
 G0 = .15                                              # ground floor over the plaza
 F2, F3, F4 = 5.0, 9.4, 13.8                           # upper floor levels
 PARA = 15.6                                           # pool block parapet top
@@ -46,7 +46,7 @@ RIM = 21.0                                            # rim top of the climbing 
 # The climbing shell's outer corners (triangulated from the front and oblique views and the top view).
 SH = dict(G=(-12.5, FY, 0.0), BW=(-17.8, -22.7, 0.0), BS=(-3.0, -26.5, 0.0), BN=(-6.0, FY, 0.0),
           KW=(-11.4, FY, 14.0), KS=(-4.75, -27.55, 9.5),
-          RNW=(-7.0, FY, RIM), RSW=(-6.0, -27.5, RIM), RSE=(7.0, -27.8, RIM), RNE=(5.3, FY, RIM))
+          RNW=(-7.26, FY, RIM), RSW=(-6.04, -26.71, RIM), RSE=(6.22, -27.72, RIM), RNE=(4.37, FY, RIM))
 SHELL_T = .35                                         # CLT shell thickness
 TOP = RIM + .1
 EPS = .002
@@ -64,13 +64,13 @@ PALETTE = dict(wall=(.86, .85, .82), precast=(.90, .89, .86), concrete2=(.70, .7
 def manifest(version):
     cams = G.camera_roster(X1 - X0 + 4.0, Y1 - Y0 + 4.0, PARA, [
         ('climbing_face', (3.0, -45.0, 8.0), (0.5, -27.6, 11.0), 32),            # the south face: holds, climbers, fascia
-        ('wall_base_contact', (-15.5, -35.0, 1.7), (-9.0, -24.0, 1.6), 26),      # the shell's foot on the plaza
+        ('wall_base_contact', (-25.0, -28.0, 1.7), (-11.0, -23.5, 1.4), 24),     # the shell's foot on the plaza
         ('rim_interior', (-1.0, -38.0, 42.0), (0.0, -22.6, 9.0), 38),            # down into the open top
         ('pool_deck', (-16.5, -16.0, 16.7), (-14.0, 6.0, 15.4), 22),             # the deck, pool, loungers and garden
         ('facade_close', (-33.0, -5.5, 8.5), (X0, -5.5, 8.5), 38),               # a west bay through both upper storeys
         ('architecture_close', (-31.0, -29.0, 11.5), (-20.5, Y0, 11.0), 38),     # the frame box corner and parapet band
         ('glass_close', (-17.8, -26.5, 9.4), (-17.8, Y0, 9.4), 38),              # the glass ribbons in the frame box
-        ('interior', (-17.0, -9.5, 1.7), (-17.0, Y0, 2.4), 20),                  # the lobby looking out to the plaza
+        ('interior', (-18.5, -12.3, 1.7), (-18.5, Y0, 2.4), 20),                 # the lobby looking out to the plaza
         ('plaza_planters', (-1.0, -41.0, 1.6), (-8.0, -31.0, .9), 28),           # the grass planters at eye level
         ('entrance', (-18.6, -29.0, 1.7), (-18.6, Y0, 2.3), 30)])                # the doors under the frame box
     for c in cams:                       # the locked front, oblique and top views are fitted to the source pixels
@@ -85,13 +85,13 @@ def manifest(version):
         elif c['name'] == 'aerial':
             c.update(location=(58.0, 52.0, 48.0), target=(-3.0, -4.0, 8.0), lens=32)
         elif c['name'] == 'left_side':
-            c.update(location=(-48.0, 2.0, 13.0), target=(X0, 0.0, 8.0), lens=22)
+            c.update(location=(-40.0, 2.0, 13.0), target=(X0, 0.0, 8.0), lens=17)
         elif c['name'] == 'right_side':
-            c.update(location=(36.0, -36.0, 12.0), target=(8.0, -16.0, 9.0), lens=26)
+            c.update(location=(33.0, -38.0, 13.0), target=(8.0, -16.0, 9.0), lens=22)
         elif c['name'] == 'rear':
-            c.update(location=(-3.0, 52.0, 18.0), target=(-3.0, Y1, 9.0), lens=24)
+            c.update(location=(-3.0, 33.5, 14.0), target=(-3.0, Y1, 10.0), lens=15)
         elif c['name'] == 'rear_side':
-            c.update(location=(-55.0, 58.0, 40.0), target=(-3.0, 0.0, 8.0), lens=30)
+            c.update(location=(-48.0, 62.0, 62.0), target=(-3.0, 0.0, 8.0), lens=30)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -1989,10 +1989,10 @@ def precast_front(b, axis, c, out, lo, hi, bays, levels, top, ground=True, fin_w
         fbox(b, 'precast', axis, c, out, s0, s1, levels[0] - .55, zb + .02, -.25, .42)
         if ground:
             fbox(b, 'precast', axis, c, out, s0 + .02, s1 - .02, 0.0, levels[0] - .5, -ground_d - .05, .08)
-    for z in levels[:-1]:
-        fbox(b, 'precast', axis, c, out, lo, hi, z - .55, z + .25, -.25, .38)
-    fbox(b, 'precast', axis, c, out, lo, hi, zb, top - .05, -.25, .30)
-    fbox(b, 'coping', axis, c, out, lo, hi, top - .06, top, -.3, .34)
+    for z in levels[:-1]:                                      # spandrels end 2 cm inside the end fins (no shared end faces)
+        fbox(b, 'precast', axis, c, out, lo + .02, hi - .02, z - .55, z + .25, -.25, .38)
+    fbox(b, 'precast', axis, c, out, lo - .02, hi + .02, zb, top - .05, -.25, .30)
+    fbox(b, 'coping', axis, c, out, lo - .04, hi + .04, top - .06, top, -.3, .34)
     for j, z in enumerate(levels[:-1]):
         z1 = levels[j + 1]
         for k in range(bays):
@@ -2003,7 +2003,7 @@ def precast_front(b, axis, c, out, lo, hi, bays, levels, top, ground=True, fin_w
         for k in range(bays):
             s0, s1 = fins[k] + fin_w / 2 - .02, fins[k + 1] - fin_w / 2 + .02
             glazed(b, axis, c, out, s0, s1, G0, levels[0] - .5, 1.2, d=-ground_d, transoms=(3.3,))
-        fbox(b, 'precast', axis, c, out, lo, hi, levels[0] - .55, levels[0] - .5, -ground_d - .3, -ground_d + .02)
+        fbox(b, 'precast', axis, c, out, lo + .03, hi - .03, levels[0] - .55, levels[0] - .5, -ground_d - .3, -ground_d + .02)
         fbox(b, 'interior', axis, c, out, lo + .3, hi - .3, G0, levels[0] - .5, -room - 2.2, -room - 2.0)
 
 
@@ -2040,16 +2040,16 @@ def south_frame_box():
     b = Batch()
     ax, c, o = 'x', Y0, -1
     s0, s1 = X0, BOXX1
-    fbox(b, 'precast', ax, c, o, s0, s1, F2 - .45, F2 + .2, -.3, .78)                                  # box bottom
-    fbox(b, 'precast', ax, c, o, s0, s1, F4 - .25, F4 + .25, -.3, .78)                                 # box top
+    fbox(b, 'precast', ax, c, o, s0 + .02, s1 - .02, F2 - .45, F2 + .2, -.3, .78)                      # box bottom
+    fbox(b, 'precast', ax, c, o, s0 + .02, s1 - .02, F4 - .25, F4 + .25, -.3, .78)                     # box top
     fbox(b, 'precast', ax, c, o, s0, s0 + .5, F2 - .45, F4 + .25, -.3, .80)                            # box ends
     fbox(b, 'precast', ax, c, o, s1 - .5, s1, F2 - .45, F4 + .25, -.3, .80)
     fbox(b, 'precast', ax, c, o, s0 + .5, s1 - .5, F3 - .4, F3 + .2, -.3, .74)                         # middle spandrel
     for z0, z1 in ((F2 + .2, F3 - .4), (F3 + .2, F4 - .25)):
         glazed(b, ax, c, o, s0 + .5, s1 - .5, z0, z1, 2.4, d=.3)
     fbox(b, 'interior', ax, c, o, s0 + .6, s1 - .6, F2, F4, -4.4, -4.2)
-    fbox(b, 'precast', ax, c, o, s0 - .3, -12.0, F4 + .25, PARA - .05, -.25, .30)                            # parapet band
-    fbox(b, 'coping', ax, c, o, s0 - .34, -12.0, PARA - .06, PARA, -.3, .34)
+    fbox(b, 'precast', ax, c, o, s0 - .28, -12.0, F4 + .25, PARA - .05, -.25, .30)                            # parapet band
+    fbox(b, 'coping', ax, c, o, s0 - .32, -12.0, PARA - .06, PARA, -.3, .34)
     # Ground floor: recessed glazing with two pairs of doors, the corner column.
     gd = -.7
     fbox(b, 'precast', ax, c, o, s0, s0 + .55, 0.0, F2 - .4, gd - .05, .1)
@@ -2105,7 +2105,7 @@ def corners():
     """Corner piers closing the precast fronts at the four building corners (the fronts' fins stop at the corner line)."""
     b = Batch()
     for x, y, sx, sy, top in ((X0, Y1, -1, 1, PARA), (X1, Y1, 1, 1, EB_PARA), (X1, Y0, 1, -1, EB_PARA)):
-        b.box('precast', x + sx * .21, y + sy * .21, top / 2, .44, .44, top - .002)
+        b.box('precast', x + sx * .23, y + sy * .23, top / 2, .5, .5, top - .002)
     b.flush('corners')
 
 
@@ -2527,14 +2527,19 @@ def car(name, x, y, role):
 
 
 def street_trees():
+    """Street trees in the sidewalk pits: a trunk, three limbs and a full crown of five overlapping leafy masses."""
     for k, (x, y) in enumerate(TREE_PITS):
         h = 7.0 + (k % 3) * .8
         C.rod('Street tree trunk', (x, y, .1), (x, y, .15 + h * .5), .14, 'bark', 'street trees', 7)
         for j, (dx, dy) in enumerate(((-.6, -.2), (.5, -.1), (.1, .55))):
-            tip = (x + dx * 1.6, y + dy * 1.6, .15 + h * .7)
+            tip = (x + dx * 1.4, y + dy * 1.4, .15 + h * .66)
             C.rod('Street tree limb', (x, y, .15 + h * .45), tip, .06, 'bark', 'street trees', 6)
-            A.foliage('Street tree crown', tip, (1.5, 1.5, 1.4), role=('tree', 'tree2')[(k + j) % 2], detail=2)
-        A.foliage('Street tree crown', (x, y, .15 + h * .82), (1.9, 1.9, 1.6), role='tree2', detail=2)
+        for j in range(5):
+            a = k * 1.3 + j * math.tau / 5
+            r = 1.25 if j else 1.0
+            A.foliage('Street tree crown', (x + 1.1 * math.cos(a) * (j > 0), y + 1.1 * math.sin(a) * (j > 0), .15 + h * (.7 + .06 * (j % 2))),
+                      (r * 1.5, r * 1.5, r * 1.3), role=('tree', 'tree2')[(k + j) % 2], detail=2)
+        A.foliage('Street tree crown', (x, y, .15 + h * .9), (1.6, 1.6, 1.3), role='tree', detail=2)
 
 
 def roof_trees():
@@ -2558,8 +2563,8 @@ def planting():
     sidewalk, and grasses in the roof garden planters (shared planting kit, linked instances)."""
     global KIT
     kit = KIT = PlantKit('planting', instancing=True)
-    reed = arching_grass(kit, 'ov_feather_reed', blades=58, height=.62, width=.018, role='pk_straw', crown_role='pk_straw',
-                         plume_role='pk_plume', plumes=9, plume_height=1.35, seed=91)
+    reed = arching_grass(kit, 'ov_feather_reed', blades=58, height=.85, width=.018, role='pk_straw', crown_role='pk_straw',
+                         plume_role='pk_plume', plumes=9, plume_height=1.3, seed=91)
     fountain = arching_grass(kit, 'ov_fountain_grass', blades=60, height=.6, width=.019, crown_role='pk_blade', seed=81)
     low = arching_grass(kit, 'ov_edge_grass', blades=36, height=.3, width=.013, role='pk_blade', crown_role='pk_blade', seed=101)
     shrub = shrub_mass(kit, 'ov_shrub', radius=.5, height=.7, lobes=6, seed=122)
@@ -2577,11 +2582,11 @@ def planting():
         reg = kit.register_bed(pk_region(poly, wall))
         groundcover(f'Planter {i} groundcover', poly, soil, kerb=wall, height=.05, bump=.02, wave=.7, grid=.5, seed=40 + i)
         mix = (reed, reed, fountain) if i < 2 else (shrub, low, low)
-        for x, y in pk_scatter(reg, .62 if i < 2 else .55, margin=PK_CLEAR, seed=60 + i):
+        for x, y in pk_scatter(reg, .5 if i < 2 else .5, margin=PK_CLEAR, seed=60 + i):
             p = mix[rnd.randrange(len(mix))]
-            s = rnd.uniform(1.5, 1.9) if p is reed else rnd.uniform(1.1, 1.4)
-            kit.place_in(p, x, y, soil, rnd.uniform(0, math.tau), s, region=reg, shrink=(1., .85, .7, .55),
-                         sz=s * rnd.uniform(.95, 1.1))
+            s = rnd.uniform(.95, 1.2) if p is reed else rnd.uniform(.9, 1.15)
+            kit.place_in(p, x, y, soil, rnd.uniform(0, math.tau), s, region=reg, shrink=(1., .85, .7, .55, .45),
+                         sz=(1.55 if p is reed else 1.1) * rnd.uniform(.92, 1.08))
     for x, y in ROOF_TREES:
         kit.add_obstacle(_pksh.Point(x, y).buffer(.25), 3.0)
     for i, (x0, x1, y0, y1) in enumerate(GARDEN):
@@ -2605,8 +2610,8 @@ def interiors():
     """Lobby desk, gym equipment rows behind the frame box, penthouse lounge seating; inspection lights everywhere
     behind glazing and inside the climbing shell."""
     b = Batch()
-    b.box('timber', -18.0, -13.5, G0 + .55, 4.0, .9, 1.1)                                              # reception desk
-    b.box('coping', -18.0, -13.5, G0 + 1.12, 4.2, 1.0, .05)
+    b.box('timber', -14.2, -13.8, G0 + .55, 3.6, .9, 1.1)                                              # reception desk
+    b.box('coping', -14.2, -13.8, G0 + 1.12, 3.8, 1.0, .05)
     for z in (F2, F3):
         for x in (-21.5, -19.6, -17.7, -15.8, -13.9):
             b.box('frame', x, -15.6, z + .55, .8, 1.9, 1.1)                                             # treadmills
@@ -2624,25 +2629,21 @@ def interiors():
     for y in (-14.0, -4.0, 6.0):
         qa_light(f'penthouse {y:.0f}', (-1.0, y, PH_TOP - .7), 110, 2.5)
     for z in (2.0, 8.5, 15.0):                                                                          # inside the shell
-        qa_light(f'shell hollow {z:.0f}', (-6.5 + .25 * z, -22.5, z), 160, 2.0)
+        qa_light(f'shell hollow {z:.0f}', (-6.5 + .25 * z, -22.5, z), 70, 2.0)
 
 
-def windows_grid(m, lo, hi, z0, z1, floors, per, w=1.1, hh=1.9, role='frame', frame='paint'):
-    """Context windows on a solid face (Merge in face coordinates): a surround standing 15 cm proud, a lit room plate,
-    a transmissive pane and a sash, each layer at its own depth."""
+def window_bands(m, lo, hi, z0, z1, floors, per, role='stone'):
+    """Context windows on a solid face (Merge in face coordinates), per floor: one lit room band, one glass band 2 cm
+    in front of it, a head band and a sill band standing 10 cm proud, and piers 12 cm proud between the windows."""
     n = max(1, int((hi - lo) / per))
-    for k in range(n):
-        u = lo + (hi - lo) * (k + .5) / n
-        for j in range(floors):
-            z = z0 + (z1 - z0) * j / floors + .9
-            zc = z + hh / 2
-            m.box('interior', u, -.009, zc, w - .02, .01, hh - .02)
-            for s in (-1, 1):
-                m.box(frame, u + s * (w / 2 + .05), -.07, zc, .1, .16, hh + .2)
-            m.box(frame, u, -.075, z + hh + .06, w + .24, .17, .12)
-            m.box(frame, u, -.09, z - .08, w + .3, .2, .08)
-            m.box('glass', u, -.05, zc, w - .02, .008, hh - .02)
-            m.box(role, u, -.07, zc, w - .1, .024, .05)
+    for j in range(floors):
+        z = z0 + (z1 - z0) * j / floors + .9
+        m.box('interior', (lo + hi) / 2, -.01, z + 1.0, hi - lo, .012, 2.0)
+        m.box('glass', (lo + hi) / 2, -.035, z + 1.0, hi - lo, .008, 2.0)
+        m.box(role, (lo + hi) / 2, -.06, z + 2.08, hi - lo + .2, .14, .18)
+        m.box(role, (lo + hi) / 2, -.07, z - .07, hi - lo + .2, .16, .14)
+        for k in range(n + 1):
+            m.box(role if k in (0, n) else 'frame', lo + (hi - lo) * k / n, -.05, z + 1.0, .5 if k in (0, n) else .1, .12 if k in (0, n) else .1, 2.02)
 
 
 def context():
@@ -2668,7 +2669,7 @@ def context():
         else:
             f = C.Face((0, y1, 0), (-1, 0, 0), (0, -1, 0), name + ' north face'); lo, hi = -x1 + .6, -x0 - .6
         m = Merge(f)
-        windows_grid(m, lo, hi, 3.6, h - .6, floors, 2.8, w=1.5, hh=2.0, frame='stone' if 'brick' in role else 'paint')
+        window_bands(m, lo, hi, 3.6, h - .6, floors, 2.6, role='stone' if 'brick' in role else 'paint')
         for k in range(int((hi - lo) / 5.0)):
             m.box('glass', lo + 2.5 + k * 5.0, -.03, 1.6, 3.6, .04, 2.6)
             m.box('frame', lo + 2.5 + k * 5.0, -.06, 3.1, 4.2, .1, .3)
@@ -2693,4 +2694,4 @@ def build():
     C.CONTACTS.append(dict(name='The Overhang climbing building', box=[X0, X1, Y0, Y1]))
 
 
-LIGHT_RIG = dict(key=(-75, -45, 55), fill=(60, -70, 40), rear=(20, 80, 60), target=(-3, -12, 8.0), gain=4.0)
+LIGHT_RIG = dict(key=(-46, -30, 34), fill=(85, -95, 55), rear=(30, 105, 75), target=(-3, -12, 8.0), gain=4.0)
