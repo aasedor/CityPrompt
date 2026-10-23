@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-climbing-spine-clay-v002",
+  "glb": "clay-climbing-spine-clay-v002.glb",
+  "glb_bytes": 3661936,
+  "glb_sha256": "6bb192c3ea942796b216d66ad3f706e074d1cc7a27e7d8a5fe185571c1a67eb1",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "boulder_garden.png": 92,
+    "east_facade.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "rest_balconies.png": 92,
+    "retail_base.png": 92,
+    "right_side.png": 92,
+    "roof_terrace.png": 92,
+    "rooftop_plant.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-climbing-spine-clay-v002-renders-and-glb.zip",
+  "zip_bytes": 36551124
+}
