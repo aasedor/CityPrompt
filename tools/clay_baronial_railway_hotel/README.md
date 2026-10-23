@@ -1,6 +1,6 @@
 # Scottish Baronial railway hotel (RLASM v6.1 architectural clay)
 
-Candidate C1 of the five-building wave of 2026-10-13. State: **candidate under review**. Nothing
+Candidate C1 of the five-building wave of 2026-10-13. State: **PASS_ZERO_P0_P1 at v006 (independent review); v006 is the candidate, not keeper-approved**. Nothing
 here is keeper-approved, runtime-integrated, enrolled in a catalogue or activated;
 those remain separate checkpoints that need the user's decision.
 

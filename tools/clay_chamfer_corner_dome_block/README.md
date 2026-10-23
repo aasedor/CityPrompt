@@ -1,6 +1,6 @@
 # Chamfered corner block with domed turret (RLASM v6.1 architectural clay)
 
-Candidate M3 of the towers and mixed-use batch. State: **candidate under review**. Nothing
+Candidate M3 of the towers and mixed-use batch. State: **ended at the two-version cap; v006 (0 P0 / 2 P1) is the candidate, not keeper-approved; open findings remain**. Nothing
 here is keeper-approved, runtime-integrated, enrolled in a catalogue or activated;
 those remain separate checkpoints that need the user's decision.
 

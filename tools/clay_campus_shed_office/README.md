@@ -1,6 +1,6 @@
 # Campus shed office (RLASM v6.1 architectural clay)
 
-Candidate 1 of the ten-building batch. State: **candidate under review**. Nothing
+Candidate 1 of the ten-building batch. State: **PASS_ZERO_P0_P1 at v009 (independent review); v009 is the candidate, not keeper-approved**. Nothing
 here is keeper-approved, runtime-integrated, enrolled in a catalogue or activated;
 those remain separate checkpoints that need the user's decision.
 

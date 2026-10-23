@@ -1,6 +1,6 @@
 # Plus 15 glass office tower (RLASM v6.1 architectural clay)
 
-Candidate T3 of the towers and mixed-use batch. State: **candidate under review**. Nothing
+Candidate T3 of the towers and mixed-use batch. State: **PASS_ZERO_P0_P1 at v006 (independent review); v006 is the candidate, not keeper-approved**. Nothing
 here is keeper-approved, runtime-integrated, enrolled in a catalogue or activated;
 those remain separate checkpoints that need the user's decision.
 

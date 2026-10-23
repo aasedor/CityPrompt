@@ -1,6 +1,6 @@
 # Converted brick mill mixed-use block (RLASM v6.1 architectural clay)
 
-Candidate M1 of the towers and mixed-use batch. State: **candidate under review**. Nothing
+Candidate M1 of the towers and mixed-use batch. State: **PASS_ZERO_P0_P1 at v005 (independent review); v005 is the candidate, not keeper-approved**. Nothing
 here is keeper-approved, runtime-integrated, enrolled in a catalogue or activated;
 those remain separate checkpoints that need the user's decision.
 

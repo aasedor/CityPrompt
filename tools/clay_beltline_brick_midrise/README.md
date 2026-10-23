@@ -1,7 +1,7 @@
 # Calgary Beltline brick mid-rise with street retail (RLASM v6.1 architectural clay)
 
 Candidate D1 of the five-building wave of 2026-10-15, chosen to fill catalogue gaps (building types
-with no clay or runtime family yet). State: **candidate under review**. Nothing here is keeper-approved,
+with no clay or runtime family yet). State: **stopped after v001 because the archetype already has a model; no candidate GLB is kept**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 

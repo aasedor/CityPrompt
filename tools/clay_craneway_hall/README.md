@@ -1,6 +1,6 @@
 # Crane-way hall with rail yard (heavy industrial) (RLASM v6.1 architectural clay)
 
-Candidate 7 of the ten-building batch. State: **candidate under review**. Nothing
+Candidate 7 of the ten-building batch. State: **ended at the two-version cap; v007 (0 P0 / 2 P1) is the candidate, not keeper-approved; open findings remain**. Nothing
 here is keeper-approved, runtime-integrated, enrolled in a catalogue or activated;
 those remain separate checkpoints that need the user's decision.
 

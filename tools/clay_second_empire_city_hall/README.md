@@ -1,6 +1,6 @@
 # Second Empire civic hall with clock tower (RLASM v6.1 architectural clay)
 
-Candidate C4 of the five-building wave of 2026-10-13. State: **candidate under review**. Nothing
+Candidate C4 of the five-building wave of 2026-10-13. State: **stopped by the stopping rule (v005 rose to 0 P0 / 6 P1 and v006 only tied the best); v004 (0 P0 / 3 P1) is the candidate, not keeper-approved; open findings remain**. Nothing
 here is keeper-approved, runtime-integrated, enrolled in a catalogue or activated;
 those remain separate checkpoints that need the user's decision.
 
