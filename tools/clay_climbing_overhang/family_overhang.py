@@ -51,8 +51,8 @@ SHELL_T = .35                                         # CLT shell thickness
 TOP = RIM + .1
 EPS = .002
 PALETTE = dict(wall=(.86, .85, .82), precast=(.90, .89, .86), concrete2=(.70, .70, .68), frame=(.22, .24, .26),
-    glass=(.15, .21, .25), interior=(.82, .79, .72), floor=(.60, .57, .52), timber=(.80, .40, .075), timber2=(.88, .58, .2),
-    timber_in=(.72, .36, .07), hold=(.10, .10, .11), hold_w=(.91, .90, .86), mat=(.10, .11, .13), shirt=(.20, .60, .70),
+    glass=(.15, .21, .25), interior=(.82, .79, .72), floor=(.60, .57, .52), timber=(.84, .48, .13), timber2=(.90, .64, .27),
+    timber_in=(.76, .42, .11), hold=(.10, .10, .11), hold_w=(.91, .90, .86), mat=(.17, .19, .23), shirt=(.20, .60, .70),
     skin=(.78, .60, .47), harness=(.12, .12, .14), paving=(.63, .64, .64), paving2=(.53, .54, .55), granite=(.60, .60, .59),
     deck=(.80, .74, .64), coping=(.88, .86, .80), water=(.08, .52, .66), water2=(.06, .38, .50), membrane=(.86, .86, .84),
     mech=(.78, .78, .76), asphalt=(.26, .26, .27), curb=(.73, .73, .71), paint=(.93, .93, .91), soil=(.26, .20, .15),
@@ -67,7 +67,7 @@ def manifest(version):
         ('wall_base_contact', (-25.0, -28.0, 1.7), (-11.0, -23.5, 1.4), 24),     # the shell's foot on the plaza
         ('rim_interior', (-1.0, -38.0, 42.0), (0.0, -22.6, 9.0), 38),            # down into the open top
         ('pool_deck', (-16.5, -16.0, 16.7), (-14.0, 6.0, 15.4), 22),             # the deck, pool, loungers and garden
-        ('facade_close', (-31.0, -13.5, 8.5), (X0, -13.5, 8.5), 40),               # a west bay through both upper storeys
+        ('facade_close', (-31.0, -14.75, 11.5), (X0, -14.75, 9.5), 40),               # a west bay through both upper storeys
         ('architecture_close', (-31.0, -29.0, 11.5), (-20.5, Y0, 11.0), 38),     # the frame box corner and parapet band
         ('glass_close', (-17.8, -26.5, 9.4), (-17.8, Y0, 9.4), 38),              # the glass ribbons in the frame box
         ('interior', (-18.5, -12.3, 1.7), (-18.5, Y0, 2.4), 20),                 # the lobby looking out to the plaza
@@ -2025,7 +2025,7 @@ def fronts():
     """West, north and east precast fronts; the pool block's south frame box; the white south front under the
     climbing shell's overhang."""
     b = Batch()
-    precast_front(b, 'y', X0, -1, Y0, Y1, 10, [F2, F3, F4], PARA)                                        # west front
+    precast_front(b, 'y', X0, -1, Y0, Y1, 13, [F2, F3, F4], PARA)                                        # west front (13 bays)
     precast_front(b, 'y', X1, 1, Y0, Y1, 10, [F2, F3, F4, EB_TOP], EB_PARA)                              # east front (4 storeys)
     precast_front(b, 'x', Y1, 1, X0, XE, 8, [F2, F3, F4], PARA, cop_dz=-.01)                            # north front, pool block
     precast_front(b, 'x', Y1, 1, XE, X1, 3, [F2, F3, F4, EB_TOP], EB_PARA, cop_dz=-.01)                  # north front, east block
@@ -2060,9 +2060,9 @@ def south_frame_box():
     to_return(b, 'precast', s1 - .5, Y0 - .8, Y0 + .3, F2 - .47, F4 + .27)                           # box east end
     to_return(b, 'precast', s0 + .5, Y0 - .74, Y0 + .3, F3 - .4, F3 + .2)                            # middle spandrel
     for z0, z1 in ((F2 + .2, F3 - .4), (F3 + .2, F4 - .25)):
-        glazed(b, ax, c, o, s0 + .5, s1 - .5, z0, z1, 2.4, d=.3)
+        glazed(b, ax, c, o, s0 + .5, s1 - .5, z0, z1, 1.9, d=.3)
     fbox(b, 'interior', ax, c, o, s0 + .6, s1 - .6, F2, F4, -4.4, -4.2)
-    to_return(b, 'precast', s0 - .28, Y0 - .3, Y0 + .25, F4 + .25, PARA - .05)                        # parapet band
+    to_return(b, 'precast', s0 - .28, Y0 - .3, Y0 + .25, F4 - .01, PARA - .05)                        # parapet band
     to_return(b, 'coping', s0 - .32, Y0 - .34, Y0 + .3, PARA - .07, PARA - .01)
     # Ground floor: recessed glazing with two pairs of doors, the corner column.
     gd = -.7
@@ -2085,7 +2085,7 @@ def shell_edge_x(z):
     return SH['BN'][0] + (SH['RNE'][0] - SH['BN'][0]) * z / RIM
 
 
-XV = 3.6                            # vertical return of the ribbons under the east overhang
+XV = 8.0                            # ribbons start beyond the east overhang (plain white wall under it)
 
 
 def south_under_shell():
@@ -2096,6 +2096,10 @@ def south_under_shell():
     b = Batch()
     ax, c, o = 'x', Y0, -1
     fbox(b, 'precast', ax, c, o, -12.7, -10.5, 0.0, PARA, -.5, -.1)                                     # beside the return
+    # Plain white wall under the overhang, from behind the shell's back edge to the ribbons: one box per height zone
+    # (stacked, never overlapping, so no two front faces share a plane).
+    fbox(b, 'precast', ax, c, o, shell_edge_x(0.0) - .6, XV + .05, 0.0, F4 + .25, -.4, -.1)
+    fbox(b, 'precast', ax, c, o, XE - .02, XV + .05, F4 + .25, EB_TOP - .5, -.4, -.1)
     levels = [(G0, F2), (F2, F3), (F3, F4), (F4, EB_TOP)]
     for k, (za, zb) in enumerate(levels):
         x_lo = XE + .2 if k == 3 else -12.2
@@ -2103,7 +2107,6 @@ def south_under_shell():
         if k > 0:
             fbox(b, 'precast', ax, c, o, max(x_lo, XV - .1), X1, za - .55, za + .25, -.4, .05)
         xs = max(x_lo, XV)
-        fbox(b, 'precast', ax, c, o, max(x_lo - .6, shell_edge_x(g0) - .6), xs + .05, g0 - .02, g1 + .02, -.4, -.1)
         if X1 - .4 - xs > 1.0:
             glazed(b, ax, c, o, xs, X1 - .4, g0, g1, 2.0, d=-.38)
             fbox(b, 'interior', ax, c, o, xs, X1 - .4, za, zb, -4.4, -4.2)
@@ -2410,6 +2413,18 @@ def hold(b, role, p, n, r, h, rnd):
         F.append((o + i, o + j, o + k + j, o + k + i))
 
 
+def fold_dist(p):
+    """Distance from p to the west/south fold (the arris BS-KS-KX-RSW)."""
+    best = 1e9
+    pts = [SH[k] for k in ('BS', 'KS', 'KX', 'RSW')]
+    for a, e in zip(pts, pts[1:]):
+        d = _v(a, e); L2 = _d(d, d)
+        s = max(0.0, min(1.0, _d(_v(a, p), d) / L2))
+        q = tuple(a[i] + d[i] * s for i in range(3))
+        best = min(best, math.sqrt(_d(_v(q, p), _v(q, p))))
+    return best
+
+
 def holds(tris, inner):
     """Dark and white holds: dense on the south face, a white route with a few dark holds on the south-west face,
     some on the east face, and white holds on the inner walls near the top (seen from above)."""
@@ -2438,8 +2453,8 @@ def holds(tris, inner):
         P = [SH[k] for k in t]
         if names <= {'BS', 'RSE', 'KS', 'RSW', 'KX'} and 'RSE' in names:                  # south face
             scatter(P, n, 32, .22)
-        elif names <= {'BW', 'BS', 'KW', 'KS', 'KX', 'RSW', 'RNW'}:                       # south-west faces: a white route
-            scatter(P, n, 14, .9, band=lambda p: p[0] > -9.8)
+        elif names in ({'BW', 'BS', 'KS'}, {'BW', 'KS', 'KX'}, {'KW', 'KX', 'RSW'}):         # west faces: plain timber except
+            scatter(P, n, 6, .9, band=lambda p: fold_dist(p) < 1.7)                          # a white band along the west/south fold
         elif names <= {'BS', 'BN', 'RNE', 'RSE'}:                                         # east face
             scatter(P, n, 12, .3, zmin=2.0)
     for t, n in tris:                                                                   # inner faces near the rim
@@ -2529,7 +2544,7 @@ ES0, ES1 = X1, 20.5                  # east sidewalk
 PLANTERS = (((-16.5, -33.8), (-5.5, -33.8), (-5.5, -29.2), (-16.5, -29.2)),
             ((4.0, -33.6), (11.5, -33.6), (11.5, -26.0), (9.0, -26.0), (9.0, -31.0), (4.0, -31.0)),
             ((16.6, -31.0), (17.9, -31.0), (17.9, -19.0), (16.6, -19.0)))
-TREE_PITS = [(-26.6, y) for y in (-30.0, -19.0, -8.0, 3.0, 14.0)] + [(18.6, y) for y in (-7.0, 6.0)]
+TREE_PITS = [(-26.6, y) for y in (-31.0, -24.5, -18.0, -11.5, -5.0, 1.5, 8.0, 14.5)] + [(18.6, y) for y in (-7.0, 6.0)]
 
 
 def site():
@@ -2575,7 +2590,7 @@ def site():
     # Tree pits, lamp posts, bollards, a bin.
     for x, y in TREE_PITS:
         b.box('soil', x, y, .152, 1.4, 1.4, .01)
-    for x, y in ((-27.3, -24.0), (-27.3, -2.0), (-27.3, 20.0), (-12.8, -34.6), (2.0, -34.6), (20.0, 4.0)):
+    for x, y in ((-27.3, -21.2), (-27.3, -1.7), (-27.3, 18.0), (-12.8, -34.6), (2.0, -34.6), (20.0, 4.0)):
         cyl(b, 'hardware', x, y, .15, 5.6, .07, 8)
         b.box('hardware', x, y, 5.75, .34, .34, .3)
         b.box('paint', x, y, 5.55, .28, .28, .14)
@@ -2678,7 +2693,7 @@ def planting():
         reg = kit.register_bed(pk_region(poly, wall))
         groundcover(f'Planter {i} groundcover', poly, soil, kerb=wall, height=.05, bump=.02, wave=.7, grid=.5, seed=40 + i)
         mix = (reed, reed, fountain) if i < 2 else (shrub, low, low)
-        for x, y in pk_scatter(reg, .5 if i < 2 else .5, margin=PK_CLEAR, seed=60 + i):
+        for x, y in pk_scatter(reg, .41 if i < 2 else .5, margin=PK_CLEAR, seed=60 + i):
             p = mix[rnd.randrange(len(mix))]
             s = rnd.uniform(.95, 1.2) if p is reed else rnd.uniform(.9, 1.15)
             kit.place_in(p, x, y, soil, rnd.uniform(0, math.tau), s, region=reg, shrink=(1., .85, .7, .55, .45),
