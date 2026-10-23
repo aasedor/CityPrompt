@@ -3,7 +3,7 @@ import { detailAsset, type DetailAssetId } from './detailCatalogue';
 import type { ProjectDetails, ProjectBench } from './projectBenches';
 import { useUndoRedoStore } from '@/store/undoRedo';
 import type { DetailPose, DetailSupport } from './safetyPlacement';
-import { peopleAction, type PeopleActionId } from '@/features/people/peopleActions';
+import { isPeopleAsset, peopleActionForAsset, type PeopleActionId } from '@/features/people/peopleActions';
 
 type ItemCollection = 'benches' | 'trees' | 'props';
 /** Compare all persisted fields, independent of JSON property insertion order. */
@@ -67,18 +67,35 @@ export function useDetailPlacement(data: ProjectDetails | undefined, save: (next
       current.current = data;
     }
   }, [data, projectId]);
-  const choose = (id: DetailAssetId | null, action?: PeopleActionId) => { if (unavailable()) return; setSelected(id); setSelectedAction(peopleAction(action).id); setEditing(null); setMoving(false); setError(''); setStatus(''); };
+  const choose = (id: DetailAssetId | null, action?: PeopleActionId) => {
+    if (unavailable()) return;
+    const asset = id ? detailAsset(id) : undefined;
+    let selectedAction: PeopleActionId = 'standing';
+    try { if (isPeopleAsset(asset)) selectedAction = peopleActionForAsset(asset, action).id; }
+    catch (error) { setError((error as Error).message); return; }
+    setSelected(id); setSelectedAction(selectedAction); setEditing(null); setMoving(false); setError(''); setStatus('');
+  };
   const selectItem = (id: string) => {
     if (unavailable() || !current.current?.can_edit) return;
     const source = current.current;
     const item = [...source.benches.map(b => ({ ...b, variant: 'timber-bench' as const })), ...(source.trees ?? []), ...(source.props ?? [])].find(b => b.id === id);
     if (!item) return;
-    setSelected(null); setEditing(item); setAngle(item.angle); setMoving(false); setError(''); setStatus('');
+    const asset = detailAsset(item.variant);
+    try {
+      const selected = isPeopleAsset(asset) ? {...item, people_action:peopleActionForAsset(asset, 'people_action' in item ? item.people_action : undefined).id} : item;
+      setSelected(null); setEditing(selected); setAngle(item.angle); setMoving(false); setError(''); setStatus('');
+    } catch (error) { setError((error as Error).message); }
   };
   const updateItem = async (position?: [number, number], remove = false, nextAngle = angle, nextAction?: PeopleActionId) => {
     const source = current.current;
     if (!source?.can_edit || !editing || unavailable() || !Number.isFinite(nextAngle)) return;
-    if (nextAction !== undefined && (!detailAsset(editing.variant).people || !peopleAction(nextAction))) return;
+    const asset = detailAsset(editing.variant);
+    let action: PeopleActionId | undefined;
+    if (!remove) {
+      try {
+        if (nextAction !== undefined || isPeopleAsset(asset)) action = peopleActionForAsset(asset, nextAction ?? editing.people_action).id;
+      } catch (error) { setError((error as Error).message); return; }
+    }
     const key = (['benches', 'trees', 'props'] as const).find(k => source[k]?.some(i => i.id === editing.id));
     if (!key) return;
     const before = source[key]?.find(i => i.id === editing.id);
@@ -88,7 +105,7 @@ export function useDetailPlacement(data: ProjectDetails | undefined, save: (next
     const requestGeneration = generation.current;
     const update = <T extends ProjectBench>(items: T[]) => items.filter(i => !remove || i.id !== editing.id).map(i => i.id === editing.id
       ? { ...i, angle: ((nextAngle % 360) + 360) % 360, lng: position?.[0] ?? editing.lng, lat: position?.[1] ?? editing.lat,
-        ...(nextAction ? {people_action:nextAction} : {}),
+        ...(action ? {people_action:action} : {}),
         ...('hostId' in support && support.hostId ? {support_zone_id:support.hostId}: {}) } : i);
     busy.current = true; setSaving(true); setError('');
     try {
@@ -97,7 +114,7 @@ export function useDetailPlacement(data: ProjectDetails | undefined, save: (next
         record(key, before, saved[key]?.find(i => i.id === editing.id), remove ? 'Delete detail' : nextAction ? 'Change person action' : 'Move or rotate detail');
         current.current = saved; setMoving(false);
         if (remove) setEditing(null);
-        else setEditing({ ...editing, ...(nextAction ? {people_action:nextAction} : {}), lng: position?.[0] ?? editing.lng, lat: position?.[1] ?? editing.lat, angle: ((nextAngle % 360) + 360) % 360 });
+        else setEditing({ ...editing, ...(action ? {people_action:action} : {}), lng: position?.[0] ?? editing.lng, lat: position?.[1] ?? editing.lat, angle: ((nextAngle % 360) + 360) % 360 });
         setAngle(((nextAngle % 360) + 360) % 360);
         setStatus(remove ? 'Item removed and saved.' : 'Item changes saved.');
       }
@@ -117,7 +134,7 @@ export function useDetailPlacement(data: ProjectDetails | undefined, save: (next
     if (items.length >= 256) { setError('This category is full. Remove an item in Arrange details to make room.'); return; }
     const item = { id: `${asset.kind}-${crypto.randomUUID()}`, lng: position[0], lat: position[1], angle,
       ...(asset.kind === 'bench' ? {} : { variant: selected }),
-      ...(asset.people ? {people_action:selectedAction} : {}),
+      ...(isPeopleAsset(asset) ? {people_action:peopleActionForAsset(asset, selectedAction).id} : {}),
       ...('hostId' in support && support.hostId ? {support_zone_id:support.hostId}: {}) };
     const requestScope = scope.current;
     const requestGeneration = generation.current;

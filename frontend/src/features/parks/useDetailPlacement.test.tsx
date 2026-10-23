@@ -3,9 +3,29 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useUndoRedoStore } from '@/store/undoRedo';
 import { useDetailPlacement } from './useDetailPlacement';
 import type { ProjectDetails } from './projectBenches';
+vi.mock('../people/inclusivePeopleCatalogue.json', async () => ({ default: (await import('../people/testFixtures/inclusivePeople')).inclusivePeople }));
 
 const initial: ProjectDetails = { version: 1, revision: 4, can_edit: true, benches: [], trees: [], props: [], surfaces: [] };
 describe('persistent detail placement', () => {
+  it('defaults a wheelchair copy to sitting and rejects unsupported action edits before saving', async () => {
+    const save = vi.fn(async (data: ProjectDetails) => ({...data, revision: data.revision + 1}));
+    const {result} = renderHook(() => useDetailPlacement(initial, save, 'detail-project'));
+    act(() => result.current.choose('people-inclusive-manual-wheelchair'));
+    expect(result.current.selectedAction).toBe('sitting');
+    await act(() => result.current.place([-114, 51]));
+    const original = save.mock.calls[0][0].props![0];
+    expect(original.people_action).toBe('sitting');
+    act(() => result.current.selectItem(original.id));
+    await act(() => result.current.setPeopleAction('walking'));
+    expect(save).toHaveBeenCalledTimes(1);
+    expect(result.current.error).toMatch(/supported|fixed/i);
+    await act(() => result.current.rotateBy(15));
+    act(() => result.current.choose(original.variant, result.current.editing?.people_action));
+    await act(() => result.current.place([-114.001, 51.001]));
+    expect(save.mock.calls[2][0].props![1]).toMatchObject({people_action:'sitting', angle:15});
+    await act(() => useUndoRedoStore.getState().undo());
+    expect(save.mock.calls[3][0].props).toHaveLength(1);
+  });
   it('saves, moves, copies and undoes a person action without changing another person', async () => {
     const person = {id:'reader',lng:-114,lat:51,angle:0,variant:'people-pilot-commuter',people_action:'reading' as const};
     const save=vi.fn(async(data:ProjectDetails)=>({...data,revision:data.revision+1}));

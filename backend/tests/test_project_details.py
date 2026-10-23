@@ -147,16 +147,53 @@ def test_legacy_people_have_no_synthetic_saved_action():
     assert 'people_action' not in prop.model_dump(exclude_none=True)
 
 
-def test_all_registered_people_support_actions_and_unknown_characters_are_rejected():
-    people_ids = [model for model in endpoint._DETAIL_MODELS['props'] if model.startswith('people-')]
+def test_all_legacy_people_support_every_action_and_unknown_characters_are_rejected():
+    from app.services.people_actions import PEOPLE_ACTIONS
+    people_ids = [model for model in endpoint._DETAIL_MODELS['props']
+                  if model.startswith(('people-pilot-', 'people-community-'))]
     assert len(people_ids) == 23
     for model in people_ids:
-        prop = endpoint.Prop(id='person', lng=-114.1, lat=51.05, angle=0,
-                             variant=model, people_action='reading')
-        assert prop.people_action == 'reading'
+        for action in PEOPLE_ACTIONS:
+            prop = endpoint.Prop(id='person', lng=-114.1, lat=51.05, angle=0,
+                                 variant=model, people_action=action)
+            assert prop.people_action == action
     with pytest.raises(ValidationError, match='Unknown detail model'):
         endpoint.Prop(id='person', lng=-114.1, lat=51.05, angle=0,
                       variant='people-community-forged', people_action='reading')
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('slug,action', [
+    ('white-cane', 'standing'), ('guide-dog', 'standing'),
+    ('manual-wheelchair', 'sitting'), ('power-wheelchair', 'sitting'),
+    ('older-woman', 'standing'), ('older-man-rollator', 'standing'),
+    ('family-parent-child', 'standing'), ('family-stroller', 'standing'),
+])
+async def test_inclusive_people_default_round_trip_and_reject_unsupported_actions(monkeypatch, slug, action):
+    from app.services import people_actions
+    variant = f'people-inclusive-{slug}'
+    # No registry promotion: the owner registers measured assets separately.
+    monkeypatch.setitem(endpoint._DETAIL_MODELS, 'props', [*endpoint._DETAIL_MODELS['props'], variant])
+    monkeypatch.setattr(people_actions, '_PEOPLE_MODELS', people_actions._PEOPLE_MODELS | {variant})
+    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
+    db, row = session({'keep': True})
+    prop = {'id': 'person', 'lng': -114.1, 'lat': 51.05, 'angle': 0, 'variant': variant}
+    saved = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(
+        expected_revision=0, benches=[], props=[prop]), SimpleNamespace(), db)
+    expected = {**prop, 'people_action': action}
+    assert saved['props'] == [expected]
+    loaded = endpoint.DetailResponse(**await endpoint.get_details(uuid.uuid4(), SimpleNamespace(), db))
+    assert loaded.model_dump(exclude_none=True)['props'] == [expected]
+    legacy = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(
+        expected_revision=1, benches=[]), SimpleNamespace(), db)
+    assert legacy['props'] == [expected] and row.metadata_['keep'] is True
+    assert endpoint.Prop(**{**prop, 'people_action': None}).people_action == action
+    for unsupported in people_actions.PEOPLE_ACTIONS:
+        if unsupported != action:
+            with pytest.raises(ValidationError, match='Unsupported people action'):
+                endpoint.DetailUpdate(expected_revision=2, benches=[], props=[{
+                    **prop, 'people_action': unsupported,
+                }])
 
 
 @pytest.mark.asyncio
@@ -250,6 +287,11 @@ def test_expanded_catalogue_accepts_existing_kit_parts_and_matches_frontend():
     # Local preview IDs must round-trip before their public picker gate is lifted.
     choices += json.loads((root / 'frontend/src/features/parks/calgarySafetyCatalogue.json').read_text())
     choices += json.loads((root / 'frontend/src/features/people/peopleCatalogue.json').read_text())
+    inclusive = json.loads((root / 'frontend/src/features/people/inclusivePeopleCatalogue.json').read_text())
+    choices += inclusive
+    representations = json.loads((root / 'backend/app/data/inclusive_people.json').read_text())
+    for choice in inclusive:
+        assert choice['peopleRepresentation'] == representations[choice['id']]
     assert set(endpoint._DETAIL_MODELS['trees']) == {'oak-0','oak-1','oak-2'} | {c['id'] for c in choices if c['kind'] == 'tree'}
     assert set(endpoint._DETAIL_MODELS['props']) == {'picnic-table-accessible','dual-stream-bin','bike-rack-three-stall','drinking-fountain-accessible','boulders','split-rail'} | {c['id'] for c in choices if c['kind'] == 'object'}
     for choice in choices:

@@ -1,0 +1,226 @@
+[
+  {
+    "id": "people-inclusive-white-cane",
+    "label": "Ava \u00b7 White cane \u00b7 teal jacket",
+    "category": "People",
+    "kind": "object",
+    "description": "Standing person using a white cane. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+    "dimensions": [
+      0.642409,
+      1.106495,
+      1.732742
+    ],
+    "datumLift": 0,
+    "color": "#667d79",
+    "url": "/street-kits/people-inclusive-v1/people-inclusive-white-cane.glb",
+    "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-white-cane.png",
+    "sha256": "2cae670c9e7d318e74aaa9248aca75b199091d15769087d28d1f8106ce634813",
+    "bytes": 1391708,
+    "thumbnailSha256": "33a9f6d8eb7a70b08e5b4be0d3219edb08d11e2d22322149e7b2fd090a1c1bf2",
+    "peopleRepresentation": {
+      "defaultAction": "standing",
+      "supportedActions": [
+        "standing"
+      ],
+      "personCount": 1,
+      "description": "standing person using a white cane",
+      "fixedPose": true
+    }
+  },
+  {
+    "id": "people-inclusive-guide-dog",
+    "label": "Mateo \u00b7 Guide dog \u00b7 camel hoodie",
+    "category": "People",
+    "kind": "object",
+    "description": "Standing person with a guide dog and harness. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+    "dimensions": [
+      1.128592,
+      1.145055,
+      1.746202
+    ],
+    "datumLift": 0,
+    "color": "#667d79",
+    "url": "/street-kits/people-inclusive-v1/people-inclusive-guide-dog.glb",
+    "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-guide-dog.png",
+    "sha256": "fdc609c4615359b7bf4e7ab8bc29a59b518f59afe6a9b8bb49c17de8ef517ab9",
+    "bytes": 1001128,
+    "thumbnailSha256": "785a6b5a5219dfeabeecd15f47fd69b019969f0e4a01663868c40a850790e5aa",
+    "peopleRepresentation": {
+      "defaultAction": "standing",
+      "supportedActions": [
+        "standing"
+      ],
+      "personCount": 1,
+      "description": "standing person with a guide dog and harness",
+      "fixedPose": true
+    }
+  },
+  {
+    "id": "people-inclusive-manual-wheelchair",
+    "label": "Maya \u00b7 Manual wheelchair \u00b7 coral knit",
+    "category": "People",
+    "kind": "object",
+    "description": "Person seated in a manual wheelchair. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+    "dimensions": [
+      0.744,
+      1.097903,
+      1.357595
+    ],
+    "datumLift": 0,
+    "color": "#667d79",
+    "url": "/street-kits/people-inclusive-v1/people-inclusive-manual-wheelchair.glb",
+    "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-manual-wheelchair.png",
+    "sha256": "b3ce624cd0729c0b1b1328af3d267c48c763041621f33d9c6478947d64dcc608",
+    "bytes": 1554884,
+    "thumbnailSha256": "145a2b70de0137f9a8a69b7d191a5385909a17cea4aa4ad42290580d58c45437",
+    "peopleRepresentation": {
+      "defaultAction": "sitting",
+      "supportedActions": [
+        "sitting"
+      ],
+      "personCount": 1,
+      "description": "person seated in a manual wheelchair",
+      "fixedPose": true
+    }
+  },
+  {
+    "id": "people-inclusive-power-wheelchair",
+    "label": "Andre \u00b7 Powered wheelchair \u00b7 plum polo",
+    "category": "People",
+    "kind": "object",
+    "description": "Person seated in a powered wheelchair. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+    "dimensions": [
+      0.645427,
+      1.09901,
+      1.433744
+    ],
+    "datumLift": 0,
+    "color": "#667d79",
+    "url": "/street-kits/people-inclusive-v1/people-inclusive-power-wheelchair.glb",
+    "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-power-wheelchair.png",
+    "sha256": "accdf6772937cfc732aa73332fa686ad691ec992eda91f1efa0f2cb98594099e",
+    "bytes": 1054260,
+    "thumbnailSha256": "87a6a28ea671679f22158f4815eb5520983957bf71399e9c3da64a0d2dc7ad2a",
+    "peopleRepresentation": {
+      "defaultAction": "sitting",
+      "supportedActions": [
+        "sitting"
+      ],
+      "personCount": 1,
+      "description": "person seated in a powered wheelchair",
+      "fixedPose": true
+    }
+  },
+  {
+    "id": "people-inclusive-older-woman",
+    "label": "Clara \u00b7 Older adult \u00b7 sage coat",
+    "category": "People",
+    "kind": "object",
+    "description": "Standing older woman. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+    "dimensions": [
+      0.652314,
+      0.75937,
+      1.702336
+    ],
+    "datumLift": 0,
+    "color": "#667d79",
+    "url": "/street-kits/people-inclusive-v1/people-inclusive-older-woman.glb",
+    "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-older-woman.png",
+    "sha256": "bd391fe154641f288b913a3b1058de508ade3e32b9dda93a674ad8dd4a082616",
+    "bytes": 1357748,
+    "thumbnailSha256": "82670049eb5fea9f3a68bb2eb70fabde7de9a5d47af983323a1b26024c466cb1",
+    "peopleRepresentation": {
+      "defaultAction": "standing",
+      "supportedActions": [
+        "standing"
+      ],
+      "personCount": 1,
+      "description": "standing older woman",
+      "fixedPose": true
+    }
+  },
+  {
+    "id": "people-inclusive-older-man-rollator",
+    "label": "Eli \u00b7 Rollator \u00b7 blue jacket",
+    "category": "People",
+    "kind": "object",
+    "description": "Standing older man using a rollator. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+    "dimensions": [
+      0.727201,
+      1.093932,
+      1.785409
+    ],
+    "datumLift": 0,
+    "color": "#667d79",
+    "url": "/street-kits/people-inclusive-v1/people-inclusive-older-man-rollator.glb",
+    "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-older-man-rollator.png",
+    "sha256": "4e291f49fa5f8abdd2ad807bd59f2a76e594f3979b650c688b3e264d3a417b11",
+    "bytes": 1053184,
+    "thumbnailSha256": "86a0adc3d68eefc58e815496990544329d9e51c2a43d74d649379afbdf809852",
+    "peopleRepresentation": {
+      "defaultAction": "standing",
+      "supportedActions": [
+        "standing"
+      ],
+      "personCount": 1,
+      "description": "standing older man using a rollator",
+      "fixedPose": true
+    }
+  },
+  {
+    "id": "people-inclusive-family-parent-child",
+    "label": "Imani & child \u00b7 Parent and child",
+    "category": "People",
+    "kind": "object",
+    "description": "Adult and child standing together. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+    "dimensions": [
+      1.098881,
+      0.761801,
+      1.770492
+    ],
+    "datumLift": 0,
+    "color": "#667d79",
+    "url": "/street-kits/people-inclusive-v1/people-inclusive-family-parent-child.glb",
+    "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-family-parent-child.png",
+    "sha256": "e9febea869a75b6914d7639ad03a6a28f3224ee431305e0f7e743aef34896404",
+    "bytes": 2148500,
+    "thumbnailSha256": "ef67c500f1574cbded37b35d3fd31cb327a81fea01b5da17844ea58c20208560",
+    "peopleRepresentation": {
+      "defaultAction": "standing",
+      "supportedActions": [
+        "standing"
+      ],
+      "personCount": 2,
+      "description": "adult and child standing together",
+      "fixedPose": true
+    }
+  },
+  {
+    "id": "people-inclusive-family-stroller",
+    "label": "Noah & baby \u00b7 Parent - striped T-shirt & stroller",
+    "category": "People",
+    "kind": "object",
+    "description": "Adult and infant in a stroller, with the adult standing. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+    "dimensions": [
+      0.735196,
+      1.394698,
+      1.855912
+    ],
+    "datumLift": 0,
+    "color": "#667d79",
+    "url": "/street-kits/people-inclusive-v1/people-inclusive-family-stroller.glb",
+    "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-family-stroller.png",
+    "sha256": "05700cb3a3266aa82e01c74b24819ef6914e43fa83aca0d673bd34011aa3da79",
+    "bytes": 1048300,
+    "thumbnailSha256": "495902981c76127f5cb2f1a3cf3d8cd511763b50b87f4854da3e86b3139cf08c",
+    "peopleRepresentation": {
+      "defaultAction": "standing",
+      "supportedActions": [
+        "standing"
+      ],
+      "personCount": 2,
+      "description": "adult and infant in a stroller, with the adult standing",
+      "fixedPose": true
+    }
+  }
+]

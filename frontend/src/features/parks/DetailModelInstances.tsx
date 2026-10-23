@@ -37,7 +37,7 @@ export function DetailModelInstances({
     const result = buildDetailInstances(
       scene,
       placements.map((p) => detailPlacementMatrix(p, inverse, model.offset, model.datumLift)),
-      Boolean(model.safety) && animations.length === 0,
+      Boolean(model.safety || model.peopleRepresentation?.fixedPose) && animations.length === 0,
     );
     delete result.userData.siteforgeDirect3DContextOnly;
     result.userData = { ...result.userData, semanticRole: asset, fixedMetricObject: true,

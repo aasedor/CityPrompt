@@ -1,4 +1,4 @@
-import { detailAsset } from '@/features/parks/detailCatalogue';
+import { detailAsset, type DetailAsset } from '@/features/parks/detailCatalogue';
 
 export const PEOPLE_ACTIONS = [
   { id: 'standing', label: 'Standing' }, { id: 'walking', label: 'Walking' },
@@ -18,14 +18,43 @@ export function peopleAction(value: unknown) {
   return action;
 }
 
+export const FIXED_PEOPLE_LIMITATION = 'Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview.';
+
+export function isPeopleAsset(asset: DetailAsset | undefined): boolean {
+  return !!(asset?.people || asset?.peopleRepresentation);
+}
+
+export function peopleActionsForAsset(asset: DetailAsset | undefined) {
+  if (!isPeopleAsset(asset)) return [];
+  const supported = asset?.peopleRepresentation?.supportedActions;
+  return PEOPLE_ACTIONS.filter(action => !supported || supported.includes(action.id));
+}
+
+/** Defaults are asset-specific; unsupported fixed poses must never be persisted. */
+export function peopleActionForAsset(asset: DetailAsset | undefined, value?: unknown) {
+  if (!isPeopleAsset(asset)) throw new Error('This detail does not support person actions.');
+  const action = peopleAction(value ?? asset?.peopleRepresentation?.defaultAction);
+  if (!peopleActionsForAsset(asset).some(supported => supported.id === action.id)) {
+    throw new Error('This action is not supported by this fixed pose. Choose its supported action.');
+  }
+  return action;
+}
+
 /** Bounded, conditional direction: saved actors never create offscreen extras. */
 export function buildPeopleDirection(props: readonly { id?:string; variant: string; people_action?: PeopleActionId }[] = []): string {
   const counts = new Map<PeopleActionId, number>();
+  const representations: string[] = [];
   props.forEach(prop => {
-    if (!detailAsset(prop.variant)?.people) return;
-    const action = peopleAction(prop.people_action).id;
-    counts.set(action, (counts.get(action) ?? 0) + 1);
+    const asset = detailAsset(prop.variant);
+    if (!isPeopleAsset(asset)) return;
+    const action = peopleActionForAsset(asset, prop.people_action).id;
+    const representation = asset.peopleRepresentation;
+    // A group action identifies the authored pose, not every member's activity:
+    // the standing stroller parent's infant must never be described as standing.
+    if (!representation || representation.personCount === 1) counts.set(action, (counts.get(action) ?? 0) + 1);
+    if (representation) representations.push(`${prop.id ?? asset.id}: ${representation.description} (${representation.personCount} ${representation.personCount === 1 ? 'person' : 'people'}; fixed pose)`);
   });
-  if (!counts.size) return '';
-  return `Saved people direction (apply only to these actors when visible in the captured scene): ${PEOPLE_ACTIONS.filter(action => counts.has(action.id)).map(action => `${counts.get(action.id)} ${action.label.toLowerCase()}`).join('; ')}. Preserve each person's saved position, appearance and scene support. Do not invent offscreen people or seats. These actions also apply when no additional people are requested.`;
+  if (!counts.size && !representations.length) return '';
+  const actionSummary = PEOPLE_ACTIONS.filter(action => counts.has(action.id)).map(action => `${counts.get(action.id)} ${action.label.toLowerCase()}`).join('; ');
+  return `Saved people direction (apply only to these actors when visible in the captured scene):${actionSummary ? ` ${actionSummary}.` : ''}${representations.length ? ` Authored representations: ${representations.join('; ')}. Preserve the mobility aids, guide dog and family group arrangements present in each representation.` : ''} Preserve each person's saved position, appearance and scene support. Do not invent offscreen people or seats. These actions also apply when no additional people are requested.`;
 }

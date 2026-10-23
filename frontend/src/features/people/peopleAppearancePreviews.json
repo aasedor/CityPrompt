@@ -228,5 +228,85 @@
     "bytes": 9996,
     "width": 480,
     "height": 600
+  },
+  {
+    "id": "people-inclusive-white-cane",
+    "name": "Ava",
+    "style": "White cane \u00b7 teal jacket",
+    "url": "/street-kits/people-appearance-v3/people-inclusive-white-cane.webp",
+    "sha256": "5bb30e820f0920992874fa440c5ad7e7a9af526d8c7d0a52afcccae3434f4606",
+    "bytes": 10506,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-inclusive-guide-dog",
+    "name": "Mateo",
+    "style": "Guide dog \u00b7 camel hoodie",
+    "url": "/street-kits/people-appearance-v3/people-inclusive-guide-dog.webp",
+    "sha256": "84c920fac328b86617989ae2d5e15542eb646952fe7f7d9c2ee415c9c3ad6604",
+    "bytes": 16124,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-inclusive-manual-wheelchair",
+    "name": "Maya",
+    "style": "Manual wheelchair \u00b7 coral knit",
+    "url": "/street-kits/people-appearance-v3/people-inclusive-manual-wheelchair.webp",
+    "sha256": "81b71dccc461e584d46c0d6b43c6e7d45a223c8cab559d39baa9858262e4b900",
+    "bytes": 21734,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-inclusive-power-wheelchair",
+    "name": "Andre",
+    "style": "Powered wheelchair \u00b7 plum polo",
+    "url": "/street-kits/people-appearance-v3/people-inclusive-power-wheelchair.webp",
+    "sha256": "eb01bebaae01e5a2c6d0837a0e61ac5adb4e16ec30549815509fde7598e590bb",
+    "bytes": 19584,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-inclusive-older-woman",
+    "name": "Clara",
+    "style": "Older adult \u00b7 sage coat",
+    "url": "/street-kits/people-appearance-v3/people-inclusive-older-woman.webp",
+    "sha256": "4e7f2a3871bfc3ce01836f3d52c76f621025b4a1f70b0fdfc098e031459981db",
+    "bytes": 8976,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-inclusive-older-man-rollator",
+    "name": "Eli",
+    "style": "Rollator \u00b7 blue jacket",
+    "url": "/street-kits/people-appearance-v3/people-inclusive-older-man-rollator.webp",
+    "sha256": "269af3825d7480848c6c16b7d1203a0460507ef402784eff24868f1dc617f21b",
+    "bytes": 18340,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-inclusive-family-parent-child",
+    "name": "Imani & child",
+    "style": "Parent and child",
+    "url": "/street-kits/people-appearance-v3/people-inclusive-family-parent-child.webp",
+    "sha256": "75805a2784737017700e556bc3172f83dc9bc6667d6f5d95886569af89406c99",
+    "bytes": 14204,
+    "width": 480,
+    "height": 600
+  },
+  {
+    "id": "people-inclusive-family-stroller",
+    "name": "Noah & baby",
+    "style": "Parent - striped T-shirt & stroller",
+    "url": "/street-kits/people-appearance-v3/people-inclusive-family-stroller.webp",
+    "sha256": "456b55eafd0c5b7726a86e72c85d88b4b1e315705a85c61ad683ef69b386cc6f",
+    "bytes": 19426,
+    "width": 480,
+    "height": 600
   }
 ]

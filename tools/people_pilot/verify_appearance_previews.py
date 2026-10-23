@@ -14,10 +14,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
     root = REPO / 'frontend/src/features/people'
     actors = json.loads((root / 'peopleCatalogue.json').read_text(encoding='utf-8'))
+    actors += json.loads((root / 'inclusivePeopleCatalogue.json').read_text(encoding='utf-8'))
     previews = json.loads((root / 'peopleAppearancePreviews.json').read_text(encoding='utf-8'))
-    assert len(previews) == len(actors) == 23
+    assert len(previews) == len(actors) and len(actors) >= 23
+    assert len({a["id"] for a in actors}) == len(actors)
     assert {p['id'] for p in previews} == {a['id'] for a in actors}
-    assert len({p['url'] for p in previews}) == 23
+    assert len({p['url'] for p in previews}) == len(actors)
     total = 0
     for preview in previews:
         with urlopen(args.base.rstrip('/') + preview['url'], timeout=20) as response:
@@ -34,4 +36,4 @@ if __name__ == '__main__':
                 content = response.read()
                 assert response.status == 200
             assert hashlib.sha256(content).hexdigest() == expected, actor['id']
-    print(f'PASS 23/23 WebP previews ({total:,} bytes), 23 unchanged GLBs and 23 unchanged source thumbnails')
+    print(f'PASS {len(actors)}/{len(actors)} WebP previews ({total:,} bytes), exact catalogue GLBs and source thumbnails')

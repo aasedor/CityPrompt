@@ -4,8 +4,20 @@ import { describe, expect, it, vi } from 'vitest';
 import { DetailEditControls } from './DetailEditControls';
 import { useDetailPlacement } from './useDetailPlacement';
 import type { ProjectDetails } from './projectBenches';
+vi.mock('../people/inclusivePeopleCatalogue.json', async () => ({ default: (await import('../people/testFixtures/inclusivePeople')).inclusivePeople }));
 
 describe('detail duplication', () => {
+  it('shows the seated fixed pose and keeps its limitation visible', () => {
+    const data:ProjectDetails={version:1,revision:1,can_edit:true,benches:[],props:[{id:'wheelchair',variant:'people-inclusive-manual-wheelchair',lng:-114,lat:51,angle:0}]};
+    function Editor(){const placement=useDetailPlacement(data,vi.fn());return <><button onClick={()=>placement.selectItem('wheelchair')}>Select wheelchair</button><DetailEditControls placement={placement}/></>;}
+    render(<Editor/>);
+    fireEvent.click(screen.getByRole('button',{name:'Select wheelchair'}));
+    const action=screen.getByRole('combobox',{name:'Person action'});
+    expect(action).toHaveValue('sitting');
+    expect(action).toBeDisabled();
+    expect(action.querySelectorAll('option')).toHaveLength(1);
+    expect(screen.getByText(/Fixed pose.*motion is not animated/)).toBeInTheDocument();
+  });
   it('offers all fifteen saved actions for a selected person', async () => {
     const data:ProjectDetails={version:1,revision:1,can_edit:true,benches:[],props:[{id:'person',variant:'people-pilot-commuter',lng:-114,lat:51,angle:0}]};
     const save=vi.fn(async(next:ProjectDetails)=>({...next,revision:next.revision+1}));

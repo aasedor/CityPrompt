@@ -3,15 +3,16 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { detailThumbnail } from './detailThumbnail';
 import { detailAsset } from './detailCatalogue';
 import people from '../people/peopleCatalogue.json';
+import inclusivePeople from '../people/inclusivePeopleCatalogue.json';
 
 it('uses realistic People appearance previews without changing source model data or loading geometry', async () => {
   const load = vi.spyOn(GLTFLoader.prototype, 'loadAsync');
-  for (const actor of people) {
+  for (const actor of [...people, ...inclusivePeople]) {
     const asset = detailAsset(actor.id);
     expect(await detailThumbnail(actor.id)).toBe(asset.appearancePreview?.url);
     expect(asset.appearancePreview?.url).toMatch(/people-appearance-v\d+\/.+\.webp$/);
     expect(asset.url).toBe(actor.url);
-    expect(asset.people).toEqual(actor.people);
+    expect(asset.people).toEqual('people' in actor ? actor.people : undefined);
     expect(asset.thumbnailUrl).toBe(actor.thumbnailUrl);
   }
   expect(load).not.toHaveBeenCalled();

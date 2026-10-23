@@ -1,10 +1,11 @@
+import { isPeopleAsset } from '@/features/people/peopleActions';
 import { detailAsset } from './detailCatalogue';
 import { safetySurfaceSupport } from './safetySupport';
 export interface DetailPose {lng:number;lat:number;angle:number;support_zone_id?:string}
 export type DetailSupport = {ok:true;hostId?:string;height?:number}|{ok:false;message:string};
 export function detailPlacementSupport(id:string,pose:DetailPose,zoneIds:readonly string[]):DetailSupport {
   const asset=detailAsset(id);
-  if (asset.people) {
+  if (isPeopleAsset(asset)) {
     // Feet use the rendered sidewalk datum, not the site's unpaved base. This
     // remains an ordinary detail placement when no level authored road exists.
     const pavement = safetySurfaceSupport(pose, [-.08, -.08, .08, .08], zoneIds);

@@ -5,6 +5,7 @@ import type { SiteZone } from "@/types";
 import { rectangleAt } from "@/features/pickPlace/geometry";
 import { BenchDetailControls, BenchLayoutEditor } from "./BenchDetailEditor";
 import { projectBenchContext, projectBenchFrame } from "./projectBenches";
+vi.mock('../people/inclusivePeopleCatalogue.json', async () => ({ default: (await import('../people/testFixtures/inclusivePeople')).inclusivePeople }));
 const zone = {
   id: "park",
   project_id: "trial",
@@ -22,6 +23,19 @@ const zone = {
   },
 } as SiteZone;
 describe("isolated bench editor", () => {
+  it('adds a wheelchair user with a saved seated action and a fixed-pose control', async () => {
+    const onSave = vi.fn().mockResolvedValue({});
+    render(<BenchLayoutEditor context={projectBenchContext(projectBenchFrame([],[]))} initialBenches={[]} title="Inclusive trial" disabled={false} onSave={onSave} onClose={vi.fn()}/>);
+    fireEvent.change(screen.getByLabelText('Search detail catalogue'), {target:{value:'wheelchair'}});
+    fireEvent.change(screen.getByLabelText('Detail model'), {target:{value:'people-inclusive-manual-wheelchair'}});
+    fireEvent.click(screen.getByRole('button',{name:'Add object'}));
+    expect(screen.getByRole('combobox',{name:'Person action'})).toHaveValue('sitting');
+    expect(screen.getByRole('combobox',{name:'Person action'})).toBeDisabled();
+    expect(screen.getByText(/Fixed pose.*motion is not animated/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button',{name:'Save details'}));
+    await waitFor(() => expect(onSave).toHaveBeenCalledOnce());
+    expect(onSave.mock.calls[0][0][0]).toMatchObject({propVariant:'people-inclusive-manual-wheelchair',people_action:'sitting'});
+  });
   it('prevents saving when a later detail edit blocks a linked driveway',()=>{
     const context=projectBenchContext(projectBenchFrame([],[]));
     const ll=(x:number,y:number)=>context.toWorld({x,y});

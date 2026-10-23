@@ -7,6 +7,7 @@ import type { SiteZone } from '@/types';
 import { DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA } from '@/components/viewer/globe/direct3dCapture';
 import { useSharedSiteGround } from '@/components/viewer/globe/SharedSiteGroundProvider';
 import { authoredCameraGround } from '@/components/viewer/globe/authoredCameraGround';
+import { isPeopleAsset } from '@/features/people/peopleActions';
 import { detailAsset } from './detailCatalogue';
 import { DetailModelInstances } from './DetailModelInstances';
 import { PeopleModelInstances } from '@/features/people/PeopleModel';
@@ -52,7 +53,7 @@ export function DetailMapPreview({ interaction, zones, surfaceAt, fallbackHeight
   const point = follows ? hover : item ? { lngLat: [item.lng, item.lat] as [number, number], height: selectedHeight ?? fallbackHeight } : null;
   if (!asset || !point) return null;
   const [lng, lat] = point.lngLat;
-  const support=detailAsset(asset).safety?detailPlacementSupport(asset,{lng,lat,angle:interaction.angle},zones.map(zone=>zone.id)):null;
+  const support=(detailAsset(asset).safety || isPeopleAsset(detailAsset(asset)))?detailPlacementSupport(asset,{lng,lat,angle:interaction.angle},zones.map(zone=>zone.id)):null;
   if(support&&!support.ok)return null;
   const height = support?.ok&&support.height!==undefined?support.height:authoredCameraGround(zones, lng, lat, ground.heightAt(lng, lat) ?? point.height);
   const radius = Math.max(0.7, detailAsset(asset).dimensions[0] / 2);

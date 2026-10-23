@@ -1,3 +1,4 @@
+import { isPeopleAsset } from '@/features/people/peopleActions';
 import {
   Suspense,
   useContext,
@@ -91,7 +92,7 @@ export function GlobeProjectBenches({
       const measured =
         ground.heightAt(b.lng, b.lat) ?? sampled[keyFor(b)] ?? fallbackHeight;
       const asset = detailAsset(b.variant);
-      const support=(asset.safety || asset.people)?detailPlacementSupport(b.variant,b,zones.map(zone=>zone.id)):null;
+      const support=(asset.safety || isPeopleAsset(asset))?detailPlacementSupport(b.variant,b,zones.map(zone=>zone.id)):null;
       if(support&&!support.ok){unsupported.push(b.id);continue;}
       const height = support?.ok && support.height!==undefined ? support.height : authoredCameraGround(zones, b.lng, b.lat, measured);
       const group = groups.get(b.variant) ?? [];

@@ -11,6 +11,7 @@ import recovered from "./recoveredDetails.json";
 import safety from './trafficSafetyCatalogue.json';
 import calgary from './calgarySafetyCatalogue.json';
 import people from '../people/peopleCatalogue.json';
+import inclusivePeople from '../people/inclusivePeopleCatalogue.json';
 
 describe("standalone detail catalogue", () => {
   it('finds People by the clothing styles shown on their appearance cards', () => {
@@ -30,10 +31,10 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(165 + people.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
+    expect(DETAIL_CATALOGUE).toHaveLength(165 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
     expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
-      (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m),
+      (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m) && !('peopleRepresentation' in m),
     )) {
       const source =
         equipment.assets.find((a) => model.url.endsWith("/" + a.file)) ??

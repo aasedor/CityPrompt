@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { detailAsset } from './detailCatalogue';
 import type { DetailInteraction } from './DetailMapPreview';
-import { PEOPLE_ACTIONS, peopleAction, type PeopleActionId } from '@/features/people/peopleActions';
+import { FIXED_PEOPLE_LIMITATION, isPeopleAsset, peopleActionForAsset, peopleActionsForAsset, type PeopleActionId } from '@/features/people/peopleActions';
 
 export function DetailEditControls({ placement, compact = false }: { placement: DetailInteraction; compact?: boolean }) {
   useEffect(() => {
@@ -21,16 +21,17 @@ export function DetailEditControls({ placement, compact = false }: { placement: 
     return () => window.removeEventListener('keydown', key, true);
   }, [placement]);
   if (!placement.editing) return <p className="text-xs text-slate-600">{compact ? 'Tap the map to place · Stop placing to select an item.' : 'Q / E to rotate · Click to place · Esc to stop. Click a placed item to select it, or use Placed items.'}</p>;
+  const asset = detailAsset(placement.editing.variant);
   return <div aria-label="Selected detail" className="space-y-3 rounded-xl border-2 border-slate-900 bg-lime-50 p-3">
     <p className="text-sm font-bold">Selected: {detailAsset(placement.editing.variant).label}</p>
-    {detailAsset(placement.editing.variant).people && <div className="space-y-1">
+    {isPeopleAsset(asset) && <div className="space-y-1">
       <label className="block text-xs font-bold">Person's action
-        <select aria-label="Person action" value={peopleAction(placement.editing.people_action).id} disabled={placement.saving || placement.moving}
+        <select aria-label="Person action" value={peopleActionForAsset(asset, placement.editing.people_action).id} disabled={placement.saving || placement.moving || asset.peopleRepresentation?.fixedPose}
           onChange={event => void placement.setPeopleAction(event.target.value as PeopleActionId)} className="mt-1 min-h-11 w-full rounded-lg border border-slate-400 bg-white px-2 text-sm">
-          {PEOPLE_ACTIONS.map(action => <option key={action.id} value={action.id}>{action.label}</option>)}
+          {peopleActionsForAsset(asset).map(action => <option key={action.id} value={action.id}>{action.label}</option>)}
         </select>
       </label>
-      <p className="text-xs text-slate-600">Saved for images and videos. Position seated people beside your own seat; actions do not find seats or routes automatically.</p>
+      <p className="text-xs text-slate-600">{asset.peopleRepresentation ? FIXED_PEOPLE_LIMITATION : 'Saved for images and videos. Position seated people beside your own seat; actions do not find seats or routes automatically.'}</p>
     </div>}
     {!compact && <p className="text-xs">{placement.moving ? 'Move the preview, then click to save its position.' : 'Move, rotate or delete this item. Changes save automatically.'}</p>}
     <div className="flex gap-2">

@@ -3,7 +3,9 @@ import recovered from "./recoveredDetails.json";
 import trafficSafety from "./trafficSafetyCatalogue.json";
 import calgarySafety from "./calgarySafetyCatalogue.json";
 import peopleCatalogue from '../people/peopleCatalogue.json';
+import inclusivePeopleCatalogue from '../people/inclusivePeopleCatalogue.json';
 import peopleAppearancePreviews from '../people/peopleAppearancePreviews.json';
+import type { PeopleActionId } from '../people/peopleActions';
 import type { DetailWalkSurface } from "./detailWalking";
 export interface DetailAsset {
   id: string;
@@ -24,6 +26,8 @@ export interface DetailAsset {
   datumLift?: number;
   /** Reviewed in-place animation, Y-up metric foot datum; no crowd simulation. */
   people?: { walkClip: string; idleClip: string; walkStrideMeters: number; sha256: string };
+  /** Authored static people/aid groups; deliberately never passed to the rig loader. */
+  peopleRepresentation?: { defaultAction: 'standing' | 'sitting'; supportedActions: readonly PeopleActionId[]; personCount: number; description: string; fixedPose: true };
   safety?: {
     group: string;
     family: string;
@@ -53,7 +57,7 @@ const safetyModels = ([...trafficSafety, ...releasedCalgary] as unknown as Detai
     safety: {...asset.safety!, limitation: placementText(asset.safety!.limitation)}};
 });
 const appearanceById = new Map(peopleAppearancePreviews.map(preview => [preview.id, preview]));
-const peopleModels = peopleCatalogue.map(asset => ({...asset, appearancePreview: appearanceById.get(asset.id)})) as DetailAsset[];
+const peopleModels = [...peopleCatalogue, ...inclusivePeopleCatalogue].map(asset => ({...asset, appearancePreview: appearanceById.get(asset.id)})) as DetailAsset[];
 const extraModels = [...extras, ...recovered, ...safetyModels, ...peopleModels] as DetailAsset[];
 /** Existing metric assets only. No user-provided paths or nonuniform scaling. */
 const RUSTIC = "/landscape-pilots/neighborhood-rustic-v5";

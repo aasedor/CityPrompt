@@ -25,7 +25,7 @@ import { usePavingEditor } from "./PavingEditor";
 import type { PavingSurface } from "./pavingSurfaces";
 import { parkingRoads, parkingDetailFootprints } from './parkingDriveway';
 import { saveProjectDetails } from './projectBenches';
-import { PEOPLE_ACTIONS, peopleAction, type PeopleActionId } from '@/features/people/peopleActions';
+import { FIXED_PEOPLE_LIMITATION, isPeopleAsset, peopleActionForAsset, peopleActionsForAsset } from '@/features/people/peopleActions';
 import type { PublicRoadContext } from '@/features/pickPlace/publicRoadSuggestions';
 import { readNativePark, nativeParkFootprint } from "./nativeParkRegistry";
 import {
@@ -253,6 +253,7 @@ export function BenchLayoutEditor({
       id: `${model.kind}-${crypto.randomUUID()}`,
       point: context.fromFrame(0.5, 0.5),
       yaw: context.angle,
+      ...(isPeopleAsset(model) ? {people_action:peopleActionForAsset(model).id} : {}),
       ...(model.kind === "tree"
         ? { treeVariant: assetId as DetailTreeVariant }
         : model.kind === "object"
@@ -804,13 +805,13 @@ export function BenchLayoutEditor({
                       : "Bench"}{" "}
                   {benches.findIndex((b) => b.id === active.id) + 1} selected
                 </p>
-                {active.propVariant && detailAsset(active.propVariant).people && <label className="block text-sm font-semibold">Person's action
-                  <select aria-label="Person action" disabled={locked} value={peopleAction(active.people_action).id}
-                    onChange={event=>change(benches.map(item=>item.id===active.id?{...item,people_action:event.target.value as PeopleActionId}:item))}
+                {active.propVariant && isPeopleAsset(detailAsset(active.propVariant)) && <label className="block text-sm font-semibold">Person's action
+                  <select aria-label="Person action" disabled={locked || detailAsset(active.propVariant).peopleRepresentation?.fixedPose} value={peopleActionForAsset(detailAsset(active.propVariant),active.people_action).id}
+                    onChange={event=>change(benches.map(item=>item.id===active.id?{...item,people_action:peopleActionForAsset(detailAsset(active.propVariant!),event.target.value).id}:item))}
                     className="mt-1 min-h-11 w-full rounded-lg border border-slate-400 bg-white p-2">
-                    {PEOPLE_ACTIONS.map(action=><option key={action.id} value={action.id}>{action.label}</option>)}
+                    {peopleActionsForAsset(detailAsset(active.propVariant)).map(action=><option key={action.id} value={action.id}>{action.label}</option>)}
                   </select>
-                  <span className="mt-1 block text-xs font-normal">Saved for images and videos. Seats and routes are placed separately.</span>
+                  <span className="mt-1 block text-xs font-normal">{detailAsset(active.propVariant).peopleRepresentation ? FIXED_PEOPLE_LIMITATION : 'Saved for images and videos. Seats and routes are placed separately.'}</span>
                 </label>}
                 <button
                   className={`${button} w-full`}
@@ -913,7 +914,11 @@ export function BenchLayoutEditor({
                 setSaving(true);
                 setMessage("");
                 try {
-                  await onSave(benches, surfaces);
+                  const validated = benches.map(item => {
+                    const asset = item.propVariant ? detailAsset(item.propVariant) : undefined;
+                    return isPeopleAsset(asset) ? {...item, people_action:peopleActionForAsset(asset,item.people_action).id} : item;
+                  });
+                  await onSave(validated, surfaces);
                   onClose();
                 } catch (error) {
                   const fallback =

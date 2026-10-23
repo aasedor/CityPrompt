@@ -11,6 +11,70 @@ from app.services.people_actions import (
 )
 
 
+INCLUSIVE_POSES = {
+    'white-cane': ('standing', 1, 'white cane'),
+    'guide-dog': ('standing', 1, 'guide dog'),
+    'manual-wheelchair': ('sitting', 1, 'manual wheelchair'),
+    'power-wheelchair': ('sitting', 1, 'powered wheelchair'),
+    'older-woman': ('standing', 1, 'older woman'),
+    'older-man-rollator': ('standing', 1, 'rollator'),
+    'family-parent-child': ('standing', 2, 'child'),
+    'family-stroller': ('standing', 2, 'infant'),
+}
+
+
+@pytest.fixture
+def registered_inclusive_people(monkeypatch):
+    """Exercise the contract before the measured assets enter the registry."""
+    from app.services import people_actions
+    variants = {f'people-inclusive-{slug}' for slug in INCLUSIVE_POSES}
+    monkeypatch.setattr(people_actions, '_PEOPLE_MODELS', people_actions._PEOPLE_MODELS | variants)
+    return variants
+
+
+@pytest.mark.parametrize('slug,pose', INCLUSIVE_POSES.items())
+def test_fixed_people_default_to_their_captured_pose_and_preserve_representation(
+        registered_inclusive_people, slug, pose):
+    action, count, description = pose
+    direction = people_action_direction({'props': [{'variant': f'people-inclusive-{slug}'}]})
+    assert f'1 {action}' in direction
+    assert f'People represented by saved models: {count}' in direction
+    assert description in direction.lower()
+    assert 'fixed pose' in direction.lower() and 'not animated' in direction.lower()
+    assert 'offscreen' in direction and 'Do not add' in direction
+    if 'wheelchair' in slug:
+        assert 'walking' not in direction and 'heel-to-toe' not in direction
+        assert 'seated' in direction
+    if slug == 'guide-dog':
+        assert 'harness' in direction
+
+
+def test_group_counts_are_people_and_guide_dog_is_not_a_second_person(registered_inclusive_people):
+    direction = people_action_direction({'props': [
+        {'variant': 'people-inclusive-family-parent-child'},
+        {'variant': 'people-inclusive-family-stroller'},
+        {'variant': 'people-inclusive-guide-dog'},
+        {'variant': 'people-inclusive-manual-wheelchair'},
+    ]})
+    assert '3 standing; 1 sitting' in direction
+    assert 'People represented by saved models: 6' in direction
+    assert 'group arrangement' in direction and 'mobility aids' in direction
+    assert 'adult and child' in direction and 'adult and infant' in direction
+
+
+@pytest.mark.parametrize('slug,pose', INCLUSIVE_POSES.items())
+def test_render_directions_reject_forged_unsupported_fixed_pose_actions(
+        registered_inclusive_people, slug, pose):
+    supported, _, _ = pose
+    for action in PEOPLE_ACTIONS:
+        if action == supported:
+            continue
+        with pytest.raises(ValueError, match='Unsupported people action'):
+            people_action_direction({'props': [{
+                'variant': f'people-inclusive-{slug}', 'people_action': action,
+            }]})
+
+
 def details(*actions):
     return {'revision': 3, 'props': [
         {'id': f'person-{index}', 'variant': 'people-pilot-commuter',

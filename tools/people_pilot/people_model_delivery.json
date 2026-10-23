@@ -1,0 +1,1232 @@
+{
+  "localOnly": true,
+  "published": false,
+  "models": [
+    {
+      "id": "people-pilot-commuter",
+      "label": "Maya \u00b7 Relaxed overshirt",
+      "category": "People",
+      "kind": "object",
+      "color": "#b86b47",
+      "description": "Stylized adult wearing the relaxed overshirt outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.667883,
+        0.739381,
+        1.693334
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-commuter.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-pilot-commuter.png",
+      "sha256": "7b87f5489e5147829819ade494c726a9b6b3a1e69ce7004b8215906fc2ce295c",
+      "bytes": 1759428,
+      "thumbnailSha256": "4aca93d68846cf6b31239c239b247ef4fd17ae4961c45306c64f133a42e5dc6f",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.293318,
+        "sha256": "7b87f5489e5147829819ade494c726a9b6b3a1e69ce7004b8215906fc2ce295c"
+      }
+    },
+    {
+      "id": "people-pilot-neighbour",
+      "label": "Eli \u00b7 Smart casual",
+      "category": "People",
+      "kind": "object",
+      "color": "#344f67",
+      "description": "Stylized adult wearing the smart casual outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.764102,
+        0.775106,
+        1.785409
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-neighbour.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-pilot-neighbour.png",
+      "sha256": "dbb2189bcf3ee3156fd23919cbcfd1bfce3dd9bd8ec45e706a3d93f86134f3e3",
+      "bytes": 1205056,
+      "thumbnailSha256": "da33e0306b0c1bc65a9a6adcf129cc4f3b603ccb943874a0b4a693aecf551e6a",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.324843,
+        "sha256": "dbb2189bcf3ee3156fd23919cbcfd1bfce3dd9bd8ec45e706a3d93f86134f3e3"
+      }
+    },
+    {
+      "id": "people-pilot-creative",
+      "label": "Sofia \u00b7 Summer dress",
+      "category": "People",
+      "kind": "object",
+      "color": "#879b7a",
+      "description": "Stylized adult wearing the summer dress outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.67319,
+        0.717354,
+        1.653009
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-creative.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-pilot-creative.png",
+      "sha256": "88ea8b8e0e3d911a12adf93c92ab6d4bb4f734b87dd613e1e55beef4ad6b83fb",
+      "bytes": 1593720,
+      "thumbnailSha256": "e283139b97734ad6eaf1d93d2e1a7cc8b5e7eea0fbd3c950ca8679afb969e8a2",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.264602,
+        "sha256": "88ea8b8e0e3d911a12adf93c92ab6d4bb4f734b87dd613e1e55beef4ad6b83fb"
+      }
+    },
+    {
+      "id": "people-community-ava",
+      "label": "Ava \u00b7 Relaxed trackwear",
+      "category": "People",
+      "kind": "object",
+      "color": "#286b66",
+      "description": "Stylized adult wearing the relaxed trackwear outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.64241,
+        0.741445,
+        1.732742
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-ava.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-ava.png",
+      "sha256": "c841a8ab8c0e18011a4d6f81f4346d92f2907778c222932ad2bdde5b8b0a19ca",
+      "bytes": 1670820,
+      "thumbnailSha256": "6ceeb1e3edbb747d7a6a9a037c9103084981038e156f197511fdce5e14120212",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.29693,
+        "sha256": "c841a8ab8c0e18011a4d6f81f4346d92f2907778c222932ad2bdde5b8b0a19ca"
+      }
+    },
+    {
+      "id": "people-community-noah",
+      "label": "Noah \u00b7 Relaxed streetwear",
+      "category": "People",
+      "kind": "object",
+      "color": "#343c4b",
+      "description": "Stylized adult wearing the relaxed streetwear outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.81578,
+        0.81649,
+        1.855911
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-noah.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-noah.png",
+      "sha256": "470f788d5798045bde035eb30e0db68105d89e216f08847900cb6519e183b080",
+      "bytes": 1177224,
+      "thumbnailSha256": "e5bf41553f317f91ca7c56e411979df9caa841480bfe21f590596c65ea6ca10d",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.395578,
+        "sha256": "470f788d5798045bde035eb30e0db68105d89e216f08847900cb6519e183b080"
+      }
+    },
+    {
+      "id": "people-community-zara",
+      "label": "Zara \u00b7 Contemporary dress",
+      "category": "People",
+      "kind": "object",
+      "color": "#b3664c",
+      "description": "Stylized adult wearing the contemporary dress outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.672893,
+        0.717421,
+        1.682689
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-zara.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-zara.png",
+      "sha256": "60c17309786aa4e34867ac6c22f7719664dedd4c88bbc13e3276ba5674c0f44c",
+      "bytes": 1613152,
+      "thumbnailSha256": "b0e24ddd0a3231988bd2a1840556106107a80f9e835929e752d38cb9f865a68b",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.261441,
+        "sha256": "60c17309786aa4e34867ac6c22f7719664dedd4c88bbc13e3276ba5674c0f44c"
+      }
+    },
+    {
+      "id": "people-community-leo",
+      "label": "Leo \u00b7 Striped rugby",
+      "category": "People",
+      "kind": "object",
+      "color": "#5b7692",
+      "description": "Stylized adult wearing the striped rugby outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.738722,
+        0.734067,
+        1.78647
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-leo.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-leo.png",
+      "sha256": "168fb6654d49a0a7fee315c7cb045d39d8ca743cd4dde08d329b621091d84f28",
+      "bytes": 1259208,
+      "thumbnailSha256": "904a36fa1ce052e8dd9892c1d58fc2cbed46e2086955de373e5f671933f4934f",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.254702,
+        "sha256": "168fb6654d49a0a7fee315c7cb045d39d8ca743cd4dde08d329b621091d84f28"
+      }
+    },
+    {
+      "id": "people-community-imani",
+      "label": "Imani \u00b7 Office tailoring",
+      "category": "People",
+      "kind": "object",
+      "color": "#d2bb91",
+      "description": "Stylized adult wearing the office tailoring outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.702177,
+        0.761801,
+        1.770492
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-imani.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-imani.png",
+      "sha256": "63131ce40393851fd63063857131b827b85412b2415871701596900f7763f6f9",
+      "bytes": 1604444,
+      "thumbnailSha256": "321215bb484a8efb7a68c46a59f46a6a78a1fb29f1528b2fd01c3ccfe1e3783f",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.332538,
+        "sha256": "63131ce40393851fd63063857131b827b85412b2415871701596900f7763f6f9"
+      }
+    },
+    {
+      "id": "people-community-luca",
+      "label": "Luca \u00b7 Hoodie & denim",
+      "category": "People",
+      "kind": "object",
+      "color": "#405d48",
+      "description": "Stylized adult wearing the hoodie & denim outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.825362,
+        0.829198,
+        1.826035
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-luca.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-luca.png",
+      "sha256": "aa905ffd7356a130b47265e5cc880fd44de30592a71e28ec5730575d6a354704",
+      "bytes": 1210212,
+      "thumbnailSha256": "7f67c11dfd14102d4791a0f594d1e17dcb2ba6c3627ab944a7d25f9fbca939ae",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.417305,
+        "sha256": "aa905ffd7356a130b47265e5cc880fd44de30592a71e28ec5730575d6a354704"
+      }
+    },
+    {
+      "id": "people-community-nina",
+      "label": "Nina \u00b7 Minimal knitwear",
+      "category": "People",
+      "kind": "object",
+      "color": "#715e81",
+      "description": "Stylized adult wearing the minimal knitwear outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.580369,
+        0.655699,
+        1.630426
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-nina.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-nina.png",
+      "sha256": "a9abd8f8a83c08a4b65cf36db7ec5682bf607844c1c62cc89bc97a990f4387e5",
+      "bytes": 1507256,
+      "thumbnailSha256": "d654773e0592c8673742a34f085d9a441401356240fc9fd469990b3b4bf38081",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.146947,
+        "sha256": "a9abd8f8a83c08a4b65cf36db7ec5682bf607844c1c62cc89bc97a990f4387e5"
+      }
+    },
+    {
+      "id": "people-community-owen",
+      "label": "Owen \u00b7 Outdoor casual",
+      "category": "People",
+      "kind": "object",
+      "color": "#9a6f4c",
+      "description": "Stylized adult wearing the outdoor casual outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.834737,
+        0.837857,
+        1.89519
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-owen.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-owen.png",
+      "sha256": "f81f1f10c068cb17fca27314e839ec288b0f89cd4fe86119b4b68b05b29665fd",
+      "bytes": 1198656,
+      "thumbnailSha256": "84ffbe277fea35bcf1821297eb6fe24308670dc7368abb4c5b85b662c7c2edca",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.439364,
+        "sha256": "f81f1f10c068cb17fca27314e839ec288b0f89cd4fe86119b4b68b05b29665fd"
+      }
+    },
+    {
+      "id": "people-community-amara",
+      "label": "Amara \u00b7 Campus denim",
+      "category": "People",
+      "kind": "object",
+      "color": "#3c4f6d",
+      "description": "Stylized adult wearing the campus denim outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.721624,
+        0.855069,
+        1.811424
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-amara.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-amara.png",
+      "sha256": "b02be500af55de09a30302d3b736c1512ec19a369d8b64d9578dd3b8cbbe053a",
+      "bytes": 1768976,
+      "thumbnailSha256": "5b145a66c00502afc0886fdc33ed97259eab47ab7c14188c0c8c1e13d82f9eb6",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.369715,
+        "sha256": "b02be500af55de09a30302d3b736c1512ec19a369d8b64d9578dd3b8cbbe053a"
+      }
+    },
+    {
+      "id": "people-community-mateo",
+      "label": "Mateo \u00b7 Polo & chinos",
+      "category": "People",
+      "kind": "object",
+      "color": "#8d5546",
+      "description": "Stylized adult wearing the polo & chinos outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.712858,
+        0.735329,
+        1.746202
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-mateo.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-mateo.png",
+      "sha256": "d4b0db52049e2573bf44b4421fb0bd668ef54adaeae861cf0e5e792156cd0a31",
+      "bytes": 1190712,
+      "thumbnailSha256": "44996ad7fdb8742957bbb33680368db17d022696f4675cc431326b25487adfe9",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.256857,
+        "sha256": "d4b0db52049e2573bf44b4421fb0bd668ef54adaeae861cf0e5e792156cd0a31"
+      }
+    },
+    {
+      "id": "people-community-clara",
+      "label": "Clara \u00b7 City coat",
+      "category": "People",
+      "kind": "object",
+      "color": "#a89a83",
+      "description": "Stylized adult wearing the city coat outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.652314,
+        0.75937,
+        1.702336
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-clara.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-clara.png",
+      "sha256": "5afb7c0f36f65f7af675184daa7532963d7b2638d740917922ecb02ff40c5f2f",
+      "bytes": 1740676,
+      "thumbnailSha256": "1aabb4d1b371f6ec6335c2ca2a13932edf8f1ae1d30bb0e8ff6e99115f4c427d",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.328284,
+        "sha256": "5afb7c0f36f65f7af675184daa7532963d7b2638d740917922ecb02ff40c5f2f"
+      }
+    },
+    {
+      "id": "people-community-kai",
+      "label": "Kai \u00b7 Campus sport",
+      "category": "People",
+      "kind": "object",
+      "color": "#3c7a80",
+      "description": "Stylized adult wearing the campus sport outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.763053,
+        0.81568,
+        1.806813
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-kai.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-kai.png",
+      "sha256": "729750a661c026dedad6cff6f81bf723b809263690f28c1da7ec14a843ec02b9",
+      "bytes": 1257364,
+      "thumbnailSha256": "0e9076128b8e0994721e77e31f120dd12bad2478fd49c21d48f18d5bec92056e",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.290729,
+        "sha256": "729750a661c026dedad6cff6f81bf723b809263690f28c1da7ec14a843ec02b9"
+      }
+    },
+    {
+      "id": "people-community-ines",
+      "label": "Ines \u00b7 Cropped leather",
+      "category": "People",
+      "kind": "object",
+      "color": "#9d684f",
+      "description": "Stylized adult wearing the cropped leather outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.629902,
+        0.718802,
+        1.662296
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-ines.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-ines.png",
+      "sha256": "0c2bccd8ffd1e4e316eae6cdc1b912a418c4abc4d36dc49a04500059567c1791",
+      "bytes": 1564984,
+      "thumbnailSha256": "a0fe6fb4262f5b85bbd2839416d27a137994adcd673f8937874fc04d24febb3a",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.263867,
+        "sha256": "0c2bccd8ffd1e4e316eae6cdc1b912a418c4abc4d36dc49a04500059567c1791"
+      }
+    },
+    {
+      "id": "people-community-jules",
+      "label": "Jules \u00b7 Vintage workwear",
+      "category": "People",
+      "kind": "object",
+      "color": "#767b72",
+      "description": "Stylized adult wearing the vintage workwear outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.838538,
+        0.834565,
+        1.874799
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-jules.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-jules.png",
+      "sha256": "9bc0e329b5ebc323dcaa6cef95924f2d9f35a4c098dee289777ddd7eb6bd8e06",
+      "bytes": 1289780,
+      "thumbnailSha256": "c8aefac95305d06ac6a9f1e29c1b80de1e3e57c1076809e86d5f93b99924e165",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.426477,
+        "sha256": "9bc0e329b5ebc323dcaa6cef95924f2d9f35a4c098dee289777ddd7eb6bd8e06"
+      }
+    },
+    {
+      "id": "people-community-sana",
+      "label": "Sana \u00b7 Campus creative",
+      "category": "People",
+      "kind": "object",
+      "color": "#884f64",
+      "description": "Stylized adult wearing the campus creative outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.646022,
+        0.70682,
+        1.748315
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-sana.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-sana.png",
+      "sha256": "e0969a1861b1aecedd2576ca316c5086bac3cef014b20b105b011b0b09f892fb",
+      "bytes": 1524616,
+      "thumbnailSha256": "0b7b0b4bb2671824c2bc6491d14c263dafd034e0d55e7a14d89e1ff6b7de4428",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.242804,
+        "sha256": "e0969a1861b1aecedd2576ca316c5086bac3cef014b20b105b011b0b09f892fb"
+      }
+    },
+    {
+      "id": "people-community-felix",
+      "label": "Felix \u00b7 Campus hoodie",
+      "category": "People",
+      "kind": "object",
+      "color": "#c2ad8c",
+      "description": "Stylized adult wearing the campus hoodie outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.725477,
+        0.828041,
+        1.765767
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-felix.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-felix.png",
+      "sha256": "ceb2fe5971830e9df08c26af1032d0c25dec2877e18aab648517edebdf3e5e3a",
+      "bytes": 1246292,
+      "thumbnailSha256": "023ca48aacc9d658a16b06a3a3db652b6b1ef08f51b3ee167fafe7463203431b",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.310286,
+        "sha256": "ceb2fe5971830e9df08c26af1032d0c25dec2877e18aab648517edebdf3e5e3a"
+      }
+    },
+    {
+      "id": "people-community-rhea",
+      "label": "Rhea \u00b7 Summer denim",
+      "category": "People",
+      "kind": "object",
+      "color": "#67745b",
+      "description": "Stylized adult wearing the summer denim outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.645644,
+        0.689711,
+        1.624276
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-rhea.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-rhea.png",
+      "sha256": "18e4eefa76b2da8d637ef0444fb796153f2d2b62667db130e52a68024776bcb9",
+      "bytes": 1619108,
+      "thumbnailSha256": "55ed875f0a512acf273e8aa342b018aad295d860703af959a3d6040b6d33483f",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.215872,
+        "sha256": "18e4eefa76b2da8d637ef0444fb796153f2d2b62667db130e52a68024776bcb9"
+      }
+    },
+    {
+      "id": "people-community-andre",
+      "label": "Andre \u00b7 Modern office",
+      "category": "People",
+      "kind": "object",
+      "color": "#4c515e",
+      "description": "Stylized adult wearing the modern office outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.808645,
+        0.787804,
+        1.846092
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-andre.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-andre.png",
+      "sha256": "acd747c263cb7198feab4b5242d94ca52678f6c878bfcff6d0e561f12f0d7691",
+      "bytes": 1277616,
+      "thumbnailSha256": "87a20a0f7ec27e440ad4286d062ea1026d7010d0f08b2fcbef668ab00dfb4d4a",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.346547,
+        "sha256": "acd747c263cb7198feab4b5242d94ca52678f6c878bfcff6d0e561f12f0d7691"
+      }
+    },
+    {
+      "id": "people-community-elena",
+      "label": "Elena \u00b7 Linen jumpsuit",
+      "category": "People",
+      "kind": "object",
+      "color": "#8a9b9a",
+      "description": "Stylized adult wearing the linen jumpsuit outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.690163,
+        0.778907,
+        1.780996
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-elena.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-elena.png",
+      "sha256": "8f984ce4e2279d96588a19e10bc16fd2b3f1f0f6d7102455ab70149596b6471e",
+      "bytes": 1568040,
+      "thumbnailSha256": "16cb68c812fd06e2509067464174af6c3fadd447ad6bbfcd6ca828e5969593bb",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.362456,
+        "sha256": "8f984ce4e2279d96588a19e10bc16fd2b3f1f0f6d7102455ab70149596b6471e"
+      }
+    },
+    {
+      "id": "people-community-amir",
+      "label": "Amir \u00b7 Everyday essentials",
+      "category": "People",
+      "kind": "object",
+      "color": "#73624e",
+      "description": "Stylized adult wearing the everyday essentials outfit shown in the picker. Saved action guides poses and image/video direction. Use clear level ground; provide a seat for sitting. No automatic obstacle avoidance.",
+      "dimensions": [
+        0.772472,
+        0.772303,
+        1.79657
+      ],
+      "datumLift": 0,
+      "url": "/street-kits/people-wardrobe-v1/people-community-amir.glb",
+      "thumbnailUrl": "/street-kits/people-wardrobe-v1/people-community-amir.png",
+      "sha256": "4a1b3c24becb3d2441ee007bef94c4233f22c28ea566bcd23619bb10c0d79521",
+      "bytes": 1166684,
+      "thumbnailSha256": "3442b8d97a6e44f326296d66f9ae44315e453d7ba1c5e1912ea801bcbb6fa591",
+      "people": {
+        "walkClip": "Walk",
+        "idleClip": "Idle",
+        "walkStrideMeters": 1.32675,
+        "sha256": "4a1b3c24becb3d2441ee007bef94c4233f22c28ea566bcd23619bb10c0d79521"
+      }
+    },
+    {
+      "id": "people-inclusive-white-cane",
+      "label": "Ava \u00b7 White cane \u00b7 teal jacket",
+      "category": "People",
+      "kind": "object",
+      "description": "Standing person using a white cane. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+      "dimensions": [
+        0.642409,
+        1.106495,
+        1.732742
+      ],
+      "datumLift": 0,
+      "color": "#667d79",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-white-cane.glb",
+      "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-white-cane.png",
+      "sha256": "2cae670c9e7d318e74aaa9248aca75b199091d15769087d28d1f8106ce634813",
+      "bytes": 1391708,
+      "thumbnailSha256": "33a9f6d8eb7a70b08e5b4be0d3219edb08d11e2d22322149e7b2fd090a1c1bf2",
+      "peopleRepresentation": {
+        "defaultAction": "standing",
+        "supportedActions": [
+          "standing"
+        ],
+        "personCount": 1,
+        "description": "standing person using a white cane",
+        "fixedPose": true
+      }
+    },
+    {
+      "id": "people-inclusive-guide-dog",
+      "label": "Mateo \u00b7 Guide dog \u00b7 camel hoodie",
+      "category": "People",
+      "kind": "object",
+      "description": "Standing person with a guide dog and harness. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+      "dimensions": [
+        1.128592,
+        1.145055,
+        1.746202
+      ],
+      "datumLift": 0,
+      "color": "#667d79",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-guide-dog.glb",
+      "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-guide-dog.png",
+      "sha256": "fdc609c4615359b7bf4e7ab8bc29a59b518f59afe6a9b8bb49c17de8ef517ab9",
+      "bytes": 1001128,
+      "thumbnailSha256": "785a6b5a5219dfeabeecd15f47fd69b019969f0e4a01663868c40a850790e5aa",
+      "peopleRepresentation": {
+        "defaultAction": "standing",
+        "supportedActions": [
+          "standing"
+        ],
+        "personCount": 1,
+        "description": "standing person with a guide dog and harness",
+        "fixedPose": true
+      }
+    },
+    {
+      "id": "people-inclusive-manual-wheelchair",
+      "label": "Maya \u00b7 Manual wheelchair \u00b7 coral knit",
+      "category": "People",
+      "kind": "object",
+      "description": "Person seated in a manual wheelchair. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+      "dimensions": [
+        0.744,
+        1.097903,
+        1.357595
+      ],
+      "datumLift": 0,
+      "color": "#667d79",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-manual-wheelchair.glb",
+      "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-manual-wheelchair.png",
+      "sha256": "b3ce624cd0729c0b1b1328af3d267c48c763041621f33d9c6478947d64dcc608",
+      "bytes": 1554884,
+      "thumbnailSha256": "145a2b70de0137f9a8a69b7d191a5385909a17cea4aa4ad42290580d58c45437",
+      "peopleRepresentation": {
+        "defaultAction": "sitting",
+        "supportedActions": [
+          "sitting"
+        ],
+        "personCount": 1,
+        "description": "person seated in a manual wheelchair",
+        "fixedPose": true
+      }
+    },
+    {
+      "id": "people-inclusive-power-wheelchair",
+      "label": "Andre \u00b7 Powered wheelchair \u00b7 plum polo",
+      "category": "People",
+      "kind": "object",
+      "description": "Person seated in a powered wheelchair. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+      "dimensions": [
+        0.645427,
+        1.09901,
+        1.433744
+      ],
+      "datumLift": 0,
+      "color": "#667d79",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-power-wheelchair.glb",
+      "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-power-wheelchair.png",
+      "sha256": "accdf6772937cfc732aa73332fa686ad691ec992eda91f1efa0f2cb98594099e",
+      "bytes": 1054260,
+      "thumbnailSha256": "87a6a28ea671679f22158f4815eb5520983957bf71399e9c3da64a0d2dc7ad2a",
+      "peopleRepresentation": {
+        "defaultAction": "sitting",
+        "supportedActions": [
+          "sitting"
+        ],
+        "personCount": 1,
+        "description": "person seated in a powered wheelchair",
+        "fixedPose": true
+      }
+    },
+    {
+      "id": "people-inclusive-older-woman",
+      "label": "Clara \u00b7 Older adult \u00b7 sage coat",
+      "category": "People",
+      "kind": "object",
+      "description": "Standing older woman. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+      "dimensions": [
+        0.652314,
+        0.75937,
+        1.702336
+      ],
+      "datumLift": 0,
+      "color": "#667d79",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-older-woman.glb",
+      "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-older-woman.png",
+      "sha256": "bd391fe154641f288b913a3b1058de508ade3e32b9dda93a674ad8dd4a082616",
+      "bytes": 1357748,
+      "thumbnailSha256": "82670049eb5fea9f3a68bb2eb70fabde7de9a5d47af983323a1b26024c466cb1",
+      "peopleRepresentation": {
+        "defaultAction": "standing",
+        "supportedActions": [
+          "standing"
+        ],
+        "personCount": 1,
+        "description": "standing older woman",
+        "fixedPose": true
+      }
+    },
+    {
+      "id": "people-inclusive-older-man-rollator",
+      "label": "Eli \u00b7 Rollator \u00b7 blue jacket",
+      "category": "People",
+      "kind": "object",
+      "description": "Standing older man using a rollator. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+      "dimensions": [
+        0.727201,
+        1.093932,
+        1.785409
+      ],
+      "datumLift": 0,
+      "color": "#667d79",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-older-man-rollator.glb",
+      "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-older-man-rollator.png",
+      "sha256": "4e291f49fa5f8abdd2ad807bd59f2a76e594f3979b650c688b3e264d3a417b11",
+      "bytes": 1053184,
+      "thumbnailSha256": "86a0adc3d68eefc58e815496990544329d9e51c2a43d74d649379afbdf809852",
+      "peopleRepresentation": {
+        "defaultAction": "standing",
+        "supportedActions": [
+          "standing"
+        ],
+        "personCount": 1,
+        "description": "standing older man using a rollator",
+        "fixedPose": true
+      }
+    },
+    {
+      "id": "people-inclusive-family-parent-child",
+      "label": "Imani & child \u00b7 Parent and child",
+      "category": "People",
+      "kind": "object",
+      "description": "Adult and child standing together. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+      "dimensions": [
+        1.098881,
+        0.761801,
+        1.770492
+      ],
+      "datumLift": 0,
+      "color": "#667d79",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-family-parent-child.glb",
+      "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-family-parent-child.png",
+      "sha256": "e9febea869a75b6914d7639ad03a6a28f3224ee431305e0f7e743aef34896404",
+      "bytes": 2148500,
+      "thumbnailSha256": "ef67c500f1574cbded37b35d3fd31cb327a81fea01b5da17844ea58c20208560",
+      "peopleRepresentation": {
+        "defaultAction": "standing",
+        "supportedActions": [
+          "standing"
+        ],
+        "personCount": 2,
+        "description": "adult and child standing together",
+        "fixedPose": true
+      }
+    },
+    {
+      "id": "people-inclusive-family-stroller",
+      "label": "Noah & baby \u00b7 Parent - striped T-shirt & stroller",
+      "category": "People",
+      "kind": "object",
+      "description": "Adult and infant in a stroller, with the adult standing. Fixed pose. Move, rotate, duplicate or delete; motion is not animated in the 3D preview. Use clear level ground.",
+      "dimensions": [
+        0.735196,
+        1.394698,
+        1.855912
+      ],
+      "datumLift": 0,
+      "color": "#667d79",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-family-stroller.glb",
+      "thumbnailUrl": "/street-kits/people-inclusive-v1/people-inclusive-family-stroller.png",
+      "sha256": "05700cb3a3266aa82e01c74b24819ef6914e43fa83aca0d673bd34011aa3da79",
+      "bytes": 1048300,
+      "thumbnailSha256": "495902981c76127f5cb2f1a3cf3d8cd511763b50b87f4854da3e86b3139cf08c",
+      "peopleRepresentation": {
+        "defaultAction": "standing",
+        "supportedActions": [
+          "standing"
+        ],
+        "personCount": 2,
+        "description": "adult and infant in a stroller, with the adult standing",
+        "fixedPose": true
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-pilot-commuter.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-commuter.glb",
+      "sha256": "7b87f5489e5147829819ade494c726a9b6b3a1e69ce7004b8215906fc2ce295c",
+      "bytes": 1759428
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-pilot-commuter.png",
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-commuter.png",
+      "sha256": "4aca93d68846cf6b31239c239b247ef4fd17ae4961c45306c64f133a42e5dc6f",
+      "bytes": 472622
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-pilot-neighbour.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-neighbour.glb",
+      "sha256": "dbb2189bcf3ee3156fd23919cbcfd1bfce3dd9bd8ec45e706a3d93f86134f3e3",
+      "bytes": 1205056
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-pilot-neighbour.png",
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-neighbour.png",
+      "sha256": "da33e0306b0c1bc65a9a6adcf129cc4f3b603ccb943874a0b4a693aecf551e6a",
+      "bytes": 466875
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-pilot-creative.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-creative.glb",
+      "sha256": "88ea8b8e0e3d911a12adf93c92ab6d4bb4f734b87dd613e1e55beef4ad6b83fb",
+      "bytes": 1593720
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-pilot-creative.png",
+      "url": "/street-kits/people-wardrobe-v1/people-pilot-creative.png",
+      "sha256": "e283139b97734ad6eaf1d93d2e1a7cc8b5e7eea0fbd3c950ca8679afb969e8a2",
+      "bytes": 466258
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-ava.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-ava.glb",
+      "sha256": "c841a8ab8c0e18011a4d6f81f4346d92f2907778c222932ad2bdde5b8b0a19ca",
+      "bytes": 1670820
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-ava.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-ava.png",
+      "sha256": "6ceeb1e3edbb747d7a6a9a037c9103084981038e156f197511fdce5e14120212",
+      "bytes": 466539
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-noah.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-noah.glb",
+      "sha256": "470f788d5798045bde035eb30e0db68105d89e216f08847900cb6519e183b080",
+      "bytes": 1177224
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-noah.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-noah.png",
+      "sha256": "e5bf41553f317f91ca7c56e411979df9caa841480bfe21f590596c65ea6ca10d",
+      "bytes": 465822
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-zara.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-zara.glb",
+      "sha256": "60c17309786aa4e34867ac6c22f7719664dedd4c88bbc13e3276ba5674c0f44c",
+      "bytes": 1613152
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-zara.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-zara.png",
+      "sha256": "b0e24ddd0a3231988bd2a1840556106107a80f9e835929e752d38cb9f865a68b",
+      "bytes": 473345
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-leo.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-leo.glb",
+      "sha256": "168fb6654d49a0a7fee315c7cb045d39d8ca743cd4dde08d329b621091d84f28",
+      "bytes": 1259208
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-leo.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-leo.png",
+      "sha256": "904a36fa1ce052e8dd9892c1d58fc2cbed46e2086955de373e5f671933f4934f",
+      "bytes": 475018
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-imani.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-imani.glb",
+      "sha256": "63131ce40393851fd63063857131b827b85412b2415871701596900f7763f6f9",
+      "bytes": 1604444
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-imani.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-imani.png",
+      "sha256": "321215bb484a8efb7a68c46a59f46a6a78a1fb29f1528b2fd01c3ccfe1e3783f",
+      "bytes": 467917
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-luca.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-luca.glb",
+      "sha256": "aa905ffd7356a130b47265e5cc880fd44de30592a71e28ec5730575d6a354704",
+      "bytes": 1210212
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-luca.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-luca.png",
+      "sha256": "7f67c11dfd14102d4791a0f594d1e17dcb2ba6c3627ab944a7d25f9fbca939ae",
+      "bytes": 474650
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-nina.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-nina.glb",
+      "sha256": "a9abd8f8a83c08a4b65cf36db7ec5682bf607844c1c62cc89bc97a990f4387e5",
+      "bytes": 1507256
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-nina.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-nina.png",
+      "sha256": "d654773e0592c8673742a34f085d9a441401356240fc9fd469990b3b4bf38081",
+      "bytes": 465188
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-owen.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-owen.glb",
+      "sha256": "f81f1f10c068cb17fca27314e839ec288b0f89cd4fe86119b4b68b05b29665fd",
+      "bytes": 1198656
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-owen.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-owen.png",
+      "sha256": "84ffbe277fea35bcf1821297eb6fe24308670dc7368abb4c5b85b662c7c2edca",
+      "bytes": 505199
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-amara.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-amara.glb",
+      "sha256": "b02be500af55de09a30302d3b736c1512ec19a369d8b64d9578dd3b8cbbe053a",
+      "bytes": 1768976
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-amara.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-amara.png",
+      "sha256": "5b145a66c00502afc0886fdc33ed97259eab47ab7c14188c0c8c1e13d82f9eb6",
+      "bytes": 480110
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-mateo.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-mateo.glb",
+      "sha256": "d4b0db52049e2573bf44b4421fb0bd668ef54adaeae861cf0e5e792156cd0a31",
+      "bytes": 1190712
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-mateo.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-mateo.png",
+      "sha256": "44996ad7fdb8742957bbb33680368db17d022696f4675cc431326b25487adfe9",
+      "bytes": 468423
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-clara.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-clara.glb",
+      "sha256": "5afb7c0f36f65f7af675184daa7532963d7b2638d740917922ecb02ff40c5f2f",
+      "bytes": 1740676
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-clara.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-clara.png",
+      "sha256": "1aabb4d1b371f6ec6335c2ca2a13932edf8f1ae1d30bb0e8ff6e99115f4c427d",
+      "bytes": 467368
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-kai.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-kai.glb",
+      "sha256": "729750a661c026dedad6cff6f81bf723b809263690f28c1da7ec14a843ec02b9",
+      "bytes": 1257364
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-kai.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-kai.png",
+      "sha256": "0e9076128b8e0994721e77e31f120dd12bad2478fd49c21d48f18d5bec92056e",
+      "bytes": 473634
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-ines.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-ines.glb",
+      "sha256": "0c2bccd8ffd1e4e316eae6cdc1b912a418c4abc4d36dc49a04500059567c1791",
+      "bytes": 1564984
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-ines.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-ines.png",
+      "sha256": "a0fe6fb4262f5b85bbd2839416d27a137994adcd673f8937874fc04d24febb3a",
+      "bytes": 468591
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-jules.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-jules.glb",
+      "sha256": "9bc0e329b5ebc323dcaa6cef95924f2d9f35a4c098dee289777ddd7eb6bd8e06",
+      "bytes": 1289780
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-jules.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-jules.png",
+      "sha256": "c8aefac95305d06ac6a9f1e29c1b80de1e3e57c1076809e86d5f93b99924e165",
+      "bytes": 473414
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-sana.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-sana.glb",
+      "sha256": "e0969a1861b1aecedd2576ca316c5086bac3cef014b20b105b011b0b09f892fb",
+      "bytes": 1524616
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-sana.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-sana.png",
+      "sha256": "0b7b0b4bb2671824c2bc6491d14c263dafd034e0d55e7a14d89e1ff6b7de4428",
+      "bytes": 467387
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-felix.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-felix.glb",
+      "sha256": "ceb2fe5971830e9df08c26af1032d0c25dec2877e18aab648517edebdf3e5e3a",
+      "bytes": 1246292
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-felix.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-felix.png",
+      "sha256": "023ca48aacc9d658a16b06a3a3db652b6b1ef08f51b3ee167fafe7463203431b",
+      "bytes": 467301
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-rhea.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-rhea.glb",
+      "sha256": "18e4eefa76b2da8d637ef0444fb796153f2d2b62667db130e52a68024776bcb9",
+      "bytes": 1619108
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-rhea.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-rhea.png",
+      "sha256": "55ed875f0a512acf273e8aa342b018aad295d860703af959a3d6040b6d33483f",
+      "bytes": 465692
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-andre.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-andre.glb",
+      "sha256": "acd747c263cb7198feab4b5242d94ca52678f6c878bfcff6d0e561f12f0d7691",
+      "bytes": 1277616
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-andre.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-andre.png",
+      "sha256": "87a20a0f7ec27e440ad4286d062ea1026d7010d0f08b2fcbef668ab00dfb4d4a",
+      "bytes": 474982
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-elena.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-elena.glb",
+      "sha256": "8f984ce4e2279d96588a19e10bc16fd2b3f1f0f6d7102455ab70149596b6471e",
+      "bytes": 1568040
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-elena.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-elena.png",
+      "sha256": "16cb68c812fd06e2509067464174af6c3fadd447ad6bbfcd6ca828e5969593bb",
+      "bytes": 451825
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\runtime\\people-community-amir.glb",
+      "url": "/street-kits/people-wardrobe-v1/people-community-amir.glb",
+      "sha256": "4a1b3c24becb3d2441ee007bef94c4233f22c28ea566bcd23619bb10c0d79521",
+      "bytes": 1166684
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-wardrobe-2026-10-23\\qa\\people-community-amir.png",
+      "url": "/street-kits/people-wardrobe-v1/people-community-amir.png",
+      "sha256": "3442b8d97a6e44f326296d66f9ae44315e453d7ba1c5e1912ea801bcbb6fa591",
+      "bytes": 468203
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\runtime\\people-inclusive-white-cane.glb",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-white-cane.glb",
+      "sha256": "2cae670c9e7d318e74aaa9248aca75b199091d15769087d28d1f8106ce634813",
+      "bytes": 1391708
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\qa\\people-inclusive-white-cane.png",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-white-cane.png",
+      "sha256": "33a9f6d8eb7a70b08e5b4be0d3219edb08d11e2d22322149e7b2fd090a1c1bf2",
+      "bytes": 478475
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\picker\\people-inclusive-white-cane.webp",
+      "url": "/street-kits/people-appearance-v3/people-inclusive-white-cane.webp",
+      "sha256": "5bb30e820f0920992874fa440c5ad7e7a9af526d8c7d0a52afcccae3434f4606",
+      "bytes": 10506
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\runtime\\people-inclusive-guide-dog.glb",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-guide-dog.glb",
+      "sha256": "fdc609c4615359b7bf4e7ab8bc29a59b518f59afe6a9b8bb49c17de8ef517ab9",
+      "bytes": 1001128
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\qa\\people-inclusive-guide-dog.png",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-guide-dog.png",
+      "sha256": "785a6b5a5219dfeabeecd15f47fd69b019969f0e4a01663868c40a850790e5aa",
+      "bytes": 495286
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\picker\\people-inclusive-guide-dog.webp",
+      "url": "/street-kits/people-appearance-v3/people-inclusive-guide-dog.webp",
+      "sha256": "84c920fac328b86617989ae2d5e15542eb646952fe7f7d9c2ee415c9c3ad6604",
+      "bytes": 16124
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\runtime\\people-inclusive-manual-wheelchair.glb",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-manual-wheelchair.glb",
+      "sha256": "b3ce624cd0729c0b1b1328af3d267c48c763041621f33d9c6478947d64dcc608",
+      "bytes": 1554884
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\qa\\people-inclusive-manual-wheelchair.png",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-manual-wheelchair.png",
+      "sha256": "145a2b70de0137f9a8a69b7d191a5385909a17cea4aa4ad42290580d58c45437",
+      "bytes": 535090
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\picker\\people-inclusive-manual-wheelchair.webp",
+      "url": "/street-kits/people-appearance-v3/people-inclusive-manual-wheelchair.webp",
+      "sha256": "81b71dccc461e584d46c0d6b43c6e7d45a223c8cab559d39baa9858262e4b900",
+      "bytes": 21734
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\runtime\\people-inclusive-power-wheelchair.glb",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-power-wheelchair.glb",
+      "sha256": "accdf6772937cfc732aa73332fa686ad691ec992eda91f1efa0f2cb98594099e",
+      "bytes": 1054260
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\qa\\people-inclusive-power-wheelchair.png",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-power-wheelchair.png",
+      "sha256": "87a6a28ea671679f22158f4815eb5520983957bf71399e9c3da64a0d2dc7ad2a",
+      "bytes": 527927
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\picker\\people-inclusive-power-wheelchair.webp",
+      "url": "/street-kits/people-appearance-v3/people-inclusive-power-wheelchair.webp",
+      "sha256": "eb01bebaae01e5a2c6d0837a0e61ac5adb4e16ec30549815509fde7598e590bb",
+      "bytes": 19584
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\runtime\\people-inclusive-older-woman.glb",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-older-woman.glb",
+      "sha256": "bd391fe154641f288b913a3b1058de508ade3e32b9dda93a674ad8dd4a082616",
+      "bytes": 1357748
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\qa\\people-inclusive-older-woman.png",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-older-woman.png",
+      "sha256": "82670049eb5fea9f3a68bb2eb70fabde7de9a5d47af983323a1b26024c466cb1",
+      "bytes": 471439
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\picker\\people-inclusive-older-woman.webp",
+      "url": "/street-kits/people-appearance-v3/people-inclusive-older-woman.webp",
+      "sha256": "4e7f2a3871bfc3ce01836f3d52c76f621025b4a1f70b0fdfc098e031459981db",
+      "bytes": 8976
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\runtime\\people-inclusive-older-man-rollator.glb",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-older-man-rollator.glb",
+      "sha256": "4e291f49fa5f8abdd2ad807bd59f2a76e594f3979b650c688b3e264d3a417b11",
+      "bytes": 1053184
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\qa\\people-inclusive-older-man-rollator.png",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-older-man-rollator.png",
+      "sha256": "86a0adc3d68eefc58e815496990544329d9e51c2a43d74d649379afbdf809852",
+      "bytes": 506219
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\picker\\people-inclusive-older-man-rollator.webp",
+      "url": "/street-kits/people-appearance-v3/people-inclusive-older-man-rollator.webp",
+      "sha256": "269af3825d7480848c6c16b7d1203a0460507ef402784eff24868f1dc617f21b",
+      "bytes": 18340
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\runtime\\people-inclusive-family-parent-child.glb",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-family-parent-child.glb",
+      "sha256": "e9febea869a75b6914d7639ad03a6a28f3224ee431305e0f7e743aef34896404",
+      "bytes": 2148500
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\qa\\people-inclusive-family-parent-child.png",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-family-parent-child.png",
+      "sha256": "ef67c500f1574cbded37b35d3fd31cb327a81fea01b5da17844ea58c20208560",
+      "bytes": 486742
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\picker\\people-inclusive-family-parent-child.webp",
+      "url": "/street-kits/people-appearance-v3/people-inclusive-family-parent-child.webp",
+      "sha256": "75805a2784737017700e556bc3172f83dc9bc6667d6f5d95886569af89406c99",
+      "bytes": 14204
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\runtime\\people-inclusive-family-stroller.glb",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-family-stroller.glb",
+      "sha256": "05700cb3a3266aa82e01c74b24819ef6914e43fa83aca0d673bd34011aa3da79",
+      "bytes": 1048300
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\qa\\people-inclusive-family-stroller.png",
+      "url": "/street-kits/people-inclusive-v1/people-inclusive-family-stroller.png",
+      "sha256": "495902981c76127f5cb2f1a3cf3d8cd511763b50b87f4854da3e86b3139cf08c",
+      "bytes": 519517
+    },
+    {
+      "path": "C:\\dev-artifacts\\CityPrompt\\people-inclusive-2026-10-23\\picker\\people-inclusive-family-stroller.webp",
+      "url": "/street-kits/people-appearance-v3/people-inclusive-family-stroller.webp",
+      "sha256": "456b55eafd0c5b7726a86e72c85d88b4b1e315705a85c61ad683ef69b386cc6f",
+      "bytes": 19426
+    }
+  ],
+  "limitations": [
+    "Picker photos are realistic style illustrations; 3D people remain architectural models.",
+    "Inclusive eight use authored fixed poses. No automatic navigation or medical equipment certification.",
+    "No paid AI acceptance renders or physical student-laptop/mobile measurements in this batch."
+  ]
+}

@@ -14,7 +14,7 @@ from shapely.geometry import Point, Polygon
 from app.core.database import get_db
 from app.core.security import check_project_permission, require_auth
 from app.models.models import Project, User
-from app.services.people_actions import PeopleAction, is_people_model
+from app.services.people_actions import PeopleAction, is_people_model, resolve_people_action
 
 router = APIRouter()
 
@@ -50,6 +50,12 @@ class Prop(Bench):
     def action_requires_person(self):
         if self.people_action is not None and not is_people_model(self.variant):
             raise ValueError('People actions require a people model')
+        if is_people_model(self.variant):
+            resolved = resolve_people_action(self.variant, self.people_action)
+            # Legacy people omit synthetic defaults; fixed seated assets must not
+            # round-trip as standing through older clients that omit the field.
+            if self.people_action is not None or self.variant.startswith('people-inclusive-'):
+                self.people_action = resolved
         return self
 
     @field_validator('variant')

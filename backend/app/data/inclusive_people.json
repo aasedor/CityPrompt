@@ -1,0 +1,58 @@
+{
+  "people-inclusive-white-cane": {
+    "defaultAction": "standing",
+    "supportedActions": ["standing"],
+    "personCount": 1,
+    "description": "standing person using a white cane",
+    "fixedPose": true
+  },
+  "people-inclusive-guide-dog": {
+    "defaultAction": "standing",
+    "supportedActions": ["standing"],
+    "personCount": 1,
+    "description": "standing person with a guide dog and harness",
+    "fixedPose": true
+  },
+  "people-inclusive-manual-wheelchair": {
+    "defaultAction": "sitting",
+    "supportedActions": ["sitting"],
+    "personCount": 1,
+    "description": "person seated in a manual wheelchair",
+    "fixedPose": true
+  },
+  "people-inclusive-power-wheelchair": {
+    "defaultAction": "sitting",
+    "supportedActions": ["sitting"],
+    "personCount": 1,
+    "description": "person seated in a powered wheelchair",
+    "fixedPose": true
+  },
+  "people-inclusive-older-woman": {
+    "defaultAction": "standing",
+    "supportedActions": ["standing"],
+    "personCount": 1,
+    "description": "standing older woman",
+    "fixedPose": true
+  },
+  "people-inclusive-older-man-rollator": {
+    "defaultAction": "standing",
+    "supportedActions": ["standing"],
+    "personCount": 1,
+    "description": "standing older man using a rollator",
+    "fixedPose": true
+  },
+  "people-inclusive-family-parent-child": {
+    "defaultAction": "standing",
+    "supportedActions": ["standing"],
+    "personCount": 2,
+    "description": "adult and child standing together",
+    "fixedPose": true
+  },
+  "people-inclusive-family-stroller": {
+    "defaultAction": "standing",
+    "supportedActions": ["standing"],
+    "personCount": 2,
+    "description": "adult and infant in a stroller, with the adult standing",
+    "fixedPose": true
+  }
+}
