@@ -5,6 +5,12 @@ locally. The user is opening a fresh chat for a large task that has not yet been
 specified. Do not infer a new implementation or deployment request from this
 handoff.
 
+Publication was subsequently authorized by the user. Before relying on the older
+unpublished status below, read the current release result and rollback record at
+`C:/dev-artifacts/CityPrompt/scene-readiness-release-2026-10-22/deployment-progress.json`.
+That record distinguishes preparing, deploying, verified and failed states; do
+not assume completion from this publication authorization alone.
+
 ## Use the correct checkout
 
 - Active checkout: `C:/Users/andre/.codex/worktrees/add-details-recovery/CityPrompt`.
