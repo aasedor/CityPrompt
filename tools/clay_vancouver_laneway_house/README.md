@@ -1,7 +1,7 @@
 # Vancouver laneway house (RLASM v6.1 architectural clay)
 
 Candidate J3 of wave J of 2026-10-22, one of five catalogue additions the user asked to be chosen
-(four buildings and one street); a building option from the building catalogue. State: **candidate under review**. Nothing here is keeper-approved,
+(four buildings and one street); a building option from the building catalogue. State: **stopped at v003 by the stopping rule (the planting finding survived two targeted fixes); v002 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -72,6 +72,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002 (x)
+## Open blockers after v003 (x)
 
 x

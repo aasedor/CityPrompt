@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-vancouver-laneway-house-clay-v003",
+  "glb": "clay-vancouver-laneway-house-clay-v003.glb",
+  "glb_bytes": 2330308,
+  "glb_sha256": "5687829290a4d6d3fdc585c8b94f90275c4c463f46d9e4805ffc6407f81ada28",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "entry_steps.png": 92,
+    "facade_close.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "garage.png": 92,
+    "garden.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_seams.png": 92,
+    "side_entry.png": 92,
+    "top.png": 92,
+    "west_wall.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-vancouver-laneway-house-clay-v003-renders-and-glb.zip",
+  "zip_bytes": 38583509
+}
