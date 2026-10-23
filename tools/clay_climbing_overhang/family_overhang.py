@@ -2036,19 +2036,29 @@ def fronts():
     corners()
 
 
-def shell_section(z):
-    """Plan section of the shell's outer surface at height z (convex hull of the edge crossings)."""
-    pts = []
+def surface_section(V, z):
+    """Exact plan section at height z of the folded surface with vertices V (the triangles' crossing segments
+    polygonised; the folds are not all convex, so no hull)."""
+    from shapely.ops import polygonize, unary_union
+    segs = []; memo = {}
     for tr in SHELL_TRIS:
-        q = [SH[k] for k in tr]
+        cut = []
         for i in range(3):
-            a, e = q[i], q[(i + 1) % 3]
+            k1, k2 = sorted((tr[i], tr[(i + 1) % 3]))             # each edge's crossing computed once (shared exactly)
+            a, e = V[k1], V[k2]
             if (a[2] - z) * (e[2] - z) < 0:
-                s = (z - a[2]) / (e[2] - a[2])
-                pts.append((a[0] + (e[0] - a[0]) * s, a[1] + (e[1] - a[1]) * s))
-            elif abs(a[2] - z) < 1e-9:
-                pts.append((a[0], a[1]))
-    return _pksh.MultiPoint(pts).convex_hull
+                if (k1, k2) not in memo:
+                    s = (z - a[2]) / (e[2] - a[2])
+                    memo[(k1, k2)] = (a[0] + (e[0] - a[0]) * s, a[1] + (e[1] - a[1]) * s)
+                cut.append(memo[(k1, k2)])
+        if len(cut) == 2:
+            segs.append(_pksh.LineString(cut))
+    polys = list(polygonize(unary_union(segs)))
+    return max(polys, key=lambda g: g.area) if polys else _pksh.Polygon()
+
+
+def shell_section(z):
+    return surface_section(SH, z)
 
 
 def cut_slab(name, role, x0, x1, ya, yb, z0, z1, dz=.5):
@@ -2399,15 +2409,7 @@ def shell():
     # the top view sees through the rim. Its outline is the inner surface's section at that height, grown 10 cm so its
     # edges bury in the CLT.
     zm = 5.5
-    pts = []
-    for tr, n in tris:
-        q = [inner[k] for k in tr]
-        for i in range(3):
-            a, e = q[i], q[(i + 1) % 3]
-            if (a[2] - zm) * (e[2] - zm) < 0:
-                s = (zm - a[2]) / (e[2] - a[2])
-                pts.append((a[0] + (e[0] - a[0]) * s, a[1] + (e[1] - a[1]) * s))
-    hull = _PkPolygon(pts).convex_hull.buffer(.1, join_style=2)
+    hull = surface_section(inner, zm - .35).intersection(surface_section(inner, zm + .1)).buffer(.08, join_style=2)
     C.prism('Climbing shell bouldering deck', list(hull.exterior.coords)[:-1][::-1] if hull.exterior.is_ccw is False else list(hull.exterior.coords)[:-1],
             'z', zm - .35, zm + .1, 'mat', 'climbing shell')
     foot = _PkPolygon([(SH[k][0], SH[k][1]) for k in ('G', 'BN', 'BS', 'BW')])                     # a soft dark contact band
