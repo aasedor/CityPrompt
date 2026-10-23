@@ -1,0 +1,539 @@
+{
+  "candidate": "clay-climbing-crucible-clay-v001",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 1074,
+    "vertices": 942910,
+    "polygons": 1040649,
+    "triangles": 1040649,
+    "path": "clay-climbing-crucible-clay-v001-authoring.blend",
+    "bytes": 8047712,
+    "sha256": "c6ba48e32bac649c88fcba94bf1d211a14595a3225ca085133cbb6982ce4bb0a"
+  },
+  "runtime": {
+    "path": "clay-climbing-crucible-clay-v001.glb",
+    "bytes": 2441540,
+    "sha256": "7da351ad2a265523a5a465cdc82b68333de4640ad5bfd3bcff2e9e67b66b18f9",
+    "meshes": 49,
+    "materials": 45,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 957,
+    "vertices": 942910,
+    "polygons": 1040649,
+    "triangles": 1040649
+  },
+  "original_bounds_m": [
+    [
+      -70.0,
+      -62.0,
+      0.0
+    ],
+    [
+      80.0,
+      63.459999084472656,
+      39.599998474121094
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -70.0,
+      -62.0,
+      0.0
+    ],
+    [
+      80.0,
+      63.459999084472656,
+      39.599998474121094
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 101.0,
+    "depth": 28.0,
+    "height": 28.14
+  },
+  "native_dimensions_m": {
+    "width": 150.0,
+    "depth": 125.45999908447266,
+    "height": 39.599998474121094
+  },
+  "native_bottom_center_m": [
+    5.0,
+    0.7299995422363281,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 1,
+    "hex": 2,
+    "hex2": 2,
+    "hexd": 1,
+    "joint": 5,
+    "led": 1,
+    "hold": 2,
+    "hold2": 1,
+    "hold3": 1,
+    "corten": 8,
+    "corten2": 8,
+    "corten3": 5,
+    "cjoint": 5,
+    "coping": 3,
+    "frame": 4,
+    "glass": 4,
+    "interior": 3,
+    "floor": 7,
+    "roof": 1,
+    "track": 2,
+    "lane": 9,
+    "paving": 9,
+    "meadow": 3,
+    "lawn": 1,
+    "path": 1,
+    "rubber": 1,
+    "kerb": 1,
+    "boulder": 34,
+    "steel": 8,
+    "concrete": 2,
+    "asphalt": 1,
+    "pavilion": 2,
+    "membrane": 1,
+    "brick": 5,
+    "slate": 2,
+    "stack": 1,
+    "water": 1,
+    "metal": 6,
+    "mulch": 2
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/climbing_wall.png",
+    "renders/route_holds.png",
+    "renders/fall_zone.png",
+    "renders/glass_close.png",
+    "renders/architecture_close.png",
+    "renders/facade_close.png",
+    "renders/east_entrance.png",
+    "renders/roof_track.png",
+    "renders/roof_pavilion.png",
+    "renders/interior.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "aerial": {
+      "xmin": 0.1222778707742691,
+      "xmax": 0.9097895622253418,
+      "ymin": 0.1856144368648529,
+      "ymax": 0.6559101939201355
+    },
+    "left_side": {
+      "xmin": 0.09830500930547714,
+      "xmax": 0.9127753973007202,
+      "ymin": 0.3653491735458374,
+      "ymax": 0.6772562861442566
+    },
+    "right_side": {
+      "xmin": 0.11451243609189987,
+      "xmax": 0.9189342260360718,
+      "ymin": 0.3646659255027771,
+      "ymax": 0.696272075176239
+    },
+    "rear_side": {
+      "xmin": 0.11927089095115662,
+      "xmax": 0.9113229513168335,
+      "ymin": 0.2354307472705841,
+      "ymax": 0.6436958909034729
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Climbing wall and Corten blocks from grade; roof elements on the roof slab inside the parapet; boulders and frame on the ground",
+      "eave_m": 28.0
+    },
+    {
+      "name": "The Crucible climbing wall building",
+      "box": [
+        -50.0,
+        51.0,
+        -21.0,
+        7.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "W window",
+      "face": "west block south",
+      "u": -46.4,
+      "z": 19.6,
+      "width": 2.2,
+      "height": 2.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -21.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "W slot",
+      "face": "west block south",
+      "u": -43.1,
+      "z": 21.6,
+      "width": 0.8,
+      "height": 3.4,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -21.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "stair"
+    },
+    {
+      "id": "W door",
+      "face": "west block south",
+      "u": -30.6,
+      "z": 0.15,
+      "width": 1.6,
+      "height": 2.6,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -21.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "E door",
+      "face": "east block south",
+      "u": 35.7,
+      "z": 0.15,
+      "width": 1.3,
+      "height": 2.5,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.4,
+      "frame_inset_m": 0.22,
+      "pane_inset_m": 0.257,
+      "face_origin": [
+        0.0,
+        -21.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "Lawn",
+      "North yard",
+      "Fall-zone apron",
+      "Bouldering frame tube",
+      "Bouldering frame tube.001",
+      "Bouldering frame tube.002",
+      "Bouldering frame tube.003",
+      "Bouldering frame leg",
+      "Path 0",
+      "Bed W",
+      "Bed E",
+      "East plaza"
+    ],
+    "apron edge": [
+      "apron edge kerb"
+    ],
+    "garden planting": [
+      "Bouldering frame joint",
+      "Bouldering frame joint.001",
+      "Bouldering frame joint.002",
+      "Apron boulder 0",
+      "Apron boulder 1",
+      "Apron boulder 2",
+      "Apron boulder 3",
+      "Apron boulder 4",
+      "Apron boulder 5",
+      "Apron boulder 6",
+      "Apron boulder 7",
+      "Apron boulder 8",
+      "Apron boulder 9",
+      "Lawn boulder 0",
+      "Lawn boulder 1",
+      "Lawn boulder 2",
+      "Lawn boulder 3",
+      "Lawn boulder 4",
+      "Lawn boulder 5",
+      "Lawn boulder 6",
+      "Lawn boulder 7",
+      "Lawn boulder 8",
+      "Lawn boulder 9",
+      "Lawn boulder 10",
+      "Lawn boulder 11",
+      "Lawn boulder 12",
+      "Lawn boulder 13",
+      "Lawn boulder 14",
+      "Lawn boulder 15",
+      "Lawn boulder 16",
+      "Lawn boulder 17",
+      "Lawn boulder 18",
+      "Bed boulder 0",
+      "Bed boulder 1",
+      "Bed boulder 2",
+      "Bed boulder 3",
+      "Bed boulder 4"
+    ],
+    "apron disc": [
+      "apron disc hold"
+    ],
+    "plaza joints": [
+      "plaza joints joint"
+    ],
+    "plaza lamp": [
+      "plaza lamp metal",
+      "plaza lamp metal.001"
+    ],
+    "envelope": [
+      "Climbing hall",
+      "Hall north parapet",
+      "Hall north cladding",
+      "west block south carrier",
+      "West block core",
+      "West block west wall",
+      "West block north wall",
+      "West block east wall",
+      "east block south carrier",
+      "East block core",
+      "East block north wall"
+    ],
+    "hall north joints": [
+      "hall north joints joint"
+    ],
+    "climbing wall panels": [
+      "climbing wall panels hex",
+      "climbing wall panels hex2",
+      "climbing wall panels hexd"
+    ],
+    "return backing": [
+      "return backing joint"
+    ],
+    "return panels": [
+      "return panels hex2",
+      "return panels hex"
+    ],
+    "hall coping": [
+      "hall coping coping"
+    ],
+    "route lines": [
+      "route lines led"
+    ],
+    "climbing holds": [
+      "climbing holds hold2",
+      "climbing holds hold",
+      "climbing holds hold3"
+    ],
+    "west block openings": [
+      "west block south west block openings corten2",
+      "west block south west block openings frame",
+      "west block south west block openings glass"
+    ],
+    "west block south panels": [
+      "west block south west block south panels cjoint",
+      "west block south west block south panels corten2",
+      "west block south west block south panels corten3"
+    ],
+    "inside": [
+      "West block floor 0",
+      "West block floor 9",
+      "West block floor 18",
+      "Hall floor 0.1",
+      "Hall floor 9.0",
+      "Hall floor 14.5",
+      "Hall floor 20.0"
+    ],
+    "west block west face panels": [
+      "west block west face west block west face panels cjoint",
+      "west block west face west block west face panels corten3",
+      "west block west face west block west face panels corten2"
+    ],
+    "west block north face panels": [
+      "west block north face west block north face panels cjoint",
+      "west block north face west block north face panels corten2",
+      "west block north face west block north face panels corten3"
+    ],
+    "east block openings": [
+      "east block south east block openings frame",
+      "east block south east block openings corten2",
+      "east block south east block openings glass"
+    ],
+    "east block south panels": [
+      "east block south east block south panels cjoint",
+      "east block south east block south panels corten3",
+      "east block south east block south panels corten2"
+    ],
+    "east block north face panels": [
+      "east block north face east block north face panels cjoint",
+      "east block north face east block north face panels corten2",
+      "east block north face east block north face panels corten3"
+    ],
+    "east end": [
+      "east end corten",
+      "east end corten2",
+      "east end glass",
+      "east end frame",
+      "east end metal"
+    ],
+    "hall interior": [
+      "hall interior interior"
+    ],
+    "parapets": [
+      "parapets coping",
+      "parapets metal"
+    ],
+    "roof": [
+      "Roof slab",
+      "Running track",
+      "Lane line 1",
+      "Lane line 2",
+      "Lane line 3",
+      "Track outer edge",
+      "Track inner edge",
+      "Bowl floor",
+      "Bowl tier 0",
+      "Bowl tier 1",
+      "Bowl tier 2",
+      "Bowl tier 3",
+      "Bowl back wall",
+      "Roof path 0",
+      "Roof path 1",
+      "North walkway",
+      "Track west run",
+      "West run lane 1",
+      "West run lane 2",
+      "West run lane 3"
+    ],
+    "pavilion": [
+      "pavilion pavilion",
+      "pavilion membrane",
+      "pavilion metal",
+      "pavilion frame",
+      "pavilion glass"
+    ],
+    "roof vents": [
+      "roof vents coping",
+      "roof vents metal"
+    ],
+    "planting": [
+      "Roof meadow outer 0",
+      "Roof meadow inner 0",
+      "Roof meadow inner 1",
+      {
+        "planting_kit": true,
+        "instancing": true,
+        "plants": 591,
+        "instance_nodes": 918,
+        "prototypes": {
+          "cr_straw_grass": 260,
+          "cr_green_grass": 106,
+          "cr_tan_grass": 176,
+          "cr_shrub": 31,
+          "cr_shrub_dark": 5,
+          "cr_fountain": 13
+        },
+        "clearance_violations": 0,
+        "rejected": 0
+      }
+    ],
+    "context": [
+      "context stack",
+      "context joint",
+      "context concrete",
+      "context brick",
+      "context asphalt",
+      "context lane",
+      "context water",
+      "Warehouse roof 30",
+      "Warehouse gable 30 33",
+      "Warehouse gable 30 63",
+      "Warehouse roof 50",
+      "Warehouse gable 50 33",
+      "Warehouse gable 50 63"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-23T07:56:11.767654+00:00",
+  "delivery_and_render_seconds": 4489.827130643,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

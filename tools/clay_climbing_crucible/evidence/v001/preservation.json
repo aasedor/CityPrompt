@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-climbing-crucible-clay-v001",
+  "glb": "clay-climbing-crucible-clay-v001.glb",
+  "glb_bytes": 2441540,
+  "glb_sha256": "7da351ad2a265523a5a465cdc82b68333de4640ad5bfd3bcff2e9e67b66b18f9",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "climbing_wall.png": 92,
+    "east_entrance.png": 92,
+    "facade_close.png": 92,
+    "fall_zone.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_pavilion.png": 92,
+    "roof_track.png": 92,
+    "route_holds.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-climbing-crucible-clay-v001-renders-and-glb.zip",
+  "zip_bytes": 35433962
+}
