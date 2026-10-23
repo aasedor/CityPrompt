@@ -2348,6 +2348,21 @@ def shell():
     mat = [(cx + (p[0] - cx) * .97, cy + (p[1] - cy) * .97) for p in fl]
     b.flush('climbing shell fascia')
     C.prism('Climbing shell crash mat', mat, 'z', fl[0][2] - .02, fl[0][2] + .45, 'mat', 'climbing shell')
+    # The lean hides the foot from above, so a padded bouldering deck spans the hollow at 5.5 m: its dark mat is what
+    # the top view sees through the rim. Its outline is the inner surface's section at that height, grown 10 cm so its
+    # edges bury in the CLT.
+    zm = 5.5
+    pts = []
+    for tr, n in tris:
+        q = [inner[k] for k in tr]
+        for i in range(3):
+            a, e = q[i], q[(i + 1) % 3]
+            if (a[2] - zm) * (e[2] - zm) < 0:
+                s = (zm - a[2]) / (e[2] - a[2])
+                pts.append((a[0] + (e[0] - a[0]) * s, a[1] + (e[1] - a[1]) * s))
+    hull = _PkPolygon(pts).convex_hull.buffer(.1, join_style=2)
+    C.prism('Climbing shell bouldering deck', list(hull.exterior.coords)[:-1][::-1] if hull.exterior.is_ccw is False else list(hull.exterior.coords)[:-1],
+            'z', zm - .35, zm + .1, 'mat', 'climbing shell')
     C.CONTACTS.append(dict(name='Climbing shell: foot sunk 15 cm into the plaza, back plane lapped 10 cm into the facade', rim_m=RIM))
     return tris, inner
 
@@ -2693,8 +2708,7 @@ def interiors():
             qa_light(f'room {k} top', (x, y, F4 + 3.8), 90, 2.5)
     for y in (-14.0, -4.0, 6.0):
         qa_light(f'penthouse {y:.0f}', (-1.0, y, PH_TOP - .7), 110, 2.5)
-    for z in (6.0,):                                                                                    # inside the shell
-        qa_light(f'shell hollow {z:.0f}', (-6.5 + .25 * z, -22.5, z), 25, 2.0)
+    qa_light('shell hollow', (-2.0, -22.5, 15.0), 30, 4.0)                                            # inside the shell (dim)
 
 
 def window_bands(m, lo, hi, z0, z1, floors, per, role='stone'):

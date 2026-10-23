@@ -37,7 +37,7 @@ YN = Y0 + 3.5
 SPX = (-1.4, 6.0)                                     # the spine's core (x); front face at SPY0, runs past the notch back to SPY1
 SPY0, SPY1 = YN - 2.4, YN + 3.6                     # v002: SPY0 is the straight outer face; relief is carved inward
 SPTOP = ROOF + 5.7                                    # spine cap (fitted to front, oblique and top)
-BAL_FLOORS = (1, 3, 5, 7, 9, 12)                      # rest-station balconies (tower floors above the base)
+BAL_FLOORS = (0, 2, 4, 6, 8, 11)                      # rest-station balconies (tower floors above the base)
 BAL_X1, BAL_Y = NOTCH[1] + 1.0, Y0 - 1.2              # balcony east end (steps 1 m past the notch) and front edge (2.3 m past the spine)
 RB = (-18.1, 16.0, -3.8, Y1)                          # glazed amenity block over the north of the roof (fitted)
 RBTOP = ROOF + 6.6
@@ -46,11 +46,11 @@ CURB = Y0 - 16.0                                      # plaza and sidewalk to th
 SIDE = 4.5                                            # side sidewalks
 EPS = .002
 FLOORS = [BASE + FH * i for i in range(NF)]
-PALETTE = dict(glass=(.16, .13, .10), spandrel=(.10, .085, .07), bronze=(.50, .34, .17), frame=(.20, .16, .12),
-    rock=(.80, .74, .63), rock2=(.60, .54, .45), hold=(.20, .19, .18), concrete=(.80, .78, .74), coping=(.88, .87, .84),
+PALETTE = dict(glass=(.09, .075, .06), spandrel=(.10, .085, .07), bronze=(.50, .34, .17), frame=(.20, .16, .12),
+    rock=(.80, .74, .63), rock2=(.50, .44, .36), hold=(.50, .46, .40), concrete=(.80, .78, .74), coping=(.88, .87, .84),
     canopy=(.90, .89, .86), stone=(.70, .68, .64), copper=(.66, .38, .20), timber=(.62, .45, .28), hardware=(.18, .18, .19),
     steel=(.55, .55, .55), interior=(.80, .76, .68), floor=(.48, .43, .36), core=(.66, .64, .60), roof=(.86, .86, .84),
-    membrane=(.80, .80, .78), metal=(.70, .71, .72), duct=(.76, .77, .78), granite=(.64, .60, .54), granite2=(.57, .54, .49),
+    membrane=(.80, .80, .78), metal=(.70, .71, .72), duct=(.76, .77, .78), granite=(.66, .57, .44), granite2=(.57, .49, .38), granite3=(.72, .63, .50),
     paver=(.70, .69, .66), paver2=(.62, .61, .58), kerb=(.76, .75, .72), asphalt=(.25, .25, .26), line=(.86, .85, .80),
     mulch=(.26, .20, .14), brick=(.62, .44, .30), brick2=(.52, .30, .22), tan=(.74, .62, .46), white=(.84, .83, .80),
     ctxglass=(.36, .44, .50), lamp=(.22, .22, .23), tree=(.24, .38, .16), tree2=(.30, .44, .19), bark=(.30, .23, .16))
@@ -82,11 +82,11 @@ def manifest(version):
         elif c['name'] == 'rear_side':
             c.update(location=(62.0, 78.0, 110.0), target=(0.0, 0.0, 28.0), lens=34.0, whole=False)
         elif c['name'] == 'right_side':                                  # over the low white block across the east street, south of the glass tower
-            c.update(location=(82.0, -18.0, 70.0), target=(X1, 0.0, 30.0), lens=27, whole=False)
+            c.update(location=(88.0, -14.0, 60.0), target=(X1, 0.0, 32.0), lens=20, whole=False)   # amenity roof and spine cap ~10% under the top edge
         elif c['name'] == 'left_side':                                   # over the walk-ups across the west street
             c.update(location=(-82.0, 2.0, 56.0), target=(X0, 0.0, 33.0), lens=20, whole=False)
         elif c['name'] == 'rear':                                        # over the white mid-rise to the north
-            c.update(location=(8.0, 70.0, 95.0), target=(0.0, Y1, 25.0), lens=24, whole=False)
+            c.update(location=(8.0, 70.0, 95.0), target=(0.0, Y1, 27.0), lens=21, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
@@ -2065,8 +2065,8 @@ def notch_east_wall():
     a window on the other floors, the climbing-gym entrance at the base."""
     f = NOTCH_B
     lo, hi = SPX[1] - .05, NOTCH[1]
-    holes = [hole('climbing gym entrance', 8.9, .15, 3.2, 3.6, kind='door'), hole('climbing gym high window', 8.9, 4.4, 3.2, 2.6)]
-    kinds = ['door', 'win']
+    holes = [hole('climbing gym entrance', 8.9, .15, 3.2, 7.1, kind='door')]
+    kinds = ['door']
     for i, (z0, z1) in enumerate(BANDS):
         if i in BAL_FLOORS:
             holes.append(hole(f'balcony door {i}', 8.2, z0 + .05, 2.6, 2.7, kind='door')); kinds.append('bdoor')
@@ -2078,9 +2078,9 @@ def notch_east_wall():
         if k == 'win':
             framed(m, f, h, cols=2, rows=1, inset=.16, occupied='apartments', frame='frame')
         else:
-            framed(m, f, h, cols=2 if k == 'bdoor' else 3, rows=1, inset=.16, occupied='apartments' if k == 'bdoor' else 'climbing gym',
+            framed(m, f, h, cols=2 if k == 'bdoor' else 3, rows=1 if k == 'bdoor' else 2, inset=.16, occupied='apartments' if k == 'bdoor' else 'climbing gym',
                    kind='glazed door', frame='frame')
-        reveal(m, f, h, inset=.16, role='concrete')
+        reveal(m, f, h, inset=.16, role='concrete', jambs_only=True)
     for z0, z1 in BANDS:                                  # precast panel joints at the floor lines
         m.box('core', (lo + hi) / 2, -.006, z0 + .4, hi - lo - .02, .014, .03)
     m.flush('notch east back wall')
@@ -2212,22 +2212,31 @@ ND = _PkNoise(404, 1.0)
 
 
 def rock_depth(s, z):
-    """Inward relief carved into the spine's straight faces at perimeter distance s and height z (0 to 0.42 m):
-    vertical flakes from ridged noise stretched about 3.5:1 in z, shallow flake breaks, and an uncarved ledge band
-    every ~3.3 m; plain under the cap. The arrises stay ruler-straight (the weight in spine_perimeter is 0 there)."""
-    ridge = max(0., 1 - abs(NA(s * 1.8, z * .5))) ** 1.5
-    d = .06 + .30 * ridge + .07 * NB(s * 3.4, z * 1.0)
-    ph = (z / 3.3 + .3 * ND(s * .5, 0.)) % 1.0
-    if ph < .1:                                                       # ledge: the face returns to the arris plane
-        d *= .25 + 7.5 * ph
-    d *= 1 - _smooth01((z - (SPTOP - 1.6)) / 1.0)                     # plain under the cap
-    return max(0., min(.42, d))
+    """Outward (+) / inward (-) relief of the carved spine at perimeter distance s and height z, about -0.55 to
+    +0.6 m: stacked ledges every ~1.6 m whose lips project and whose undersides face down (a sawtooth that rises
+    diagonally across the face), continuous vertical flake ridges, and a plain band under the cap. The arrises carry
+    no relief (spine_perimeter weight)."""
+    ph = ((z + .45 * s + 1.3 * ND(s * .4, 0.)) / 1.7) % 1.0           # diagonal ledge bands
+    saw = 1 - ph if ph > .12 else ph / .12                            # lip at the band base, sloping back above it
+    ridge = max(0., 1 - abs(NA(s * 1.6, z * .45))) ** 1.3             # vertical flakes (about 3.5:1)
+    d = -.5 + .5 * saw + .62 * ridge + .1 * NB(s * 3.0, z * .9)
+    d *= 1 - _smooth01((z - (SPTOP - 1.4)) / 1.0)                     # plain under the cap
+    return max(-.55, min(.6, d))
 
 
-def spine_perimeter(step=.42):
-    """Exposed perimeter of the spine prism, from the notch back on the west side round the front to the notch back
-    on the east side: (x, y, nx, ny, s, weight) samples. The weight is 0 at both front arrises and at the notch walls
-    and ramps to 1 over 0.35 m, so the carving stays inside each face and every edge is straight."""
+PLINTH = 9.0                                                          # the foot swells through the double-height base
+
+
+def plinth(z):
+    """Outward swell of the whole foot: about 1.3 m at grade, gone at the base head."""
+    return 1.3 * max(0., 1 - z / PLINTH) ** 1.4
+
+
+def spine_perimeter(step=.5):
+    """Exposed perimeter of the spine, from the notch back on the west side round the front to the notch back on
+    the east side: (x, y, face normal, mitre normal, s, relief weight, swell weight). The relief weight is 0 on the
+    arrises and at the notch walls; the swell weight is 0 only at the notch walls, so the foot bulges round the
+    arrises."""
     path = [(SPX[0], YN), (SPX[0], SPY0), (SPX[1], SPY0), (SPX[1], YN)]
     nrm = [(-1, 0), (0, -1), (1, 0)]
     lens = [math.hypot(path[i + 1][0] - path[i][0], path[i + 1][1] - path[i][1]) for i in range(3)]
@@ -2239,8 +2248,12 @@ def spine_perimeter(step=.42):
         for k in range(n + (1 if i == 2 else 0)):
             t = k / n; x, y = ax + (bx - ax) * t, ay + (by - ay) * t
             s = s0 + L * t
-            w = _smooth01(min(abs(s - c) for c in corners) / .35)
-            pts.append((x, y, nrm[i][0], nrm[i][1], s, w))
+            mit = nrm[i]
+            if k == 0 and i > 0:
+                mit = (nrm[i - 1][0] + nrm[i][0], nrm[i - 1][1] + nrm[i][1])   # unnormalised: both faces swell equally
+            w = _smooth01(min(abs(s - c) for c in corners) / .45)
+            ws = _smooth01(min(s, corners[3] - s) / 1.0)
+            pts.append((x, y, nrm[i], mit, s, w, ws))
         s0 += L
     return pts
 
@@ -2248,50 +2261,37 @@ def spine_perimeter(step=.42):
 def spine():
     per = spine_perimeter()
     zs = [0.0]
-    while zs[-1] < SPTOP - .4:
-        zs.append(min(SPTOP, zs[-1] + .62))
+    while zs[-1] < SPTOP - .3:
+        zs.append(min(SPTOP, zs[-1] + .42))
     if zs[-1] < SPTOP:
         zs.append(SPTOP)
     rings = []
     for z in zs:
-        ring = [(x - nx * w * rock_depth(s, z), y - ny * w * rock_depth(s, z), z) for x, y, nx, ny, s, w in per]
+        ring = []
+        for x, y, (nx, ny), (mx, my), s, w, ws in per:
+            d = w * rock_depth(s, z); f = ws * plinth(z)
+            ring.append((x + nx * d + mx * f, y + ny * d + my * f, z))
         ring += [(SPX[1], SPY1, z), (SPX[0], SPY1, z)]
         rings.append(ring)
-    carved(rings, per)
+    carved(rings, [(p[0], p[1], p[2][0], p[2][1]) for p in per])
     b = Batch()
     b.box('concrete', (SPX[0] + SPX[1]) / 2, (SPY0 + SPY1) / 2, SPTOP + .06, SPX[1] - SPX[0] + .12, SPY1 - SPY0 + .12, .12)
     for k in range(1, 4):                                                # cap joints (top view)
         b.box('core', SPX[0] + (SPX[1] - SPX[0]) * k / 4, (SPY0 + SPY1) / 2, SPTOP + .1205, .03, SPY1 - SPY0 + .1, .003)
     b.flush('spine cap')
-    # Holds: small charcoal blocks set into the carved faces, about one per 2 m2 of the front face, fewer on the sides.
+    # Holds: about fifty small warm-grey holds in three climbing lines on the front face (close range only).
     rnd = random.Random(31)
     hb = Batch()
-    total = per[-1][4]
-    front = (per[0][4], 0.)
-    n = tries = 0
-    while n < 160 and tries < 5000:
-        tries += 1
-        s = rnd.uniform(0., total); z = rnd.uniform(1.4, SPTOP - 2.2)
-        for i in range(len(per) - 1):
-            if per[i][4] <= s <= per[i + 1][4]:
-                a = (s - per[i][4]) / max(1e-6, per[i + 1][4] - per[i][4])
-                x = per[i][0] + (per[i + 1][0] - per[i][0]) * a; y = per[i][1] + (per[i + 1][1] - per[i][1]) * a
-                nx, ny = per[i][2], per[i][3]; w = per[i][5] + (per[i + 1][5] - per[i][5]) * a
-                break
-        if w < .95 or (nx != 0 and rnd.random() < .55):                 # keep off the arrises; sparser on the sides
-            continue
-        d = w * rock_depth(s, z) + .04                                    # set 4 cm into the carved surface
-        r = rnd.uniform(.07, .12)
-        cx, cy = x - nx * d, y - ny * d
-        hb.beam('hold', (cx, cy, z), (cx + nx * (d + r * .9), cy + ny * (d + r * .9), z + rnd.uniform(-.04, .06)), r * 1.7, r * 1.1)
-        n += 1
+    L0 = YN - SPY0                                                      # west side length: s of the west arris
+    for u0 in (1.3, 3.7, 6.0):
+        for k in range(17):
+            z = 9.6 + k * 3.0 + rnd.uniform(-.6, .6)
+            u = u0 + rnd.uniform(-.45, .45)
+            d = rock_depth(L0 + u, z)                                     # w = 1 away from the arrises
+            r = rnd.uniform(.05, .085)
+            y = SPY0 - d
+            hb.beam('hold', (SPX[0] + u, y + .04, z), (SPX[0] + u, y - r * .9, z + rnd.uniform(-.03, .05)), r * 1.7, r * 1.1)
     hb.flush('spine holds')
-    # The foot flares into broken precast rock over the bottom ~4.5 m, about 1.5 m wider each side (oblique, top).
-    for k, (x, y, rx, ry, rz, role) in enumerate((
-            (SPX[0] + .2, SPY0 - .5, 1.7, 1.3, 4.6, 'rock'), (SPX[1] - .1, SPY0 - .4, 1.5, 1.2, 3.9, 'rock'),
-            (2.3, SPY0 - .9, 2.3, 1.3, 2.8, 'rock2'), (SPX[0] - .9, SPY0 - 1.2, 1.05, .95, 1.8, 'rock2'),
-            (SPX[1] + .9, SPY0 - 1.1, .95, .85, 1.5, 'rock'), (.6, SPY0 - 1.8, .8, .7, 1.0, 'rock'))):
-        boulder(f'Spine foot rock {k}', x, y, .12, rx, ry, rz, 40 + k, role=role, sink=.1)
 
 
 def carved(rings, per):
@@ -2314,7 +2314,7 @@ def carved(rings, per):
                     bx, by = per[j][2] + per[j + 1][2], per[j][3] + per[j + 1][3]
                     bl = math.hypot(bx, by) or 1.
                     face = abs(nn[0] * bx / bl + nn[1] * by / bl)          # winding-agnostic: |cos| to the face normal
-                    (dark if face < .93 or abs(nn[2]) > .3 else light).append(tri)
+                    (dark if face < .9 or abs(nn[2]) > .28 else light).append(tri)
                 else:
                     light.append(tri)
     fs_bottom = tuple(range(m - 1, -1, -1)); fs_top = tuple((len(rings) - 1) * m + j for j in range(m))
@@ -2322,6 +2322,36 @@ def carved(rings, per):
     o.data.materials.append(C.MATS['rock2'])                       # one closed solid, two stones
     for poly in o.data.polygons:
         poly.material_index = 1 if len(light) <= poly.index < len(light) + len(dark) else 0
+    return o
+
+
+def round_boulder(name, cx, cy, z0, rx, ry, rz, seed, role='granite', sink=.1, lat=9, lon=16):
+    """Rounded granite boulder (v003): a smooth-shaded squashed sphere with low-frequency lumps, its bottom flattened
+    and sunk `sink` below z0; never pointed."""
+    rnd = random.Random(seed); nz = _PkNoise(seed, 1.0)
+    vs = []
+    base = z0 - sink
+    for i in range(lat + 1):
+        th = math.pi * i / lat
+        for j in range(lon if 0 < i < lat else 1):
+            ph = 2 * math.pi * j / lon
+            ux, uy, uz = math.sin(th) * math.cos(ph), math.sin(th) * math.sin(ph), math.cos(th)
+            k = 1 + .2 * nz(ux * 2.2, uy * 2.2, uz * 2.2) + .07 * nz(ux * 5.0 + 3, uy * 5.0, uz * 5.0)
+            vs.append((cx + rx * k * ux, cy + ry * k * uy, max(base, z0 + rz * .5 + rz * .5 * k * uz)))
+    fs = []
+    top, bot = 0, len(vs) - 1
+    def ring(i): return 1 + (i - 1) * lon
+    for j in range(lon):
+        fs.append((top, ring(1) + (j + 1) % lon, ring(1) + j))
+        fs.append((bot, ring(lat - 1) + j, ring(lat - 1) + (j + 1) % lon))
+    for i in range(1, lat - 1):
+        for j in range(lon):
+            a, b2 = ring(i) + j, ring(i) + (j + 1) % lon
+            c, d = ring(i + 1) + (j + 1) % lon, ring(i + 1) + j
+            fs.append((a, b2, c, d))
+    o = C.mesh(name, vs, fs, role, 'boulders')
+    for p in o.data.polygons:
+        p.use_smooth = True
     return o
 
 
@@ -2382,7 +2412,7 @@ def canopy():
     b = Batch()
     b.box('canopy', (x0 + x1) / 2, (yf + Y0 - FIN_D) / 2, zt - .45, x1 - x0, Y0 - FIN_D - yf, .9)
     b.box('canopy', (x0 + x1) / 2, (Y0 - FIN_D + Y0 + .01) / 2 + .0005, zt - .45 - .0005, x1 - x0, FIN_D + .01, .899)
-    b.box('frame', (x0 + x1) / 2, yf - .008, zt - .78, x1 - x0 - .2, .02, .05)
+    b.box('bronze', (x0 + x1) / 2, yf - .03, zt - .3, x1 - x0 + .04, .08, .5)                   # dark bronze fascia band
     for k in range(9):                                                         # downlights in the soffit
         b.box('coping', x0 + 1.0 + (x1 - x0 - 2.0) * k / 8, (yf + Y0) / 2, zt - .905, .5, .5, .012)
     b.flush('canopy')
@@ -2404,7 +2434,7 @@ def floors_and_inside():
     for k, z in enumerate([.15] + FLOORS):
         h = (BASE - .15 if k == 0 else FH) - .5
         for x, y in ((-17.0, -7.5), (-4.0, -5.0), (8.5, -4.5), (19.0, -7.5), (-17.0, 8.5), (18.0, 8.5)):
-            C.qa_room_light(f'Floor {k} {x:+.0f} {y:+.0f}', (x, y, z + h), 38 if k else 110, 5.0)
+            C.qa_room_light(f'Floor {k} {x:+.0f} {y:+.0f}', (x, y, z + h), 24 if k else 110, 5.0)
     C.qa_room_light('Amenity room west', (-9.0, 2.0, RBTOP - 1.2), 110, 6.0)
     C.qa_room_light('Amenity room east', (8.0, 2.0, RBTOP - 1.2), 110, 6.0)
     zf = FLOORS[5]
@@ -2443,28 +2473,36 @@ def terrace():
     soil = ROOF + .36
     kit = KIT
     P = PROTOS
+    # v003: side and front beds with paved boulder courts at both street corners (paths between beds and boulders).
     beds = {
-        'L': [(X0 + .45, Y1 - .45), (X0 + .45, Y0 + .45), (NOTCH[0] - .9, Y0 + .45), (NOTCH[0] - .9, Y0 + 3.2),
-              (RB[0] - 3.9, Y0 + 3.2), (RB[0] - 3.9, Y1 - .45)],
-        'R': [(X1 - .45, Y0 + .45), (X1 - .45, Y1 - .45), (RB[1] + 4.6, Y1 - .45), (RB[1] + 4.6, Y0 + 3.4),
-              (NOTCH[1] + .9, Y0 + 3.4), (NOTCH[1] + .9, Y0 + .45)],
+        'L1': [(X0 + .45, Y1 - .45), (X0 + .45, Y0 + 7.4), (RB[0] - 3.9, Y0 + 7.4), (RB[0] - 3.9, Y1 - .45)],
+        'L2': [(X0 + 9.0, Y0 + .45), (NOTCH[0] - .9, Y0 + .45), (NOTCH[0] - .9, Y0 + 3.0), (X0 + 9.0, Y0 + 3.0)],
+        'R1': [(X1 - .45, Y0 + 7.4), (X1 - .45, Y1 - .45), (RB[1] + 4.6, Y1 - .45), (RB[1] + 4.6, Y0 + 7.4)],
+        'R2': [(NOTCH[1] + .9, Y0 + .45), (X1 - 9.0, Y0 + .45), (X1 - 9.0, Y0 + 3.0), (NOTCH[1] + .9, Y0 + 3.0)],
     }
     for k, poly in beds.items():
         pk_bed(f'Terrace bed {k}', poly, soil, kerb=.16, kerb_top=soil + .06, kerb_bottom=zp - .03, kerb_role='concrete', kit=kit)
-    # Sculptural granite: three tall elongated pieces up to ~3.5 m and smaller angular stones (front, oblique, top).
-    rocks = [('L', -24.1, 9.6, 1.2, 1.0, 3.5), ('L', -24.0, 3.0, 1.5, 1.15, 2.1), ('L', -23.8, -4.2, 1.8, 1.4, 2.6),
-             ('L', -17.4, -11.6, 1.1, .9, 3.2), ('L', -11.8, -11.8, 1.6, 1.2, 2.2), ('L', -23.8, -11.3, 1.0, .85, 1.3),
-             ('L', -14.6, -11.9, .7, .6, .8), ('L', -24.1, -8.0, .7, .6, .7),
-             ('R', 23.6, 9.8, 1.8, 1.4, 2.8), ('R', 23.0, 3.4, 1.6, 1.25, 2.2), ('R', 23.4, -4.6, 1.3, 1.0, 3.5),
-             ('R', 19.8, -11.6, 1.7, 1.25, 2.3), ('R', 24.0, -11.4, 1.0, .85, 1.3), ('R', 15.0, -11.8, 1.2, .95, 1.6),
-             ('R', 22.4, -1.0, .7, .6, .8)]
-    for k, (bed, x, y, rx, ry, rz) in enumerate(rocks):
-        boulder(f'Terrace boulder {k}', x, y, soil, rx, ry, rz, 70 + k, role='granite' if k % 3 else 'granite2', sink=.2)
+    # Massive rounded tan granite boulders (front, oblique, top): dense clusters of 3-4 m stones on the front corner
+    # courts of both wings, rising about a storey over the coping, smaller stones between and in the beds.
+    big = [(-23.2, -10.4, 2.0, 1.7, 4.0), (-19.6, -11.2, 1.8, 1.5, 3.6), (-23.6, -6.6, 1.7, 1.5, 3.4), (-20.4, -7.9, 1.5, 1.3, 3.0),
+           (-17.6, -9.3, 1.2, 1.1, 2.2), (-14.2, -11.6, 1.5, 1.2, 3.1), (-9.6, -11.7, 1.3, 1.1, 2.6),
+           (23.2, -10.4, 2.0, 1.7, 4.1), (19.6, -11.1, 1.8, 1.5, 3.5), (23.5, -6.6, 1.7, 1.5, 3.3), (20.3, -7.8, 1.5, 1.3, 2.9),
+           (17.5, -9.4, 1.2, 1.1, 2.1), (14.6, -11.6, 1.4, 1.2, 2.9),
+           (-24.0, -1.0, 1.4, 1.2, 2.6), (-24.0, 5.5, 1.6, 1.3, 2.9), (-23.8, 10.6, 1.3, 1.1, 2.4),
+           (24.0, -1.0, 1.5, 1.2, 2.7), (24.0, 5.2, 1.7, 1.4, 3.0), (23.8, 10.6, 1.3, 1.1, 2.3)]
+    small = [(-21.6, -12.3, .7, .6, .9), (-17.9, -12.2, .6, .5, .7), (-22.0, -5.0, .7, .6, .8), (21.6, -12.3, .7, .6, .9),
+             (17.8, -12.2, .6, .5, .7), (22.1, -5.1, .7, .6, .8), (-12.0, -12.0, .6, .5, .6), (12.4, -12.0, .6, .5, .6),
+             (-22.6, 2.2, .7, .6, .8), (22.6, 2.0, .7, .6, .8), (-22.4, 8.0, .6, .5, .7), (22.4, 8.2, .6, .5, .7)]
+    def seat(x, y):
+        return soil if any(_PkPolygon(p).contains(_pksh.points(x, y)) for p in beds.values()) else zp
+    for k, (x, y, rx, ry, rz) in enumerate(big + small):
+        round_boulder(f'Terrace boulder {k}', x, y, seat(x, y), rx, ry, rz, 70 + k, role=('granite', 'granite2', 'granite3')[k % 3],
+                      sink=.25, lat=9 if rx > 1 else 7, lon=16 if rx > 1 else 12)
         kit.add_obstacle(_PkPolygon(pk_ellipse(x, y, rx * 1.05, ry * 1.05)), rz)
     fill_beds(kit, P, beds, soil, 55, spacing=.6)
     for k, poly in beds.items():
         groundcover(f'Terrace bed {k} groundcover', poly, soil, kerb=.16, height=.05, bump=.02, wave=.6, grid=.6, role='bedgreen',
-                    seed=90 + ord(k), dots=(('pk_yellow', 'pk_yellow2'), 2.5, .03))
+                    seed=90 + ord(k[0]) + int(k[1]), dots=(('pk_yellow', 'pk_yellow2'), 2.5, .03))
     return kit
 
 
@@ -2586,24 +2624,25 @@ def plaza_garden():
     kit = KIT
     fx, fy = (SPX[0] + SPX[1]) / 2, SPY0 - .8
     beds = {
-        'A': (crescent(fx, fy, 165, 262, 3.4, 8.6, sy=.85), .50, .25, .57),
-        'B': (crescent(fx, fy, 279, 352, 3.4, 8.0, sy=.85), .50, .25, .57),
+        'A': (crescent(fx, fy, 172, 262, 4.8, 9.2, sy=.85), .50, .25, .57),
+        'B': (crescent(fx, fy, 279, 352, 4.8, 8.6, sy=.85), .50, .25, .57),
         'G3': (pk_blob(18.0, Y0 - 7.2, 2.9, 2.2, seed=9, amp=.08), .36, .2, .46),
-        'G4': (pk_rounded_rect(-19.5, Y0 - 8.0, 2.7, .9, r=.4), .36, .2, .46),
+        'G4': (pk_rounded_rect(-17.5, Y0 - 8.0, 5.6, .9, r=.4), .36, .2, .46),
     }
     for k, (poly, soil, kerb, top) in beds.items():
         pk_bed(f'Plaza bed {k}', poly, soil, kerb=kerb, kerb_top=top, kerb_bottom=.06, kerb_role='kerb', kit=kit)
 
     def polar(a, r):
         return fx + r * 1.15 * math.cos(math.radians(a)), fy + r * .85 * math.sin(math.radians(a))
-    rocks = [('A', 203, 4.6, 1.45, 1.15, 2.6), ('A', 176, 6.2, 1.0, .8, 1.1), ('A', 190, 7.5, .65, .55, .6), ('A', 232, 5.8, 1.15, .95, 1.2),
-             ('A', 250, 7.3, .75, .65, .75), ('A', 218, 7.4, .55, .5, .5), ('A', 256, 4.4, .6, .5, .6), ('A', 168, 4.3, .5, .45, .5),
-             ('B', 292, 5.0, 1.1, .9, 1.2), ('B', 318, 6.3, .85, .75, .9), ('B', 338, 4.6, .65, .55, .6), ('B', 304, 7.0, .55, .5, .5),
-             ('B', 345, 7.0, .5, .45, .45),
+    rocks = [('A', 206, 6.0, 1.5, 1.25, 2.6), ('A', 182, 7.4, .9, .8, .9), ('A', 194, 8.4, .55, .5, .5), ('A', 232, 7.0, 1.0, .85, 1.0),
+             ('A', 250, 8.3, .7, .6, .65), ('A', 222, 8.4, .5, .45, .45), ('A', 256, 5.6, .6, .5, .55), ('A', 176, 5.6, .5, .45, .45),
+             ('A', 240, 5.6, .45, .4, .4), ('B', 292, 6.2, 1.0, .85, 1.0), ('B', 318, 7.3, .8, .7, .8), ('B', 338, 5.7, .6, .5, .55),
+             ('B', 304, 8.0, .5, .45, .45), ('B', 345, 7.8, .45, .4, .4), ('B', 285, 7.9, .4, .35, .35),
              ('G3', None, None, 1.1, .9, 1.05)]
     for k, (bed, a, r, rx, ry, rz) in enumerate(rocks):
         x, y = polar(a, r) if a is not None else (18.2, Y0 - 7.0)
-        boulder(f'Garden boulder {k}', x, y, beds[bed][1], rx, ry, rz, 120 + k, role='granite' if k % 2 else 'granite2', sink=.2)
+        round_boulder(f'Garden boulder {k}', x, y, beds[bed][1], rx, ry, rz, 120 + k, role=('granite', 'granite2', 'granite3')[k % 3], sink=.2,
+                      lat=9 if rx > .9 else 7, lon=16 if rx > .9 else 12)
         kit.add_obstacle(_PkPolygon(pk_ellipse(x, y, rx * 1.05, ry * 1.05)), rz)
     for k, (poly, soil, kerb, top) in beds.items():
         fill_beds(kit, PROTOS, {k: poly}, soil, 77, spacing=.55)
@@ -2641,9 +2680,9 @@ def context():
     W0 = X0 - SIDE - 13.0 - 4.0 - .5                                   # west street frontage of the west blocks
     E0 = X1 + SIDE + 13.0 + 4.0 + .5
     ctx_block(b, W0 - 30.0, W0, -26.0, 2.0, 21.0, 'tan', faces=('e', 's'))
-    ctx_block(b, W0 - 30.0, W0, 2.0, 30.0, 17.5, 'brick', faces=('e',))
+    ctx_block(b, W0 - 30.0, W0, 2.0, 30.0, 17.5, 'brick2', faces=('e',))
     ctx_block(b, -21.0, 21.0, Y1 + 22.5, Y1 + 46.0, 30.0, 'white', faces=('s',))
-    ctx_block(b, E0, E0 + 18.0, -26.0, -4.0, 24.0, 'white', faces=('w', 's'))
+    ctx_block(b, E0, E0 + 18.0, -26.0, -4.0, 16.0, 'white', faces=('w', 's'))
     ctx_block(b, E0, E0 + 22.0, 16.0, 44.0, 92.0, 'ctxglass', faces=('w', 's'), floor=3.6, win=.8, glass='white', piers=30.0)
     ctx_block(b, E0 + 2.0, E0 + 32.0, CURB - 13.0 - 4.0 - 30.0, CURB - 13.0 - 4.5, 12.0, 'brick2', faces=('n', 'w'))
     ctx_block(b, W0 - 34.0, W0, CURB - 13.0 - 4.0 - 30.0, CURB - 13.0 - 4.5, 9.5, 'brick', faces=('n', 'e'))
