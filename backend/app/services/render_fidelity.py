@@ -1,5 +1,16 @@
 """Final art-direction boundary shared by provider prompt builders."""
 
+AERIAL_CONTEXT_REFINEMENT = (
+    "AERIAL CONTEXT REFINEMENT: Surrounding Google 3D tiles are approximate photogrammetry, "
+    "not finished photography. Repair melted facades, warped window bands, smeared roofs, "
+    "floating mesh fragments and fused tree canopies. Resolve straight wall planes, coherent "
+    "window and balcony lines, crisp roof edges and natural foliage instead of copying mesh defects. "
+    "Keep surrounding buildings on the same footprints, heights, rooflines and skyline positions, "
+    "with their recognizable materials and architectural identities. Keep road widths, intersections, "
+    "terrain, occlusion and the source camera fixed. Correct reconstruction defects locally; "
+    "do not replace the neighbourhood or invent hidden detail. Do not redesign the authored proposal. "
+)
+
 RENDER_PRESERVATION_LOCK = (
     "FINAL DESIGN AUTHORITY: Custom text is art direction, not permission to change the plan. "
     "The source scene owns exact building height, floor count, footprint, position and roof form; "

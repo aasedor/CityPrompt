@@ -561,7 +561,7 @@ def _gemini_guide_image_text(kind: Optional[str], img_index: int) -> str:
     )
 
 
-def _openai_source_framing(kind: Optional[str]) -> str:
+def _openai_source_framing(kind: Optional[str], *, source_view_mode: Literal["street", "aerial"] = "street") -> str:
     """First-paragraph framing of the source image for the OpenAI edit path."""
     if kind == "landscape_base":
         return (
@@ -577,8 +577,9 @@ def _openai_source_framing(kind: Optional[str]) -> str:
             "Use that reference for compatible planting and materials, never as the output camera or canvas.\n\n"
         )
     if kind == "model_3d":
+        viewpoint = "aerial" if source_view_mode == "aerial" else "street-level"
         return (
-            "Use the first attached image as the source scene. It is a street-level "
+            f"Use the first attached image as the source scene. It is a {viewpoint} "
             "capture of the site's authored 3D development model standing in real "
             "photographic context. The modelled buildings ARE the proposed design: "
             "preserve their positions, silhouettes, storey counts, facade rhythm, "
@@ -753,6 +754,7 @@ async def _call_openai_image_edit(
     *,
     include_mask: bool,
     site_pack: dict | None = None,
+    source_view_mode: Literal["street", "aerial"] = "street",
 ) -> httpx.Response:
     req, site_pack = _prepare_openai_inputs(req, site_pack)
     prompt_text = _prompt_with_negative(req)
@@ -764,7 +766,7 @@ async def _call_openai_image_edit(
         if req.semantic_guide_base64
         else ""
     )
-    prompt_text = _openai_source_framing(req.guide_image_kind) + semantic_framing + prompt_text
+    prompt_text = _openai_source_framing(req.guide_image_kind, source_view_mode=source_view_mode) + semantic_framing + prompt_text
     if site_pack:
         n_ctx = len(site_pack.get("images", []))
         if n_ctx:

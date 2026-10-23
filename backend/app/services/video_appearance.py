@@ -12,6 +12,7 @@ from app.core.security import check_project_permission
 from app.schemas.video_appearance import VideoAppearanceRequest
 from app.services.omni_video import decode_guide_image
 from app.services.render_attempt_storage import write_evidence
+from app.services.render_fidelity import AERIAL_CONTEXT_REFINEMENT
 from app.api.v1.render import RenderRequest, _call_openai_image_edit as call_image_edit
 
 GUIDE_CREDIT_COST = 26
@@ -70,6 +71,7 @@ async def run_appearance_render(req: VideoAppearanceRequest, user, db, *, attemp
         raise HTTPException(400, str(exc)) from exc
     scene_sha = await validate_scene(req, db)
     prompt = PHOTOGRAPHIC_DIRECTION + req.prompt.strip()
+    image_options = {}
     if req.source_request is not None:
         from app.api.v1.video import VideoPilotRequest, _saved_people_prompt
         from app.models.models import Project
@@ -77,6 +79,9 @@ async def run_appearance_render(req: VideoAppearanceRequest, user, db, *, attemp
         # validate_scene bound this exact source request, not the guide's
         # client-authored prose or optional duplicate scene claims.
         source_request = VideoPilotRequest.model_validate(req.source_request)
+        if source_request.camera_motion == "path_follow":
+            prompt += "\n" + AERIAL_CONTEXT_REFINEMENT
+            image_options["source_view_mode"] = "aerial"
         project = await db.get(Project, source_request.project_id)
         prompt = _saved_people_prompt(source_request, project, prompt)
     await write_evidence(
@@ -115,6 +120,7 @@ async def run_appearance_render(req: VideoAppearanceRequest, user, db, *, attemp
             settings,
             req.model,
             include_mask=False,
+            **image_options,
         )
         if response.status_code != 200:
             billing = (

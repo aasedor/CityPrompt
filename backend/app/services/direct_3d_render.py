@@ -31,7 +31,7 @@ from app.core.image_models import (
     PaidImageModel,
 )
 from app.schemas.direct_3d_render import Direct3DRenderRequest
-from app.services.render_fidelity import RENDER_PRESERVATION_LOCK, apply_presentation_selections
+from app.services.render_fidelity import AERIAL_CONTEXT_REFINEMENT, RENDER_PRESERVATION_LOCK, apply_presentation_selections
 from app.services.people_actions import append_people_action_direction
 
 logger = logging.getLogger(__name__)
@@ -3330,6 +3330,11 @@ def _presentation_prompt(
             "and surrounding building identities. Preserve existing materials beneath the "
             "chosen artistic medium." + archetype_identity_lock + " " + RENDER_PRESERVATION_LOCK
         )
+        if view_mode == "aerial" and style in {
+            "photorealistic", "photomontage", "development", "atmospheric",
+            "winter", "night", "survey", "documentary", "site-plan-photo",
+        }:
+            task += " " + AERIAL_CONTEXT_REFINEMENT
         if view_mode == "street":
             final_lock += (
                 " Respect Image 1's depth ordering exactly: nearer volumes "

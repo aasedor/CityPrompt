@@ -146,3 +146,30 @@ async def test_guide_recovery_retains_the_exact_original_video_request(isolated,
         assert recovered["source_request"] == source
         assert await routes.recent(f.project.id, user, db) == []
         assert [v["id"] for v in await routes.recent(f.project.id, user, db, purpose="video_appearance")] == [str(a.id)]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("camera_motion", ["path_follow", "street_walkby", "people_follow"])
+async def test_only_aerial_guides_request_google_tile_refinement(isolated, monkeypatch, camera_motion):
+    f = isolated
+    monkeypatch.setattr(appearance, "get_settings", lambda: f.settings)
+    monkeypatch.setattr(appearance, "write_evidence", f.write)
+    monkeypatch.setattr(appearance, "validate_scene", AsyncMock(return_value="c" * 64))
+    provider = AsyncMock(return_value=httpx.Response(200, json={"data": [{"b64_json": _jpeg_data_url().split(",", 1)[1]}]}))
+    monkeypatch.setattr(appearance, "call_image_edit", provider)
+    payload = request(f).model_dump(mode="json")
+    payload["source_request"] = {
+        "project_id": str(f.project.id), "guide_frame_base64": _jpeg_data_url(),
+        "route_points": [{"x": .2, "y": .8}, {"x": .8, "y": .2}],
+        "camera_motion": camera_motion,
+    }
+    a = await submit(f, req=VideoAppearanceRequest.model_validate(payload))
+    await execute(f, a)
+    image_request = provider.await_args.args[0]
+    if camera_motion == "path_follow":
+        assert "AERIAL CONTEXT REFINEMENT" in image_request.prompt
+        assert provider.await_args.kwargs["source_view_mode"] == "aerial"
+        assert "same footprints, heights, rooflines" in image_request.prompt
+    else:
+        assert "AERIAL CONTEXT REFINEMENT" not in image_request.prompt
+        assert "source_view_mode" not in provider.await_args.kwargs
