@@ -40,17 +40,17 @@ SPTOP = ROOF + 5.7                                    # spine cap (fitted to fro
 BAL_FLOORS = (0, 2, 4, 6, 8, 11)                      # rest-station balconies (tower floors above the base)
 BAL_X1, BAL_Y = NOTCH[1] + 1.0, Y0 - 1.2              # balcony east end (steps 1 m past the notch) and front edge (2.3 m past the spine)
 RB = (-18.1, 16.0, -3.8, Y1)                          # glazed amenity block over the north of the roof (fitted)
-RBTOP = ROOF + 6.6
+RBTOP = ROOF + 8.4                                     # v004: the crown clears the spine cap by ~2.7 m
 CANOPY = (X0 + .4, SPX[0] - .02, Y0 - 3.0, BASE + .25)  # west-wing shopfront canopy: x0, x1, front y, top z
 CURB = Y0 - 16.0                                      # plaza and sidewalk to the south curb
 SIDE = 4.5                                            # side sidewalks
 EPS = .002
 FLOORS = [BASE + FH * i for i in range(NF)]
-PALETTE = dict(glass=(.09, .075, .06), spandrel=(.10, .085, .07), bronze=(.50, .34, .17), frame=(.20, .16, .12),
-    rock=(.80, .74, .63), rock2=(.50, .44, .36), hold=(.50, .46, .40), concrete=(.80, .78, .74), coping=(.88, .87, .84),
+PALETTE = dict(glass=(.13, .10, .075), spandrel=(.10, .085, .07), bronze=(.50, .34, .17), frame=(.20, .16, .12),
+    rock=(.67, .60, .49), rock2=(.64, .57, .46), hold=(.42, .38, .33), concrete=(.80, .78, .74), coping=(.88, .87, .84),
     canopy=(.90, .89, .86), stone=(.70, .68, .64), copper=(.66, .38, .20), timber=(.62, .45, .28), hardware=(.18, .18, .19),
     steel=(.55, .55, .55), interior=(.80, .76, .68), floor=(.48, .43, .36), core=(.66, .64, .60), roof=(.86, .86, .84),
-    membrane=(.80, .80, .78), metal=(.70, .71, .72), duct=(.76, .77, .78), granite=(.66, .57, .44), granite2=(.57, .49, .38), granite3=(.72, .63, .50),
+    membrane=(.80, .80, .78), metal=(.70, .71, .72), duct=(.76, .77, .78), granite=(.67, .59, .47), granite2=(.60, .53, .42), granite3=(.73, .65, .53),
     paver=(.70, .69, .66), paver2=(.62, .61, .58), kerb=(.76, .75, .72), asphalt=(.25, .25, .26), line=(.86, .85, .80),
     mulch=(.26, .20, .14), brick=(.62, .44, .30), brick2=(.52, .30, .22), tan=(.74, .62, .46), white=(.84, .83, .80),
     ctxglass=(.36, .44, .50), lamp=(.22, .22, .23), tree=(.24, .38, .16), tree2=(.30, .44, .19), bark=(.30, .23, .16))
@@ -1906,7 +1906,7 @@ def wall_drape(name, p0, p1, out, profile, curtain, kit, sprays, openings=(), th
 from scipy.spatial import ConvexHull as _Hull
 
 PALETTE.update(trim=(.30, .28, .26), blue=(.20, .26, .32), wall=(.80, .78, .74), soffit=(.76, .60, .40), ctxroof=(.55, .53, .50),
-               bedgreen=(.27, .33, .20))
+               bedgreen=(.27, .33, .20), crown=(.30, .21, .13))
 pk_palette(PALETTE)
 KIT = None
 PROTOS = None
@@ -2109,11 +2109,9 @@ def amenity_block(grid):
         m = Merge(f)
         h = holes[0]
         m.box('glass', h['u'], .13, h['z'] + h['h'] / 2, h['w'] - .02, .012, h['h'] - .02)
-        us = fins_at(lo, hi, 1.45)
+        us = fins_at(lo, hi, .8)                                     # v004: a dense bronze-panelled crown (panels ~55% of the face)
         for u in us:
-            if h['u'] - h['w'] / 2 + .05 < u < h['u'] + h['w'] / 2 - .05:
-                m.box('frame', u, .07, h['z'] + h['h'] / 2, .06, .10, h['h'])
-            m.box('bronze', u, -FIN_D / 2 + .004, (ROOF + .08 + RBTOP - .08) / 2, .07, FIN_D + .008, RBTOP - .16 - ROOF)
+            m.box('crown', u, -.19, (ROOF + .08 + RBTOP - .08) / 2, .44, .4, RBTOP - .16 - ROOF)
         m.box('frame', h['u'], .07, h['z'] + .03, h['w'], .10, .06)
         register(f, h, .07, 'curtain wall', 'roof amenity room')
         m.flush(lab)
@@ -2123,8 +2121,8 @@ def amenity_block(grid):
     m = Merge(NORTH)
     h = holes[0]
     m.box('glass', h['u'], .13, h['z'] + h['h'] / 2, h['w'] - .02, .012, h['h'] - .02)
-    for u in [g for g in grid if lo + .1 < g < hi - .1]:
-        m.box('bronze', u, -FIN_D / 2 + .004, (ROOF + RBTOP - .08) / 2, .07, FIN_D + .008, RBTOP - .08 - ROOF)
+    for u in [g for g in fins_at(lo, hi, .8)]:
+        m.box('crown', u, -FIN_D / 2 + .004, (ROOF + RBTOP - .08) / 2, .07, FIN_D + .008, RBTOP - .08 - ROOF)
     register(NORTH, h, .07, 'curtain wall', 'roof amenity room')
     m.flush('amenity north')
     b = Batch()
@@ -2211,16 +2209,35 @@ NC = _PkNoise(303, 1.0)
 ND = _PkNoise(404, 1.0)
 
 
+def _cleave_cells(seed=7):
+    """Cleaved planes of the carved spine (v004, measured on the source front and oblique crops): about 60 cells
+    1.5-4 m wide and 4-12 m tall (a vertically stretched Voronoi), each a smooth plane with its own offset and
+    tilt, so the cell borders read as long vertical and diagonal fissures and flake edges."""
+    rnd = random.Random(seed)
+    total = 2 * (YN - SPY0) + (SPX[1] - SPX[0])
+    cells = []
+    for k in range(64):                                                 # main cleaved planes
+        cells.append((rnd.uniform(0, total), rnd.uniform(0, SPTOP), rnd.uniform(-.5, .55), rnd.uniform(-.42, .42),
+                      rnd.uniform(-.1, .1), rnd.uniform(.25, .4)))
+    for k in range(110):                                                # secondary flakes, smaller and shallower
+        cells.append((rnd.uniform(0, total), rnd.uniform(0, SPTOP), rnd.uniform(-.3, .35), rnd.uniform(-.5, .5),
+                      rnd.uniform(-.14, .14), rnd.uniform(.6, .9)))
+    return cells
+
+
+CELLS = _cleave_cells()
+
+
 def rock_depth(s, z):
-    """Outward (+) / inward (-) relief of the carved spine at perimeter distance s and height z, about -0.55 to
-    +0.6 m: stacked ledges every ~1.6 m whose lips project and whose undersides face down (a sawtooth that rises
-    diagonally across the face), continuous vertical flake ridges, and a plain band under the cap. The arrises carry
-    no relief (spine_perimeter weight)."""
-    ph = ((z + .45 * s + 1.3 * ND(s * .4, 0.)) / 1.7) % 1.0           # diagonal ledge bands
-    saw = 1 - ph if ph > .12 else ph / .12                            # lip at the band base, sloping back above it
-    ridge = max(0., 1 - abs(NA(s * 1.6, z * .45))) ** 1.3             # vertical flakes (about 3.5:1)
-    d = -.5 + .5 * saw + .62 * ridge + .1 * NB(s * 3.0, z * .9)
-    d *= 1 - _smooth01((z - (SPTOP - 1.4)) / 1.0)                     # plain under the cap
+    """Outward (+) / inward (-) relief at perimeter distance s and height z: the plane of the nearest cleaved cell
+    (distance measured with z compressed by the cell's stretch), plus faint secondary grain; plain under the cap."""
+    best = None
+    for cs, cz, a, bs, bz, k in CELLS:
+        dd = (s - cs) ** 2 + ((z - cz) * k) ** 2
+        if best is None or dd < best[0]:
+            best = (dd, a + bs * (s - cs) + bz * (z - cz))
+    d = best[1] + .05 * NB(s * 2.5, z * .7)
+    d *= 1 - _smooth01((z - (SPTOP - 1.2)) / 1.0)
     return max(-.55, min(.6, d))
 
 
@@ -2232,7 +2249,7 @@ def plinth(z):
     return 1.3 * max(0., 1 - z / PLINTH) ** 1.4
 
 
-def spine_perimeter(step=.5):
+def spine_perimeter(step=.4):
     """Exposed perimeter of the spine, from the notch back on the west side round the front to the notch back on
     the east side: (x, y, face normal, mitre normal, s, relief weight, swell weight). The relief weight is 0 on the
     arrises and at the notch walls; the swell weight is 0 only at the notch walls, so the foot bulges round the
@@ -2262,7 +2279,7 @@ def spine():
     per = spine_perimeter()
     zs = [0.0]
     while zs[-1] < SPTOP - .3:
-        zs.append(min(SPTOP, zs[-1] + .42))
+        zs.append(min(SPTOP, zs[-1] + .4))
     if zs[-1] < SPTOP:
         zs.append(SPTOP)
     rings = []
@@ -2288,7 +2305,7 @@ def spine():
             z = 9.6 + k * 3.0 + rnd.uniform(-.6, .6)
             u = u0 + rnd.uniform(-.45, .45)
             d = rock_depth(L0 + u, z)                                     # w = 1 away from the arrises
-            r = rnd.uniform(.05, .085)
+            r = rnd.uniform(.06, .1)
             y = SPY0 - d
             hb.beam('hold', (SPX[0] + u, y + .04, z), (SPX[0] + u, y - r * .9, z + rnd.uniform(-.03, .05)), r * 1.7, r * 1.1)
     hb.flush('spine holds')
@@ -2314,7 +2331,7 @@ def carved(rings, per):
                     bx, by = per[j][2] + per[j + 1][2], per[j][3] + per[j + 1][3]
                     bl = math.hypot(bx, by) or 1.
                     face = abs(nn[0] * bx / bl + nn[1] * by / bl)          # winding-agnostic: |cos| to the face normal
-                    (dark if face < .9 or abs(nn[2]) > .28 else light).append(tri)
+                    (dark if face < .75 else light).append(tri)
                 else:
                     light.append(tri)
     fs_bottom = tuple(range(m - 1, -1, -1)); fs_top = tuple((len(rings) - 1) * m + j for j in range(m))
@@ -2323,6 +2340,36 @@ def carved(rings, per):
     for poly in o.data.polygons:
         poly.material_index = 1 if len(light) <= poly.index < len(light) + len(dark) else 0
     return o
+
+
+def cleft_boulder(name, cx, cy, z0, rx, ry, rz, seed, role='granite', sink=.15, rot=0.):
+    """Granite boulder (v004): a convex hull of jittered points on a flat-topped ellipsoid, cut by 2-4 planar
+    cleavage faces (points beyond a plane are projected onto it), flat-shaded so the edges stay crisp; never pointed."""
+    rnd = random.Random(seed)
+    c, sn = math.cos(rot), math.sin(rot)
+    pts = []
+    N = 26
+    for i in range(N):
+        zf = 1 - 2 * (i + .5) / N; r = math.sqrt(max(0., 1 - zf * zf)); a = i * 2.39996 + rnd.uniform(-.25, .25)
+        k = rnd.uniform(.86, 1.04)
+        pts.append([rx * k * r * math.cos(a), ry * k * r * math.sin(a), rz * (.5 + .5 * max(-1., min(.82, zf * k)))])
+    for _ in range(rnd.randint(2, 4)):                                  # cleavage planes
+        ph = rnd.uniform(0, 2 * math.pi); el = rnd.uniform(-.2, .7)
+        n = (math.cos(ph) * math.cos(el), math.sin(ph) * math.cos(el), math.sin(el))
+        off = rnd.uniform(.6, .82) * (abs(n[0]) * rx + abs(n[1]) * ry + abs(n[2]) * rz * .5) * .8
+        for p in pts:
+            q = (p[0] * n[0] + p[1] * n[1] + (p[2] - rz * .5) * n[2]) - off
+            if q > 0:
+                p[0] -= q * n[0]; p[1] -= q * n[1]; p[2] -= q * n[2]
+    base = -sink
+    out = [(cx + p[0] * c - p[1] * sn, cy + p[0] * sn + p[1] * c, z0 + max(base, p[2])) for p in pts]
+    for a in range(8):
+        tt = a * math.tau / 8; k = rnd.uniform(.8, .92)
+        x, y = rx * k * math.cos(tt), ry * k * math.sin(tt)
+        out.append((cx + x * c - y * sn, cy + x * sn + y * c, z0 + base))
+    hull = _Hull(out)
+    used = sorted(set(i for f in hull.simplices for i in f)); idx = {v: j for j, v in enumerate(used)}
+    return C.mesh(name, [out[i] for i in used], [tuple(idx[i] for i in f) for f in hull.simplices], role, 'boulders')
 
 
 def round_boulder(name, cx, cy, z0, rx, ry, rz, seed, role='granite', sink=.1, lat=9, lon=16):
@@ -2434,9 +2481,9 @@ def floors_and_inside():
     for k, z in enumerate([.15] + FLOORS):
         h = (BASE - .15 if k == 0 else FH) - .5
         for x, y in ((-17.0, -7.5), (-4.0, -5.0), (8.5, -4.5), (19.0, -7.5), (-17.0, 8.5), (18.0, 8.5)):
-            C.qa_room_light(f'Floor {k} {x:+.0f} {y:+.0f}', (x, y, z + h), 24 if k else 110, 5.0)
-    C.qa_room_light('Amenity room west', (-9.0, 2.0, RBTOP - 1.2), 110, 6.0)
-    C.qa_room_light('Amenity room east', (8.0, 2.0, RBTOP - 1.2), 110, 6.0)
+            C.qa_room_light(f'Floor {k} {x:+.0f} {y:+.0f}', (x, y, z + h), 34 if k else 110, 5.0)
+    C.qa_room_light('Amenity room west', (-9.0, 2.0, RBTOP - 1.2), 30, 6.0)
+    C.qa_room_light('Amenity room east', (8.0, 2.0, RBTOP - 1.2), 30, 6.0)
     zf = FLOORS[5]
     for x in (-22.5, -19.0, -15.5, -12.0):
         for y in (-10.5, -7.0):
@@ -2473,36 +2520,33 @@ def terrace():
     soil = ROOF + .36
     kit = KIT
     P = PROTOS
-    # v003: side and front beds with paved boulder courts at both street corners (paths between beds and boulders).
+    # v004: L-shaped beds wrap each wing corner (top, oblique); boulders sit in them 1-2 m apart.
     beds = {
-        'L1': [(X0 + .45, Y1 - .45), (X0 + .45, Y0 + 7.4), (RB[0] - 3.9, Y0 + 7.4), (RB[0] - 3.9, Y1 - .45)],
-        'L2': [(X0 + 9.0, Y0 + .45), (NOTCH[0] - .9, Y0 + .45), (NOTCH[0] - .9, Y0 + 3.0), (X0 + 9.0, Y0 + 3.0)],
-        'R1': [(X1 - .45, Y0 + 7.4), (X1 - .45, Y1 - .45), (RB[1] + 4.6, Y1 - .45), (RB[1] + 4.6, Y0 + 7.4)],
-        'R2': [(NOTCH[1] + .9, Y0 + .45), (X1 - 9.0, Y0 + .45), (X1 - 9.0, Y0 + 3.0), (NOTCH[1] + .9, Y0 + 3.0)],
+        'L': [(X0 + .45, Y1 - .45), (X0 + .45, Y0 + .45), (NOTCH[0] - .9, Y0 + .45), (NOTCH[0] - .9, Y0 + 4.1),
+              (RB[0] - 3.9, Y0 + 4.1), (RB[0] - 3.9, Y1 - .45)],
+        'R': [(X1 - .45, Y0 + .45), (X1 - .45, Y1 - .45), (RB[1] + 4.6, Y1 - .45), (RB[1] + 4.6, Y0 + 4.1),
+              (NOTCH[1] + .9, Y0 + 4.1), (NOTCH[1] + .9, Y0 + .45)],
     }
     for k, poly in beds.items():
         pk_bed(f'Terrace bed {k}', poly, soil, kerb=.16, kerb_top=soil + .06, kerb_bottom=zp - .03, kerb_role='concrete', kit=kit)
-    # Massive rounded tan granite boulders (front, oblique, top): dense clusters of 3-4 m stones on the front corner
-    # courts of both wings, rising about a storey over the coping, smaller stones between and in the beds.
-    big = [(-23.2, -10.4, 2.0, 1.7, 4.0), (-19.6, -11.2, 1.8, 1.5, 3.6), (-23.6, -6.6, 1.7, 1.5, 3.4), (-20.4, -7.9, 1.5, 1.3, 3.0),
-           (-17.6, -9.3, 1.2, 1.1, 2.2), (-14.2, -11.6, 1.5, 1.2, 3.1), (-9.6, -11.7, 1.3, 1.1, 2.6),
-           (23.2, -10.4, 2.0, 1.7, 4.1), (19.6, -11.1, 1.8, 1.5, 3.5), (23.5, -6.6, 1.7, 1.5, 3.3), (20.3, -7.8, 1.5, 1.3, 2.9),
-           (17.5, -9.4, 1.2, 1.1, 2.1), (14.6, -11.6, 1.4, 1.2, 2.9),
-           (-24.0, -1.0, 1.4, 1.2, 2.6), (-24.0, 5.5, 1.6, 1.3, 2.9), (-23.8, 10.6, 1.3, 1.1, 2.4),
-           (24.0, -1.0, 1.5, 1.2, 2.7), (24.0, 5.2, 1.7, 1.4, 3.0), (23.8, 10.6, 1.3, 1.1, 2.3)]
-    small = [(-21.6, -12.3, .7, .6, .9), (-17.9, -12.2, .6, .5, .7), (-22.0, -5.0, .7, .6, .8), (21.6, -12.3, .7, .6, .9),
-             (17.8, -12.2, .6, .5, .7), (22.1, -5.1, .7, .6, .8), (-12.0, -12.0, .6, .5, .6), (12.4, -12.0, .6, .5, .6),
-             (-22.6, 2.2, .7, .6, .8), (22.6, 2.0, .7, .6, .8), (-22.4, 8.0, .6, .5, .7), (22.4, 8.2, .6, .5, .7)]
-    def seat(x, y):
-        return soil if any(_PkPolygon(p).contains(_pksh.points(x, y)) for p in beds.values()) else zp
-    for k, (x, y, rx, ry, rz) in enumerate(big + small):
-        round_boulder(f'Terrace boulder {k}', x, y, seat(x, y), rx, ry, rz, 70 + k, role=('granite', 'granite2', 'granite3')[k % 3],
-                      sink=.25, lat=9 if rx > 1 else 7, lon=16 if rx > 1 else 12)
-        kit.add_obstacle(_PkPolygon(pk_ellipse(x, y, rx * 1.05, ry * 1.05)), rz)
-    fill_beds(kit, P, beds, soil, 55, spacing=.6)
+    # Measured on the source front and oblique: about 11 granite boulders per wing, spread along the street edge and
+    # down the side strip, 1.5-3.6 m tall (2-3 m showing over the coping), about a third upright slabs.
+    rocks = []
+    for side in (-1, 1):
+        xo = X0 if side < 0 else X1
+        front = [(2.3, 2.0, 2.0, 1.4, 3.2), (6.1, 2.2, 1.6, 1.3, 3.6), (9.8, 1.9, 2.1, 1.35, 2.6), (14.4, 2.1, 1.7, 1.3, 3.3),
+                 (17.7, 1.9, 1.3, 1.1, 2.2)]
+        sidel = [(2.3, 7.6, 1.9, 1.5, 3.0), (2.3, 12.8, 1.5, 1.2, 3.4), (2.2, 19.2, 1.8, 1.4, 2.7)]
+        for dx, dy, rx, ry, rz in front + sidel:
+            rocks.append((xo - side * dx, Y0 + dy, rx, ry, rz))
+    for k, (x, y, rx, ry, rz) in enumerate(rocks):
+        cleft_boulder(f'Terrace boulder {k}', x, y, soil, rx, ry, rz, 70 + k, role=('granite', 'granite2', 'granite3')[k % 3],
+                      sink=.25, rot=(k * 1.7) % math.pi)
+        kit.add_obstacle(_PkPolygon(pk_ellipse(x, y, max(rx, ry) * 1.05, max(rx, ry) * 1.05)), rz)
+    fill_beds(kit, P, beds, soil, 55, spacing=.72)
     for k, poly in beds.items():
         groundcover(f'Terrace bed {k} groundcover', poly, soil, kerb=.16, height=.05, bump=.02, wave=.6, grid=.6, role='bedgreen',
-                    seed=90 + ord(k[0]) + int(k[1]), dots=(('pk_yellow', 'pk_yellow2'), 2.5, .03))
+                    seed=90 + ord(k[0]), dots=(('pk_yellow', 'pk_yellow2'), 2.5, .03))
     return kit
 
 
@@ -2515,11 +2559,14 @@ def protos(kit):
     P['fescue'] = arching_grass(kit, 'sp_blue_fescue', blades=34, height=.24, width=.011, role='pk_blade_blue', crown_role='pk_crown_blue', seed=13)
     P['shrub'] = shrub_mass(kit, 'sp_shrub', radius=.5, height=.7, lobes=5, seed=19)
     P['shrub2'] = shrub_mass(kit, 'sp_shrub_b', radius=.35, height=.5, lobes=4, role='pk_leaf', role2='pk_leaf_light', seed=23)
+    P['shrub3'] = shrub_mass(kit, 'sp_shrub_dark', radius=.65, height=.8, lobes=6, role='pk_leaf_dark', role2='pk_leaf_dark', seed=29)
     return P
 
 
-def fill_beds(kit, P, beds, soil, seed, spacing=.62):
+def fill_beds(kit, P, beds, soil, seed, spacing=.62, shrubby=False):
     mix = [('reed', 1.0), ('fountain', 1.0), ('fescue', .7), ('shrub', .45), ('shrub2', .5)]
+    if shrubby:                                                         # the plaza beds: dark shrub masses with grass clumps
+        mix = [('shrub3', 1.8), ('shrub', 1.3), ('fountain', .6), ('reed', .3)]
     rnd = random.Random(seed)
     fields = [_PkNoise(seed + 17 * i, 2 * math.pi / 3.0) for i in range(len(mix))]
     for name, poly in beds.items():
@@ -2527,7 +2574,7 @@ def fill_beds(kit, P, beds, soil, seed, spacing=.62):
         for x, y in pk_scatter(reg, spacing, margin=PK_CLEAR, seed=seed + ord(name[0])):
             order = sorted(range(len(mix)), key=lambda i: -(fields[i](x, y) + 1.4 * math.log(mix[i][1])))
             p = P[mix[order[0]][0]]
-            kit.place_in(p, x, y, soil, rnd.uniform(0, math.tau), rnd.uniform(.9, 1.2), shrink=(1., .85, .7, .55))
+            kit.place_in(p, x, y, soil, rnd.uniform(0, math.tau), rnd.uniform(.9, 1.2) * (1.35 if shrubby else 1.), shrink=(1., .85, .7, .55, .45))
 
 
 # ---- plaza, streets and context ----
@@ -2634,19 +2681,21 @@ def plaza_garden():
 
     def polar(a, r):
         return fx + r * 1.15 * math.cos(math.radians(a)), fy + r * .85 * math.sin(math.radians(a))
-    rocks = [('A', 206, 6.0, 1.5, 1.25, 2.6), ('A', 182, 7.4, .9, .8, .9), ('A', 194, 8.4, .55, .5, .5), ('A', 232, 7.0, 1.0, .85, 1.0),
-             ('A', 250, 8.3, .7, .6, .65), ('A', 222, 8.4, .5, .45, .45), ('A', 256, 5.6, .6, .5, .55), ('A', 176, 5.6, .5, .45, .45),
-             ('A', 240, 5.6, .45, .4, .4), ('B', 292, 6.2, 1.0, .85, 1.0), ('B', 318, 7.3, .8, .7, .8), ('B', 338, 5.7, .6, .5, .55),
-             ('B', 304, 8.0, .5, .45, .45), ('B', 345, 7.8, .45, .4, .4), ('B', 285, 7.9, .4, .35, .35),
+    # Measured on the source front base crop: one ~2.6 m stone against the foot, three upright stones by the foot,
+    # about a dozen 0.6-1.4 m stones through the beds.
+    rocks = [('A', 206, 5.9, 1.4, 1.2, 2.6), ('A', 184, 5.4, .55, .5, 1.6), ('A', 228, 5.4, .6, .5, 1.5), ('A', 194, 7.6, .8, .7, .9),
+             ('A', 236, 7.6, .9, .75, .85), ('A', 252, 6.1, .6, .5, .7), ('A', 214, 8.4, .5, .45, .6), ('A', 176, 7.6, .55, .5, .6),
+             ('B', 290, 5.6, .6, .5, 1.4), ('B', 300, 7.1, .9, .8, 1.0), ('B', 322, 6.6, .8, .7, .8), ('B', 340, 5.8, .6, .5, .7),
+             ('B', 312, 8.0, .5, .45, .55), ('B', 346, 7.6, .5, .45, .5),
              ('G3', None, None, 1.1, .9, 1.05)]
     for k, (bed, a, r, rx, ry, rz) in enumerate(rocks):
         x, y = polar(a, r) if a is not None else (18.2, Y0 - 7.0)
-        round_boulder(f'Garden boulder {k}', x, y, beds[bed][1], rx, ry, rz, 120 + k, role=('granite', 'granite2', 'granite3')[k % 3], sink=.2,
-                      lat=9 if rx > .9 else 7, lon=16 if rx > .9 else 12)
+        cleft_boulder(f'Garden boulder {k}', x, y, beds[bed][1], rx * 1.25, ry * 1.25, rz * 1.2, 120 + k, role=('granite', 'granite2', 'granite3')[k % 3],
+                      sink=.2, rot=k * 1.3)
         kit.add_obstacle(_PkPolygon(pk_ellipse(x, y, rx * 1.05, ry * 1.05)), rz)
     for k, (poly, soil, kerb, top) in beds.items():
-        fill_beds(kit, PROTOS, {k: poly}, soil, 77, spacing=.55)
-        groundcover(f'Plaza bed {k} groundcover', poly, soil, kerb=kerb, height=.05, bump=.02, wave=.6, grid=.6, role='bedgreen',
+        fill_beds(kit, PROTOS, {k: poly}, soil, 77, spacing=.45, shrubby=True)
+        groundcover(f'Plaza bed {k} groundcover', poly, soil, kerb=kerb, height=.07, bump=.03, wave=.6, grid=.6, role='pk_leaf_dark',
                     seed=150 + len(k) + ord(k[0]))
 
 
@@ -2685,7 +2734,7 @@ def context():
     ctx_block(b, E0, E0 + 18.0, -26.0, -4.0, 16.0, 'white', faces=('w', 's'))
     ctx_block(b, E0, E0 + 22.0, 16.0, 44.0, 92.0, 'ctxglass', faces=('w', 's'), floor=3.6, win=.8, glass='white', piers=30.0)
     ctx_block(b, E0 + 2.0, E0 + 32.0, CURB - 13.0 - 4.0 - 30.0, CURB - 13.0 - 4.5, 12.0, 'brick2', faces=('n', 'w'))
-    ctx_block(b, W0 - 34.0, W0, CURB - 13.0 - 4.0 - 30.0, CURB - 13.0 - 4.5, 9.5, 'brick', faces=('n', 'e'))
+    ctx_block(b, W0 - 34.0, W0, CURB - 13.0 - 4.0 - 30.0, CURB - 13.0 - 4.5, 9.5, 'brick2', faces=('n', 'e'))
     ctx_block(b, W0 - 30.0, W0 - 10.0, 36.0, 58.0, 78.0, 'tan', faces=('e', 's'), floor=3.2)
     ctx_block(b, E0 + 10.0, E0 + 30.0, 40.0, 60.0, 98.0, 'ctxglass', faces=('w', 's'), floor=3.6, win=.8, glass='white', piers=30.0)
     ctx_block(b, -46.0, -24.0, 70.0, 92.0, 84.0, 'white', faces=('s', 'e'), floor=3.2)
@@ -2703,6 +2752,12 @@ def build():
     balconies()
     canopy()
     floors_and_inside()
+    # The plaza and the roof terrace overlap in plan: audit the plaza planting on its own, then give the terrace a
+    # clean bed and obstacle register (the kit's clearance rule is planar).
+    bad = KIT.audit(detail=True)
+    if bad:
+        raise RuntimeError(f'planting kit clearance rule (plaza): {len(bad)}: {bad[:12]}')
+    KIT.placements, KIT.beds, KIT.obstacles = [], [], []
     terrace()
     KIT.flush()
     bad = KIT.audit(detail=True)
