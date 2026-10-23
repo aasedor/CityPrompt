@@ -2,7 +2,7 @@
 (a CopenHill-inspired industrial block on a harbour-side site whose long south face is a climbing wall).
 
 Read from the pixels (a landmark fit of the front and oblique governs the proportions; the AI-rendered top view is not
-consistent with them and governs the roof layout): a long rectangular block about 101 m by 26 m and 28 m high with a
+consistent with them and governs the roof layout): a long rectangular block about 101 m by 28 m and 28 m high with a
 flat green roof. The long south front is a climbing wall between two tall rust-orange Corten end blocks whose south
 faces stand on the foot line of the wall; the wall leans back slightly and, near the east block, folds into a darker
 facet that turns away from the western light; it is clad in dark charcoal hexagonal panels and carries amber LED
@@ -29,7 +29,7 @@ import geometry as G
 SLUG = 'clay-climbing-crucible'
 X0, X1 = -50.0, 51.0                                  # west and east end faces (101 m; landmark fit of the front and oblique)
 XW, XE = -28.0, 34.0                                  # the climbing wall runs between the west block (X0..XW) and the east block (XE..X1)
-YF, Y1 = -21.0, 5.0                                   # foot line of the climbing wall and the Corten blocks' south faces; north face
+YF, Y1 = -21.0, 7.0                                   # foot line of the climbing wall and the Corten blocks' south faces; north face
 SET = 1.5                                             # horizontal set-back of the wall top from its foot (the fit: about 87 degrees)
 YW = YF + SET                                         # outer edge of the wall top (the coping line)
 ZT = 27.0                                             # roof slab top
@@ -47,9 +47,9 @@ ZU0, ZU1 = 9.0, 25.4                                  # upper curtain wall
 FLOORS = (.15, 9.0, 14.5, 20.0)                       # floor tops behind the east glazing
 HALL = X1 - 9.0                                       # back wall of the glazed east hall
 # Roof track (top): a stadium loop; straights between CX0 and CX1 on CY, centre-line radius RT, band width TW.
-CX0, CX1, CY, RT, TW = -38.0, 30.8, -8.4, 8.0, 4.0
-PAV = (-12.0, -6.6, 10.0, 6.0, 4.0)                    # roof pavilion: centre x, y, length, depth, height
-AMPH = (8.0, -8.4, 4.6)                                # sunken half-round seating bowl: centre x, y, radius
+CX0, CX1, CY, RT, TW = -38.0, 30.8, -7.4, 8.3, 4.0
+PAV = (-12.0, -5.6, 10.0, 6.0, 4.0)                    # roof pavilion: centre x, y, length, depth, height
+AMPH = (8.0, -7.4, 4.8)                                # sunken half-round seating bowl: centre x, y, radius
 PALETTE = dict(wall=(.13, .13, .14), hex=(.17, .17, .18), hex2=(.21, .21, .22), joint=(.08, .08, .09),
     led=(1.0, .60, .10), hold=(.10, .09, .08), hold2=(.86, .52, .14), hold3=(.55, .58, .60),
     corten=(.55, .25, .10), corten2=(.50, .225, .09), corten3=(.60, .28, .11), cjoint=(.33, .15, .07), coping=(.58, .58, .56),
@@ -71,23 +71,25 @@ def manifest(version):
         ('architecture_close', (46.0, -40.0, 24.0), (XE - 2.0, YF + 2.0, 22.0), 36),    # wall fold, east block corner and coping
         ('facade_close', (42.5, -58.0, 14.0), ((XE + X1) / 2, YF, 14.0), 32),           # the east block's Corten panel grid, grade to coping
         ('east_entrance', (X1 + 13.0, 0.0, 3.4), (GL_GF, -3.0, 3.2), 26),              # recessed ground glazing and doors under the band
-        ('roof_track', (20.0, -50.0, 60.0), (-6.0, -8.0, ZT), 30),                     # track loop, meadow, pavilion and bowl
-        ('roof_pavilion', (-30.0, -12.0, ZT + 3.4), (-12.0, -6.6, ZT + 2.0), 28),      # eye level on the roof: pavilion, grasses, track
+        ('roof_track', (20.0, -50.0, 60.0), (-6.0, -7.0, ZT), 30),                     # track loop, meadow, pavilion and bowl
+        ('roof_pavilion', (-30.0, -11.0, ZT + 3.4), (-12.0, -5.6, ZT + 2.0), 28),      # eye level on the roof: pavilion, grasses, track
         ('interior', (X1 - 1.9, YF + 3.5, 10.7), (HALL + 1.0, 0.0, 11.6), 20)])         # inside the glazed east hall
     for c in cams:
         if c['name'] == 'front':
-            c.update(location=(226.2, -171.4, 99.1), target=(27.0, -22.4, 22.0), lens=124.2, whole=False)
+            c.update(location=(236.7, -181.5, 104.3), target=(28.8, -23.8, 22.7), lens=129.5, whole=False)
         elif c['name'] == 'front_corner':
-            c.update(location=(232.4, -180.1, 111.7), target=(59.6, -47.7, 36.4), lens=128.2, whole=False)
+            c.update(location=(245.6, -192.1, 118.4), target=(40.8, -33.4, 28.3), lens=135.1, whole=False)
         elif c['name'] == 'top':
-            c.update(location=(44.2, -76.9, 197.5), target=(16.9, -28.9, 78.4), lens=62.2, whole=False)
+            c.update(location=(46.2, -79.7, 196.0), target=(12.5, -20.6, 56.4), lens=62.0, whole=False)
+        elif c['name'] == 'rear':                                       # elevated over the north yard: north wall, parapet and roof edge
+            c.update(location=(0.0, 135.0, 72.0), target=(0.0, -6.0, 10.0), lens=42.0, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
         archetype_id=SLUG, variant_id=SLUG + '-v1', representation_kind='architectural_clay',
         state='prework', keeper_claimed=False, runtime_seed_allowed=False,
         source_archetype='climbing_wall_building/variant_0 (The Crucible: industrial wedge with a sloped hexagonal climbing wall)',
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - YF, height=h),
             observed_storeys=4, storey_programme='a climbing hall behind the sloped wall, a glazed east hall of three upper levels over a ground-floor lobby',
-            plan='101 m by 26 m block (landmark fit of the front and oblique; the AI-rendered top view is not consistent with them): a 62 m climbing wall between a 22 m west Corten block and a 17 m east Corten block',
+            plan='101 m by 28 m block (landmark fit of the front and oblique; the AI-rendered top view is not consistent with them): a 62 m climbing wall between a 22 m west Corten block and a 17 m east Corten block',
             facade='south: dark charcoal hexagonal panels on a wall leaning back slightly (1.5 m over 28 m) that folds into a darker facet near the east block, with amber LED route lines and holds; Corten panel grid on the end blocks; east: Corten frame round a mullioned curtain wall over a projecting band and recessed ground glazing',
             roof='green roof of native grasses inside a coped parapet; red running-track loop with lane lines and a second run closing a loop round the west bed, dark pavilion, sunken half-round seating bowl, concrete paths, north walkway with a rail, two vent boxes',
             site='black rubber fall-zone apron with a white edge, a bent steel bouldering frame and a disc; boulders, lawn, curving path, shrub beds; paved east plaza',
@@ -1994,11 +1996,24 @@ class Poly:
         faces = [tuple(range(k, 2 * k))] + [(i, (i + 1) % k, k + (i + 1) % k, k + i) for i in range(k)]
         self.add(role, lo + hi, faces)
 
-    def flush(self, module):
+    def face(self, role, pts3):
+        """One polygon, wound as given (no recalculation: see raw_mesh)."""
+        self.add(role, pts3, [tuple(range(len(pts3)))])
+
+    def flush(self, module, raw=False):
         for role, (V, F) in self.g.items():
             if F:
-                C.mesh(f'{module} {role}', V, F, role, module)
+                (raw_mesh if raw else C.mesh)(f'{module} {role}', V, F, role, module)
         self.g = {}
+
+
+def raw_mesh(name, V, F, role, module):
+    """clay_core.mesh without the normal recalculation, for single-sided panels whose winding is set by construction
+    (recalculation cannot orient an isolated flat face)."""
+    me = C.bpy.data.meshes.new(name + ' mesh'); me.from_pydata(V, [], F); me.update()
+    obj = C.bpy.data.objects.new(name, me); C.bpy.context.collection.objects.link(obj)
+    obj.data.materials.append(C.MATS[role]); C.tag(obj, role, module)
+    return obj
 
 
 def facet_basis(n):
@@ -2034,7 +2049,7 @@ def hex_tiles(pg, pts3, n, seed, roles=('hex', 'hex2'), d0=.006, d1=.032, origin
                 if _P(ring).exterior.is_ccw is False:
                     ring = ring[::-1]
                 pts = [vadd(vadd(o, e1, u), e2, v) for u, v in ring]
-                pg.plate(roles[1] if rnd.random() < rnd_role else roles[0], pts, n, d0, d1)
+                pg.face(roles[1] if rnd.random() < rnd_role else roles[0], [vadd(p, n, d1) for p in pts])
             xx += w
         yy += 1.5 * HEX_R
         row += 1
@@ -2062,7 +2077,7 @@ def surface_hexes(pg, seed, d0=.006, d1=.032):
                 pts = [wall_q(u / WALL_L, v / WALL_H) for u, v in ring]
                 if vdot(vcross(vsub(pts[1], pts[0]), vsub(pts[2], pts[0])), n) < 0:
                     pts = pts[::-1]
-                pg.plate('hex2' if rnd.random() < .28 else 'hex', pts, n, d0, d1)
+                pg.face('hex2' if rnd.random() < .28 else 'hex', [vadd(p, n, d1) for p in pts])
             xx += w
         yy += 1.5 * HEX_R
         row += 1
@@ -2109,7 +2124,7 @@ def hall():
     pg = Poly()
     surface_hexes(pg, 11)
     hex_tiles(pg, [P10, P4, T1], DARK_N, 12, roles=('hex', 'hex'), origin=P10, rnd_role=0.0)
-    pg.flush('climbing wall panels')
+    pg.flush('climbing wall panels', raw=True)
     # Dark backing plate and panels on the west block's return (its east face south of the facet edge, facing east).
     pg = Poly()
     wtri = [(XW, YF, 0.0), (XW, YF, EAVE), (XW, P9[1], EAVE)]
@@ -2117,7 +2132,7 @@ def hall():
     pg.flush('return backing')
     pg = Poly()
     hex_tiles(pg, wtri, (1.0, 0.0, 0.0), 13, origin=wtri[0], d0=.008, d1=.03)
-    pg.flush('return panels')
+    pg.flush('return panels', raw=True)
     # Coping on the hall parapet (top edge P9 -> T1 -> P4), 8 cm proud of the facets.
     b2 = Batch()
     for p, q in ((top[0], T1), (T1, P4)):
@@ -2381,9 +2396,9 @@ def path_poly(pts, w):
     return [tuple(p) for p in list(g.exterior.coords)[:-1]]
 
 
-INNER_PATHS = (('Inner path', [(-16.5, -11.7), (-7.0, -12.5), (2.8, -11.4)], 2.0),
-               ('Pavilion path', [(-12.0, -9.5), (-12.0, -11.7)], 1.8),
-               ('Bowl path', [(13.2, -11.6), (17.0, -8.4), (13.2, -5.2)], 1.8))
+INNER_PATHS = (('Inner path', [(-16.5, -10.7), (-7.0, -11.5), (2.6, -10.4)], 2.0),
+               ('Pavilion path', [(-12.0, -8.5), (-12.0, -10.7)], 1.8),
+               ('Bowl path', [(13.4, -10.8), (17.2, -7.4), (13.4, -4.0)], 1.8))
 
 
 def bezier(p0, p1, p2, p3, n=24):
@@ -2493,13 +2508,13 @@ def roof_planting(kit, P):
             groundcover(f'Roof meadow {name} {i}', g, ZR + .02, kerb=0, height=.07, bump=.035, wave=1.6, grid=.8, edge=.3, ramp=.12,
                         role='meadow', seed=60 + i)
             rg = kit.register_bed(pk_region(g, .05))
-            for x, y in pk_scatter(rg, 1.55, margin=.1, seed=70 + i):
+            for x, y in pk_scatter(rg, 1.2, margin=.1, seed=70 + i):
                 r = rnd.random(); acc = 0.0
                 for p, wgt in mix:
                     acc += wgt
                     if r <= acc:
                         break
-                for s in (1.6, 1.3, 1.0, .8):
+                for s in (1.9, 1.6, 1.3, 1.0):
                     sz = s * rnd.uniform(.85, 1.15)
                     if kit.fits(p, x, y, s, rg, sz=sz):
                         kit.place(p, x, y, ZR + .02, rnd.uniform(0, math.tau), s, sz=sz)
@@ -2521,7 +2536,18 @@ def ground_planting(kit, P, beds):
 
 
 def boulder(name, x, y, s, rnd):
-    o = A.foliage(name, (x, y, s * .5 + .004), (s * rnd.uniform(.85, 1.15), s * rnd.uniform(.7, .95), s * .5), role='boulder', detail=1)
+    """Smooth, irregular pale boulder: an icosphere (detail 2) with low-order radial noise, flattened, its base resting on
+    grade (only inward noise below the equator) and sunk into the lawn."""
+    sx, sy, sz = s * rnd.uniform(.85, 1.15), s * rnd.uniform(.7, .95), s * rnd.uniform(.45, .6)
+    o = A.foliage(name, (x, y, sz + .004), (sx, sy, sz), role='boulder', detail=2)
+    nz = _PkNoise(rnd.randrange(10 ** 6), 2.2, waves=5)
+    for v in o.data.vertices:
+        k = 1.0 + .16 * nz(v.co.x, v.co.y, v.co.z)
+        if v.co.z < -.3:
+            k = min(k, 1.0)
+        v.co = v.co * k
+    for p in o.data.polygons:
+        p.use_smooth = True
     o.rotation_euler = (0.0, 0.0, rnd.uniform(0, math.tau))
     return o
 
@@ -2598,28 +2624,32 @@ def site():
 def context():
     """Smokestack, brick warehouses, road, parking and harbour (simple massing)."""
     b = Batch()
-    frustum(b, 'stack', X1 - 6.0, Y1 + 9.0, 0.0, 50.0, 2.5, 2.0, 28)
-    frustum(b, 'joint', X1 - 6.0, Y1 + 9.0, 50.0, 52.0, 2.06, 2.0, 28)
-    frustum(b, 'concrete', X1 - 6.0, Y1 + 9.0, 0.0, 1.2, 3.4, 3.4, 28)
-    for name, x0, x1, y0, y1 in (('Warehouse A', 6.0, 36.0, Y1 + 30.0, Y1 + 46.0), ('Warehouse B', 38.0, 68.0, Y1 + 30.0, Y1 + 46.0)):
-        b.box('brick', (x0 + x1) / 2, (y0 + y1) / 2, 7.0, x1 - x0, y1 - y0, 14.0)
-        for k in range(int((x1 - x0) / 3.6)):
-            x = x0 + 1.8 + 3.6 * k
+    sx, sy = 27.0, Y1 + 10.0                                                                          # smokestack (front and oblique projection)
+    frustum(b, 'stack', sx, sy, 0.0, 38.0, 2.3, 1.9, 28)
+    frustum(b, 'joint', sx, sy, 38.0, 39.6, 1.96, 1.9, 28)
+    frustum(b, 'concrete', sx, sy, 0.0, 1.2, 3.2, 3.2, 28)
+    WH = ((30.0, 48.0), (50.0, 68.0)); wy0, wy1 = Y1 + 26.0, Y1 + 56.0
+    for x0, x1 in WH:                                                                                 # brick warehouses, gables to the south
+        b.box('brick', (x0 + x1) / 2, (wy0 + wy1) / 2, 7.0, x1 - x0, wy1 - wy0, 14.0)
+        for k in range(int((wy1 - wy0) / 3.6)):
+            y = wy0 + 1.8 + 3.6 * k
             for z in (2.2, 7.6):
-                b.box('joint', x, y0 - .03, z + 1.5, 1.4, .08, 3.0)
-        for k in range(3):                                                                            # arched windows in the west gable
-            b.box('joint', x0 - .03, y0 + 4.0 + 4.0 * k, 9.0, .08, 1.6, 4.0)
-    b.box('asphalt', -5.0, Y1 + 20.0, .03, 150.0, 12.0, .06)                                          # north road
+                b.box('joint', x0 - .03, y, z + 1.5, .08, 1.4, 3.0)
+        for k in range(4):
+            b.box('joint', x0 + 2.4 + k * 4.4, wy0 - .03, 3.4, 1.8, .08, 4.4)
+            b.box('joint', x0 + 2.4 + k * 4.4, wy0 - .03, 10.0, 1.8, .08, 3.4)
+        b.box('joint', (x0 + x1) / 2, wy0 - .03, 16.4, 2.4, .08, 3.6)
+    b.box('asphalt', 5.0, Y1 + 19.0, .03, 150.0, 9.0, .06)                                            # north road
     b.box('asphalt', -64.0, -18.0, .03, 12.0, 70.0, .06)                                              # west parking
     for k in range(10):
         b.box('lane', -64.0, -48.0 + 6.0 * k, .065, 10.0, .14, .01)
     b.box('water', -45.0, Y1 + 40.0, .01, 50.0, 20.0, .02)                                            # harbour
     b.box('concrete', -45.0, Y1 + 29.5, .5, 50.0, 1.0, 1.0)                                           # quay edge
     b.flush('context')
-    for x0, x1, y0, y1 in ((6.0, 36.0, Y1 + 30.0, Y1 + 46.0), (38.0, 68.0, Y1 + 30.0, Y1 + 46.0)):
-        pitched_roof(f'Warehouse roof {x0:.0f}', x0, x1, y0, y1, 14.0, 7.0, False, False, 'x', .4, 'slate', 'context')
-        for x in (x0, x1):
-            C.prism(f'Warehouse gable {x0:.0f} {x:.0f}', [(y0, 14.0), (y1, 14.0), ((y0 + y1) / 2, 21.0)], 'x', x - .2 if x == x0 else x - .3, x + .3 if x == x0 else x + .2, 'brick', 'context')
+    for x0, x1 in WH:
+        pitched_roof(f'Warehouse roof {x0:.0f}', x0, x1, wy0, wy1, 14.0, 7.0, False, False, 'y', .4, 'slate', 'context')
+        for y in (wy0, wy1):
+            C.prism(f'Warehouse gable {x0:.0f} {y:.0f}', [(x0, 14.0), (x1, 14.0), ((x0 + x1) / 2, 21.0)], 'y', y - .2 if y == wy0 else y - .3, y + .3 if y == wy0 else y + .2, 'brick', 'context')
 
 
 def cyl(b, role, cx, cy, z0, z1, r, n=12):
