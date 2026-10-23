@@ -9,6 +9,19 @@ import { packCatalogue, packedCatalogue } from './packed-catalogue.mjs';
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
 
+for (const filename of ['peopleCatalogue.json', 'inclusivePeopleCatalogue.json', 'peopleAppearancePreviews.json']) {
+  test(`${filename}: production People packing preserves exact models, wardrobe and image locks`, async () => {
+    const path = resolve('src/features/people', filename);
+    const source = readFileSync(path, 'utf8');
+    const transformed = packedCatalogue().transform('', path);
+    assert.notEqual(transformed, null);
+    const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
+    assert.deepEqual(decoded.default, JSON.parse(source));
+    assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * 0.55);
+  });
+}
+
 for (const filename of ['streetManual.json', 'nativeStreetModuleBounds.json']) {
   test(`${filename}: production packing preserves every street rule and exact geometric bound`, async () => {
     const path = resolve('src/data', filename);
