@@ -62,7 +62,7 @@ def manifest(version):
         ('boulder_garden', (18.0, -44.0, 6.0), (2.3, -18.5, 1.8), 30),               # spine foot, boulders and curved planters
         ('rest_balconies', (30.0, -50.0, 30.0), (9.0, Y0, 31.0), 50),           # the balcony stack against the spine
         ('roof_terrace', (-38.0, -34.0, 76.0), (-9.0, -5.0, ROOF + 1.5), 32),        # U terrace, beds and boulders
-        ('retail_base', (-21.0, -31.5, 3.4), (-15.0, Y0, 4.0), 34),                  # canopy and shopfronts
+        ('retail_base', (-12.5, -26.6, 3.2), (-16.0, Y0, 4.4), 28),               # from the plaza, inside the tree and lamp line: canopy and shopfronts
         ('facade_close', (-16.5, -50.0, 30.0), (-16.5, Y0, 30.0), 42),               # one curtain-wall bay through several floors
         ('architecture_close', (10.0, -27.0, 22.0), (2.3, SPY0, 24.0), 32),           # carved spine faces and holds
         ('glass_close', (19.0, -24.0, 21.0), (19.0, Y0, 21.5), 34),                  # vision glass, fins and transoms
