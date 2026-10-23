@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-barcelona-passatge",
+  "variant_id": "clay-barcelona-passatge-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "barcelona_passatge/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/barcelona-passatge-covered-passage/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1623910,
+      "sha256": "81100da89fdcde1e0491b5d573de22458ec1b903c5a3ec3c89061738bcce0c8c"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/barcelona-passatge-covered-passage/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 973696,
+      "sha256": "91e5b7b486005a0c3be5b9a8edddb951377ef83af5b7957a1d79ff6711267c6b"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/barcelona-passatge-covered-passage/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 941432,
+      "sha256": "c13e0acab15bcb535ed0b529ffbac5e754d80429c605c90b2ff96ad7ca701648"
+    }
+  ]
+}
