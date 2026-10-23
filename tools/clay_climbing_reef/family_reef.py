@@ -25,7 +25,7 @@ import geometry as G
 
 SLUG = 'clay-climbing-reef'
 PX, CU, CV = 24.4, 603.0, 428.0                     # top-view pixels per metre and the plan origin (the central dome)
-T = .62                                             # shell depth: fibreglass skin on its sculpted structure (pockets sink into it)
+T = 1.0                                             # shell depth: fibreglass skin on its sculpted structure (pockets sink into it)
 EPS = .002
 H = 6.9                                             # roof plateau at the centre
 ZW = 5.0                                            # wall shoulder: near-vertical below, rolling over above
@@ -50,12 +50,12 @@ DOMES_PX = [(603, 428, 40), (620, 212, 22), (613, 305, 19), (680, 312, 19), (550
 GAPS = (113.0, 41.5, -44.7, -137.0)                 # curb gaps (degrees about the origin) where the shell paths arrive
 ENTRANCES = (-135.0, -50.0, 45.0, 132.0)            # arched entrances at the foot of the four bays (searched to the bay minima)
 PALETTE = dict(reef0=(.008, .11, .14), reef1=(.02, .19, .23), reef2=(.02, .31, .36), reef3=(.0, .45, .52), reef4=(.04, .58, .60),
-    reef5=(.20, .68, .62), reef6=(.36, .76, .66), reef7=(.46, .82, .71), reef8=(.56, .86, .75), reef_inner=(.52, .66, .63), rim=(.93, .93, .91), glass=(.30, .36, .40), dome=(.58, .64, .68), tint=(.025, .03, .035),
+    reef5=(.20, .68, .62), reef6=(.36, .79, .68), reef7=(.48, .86, .74), reef8=(.60, .90, .79), reef_inner=(.52, .66, .63), rim=(.93, .93, .91), glass=(.30, .36, .40), dome=(.58, .64, .68), tint=(.025, .03, .035),
     frame=(.10, .13, .14), hardware=(.06, .06, .06), floor=(.20, .25, .30), mat=(.11, .17, .26), interior=(.70, .70, .66),
-    apron=(.64, .47, .29), curb=(.70, .55, .36), shellpath=(.90, .88, .85), shell2=(.80, .76, .70), shell3=(.97, .96, .94), concrete=(.50, .48, .44), lawn=(.20, .31, .10),
+    apron=(.64, .47, .29), curb=(.70, .55, .36), shellpath=(.95, .94, .91), shell2=(.80, .76, .70), shell3=(.97, .96, .94), concrete=(.50, .48, .44), lawn=(.20, .31, .10),
     mulch=(.22, .15, .09), hold_r=(.72, .10, .08), hold_y=(.90, .70, .10), hold_b=(.08, .22, .62), hold_p=(.42, .16, .55),
-    reef1p=(0.017, 0.160, 0.193), reef2p=(0.017, 0.260, 0.302), reef3p=(0.000, 0.378, 0.437), reef4p=(0.034, 0.487, 0.504), reef5p=(0.168, 0.571, 0.521), reef6p=(0.302, 0.638, 0.554), reef7p=(0.386, 0.689, 0.596), reef8p=(0.470, 0.722, 0.630),
-    hold_o=(.88, .40, .08), hold_g=(.20, .55, .18), bark=(.30, .23, .16), tree=(.20, .33, .12), tree2=(.27, .40, .15),
+    reef1p=(0.012, 0.110, 0.133), reef2p=(0.012, 0.180, 0.209), reef3p=(0.000, 0.261, 0.302), reef4p=(0.023, 0.336, 0.348), reef5p=(0.116, 0.394, 0.360), reef6p=(0.209, 0.458, 0.394), reef7p=(0.278, 0.499, 0.429), reef8p=(0.348, 0.522, 0.458),
+    hold_k=(.10, .10, .11), hold_n=(.52, .49, .44), hold_o=(.88, .40, .08), hold_g=(.20, .55, .18), bark=(.30, .23, .16), tree=(.20, .33, .12), tree2=(.27, .40, .15),
     tree3=(.34, .45, .18), wall=(.5, .5, .5), trim=(.84, .85, .82), stone=(.6, .6, .58), timber=(.42, .30, .18))
 
 
@@ -1955,7 +1955,7 @@ def _bumps():
         r = rnd.uniform(1.2, 2.6)
         if any(math.hypot(x - dx, y - dy) < dr + r * .9 + .4 for (dx, dy), dr in DOMES):
             continue
-        out.append((x, y, r, rnd.choice((-1, 1)) * rnd.uniform(.06, .14)))
+        out.append((x, y, r, rnd.choice((-1, 1)) * rnd.uniform(.15, .30)))
     return out
 
 
@@ -2012,7 +2012,7 @@ class Shell:
         RHO = S_ * r[None, :] * wob
         X = RHO * np.cos(TH); Y = RHO * np.sin(TH)
         # the wall rings wander up and down round the shell, so the ring-aligned contour bands read as wavy layers
-        amp = .42 * np.sin(3 * TH + 1.0) + .28 * np.sin(7 * TH + 2.0) + .14 * np.sin(13 * TH + .4)
+        amp = .62 * np.sin(3 * TH + 1.0) + .40 * np.sin(5 * TH + 2.0) + .20 * np.sin(11 * TH + .4)
         Z = Z + amp * np.where(Z < 5.6, np.sin(math.pi * np.clip(Z, 0, 5.6) / 5.6), 0.0)
         Zn = pads(X, Y, Z + wall * roof_noise(X, Y))
         self.P = np.stack([X, Y, Zn], -1)                           # (K, NT, 3); the last ring collapses to the centre
@@ -2062,10 +2062,10 @@ def pockets(shell):
     """Rounded rock-like pockets, placed as measured in the locked views: the locked front shows about 15 pockets and the
     locked oblique about 12 on the visible faces (about half the shell), so about 28 in all; they sit mostly on the upper
     wall and the roll-over shoulder, a few on the mid wall, very few on the dark lower wall and none at the base tuck.
-    Mouths 0.6-1.6 m across, round to vertically elongated ovals (aspect 1-1.6), 0.38-0.5 m deep. Each is a spherical cap
-    cut along the skin normal (tilted outward on the shoulder so its inner wall faces the viewer), lined in a slightly
-    darker shade of its own band colour, its rim then filleted. Kept out of the bay creases, clear of the skylight pads
-    and the entrances. Returns (sphere centre, radius, lining role, mouth point, mouth half-length, axis, aspect, up)."""
+    Mouths 0.6-1.6 m across, round to mildly upright ovals (aspect 1-1.4), 0.55-0.7 m deep. Each is shaped by
+    deform_pockets() along the skin normal (tilted outward on the shoulder so the hollow faces the viewer). Kept out
+    of the bay creases, clear of the skylight pads and the entrances. Returns (depth, mouth radius, unused, mouth
+    point, mouth half-length, axis, aspect, up)."""
     rnd = random.Random(29); out = []; tries = 0
     P, N = shell.P, shell.N
     for z0, z1, cnt in ((4.3, 5.3, 12), (5.3, 6.1, 8), (2.6, 4.3, 5), (1.4, 2.6, 3)):    # upper wall, shoulder, mid, low
@@ -2081,9 +2081,9 @@ def pockets(shell):
                 h = np.array([p[0], p[1], 0.0]); h /= np.linalg.norm(h); ax = n + h * .9; ax /= np.linalg.norm(ax)
             else:
                 ax = n
-            a = rnd.uniform(.32, .58) if shoulder else rnd.uniform(.30, .80)
-            asp = rnd.uniform(1.0, 1.6)
-            D = min(T - .1, rnd.uniform(.45, .5) if shoulder else rnd.uniform(.38, .5))
+            a = rnd.uniform(.38, .65) if shoulder else rnd.uniform(.45, .95)
+            asp = rnd.uniform(1.0, 1.4)
+            D = min(T - .16, rnd.uniform(.65, .84))
             if any(np.linalg.norm(p - q[3]) < a * asp + q[4] + .45 for q in out):
                 continue
             if any(math.hypot(p[0] - x, p[1] - y) < R + a * asp + 1.9 for (x, y), R in DOMES):
@@ -2091,7 +2091,7 @@ def pockets(shell):
             Rp = (a * a + D * D) / (2 * D)
             c = p + ax * (Rp - D)
             up = np.array([0.0, 0.0, 1.0]) - ax * ax[2]; up /= (np.linalg.norm(up) or 1)
-            out.append((c, Rp, ROLES[band(shell.zprof[k])] + 'p', p, a * asp, ax, asp, up)); got += 1
+            out.append((D, a, None, p, a * asp, ax, asp, up)); got += 1
     return out
 
 
@@ -2133,7 +2133,121 @@ def shell_mesh(shell, Pi):
     for p, m in zip(obj.data.polygons, M):
         p.material_index = m; p.use_smooth = p.index not in fl          # the buried base annulus is flat (a crisp foot)
     obj['rlasm_wall_carrier'] = True
+    obj['outer_vertex_count'] = off
     return obj
+
+
+def pocket_linings(obj):
+    """Add each band's darker pocket-floor material to the shell's slots (so deform_pockets() can assign it)."""
+    for role in ROLES:
+        if C.MATS[role + 'p'].name not in [m.name for m in obj.data.materials]:
+            obj.data.materials.append(C.MATS[role + 'p'])
+
+
+def soft_pairs(obj):
+    """Material index pairs (a band, its darker pocket floor) whose shared edges stay smooth."""
+    names = [m.name for m in obj.data.materials]
+    return {frozenset((i, names.index(nm[:-1]))) for i, nm in enumerate(names) if nm.endswith('P') and nm[:-1] in names}
+
+
+def deform_pockets(obj, pocket_list):
+    """Each pocket is a smooth deformation of the outer skin, not a cut: the skin round it is first subdivided once
+    (about 13 x 8 cm facets), then pushed in along the pocket axis as a dish (deepest at the centre, its depth falling
+    smoothly to zero over the outer 38% of the radius, so the rim blends into the wall) and pushed out 10 cm in a low brow
+    over its upper rim, and its floor (inside 0.62 of the radius) takes a darker shade of the same band colour (an overhang that throws a crescent shadow into the hollow under top light, on dark and pale
+    bands alike). The inner skin is never moved."""
+    off = obj['outer_vertex_count']
+    pocket_linings(obj)
+    bm = C.bmesh.new(); bm.from_mesh(obj.data)
+    lay = bm.verts.layers.int.new('inner')
+    bm.verts.ensure_lookup_table()
+    for v in bm.verts:
+        v[lay] = 1 if v.index >= off else 0
+    pk = [(np.array(q[3]), q[1], q[4] / q[1], q[0], np.array(q[5]), np.array(q[7])) for q in pocket_list]
+    sel = set()
+    for f in bm.faces:
+        if any(v[lay] for v in f.verts):
+            continue
+        c = np.array(f.calc_center_median())
+        if any(np.linalg.norm(c - p) < 1.75 * a * asp + .25 for p, a, asp, D, ax, up in pk):
+            sel.add(f)
+    edges = list({e for f in sel for e in f.edges})
+    C.bmesh.ops.subdivide_edges(bm, edges=edges, cuts=1, use_grid_fill=True)
+    for v in bm.verts:
+        if v[lay]:
+            continue
+        x = np.array(v.co)
+        for p, a, asp, D, ax, up in pk:
+            d = x - p
+            if d @ d > (2.0 * a * asp) ** 2:
+                continue
+            h = d @ ax
+            if abs(h) > .7:
+                continue
+            side = np.cross(ax, up)
+            xu = d @ up; yv = d @ side
+            r = math.sqrt((xu / (a * asp)) ** 2 + (yv / a) ** 2)
+            disp = 0.0
+            if r < 1.0:                                      # a bowl, its depth blending to zero over the outer 38% of the radius
+                disp -= D * (1 - .35 * r * r) * (1 - float(smoothstep(.62, 1.0, r)))
+            rb = math.sqrt(((xu - .95 * a * asp) / (.55 * a)) ** 2 + (yv / (.95 * a)) ** 2)
+            if rb < 1.0:                                     # a low brow on the upper rim (kept low: views look down into the hollows)
+                disp += .10 * (1 - float(smoothstep(0.0, 1.0, rb)))
+            if disp:
+                x = x + ax * disp
+        v.co = tuple(float(c) for c in x)
+    names = [m.name for m in obj.data.materials]
+    for f in bm.faces:
+        if any(v[lay] for v in f.verts):
+            continue
+        f.smooth = True
+    bm.verts.layers.int.remove(lay)
+    bm.to_mesh(obj.data); bm.free(); obj.data.update()
+    C.normalise(obj.data)
+    pocket_floors(obj, pk)
+
+
+def pocket_floors(obj, pk):
+    """The shadowed floor of each hollow: an oval lining (0.62 of the mouth) in a darker shade of the band colour round
+    it, draped 12 mm proud of the dished skin (ray-cast onto it), with a smooth oval edge."""
+    from mathutils import Vector
+    from mathutils.bvhtree import BVHTree
+    bvh = BVHTree.FromObject(obj, C.bpy.context.evaluated_depsgraph_get())
+    names = [m.name for m in obj.data.materials]
+    groups = {}
+    for p, a, asp, D, ax, up in pk:
+        side = np.cross(ax, up); n_ = 24
+        rings = []
+        for rf in (0.0, .3, .62):
+            ring = []
+            for i in range(1 if rf == 0 else n_):
+                ang = 2 * math.pi * i / n_
+                q = p + up * (rf * a * asp * math.cos(ang)) + side * (rf * a * math.sin(ang))
+                hit = bvh.ray_cast(Vector(tuple(q + ax * 1.2)), Vector(tuple(-ax)), 3.0)
+                if hit[0] is None:
+                    ring = None; break
+                ring.append(tuple(hit[0] + Vector(tuple(ax)) * .012))
+            if ring is None:
+                break
+            rings.append(ring)
+        if len(rings) < 3:
+            continue
+        hit = bvh.ray_cast(Vector(tuple(p + ax * 1.2)), Vector(tuple(-ax)), 3.0)
+        band_mat = names[obj.data.polygons[hit[2]].material_index] if hit[0] is not None else 'CLAY_REEF3'
+        role = band_mat[len('CLAY_'):].lower() + 'p'
+        if role not in C.MATS:
+            continue
+        V, F = groups.setdefault(role, ([], []))
+        o = len(V); V += rings[0] + rings[1] + rings[2]
+        c, r1, r2 = o, o + 1, o + 1 + n_
+        for i in range(n_):
+            j = (i + 1) % n_
+            F.append((c, r1 + i, r1 + j))
+            F.append((r1 + i, r2 + i, r2 + j, r1 + j))
+    for role, (V, F) in groups.items():
+        m = C.mesh(f'Pocket floors {role}', V, F, role, 'shell')
+        for f_ in m.data.polygons:
+            f_.use_smooth = True
 
 
 def entry_frame(th):
@@ -2188,39 +2302,25 @@ def pads(x, y, z):
     return z
 
 
-def cut_openings(obj, pocket_list):
-    """One exact boolean: the pockets (each lined in its own darker band material, its rim a crisp edge), the twelve
-    skylight holes and the four arched entrances (reveals deep teal, hidden by the collars and the tunnel linings)."""
+def cut_openings(obj):
+    """One exact boolean: the twelve skylight holes and the four arched entrances (reveals deep teal, hidden by the
+    collars and the tunnel linings)."""
     cutters = []
     from mathutils import Vector
-    from mathutils import Matrix
-    for j, (c, Rp, role, p, a, ax, asp, up) in enumerate(pocket_list):
-        C.bpy.ops.mesh.primitive_uv_sphere_add(segments=32, ring_count=16, radius=Rp, location=(0, 0, 0))
-        sp = C.bpy.context.object; sp.name = f'Pocket cutter {j}'
-        X = Vector(tuple(float(v) for v in up)); Z = Vector(tuple(float(v) for v in ax)); Y = Z.cross(X)
-        rot = Matrix((X, Y, Z)).transposed().to_4x4()
-        sp.matrix_world = Matrix.Translation(Vector(tuple(float(v) for v in c))) @ rot @ Matrix.Diagonal((asp, 1.0, 1.0, 1.0))
-        C.bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)   # elongated up the wall
-        sp.data.materials.append(C.MATS[role])
-        for f_ in sp.data.polygons:
-            f_.use_smooth = True
-        sp['pocket'] = True
-        cutters.append(sp)
     for (x, y), R in DOMES:
         c = C.rod('Skylight cutter', (x, y, 4.6), (x, y, 9.5), R, 'reef1', 'construction cutter', 48)
         cutters.append(c)
     for th in ENTRY_TH:
         rho, e, t = entry_frame(th)
         O = e * rho * 1.03
-        cutters.append(prism_local('Entrance cutter', O, e, t, arch_poly(EW, EH, z0=-.12), -.55, 1.75, 'reef1', 'construction cutter'))
+        cutters.append(prism_local('Entrance cutter', O, e, t, arch_poly(EW, EH, z0=-.12, n=48), -.55, 1.75, 'reef1', 'construction cutter'))
     for c in cutters:
-        if not c.get('pocket'):
-            for p in c.data.polygons:
-                p.use_smooth = False
+        for p in c.data.polygons:
+            p.use_smooth = False
     C.bpy.ops.object.select_all(action='DESELECT')
     for c in cutters:
         c.select_set(True)
-    C.bpy.context.view_layer.objects.active = next(c for c in cutters if not c.get('pocket'))   # a registered cutter
+    C.bpy.context.view_layer.objects.active = cutters[0]
     C.bpy.ops.object.join()
     cutter = C.bpy.context.object
     C.bpy.context.view_layer.objects.active = obj
@@ -2229,34 +2329,7 @@ def cut_openings(obj, pocket_list):
     C.bpy.ops.object.modifier_apply(modifier=mod.name)
     C.remove_cutter(cutter)
     C.normalise(obj.data)
-    fillet_pockets(obj)
-    crisp(obj, by_material=True, angle=70.0, soft=pocket_pairs(obj))   # reveals and band edges crisp; pocket rims soft
-
-
-def pocket_pairs(obj):
-    """Material index pairs (band, its pocket lining) whose shared edges stay smooth."""
-    names = [m.name for m in obj.data.materials]
-    pairs = set()
-    for i, nm in enumerate(names):
-        if nm.endswith('P') and nm[:-1] in names:
-            pairs.add(frozenset((i, names.index(nm[:-1]))))
-    return pairs
-
-
-def fillet_pockets(obj):
-    """Round each pocket rim: bevel the edges where a pocket lining meets the skin (7 cm, two segments), smooth-shaded."""
-    lining = {i for i, m in enumerate(obj.data.materials) if m.name.endswith('P')}
-    bm = C.bmesh.new(); bm.from_mesh(obj.data)
-    rim = [e for e in bm.edges if len(e.link_faces) == 2 and
-           (e.link_faces[0].material_index in lining) != (e.link_faces[1].material_index in lining)]
-    try:
-        res = C.bmesh.ops.bevel(bm, geom=rim, offset=.07, offset_type='OFFSET', segments=2, profile=.5, affect='EDGES',
-                                clamp_overlap=True)
-        for f in res['faces']:
-            f.smooth = True
-    except Exception as error:
-        print('POCKET_FILLET_SKIPPED ' + str(error), flush=True)
-    bm.to_mesh(obj.data); bm.free(); obj.data.update()
+    crisp(obj, by_material=True, angle=89.0, soft=soft_pairs(obj))   # reveals and band edges crisp; pocket dishes smooth
 
 
 def crisp(obj, by_material=False, angle=35.0, soft=()):
@@ -2370,17 +2443,17 @@ def entrances(obj):
             mg.box('frame', s * .85, dglass - .02, .10 + .95, .05, .04, 1.9)            # door jambs
             mg.box('hardware', s * .1, dglass - .045, 1.15, .025, .03, .6)              # pull handles
         d0 = min(depth) + .30
-        mg.box('apron', 0.0, (d0 + dback) / 2, .035, 2 * (EW / 2 - .18) + .1, dback - d0, .07)      # tunnel floor, 1 cm above the apron
+        mg.box('apron', 0.0, (d0 + dback) / 2, .031, 2 * (EW / 2 - .18) + .1, dback - d0, .062)     # tunnel floor, 2 mm above the apron
         mg.flush(f'entrance {j}')
 
 
 def holds(shell, Pi, dent_list):
     """Multicoloured climbing holds: small rounded six-sided nubs seated 4 cm into the skin, scattered uniformly by
     area over the walls (outside) and the lower inner skin (inside), clear of the pocket hollows and entrances."""
-    rnd = random.Random(11); roles = ('hold_r', 'hold_y', 'hold_b', 'hold_p', 'hold_o', 'hold_g')
+    rnd = random.Random(11); roles = ('hold_r', 'hold_y', 'hold_b', 'hold_p', 'hold_o', 'hold_g', 'hold_k', 'hold_n', 'hold_k', 'hold_n')
     G_ = {r: ([], []) for r in roles}
 
-    holes = [(q[3], q[4] + .15) for q in dent_list]                  # holds stay out of the pocket hollows
+    holes = [(q[3], q[4] * 1.7 + .1) for q in dent_list]             # holds stay off the pocket hollows and brows
 
     def add(p, n, sz, role):
         n = n / (np.linalg.norm(n) or 1); a = np.cross(n, [0, 0, 1.0])
@@ -2413,11 +2486,13 @@ def holds(shell, Pi, dent_list):
         routes.append(th)
     for th in routes:
         top = rnd.uniform(3.6, 5.2)
-        for z in np.arange(.35, top, .34):
-            k, i = shell.grid_index(th + rnd.uniform(-.012, .012), z + rnd.uniform(-.1, .1))
+        z = .35
+        while z < top:
+            z += .34 * rnd.uniform(.6, 1.4)
+            k, i = shell.grid_index(th + rnd.uniform(-.3, .3) / max(5.0, shell.r.mean()), z)
             if any(np.linalg.norm(P[k, i] - c) < r for c, r in holes):
                 continue
-            add(P[k, i], N[k, i], rnd.uniform(.05, .11), roles[rnd.randrange(6)]); n_out += 1
+            add(P[k, i], N[k, i], rnd.uniform(.04, .09), roles[rnd.randrange(len(roles))]); n_out += 1
     while n_out < 600:
         k = rnd.choices(ks, wk)[0]; i = rnd.randrange(NT)
         z = P[k, i, 2]
@@ -2428,7 +2503,7 @@ def holds(shell, Pi, dent_list):
             continue
         if any(np.linalg.norm(P[k, i] - c) < r for c, r in holes):
             continue
-        add(P[k, i], N[k, i], rnd.uniform(.05, .11), roles[rnd.randrange(6)]); n_out += 1
+        add(P[k, i], N[k, i], rnd.uniform(.04, .09), roles[rnd.randrange(len(roles))]); n_out += 1
     n_in = 0
     while n_in < 200:
         k = rnd.choices(ks, wk)[0]; i = rnd.randrange(NT)
@@ -2438,7 +2513,7 @@ def holds(shell, Pi, dent_list):
         th = shell.th[i]
         if any(abs((th - e + math.pi) % (2 * math.pi) - math.pi) < .28 for e in ENTRY_TH):
             continue
-        add(Pi[k, i], -N[k, i], rnd.uniform(.05, .10), roles[rnd.randrange(6)]); n_in += 1
+        add(Pi[k, i], -N[k, i], rnd.uniform(.04, .08), roles[rnd.randrange(len(roles))]); n_in += 1
     for role, (V, F) in G_.items():
         if F:
             o = C.mesh(f'Climbing holds {role}', V, F, role, 'holds')
@@ -2615,19 +2690,20 @@ def protos(kit):
     P['straw'] = arching_grass(kit, 'reef_gold_grass', blades=52, height=.55, width=.02, role='pk_leaf_light', crown_role='pk_leaf_light',
                                seed=31)
     P['shrub'] = shrub_mass(kit, 'reef_shrub', radius=.55, height=.8, lobes=6, seed=41)
+    P['tall'] = arching_grass(kit, 'reef_tall_gold', blades=60, height=.9, width=.02, role='pk_straw', crown_role='pk_straw', seed=51)
     return P
 
 
 def planting(beds):
     global KIT
     kit = KIT = PlantKit('planting', instancing=INSTANCING); P = protos(kit)
-    for x, y, r in TREES:
+    for x, y, r in TREES + SMALL:
         kit.add_obstacle(_pksh.Point(x, y).buffer(.25, quad_segs=6), 3.0)
-    mix = [(P['palmetto'], 1.3), (P['fountain'], 1.0), (P['straw'], .9), (P['shrub'], .5)]
+    mix = [(P['palmetto'], 1.2), (P['tall'], 1.2), (P['fountain'], .9), (P['straw'], .8), (P['shrub'], .5)]
     rnd = random.Random(5); fields = [_PkNoise(91 + 17 * i, 2 * math.pi / 3.2) for i in range(len(mix))]
     for j, g in enumerate(beds):
         reg = kit.register_bed(pk_region(g))
-        spacing = .72 if g.centroid.distance(_pksh.Point(0, 0)) < RING_R0 else 1.0
+        spacing = .56 if g.centroid.distance(_pksh.Point(0, 0)) < RING_R0 else 1.1
         for x, y in pk_scatter(reg, spacing, margin=PK_CLEAR, seed=40 + j):
             order = sorted(range(len(mix)), key=lambda i: -(fields[i](x, y) + 1.4 * math.log(mix[i][1])))
             for i in order[:2]:
@@ -2643,6 +2719,36 @@ def planting(beds):
     bad = kit.audit(detail=True)
     if bad:
         raise RuntimeError(f'planting kit clearance rule: {len(bad)} placements cross a bed edge or obstacle: {bad[:12]}')
+
+
+SMALL = []                                          # small multi-stem trees in the inner beds, placed by build()
+SMALL_AT = [(-14.0, 10.6), (-18.6, 8.9), (-19.4, -6.2), (20.4, -3.4), (-13.2, -14.8), (11.4, -14.4), (12.0, 14.5), (2.5, 19.5)]
+
+
+def small_trees(beds):
+    """The sources show small trees through every meadow bed inside the ring (top: NW, W, SW, S/SE, E, N): each is
+    nudged outward until it stands 0.8 m inside a bed."""
+    inner = [g for g in beds if g.centroid.distance(_pksh.Point(0, 0)) < RING_R0]
+    for x, y in SMALL_AT:
+        r0 = math.hypot(x, y); ux, uy = x / r0, y / r0
+        for k in range(10):
+            q = (x + ux * .5 * k, y + uy * .5 * k)
+            if any(g.buffer(-.8).contains(_pksh.Point(q)) for g in inner):
+                SMALL.append((q[0], q[1], 1.0)); break
+
+
+def small_tree(x, y, k=0):
+    """Small multi-stem meadow tree (about 5 m): three slender stems fanning from one root and a loose crown."""
+    z = BED_Z
+    roles = ('tree', 'tree2', 'tree3')
+    for j in range(3):
+        a = k * 1.1 + j * math.tau / 3
+        tip = (x + math.cos(a) * .7, y + math.sin(a) * .7, z + 3.2 + .3 * j)
+        C.rod('Small tree stem', (x, y, z), tip, .07, 'bark', 'trees', 6)
+        o = A.foliage('Small tree crown', (tip[0] + math.cos(a) * .2, tip[1] + math.sin(a) * .2, tip[2] + .6), (1.05, 1.05, .85),
+                      role=roles[(k + j) % 3], detail=2)
+        for p in o.data.polygons:
+            p.use_smooth = True
 
 
 def park_tree(x, y, r, k=0):
@@ -2670,7 +2776,8 @@ def build():
     Pi = shell.inner()                    # the inner skin follows the outer skin T inside it (pockets never reach it)
     dent_list = pockets(shell)
     obj = shell_mesh(shell, Pi)
-    cut_openings(obj, dent_list)
+    deform_pockets(obj, dent_list)
+    cut_openings(obj)
     dome_glazing()
     skylights()
     tint_glazing()
@@ -2680,7 +2787,10 @@ def build():
     apron_and_curb(shell)
     paths = shell_paths()
     beds = site(paths)
+    small_trees(beds)
     planting(beds)
+    for k, (x, y, r) in enumerate(SMALL):
+        small_tree(x, y, k)
     for k, (x, y, r) in enumerate(TREES):
         park_tree(x, y, r, k)
     for j, th in enumerate(ENTRY_TH):
