@@ -1,7 +1,7 @@
 # Barcelona passatge (covered passage) (RLASM v6.1 architectural clay)
 
 Candidate K5 of wave K of 2026-10-23, one of five catalogue additions the user asked for
-(all four variants of the climbing wall building, and the covered passage); a street or path option, not a building. State: **candidate under review**. Nothing here is keeper-approved,
+(all four variants of the climbing wall building, and the covered passage); a street or path option, not a building. State: **stopped at v003 by the stopping rule (the upper-bay finding survived two targeted fixes); v002 (0 P0 / 2 P1) is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -69,9 +69,11 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v002
+## Open blockers after v003 (stopped)
 
-Candidate: `clay-barcelona-passatge-clay-v002.glb`. The v002 independent review (`evidence/v002/independent-review.md`) left these P0/P1 findings open:
+Candidate: `clay-barcelona-passatge-clay-v002.glb`. The v003 independent review (`evidence/v003/independent-review.md`) left these P0/P1 findings open:
 
-- **P1** (facade_close, architecture_close, front, interior, south_portal): Each tall arched recess holds a square-headed first-floor window with no fanlight, and a second-floor "French window" that is only a squat lunette. In facade_close the lunette is about 95 px (about 1.4 m at about 69 px/m, from the 5 m bay) from the balcony slab to the crown. A 1.0 m railing covers it up to the arch... Likely fix: Raise the cornice and vault springing by about 0.8 to 1.0 m, or shorten the first-floor window by the same amount. The second-floor French window then gets at least 2.1 m of glass below its arch crown, with the...
-- **P1** (front_corner (matched to oblique), aerial, south_portal, pavilion_finial): The ornamental south end arch is drawn as the last pointed lattice rib, the same weight as the interior main ribs. It has a short band of five rings only near the apex and small scrolls at the springing. In front_corner and aerial it does not read as a distinct object. The source oblique's end arch is a deep... Likely fix: Model the end arch as its own assembly. Make an outer pointed band about 0.8 to 1.0 m deep. Add a semicircular inner arch springing from the pavilion parapet corners, with radial bars and rings filling the spandrel...
+- **P1** (front, interior, facade_close, architecture_close, south_portal, front_corner, north_portal vs source front + oblique): The upper facade and pavilions are one storey too tall and use the wrong bay grammar. Render: above the shop cornice, every bay has two tiers of round-arched French windows. Each tier has a cream archivolt with a keystone and its own balcony, set on a flat brick wall. The cornice is about 12.5 m high. In the... Likely fix: Rebuild the upper passage facade as one storey of tall, deeply recessed round-arched brick bays, one per pilaster bay. Each bay gets a brick arch ring with a visible brick soffit and reveal of at least 0.5 m, one...
+- **P1** (front, north_portal, south_portal (distant) vs source front): The north portal is too wide for its end wall. Render front: the clear opening at the arch is about 0.70 of the end-wall width, and the archivolt's outer edge runs almost to both flanking pilasters. That leaves thin brick piers, and the two medallions are crowded into the corners next to the arch crown. Source... Likely fix: Narrow the clear opening to about 50% of the end-wall width (≈5.5 m), keeping the crown just under the end-wall cornice. Make the stone piers about 1 m wide on bases, and widen the brick fields. Centre the medallions...
+
+The candidate v002's own open findings are in `evidence/v002/independent-review.md`.
