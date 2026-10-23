@@ -1,7 +1,7 @@
 # Climbing wall building: The Crucible (RLASM v6.1 architectural clay)
 
 Candidate K1 of wave K of 2026-10-23, one of five catalogue additions the user asked for
-(all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **stopped at v003 by the stopping rule (the east curtain-wall finding, first raised at v001, recurred after targeted fixes in v002 and v003); v003 (0 P0 / 2 P1) is the candidate, not keeper-approved**. Nothing here is keeper-approved,
+(all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **PASS_ZERO_P0_P1 at v004 (independent review, after the user reopened the family to keep trying until it passes); v004 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -71,9 +71,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v003 (stopped)
+## Open blockers after v004 (passed)
 
-Candidate: `clay-climbing-crucible-clay-v003.glb`. The v003 independent review (`evidence/v003/independent-review.md`) left these P0/P1 findings open:
-
-- **P1** (front, front_corner, aerial, top, climbing_wall, route_holds, fall_zone): Holds are illegible and do not cluster. In the envelope views the holds are 2–4 px near-black specks on charcoal panels and are effectively invisible. In route_holds each hold is about 1/10 of a hex panel and they are scattered thinly across the whole eastern field, between routes as well as on them. Source front... Likely fix: Make holds about 2.5× larger (roughly 0.35–0.45 m across). Place 70–80 % of them within about 0.6 m of the two eastern route corridors, at about 3× the current density in those corridors, and thin out the field...
-- **P1** (front, front_corner, right_side, glass_close, east_entrance): East curtain wall has the wrong mullion rhythm. The upper curtain wall is a near-square grid of about 13 columns × 11–13 rows, with panes about 1:1 to 1:1.3. Source oblique and front show a much finer vertical rhythm: about 20–22 slender columns of tall panes (about 1:3 to 1:4), with strong vertical mullions and... Likely fix: Halve the vertical-mullion spacing to about 1.1–1.25 m (about 20–22 bays across the frame opening). Space transoms about 3.5–4 m apart (3–4 transoms over the upper wall). Apply the same vertical module to the...
+Candidate: `clay-climbing-crucible-clay-v004.glb`. None: the v004 independent review returned zero P0 and zero P1. Its P2 polish items are in `evidence/v004/independent-review.md`.
