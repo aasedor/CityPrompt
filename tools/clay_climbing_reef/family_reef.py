@@ -49,10 +49,10 @@ DOMES_PX = [(603, 428, 40), (620, 212, 22), (613, 305, 19), (680, 312, 19), (550
             (830, 398, 23), (347, 413, 23), (450, 442, 19), (573, 560, 19), (653, 549, 19), (610, 632, 23)]
 GAPS = (113.0, 41.5, -44.7, -137.0)                 # curb gaps (degrees about the origin) where the shell paths arrive
 ENTRANCES = (-135.0, -50.0, 45.0, 132.0)            # arched entrances at the foot of the four bays (searched to the bay minima)
-PALETTE = dict(reef1=(.02, .16, .19), reef2=(.04, .25, .28), reef3=(.075, .36, .37), reef4=(.13, .47, .44),
-    reef5=(.20, .57, .50), reef6=(.29, .68, .56), reef7=(.40, .78, .62), reef_inner=(.52, .66, .63), rim=(.84, .85, .82), glass=(.30, .36, .40), dome=(.56, .62, .66),
+PALETTE = dict(reef1=(.02, .17, .20), reef2=(.03, .28, .31), reef3=(.03, .41, .45), reef4=(.08, .53, .53),
+    reef5=(.20, .64, .58), reef6=(.34, .74, .64), reef7=(.48, .81, .70), reef8=(.62, .86, .76), reef_inner=(.52, .66, .63), rim=(.93, .93, .91), glass=(.30, .36, .40), dome=(.58, .64, .68), tint=(.025, .03, .035),
     frame=(.10, .13, .14), hardware=(.06, .06, .06), floor=(.20, .25, .30), mat=(.11, .17, .26), interior=(.70, .70, .66),
-    apron=(.64, .47, .29), curb=(.70, .55, .36), shellpath=(.82, .81, .76), concrete=(.62, .61, .58), lawn=(.20, .31, .10),
+    apron=(.64, .47, .29), curb=(.70, .55, .36), shellpath=(.90, .88, .85), shell2=(.80, .76, .70), shell3=(.97, .96, .94), concrete=(.50, .48, .44), lawn=(.20, .31, .10),
     mulch=(.22, .15, .09), hold_r=(.72, .10, .08), hold_y=(.90, .70, .10), hold_b=(.08, .22, .62), hold_p=(.42, .16, .55),
     hold_o=(.88, .40, .08), hold_g=(.20, .55, .18), bark=(.30, .23, .16), tree=(.20, .33, .12), tree2=(.27, .40, .15),
     tree3=(.34, .45, .18), wall=(.5, .5, .5), trim=(.84, .85, .82), stone=(.6, .6, .58), timber=(.42, .30, .18))
@@ -1932,13 +1932,14 @@ R_SHELL = polar_fit(SHELL_PX, 8)
 R_APRON = polar_fit(APRON_PX, 8)
 DOMES = [(W(u, v), r / PX) for u, v, r in DOMES_PX]
 BUMPS = []
-NT = 256                                            # shell segments round the outline
+NT = 384                                            # shell segments round the outline
 # Meridian profile of the shell: (fraction of the outline radius, height). Tucked base, bulging near-vertical wall to the
 # shoulder, roll-over, gently domed plateau (front, oblique).
-PROFILE = [(.962, 0.0), (.978, .35), (.995, .9), (1.0, 1.6), (.998, 2.6), (.99, 3.5), (.975, 4.3), (.955, 4.9),
+PROFILE = [(.975, 0.0), (.986, .35), (.995, .9), (1.0, 1.6), (.998, 2.6), (.99, 3.5), (.975, 4.3), (.955, 4.9),
            (.925, 5.45), (.88, 5.95), (.82, 6.3), (.74, 6.55), (.62, 6.72), (.48, 6.82), (.32, 6.88), (.16, 6.9), (0., 6.9)]
-BANDS = (1.25, 2.5, 3.7, 4.8, 5.85, 6.62)           # contour band edges (profile heights): deep teal .. palest seafoam
-ROLES = ('reef1', 'reef2', 'reef3', 'reef4', 'reef5', 'reef6', 'reef7')
+BANDS = (1.25, 2.5, 3.7, 4.8, 5.85, 6.62, 6.80)     # contour band edges (profile heights): deep teal .. palest seafoam
+ROLES = ('reef1', 'reef2', 'reef3', 'reef4', 'reef5', 'reef6', 'reef7', 'reef8')
+TUCK = PROFILE[0][0]                                # base ring: fraction of the outline radius
 INNER = len(ROLES)                                  # material slot of the inner skin
 
 
@@ -1978,7 +1979,7 @@ def rings():
     out = [dense[0]]; acc = 0.0
     for a, b in zip(dense, dense[1:]):
         acc += math.hypot((b[0] - a[0]) * 12.0, b[1] - a[1])
-        step = .22 if b[1] < 5.6 else .40
+        step = .15 if b[1] < 5.6 else .40
         if acc >= step:
             out.append(b); acc = 0.0
     if out[-1][0] > 1e-6:
@@ -2012,7 +2013,7 @@ class Shell:
         # the wall rings wander up and down round the shell, so the ring-aligned contour bands read as wavy layers
         amp = .42 * np.sin(3 * TH + 1.0) + .28 * np.sin(7 * TH + 2.0) + .14 * np.sin(13 * TH + .4)
         Z = Z + amp * np.where(Z < 5.6, np.sin(math.pi * np.clip(Z, 0, 5.6) / 5.6), 0.0)
-        Zn = Z + wall * roof_noise(X, Y)
+        Zn = pads(X, Y, Z + wall * roof_noise(X, Y))
         self.P = np.stack([X, Y, Zn], -1)                           # (K, NT, 3); the last ring collapses to the centre
         self.P[-1, :, :] = (0.0, 0.0, Zn[-1].mean())
         self.zprof = z; self.r = r
@@ -2052,30 +2053,42 @@ def bay_minimum(deg):
 
 ENTRY_TH = [bay_minimum(d) for d in ENTRANCES]
 BUMPS = _bumps()
+PADS = []                                           # (centre, radius, pad height) per skylight, filled by build()
 EW, EH = 2.8, 2.6                                   # entrance clear width and height (a low, wide cave-like arch)
 
 
 def pockets(shell):
-    """Rounded rock-like pockets: spheres sunk into the outer skin (cut by the openings boolean), never reaching the inner
-    skin; each pocket takes the band colour one layer darker than the skin round it (a shadowed hollow)."""
-    rnd = random.Random(7); out = []
-    tries = 0
-    while len(out) < 58 and tries < 12000:
+    """Rounded rock-like pockets: softly dished scoops pressed into the outer skin along its normal (a smooth bump with a
+    rounded lip, never reaching the inner skin), oval or kidney-shaped, kept out of the bay creases and off the plateau."""
+    rnd = random.Random(7); out = []; tries = 0
+    P, N = shell.P, shell.N
+    while len(out) < 36 and tries < 12000:
         tries += 1
-        th = rnd.uniform(0, 2 * math.pi)
-        z = rnd.uniform(1.0, 4.9) if len(out) < 46 else rnd.uniform(5.1, 5.8) if len(out) < 54 else rnd.uniform(6.0, 6.3)
-        if any(abs((th - e + math.pi) % (2 * math.pi) - math.pi) < .36 and z < 3.6 for e in ENTRY_TH):
+        th = rnd.uniform(0, 2 * math.pi); z = rnd.uniform(1.1, 4.8) if len(out) < 30 else rnd.uniform(5.0, 5.5)
+        if any(abs((th - e + math.pi) % (2 * math.pi) - math.pi) < .34 for e in ENTRY_TH):
+            continue                                                 # the bay creases (and the entrances in them)
+        k, i = shell.grid_index(th, z); c = P[k, i].copy(); n = N[k, i].copy()
+        Ra = rnd.uniform(.6, 1.05); Rb = Ra * rnd.uniform(.6, .9); D = rnd.uniform(.34, .48)
+        if any(np.linalg.norm(c - q[0]) < max(Ra, q[2]) + q[2] * .6 + Ra * .6 + .3 for q in out):
             continue
-        k, i = shell.grid_index(th, z); p = shell.P[k, i]; n = shell.N[k, i]
-        Rp = rnd.uniform(.45, .85) if z < 5.0 else rnd.uniform(.38, .55)
-        D = min(T - .12, Rp * rnd.uniform(.55, .75))
-        c = p + n * (Rp - D)
-        if any(np.linalg.norm(c - q[0]) < q[1] + Rp + .35 for q in out):
+        if any(math.hypot(c[0] - x, c[1] - y) < R + Ra + 1.9 for (x, y), R in DOMES):
             continue
-        if any(math.hypot(c[0] - x, c[1] - y) < R + Rp + .6 for (x, y), R in DOMES):
-            continue
-        out.append((c, Rp, ROLES[max(0, band(shell.zprof[k]) - 1)], p))
-    return out
+        out.append((c, n, Ra, Rb, rnd.uniform(0, math.pi), D, rnd.random() < .35))
+    for c, n, Ra, Rb, phi, D, kidney in out:
+        th_c = math.atan2(c[1], c[0]); th_h = np.array([-math.sin(th_c), math.cos(th_c), 0.0])
+        b = np.cross(n, th_h); b /= np.linalg.norm(b) or 1
+        u_ = th_h * math.cos(phi) + b * math.sin(phi); v_ = -th_h * math.sin(phi) + b * math.cos(phi)
+        rel = P - c
+        x_ = rel @ u_; y_ = rel @ v_; h_ = rel @ n
+        q = (x_ / Ra) ** 2 + (y_ / Rb) ** 2
+        w = smoothstep(0, .75, 1 - q)                                # a dished hollow with a broad rounded lip
+        if kidney:                                                   # a second lobe offset along the long axis
+            q2 = ((x_ - Ra * .75) / (Ra * .7)) ** 2 + (y_ / (Rb * .8)) ** 2
+            w = np.maximum(w, .85 * smoothstep(0, .75, 1 - q2))
+        w[np.abs(h_) > .8] = 0                                       # only the skin round the pocket, never across a bay
+        w[-1] = 0; w[:3] = 0
+        P -= N * (D * w)[..., None]
+    return [(q[0], max(q[2], q[3]) * (1.8 if q[6] else 1.0)) for q in out]
 
 
 def shell_mesh(shell, Pi):
@@ -2151,36 +2164,44 @@ def roof_z(x, y):
     ss = [p[0] for p in prof][::-1]; zz = [p[1] for p in prof][::-1]
     z = float(np.interp(s, ss, zz))
     wall = 1 - float(smoothstep(.70, .93, s))
-    return z + wall * float(roof_noise(x, y))
+    return float(pads(x, y, z + wall * float(roof_noise(x, y))))
 
 
-def cut_openings(obj, pocket_list):
-    """One exact boolean: the twelve skylight holes, the four arched entrances and the pockets. The cut faces take each
-    cutter's material (skylight and entrance reveals deep teal, each pocket its band colour)."""
+def plateau_profile(x, y):
+    """Noise-free profile height of the plateau at a plan point."""
+    th = math.atan2(y, x); s = math.hypot(x, y) / float(polar(R_SHELL, [th])[0])
+    prof = [p for p in rings() if p[1] >= 4.9]
+    return float(np.interp(s, [p[0] for p in prof][::-1], [p[1] for p in prof][::-1]))
+
+
+def pads(x, y, z):
+    """Each skylight sits on a level circular pad: the roof relief blends to the pad height within 0.5-1.7 m of its rim
+    (floats or arrays)."""
+    for (dx, dy), R, zc in PADS:
+        d = np.hypot(x - dx, y - dy)
+        w = 1 - smoothstep(R + .5, R + 1.7, d)
+        z = z * (1 - w) + zc * w
+    return z
+
+
+def cut_openings(obj):
+    """One exact boolean: the twelve skylight holes and the four arched entrances (reveals deep teal, hidden by the
+    collars and the tunnel linings)."""
     cutters = []
-    for j, (c, Rp, role, p) in enumerate(pocket_list):
-        C.bpy.ops.mesh.primitive_uv_sphere_add(segments=24, ring_count=12, radius=Rp, location=tuple(float(v) for v in c))
-        sp = C.bpy.context.object; sp.name = f'Pocket cutter {j}'
-        C.bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
-        sp.data.materials.append(C.MATS[role])
-        for f_ in sp.data.polygons:
-            f_.use_smooth = True
-        cutters.append(sp)
     for (x, y), R in DOMES:
-        c = C.rod('Skylight cutter', (x, y, 4.6), (x, y, 9.5), R, 'reef1', 'construction cutter', 40)
+        c = C.rod('Skylight cutter', (x, y, 4.6), (x, y, 9.5), R, 'reef1', 'construction cutter', 48)
         cutters.append(c)
     for th in ENTRY_TH:
         rho, e, t = entry_frame(th)
         O = e * rho * 1.03
         cutters.append(prism_local('Entrance cutter', O, e, t, arch_poly(EW, EH, z0=-.12), -.55, 1.75, 'reef1', 'construction cutter'))
     for c in cutters:
-        if not c.name.startswith('Pocket'):
-            for p in c.data.polygons:
-                p.use_smooth = False
+        for p in c.data.polygons:
+            p.use_smooth = False
     C.bpy.ops.object.select_all(action='DESELECT')
     for c in cutters:
         c.select_set(True)
-    C.bpy.context.view_layer.objects.active = next(c for c in cutters if not c.name.startswith('Pocket'))   # a registered cutter
+    C.bpy.context.view_layer.objects.active = cutters[0]
     C.bpy.ops.object.join()
     cutter = C.bpy.context.object
     C.bpy.context.view_layer.objects.active = obj
@@ -2189,7 +2210,7 @@ def cut_openings(obj, pocket_list):
     C.bpy.ops.object.modifier_apply(modifier=mod.name)
     C.remove_cutter(cutter)
     C.normalise(obj.data)
-    crisp(obj, by_material=True)
+    crisp(obj, by_material=True, angle=70.0)            # reveals and band edges crisp; the pocket hollows stay smooth
 
 
 def crisp(obj, by_material=False, angle=35.0):
@@ -2208,6 +2229,12 @@ def crisp(obj, by_material=False, angle=35.0):
     bm.to_mesh(obj.data); bm.free(); obj.data.update()
 
 
+def tint_glazing():
+    """The entrance glazing is dark tinted glass (the sources show the entrances as dark cave mouths)."""
+    bs = C.MATS['tint'].node_tree.nodes.get('Principled BSDF')
+    bs.inputs['Roughness'].default_value = .12
+
+
 def dome_glazing():
     """The skylight domes are thick acrylic: mostly reflective with some transmission (the sources show silver bubbles)."""
     bs = C.MATS['dome'].node_tree.nodes.get('Principled BSDF')
@@ -2215,84 +2242,95 @@ def dome_glazing():
 
 
 def skylights():
-    """Each skylight: a white collar seated through the shell whose top follows the roof 10 cm proud of it (its inner wall
-    lines the cut), and a glazed dome whose base ring sits on the collar and blends up to a level crown."""
-    n, prof = 36, [(1, 0), (.97, .22), (.88, .5), (.7, .76), (.45, .93), (.0, 1)]
-    for j, ((x, y), R) in enumerate(DOMES):
-        a = [2 * math.pi * i / n for i in range(n)]
-        top = [roof_z(x + (R + .10) * math.cos(q), y + (R + .10) * math.sin(q)) + .10 for q in a]
-        topi = [roof_z(x + (R - .05) * math.cos(q), y + (R - .05) * math.sin(q)) + .10 for q in a]
-        zlo = min(top) - T - .35
-        V = []
-        for (r, zt) in ((R - .05, topi), (R + .10, top)):
-            for i, q in enumerate(a):
-                V += [(x + r * math.cos(q), y + r * math.sin(q), zlo), (x + r * math.cos(q), y + r * math.sin(q), zt[i])]
-        F = []
-        I, O = 0, 2 * n
-        for i in range(n):
-            k = (i + 1) % n
-            F += [(O + 2 * i, O + 2 * k, O + 2 * k + 1, O + 2 * i + 1),          # outer wall
-                  (I + 2 * k, I + 2 * i, I + 2 * i + 1, I + 2 * k + 1),          # inner wall
-                  (I + 2 * i + 1, O + 2 * i + 1, O + 2 * k + 1, I + 2 * k + 1),  # top (follows the roof)
-                  (O + 2 * i, I + 2 * i, I + 2 * k, O + 2 * k)]                  # buried bottom
-        rim = C.mesh(f'Skylight collar {j}', V, F, 'rim', 'skylights')
+    """Each skylight: a rigid white collar standing level on its pad (12 cm proud, 22 cm wide), seated down through the
+    shell to 5 cm above the inner skin (the cut's own wall shows below it inside), and a low glazed lens dome on it,
+    open underneath so the hall sees the glazing."""
+    n, prof = 48, [(1, 0), (.93, .30), (.78, .58), (.55, .82), (.28, .96), (.0, 1)]
+    for j, (((x, y), R, zc)) in enumerate(PADS):
+        top = zc + .12; bot = zc - T + .05
+        rim = annulus(f'Skylight collar {j}', (x, y, 0.0), (0, 0, 1), R - .04, R + .22, bot, top, 'rim', 'skylights', n)
         for p in rim.data.polygons:
             p.use_smooth = abs(p.normal.z) < .5
         crisp(rim)
-        base = [(topi[i] + top[i]) / 2 - .02 for i in range(n)]
-        crown = sum(base) / n + .62 * R + .06
-        V = []
+        a = [2 * math.pi * i / n for i in range(n)]; rise = .30 * R + .05; V = []
         for rf, hf in prof:
-            for i, q in enumerate(a):
-                rr = max((R + .04) * rf, .002)
-                V.append((x + rr * math.cos(q), y + rr * math.sin(q), base[i] * (1 - hf) + crown * hf))
-        F = [tuple(range(n - 1, -1, -1))]
+            for q in a:
+                rr = max((R + .06) * rf, .002)
+                V.append((x + rr * math.cos(q), y + rr * math.sin(q), top - .02 + rise * hf))
+        F = []
         for jr in range(len(prof) - 1):
             for i in range(n):
                 k = (i + 1) % n
                 F.append((jr * n + i, jr * n + k, (jr + 1) * n + k, (jr + 1) * n + i))
         d = C.mesh(f'Skylight dome {j}', V, F, 'dome', 'skylights')
         for p in d.data.polygons:
-            p.use_smooth = len(p.vertices) < 6
+            p.use_smooth = True
 
 
-def entrances():
-    """Arched glazed screens with a pair of glass doors, set mid-wall in each bay; thresholds to the hall floor."""
+def arch_line(w, h, grow=0.0, z0=0.0, n=20):
+    """Open arch line: right jamb foot, up and over the semicircular head, down to the left jamb foot."""
+    r = w / 2 + grow; zs = h - w / 2
+    return [(r, z0)] + [(r * math.cos(math.pi * j / n), zs + r * math.sin(math.pi * j / n)) for j in range(n + 1)] + [(-r, z0)]
+
+
+def entrances(obj):
+    """Each bay entrance is a cave mouth: an arched tunnel lined in the shell's deep teal runs from the outer skin (its lip
+    3 cm inside the skin all round the cut) about 2 m through and into the hall as a short vault; dark glazing with a pair
+    of thin dark doors closes its inner end; a sand threshold runs the tunnel floor."""
+    bvh = C.BVHTree.FromObject(obj, C.bpy.context.evaluated_depsgraph_get()) if hasattr(C, 'BVHTree') else None
+    if bvh is None:
+        from mathutils.bvhtree import BVHTree
+        bvh = BVHTree.FromObject(obj, C.bpy.context.evaluated_depsgraph_get())
+    from mathutils import Vector
     for j, th in enumerate(ENTRY_TH):
         rho, e, t = entry_frame(th)
         O = e * rho * 1.03
-        dg = rho * .032 + T / 2                                      # mid-wall at the bay floor (outer skin about 0.03 r in)
-        f = C.Face(tuple(O), tuple(t), tuple(-e), f'Entrance {j}')
-        outer = arch_poly(EW, EH, grow=.05, z0=.10)
-        inner = arch_poly(EW - .16, EH - .08, z0=.10)
-        # frame: an arched band between the two outlines, 7 cm deep, its outer edge 5 cm into the reveal
+        outer = arch_line(EW, EH, grow=.04); inner = arch_line(EW, EH, grow=-.18)
+        depth = []
+        for u, z in outer:
+            start = O + t * u + np.array([0, 0, max(z, .05)]) + e * 1.5
+            hit = bvh.ray_cast(Vector(start), Vector(-e), 4.0)
+            depth.append(hit[3] - 1.5 if hit[0] is not None else None)
+        known = [d for d in depth if d is not None]
+        depth = [d if d is not None else min(known) for d in depth]
+        dback = max(depth) + T + 1.35; dglass = dback - .12
         n = len(outer); V = []
-        for d in (dg - .035, dg + .035):
-            for u, z in outer + inner:
-                V.append(f.p(u, d, z))
-        m = 2 * n; Fc = []
+        for line in (outer, inner):
+            for (u, z), d in zip(line, depth):
+                p = O - e * (d + .03) + t * u; V.append((float(p[0]), float(p[1]), float(z)))
+        for line in (outer, inner):
+            for (u, z) in line:
+                p = O - e * dback + t * u; V.append((float(p[0]), float(p[1]), float(z)))
+        OF, IF, OB, IB = 0, n, 2 * n, 3 * n
+        F = []
         for i in range(n - 1):
-            a, b_, c_, d_ = i, i + 1, n + i + 1, n + i
-            Fc += [(a, b_, c_, d_), (m + d_, m + c_, m + b_, m + a), (a, m + a, m + b_, b_), (d_, c_, m + c_, m + d_)]
-        Fc += [(0, n, m + n, m), (n - 1, m + n - 1, m + 2 * n - 1, 2 * n - 1)]
-        C.mesh(f'Entrance {j} arched frame', V, Fc, 'frame', 'entrances')
-        prism_local(f'Entrance {j} glazing', O, e, t, arch_poly(EW - .12, EH - .06, z0=.12), dg - .006, dg + .006, 'glass', 'entrances')
+            k = i + 1
+            F += [(IF + i, IF + k, IB + k, IB + i), (OF + k, OF + i, OB + i, OB + k),
+                  (OF + i, OF + k, IF + k, IF + i), (OB + k, OB + i, IB + i, IB + k)]
+        F += [(OF, IF, IB, OB), (OF + n - 1, OB + n - 1, IB + n - 1, IF + n - 1)]
+        lin = C.mesh(f'Entrance {j} tunnel lining', V, F, 'reef2', 'entrances')
+        for p in lin.data.polygons:
+            p.use_smooth = True
+        crisp(lin)
+        prism_local(f'Entrance {j} glazing', O, e, t, arch_poly(EW, EH, grow=-.16, z0=.10), dglass - .006, dglass + .006, 'tint', 'entrances')
+        f = C.Face(tuple(O), tuple(t), tuple(-e), f'Entrance {j}')
         mg = Merge(f)
-        mg.box('frame', 0.0, dg - .02, .10 + 1.075, .07, .05, 2.15)                 # door meeting stile
-        mg.box('frame', 0.0, dg - .02, 2.22, 1.86, .05, .07)                        # door head
+        mg.box('frame', 0.0, dglass - .02, .10 + .95, .05, .04, 1.9)                   # door meeting stile
+        mg.box('frame', 0.0, dglass - .02, 2.02, 1.74, .04, .05)                       # door head
         for s in (-1, 1):
-            mg.box('frame', s * .9, dg - .02, .10 + 1.075, .06, .05, 2.15)          # door jamb stiles, fixed side lights beyond
-            mg.box('hardware', s * .12, dg - .06, 1.15, .03, .04, .7)                 # pull handles
-        mg.box('apron', 0.0, dg, .053, EW + .3, 1.7 + T, .105)                      # threshold, apron to hall floor
+            mg.box('frame', s * .85, dglass - .02, .10 + .95, .05, .04, 1.9)            # door jambs
+            mg.box('hardware', s * .1, dglass - .045, 1.15, .025, .03, .6)              # pull handles
+        d0 = min(depth) + .05
+        mg.box('apron', 0.0, (d0 + dback) / 2, .0525, 2 * (EW / 2 - .18) + .1, dback - d0, .105)   # tunnel floor and threshold
         mg.flush(f'entrance {j}')
 
 
-def holds(shell, Pi, pocket_list):
+def holds(shell, Pi, dent_list):
     """Multicoloured climbing holds: small four-sided lumps seated 4 cm into the skin, outside and inside."""
     rnd = random.Random(11); roles = ('hold_r', 'hold_y', 'hold_b', 'hold_p', 'hold_o', 'hold_g')
     G_ = {r: ([], []) for r in roles}
 
-    holes = [(q[3], q[1] + .15) for q in pocket_list]                # skin removed round each pocket mouth (conservative)
+    holes = [(c, r * .9) for c, r in dent_list]                      # holds stay out of the pocket hollows
 
     def add(p, n, sz, role):
         n = n / (np.linalg.norm(n) or 1); a = np.cross(n, [0, 0, 1.0])
@@ -2344,7 +2382,7 @@ def interior(shell):
     rho0 = np.hypot(shell.P[0, ::2, 0], shell.P[0, ::2, 1]) - T + .08
     pts = [(float(r * math.cos(a)), float(r * math.sin(a))) for r, a in zip(rho0, th)]
     C.prism('Hall floor', pts, 'z', 0.0, .10, 'mat', 'inside')
-    for j, (x, y, R, h) in enumerate(((2.6, 1.8, 1.7, 3.0), (-3.4, 4.6, 1.4, 2.4), (4.6, -3.4, 1.2, 2.1))):
+    for j, (x, y, R, h) in enumerate(((5.0, .3, 1.5, 2.8), (-5.4, .6, 1.5, 2.6), (.3, 5.0, 1.3, 2.3))):   # off the entrance axes
         o = dome(f'Bouldering block {j}', x, y, .05, R, h, [(1, 0), (1.04, .25), (.95, .55), (.78, .8), (.45, .96), (0, 1)],
                  ('reef3', 'reef4', 'reef2')[j], 'inside', 24, 8)
         for p in o.data.polygons:
@@ -2359,7 +2397,8 @@ def interior(shell):
             if rr + 1.0 < .6 * ra:
                 spots.append((rr * math.cos(ta), rr * math.sin(ta)))
     for x, y in spots:
-        C.qa_room_light(f'Hall {x:+.1f} {y:+.1f}', (x, y, 4.6), 40, 2.0)
+        lt = C.qa_room_light(f'Hall {x:+.1f} {y:+.1f}', (x, y, 4.6), 40, 2.0)
+        lt.visible_camera = False; lt.visible_glossy = False                 # the emitters light the hall but never show
     C.CONTACTS.append(dict(name='Hall floor lapped into the shell base; boulders on the floor', floor_m=.10))
 
 
@@ -2394,7 +2433,7 @@ def in_gap(th):
 def apron_and_curb(shell):
     """The sand rubber crash-pad apron from under the shell wall to inside the curb, and the rounded curb segments."""
     th = np.linspace(0, 2 * math.pi, 240, endpoint=False)
-    ra = polar(R_APRON, th); rs = polar(R_SHELL, th) * .962
+    ra = polar(R_APRON, th); rs = polar(R_SHELL, th) * TUCK
     outer = [(float((r - .05) * math.cos(a)), float((r - .05) * math.sin(a))) for r, a in zip(ra, th)]
     inner = [(float((r - .25) * math.cos(a)), float((r - .25) * math.sin(a))) for r, a in zip(rs, th)]
     band_mesh('Crash-pad apron', outer, inner, 0.0, APRON_Z, 'apron', 'apron')
@@ -2423,8 +2462,9 @@ PATH_DIRS = {113.0: 100.0, 41.5: 31.0, -44.7: -13.5, -137.0: -154.0}
 
 
 def shell_paths():
-    """White crushed-shell paths from each curb gap out to the ring path (2.8 m, bending slightly)."""
-    polys = []
+    """White crushed-shell paths from each curb gap out to the ring path: soft irregular edges, flaring where they meet
+    the gap, and two tones of shell specks scattered on them (the granular crushed shell of the top view)."""
+    polys = []; rnd = random.Random(31); specks = {'shell2': ([], []), 'shell3': ([], [])}
     for g, d in PATH_DIRS.items():
         ga = math.radians(g); ra = float(polar(R_APRON, [ga])[0])
         p0 = np.array([math.cos(ga), math.sin(ga)]) * (ra - .25)
@@ -2432,23 +2472,37 @@ def shell_paths():
         v = np.array([math.cos(ga) + math.cos(dd), math.sin(ga) + math.sin(dd)]); v /= np.linalg.norm(v)
         mid = p0 + v * L * .45
         end = mid + np.array([math.cos(dd), math.sin(dd)]) * L
-        # trim the end to the ring path's middle
         line = _pksh.LineString([tuple(p0), tuple(mid), tuple(end)])
-        ring = _pksh.Point(0, 0).buffer(RING_R0 + .9, quad_segs=32)
-        line = line.intersection(ring)
+        line = line.intersection(_pksh.Point(0, 0).buffer(RING_R0 + .9, quad_segs=32))
         if line.geom_type != 'LineString':
             line = max(line.geoms, key=lambda q: q.length)
-        poly = line.buffer(1.4, cap_style='flat', join_style='round', quad_segs=6).simplify(.02)
+        Ln = line.length; m = int(Ln / .35) + 1; left, right = [], []
+        for k in range(m + 1):
+            s = Ln * k / m; p = line.interpolate(s); q = line.interpolate(min(Ln, s + .05)); q0 = line.interpolate(max(0, s - .05))
+            tx, ty = q.x - q0.x, q.y - q0.y; tl = math.hypot(tx, ty) or 1; nx, ny = -ty / tl, tx / tl
+            flare = 1.3 * max(0.0, 1 - s / 2.6) ** 2
+            wl = 1.4 + flare / 2 + .14 * math.sin(2.1 * s + g) + .07 * math.sin(5.3 * s + 1.7 * g)
+            wr = 1.4 + flare / 2 + .14 * math.sin(1.7 * s - g + .5) + .07 * math.sin(4.7 * s - g)
+            left.append((p.x + nx * wl, p.y + ny * wl)); right.append((p.x - nx * wr, p.y - ny * wr))
+        pts = left + right[::-1]
+        poly = _PkPolygon(pts).buffer(0).simplify(.03)
         polys.append(poly)
-        pts = list(poly.exterior.coords)[:-1]
-        C.prism(f'Shell path {g:+.0f}', pts, 'z', 0.0, .045, 'shellpath', 'paths')
+        C.prism(f'Shell path {g:+.0f}', [tuple(c) for c in list(poly.exterior.coords)[:-1]], 'z', 0.0, .045, 'shellpath', 'paths')
+        for x, y in pk_scatter(poly.buffer(-.05), .2, seed=int(g * 10) % 997 + 3)[:720]:
+            role = 'shell2' if rnd.random() < .55 else 'shell3'; V, F = specks[role]; o = len(V)
+            r = rnd.uniform(.03, .06); a0 = rnd.uniform(0, math.tau)        # a flat flake 2 mm above the path
+            V += [(x + r * math.cos(a0 + k * 2.1), y + r * math.sin(a0 + k * 2.1), .047) for k in range(3)]
+            F.append((o, o + 1, o + 2))
+    for role, (V, F) in specks.items():
+        if F:
+            C.mesh(f'Crushed shell {role}', V, F, role, 'paths')
     return polys
 
 
 def site(paths):
     """Lawn disc under everything, the concrete ring path, and the mulch meadow beds inside and beyond it."""
     th = np.linspace(0, 2 * math.pi, 160, endpoint=False)
-    C.prism('Park lawn', [(SITE_R * math.cos(a), SITE_R * math.sin(a)) for a in th], 'z', 0.0, .03, 'lawn', 'site')
+    C.prism('Park lawn', [(70.0 * math.cos(a), 70.0 * math.sin(a)) for a in th], 'z', 0.0, .03, 'lawn', 'site')   # to the frame edges
     band_mesh('Ring path', [(RING_R1 * math.cos(a), RING_R1 * math.sin(a)) for a in th],
               [(RING_R0 * math.cos(a), RING_R0 * math.sin(a)) for a in th], 0.0, .06, 'concrete', 'paths')
     th2 = np.linspace(0, 2 * math.pi, 240, endpoint=False)
@@ -2538,15 +2592,18 @@ def park_tree(x, y, r, k=0):
 
 
 def build():
+    PADS[:] = [((x, y), R, plateau_profile(x, y)) for (x, y), R in DOMES]
     shell = Shell()
     Pi = shell.inner()                    # the inner skin follows the outer skin T inside it (pockets never reach it)
-    pocket_list = pockets(shell)
+    dent_list = pockets(shell)
+    shell.normals()
     obj = shell_mesh(shell, Pi)
-    cut_openings(obj, pocket_list)
+    cut_openings(obj)
     dome_glazing()
     skylights()
-    entrances()
-    holds(shell, Pi, pocket_list)
+    tint_glazing()
+    entrances(obj)
+    holds(shell, Pi, dent_list)
     interior(shell)
     apron_and_curb(shell)
     paths = shell_paths()
