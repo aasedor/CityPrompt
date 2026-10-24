@@ -1,0 +1,106 @@
+{
+  "id": "court_only_basketball_v1",
+  "title": "Basketball court only",
+  "sport": "basketball",
+  "playing_m": [
+    15,
+    28
+  ],
+  "module_m": [
+    21,
+    36
+  ],
+  "dimensions_m": [
+    21,
+    36
+  ],
+  "court_colour": [
+    0.11,
+    0.25,
+    0.27
+  ],
+  "source": "https://www.venueguide.fiba.basketball/vanue-design",
+  "source_checked": "2026-10-24",
+  "programme": "Playing surface, markings, required equipment and clear playing reserve only",
+  "hoop_height_m": 3.05,
+  "hoops": 2,
+  "include_enclosure": false,
+  "limitations": [
+    "Planning model at native size; not a certified competition facility.",
+    "Repeat and rotate courts; never stretch their playing dimensions."
+  ],
+  "reserve_basis": "3 m sides and 4 m ends, including cantilever hoop supports outside the 2 m baseline clear zone.",
+  "clear_routes": [
+    {
+      "a": [
+        -10.5,
+        -9.0
+      ],
+      "b": [
+        -7.8,
+        -9.0
+      ],
+      "width": 1.8
+    }
+  ],
+  "equipment": [
+    {
+      "kind": "basketball_hoop",
+      "x": 0,
+      "y": 12.425,
+      "z": 3.05,
+      "radius": 0.225
+    },
+    {
+      "kind": "basketball_hoop",
+      "x": 0,
+      "y": -12.425,
+      "z": 3.05,
+      "radius": 0.225
+    }
+  ],
+  "source_components": {
+    "sport base": 1,
+    "playing surface": 1,
+    "marking": 250,
+    "painted key": 2,
+    "hoop anchor": 2,
+    "hoop mast": 2,
+    "mast padding": 2,
+    "cantilever": 2,
+    "backboard brace": 2,
+    "backboard": 2,
+    "backboard target": 8,
+    "rim bracket": 2,
+    "basket rim": 96,
+    "basket net": 312
+  },
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Last containing region owns ground cell; grass default; null means rigid module owns surface.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 448768,
+    "sha256": "5e3150afb5b14183172cd4aef5551f66627eab33ec6aefc58a697fb7dd458259"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -10.5,
+      -18.0,
+      -0.11999999731779099
+    ],
+    [
+      10.5,
+      18.0,
+      4.0
+    ]
+  ],
+  "triangles": 8908,
+  "mesh_instances": 8,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Preview assembly is a level inspection fixture. Reconstruct surfaces with shared ground; place rigid modules at native size. Never stretch assembly to fit."
+}

@@ -5,7 +5,7 @@ import expansion from '@/data/classroomExpansion.json';
 import { LOCAL_CLAUDE_ASSETS } from './claudeAssetLocalTrial';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
 import { PUBLIC_REALM_RELEASE_ASSETS } from './publicRealmRelease';
-import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS } from './assetRegistry';
+import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS, COURT_ONLY_SPORT_ASSETS, isPlaceable } from './assetRegistry';
 
 describe('canonical discovery and identity', () => {
   it('finds a duplex inside an infill parent and opens the matching detailed variant', () => {
@@ -18,7 +18,8 @@ describe('canonical discovery and identity', () => {
   });
   it('discovers exactly the current eligible parents in each domain', () => {
     expect(UNAVAILABLE_CATALOGUE_ENTRIES).toEqual([]);
-    const roster = [...validation.entries, ...expansion.entries];
+    const roster = [...validation.entries, ...expansion.entries,
+      ...COURT_ONLY_SPORT_ASSETS.filter(isPlaceable).map(asset=>({archetype_id:String(asset.properties.green_space_archetype_id),variant_id:asset.model.variantId}))];
     const remainingLocal = LOCAL_CLAUDE_ASSETS.filter(asset =>
       !CLAUDE_BUILDING_RELEASE_ASSETS.some(release => release.id === asset.id)
       && !PUBLIC_REALM_RELEASE_ASSETS.some(release => release.zoneType === asset.zoneType && release.model.variantId === asset.model.variantId));

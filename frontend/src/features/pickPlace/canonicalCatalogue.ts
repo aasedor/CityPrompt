@@ -11,7 +11,7 @@ import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
 import { catalogueStyleIds, catalogueStyleLabel } from './catalogueFacets';
 import { cataloguePresentationFor } from './cataloguePresentation';
-import { CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS } from './assetRegistry';
+import { CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS, COURT_ONLY_SPORT_ASSETS } from './assetRegistry';
 import { LOCAL_CLAUDE_ASSETS } from './claudeAssetLocalTrial';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
 import { PUBLIC_REALM_RELEASE_ASSETS } from './publicRealmRelease';
@@ -108,6 +108,9 @@ export function resolveCatalogueRoster(entries: CatalogueRosterEntry[], assets =
 
 // Local validation roster: no legacy variants or generic massing fallbacks in discovery.
 const resolvedRoster = resolveCatalogueRoster([...validation.entries, ...expansion.entries,
+  ...COURT_ONLY_SPORT_ASSETS.filter(isPlaceable).map(asset => ({ domain: 'park',
+    archetype_id: String(asset.properties.green_space_archetype_id),
+    variant_id: asset.model.variantId, placement_id: asset.id })),
   ...[...LOCAL_CLAUDE_ASSETS.filter(asset =>
     !CLAUDE_BUILDING_RELEASE_ASSETS.some(release => release.id === asset.id)
     && !PUBLIC_REALM_RELEASE_ASSETS.some(release => release.zoneType === asset.zoneType && release.model.variantId === asset.model.variantId)),

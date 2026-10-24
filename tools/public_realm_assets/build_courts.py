@@ -121,7 +121,8 @@ def aggregate(w,d,material_name,z=0):
         k=len(verts);verts.extend([(x-s,y,z+.002),(x+s,y,z+.002),(x,y+s,z+.004)]);faces.append((k,k+1,k+2))
     S.mesh('fine aggregate',verts,faces,material_name)
 
-def sports_module(r):
+def sports_module(r, *, include_enclosure=True):
+    """Build the sport at native size; optional perimeter fences serve gardens."""
     kind=r['sport'];pw,pd=r['playing_m'];mw,md=r['module_m']
     gate_y=-md/2+3;gate_width=1.8
     if kind=='padel':gate_y=-.6;gate_width=.86
@@ -142,7 +143,7 @@ def sports_module(r):
         basketball_end(pd/2,1,r)
         if kind=='basketball':
             basketball_end(-pd/2,-1,r);S.line((-pw/2-.15,0),(pw/2+.15,0));S.arc(0,0,1.775,width=.05)
-        side_gate_fence(mw,md,gate_y,3)
+        if include_enclosure:side_gate_fence(mw,md,gate_y,3)
     elif kind=='netball':
         S.rectline(0,0,pw-.05,pd-.05)
         for y in (-pd/6,pd/6):S.line((-pw/2,y),(pw/2,y))
@@ -175,7 +176,8 @@ def sports_module(r):
         court_net(nw,r['net_center_m'],r['net_end_m'],bottom=.78 if kind=='badminton' else .03,
                   mesh_step=.05,post_height=1.55 if kind=='badminton' else 1.07 if kind=='tennis' else 1.05)
         if kind=='padel':padel_walls()
-        elif kind=='tennis':side_gate_fence(mw,md,gate_y,3)
+        elif kind=='tennis':
+            if include_enclosure:side_gate_fence(mw,md,gate_y,3)
         else:
             # Low end screens frame the calm-weather garden; sides remain open.
             for y in (-md/2,md/2):S.fence_segment((-mw/2,y),(mw/2,y),2.4)

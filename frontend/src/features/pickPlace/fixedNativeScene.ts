@@ -4,6 +4,7 @@ import type { SiteZoneProperties } from '@/types';
  * Treat even an unavailable saved release claim as fixed until it is repaired. */
 export function isFixedNativeScene(properties?: SiteZoneProperties | null): boolean {
   return properties?.validation_fixed_fixture === true
+    || properties?.court_only_native === true
     || [properties?.public_realm_release_asset, properties?.pick_place_asset].some(value =>
       typeof value === 'string' && value.startsWith('claude_public_realm:'));
 }

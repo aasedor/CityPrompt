@@ -53748,6 +53748,362 @@
         "concrete"
       ],
       "contentRevision": "f8f39b1991f46f3c9b5281955b8e77d415fe02a5de25787d3203cd686554acd4"
+    },
+    {
+      "id": "court_only_basketball_v1--native-v1",
+      "archetypeId": "court_only_basketball",
+      "variantId": "court_only_basketball_v1",
+      "title": "Basketball court only",
+      "label": "Court only",
+      "mode": "native_assembly",
+      "widthM": 21,
+      "depthM": 36,
+      "occupiedWidthM": 21,
+      "occupiedDepthM": 36,
+      "measuredBoundsM": [
+        [
+          -10.5,
+          -18.0,
+          -0.11999999731779099
+        ],
+        [
+          10.5,
+          18.0,
+          4.0
+        ]
+      ],
+      "sourceRecipeSha256": "dd9d4c55a54679ca7e90f61e347f2c86d26ce5c6647a80140b14d46ebed9b487",
+      "sourceRecipePath": "seed/classroom-parks/court-only-basketball-v001/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "5e3150afb5b14183172cd4aef5551f66627eab33ec6aefc58a697fb7dd458259",
+          "archivePath": "seed/classroom-parks/court-only-basketball-v001/assembly-preview.glb",
+          "url": "/native-park-assets/5e3150afb5b14183172cd4aef5551f66627eab33ec6aefc58a697fb7dd458259.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "dfff2afd77519df425ad95d91e0351933a14e6809fb13d926135f2d16074d15a",
+        "archivePath": "seed/classroom-parks/court-only-basketball-v001/preview.png",
+        "url": "/archetypes/openspaces/court-only-basketball-v001/preview.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            -10.5,
+            -9.0
+          ],
+          "b": [
+            -7.8,
+            -9.0
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": -10.5,
+          "y": -9.0,
+          "arrivalX": -7.8,
+          "arrivalY": -9.0,
+          "widthM": 1.8
+        }
+      ],
+      "walkSurfaceMaterials": [
+        "court",
+        "runoff",
+        "paint",
+        "key",
+        "kitchen",
+        "sand"
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "student_browser_pass_2026-10-24",
+      "contentRevision": "6392a787429c551108dd2d99912b690816d838035400d322883c7952f3423117"
+    },
+    {
+      "id": "court_only_tennis_v1--native-v1",
+      "archetypeId": "court_only_tennis",
+      "variantId": "court_only_tennis_v1",
+      "title": "Tennis court only",
+      "label": "Court only",
+      "mode": "native_assembly",
+      "widthM": 18.3,
+      "depthM": 36.6,
+      "occupiedWidthM": 18.3,
+      "occupiedDepthM": 36.6,
+      "measuredBoundsM": [
+        [
+          -9.149999618530273,
+          -18.299999237060547,
+          -0.11999999731779099
+        ],
+        [
+          9.149999618530273,
+          18.299999237060547,
+          1.072996735572815
+        ]
+      ],
+      "sourceRecipeSha256": "8d7e38eb9c7c8f6b9169706899bfaea067b0337ef348410e047fc8fb37b972f7",
+      "sourceRecipePath": "seed/classroom-parks/court-only-tennis-v001/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "6b35d22789a3a7e8c045ec4c3e8e9d69a930727d17ac9c2d641fd9870ef8dd52",
+          "archivePath": "seed/classroom-parks/court-only-tennis-v001/assembly-preview.glb",
+          "url": "/native-park-assets/6b35d22789a3a7e8c045ec4c3e8e9d69a930727d17ac9c2d641fd9870ef8dd52.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "2cd893337068b8527989a6d7c366f8f1e2307313ca3734a21ea01aefbee834f7",
+        "archivePath": "seed/classroom-parks/court-only-tennis-v001/preview.png",
+        "url": "/archetypes/openspaces/court-only-tennis-v001/preview.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            -9.15,
+            -9.15
+          ],
+          "b": [
+            -5.785,
+            -9.15
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": -9.15,
+          "y": -9.15,
+          "arrivalX": -5.785,
+          "arrivalY": -9.15,
+          "widthM": 1.8
+        }
+      ],
+      "walkSurfaceMaterials": [
+        "court",
+        "runoff",
+        "paint",
+        "key",
+        "kitchen",
+        "sand"
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "student_browser_pass_2026-10-24",
+      "contentRevision": "eed1f8f2dd6a444847b93f1a5e98dd297cba50409dd456b2b19e2119d84ab8b5"
+    },
+    {
+      "id": "court_only_pickleball_v1--native-v1",
+      "archetypeId": "court_only_pickleball",
+      "variantId": "court_only_pickleball_v1",
+      "title": "Pickleball court only",
+      "label": "Court only",
+      "mode": "native_assembly",
+      "widthM": 10.4,
+      "depthM": 19.6,
+      "occupiedWidthM": 10.4,
+      "occupiedDepthM": 19.6,
+      "measuredBoundsM": [
+        [
+          -5.199999809265137,
+          -9.800000190734863,
+          -0.11999999731779099
+        ],
+        [
+          5.199999809265137,
+          9.800000190734863,
+          0.9652000069618225
+        ]
+      ],
+      "sourceRecipeSha256": "36c1a659493d43e4dfef37d1ecab899e0ba76ca1683ed213dfe00ea622e6afda",
+      "sourceRecipePath": "seed/classroom-parks/court-only-pickleball-v001/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "75fa2fcf105f678bdafbe3d72c348f73e3ca0a892ee563fb871439a51a1b00f5",
+          "archivePath": "seed/classroom-parks/court-only-pickleball-v001/assembly-preview.glb",
+          "url": "/native-park-assets/75fa2fcf105f678bdafbe3d72c348f73e3ca0a892ee563fb871439a51a1b00f5.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "5045fdb916ceba5673a02a92e197f18a952bfb6e135647f10cfccadad642c7a9",
+        "archivePath": "seed/classroom-parks/court-only-pickleball-v001/preview.png",
+        "url": "/archetypes/openspaces/court-only-pickleball-v001/preview.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            -5.2,
+            -4.9
+          ],
+          "b": [
+            -3.348,
+            -4.9
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": -5.2,
+          "y": -4.9,
+          "arrivalX": -3.348,
+          "arrivalY": -4.9,
+          "widthM": 1.8
+        }
+      ],
+      "walkSurfaceMaterials": [
+        "court",
+        "runoff",
+        "paint",
+        "key",
+        "kitchen",
+        "sand"
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "student_browser_pass_2026-10-24",
+      "contentRevision": "9d6876edb170afc909a8cad57260c599cf6b09fd16bc97023c3e1d9c35fdd351"
+    },
+    {
+      "id": "court_only_beach_volleyball_v1--native-v1",
+      "archetypeId": "court_only_beach_volleyball",
+      "variantId": "court_only_beach_volleyball_v1",
+      "title": "Beach volleyball court only",
+      "label": "Court only",
+      "mode": "native_assembly",
+      "widthM": 14,
+      "depthM": 22,
+      "occupiedWidthM": 14,
+      "occupiedDepthM": 22,
+      "measuredBoundsM": [
+        [
+          -7.0,
+          -11.0,
+          -0.11999999731779099
+        ],
+        [
+          7.0,
+          11.0,
+          3.2300000190734863
+        ]
+      ],
+      "sourceRecipeSha256": "b885d3e9c066fcb8dabe7d82145977a1b568dbd617d339b1ecef8c418a305277",
+      "sourceRecipePath": "seed/classroom-parks/court-only-beach-volleyball-v001/recipe.json",
+      "sourceStorage": "repository",
+      "groundOwner": "assembly",
+      "terrainPolicy": "prepared_level",
+      "assets": {
+        "assembly": {
+          "sha256": "2333fa81b824f1851a8730f0b96bc3ec2334717b56aa4869e753936450fc5504",
+          "archivePath": "seed/classroom-parks/court-only-beach-volleyball-v001/assembly-preview.glb",
+          "url": "/native-park-assets/2333fa81b824f1851a8730f0b96bc3ec2334717b56aa4869e753936450fc5504.glb"
+        }
+      },
+      "thumbnail": {
+        "sha256": "25f849284fe35eab5ebe800f3554c5af0f7b3c80414806800c60f9fe581e4055",
+        "archivePath": "seed/classroom-parks/court-only-beach-volleyball-v001/preview.png",
+        "url": "/archetypes/openspaces/court-only-beach-volleyball-v001/preview.png"
+      },
+      "placements": [],
+      "surfaceRegions": [],
+      "routes": [
+        {
+          "a": [
+            -7.0,
+            -5.5
+          ],
+          "b": [
+            -4.3,
+            -5.5
+          ],
+          "z": 0
+        }
+      ],
+      "entrances": [
+        {
+          "x": -7.0,
+          "y": -5.5,
+          "arrivalX": -4.3,
+          "arrivalY": -5.5,
+          "widthM": 1.8
+        }
+      ],
+      "walkSurfaceMaterials": [
+        "court",
+        "runoff",
+        "paint",
+        "key",
+        "kitchen",
+        "sand"
+      ],
+      "surfacePalette": {
+        "grass": [
+          0.21,
+          0.28,
+          0.105
+        ],
+        "paving": [
+          0.53,
+          0.5,
+          0.43
+        ]
+      },
+      "status": "pilot",
+      "visualStatus": "agent_native_visual_review_pass",
+      "runtimeStatus": "student_browser_pass_2026-10-24",
+      "contentRevision": "1ce0ad75c0496a1eda8855d6ba8db37c439e1e77260cb038a0e77b4cb1b27aa8"
     }
   ],
   "archivedLayouts": [
