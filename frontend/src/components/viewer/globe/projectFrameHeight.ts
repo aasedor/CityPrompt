@@ -1,5 +1,17 @@
 const DEG_TO_RAD = Math.PI / 180;
 
+/** Include saved height edits when framing an authored native building. */
+export function projectFrameRoofHeight({ nativeHeight, heightM, floorCount, isBuilding }: {
+  nativeHeight?: number; heightM?: unknown; floorCount?: unknown; isBuilding: boolean;
+}): number {
+  const native = typeof nativeHeight === 'number' && Number.isFinite(nativeHeight) ? Math.max(0, nativeHeight) : 0;
+  if (!isBuilding) return native;
+  const edited = Number(heightM);
+  const floors = Number(floorCount);
+  return Math.max(native, Number.isFinite(edited) && edited > 0
+    ? edited : Number.isFinite(floors) ? Math.max(0, floors * 4) : 0);
+}
+
 /** Symmetric extent around the optical centre, including an off-centre roof. */
 export function projectedFrameFraction(points: Array<{ x: number; y: number }>, width: number, height: number): number {
   return Math.max(...points.map(p => Math.max(Math.abs(2 * p.x / width - 1), Math.abs(2 * p.y / height - 1))));

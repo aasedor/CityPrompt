@@ -28,7 +28,7 @@ import { MapCleanupPreview } from './MapCleanupPreview';
 import { readMapCleanupBoxes, type MapCleanupBox } from './mapCleanup';
 import { assetForZone } from '@/features/pickPlace/catalogue';
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
-import { projectedFrameFraction } from './projectFrameHeight';
+import { projectedFrameFraction, projectFrameRoofHeight } from './projectFrameHeight';
 import { useWorkingViewQuality } from './useWorkingViewQuality';
 import { WorkingViewPerformance, WorkingViewStatsSampler, type WorkingViewStats } from './WorkingViewPerformance';
 /**
@@ -2330,10 +2330,12 @@ export function GlobeSitePlannerMap({
     );
     const samples = renderZones.flatMap(zone => {
       const nativeHeight = assetForZone({ properties: zone.properties ?? {} })?.nativeDimensions?.[2];
-      const floors = Number(zone.properties?.floor_count ?? zone.properties?.floors ?? 0);
-      const explicitHeight = Number(zone.properties?.height_m ?? 0);
-      const roof = nativeHeight ?? (isBuildingZoneType(zone.zone_type ?? '')
-        ? Math.max(0, Number.isFinite(explicitHeight) ? explicitHeight : 0, Number.isFinite(floors) ? floors * 4 : 0) : 0);
+      const roof = projectFrameRoofHeight({
+        nativeHeight,
+        heightM: zone.properties?.height_m ?? zone.properties?.height,
+        floorCount: zone.properties?.floor_count ?? zone.properties?.floors,
+        isBuilding: isBuildingZoneType(zone.zone_type ?? ''),
+      });
       return (zone.coordinates ?? []).filter(c => c.length >= 2 && c.every(Number.isFinite))
         .flatMap(c => [{ coordinate: c, altitude: 0 }, { coordinate: c, altitude: roof }]);
     });

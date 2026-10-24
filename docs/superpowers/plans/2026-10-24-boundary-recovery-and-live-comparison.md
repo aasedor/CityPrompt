@@ -37,7 +37,45 @@
 - [x] Reconcile editing handles with the actual saved shape after a second snap. Cover Undo/Redo, a revision arriving during a drag, and changing selection before pointer release. Verify each newly exposed failure red then green.
 - [x] Repeat ordinary-control edge/overlap moves, Undo and Redo in the local app after the final fix. Reproduce the old handle bug on live to distinguish it from a new regression.
 
-## Review focus
+## Follow-up — eliminate avoidable generic blocks
+
+User requested correction of the generic blocks described by the comparison.
+The finite audit of all 97 effective building placements found 77 resolving
+through the canonical library, 15 through valid direct GLBs, and five missing
+revisions from the separately published `seed/claude-five-trial/library.json`.
+The 81-entry restore also omitted the existing tower and house programmes.
+House alternate assemblies have a different candidate revision from their
+programme's native source; filtering solely to the saved native revision blocks
+an otherwise valid authored assembly. Direct review GLBs also override a
+changed house storey count/footprint unless their native-only limit is checked.
+
+Approach: restore the existing finite packages into the disposable local QA
+services, preserving their review states. Keep exact revision locking for fixed
+models. Admit a complete alternate only within the saved source's same family,
+exact variant and authored programme. Check variable-storey/footprint edits
+before saving so missing support preserves the current detailed building.
+Use the compiled recipe for a transformed house instead of its native preview.
+No new geometry, approval, model publication, or deployment is in scope.
+
+- [x] Restore one missing model; visually replace its saved block, then restore and verify the remaining four.
+- [x] Verify/install the existing finite tower and house programmes locally, retaining their trial review states.
+- [x] Reproduce programme revision filtering, stale direct preview and unchecked house edits with failing tests; apply minimal fixes.
+- [x] Audit every default building plus a finite set of height/footprint programme cases, and stress-test mixed detailed placements and save/reload through the browser.
+- [x] Obtain independent review, run narrow checks/type-check/build, save evidence and prepare coherent local source checkpoints.
+
+Follow-up results, 2026-10-24:
+
+- All 97 effective default building bindings resolve: 82 compiled detailed recipes and 15 valid direct native GLBs. No default falls back because of a missing revision in this QA inventory. This is a binding/recipe audit, not a visual review of all 97 buildings.
+- The separately published five-model package passes object/hash and database-binding verification. The existing tower source plus three modules and six house assemblies also pass their official verifiers. The QA library now has 93 rows. The three alternate house assemblies retain `BUILDER_PASS_VISUAL_REVIEW_PENDING`; installing them into disposable QA does not grant visual approval or publish them.
+- All 68 programme probes pass: tower storeys 16–40 at both authored plot-size bounds, and each of the three houses at one/two storeys and 85/100/115% footprint. Every probe retains uniform horizontal scale and unscaled authored height.
+- Exact candidate and validated source SHA bindings both resolve, including Halifax's saved content hash. Same-storey edits retain the pinned native revision. Alternate complete houses stay within the same family, exact variant and programme. Unknown revisions remain rejected.
+- Native direct previews no longer override changed or unsupported geometry. Storey and footprint edits, including return to default values, check the authored recipe before saving; failed checks preserve the current building.
+- Browser project `http://localhost:5174/projects/062ccae6-fde1-441e-ab3f-e1e557ec2ab3` contains eight distinct detailed buildings: the five restored models, tower, Halifax house and bungalow. The saved hotel block upgrades after Refresh detailed models. A 40-storey tower, two-storey bungalow at 115%, return to native values, Undo/Redo and full reload were verified. Persisted readback confirms all eight use `lego_assembly`, tower 40/135.6 m and bungalow 1/100%. Fixed review models retain move/rotate controls.
+- Browser testing exposed cropped tower framing: the camera sampled native height before the saved edit. Framing now includes the edited roof; Focus building visibly contains the complete 40-storey tower. Added a regression and obtained a second independent review approval.
+- Fresh verification: 328 tests across ten targeted frontend files plus 13 framing tests; 225 backend assembly/revision tests; frontend type-check and production build all pass. React review found no new hook, accessibility or state-management concerns. Existing build-size/mixed-import and pytest deprecation warnings remain. Final browser console error read is empty.
+- Evidence and report: primary checkout `artifacts/model-block-repair-20261024/`. Runtime helpers, audits, restored LFS objects and build output remain untracked/ignored or unchanged tracked source assets. The primary checkout retains its 142 pre-existing status entries. No push, deployment, new geometry generation or approval-state change occurred. Browser viewport overrides were reset.
+
+## Original review focus
 
 Closing clicks and concave polygons must remain valid. A failed outline must retain its points. Retained legacy server errors must have reachable recovery. Model installs must target only the isolated QA services and exact activated seed entries. Production testing must not mutate existing user projects or spend credits.
 

@@ -2,10 +2,17 @@ import { describe, expect, it } from 'vitest';
 import {
   estimateProjectFrameHeight,
   projectedFrameFraction,
+  projectFrameRoofHeight,
   PROJECT_FRAME_MIN_HEIGHT_M,
 } from './projectFrameHeight';
 
 describe('project camera framing height', () => {
+  it('includes an edited tower height above its native roof', () => {
+    expect(projectFrameRoofHeight({ nativeHeight: 58.8, heightM: 135.6, floorCount: 40, isBuilding: true })).toBe(135.6);
+    expect(projectFrameRoofHeight({ nativeHeight: 58.8, floorCount: 40, isBuilding: true })).toBe(160);
+    expect(projectFrameRoofHeight({ nativeHeight: 29.4, heightM: NaN, floorCount: 1, isBuilding: true })).toBe(29.4);
+    expect(projectFrameRoofHeight({ nativeHeight: 8, heightM: 135.6, floorCount: 40, isBuilding: false })).toBe(8);
+  });
   it('detects a cropped rooftop even when the footprint span fits', () => {
     // The former span-only test sees 60% width; the roof is above the frame.
     expect(projectedFrameFraction([{ x: 300, y: -100 }, { x: 900, y: 650 }], 1200, 900)).toBeGreaterThan(1);
