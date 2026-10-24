@@ -34,6 +34,7 @@ export interface SceneTileQueue {
 }
 
 interface WaitForVisibleTileCoverageOptions {
+  signal?: AbortSignal;
   /** How long the exact visible tile set must remain unchanged. */
   stableMs?: number;
   /** Poll cadence for checking the renderer's visible tile set. */
@@ -143,11 +144,13 @@ export function waitForVisibleTileCoverage(
     timeoutMs = 12_000,
     minimumVisibleTiles = 1,
     acceptVisibleCoverageAtTimeout = false,
+    signal,
   }: WaitForVisibleTileCoverageOptions = {},
 ): Promise<boolean> {
+  if(signal?.aborted)return Promise.reject(signal.reason);
   if (!tiles?.visibleTiles) return Promise.resolve(false);
 
-  return new Promise((resolve) => {
+  return new Promise((resolve,reject) => {
     const objectIds = new WeakMap<object, number>();
     let nextObjectId = 1;
     let lastSignature: string | null = null;
@@ -170,11 +173,16 @@ export function waitForVisibleTileCoverage(
       return `${typeof tile}:${String(tile)}`;
     };
 
+    const cleanup=()=>{
+      if(pollTimer!==null)window.clearInterval(pollTimer);
+      if(timeoutTimer!==null)window.clearTimeout(timeoutTimer);
+      signal?.removeEventListener('abort',abort);
+    };
+    const abort=()=>{if(complete)return;complete=true;cleanup();reject(signal?.reason);};
     const finish = (settled: boolean) => {
       if (complete) return;
       complete = true;
-      if (pollTimer !== null) window.clearInterval(pollTimer);
-      if (timeoutTimer !== null) window.clearTimeout(timeoutTimer);
+      cleanup();
       resolve(settled);
     };
 
@@ -195,6 +203,7 @@ export function waitForVisibleTileCoverage(
       if (now - stableSince >= stableMs) finish(true);
     };
 
+    signal?.addEventListener('abort',abort,{once:true});
     sample();
     pollTimer = window.setInterval(sample, Math.max(16, pollMs));
     timeoutTimer = window.setTimeout(() => {

@@ -27,6 +27,7 @@ import { MapCleanupControls } from './MapCleanupControls';
 import { MapCleanupPreview } from './MapCleanupPreview';
 import { readMapCleanupBoxes, type MapCleanupBox } from './mapCleanup';
 import { assetForZone } from '@/features/pickPlace/catalogue';
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import { projectedFrameFraction } from './projectFrameHeight';
 import { useWorkingViewQuality } from './useWorkingViewQuality';
 import { WorkingViewPerformance, WorkingViewStatsSampler, type WorkingViewStats } from './WorkingViewPerformance';
@@ -1779,13 +1780,15 @@ export function GlobeSitePlannerMap({
   const [parkAlignment, setParkAlignment] = useState<ParkAlignment>({ pending: false, needsAttention: false, retry: () => {} });
   const parkAlignmentRef = useRef(parkAlignment);
   parkAlignmentRef.current = parkAlignment;
-  const waitForSharedGround = useCallback(async () => {
+  const waitForSharedGround = useCallback(async (signal?:AbortSignal) => {
+    signal?.throwIfAborted();
     if (sharedGroundRef.current.snapshot?.excludedCells?.length) captureSharedGround(sharedGroundRef.current);
     const context = contextPresentationRef.current;
     const contextProblem = contextPilotCaptureProblem(context.provider, context.requested);
     if (contextProblem) throw new Direct3DCaptureError('capture_failed', contextProblem);
     const parkDeadline = performance.now() + 45000;
     while (parkAlignmentRef.current.pending && !parkAlignmentRef.current.needsAttention && performance.now() < parkDeadline) {
+      signal?.throwIfAborted();
       await new Promise(resolve => setTimeout(resolve, 200));
     }
     if (parkAlignmentRef.current.pending) throw new Error('Park alignment is still updating. Your design is safe; keep working and try the render once alignment finishes.');
@@ -1798,8 +1801,10 @@ export function GlobeSitePlannerMap({
       || (sharedGroundRef.current.status === 'ready' && pendingGroundBuildingsRef.current.length > 0
         && !buildingGroundingIssuesRef.current.some((issue) => issue.reason !== 'ground_not_ready')))
       && performance.now() < deadline) {
+      signal?.throwIfAborted();
       await new Promise((resolve) => setTimeout(resolve, 200));
     }
+    signal?.throwIfAborted();
     assertStreetGroundReady(sceneRef.current);
     const snapshot = captureSharedGround(sharedGroundRef.current);
     if (pendingGroundBuildingsRef.current.length > 0 || buildingGroundingIssuesRef.current.length > 0) {
@@ -2986,11 +2991,12 @@ export function GlobeSitePlannerMap({
   ]);
 
   const waitForCurrentTiles = useCallback(
-    () => waitForCaptureTileReadiness(tilesRendererRef.current),
+    (signal?:AbortSignal) => waitForCaptureTileReadiness(tilesRendererRef.current,{signal}),
     [],
   );
 
   const captureDirect3D = useCallback((options: {
+    signal?:AbortSignal;
     landscapeBoundary?: number[][];
     skipTileWait?: boolean;
     includeGeometryPasses?: boolean;
@@ -3031,14 +3037,14 @@ export function GlobeSitePlannerMap({
       try {
         if (restoreContextCamera) setBuildingModelsVisible(true);
         if (restoreContextCamera) await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
-        const tilesSettled = options.skipTileWait || await waitForCurrentTiles();
+        const tilesSettled = options.skipTileWait || await waitForCurrentTiles(options.signal);
         if (!tilesSettled) {
           throw new Direct3DCaptureError(
             'capture_failed',
             'The surrounding 3D tiles did not settle in time. Hold the camera still and try again.',
           );
         }
-        const sharedGroundSnapshot = await waitForSharedGround();
+        const sharedGroundSnapshot = await waitForSharedGround(options.signal);
         if (
           rendererRef.current !== renderer
           || sceneRef.current !== scene
@@ -3165,6 +3171,7 @@ export function GlobeSitePlannerMap({
   const captureVideoRouteControls = useCallback(async (
     request: VideoRouteCaptureRequest,
   ): Promise<VideoRouteCaptureResult> => {
+    request.signal?.throwIfAborted();
     const canvas = canvasRef.current;
     const renderer = rendererRef.current;
     const camera = cameraRef.current;
@@ -3316,8 +3323,9 @@ export function GlobeSitePlannerMap({
       ? waitForVisibleTileCoverage(tileRenderer, {
           stableMs: 750,
           timeoutMs: 45_000,
+          signal:request.signal,
         })
-      : waitForCurrentTiles();
+      : waitForCurrentTiles(request.signal);
 
     const applyRoutePose = (progress: number) => {
       if (peopleFollow) {
@@ -3345,9 +3353,10 @@ export function GlobeSitePlannerMap({
       camera.updateMatrixWorld(true);
       if (controls?.pivotPoint) controls.pivotPoint.copy(target);
     };
-    const twoFrames = () => new Promise<void>((resolve) => {
-      requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
-    });
+    const twoFrames = async () => {
+      await new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
+      request.signal?.throwIfAborted();
+    };
 
     try {
       if (previousControlsEnabled !== null) controlsTarget.enabled = false;
@@ -3403,6 +3412,7 @@ export function GlobeSitePlannerMap({
       const warmupFrames = buildVideoWarmupFrames(renderProfile, request.durationSeconds);
       if (request.renderQuality === 'high') {
         for (const warmup of warmupFrames) {
+          request.signal?.throwIfAborted();
           if (warmup.index % 8 === 0) request.onProgress?.('loading', warmup.index, warmupFrames.length);
           peopleCapture.pose(warmup.index / 24);
           applyRoutePose(videoMotionProgress(warmup.progress, request.cameraMotion));
@@ -3422,16 +3432,17 @@ export function GlobeSitePlannerMap({
         // restored in the finally block.
         releaseTileQueueHold = holdTileQueueUpdates(tileRenderer);
         await twoFrames();
-        const frozenContextReady = await waitForVisibleTileCoverage(tileRenderer);
+        const frozenContextReady = await waitForVisibleTileCoverage(tileRenderer,{signal:request.signal});
         if (!frozenContextReady) {
           throw new Error('The preloaded Google context could not be frozen for capture. Try a shorter path.');
         }
       }
 
-      const routeGroundSnapshot = await waitForSharedGround();
+      const routeGroundSnapshot = await waitForSharedGround(request.signal);
       const keyframesBase64: string[] = [];
       const geometryCheckpoints: NonNullable<VideoRouteCaptureResult['geometryCheckpoints']> = [];
       for (let index = 0; index < sampledRoute.length; index += 1) {
+        request.signal?.throwIfAborted();
         request.onProgress?.('checking', index, sampledRoute.length);
         peopleCapture.pose(index / (sampledRoute.length - 1) * (request.durationSeconds - 1 / 24));
         applyRoutePose(videoMotionProgress(index / (sampledRoute.length - 1), request.cameraMotion));
@@ -3440,7 +3451,7 @@ export function GlobeSitePlannerMap({
         if (!settled) {
           throw new Error(`The surrounding Google context did not settle at route view ${index + 1}. Try a shorter path.`);
         }
-        await waitForSharedGround();
+        await waitForSharedGround(request.signal);
         assertSharedGroundUnchanged(routeGroundSnapshot, sharedGroundRef.current);
         assertStreetGroundReady(scene);
         peopleCapture.pose(index / (sampledRoute.length - 1) * (request.durationSeconds - 1 / 24));
@@ -3452,6 +3463,7 @@ export function GlobeSitePlannerMap({
         const capture = nearFieldRoute
           ? null
           : await captureDirect3D({
+              signal:request.signal,
               skipTileWait: true,
               includeGeometryPasses: request.renderQuality === 'high',
             });
@@ -3510,6 +3522,7 @@ export function GlobeSitePlannerMap({
 
       const cpuSubmissionMs: number[] = [];
       const previewCapture = await captureDeterministicVideo({
+        signal:request.signal,
         canvas: previewCanvas,
         durationSeconds: request.durationSeconds,
         bitrate: renderProfile.bitrate,
@@ -5234,6 +5247,8 @@ export function GlobeSitePlannerMap({
       {!walkMode && !entrancePick && !hasDrawingTool && !streetViewPegman && !measureModeActive && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 hidden max-w-[min(38rem,calc(100%-36rem))] -translate-x-1/2 rounded-xl border border-slate-300 bg-white/95 px-3 py-2 text-center text-xs font-medium text-slate-700 shadow-lg backdrop-blur-xl select-none lg:block">
           {detailEditing ? (detailInteraction?.moving ? 'Click the map to move this item · Esc to cancel' : detailInteraction?.editing ? 'Use Move, Rotate or Delete in the panel · Click another item to select it' : 'Choose an item to place · Click a placed item to edit · Drag to pan · Scroll to zoom')
+            : siteZones.some(zone => zone.id === selectedZoneId && isFixedNativeScene(zone.properties))
+            ? 'Fixed-size model | Drag to move | Use the reshape panel to rotate | Esc to deselect'
             : siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.native_home_plot === true)
             ? 'Drag the Move handle to reposition this house | Use the reshape panel to resize or rotate | Esc to deselect'
             : siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.pick_place_asset)

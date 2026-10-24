@@ -14,6 +14,7 @@ import { ParkComponentControls } from './ParkComponentControls';
 import { BenchDetailControls } from '@/features/parks/BenchDetailEditor';
 import { BuildingDesignControls } from './BuildingDesignControls';
 import type { SiteZoneProperties } from '@/types';
+import { cataloguePresentationFor } from './cataloguePresentation';
 
 export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onDuplicate, onMore, onConnections, onTerrace, onUpdateDesign, zones = [], onUpdateParkLayout, onSaveDetails, onDetailsEditingChange }: {
   onDetailsEditingChange?: (editing:boolean) => void;
@@ -58,7 +59,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
   const valid = dimensionsValid && !flexibleProblem;
   const button = 'min-h-11 rounded-lg border border-slate-700 bg-white px-3 text-sm font-semibold text-slate-900 disabled:opacity-40';
   return <aside aria-label="Reshape object" className="absolute bottom-4 inset-x-4 top-auto z-40 max-h-[42dvh] overflow-y-auto overscroll-contain rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-3 shadow-xl sm:left-auto sm:w-72 sm:bottom-4 sm:top-28 sm:max-h-none">
-    <div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">{asset.label}</h2><button aria-label="Close reshape" onClick={onClose} className="flex h-11 w-11 items-center justify-center text-slate-900"><X size={18}/></button></div>
+    <div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">{cataloguePresentationFor(asset.id)?.label ?? asset.label}</h2><button aria-label="Close reshape" onClick={onClose} className="flex h-11 w-11 items-center justify-center text-slate-900"><X size={18}/></button></div>
     <p className="mb-3 text-xs text-slate-600">{fixedFixture ? 'Fixed native model: move and rotate only.' : isFlexiblePark(zone.properties) ? 'Drag white corners to make an irregular park. Add an outline point for more bends; the planted layout adapts when saved.' : isPark ? 'Drag the park to move it. Drag individual white corners to fit its outline to the site; use the orange handle to turn it.' : zone.properties?.native_home_plot === true ? 'Drag the Move handle on the selected plot to move this house. Use a corner to reshape or the orange handle to turn it.' : zone.properties?.native_plot_axes === true ? 'Drag the Move handle on the selected plot to move this building. Use a corner to reshape or the orange handle to turn it.' : 'Drag the object to move it. Drag a corner to reshape; use the orange handle to turn it.'}</p>
     {!isPark && !fixedFixture && onUpdateDesign && <BuildingDesignControls key={JSON.stringify([zone.id, zone.properties?.development_subcategory, zone.properties?.development_archetype_id, zone.properties?.development_selected_variant_id, zone.properties?.floors, zone.properties?.floor_count, zone.properties?.height, zone.properties?.height_m, zone.properties?.building_footprint_scale])} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
     {onUpdateParkLayout && <ParkLayoutControls key={`${zone.id}:${zone.updated_at}`} zone={zone} zones={zones} disabled={disabled} onSave={onUpdateParkLayout}/>}
@@ -87,7 +88,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
         <label className="text-xs font-semibold text-slate-800">Plot depth (m)<input aria-label="Plot depth (m)" disabled={fixedFixture} type="number" min={asset.minDepth} max={maxDepth} step="0.1" value={depth} onChange={e=>setDepth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
       </div>
       <label className="mt-2 block text-xs font-semibold text-slate-800">Rotation (°)<input aria-label="Rotation (degrees)" type="number" step="1" value={degrees} onChange={e=>setDegrees(e.target.value)} className="ml-2 min-h-11 w-20 rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
-      <p className="my-3 text-xs text-slate-600">{asset.reshapeDescription}</p>
+      <p className="my-3 text-xs text-slate-600">{fixedFixture ? 'The model and its plot keep their fixed size. Move or rotate it to fit, or choose a smaller model.' : asset.reshapeDescription}</p>
       {reshapeRejected && <p role="alert" className="mb-2 text-xs font-semibold text-red-700">Shape not saved. The existing plot is unchanged; check the placement message, then move the plot or try another size or angle.</p>}
       {!dimensionsValid && <p role="alert" className="mb-2 text-xs text-red-700">Use a width of {asset.minWidth}–{maxWidth} m and depth of {asset.minDepth}–{maxDepth} m.</p>}
       {flexibleProblem && <p role="alert" className="mb-2 text-xs text-red-700">{flexibleProblem}</p>}

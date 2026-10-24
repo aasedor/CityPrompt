@@ -39,6 +39,17 @@ class FakeTiles implements SceneTileRenderer {
   }
 }
 
+it('cancels a tile wait promptly and releases its polling timers',async()=>{
+  vi.useFakeTimers();
+  try {
+    const controller=new AbortController();
+    const result=waitForVisibleTileCoverage(new FakeTiles(),{signal:controller.signal,timeoutMs:45_000});
+    const rejected=expect(result).rejects.toMatchObject({name:'AbortError'});
+    controller.abort();await rejected;
+    expect(vi.getTimerCount()).toBe(0);
+  }finally{vi.useRealTimers();}
+});
+
 describe('waitForTilesSettled', () => {
   afterEach(() => {
     vi.useRealTimers();

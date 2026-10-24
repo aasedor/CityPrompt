@@ -5,6 +5,7 @@ import { rectangleAt } from '@/features/pickPlace/geometry';
 import { parkOutlineDimensions } from '@/features/pickPlace/parkOutline';
 import { snapPlacement } from '@/features/pickPlace/snapPlacement';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { isFlexiblePark } from './flexibleParkFit';
 
 export function parkLayoutProposal(zone:SiteZone,layout:NativeParkLayout,zones:SiteZone[]) {
   const d=parkOutlineDimensions(zone.coordinates);
@@ -28,7 +29,7 @@ export function parkLayoutProposal(zone:SiteZone,layout:NativeParkLayout,zones:S
 export function ParkLayoutControls({zone,zones,disabled,onSave}:{zone:SiteZone;zones:SiteZone[];disabled:boolean;
   onSave:(data:{coordinates:number[][];properties:SiteZoneProperties})=>Promise<unknown>}) {
   const current=readNativePark(zone);
-  const choices=nativeParkLayouts.filter(p=>p.variantId===zone.properties?.green_space_selected_variant_id && p.status==='pilot');
+  const choices=isFlexiblePark(zone.properties) ? [] : nativeParkLayouts.filter(p=>p.variantId===zone.properties?.green_space_selected_variant_id && p.status==='pilot');
   const [selected,setSelected]=useState(current?.layout.id??choices[0]?.id??'');
   const [preview,setPreview]=useState(false),[saving,setSaving]=useState(false),[error,setError]=useState('');
   useEffect(()=>{

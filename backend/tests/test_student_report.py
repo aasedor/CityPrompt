@@ -291,6 +291,34 @@ def test_detached_recipe_inconsistent_count_is_not_reported_as_compiled_housing(
     assert metrics["detached_plots_pending"] == 1
 
 
+@pytest.mark.parametrize("automatic_properties", [
+    {"pick_place_automatic_3d": True},
+    {"pick_place_asset": "validation_infill_flat_roof_minimal", "validation_fixed_fixture": True},
+])
+def test_automatic_models_keep_unknown_quantities_without_requesting_a_hidden_rebuild(automatic_properties):
+    parcel, building = detached_fixture(compiled=False)
+    parcel.properties.update(automatic_properties)
+    report = analyze_snapshot(snapshot([parcel], [building]))
+    assert values(report)["compiled_detached_dwellings"] is None
+    metric = next(m for m in report["metrics"] if m["key"] == "detached_plots_pending")
+    assert metric["value"] == 1
+    assert "unverified" in metric["label"].lower()
+    finding = next(f for f in report["findings"] if f["id"] == "detached-housing-quantities")
+    assert "rebuild" not in finding["recommendation"].lower()
+    assert "automatically" in finding["recommendation"]
+
+
+def test_mixed_automatic_and_legacy_plots_explain_both_quantity_workflows():
+    automatic, _ = detached_fixture(compiled=False)
+    automatic.properties["pick_place_asset"] = "validation_infill_flat_roof_minimal"
+    legacy, _ = detached_fixture(compiled=False)
+    report = analyze_snapshot(snapshot([automatic, legacy]))
+    finding = next(f for f in report["findings"] if f["id"] == "detached-housing-quantities")
+    assert "automatically" in finding["recommendation"]
+    assert "legacy" in finding["recommendation"].lower()
+    assert "Build or refresh Community 3D" in finding["recommendation"]
+
+
 @pytest.mark.parametrize("bad_field", ["legoAssembly", "fit", "instances", "segment_id", "community_3d"])
 def test_malformed_detached_metadata_is_reported_as_unknown(bad_field):
     parcel, building = detached_fixture()

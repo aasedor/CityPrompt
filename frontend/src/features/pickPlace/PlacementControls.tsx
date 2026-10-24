@@ -14,6 +14,7 @@ export function PlacementControls({ draft, onChange, getPreviewDegrees }: {
   const [expanded,setExpanded] = useState(false);
   const generated=draft.generatedModel;
   const asset=generated?null:placeAsset(draft.assetId);
+  const fixed = isFixedNativeScene(asset?.properties);
   const entrance=asset?reviewedEntranceForAsset(asset):null;
   const minWidth=asset?.minWidth??2, minDepth=asset?.minDepth??2;
   const maxWidth=asset?(asset.maxWidth??asset.maxSize):100;
@@ -64,15 +65,15 @@ export function PlacementControls({ draft, onChange, getPreviewDegrees }: {
         <input aria-label={`Placement ${key}`} aria-describedby={hintId} type="number" step="any"
           min={key === 'degrees' ? undefined : key === 'width' ? minWidth : minDepth}
           max={key === 'degrees' ? undefined : key === 'width' ? maxWidth : maxDepth}
-          disabled={isFixedNativeScene(asset?.properties) && key !== 'degrees'}
+          disabled={fixed && key !== 'degrees'}
           value={values[key]} onChange={event => update(key, event.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 p-1" />
       </label>)}
     </div>
     <p className="text-xs text-slate-600">Q: rotate left · E: rotate right (15°). Hold Shift for 1°.</p>
-    <p id={hintId} className="text-xs">Minimum {minWidth} × {minDepth} m; maximum {maxWidth} × {maxDepth} m.{asset?.properties.native_home_plot === true ? ' Houses repeat at their native size.' : ''}
+    <p id={hintId} className="text-xs">{fixed ? `Fixed size ${draft.width} × ${draft.depth} m. Choose a smaller model if it does not fit.` : <>Minimum {minWidth} × {minDepth} m; maximum {maxWidth} × {maxDepth} m.{asset?.properties.native_home_plot === true ? ' Houses repeat at their native size.' : ''}</>}
       {generated && (generated.size_estimated ? ' The original plot size was unavailable; adjust this starting size if needed.' : ' The starting size matches the original plot.')}
     </p>
-    <p role="status" className={draft.inputError ? 'text-xs text-red-700' : 'text-xs text-slate-600'}>{draft.inputError ?? (draft.faceStreet ? 'The preview faces a nearby street. Enter a rotation for manual control.' : 'Size and rotation update automatically.')}</p>
+    <p role="status" className={draft.inputError ? 'text-xs text-red-700' : 'text-xs text-slate-600'}>{draft.inputError ?? (fixed ? 'Fixed-size model: move and rotate to fit. Size cannot be changed.' : draft.faceStreet ? 'The preview faces a nearby street. Enter a rotation for manual control.' : 'Size and rotation update automatically.')}</p>
     {(generated || asset?.zoneType === 'building') && <p className="text-xs text-slate-600">Buildings settle into available space beside other plots.{generated ? ' Your saved model keeps its proportions as its plot size changes.' : ''}
       {entrance && (entrance.fixedNative || (Math.abs(draft.width-entrance.plotWidthM)<.05 && Math.abs(draft.depth-entrance.plotDepthM)<.05))
         ? ' This building connects to a nearby sidewalk automatically.' : ''}</p>}

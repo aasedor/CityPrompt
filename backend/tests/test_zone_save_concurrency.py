@@ -30,7 +30,8 @@ def create_payload(**overrides):
 
 
 @pytest.mark.asyncio
-async def test_boundary_resize_saves_without_rejecting_existing_objects(mock_db, test_user, monkeypatch):
+@pytest.mark.parametrize("excludes_objects", [True, False])
+async def test_boundary_resize_checks_existing_objects_before_saving(mock_db, test_user, monkeypatch, excludes_objects):
     from shapely.geometry import Polygon
     from geoalchemy2.shape import from_shape, to_shape
     project = FakeProject(owner_id=test_user.id)
@@ -40,7 +41,7 @@ async def test_boundary_resize_saves_without_rejecting_existing_objects(mock_db,
         properties={}, updated_at=datetime.now(timezone.utc), geometry=from_shape(Polygon(original),srid=4326),
         building_id=None, building_ids=None)
     mock_db.execute.side_effect = [result(zone), result(project)]
-    reject = AsyncMock(side_effect=HTTPException(409, "existing street is outside"))
+    reject = AsyncMock(side_effect=HTTPException(409, "existing street is outside") if excludes_objects else None)
     monkeypatch.setattr(site_zones, "_assert_boundary_covers_existing_zones", reject)
     for name in ("lock_residual_landscape_project", "_invalidate_boundary_dependents",
                  "_invalidate_residual_landscape", "_record_zone_history"):
@@ -49,11 +50,19 @@ async def test_boundary_resize_saves_without_rejecting_existing_objects(mock_db,
         "zone_type": z.zone_type, "properties": z.properties,
         "coordinates": [list(p) for p in to_shape(z.geometry).exterior.coords][:-1]})
     monkeypatch.setattr(site_zones, "_zone_to_response", lambda z: {"id": str(z.id)})
-    await site_zones.update_zone(zone.id, SiteZoneUpdate(coordinates=revised),
-        SimpleNamespace(headers={}), test_user, mock_db)
-    assert to_shape(zone.geometry).equals(Polygon(revised))
-    reject.assert_not_called()
-    mock_db.commit.assert_awaited_once()
+    if excludes_objects:
+        with pytest.raises(HTTPException) as exc:
+            await site_zones.update_zone(zone.id, SiteZoneUpdate(coordinates=revised),
+                SimpleNamespace(headers={}), test_user, mock_db)
+        assert exc.value.status_code == 409
+        assert to_shape(zone.geometry).equals(Polygon(original))
+        mock_db.commit.assert_not_awaited()
+    else:
+        await site_zones.update_zone(zone.id, SiteZoneUpdate(coordinates=revised),
+            SimpleNamespace(headers={}), test_user, mock_db)
+        assert to_shape(zone.geometry).equals(Polygon(revised))
+        mock_db.commit.assert_awaited_once()
+    reject.assert_awaited_once()
 
 
 @pytest.mark.asyncio

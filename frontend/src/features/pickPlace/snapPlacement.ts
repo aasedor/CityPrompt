@@ -89,19 +89,28 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
   }).filter((p): p is Point => p !== null);
   const project = (ring: Point[], axis: Point) => ring.map(p => p.x * axis.x + p.y * axis.y);
   const pending: Point[] = [{ x: 0, y: 0 }], seen = new Set<string>();
+  type Candidate = { coordinates: number[][]; distance: number };
+  let best: Candidate | null = null;
+  const consider = (offset: Point, previous: Candidate | null): Candidate | null => {
+    const distance = Math.hypot(offset.x, offset.y);
+    if (previous && distance >= previous.distance) return previous;
+    const result = coordinates.map(p => [p[0] + offset.x / east, p[1] + offset.y / METERS_PER_DEG_LAT]);
+    return !check(result) && connectionFits(result) ? { coordinates: result, distance } : previous;
+  };
   // Reviewed envelopes include only the side/access space they need. A 2 cm
   // numerical margin prevents touching faces oscillating valid/overlapping.
   const gap = .02, maxDistance = 30;
   for (let attempt = 0; pending.length && attempt < 64; attempt++) {
     pending.sort((a, b) => Math.hypot(a.x, a.y) - Math.hypot(b.x, b.y) || a.x - b.x || a.y - b.y);
     const offset = pending.shift()!;
+    if (best && Math.hypot(offset.x, offset.y) >= best.distance) break;
     const ring = footprint.map(p => ({ x: p.x + offset.x, y: p.y + offset.y }));
     const hits = obstacles.filter(other => envelopesOverlap(ring, other));
     const plotRing=plot.map(p=>({x:p.x+offset.x,y:p.y+offset.y}));
     const outside = border && !envelopeFits(plotRing, border);
     if (!hits.length && !outside) {
-      const result = coordinates.map(p => [p[0] + offset.x / east, p[1] + offset.y / METERS_PER_DEG_LAT]);
-      if (!check(result) && connectionFits(result)) return { coordinates: result, snapped: true, problem: null };
+      best = consider(offset, best);
+      continue;
     }
     const add = (axis: Point, distance: number) => {
       const next = { x: offset.x + axis.x * distance, y: offset.y + axis.y * distance };
@@ -127,8 +136,10 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
         && connectionFits(coordinates.map(p=>[p[0]+candidate.x/east,p[1]+candidate.y/METERS_PER_DEG_LAT]));
     }).sort((a,b)=>Math.hypot(a.x,a.y)-Math.hypot(b.x,b.y))[0];
     if (clear) {
-      const result=coordinates.map(p=>[p[0]+clear.x/east,p[1]+clear.y/METERS_PER_DEG_LAT]);
-      if (!check(result)) return {coordinates:result,snapped:true,problem:null};
+      // Keep this usable fallback while exploring closer blocked candidates.
+      // A boundary correction plus a neighbour correction can fit with a
+      // shorter diagonal move than the first clear single-edge translation.
+      best = consider(clear, best);
     }
     // Retain nearest candidates only; crowded scenes cannot grow an open loop.
     if (pending.length > 256) {
@@ -136,6 +147,7 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
       pending.length = 256;
     }
   }
+  if (best) return { coordinates: best.coordinates, snapped: true, problem: null };
   // The nearby search can fail even when the asset itself is an appropriate size.
   // Preserve the actual boundary, neighbour, or entrance conflict so the student
   // knows what to move instead of being told the object is too large.

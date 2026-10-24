@@ -1,10 +1,19 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import {
   buildDeterministicVideoFrames,
   CITY_PROMPT_VIDEO_FRAME_COUNT,
   getCenterCropRect,
+  captureDeterministicVideo,
 } from './deterministicVideoCapture';
+
+it('honours cancellation before selecting an encoder or rendering frames',async()=>{
+  const controller=new AbortController();controller.abort();
+  const renderFrame=vi.fn();
+  await expect(captureDeterministicVideo({canvas:document.createElement('canvas'),renderFrame,
+    signal:controller.signal})).rejects.toMatchObject({name:'AbortError'});
+  expect(renderFrame).not.toHaveBeenCalled();
+});
 
 describe('deterministic video frame clock', () => {
   it('creates exactly 192 ordered frames for an eight-second 24 fps render', () => {

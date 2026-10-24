@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom/vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { expect, it, vi, afterEach } from 'vitest';
 import { cleanup } from '@testing-library/react';
@@ -13,6 +14,18 @@ vi.mock('./publicRealmRelease', async () => {
  return {...actual,PUBLIC_REALM_RELEASE_ASSETS:assets,PUBLIC_REALM_RELEASE_SAVED_ASSETS:assets};
 });
 afterEach(cleanup);
+
+it('keeps a flexible park recognisable without offering an incompatible fixed layout', () => {
+  const asset = placeAsset('flexible_pocket_park_v1');
+  // Shape-first drawing previously saved the programme without its picker ID.
+  const zone = {id:'flexible', zone_type:'green_space', properties:{...asset.properties},
+    coordinates:rectangleAt([-114,51],36,30)} as SiteZone;
+  render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={vi.fn()}
+    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} onUpdateParkLayout={vi.fn()}/>);
+  expect(screen.getByRole('heading',{name:/Flexible Pocket Park/i})).toBeTruthy();
+  expect(screen.queryByRole('combobox',{name:'Park layout'})).toBeNull();
+  expect(screen.getByLabelText('Plot width (m)')).toBeEnabled();
+});
 
 it('points native-house students to the working Move handle', () => {
   const asset=placeAsset('infill_home');

@@ -39,7 +39,7 @@ import { TerraceEditor } from '@/features/pickPlace/TerraceEditor';
 import { saveAutomaticParkGround } from '@/features/pickPlace/saveAutomaticParkGround';
 import { TerraceSummary } from '@/features/pickPlace/TerraceSummary';
 import { CALGARY_LOCAL_PLACEMENT, isFixedSectionStreet, streetCoordinateUpdate, streetRouteProblem, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
-import { assetForZone, placeAsset, type PlaceAssetId } from '@/features/pickPlace/catalogue';
+import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
 import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
 import { nativeStreetRouteProblem } from '@/components/viewer/globe/nativeStreetPilot';
 import { brtConnectionProblem } from '@/features/pickPlace/brtConnections';
@@ -369,7 +369,7 @@ export function ProjectViewPage() {
     useViewerStore.getState().setStreetViewActive(false);
     if (isFlexiblePark(asset.properties)) {
       cancelPlacement();
-      setActiveSitePlannerTool('green_space', asset.properties);
+      setActiveSitePlannerTool('green_space', placementProperties(asset));
       return;
     }
     setPlacementDraft({ assetId, width: width ?? asset.width, depth: depth ?? asset.depth, degrees,
@@ -433,8 +433,7 @@ export function ProjectViewPage() {
           { allowStreetIntersections: isFixedSectionStreet(zone) });
       if(problem) { toast.error(problem, { position: 'top-center' }); return false; }
     }
-    handleZoneUpdated(zoneId, coordinates);
-    return true;
+    return handleZoneUpdated(zoneId, coordinates) !== false;
   };
 
   // --- Imported shapefile "layers" (zones grouped by properties._imported_from) ---

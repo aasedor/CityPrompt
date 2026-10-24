@@ -660,6 +660,7 @@ export function GlobeEditMode({
 
   // Start dragging a vertex
   const handleVertexPointerDown = useCallback((index: number, e: any) => {
+    if (isFixedNativeScene(zone.properties)) return;
     e.stopPropagation();
     onInteractionStart?.();
     setDragIndex(index);
@@ -853,7 +854,7 @@ export function GlobeEditMode({
         </EastNorthUpFrame>
       )}
 
-      {handleCoords.map((coord, i) => (
+      {!isFixedNativeScene(zone.properties) && handleCoords.map((coord, i) => (
         <EastNorthUpFrame
           key={`edit-v-${i}`}
           lat={coord[1] * DEG_TO_RAD}

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { SiteZone } from '@/types';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngine/geoUtils';
 import { placementProblem, rectangleAt, rectangleDimensions } from './geometry';
-import { snapPlacement } from './snapPlacement';
+import { snapBuildingMove, snapPlacement } from './snapPlacement';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 
 const ll = (x: number, y: number) => [-114 + x/metersPerDegLon(51),51 + y/METERS_PER_DEG_LAT];
@@ -34,6 +34,29 @@ describe('ideation placement snapping',()=>{
     const result=snapPlacement(rectangleAt(ll(48,1),12,16),neighbours,site);
     expect(result.problem).toBeNull();
     expect(placementProblem(result.coordinates,neighbours,site)).toBeNull();
+  });
+  it.each([[48,1,15.7],[44.5,15,1.3]])('chooses the closest fitting corner around a boundary and neighbour at (%s, %s)',(x,y,maxShift)=>{
+    const neighbours=[zone('a',rectangleAt(ll(40,0),12,16))];
+    const proposed=rectangleAt(ll(x,y),12,16,0);
+    const properties={validation_fixed_fixture:true};
+    const result=snapPlacement(proposed,neighbours,site,undefined,properties,'building');
+    expect(result.problem).toBeNull();
+    const d=rectangleDimensions(result.coordinates);
+    const dx=(d.center[0]-rectangleDimensions(proposed).center[0])*metersPerDegLon(51);
+    const dy=(d.center[1]-rectangleDimensions(proposed).center[1])*METERS_PER_DEG_LAT;
+    expect(Math.hypot(dx,dy)).toBeLessThan(maxShift);
+    expect(d.width).toBeCloseTo(12,3);expect(d.depth).toBeCloseTo(16,3);expect(d.degrees).toBeCloseTo(0,3);
+    expect(placementProblem(result.coordinates,neighbours,site,undefined,{properties})).toBeNull();
+  });
+  it('settles a fixed model moved slightly over a neighbour without resizing it',()=>{
+    const self={...zone('self',rectangleAt(ll(25,0),12,16)),properties:{validation_fixed_fixture:true}};
+    const other=zone('other',rectangleAt(ll(0,0),12,16));
+    const proposed=rectangleAt(ll(11,0),12,16);
+    const result=snapBuildingMove(self,proposed,[self,other],site);
+    expect(result.problem).toBeNull();expect(result.snapped).toBe(true);
+    const d=rectangleDimensions(result.coordinates);
+    expect((d.center[0]+114)*metersPerDegLon(51)).toBeCloseTo(12.02,2);
+    expect(d.width).toBeCloseTo(12,3);expect(d.depth).toBeCloseTo(16,3);
   });
   it('respects a concave site and cannot jump across its missing notch',()=>{
     const concave=zone('site',[ll(-40,-40),ll(40,-40),ll(40,0),ll(0,0),ll(0,40),ll(-40,40)],'site_boundary');

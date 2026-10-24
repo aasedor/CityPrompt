@@ -15,6 +15,7 @@ export interface NormalizedVideoRoutePoint {
 }
 
 export interface VideoRouteCaptureRequest {
+  signal?: AbortSignal;
   routePoints: NormalizedVideoRoutePoint[];
   cameraMotion: 'path_follow' | 'street_walkby' | 'detail_flythrough' | 'bicycle_ride' | 'people_follow';
   renderQuality: VideoRenderQuality;

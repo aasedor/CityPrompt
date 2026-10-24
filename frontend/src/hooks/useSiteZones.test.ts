@@ -84,6 +84,18 @@ describe('useSiteZones', () => {
     expect(cached?.[0].coordinates).toEqual(newCoords);
   });
 
+  it('rejects a boundary drag that excludes a house before committing a preview or write', () => {
+    const boundary = {...makeZone(REAL_ZONE_ID), coordinates:[[0,0],[1,0],[1,1],[0,1]]};
+    const house = {...makeZone('a3bb189e-8bf9-3888-9912-ace4e6543003'), zone_type:'building',
+      name:'Student house', coordinates:[[.7,.7],[.8,.7],[.8,.8],[.7,.8]]} as SiteZone;
+    queryClient.setQueryData(['site-zones', PROJECT_ID],[boundary,house]);
+    const {result} = renderHook(()=>useSiteZones(PROJECT_ID),{wrapper});
+    expect(result.current.handleZoneUpdated(REAL_ZONE_ID,[[0,0],[.5,0],[.5,.5],[0,.5]])).toBe(false);
+    expect(siteZonesApi.update).not.toHaveBeenCalled();
+    expect(queryClient.getQueryData<SiteZone[]>(['site-zones', PROJECT_ID])?.[0].coordinates).toEqual(boundary.coordinates);
+    expect(toast.error).toHaveBeenCalledWith(expect.stringContaining('Student house'));
+  });
+
   it('handleZoneUpdated calls the API for persisted ids', async () => {
     const zone = makeZone(REAL_ZONE_ID);
     queryClient.setQueryData(['site-zones', PROJECT_ID], [zone]);
@@ -192,8 +204,8 @@ describe('useSiteZones', () => {
 
     await waitFor(() => expect(result.current.createZone.isSuccess).toBe(true));
     await waitFor(() => expect(toast).toHaveBeenCalledWith(
-      'Site boundary saved. Nearby map context is unavailable for now; you can keep designing.',
-      { icon: 'ℹ️' },
+      'Site boundary saved. Nearby map context is unavailable. Open Layers → Load nearby Calgary streets & paths to add existing routes, or keep designing.',
+      { icon: 'ℹ️', duration: 8000 },
     ));
     expect(toast.error).not.toHaveBeenCalled();
     expect(queryClient.getQueryData<SiteZone[]>(['site-zones', PROJECT_ID])?.[0]?.id).toBe(REAL_ZONE_ID);

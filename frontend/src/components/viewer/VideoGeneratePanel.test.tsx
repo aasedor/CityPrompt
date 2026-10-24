@@ -2,6 +2,8 @@ import '@testing-library/jest-dom/vitest';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { VideoGeneratePanel } from './VideoGeneratePanel';
+import type {VideoRouteCaptureResult} from './videoRouteControls';
+const BrowserURL=URL;
 
 const api = vi.hoisted(() => ({ capabilities: vi.fn(), list: vi.fn(), preflight: vi.fn(), generate: vi.fn(), imageGenerate: vi.fn(), imageList: vi.fn(), imageRecover: vi.fn() }));
 vi.mock('@/services/api', () => ({
@@ -14,6 +16,25 @@ vi.mock('@/features/community3d/community3d', () => ({
 }));
 
 describe('Omni video preparation and saved-video recovery', () => {
+  it('allows cancelling a free capture without submitting its late result or a paid request', async () => {
+    api.capabilities.mockResolvedValue({video_enabled:true});
+    api.list.mockResolvedValue({attempts:[],attempts_used:0,attempts_remaining:2,max_attempts:2});
+    const captureRouteControls=vi.fn((request)=>new Promise<VideoRouteCaptureResult>((_resolve,reject)=>{
+      request.signal.addEventListener('abort',()=>reject(new DOMException('Cancelled','AbortError')),{once:true});
+    }));
+    render(<VideoGeneratePanel projectId="trial" canvas={null} buildings={[]} siteZones={[]}
+      captureAerialFrame={async()=>'data:image/jpeg;base64,ZnJhbWU='}
+      captureRouteControls={captureRouteControls} onClose={vi.fn()}/>);
+    await screen.findByAltText('Captured City Prompt scene');
+    fireEvent.click(screen.getByRole('button',{name:'Preview · free'}));
+    await screen.findByRole('button',{name:'Cancel preview'});
+    expect(screen.getByRole('button',{name:'Close Video Render'})).toBeEnabled();
+    fireEvent.click(screen.getByRole('button',{name:'Cancel preview'}));
+    await waitFor(()=>expect(screen.getByRole('button',{name:'Preview · free'})).toBeEnabled());
+    expect(api.preflight).not.toHaveBeenCalled();
+    expect(api.generate).not.toHaveBeenCalled();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  });
   it('prepares an Omni shot from the current view with one free Preview and a separate paid Generate', async () => {
     api.capabilities.mockResolvedValue({ video_enabled: true });
     api.list.mockResolvedValue({ attempts: [], attempts_used: 0, attempts_remaining: 2, max_attempts: 2 });
@@ -313,6 +334,10 @@ describe('Omni video preparation and saved-video recovery', () => {
   });
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.stubGlobal('URL',class extends BrowserURL {
+      static createObjectURL=()=> 'blob:test-preview';
+      static revokeObjectURL=()=>{};
+    });
     api.capabilities.mockResolvedValue({ video_enabled: false });
     vi.stubGlobal('Image', class {
       naturalWidth = 1280;

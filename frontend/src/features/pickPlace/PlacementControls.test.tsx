@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom/vitest';
 import { useState } from 'react';
 import { fireEvent, render, screen, cleanup } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -27,6 +28,13 @@ function GeneratedHarness() {
 const current = () => JSON.parse(screen.getByTestId('draft').textContent!) as PlacementDraft;
 afterEach(()=>{cleanup();vi.unstubAllGlobals();});
 describe('pre-placement reshaping', () => {
+  it('describes fixed dimensions without promising an unavailable resize range', () => {
+    const fixed = PLACE_ASSETS.find(candidate=>candidate.properties.validation_fixed_fixture===true)!;
+    render(<PlacementControls draft={{assetId:fixed.id,width:fixed.width,depth:fixed.depth,degrees:0}} onChange={vi.fn()}/>);
+    expect(screen.getByLabelText('Placement width')).toBeDisabled();
+    expect(screen.getByRole('status')).toHaveTextContent(/fixed.*move.*rotate/i);
+    expect(screen.queryByText(/Minimum .*maximum/)).toBeNull();
+  });
   it('keeps narrow placement compact while preserving advanced dimensions',()=>{
     vi.stubGlobal('matchMedia',()=>({matches:true,addEventListener:vi.fn(),removeEventListener:vi.fn()}));
     render(<VancouverHarness/>);
