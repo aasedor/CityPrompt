@@ -2180,7 +2180,7 @@ def deform_pockets(obj, pocket_list):
         if any(v[lay] for v in f.verts):
             continue
         c = np.array(f.calc_center_median())
-        if any(np.linalg.norm(c - p) < 1.2 * a * asp + .1 for p, a, asp, D, ax, up, kind in pk):
+        if any(np.linalg.norm(c - p) < 1.12 * a * asp + .06 for p, a, asp, D, ax, up, kind in pk):
             sel.add(f)
     edges = list({e for f in sel for e in f.edges})
     C.bmesh.ops.subdivide_edges(bm, edges=edges, cuts=1, use_grid_fill=True)
@@ -2352,7 +2352,7 @@ def skylights():
     """Each skylight: a rigid white collar standing level on its pad (12 cm proud, 22 cm wide), seated down through the
     shell to 5 cm above the inner skin (the cut's own wall shows below it inside), and a low glazed lens dome on it,
     open underneath so the hall sees the glazing."""
-    n, prof = 48, [(1, 0), (.93, .30), (.78, .58), (.55, .82), (.28, .96), (.0, 1)]
+    n, prof = 36, [(1, 0), (.93, .30), (.78, .58), (.55, .82), (.28, .96), (.0, 1)]
     for j, (((x, y), R, zc)) in enumerate(PADS):
         top = zc + .12; bot = zc - T + .05
         rim = annulus(f'Skylight collar {j}', (x, y, 0.0), (0, 0, 1), R - .04, R + .22, bot, top, 'rim', 'skylights', n)
@@ -2493,7 +2493,7 @@ def holds(shell, Pi, dent_list):
             if any(np.linalg.norm(P[k, i] - c) < r for c, r in holes):
                 continue
             add(P[k, i], N[k, i], rnd.uniform(.04, .09), roles[rnd.randrange(len(roles))]); n_out += 1
-    while n_out < 500:
+    while n_out < 380:
         k = rnd.choices(ks, wk)[0]; i = rnd.randrange(NT)
         z = P[k, i, 2]
         if not (.3 < z < 5.3):
@@ -2505,7 +2505,7 @@ def holds(shell, Pi, dent_list):
             continue
         add(P[k, i], N[k, i], rnd.uniform(.04, .09), roles[rnd.randrange(len(roles))]); n_out += 1
     n_in = 0
-    while n_in < 200:
+    while n_in < 120:
         k = rnd.choices(ks, wk)[0]; i = rnd.randrange(NT)
         z = Pi[k, i, 2]
         if not (.4 < z < 4.4):
@@ -2633,7 +2633,7 @@ def shell_paths():
         poly = _PkPolygon(pts).buffer(.3, quad_segs=8).buffer(-.3, quad_segs=8).simplify(.01)   # soft organic edges
         polys.append(poly)
         C.prism(f'Shell path {g:+.0f}', [tuple(c) for c in list(poly.exterior.coords)[:-1]], 'z', 0.0, .045, 'shellpath', 'paths')
-        for x, y in pk_scatter(poly.buffer(-.05), .2, seed=int(g * 10) % 997 + 3)[:560]:
+        for x, y in pk_scatter(poly.buffer(-.05), .2, seed=int(g * 10) % 997 + 3)[:300]:
             role = 'shell2' if rnd.random() < .55 else 'shell3'; V, F = specks[role]; o = len(V)
             a0 = rnd.uniform(0, math.tau)                                   # a small irregular flat flake 2 mm above the path
             V += [(x + rnd.uniform(.012, .028) * math.cos(a0 + k * 1.571 + rnd.uniform(-.4, .4)),
@@ -2703,7 +2703,7 @@ def planting(beds):
     rnd = random.Random(5); fields = [_PkNoise(91 + 17 * i, 2 * math.pi / 3.2) for i in range(len(mix))]
     for j, g in enumerate(beds):
         reg = kit.register_bed(pk_region(g))
-        spacing = .60 if g.centroid.distance(_pksh.Point(0, 0)) < RING_R0 else 1.3
+        spacing = .68 if g.centroid.distance(_pksh.Point(0, 0)) < RING_R0 else 1.3
         for x, y in pk_scatter(reg, spacing, margin=PK_CLEAR, seed=40 + j):
             order = sorted(range(len(mix)), key=lambda i: -(fields[i](x, y) + 1.4 * math.log(mix[i][1])))
             for i in order[:2]:

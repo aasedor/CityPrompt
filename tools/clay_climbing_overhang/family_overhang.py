@@ -53,8 +53,8 @@ SHELL_T = .35                                         # CLT shell thickness
 TOP = RIM + .1
 EPS = .002
 PALETTE = dict(wall=(.86, .85, .82), precast=(.90, .89, .86), concrete2=(.70, .70, .68), frame=(.22, .24, .26),
-    glass=(.15, .21, .25), interior=(.82, .79, .72), floor=(.60, .57, .52), timber=(.78, .46, .14), timber2=(.86, .60, .26),
-    timber_in=(.70, .40, .12), shade=(.36, .36, .36), hold=(.10, .10, .11), hold_w=(.91, .90, .86), mat=(.17, .19, .23), shirt=(.20, .60, .70),
+    glass=(.15, .21, .25), interior=(.82, .79, .72), floor=(.60, .57, .52), timber=(.75, .36, .073), timber2=(.86, .55, .19),
+    timber_in=(.67, .31, .062), shade=(.36, .36, .36), hold=(.10, .10, .11), hold_w=(.91, .90, .86), mat=(.17, .19, .23), shirt=(.20, .60, .70),
     skin=(.78, .60, .47), harness=(.12, .12, .14), paving=(.53, .54, .55), paving2=(.43, .44, .45), trough=(.72, .80, .82), granite=(.60, .60, .59),
     deck=(.80, .74, .64), coping=(.88, .86, .80), water=(.08, .52, .66), water2=(.06, .38, .50), membrane=(.86, .86, .84),
     mech=(.78, .78, .76), asphalt=(.26, .26, .27), curb=(.73, .73, .71), paint=(.93, .93, .91), soil=(.26, .20, .15),
@@ -2175,7 +2175,7 @@ def pool_deck():
     loungers, and the planters of the roof garden at the north end."""
     b = Batch()
     dx0, dx1, dy0, dy1 = X0 + .3, XP0, Y0 + .08, Y1 - .3
-    px0, px1, py0, py1 = -20.9, -10.8, -15.6, 6.9
+    px0, px1, py0, py1 = -20.9, -12.9, -15.6, 6.9                        # long and narrow: 8 m by 22.5 m (top view)
     for x0, x1, y0, y1 in ((dx0, px0 - 1.7, dy0, dy1), (px1, dx1, dy0, dy1), (px0 - 1.7, px1, dy0, py0), (px0 - 1.7, px1, py1, dy1)):
         b.box('deck', (x0 + x1) / 2, (y0 + y1) / 2, DECK - .1, x1 - x0, y1 - y0, .2)
     for k in range(1, 12):                                                                            # paver joints
@@ -2203,7 +2203,7 @@ def pool_deck():
         b.beam('metal', (x0, y0, PARA + 1.07), (x1, y1, PARA + 1.07), .04, .03)
     # Loungers in a row along the penthouse glazing, facing the pool; a second row at the garden.
     for k in range(8):
-        lounger(b, -8.4, -14.6 + k * 1.65, DECK, 1)
+        lounger(b, -11.0, -14.6 + k * 1.65, DECK, 1)                                                # beside the pool
     for k in range(6):
         lounger(b, -20.6 + k * 1.45, 8.3, DECK, 2)
     # Roof garden planters: a large raised planter with trees and grasses, a strip along the penthouse wall.
