@@ -201,6 +201,9 @@ export function GlobeEditMode({
   const [liveCoords, setLiveCoords] = useState<number[][] | null>(null);
   const [liveRouteControls, setLiveRouteControls] = useState<number[][] | null>(null);
   const [pendingCommitCoords, setPendingCommitCoords] = useState<number[][] | null>(null);
+  const pendingCommitSourceRef = useRef(zone);
+  const latestZoneRef = useRef(zone);
+  useEffect(() => { latestZoneRef.current = zone; }, [zone]);
   const [sampledTerrainHeight, setSampledTerrainHeight] = useState<number | null>(null);
   const [isRotating, setIsRotating] = useState(false);
   const dragRef = useGlobeDragRef();
@@ -355,12 +358,18 @@ export function GlobeEditMode({
 
   useEffect(() => {
     if (isDraggingBody || isRotating || dragIndex !== null || !pendingCommitCoords) return;
-    if (coordsMatch(zone.coordinates, pendingCommitCoords)) {
+    // The save path can snap the preview again. Once saved geometry or its
+    // revision changes, use that authoritative shape so Undo/Redo and a new
+    // selection cannot leave handles stranded at the old drag preview.
+    const source = pendingCommitSourceRef.current;
+    if (coordsMatch(zone.coordinates, pendingCommitCoords)
+      || zone.id !== source.id || zone.updated_at !== source.updated_at
+      || !coordsMatch(zone.coordinates, source.coordinates)) {
       setLiveCoords(null);
       setLiveRouteControls(null);
       setPendingCommitCoords(null);
     }
-  }, [dragIndex, isDraggingBody, isRotating, pendingCommitCoords, zone.coordinates]);
+  }, [dragIndex, isDraggingBody, isRotating, pendingCommitCoords, zone.coordinates, zone.id, zone.updated_at]);
 
   // Start dragging the zone body
   const handleBodyPointerDown = useCallback((e: any) => {
@@ -418,6 +427,7 @@ export function GlobeEditMode({
 
       // Commit final coordinates to React state (one re-render)
       if (finalCoords) {
+        pendingCommitSourceRef.current = latestZoneRef.current.id === zone.id ? latestZoneRef.current : zone;
         setPendingCommitCoords(finalCoords);
         if (onZoneUpdated(zone.id, finalCoords) === false) { setPendingCommitCoords(null); setLiveCoords(null); }
       } else {
@@ -615,6 +625,7 @@ export function GlobeEditMode({
         : null;
 
       if (finalCoords) {
+        pendingCommitSourceRef.current = latestZoneRef.current.id === zone.id ? latestZoneRef.current : zone;
         setPendingCommitCoords(finalCoords);
         if (onZoneUpdated(zone.id, finalCoords) === false) { setPendingCommitCoords(null); setLiveCoords(null); }
       } else {
@@ -711,6 +722,7 @@ export function GlobeEditMode({
 
       // Commit final coordinates to React state
       if (finalCoords) {
+        pendingCommitSourceRef.current = latestZoneRef.current.id === zone.id ? latestZoneRef.current : zone;
         setPendingCommitCoords(routeEditing ? streetCoordinateUpdate(zone, finalCoords).coordinates : finalCoords);
         if (onZoneUpdated(zone.id, finalCoords) === false) {
           setPendingCommitCoords(null); setLiveCoords(null); setLiveRouteControls(null);
