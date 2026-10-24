@@ -110,6 +110,9 @@ class ModuleDescriptor:
     allow_inset_footprint: bool = False
     delivery_format: str | None = None
     model_revision: str | None = None
+    # Some catalogue bindings pin the exact source bytes rather than its
+    # candidate name. Both identify the same installed immutable model.
+    model_sha256: str | None = None
 
 
 @dataclass(frozen=True)
@@ -249,6 +252,13 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
     if any(not math.isfinite(value) or value <= 0 for value in (width_m, depth_m, height_m)):
         return None
 
+    source_digest = rlasm.get("model_sha256") if isinstance(rlasm, dict) else None
+    model_sha256 = (
+        source_digest.lower()
+        if isinstance(source_digest, str) and re.fullmatch(r"[0-9a-fA-F]{64}", source_digest)
+        else None
+    )
+
     return ModuleDescriptor(
         id=str(entry.id),
         name=str(entry.name),
@@ -290,6 +300,7 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
         ),
         allow_inset_footprint=bool(lego.get("allow_inset_footprint", False)),
         model_revision=str(rlasm.get("candidate")) if rlasm.get("candidate") else None,
+        model_sha256=model_sha256,
         delivery_format=(
             RLASM_ARCHITECTURAL_CLAY_FORMAT
             if is_clay
@@ -1132,6 +1143,24 @@ def _plan_detached_assembly(
     raise AssemblyPlanningError("No compatible native detached-house family is available.", code="family_not_found")
 
 
+def _matches_model_revision(module: ModuleDescriptor, revision: str) -> bool:
+    return module.model_revision == revision or (
+        module.model_sha256 is not None and module.model_sha256 == revision.lower()
+    )
+
+
+def _authored_assembly_program_key(module: ModuleDescriptor) -> tuple[str, str, str] | None:
+    contract = module.placement_contract or {}
+    program = contract.get("storey_program_id")
+    if (module.role != "assembled" or module.repeatable_z
+        or module.delivery_format not in {RLASM_ARCHITECTURAL_CLAY_FORMAT, RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT}
+        or contract.get("mode") != "authored_storey_program"
+        or not isinstance(program, str) or not program.strip()
+        or not module.source_variant_id or module.source_variant_id != module.generation_archetype_id):
+        return None
+    return module.family, module.source_variant_id, program
+
+
 def plan_vertical_assembly(
     modules: Iterable[ModuleDescriptor],
     request: AssemblyRequest,
@@ -1140,9 +1169,19 @@ def plan_vertical_assembly(
 ) -> dict[str, Any]:
     modules = list(modules)
     if request.model_revision:
-        modules = [module for module in modules if module.model_revision == request.model_revision]
-        if not modules:
+        pinned = [module for module in modules if _matches_model_revision(module, request.model_revision)]
+        if not pinned:
             raise AssemblyPlanningError("The selected model revision is not installed.", code="family_not_found")
+        # A complete authored house can have one immutable GLB per storey
+        # choice. The saved source pins its finite programme, not an unrelated
+        # family or variant. Ordinary fixed models keep strict revision locks.
+        programs = {key for module in pinned
+                    if module.source_variant_id == request.archetype_id
+                    and module.native_floors != request.target_floors
+                    and (key := _authored_assembly_program_key(module)) is not None}
+        modules = [module for module in modules if _matches_model_revision(module, request.model_revision)
+                   or (module.native_floors == request.target_floors
+                       and _authored_assembly_program_key(module) in programs)]
     # An explicit home plot groups whole independent copies. It does not grant
     # a clay asset a repeatable floor/bay contract or allow mesh deformation.
     if request.native_home_plot:

@@ -117,7 +117,11 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
         : heightEdited ? { development_height_override_m: Number(height) } : {}),
     };
     setRuntimeError('');
-    if (storeyProgram?.mode === 'repeat_authored_floor' && Number(floors) !== storeyProgram.nativeStoreys) {
+    const needsAuthoredAssembly = storeyProgram && storeyProgram.mode !== 'fixed_authored_assembly'
+      && (Number(floors) !== storeyProgram.nativeStoreys || Number(floors) !== Number(savedFloors));
+    const needsScaledAssembly = footprintProgram && (selectedFootprintScale !== footprintProgram.defaultScale
+      || selectedFootprintScale !== Number(savedProperties.building_footprint_scale ?? footprintProgram.defaultScale));
+    if (needsAuthoredAssembly || needsScaledAssembly) {
       pending.current=true;setChecking(true);
       try {
         const item=deriveItems([{...zone,properties:nextProperties}])[0];
