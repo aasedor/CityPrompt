@@ -1933,7 +1933,7 @@ R_SHELL = polar_fit(SHELL_PX, 8)
 R_APRON = polar_fit(APRON_PX, 8)
 DOMES = [(W(u, v), r / PX) for u, v, r in DOMES_PX]
 BUMPS = []
-NT = 288                                            # shell segments round the outline
+NT = 256                                            # shell segments round the outline
 # Meridian profile of the shell: (fraction of the outline radius, height). Tucked base, bulging near-vertical wall to the
 # shoulder, roll-over, gently domed plateau (front, oblique).
 PROFILE = [(.975, 0.0), (.986, .35), (.995, .9), (1.0, 1.6), (.998, 2.6), (.99, 3.5), (.975, 4.3), (.955, 4.9),
@@ -2180,13 +2180,18 @@ def deform_pockets(obj, pocket_list):
         if any(v[lay] for v in f.verts):
             continue
         c = np.array(f.calc_center_median())
-        if any(np.linalg.norm(c - p) < 1.3 * a * asp + .2 for p, a, asp, D, ax, up, kind in pk):
+        if any(np.linalg.norm(c - p) < 1.2 * a * asp + .1 for p, a, asp, D, ax, up, kind in pk):
             sel.add(f)
     edges = list({e for f in sel for e in f.edges})
     C.bmesh.ops.subdivide_edges(bm, edges=edges, cuts=1, use_grid_fill=True)
-    sel = [f for f in bm.faces if not any(v[lay] for v in f.verts) and any(
-        np.linalg.norm(np.array(f.calc_center_median()) - p) < 1.05 * a * asp for p, a, asp, D, ax, up, kind in pk if kind == 'pocket')]
-    C.bmesh.ops.subdivide_edges(bm, edges=list({e for f in sel for e in f.edges}), cuts=1, use_grid_fill=True)   # finer in the dish
+    def upper_dish(c):
+        for p, a, asp, D, ax, up, kind in pk:
+            d = c - p
+            if kind == 'pocket' and d @ d < (a * asp) ** 2 and d @ up > -.15 * a * asp:
+                return True
+        return False
+    sel = [f for f in bm.faces if not any(v[lay] for v in f.verts) and upper_dish(np.array(f.calc_center_median()))]
+    C.bmesh.ops.subdivide_edges(bm, edges=list({e for f in sel for e in f.edges}), cuts=1, use_grid_fill=True)   # finer over the upper dish (undercut and shading)
     for v in bm.verts:
         if v[lay]:
             continue
@@ -2352,7 +2357,7 @@ def skylights():
         top = zc + .12; bot = zc - T + .05
         rim = annulus(f'Skylight collar {j}', (x, y, 0.0), (0, 0, 1), R - .04, R + .22, bot, top, 'rim', 'skylights', n)
         liner = annulus(f'Skylight reveal liner {j}', (x, y, 0.0), (0, 0, 1), R - .07, R - .035, zc - T - .03, top - .02,
-                        'liner', 'skylights', n)                     # the full-depth reveal, seen from the hall
+                        'liner', 'skylights', 32)                    # the full-depth reveal, seen from the hall
         for p in liner.data.polygons:
             p.use_smooth = abs(p.normal.z) < .5
         crisp(liner)
