@@ -4777,7 +4777,7 @@ export function GlobeSitePlannerMap({
               the prepared boundary surface; this layer adds the deterministic
               canopy placements that are safe outside every authored zone. */}
           <group name="siteforge-direct3d-landscape" userData={direct3DProposalUserData('landscape')}>
-            {buildingModelsVisible && <GlobeBuildingPlotLandscape zones={connectedSceneZones} terrainHeight={terrainElevation}/>}
+            {buildingModelsVisible && <GlobeBuildingPlotLandscape zones={connectedSceneZones} buildings={legoLayerBuildings} terrainHeight={terrainElevation}/>}
             {siteZones.flatMap((zone) => {
               const recipe = getResidualLandscapeRecipe(zone);
               if (!recipe?.placements.length) return [];

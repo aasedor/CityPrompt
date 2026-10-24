@@ -31,7 +31,9 @@ import {
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
-import { BuildingFoundationSurface } from './BuildingFoundationSurface';
+import { BuildingFoundationSurface, useBuildingLandscapeGround } from './BuildingFoundationSurface';
+import { prepareReviewBuildingLandscape, reviewBuildingLandscapePlacement } from './reviewBuildingLandscape';
+import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
@@ -462,6 +464,8 @@ function LegoStackInstance({
   const tiles = useContext(TilesRendererContext);
   const maxAnisotropy = gl.capabilities.getMaxAnisotropy();
   const preserveSourceMaterials = isArchitecturalClayPlan(recipe);
+  const landscapeGround = useBuildingLandscapeGround(zone);
+  const landscapePlacement = useMemo(() => zone ? reviewBuildingLandscapePlacement(zone, building) : null, [zone, building]);
 
   const sceneByUrl = useMemo(
     () => indexRenderableLegoScenes(urls, gltfs),
@@ -479,7 +483,9 @@ function LegoStackInstance({
       .map((instance, index) => {
         const scene = sceneByUrl.get(resolveApiFileUrl(instance.model_url));
         if (!scene) return null;
-        const prepared = prepareArchitecturalClone(scene, {
+        const landscape = zone && isNativeClayPlan(recipe) && recipe.instances.length === 1
+          ? prepareReviewBuildingLandscape(scene, zone, landscapeGround, landscapePlacement) : null;
+        const prepared = prepareArchitecturalClone(landscape?.clone ?? scene, {
           renderOrder: LEGO_RENDER_ORDER,
           maxAnisotropy,
           ambientOcclusion: 'disable',
@@ -490,6 +496,7 @@ function LegoStackInstance({
         return {
           key: `${instance.asset_id}-${instance.level}-${index}`,
           cloned,
+          landscape,
           transform: legoInstanceTransform(instance),
           bounds: isNativeClayPlan(recipe)
             ? new THREE.Box3().setFromObject(cloned, true)
@@ -497,7 +504,11 @@ function LegoStackInstance({
         };
       })
       .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
-  }, [maxAnisotropy, preserveSourceMaterials, recipe, sceneByUrl, urls]);
+  }, [maxAnisotropy, preserveSourceMaterials, recipe, sceneByUrl, urls, zone, landscapeGround, landscapePlacement]);
+  useEffect(() => retainResourceForDeferredDisposal(modules, values => values.forEach(({ landscape }) => {
+    landscape?.ownedGeometries.forEach(geometry => geometry.dispose());
+    landscape?.ownedMaterials.forEach(material => material.dispose());
+  })), [modules]);
   const detailedReady = isCompleteLegoModuleStack(recipe.instances.length, modules.length);
   const authoredPlot = preservesAuthoredPlotAxes(zone?.properties) ? authoredHomePlotFrame(ring) : undefined;
   const yawRad = authoredPlot ? authoredPlot.yawRad + (building.rotation_degrees ?? 0) * DEG_TO_RAD

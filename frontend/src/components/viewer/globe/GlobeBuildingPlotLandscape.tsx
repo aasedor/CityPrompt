@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { EastNorthUpFrame } from '3d-tiles-renderer/r3f';
 import * as THREE from 'three';
 import type { MultiPolygon } from 'polygon-clipping';
-import type { SiteZone } from '@/types';
+import type { Building, SiteZone } from '@/types';
 import { buildingPlotLandscapes, type BuildingPlotLandscape } from './buildingPlotLandscape';
 import { createSitePreparationTexture } from './sitePreparationSurface';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
@@ -10,6 +10,7 @@ import { direct3DInstanceUserData, direct3DProposalUserData, direct3DZoneInstanc
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { residualLandscapeBounds } from './residualLandscape';
 import { metersPerDegLon, METERS_PER_DEG_LAT } from '../mapEngine/geoUtils';
+const NO_BUILDINGS: readonly Building[] = [];
 
 function surfaceGeometry(polygons: MultiPolygon, height: number) {
   const shapes = polygons.map(([outer, ...holes]) => {
@@ -26,7 +27,7 @@ function surfaceGeometry(polygons: MultiPolygon, height: number) {
 
 function PlotGarden({ plan, boundary }: { plan: BuildingPlotLandscape; boundary: SiteZone }) {
   const resources = useMemo(() => {
-    const surface = surfaceGeometry(plan.surface, .035), beds = surfaceGeometry(plan.beds, .043);
+    const surface = surfaceGeometry(plan.surface, .035), beds = surfaceGeometry(plan.beds, plan.bedLiftM ?? .043);
     // Uncompiled sites use the boundary's exact texture and geographic phase.
     // Compiled sites already paint through lots; no second lawn covers that surface.
     const texture = createSitePreparationTexture(boundary.id, 256, 'grass');
@@ -85,8 +86,10 @@ function PlotGarden({ plan, boundary }: { plan: BuildingPlotLandscape; boundary:
 
 /** Model-owned landscaping remains visible in clean captures. It uses the same
  * prepared datum as the building and never raycasts roofs or changes terrain. */
-export function GlobeBuildingPlotLandscape({ zones, terrainHeight }: { zones: SiteZone[]; terrainHeight: number }) {
-  const plans = useMemo(() => buildingPlotLandscapes(zones, terrainHeight), [zones, terrainHeight]);
+export function GlobeBuildingPlotLandscape({ zones, terrainHeight, buildings = NO_BUILDINGS }: {
+  zones: SiteZone[]; terrainHeight: number; buildings?: readonly Building[];
+}) {
+  const plans = useMemo(() => buildingPlotLandscapes(zones, terrainHeight, buildings), [zones, terrainHeight, buildings]);
   const boundary = getActiveSiteBoundary(zones);
   return boundary ? <>{plans.map(plan => <PlotGarden key={plan.zoneId} plan={plan} boundary={boundary}/>)}</> : null;
 }

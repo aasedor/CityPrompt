@@ -14,7 +14,10 @@ vi.mock('@react-three/drei', () => ({ useGLTF: mocks.gltf }));
 vi.mock('3d-tiles-renderer/r3f', () => ({ EastNorthUpFrame: ({ children, height }: { children: React.ReactNode; height: number }) =>
   <div data-testid="frame" data-height={height}>{children}</div> }));
 vi.mock('./SharedSiteGroundProvider', () => ({ useSharedSiteGround: mocks.display, useSharedSiteGroundVerification: mocks.verified }));
-vi.mock('./BuildingFoundationSurface', () => ({ BuildingFoundationSurface: () => <div data-testid="foundation"/> }));
+vi.mock('./BuildingFoundationSurface', async importOriginal => ({
+  ...await importOriginal<typeof import('./BuildingFoundationSurface')>(),
+  BuildingFoundationSurface: () => <div data-testid="foundation"/>,
+}));
 vi.mock('@/features/legoAssembly/buildingWalking', async importOriginal => ({
   ...await importOriginal<typeof import('@/features/legoAssembly/buildingWalking')>(),
   readBuildingWalking: mocks.readWalking, mountBuildingWalking: mocks.mountWalking,

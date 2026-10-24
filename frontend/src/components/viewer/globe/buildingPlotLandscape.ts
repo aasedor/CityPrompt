@@ -1,5 +1,6 @@
 import polygonClipping, { type MultiPolygon, type Pair } from 'polygon-clipping';
-import type { SiteZone } from '@/types';
+import type { Building, SiteZone } from '@/types';
+import { Vector3 } from 'three';
 import { assetForZone } from '@/features/pickPlace/catalogue';
 import { buildingEdgeContract } from '@/features/pickPlace/buildingPlacementEdges';
 import { rectangleAt, rectangleDimensions } from '@/features/pickPlace/geometry';
@@ -10,6 +11,7 @@ import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { getResidualLandscapeRecipe } from './residualLandscape';
 import { buildingLandscapeNotes } from './buildingLandscapeNotes';
+import { reviewBuildingLandscapeContract, reviewBuildingLandscapePlacement } from './reviewBuildingLandscape';
 
 export type BuildingGardenStyle = 'residential' | 'urban' | 'civic' | 'service';
 export interface BuildingPlotLandscape {
@@ -23,6 +25,7 @@ export interface BuildingPlotLandscape {
   surface: MultiPolygon;
   beds: MultiPolygon;
   shrubs: Pair[];
+  bedLiftM?: number;
 }
 
 /** Some historic review cards have a generic housing category. Resolve their
@@ -70,7 +73,7 @@ export function buildingGardenEnvelope(zone: SiteZone): { width: number; depth: 
  * It never changes model bounds, saved geometry, terrain or access contracts.
  * Unknown/repeated models receive ground cover only: no guessed shrub layout.
  */
-export function buildingPlotLandscapes(zones: SiteZone[], terrainHeight: number): BuildingPlotLandscape[] {
+export function buildingPlotLandscapes(zones: SiteZone[], terrainHeight: number, buildings: readonly Building[] = []): BuildingPlotLandscape[] {
   const boundary = getActiveSiteBoundary(zones);
   if (!boundary || boundary.properties?.community_3d_mask_existing_tiles === false
     || boundary.properties?.terrain_strategy === 'landscape') return [];
@@ -79,6 +82,7 @@ export function buildingPlotLandscapes(zones: SiteZone[], terrainHeight: number)
   if (recipe?.surface_image_url && recipe.surface_mode === 'site_base') return [];
   const corridors = landscapeKeepClear(zones).filter(validRing);
   const physical = zones.filter(z => resolveCommunity3DKind(z) !== null && validRing(z.coordinates));
+  const linkedBuildings = new Map(buildings.map(building => [building.id, building]));
   return physical.flatMap(zone => {
     if (resolveCommunity3DKind(zone) !== 'building') return [];
     const height = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight);
@@ -97,6 +101,27 @@ export function buildingPlotLandscapes(zones: SiteZone[], terrainHeight: number)
       const style = buildingGardenStyle(zone);
       const result: BuildingPlotLandscape = { zoneId: zone.id, style, design: buildingLandscapeNotes(zone),
         drawSurface: !recipe, origin, height, surface, beds: [], shrubs: [] };
+      const authoredGround = reviewBuildingLandscapeContract(zone);
+      if (authoredGround) {
+        const placement = reviewBuildingLandscapePlacement(zone, linkedBuildings.get(zone.building_id ?? ''));
+        if (!placement) return [result];
+        const rotate = (x: number, z: number): Pair => {
+          const point = new Vector3(x, 0, z).applyMatrix4(placement.matrix);
+          return [point.x, point.y];
+        };
+        const beds = authoredGround.beds.map(([x0, z0, x1, z1]) => closed([
+          rotate(x0, z0), rotate(x1, z0), rotate(x1, z1), rotate(x0, z1)]));
+        result.beds = polygonClipping.intersection(surface, beds.map(ring => [ring]));
+        result.bedLiftM = .08;
+        for (const [x0, z0, x1, z1] of authoredGround.beds) {
+          for (let x = x0 + .7; x <= x1 - .7; x += 1.5) {
+            const point = rotate(x, (z0 + z1) / 2);
+            const disk = Array.from({ length: 16 }, (_, i): Pair => [point[0] + .42 * Math.cos(i * Math.PI / 8), point[1] + .42 * Math.sin(i * Math.PI / 8)]);
+            if (polygonClipping.difference([closed(disk)], result.beds).length === 0) result.shrubs.push(point);
+          }
+        }
+        return [result];
+      }
       const contract = buildingGardenEnvelope(zone);
       if (!contract || style === 'service') return [result];
       const frame = rectangleDimensions(zone.coordinates), angle = frame.degrees * Math.PI / 180;

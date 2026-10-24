@@ -17,9 +17,10 @@ import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useSharedSiteGround, useSharedSiteGroundVerification } from './SharedSiteGroundProvider';
 import { preparedEntranceGround } from './preparedEntranceGround';
 import { reviewBuildingFootprints, reviewBuildingGroundContact } from './reviewBuildingGround';
-import { BuildingFoundationSurface } from './BuildingFoundationSurface';
+import { BuildingFoundationSurface, useBuildingLandscapeGround } from './BuildingFoundationSurface';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 import { prepareReviewBuildingGlass } from './reviewBuildingGlass';
+import { prepareReviewBuildingLandscape } from './reviewBuildingLandscape';
 import type { NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntrance';
 import { supportsNativeEntranceStepPick } from '@/features/pickPlace/pedestrianConnections';
 import { useBuildingEntranceApproach, BuildingEntranceApproachMesh } from './BuildingEntranceApproaches';
@@ -62,7 +63,13 @@ function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuil
 }) {
   const frameRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF(url);
-  const preparedModel = useMemo(() => prepareReviewBuildingGlass(scene), [scene]);
+  const landscapeGround = useBuildingLandscapeGround(zone);
+  const landscape = useMemo(() => prepareReviewBuildingLandscape(scene, zone, landscapeGround), [scene, zone, landscapeGround]);
+  useEffect(() => retainResourceForDeferredDisposal(landscape, value => {
+    value.ownedGeometries.forEach(geometry => geometry.dispose());
+    value.ownedMaterials.forEach(material => material.dispose());
+  }), [landscape]);
+  const preparedModel = useMemo(() => prepareReviewBuildingGlass(landscape.clone), [landscape]);
   const model = useMemo(() => {
     const clone = centreNativeClayClone(preparedModel.clone);
     // Draw authored geometry after the prepared surface, whose depth remains
@@ -133,7 +140,7 @@ function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuil
       zone.building_id ? { building_id: zone.building_id } : {})) };
   return <EastNorthUpFrame lat={lat * Math.PI / 180} lon={lng * Math.PI / 180} height={height}>
     <group ref={frameRef} name={`review-building-${zone.id}`}>
-      {geometry && <BuildingFoundationSurface geometry={geometry} renderOrder={150} userData={userData}/>}
+      {geometry && <BuildingFoundationSurface geometry={geometry} renderOrder={150} userData={userData} frame={footprintFrame} zone={zone}/>}
       <group rotation={[0, 0, yaw]}
         onPointerDown={event => {
           event.stopPropagation();
