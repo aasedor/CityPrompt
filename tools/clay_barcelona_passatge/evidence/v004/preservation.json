@@ -1,0 +1,32 @@
+{
+  "candidate": "clay-barcelona-passatge-clay-v004",
+  "glb": "clay-barcelona-passatge-clay-v004.glb",
+  "glb_bytes": 3217812,
+  "glb_sha256": "f13ce0224dcd3d30817ac2b109f76b1c7f677ce1c3a6aba62a948415c0a3b204",
+  "jpeg_qualities": {
+    "aerial.png": 92,
+    "architecture_close.png": 92,
+    "facade_close.png": 92,
+    "floor_tiles.png": 92,
+    "front.png": 92,
+    "front_corner.png": 92,
+    "glass_close.png": 92,
+    "interior.png": 92,
+    "left_side.png": 92,
+    "north_portal.png": 92,
+    "pavilion_finial.png": 92,
+    "rear.png": 92,
+    "rear_side.png": 92,
+    "right_side.png": 92,
+    "roof_vault.png": 92,
+    "shopfronts.png": 92,
+    "south_portal.png": 92,
+    "top.png": 92,
+    "phone-01-source-vs-render.png": 92,
+    "phone-02-details.png": 92,
+    "phone-03-details.png": 92,
+    "phone-04-details.png": 92
+  },
+  "zip": "clay-barcelona-passatge-clay-v004-renders-and-glb.zip",
+  "zip_bytes": 42408256
+}
