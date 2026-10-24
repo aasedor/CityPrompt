@@ -2046,8 +2046,8 @@ def tower():
     m = Merge(NORTH)
     framed(m, NORTH, sh[0], cols=5, rows=1, inset=.18, occupied='lobby', kind='storefront', frame='frame')
     m.box('metal', 6.0, .2, 2.15, 4.18, .06, 3.98)
-    for k in range(1, 12):
-        m.box('steel', 6.0, .16, .15 + 4.0 * k / 12, 4.1, .03, .03)
+    for k in range(1, 7):
+        m.box('steel', 6.0, .16, .15 + 4.0 * k / 7, 4.1, .03, .03)
     register(NORTH, sh[1], .2, 'door', 'loading')
     m.flush('north base')
     for a, b, lab in ((lo, -RB[1], 'north parapet east'), (-RB[0], hi, 'north parapet west')):
@@ -2221,14 +2221,14 @@ def _grooves(seed=11):
     rnd = random.Random(seed)
     W = SPX[1] - SPX[0]
     cols = []
-    for c in range(3):
+    for c in range(5):
         rows, z = [], 0.
         while z < SPTOP:
-            h = rnd.uniform(6., 15.)
-            rows.append((z, rnd.uniform(-.25, .25), rnd.uniform(.08, .3), rnd.uniform(-.12, .12), rnd.uniform(-.012, .012)))
+            h = rnd.uniform(5.5, 11.)
+            rows.append((z, rnd.uniform(-.3, .3), rnd.uniform(.06, .4), rnd.uniform(-.5, .5), rnd.uniform(-.05, .05)))
             z += h
         cols.append(rows)
-    ph = [rnd.uniform(0, 6.3) for _ in range(6)]
+    ph = [rnd.uniform(0, 6.3) for _ in range(8)]
     return W, cols, ph
 
 
@@ -2236,17 +2236,20 @@ GW, GCOLS, GPH = _grooves()
 
 
 def _bounds(z):
-    return (2.45 + .35 * math.sin(z / 6.5 + GPH[0]) + .14 * math.sin(z / 2.3 + GPH[1]),
-            4.95 + .35 * math.sin(z / 7.3 + GPH[2]) + .14 * math.sin(z / 2.9 + GPH[3]))
+    """The four sinuous cleft lines that part the five columns of cleaved planes (their x across the front face)."""
+    W = SPX[1] - SPX[0]
+    return [W * (i + 1) / 5 + .42 * math.sin(z / (5.5 + 1.1 * i) + GPH[i]) + .16 * math.sin(z / 2.4 + GPH[i + 1])
+            for i in range(4)]
 
 
 def rock_depth(u, z):
     """Inward relief (<= 0) at distance u from the west arris across the front face and height z: the plane of the
     cell (column, row) plus V-clefts along the sinuous column boundaries and the slanted row breaks; plain within
     0.3 m of either arris and under the cap."""
-    b1, b2 = _bounds(z)
-    c = 0 if u < b1 else 1 if u < b2 else 2
-    lo, hi = (0., b1) if c == 0 else (b1, b2) if c == 1 else (b2, GW)
+    bs = _bounds(z)
+    c = sum(1 for b in bs if u >= b)
+    lo = bs[c - 1] if c else 0.
+    hi = bs[c] if c < len(bs) else GW
     uc = (lo + hi) / 2
     rows = GCOLS[c]
     r = 0
@@ -2255,16 +2258,16 @@ def rock_depth(u, z):
             r = k
     z0, sl, a, gu, gz = rows[r]
     d = -(a + gu * (u - uc) + gz * (z - z0 - 4.))
-    d = max(-.45, min(-.02, d))
-    for b in (b1, b2):                                                # vertical clefts
+    d = max(-.62, min(-.01, d))
+    for b in bs:                                                      # vertical clefts
         t = abs(u - b)
-        if t < .24:
-            d = min(d, -.5 * (1 - t / .24) - .04)
+        if t < .3:
+            d = min(d, -.6 * (1 - (t / .3) ** 2) - .04)
     for k in range(1, len(rows)):                                     # slanted row breaks
         zb = rows[k][0] + rows[k][1] * (u - uc)
         t = abs(z - zb)
-        if t < .2:
-            d = min(d, -.3 * (1 - t / .2) - .03)
+        if t < .26:
+            d = min(d, -.4 * (1 - (t / .26) ** 2) - .03)
     w = _smooth01((min(u, GW - u) - .3) / .25)
     w *= 1 - _smooth01((z - (SPTOP - 1.2)) / .9)
     return w * d
@@ -2278,7 +2281,7 @@ def plinth(z):
     return 1.3 * max(0., 1 - z / PLINTH) ** 1.4
 
 
-def spine_perimeter(side_step=.6, front_step=.2):
+def spine_perimeter(side_step=.9, front_step=.17):
     """Exposed perimeter: west side (notch back to the west arris), the front face, east side back to the notch:
     (x, y, face normal, mitre normal, u or None, swell weight). u is the distance across the front face (front
     samples only); the swell weight is 0 only at the notch walls so the foot bulges round the arrises."""
@@ -2304,7 +2307,7 @@ def spine():
     per = spine_perimeter()
     zs = [0.0]
     while zs[-1] < SPTOP - .3:
-        zs.append(min(SPTOP, zs[-1] + .45))
+        zs.append(min(SPTOP, zs[-1] + .44))
     if zs[-1] < SPTOP:
         zs.append(SPTOP)
     rings = []
@@ -2359,7 +2362,7 @@ def spine_mesh(rings, front):
                 u = [p1[c] - p0[c] for c in range(3)]; w = [p2[c] - p0[c] for c in range(3)]
                 nn = (u[1] * w[2] - u[2] * w[1], u[2] * w[0] - u[0] * w[2], u[0] * w[1] - u[1] * w[0])
                 L = math.sqrt(sum(c * c for c in nn)) or 1.
-                (dark if abs(nn[1]) / L < .9 else light).append(quad)
+                (dark if abs(nn[1]) / L < .93 else light).append(quad)
             else:
                 plain.append(quad)
     caps = [tuple(range(m - 1, -1, -1)), tuple((len(rings) - 1) * m + j for j in range(m))]
@@ -2368,7 +2371,7 @@ def spine_mesh(rings, front):
     nl, nd = len(light), len(dark)
     for poly in o.data.polygons:                                     # front planes smooth; sides, back and caps flat (crisp arrises)
         poly.material_index = 1 if nl <= poly.index < nl + nd else 0
-        poly.use_smooth = poly.index < nl + nd
+        poly.use_smooth = False                                      # every cleaved plane shades as one facet
     return o
 
 
@@ -2410,7 +2413,7 @@ def cleft_boulder(name, cx, cy, z0, rx, ry, rz, seed, role='granite', sink=.15, 
     rnd = random.Random(seed)
     c, sn = math.cos(rot), math.sin(rot)
     pts = []
-    N = 26
+    N = 14
     for i in range(N):
         zf = 1 - 2 * (i + .5) / N; r = math.sqrt(max(0., 1 - zf * zf)); a = i * 2.39996 + rnd.uniform(-.25, .25)
         k = rnd.uniform(.86, 1.04)
@@ -2418,7 +2421,7 @@ def cleft_boulder(name, cx, cy, z0, rx, ry, rz, seed, role='granite', sink=.15, 
     for _ in range(planes):                                             # cleavage planes
         ph = rnd.uniform(0, 2 * math.pi); el = rnd.uniform(-.2, .7)
         n = (math.cos(ph) * math.cos(el), math.sin(ph) * math.cos(el), math.sin(el))
-        off = rnd.uniform(.6, .82) * (abs(n[0]) * rx + abs(n[1]) * ry + abs(n[2]) * rz * .5) * .8
+        off = rnd.uniform(.35, .6) * (abs(n[0]) * rx + abs(n[1]) * ry + abs(n[2]) * rz * .5) * .8
         for p in pts:
             q = (p[0] * n[0] + p[1] * n[1] + (p[2] - rz * .5) * n[2]) - off
             if q > 0:
@@ -2432,8 +2435,8 @@ def cleft_boulder(name, cx, cy, z0, rx, ry, rz, seed, role='granite', sink=.15, 
             p[0] += tilt * (p[2] - rz * .5)
     base = -sink
     out = [(cx + p[0] * c - p[1] * sn, cy + p[0] * sn + p[1] * c, z0 + max(base, p[2])) for p in pts]
-    for a in range(8):
-        tt = a * math.tau / 8; k = rnd.uniform(.8, .92)
+    for a in range(6):
+        tt = a * math.tau / 6; k = rnd.uniform(.78, .9)
         x, y = rx * k * math.cos(tt), ry * k * math.sin(tt)
         out.append((cx + x * c - y * sn, cy + x * sn + y * c, z0 + base))
     hull = _Hull(out)
