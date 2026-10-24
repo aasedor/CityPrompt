@@ -262,6 +262,33 @@ def test_native_single_detached_landmark_is_one_dwelling_without_guessing_floor_
     assert values(analyze_snapshot(snapshot([parcel], [building])))["compiled_detached_dwellings"] is None
 
 
+@pytest.mark.parametrize("automatic_properties", [
+    {"development_archetype_id": "calgary_modern_infill_house", "development_selected_variant_id": "infill_duplex",
+     "pick_place_asset": "clay_side_by_side_duplex", "pick_place_model_revision": "calgary-side-by-side-duplex-clay-v004"},
+    {"development_archetype_id": "calgary_modern_infill_house", "development_selected_variant_id": "infill_duplex"},
+    {"pick_place_automatic_3d": True},
+])
+def test_one_assembled_catalogue_mesh_does_not_certify_one_dwelling(automatic_properties):
+    from app.services.residual_landscape import community_3d_source_hash
+
+    parcel, building = detached_fixture(unit_estimate=None)
+    parcel.properties.update(automatic_properties)
+    building.specifications["legoAssembly"] = {
+        "fit": {"assembly_mode": "fixed_landmark", "native_scale_locked": True},
+        "instances": [{"segment_id": "landmark", "role": "assembled"}],
+    }
+    parcel.properties["community_3d"]["source_hash"] = community_3d_source_hash(
+        parcel.zone_type, parcel.geometry, parcel.properties)
+    report = analyze_snapshot(snapshot([parcel], [building]))
+    metrics = values(report)
+    assert metrics["compiled_detached_dwellings"] is None
+    assert metrics["detached_plots_pending"] == 1
+    pending = next(m for m in report["metrics"] if m["key"] == "detached_plots_pending")
+    assert "unverified" in pending["label"].lower()
+    finding = next(f for f in report["findings"] if f["id"] == "detached-housing-quantities")
+    assert "rebuild" not in finding["recommendation"].lower()
+
+
 def test_direct_zone_storeys_use_canonical_floor_count():
     report = analyze_snapshot(snapshot([zone("building", floor_count=4)]))
     metrics = values(report)

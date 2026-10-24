@@ -273,6 +273,7 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
     detached_building_ids: set[str] = set()
     compiled_detached: dict[str, int] = {}
     compiled_detached_zone_ids: set[str] = set()
+    native_quantity_unknown_zone_ids: set[str] = set()
     for zone in zones:
         props = zone["properties"]
         identity = str(props.get("development_selected_variant_id") or props.get("development_archetype_id") or "")
@@ -308,18 +309,22 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             ):
                 continue
             segments = {item["segment_id"] for item in instances}
-            # A published detached archetype may be delivered as one native,
-            # complete landmark rather than a repeated-lot recipe. Its plot
-            # still includes setbacks and is not a measured floor plate.
+            # Retain legacy single-house recipes, but never infer one dwelling
+            # from one catalogue mesh: a variant can contain a duplex or more.
+            # Exact reviewed catalogue programmes are counted separately below.
             if (
-                catalog_parent_archetype_id(identity) in DETACHED_ARCHETYPE_IDS
-                and fit.get("assembly_mode") == "fixed_landmark"
+                fit.get("assembly_mode") == "fixed_landmark"
                 and fit.get("native_scale_locked") is True
                 and len(instances) == 1
                 and instances[0].get("role") == "assembled"
             ):
-                compiled_detached[building["id"]] = 1
-                compiled_detached_zone_ids.add(zone["id"])
+                if (identity in DETACHED_ARCHETYPE_IDS
+                    and props.get("pick_place_automatic_3d") is not True
+                    and not props.get("pick_place_asset")):
+                    compiled_detached[building["id"]] = 1
+                    compiled_detached_zone_ids.add(zone["id"])
+                else:
+                    native_quantity_unknown_zone_ids.add(zone["id"])
                 continue
             if (
                 fit.get("placement_mode") == "detached_lots"
@@ -706,22 +711,30 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             and bool(zone["properties"]["pick_place_asset"].strip())
             for zone in pending_zones
         )
-        legacy_pending = pending - automatic_pending
+        native_pending = sum(zone["id"] in native_quantity_unknown_zone_ids for zone in pending_zones)
+        unknown_quantities = automatic_pending or native_pending
+        legacy_pending = sum(
+            zone["id"] not in native_quantity_unknown_zone_ids
+            and zone["properties"].get("pick_place_automatic_3d") is not True
+            and not zone["properties"].get("pick_place_asset")
+            for zone in pending_zones
+        )
         metric(
             "detached_plots_pending",
-            "Detached plots with unverified dwelling counts" if automatic_pending else "Detached plots awaiting current 3D",
+            "Detached plots with unverified dwelling counts" if unknown_quantities else "Detached plots awaiting current 3D",
             pending,
             "plots",
-            ("Housing plot count, separate from certified dwelling counts. Automatic 3D visuals do not certify housing quantities; unknown counts remain unknown."
-             if automatic_pending else "Housing plot count, separate from dwelling count. Compile or rebuild Community 3D to resolve missing or stale dwelling recipes."),
+            ("Housing plot count, separate from certified dwelling counts. 3D visuals do not certify housing quantities; unknown counts remain unknown."
+             if unknown_quantities else "Housing plot count, separate from dwelling count. Compile or rebuild Community 3D to resolve missing or stale dwelling recipes."),
         )
         finding(
             "detached-housing-quantities",
             "Resolve the detached housing quantities",
             f"{len(detached_zone_ids)} detached housing plots are present; {pending} have unverified dwelling counts. Plot area includes yards and is excluded from known building footprint and floor-area totals.",
             ("These catalogue objects update automatically in 3D. A saved visual model does not certify dwelling quantities. Record known dwelling estimates in object settings, or leave unknown counts blank. " if automatic_pending
+             else "The saved 3D model does not certify dwelling quantities. Record known dwelling estimates in object settings, or leave unknown counts blank. " if native_pending
              else "Build or refresh Community 3D for dwelling counts. " if pending else "Dwelling counts are current. ")
-            + ("For the remaining legacy plots, Build or refresh Community 3D to resolve their dwelling counts. " if automatic_pending and legacy_pending else "")
+            + ("For the remaining legacy plots, Build or refresh Community 3D to resolve their dwelling counts. " if unknown_quantities and legacy_pending else "")
             + "Record individual measured house floor plates before using these plots for floor-area or density calculations.",
             kind="unresolved_question",
             records=[zone for zone in zones if zone["id"] in detached_zone_ids],
