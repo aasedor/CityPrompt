@@ -3,12 +3,13 @@ import { useNarrowViewport } from '@/hooks/useNarrowViewport';
 import { createPortal } from 'react-dom';
 import { Check, FileText, HelpCircle, Layers, Loader2, Maximize2, Minimize2, RotateCw, Users, X } from 'lucide-react';
 
-export function StudioToolSheet({navigation,children}:{navigation:ReactNode;children:ReactNode}) {
+export function StudioToolSheet({navigation,notice,children}:{navigation:ReactNode;notice?:ReactNode;children:ReactNode}) {
   const narrow=useNarrowViewport();
   const [expanded,setExpanded]=useState(false);
   const id=useId();
   return <div className="pointer-events-auto h-full">
     {navigation}
+    {notice && <div className="mb-2">{notice}</div>}
     {narrow && <button type="button" aria-expanded={expanded} aria-controls={id}
       aria-label={expanded?'Hide design tools':'Show design tools'} onClick={()=>setExpanded(value=>!value)}
       className="mt-2 min-h-11 w-full rounded-xl border-2 border-slate-900 bg-[#fff9ec] px-3 text-sm font-bold text-slate-950 shadow-lg">
@@ -34,6 +35,12 @@ export function StudioSaveStatus({ saving, draftCount, loadError, onRetry, onRel
   saving: boolean; draftCount: number; loadError: boolean; onRetry: () => void; onReload: () => void; draftsPersistOnDevice?: boolean;
   discardableCount?: number; onDiscardRejected?: () => void; saveError?: string | null;
 }) {
+  const readableError = saveError?.includes('Polygon boundary self-intersects or overlaps')
+    ? `This outline has crossing or overlapping edges. ${discardableCount > 0
+      ? 'Discard the rejected drawing, then draw it again.'
+      : draftCount > 0 ? 'Redraw the outline without crossing edges, then save again.'
+      : 'Reload the saved version, then move the corners so the edges do not cross.'}`
+    : saveError;
   if (loadError) return <div role="alert" className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
     Saved drawings could not load. Your project may contain more work.
     <button onClick={onReload} className="mt-2 flex min-h-11 items-center gap-2 font-semibold underline"><RotateCw size={16} /> Try loading again</button>
@@ -42,14 +49,14 @@ export function StudioSaveStatus({ saving, draftCount, loadError, onRetry, onRel
   if (draftCount) return <div role="status" className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
     {draftCount} {draftCount === 1 ? 'drawing is' : 'drawings are'} {draftsPersistOnDevice
       ? 'kept on this device and waiting to save.' : 'kept in this tab only. Keep the tab open and save again.'}
-    {saveError && <p role="alert" className="mt-2">{saveError}</p>}
+    {readableError && <p role="alert" className="mt-2">{readableError}</p>}
     <button onClick={onRetry} className="mt-2 flex min-h-11 items-center gap-2 font-semibold underline"><RotateCw size={16} /> Save again</button>
     {discardableCount > 0 && <button onClick={onDiscardRejected} className="mt-1 flex min-h-11 items-center font-semibold underline">
       Discard {discardableCount === 1 ? 'rejected drawing' : `${discardableCount} rejected drawings`}
     </button>}
   </div>;
   if (saveError) return <div role="alert" className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">
-    {saveError}<button onClick={onReload} className="mt-2 flex min-h-11 items-center gap-2 font-semibold underline"><RotateCw size={16} /> Reload saved version</button>
+    {readableError}<button onClick={onReload} className="mt-2 flex min-h-11 items-center gap-2 font-semibold underline"><RotateCw size={16} /> Reload saved version</button>
   </div>;
   return <p role="status" className="flex items-center gap-2 px-1 py-2 text-sm text-slate-700"><Check size={15} /> Drawings saved</p>;
 }

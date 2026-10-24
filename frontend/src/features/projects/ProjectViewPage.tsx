@@ -68,6 +68,7 @@ import { ZoneLegend } from '@/components/viewer/ZoneLegend';
 import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
 import { ProjectPdfDownloadButton } from './ProjectPdfDownloadButton';
 import { StudioControls, StudioDialog, StudioSaveStatus, StudioToolSheet } from './StudioControls';
+import { polygonOutlineProblem } from '@/utils/polygonOutline';
 import { ReadOnlyProject } from './ReadOnlyProject';
 import { StudentWorkflowNav, StudentStepPanel, studentLandscapeNeedsRefresh, studentStreetAccessNotice, type StudentStep } from './StudentWorkflow';
 import { defaultStudentStep } from './studentNavigation';
@@ -404,6 +405,10 @@ export function ProjectViewPage() {
     finally { placementPending.current = false; }
   };
   const reshapeObject = (zoneId: string, coordinates: number[][]): boolean => {
+    if (siteZones.find(zone => zone.id === zoneId)?.zone_type === 'site_boundary') {
+      const problem = polygonOutlineProblem(coordinates, 'site boundary');
+      if (problem) { toast.error(problem, {id:'boundary-outline-validation',position:'top-center'}); return false; }
+    }
     const zone = siteZones.find(item => item.id === zoneId);
     if (zone && isFixedSectionStreet(zone)) coordinates = snapConnectedStreetEdit(zone, coordinates, siteZones);
     if (zone?.zone_type === 'road') {
@@ -1177,6 +1182,13 @@ export function ProjectViewPage() {
             buildings={visibleBuildings}
             onZoneCreated={(coordinates, type, properties) => {
               if (properties?.cartography_study) return references.canEdit && studyMap.complete(coordinates);
+              if (type === 'site_boundary') {
+                const problem = polygonOutlineProblem(coordinates, 'site boundary');
+                if (problem) {
+                  toast.error(`${problem} Use Backspace to remove the last corner, or Esc to clear the drawing.`, {id:'boundary-outline-validation',position:'top-center'});
+                  return false;
+                }
+              }
               if (['building', 'residential', 'green_space'].includes(type)) {
                 const snapped = snapPlacement(coordinates, siteZones, getActiveSiteBoundary(siteZones), undefined, properties, type);
                 if (snapped.problem) { toast.error(snapped.problem, { position: 'top-center' }); return false; }
@@ -1227,7 +1239,11 @@ export function ProjectViewPage() {
           style={entrancePick ? {display:'none'} : undefined}
           className={`pointer-events-none absolute inset-x-3 bottom-3 z-30 min-h-0 max-h-[42dvh] overflow-y-auto overscroll-contain lg:inset-x-auto lg:left-4 lg:top-28 lg:bottom-16 lg:w-64 lg:max-h-none lg:overflow-y-auto lg:pr-2 ${activeSitePlannerTool || placementDraft || showDetailCatalogue || (selectedZone && (assetForZone(selectedZone) || isFixedSectionStreet(selectedZone))) ? 'hidden lg:block' : ''}`}
         >
-          <StudioToolSheet navigation={<StudentWorkflowNav step={activeStudentStep} onChange={changeStudentStep} />}>
+          <StudioToolSheet navigation={<StudentWorkflowNav step={activeStudentStep} onChange={changeStudentStep} />}
+            notice={(pendingDrafts.length > 0 || saveError || siteZonesError) && <StudioSaveStatus
+              saving={isSaving} draftCount={pendingDrafts.length} draftsPersistOnDevice={draftsPersistOnDevice}
+              loadError={Boolean(siteZonesError)} onRetry={() => pendingDrafts.forEach(retryDraft)} onReload={() => { void reloadSavedVersion(); }}
+              discardableCount={discardableDrafts.length} onDiscardRejected={() => discardableDrafts.forEach(discardDraft)} saveError={saveError} />}>
             {activeStudentStep !== 'design' && !showGlobeRender && !showVideoRender && <StudentStepPanel
               siteOptions={<StreetNamesControl state={streetNames} />}
               step={activeStudentStep} hasSite={Boolean(cityPromptWorkflow.activeBoundary && isPersistedZoneId(cityPromptWorkflow.activeBoundary.id))}
@@ -1238,10 +1254,6 @@ export function ProjectViewPage() {
               automatic3DStatus={automatic3D.status} automatic3DMessage={automatic3D.message}
               onSite={() => { setStudentStep('site'); handleSiteBoundary(); }} onDesign={() => changeStudentStep('design')}
               onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} onRefreshLandscape={automatic3D.retry} onRetry3D={automatic3D.retry} />}
-            {activeStudentStep === 'site' && (pendingDrafts.length > 0 || saveError) && <StudioSaveStatus
-              saving={isSaving} draftCount={pendingDrafts.length} draftsPersistOnDevice={draftsPersistOnDevice}
-              loadError={false} onRetry={() => pendingDrafts.forEach(retryDraft)} onReload={() => { void reloadSavedVersion(); }}
-              discardableCount={discardableDrafts.length} onDiscardRejected={() => discardableDrafts.forEach(discardDraft)} saveError={saveError} />}
             {activeStudentStep === 'site' && <div className="mt-3 space-y-3"><ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend} /><LocalAreaPlanPanel state={localPolicyPanel} /><CityPolicyMapsPanel state={cityPolicyPanel} /><ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/><SiteAssessmentPanel zones={siteZones} projectId={id} state={siteAssessment} /></div>}
             <div hidden={activeStudentStep !== 'design'}>
             <SitePlannerToolbar
@@ -1310,8 +1322,8 @@ export function ProjectViewPage() {
               bottomSlot={
                 !showGlobeRender && !showVideoRender ? (
                   <div className="flex flex-col gap-1">
-                    <StudioSaveStatus saving={isSaving} draftCount={pendingDrafts.length} draftsPersistOnDevice={draftsPersistOnDevice} loadError={Boolean(siteZonesError)} onRetry={() => pendingDrafts.forEach(retryDraft)} onReload={() => { void reloadSavedVersion(); }}
-                      discardableCount={discardableDrafts.length} onDiscardRejected={() => discardableDrafts.forEach(discardDraft)} saveError={saveError} />
+                    {pendingDrafts.length === 0 && !saveError && !siteZonesError && <StudioSaveStatus saving={isSaving} draftCount={0} draftsPersistOnDevice={draftsPersistOnDevice} loadError={false} onRetry={() => pendingDrafts.forEach(retryDraft)} onReload={() => { void reloadSavedVersion(); }}
+                      discardableCount={discardableDrafts.length} onDiscardRejected={() => discardableDrafts.forEach(discardDraft)} saveError={saveError} />}
 
                     <button type="button" data-tour="ai-render-btn" onClick={() => changeStudentStep('present')}
                       className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-950 bg-[#c9ff3d] px-3 py-2 text-sm font-bold text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-700">

@@ -112,6 +112,9 @@ function normalizeSavedRender(render: SavedRender): SavedRender {
 function formatApiDetail(detail: unknown): string | null {
   if (typeof detail === 'string') {
     const trimmed = detail.trim();
+    if (trimmed.startsWith('Polygon boundary self-intersects or overlaps')) {
+      return 'This outline has crossing or overlapping edges. Move its corners so the edges do not cross.';
+    }
     return trimmed || null;
   }
   if (Array.isArray(detail)) {
