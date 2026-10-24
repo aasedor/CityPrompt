@@ -277,6 +277,45 @@ describe('automatic placement compilation',()=>{
     expect(result.current.message).toContain('Unfinished home');
     unmount();
   });
+  it.each([false,true])('invalidates objects and buildings before landscape recovery (previously ready: %s)', async previouslyReady => {
+    const generated:SiteZone={...boundary('stale'),properties:{
+      ...boundary('stale').properties,community_3d_landscape_mode:'generated',
+    }};
+    const applied:SiteZone={...generated,properties:{...generated.properties,
+      community_3d_landscape:boundary('compiled').properties!.community_3d_landscape,
+    }};
+    const edited=zone(1),saved=zone(1,true);
+    const initialZones=previouslyReady ? [zone(0,true),applied] : [edited,generated];
+    const client=new QueryClient({defaultOptions:{queries:{retry:false}}});
+    client.setQueryData(['site-zones','p'],initialZones);
+    client.setQueryData(['project','p'],{id:'p',buildings:[]});
+    const wrap=({children}:{children:ReactNode})=><QueryClientProvider client={client}>{children}</QueryClientProvider>;
+    vi.mocked(siteZonesApi.list).mockResolvedValue([saved,generated]);
+    const {result,rerender,unmount}=renderHook(({zones})=>useAutomatic3D('p',zones,false),{
+      initialProps:{zones:initialZones},wrapper:wrap,
+    });
+    if(previouslyReady){
+      await advance();
+      expect(result.current.status).toBe('ready');
+      expect(compileMixedCommunity3D).not.toHaveBeenCalled();
+      client.setQueryData(['site-zones','p'],[edited,generated]);
+      rerender({zones:[edited,generated]});
+    }
+    await advance();
+    expect(result.current.status).toBe('error');
+    expect(client.getQueryData(['site-zones','p'])).toEqual([saved,generated]);
+    expect(client.getQueryState(['site-zones','p'])?.isInvalidated).toBe(true);
+    expect(client.getQueryState(['project','p'])?.isInvalidated).toBe(true);
+    await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
+
+    client.setQueryData(['site-zones','p'],[saved,applied]);
+    rerender({zones:[saved,applied]});
+    await advance();
+    expect(result.current.status).toBe('ready');
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
+    unmount();
+  });
   it.each(['plaza_archetype_id', 'generation_style_inputs'])('retries a failed custom plaza when %s changes', async field => {
     vi.mocked(compileMixedCommunity3D).mockRejectedValueOnce(new Error('bad archetype'));
     const plaza = {...zone(),zone_type:'parking',properties:{[field]:'old'}} as SiteZone;

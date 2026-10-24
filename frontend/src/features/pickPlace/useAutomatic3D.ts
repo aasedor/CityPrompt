@@ -101,7 +101,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
     const timer = window.setTimeout(async () => {
       run.busy = true; run.force = false; setStatus('updating'); setMessage('');
       try {
-        const result = await runProjectWrite(client, projectId, async () => {
+        const { result, readiness } = await runProjectWrite(client, projectId, async () => {
           // Refresh objects from the full cache, but keep the selected scenario.
           // Hidden alternatives must never occupy or invalidate its landscape.
           const currentZones = (client.getQueryData<SiteZone[]>(['site-zones', projectId]) ?? latest.current)
@@ -110,7 +110,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
           const sources = currentZones.filter(physicalZone);
           const scope = currentZones.filter(physicalScopeZone);
           const currentBoundary = deriveCityPromptWorkflow(currentZones).activeBoundary;
-          if (!sources.length) return { plannedMasses: 0 };
+          if (!sources.length) return { result: { plannedMasses: 0 }, readiness: null };
           const result = await compileMixedCommunity3D(sources, undefined, {
             includeResidualLandscape: automaticSiteTreesEnabled(currentBoundary),
             scopeMode: visibility?.hiddenLayers.size ? 'selection' : 'project',
@@ -127,17 +127,20 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
           client.setQueryData(['site-zones', projectId], saved);
           const savedVisible = saved.filter(zone => !zone.id.startsWith('temp-')
             && !visibility?.hiddenLayers.has(String(zone.properties?._imported_from ?? '')));
-          const readiness = deriveCityPromptWorkflow(savedVisible);
-          if (!readiness.sceneReady) {
-            throw new Error(readiness.renderReason);
-          }
-          return result;
+          return { result, readiness: deriveCityPromptWorkflow(savedVisible) };
         });
+        // Object compilation can commit new Building representations while an
+        // applied landscape still needs manual regeneration. Refresh both caches
+        // before reporting that remaining issue so capture sees matching records.
         await Promise.all([
           client.invalidateQueries({ queryKey: ['site-zones', projectId] }),
           client.invalidateQueries({ queryKey: ['project', projectId] }),
         ]);
+        // Applying the landscape later can finish this same authored revision.
         run.completed = key;
+        if (readiness && !readiness.sceneReady) {
+          throw new Error(readiness.renderReason);
+        }
         if (state.current === run) {
           setStatus('ready');
           setMessage(result.plannedMasses ? 'Some detailed models are unavailable. Simple building volumes are shown.' : 'Your 3D scene updates automatically.');
