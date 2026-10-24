@@ -53,8 +53,8 @@ SHELL_T = .35                                         # CLT shell thickness
 TOP = RIM + .1
 EPS = .002
 PALETTE = dict(wall=(.86, .85, .82), precast=(.90, .89, .86), concrete2=(.70, .70, .68), frame=(.22, .24, .26),
-    glass=(.15, .21, .25), interior=(.82, .79, .72), floor=(.60, .57, .52), timber=(.80, .52, .21), timber2=(.88, .66, .34),
-    timber_in=(.73, .45, .17), shade=(.36, .36, .36), hold=(.10, .10, .11), hold_w=(.91, .90, .86), mat=(.17, .19, .23), shirt=(.20, .60, .70),
+    glass=(.15, .21, .25), interior=(.82, .79, .72), floor=(.60, .57, .52), timber=(.78, .46, .14), timber2=(.86, .60, .26),
+    timber_in=(.70, .40, .12), shade=(.36, .36, .36), hold=(.10, .10, .11), hold_w=(.91, .90, .86), mat=(.17, .19, .23), shirt=(.20, .60, .70),
     skin=(.78, .60, .47), harness=(.12, .12, .14), paving=(.53, .54, .55), paving2=(.43, .44, .45), trough=(.72, .80, .82), granite=(.60, .60, .59),
     deck=(.80, .74, .64), coping=(.88, .86, .80), water=(.08, .52, .66), water2=(.06, .38, .50), membrane=(.86, .86, .84),
     mech=(.78, .78, .76), asphalt=(.26, .26, .27), curb=(.73, .73, .71), paint=(.93, .93, .91), soil=(.26, .20, .15),
@@ -102,7 +102,7 @@ def manifest(version):
             observed_storeys=3, storey_programme='three-storey pool block (lobby, gym floors) with a one-storey penthouse lounge and a four-storey east block',
             plan='39 m by 36 m corner building (top view) on a south plaza, a west street and an east street; the climbing shell stands on the plaza at the south front',
             facade='white precast: west front of ten bays of tall recessed windows between fins and spandrels over a recessed glazed ground floor; south front: a projecting white frame box of two glass ribbons over recessed ground-floor glazing with two pairs of doors; a deep parapet band; white facade with glass ribbons under the overhang',
-            climbing_wall='hollow open-topped shell of honey CLT in folded planes: foot on the plaza, south-west face in two facets with a fold at the parapet, triangular south face, overhanging east face, light timber rim fascia, dark and white holds, three climbers',
+            climbing_wall='hollow open-topped shell of honey CLT in folded planes: compact foot on the plaza just east of the doors, soffit rising east to an airborne point about two storeys up, south-west face in two facets with a fold at the parapet, triangular south face, overhanging east face, light timber rim fascia, dark and white holds, three climbers',
             roof='pool deck with an infinity pool along the west edge, glass balustrades, loungers and a roof garden of planters and small trees; penthouse with a glazed pool side and an air-handling unit; east block membrane roof with skylights and plant',
             streetscape='granite plaza with two raised planters of ornamental grasses and steps to the south sidewalk; west sidewalk with street trees in pits and lamp posts; west and east streets with crossings and parked cars; brick mid-rise and residential blocks around',
             levels_m=[G0, F2, F3, F4, DECK], roof_m=dict(parapet=PARA, penthouse=PH_TOP, east_block=EB_TOP, rim=RIM),
@@ -2184,11 +2184,11 @@ def pool_deck():
     # Pool tank: water to the west edge (infinity), coping on the north, east and south, trough below the edge.
     # Basin sunk in the deck: water a few centimetres below the deck, flush coping on the north, east and south; on the
     # west a frameless glass weir at the water line over a pale overflow trough, then the parapet coping (infinity edge).
-    b.box('water', (px0 + px1) / 2, (py0 + py1) / 2, DECK - .34, px1 - px0, py1 - py0, .6)
+    b.box('water', (px0 + px1 - .02) / 2, (py0 + py1) / 2, DECK - .34, px1 - px0 - .02, py1 - py0 - .03, .6)
     for x0, x1, y0, y1 in ((px1, px1 + .45, py0 - .45, py1 + .45), (px0 - .02, px1, py0 - .45, py0), (px0 - .02, px1, py1, py1 + .45)):
         b.box('coping', (x0 + x1) / 2, (y0 + y1) / 2, DECK - .29, x1 - x0, y1 - y0, .62)
     b.box('trough', px0 - .87, (py0 + py1) / 2, DECK - .45, 1.66, py1 - py0 + .9, .3)                 # overflow trough floor
-    b.box('glass', px0 - .03, (py0 + py1) / 2, DECK - .34, .06, py1 - py0, .62)                       # frameless glass weir
+    b.box('glass', px0 - .04, (py0 + py1) / 2, DECK - .34, .06, py1 - py0, .62)                       # frameless glass weir
     for y in (py0 + 1.0, py1 - 1.0):                                                                  # pool ladders
         for dyy in (-.25, .25):
             b.beam('metal', (px1 - .1, y + dyy, WATER - .5), (px1 + .2, y + dyy, WATER + .9), .045)
@@ -2448,7 +2448,7 @@ def hold(b, role, p, n, r, h, rnd):
 
 
 def fold_dist(p):
-    """Distance from p to the west/south fold (the arris BS-KS-KX-RSW)."""
+    """Distance from p to the west/south fold (the arris BF-KX-RSW)."""
     best = 1e9
     pts = [SH[k] for k in ('BF', 'KX', 'RSW')]
     for a, e in zip(pts, pts[1:]):
@@ -2520,7 +2520,7 @@ def inside_xz(tri, x, z, m=0.0):
     return all(v >= m for v in s) or all(v <= -m for v in s)
 
 
-CLIMBERS = ((-3.4, 10.4, 'shirt', 0), (-1.6, 8.6, 'shirt', 1), (-4.6, 12.8, 'harness', 2))
+CLIMBERS = ((-2.6, 11.2, 'shirt', 0), (-.6, 10.6, 'shirt', 1), (-2.4, 14.4, 'harness', 2))
 POSES = (((-.4, .95), (.38, .8), (-.32, -1.35), (.36, -1.2)),       # reaching
          ((-.3, 1.0), (.45, .55), (-.35, -1.3), (.55, -.8)),        # high step
          ((-.42, .85), (.4, .95), (-.28, -1.4), (.3, -1.3)))         # resting on straight arms
@@ -2535,10 +2535,10 @@ def climbers(tris):
     b = Batch()
     for (x0, z0, shirt, k) in CLIMBERS:
         best = None
-        for dx in (0.0, .5, -.5, 1.0, -1.0, 1.5, -1.5):                          # nearest spot with 1.6 m of facet around
-            for dz in (0.0, .5, -.5, 1.0, -1.0):
+        for dx in (0.0, .5, -.5, 1.0, -1.0, 1.5, -1.5, 2.0, -2.0):               # nearest spot with 1.1 m of facet around
+            for dz in (0.0, .5, -.5, 1.0, -1.0, 1.5, -1.5):
                 for t, n in south:
-                    if inside_xz([SH[q] for q in t], x0 + dx, z0 + dz, 1.6):
+                    if inside_xz([SH[q] for q in t], x0 + dx, z0 + dz, 1.1):
                         best = best or (t, n, x0 + dx, z0 + dz)
         t, n, x, z = best
         tri = [SH[q] for q in t]
@@ -2659,17 +2659,17 @@ def car(name, x, y, role):
 def street_trees():
     """Street trees in the sidewalk pits: a trunk, three limbs and a full crown of five overlapping leafy masses."""
     for k, (x, y) in enumerate(TREE_PITS):
-        h = 7.0 + (k % 3) * .8
+        h = 8.2 + (k % 3) * .8
         C.rod('Street tree trunk', (x, y, .1), (x, y, .15 + h * .5), .14, 'bark', 'street trees', 7)
         for j, (dx, dy) in enumerate(((-.6, -.2), (.5, -.1), (.1, .55))):
-            tip = (x + dx * 1.4, y + dy * 1.4, .15 + h * .66)
+            tip = (x + dx * 1.2, y + dy * 1.2, .15 + h * .72)
             C.rod('Street tree limb', (x, y, .15 + h * .45), tip, .06, 'bark', 'street trees', 6)
         for j in range(5):
             a = k * 1.3 + j * math.tau / 5
-            r = .88 if j else .7
-            A.foliage('Street tree crown', (x + .8 * math.cos(a) * (j > 0), y + .8 * math.sin(a) * (j > 0), .15 + h * (.7 + .06 * (j % 2))),
-                      (r * 1.5, r * 1.5, r * 1.3), role=('tree', 'tree2')[(k + j) % 2], detail=2)
-        A.foliage('Street tree crown', (x, y, .15 + h * .86), (1.1, 1.1, .95), role='tree', detail=2)
+            r = .8 if j else .66
+            A.foliage('Street tree crown', (x + .7 * math.cos(a) * (j > 0), y + .7 * math.sin(a) * (j > 0), .15 + h * (.76 + .05 * (j % 2))),
+                      (r * 1.3, r * 1.3, r * 1.15), role=('tree', 'tree2')[(k + j) % 2], detail=2)
+        A.foliage('Street tree crown', (x, y, .15 + h * .9), (.95, .95, .85), role='tree', detail=2)
 
 
 def roof_trees():
