@@ -2185,7 +2185,8 @@ def pool_deck():
     # Basin sunk in the deck: water a few centimetres below the deck, flush coping on the north, east and south; on the
     # west a frameless glass weir at the water line over a pale overflow trough, then the parapet coping (infinity edge).
     b.box('water', (px0 + px1 - .02) / 2, (py0 + py1) / 2, DECK - .34, px1 - px0 - .02, py1 - py0 - .03, .6)
-    for x0, x1, y0, y1 in ((px1, px1 + .45, py0 - .45, py1 + .45), (px0 - .02, px1, py0 - .45, py0), (px0 - .02, px1, py1, py1 + .45)):
+    for x0, x1, y0, y1 in ((px1 - .01, px1 + .45, py0 - .45, py1 + .45), (px0 - .02, px1, py0 - .45, py0 + .01),
+                           (px0 - .02, px1, py1 - .01, py1 + .45)):            # lapped 1 cm past the deck edges
         b.box('coping', (x0 + x1) / 2, (y0 + y1) / 2, DECK - .29, x1 - x0, y1 - y0, .62)
     b.box('trough', px0 - .87, (py0 + py1) / 2, DECK - .45, 1.66, py1 - py0 + .9, .3)                 # overflow trough floor
     b.box('glass', px0 - .04, (py0 + py1) / 2, DECK - .34, .06, py1 - py0, .62)                       # frameless glass weir

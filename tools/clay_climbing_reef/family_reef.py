@@ -2077,7 +2077,7 @@ def pockets(shell):
             k, i = shell.grid_index(th, z); p = P[k, i].copy()
             nb = N[max(1, k - 2):k + 3][:, [(i + j) % NT for j in range(-3, 4)]].reshape(-1, 3).sum(0)
             ax = nb / np.linalg.norm(nb)
-            a = rnd.uniform(.45, .95); asp = rnd.uniform(1.0, 1.4)
+            a = rnd.uniform(.55, 1.0); asp = rnd.uniform(1.0, 1.4)
             if any(np.linalg.norm(p - q[3]) < a * asp + q[4] + .3 for q in out):
                 continue
             up = np.array([0.0, 0.0, 1.0]) - ax * ax[2]; up /= (np.linalg.norm(up) or 1)
@@ -2138,28 +2138,39 @@ def shell_mesh(shell, Pi):
     return obj
 
 
+SHADES = (('a', .94), ('b', .88), ('c', .80))     # graded shades of each band for the shadowed upper wall of a pocket
+for _r in [r for r in PALETTE if r.startswith('reef') and r[4:].isdigit()]:
+    for _s, _f in SHADES:
+        PALETTE[_r + _s] = tuple(round(v * _f, 4) for v in PALETTE[_r])
+
+
 def pocket_linings(obj):
-    """Add each band's darker pocket-floor material to the shell's slots (so deform_pockets() can assign it)."""
+    """Add each band's graded shades to the shell's slots (so deform_pockets() can assign them)."""
     for role in ROLES:
-        if C.MATS[role + 'p'].name not in [m.name for m in obj.data.materials]:
-            obj.data.materials.append(C.MATS[role + 'p'])
+        for s, f in SHADES:
+            if C.MATS[role + s].name not in [m.name for m in obj.data.materials]:
+                obj.data.materials.append(C.MATS[role + s])
 
 
 def soft_pairs(obj):
-    """Material index pairs (a band, its darker pocket floor) whose shared edges stay smooth."""
+    """Material index pairs within one band (the band and its graded pocket shades) whose shared edges stay smooth."""
     names = [m.name for m in obj.data.materials]
-    return {frozenset((i, names.index(nm[:-1]))) for i, nm in enumerate(names) if nm.endswith('P') and nm[:-1] in names}
+    base = [nm[:-1] if nm[-1] in 'ABC' and nm[:-1] in names else nm for nm in names]
+    return {frozenset((i, j)) for i in range(len(names)) for j in range(len(names)) if i != j and base[i] == base[j]}
 
 
 def deform_pockets(obj, pocket_list):
     """Each pocket is a smooth deformation of the outer skin in its own band material, read by shading alone: the skin
     round it is first subdivided once (about 13 x 8 cm facets), then pushed in along the smoothed axis as a shallow dish
     whose deepest point sits a little above the centre, steep under the upper lip and easing out flat across the lower
-    floor (so the floor catches the light), the upper lip leaning out 12 cm. Smooth-shaded throughout; the inner skin
-    is never moved."""
+    floor (so the floor catches the light); the upper lip leans out 18 cm and the upper inner wall is drawn up under it
+    (an undercut, so a raking light leaves a true shadow crescent), and the faces of that upper wall take three graded
+    shades of the band's own colour (-6/-12/-20%) on finely subdivided faces, the lower floor keeping the band value.
+    Smooth-shaded throughout, no edge between the shades; the inner skin is never moved."""
     off = obj['outer_vertex_count']
+    pocket_linings(obj)
     bm = C.bmesh.new(); bm.from_mesh(obj.data)
-    lay = bm.verts.layers.int.new('inner')
+    lay = bm.verts.layers.int.new('inner'); shade = bm.verts.layers.float.new('shade')
     bm.verts.ensure_lookup_table()
     for v in bm.verts:
         v[lay] = 1 if v.index >= off else 0
@@ -2173,10 +2184,13 @@ def deform_pockets(obj, pocket_list):
             sel.add(f)
     edges = list({e for f in sel for e in f.edges})
     C.bmesh.ops.subdivide_edges(bm, edges=edges, cuts=1, use_grid_fill=True)
+    sel = [f for f in bm.faces if not any(v[lay] for v in f.verts) and any(
+        np.linalg.norm(np.array(f.calc_center_median()) - p) < 1.05 * a * asp for p, a, asp, D, ax, up, kind in pk if kind == 'pocket')]
+    C.bmesh.ops.subdivide_edges(bm, edges=list({e for f in sel for e in f.edges}), cuts=1, use_grid_fill=True)   # finer in the dish
     for v in bm.verts:
         if v[lay]:
             continue
-        x = np.array(v.co)
+        x = np.array(v.co); wsh = 0.0
         for p, a, asp, D, ax, up, kind in pk:
             d = x - p
             if d @ d > (1.6 * a * asp) ** 2:
@@ -2188,22 +2202,30 @@ def deform_pockets(obj, pocket_list):
             A_ = a * asp; xu = d @ up - .12 * A_; yv = d @ side      # deepest a little above the centre
             upper = xu > 0
             ru = math.sqrt((xu / (A_ * (.88 if upper else 1.12))) ** 2 + (yv / a) ** 2)
-            disp = 0.0
+            disp = 0.0; lift = 0.0
             if ru < 1.0:                                     # a lit dish: steep under the upper lip, the lower floor easing out flat
                 disp -= D * (1 - .3 * ru * ru) * (1 - float(smoothstep(.58 if upper else .25, 1.0, ru)))
             if kind == 'pocket':
-                rb = math.sqrt(((xu - .86 * A_) / (.42 * a)) ** 2 + (yv / (.9 * a)) ** 2)
-                if rb < 1.0:                                 # the upper lip leans out a little over the dish
-                    disp += .12 * (1 - float(smoothstep(0.0, 1.0, rb)))
-            if disp:
-                x = x + ax * disp
-        v.co = tuple(float(c) for c in x)
+                rb = math.sqrt(((xu - .82 * A_) / (.38 * a)) ** 2 + (yv / (.9 * a)) ** 2)
+                if rb < 1.0:                                 # the upper lip leans out over the dish
+                    disp += .18 * (1 - float(smoothstep(0.0, 1.0, rb)))
+                if upper and ru < 1.0:                       # the upper inner wall is drawn up under the lip: an undercut
+                    lift = .20 * float(smoothstep(.30, .75, ru)) * (1 - float(smoothstep(.86, 1.0, ru)))
+                    wsh = max(wsh, float(smoothstep(0.0, .6, xu / (.88 * A_))) * float(smoothstep(.25, .6, ru))
+                              * (1 - float(smoothstep(.9, 1.0, ru))))
+            if disp or lift:
+                x = x + ax * disp + up * lift
+        v.co = tuple(float(c) for c in x); v[shade] = wsh
     names = [m.name for m in obj.data.materials]
     for f in bm.faces:
         if any(v[lay] for v in f.verts):
             continue
         f.smooth = True
-    bm.verts.layers.int.remove(lay)
+        w = sum(v[shade] for v in f.verts) / len(f.verts)       # the shadowed upper wall: three graded shades, no edge
+        s = 'C' if w > .62 else 'B' if w > .38 else 'A' if w > .15 else ''
+        if s and names[f.material_index] + s in names:
+            f.material_index = names.index(names[f.material_index] + s)
+    bm.verts.layers.int.remove(lay); bm.verts.layers.float.remove(shade)
     bm.to_mesh(obj.data); bm.free(); obj.data.update()
     C.normalise(obj.data)
 
