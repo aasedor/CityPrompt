@@ -1,0 +1,822 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "south west wing floor 0",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west wing floor 1",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west wing floor 2",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west wing floor 3",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west wing floor 4",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west wing floor 5",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west wing floor 6",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west wing floor 7",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west wing floor 8",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west wing floor 9",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west wing floor 10",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west wing floor 11",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south west wing floor 12",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west shopfronts bay 0",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west shopfronts bay 1",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west shopfronts bay 2",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west shopfronts bay 3",
+      "face": "south front west wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east wing floor 0",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east wing floor 1",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east wing floor 2",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east wing floor 3",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east wing floor 4",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east wing floor 5",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east wing floor 6",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east wing floor 7",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east wing floor 8",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east wing floor 9",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east wing floor 10",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east wing floor 11",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "south east wing floor 12",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east lobby bay 0",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east lobby bay 1",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east lobby bay 2",
+      "face": "south front east wing",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west return floor 0",
+      "face": "notch west return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west return floor 1",
+      "face": "notch west return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west return floor 2",
+      "face": "notch west return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west return floor 3",
+      "face": "notch west return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west return floor 4",
+      "face": "notch west return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west return floor 5",
+      "face": "notch west return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west return floor 6",
+      "face": "notch west return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west return floor 7",
+      "face": "notch west return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west return floor 8",
+      "face": "notch west return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west return floor 9",
+      "face": "notch west return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west return floor 10",
+      "face": "notch west return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west return floor 11",
+      "face": "notch west return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west return floor 12",
+      "face": "notch west return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west return base",
+      "face": "notch west return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch east return floor 0",
+      "face": "notch east return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch east return floor 1",
+      "face": "notch east return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch east return floor 2",
+      "face": "notch east return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch east return floor 3",
+      "face": "notch east return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch east return floor 4",
+      "face": "notch east return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch east return floor 5",
+      "face": "notch east return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch east return floor 6",
+      "face": "notch east return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch east return floor 7",
+      "face": "notch east return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch east return floor 8",
+      "face": "notch east return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch east return floor 9",
+      "face": "notch east return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch east return floor 10",
+      "face": "notch east return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch east return floor 11",
+      "face": "notch east return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch east return floor 12",
+      "face": "notch east return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch east return base",
+      "face": "notch east return",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west back floor 0",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west back floor 1",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west back floor 2",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west back floor 3",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west back floor 4",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west back floor 5",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west back floor 6",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west back floor 7",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west back floor 8",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west back floor 9",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west back floor 10",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west back floor 11",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west back floor 12",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch west back base",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "climbing gym entrance",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "balcony door 0",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch window 1",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "balcony door 2",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch window 3",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "balcony door 4",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch window 5",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "balcony door 6",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch window 7",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "balcony door 8",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch window 9",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch window 10",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "balcony door 11",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "notch window 12",
+      "face": "notch back",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east face floor 0",
+      "face": "east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east face floor 1",
+      "face": "east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east face floor 2",
+      "face": "east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east face floor 3",
+      "face": "east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east face floor 4",
+      "face": "east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east face floor 5",
+      "face": "east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east face floor 6",
+      "face": "east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east face floor 7",
+      "face": "east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east face floor 8",
+      "face": "east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east face floor 9",
+      "face": "east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east face floor 10",
+      "face": "east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east face floor 11",
+      "face": "east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east face floor 12",
+      "face": "east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "east face base glazing",
+      "face": "east face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west face floor 0",
+      "face": "west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west face floor 1",
+      "face": "west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west face floor 2",
+      "face": "west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west face floor 3",
+      "face": "west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west face floor 4",
+      "face": "west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west face floor 5",
+      "face": "west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west face floor 6",
+      "face": "west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west face floor 7",
+      "face": "west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west face floor 8",
+      "face": "west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west face floor 9",
+      "face": "west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west face floor 10",
+      "face": "west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west face floor 11",
+      "face": "west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west face floor 12",
+      "face": "west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "west face base glazing",
+      "face": "west face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north face floor 0",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north face floor 1",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north face floor 2",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north face floor 3",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north face floor 4",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north face floor 5",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north face floor 6",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north face floor 7",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north face floor 8",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north face floor 9",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north face floor 10",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north face floor 11",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north face floor 12",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north base glazing",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "north service door",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "amenity front glazing",
+      "face": "amenity block front",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "amenity west glazing",
+      "face": "amenity block west",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "amenity east glazing",
+      "face": "amenity block east",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "amenity north glazing",
+      "face": "north face",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

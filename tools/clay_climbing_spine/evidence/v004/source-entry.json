@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-climbing-spine",
+  "variant_id": "clay-climbing-spine-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "climbing_wall_building/variant_2",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_2.png",
+      "path": "sources/front.png",
+      "bytes": 1420825,
+      "sha256": "6dc35f50b0835b370396357f550a80eb18d643d80a90e72941b3c4f4c21f256e"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_2_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 905088,
+      "sha256": "a5a39a8c97f8f831f1538eec96e967d4be10dcb3e96d89196c18e58f75c349e6"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_2_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 840417,
+      "sha256": "9239bd487ba29a757dded892881ae4d6754d61b59709e81b01d172d25849496d"
+    }
+  ]
+}
