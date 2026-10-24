@@ -45,8 +45,9 @@ BOXX1 = -12.6                                         # the south frame box span
 FY = -17.8                                            # the climbing shell's back plane (laps 10 cm into the facade)
 RIM = 21.0                                            # rim top of the climbing shell
 # The climbing shell's outer corners (triangulated from the front and oblique views and the top view).
-SH = dict(G=(-15.2, FY, 0.0), BW=(-17.2, -21.3, 0.0), BS=(-3.0, -26.5, 0.0), BN=(-1.0, FY, 0.0),
-          KW=(-11.1, FY, PARA), KS=(-4.75, -27.55, 9.5), KX=(-6.3, -27.35, PARA),
+SH = dict(G=(-14.8, FY, 0.0), BW=(-15.6, -20.0, 0.0), BF=(-12.9, -20.7, 0.0), BN0=(-12.4, FY, 0.0),
+          BS=(-2.5, -26.6, 6.0), BN=(-0.5, FY, 7.5),
+          KW=(-11.1, FY, PARA), KX=(-6.3, -27.35, PARA),
           RNW=(-7.26, FY, RIM), RSW=(-6.04, -26.71, RIM), RSE=(6.22, -27.72, RIM), RNE=(4.37, FY, RIM))
 SHELL_T = .35                                         # CLT shell thickness
 TOP = RIM + .1
@@ -54,7 +55,7 @@ EPS = .002
 PALETTE = dict(wall=(.86, .85, .82), precast=(.90, .89, .86), concrete2=(.70, .70, .68), frame=(.22, .24, .26),
     glass=(.15, .21, .25), interior=(.82, .79, .72), floor=(.60, .57, .52), timber=(.80, .52, .21), timber2=(.88, .66, .34),
     timber_in=(.73, .45, .17), shade=(.36, .36, .36), hold=(.10, .10, .11), hold_w=(.91, .90, .86), mat=(.17, .19, .23), shirt=(.20, .60, .70),
-    skin=(.78, .60, .47), harness=(.12, .12, .14), paving=(.63, .64, .64), paving2=(.53, .54, .55), granite=(.60, .60, .59),
+    skin=(.78, .60, .47), harness=(.12, .12, .14), paving=(.53, .54, .55), paving2=(.43, .44, .45), trough=(.72, .80, .82), granite=(.60, .60, .59),
     deck=(.80, .74, .64), coping=(.88, .86, .80), water=(.08, .52, .66), water2=(.06, .38, .50), membrane=(.86, .86, .84),
     mech=(.78, .78, .76), asphalt=(.26, .26, .27), curb=(.73, .73, .71), paint=(.93, .93, .91), soil=(.26, .20, .15),
     lounger=(.93, .93, .91), hardware=(.08, .08, .08), metal=(.55, .56, .57), brick=(.50, .25, .17), brick2=(.58, .32, .22),
@@ -2120,7 +2121,8 @@ def south_frame_box():
 
 def shell_edge_x(z):
     """x of the climbing shell's east back edge (BN to RNE) at height z: the facade east of it is open to view."""
-    return SH['BN'][0] + (SH['RNE'][0] - SH['BN'][0]) * z / RIM
+    (x0, _, z0), (x1, _, z1), (x2, _, z2) = SH['BN0'], SH['BN'], SH['RNE']
+    return x0 + (x1 - x0) * z / z1 if z <= z1 else x1 + (x2 - x1) * (z - z1) / (z2 - z1)
 
 
 XV = 8.0                            # ribbons start beyond the east overhang (plain white wall under it)
@@ -2180,11 +2182,13 @@ def pool_deck():
         y = dy0 + (dy1 - dy0) * k / 12
         b.box('coping', (px1 + dx1) / 2, y, DECK + .002, dx1 - px1 - .1, .03, .006)
     # Pool tank: water to the west edge (infinity), coping on the north, east and south, trough below the edge.
-    b.box('water', (px0 + px1) / 2, (py0 + py1) / 2, WATER - .3, px1 - px0, py1 - py0, .6)
+    # Basin sunk in the deck: water a few centimetres below the deck, flush coping on the north, east and south; on the
+    # west a frameless glass weir at the water line over a pale overflow trough, then the parapet coping (infinity edge).
+    b.box('water', (px0 + px1) / 2, (py0 + py1) / 2, DECK - .34, px1 - px0, py1 - py0, .6)
     for x0, x1, y0, y1 in ((px1, px1 + .45, py0 - .45, py1 + .45), (px0 - .02, px1, py0 - .45, py0), (px0 - .02, px1, py1, py1 + .45)):
-        b.box('coping', (x0 + x1) / 2, (y0 + y1) / 2, (DECK - .2 + WATER + .06) / 2, x1 - x0, y1 - y0, WATER + .06 - DECK + .2)
-    b.box('water2', px0 - .85, (py0 + py1) / 2, DECK - .2, 1.7, py1 - py0 + .9, .2)                   # overflow trough
-    b.box('glass', px0 - .03, (py0 + py1) / 2, (DECK - .2 + WATER - .005) / 2, .05, py1 - py0, WATER - .005 - DECK + .2)   # infinity weir
+        b.box('coping', (x0 + x1) / 2, (y0 + y1) / 2, DECK - .29, x1 - x0, y1 - y0, .62)
+    b.box('trough', px0 - .87, (py0 + py1) / 2, DECK - .45, 1.66, py1 - py0 + .9, .3)                 # overflow trough floor
+    b.box('glass', px0 - .03, (py0 + py1) / 2, DECK - .34, .06, py1 - py0, .62)                       # frameless glass weir
     for y in (py0 + 1.0, py1 - 1.0):                                                                  # pool ladders
         for dyy in (-.25, .25):
             b.beam('metal', (px1 - .1, y + dyy, WATER - .5), (px1 + .2, y + dyy, WATER + .9), .045)
@@ -2195,11 +2199,7 @@ def pool_deck():
         L = math.hypot(x1 - x0, y1 - y0)
         ux, uy = (x1 - x0) / L, (y1 - y0) / L
         b.beam('glass', (x0, y0, PARA + .55), (x1, y1, PARA + .55), .025, 1.0)
-        b.beam('metal', (x0, y0, PARA + 1.08), (x1, y1, PARA + 1.08), .05, .05)
-        n = max(1, int(L / 1.5))
-        for k in range(n + 1):
-            px, py = x0 + ux * L * k / n, y0 + uy * L * k / n
-            b.box('metal', px, py, PARA + .53, .06, .06, 1.06)
+        b.beam('metal', (x0, y0, PARA + 1.07), (x1, y1, PARA + 1.07), .04, .03)
     # Loungers in a row along the penthouse glazing, facing the pool; a second row at the garden.
     for k in range(8):
         lounger(b, -8.4, -14.6 + k * 1.65, DECK, 1)
@@ -2245,8 +2245,8 @@ def penthouse():
     fbox(b, 'coping', ax, c, o, PY0 - .05, Y1, PH_PARA - .06, PH_PARA, -.35, .3)
     glazed(b, ax, c, o, PY0 + 1.2, 2.6, DECK + .1, PH_TOP - .32, 2.2, d=-.15)
     fbox(b, 'interior', ax, c, o, PY0 + 1.3, 2.5, DECK, PH_TOP - .3, -6.2, -6.0)
-    fbox(b, 'frame', ax, c, o, 5.2, 6.4, DECK + .1, DECK + 2.8, -.04, .03)                              # door
-    fbox(b, 'hardware', ax, c, o, 6.2, 6.25, DECK + 1.0, DECK + 1.15, .03, .08)
+    b.box('frame', -1.5, Y1 + .1, DECK + 1.45, 1.2, .08, 2.7)                                           # door on the north end
+    b.box('hardware', -1.05, Y1 + .16, DECK + 1.1, .05, .05, .15)
     # Other walls: south (set back from the front), north (on the north front), east (over the east block roof).
     b.box('precast', (XP0 + XE) / 2, PY0 + .13, (DECK - .3 + PH_TOP - .3) / 2, XE - XP0 - .02, .3, PH_TOP - DECK)
     b.box('precast', (XP0 + XE) / 2, PY0 + .1, (PH_TOP - .32 + PH_PARA - .05) / 2, XE - XP0 + .02, .4, PH_PARA - .05 - PH_TOP + .32)
@@ -2280,13 +2280,14 @@ def east_roof():
 
 # ---------------------------------------------------------------- the climbing shell
 SHELL_TRIS = [('KW', 'KX', 'RSW'), ('KW', 'RSW', 'RNW'),           # upper west panel: from the pool-block parapet corner up to the rim
-              ('BW', 'KX', 'KW'),                                   # lower flared west face; the fold KW-KX runs at parapet height
-              ('BW', 'BS', 'KS'), ('BW', 'KS', 'KX'),               # south-west facets over the foot
-              ('KS', 'BS', 'RSE'), ('KS', 'RSE', 'KX'), ('KX', 'RSE', 'RSW'),   # south face
-              ('BS', 'BN', 'RNE'), ('BS', 'RNE', 'RSE'),            # east face, overhanging the facade
-              ('BN', 'G', 'KW'), ('BN', 'KW', 'RNW'), ('BN', 'RNW', 'RNE'),     # back plane, lapped into the facade
-              ('BW', 'KW', 'G'),                                    # return to the facade under the fold
-              ('G', 'BN', 'BS'), ('G', 'BS', 'BW')]                 # foot
+              ('BW', 'KX', 'KW'),                                   # flared west face; the fold KW-KX runs at parapet height
+              ('BW', 'BF', 'KX'),                                   # south-west facet over the compact foot
+              ('BF', 'BS', 'KX'), ('KX', 'BS', 'RSE'), ('KX', 'RSE', 'RSW'),    # south face, down to the foot at BF
+              ('BS', 'BN', 'RNE'), ('BS', 'RNE', 'RSE'),            # east face, a free blade ending two storeys up
+              ('BF', 'BN0', 'BN'), ('BF', 'BN', 'BS'),              # soffit of the cantilever (faces down over the plaza)
+              ('BN0', 'G', 'KW'), ('BN0', 'KW', 'RNW'), ('BN0', 'RNW', 'RNE'), ('BN0', 'RNE', 'BN'),   # back plane on the facade
+              ('BW', 'KW', 'G'),                                    # return to the facade beside the doors
+              ('G', 'BN0', 'BF'), ('G', 'BF', 'BW')]                # the compact foot on the plaza
 RIM_LOOP = ['RNW', 'RSW', 'RSE', 'RNE']
 
 
@@ -2387,7 +2388,7 @@ def shell():
     for a, e in (('RNW', 'RSW'), ('RSW', 'RSE'), ('RSE', 'RNE')):
         n = next(n for t, n in tris if a in t and e in t)
         dn = _n((n[2] * n[0], n[2] * n[1], -1.0 + n[2] * n[2]))      # down the face, in its plane
-        s = .55 / max(.2, -dn[2])
+        s = .38 / max(.2, -dn[2])
         pa, pe = SH[a], SH[e]
         u = _n(_v(pa, pe))
         pa = tuple(pa[i] - u[i] * .06 for i in range(3)); pe = tuple(pe[i] + u[i] * .06 for i in range(3))
@@ -2400,7 +2401,7 @@ def shell():
         F2_.extend([(o, o + 1, o + 2, o + 3), (o + 7, o + 6, o + 5, o + 4), (o, o + 4, o + 5, o + 1), (o + 1, o + 5, o + 6, o + 2),
                     (o + 2, o + 6, o + 7, o + 3), (o + 3, o + 7, o + 4, o + 0)])
     # The hollow's floor: a crash mat on the inner foot.
-    fl = [inner[k] for k in ('G', 'BN', 'BS', 'BW')]
+    fl = [inner[k] for k in ('G', 'BN0', 'BF', 'BW')]
     cx = sum(p[0] for p in fl) / 4; cy = sum(p[1] for p in fl) / 4
     mat = [(cx + (p[0] - cx) * .97, cy + (p[1] - cy) * .97) for p in fl]
     b.flush('climbing shell fascia')
@@ -2412,12 +2413,6 @@ def shell():
     hull = surface_section(inner, zm - .35).intersection(surface_section(inner, zm + .1)).buffer(.08, join_style=2)
     C.prism('Climbing shell bouldering deck', list(hull.exterior.coords)[:-1][::-1] if hull.exterior.is_ccw is False else list(hull.exterior.coords)[:-1],
             'z', zm - .35, zm + .1, 'mat', 'climbing shell')
-    foot = _PkPolygon([(SH[k][0], SH[k][1]) for k in ('G', 'BN', 'BS', 'BW')])                     # a soft dark contact band
-    band = foot.buffer(.45, join_style=2).difference(foot.buffer(-.02, join_style=2)).difference(_pksh.box(-40, FY - .05, 40, 40))
-    for part in getattr(band, 'geoms', [band]):
-        if part.geom_type == 'Polygon' and part.area > .01:
-            pts = list(part.exterior.coords)[:-1]
-            C.prism('Climbing shell contact shade', pts if part.exterior.is_ccw else pts[::-1], 'z', .1495, .1565, 'shade', 'climbing shell')
     C.CONTACTS.append(dict(name='Climbing shell: foot sunk 15 cm into the plaza, back plane lapped 10 cm into the facade', rim_m=RIM))
     return tris, inner
 
@@ -2455,7 +2450,7 @@ def hold(b, role, p, n, r, h, rnd):
 def fold_dist(p):
     """Distance from p to the west/south fold (the arris BS-KS-KX-RSW)."""
     best = 1e9
-    pts = [SH[k] for k in ('BS', 'KS', 'KX', 'RSW')]
+    pts = [SH[k] for k in ('BF', 'KX', 'RSW')]
     for a, e in zip(pts, pts[1:]):
         d = _v(a, e); L2 = _d(d, d)
         s = max(0.0, min(1.0, _d(_v(a, p), d) / L2))
@@ -2490,15 +2485,15 @@ def holds(tris, inner):
     for t, n in tris:
         names = set(t)
         P = [SH[k] for k in t]
-        if names <= {'BS', 'RSE', 'KS', 'RSW', 'KX'} and 'RSE' in names:                  # south face
-            scatter(P, n, 32, .22)
-        elif names in ({'BW', 'BS', 'KS'}, {'BW', 'KS', 'KX'}, {'KW', 'KX', 'RSW'}):         # west faces: plain timber except
-            scatter(P, n, 9, .9, band=lambda p: fold_dist(p) < 1.7, zmin=.4, big=1.5)        # a white band along the west/south fold
-        elif names <= {'BS', 'BN', 'RNE', 'RSE'}:                                         # east face
-            scatter(P, n, 12, .3, zmin=2.0)
+        if names in ({'BF', 'BS', 'KX'}, {'KX', 'BS', 'RSE'}, {'KX', 'RSE', 'RSW'}):       # south face: dense, rim to foot
+            scatter(P, n, 70, .2, zmin=.4, big=1.35)
+        elif names in ({'BS', 'BN', 'RNE'}, {'BS', 'RNE', 'RSE'}):                        # east face: dense edge to edge,
+            scatter(P, n, 60, .15, zmin=.4, big=1.35)                                              # dark-dominant
+        elif names in ({'BW', 'BF', 'KX'}, {'KW', 'KX', 'RSW'}, {'BW', 'KX', 'KW'}):      # west flare: white holds along
+            scatter(P, n, 14, .85, band=lambda p: fold_dist(p) < 2.6, zmin=.4, big=1.4)   # the west/south fold
     for t, n in tris:                                                                   # inner faces near the rim
         names = set(t)
-        if names & set(RIM_LOOP) and not names <= {'G', 'BN', 'BS', 'BW'}:
+        if names & set(RIM_LOOP):
             P = [inner[k] for k in t]
             ni = (-n[0], -n[1], -n[2])
             scatter(P, ni, 10, .85, zmin=RIM - 7.0, zmax=RIM - .9)
@@ -2525,37 +2520,42 @@ def inside_xz(tri, x, z, m=0.0):
     return all(v >= m for v in s) or all(v <= -m for v in s)
 
 
-CLIMBERS = ((-3.4, 9.4, 'shirt', ((-.55, .95), (.45, .75), (-.45, -1.5), (.4, -1.35))),           # reaching
-            (-1.6, 8.4, 'shirt', ((-.25, 1.05), (.6, .2), (-.35, -1.45), (.85, -.7))),             # flagged leg
-            (-4.3, 12.6, 'harness', ((-.5, .9), (.35, -.35), (-.3, -1.4), (.3, -1.5))))           # resting, one arm low
+CLIMBERS = ((-3.4, 10.4, 'shirt', 0), (-1.6, 8.6, 'shirt', 1), (-4.6, 12.8, 'harness', 2))
+POSES = (((-.4, .95), (.38, .8), (-.32, -1.35), (.36, -1.2)),       # reaching
+         ((-.3, 1.0), (.45, .55), (-.35, -1.3), (.55, -.8)),        # high step
+         ((-.42, .85), (.4, .95), (-.28, -1.4), (.3, -1.3)))         # resting on straight arms
 
 
 def climbers(tris):
-    """Three climbers on the middle of the south face (cyan, cyan and dark tops), each on the facet that contains it:
-    torso, head, arms to holds above, legs to holds below, harness, 25-30 cm off the face; every hand and foot rests
-    on a hold on that facet."""
-    south = [(t, n) for t, n in tris if 'RSE' in t and set(t) <= {'KS', 'BS', 'RSE', 'KX', 'RSW'}]
+    """Three climbers on the south face (cyan, cyan and dark tops), each on a facet with room around it: a torso and
+    head 45 cm off the face, arms and legs bent out from the face at elbow and knee, and every hand and foot closing on
+    a hold on that facet (the holds are placed at the hand and foot points)."""
+    south = [(t, n) for t, n in tris if set(t) in ({'BF', 'BS', 'KX'}, {'KX', 'BS', 'RSE'}, {'KX', 'RSE', 'RSW'})]
     rnd = random.Random(31)
     b = Batch()
-    for (x, z, shirt, ends) in CLIMBERS:
-        t, n = next((t, n) for t, n in south if inside_xz([SH[k] for k in t], x, z, .9))
-        tri = [SH[k] for k in t]
+    for (x0, z0, shirt, k) in CLIMBERS:
+        best = None
+        for dx in (0.0, .5, -.5, 1.0, -1.0, 1.5, -1.5):                          # nearest spot with 1.6 m of facet around
+            for dz in (0.0, .5, -.5, 1.0, -1.0):
+                for t, n in south:
+                    if inside_xz([SH[q] for q in t], x0 + dx, z0 + dz, 1.6):
+                        best = best or (t, n, x0 + dx, z0 + dz)
+        t, n, x, z = best
+        tri = [SH[q] for q in t]
         p = face_point(tri, x, z)
         up = _n((-n[2] * n[0], -n[2] * n[1], 1.0 - n[2] * n[2]))
         side = _n(_x(up, n))
         q = lambda du, dv, dd: tuple(p[i] + side[i] * du + up[i] * dv + n[i] * dd for i in range(3))
-        b.beam(shirt, q(0, -.3, .3), q(0, .3, .3), .36, .22)                                  # torso
-        b.beam('harness', q(0, -.38, .3), q(0, -.24, .3), .4, .26)                            # harness belt
-        b.beam('harness', q(-.1, -.95, .27), q(-.1, -.36, .3), .14, .14)                      # legs
-        b.beam('harness', q(.1, -.95, .27), q(.1, -.36, .3), .14, .14)
-        (ha, hb, fa, fb) = ends
-        b.beam('harness', q(-.12, -.95, .27), q(fa[0], fa[1], .07), .12, .12)
-        b.beam('harness', q(.12, -.95, .27), q(fb[0], fb[1], .07), .12, .12)
-        b.beam('skin', q(-.2, .25, .3), q(ha[0], ha[1], .07), .09, .09)                       # arms
-        b.beam('skin', q(.2, .25, .3), q(hb[0], hb[1], .07), .09, .09)
-        frustum_on(b, 'skin', q(0, .48, .3), up, n, .11, .24)                                 # head
-        for du, dv in ends:                                                                  # holds under hands and feet
-            hold(b, 'hold', q(du, dv, 0.0), n, .1, .085, rnd)
+        ha, hb, fa, fb = POSES[k]
+        b.beam(shirt, q(0, -.3, .45), q(0, .3, .45), .36, .22)                              # torso
+        b.beam('harness', q(0, -.38, .45), q(0, -.24, .45), .4, .26)                        # harness belt
+        frustum_on(b, 'skin', q(0, .5, .45), up, n, .11, .24)                               # head
+        for end, root, role, w in ((ha, (-.18, .25), 'skin', .09), (hb, (.18, .25), 'skin', .09),
+                                   (fa, (-.1, -.36), 'harness', .13), (fb, (.1, -.36), 'harness', .13)):
+            mid = ((end[0] + root[0]) / 2 + (.12 if end[0] > 0 else -.12), (end[1] + root[1]) / 2)
+            b.beam(role, q(root[0], root[1], .45), q(mid[0], mid[1], .55), w, w)            # upper arm / thigh, out from the face
+            b.beam(role, q(mid[0], mid[1], .55), q(end[0], end[1], .2), w, w)               # forearm / shin, down to the hold
+            hold(b, 'hold', q(end[0], end[1], 0.0), n, .15, .2, rnd)                        # the hold it closes on
     b.flush('climbers')
 
 
