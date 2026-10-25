@@ -1,0 +1,19 @@
+{
+  "schema": "cityprompt.planning-history-evidence@1",
+  "reviewDate": "2026-10-25",
+  "sourceCommit": "e2f4793e438d86c7c20a13b434828306f28153c0",
+  "baseAuditSha256": "a15a239fb77fb98550db150f63257a08530fcc7089c8838685617a353a3e859c",
+  "baseInventorySha256": "a8248ac3486dba78d3164015899dc6d1cb255f39e2879c47ec889331543a3cbb",
+  "inputs": {
+    "framework.json": "ba9db1efebe7ba2cd4a838d5a2bfc05c58d14310bf66e8f78fc7e8ba3c818419",
+    "assignments.json": "3dce2c4194a58cf9f686d8f4292f8ff72724b7ac994219429884560bad2708f4",
+    "candidates.json": "da04a565819a12559ff57044ad175cfb714efd6cca6b01a446ba3251fe6d993e"
+  },
+  "scope": {
+    "currentChoices": 196,
+    "heldChoices": 8,
+    "offlineCandidates": 5,
+    "sourceFamilies": 497
+  },
+  "authoredDraftRevision": 2
+}
