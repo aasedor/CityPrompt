@@ -25,8 +25,8 @@ Modernism. This approach also separates the history of a building form from a
 recent name for it: Opticos introduced the term missing middle in 2010 for types
 with many pre 1940 precedents. [Missing Middle Housing](https://missingmiddlehousing.com/).
 
-This pass covers196 exact current local choices:97 buildings, 53 streets/pathways
-and46 parks/open spaces. Eight inherited reference conflicts remain held.
+This pass covers 196 exact current local choices: 97 buildings, 53 streets/pathways
+and 46 parks/open spaces. Eight inherited reference conflicts remain held.
 Five independently reviewed original building candidates receive research
 records without entering the student catalogue. A separate 521-family coverage
 index reconciles 497 legacy families with 24 current-only park/street families,
@@ -37,7 +37,7 @@ extend one reviewed variant's dates to every other variant in its family.
 
 | Era | Main planning questions | Examples to investigate |
 | --- | --- | --- |
-| Earlier traditions, before c.1850 | Whose land, settlement systems and local knowledge shape the city? How do ports, colonial surveys and inherited forms organise access? | Georgian influences, Kyoto machiya, canal-city references; Indigenous planning as longstanding and continuing |
+| Earlier traditions, before c. 1850 | Whose land, settlement systems and local knowledge shape the city? How do ports, colonial surveys and inherited forms organise access? | Georgian influences, Kyoto machiya, canal-city references; Indigenous planning as longstanding and continuing |
 | Industrial and streetcar city, c. 1850–1914 | How do rail, industry, small plots, shops and housing relate? Who gains access and who is excluded? | Main streets, Montréal duplexes, railway stations, iron-and-glass markets, industrial buildings |
 | Reform and interwar city, c. 1900–1945 | How do reformers connect housing, health, green space and civic identity? How do new design movements change buildings? | Garden suburbs, Craftsman/Prairie School houses, Art Deco, Bauhaus, De Stijl |
 | Postwar expansion, c. 1945–1975 | How can cities accommodate rapid growth? What follows from road hierarchy, separation of uses and redevelopment? | Small-house programmes, Don Mills, retail strips, slab apartments, concrete parking structures, civic Modernism |
@@ -63,7 +63,7 @@ and infrastructure activity, and Indigenous governance. These relationships vary
 by place and cannot be inferred from the appearance of a model.
 
 Sen̓áḵw offers a contemporary example grounded in the Squamish Nation's own
-account:ancestral village lands were taken, part was returned through a 2003 court
+account: ancestral village lands were taken, part was returned through a 2003 court
 decision, and the Nation voted in 2019 to pursue development. The case is about
 land, authority, community priorities and urban development. It is not a generic
 Indigenous architectural aesthetic. No catalogue item receives an Indigenous
@@ -156,7 +156,7 @@ Housing institutions deserve equal attention. Toronto identifies the planned
 St Lawrence neighbourhood of mid-rise apartments and low-rise townhouses opening
 east of George Street in 1977. Housing research describes its mix of uses,
 incomes and public, non-profit, co-operative and market housing. Those
-arrangements require documentary evidence:an attractive courtyard or a model
+arrangements require documentary evidence: an attractive courtyard or a model
 named Affordable is insufficient to establish rent, ownership or governance.
 [City of Toronto](https://www.toronto.ca/legdocs/mmis/2008/te/bgrd/backgroundfile-9479.pdf),
 [University of Toronto housing research](https://www.utoronto.ca/news/mixed-income-housing-one-answer-out-control-home-prices).
@@ -183,11 +183,11 @@ tower is not assigned Vancouverism merely because it is glazed.
 [City of Vancouver](https://vancouver.ca/home-property-development/planning-zoning-development.aspx).
 
 Recent planning references are dated. Vancouver's city-wide Official Development
-Plan was adopted on 31March 2026 and replaced Vancouver Plan 2022. Its complete-
+Plan was adopted on 31 March 2026 and replaced Vancouver Plan 2022. Its complete-
 neighbourhood directions sit alongside reconciliation, equity and resilience.
 CMHC's present housing catalogue also connects current modest multi-unit
 designs with the earlier national plan-book tradition. These are current cases
-checked on 25October 2026, not universal rules for Canadian municipalities.
+checked on 25 October 2026, not universal rules for Canadian municipalities.
 [Vancouver ODP](https://vancouver.ca/home-property-development/vancouver-official-development-plan.aspx),
 [plan replacement](https://vancouver.ca/home-property-development/zoning-land-use-document-library-amendments.aspx),
 [CMHC catalogue](https://www.housingcatalogue.cmhc-schl.gc.ca/about).
@@ -207,7 +207,7 @@ checked on 25October 2026, not universal rules for Canadian municipalities.
 | Classic Concrete Parkade | Parking structure; Modernist/utilitarian | Postwar and late 20th-century reference | Automobile accommodation and frontage comparison |
 | Court-only sports component | Recreation equipment/layout | Era not specified by the evidence | Assemble into a wider recreational/public-space plan |
 
-The five uninstalled candidates expand comparison:Prairie School relates to
+The five uninstalled candidates expand comparison: Prairie School relates to
 early 20th-century American domestic architecture; the Postmodern library to
 late 20th-century architectural communication; Bauhaus and De Stijl to interwar
 European movements; the Mughal-inspired pavilion to a South Asian historical
@@ -231,7 +231,7 @@ style names:
    and parks. Explain why isolated transit, greenery or tower components cannot
    establish the performance of the whole plan.
 
-The largest gaps are institutional and relational:Indigenous authority,
+The largest gaps are institutional and relational: Indigenous authority,
 tenure/non-market housing, displacement, regional infrastructure and whole-
 neighbourhood outcomes. These need sourced case studies or composed editable
 scenes. More facade styles alone would not fill them. Source-only families are
@@ -246,9 +246,23 @@ and incomplete coverage are rejected or withheld. No model, seed, placement or
 publication approval is changed by a research classification.
 
 The companion CSVs provide 201 current/candidate rows and 521 family-coverage
-rows (497 legacy families plus 24 current-only native families). Source facts and access/status notes are recorded in
+rows (497 legacy families plus 24 current-only native families). Source facts and
+access/status notes are recorded in
 `tools/planning_history/reviewed-inputs/framework.json`; each classification
 also carries its design evidence, rationale and source references. Previously
 curated architectural sources are distinguished from references checked for
 this research. The dates remain interpretive ranges suitable for introductory
 discussion, not measured construction histories.
+
+The local catalogue now supports combined use, style, era and planning filters,
+plus concise historical context on expanded cards. Development mode includes
+one local plaza review model that test/production mode excludes; this is an
+existing availability gate, not a new publication approval. The classification
+snapshot retains all 196 local records, while browsing offers only the choices
+available in the running environment.
+
+The full classification is in [the archetype table](planning-history-archetypes-2026-10-25.csv),
+with a separate [family coverage index](planning-history-source-coverage-2026-10-25.csv)
+and [source bibliography](planning-history-bibliography-2026-10-25.csv).
+The [verification note](PLANNING_HISTORY_VERIFICATION_2026-10-25.md) records local
+tests, interpretation limits and publication status.
