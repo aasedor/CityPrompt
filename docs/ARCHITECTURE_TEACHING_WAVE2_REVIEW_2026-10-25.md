@@ -107,3 +107,35 @@ without console warnings/errors; its screenshot is explicitly labelled as
 existing-app evidence, not runtime acceptance of these uninstalled candidates.
 No paid app render jobs, video jobs or actual saved-project polygon overlays
 were created in this offline batch.
+
+## Final independent source review
+
+A fresh-context whole-branch review of `fd90fed3b..d26f8e969` found no Critical
+or Important issues and judged the offline source/evidence change ready to merge.
+It independently ran the 42-test suite and `git diff --check`, verified all three
+model/review hashes, 86 inspected/supporting review-input bindings and 49 replay
+snapshot file hashes, then rehashed all 85 delivered local files against receipts.
+It inspected the workshop stair, studio plane contacts and pavilion arcade
+directly. The known workshop handrail endpoint is the sole deferred Minor/P2.
+The branch remains local; review readiness does not authorize activation.
+
+Execution decisions and review boundaries:
+
+- Three contrasting original teaching styles were selected under the user's
+  autonomous build request. If priorities differ, the next batch should change.
+- All four compatible reference views were retained under truthful roles;
+  high aerials are not measured plans, and the workshop repeat front is not a
+  rear view. Hidden geometry and scale are inferred; incorrect inferences would
+  require another preserved candidate.
+- Runtime placement, terrain, controls, routes, save/reload and resizing remain
+  untested for these external assets. They require a separate local trial before
+  student activation; the offline pass cannot expose runtime defects.
+- Engineering/accessibility certification and textured keeper fidelity remain
+  outside the architectural-clay claim; these outputs cannot establish those
+  approvals or photographic finish.
+- Final source review used verified existing exact-byte evidence and the separate
+  full holistic reviews. It did not rerun Blender or claim deterministic rebuild
+  byte equality; future environment drift could affect reproduction.
+- The source reviewer assessed saved Drive receipts; the executor independently
+  performed live metadata and four-folder readback in this session. All 85 files
+  matched. These receipts establish delivery at the recorded time.
