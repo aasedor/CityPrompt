@@ -22,7 +22,8 @@ The multi-axis approach directly implements the user's requested distinctions.
   reference conflicts as held, with no advertised era/style/approach assertion.
 - Include the five exact-byte, independently reviewed original building
   candidates in the research export only; never activate them.
-- Supply a 497-family source-library coverage index. Tags inherited from exact
+- Supply a 521-family coverage index: 497 legacy source-library families plus
+  24 current-only native families identified by exact ID reconciliation. Tags inherited from exact
   reviewed choices describe those variants only; remaining source-only families
   are explicitly awaiting variant review, with no fabricated dates.
 - Use primary Canadian municipal/federal/Indigenous/professional sources and
@@ -56,7 +57,7 @@ behaviour changes. No paid generation, activation, push or deployment.
 ## Deliverables and verification
 
 Research synthesis/timeline and bibliography, 201-row current/candidate CSV,
-497-row source coverage CSV, reproducible history JSON and local teaching UI.
+521-row source coverage CSV, reproducible history JSON and local teaching UI.
 Use finite authored mappings, not keyword-generated historical verdicts.
 Run narrow generator/history/facet/card/palette tests and frontend type-check;
 perform a read-only local browser trial and fresh whole-branch source review.

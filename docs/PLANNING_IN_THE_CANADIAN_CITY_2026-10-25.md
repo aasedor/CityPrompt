@@ -28,8 +28,9 @@ with many pre 1940 precedents. [Missing Middle Housing](https://missingmiddlehou
 This pass covers196 exact current local choices:97 buildings, 53 streets/pathways
 and46 parks/open spaces. Eight inherited reference conflicts remain held.
 Five independently reviewed original building candidates receive research
-records without entering the student catalogue. A separate497-family coverage
-index distinguishes reviewed variants from343 source-only families. It does not
+records without entering the student catalogue. A separate 521-family coverage
+index reconciles 497 legacy families with 24 current-only park/street families,
+and distinguishes reviewed variants from 343 source-only families. It does not
 extend one reviewed variant's dates to every other variant in its family.
 
 ## Overlapping eras for introductory browsing
@@ -244,8 +245,8 @@ and five candidate records. Altered inputs, new model revisions, held identities
 and incomplete coverage are rejected or withheld. No model, seed, placement or
 publication approval is changed by a research classification.
 
-The companion CSVs provide201 current/candidate rows and497 source-family
-coverage rows. Source facts and access/status notes are recorded in
+The companion CSVs provide 201 current/candidate rows and 521 family-coverage
+rows (497 legacy families plus 24 current-only native families). Source facts and access/status notes are recorded in
 `tools/planning_history/reviewed-inputs/framework.json`; each classification
 also carries its design evidence, rationale and source references. Previously
 curated architectural sources are distinguished from references checked for

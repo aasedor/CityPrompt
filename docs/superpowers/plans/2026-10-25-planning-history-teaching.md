@@ -12,7 +12,7 @@
 
 ## Global constraints
 
-- 196 current exact choices, eight held; five uninstalled candidates in export only; 497-family coverage index.
+- 196 current exact choices, eight held; five uninstalled candidates in export only; 521-family union index (497 legacy +24 current-only).
 - Approximate era associations, no invented construction dates or automatic ideology/tenure claims.
 - Preserve base teaching evidence/model/source assets, all placement behaviour and activation state.
 - No paid generation, seed changes, push or deployment. Reuse isolated worktree on codex/planning-history-teaching-20261025.
@@ -37,11 +37,11 @@
 ### Task 2: Reproducible outputs and research exports
 
 **Files:** tools/planning_history/{build_data.py,test_build_data.py,README.md}; frontend/src/data/cataloguePlanningHistory.json; docs/planning-history-{archetypes,source-coverage}-2026-10-25.csv.
-**Interfaces:** build_data.build() returns current-only history overlay and 201/497-row exports; CLI writes exclusively into a new output directory, refusing existing targets.
+**Interfaces:** build_data.build() returns current-only history overlay and 201/521-row exports; CLI writes exclusively into a new output directory, refusing existing targets.
 
-- [ ] Test altered locks/contracts, duplicate IDs, invalid era/source references and overwrite attempts RED.
-- [ ] Implement finite deterministic generator; validate all rows and preserve base bytes; tests GREEN.
-- [ ] Promote only reviewed text outputs and checkpoint source.
+- [x] Test altered locks/contracts, duplicate IDs, invalid era/source references and overwrite attempts RED.
+- [x] Implement finite deterministic generator; validate all rows and preserve base bytes; tests GREEN.
+- [x] Promote only reviewed text outputs and checkpoint source.
 
 ### Task 3: Era and planning context in catalogue
 
@@ -56,7 +56,7 @@
 
 **Files:** research/report and execution ledger; external artifacts under C:/dev-artifacts/CityPrompt/planning-history-20261025.
 
-- [ ] Verify 201/497 export coverage, source links/date/interpretation boundaries and unchanged asset/base hashes.
+- [ ] Verify 201/521 export coverage, source links/date/interpretation boundaries and unchanged asset/base hashes.
 - [ ] Run focused generator/frontend checks; review diff/check/stat/status; commit coherent source units.
 - [ ] Obtain fresh-context whole-branch review on the most capable available model; fix any Important/Critical issues in one RED-to-GREEN pass.
 - [ ] Deliver research, categorisation exports and local UI evidence; keep branch local and report remaining evidence gaps.
