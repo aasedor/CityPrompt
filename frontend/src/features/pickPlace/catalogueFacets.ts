@@ -4,8 +4,9 @@ import type { CanonicalChoice } from './canonicalCatalogue';
 import type { CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import { cataloguePresentationFor } from './cataloguePresentation';
 import { planningIds, styleDefinition, teachingStyleIds } from '@/features/catalogueLearning/teaching';
+import { eraIds } from '@/features/catalogueLearning/planningHistory';
 
-export interface CatalogueFacets { styleId: string; sizeId: string; planningId?:string }
+export interface CatalogueFacets { styleId: string; sizeId: string; planningId?:string; eraId?:string }
 interface SizeBand { id: string; label: string; min: number; max: number }
 const AREA_BANDS: SizeBand[] = [
   { id: 'small', label: 'Under 500 m²', min: 0, max: 500 },
@@ -115,9 +116,10 @@ export function catalogueSizeLabel(asset: CatalogueAsset | undefined): string {
   return `Default plot ${number.format(asset.width)} × ${number.format(asset.depth)} m · ${number.format(value)} m²`;
 }
 
-export function choiceMatchesFacets(choice: CanonicalChoice, { styleId, sizeId, planningId }: CatalogueFacets): boolean {
+export function choiceMatchesFacets(choice: CanonicalChoice, { styleId, sizeId, planningId, eraId }: CatalogueFacets): boolean {
   const styles = catalogueStyleIds(choice);
   return (!styleId || (styleId === 'unknown' ? !styles.length : styles.includes(styleId)))
     && (!sizeId || catalogueSizeId(choice) === sizeId)
-    && (!planningId || planningIds(choice).includes(planningId));
+    && (!planningId || planningIds(choice).includes(planningId))
+    && (!eraId || eraIds(choice).includes(eraId));
 }

@@ -1,6 +1,8 @@
 import data from '@/data/catalogueTeaching.json';
 import type { CanonicalChoice } from '@/features/pickPlace/canonicalCatalogue';
 import type { CatalogueDomain } from '@/features/calgaryCatalogue/guide';
+import { HISTORY_PLANNING_DEFINITIONS, HISTORY_PLANNING_ORDER, HISTORY_SOURCES,
+  HISTORY_STYLE_DEFINITIONS, historyForChoice, historySearchTerms } from './planningHistory';
 
 export interface TeachingDefinition {
   label: string; description: string; designIdea: string; sourceIds: string[];
@@ -14,10 +16,10 @@ export interface CatalogueLesson {
 export interface LessonMatch { status: 'classified' | 'review' | 'stale'; lesson: CatalogueLesson }
 
 const lessons: Readonly<Record<string, CatalogueLesson>> = data.lessons;
-const styles: Readonly<Record<string, TeachingDefinition>> = data.styles;
-const planning: Readonly<Record<string, PlanningDefinition>> = data.planning;
-export const TEACHING_SOURCES: Readonly<Record<string, {label:string;url:string}>> = data.sources;
-export const INTRODUCTORY_PLANNING_IDS: readonly string[] = data.introductoryPlanningIds;
+const styles: Readonly<Record<string, TeachingDefinition>> = { ...data.styles, ...HISTORY_STYLE_DEFINITIONS };
+const planning: Readonly<Record<string, PlanningDefinition>> = { ...data.planning, ...HISTORY_PLANNING_DEFINITIONS };
+export const TEACHING_SOURCES: Readonly<Record<string, {label:string;url:string}>> = { ...data.sources, ...HISTORY_SOURCES };
+export const INTRODUCTORY_PLANNING_IDS: readonly string[] = HISTORY_PLANNING_ORDER;
 
 const styleAlias = (id: string) => id === 'nordic' ? 'scandinavian_nordic' : id;
 export const styleDefinition = (id: string): TeachingDefinition | undefined =>
@@ -33,7 +35,11 @@ export function lessonForChoice(choice: CanonicalChoice, variantId?: string): Le
   if (lesson.domain !== choice.domain || lesson.archetypeId !== choice.option.id
       || lesson.variantId !== asset.model.variantId || lesson.modelMethod !== asset.model.method
       || lesson.modelRevision !== (asset.model.revision ?? null)) return {status:'stale', lesson};
-  return {status:lesson.confidence === 'Review' ? 'review' : 'classified',lesson};
+  if (lesson.confidence === 'Review') return {status:'review',lesson};
+  const history = historyForChoice(choice, variantId);
+  if (history && history.status !== 'classified') return {status:history.status,lesson};
+  return {status:'classified',lesson:history ? {...lesson,
+    styleIds:history.lesson.styleIds, planningIds:history.lesson.planningIds} : lesson};
 }
 
 /** Undefined preserves authored fallback for a genuinely unclassified future asset.
@@ -58,5 +64,5 @@ export function teachingSearchTerms(choice: CanonicalChoice): string[] {
   const match = lessonForChoice(choice);
   if (match?.status !== 'classified') return [];
   return [...match.lesson.styleIds.map(id => styleDefinition(id)?.label ?? ''),
-    ...planningIds(choice).map(id => planningDefinition(id)?.label ?? '')];
+    ...planningIds(choice).map(id => planningDefinition(id)?.label ?? ''), ...historySearchTerms(choice)];
 }

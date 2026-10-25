@@ -5,13 +5,14 @@ import { choiceMatchesGroup, type CanonicalChoice } from './canonicalCatalogue';
 import { availableCatalogueSizes, availableCatalogueStyles, type CatalogueFacets } from './catalogueFacets';
 import { availablePlanningIdeas } from '@/features/catalogueLearning/teaching';
 import { TeachingDefinition } from '@/features/catalogueLearning/TeachingDefinition';
+import { availableEras } from '@/features/catalogueLearning/planningHistory';
 
 const field = 'mt-1 min-h-11 w-full min-w-0 rounded-lg border border-slate-400 bg-white px-2 text-sm text-slate-900';
 
 export function CatalogueFacetControls({ domain, choices, purposeId, facets, onPurpose, onFacet, browseMode='use' }: {
   domain: CatalogueDomain; choices: CanonicalChoice[]; purposeId: string; facets: CatalogueFacets;
   onPurpose: (id: string) => void; onFacet: (key: keyof CatalogueFacets, id: string) => void;
-  browseMode?:'use'|'style'|'planning';
+  browseMode?:'use'|'style'|'planning'|'era';
 }) {
   const id = useId();
   const options = useMemo(() => choices.filter(choice => choice.domain === domain), [choices, domain]);
@@ -19,12 +20,13 @@ export function CatalogueFacetControls({ domain, choices, purposeId, facets, onP
   const styles = useMemo(() => availableCatalogueStyles(options, BUILDING_AESTHETIC_CATEGORIES_V2), [options]);
   const sizes = useMemo(() => availableCatalogueSizes(domain, options), [domain, options]);
   const planning = useMemo(()=>availablePlanningIdeas(options,domain),[options,domain]);
-  const active = Boolean(purposeId || facets.styleId || facets.sizeId || facets.planningId);
+  const eras = useMemo(()=>availableEras(options,domain),[options,domain]);
+  const active = Boolean(purposeId || facets.styleId || facets.sizeId || facets.planningId || facets.eraId);
   return <div className="space-y-2"><details key={browseMode} open={browseMode!=='use' || undefined} className="rounded-lg border border-slate-200 px-3">
     <summary className="min-h-11 cursor-pointer py-3 text-sm font-semibold">
-      {domain === 'building' ? 'Use, size, style & planning' : domain === 'park_plaza' ? 'Park purpose, size & planning' : 'Street role, width & planning'}{active ? ' · filters active' : ''}
+      {domain === 'building' ? 'Use, size, style, era & planning' : domain === 'park_plaza' ? 'Park purpose, size, era & planning' : 'Street role, width, era & planning'}{active ? ' · filters active' : ''}
     </summary>
-    <div className={`grid gap-2 pb-2 sm:grid-cols-2 ${domain === 'building' ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
+    <div className="grid gap-2 pb-2 sm:grid-cols-2 lg:grid-cols-3">
       <label htmlFor={`${id}-purpose`} className="min-w-0 text-xs font-semibold">
         {domain === 'building' ? 'Land-use type' : domain === 'park_plaza' ? 'Park purpose' : 'Street role'}
         <select id={`${id}-purpose`} className={field} value={purposeId} onChange={event => onPurpose(event.target.value)}>
@@ -45,6 +47,12 @@ export function CatalogueFacetControls({ domain, choices, purposeId, facets, onP
           {styles.map(style => <option key={style.id} value={style.id}>{style.label}</option>)}
         </select>
       </label>}
+      <label htmlFor={`${id}-era`} className="min-w-0 text-xs font-semibold">Design era
+        <select id={`${id}-era`} autoFocus={browseMode==='era'} className={field} value={facets.eraId ?? ''} onChange={event=>onFacet('eraId',event.target.value)}>
+          <option value="">All eras</option>
+          {eras.map(era=><option key={era.id} value={era.id}>{era.label}</option>)}
+        </select>
+      </label>
       <label htmlFor={`${id}-planning`} className="min-w-0 text-xs font-semibold">Planning idea
         <select id={`${id}-planning`} autoFocus={browseMode==='planning'} className={field} value={facets.planningId ?? ''} onChange={event=>onFacet('planningId',event.target.value)}>
           <option value="">All planning ideas</option>
@@ -58,6 +66,7 @@ export function CatalogueFacetControls({ domain, choices, purposeId, facets, onP
       {domain === 'building' && ' Style and use are separate: the same use can have many architectural styles.'}</p>
   </details>
     {domain==='building' && facets.styleId && <TeachingDefinition kind="style" id={facets.styleId} regionLabel="About the selected architectural style" />}
+    {facets.eraId && <TeachingDefinition kind="era" id={facets.eraId} regionLabel="About the selected design era" />}
     {facets.planningId && <TeachingDefinition kind="planning" id={facets.planningId} regionLabel="About the selected planning idea" />}
   </div>;
 }

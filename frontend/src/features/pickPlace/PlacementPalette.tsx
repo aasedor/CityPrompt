@@ -37,21 +37,21 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [categoryView, setCategoryView] = useState(true);
-  const [browseMode,setBrowseMode] = useState<'use'|'style'|'planning'>('use');
+  const [browseMode,setBrowseMode] = useState<'use'|'style'|'planning'|'era'>('use');
   const [section, setSection] = useState<Section>('building');
   const [query, setQuery] = useState('');
   const [groupId, setGroupId] = useState('');
   const [purposeId, setPurposeId] = useState('');
-  const [facets, setFacets] = useState<CatalogueFacets>({ styleId: '', sizeId: '', planningId:'' });
+  const [facets, setFacets] = useState<CatalogueFacets>({ styleId: '', sizeId: '', planningId:'', eraId:'' });
   const [limit, setLimit] = useState(12);
   const [collection, setCollection] = useState<'starter' | 'explore'>('starter');
   const [showFixedStreetSegments, setShowFixedStreetSegments] = useState(false);
   const close = useCallback(() => { setOpen(false); onBrowseChange?.(false); }, [onBrowseChange]);
-  const clearFilters = () => { setGroupId(''); setPurposeId(''); setQuery(''); setFacets({styleId:'',sizeId:'',planningId:''}); setLimit(12); };
+  const clearFilters = () => { setGroupId(''); setPurposeId(''); setQuery(''); setFacets({styleId:'',sizeId:'',planningId:'',eraId:''}); setLimit(12); };
   const showCategories = () => { clearFilters(); setBrowseMode('use'); setCategoryView(true); };
   const chooseSection = (id: Section) => { setSection(id); showCategories(); };
   const choosePurpose = (id: string) => { clearFilters(); setBrowseMode('use'); setPurposeId(id); setCategoryView(false); };
-  const browseTeaching = (mode:'style'|'planning') => { clearFilters(); setBrowseMode(mode); setCategoryView(false); };
+  const browseTeaching = (mode:'style'|'planning'|'era') => { clearFilters(); setBrowseMode(mode); setCategoryView(false); };
   const choices = collection === 'starter' ? CLASSROOM_CHOICES : CANONICAL_CHOICES;
   const groups = availablePickerCategories(section, choices);
   const matchingAssets = useMemo(() => filterCanonicalChoices(section, query, purposeId, choices)
@@ -109,6 +109,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
             <span className="font-semibold">Explore by</span>
             <button type="button" onClick={showCategories} aria-pressed={browseMode==='use'} className={browseButtonStyle}>Use</button>
             {section==='building' && <button type="button" aria-label="Browse by architectural style" aria-pressed={browseMode==='style'} onClick={()=>browseTeaching('style')} className={browseButtonStyle}>Architectural style</button>}
+            <button type="button" aria-label="Browse by era" aria-pressed={browseMode==='era'} onClick={()=>browseTeaching('era')} className={browseButtonStyle}>Era</button>
             <button type="button" aria-label="Browse by planning idea" aria-pressed={browseMode==='planning'} onClick={()=>browseTeaching('planning')} className={browseButtonStyle}>Planning idea</button>
           </div>}
           <div className={categoryView ? 'grid gap-2' : 'grid gap-2 sm:grid-cols-2'}>
@@ -129,7 +130,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
               onFacet={(key,id) => { setFacets(value => ({...value,[key]:id})); setLimit(12); }} />
             <div className="flex items-center justify-between gap-2 text-xs text-slate-600">
               <p role="status">{assets.length} {assets.length === 1 ? 'choice' : 'choices'} · Choose a design, then place it or draw its outline.</p>
-              {(query || groupId || purposeId || facets.styleId || facets.sizeId || facets.planningId) && <button type="button" onClick={clearFilters} className="min-h-11 shrink-0 underline">Reset filters</button>}
+              {(query || groupId || purposeId || facets.styleId || facets.sizeId || facets.planningId || facets.eraId) && <button type="button" onClick={clearFilters} className="min-h-11 shrink-0 underline">Reset filters</button>}
             </div>
           </>}
           {!categoryView && section === 'street_pathway' && fixedStreetCount > 0 && <button type="button"
@@ -156,7 +157,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
             onGenerated={section === 'building' && onPickGenerated ? () => { clearFilters(); setGroupId('user-generated'); setCategoryView(false); } : undefined} />
           : userGenerated && onPickGenerated ? <UserGeneratedBuildings query={query} onPick={model => { close(); onPickGenerated(model); }} /> : <>
           <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {assets.slice(0, limit).map(choice => <CanonicalCatalogueCard key={`${collection}:${choice.id}:${query}:${groupId}:${purposeId}:${facets.styleId}:${facets.sizeId}:${facets.planningId}`} choice={choice}
+            {assets.slice(0, limit).map(choice => <CanonicalCatalogueCard key={`${collection}:${choice.id}:${query}:${groupId}:${purposeId}:${facets.styleId}:${facets.sizeId}:${facets.planningId}:${facets.eraId}`} choice={choice}
               initialVariantId={preferredCatalogueVariant(choice, query, purposeId)}
               selected={selected} activeStreetVariant={activeStreetVariant}
               onPlacement={asset => { close(); if (asset.kind === 'street') onPickStreet?.(asset); else onPick(asset.id); }}

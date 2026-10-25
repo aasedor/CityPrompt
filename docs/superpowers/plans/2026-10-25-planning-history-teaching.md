@@ -48,9 +48,9 @@
 **Files:** new frontend/src/features/catalogueLearning/planningHistory.ts and tests; existing teaching, definition/details, palette/facet modules and relevant tests.
 **Interfaces:** historyForChoice checks domain/archetype/variant/method/revision; eraIds/definitions feed facet filtering, contextual cards and search. Planning vocabulary/styles merge from reviewed history layer only.
 
-- [ ] Test postwar bungalow, interwar influences, contemporary fourplex/missing middle, Vancouverism and held/stale records RED.
-- [ ] Add era browsing/filter/card context, search and full reset/domain changes; tests GREEN.
-- [ ] Run narrow frontend suite and npm run type-check; read-only local browser trial at desktop/phone width.
+- [x] Test postwar bungalow, interwar influences, contemporary fourplex/missing middle, Vancouverism and held/stale records RED.
+- [x] Add era browsing/filter/card context, search and full reset/domain changes; tests GREEN.
+- [x] Run narrow frontend suite and npm run type-check; read-only local browser trial at desktop/phone width.
 
 ### Task 4: Final verification and handoff
 

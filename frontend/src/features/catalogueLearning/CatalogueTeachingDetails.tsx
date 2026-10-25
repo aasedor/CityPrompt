@@ -1,6 +1,7 @@
 import type { CanonicalChoice } from '@/features/pickPlace/canonicalCatalogue';
 import { lessonForChoice, planningDefinition, styleDefinition } from './teaching';
 import { TeachingDefinition, TeachingSources } from './TeachingDefinition';
+import { historyForChoice } from './planningHistory';
 
 export function CatalogueTeachingDetails({ choice, variantId }: {choice:CanonicalChoice;variantId:string}) {
   const match=lessonForChoice(choice,variantId);
@@ -14,12 +15,26 @@ export function CatalogueTeachingDetails({ choice, variantId }: {choice:Canonica
   </section>;
   const definitions=lesson.styleIds.map(id=>styleDefinition(id)).filter(definition=>definition!==undefined);
   const planning=lesson.planningIds.map(id=>planningDefinition(id)).filter(definition=>definition!==undefined);
+  const historyMatch=historyForChoice(choice,variantId);
+  const history=historyMatch?.status==='classified' ? historyMatch.lesson : undefined;
   return <section aria-label={label} className="space-y-2">
     <p className="text-xs text-slate-700"><strong>Use:</strong> {lesson.typeLabel}</p>
+    {history && <div className="text-xs text-slate-700">
+      <p><strong>Design era:</strong> {history.designPeriod}</p>
+      <p className="mt-1 text-[11px] text-slate-600">Approximate design association, not a construction date.</p>
+    </div>}
     {lesson.styleIds[0] && <TeachingDefinition kind="style" id={lesson.styleIds[0]} showSources={false} />}
     {definitions.length>1 && <p className="text-[11px] text-slate-600">Other influences: {definitions.slice(1).map(definition=>definition.label).join(' · ')}</p>}
     {planning.length>0 && <p className="text-[11px] text-slate-600"><strong>Planning connections:</strong> {planning.map(definition=>definition.label).join(' · ')}. Components only; the neighbourhood layout matters.</p>}
     {!lesson.referenceReviewed && <p className="text-[11px] text-slate-600">Suggested from this design's catalogue description.</p>}
-    <TeachingSources sourceIds={[...definitions,...planning].flatMap(definition=>definition.sourceIds)} />
+    {history && <details className="text-[11px] leading-relaxed text-slate-700">
+      <summary className="min-h-8 cursor-pointer py-1 font-semibold">Historical and planning context</summary>
+      <div className="space-y-1 pb-2">
+        <p>{history.eraRationale}</p>
+        <p><strong>Canadian connection:</strong> {history.canadianContext}</p>
+        <p><strong>International connection:</strong> {history.internationalContext}</p>
+      </div>
+    </details>}
+    <TeachingSources sourceIds={[...definitions,...planning].flatMap(definition=>definition.sourceIds).concat(history?.sourceIds ?? [])} />
   </section>;
 }

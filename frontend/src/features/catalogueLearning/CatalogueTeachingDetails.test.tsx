@@ -21,6 +21,7 @@ it('holds a contradictory reference without displaying its proposed style as set
   fireEvent.click(screen.getByRole('button',{name:/Expand details for/}));
   expect(screen.getByRole('region',{name:'Architecture and planning'})).toHaveTextContent(/Style to be confirmed/);
   expect(screen.queryByRole('heading',{name:'Italianate'})).not.toBeInTheDocument();
+  expect(screen.queryByText(/Design era:/)).not.toBeInTheDocument();
 });
 
 it('does not show the old lesson when a model revision has changed',()=>{
@@ -30,4 +31,17 @@ it('does not show the old lesson when a model revision has changed',()=>{
   fireEvent.click(screen.getByRole('button',{name:/Expand details for/}));
   expect(screen.getByRole('region',{name:'Architecture and planning'})).toHaveTextContent(/fresh review/i);
   expect(screen.queryByRole('link',{name:'RIBA: Neoclassicism'})).not.toBeInTheDocument();
+  expect(screen.queryByText(/Design era:/)).not.toBeInTheDocument();
+});
+
+it('shows an approximate design association and optional Canadian and international context',()=>{
+  const choice=CANONICAL_CHOICES.find(c=>c.placements[0]?.id==='trial_postwar_bungalow')!;
+  render(<CanonicalCatalogueCard choice={choice} selected={null} onPlacement={vi.fn()} onDraw={vi.fn()}/>);
+  fireEvent.click(screen.getByRole('button',{name:/Expand details for/}));
+  const lesson=screen.getByRole('region',{name:'Architecture and planning'});
+  expect(lesson).toHaveTextContent(/Design era:.*1945.*1950s/);
+  expect(lesson).toHaveTextContent(/not a construction date/i);
+  fireEvent.click(screen.getByText('Historical and planning context'));
+  expect(lesson).toHaveTextContent(/CMHC 1954/);
+  expect(lesson).toHaveTextContent(/International connection/);
 });
