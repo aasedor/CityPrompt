@@ -50,5 +50,5 @@ function ReferenceOutline({ layer }: { layer: ReferenceLayer }) {
     }
     return { type: 'FeatureCollection', network: '5a', retrieved: layer.created_at, sources: {}, featureCount: features.length, features };
   }, [layer.feature_collection, layer.created_at, layer.source_filename]);
-  return <GlobeTransportVectors data={data} mapId={`reference:${layer.id}`} opacity={layer.opacity} color={layer.color} order={990} />;
+  return <GlobeTransportVectors data={data} mapId={`reference:${layer.id}`} opacity={layer.opacity} color={layer.color} order={990} pointRadius={layer.id.startsWith('public-data:') ? 2.5 : undefined} />;
 }

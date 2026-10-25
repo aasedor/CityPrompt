@@ -95,6 +95,8 @@ import type { ZoneInspection } from '@/features/zoningCatalogue/types';
 import { CalgaryContextButton } from '@/features/referenceLayers/CalgaryContextButton';
 import { existingTransport } from '@/features/referenceLayers/existingTransport';
 import { ReferenceLayersPanel } from '@/features/referenceLayers/ReferenceLayersPanel';
+import { usePublicDataLayers } from '@/features/publicData/usePublicDataLayers';
+import { PublicDataLayersPanel } from '@/features/publicData/PublicDataLayersPanel';
 import { SiteElevation } from '@/features/referenceLayers/SiteElevation';
 import { ShapefileImportButton } from './ShapefileImportButton';
 import { LayersPanel } from './LayersPanel';
@@ -325,6 +327,7 @@ export function ProjectViewPage() {
   const siteAssessment = useSiteAssessment(siteZones, id);
   const streetNames = useStreetNames(id, siteZones, exploration);
   const zoningLabels = useZoningLabels(id, siteZones, exploration);
+  const publicData = usePublicDataLayers(id, siteZones);
   const localPolicy = useLocalAreaPolicy(id, siteZones, exploration);
   const cityPolicyMaps = useCityPolicyMaps(id);
   const [zoningSelection, setZoningSelection] = useState<{ projectId?: string; zone: ZoneInspection | null; overlay: typeof zoningLabels.data } | null>(null);
@@ -1169,7 +1172,7 @@ export function ProjectViewPage() {
             projectSurfaces={projectDetails.data?.surfaces}
             siteZones={visibleZones}
             allSiteZones={siteZones}
-            referenceLayers={studyMap.layer ? [...references.visibleLayers.filter(layer=>!studyMetadata(layer)),studyMap.layer] : references.visibleLayers}
+            referenceLayers={[...(studyMap.layer ? [...references.visibleLayers.filter(layer=>!studyMetadata(layer)),studyMap.layer] : references.visibleLayers), ...publicData.layers]}
             siteAssessment={siteAssessment.mapData}
             streetNames={studyMap.editing ? { ...streetNames, enabled: false } : streetNames}
               zoningLabels={studyMap.editing ? {...zoningLabels,enabled:false} : zoningLabels}
@@ -1343,6 +1346,7 @@ export function ProjectViewPage() {
         </div>
         {showReferenceLayers && !showPlanningReport && <aside aria-label="Map layers" className="absolute bottom-20 right-3 top-32 z-40 flex max-w-[calc(100vw-1.5rem)] flex-col gap-3 overflow-y-auto rounded-xl bg-white/95 p-3 shadow-xl sm:right-4 sm:top-20">
           <div className="sticky -top-3 z-10 flex items-center justify-between bg-white py-1"><h2 className="font-semibold text-slate-900">Map layers</h2><button onClick={() => setShowReferenceLayers(false)} aria-label="Close layers" className="flex h-11 w-11 items-center justify-center"><X size={18} /></button></div>
+          <PublicDataLayersPanel state={publicData} />
           <ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend} />
           <LocalAreaPlanPanel state={localPolicyPanel} />
           <CityPolicyMapsPanel state={cityPolicyPanel} />
