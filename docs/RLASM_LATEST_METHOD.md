@@ -58,6 +58,13 @@ never override the rendered comparison.
 
 ## What we learned
 
+Teaching Wave 2 evidence (2026-10-25): the Bauhaus workshop pilot passed separate
+holistic architectural-clay review after finite door/optics/stair corrections.
+Its complete source and exact-GLB review, including the remaining P2 handrail
+finish and untested runtime boundary, are documented in
+`ARCHITECTURE_TEACHING_WAVE2_REVIEW_2026-10-25.md`. Both machine companions carry
+the same `teaching_style_wave2` evidence record; this does not change method 6.1.
+
 ### 1. The exact archetype is the goalpost
 
 - Lock one catalogue archetype, one variant, and a compatible front/oblique/top

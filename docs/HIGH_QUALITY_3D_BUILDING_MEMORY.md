@@ -30,6 +30,17 @@ their horizontal transform remains independent from the authored height.
 
 ## The quality target
 
+Teaching Wave 2 pilot, 2026-10-25: Bauhaus-inspired workshop clay-v003 passed
+independent holistic architectural-clay review with zero P0/P1 and one P2
+handrail endpoint finish. Preserve source-specific flat doors; keep inspection
+emitters out of glass reflections; guard intermediate landings and prove both
+stair connections. Two rejected full versions remain immutable. The generated
+top/rear labels are explicitly corrected in source provenance. All fourteen
+exact-GLB views and both phone boards passed; runtime remains NOT TESTED and
+activation is false. See `ARCHITECTURE_TEACHING_WAVE2_REVIEW_2026-10-25.md` and
+the synchronized `teaching_style_wave2` evidence records. This evidence addition
+does not alter the current executable rule version.
+
 Teaching-style local pilot, 2026-10-25: Prairie School house clay-v004 passed
 independent holistic architectural-clay review with zero P0/P1 after rejecting
 mirrored/drifting extra reference proposals and calibrating hip rise against
