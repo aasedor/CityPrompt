@@ -39,8 +39,8 @@ and modest entry steps remain; no enclosing grey site rectangle is exported.
 
 | Candidate | Native dimensions, m | Triangles | GLB bytes | Independent state |
 | --- | --- | --- | --- | --- |
-| Victory clay-v004 | 8.34 ×7.20 ×6.12 | 13,648 | 783,000 | PASS: zero P0/P1; one P2 guard-foot/end-anchor finish |
-| Side-split clay-v003 | 14.535 ×9.12 ×5.7225 | 14,572 | 826,444 | PASS: zero P0/P1/P2 |
+| Victory clay-v004 | 8.34 × 7.20 × 6.12 | 13,648 | 783,000 | PASS: zero P0/P1; one P2 guard-foot/end-anchor finish |
+| Side-split clay-v003 | 14.535 × 9.12 × 5.7225 | 14,572 | 826,444 | PASS: zero P0/P1/P2 |
 
 Victory GLB SHA256:
 `4b0df5c7fecb6b4a48002da119096b964fd03570503df1cb5fca91ae000fa2bb`.
@@ -58,7 +58,7 @@ camera is partly occluded; preserved clear-flight and upper-join supplements
 close that proof duty. Exact mesh samples verify continuous attic arrival.
 
 The side-split has 19 fresh 1600×1200 exact-GLB renders, five compatible source
-roles and three 1080×1920 phone boards. The low wing is 6m deep and raised wing 8m,
+roles and three 1080×1920 phone boards. The low wing is 6 m deep and raised wing 8 m,
 preserving a source-derived depth ratio around 1.33 and stepped rear outline.
 Known front faces stay registered. Its limited side-context stair view is paired
 with an axial full-flight view and upper arrival. Both lower and upper stair
@@ -68,14 +68,14 @@ clear after the shorter wing and descending stair move.
 Exact metres, concealed structure, interior arrangements and unequal floor
 offsets are declared architectural inferences. The source top is a near-vertical
 high aerial, not surveyed orthography. Split-level lower/living/upper floors are
-.10/.53/2.30m; this keeps occupied clear heights above the native zero datum.
+0.10/0.53/2.30 m; this keeps occupied clear heights above the native zero datum.
 It is not a measured historical half-storey plan or a code-compliance claim.
 
 ## Preserved failures and lessons
 
 Victory v001 exposed a gable/roof intersection and an inspection emitter crossing
 the roof. v002 lighting did not adequately expose the attic. Independent v003
-review then found a 0.19m arrival gap after the stair changed from 15 to 14 steps,
+review then found a 0.19 m arrival gap after the stair changed from 15 to 14 steps,
 an inadequate flight camera and missing source sash crossbars. v004 derives
 landing length from actual endpoints, restores the six-light upper sashes and
 supplies exact-GLB stair proof. Prior attempts and reviews remain intact.
@@ -103,9 +103,13 @@ Blender and Python/Pillow; no turnkey application or byte-identical rendering
 across hardware is claimed.
 
 The dated [Drive review batch](https://drive.google.com/drive/folders/1XqW1KTtuRDdrD54B1Ty1qiCIarX3Tl69)
-receives full-resolution originals and complete per-version archives. Its local
+contains full-resolution originals and complete per-version archives. Its local
 `delivery-manifest.json` records IDs, local hashes and Drive metadata verification.
-Delivery counts and final checks are recorded after readback.
+The batch inventory is 82 files: 32 in the Victory folder, 40 in the side-split
+folder and ten batch-level review files. Every uploaded ID, name, byte count and
+parent is checked through Drive metadata and folder readback before delivery is
+reported. Drive does not expose a remote checksum through the connected tool;
+local SHA256 values are retained, not misrepresented as remote checksums.
 
 ## Verification
 
@@ -133,3 +137,16 @@ The next useful work is to reconcile the eight held current identities and the
 existing archived housing forms, then choose the next evidence-backed form gap.
 Tenure, Indigenous authority and neighbourhood outcomes need sourced cases or
 composed scenes; they cannot be filled by applying an aesthetic to another house.
+
+## Independent source review and deferred details
+
+A fresh gpt-6-astra source review of commit `0d4d52704` found no Critical or
+Important issues. It independently verified the 76 Python checks, exact asset
+and review bindings, both complete dependency snapshots, all regenerated
+exports, and unchanged current lesson records. It did not repeat the separate
+holistic pixel review or claim fresh Blender/runtime execution.
+
+Two minor details remain: Victory guard-foot/end-anchor finish (visual P2), and
+tracking or integrating the complete snapshot assembler for future batches.
+Both delivered snapshots already include cards, source locks, sources and
+dependencies; the current delivery has no missing replay inputs.

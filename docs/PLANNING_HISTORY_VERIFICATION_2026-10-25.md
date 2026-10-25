@@ -154,3 +154,20 @@ was performed. A readable interface screenshot is stored with the follow-up
 evidence. The generator still validates and reproduces the unchanged history
 JSON. This small follow-up receives author verification; the independent
 whole-branch review above applies to the earlier research/search checkpoint.
+
+## Housing extension checkpoint
+
+The two additional exact-byte reviewed architectural-clay candidates bring the
+research matrix to 203 rows: 196 current choices plus seven offline candidates.
+Current 196 lesson records, 188 classified/eight held, and 521-family coverage are
+unchanged. The framework now has 24 planning definitions and 57 source records.
+The additional housing-delivery connection is contextual; appearance does not
+establish programme membership, ownership or affordability.
+
+Verification: 76 focused Python tests, 50 catalogue/palette Vitest tests and
+frontend TypeScript passed. All four generated outputs reproduced; family
+coverage bytes match the preceding snapshot. The local postwar and missing-middle
+filters and bungalow/fourplex cards were checked with no console errors.
+Fresh independent source review found no Critical/Important findings.
+See `docs/HOUSING_TEACHING_REVIEW_2026-10-25.md` for exact hashes, evidence,
+deferred details and delivery. Both new models remain outside runtime.

@@ -35,11 +35,11 @@ research cards own form/style/era/planning labels. Heavy evidence stays external
 **Interfaces:** Produces exact family specifications, fail-closed output/source
 contracts and separately sourced teaching cards for the two builders.
 
-- [ ] Author sourced labels and generate one compatible reference board per house.
-- [ ] Write failing tests for missing roles, source identity drift, reused output,
+- [x] Author sourced labels and generate one compatible reference board per house.
+- [x] Write failing tests for missing roles, source identity drift, reused output,
       invented construction years and tenure assumptions.
-- [ ] Run pytest; expect failure before implementation, then implement contracts.
-- [ ] Run python -m pytest tools/housing_teaching/test_contracts.py; expect PASS.
+- [x] Run pytest; expect failure before implementation, then implement contracts.
+- [x] Run python -m pytest tools/housing_teaching/test_contracts.py; expect PASS.
 
 ### Task 2: Build and review the bounded models
 
@@ -48,12 +48,12 @@ contracts and separately sourced teaching cards for the two builders.
 **Interfaces:** Consumes Task 1 contracts and cards; produces exact GLB/render
 packages, measurements, independent review records and hash-bound evidence cards.
 
-- [ ] Dry-run the source/camera contract; expect DRY_RUN_PASS.
-- [ ] Build Victory pilot, inspect all renders and phone boards, independently
+- [x] Dry-run the source/camera contract; expect DRY_RUN_PASS.
+- [x] Build Victory pilot, inspect all renders and phone boards, independently
       review; preserve failures and correct in new finite versions.
-- [ ] After zero P0/P1 pilot review build split-level, inspect and independently
+- [x] After zero P0/P1 pilot review build split-level, inspect and independently
       review all mandatory views. Keep unrun runtime checks NOT TESTED.
-- [ ] Verify output hash contracts with pytest and existing narrow compiler gates.
+- [x] Verify output hash contracts with pytest and existing narrow compiler gates.
 
 ### Task 3: Delivery and final source review
 
@@ -63,7 +63,7 @@ docs/housing-teaching-cards.json; canonical human/machine evidence records.
 **Interfaces:** Consumes exact approved review hashes; produces truthful batch
 status, Drive receipts and local manifest. No student-catalogue activation.
 
-- [ ] Upload originals and review notes to dated Drive subfolder; metadata readback.
-- [ ] Run focused pytest, git diff --check/stat/status and independent final source
+- [x] Upload originals and review notes to dated Drive subfolder; metadata readback.
+- [x] Run focused pytest, git diff --check/stat/status and independent final source
       review. Correct important findings with regression evidence.
-- [ ] Commit the coherent source unit; no push. Separate generated output in final.
+- [x] Commit the coherent source unit; no push. Separate generated output in final.
