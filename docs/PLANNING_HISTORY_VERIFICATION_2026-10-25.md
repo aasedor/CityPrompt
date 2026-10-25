@@ -132,3 +132,25 @@ catalogue, push Git changes or deploy the teaching interface.
 
 External generated batches, logs, screenshots, receipts and the execution ledger
 are retained under `C:/dev-artifacts/CityPrompt/planning-history-20261025`.
+
+## Follow-up: explicit use/form tags
+
+The instructor confirmed the four-axis categorisation and requested its tags.
+All 196 local records already carry authored use/form, style, era and planning
+fields. The follow-up exposes the reviewed use/form label on expanded cards and
+in semantic search. This corrects the Charcoal Gable Fourplex's old broad
+townhouse caption to Fourplex; the model, placement guide and locked audit remain
+unchanged. Every one of the 188 classified records has an explicit display label;
+the eight held records remain withheld. Housing tenure is not inferred or added.
+
+Three new regression tests were observed failing before implementation: the
+fourplex's four-axis card, complete form-label coverage and discovery by the
+reviewed form label. All 93 focused frontend tests and the TypeScript check pass.
+All 43 classified use/form IDs have plain labels. The local browser showed one
+fourplex search result with the correct form, contemporary gabled style,
+2000–present association and missing-middle/compact-infill planning connections;
+no warning/error console entries were recorded. No placement or render action
+was performed. A readable interface screenshot is stored with the follow-up
+evidence. The generator still validates and reproduces the unchanged history
+JSON. This small follow-up receives author verification; the independent
+whole-branch review above applies to the earlier research/search checkpoint.

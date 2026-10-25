@@ -45,3 +45,16 @@ it('shows an approximate design association and optional Canadian and internatio
   expect(lesson).toHaveTextContent(/CMHC 1954/);
   expect(lesson).toHaveTextContent(/International connection/);
 });
+
+it('teaches the reviewed fourplex form alongside its style, era and planning tags',()=>{
+  const choice=CANONICAL_CHOICES.find(c=>c.placements[0]?.id==='validation_reference_charcoal_gable_fourplex_v1')!;
+  render(<CanonicalCatalogueCard choice={choice} selected={null} onPlacement={vi.fn()} onDraw={vi.fn()}/>);
+  fireEvent.click(screen.getByRole('button',{name:/Expand details for/}));
+  const lesson=screen.getByRole('region',{name:'Architecture and planning'});
+  expect(lesson).toHaveTextContent('Use / form: Fourplex');
+  expect(lesson).not.toHaveTextContent('Rowhouse / townhouse');
+  expect(lesson).toHaveTextContent(/Contemporary gabled/);
+  expect(lesson).toHaveTextContent(/2000/);
+  expect(lesson).toHaveTextContent(/Missing-middle housing/);
+  expect(lesson).not.toHaveTextContent(/Tenure:|Owner-occupied|Co-operative occupancy/);
+});

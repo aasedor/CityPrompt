@@ -194,6 +194,35 @@ checked on 25 October 2026, not universal rules for Canadian municipalities.
 
 ## Examples of the resulting classification
 
+### Housing tenure is separate from building form
+
+Tenure describes the arrangement through which people occupy a home, such as
+ownership, rental or co-operative occupancy. Public and non-profit describe
+housing providers; affordability describes a relationship between housing cost
+and household resources. These fields should be taught separately rather than
+inferred from a facade. CMHC's glossary distinguishes the range of tenures and
+community-housing providers; Statistics Canada also records dwelling structure,
+condominium status and tenure as separate variables.
+[CMHC glossary](https://www.cmhc-schl.gc.ca/nhs/guidepage-strategy/glossary?rdlink=1),
+[Statistics Canada](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=9810023901).
+
+The following are possible classroom scenarios using existing forms, not claims
+about the catalogue models' actual ownership or operation:
+
+| Existing form | Possible tenure/provider scenario |
+| --- | --- |
+| Fourplex or duplex | Owner-occupied unit with other units rented; or a rental building |
+| Courtyard cottages or townhouses | Co-operative occupancy; private rental; or individual ownership |
+| Mid-rise apartment building | Private rental, non-profit rental or condominium ownership |
+| Residential tower and podium | Rental or condominium housing |
+
+A new housing-tenure lesson therefore need not require a new architectural
+appearance. A student could assign a documented or proposed tenure and provider
+to their project while reusing these forms. No catalogue tenure is automatically
+assigned in this classification.
+
+### Archetype examples
+
 | Archetype | Form/aesthetic | Approximate design association | Planning connection |
 | --- | --- | --- | --- |
 | Post-War Bungalow | Small house; Ranch/vernacular influence | Postwar, c. 1945–1975, including 1950s | Compare housing production and suburban pattern; a detached house alone is not missing middle |

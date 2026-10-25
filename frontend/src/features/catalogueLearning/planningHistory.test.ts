@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { CANONICAL_CHOICES, filterCanonicalChoices } from '@/features/pickPlace/canonicalCatalogue';
 import { choiceMatchesFacets, catalogueStyleIds } from '@/features/pickPlace/catalogueFacets';
 import { planningIds, teachingSearchTerms } from './teaching';
-import { availableEras, eraIds, historyForChoice } from './planningHistory';
+import { availableEras, eraIds, formLabel, historyForChoice } from './planningHistory';
 import historyData from '@/data/cataloguePlanningHistory.json';
 
 const choiceFor = (id: string) => CANONICAL_CHOICES.find(choice => choice.placements.some(asset => asset.id === id))!;
@@ -115,5 +115,21 @@ describe('historical planning interpretation', () => {
     expect(Object.keys(historyData.lessons)).toHaveLength(196);
     expect(CANONICAL_CHOICES.filter(choice => !historyForChoice(choice))).toEqual([]);
     expect(CANONICAL_CHOICES.some(choice => choice.id.includes('bauhaus_workshop'))).toBe(false);
+  });
+
+  it('names every classified form explicitly without assigning a housing tenure', () => {
+    for (const lesson of Object.values(historyData.lessons).filter(row => row.status === 'classified')) {
+      expect(formLabel(lesson.formId), lesson.placementId).toBeTruthy();
+      expect(lesson).not.toHaveProperty('tenure');
+    }
+    expect(formLabel('fourplex')).toBe('Fourplex');
+    expect(formLabel('residential_tower_podium')).toBe('Residential tower and podium');
+    expect(formLabel('unconfirmed')).toBeUndefined();
+    expect(formLabel('unreviewed-future-form')).toBeUndefined();
+  });
+
+  it('allows discovery by the reviewed form name', () => {
+    const tower=choiceFor('clay_vancouver_balcony_podium_tower');
+    expect(teachingSearchTerms(tower)).toContain('Residential tower and podium');
   });
 });

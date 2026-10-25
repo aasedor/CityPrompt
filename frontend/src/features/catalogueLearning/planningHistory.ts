@@ -8,13 +8,61 @@ export interface EraDefinition {
 }
 export interface PlanningHistoryLesson {
   domain: string; archetypeId: string; variantId: string; modelMethod: string; modelRevision: string | null;
-  status: string; eraIds: string[]; designPeriod: string; eraRationale: string;
+  status: string; formId: string; eraIds: string[]; designPeriod: string; eraRationale: string;
   canadianContext: string; internationalContext: string; sourceIds: string[];
   styleIds: string[]; planningIds: string[]; constructionYear: null;
 }
 
 const lessons: Readonly<Record<string, PlanningHistoryLesson>> = data.lessons;
 const eras: Readonly<Record<string, EraDefinition>> = data.eras;
+// Plain labels for the authored use/form tags. These describe the component,
+// never its ownership, occupancy agreement, provider or affordability.
+const FORM_LABELS: Readonly<Record<string, string>> = {
+  civic: 'Civic / community building',
+  fourplex: 'Fourplex',
+  single_family: 'Detached home',
+  detached: 'Detached home',
+  shops: 'Shop / commercial building',
+  apartments: 'Apartment building',
+  townhouse: 'Townhouse / rowhouse',
+  gardens: 'Garden',
+  neighbourhood: 'Neighbourhood park',
+  plazas: 'Plaza / public square',
+  linear: 'Linear park',
+  local: 'Local street',
+  transit: 'Transit corridor / facility',
+  active: 'Walking / cycling route',
+  street_other: 'Street / pathway component',
+  mixed: 'Mixed-use building',
+  play_sport: 'Play / sports space',
+  duplex: 'Duplex',
+  courtyard_frontage_component: 'Courtyard frontage component',
+  office_tower: 'Office tower',
+  residential_tower_podium: 'Residential tower and podium',
+  alley: 'Lane / alley',
+  arterial: 'Arterial street',
+  offices: 'Office building',
+  railway_station: 'Railway station',
+  hotels: 'Hotel',
+  water: 'Water / stormwater space',
+  industry: 'Industrial building',
+  courtyard_cluster: 'Courtyard housing cluster',
+  cottage_court: 'Cottage court',
+  stacked_townhouse: 'Stacked townhouses',
+  lowrise_apartments: 'Low-rise apartment building',
+  shop_and_home: 'Shop with housing above',
+  midrise_apartments: 'Mid-rise apartment building',
+  infrastructure: 'Infrastructure building',
+  mixed_use_courtyard_block: 'Mixed-use courtyard block',
+  parking_structure: 'Parking structure',
+  parkades: 'Parking structure',
+  adapted_mill: 'Adapted mill / mixed-use building',
+  indoor_food: 'Indoor food-production building',
+  towers: 'Residential tower',
+  small_park: 'Small park',
+  collector: 'Collector street',
+};
+export const formLabel = (id: string): string | undefined => FORM_LABELS[id];
 export const HISTORY_STYLE_DEFINITIONS = data.styles;
 export const HISTORY_PLANNING_DEFINITIONS = data.planning;
 export const HISTORY_PLANNING_ORDER: readonly string[] = data.planningOrder;
@@ -48,7 +96,7 @@ export function availableEras(choices: CanonicalChoice[], domain: CatalogueDomai
 export function historySearchTerms(choice: CanonicalChoice): string[] {
   const match = historyForChoice(choice);
   if (match?.status !== 'classified') return [];
-  return [match.lesson.designPeriod, ...match.lesson.eraIds.flatMap(id => {
+  return [formLabel(match.lesson.formId) ?? '', match.lesson.designPeriod, ...match.lesson.eraIds.flatMap(id => {
     const era = eras[id];
     return era ? [era.label, era.dates, ...era.searchTerms] : [];
   })];

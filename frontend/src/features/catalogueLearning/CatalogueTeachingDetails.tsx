@@ -1,7 +1,7 @@
 import type { CanonicalChoice } from '@/features/pickPlace/canonicalCatalogue';
 import { lessonForChoice, planningDefinition, styleDefinition } from './teaching';
 import { TeachingDefinition, TeachingSources } from './TeachingDefinition';
-import { historyForChoice } from './planningHistory';
+import { formLabel, historyForChoice } from './planningHistory';
 
 export function CatalogueTeachingDetails({ choice, variantId }: {choice:CanonicalChoice;variantId:string}) {
   const match=lessonForChoice(choice,variantId);
@@ -17,8 +17,9 @@ export function CatalogueTeachingDetails({ choice, variantId }: {choice:Canonica
   const planning=lesson.planningIds.map(id=>planningDefinition(id)).filter(definition=>definition!==undefined);
   const historyMatch=historyForChoice(choice,variantId);
   const history=historyMatch?.status==='classified' ? historyMatch.lesson : undefined;
+  const useFormLabel=history ? formLabel(history.formId) ?? lesson.typeLabel : lesson.typeLabel;
   return <section aria-label={label} className="space-y-2">
-    <p className="text-xs text-slate-700"><strong>Use:</strong> {lesson.typeLabel}</p>
+    <p className="text-xs text-slate-700"><strong>Use / form:</strong> {useFormLabel}</p>
     {history && <div className="text-xs text-slate-700">
       <p><strong>Design era:</strong> {history.designPeriod}</p>
       <p className="mt-1 text-[11px] text-slate-600">Approximate design association, not a construction date.</p>
