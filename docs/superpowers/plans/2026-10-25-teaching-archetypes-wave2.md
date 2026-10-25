@@ -51,7 +51,7 @@
 
 **Files:** batch review Markdown/card JSON, synchronized method/memory companions; external delivery manifest.
 
-- [ ] Verify exact hashes/native contracts/texture counts, run focused source/evidence and RLASM compiler tests.
-- [ ] Synchronize review findings and lifecycle boundaries in human/machine memory.
-- [ ] Inspect staged diff/check/status and commit only the coherent source initiative.
-- [ ] Upload originals, full render sets, comparisons and packages to the existing Drive parent; verify metadata/readback and local receipts; report review state and runtime limits.
+- [x] Verify exact hashes/native contracts/texture counts, run focused source/evidence and RLASM compiler tests.
+- [x] Synchronize review findings and lifecycle boundaries in human/machine memory.
+- [x] Inspect staged diff/check/status and commit only the coherent source initiative.
+- [x] Upload originals, full render sets, comparisons and packages to the existing Drive parent; verify metadata/readback and local receipts; report review state and runtime limits.

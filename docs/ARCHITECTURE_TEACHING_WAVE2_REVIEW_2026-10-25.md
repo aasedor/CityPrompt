@@ -86,3 +86,24 @@ https://drive.google.com/drive/folders/1zZpzx4H24GQJOwPXQsvALk3ZI_JvtQFK.
 Its local `delivery-manifest.json` records per-file hashes, Drive IDs and verified
 metadata receipts. Delivery counts are recorded after folder readback. Existing
 contents and sharing settings of the user's review folder are preserved.
+
+Verified delivery: **85 files, 461,917,070 bytes**. Folder readback matched every
+uploaded ID and byte count: workshop 26 files, studio 28, pavilion 26, and five
+batch-level overview/review/card/verification/UI-evidence files. All 42 final
+render originals, six phone boards, three reference originals, twelve source
+extracts and three exact GLBs are available. Eight ZIPs preserve the complete
+reviewed candidates, editable Blender files, replay dependencies and rejected
+versions. The connector rejected the combined 115,490,310-byte studio history
+archive before upload (100 MiB limit); three complete per-version archives
+deliver its contents instead. The original combined archive remains local.
+No generated output is missing.
+
+Focused verification: **42 tests passed** across Wave 2, inherited source/output
+contracts and RLASM method/delivery/memory tests. Final evidence verification
+rechecked each exact GLB, the independent report hashes and every inspected
+source/render input, all render/phone dimensions, zero texture/image counts and
+zero bounds delta. A read-only existing-project/catalogue smoke check loaded
+without console warnings/errors; its screenshot is explicitly labelled as
+existing-app evidence, not runtime acceptance of these uninstalled candidates.
+No paid app render jobs, video jobs or actual saved-project polygon overlays
+were created in this offline batch.
