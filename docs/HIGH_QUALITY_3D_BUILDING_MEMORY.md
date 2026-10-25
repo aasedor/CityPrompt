@@ -39,6 +39,15 @@ All fourteen exact-GLB views and both phone boards were reviewed afresh. This
 does not grant textured keeper approval or runtime activation. See
 `ARCHITECTURE_TEACHING_GAPS_2026-10-25.md` and the matching machine pilot record.
 
+The second teaching build, Postmodern neighbourhood library clay-v002, also
+passed independent holistic architectural-clay review with zero P0/P1. It has
+physical circular wall apertures and occupied library depth. A coincident
+frame/carrier reveal in v001 produced triangular artefacts; the finite v002
+correction separates the structural cut by 35mm while retaining the clear
+frame diameter. Its generated "top" source is high aerial, explicitly recorded
+in provenance. Both fixed-native models remain uninstalled and unactivated.
+See `ARCHITECTURE_TEACHING_BUILD_REVIEW_2026-10-25.md` for exact hashes and limits.
+
 Large civic local pilot, 2026-10-02: Gothic Community Church v005 passed
 independent architectural-clay review before starting the bounded Timber
 Sanctuary Church build. Preserve curved partial glass cells at arch edges,

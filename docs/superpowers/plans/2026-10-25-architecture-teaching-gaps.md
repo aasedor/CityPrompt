@@ -26,10 +26,10 @@
 - [x] Audit gaps against actual catalogue and existing source families; record evidence and primary-source teaching definitions.
 - [x] Generate, inspect and lock the first reference board. Record measured ratios and prose/pixel differences.
 - [x] Add small source/evidence contract tests; observe meaningful tamper/missing-view failures before implementation.
-- [ ] Build Prairie pilot, dry run then native GLB and complete evidence. Inspect every required output. Separate holistic clay review.
-- [ ] After pilot pass, checkpoint then generate/lock/build the Postmodern library; inspect and independently review.
-- [ ] Preserve exact source/build/review hashes, unrun runtime gates and reusable builder scripts. Run narrow tests, `git diff --check`, stat and status.
-- [ ] Upload completed original reference images, GLB source renders, comparison boards and review note to a dated subfolder of the existing Drive review folder. Verify metadata and record receipts.
+- [x] Build Prairie pilot, dry run then native GLB and complete evidence. Inspect every required output. Separate holistic clay review.
+- [x] After pilot pass, checkpoint then generate/lock/build the Postmodern library; inspect and independently review.
+- [x] Preserve exact source/build/review hashes, unrun runtime gates and reusable builder scripts. Run narrow tests, `git diff --check`, stat and status.
+- [x] Upload completed original reference images, GLB source renders, comparison boards and review note to a dated subfolder of the existing Drive review folder. Verify metadata and record receipts.
 
 ## Ledger
 
@@ -38,3 +38,7 @@
 - Ruling: choose the canonical architectural-clay delivery profile, matching current RLASM runtime work. Human activation and student UI testing remain separate from offline geometry review.
 - Pilot ledger: v001 builder rejection (rear belt crosses door); v002 independent rejection (mirrored rear source, chimney too far inward); v003 independent rejection (roof too shallow). Every version and actual review is preserved. The compatible three-view lock explicitly excludes both inconsistent rear proposals. A read-only projection probe measured source roof rise/width .10695 and v003 .06090; v004 raises the ridge to5.75m while retaining camera and wall/window datums. v004 is the final planned Prairie geometry correction in this batch.
 - Verification checkpoint: 15 narrow source/evidence and RLASM method/delivery tests passed. Per-candidate deterministic delivery checks do not substitute for independent visual review.
+- Prairie v004 independent review: PASS, zero P0/P1, exact GLB `0d84ec0a10f478d3c57f97ff7de47be1a9c83dcfaf5caa189492bdf040df9b7a`. Pilot source checkpoint committed as `c622c7575`; no push.
+- Library v001 was rejected by the builder for coincident round-window reveal surfaces. One finite v002 correction separates the structural cut by 35mm while preserving all identity dimensions. All 14 GLB views and both phone boards were regenerated and inspected. Independent holistic review found zero P0/P1, with minor circular faceting and the high-aerial source label retained as P2.
+- Latest focused validation: 30 tests passed, including the quality-memory suite. Neither candidate is installed or activated in the app.
+- Final delivery: both complete candidate ZIPs, all 28 original GLB views, original references/extracts, independent review records, teaching cards and the review note are uploaded and metadata verified. Exact IDs/hashes are in the external delivery manifest; the dated Drive folder is linked from the review handoff. Failed versions remain separately labelled and preserved. No further generations, publication or runtime activation occurred.

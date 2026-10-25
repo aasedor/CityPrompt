@@ -17,6 +17,7 @@ sys.path.insert(0, str(HERE))
 import clay_core as C
 from contracts import lock_sources, verify_evidence, unobstructed_spans
 import bpy
+import family_library
 
 ROOT = Path('C:/dev-artifacts/CityPrompt/teaching-gaps-20261025')
 
@@ -162,11 +163,12 @@ def prairie():
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('--family',choices=['prairie'],required=True)
+    parser.add_argument('--family',choices=['prairie','library'],required=True)
     parser.add_argument('--output',required=True);parser.add_argument('--version',type=int,default=1)
     parser.add_argument('--resolution',type=int,default=1600);parser.add_argument('--dry-run',action='store_true')
     args=parser.parse_args(sys.argv[sys.argv.index('--')+1:])
-    spec=prairie_spec();out=Path(args.output).resolve()
+    spec=prairie_spec() if args.family=='prairie' else family_library.specification(cameras)
+    out=Path(args.output).resolve()
     if ROOT.resolve() not in out.parents:raise ValueError('Output must be in the named external batch')
     refs=spec.get('references',{r:spec['reference'] for r in ('front','oblique','top')})
     sources=lock_sources(spec['archetype_id'],spec['variant_id'],{r:ROOT/'references'/p for r,p in refs.items()})
@@ -177,9 +179,9 @@ def main():
     out.mkdir(parents=True)
     for name in ('sources','scripts','renders','review','evidence','boards'): (out/name).mkdir()
     for p in {Path(s['original_path']) for s in sources}:shutil.copy2(p,out/'sources'/p.name)
-    provenance=ROOT/'references/source-provenance.json'
+    provenance=ROOT/'references'/spec.get('provenance_file','source-provenance.json')
     if provenance.exists():shutil.copy2(provenance,out/'sources/source-provenance.json')
-    for p in (Path(__file__),HERE/'contracts.py',Path(C.__file__)):shutil.copy2(p,out/'scripts'/p.name)
+    for p in (Path(__file__),HERE/'contracts.py',HERE/'family_library.py',Path(C.__file__)):shutil.copy2(p,out/'scripts'/p.name)
     shutil.copy2(HERE.parents[1]/'docs/ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md',out/'review/runtime-integration-NOT-TESTED.md')
     manifest=dict(candidate=spec['candidate']+f'-v{args.version:03d}',method='RLASM v6.1',representation_kind='architectural_clay',
         archetype_id=spec['archetype_id'],variant_id=spec['variant_id'],state='prework',keeper_claimed=False,runtime_seed_allowed=False,
@@ -191,14 +193,15 @@ def main():
         contact_contract=['Complete foundation','Through-carrier apertures','Supported roof','Seated weathering connections'],
         runtime_contract=dict(scale='fixed_native_only',resizing=False,installation='not installed',review='NOT TESTED'),
         camera_roster=spec['cameras'],teaching=spec['teaching'],
-        provenance=dict(builder='Codex',source_commit='55033b913',render_source='exact GLB reimport'))
+        provenance=dict(builder='Codex',base_commit='c622c7575',working_scripts_archived=True,render_source='exact GLB reimport'))
     C.write_json(out/'prework-manifest.json',manifest)
     cams=C.setup(spec['palette'],spec['cameras'],args.resolution)
     bpy.context.scene.view_settings.exposure=.7
     # Green neutral context is QA-only; never export a full rectangular site pad.
     ground=bpy.data.objects.get('QA ground - excluded')
     ground.data.materials[0].node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value=(.27,.34,.19,1)
-    prairie()
+    if args.family=='prairie':prairie()
+    else:family_library.construct(face_wall,hole,table,chair)
     C.deliver(out,manifest,cams)
     verify_evidence(sources,out,require_renders=True)
 
