@@ -68,6 +68,43 @@ describe('historical planning interpretation', () => {
     }
   });
 
+  it.each([
+    ['clay_ecole_republicaine_provincial_brick', 'classical', 'Provincial Brick School'],
+    ['validation_clapboard_north_end', 'historical', 'Halifax Clapboard House'],
+    ['community_inglewood_corner_merchants', 'historical', 'Inglewood Corner Merchants'],
+  ])('withholds legacy semantic search tags for held %s while retaining name discovery', (id, tag, name) => {
+    const choice = choiceFor(id);
+    expect(filterCanonicalChoices('building', tag)).not.toContain(choice);
+    expect(filterCanonicalChoices('building', name)).toContain(choice);
+  });
+
+  it('withholds semantic tags through the full search path after the model revision changes', () => {
+    const original = choiceFor('clay_montreal_plateau_duplex');
+    const changed = { ...original, placements: original.placements.map(asset => ({ ...asset,
+      model: { ...asset.model, revision: 'new-unreviewed-model' } })),
+    };
+    expect(historyForChoice(changed)?.status).toBe('stale');
+    expect(historyForChoice(original)?.status).toBe('classified');
+    expect(filterCanonicalChoices('building', 'historical', '', [original])).toEqual([original]);
+    expect(filterCanonicalChoices('building', 'historical', '', [changed])).toEqual([]);
+    expect(filterCanonicalChoices('building', 'Plateau Stacked Duplex', '', [changed])).toEqual([changed]);
+  });
+
+  it('also withholds legacy fallback descriptions and tags when an unreviewed sibling has no presentation', () => {
+    const original = choiceFor('trial_postwar_bungalow');
+    const changed = { ...original, option: { ...original.option, label: 'Known dwelling',
+      description: 'unsupported-era-marker', categoryId: 'unsupported-era-marker',
+      generationTags: ['unsupported-era-marker'], variants: [] },
+      placements: [
+        { ...original.placements[0], label: 'Known dwelling',
+          model: { ...original.placements[0].model, revision: 'new-unreviewed-model' } },
+        { ...original.placements[0], id: 'unreviewed-sibling-without-presentation', label: 'Known dwelling' },
+      ],
+    };
+    expect(filterCanonicalChoices('building', 'unsupported-era-marker', '', [changed])).toEqual([]);
+    expect(filterCanonicalChoices('building', 'Known dwelling', '', [changed])).toEqual([changed]);
+  });
+
   it('only offers eras represented by valid current choices in that domain', () => {
     const bungalow = choiceFor('trial_postwar_bungalow');
     const held = choiceFor('validation_clapboard_north_end');

@@ -37,8 +37,8 @@ the rail through-truss public-realm model. Their exact IDs remain in the export.
   original teaching generator. Tests cover input tampering, wrong exact model
   contracts, held records, source/era references, incomplete coverage, candidate
   hash changes, deterministic outputs and refusal to overwrite an existing batch.
-- Frontend: 79 focused tests passed across history, teaching definitions/cards,
-  facets, canonical discovery and palette browsing. New tests were observed
+- Frontend: 90 focused tests passed across history, teaching definitions/cards,
+  facets, canonical discovery, presentation and palette browsing. New tests were observed
   failing before implementation. The frontend TypeScript check passed.
 - A second finite generation reproduced the promoted JSON and all three CSVs.
   All 196 current records join the family coverage export exactly once; all 201
@@ -46,7 +46,11 @@ the rail through-truss public-realm model. Their exact IDs remain in the export.
 - The original teaching JSON is byte-identical to its pre-task backup. Original
   reviewed teaching inputs, models, compiler, seed files and backend have no
   changes from the initiative's base commit.
-- Independent whole-branch review: pending final review.
+- Independent whole-branch review found one Important search-path issue and no
+  Critical or Minor findings. Five full-search regression cases failed before
+  the fix, then passed with the 90-test suite and TypeScript check. Held/stale
+  designs now retain literal name/ID discovery while legacy semantic tags and
+  descriptions are withheld. The original locked evidence was not relabelled.
 
 The only pytest warning is an existing pytest-asyncio fixture-loop configuration
 deprecation; the focused synchronous tests pass.
@@ -68,6 +72,11 @@ objects were placed, no project geometry changed and no paid render was started.
 | Keyboard | Tab moves from Design era to Planning idea |
 | Console | No warning or error entries during the trial |
 
+After the review fix, an additional browser check confirmed that `classical`
+returns only the Neoclassical Office, while searching Provincial Brick School
+by name still returns its held card with no taught era/style. The console
+remained free of warning/error entries.
+
 The temporary viewport override was reset. Screenshots show interface evidence,
 not newly generated image originals. The test-mode catalogue has 195 choices:
 an existing development-only plaza gate accounts for the one-choice difference
@@ -87,6 +96,29 @@ from the 196-record local-development snapshot. No availability gate changed.
    union. The 24 native park/street families are current choices outside the old
    source files. Keeping the populations separate prevents incorrect coverage
    claims; a future source-library refresh must reconcile them again.
+
+The independent reviewer deliberately left six matters outside its verdict;
+these decisions remain explicit:
+
+4. Existing model geometry, reference fidelity, terrain and approval gates were
+   unchanged. This review grants no new model approval; pre-existing visual
+   issues still require their own exact-model review.
+5. The 343 source-only families retain their unreviewed status. Broader library
+   classification remains future work because exact evidence is absent.
+6. Era overlaps remain interpretive teaching groupings. A different syllabus may
+   call for different boundaries; these labels do not become construction dates.
+7. Inherited sources retain disclosed inherited status. The independent checks
+   targeted consequential claims; older links/background references may need
+   later rechecking.
+8. Deployment, publication and offline-candidate activation remain outside this
+   initiative. Live students receive these changes only after authorized
+   integration and publication.
+9. The independent reviewer exercised actual search modules and reviewed the
+   supplied browser evidence. It did not repeat the author's desktop/phone
+   trial, so visual verification has one author-run browser pass rather than a
+   second independent browser pass.
+
+There are no deferred Minor review findings.
 
 Institutional topics still need sourced case studies and composed neighbourhood
 scenes: Indigenous authority, non-market/co-operative housing, displacement,

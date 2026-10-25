@@ -58,5 +58,5 @@
 
 - [x] Verify 201/521 export coverage, source links/date/interpretation boundaries and unchanged asset/base hashes.
 - [x] Run focused generator/frontend checks; review diff/check/stat/status; commit coherent source units.
-- [ ] Obtain fresh-context whole-branch review on the most capable available model; fix any Important/Critical issues in one RED-to-GREEN pass.
-- [ ] Deliver research, categorisation exports and local UI evidence; keep branch local and report remaining evidence gaps.
+- [x] Obtain fresh-context whole-branch review on the most capable available model; fix any Important/Critical issues in one RED-to-GREEN pass.
+- [x] Deliver research, categorisation exports and local UI evidence; keep branch local and report remaining evidence gaps.

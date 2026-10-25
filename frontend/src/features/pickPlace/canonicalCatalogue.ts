@@ -11,7 +11,7 @@ import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
 import { catalogueStyleIds, catalogueStyleLabel } from './catalogueFacets';
 import { cataloguePresentationFor } from './cataloguePresentation';
-import { teachingSearchTerms } from '@/features/catalogueLearning/teaching';
+import { lessonForChoice, teachingSearchTerms } from '@/features/catalogueLearning/teaching';
 import { CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS, COURT_ONLY_SPORT_ASSETS } from './assetRegistry';
 import { LOCAL_CLAUDE_ASSETS } from './claudeAssetLocalTrial';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
@@ -198,16 +198,22 @@ export function filterCanonicalChoices(domain: CatalogueDomain, query = '', grou
   return choices.filter(choice => {
     if (choice.domain !== domain || !choiceMatchesGroup(choice, groupId)) return false;
     const group = calgaryGroup(choice.option.calgaryGuide);
+    const lesson = lessonForChoice(choice);
+    const semanticSearchAllowed = !lesson || lesson.status === 'classified';
     const presentations = choice.placements.map(asset => cataloguePresentationFor(asset.id));
     const presentationTerms = presentations.flatMap(presentation => {
-      return presentation ? [presentation.label, presentation.description, ...presentation.searchTags] : [];
+      return presentation ? [presentation.label,
+        ...(semanticSearchAllowed ? [presentation.description, ...presentation.searchTags] : [])] : [];
     });
     // Exact presentation copy supersedes broad parent browsing tags. Keep the
     // original rendering metadata untouched and available for future entries.
     const fullyPresented = presentations.length > 0 && presentations.every(Boolean);
-    const fallbackTerms = fullyPresented ? [] : [choice.option.label, choice.option.description, choice.option.categoryId,
-      ...(choice.option.generationTags ?? []), ...(choice.option.variants ?? []).map(v => v.label),
-      ...choice.placements.map(asset => asset.label)];
+    // Held/stale records retain literal name/ID discovery. Legacy descriptions
+    // and tags can contain the unsupported classification, so withhold them too.
+    const fallbackTerms = fullyPresented ? [] : [choice.option.label,
+      ...(choice.option.variants ?? []).map(v => v.label), ...choice.placements.map(asset => asset.label),
+      ...(semanticSearchAllowed ? [choice.option.description, choice.option.categoryId,
+        ...(choice.option.generationTags ?? [])] : [])];
     const haystack = normalize([choice.option.id, group?.label, ...(group?.districts ?? []),
       ...presentationTerms,
       ...fallbackTerms,
