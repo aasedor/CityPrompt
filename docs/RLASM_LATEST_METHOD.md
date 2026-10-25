@@ -1,5 +1,12 @@
 # RLASM v6.1 — integrated proven methodology
 
+Housing teaching evidence (2026-10-25): Victory house clay-v004 and side-split
+clay-v003 passed separate holistic architectural-clay review with zero P0/P1.
+Exact model/review hashes are synchronized as `housing_teaching_batch` in both
+machine companions. See `docs/HOUSING_TEACHING_REVIEW_2026-10-25.md`. These are
+fixed-scale offline candidates; runtime integration remains NOT TESTED and
+seed activation is false. This evidence addition does not change RLASM v6.1.
+
 **Method name:** Reference-Locked Atomic Sticker-and-Massing (RLASM)
 **Revision:** v6.1, 2026-09-28
 **Purpose:** build source-specific, physically credible, reviewable 3D building

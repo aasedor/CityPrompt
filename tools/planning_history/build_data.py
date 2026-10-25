@@ -53,14 +53,24 @@ def _validate_candidates(candidates,framework):
         'bauhaus_design_workshop':wave['workshop']['model_sha256'],
         'destijl_artist_studio':wave['destijl']['model_sha256'],
         'mughal_reading_pavilion':wave['pavilion']['model_sha256']}
+    variants={'prairie_school_house':'roman_brick_hip_roof',
+        'postmodern_neighbourhood_library':'broken_pediment_reading_room',
+        'bauhaus_design_workshop':'glazed_studio_low_wing',
+        'destijl_artist_studio':'primary_planes_glazed_studio',
+        'mughal_reading_pavilion':'cusped_arcade_central_dome'}
+    for record in method.get('housing_teaching_batch',{}).get('candidates',{}).values():
+        approved[record['archetype_id']]=record['model_sha256']
+        variants[record['archetype_id']]=record['variant_id']
     ids=[r['archetypeId'] for r in candidates]
     if len(ids)!=len(set(ids)) or set(ids)!=set(approved):
-        raise ValueError('Candidate coverage differs from the five reviewed originals')
+        raise ValueError('Candidate coverage differs from the exact independently reviewed originals')
     for row in candidates:
         if row.get('runtimeActivation') is not False or row.get('status')!='offline_review_candidate':
             raise ValueError('Research candidates must remain outside runtime')
         if not re.fullmatch('[0-9a-f]{64}',row.get('modelSha256','')) or row['modelSha256']!=approved[row['archetypeId']]:
             raise ValueError('Candidate history is not bound to the independently reviewed model')
+        if row.get('variantId')!=variants[row['archetypeId']]:
+            raise ValueError('Candidate history cannot be rebound to an unreviewed sibling variant')
         if row.get('constructionYear') is not None or row.get('dateBasis')!='approximate_design_association':
             raise ValueError('A candidate cannot acquire an invented construction year')
         for field,key in (('eraIds','eras'),('planningIds','planning'),('sourceIds','sources')):
@@ -145,7 +155,8 @@ def build(review_dir=REVIEWED_INPUTS):
         sourceOnlyFamilies=sum(c['scope']=='source_only_unreviewed' for c in coverage),
         eras=len(framework['eras']),planningDefinitions=len(framework['planning']),sources=len(framework['sources']))
     actual={key:summary[key] for key in lock['scope']}
-    if actual!=lock['scope'] or len(archetypes)!=201 or sum(c['current_exact_choices'] for c in coverage)!=len(records):
+    expected_rows=lock['scope']['currentChoices']+lock['scope']['offlineCandidates']
+    if actual!=lock['scope'] or len(archetypes)!=expected_rows or sum(c['current_exact_choices'] for c in coverage)!=len(records):
         raise ValueError('Reviewed scope/coverage mismatch')
     history=dict(schema='cityprompt.planning-history@1',asOf=framework['asOf'],scope=framework['scope'],
         evidence=dict(sourceCommit=lock['sourceCommit'],baseAuditSha256=lock['baseAuditSha256'],

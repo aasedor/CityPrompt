@@ -127,6 +127,61 @@
       "planningIds": [],
       "styleLabel": "Mughal-inspired",
       "typeLabel": "Open reading pavilion / cultural amenity"
+    },
+    {
+      "id": "wartime_victory_house",
+      "title": "Wartime / Victory house",
+      "archetypeId": "wartime_victory_house",
+      "variantId": "cream_clapboard_steep_side_gable",
+      "modelSha256": "4b0df5c7fecb6b4a48002da119096b964fd03570503df1cb5fca91ae000fa2bb",
+      "status": "offline_review_candidate",
+      "runtimeActivation": false,
+      "eraIds": [
+        "reform_interwar",
+        "postwar"
+      ],
+      "designPeriod": "1940s to early 1950s association",
+      "eraRationale": "The steep side-gabled roof, simple clapboard and occupied attic illustrate a compact wartime and early postwar small-house form.",
+      "canadianContext": "Connect wartime and veteran housing delivery with later adaptation of existing Canadian neighbourhoods; this is not a reconstruction of a particular programme house.",
+      "internationalContext": "Compact standardized houses also appear internationally. Similar appearance does not establish the same delivery programme or ownership.",
+      "sourceIds": [
+        "victory_housing"
+      ],
+      "formId": "one_and_half_storey_detached",
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "planningIds": [
+        "housing_delivery"
+      ],
+      "styleLabel": "Wartime small-house vernacular",
+      "typeLabel": "Detached house, one full storey plus occupied attic"
+    },
+    {
+      "id": "postwar_side_split_house",
+      "title": "Postwar side-split house",
+      "archetypeId": "postwar_side_split_house",
+      "variantId": "cream_siding_brick_raised_sleeping_wing",
+      "modelSha256": "e5b80f45a78909bd0910f29bf0587d99c4bcb3225e7418e8d06e94c4dbfdf00f",
+      "status": "offline_review_candidate",
+      "runtimeActivation": false,
+      "eraIds": [
+        "postwar"
+      ],
+      "designPeriod": "1950s to 1970s association; split-levels appear in CMHC's 1954 catalogue",
+      "eraRationale": "Staggered living and sleeping levels, a picture window and restrained brick/siding palette connect this original design to postwar small-house forms.",
+      "canadianContext": "CMHC’s 1954 catalogue includes split-level designs. Compare household space and adapting postwar Canadian housing without claiming this is a catalogue plan.",
+      "internationalContext": "Split-level layouts occur internationally. A house alone does not establish a suburban street pattern or car dependence.",
+      "sourceIds": [
+        "cmhc_1954"
+      ],
+      "formId": "split_level_detached",
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "planningIds": [
+        "housing_delivery"
+      ],
+      "styleLabel": "Mid-century suburban vernacular",
+      "typeLabel": "Detached house with staggered living, lower and upper levels"
     }
   ]
 }

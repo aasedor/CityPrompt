@@ -28,6 +28,7 @@ build/
 /tools/archetype_compiler/facade_sheets_openai*/
 /tools/archetype_compiler/facade_sheets_gpt_variant_pilot_v1/
 /frontend/public/archetypes/buildings/teaching-wave2/
+/frontend/public/archetypes/buildings/housing-teaching/
 /tools/archetype_compiler/facade_sheets_v40/
 /tools/archetype_compiler/textures_*/
 # IDE

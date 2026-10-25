@@ -27,7 +27,7 @@ with many pre 1940 precedents. [Missing Middle Housing](https://missingmiddlehou
 
 This pass covers 196 exact current local choices: 97 buildings, 53 streets/pathways
 and 46 parks/open spaces. Eight inherited reference conflicts remain held.
-Five independently reviewed original building candidates receive research
+Seven independently reviewed original building candidates receive research
 records without entering the student catalogue. A separate 521-family coverage
 index reconciles 497 legacy families with 24 current-only park/street families,
 and distinguishes reviewed variants from 343 source-only families. It does not
@@ -226,6 +226,8 @@ assigned in this classification.
 | Archetype | Form/aesthetic | Approximate design association | Planning connection |
 | --- | --- | --- | --- |
 | Post-War Bungalow | Small house; Ranch/vernacular influence | Postwar, c. 1945–1975, including 1950s | Compare housing production and suburban pattern; a detached house alone is not missing middle |
+| Wartime / Victory house (offline candidate) | Detached, occupied attic; wartime small-house vernacular | 1940s to early 1950s association | Standardized housing delivery and later adaptation; no tenure assumed |
+| Postwar side-split (offline candidate) | Staggered living/sleeping/recreation levels; mid-century suburban vernacular | Broadly 1950s–1970s association | Postwar household space and adaptation; form alone does not establish car dependence |
 | Plateau Stacked Duplex | Duplex; regional urban vernacular | Fine-grained urban reference, c. 1870–1930 | Historic urbanism, compact infill and missing-middle comparison |
 | Charcoal Gable Fourplex | Fourplex; contemporary gabled | Contemporary, c. 2000–present | Missing middle and compact infill |
 | RNDSQR Contextual Townhouses | Townhouse; contextual brick contemporary | Contemporary | Missing middle and relationships to an inherited streetscape |
@@ -236,7 +238,7 @@ assigned in this classification.
 | Classic Concrete Parkade | Parking structure; Modernist/utilitarian | Postwar and late 20th-century reference | Automobile accommodation and frontage comparison |
 | Court-only sports component | Recreation equipment/layout | Era not specified by the evidence | Assemble into a wider recreational/public-space plan |
 
-The five uninstalled candidates expand comparison: Prairie School relates to
+The seven uninstalled candidates expand comparison: Prairie School relates to
 early 20th-century American domestic architecture; the Postmodern library to
 late 20th-century architectural communication; Bauhaus and De Stijl to interwar
 European movements; the Mughal-inspired pavilion to a South Asian historical
@@ -244,6 +246,14 @@ reference. Their Canadian connections are teaching comparisons, not claims that
 these traditions originated in Canada.
 [Prairie School](https://www.flwright.org/explore/prairie-style),
 [Mughal court-city reference](https://whc.unesco.org/en/list/255/).
+
+The two housing additions connect architecture to housing delivery. The Victory
+house illustrates modest wartime/postwar form, while the side-split separates
+living and sleeping spaces through staggered levels. The federal local inventory
+and CMHC's 1954 plan-book provide context; the generated designs are not exact
+historic plans. Their records remain separate from the 196 current choices.
+[Victory Housing](https://veterans.gc.ca/en/remembrance/memorials/canada/victory-housing),
+[CMHC 1954](https://publications.gc.ca/site/eng/9.821302/publication.html).
 
 ## Classroom applications and remaining gaps
 
@@ -270,11 +280,11 @@ research leads until their exact variants and model identities are reviewed.
 
 The authored history layer preserves the existing locked style audit and model
 inventory. Its own input lock binds the new framework, 196 exact interpretations
-and five candidate records. Altered inputs, new model revisions, held identities
+and seven candidate records. Altered inputs, new model revisions, held identities
 and incomplete coverage are rejected or withheld. No model, seed, placement or
 publication approval is changed by a research classification.
 
-The companion CSVs provide 201 current/candidate rows and 521 family-coverage
+The companion CSVs provide 203 current/candidate rows and 521 family-coverage
 rows (497 legacy families plus 24 current-only native families). Source facts and
 access/status notes are recorded in
 `tools/planning_history/reviewed-inputs/framework.json`; each classification

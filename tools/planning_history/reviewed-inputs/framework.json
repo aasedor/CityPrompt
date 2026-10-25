@@ -188,7 +188,8 @@
     "historic_urbanism",
     "complete_neighbourhoods",
     "indigenous_planning",
-    "nonmarket_housing"
+    "nonmarket_housing",
+    "housing_delivery"
   ],
   "planning": {
     "new_urbanism": {
@@ -411,6 +412,16 @@
       "sourceIds": [
         "nonmarket_history",
         "stlawrence"
+      ]
+    },
+    "housing_delivery": {
+      "label": "Standardized small-house delivery",
+      "description": "Pattern-book plans and coordinated housing programmes connect individual dwelling design with the supply of homes.",
+      "designIdea": "Compare the design of a home with how many homes and their neighbourhoods are delivered.",
+      "componentLimit": "An isolated model does not establish a government programme, present affordability, ownership or a street pattern.",
+      "sourceIds": [
+        "cmhc_1954",
+        "victory_housing"
       ]
     }
   },
@@ -776,6 +787,13 @@
       "accessed": "2026-10-25",
       "status": "checked_for_this_research",
       "supports": "Council credited Jacobs with neighbourhood advocacy and opposition to the Spadina Expressway; not used for biographical dates."
+    },
+    "victory_housing": {
+      "label": "Veterans Affairs Canada: Victory Housing, Acton",
+      "url": "https://veterans.gc.ca/en/remembrance/memorials/canada/victory-housing",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Local heritage account of wartime/Victory housing, its modest form and housing-delivery context; community inventory entry, not an exhaustive national typology."
     }
   },
   "curriculumGaps": [

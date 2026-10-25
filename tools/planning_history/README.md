@@ -6,7 +6,7 @@ connections. They do not assign actual construction years. Source facts,
 interpretations, held identities and source-only variants remain distinct.
 
 The finite scope is 196 current exact choices (188 classified, eight held),
-five uninstalled reviewed building candidates and a 521-family coverage union:
+seven uninstalled reviewed building candidates and a 521-family coverage union:
 497 legacy families plus 24 current native families outside those legacy files.
 All 196 exact choices occur once in the coverage join. 343 legacy families have
 no current exact choice. The native-only rows do not invent a complete source
@@ -18,7 +18,7 @@ python -m tools.planning_history.build_data --output-dir artifacts/planning-hist
 ```
 
 The CLI refuses an existing output directory. It writes current-only frontend
-JSON, 201-row archetype and 521-row coverage CSVs, a source bibliography CSV and
+JSON, 203-row archetype and 521-row coverage CSVs, a source bibliography CSV and
 verification counts. CSVs use UTF-8 with BOM for common spreadsheet readers.
 Review differences before explicitly promoting text files into frontend/src/data
 or docs. Preserve earlier generated output externally.

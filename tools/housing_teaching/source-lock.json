@@ -1,0 +1,87 @@
+{
+  "victory": [
+    {
+      "archetype_id": "wartime_victory_house",
+      "variant_id": "cream_clapboard_steep_side_gable",
+      "role": "front",
+      "path": "sources/front.png",
+      "original_path": "frontend/public/archetypes/buildings/housing-teaching/victory/front.png",
+      "bytes": 376508,
+      "sha256": "4d79232e247c43d2da95bd3a70261862a587e162c0ae80ec79c8785efcf3b578"
+    },
+    {
+      "archetype_id": "wartime_victory_house",
+      "variant_id": "cream_clapboard_steep_side_gable",
+      "role": "oblique",
+      "path": "sources/oblique.png",
+      "original_path": "frontend/public/archetypes/buildings/housing-teaching/victory/oblique.png",
+      "bytes": 415608,
+      "sha256": "b532ffc76d9d76844e5b3c312228eb9527e11368067eff6b63dea55347d242fc"
+    },
+    {
+      "archetype_id": "wartime_victory_house",
+      "variant_id": "cream_clapboard_steep_side_gable",
+      "role": "top",
+      "path": "sources/top.png",
+      "original_path": "frontend/public/archetypes/buildings/housing-teaching/victory/top.png",
+      "bytes": 420162,
+      "sha256": "62801e3e512f0da15e2c869eb470d34a73b9e5e0d8396b91d97c38ec37e1dfdc"
+    },
+    {
+      "archetype_id": "wartime_victory_house",
+      "variant_id": "cream_clapboard_steep_side_gable",
+      "role": "rear_oblique",
+      "path": "sources/rear_oblique.png",
+      "original_path": "frontend/public/archetypes/buildings/housing-teaching/victory/rear_oblique.png",
+      "bytes": 422300,
+      "sha256": "917d1ff992f331e867163b1215f3b489b06763c0f42ea2b9d91d14e3bbc4075f"
+    }
+  ],
+  "split": [
+    {
+      "archetype_id": "postwar_side_split_house",
+      "variant_id": "cream_siding_brick_raised_sleeping_wing",
+      "role": "front",
+      "path": "sources/front.png",
+      "original_path": "frontend/public/archetypes/buildings/housing-teaching/split/front.png",
+      "bytes": 352001,
+      "sha256": "a64eac5b0f5a007061a62d4dc089a5e18e6699538a3bdd0f386a81becfcc1751"
+    },
+    {
+      "archetype_id": "postwar_side_split_house",
+      "variant_id": "cream_siding_brick_raised_sleeping_wing",
+      "role": "oblique",
+      "path": "sources/oblique.png",
+      "original_path": "frontend/public/archetypes/buildings/housing-teaching/split/oblique.png",
+      "bytes": 391519,
+      "sha256": "3169350dc3cce868c081191ccfa38bfe217bb52e2fff16286b6c53aa3997baac"
+    },
+    {
+      "archetype_id": "postwar_side_split_house",
+      "variant_id": "cream_siding_brick_raised_sleeping_wing",
+      "role": "top",
+      "path": "sources/top.png",
+      "original_path": "frontend/public/archetypes/buildings/housing-teaching/split/top.png",
+      "bytes": 467640,
+      "sha256": "d80f7c2e2b12ebfa2e826a11a3d616833fb3d71f9a6ff80162418dfe9e712985"
+    },
+    {
+      "archetype_id": "postwar_side_split_house",
+      "variant_id": "cream_siding_brick_raised_sleeping_wing",
+      "role": "front_prior",
+      "path": "sources/front_prior.png",
+      "original_path": "frontend/public/archetypes/buildings/housing-teaching/split/front_prior.png",
+      "bytes": 380405,
+      "sha256": "5a402ab7b5ae4c642442525e378251d8ca1b339b25d9a317211db63b6a2a14d8"
+    },
+    {
+      "archetype_id": "postwar_side_split_house",
+      "variant_id": "cream_siding_brick_raised_sleeping_wing",
+      "role": "oblique_prior",
+      "path": "sources/oblique_prior.png",
+      "original_path": "frontend/public/archetypes/buildings/housing-teaching/split/oblique_prior.png",
+      "bytes": 425212,
+      "sha256": "b7eabb1206b1b075231402c1f8f3f862ea2db2cbdd35c9aa09ee9a0b309bfe8e"
+    }
+  ]
+}

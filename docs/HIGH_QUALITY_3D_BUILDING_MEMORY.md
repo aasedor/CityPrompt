@@ -1,5 +1,12 @@
 # High-Quality 3D Building Production Memory
 
+Housing teaching evidence (2026-10-25): Victory house clay-v004 and side-split
+clay-v003 passed separate holistic architectural-clay review with zero P0/P1.
+Exact model/review hashes are synchronized as `housing_teaching_batch` in both
+machine companions. See `docs/HOUSING_TEACHING_REVIEW_2026-10-25.md`. These are
+fixed-scale offline candidates; runtime integration remains NOT TESTED and
+seed activation is false. This evidence addition does not change RLASM v6.1.
+
 This is the persistent production memory for turning City Prompt archetypes and variants into high-quality modular GLB families. It captures the construction rules established through the Kinnaird, Chicago, Gothic, glass, Nordic, industrial and Parisian pilots.
 
 The memory has two forms:

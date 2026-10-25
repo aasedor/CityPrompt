@@ -12,11 +12,11 @@ historical framework; the CSVs retain the individual classification evidence.
 | Current local exact choices | 196: 97 buildings, 53 streets/pathways, 46 parks/open spaces |
 | Classified choices | 188, including legitimate context-dependent era outcomes |
 | Held reference conflicts | 8, with no confident era, style or planning tags |
-| Reviewed offline building candidates | 5 research records; excluded from the runtime history catalogue |
-| Archetype export | 201 rows: 196 current records plus five offline candidates |
+| Reviewed offline building candidates | 7 research records; excluded from the runtime history catalogue |
+| Archetype export | 203 rows: 196 current records plus seven offline candidates |
 | Family coverage export | 521 rows: 497 legacy families plus 24 current-only native park/street families |
 | Legacy families without a current exact choice | 343, explicitly awaiting exact-variant research |
-| Framework | Seven broad era outcomes, 23 planning definitions, 56 source records |
+| Framework | Seven broad era outcomes, 24 planning definitions, 57 source records |
 
 Dates are approximate design associations, not real construction years.
 Historical influence can coexist with a contemporary reinterpretation.
@@ -88,7 +88,7 @@ from the 196-record local-development snapshot. No availability gate changed.
    style/era hierarchy would obscure revivals and cross-era housing forms.
    A different syllabus emphasis may require revising these interpretive labels;
    it does not require changing models.
-2. Classify the 196 exact local choices and five offline candidates, and report
+2. Classify the 196 exact local choices and seven offline candidates, and report
    the larger source library separately. The 343 source-only families lack
    reviewed exact-variant evidence; extending dates to them would overstate
    certainty. They remain research leads rather than completed classifications.

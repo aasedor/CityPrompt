@@ -7,9 +7,9 @@
     "baseAuditSha256": "a15a239fb77fb98550db150f63257a08530fcc7089c8838685617a353a3e859c",
     "baseInventorySha256": "a8248ac3486dba78d3164015899dc6d1cb255f39e2879c47ec889331543a3cbb",
     "inputSha256": {
-      "framework.json": "ba9db1efebe7ba2cd4a838d5a2bfc05c58d14310bf66e8f78fc7e8ba3c818419",
+      "framework.json": "1e75b2fed2a3ac58011f33c00f39b3160765565e8e5d7a21f4bbba86f5cd4cf2",
       "assignments.json": "3dce2c4194a58cf9f686d8f4292f8ff72724b7ac994219429884560bad2708f4",
-      "candidates.json": "da04a565819a12559ff57044ad175cfb714efd6cca6b01a446ba3251fe6d993e"
+      "candidates.json": "6ddbed17a7f468d4ee12fef01aab274d002f655c7380ad7074c57dad46043136"
     }
   },
   "eraOrder": [
@@ -198,7 +198,8 @@
     "historic_urbanism",
     "complete_neighbourhoods",
     "indigenous_planning",
-    "nonmarket_housing"
+    "nonmarket_housing",
+    "housing_delivery"
   ],
   "planning": {
     "new_urbanism": {
@@ -421,6 +422,16 @@
       "sourceIds": [
         "nonmarket_history",
         "stlawrence"
+      ]
+    },
+    "housing_delivery": {
+      "label": "Standardized small-house delivery",
+      "description": "Pattern-book plans and coordinated housing programmes connect individual dwelling design with the supply of homes.",
+      "designIdea": "Compare the design of a home with how many homes and their neighbourhoods are delivered.",
+      "componentLimit": "An isolated model does not establish a government programme, present affordability, ownership or a street pattern.",
+      "sourceIds": [
+        "cmhc_1954",
+        "victory_housing"
       ]
     }
   },
@@ -786,6 +797,13 @@
       "accessed": "2026-10-25",
       "status": "checked_for_this_research",
       "supports": "Council credited Jacobs with neighbourhood advocacy and opposition to the Spadina Expressway; not used for biographical dates."
+    },
+    "victory_housing": {
+      "label": "Veterans Affairs Canada: Victory Housing, Acton",
+      "url": "https://veterans.gc.ca/en/remembrance/memorials/canada/victory-housing",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Local heritage account of wartime/Victory housing, its modest form and housing-delivery context; community inventory entry, not an exhaustive national typology."
     }
   },
   "lessons": {
