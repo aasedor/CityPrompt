@@ -42,10 +42,10 @@
 **Files:** new `family_destijl.py`, `family_pavilion.py`; extend build choice; new teaching card drafts and batch review doc.
 **Interfaces:** same specification/constructor contract as Task 1; reuse exact source/evidence gates.
 
-- [ ] After pilot pass, generate and lock each family's own compatible sources.
-- [ ] Construct original envelope, openings, programme and supports; dry run each.
-- [ ] Build each candidate and complete its exact-GLB render/phone evidence set.
-- [ ] Inspect and obtain separate holistic reviews; preserve failures and rerender all views after corrections.
+- [x] After pilot pass, generate and lock each family's own compatible sources.
+- [x] Construct original envelope, openings, programme and supports; dry run each.
+- [x] Build each candidate and complete its exact-GLB render/phone evidence set.
+- [x] Inspect and obtain separate holistic reviews; preserve failures and rerender all views after corrections.
 
 ### Task 3: Verification, source checkpoint and delivery
 

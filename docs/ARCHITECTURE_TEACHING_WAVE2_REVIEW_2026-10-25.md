@@ -29,6 +29,44 @@ landing guards. Both versions and their full evidence sets remain preserved.
 v003 corrects those finite blockers and renders every view afresh. The independent
 review still records its minor handrail finish; no keeper claim is made.
 
+## Completed scale-up
+
+Both remaining families passed independent holistic architectural-clay review
+with zero P0/P1/P2. Each review inspected all fourteen 1600×1200 exact-GLB
+reimport renders, four unchanged locked source panels, the original AI source
+board and both 1080×1920 phone boards. These are offline architectural-clay
+passes, with native scale fixed and metric dimensions inferred from the design.
+
+| Candidate | Native dimensions (m) | Triangles | GLB bytes |
+| --- | --- | --- | --- |
+| De Stijl artist studio clay-v004 | 15.55 × 8.975 × 5.76 | 6,260 | 359,372 |
+| Mughal-inspired reading pavilion clay-v002 | 14.60 × 15.10 × 8.30 | 31,868 | 1,357,136 |
+
+Both GLBs have zero images/textures and zero export/reimport bounds delta.
+The studio contains easels, paint tables, supplies and a connected preparation
+room; its coloured planes have physical bearings and a closed weather envelope.
+The pavilion contains reading tables, bookshelves and seating behind twelve
+real cusped arch openings. Its roof, dome and eaves have visible supports.
+
+- Studio GLB SHA-256: `770f5eb08631a3fd3de71d43385d20049d18fe6f664f5b55dd13074ce8f70e15`
+- Studio independent review SHA-256: `d13c6afb12156b3b5ce77bba2444f9f4e51fea8ebe9ef7a21db5b9d3e9090040`
+- Pavilion GLB SHA-256: `21ca71237504d6804a2eba435c25c0f4379793b68ad6ab9e6ff6450a7e3596c5`
+- Pavilion independent review SHA-256: `76af7881090b0b6160e5c6a941291e046d9c850b79fc147ab89531e975f88540`
+
+External candidates are `destijl-artist-studio-clay-v004` and
+`mughal-reading-pavilion-clay-v002` beneath the same external batch root above.
+Their generated source “top” labels mean high aerial views. Hidden construction,
+interiors and metric scale remain declared architectural inferences. The
+pavilion's source dome is a rounded cap, which overrides the prompt's requested
+onion shape. These are original teaching designs, not named monument replicas.
+
+Studio v001 was rejected for an unsupported fin, coincident faces and a clipped
+entry camera; v002 exposed a roof/wall closure gap. Independent review rejected
+v003 for the wrong colour above the canopy. v004 supplies the continuous grey
+header. Pavilion v001 was rejected for its pale roof surface and unhelpful
+contact/programme cameras; v002 restores the source red roof and clear views.
+Every rejected version, render set and replay snapshot remains preserved.
+
 ## Delivery and lifecycle boundary
 
 All candidates remain external and uninstalled. Runtime placement, neighbour and
@@ -43,6 +81,8 @@ Original references and editable `.blend`/GLB packages stay outside ordinary Git
 Per-version replay snapshots preserve the exact small repository-shaped builder
 dependencies and source paths with hashes.
 
-The remainder of the batch and verified Google Drive delivery will be recorded
-here after their independent reviews. Existing contents and sharing settings of
-the user's review folder will be preserved.
+The dated Drive batch is
+https://drive.google.com/drive/folders/1zZpzx4H24GQJOwPXQsvALk3ZI_JvtQFK.
+Its local `delivery-manifest.json` records per-file hashes, Drive IDs and verified
+metadata receipts. Delivery counts are recorded after folder readback. Existing
+contents and sharing settings of the user's review folder are preserved.

@@ -1,6 +1,7 @@
 """Finite RLASM 6.1 teaching Wave 2; source-specific architectural clay."""
 from pathlib import Path
 import argparse
+import importlib
 import json
 import shutil
 import sys
@@ -14,7 +15,6 @@ import bpy
 import clay_core as C
 from tools.teaching_style_pilot.contracts import verify_evidence
 from tools.teaching_style_wave2.contracts import candidate_path, source_lock
-import family_workshop
 
 BATCH = Path('C:/dev-artifacts/CityPrompt/teaching-wave2-20261025')
 SOURCES = REPO / 'frontend/public/archetypes/buildings/teaching-wave2'
@@ -46,13 +46,13 @@ def cameras(width, depth, height, details):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--family', choices=['workshop'], required=True)
+    parser.add_argument('--family', choices=['workshop', 'destijl', 'pavilion'], required=True)
     parser.add_argument('--output', required=True)
     parser.add_argument('--version', type=int, default=1)
     parser.add_argument('--resolution', type=int, default=1600)
     parser.add_argument('--dry-run', action='store_true')
     args = parser.parse_args(sys.argv[sys.argv.index('--')+1:])
-    family = family_workshop
+    family = importlib.import_module('family_' + args.family)
     spec = family.specification(cameras)
     output = candidate_path(args.output, BATCH)
     root = SOURCES / args.family
@@ -69,9 +69,10 @@ def main():
         (output / name).mkdir()
     for source in sources:
         shutil.copy2(source['original_path'], output / source['path'])
-    for name in ('original-board.png', 'source-provenance.json'):
+    for name in ('original-board.png', 'source-provenance.json', 'generation-prompt.txt'):
         shutil.copy2(root / name, output / 'sources' / name)
     script_paths = [Path(__file__), HERE/'contracts.py', Path(family.__file__), Path(C.__file__)]
+    script_paths.extend(HERE / name for name in getattr(family, 'SUPPORT_FILES', ()))
     for path in script_paths:
         shutil.copy2(path, output / 'scripts' / path.name)
     shutil.copy2(REPO/'docs/ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md',

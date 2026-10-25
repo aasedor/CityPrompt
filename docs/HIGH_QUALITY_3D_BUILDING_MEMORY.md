@@ -41,6 +41,15 @@ activation is false. See `ARCHITECTURE_TEACHING_WAVE2_REVIEW_2026-10-25.md` and
 the synchronized `teaching_style_wave2` evidence records. This evidence addition
 does not alter the current executable rule version.
 
+Teaching Wave 2 scale-up: De Stijl artist studio clay-v004 and Mughal-inspired
+reading pavilion clay-v002 passed separate holistic reviews with zero P0/P1/P2.
+Preserve raised grey headers across colour-plane joins, close shared walls up to
+the higher roof underside and seat projecting fins. For arcades, cut real cusped
+voids and prove the inner faces, roof brackets and occupied reading bays. Source
+roof colour and dome silhouette govern over the prompt. Keep every rejected
+version. All three final models remain fixed scale, external and unactivated;
+their exact byte hashes and reviews are bound in the same evidence record.
+
 Teaching-style local pilot, 2026-10-25: Prairie School house clay-v004 passed
 independent holistic architectural-clay review with zero P0/P1 after rejecting
 mirrored/drifting extra reference proposals and calibrating hip rise against
