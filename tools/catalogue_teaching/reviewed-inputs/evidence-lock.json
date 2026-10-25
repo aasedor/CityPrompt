@@ -1,0 +1,9 @@
+{
+  "schema": "cityprompt.teaching-evidence-lock@1",
+  "reviewedDate": "2026-10-25",
+  "sourceCommit": "55033b913",
+  "auditSha256": "a15a239fb77fb98550db150f63257a08530fcc7089c8838685617a353a3e859c",
+  "inventorySha256": "a8248ac3486dba78d3164015899dc6d1cb255f39e2879c47ec889331543a3cbb",
+  "sourceInventorySha256": "19ed89a4100801a72c9f21bd0bb21db6baa8d90bb074f1e5e4748e0e1878ee61",
+  "note": "Immutable reviewed pairing for the initial undergraduate teaching audit. A changed model needs a new review before this lock may change."
+}

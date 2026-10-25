@@ -3,24 +3,28 @@ import { BUILDING_AESTHETIC_CATEGORIES_V2 } from '@/components/viewer/aestheticC
 import { CALGARY_GROUPS, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import { choiceMatchesGroup, type CanonicalChoice } from './canonicalCatalogue';
 import { availableCatalogueSizes, availableCatalogueStyles, type CatalogueFacets } from './catalogueFacets';
+import { availablePlanningIdeas } from '@/features/catalogueLearning/teaching';
+import { TeachingDefinition } from '@/features/catalogueLearning/TeachingDefinition';
 
 const field = 'mt-1 min-h-11 w-full min-w-0 rounded-lg border border-slate-400 bg-white px-2 text-sm text-slate-900';
 
-export function CatalogueFacetControls({ domain, choices, purposeId, facets, onPurpose, onFacet }: {
+export function CatalogueFacetControls({ domain, choices, purposeId, facets, onPurpose, onFacet, browseMode='use' }: {
   domain: CatalogueDomain; choices: CanonicalChoice[]; purposeId: string; facets: CatalogueFacets;
   onPurpose: (id: string) => void; onFacet: (key: keyof CatalogueFacets, id: string) => void;
+  browseMode?:'use'|'style'|'planning';
 }) {
   const id = useId();
   const options = useMemo(() => choices.filter(choice => choice.domain === domain), [choices, domain]);
   const purposes = useMemo(() => CALGARY_GROUPS.filter(group => group.domain === domain && options.some(choice => choiceMatchesGroup(choice, group.id))), [options, domain]);
   const styles = useMemo(() => availableCatalogueStyles(options, BUILDING_AESTHETIC_CATEGORIES_V2), [options]);
   const sizes = useMemo(() => availableCatalogueSizes(domain, options), [domain, options]);
-  const active = Boolean(purposeId || facets.styleId || facets.sizeId);
-  return <details className="rounded-lg border border-slate-200 px-3">
+  const planning = useMemo(()=>availablePlanningIdeas(options,domain),[options,domain]);
+  const active = Boolean(purposeId || facets.styleId || facets.sizeId || facets.planningId);
+  return <div className="space-y-2"><details key={browseMode} open={browseMode!=='use' || undefined} className="rounded-lg border border-slate-200 px-3">
     <summary className="min-h-11 cursor-pointer py-3 text-sm font-semibold">
-      {domain === 'building' ? 'Land use, size & style' : domain === 'park_plaza' ? 'Park purpose & size' : 'Street role & width'}{active ? ' · filters active' : ''}
+      {domain === 'building' ? 'Use, size, style & planning' : domain === 'park_plaza' ? 'Park purpose, size & planning' : 'Street role, width & planning'}{active ? ' · filters active' : ''}
     </summary>
-    <div className={`grid gap-2 pb-2 ${domain === 'building' ? 'sm:grid-cols-3' : 'sm:grid-cols-2'}`}>
+    <div className={`grid gap-2 pb-2 sm:grid-cols-2 ${domain === 'building' ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
       <label htmlFor={`${id}-purpose`} className="min-w-0 text-xs font-semibold">
         {domain === 'building' ? 'Land-use type' : domain === 'park_plaza' ? 'Park purpose' : 'Street role'}
         <select id={`${id}-purpose`} className={field} value={purposeId} onChange={event => onPurpose(event.target.value)}>
@@ -36,15 +40,24 @@ export function CatalogueFacetControls({ domain, choices, purposeId, facets, onP
         </select>
       </label>
       {domain === 'building' && <label htmlFor={`${id}-style`} className="min-w-0 text-xs font-semibold">Architectural style
-        <select id={`${id}-style`} className={field} value={facets.styleId} onChange={event => onFacet('styleId', event.target.value)}>
+        <select id={`${id}-style`} autoFocus={browseMode==='style'} className={field} value={facets.styleId} onChange={event => onFacet('styleId', event.target.value)}>
           <option value="">All styles</option>
           {styles.map(style => <option key={style.id} value={style.id}>{style.label}</option>)}
         </select>
       </label>}
+      <label htmlFor={`${id}-planning`} className="min-w-0 text-xs font-semibold">Planning idea
+        <select id={`${id}-planning`} autoFocus={browseMode==='planning'} className={field} value={facets.planningId ?? ''} onChange={event=>onFacet('planningId',event.target.value)}>
+          <option value="">All planning ideas</option>
+          {planning.map(idea=><option key={idea.id} value={idea.id}>{idea.label}</option>)}
+        </select>
+      </label>
     </div>
     <p className="pb-3 text-[11px] leading-relaxed text-slate-600">{domain === 'street_pathway'
       ? 'Width is the registered corridor width; you draw the route length.'
       : 'Size is the default reserved plot, not floor area. Drawn shapes can differ.'}
-      {domain === 'building' && ' Styles use existing catalogue categories and tags; land-use types are design references.'}</p>
-  </details>;
+      {domain === 'building' && ' Style and use are separate: the same use can have many architectural styles.'}</p>
+  </details>
+    {domain==='building' && facets.styleId && <TeachingDefinition kind="style" id={facets.styleId} regionLabel="About the selected architectural style" />}
+    {facets.planningId && <TeachingDefinition kind="planning" id={facets.planningId} regionLabel="About the selected planning idea" />}
+  </div>;
 }

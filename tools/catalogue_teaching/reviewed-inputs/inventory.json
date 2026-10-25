@@ -1,0 +1,3339 @@
+{
+  "schema": "cityprompt.reviewed-teaching-inventory@1",
+  "sourceCommit": "55033b913",
+  "sourceInventorySha256": "19ed89a4100801a72c9f21bd0bb21db6baa8d90bb074f1e5e4748e0e1878ee61",
+  "choices": [
+    {
+      "id": "building:timber_sanctuary_church:timber_sanctuary_church_glazed_gable",
+      "domain": "building",
+      "option": {
+        "id": "timber_sanctuary_church"
+      },
+      "placements": [
+        {
+          "id": "validation_timber_sanctuary_church_glazed_gable",
+          "model": {
+            "variantId": "timber_sanctuary_church_glazed_gable",
+            "revision": "da8ad808774d542d9b4f6216f3c9589b40633a6c56222ab05c9863fe6cdd712b",
+            "method": "RLASM 6.1 architectural clay"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:gothic_community_church:gothic_community_church_single_spire",
+      "domain": "building",
+      "option": {
+        "id": "gothic_community_church"
+      },
+      "placements": [
+        {
+          "id": "validation_gothic_community_church_single_spire",
+          "model": {
+            "variantId": "gothic_community_church_single_spire",
+            "revision": "ca7066e8dc41f1d1e258ec5b162ed832787d576be8ee67d7449ddfa3850741fb",
+            "method": "RLASM 6.1 architectural clay"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:reference_charcoal_gable_fourplex:reference_charcoal_gable_fourplex_v1",
+      "domain": "building",
+      "option": {
+        "id": "reference_charcoal_gable_fourplex"
+      },
+      "placements": [
+        {
+          "id": "validation_reference_charcoal_gable_fourplex_v1",
+          "model": {
+            "variantId": "reference_charcoal_gable_fourplex_v1",
+            "revision": "22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732",
+            "method": "RLASM 6.1 candidate"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:minimalist_infill_townhouse:minimalist_infill_brick_monolith",
+      "domain": "building",
+      "option": {
+        "id": "minimalist_infill_townhouse"
+      },
+      "placements": [
+        {
+          "id": "validation_minimalist_infill_brick_monolith",
+          "model": {
+            "variantId": "minimalist_infill_brick_monolith",
+            "revision": "97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:brewery_distillery:brewery_crystal_brewhouse",
+      "domain": "building",
+      "option": {
+        "id": "brewery_distillery"
+      },
+      "placements": [
+        {
+          "id": "validation_brewery_crystal_brewhouse",
+          "model": {
+            "variantId": "brewery_crystal_brewhouse",
+            "revision": "722ec3561d3ddf14fce312d67adbe8a8b268b2b414157e8644cfb5dcf3ff1782",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:monumental_museum_axis:museum_earth_sheltered",
+      "domain": "building",
+      "option": {
+        "id": "monumental_museum_axis"
+      },
+      "placements": [
+        {
+          "id": "validation_museum_earth_sheltered",
+          "model": {
+            "variantId": "museum_earth_sheltered",
+            "revision": "ff9b62f7965b2f73f73e0896f06340d76196e6768e364b5c66a7a0e9e28e9106",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:halifax_painted_clapboard_row:clapboard_north_end",
+      "domain": "building",
+      "option": {
+        "id": "halifax_painted_clapboard_row"
+      },
+      "placements": [
+        {
+          "id": "validation_clapboard_north_end",
+          "model": {
+            "variantId": "clapboard_north_end",
+            "revision": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:japanese_machiya_mixed_use:machiya_cafe_gallery",
+      "domain": "building",
+      "option": {
+        "id": "japanese_machiya_mixed_use"
+      },
+      "placements": [
+        {
+          "id": "validation_machiya_cafe_gallery",
+          "model": {
+            "variantId": "machiya_cafe_gallery",
+            "revision": "b65861f28967939f7ec50f133417077e40576366f5382e404ed7d1c13fec4ea9",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:soho_cast_iron_loft_building:cast_iron_italianate",
+      "domain": "building",
+      "option": {
+        "id": "soho_cast_iron_loft_building"
+      },
+      "placements": [
+        {
+          "id": "validation_cast_iron_italianate",
+          "model": {
+            "variantId": "cast_iron_italianate",
+            "revision": "29ed79811ff9f9e89ce975a105835e8d425d33730fd0de187d85d034426a3e6f",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:art_deco_setback_tower:art_deco_streamline_moderne",
+      "domain": "building",
+      "option": {
+        "id": "art_deco_setback_tower"
+      },
+      "placements": [
+        {
+          "id": "validation_art_deco_streamline_moderne",
+          "model": {
+            "variantId": "art_deco_streamline_moderne",
+            "revision": "4969c98cb0f6fd6d510fbbf2e410fd45b934a93005d8a0a49460b1ae7540d0a3",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:rndsqr_terraced_mixed_use_midrise:rndsqr_midrise_terraced_garden",
+      "domain": "building",
+      "option": {
+        "id": "rndsqr_terraced_mixed_use_midrise"
+      },
+      "placements": [
+        {
+          "id": "validation_rndsqr_midrise_terraced_garden",
+          "model": {
+            "variantId": "rndsqr_midrise_terraced_garden",
+            "revision": "927bb882aad323702146db98c9095a4f798f101384c5af15901ff712724a0d47",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:community_recreation_centre:rec_centre_timber_hall",
+      "domain": "building",
+      "option": {
+        "id": "community_recreation_centre"
+      },
+      "placements": [
+        {
+          "id": "validation_rec_centre_timber_hall",
+          "model": {
+            "variantId": "rec_centre_timber_hall",
+            "revision": "a07dcba9316c85dadcc325c9849c2fab9127174de52eb6513fc6dcfc2569aecf",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:contemporary_townhouse_courtyard:contemporary_townhouse_timber_screen",
+      "domain": "building",
+      "option": {
+        "id": "contemporary_townhouse_courtyard"
+      },
+      "placements": [
+        {
+          "id": "validation_contemporary_townhouse_timber_screen",
+          "model": {
+            "variantId": "contemporary_townhouse_timber_screen",
+            "revision": "c7a40074d68f8e0d7429caa553ba767723192e8d0b1d7e54bc4db3cdb2ee2ab5",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:botanical_garden:botanical_garden_v3",
+      "domain": "park_plaza",
+      "option": {
+        "id": "botanical_garden"
+      },
+      "placements": [
+        {
+          "id": "native-park:botanical_garden_v3--native-v1",
+          "model": {
+            "variantId": "botanical_garden_v3",
+            "revision": "8e5447c3b253c3f5842c049948620c67eebe4679f73b72ca84145718f58e4a84",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:sculpture_garden:sculpture_garden_v0",
+      "domain": "park_plaza",
+      "option": {
+        "id": "sculpture_garden"
+      },
+      "placements": [
+        {
+          "id": "native-park:sculpture_garden_v0--native-v1",
+          "model": {
+            "variantId": "sculpture_garden_v0",
+            "revision": "5ea667d78cf619fd919494c852c1fe5751f3e951fdc8deccba3904d52500af62",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:student_neighbourhood_orchard_v1:student_neighbourhood_orchard_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "student_neighbourhood_orchard_v1"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_neighbourhood_orchard_v1--native-v1",
+          "model": {
+            "variantId": "student_neighbourhood_orchard_v1",
+            "revision": "746f5c3037bef70511e1529b7c7ca536697ea9931798231ca4a2c68306bf80ff",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:amphitheater_lawn:amphitheater_lawn_v0",
+      "domain": "park_plaza",
+      "option": {
+        "id": "amphitheater_lawn"
+      },
+      "placements": [
+        {
+          "id": "native-park:amphitheater_lawn_v0--native-v1",
+          "model": {
+            "variantId": "amphitheater_lawn_v0",
+            "revision": "e5bbe20222fe6af93f05c33a8ef4688f57b51b8636d0d5dee5672d1c2840d1ee",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:student_garden_square_v1:student_garden_square_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "student_garden_square_v1"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_garden_square_v1--native-v1",
+          "model": {
+            "variantId": "student_garden_square_v1",
+            "revision": "b0310f14be314d41a61167a5d62627fbadbf65ce37f1d3dc2e3feaef2f8c7400",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:wetland_rain_garden:wetland_rain_garden_v0",
+      "domain": "park_plaza",
+      "option": {
+        "id": "wetland_rain_garden"
+      },
+      "placements": [
+        {
+          "id": "native-park:wetland_rain_garden_v0--native-v1",
+          "model": {
+            "variantId": "wetland_rain_garden_v0",
+            "revision": "95c8676b5de15a86550f632d994a1bebe65efb51ea73ee3ad5acabbac6ba1c54",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:amsterdam_gracht:amsterdam_gracht_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "amsterdam_gracht"
+      },
+      "placements": [
+        {
+          "id": "amsterdam_gracht_v1",
+          "model": {
+            "variantId": "amsterdam_gracht_v1",
+            "revision": "db99c735b29e2d9c9131d89f787fd137fb1f41523cbae55d8a15322e35535ef9",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:brt_bus_rapid_transit_corridor:brt_bus_rapid_transit_corridor_v0",
+      "domain": "street_pathway",
+      "option": {
+        "id": "brt_bus_rapid_transit_corridor"
+      },
+      "placements": [
+        {
+          "id": "brt_bus_rapid_transit_corridor_v0",
+          "model": {
+            "variantId": "brt_bus_rapid_transit_corridor_v0",
+            "revision": "c18cdf29bc7474a90b1bbbc5531650faefb388e0366f6ce2d1ba98c75bbecb1c",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:student_planted_shared_lane_v1:student_planted_shared_lane_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "student_planted_shared_lane_v1"
+      },
+      "placements": [
+        {
+          "id": "student_planted_shared_lane_v1",
+          "model": {
+            "variantId": "student_planted_shared_lane_v1",
+            "revision": "9a70236d619d94ee3ca8c642b9eebb14ed3ebfd7884b19777ca7c17d09017520",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:student_quiet_residential_street_v1:student_quiet_residential_street_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "student_quiet_residential_street_v1"
+      },
+      "placements": [
+        {
+          "id": "student_quiet_residential_street_v1",
+          "model": {
+            "variantId": "student_quiet_residential_street_v1",
+            "revision": "b6f20dbe8236380630ce0f1d212b1690317e4351f229d8140bf0e7ce1ad23626",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:landmark_signature_bridge:landmark_signature_bridge_v2",
+      "domain": "street_pathway",
+      "option": {
+        "id": "landmark_signature_bridge"
+      },
+      "placements": [
+        {
+          "id": "landmark_signature_bridge_v2",
+          "model": {
+            "variantId": "landmark_signature_bridge_v2",
+            "revision": "45097473e6d0b948c507466c46862330bdb42fc19edd4575abb08e1d986bd34c",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:calgary_beltline_mid_rise:beltline_brick_modern",
+      "domain": "building",
+      "option": {
+        "id": "calgary_beltline_mid_rise"
+      },
+      "placements": [
+        {
+          "id": "validation_beltline_brick_modern",
+          "model": {
+            "variantId": "beltline_brick_modern",
+            "revision": "81d39f92f9f85aa769598bdcfbfe989a628ed52fd1e6da8c27660b6cbec66618",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:calgary_modern_infill_house:infill_flat_roof_minimal",
+      "domain": "building",
+      "option": {
+        "id": "calgary_modern_infill_house"
+      },
+      "placements": [
+        {
+          "id": "validation_infill_flat_roof_minimal",
+          "model": {
+            "variantId": "infill_flat_roof_minimal",
+            "revision": "71f9478a6a053be8c43fe1a6c39c4bae700af94f043aac8be42e42ab8bcbdc74",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:research_garden_teaching_arboretum:research_garden_teaching_arboretum_variant_3",
+      "domain": "park_plaza",
+      "option": {
+        "id": "research_garden_teaching_arboretum"
+      },
+      "placements": [
+        {
+          "id": "native-park:research_garden_teaching_arboretum_variant_3--native-v1",
+          "model": {
+            "variantId": "research_garden_teaching_arboretum_variant_3",
+            "revision": "d76573a0a2a7281b71018a9f75dcee148fb8e401ad547e3053eba4f8a475c38e",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:basketball_court:basketball_court_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "basketball_court"
+      },
+      "placements": [
+        {
+          "id": "native-park:basketball_court_v1--native-v1",
+          "model": {
+            "variantId": "basketball_court_v1",
+            "revision": "4682d83edf8fee509fbe4f4edae8cd524849743fa613046c358a4a6615a36fa3",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:neighborhood_main_street:student_main_street_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "neighborhood_main_street"
+      },
+      "placements": [
+        {
+          "id": "validation_student_main_street_v1",
+          "model": {
+            "variantId": "student_main_street_v1",
+            "revision": "7d93e05d06e84e0c722f3a005055329d970698d6dbc2a7a95f94daae2a67e531",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:pedestrian_only_street:student_market_street_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "pedestrian_only_street"
+      },
+      "placements": [
+        {
+          "id": "validation_student_market_street_v1",
+          "model": {
+            "variantId": "student_market_street_v1",
+            "revision": "38a330a8af325cf111a211e68c89a80a0f45e78c04c606784f37ee9c79f72345",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:student_reading_garden:student_reading_garden_v2",
+      "domain": "park_plaza",
+      "option": {
+        "id": "student_reading_garden"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_reading_garden_v2--native-v1",
+          "model": {
+            "variantId": "student_reading_garden_v2",
+            "revision": "5c6a709fb7e69eeeb6de039809c16776bc30645de9614afffab85397c711c50a",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:student_pickleball_garden:student_pickleball_garden_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "student_pickleball_garden"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_pickleball_garden_v1--native-v1",
+          "model": {
+            "variantId": "student_pickleball_garden_v1",
+            "revision": "ef5762251943079d6a7510f529b4d117a31d2837fe857f11d461ae4cdb47e7e3",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:student_tennis_garden:student_tennis_garden_v2",
+      "domain": "park_plaza",
+      "option": {
+        "id": "student_tennis_garden"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_tennis_garden_v2--native-v1",
+          "model": {
+            "variantId": "student_tennis_garden_v2",
+            "revision": "e2f7e20157f3ad95782137f984524f16f980670bcbdf9caa0034b43bdc063a41",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:student_bocce_garden:student_bocce_garden_v2",
+      "domain": "park_plaza",
+      "option": {
+        "id": "student_bocce_garden"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_bocce_garden_v2--native-v1",
+          "model": {
+            "variantId": "student_bocce_garden_v2",
+            "revision": "935250c769cf950991ce35e6ccc4a7fc580c43bbf808bb2d5bc4bbcb25f26fc0",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:urban_pocket_park:urban_pocket_park_v0",
+      "domain": "park_plaza",
+      "option": {
+        "id": "urban_pocket_park"
+      },
+      "placements": [
+        {
+          "id": "native-park:urban_pocket_park_v0--native-v1",
+          "model": {
+            "variantId": "urban_pocket_park_v0",
+            "revision": "aa17f01fdb4a44036d038696728e54ec5b35974f30adae2be7a1258d557eaaad",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:linear_park_greenway:linear_park_greenway_v0",
+      "domain": "park_plaza",
+      "option": {
+        "id": "linear_park_greenway"
+      },
+      "placements": [
+        {
+          "id": "native-park:linear_park_greenway_v0--native-v1",
+          "model": {
+            "variantId": "linear_park_greenway_v0",
+            "revision": "58be0c48376bb8b565fa8a9449072a542b68ec41d9b793be2018b58683e5d1b1",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:inclusive_accessible_playground:inclusive_accessible_playground_v0",
+      "domain": "park_plaza",
+      "option": {
+        "id": "inclusive_accessible_playground"
+      },
+      "placements": [
+        {
+          "id": "native-park:inclusive_accessible_playground_v0--native-v1",
+          "model": {
+            "variantId": "inclusive_accessible_playground_v0",
+            "revision": "fc15d5ad13a8642d10f74945908ee3afbddc1c841f99ba0641449bf92e240888",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:calgary_modern_infill_house:infill_duplex",
+      "domain": "building",
+      "option": {
+        "id": "calgary_modern_infill_house"
+      },
+      "placements": [
+        {
+          "id": "clay_side_by_side_duplex",
+          "model": {
+            "variantId": "infill_duplex",
+            "revision": "calgary-side-by-side-duplex-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:montreal_duplex:montreal_duplex_plateau",
+      "domain": "building",
+      "option": {
+        "id": "montreal_duplex"
+      },
+      "placements": [
+        {
+          "id": "clay_montreal_plateau_duplex",
+          "model": {
+            "variantId": "montreal_duplex_plateau",
+            "revision": "montreal-plateau-duplex-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:courtyard_family_housing:courtyard_family_brick_modern",
+      "domain": "building",
+      "option": {
+        "id": "courtyard_family_housing"
+      },
+      "placements": [
+        {
+          "id": "clay_courtyard_brick_modern",
+          "model": {
+            "variantId": "courtyard_family_brick_modern",
+            "revision": "courtyard-brick-modern-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:calgary_inner_city_bungalow:bungalow_postwar_ranch",
+      "domain": "building",
+      "option": {
+        "id": "calgary_inner_city_bungalow"
+      },
+      "placements": [
+        {
+          "id": "trial_postwar_bungalow",
+          "model": {
+            "variantId": "bungalow_postwar_ranch",
+            "revision": "calgary-inner-city-bungalow-clay-v005",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:toronto_edwardian_foursquare:toronto_foursquare_red_brick",
+      "domain": "building",
+      "option": {
+        "id": "toronto_edwardian_foursquare"
+      },
+      "placements": [
+        {
+          "id": "trial_edwardian_foursquare",
+          "model": {
+            "variantId": "toronto_foursquare_red_brick",
+            "revision": "toronto-edwardian-foursquare-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:detached_contemporary_infill:detached_infill_rammed_earth",
+      "domain": "building",
+      "option": {
+        "id": "detached_contemporary_infill"
+      },
+      "placements": [
+        {
+          "id": "clay_rammed_earth_infill",
+          "model": {
+            "variantId": "detached_infill_rammed_earth",
+            "revision": "detached_contemporary_infill-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:glass_tower_podium_modern:glass_tower_blue_reflective",
+      "domain": "building",
+      "option": {
+        "id": "glass_tower_podium_modern"
+      },
+      "placements": [
+        {
+          "id": "clay_blue_glass_office_tower",
+          "model": {
+            "variantId": "glass_tower_blue_reflective",
+            "revision": "glass_tower_podium_modern-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:vancouverism_tower_podium:vancouverism_classic",
+      "domain": "building",
+      "option": {
+        "id": "vancouverism_tower_podium"
+      },
+      "placements": [
+        {
+          "id": "clay_vancouver_balcony_podium_tower",
+          "model": {
+            "variantId": "vancouverism_classic",
+            "revision": "vancouverism-tower-podium-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:protected_bike_lane_bidirectional:student_cycle_avenue_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "protected_bike_lane_bidirectional"
+      },
+      "placements": [
+        {
+          "id": "student_cycle_avenue_v1",
+          "model": {
+            "variantId": "student_cycle_avenue_v1",
+            "revision": "f56ed6647252befea881c6101236c588b889a80392113b681a14c0a33b32e9ed",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:montreal_ruelle_verte:student_green_alley_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "montreal_ruelle_verte"
+      },
+      "placements": [
+        {
+          "id": "student_green_alley_v1",
+          "model": {
+            "variantId": "student_green_alley_v1",
+            "revision": "5fa64b56938f1adaaa5088b454d58e736fa23db3930d6f7a47345f95fb746c7b",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:school_street:student_school_street_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "school_street"
+      },
+      "placements": [
+        {
+          "id": "student_school_street_v1",
+          "model": {
+            "variantId": "student_school_street_v1",
+            "revision": "0a0f39857cee97851bf405f59ff75f6efff9929adeac1c435b6fae9e9ceecd4f",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:japanese_garden:student_woodland_stream_garden_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "japanese_garden"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_woodland_stream_garden_v1--native-v1",
+          "model": {
+            "variantId": "student_woodland_stream_garden_v1",
+            "revision": "e3fff90f005da1a2bb19b49c4cfeaa69a8ec32dca68a4a1a74f0179bc2c81461",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:fountain_water_feature:student_reflecting_fountain_garden_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "fountain_water_feature"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_reflecting_fountain_garden_v1--native-v1",
+          "model": {
+            "variantId": "student_reflecting_fountain_garden_v1",
+            "revision": "eda91f3a08b13efd331753078900f080612d971d3acc14b994f3fea9d2f78b96",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:sunken_plaza:student_terraced_cafe_court_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "sunken_plaza"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_terraced_cafe_court_v1--native-v1",
+          "model": {
+            "variantId": "student_terraced_cafe_court_v1",
+            "revision": "6f8c9e3f3d67e18da2aef8c65719f5ba0eee9afe7a9613261e36705e8b9a166f",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:light_rail_tram_avenue:student_grass_tram_avenue_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "light_rail_tram_avenue"
+      },
+      "placements": [
+        {
+          "id": "student_grass_tram_avenue_v1",
+          "model": {
+            "variantId": "student_grass_tram_avenue_v1",
+            "revision": "3562b794641d753ee9710233052adfc08931ca5bfc0ccece6c3853ae1a75f9bd",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:riverfront_promenade:student_vine_pergola_promenade_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "riverfront_promenade"
+      },
+      "placements": [
+        {
+          "id": "student_vine_pergola_promenade_v1",
+          "model": {
+            "variantId": "student_vine_pergola_promenade_v1",
+            "revision": "428b632b3202f7324cc0bb538bc7fe387c839c6074d5c148fc122574d5d43b46",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:haussmann_boulevard:student_grand_haussmann_boulevard_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "haussmann_boulevard"
+      },
+      "placements": [
+        {
+          "id": "student_grand_haussmann_boulevard_v1",
+          "model": {
+            "variantId": "student_grand_haussmann_boulevard_v1",
+            "revision": "ad63425c5e2c4de12f1d961df5d5f61ff514aad9cae299eaf1e64a71d7f9df3c",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:food_hall_market_hall:market_historic_iron_glass",
+      "domain": "building",
+      "option": {
+        "id": "food_hall_market_hall"
+      },
+      "placements": [
+        {
+          "id": "showcase_market",
+          "model": {
+            "variantId": "market_historic_iron_glass",
+            "revision": "showcase-market-clay-v006",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:aquatic_natatorium_complex:biophilic_mass_timber_pool",
+      "domain": "building",
+      "option": {
+        "id": "aquatic_natatorium_complex"
+      },
+      "placements": [
+        {
+          "id": "showcase_aquatic",
+          "model": {
+            "variantId": "biophilic_mass_timber_pool",
+            "revision": "showcase-aquatic-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:art_deco_setback_tower:art_deco_cream_terracotta",
+      "domain": "building",
+      "option": {
+        "id": "art_deco_setback_tower"
+      },
+      "placements": [
+        {
+          "id": "showcase_tower",
+          "model": {
+            "variantId": "art_deco_cream_terracotta",
+            "revision": "showcase-tower-clay-v005",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:nordic_timber_midrise:nordic_timber_mass_timber",
+      "domain": "building",
+      "option": {
+        "id": "nordic_timber_midrise"
+      },
+      "placements": [
+        {
+          "id": "autumn_timber",
+          "model": {
+            "variantId": "nordic_timber_mass_timber",
+            "revision": "autumn-timber-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:mediterranean_villa_estate:med_villa_tuscan",
+      "domain": "building",
+      "option": {
+        "id": "mediterranean_villa_estate"
+      },
+      "placements": [
+        {
+          "id": "autumn_villa",
+          "model": {
+            "variantId": "med_villa_tuscan",
+            "revision": "autumn-villa-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:deco_theater_mainstreet:deco_theater_movie_palace",
+      "domain": "building",
+      "option": {
+        "id": "deco_theater_mainstreet"
+      },
+      "placements": [
+        {
+          "id": "autumn_cinema",
+          "model": {
+            "variantId": "deco_theater_movie_palace",
+            "revision": "autumn-cinema-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:splash_pad_area:student_urban_splash_plaza_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "splash_pad_area"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_urban_splash_plaza_v1--native-v1",
+          "model": {
+            "variantId": "student_urban_splash_plaza_v1",
+            "revision": "274f6fb01e74ae32a5c6764508f50b917866e8bf98b617a7e94aeb5ce2fe6838",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:labyrinth_meditation:student_stone_labyrinth_garden_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "labyrinth_meditation"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_stone_labyrinth_garden_v1--native-v1",
+          "model": {
+            "variantId": "student_stone_labyrinth_garden_v1",
+            "revision": "c00bd66703707245b469c8c3d120470fc3d8b65aeb34e7918d45ca7e15145f07",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:dog_park:student_sheltered_dog_park_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "dog_park"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_sheltered_dog_park_v1--native-v1",
+          "model": {
+            "variantId": "student_sheltered_dog_park_v1",
+            "revision": "2e4db53b86fef7e6451cbfcb77b8b169f4b788fe0e53a974e259ad7b84e54f0c",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:london_mews_lane:student_london_cobbled_mews_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "london_mews_lane"
+      },
+      "placements": [
+        {
+          "id": "student_london_cobbled_mews_v1",
+          "model": {
+            "variantId": "student_london_cobbled_mews_v1",
+            "revision": "143c3856c4008aa41439d50cf59b332178a97b36635f85453b1f1f13a94d1bc8",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:vancouver_cherry_blossom_street:student_cherry_blossom_street_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "vancouver_cherry_blossom_street"
+      },
+      "placements": [
+        {
+          "id": "student_cherry_blossom_street_v1",
+          "model": {
+            "variantId": "student_cherry_blossom_street_v1",
+            "revision": "f66b0d19aefdcdf9607c68dd73574fd9d7e78896f6aa53dfe17d83ecd5427384",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:barcelona_passeig:student_barcelona_shaded_promenade_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "barcelona_passeig"
+      },
+      "placements": [
+        {
+          "id": "student_barcelona_shaded_promenade_v1",
+          "model": {
+            "variantId": "student_barcelona_shaded_promenade_v1",
+            "revision": "33a5ba4c660e85527e85d60527088407fab69c67d5b774ce17f8f4d20446f1ec",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:university_library:mass_timber_biophilic_barn",
+      "domain": "building",
+      "option": {
+        "id": "university_library"
+      },
+      "placements": [
+        {
+          "id": "clay_mass_timber_biophilic_barn",
+          "model": {
+            "variantId": "mass_timber_biophilic_barn",
+            "revision": "neighbourhood-library-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:parisian_boulevard_corner:parisian_corner_cafe_culture",
+      "domain": "building",
+      "option": {
+        "id": "parisian_boulevard_corner"
+      },
+      "placements": [
+        {
+          "id": "clay_parisian_corner_cafe_culture",
+          "model": {
+            "variantId": "parisian_corner_cafe_culture",
+            "revision": "neighbourhood-corner-cafe-clay-v010",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:community_garden_enhanced:student_community_allotment_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "community_garden_enhanced"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_community_allotment_v1--native-v1",
+          "model": {
+            "variantId": "student_community_allotment_v1",
+            "revision": "6b9d56fcc2d84088633503e9cc219ccef60fe79349b4fbc8d2138ce5d345af5a",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:nature_play_area:student_forest_adventure_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "nature_play_area"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_forest_adventure_v1--native-v1",
+          "model": {
+            "variantId": "student_forest_adventure_v1",
+            "revision": "84ce02e0cba75ce3faf810e571048d39141a14462184b112e87a144f63de86dd",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:student_spiral_lookout:student_spiral_lookout_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "student_spiral_lookout"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_spiral_lookout_v1--native-v1",
+          "model": {
+            "variantId": "student_spiral_lookout_v1",
+            "revision": "ba9ecbaafe0f56dd5206faa936951504675f05b4d5640adc25ca5d5aa98c773b",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:student_quarry_garden:student_quarry_garden_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "student_quarry_garden"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_quarry_garden_v1--native-v1",
+          "model": {
+            "variantId": "student_quarry_garden_v1",
+            "revision": "bae24fb0fc5fb032dfb74a8301789633b0d45f76a04da6971e4d9548eaf38312",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:student_cascade_water_garden:student_cascade_water_garden_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "student_cascade_water_garden"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_cascade_water_garden_v1--native-v1",
+          "model": {
+            "variantId": "student_cascade_water_garden_v1",
+            "revision": "6b0f4391a5dfad1e21c0e1ca0a53dcd36fc609cf9eb541ac354f09e2ebd3ac4c",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:historic_grand_station:station_victorian_iron_glass",
+      "domain": "building",
+      "option": {
+        "id": "historic_grand_station"
+      },
+      "placements": [
+        {
+          "id": "clay_station_victorian_iron_glass",
+          "model": {
+            "variantId": "station_victorian_iron_glass",
+            "revision": "victorian-station-interior-clay-v007",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:university_academic_complex:biophilic_mass_timber_campus",
+      "domain": "building",
+      "option": {
+        "id": "university_academic_complex"
+      },
+      "placements": [
+        {
+          "id": "clay_biophilic_mass_timber_campus",
+          "model": {
+            "variantId": "biophilic_mass_timber_campus",
+            "revision": "interior-school-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:boutique_hotel:mediterranean_resort_courtyard",
+      "domain": "building",
+      "option": {
+        "id": "boutique_hotel"
+      },
+      "placements": [
+        {
+          "id": "clay_mediterranean_resort_courtyard",
+          "model": {
+            "variantId": "mediterranean_resort_courtyard",
+            "revision": "interior-hotel-clay-v006",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:student_treetop_walk:student_treetop_walk_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "student_treetop_walk"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_treetop_walk_v1--native-v1",
+          "model": {
+            "variantId": "student_treetop_walk_v1",
+            "revision": "aef679e13148ddede9c39e73dbea57d74c23b41400d0363f3a132f93b6e72366",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:student_terraced_rose:student_terraced_rose_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "student_terraced_rose"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_terraced_rose_v1--native-v1",
+          "model": {
+            "variantId": "student_terraced_rose_v1",
+            "revision": "bfee531419eb2c25ca0fb941c232abad5f9740821cd2ed7dcc67f8c963026b83",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:elevated_garden_rail:student_elevated_garden_rail_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "elevated_garden_rail"
+      },
+      "placements": [
+        {
+          "id": "student_elevated_garden_rail_v1",
+          "model": {
+            "variantId": "student_elevated_garden_rail_v1",
+            "revision": "d101b5b4d1871681b5c6f0ce1756c533a41a74425a846993ca1e2946a44bb43c",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:skytrain_elevated_corridor:skytrain_elevated_corridor_v0",
+      "domain": "street_pathway",
+      "option": {
+        "id": "skytrain_elevated_corridor"
+      },
+      "placements": [
+        {
+          "id": "skytrain_elevated_corridor_v0",
+          "model": {
+            "variantId": "skytrain_elevated_corridor_v0",
+            "revision": "0d49f39625d445fd165cc050f25287fe1f38a4d0d235ac8000b411466a22cd89",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:elevated_rail_transit_corridor:elevated_rail_transit_corridor_v0",
+      "domain": "street_pathway",
+      "option": {
+        "id": "elevated_rail_transit_corridor"
+      },
+      "placements": [
+        {
+          "id": "elevated_rail_transit_corridor_v0",
+          "model": {
+            "variantId": "elevated_rail_transit_corridor_v0",
+            "revision": "4192e4b060c89bb0cd5b867321f0061cb4f594c880fc3e25c54d82a5fc3762a7",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:urban_beach:student_sandy_beach_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "urban_beach"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_sandy_beach_v1--native-v1",
+          "model": {
+            "variantId": "student_sandy_beach_v1",
+            "revision": "fccfdcc8f5fc403d9731f3a984fa00d5a7cac879b73ee49a8432ebd3491d9252",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:prairie_picnic_grove:student_prairie_picnic_grove_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "prairie_picnic_grove"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_prairie_picnic_grove_v1--native-v1",
+          "model": {
+            "variantId": "student_prairie_picnic_grove_v1",
+            "revision": "21710e19c4b6368480eb761df99b29017083e1400dadadee33b9e9b7238d4b31",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:neighbourhood_sports_green:student_neighbourhood_sports_green_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "neighbourhood_sports_green"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_neighbourhood_sports_green_v1--native-v1",
+          "model": {
+            "variantId": "student_neighbourhood_sports_green_v1",
+            "revision": "3cd5f45789349f6367ef0dbb51a36bb2db31a8e3161dd390dbba905d8878e6b3",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:sensory_wellness_garden:student_sensory_wellness_garden_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "sensory_wellness_garden"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_sensory_wellness_garden_v1--native-v1",
+          "model": {
+            "variantId": "student_sensory_wellness_garden_v1",
+            "revision": "6c3847fafbd9169537b4647a8dddc5e1bdc287af405ccaf9425966e817a24578",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:bicycle_pump_track_park:student_bicycle_pump_track_park_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "bicycle_pump_track_park"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_bicycle_pump_track_park_v1--native-v1",
+          "model": {
+            "variantId": "student_bicycle_pump_track_park_v1",
+            "revision": "5de7226e45bdda357d5f37707bf23c9857a544ab185ca5ddbd8171f6cd4b6e29",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:urban_skate_plaza:student_urban_skate_plaza_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "urban_skate_plaza"
+      },
+      "placements": [
+        {
+          "id": "native-park:student_urban_skate_plaza_v1--native-v1",
+          "model": {
+            "variantId": "student_urban_skate_plaza_v1",
+            "revision": "f8f39b1991f46f3c9b5281955b8e77d415fe02a5de25787d3203cd686554acd4",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:narrow_residential_street:student_rain_garden_residential_street_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "narrow_residential_street"
+      },
+      "placements": [
+        {
+          "id": "student_rain_garden_residential_street_v1",
+          "model": {
+            "variantId": "student_rain_garden_residential_street_v1",
+            "revision": "f4fb6ba6bffb3ad6590bace70e926c98d99a67a600091ddb8672c64a85727e87",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:neighborhood_main_street:student_compact_one_way_shopping_street_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "neighborhood_main_street"
+      },
+      "placements": [
+        {
+          "id": "student_compact_one_way_shopping_street_v1",
+          "model": {
+            "variantId": "student_compact_one_way_shopping_street_v1",
+            "revision": "cc70a02fe62f7463c3b39889bba13e229170ee784d5e51f5060ffabd27a76767",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:neighborhood_greenway:student_neighbourhood_cycle_street_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "neighborhood_greenway"
+      },
+      "placements": [
+        {
+          "id": "student_neighbourhood_cycle_street_v1",
+          "model": {
+            "variantId": "student_neighbourhood_cycle_street_v1",
+            "revision": "c35ec0969d4fcc4eee414fe9de4a378dbd7018340341edaf10a7da6a227b56be",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:multi_use_trail:student_separated_walking_cycling_greenway_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "multi_use_trail"
+      },
+      "placements": [
+        {
+          "id": "student_separated_walking_cycling_greenway_v1",
+          "model": {
+            "variantId": "student_separated_walking_cycling_greenway_v1",
+            "revision": "9426902708df20e0f8f2b7ca690f82edde688d445f604eaa831a898818a64f8e",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:floating_bus_stop_transit_street:student_neighbourhood_transit_stop_street_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "floating_bus_stop_transit_street"
+      },
+      "placements": [
+        {
+          "id": "student_neighbourhood_transit_stop_street_v1",
+          "model": {
+            "variantId": "student_neighbourhood_transit_stop_street_v1",
+            "revision": "4797f51909b02bfeb54ea45605feb58ab98a6bdeb0add3993a17062b720309fb",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:court_only_basketball:court_only_basketball_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "court_only_basketball"
+      },
+      "placements": [
+        {
+          "id": "native-park:court_only_basketball_v1--native-v1",
+          "model": {
+            "variantId": "court_only_basketball_v1",
+            "revision": "6392a787429c551108dd2d99912b690816d838035400d322883c7952f3423117",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:court_only_tennis:court_only_tennis_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "court_only_tennis"
+      },
+      "placements": [
+        {
+          "id": "native-park:court_only_tennis_v1--native-v1",
+          "model": {
+            "variantId": "court_only_tennis_v1",
+            "revision": "eed1f8f2dd6a444847b93f1a5e98dd297cba50409dd456b2b19e2119d84ab8b5",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:court_only_pickleball:court_only_pickleball_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "court_only_pickleball"
+      },
+      "placements": [
+        {
+          "id": "native-park:court_only_pickleball_v1--native-v1",
+          "model": {
+            "variantId": "court_only_pickleball_v1",
+            "revision": "9d6876edb170afc909a8cad57260c599cf6b09fd16bc97023c3e1d9c35fdd351",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:court_only_beach_volleyball:court_only_beach_volleyball_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "court_only_beach_volleyball"
+      },
+      "placements": [
+        {
+          "id": "native-park:court_only_beach_volleyball_v1--native-v1",
+          "model": {
+            "variantId": "court_only_beach_volleyball_v1",
+            "revision": "1ce0ad75c0496a1eda8855d6ba8db37c439e1e77260cb038a0e77b4cb1b27aa8",
+            "method": "native_park_v2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:stepped_terraced_plaza:stepped_terraced_plaza_v0",
+      "domain": "park_plaza",
+      "option": {
+        "id": "stepped_terraced_plaza"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_stepped_terraced_plaza_park_only",
+          "model": {
+            "variantId": "stepped_terraced_plaza_v0",
+            "revision": "c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2",
+            "method": "native_validation_fixture"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:dedicated_cycle_bridge:dedicated_cycle_bridge_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "dedicated_cycle_bridge"
+      },
+      "placements": [
+        {
+          "id": "claude_public_realm:cable-stayed-cycle-ring:c1ef7008750f",
+          "model": {
+            "variantId": "dedicated_cycle_bridge_v1",
+            "revision": "c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11",
+            "method": "fixed_public_realm_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:bow_river_pathway:bow_river_pathway_v0",
+      "domain": "street_pathway",
+      "option": {
+        "id": "bow_river_pathway"
+      },
+      "placements": [
+        {
+          "id": "claude_public_realm:calgary-riverwalk:22a0bc53f02c",
+          "model": {
+            "variantId": "bow_river_pathway_v0",
+            "revision": "22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930",
+            "method": "fixed_public_realm_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:halifax_public_gardens:halifax_public_gardens_v0",
+      "domain": "park_plaza",
+      "option": {
+        "id": "halifax_public_gardens"
+      },
+      "placements": [
+        {
+          "id": "claude_public_realm:halifax-public-gardens-park-only:9282a9ffd6a3",
+          "model": {
+            "variantId": "halifax_public_gardens_v0",
+            "revision": "9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79",
+            "method": "fixed_public_realm_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:outdoor_ice_rink:outdoor_ice_rink_v0",
+      "domain": "park_plaza",
+      "option": {
+        "id": "outdoor_ice_rink"
+      },
+      "placements": [
+        {
+          "id": "claude_public_realm:ice-rink-market-square-park-only:6a578c3c8e3c",
+          "model": {
+            "variantId": "outdoor_ice_rink_v0",
+            "revision": "6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8",
+            "method": "fixed_public_realm_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:inglewood_main_street:inglewood_main_street_v0",
+      "domain": "street_pathway",
+      "option": {
+        "id": "inglewood_main_street"
+      },
+      "placements": [
+        {
+          "id": "claude_public_realm:inglewood-main-street:e1106da0a1bc",
+          "model": {
+            "variantId": "inglewood_main_street_v0",
+            "revision": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e",
+            "method": "fixed_public_realm_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:montreal_plateau_residential_rue:montreal_plateau_residential_rue_v0",
+      "domain": "street_pathway",
+      "option": {
+        "id": "montreal_plateau_residential_rue"
+      },
+      "placements": [
+        {
+          "id": "claude_public_realm:montreal-plateau-rue:92722fb6162c",
+          "model": {
+            "variantId": "montreal_plateau_residential_rue_v0",
+            "revision": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde",
+            "method": "fixed_public_realm_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:calgary_princes_island:calgary_princes_island_v0",
+      "domain": "park_plaza",
+      "option": {
+        "id": "calgary_princes_island"
+      },
+      "placements": [
+        {
+          "id": "claude_public_realm:princes-island-park:498a973435fc",
+          "model": {
+            "variantId": "calgary_princes_island_v0",
+            "revision": "498a973435fc8bc077084d3ee630babc55574a7365fdbd978a1cea742525a0ec",
+            "method": "fixed_public_realm_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:rail_transit_viaduct:rail_transit_viaduct_v2",
+      "domain": "street_pathway",
+      "option": {
+        "id": "rail_transit_viaduct"
+      },
+      "placements": [
+        {
+          "id": "claude_public_realm:rail-through-truss:db0886ff6186",
+          "model": {
+            "variantId": "rail_transit_viaduct_v2",
+            "revision": "db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813",
+            "method": "fixed_public_realm_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:road_diet_complete_street:road_diet_complete_street_v0",
+      "domain": "street_pathway",
+      "option": {
+        "id": "road_diet_complete_street"
+      },
+      "placements": [
+        {
+          "id": "claude_public_realm:road-diet-complete-street:bdd53e3b94bd",
+          "model": {
+            "variantId": "road_diet_complete_street_v0",
+            "revision": "bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696",
+            "method": "fixed_public_realm_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:urban_vehicular_bridge:urban_vehicular_bridge_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "urban_vehicular_bridge"
+      },
+      "placements": [
+        {
+          "id": "claude_public_realm:steel-truss-road-bridge:d01804b356b2",
+          "model": {
+            "variantId": "urban_vehicular_bridge_v1",
+            "revision": "d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30",
+            "method": "fixed_public_realm_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:dedicated_cycle_bridge:dedicated_cycle_bridge_v0",
+      "domain": "street_pathway",
+      "option": {
+        "id": "dedicated_cycle_bridge"
+      },
+      "placements": [
+        {
+          "id": "claude_public_realm:swooping-cycle-flyover:4c075a5a31b0",
+          "model": {
+            "variantId": "dedicated_cycle_bridge_v0",
+            "revision": "4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4",
+            "method": "fixed_public_realm_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:urban_pedestrian_footbridge:urban_pedestrian_footbridge_v0",
+      "domain": "street_pathway",
+      "option": {
+        "id": "urban_pedestrian_footbridge"
+      },
+      "placements": [
+        {
+          "id": "claude_public_realm:weathering-steel-footbridge:2384d6eed060",
+          "model": {
+            "variantId": "urban_pedestrian_footbridge_v0",
+            "revision": "2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2",
+            "method": "fixed_public_realm_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:corporate_office_campus_headquarters:neoclassical_brick_headquarters",
+      "domain": "building",
+      "option": {
+        "id": "corporate_office_campus_headquarters"
+      },
+      "placements": [
+        {
+          "id": "clay_neoclassical_brick_headquarters",
+          "model": {
+            "variantId": "neoclassical_brick_headquarters",
+            "revision": "neoclassical-brick-office-clay-v005",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:administrative_faculty_office_building:admin_faculty_brick_bronze_fins",
+      "domain": "building",
+      "option": {
+        "id": "administrative_faculty_office_building"
+      },
+      "placements": [
+        {
+          "id": "clay_admin_faculty_brick_bronze_fins",
+          "model": {
+            "variantId": "admin_faculty_brick_bronze_fins",
+            "revision": "brick-bronze-faculty-office-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:courtyard_lowrise_office:brick_timber_two_storey_office",
+      "domain": "building",
+      "option": {
+        "id": "courtyard_lowrise_office"
+      },
+      "placements": [
+        {
+          "id": "clay_brick_timber_two_storey_office",
+          "model": {
+            "variantId": "brick_timber_two_storey_office",
+            "revision": "brick-timber-courtyard-office-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:commercial_strip_mall:strip_single_storey_classic",
+      "domain": "building",
+      "option": {
+        "id": "commercial_strip_mall"
+      },
+      "placements": [
+        {
+          "id": "clay_strip_single_storey_classic",
+          "model": {
+            "variantId": "strip_single_storey_classic",
+            "revision": "commercial-strip-single-storey-classic-clay-v002",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:contractor_storage_yard:corten_timber_equipment_yard",
+      "domain": "building",
+      "option": {
+        "id": "contractor_storage_yard"
+      },
+      "placements": [
+        {
+          "id": "clay_corten_timber_equipment_yard",
+          "model": {
+            "variantId": "corten_timber_equipment_yard",
+            "revision": "contractor-storage-yard-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:courtyard_childcare_centre:meadow_three_gable_childcare",
+      "domain": "building",
+      "option": {
+        "id": "courtyard_childcare_centre"
+      },
+      "placements": [
+        {
+          "id": "clay_meadow_three_gable_childcare",
+          "model": {
+            "variantId": "meadow_three_gable_childcare",
+            "revision": "courtyard-childcare-centre-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:daylight_factory:factory_sawtooth_roof",
+      "domain": "building",
+      "option": {
+        "id": "daylight_factory"
+      },
+      "placements": [
+        {
+          "id": "clay_factory_sawtooth_roof",
+          "model": {
+            "variantId": "factory_sawtooth_roof",
+            "revision": "daylight-sawtooth-factory-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:enclosed_materials_recovery:folded_roof_recovery_hall",
+      "domain": "building",
+      "option": {
+        "id": "enclosed_materials_recovery"
+      },
+      "placements": [
+        {
+          "id": "clay_folded_roof_recovery_hall",
+          "model": {
+            "variantId": "folded_roof_recovery_hall",
+            "revision": "enclosed-materials-recovery-clay-v002",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:garden_mews_courtyard_housing:garden_mews_six_homes",
+      "domain": "building",
+      "option": {
+        "id": "garden_mews_courtyard_housing"
+      },
+      "placements": [
+        {
+          "id": "clay_garden_mews_six_homes",
+          "model": {
+            "variantId": "garden_mews_six_homes",
+            "revision": "garden-mews-courtyard-housing-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:horizon_manufactured_home:horizon_double_section",
+      "domain": "building",
+      "option": {
+        "id": "horizon_manufactured_home"
+      },
+      "placements": [
+        {
+          "id": "clay_horizon_double_section",
+          "model": {
+            "variantId": "horizon_double_section",
+            "revision": "horizon-manufactured-home-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:corrugated_vernacular_industrial:industrial_gabled_metal_shed",
+      "domain": "building",
+      "option": {
+        "id": "corrugated_vernacular_industrial"
+      },
+      "placements": [
+        {
+          "id": "clay_industrial_gabled_metal_shed",
+          "model": {
+            "variantId": "industrial_gabled_metal_shed",
+            "revision": "industrial-gabled-metal-shed-clay-v002",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:industrial_park_modernism:industrial_tilt_up_concrete",
+      "domain": "building",
+      "option": {
+        "id": "industrial_park_modernism"
+      },
+      "placements": [
+        {
+          "id": "clay_industrial_tilt_up_concrete",
+          "model": {
+            "variantId": "industrial_tilt_up_concrete",
+            "revision": "industrial-tilt-up-concrete-clay-v006",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:maple_porch_manufactured_home:maple_porch_sage",
+      "domain": "building",
+      "option": {
+        "id": "maple_porch_manufactured_home"
+      },
+      "placements": [
+        {
+          "id": "clay_maple_porch_sage",
+          "model": {
+            "variantId": "maple_porch_sage",
+            "revision": "maple-porch-manufactured-cottage-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:municipal_works_depot:copperline_four_bay_depot",
+      "domain": "building",
+      "option": {
+        "id": "municipal_works_depot"
+      },
+      "placements": [
+        {
+          "id": "clay_copperline_four_bay_depot",
+          "model": {
+            "variantId": "copperline_four_bay_depot",
+            "revision": "municipal-works-depot-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:narrow_lot_craftsman_cottage:brick_timber_craftsman",
+      "domain": "building",
+      "option": {
+        "id": "narrow_lot_craftsman_cottage"
+      },
+      "placements": [
+        {
+          "id": "clay_brick_timber_craftsman",
+          "model": {
+            "variantId": "brick_timber_craftsman",
+            "revision": "narrow-lot-craftsman-cottage-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:prairie_manufactured_home:prairie_cedar_chassis_home",
+      "domain": "building",
+      "option": {
+        "id": "prairie_manufactured_home"
+      },
+      "placements": [
+        {
+          "id": "clay_prairie_cedar_chassis_home",
+          "model": {
+            "variantId": "prairie_cedar_chassis_home",
+            "revision": "prairie-manufactured-home-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:rndsqr_missing_middle_townhomes:rndsqr_townhome_brick_contextual",
+      "domain": "building",
+      "option": {
+        "id": "rndsqr_missing_middle_townhomes"
+      },
+      "placements": [
+        {
+          "id": "clay_rndsqr_townhome_brick_contextual",
+          "model": {
+            "variantId": "rndsqr_townhome_brick_contextual",
+            "revision": "rndsqr-brick-contextual-row-clay-v005",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:modern_bigbox_warehouse:warehouse_tilt_wall_mega",
+      "domain": "building",
+      "option": {
+        "id": "modern_bigbox_warehouse"
+      },
+      "placements": [
+        {
+          "id": "clay_warehouse_tilt_wall_mega",
+          "model": {
+            "variantId": "warehouse_tilt_wall_mega",
+            "revision": "tilt-wall-warehouse-clay-v006",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:ecole_republicaine:ecole-republicaine-provincial-brick",
+      "domain": "building",
+      "option": {
+        "id": "ecole_republicaine"
+      },
+      "placements": [
+        {
+          "id": "clay_ecole_republicaine_provincial_brick",
+          "model": {
+            "variantId": "ecole-republicaine-provincial-brick",
+            "revision": "provincial-brick-school-clay-v007",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:rndsqr_missing_middle_townhomes:rndsqr_townhome_scandinavian_peaks",
+      "domain": "building",
+      "option": {
+        "id": "rndsqr_missing_middle_townhomes"
+      },
+      "placements": [
+        {
+          "id": "clay_rndsqr_townhome_scandinavian_peaks",
+          "model": {
+            "variantId": "rndsqr_townhome_scandinavian_peaks",
+            "revision": "rndsqr-scandinavian-peaks-row-clay-v006",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:affordable_porchlight:affordable_porchlight_original",
+      "domain": "building",
+      "option": {
+        "id": "affordable_porchlight"
+      },
+      "placements": [
+        {
+          "id": "clay_affordable_porchlight_original",
+          "model": {
+            "variantId": "affordable_porchlight_original",
+            "revision": "affordable-porchlight-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:affordable_juniper:affordable_juniper_original",
+      "domain": "building",
+      "option": {
+        "id": "affordable_juniper"
+      },
+      "placements": [
+        {
+          "id": "clay_affordable_juniper_original",
+          "model": {
+            "variantId": "affordable_juniper_original",
+            "revision": "affordable-juniper-clay-v006",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:affordable_stackyard:affordable_stackyard_original",
+      "domain": "building",
+      "option": {
+        "id": "affordable_stackyard"
+      },
+      "placements": [
+        {
+          "id": "clay_affordable_stackyard_original",
+          "model": {
+            "variantId": "affordable_stackyard_original",
+            "revision": "affordable-stackyard-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:affordable_aspen:affordable_aspen_original",
+      "domain": "building",
+      "option": {
+        "id": "affordable_aspen"
+      },
+      "placements": [
+        {
+          "id": "clay_affordable_aspen_original",
+          "model": {
+            "variantId": "affordable_aspen_original",
+            "revision": "affordable-aspen-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:affordable_switchback:affordable_switchback_original",
+      "domain": "building",
+      "option": {
+        "id": "affordable_switchback"
+      },
+      "placements": [
+        {
+          "id": "clay_affordable_switchback_original",
+          "model": {
+            "variantId": "affordable_switchback_original",
+            "revision": "affordable-switchback-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:montreal_depanneur:montreal_depanneur_modern",
+      "domain": "building",
+      "option": {
+        "id": "montreal_depanneur"
+      },
+      "placements": [
+        {
+          "id": "community_brick_corner_grocery",
+          "model": {
+            "variantId": "montreal_depanneur_modern",
+            "revision": "brick-corner-grocery-clay-v002",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:civic_modernism_rec_centre:rec_clerestory_modern",
+      "domain": "building",
+      "option": {
+        "id": "civic_modernism_rec_centre"
+      },
+      "placements": [
+        {
+          "id": "community_clerestory_neighbourhood_hall",
+          "model": {
+            "variantId": "rec_clerestory_modern",
+            "revision": "clerestory-neighbourhood-hall-clay-v002",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:inglewood_heritage_brick_commercial:inglewood_deco_infill",
+      "domain": "building",
+      "option": {
+        "id": "inglewood_heritage_brick_commercial"
+      },
+      "placements": [
+        {
+          "id": "community_inglewood_corner_merchants",
+          "model": {
+            "variantId": "inglewood_deco_infill",
+            "revision": "inglewood-corner-merchants-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:parkitecture_recreational:rec_log_cabin_vernacular",
+      "domain": "building",
+      "option": {
+        "id": "parkitecture_recreational"
+      },
+      "placements": [
+        {
+          "id": "community_log_recreation_cabin",
+          "model": {
+            "variantId": "rec_log_cabin_vernacular",
+            "revision": "log-recreation-cabin-clay-v002",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:commercial_strip_mall:strip_weathered_1980s",
+      "domain": "building",
+      "option": {
+        "id": "commercial_strip_mall"
+      },
+      "placements": [
+        {
+          "id": "community_prairie_neighbourhood_shops",
+          "model": {
+            "variantId": "strip_weathered_1980s",
+            "revision": "prairie-neighbourhood-shops-clay-v002",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:final-seniors-apartments:final-seniors-apartments-v1",
+      "domain": "building",
+      "option": {
+        "id": "final-seniors-apartments"
+      },
+      "placements": [
+        {
+          "id": "final_seniors_apartments",
+          "model": {
+            "variantId": "final-seniors-apartments-v1",
+            "revision": "final-seniors-apartments-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:final-transit-pavilion:final-transit-pavilion-v1",
+      "domain": "building",
+      "option": {
+        "id": "final-transit-pavilion"
+      },
+      "placements": [
+        {
+          "id": "final_transit_pavilion",
+          "model": {
+            "variantId": "final-transit-pavilion-v1",
+            "revision": "final-transit-pavilion-clay-v002",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:final-courtyard-block:final-courtyard-block-v1",
+      "domain": "building",
+      "option": {
+        "id": "final-courtyard-block"
+      },
+      "placements": [
+        {
+          "id": "final_courtyard_block",
+          "model": {
+            "variantId": "final-courtyard-block-v1",
+            "revision": "final-courtyard-block-clay-v006",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:final-health-centre:final-health-centre-v1",
+      "domain": "building",
+      "option": {
+        "id": "final-health-centre"
+      },
+      "placements": [
+        {
+          "id": "final_health_centre",
+          "model": {
+            "variantId": "final-health-centre-v1",
+            "revision": "final-health-centre-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:final-urban-grocery:final-urban-grocery-v1",
+      "domain": "building",
+      "option": {
+        "id": "final-urban-grocery"
+      },
+      "placements": [
+        {
+          "id": "final_urban_grocery",
+          "model": {
+            "variantId": "final-urban-grocery-v1",
+            "revision": "final-urban-grocery-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:chateauesque_grand_railway_hotel:scottish_baronial_granite_tower",
+      "domain": "building",
+      "option": {
+        "id": "chateauesque_grand_railway_hotel"
+      },
+      "placements": [
+        {
+          "id": "claude_scottish_baronial_hotel",
+          "model": {
+            "variantId": "scottish_baronial_granite_tower",
+            "revision": "clay-baronial-railway-hotel-clay-v006",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:parisian_corner_with_dome:parisian-corner-with-dome-zinc-mansard",
+      "domain": "building",
+      "option": {
+        "id": "parisian_corner_with_dome"
+      },
+      "placements": [
+        {
+          "id": "claude_parisian_corner_with_dome",
+          "model": {
+            "variantId": "parisian-corner-with-dome-zinc-mansard",
+            "revision": "clay-zinc-dome-corner-block-clay-v007",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:grand_magasin:grand-magasin-belle-epoque",
+      "domain": "building",
+      "option": {
+        "id": "grand_magasin"
+      },
+      "placements": [
+        {
+          "id": "claude_grand_magasin",
+          "model": {
+            "variantId": "grand-magasin-belle-epoque",
+            "revision": "clay-grand-magasin-clay-v008",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:barcelona_mercat:mercat_modernista",
+      "domain": "building",
+      "option": {
+        "id": "barcelona_mercat"
+      },
+      "placements": [
+        {
+          "id": "claude_barcelona_mercat",
+          "model": {
+            "variantId": "mercat_modernista",
+            "revision": "clay-modernista-market-hall-clay-v007",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:montreal_second_empire_civic:montreal_civic_city_hall",
+      "domain": "building",
+      "option": {
+        "id": "montreal_second_empire_civic"
+      },
+      "placements": [
+        {
+          "id": "claude_montreal_second_empire_civic",
+          "model": {
+            "variantId": "montreal_civic_city_hall",
+            "revision": "clay-second-empire-city-hall-clay-v010",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:parkade-classic-concrete:classic-concrete-v1",
+      "domain": "building",
+      "option": {
+        "id": "parkade-classic-concrete"
+      },
+      "placements": [
+        {
+          "id": "parkade_classic_concrete",
+          "model": {
+            "variantId": "classic-concrete-v1",
+            "revision": "parkade-classic-concrete-clay-v005",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:parkade-urban-brick:brick-v1",
+      "domain": "building",
+      "option": {
+        "id": "parkade-urban-brick"
+      },
+      "placements": [
+        {
+          "id": "parkade_urban_brick",
+          "model": {
+            "variantId": "brick-v1",
+            "revision": "parkade-urban-brick-clay-v001",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:parkade-green-terraces:green-v1",
+      "domain": "building",
+      "option": {
+        "id": "parkade-green-terraces"
+      },
+      "placements": [
+        {
+          "id": "parkade_green_terraces",
+          "model": {
+            "variantId": "green-v1",
+            "revision": "parkade-green-terraces-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:parkade-solar-ribbon:solar-v1",
+      "domain": "building",
+      "option": {
+        "id": "parkade-solar-ribbon"
+      },
+      "placements": [
+        {
+          "id": "parkade_solar_ribbon",
+          "model": {
+            "variantId": "solar-v1",
+            "revision": "parkade-solar-ribbon-clay-v001",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:parkade-mobility-courtyard:courtyard-v1",
+      "domain": "building",
+      "option": {
+        "id": "parkade-mobility-courtyard"
+      },
+      "placements": [
+        {
+          "id": "parkade_mobility_courtyard",
+          "model": {
+            "variantId": "courtyard-v1",
+            "revision": "parkade-mobility-courtyard-clay-v002",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:industrial_brick_mixed_use:industrial_brick_original_mill",
+      "domain": "building",
+      "option": {
+        "id": "industrial_brick_mixed_use"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_arched_mill_mixed_use",
+          "model": {
+            "variantId": "industrial_brick_original_mill",
+            "revision": "clay-arched-mill-mixed-use-clay-v005",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:condo_podium_tower:brick_podium_glass_tower",
+      "domain": "building",
+      "option": {
+        "id": "condo_podium_tower"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_brick_podium_condo_tower",
+          "model": {
+            "variantId": "brick_podium_glass_tower",
+            "revision": "clay-brick-podium-condo-tower-clay-v006",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:calgary_cbe_brutalist_hq:calgary_cbe_original",
+      "domain": "building",
+      "option": {
+        "id": "calgary_cbe_brutalist_hq"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_calgary_cbe_brutalist_hq",
+          "model": {
+            "variantId": "calgary_cbe_original",
+            "revision": "clay-calgary-cbe-brutalist-hq-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:corporate_office_campus_headquarters:industrial_warehouse_campus_hq",
+      "domain": "building",
+      "option": {
+        "id": "corporate_office_campus_headquarters"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_campus_shed_office",
+          "model": {
+            "variantId": "industrial_warehouse_campus_hq",
+            "revision": "clay-campus-shed-office-clay-v009",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:mid_century_distribution_warehouse:cmu_dock_utilitarian",
+      "domain": "building",
+      "option": {
+        "id": "mid_century_distribution_warehouse"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_cmu_dock_warehouse",
+          "model": {
+            "variantId": "cmu_dock_utilitarian",
+            "revision": "clay-cmu-dock-warehouse-clay-v006",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:ecole_republicaine:ecole-republicaine-art-deco",
+      "domain": "building",
+      "option": {
+        "id": "ecole_republicaine"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_courtyard_primary_school",
+          "model": {
+            "variantId": "ecole-republicaine-art-deco",
+            "revision": "clay-courtyard-primary-school-clay-v009",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:calgary_ctrain_station:ctrain_downtown_platform",
+      "domain": "building",
+      "option": {
+        "id": "calgary_ctrain_station"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_ctrain_elevated_station",
+          "model": {
+            "variantId": "ctrain_downtown_platform",
+            "revision": "clay-ctrain-elevated-station-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:central_utilities_plant_energy_centre:transparent_plant_showcase_urban",
+      "domain": "building",
+      "option": {
+        "id": "central_utilities_plant_energy_centre"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_energy_centre",
+          "model": {
+            "variantId": "transparent_plant_showcase_urban",
+            "revision": "clay-energy-centre-clay-v010",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:senior_living_complex:senior_garden_courtyard",
+      "domain": "building",
+      "option": {
+        "id": "senior_living_complex"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_garden_court_senior_residence",
+          "model": {
+            "variantId": "senior_garden_courtyard",
+            "revision": "clay-garden-court-senior-residence-clay-v006",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:gastown_heritage_commercial:gastown_italianate",
+      "domain": "building",
+      "option": {
+        "id": "gastown_heritage_commercial"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_gastown_heritage_commercial",
+          "model": {
+            "variantId": "gastown_italianate",
+            "revision": "clay-gastown-heritage-commercial-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:halifax_georgian_colonial:georgian_clapboard_original",
+      "domain": "building",
+      "option": {
+        "id": "halifax_georgian_colonial"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_halifax_georgian_colonial",
+          "model": {
+            "variantId": "georgian_clapboard_original",
+            "revision": "clay-halifax-georgian-colonial-clay-v003",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:halifax_waterfront_warehouse:warehouse_privateers_wharf",
+      "domain": "building",
+      "option": {
+        "id": "halifax_waterfront_warehouse"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_halifax_waterfront_warehouse",
+          "model": {
+            "variantId": "warehouse_privateers_wharf",
+            "revision": "clay-halifax-waterfront-warehouse-clay-v006",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:vertical_farm_indoor_agriculture:dark_panel_led_grow_block",
+      "domain": "building",
+      "option": {
+        "id": "vertical_farm_indoor_agriculture"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_led_grow_block",
+          "model": {
+            "variantId": "dark_panel_led_grow_block",
+            "revision": "clay-led-grow-block-clay-v007",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:london_mews_house:london-mews-house-original-stable",
+      "domain": "building",
+      "option": {
+        "id": "london_mews_house"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_mews_coach_house",
+          "model": {
+            "variantId": "london-mews-house-original-stable",
+            "revision": "clay-mews-coach-house-clay-v006",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:old_montreal_limestone_commercial:old_mtl_french_colonial",
+      "domain": "building",
+      "option": {
+        "id": "old_montreal_limestone_commercial"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_old_montreal_limestone_commercial",
+          "model": {
+            "variantId": "old_mtl_french_colonial",
+            "revision": "clay-old-montreal-limestone-commercial-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:calgary_plus_15_connected_tower:plus15_contemporary_glass",
+      "domain": "building",
+      "option": {
+        "id": "calgary_plus_15_connected_tower"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_plus15_glass_office_tower",
+          "model": {
+            "variantId": "plus15_contemporary_glass",
+            "revision": "clay-plus15-glass-office-tower-clay-v006",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:west_end_mid_century_tower:midcentury_concrete_slab",
+      "domain": "building",
+      "option": {
+        "id": "west_end_mid_century_tower"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_slab_balcony_tower",
+          "model": {
+            "variantId": "midcentury_concrete_slab",
+            "revision": "clay-slab-balcony-tower-clay-v007",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "building:toronto_bay_and_gable_house:toronto_bay_gable_yellow_brick",
+      "domain": "building",
+      "option": {
+        "id": "toronto_bay_and_gable_house"
+      },
+      "placements": [
+        {
+          "id": "claude_trial_toronto_bay_and_gable",
+          "model": {
+            "variantId": "toronto_bay_gable_yellow_brick",
+            "revision": "clay-toronto-bay-and-gable-house-clay-v004",
+            "method": "RLASM 6.1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:multi_use_trail:garden_gravel_path_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "multi_use_trail"
+      },
+      "placements": [
+        {
+          "id": "garden_gravel_path_v1",
+          "model": {
+            "variantId": "garden_gravel_path_v1",
+            "revision": "53d98bede5cadbf62fe5c36d2d7232291565fae3aaee44c313564695e4f087fd",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:campus_pedestrian_spine:concrete_neighbourhood_walk_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "campus_pedestrian_spine"
+      },
+      "placements": [
+        {
+          "id": "concrete_neighbourhood_walk_v1",
+          "model": {
+            "variantId": "concrete_neighbourhood_walk_v1",
+            "revision": "cbfa6d72b1b1b7aac8c842fcca64e78a122da99625ed675fa5e447ff88002e9c",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:campus_pedestrian_spine:brick_courtyard_path_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "campus_pedestrian_spine"
+      },
+      "placements": [
+        {
+          "id": "brick_courtyard_path_v1",
+          "model": {
+            "variantId": "brick_courtyard_path_v1",
+            "revision": "987de3477b8a9bc658c9456ee4b5593a5e07648a118c620506be518ea7cab575",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:halifax_waterfront_boardwalk:timber_garden_walk_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "halifax_waterfront_boardwalk"
+      },
+      "placements": [
+        {
+          "id": "timber_garden_walk_v1",
+          "model": {
+            "variantId": "timber_garden_walk_v1",
+            "revision": "cdd6ef784f8c1351018ec472e5464f10f0e9f4caeae62237743095b0b4aa6634",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:multi_use_trail:asphalt_shared_path_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "multi_use_trail"
+      },
+      "placements": [
+        {
+          "id": "asphalt_shared_path_v1",
+          "model": {
+            "variantId": "asphalt_shared_path_v1",
+            "revision": "d09c9368796449954516e0c5e6790857a84bb6465525cb60a14de789bb42d6e3",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:campus_pedestrian_spine:standalone_narrow_sidewalk_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "campus_pedestrian_spine"
+      },
+      "placements": [
+        {
+          "id": "standalone_narrow_sidewalk_v1",
+          "model": {
+            "variantId": "standalone_narrow_sidewalk_v1",
+            "revision": "322b6b9382cd811e18c81ae6c23e8d4868fe48d840c20dbea094bf7dbbb1ecf1",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:campus_pedestrian_spine:standalone_neighbourhood_sidewalk_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "campus_pedestrian_spine"
+      },
+      "placements": [
+        {
+          "id": "standalone_neighbourhood_sidewalk_v1",
+          "model": {
+            "variantId": "standalone_neighbourhood_sidewalk_v1",
+            "revision": "d859f4e399f17e9f6db270c6630fbc43dab8a4e355d61c880f558a102ca78b74",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:campus_pedestrian_spine:standalone_urban_sidewalk_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "campus_pedestrian_spine"
+      },
+      "placements": [
+        {
+          "id": "standalone_urban_sidewalk_v1",
+          "model": {
+            "variantId": "standalone_urban_sidewalk_v1",
+            "revision": "4ff46e23abc65c10c77525e82f5d5b8c614218b9c920c0cfbed72060f62f165f",
+            "method": "native_street_modules_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:urban_pocket_park:flexible:flexible_pocket_park_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "urban_pocket_park"
+      },
+      "placements": [
+        {
+          "id": "flexible_pocket_park_v1",
+          "model": {
+            "variantId": "urban_pocket_park_v0",
+            "revision": "flexible-outline-v1",
+            "method": "public_realm_park_kit"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:linear_park_greenway:flexible:flexible_linear_greenway_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "linear_park_greenway"
+      },
+      "placements": [
+        {
+          "id": "flexible_linear_greenway_v1",
+          "model": {
+            "variantId": "linear_park_greenway_v0",
+            "revision": "flexible-outline-v1",
+            "method": "public_realm_park_kit"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:urban_pocket_park:flexible:flexible_shade_courtyard_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "urban_pocket_park"
+      },
+      "placements": [
+        {
+          "id": "flexible_shade_courtyard_v1",
+          "model": {
+            "variantId": "urban_pocket_park_v1",
+            "revision": "flexible-outline-v1",
+            "method": "public_realm_park_kit"
+          }
+        }
+      ]
+    },
+    {
+      "id": "park_plaza:urban_pocket_park:flexible:flexible_meadow_grove_v1",
+      "domain": "park_plaza",
+      "option": {
+        "id": "urban_pocket_park"
+      },
+      "placements": [
+        {
+          "id": "flexible_meadow_grove_v1",
+          "model": {
+            "variantId": "urban_pocket_park_v2",
+            "revision": "flexible-outline-v1",
+            "method": "public_realm_park_kit"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:calgary_local:calgary_local_draft3_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "calgary_local"
+      },
+      "placements": [
+        {
+          "id": "calgary_local_draft3_v1",
+          "model": {
+            "variantId": "calgary_local_draft3_v1",
+            "revision": "75c9605ef7bc294eb4722192b311fb7a1888882e353fc9830dd090b1ebdabf31",
+            "method": "manual_metric_section_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:calgary_local_industrial:calgary_local_industrial_draft3_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "calgary_local_industrial"
+      },
+      "placements": [
+        {
+          "id": "calgary_local_industrial_draft3_v1",
+          "model": {
+            "variantId": "calgary_local_industrial_draft3_v1",
+            "revision": "3c5580fa115a268b479e820781594ca567fa9b1c24cc30fc8ef7a82285b2d742",
+            "method": "manual_metric_section_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:calgary_collector:calgary_collector_draft3_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "calgary_collector"
+      },
+      "placements": [
+        {
+          "id": "calgary_collector_draft3_v1",
+          "model": {
+            "variantId": "calgary_collector_draft3_v1",
+            "revision": "d9707a946e24410cda68294ceb66f63988c9a6344ba83dcc152e2a136fec572b",
+            "method": "manual_metric_section_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:calgary_arterial_4lane_50:calgary_arterial_4lane_50_draft3_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "calgary_arterial_4lane_50"
+      },
+      "placements": [
+        {
+          "id": "calgary_arterial_4lane_50_draft3_v1",
+          "model": {
+            "variantId": "calgary_arterial_4lane_50_draft3_v1",
+            "revision": "6b19e46f5cf47fc31fa1f95baa33611fba2af3c90c4987a709b1d6951f6a19e4",
+            "method": "manual_metric_section_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:calgary_arterial_4lane_70:calgary_arterial_4lane_70_draft3_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "calgary_arterial_4lane_70"
+      },
+      "placements": [
+        {
+          "id": "calgary_arterial_4lane_70_draft3_v1",
+          "model": {
+            "variantId": "calgary_arterial_4lane_70_draft3_v1",
+            "revision": "42de737a2b5c36f2ea1d750f66df583a91eb02e9b470b2072a7ac0700efd80b5",
+            "method": "manual_metric_section_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:calgary_arterial_6lane:calgary_arterial_6lane_draft3_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "calgary_arterial_6lane"
+      },
+      "placements": [
+        {
+          "id": "calgary_arterial_6lane_draft3_v1",
+          "model": {
+            "variantId": "calgary_arterial_6lane_draft3_v1",
+            "revision": "0f09c562cb495caf7556b627a193ce6a850997c29de51b6c6d3996429e1c7a37",
+            "method": "manual_metric_section_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:calgary_alley:calgary_alley_draft3_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "calgary_alley"
+      },
+      "placements": [
+        {
+          "id": "calgary_alley_draft3_v1",
+          "model": {
+            "variantId": "calgary_alley_draft3_v1",
+            "revision": "f4ef87d7ad02ee0db524704d92d9c7d5cb3118d2c80c06cdd376c61c197ca7b3",
+            "method": "manual_metric_section_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:calgary_local_high_activity:calgary_local_high_activity_draft3_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "calgary_local_high_activity"
+      },
+      "placements": [
+        {
+          "id": "calgary_local_high_activity_draft3_v1",
+          "model": {
+            "variantId": "calgary_local_high_activity_draft3_v1",
+            "revision": "2c80ed5688f89dd0a277662aed610706de5d566653bc72b91fa1b4d181056ca9",
+            "method": "manual_metric_section_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:calgary_collector_industrial:calgary_collector_industrial_draft3_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "calgary_collector_industrial"
+      },
+      "placements": [
+        {
+          "id": "calgary_collector_industrial_draft3_v1",
+          "model": {
+            "variantId": "calgary_collector_industrial_draft3_v1",
+            "revision": "c6efe487d089ae116324999d760f0816c2b33d773dbdf28ba1140e3be50b0e43",
+            "method": "manual_metric_section_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:calgary_collector_high_activity:calgary_collector_high_activity_draft3_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "calgary_collector_high_activity"
+      },
+      "placements": [
+        {
+          "id": "calgary_collector_high_activity_draft3_v1",
+          "model": {
+            "variantId": "calgary_collector_high_activity_draft3_v1",
+            "revision": "4e4b30180d352e8dac6cd7602781743abcba558152973a65b99d514cd7b55671",
+            "method": "manual_metric_section_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:calgary_arterial_high_activity:calgary_arterial_high_activity_draft3_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "calgary_arterial_high_activity"
+      },
+      "placements": [
+        {
+          "id": "calgary_arterial_high_activity_draft3_v1",
+          "model": {
+            "variantId": "calgary_arterial_high_activity_draft3_v1",
+            "revision": "b4b73cbe659aafb11e7e6f00c0a604855702cfab042d25c45120e198f2a7b973",
+            "method": "manual_metric_section_v1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "street_pathway:calgary_skeletal:calgary_skeletal_draft3_v1",
+      "domain": "street_pathway",
+      "option": {
+        "id": "calgary_skeletal"
+      },
+      "placements": [
+        {
+          "id": "calgary_skeletal_draft3_v1",
+          "model": {
+            "variantId": "calgary_skeletal_draft3_v1",
+            "revision": "16c216c3eb070ad04345d763ed36744de82ea92344853b97616ab179bd75686f",
+            "method": "manual_metric_section_v1"
+          }
+        }
+      ]
+    }
+  ]
+}

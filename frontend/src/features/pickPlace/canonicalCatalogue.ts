@@ -11,6 +11,7 @@ import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
 import { catalogueStyleIds, catalogueStyleLabel } from './catalogueFacets';
 import { cataloguePresentationFor } from './cataloguePresentation';
+import { teachingSearchTerms } from '@/features/catalogueLearning/teaching';
 import { CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS, COURT_ONLY_SPORT_ASSETS } from './assetRegistry';
 import { LOCAL_CLAUDE_ASSETS } from './claudeAssetLocalTrial';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
@@ -211,6 +212,7 @@ export function filterCanonicalChoices(domain: CatalogueDomain, query = '', grou
       ...presentationTerms,
       ...fallbackTerms,
       ...catalogueStyleIds(choice).map(id => catalogueStyleLabel(id)),
+      ...teachingSearchTerms(choice),
       ...(choice.option.variants ?? []).map(v => v.id)].join(' '));
     return terms.every(term => haystack.includes(term));
   });

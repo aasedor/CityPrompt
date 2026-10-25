@@ -22,6 +22,7 @@ const classroomCount = (domain: typeof sections[number]['id']) => CLASSROOM_CHOI
 const classroomSummary = `${CLASSROOM_CHOICES.length} exact choices: ${classroomCount('building')} buildings, ${classroomCount('park_plaza')} parks, ${classroomCount('street_pathway')} streets. App validation in progress; fixed review models have explicit limits.`;
 type Section = typeof sections[number]['id'];
 const filterStyle = 'min-h-11 min-w-0 rounded-lg border border-slate-400 bg-white px-3 text-sm text-slate-900';
+const browseButtonStyle = 'min-h-11 rounded-full border border-slate-400 bg-white px-3 font-semibold hover:bg-lime-100 aria-pressed:border-slate-900 aria-pressed:bg-lime-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2';
 
 export function PlacementPalette({ selected, onPick, onCancel, status, message, onRetry, canRefreshDetail, onPickStreet, activeStreetVariant, onBrowseChange, onPickCanonical, onPickGenerated, primaryAction, onDrawParkingLot }: {
   onDrawParkingLot?: () => void;
@@ -36,19 +37,21 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [categoryView, setCategoryView] = useState(true);
+  const [browseMode,setBrowseMode] = useState<'use'|'style'|'planning'>('use');
   const [section, setSection] = useState<Section>('building');
   const [query, setQuery] = useState('');
   const [groupId, setGroupId] = useState('');
   const [purposeId, setPurposeId] = useState('');
-  const [facets, setFacets] = useState<CatalogueFacets>({ styleId: '', sizeId: '' });
+  const [facets, setFacets] = useState<CatalogueFacets>({ styleId: '', sizeId: '', planningId:'' });
   const [limit, setLimit] = useState(12);
   const [collection, setCollection] = useState<'starter' | 'explore'>('starter');
   const [showFixedStreetSegments, setShowFixedStreetSegments] = useState(false);
   const close = useCallback(() => { setOpen(false); onBrowseChange?.(false); }, [onBrowseChange]);
-  const clearFilters = () => { setGroupId(''); setPurposeId(''); setQuery(''); setFacets({styleId:'',sizeId:''}); setLimit(12); };
-  const showCategories = () => { clearFilters(); setCategoryView(true); };
+  const clearFilters = () => { setGroupId(''); setPurposeId(''); setQuery(''); setFacets({styleId:'',sizeId:'',planningId:''}); setLimit(12); };
+  const showCategories = () => { clearFilters(); setBrowseMode('use'); setCategoryView(true); };
   const chooseSection = (id: Section) => { setSection(id); showCategories(); };
-  const choosePurpose = (id: string) => { clearFilters(); setPurposeId(id); setCategoryView(false); };
+  const choosePurpose = (id: string) => { clearFilters(); setBrowseMode('use'); setPurposeId(id); setCategoryView(false); };
+  const browseTeaching = (mode:'style'|'planning') => { clearFilters(); setBrowseMode(mode); setCategoryView(false); };
   const choices = collection === 'starter' ? CLASSROOM_CHOICES : CANONICAL_CHOICES;
   const groups = availablePickerCategories(section, choices);
   const matchingAssets = useMemo(() => filterCanonicalChoices(section, query, purposeId, choices)
@@ -102,6 +105,12 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
             {visibleSections.map(({ id, label, icon: Icon }) => <button key={id} aria-pressed={section === id} onClick={() => chooseSection(id)}
               className={`flex min-h-11 flex-1 items-center justify-center gap-2 rounded-lg border px-2 text-sm font-semibold ${section === id ? 'border-slate-900 bg-[#c9ff3d]' : 'border-slate-300 bg-white hover:bg-lime-50'}`}><Icon size={18} />{label}</button>)}
           </nav>
+          {!userGenerated && <div role="group" aria-label="Ways to browse" className="flex flex-wrap items-center gap-2 text-xs">
+            <span className="font-semibold">Explore by</span>
+            <button type="button" onClick={showCategories} aria-pressed={browseMode==='use'} className={browseButtonStyle}>Use</button>
+            {section==='building' && <button type="button" aria-label="Browse by architectural style" aria-pressed={browseMode==='style'} onClick={()=>browseTeaching('style')} className={browseButtonStyle}>Architectural style</button>}
+            <button type="button" aria-label="Browse by planning idea" aria-pressed={browseMode==='planning'} onClick={()=>browseTeaching('planning')} className={browseButtonStyle}>Planning idea</button>
+          </div>}
           <div className={categoryView ? 'grid gap-2' : 'grid gap-2 sm:grid-cols-2'}>
             <label className="sr-only" htmlFor="placement-search">Search objects or district code</label>
             <input id="placement-search" type="search" placeholder="Search names or district codes…" value={query} onChange={event => { setQuery(event.target.value); setCategoryView(false); setLimit(12); }} className={filterStyle} />
@@ -115,11 +124,12 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
           {!categoryView && <div className="flex items-center gap-3"><button type="button" onClick={showCategories} className="flex min-h-11 items-center gap-2 rounded-full border-2 border-[#232323] bg-[#fff9ec] px-3 text-xs font-bold hover:bg-[#c9ff3d]"><ArrowLeft size={16} aria-hidden="true" />All categories</button><h3 className="text-lg font-extrabold">{userGenerated ? 'Your generated buildings' : CALGARY_GROUPS.find(group => group.id === purposeId)?.label ?? (query ? 'Search results' : `All ${sections.find(item => item.id === section)?.label.toLowerCase()}`)}</h3></div>}
           {!categoryView && !userGenerated && <>
             <CatalogueFacetControls domain={section} choices={choices} purposeId={purposeId} facets={facets}
+              browseMode={browseMode}
               onPurpose={id => { setPurposeId(id); setLimit(12); }}
               onFacet={(key,id) => { setFacets(value => ({...value,[key]:id})); setLimit(12); }} />
             <div className="flex items-center justify-between gap-2 text-xs text-slate-600">
               <p role="status">{assets.length} {assets.length === 1 ? 'choice' : 'choices'} · Choose a design, then place it or draw its outline.</p>
-              {(query || groupId || purposeId || facets.styleId || facets.sizeId) && <button type="button" onClick={clearFilters} className="min-h-11 shrink-0 underline">Reset filters</button>}
+              {(query || groupId || purposeId || facets.styleId || facets.sizeId || facets.planningId) && <button type="button" onClick={clearFilters} className="min-h-11 shrink-0 underline">Reset filters</button>}
             </div>
           </>}
           {!categoryView && section === 'street_pathway' && fixedStreetCount > 0 && <button type="button"
@@ -146,7 +156,7 @@ export function PlacementPalette({ selected, onPick, onCancel, status, message, 
             onGenerated={section === 'building' && onPickGenerated ? () => { clearFilters(); setGroupId('user-generated'); setCategoryView(false); } : undefined} />
           : userGenerated && onPickGenerated ? <UserGeneratedBuildings query={query} onPick={model => { close(); onPickGenerated(model); }} /> : <>
           <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {assets.slice(0, limit).map(choice => <CanonicalCatalogueCard key={`${collection}:${choice.id}:${query}:${groupId}:${purposeId}:${facets.styleId}:${facets.sizeId}`} choice={choice}
+            {assets.slice(0, limit).map(choice => <CanonicalCatalogueCard key={`${collection}:${choice.id}:${query}:${groupId}:${purposeId}:${facets.styleId}:${facets.sizeId}:${facets.planningId}`} choice={choice}
               initialVariantId={preferredCatalogueVariant(choice, query, purposeId)}
               selected={selected} activeStreetVariant={activeStreetVariant}
               onPlacement={asset => { close(); if (asset.kind === 'street') onPickStreet?.(asset); else onPick(asset.id); }}

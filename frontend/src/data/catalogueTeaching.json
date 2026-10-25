@@ -1,0 +1,3819 @@
+{
+  "schema": "cityprompt.catalogue-teaching@1",
+  "reviewedDate": "2026-10-25",
+  "scope": "Introductory research classifications; does not grant model approval or planning certification",
+  "audit": {
+    "sourceCommit": "55033b913",
+    "sha256": "a15a239fb77fb98550db150f63257a08530fcc7089c8838685617a353a3e859c",
+    "inventorySha256": "a8248ac3486dba78d3164015899dc6d1cb255f39e2879c47ec889331543a3cbb",
+    "sourceInventorySha256": "19ed89a4100801a72c9f21bd0bb21db6baa8d90bb074f1e5e4748e0e1878ee61"
+  },
+  "introductoryPlanningIds": [
+    "new_urbanism",
+    "tod",
+    "garden_city",
+    "ecology",
+    "complete",
+    "auto"
+  ],
+  "styles": {
+    "neoclassical": {
+      "label": "Neoclassical",
+      "kind": "Architectural style",
+      "description": "Symmetry, classical columns, ordered proportions and restrained geometric composition.",
+      "designIdea": "Clarity, order and continuity with antiquity; often used to project institutional permanence.",
+      "sourceIds": [
+        "riba_neo"
+      ]
+    },
+    "brutalism": {
+      "label": "Brutalism",
+      "kind": "Architectural movement",
+      "description": "Expressive mass, deep openings and an overt presentation of materials, structure and construction.",
+      "designIdea": "Material directness and a serious, legible architectural presence.",
+      "sourceIds": [
+        "riba_brut"
+      ]
+    },
+    "modernism": {
+      "label": "Modernism",
+      "kind": "Architectural movement / broad influence",
+      "description": "Unornamented volumes, structural grids and extensive glazing.",
+      "designIdea": "Functional clarity and technological experimentation.",
+      "sourceIds": [
+        "riba_mod"
+      ]
+    },
+    "contemporary": {
+      "label": "Contemporary",
+      "kind": "Broad period / curatorial family",
+      "description": "Current architectural vocabulary; specific examples differ in materials, roofs and composition.",
+      "designIdea": "Discuss each design’s stated aims rather than assigning one shared ideology.",
+      "sourceIds": [
+        "riba_mod"
+      ]
+    },
+    "minimalism": {
+      "label": "Minimalist contemporary",
+      "kind": "Aesthetic tendency",
+      "description": "Reduced material palette, plain volumes and carefully placed openings.",
+      "designIdea": "Restraint, spatial clarity and emphasis on proportion.",
+      "sourceIds": [
+        "riba_mod"
+      ]
+    },
+    "timber_contemporary": {
+      "label": "Contemporary timber",
+      "kind": "Material expression / broad family",
+      "description": "Visible timber frames, timber surfaces or a timber-led architectural composition.",
+      "designIdea": "Making construction legible and exploring material warmth.",
+      "sourceIds": [
+        "riba_mod",
+        "biophilic"
+      ]
+    },
+    "nordic": {
+      "label": "Nordic-inspired contemporary",
+      "kind": "Regional aesthetic influence",
+      "description": "In these catalogue examples: restrained palettes, timber and clear roof forms.",
+      "designIdea": "Use the examples to discuss domestic scale, light and material restraint.",
+      "sourceIds": [
+        "vernacular"
+      ]
+    },
+    "biophilic": {
+      "label": "Biophilic design",
+      "kind": "Design approach, cross-style",
+      "description": "Deliberate connections to planting, daylight, natural materials and natural forms.",
+      "designIdea": "Strengthening people’s connection with nature in the built environment.",
+      "sourceIds": [
+        "biophilic"
+      ]
+    },
+    "gothic": {
+      "label": "Gothic Revival",
+      "kind": "Architectural revival / influence",
+      "description": "Pointed openings, tracery, steep roofs and vertical accents.",
+      "designIdea": "Historical continuity and expressive craftsmanship; often spiritual or collegiate associations.",
+      "sourceIds": [
+        "riba_goth"
+      ]
+    },
+    "italianate": {
+      "label": "Italianate",
+      "kind": "Architectural revival family",
+      "description": "Bracketed cornices, arched openings and layered facade composition.",
+      "designIdea": "Civic or commercial dignity and an urban facade addressing the street.",
+      "sourceIds": [
+        "gsa"
+      ]
+    },
+    "georgian": {
+      "label": "Georgian",
+      "kind": "Architectural tradition / influence",
+      "description": "Balanced facades, regularly arranged windows and a composed entrance.",
+      "designIdea": "Proportion, symmetry and an orderly domestic or civic presence.",
+      "sourceIds": [
+        "georgian"
+      ]
+    },
+    "second_empire": {
+      "label": "Second Empire influence",
+      "kind": "Architectural style / influence",
+      "description": "Mansard roofs, dormers and an elaborate roof silhouette.",
+      "designIdea": "Prominence and urban prestige.",
+      "sourceIds": [
+        "second_empire",
+        "gsa"
+      ]
+    },
+    "belle_epoque": {
+      "label": "Belle Époque eclectic",
+      "kind": "Period + mixed stylistic influences",
+      "description": "Richly articulated classical composition combined with iron, glass and other decorative vocabularies.",
+      "designIdea": "Ceremony, display and commercial spectacle.",
+      "sourceIds": [
+        "gsa",
+        "modernisme"
+      ]
+    },
+    "modernisme": {
+      "label": "Catalan Modernisme",
+      "kind": "Architectural movement / regional expression",
+      "description": "Decorative ironwork, coloured glass and expressive craft in these market references.",
+      "designIdea": "Integration of architecture, craft and regional cultural expression.",
+      "sourceIds": [
+        "modernisme"
+      ]
+    },
+    "art_deco": {
+      "label": "Art Deco",
+      "kind": "Architectural / decorative style",
+      "description": "Geometric ornament, strong vertical accents and stepped composition.",
+      "designIdea": "Modernity expressed through decoration, craft and visual energy.",
+      "sourceIds": [
+        "riba_deco"
+      ]
+    },
+    "moderne": {
+      "label": "Streamline Moderne",
+      "kind": "Architectural style / Art Deco-related branch",
+      "description": "Rounded corners, smooth surfaces and strong horizontal bands.",
+      "designIdea": "An aerodynamic image of modernity.",
+      "sourceIds": [
+        "gsa"
+      ]
+    },
+    "baronial": {
+      "label": "Scottish Baronial",
+      "kind": "Architectural revival",
+      "description": "Turrets, crow-stepped gables and a castle-like roofline.",
+      "designIdea": "Romantic historical identity and a picturesque silhouette.",
+      "sourceIds": [
+        "scottish"
+      ]
+    },
+    "craftsman": {
+      "label": "Craftsman / Arts and Crafts",
+      "kind": "Movement / regional architectural expression",
+      "description": "Expressed carpentry, substantial porch elements and legible construction.",
+      "designIdea": "Craftsmanship, material care and a response to industrial standardisation.",
+      "sourceIds": [
+        "riba_arts"
+      ]
+    },
+    "edwardian": {
+      "label": "Edwardian Foursquare",
+      "kind": "Period + house form / influence",
+      "description": "In this example: square massing, a hipped roof, dormer and columned porch.",
+      "designIdea": "An orderly domestic composition with restrained traditional detail.",
+      "sourceIds": [
+        "newengland",
+        "georgian"
+      ]
+    },
+    "vernacular": {
+      "label": "Regional vernacular",
+      "kind": "Regional building tradition",
+      "description": "Established local patterns of roofs, materials, entrances and adaptation.",
+      "designIdea": "Everyday usefulness and continuity of local building knowledge.",
+      "sourceIds": [
+        "vernacular"
+      ]
+    },
+    "machiya": {
+      "label": "Traditional Japanese machiya",
+      "kind": "Regional urban building tradition / type",
+      "description": "Timber construction, street-facing lattice and a relationship to interior gardens.",
+      "designIdea": "Continuity of living, work, craft and local urban culture.",
+      "sourceIds": [
+        "machiya"
+      ]
+    },
+    "mediterranean": {
+      "label": "Mediterranean-inspired",
+      "kind": "Regional aesthetic / revival family",
+      "description": "For these models: arcades, stucco or stone, tiled roofs and sheltered outdoor rooms.",
+      "designIdea": "Shaded thresholds and relationships between indoor and outdoor life.",
+      "sourceIds": [
+        "gsa"
+      ]
+    },
+    "ranch": {
+      "label": "Post-war Ranch",
+      "kind": "Domestic tradition / house form",
+      "description": "Low horizontal composition, broad roof and an informal street-facing domestic presence.",
+      "designIdea": "Ground-oriented living and a close relationship to the private plot.",
+      "sourceIds": [
+        "newengland"
+      ]
+    },
+    "industrial": {
+      "label": "Industrial / utilitarian",
+      "kind": "Functional design tradition",
+      "description": "Simple enclosures, working doors, repetitive bays and visible construction systems.",
+      "designIdea": "Efficient accommodation of work, storage and servicing.",
+      "sourceIds": [
+        "riba_mod"
+      ]
+    },
+    "historic_industrial": {
+      "label": "Historic industrial",
+      "kind": "Construction / architectural tradition",
+      "description": "Iron or steel frames, large spans, daylight glazing and brick enclosures.",
+      "designIdea": "Structure and daylight organised around working or public interior space.",
+      "sourceIds": [
+        "modernisme",
+        "gsa"
+      ]
+    },
+    "structural": {
+      "label": "Expressed structure",
+      "kind": "Aesthetic tendency / movement affinity",
+      "description": "Exposed frames, bracing, cables or other structure as a main part of the composition.",
+      "designIdea": "Making the way a building or bridge stands up visually legible.",
+      "sourceIds": [
+        "riba_mod"
+      ]
+    },
+    "rustic": {
+      "label": "Rustic / Parkitecture",
+      "kind": "Architectural tradition",
+      "description": "Logs, stone and crafted shelter forms that relate to a landscape setting.",
+      "designIdea": "Blending built structures with their landscape.",
+      "sourceIds": [
+        "parkitecture"
+      ]
+    },
+    "traditional_inspired": {
+      "label": "Traditional-inspired contemporary",
+      "kind": "Aesthetic tendency",
+      "description": "Current buildings using familiar pitched roofs, porches and domestic proportions.",
+      "designIdea": "Familiarity and continuity of domestic form.",
+      "sourceIds": [
+        "vernacular"
+      ]
+    },
+    "classical_uncertain": {
+      "label": "Classical / eclectic — review needed",
+      "kind": "Unresolved architectural family",
+      "description": "A formal facade, dome or classical motif appears in the reviewed reference.",
+      "designIdea": "Potential teaching themes: proportion and institutional presence.",
+      "sourceIds": [
+        "riba_neo",
+        "gsa"
+      ]
+    },
+    "contemporary_landscape": {
+      "label": "Contemporary public-space design",
+      "kind": "Broad landscape-design family",
+      "description": "Current arrangements of paving, seating, planting and public activity.",
+      "designIdea": "Discuss the actual arrangement, use and experience of each space.",
+      "sourceIds": [
+        "place"
+      ]
+    },
+    "naturalistic": {
+      "label": "Naturalistic / picturesque-inspired landscape",
+      "kind": "Landscape aesthetic / influence",
+      "description": "Informal planting, varied views and paths composed around landscape scenery.",
+      "designIdea": "Restoration, discovery and attention to site character.",
+      "sourceIds": [
+        "picturesque"
+      ]
+    },
+    "formal_garden": {
+      "label": "Formal / gardenesque tradition",
+      "kind": "Landscape-design family",
+      "description": "Ordered beds, designed paths, garden structures or deliberately displayed planting.",
+      "designIdea": "Cultivated display and a composed visitor experience.",
+      "sourceIds": [
+        "halifax",
+        "picturesque"
+      ]
+    },
+    "japanese_garden": {
+      "label": "Japanese-inspired garden",
+      "kind": "Landscape-tradition influence",
+      "description": "This reference combines a stream, stones, bridge and carefully framed planted views.",
+      "designIdea": "Attention to sequence, detail and relationships among water, stones and planting.",
+      "sourceIds": [
+        "machiya"
+      ]
+    },
+    "ecological_landscape": {
+      "label": "Ecological / green-infrastructure landscape",
+      "kind": "Landscape / environmental approach",
+      "description": "Wetland planting, rain gardens or other designed relationships to water and habitat.",
+      "designIdea": "Connecting public landscape with environmental processes.",
+      "sourceIds": [
+        "ecology"
+      ]
+    },
+    "productive": {
+      "label": "Productive / community-growing landscape",
+      "kind": "Landscape programme / approach",
+      "description": "Fruit trees, allotments or demonstration planting organised for growing and learning.",
+      "designIdea": "Stewardship, cultivation and opportunities for shared learning.",
+      "sourceIds": [
+        "garden_city",
+        "place"
+      ]
+    },
+    "recreation": {
+      "label": "Sport / recreation design — no specific style",
+      "kind": "Programme, not an architectural style",
+      "description": "Courts, play or activity equipment and their supporting outdoor space.",
+      "designIdea": "Opportunities for recreation and social activity.",
+      "sourceIds": [
+        "cnu"
+      ]
+    },
+    "heritage_street": {
+      "label": "Traditional / historic streetscape",
+      "kind": "Urban-form / streetscape tradition",
+      "description": "A fine-grained street frontage, traditional paving or a locally distinctive street pattern.",
+      "designIdea": "Continuity of urban character and street-based daily life.",
+      "sourceIds": [
+        "cnu",
+        "vernacular"
+      ]
+    },
+    "haussmann": {
+      "label": "Haussmannian boulevard tradition",
+      "kind": "Historical urban-design tradition",
+      "description": "Broad tree-lined boulevards and a coordinated metropolitan street composition.",
+      "designIdea": "Movement, infrastructure and a strong metropolitan image.",
+      "sourceIds": [
+        "haussmann"
+      ]
+    },
+    "canal": {
+      "label": "Canal-city streetscape tradition",
+      "kind": "Historical urban-form tradition",
+      "description": "Waterways, narrow urban edges, planted quays and bridge crossings.",
+      "designIdea": "Connections among water, movement and the urban edge.",
+      "sourceIds": [
+        "cnu"
+      ]
+    },
+    "contemporary_street": {
+      "label": "Contemporary street / public-realm design",
+      "kind": "Broad design family",
+      "description": "Current street arrangements with deliberate allocation of movement, planting and social space.",
+      "designIdea": "Make the priorities visible by comparing the actual allocation of space.",
+      "sourceIds": [
+        "complete",
+        "shared"
+      ]
+    },
+    "engineering": {
+      "label": "Engineering / standard-section design",
+      "kind": "Technical / functional family",
+      "description": "A prescribed road section, bridge structure or infrastructure component.",
+      "designIdea": "Clearance, movement and infrastructure function.",
+      "sourceIds": [
+        "complete"
+      ]
+    },
+    "surface": {
+      "label": "Path / surface component — style neutral",
+      "kind": "Material / functional component",
+      "description": "A clear walking or cycling surface in a stated material.",
+      "designIdea": "Connecting places and providing a legible route.",
+      "sourceIds": [
+        "tod"
+      ]
+    }
+  },
+  "planning": {
+    "new_urbanism": {
+      "label": "New Urbanism",
+      "description": "Compact, connected neighbourhoods combining different uses and housing choices.",
+      "designIdea": "Walkable daily life and well-defined shared public space.",
+      "componentLimit": "A compatible frontage or street is one component; a whole-plan assessment is needed.",
+      "sourceIds": [
+        "cnu"
+      ]
+    },
+    "tod": {
+      "label": "Transit-oriented development",
+      "description": "Integrating land use with walking, cycling and useful public transport.",
+      "designIdea": "Access to activities with less dependence on cars.",
+      "componentLimit": "A station or tall building alone does not establish TOD, service quality or equitable outcomes.",
+      "sourceIds": [
+        "tod"
+      ]
+    },
+    "garden_city": {
+      "label": "Garden City",
+      "description": "Combining settlement, landscape, local work and long-term community stewardship.",
+      "designIdea": "Healthy living and shared community benefit.",
+      "componentLimit": "Green space alone is not Garden City planning; land, governance, jobs and housing matter.",
+      "sourceIds": [
+        "garden_city"
+      ]
+    },
+    "ecology": {
+      "label": "Green infrastructure",
+      "description": "Treating water, habitat, planting and built development as related systems.",
+      "designIdea": "Resilience and care for environmental processes.",
+      "componentLimit": "Model appearance cannot establish stormwater capacity, biodiversity or carbon performance.",
+      "sourceIds": [
+        "ecology"
+      ]
+    },
+    "complete": {
+      "label": "Complete Streets",
+      "description": "Allocating street space for safe access by people using different modes and with different abilities.",
+      "designIdea": "Inclusive mobility and context-sensitive street design.",
+      "componentLimit": "A section alone does not verify crossings, speeds, networks or accessibility compliance.",
+      "sourceIds": [
+        "complete"
+      ]
+    },
+    "auto": {
+      "label": "Car-oriented layouts",
+      "description": "Organising frontage, access or movement around motor vehicles and a hierarchy of roads.",
+      "designIdea": "Vehicle access and circulation.",
+      "componentLimit": "This describes a spatial priority, not the political beliefs of designers or users.",
+      "sourceIds": [
+        "complete"
+      ]
+    }
+  },
+  "sources": {
+    "riba_neo": {
+      "label": "RIBA: Neoclassicism",
+      "url": "https://www.riba.org/explore/riba-collections/architectural-styles/neoclassical-movement/"
+    },
+    "riba_brut": {
+      "label": "RIBA: Brutalism",
+      "url": "https://www.riba.org/explore/riba-collections/architectural-styles/brutalism-movement/"
+    },
+    "riba_mod": {
+      "label": "RIBA: Modernism",
+      "url": "https://www.riba.org/explore/riba-collections/architectural-styles/modernism-movement/"
+    },
+    "riba_goth": {
+      "label": "RIBA: Gothic Revival",
+      "url": "https://www.riba.org/explore/riba-collections/architectural-styles/gothic-revival-movement/"
+    },
+    "riba_arts": {
+      "label": "RIBA: Arts and Crafts",
+      "url": "https://www.riba.org/explore/riba-collections/architectural-styles/arts-and-crafts-movement/"
+    },
+    "riba_deco": {
+      "label": "RIBA: Art Deco",
+      "url": "https://www.riba.org/explore/riba-collections/architectural-styles/art-deco-movement/"
+    },
+    "gsa": {
+      "label": "US General Services Administration: architectural styles",
+      "url": "https://www.gsa.gov/real-estate/explore-historic-buildings/explore-by-architectural-style"
+    },
+    "georgian": {
+      "label": "National Park Service: Georgian architecture at Independence Hall",
+      "url": "https://www.nps.gov/inde/learn/historyculture/places-independencehall-architecture.htm"
+    },
+    "vernacular": {
+      "label": "Historic England: vernacular houses",
+      "url": "https://historicengland.org.uk/images-books/publications/dlsg-vernacular-houses/"
+    },
+    "newengland": {
+      "label": "Historic New England: architectural style guide",
+      "url": "https://www.historicnewengland.org/preservation/for-homeowners-communities/your-old-or-historic-home/architectural-style-guide/"
+    },
+    "scottish": {
+      "label": "Historic Environment Scotland: Abbotsford",
+      "url": "https://portal.historicenvironment.scot/apex/f?p=1505:300:::::VIEWTYPE,VIEWREF:designation,GDL00001"
+    },
+    "machiya": {
+      "label": "Kyoto Center for Community Collaboration: Kyo-machiya",
+      "url": "https://kyoto-machisen.jp/machiya/"
+    },
+    "modernisme": {
+      "label": "Barcelona City Council: market architecture",
+      "url": "https://www.meet.barcelona/en/visit-and-love-it/barcelonas-markets"
+    },
+    "second_empire": {
+      "label": "Parks Canada: Second Empire style in Canadian architecture",
+      "url": "https://www.publications.gc.ca/site/eng/9.864315/publication.html"
+    },
+    "parkitecture": {
+      "label": "National Park Service: NPS Rustic / Parkitecture",
+      "url": "https://www.nps.gov/subjects/architecture/parkitecture.htm"
+    },
+    "biophilic": {
+      "label": "Living Future: Biophilic Design Basics",
+      "url": "https://living-future.org/biophilic-design/overview/"
+    },
+    "cnu": {
+      "label": "Congress for the New Urbanism: Charter",
+      "url": "https://www.cnu.org/who-we-are/charter-new-urbanism"
+    },
+    "tod": {
+      "label": "ITDP: TOD Standard",
+      "url": "https://tod.itdp.org/tod-standard.html"
+    },
+    "complete": {
+      "label": "National Complete Streets Coalition: Complete Streets",
+      "url": "https://smartgrowthamerica.org/what-are-complete-streets/"
+    },
+    "shared": {
+      "label": "NACTO: residential shared streets",
+      "url": "https://nacto.org/publication/urban-street-design-guide/streets/residential-shared-street/"
+    },
+    "garden_city": {
+      "label": "Town and Country Planning Association: Garden City Principles",
+      "url": "https://www.tcpa.org.uk/garden-city-principles/"
+    },
+    "vancouver": {
+      "label": "City of Vancouver: Vancouverism and planning",
+      "url": "https://vancouver.ca/home-property-development/planning-zoning-development.aspx"
+    },
+    "haussmann": {
+      "label": "City of Paris: Haussmann and the transformation of Paris",
+      "url": "https://www.paris.fr/pages/haussmann-l-homme-qui-a-transforme-paris-23091"
+    },
+    "ecology": {
+      "label": "US EPA: green infrastructure",
+      "url": "https://www.epa.gov/green-infrastructure"
+    },
+    "picturesque": {
+      "label": "National Park Service: Olmsted design principles",
+      "url": "https://www.nps.gov/frla/learn/historyculture/olmsted-theory-and-design-principles.htm"
+    },
+    "halifax": {
+      "label": "Canadian Register of Historic Places: Halifax Public Gardens",
+      "url": "https://www.historicplaces.ca/en/rep-reg/place-lieu.aspx?id=3221"
+    },
+    "place": {
+      "label": "Project for Public Spaces: What is placemaking?",
+      "url": "https://www.pps.org/article/what-is-placemaking"
+    }
+  },
+  "lessons": {
+    "validation_timber_sanctuary_church_glazed_gable": {
+      "domain": "building",
+      "archetypeId": "timber_sanctuary_church",
+      "variantId": "timber_sanctuary_church_glazed_gable",
+      "modelRevision": "da8ad808774d542d9b4f6216f3c9589b40633a6c56222ab05c9863fe6cdd712b",
+      "modelMethod": "RLASM 6.1 architectural clay",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "timber_contemporary",
+        "contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Glazed gable and exposed timber frames are explicitly described; local reference board is not hydrated for this audit."
+    },
+    "validation_gothic_community_church_single_spire": {
+      "domain": "building",
+      "archetypeId": "gothic_community_church",
+      "variantId": "gothic_community_church_single_spire",
+      "modelRevision": "ca7066e8dc41f1d1e258ec5b162ed832787d576be8ee67d7449ddfa3850741fb",
+      "modelMethod": "RLASM 6.1 architectural clay",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "gothic"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Spire, rose window and vaulted nave establish Gothic-inspired design in the exact description; image was unavailable locally."
+    },
+    "validation_reference_charcoal_gable_fourplex_v1": {
+      "domain": "building",
+      "archetypeId": "reference_charcoal_gable_fourplex",
+      "variantId": "reference_charcoal_gable_fourplex_v1",
+      "modelRevision": "22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732",
+      "modelMethod": "RLASM 6.1 candidate",
+      "typeLabel": "Rowhouse / townhouse",
+      "styleIds": [
+        "contemporary",
+        "traditional_inspired"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Four individual stoops and repeated steep gables suggest contemporary ground-oriented housing; no specific historical style is established."
+    },
+    "validation_minimalist_infill_brick_monolith": {
+      "domain": "building",
+      "archetypeId": "minimalist_infill_townhouse",
+      "variantId": "minimalist_infill_brick_monolith",
+      "modelRevision": "97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Detached home",
+      "styleIds": [
+        "minimalism",
+        "contemporary"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Restrained buff-brick volumes and deep precise openings support the minimalist classification."
+    },
+    "validation_brewery_crystal_brewhouse": {
+      "domain": "building",
+      "archetypeId": "brewery_distillery",
+      "variantId": "brewery_crystal_brewhouse",
+      "modelRevision": "722ec3561d3ddf14fce312d67adbe8a8b268b2b414157e8644cfb5dcf3ff1782",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Shops / services",
+      "styleIds": [
+        "structural",
+        "contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "The faceted glass-and-steel brewhouse makes its frame and roof structure central to the image."
+    },
+    "validation_museum_earth_sheltered": {
+      "domain": "building",
+      "archetypeId": "monumental_museum_axis",
+      "variantId": "museum_earth_sheltered",
+      "modelRevision": "ff9b62f7965b2f73f73e0896f06340d76196e6768e364b5c66a7a0e9e28e9106",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "contemporary",
+        "biophilic"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "An earth-covered museum and projecting skylights merge architecture with the planted terrain; civic monumentality is not its style."
+    },
+    "validation_clapboard_north_end": {
+      "domain": "building",
+      "archetypeId": "halifax_painted_clapboard_row",
+      "variantId": "clapboard_north_end",
+      "modelRevision": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Detached home",
+      "styleIds": [
+        "vernacular",
+        "georgian"
+      ],
+      "planningIds": [],
+      "confidence": "Review",
+      "referenceReviewed": true,
+      "rationale": "Reference shows a balanced clapboard facade with low roof; older variant text describes a gabled saltbox row. Maritime vernacular is the safe broad label."
+    },
+    "validation_machiya_cafe_gallery": {
+      "domain": "building",
+      "archetypeId": "japanese_machiya_mixed_use",
+      "variantId": "machiya_cafe_gallery",
+      "modelRevision": "b65861f28967939f7ec50f133417077e40576366f5382e404ed7d1c13fec4ea9",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Shops / services",
+      "styleIds": [
+        "machiya"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Timber lattice, deep traditional townhouse form and garden relationship support machiya; cafe reuse is a separate approach."
+    },
+    "validation_cast_iron_italianate": {
+      "domain": "building",
+      "archetypeId": "soho_cast_iron_loft_building",
+      "variantId": "cast_iron_italianate",
+      "modelRevision": "29ed79811ff9f9e89ce975a105835e8d425d33730fd0de187d85d034426a3e6f",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Apartment building",
+      "styleIds": [
+        "italianate"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Cast-iron columns, round arches and a strong cornice show an Italianate commercial facade."
+    },
+    "validation_art_deco_streamline_moderne": {
+      "domain": "building",
+      "archetypeId": "art_deco_setback_tower",
+      "variantId": "art_deco_streamline_moderne",
+      "modelRevision": "4969c98cb0f6fd6d510fbbf2e410fd45b934a93005d8a0a49460b1ae7540d0a3",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Apartment building",
+      "styleIds": [
+        "moderne"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Rounded corner glazing and continuous horizontal bands identify Streamline Moderne rather than a generic Deco tower."
+    },
+    "validation_rndsqr_midrise_terraced_garden": {
+      "domain": "building",
+      "archetypeId": "rndsqr_terraced_mixed_use_midrise",
+      "variantId": "rndsqr_midrise_terraced_garden",
+      "modelRevision": "927bb882aad323702146db98c9095a4f798f101384c5af15901ff712724a0d47",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Apartment building",
+      "styleIds": [
+        "contemporary",
+        "biophilic"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Stepped planted terraces, warm cladding and a shop base support contemporary infill with biophilic features."
+    },
+    "validation_rec_centre_timber_hall": {
+      "domain": "building",
+      "archetypeId": "community_recreation_centre",
+      "variantId": "rec_centre_timber_hall",
+      "modelRevision": "a07dcba9316c85dadcc325c9849c2fab9127174de52eb6513fc6dcfc2569aecf",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "timber_contemporary",
+        "traditional_inspired"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "An exposed timber gable and veranda give the community hall a contemporary timber and traditional shelter expression."
+    },
+    "validation_contemporary_townhouse_timber_screen": {
+      "domain": "building",
+      "archetypeId": "contemporary_townhouse_courtyard",
+      "variantId": "contemporary_townhouse_timber_screen",
+      "modelRevision": "c7a40074d68f8e0d7429caa553ba767723192e8d0b1d7e54bc4db3cdb2ee2ab5",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Rowhouse / townhouse",
+      "styleIds": [
+        "contemporary",
+        "timber_contemporary"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Vertical timber screens and a recessed ground-level entrance are legible in the townhouse reference."
+    },
+    "native-park:botanical_garden_v3--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "botanical_garden",
+      "variantId": "botanical_garden_v3",
+      "modelRevision": "8e5447c3b253c3f5842c049948620c67eebe4679f73b72ca84145718f58e4a84",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Garden",
+      "styleIds": [
+        "formal_garden",
+        "historic_industrial"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A conservatory and curated plant displays support botanical and gardenesque traditions; the building and garden have separate design vocabularies."
+    },
+    "native-park:sculpture_garden_v0--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "sculpture_garden",
+      "variantId": "sculpture_garden_v0",
+      "modelRevision": "5ea667d78cf619fd919494c852c1fe5751f3e951fdc8deccba3904d52500af62",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Garden",
+      "styleIds": [
+        "contemporary_landscape"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Art objects and viewing routes support a contemporary cultural court, without proving a named planning ideology."
+    },
+    "native-park:student_neighbourhood_orchard_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "student_neighbourhood_orchard_v1",
+      "variantId": "student_neighbourhood_orchard_v1",
+      "modelRevision": "746f5c3037bef70511e1529b7c7ca536697ea9931798231ca4a2c68306bf80ff",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Neighbourhood / community park",
+      "styleIds": [
+        "productive"
+      ],
+      "planningIds": [
+        "garden_city",
+        "ecology"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Fruit trees and shared outdoor space support productive-landscape principles; the clay reference does not establish ecological performance."
+    },
+    "native-park:amphitheater_lawn_v0--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "amphitheater_lawn",
+      "variantId": "amphitheater_lawn_v0",
+      "modelRevision": "e5bbe20222fe6af93f05c33a8ef4688f57b51b8636d0d5dee5672d1c2840d1ee",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Neighbourhood / community park",
+      "styleIds": [
+        "contemporary_landscape",
+        "naturalistic"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Terraced landscape seating integrates performance into a planted lawn."
+    },
+    "native-park:student_garden_square_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "student_garden_square_v1",
+      "variantId": "student_garden_square_v1",
+      "modelRevision": "b0310f14be314d41a61167a5d62627fbadbf65ce37f1d3dc2e3feaef2f8c7400",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Plaza / gathering space",
+      "styleIds": [
+        "contemporary_landscape"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Timber, stone and gathering space support contemporary garden-square design; no historical garden school is established."
+    },
+    "native-park:wetland_rain_garden_v0--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "wetland_rain_garden",
+      "variantId": "wetland_rain_garden_v0",
+      "modelRevision": "95c8676b5de15a86550f632d994a1bebe65efb51ea73ee3ad5acabbac6ba1c54",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Linear park / greenway",
+      "styleIds": [
+        "ecological_landscape",
+        "naturalistic"
+      ],
+      "planningIds": [
+        "ecology"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Wetland planting and water-edge boardwalks clearly support an ecological-landscape teaching theme."
+    },
+    "amsterdam_gracht_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "amsterdam_gracht",
+      "variantId": "amsterdam_gracht_v1",
+      "modelRevision": "db99c735b29e2d9c9131d89f787fd137fb1f41523cbae55d8a15322e35535ef9",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Local street",
+      "styleIds": [
+        "canal",
+        "heritage_street"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Canal banks, trees and an arched crossing establish a canal-city precedent; a specific transport hierarchy needs a network context."
+    },
+    "brt_bus_rapid_transit_corridor_v0": {
+      "domain": "street_pathway",
+      "archetypeId": "brt_bus_rapid_transit_corridor",
+      "variantId": "brt_bus_rapid_transit_corridor_v0",
+      "modelRevision": "c18cdf29bc7474a90b1bbbc5531650faefb388e0366f6ce2d1ba98c75bbecb1c",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Transit corridor",
+      "styleIds": [
+        "contemporary_street",
+        "engineering"
+      ],
+      "planningIds": [
+        "tod",
+        "complete"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Bus-priority corridor geometry supports transit-oriented components; station-area land uses and service are not established."
+    },
+    "student_planted_shared_lane_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "student_planted_shared_lane_v1",
+      "variantId": "student_planted_shared_lane_v1",
+      "modelRevision": "9a70236d619d94ee3ca8c642b9eebb14ed3ebfd7884b19777ca7c17d09017520",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "The authored shared lane combines planting and gathering; safe operation requires speed management and accessible navigation."
+    },
+    "student_quiet_residential_street_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "student_quiet_residential_street_v1",
+      "variantId": "student_quiet_residential_street_v1",
+      "modelRevision": "b6f20dbe8236380630ce0f1d212b1690317e4351f229d8140bf0e7ce1ad23626",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Local street",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Walking routes and planting support walkable-neighbourhood principles; connected blocks cannot be inferred from one segment."
+    },
+    "landmark_signature_bridge_v2": {
+      "domain": "street_pathway",
+      "archetypeId": "landmark_signature_bridge",
+      "variantId": "landmark_signature_bridge_v2",
+      "modelRevision": "45097473e6d0b948c507466c46862330bdb42fc19edd4575abb08e1d986bd34c",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Street / infrastructure",
+      "styleIds": [
+        "structural",
+        "contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "The current model is a landmark broad-deck bridge; exact architectural expression needs its local reference image."
+    },
+    "validation_beltline_brick_modern": {
+      "domain": "building",
+      "archetypeId": "calgary_beltline_mid_rise",
+      "variantId": "beltline_brick_modern",
+      "modelRevision": "81d39f92f9f85aa769598bdcfbfe989a628ed52fd1e6da8c27660b6cbec66618",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Mixed-use building",
+      "styleIds": [
+        "contemporary"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Brick bays, deep-set windows and ground-floor shops support contemporary contextual urban infill."
+    },
+    "validation_infill_flat_roof_minimal": {
+      "domain": "building",
+      "archetypeId": "calgary_modern_infill_house",
+      "variantId": "infill_flat_roof_minimal",
+      "modelRevision": "71f9478a6a053be8c43fe1a6c39c4bae700af94f043aac8be42e42ab8bcbdc74",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Detached home",
+      "styleIds": [
+        "minimalism",
+        "contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Flat roof, crisp volumes and large openings support minimalist contemporary infill."
+    },
+    "native-park:research_garden_teaching_arboretum_variant_3--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "research_garden_teaching_arboretum",
+      "variantId": "research_garden_teaching_arboretum_variant_3",
+      "modelRevision": "d76573a0a2a7281b71018a9f75dcee148fb8e401ad547e3053eba4f8a475c38e",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Garden",
+      "styleIds": [
+        "productive",
+        "contemporary_landscape"
+      ],
+      "planningIds": [
+        "ecology"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Demonstration beds, plant displays and a teaching shelter support a productive educational landscape."
+    },
+    "native-park:basketball_court_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "basketball_court",
+      "variantId": "basketball_court_v1",
+      "modelRevision": "4682d83edf8fee509fbe4f4edae8cd524849743fa613046c358a4a6615a36fa3",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "recreation",
+        "contemporary_landscape"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A court with seating and trees illustrates active neighbourhood public space; sport is a programme rather than a style."
+    },
+    "validation_student_main_street_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "neighborhood_main_street",
+      "variantId": "student_main_street_v1",
+      "modelRevision": "7d93e05d06e84e0c722f3a005055329d970698d6dbc2a7a95f94daae2a67e531",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Local street",
+      "styleIds": [
+        "heritage_street",
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "new_urbanism",
+        "complete"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Fine-grained shops, sidewalks, street trees and curbside parking support a traditional main-street component."
+    },
+    "validation_student_market_street_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "pedestrian_only_street",
+      "variantId": "student_market_street_v1",
+      "modelRevision": "38a330a8af325cf111a211e68c89a80a0f45e78c04c606784f37ee9c79f72345",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "heritage_street"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A pedestrian market street provides space for walking, stalls and gathering."
+    },
+    "native-park:student_reading_garden_v2--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "student_reading_garden",
+      "variantId": "student_reading_garden_v2",
+      "modelRevision": "5c6a709fb7e69eeeb6de039809c16776bc30645de9614afffab85397c711c50a",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Garden",
+      "styleIds": [
+        "contemporary_landscape",
+        "naturalistic"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Shade and quiet seating are documented; no locally hydrated image was available to establish a finer landscape tradition."
+    },
+    "native-park:student_pickleball_garden_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "student_pickleball_garden",
+      "variantId": "student_pickleball_garden_v1",
+      "modelRevision": "ef5762251943079d6a7510f529b4d117a31d2837fe857f11d461ae4cdb47e7e3",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "recreation",
+        "contemporary_landscape"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Sport combined with social garden space supports recreation and public-life principles; fine aesthetic classification awaits image review."
+    },
+    "native-park:student_tennis_garden_v2--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "student_tennis_garden",
+      "variantId": "student_tennis_garden_v2",
+      "modelRevision": "e2f7e20157f3ad95782137f984524f16f980670bcbdf9caa0034b43bdc063a41",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "recreation",
+        "contemporary_landscape"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "A tennis court in planting is a garden recreation programme, not a distinct architectural movement."
+    },
+    "native-park:student_bocce_garden_v2--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "student_bocce_garden",
+      "variantId": "student_bocce_garden_v2",
+      "modelRevision": "935250c769cf950991ce35e6ccc4a7fc580c43bbf808bb2d5bc4bbcb25f26fc0",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "recreation",
+        "contemporary_landscape"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "A pergola and social court suggest sheltered public recreation; Mediterranean authorship cannot be inferred from bocce alone."
+    },
+    "native-park:urban_pocket_park_v0--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "urban_pocket_park",
+      "variantId": "urban_pocket_park_v0",
+      "modelRevision": "aa17f01fdb4a44036d038696728e54ec5b35974f30adae2be7a1258d557eaaad",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Garden",
+      "styleIds": [
+        "naturalistic",
+        "rustic"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "The reference combines a curving path, planted refuge and timber shelter; the native and flexible choices retain distinct placement identities."
+    },
+    "native-park:linear_park_greenway_v0--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "linear_park_greenway",
+      "variantId": "linear_park_greenway_v0",
+      "modelRevision": "58be0c48376bb8b565fa8a9449072a542b68ec41d9b793be2018b58683e5d1b1",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Linear park / greenway",
+      "styleIds": [
+        "naturalistic",
+        "contemporary_landscape"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A continuous path and meadow-like planting reference a reused railway corridor; adaptive reuse is an approach, not one aesthetic style."
+    },
+    "native-park:inclusive_accessible_playground_v0--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "inclusive_accessible_playground",
+      "variantId": "inclusive_accessible_playground_v0",
+      "modelRevision": "fc15d5ad13a8642d10f74945908ee3afbddc1c841f99ba0641449bf92e240888",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "recreation",
+        "naturalistic"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Woodland-themed inclusive play is documented; accessibility performance is not verified by the name."
+    },
+    "clay_side_by_side_duplex": {
+      "domain": "building",
+      "archetypeId": "calgary_modern_infill_house",
+      "variantId": "infill_duplex",
+      "modelRevision": "calgary-side-by-side-duplex-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Duplex / semi-detached",
+      "styleIds": [
+        "contemporary",
+        "minimalism"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Two independent entrances and a shared narrow-lot composition make this a contemporary duplex, despite its parent's single-family use."
+    },
+    "clay_montreal_plateau_duplex": {
+      "domain": "building",
+      "archetypeId": "montreal_duplex",
+      "variantId": "montreal_duplex_plateau",
+      "modelRevision": "montreal-plateau-duplex-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Duplex / semi-detached",
+      "styleIds": [
+        "vernacular"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Exterior stair, stacked homes and ornamental cornice identify a Montreal residential vernacular; duplex is its type."
+    },
+    "clay_courtyard_brick_modern": {
+      "domain": "building",
+      "archetypeId": "courtyard_family_housing",
+      "variantId": "courtyard_family_brick_modern",
+      "modelRevision": "courtyard-brick-modern-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Apartment building",
+      "styleIds": [
+        "contemporary"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A restrained brick entrance building and pedestrian passages support contemporary courtyard-housing vocabulary; the surrounding court is separately designed."
+    },
+    "trial_postwar_bungalow": {
+      "domain": "building",
+      "archetypeId": "calgary_inner_city_bungalow",
+      "variantId": "bungalow_postwar_ranch",
+      "modelRevision": "calgary-inner-city-bungalow-clay-v005",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Detached home",
+      "styleIds": [
+        "ranch",
+        "vernacular"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "Ranch form is documented, but the present adjustable model and reference should be checked before teaching a strict historical-period example."
+    },
+    "trial_edwardian_foursquare": {
+      "domain": "building",
+      "archetypeId": "toronto_edwardian_foursquare",
+      "variantId": "toronto_foursquare_red_brick",
+      "modelRevision": "toronto-edwardian-foursquare-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Detached home",
+      "styleIds": [
+        "edwardian",
+        "georgian"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Hipped roof, front dormer, square mass and columned porch identify the Edwardian Foursquare example with Classical influence."
+    },
+    "clay_rammed_earth_infill": {
+      "domain": "building",
+      "archetypeId": "detached_contemporary_infill",
+      "variantId": "detached_infill_rammed_earth",
+      "modelRevision": "detached_contemporary_infill-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Detached home",
+      "styleIds": [
+        "contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Rammed-earth walls, timber screens and shaded loggias are contemporary material expression, not sufficient evidence for a separate historical style."
+    },
+    "clay_blue_glass_office_tower": {
+      "domain": "building",
+      "archetypeId": "glass_tower_podium_modern",
+      "variantId": "glass_tower_blue_reflective",
+      "modelRevision": "glass_tower_podium_modern-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Office",
+      "styleIds": [
+        "contemporary",
+        "modernism"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A curtain-wall office shaft and glazed entrance are a contemporary continuation of glass-tower Modernism; its planning context is not established."
+    },
+    "clay_vancouver_balcony_podium_tower": {
+      "domain": "building",
+      "archetypeId": "vancouverism_tower_podium",
+      "variantId": "vancouverism_classic",
+      "modelRevision": "vancouverism-tower-podium-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Residential tower",
+      "styleIds": [
+        "contemporary",
+        "modernism"
+      ],
+      "planningIds": [
+        "tod"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "The narrow balcony tower, landscaped podium and lower shop wing illustrate Vancouverism's tower-and-podium component."
+    },
+    "student_cycle_avenue_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "protected_bike_lane_bidirectional",
+      "variantId": "student_cycle_avenue_v1",
+      "modelRevision": "f56ed6647252befea881c6101236c588b889a80392113b681a14c0a33b32e9ed",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "complete",
+        "tod"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Protected cycling space with pedestrian routes supports active-travel principles; continuity and junctions need separate review."
+    },
+    "student_green_alley_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "montreal_ruelle_verte",
+      "variantId": "student_green_alley_v1",
+      "modelRevision": "5fa64b56938f1adaaa5088b454d58e736fa23db3930d6f7a47345f95fb746c7b",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Alley",
+      "styleIds": [
+        "heritage_street",
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "ecology"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Community alley planting and social use support a ruelle-verte approach; ownership and community participation are not established by geometry."
+    },
+    "student_school_street_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "school_street",
+      "variantId": "student_school_street_v1",
+      "modelRevision": "0a0f39857cee97851bf405f59ff75f6efff9929adeac1c435b6fae9e9ceecd4f",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Local street",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Playful paving and pedestrian space support a school-street teaching example; operations and access restrictions are not simulated."
+    },
+    "native-park:student_woodland_stream_garden_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "japanese_garden",
+      "variantId": "student_woodland_stream_garden_v1",
+      "modelRevision": "e3fff90f005da1a2bb19b49c4cfeaa69a8ec32dca68a4a1a74f0179bc2c81461",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Linear park / greenway",
+      "styleIds": [
+        "japanese_garden",
+        "naturalistic"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "Stream, stones, bridge and framed woodland views support Japanese inspiration, with no specific garden school established."
+    },
+    "native-park:student_reflecting_fountain_garden_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "fountain_water_feature",
+      "variantId": "student_reflecting_fountain_garden_v1",
+      "modelRevision": "eda91f3a08b13efd331753078900f080612d971d3acc14b994f3fea9d2f78b96",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Plaza / gathering space",
+      "styleIds": [
+        "contemporary_landscape",
+        "formal_garden"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "An axial paved court and water jets support contemporary formal composition; the current reference reads more paved than garden-like."
+    },
+    "native-park:student_terraced_cafe_court_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "sunken_plaza",
+      "variantId": "student_terraced_cafe_court_v1",
+      "modelRevision": "6f8c9e3f3d67e18da2aef8c65719f5ba0eee9afe7a9613261e36705e8b9a166f",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Plaza / gathering space",
+      "styleIds": [
+        "contemporary_landscape",
+        "formal_garden"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "Terraces and a centred fountain create a formal civic-space comparison; this alone is not a City Beautiful plan."
+    },
+    "student_grass_tram_avenue_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "light_rail_tram_avenue",
+      "variantId": "student_grass_tram_avenue_v1",
+      "modelRevision": "3562b794641d753ee9710233052adfc08931ca5bfc0ccece6c3853ae1a75f9bd",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Transit corridor",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "tod",
+        "complete",
+        "ecology"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Tram tracks, walking routes and planting are transit-priority components; grass tracks alone do not prove ecological benefit."
+    },
+    "student_vine_pergola_promenade_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "riverfront_promenade",
+      "variantId": "student_vine_pergola_promenade_v1",
+      "modelRevision": "428b632b3202f7324cc0bb538bc7fe387c839c6074d5c148fc122574d5d43b46",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "A shaded promenade supports pedestrian comfort and social use; a specific historical planning movement is not established."
+    },
+    "student_grand_haussmann_boulevard_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "haussmann_boulevard",
+      "variantId": "student_grand_haussmann_boulevard_v1",
+      "modelRevision": "ad63425c5e2c4de12f1d961df5d5f61ff514aad9cae299eaf1e64a71d7f9df3c",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Arterial / major road",
+      "styleIds": [
+        "haussmann",
+        "heritage_street"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "The authored boulevard explicitly references Haussmann; frontage coordination and metropolitan layout remain wider-plan questions."
+    },
+    "showcase_market": {
+      "domain": "building",
+      "archetypeId": "food_hall_market_hall",
+      "variantId": "market_historic_iron_glass",
+      "modelRevision": "showcase-market-clay-v006",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Shops / services",
+      "styleIds": [
+        "historic_industrial"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "The iron-and-glass roof and brick market enclosure express a historic market-hall construction tradition."
+    },
+    "showcase_aquatic": {
+      "domain": "building",
+      "archetypeId": "aquatic_natatorium_complex",
+      "variantId": "biophilic_mass_timber_pool",
+      "modelRevision": "showcase-aquatic-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "timber_contemporary",
+        "biophilic"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Expressed timber arches, glazed frontage and a planted roof support contemporary biophilic architectural intent."
+    },
+    "showcase_tower": {
+      "domain": "building",
+      "archetypeId": "art_deco_setback_tower",
+      "variantId": "art_deco_cream_terracotta",
+      "modelRevision": "showcase-tower-clay-v005",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Office",
+      "styleIds": [
+        "art_deco"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A setback crown, terracotta relief and vertical emphasis clearly support Art Deco."
+    },
+    "autumn_timber": {
+      "domain": "building",
+      "archetypeId": "nordic_timber_midrise",
+      "variantId": "nordic_timber_mass_timber",
+      "modelRevision": "autumn-timber-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Apartment building",
+      "styleIds": [
+        "timber_contemporary",
+        "nordic",
+        "biophilic"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A timber structural grid, recessed balconies and roof planting justify the contemporary timber family; Nordic is a documented influence, not a location claim."
+    },
+    "autumn_villa": {
+      "domain": "building",
+      "archetypeId": "mediterranean_villa_estate",
+      "variantId": "med_villa_tuscan",
+      "modelRevision": "autumn-villa-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Detached home",
+      "styleIds": [
+        "mediterranean",
+        "vernacular"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Stone arcades, shutters and a tiled roof identify the Tuscan-inspired villa vocabulary."
+    },
+    "autumn_cinema": {
+      "domain": "building",
+      "archetypeId": "deco_theater_mainstreet",
+      "variantId": "deco_theater_movie_palace",
+      "modelRevision": "autumn-cinema-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "art_deco"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Geometric relief, marquee and vertical blade sign identify the Art Deco cinema frontage."
+    },
+    "native-park:student_urban_splash_plaza_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "splash_pad_area",
+      "variantId": "student_urban_splash_plaza_v1",
+      "modelRevision": "274f6fb01e74ae32a5c6764508f50b917866e8bf98b617a7e94aeb5ce2fe6838",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "contemporary_landscape",
+        "recreation"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Geometric paving and interactive water illustrate contemporary play-oriented public space."
+    },
+    "native-park:student_stone_labyrinth_garden_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "labyrinth_meditation",
+      "variantId": "student_stone_labyrinth_garden_v1",
+      "modelRevision": "c00bd66703707245b469c8c3d120470fc3d8b65aeb34e7918d45ca7e15145f07",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Garden",
+      "styleIds": [
+        "contemporary_landscape",
+        "formal_garden"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Deliberate circular walking geometry supports a contemplative contemporary garden, not an automatic religious or historical attribution."
+    },
+    "native-park:student_sheltered_dog_park_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "dog_park",
+      "variantId": "student_sheltered_dog_park_v1",
+      "modelRevision": "2e4db53b86fef7e6451cbfcb77b8b169f4b788fe0e53a974e259ad7b84e54f0c",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "recreation",
+        "contemporary_landscape"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A fenced activity area and shelter support social recreation; no specific ideology follows from the programme."
+    },
+    "student_london_cobbled_mews_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "london_mews_lane",
+      "variantId": "student_london_cobbled_mews_v1",
+      "modelRevision": "143c3856c4008aa41439d50cf59b332178a97b36635f85453b1f1f13a94d1bc8",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Alley",
+      "styleIds": [
+        "heritage_street"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Narrow cobbled lane form references London's mews tradition; surface material does not prove low-speed or accessible operation."
+    },
+    "student_cherry_blossom_street_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "vancouver_cherry_blossom_street",
+      "variantId": "student_cherry_blossom_street_v1",
+      "modelRevision": "f66b0d19aefdcdf9607c68dd73574fd9d7e78896f6aa53dfe17d83ecd5427384",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Local street",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Cherry-tree planting adds a landscape identity; it does not establish a separate Japanese planning ideology."
+    },
+    "student_barcelona_shaded_promenade_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "barcelona_passeig",
+      "variantId": "student_barcelona_shaded_promenade_v1",
+      "modelRevision": "33a5ba4c660e85527e85d60527088407fab69c67d5b774ce17f8f4d20446f1ec",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "A broad shaded walking space is Barcelona-inspired; this is not evidence of a Superblock or Cerdà grid."
+    },
+    "clay_mass_timber_biophilic_barn": {
+      "domain": "building",
+      "archetypeId": "university_library",
+      "variantId": "mass_timber_biophilic_barn",
+      "modelRevision": "neighbourhood-library-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "timber_contemporary",
+        "biophilic"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Exposed timber, a glazed reading hall and planted roof clearly support the proposed contemporary and biophilic tags."
+    },
+    "clay_parisian_corner_cafe_culture": {
+      "domain": "building",
+      "archetypeId": "parisian_boulevard_corner",
+      "variantId": "parisian_corner_cafe_culture",
+      "modelRevision": "neighbourhood-corner-cafe-clay-v010",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Mixed-use building",
+      "styleIds": [
+        "second_empire",
+        "belle_epoque"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "The rounded corner, mansard roof and cafe frontage support Parisian late-nineteenth-century eclecticism; an exact period attribution remains interpretive."
+    },
+    "native-park:student_community_allotment_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "community_garden_enhanced",
+      "variantId": "student_community_allotment_v1",
+      "modelRevision": "6b9d56fcc2d84088633503e9cc219ccef60fe79349b4fbc8d2138ce5d345af5a",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Garden",
+      "styleIds": [
+        "productive"
+      ],
+      "planningIds": [
+        "garden_city",
+        "ecology"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Shared growing beds and a garden shelter support productive-landscape principles; governance and actual food yield are not established."
+    },
+    "native-park:student_forest_adventure_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "nature_play_area",
+      "variantId": "student_forest_adventure_v1",
+      "modelRevision": "84ce02e0cba75ce3faf810e571048d39141a14462184b112e87a144f63de86dd",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "naturalistic",
+        "recreation"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Logs, planted edges and exploratory play support nature-play landscape design."
+    },
+    "native-park:student_spiral_lookout_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "student_spiral_lookout",
+      "variantId": "student_spiral_lookout_v1",
+      "modelRevision": "ba9ecbaafe0f56dd5206faa936951504675f05b4d5640adc25ca5d5aa98c773b",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Garden",
+      "styleIds": [
+        "contemporary_landscape",
+        "structural"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "A spiral lookout is documented; a more specific movement needs visual review of the unhydrated reference."
+    },
+    "native-park:student_quarry_garden_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "student_quarry_garden",
+      "variantId": "student_quarry_garden_v1",
+      "modelRevision": "bae24fb0fc5fb032dfb74a8301789633b0d45f76a04da6971e4d9548eaf38312",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Garden",
+      "styleIds": [
+        "naturalistic"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Quarry-inspired terrain supports a landscape-reclamation comparison; actual industrial reuse is not demonstrated."
+    },
+    "native-park:student_cascade_water_garden_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "student_cascade_water_garden",
+      "variantId": "student_cascade_water_garden_v1",
+      "modelRevision": "6b0f4391a5dfad1e21c0e1ca0a53dcd36fc609cf9eb541ac354f09e2ebd3ac4c",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Garden",
+      "styleIds": [
+        "contemporary_landscape",
+        "naturalistic"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Cascading water is the documented organising feature; a precise historical garden style is not established."
+    },
+    "clay_station_victorian_iron_glass": {
+      "domain": "building",
+      "archetypeId": "historic_grand_station",
+      "variantId": "station_victorian_iron_glass",
+      "modelRevision": "victorian-station-interior-clay-v007",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Infrastructure",
+      "styleIds": [
+        "historic_industrial"
+      ],
+      "planningIds": [
+        "tod"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "The large iron-and-glass train hall and historic masonry frontage belong to a Victorian engineering tradition; Victorian alone is a period label."
+    },
+    "clay_biophilic_mass_timber_campus": {
+      "domain": "building",
+      "archetypeId": "university_academic_complex",
+      "variantId": "biophilic_mass_timber_campus",
+      "modelRevision": "interior-school-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "timber_contemporary",
+        "biophilic"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Expressed timber bays, planting and a transparent teaching frontage justify biophilic contemporary timber architecture."
+    },
+    "clay_mediterranean_resort_courtyard": {
+      "domain": "building",
+      "archetypeId": "boutique_hotel",
+      "variantId": "mediterranean_resort_courtyard",
+      "modelRevision": "interior-hotel-clay-v006",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Hotel",
+      "styleIds": [
+        "mediterranean"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Shaded loggias, stucco, tiled roof and courtyard support Mediterranean-inspired contemporary hotel design."
+    },
+    "native-park:student_treetop_walk_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "student_treetop_walk",
+      "variantId": "student_treetop_walk_v1",
+      "modelRevision": "aef679e13148ddede9c39e73dbea57d74c23b41400d0363f3a132f93b6e72366",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Garden",
+      "styleIds": [
+        "naturalistic",
+        "contemporary_landscape"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Elevated canopy access suggests a landscape-led visitor experience; habitat and accessibility claims need evidence."
+    },
+    "native-park:student_terraced_rose_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "student_terraced_rose",
+      "variantId": "student_terraced_rose_v1",
+      "modelRevision": "bfee531419eb2c25ca0fb941c232abad5f9740821cd2ed7dcc67f8c963026b83",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Garden",
+      "styleIds": [
+        "formal_garden"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Roses and terraces establish a cultivated garden programme; no specific national formal-garden tradition is proven."
+    },
+    "student_elevated_garden_rail_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "elevated_garden_rail",
+      "variantId": "student_elevated_garden_rail_v1",
+      "modelRevision": "d101b5b4d1871681b5c6f0ce1756c533a41a74425a846993ca1e2946a44bb43c",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Transit corridor",
+      "styleIds": [
+        "contemporary_street",
+        "engineering"
+      ],
+      "planningIds": [
+        "tod",
+        "ecology"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Rail, walking, cycle route and planting form a multimodal corridor; the wider land-use strategy remains open."
+    },
+    "skytrain_elevated_corridor_v0": {
+      "domain": "street_pathway",
+      "archetypeId": "skytrain_elevated_corridor",
+      "variantId": "skytrain_elevated_corridor_v0",
+      "modelRevision": "0d49f39625d445fd165cc050f25287fe1f38a4d0d235ac8000b411466a22cd89",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Transit corridor",
+      "styleIds": [
+        "contemporary",
+        "structural"
+      ],
+      "planningIds": [
+        "tod"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Elevated railway and station hub are transit infrastructure; TOD requires surrounding access and land uses."
+    },
+    "elevated_rail_transit_corridor_v0": {
+      "domain": "street_pathway",
+      "archetypeId": "elevated_rail_transit_corridor",
+      "variantId": "elevated_rail_transit_corridor_v0",
+      "modelRevision": "4192e4b060c89bb0cd5b867321f0061cb4f594c880fc3e25c54d82a5fc3762a7",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Transit corridor",
+      "styleIds": [
+        "structural",
+        "contemporary"
+      ],
+      "planningIds": [
+        "tod"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "A flowing canopy is documented; parametric is a form-generation description rather than a neighbourhood ideology."
+    },
+    "native-park:student_sandy_beach_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "urban_beach",
+      "variantId": "student_sandy_beach_v1",
+      "modelRevision": "fccfdcc8f5fc403d9731f3a984fa00d5a7cac879b73ee49a8432ebd3491d9252",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Water / waterfront space",
+      "styleIds": [
+        "contemporary_landscape",
+        "recreation"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Sand, boardwalk and public activity support contemporary waterfront recreation."
+    },
+    "native-park:student_prairie_picnic_grove_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "prairie_picnic_grove",
+      "variantId": "student_prairie_picnic_grove_v1",
+      "modelRevision": "21710e19c4b6368480eb761df99b29017083e1400dadadee33b9e9b7238d4b31",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Neighbourhood / community park",
+      "styleIds": [
+        "naturalistic"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "A prairie grove and picnic programme support a landscape-led public space; Prairie School is an unrelated architecture label."
+    },
+    "native-park:student_neighbourhood_sports_green_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "neighbourhood_sports_green",
+      "variantId": "student_neighbourhood_sports_green_v1",
+      "modelRevision": "3cd5f45789349f6367ef0dbb51a36bb2db31a8e3161dd390dbba905d8878e6b3",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "recreation",
+        "naturalistic"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "A neighbourhood sports green is a recreation programme compatible with several urban approaches."
+    },
+    "native-park:student_sensory_wellness_garden_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "sensory_wellness_garden",
+      "variantId": "student_sensory_wellness_garden_v1",
+      "modelRevision": "6c3847fafbd9169537b4647a8dddc5e1bdc287af405ccaf9425966e817a24578",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Garden",
+      "styleIds": [
+        "contemporary_landscape",
+        "naturalistic"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Sensory planting and quiet relaxation support biophilic intent; health outcomes are not established."
+    },
+    "native-park:student_bicycle_pump_track_park_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "bicycle_pump_track_park",
+      "variantId": "student_bicycle_pump_track_park_v1",
+      "modelRevision": "5de7226e45bdda357d5f37707bf23c9857a544ab185ca5ddbd8171f6cd4b6e29",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "recreation"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Pump-track geometry is an activity design, not an architectural style or a complete cycling network."
+    },
+    "native-park:student_urban_skate_plaza_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "urban_skate_plaza",
+      "variantId": "student_urban_skate_plaza_v1",
+      "modelRevision": "f8f39b1991f46f3c9b5281955b8e77d415fe02a5de25787d3203cd686554acd4",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "recreation",
+        "contemporary_landscape"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Skateable public space supports active public life; no particular planning movement follows from its name."
+    },
+    "student_rain_garden_residential_street_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "narrow_residential_street",
+      "variantId": "student_rain_garden_residential_street_v1",
+      "modelRevision": "f4fb6ba6bffb3ad6590bace70e926c98d99a67a600091ddb8672c64a85727e87",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Local street",
+      "styleIds": [
+        "contemporary_street",
+        "ecological_landscape"
+      ],
+      "planningIds": [
+        "ecology",
+        "complete"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Rain gardens and clear walking routes support green-street principles; hydrological performance remains unverified."
+    },
+    "student_compact_one_way_shopping_street_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "neighborhood_main_street",
+      "variantId": "student_compact_one_way_shopping_street_v1",
+      "modelRevision": "cc70a02fe62f7463c3b39889bba13e229170ee784d5e51f5060ffabd27a76767",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Local street",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "new_urbanism",
+        "complete"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Compact shopping frontage and sidewalks support walkable-neighbourhood components; one-way operation alone has no ideological identity."
+    },
+    "student_neighbourhood_cycle_street_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "neighborhood_greenway",
+      "variantId": "student_neighbourhood_cycle_street_v1",
+      "modelRevision": "c35ec0969d4fcc4eee414fe9de4a378dbd7018340341edaf10a7da6a227b56be",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "complete"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Dedicated walking and cycling space supports active travel; intersections and network connections need context."
+    },
+    "student_separated_walking_cycling_greenway_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "multi_use_trail",
+      "variantId": "student_separated_walking_cycling_greenway_v1",
+      "modelRevision": "9426902708df20e0f8f2b7ca690f82edde688d445f604eaa831a898818a64f8e",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "naturalistic",
+        "contemporary_street"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Separate paths within planting establish an active-travel greenway rather than a specific architectural style."
+    },
+    "student_neighbourhood_transit_stop_street_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "floating_bus_stop_transit_street",
+      "variantId": "student_neighbourhood_transit_stop_street_v1",
+      "modelRevision": "4797f51909b02bfeb54ea45605feb58ab98a6bdeb0add3993a17062b720309fb",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Transit corridor",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "tod",
+        "complete"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "Transit stop, sidewalks and planting support transit-access principles; a stop alone does not establish TOD."
+    },
+    "native-park:court_only_basketball_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "court_only_basketball",
+      "variantId": "court_only_basketball_v1",
+      "modelRevision": "6392a787429c551108dd2d99912b690816d838035400d322883c7952f3423117",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "recreation"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Markings, equipment and clear playing reserve are functional sports design; the surrounding park and planning approach are student decisions."
+    },
+    "native-park:court_only_tennis_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "court_only_tennis",
+      "variantId": "court_only_tennis_v1",
+      "modelRevision": "eed1f8f2dd6a444847b93f1a5e98dd297cba50409dd456b2b19e2119d84ab8b5",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "recreation"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Markings, equipment and clear playing reserve are functional sports design; the surrounding park and planning approach are student decisions."
+    },
+    "native-park:court_only_pickleball_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "court_only_pickleball",
+      "variantId": "court_only_pickleball_v1",
+      "modelRevision": "9d6876edb170afc909a8cad57260c599cf6b09fd16bc97023c3e1d9c35fdd351",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "recreation"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Markings, equipment and clear playing reserve are functional sports design; the surrounding park and planning approach are student decisions."
+    },
+    "native-park:court_only_beach_volleyball_v1--native-v1": {
+      "domain": "park_plaza",
+      "archetypeId": "court_only_beach_volleyball",
+      "variantId": "court_only_beach_volleyball_v1",
+      "modelRevision": "1ce0ad75c0496a1eda8855d6ba8db37c439e1e77260cb038a0e77b4cb1b27aa8",
+      "modelMethod": "native_park_v2",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "recreation"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Markings, equipment and clear playing reserve are functional sports design; the surrounding park and planning approach are student decisions."
+    },
+    "claude_trial_stepped_terraced_plaza_park_only": {
+      "domain": "park_plaza",
+      "archetypeId": "stepped_terraced_plaza",
+      "variantId": "stepped_terraced_plaza_v0",
+      "modelRevision": "c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2",
+      "modelMethod": "native_validation_fixture",
+      "typeLabel": "Plaza / gathering space",
+      "styleIds": [
+        "contemporary_landscape",
+        "formal_garden"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "The park-only clay trial retains formal stepped paving; a full historical style cannot be established from this study."
+    },
+    "claude_public_realm:cable-stayed-cycle-ring:c1ef7008750f": {
+      "domain": "street_pathway",
+      "archetypeId": "dedicated_cycle_bridge",
+      "variantId": "dedicated_cycle_bridge_v1",
+      "modelRevision": "c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11",
+      "modelMethod": "fixed_public_realm_v1",
+      "typeLabel": "Street / infrastructure",
+      "styleIds": [
+        "structural"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Exposed stay cables support a cycle ring; this is structural expression serving cycling connectivity."
+    },
+    "claude_public_realm:calgary-riverwalk:22a0bc53f02c": {
+      "domain": "street_pathway",
+      "archetypeId": "bow_river_pathway",
+      "variantId": "bow_river_pathway_v0",
+      "modelRevision": "22a0bc53f02cd7f09f0358acbebb802b3ece274b8faa4347d3da4a23f1a24930",
+      "modelMethod": "fixed_public_realm_v1",
+      "typeLabel": "Street / infrastructure",
+      "styleIds": [
+        "contemporary_landscape",
+        "contemporary_street"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Riverside walking space, seating and planting support a landscape-led public promenade."
+    },
+    "claude_public_realm:halifax-public-gardens-park-only:9282a9ffd6a3": {
+      "domain": "park_plaza",
+      "archetypeId": "halifax_public_gardens",
+      "variantId": "halifax_public_gardens_v0",
+      "modelRevision": "9282a9ffd6a31997407cff90ebaea2c95e7ece983746d33e42f1c6e9ae154b79",
+      "modelMethod": "fixed_public_realm_v1",
+      "typeLabel": "Garden",
+      "styleIds": [
+        "formal_garden",
+        "naturalistic"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "The named precedent is a Victorian public garden; this stripped model illustrates selected layout elements rather than the complete historic site."
+    },
+    "claude_public_realm:ice-rink-market-square-park-only:6a578c3c8e3c": {
+      "domain": "park_plaza",
+      "archetypeId": "outdoor_ice_rink",
+      "variantId": "outdoor_ice_rink_v0",
+      "modelRevision": "6a578c3c8e3c54b729d50d83da473a52c1e039664c498ca4603343ee47bdd7a8",
+      "modelMethod": "fixed_public_realm_v1",
+      "typeLabel": "Play / sport",
+      "styleIds": [
+        "recreation",
+        "contemporary_landscape"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Seasonal rink and market uses support a flexible gathering-space approach; this is not a separate architectural movement."
+    },
+    "claude_public_realm:inglewood-main-street:e1106da0a1bc": {
+      "domain": "street_pathway",
+      "archetypeId": "inglewood_main_street",
+      "variantId": "inglewood_main_street_v0",
+      "modelRevision": "e1106da0a1bce03876cd9d863c4976b12f570cffdad693d8935615cea2623c1e",
+      "modelMethod": "fixed_public_realm_v1",
+      "typeLabel": "Street / infrastructure",
+      "styleIds": [
+        "heritage_street"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Fine-grained brick shopfronts and pedestrian edges form a traditional commercial main street."
+    },
+    "claude_public_realm:montreal-plateau-rue:92722fb6162c": {
+      "domain": "street_pathway",
+      "archetypeId": "montreal_plateau_residential_rue",
+      "variantId": "montreal_plateau_residential_rue_v0",
+      "modelRevision": "92722fb6162c910ca8fd749e24ceada451c668dc2dba880131dd03b593e99bde",
+      "modelMethod": "fixed_public_realm_v1",
+      "typeLabel": "Street / infrastructure",
+      "styleIds": [
+        "heritage_street"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Ground-oriented entrances and a fine-grained residential edge illustrate Montreal street-based urbanism."
+    },
+    "claude_public_realm:princes-island-park:498a973435fc": {
+      "domain": "park_plaza",
+      "archetypeId": "calgary_princes_island",
+      "variantId": "calgary_princes_island_v0",
+      "modelRevision": "498a973435fc8bc077084d3ee630babc55574a7365fdbd978a1cea742525a0ec",
+      "modelMethod": "fixed_public_realm_v1",
+      "typeLabel": "Plaza / gathering space",
+      "styleIds": [
+        "contemporary_landscape",
+        "naturalistic"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "The current reference is an urban planted terrace, so it should not be presented as a faithful stylistic account of the whole real island park."
+    },
+    "claude_public_realm:rail-through-truss:db0886ff6186": {
+      "domain": "street_pathway",
+      "archetypeId": "rail_transit_viaduct",
+      "variantId": "rail_transit_viaduct_v2",
+      "modelRevision": "db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813",
+      "modelMethod": "fixed_public_realm_v1",
+      "typeLabel": "Street / infrastructure",
+      "styleIds": [
+        "engineering",
+        "structural"
+      ],
+      "planningIds": [
+        "tod"
+      ],
+      "confidence": "Review",
+      "referenceReviewed": true,
+      "rationale": "Variant and current description say through-truss bridge, while the catalogue reference shows an arched masonry viaduct. Resolve the reference binding before teaching its structural type."
+    },
+    "claude_public_realm:road-diet-complete-street:bdd53e3b94bd": {
+      "domain": "street_pathway",
+      "archetypeId": "road_diet_complete_street",
+      "variantId": "road_diet_complete_street_v0",
+      "modelRevision": "bdd53e3b94bd97ce81d465654d567b2fc5bc32f2dbc1b5000aaa79f7c746a696",
+      "modelMethod": "fixed_public_realm_v1",
+      "typeLabel": "Street / infrastructure",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "complete"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Reallocated road space, cycle provision and pedestrian edges are a direct Complete Streets teaching example; real safety is not certified."
+    },
+    "claude_public_realm:steel-truss-road-bridge:d01804b356b2": {
+      "domain": "street_pathway",
+      "archetypeId": "urban_vehicular_bridge",
+      "variantId": "urban_vehicular_bridge_v1",
+      "modelRevision": "d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30",
+      "modelMethod": "fixed_public_realm_v1",
+      "typeLabel": "Street / infrastructure",
+      "styleIds": [
+        "engineering",
+        "structural"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "The exposed truss is the visual and structural organising feature; the bridge alone does not establish a car-oriented neighbourhood."
+    },
+    "claude_public_realm:swooping-cycle-flyover:4c075a5a31b0": {
+      "domain": "street_pathway",
+      "archetypeId": "dedicated_cycle_bridge",
+      "variantId": "dedicated_cycle_bridge_v0",
+      "modelRevision": "4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4",
+      "modelMethod": "fixed_public_realm_v1",
+      "typeLabel": "Street / infrastructure",
+      "styleIds": [
+        "contemporary",
+        "structural"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A sweeping elevated cycle route supports active travel with expressive civil structure."
+    },
+    "claude_public_realm:weathering-steel-footbridge:2384d6eed060": {
+      "domain": "street_pathway",
+      "archetypeId": "urban_pedestrian_footbridge",
+      "variantId": "urban_pedestrian_footbridge_v0",
+      "modelRevision": "2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2",
+      "modelMethod": "fixed_public_realm_v1",
+      "typeLabel": "Street / infrastructure",
+      "styleIds": [
+        "engineering",
+        "structural"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A weathering-steel pedestrian truss supports a walking connection; material choice is separate from urban ideology."
+    },
+    "clay_neoclassical_brick_headquarters": {
+      "domain": "building",
+      "archetypeId": "corporate_office_campus_headquarters",
+      "variantId": "neoclassical_brick_headquarters",
+      "modelRevision": "neoclassical-brick-office-clay-v005",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Office",
+      "styleIds": [
+        "neoclassical"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "The symmetrical brick composition, Corinthian portico and dome directly support Neoclassical; office use does not imply a civic planning movement."
+    },
+    "clay_admin_faculty_brick_bronze_fins": {
+      "domain": "building",
+      "archetypeId": "administrative_faculty_office_building",
+      "variantId": "admin_faculty_brick_bronze_fins",
+      "modelRevision": "brick-bronze-faculty-office-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Office",
+      "styleIds": [
+        "contemporary",
+        "modernism"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "An ordered facade with bronze shading fins and a glazed entrance supports contemporary modernist influence."
+    },
+    "clay_brick_timber_two_storey_office": {
+      "domain": "building",
+      "archetypeId": "courtyard_lowrise_office",
+      "variantId": "brick_timber_two_storey_office",
+      "modelRevision": "brick-timber-courtyard-office-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Office",
+      "styleIds": [
+        "contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Restrained brick wings frame an open court; courtyard is a type and spatial arrangement, not a style."
+    },
+    "clay_strip_single_storey_classic": {
+      "domain": "building",
+      "archetypeId": "commercial_strip_mall",
+      "variantId": "strip_single_storey_classic",
+      "modelRevision": "commercial-strip-single-storey-classic-clay-v002",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Shops / services",
+      "styleIds": [
+        "industrial",
+        "contemporary"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A low continuous canopy and repeated tenant bays form a utilitarian retail strip; Classic in the title does not mean Classical architecture."
+    },
+    "clay_corten_timber_equipment_yard": {
+      "domain": "building",
+      "archetypeId": "contractor_storage_yard",
+      "variantId": "corten_timber_equipment_yard",
+      "modelRevision": "contractor-storage-yard-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Industrial / working building",
+      "styleIds": [
+        "industrial",
+        "contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Timber and weathering-steel screening enclose a service yard; a formally constituted architectural movement is not evident."
+    },
+    "clay_meadow_three_gable_childcare": {
+      "domain": "building",
+      "archetypeId": "courtyard_childcare_centre",
+      "variantId": "meadow_three_gable_childcare",
+      "modelRevision": "courtyard-childcare-centre-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "contemporary",
+        "traditional_inspired"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Repeated gables and a low timber veranda adapt familiar domestic forms for childcare."
+    },
+    "clay_factory_sawtooth_roof": {
+      "domain": "building",
+      "archetypeId": "daylight_factory",
+      "variantId": "factory_sawtooth_roof",
+      "modelRevision": "daylight-sawtooth-factory-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Industrial / working building",
+      "styleIds": [
+        "historic_industrial"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Repeated glazed sawtooth roof slopes, brick bays and working openings express a daylight-factory tradition."
+    },
+    "clay_folded_roof_recovery_hall": {
+      "domain": "building",
+      "archetypeId": "enclosed_materials_recovery",
+      "variantId": "folded_roof_recovery_hall",
+      "modelRevision": "enclosed-materials-recovery-clay-v002",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Industrial / working building",
+      "styleIds": [
+        "industrial",
+        "contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A folded metal roof and large service enclosure support contemporary utilitarian design; waste programme alone does not prove ecological planning."
+    },
+    "clay_garden_mews_six_homes": {
+      "domain": "building",
+      "archetypeId": "garden_mews_courtyard_housing",
+      "variantId": "garden_mews_six_homes",
+      "modelRevision": "garden-mews-courtyard-housing-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Rowhouse / townhouse",
+      "styleIds": [
+        "contemporary",
+        "traditional_inspired"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Small gabled homes with individual front doors face a shared court; the arrangement can support compact neighbourhood principles."
+    },
+    "clay_horizon_double_section": {
+      "domain": "building",
+      "archetypeId": "horizon_manufactured_home",
+      "variantId": "horizon_double_section",
+      "modelRevision": "horizon-manufactured-home-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Detached home",
+      "styleIds": [
+        "contemporary",
+        "modernism"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A clerestory roof, broad glazing and low horizontal mass support contemporary modernist influence; manufactured is its construction method."
+    },
+    "clay_industrial_gabled_metal_shed": {
+      "domain": "building",
+      "archetypeId": "corrugated_vernacular_industrial",
+      "variantId": "industrial_gabled_metal_shed",
+      "modelRevision": "industrial-gabled-metal-shed-clay-v002",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Industrial / working building",
+      "styleIds": [
+        "industrial",
+        "vernacular"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Portal-frame enclosure, corrugated metal and gabled roof support industrial vernacular, not automatically Brutalism."
+    },
+    "clay_industrial_tilt_up_concrete": {
+      "domain": "building",
+      "archetypeId": "industrial_park_modernism",
+      "variantId": "industrial_tilt_up_concrete",
+      "modelRevision": "industrial-tilt-up-concrete-clay-v006",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Industrial / working building",
+      "styleIds": [
+        "industrial",
+        "contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Concrete panels and loading doors define a utilitarian industrial enclosure; tilt-up is a construction system."
+    },
+    "clay_maple_porch_sage": {
+      "domain": "building",
+      "archetypeId": "maple_porch_manufactured_home",
+      "variantId": "maple_porch_sage",
+      "modelRevision": "maple-porch-manufactured-cottage-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Detached home",
+      "styleIds": [
+        "traditional_inspired",
+        "vernacular"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A modest porch, horizontal siding and pitched roof give a new manufactured cottage traditional domestic expression."
+    },
+    "clay_copperline_four_bay_depot": {
+      "domain": "building",
+      "archetypeId": "municipal_works_depot",
+      "variantId": "copperline_four_bay_depot",
+      "modelRevision": "municipal-works-depot-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "industrial",
+        "contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Four work bays and restrained cladding are a contemporary service-building expression rather than a precise historical movement."
+    },
+    "clay_brick_timber_craftsman": {
+      "domain": "building",
+      "archetypeId": "narrow_lot_craftsman_cottage",
+      "variantId": "brick_timber_craftsman",
+      "modelRevision": "narrow-lot-craftsman-cottage-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Detached home",
+      "styleIds": [
+        "craftsman"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Substantial porch supports, visible woodwork and the gabled cottage composition support Craftsman influence."
+    },
+    "clay_prairie_cedar_chassis_home": {
+      "domain": "building",
+      "archetypeId": "prairie_manufactured_home",
+      "variantId": "prairie_cedar_chassis_home",
+      "modelRevision": "prairie-manufactured-home-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Detached home",
+      "styleIds": [
+        "contemporary",
+        "timber_contemporary",
+        "nordic"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "Simple dark cladding, warm timber and a clear folded roof support the local Nordic-inspired tag; Prairie in the title does not establish Prairie School architecture."
+    },
+    "clay_rndsqr_townhome_brick_contextual": {
+      "domain": "building",
+      "archetypeId": "rndsqr_missing_middle_townhomes",
+      "variantId": "rndsqr_townhome_brick_contextual",
+      "modelRevision": "rndsqr-brick-contextual-row-clay-v005",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Rowhouse / townhouse",
+      "styleIds": [
+        "contemporary"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Brick lower floors, articulated bays and individual street entries support contemporary contextual townhouses."
+    },
+    "clay_warehouse_tilt_wall_mega": {
+      "domain": "building",
+      "archetypeId": "modern_bigbox_warehouse",
+      "variantId": "warehouse_tilt_wall_mega",
+      "modelRevision": "tilt-wall-warehouse-clay-v006",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Industrial / working building",
+      "styleIds": [
+        "industrial",
+        "contemporary"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A large tilt-wall envelope and loading courts support logistics-oriented utilitarian design; its operations are vehicle dependent."
+    },
+    "clay_ecole_republicaine_provincial_brick": {
+      "domain": "building",
+      "archetypeId": "ecole_republicaine",
+      "variantId": "ecole-republicaine-provincial-brick",
+      "modelRevision": "provincial-brick-school-clay-v007",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "contemporary",
+        "classical_uncertain"
+      ],
+      "planningIds": [],
+      "confidence": "Review",
+      "referenceReviewed": true,
+      "rationale": "The current reference is a restrained brick-and-stone school with clock element; it does not clearly show the historic polychrome and steep-roof variant text. Resolve identity before a precise style label."
+    },
+    "clay_rndsqr_townhome_scandinavian_peaks": {
+      "domain": "building",
+      "archetypeId": "rndsqr_missing_middle_townhomes",
+      "variantId": "rndsqr_townhome_scandinavian_peaks",
+      "modelRevision": "rndsqr-scandinavian-peaks-row-clay-v006",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Rowhouse / townhouse",
+      "styleIds": [
+        "nordic",
+        "contemporary"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Alternating peaked roofs, pale walls and timber accents support the documented Nordic-inspired contemporary row."
+    },
+    "clay_affordable_porchlight_original": {
+      "domain": "building",
+      "archetypeId": "affordable_porchlight",
+      "variantId": "affordable_porchlight_original",
+      "modelRevision": "affordable-porchlight-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Rowhouse / townhouse",
+      "styleIds": [
+        "contemporary",
+        "traditional_inspired"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Repeated pitched-roof townhouses and private street entrances are contemporary traditional-inspired ground housing; appearance cannot establish affordability."
+    },
+    "clay_affordable_juniper_original": {
+      "domain": "building",
+      "archetypeId": "affordable_juniper",
+      "variantId": "affordable_juniper_original",
+      "modelRevision": "affordable-juniper-clay-v006",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Rowhouse / townhouse",
+      "styleIds": [
+        "contemporary",
+        "nordic"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Small gabled cottages form a shared garden cluster; this supports compact-housing comparison, not a Garden City label by itself."
+    },
+    "clay_affordable_stackyard_original": {
+      "domain": "building",
+      "archetypeId": "affordable_stackyard",
+      "variantId": "affordable_stackyard_original",
+      "modelRevision": "affordable-stackyard-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Rowhouse / townhouse",
+      "styleIds": [
+        "contemporary",
+        "modernism"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Exposed access gallery, external stairs and a simple two-level composition are contemporary stacked housing."
+    },
+    "clay_affordable_aspen_original": {
+      "domain": "building",
+      "archetypeId": "affordable_aspen",
+      "variantId": "affordable_aspen_original",
+      "modelRevision": "affordable-aspen-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Apartment building",
+      "styleIds": [
+        "contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A restrained brick apartment block uses an ordered window grid and shared entrance; no more specific historical style is established."
+    },
+    "clay_affordable_switchback_original": {
+      "domain": "building",
+      "archetypeId": "affordable_switchback",
+      "variantId": "affordable_switchback_original",
+      "modelRevision": "affordable-switchback-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Apartment building",
+      "styleIds": [
+        "contemporary",
+        "modernism"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A plain modular apartment composition uses repeated bays and material panels; modular construction is separate from architectural style."
+    },
+    "community_brick_corner_grocery": {
+      "domain": "building",
+      "archetypeId": "montreal_depanneur",
+      "variantId": "montreal_depanneur_modern",
+      "modelRevision": "brick-corner-grocery-clay-v002",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Mixed-use building",
+      "styleIds": [
+        "vernacular",
+        "italianate"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "The corner grocery and home above continue Montreal main-street vernacular; bracketed and arched details suggest Italianate influence without a firm historical attribution."
+    },
+    "community_clerestory_neighbourhood_hall": {
+      "domain": "building",
+      "archetypeId": "civic_modernism_rec_centre",
+      "variantId": "rec_clerestory_modern",
+      "modelRevision": "clerestory-neighbourhood-hall-clay-v002",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "modernism",
+        "contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Clear roof planes, clerestory glazing and expressed supports support civic Modernism influence."
+    },
+    "community_inglewood_corner_merchants": {
+      "domain": "building",
+      "archetypeId": "inglewood_heritage_brick_commercial",
+      "variantId": "inglewood_deco_infill",
+      "modelRevision": "inglewood-corner-merchants-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Shops / services",
+      "styleIds": [
+        "vernacular",
+        "italianate"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "Review",
+      "referenceReviewed": true,
+      "rationale": "Brick cornice, arched openings and upper shopfront composition read as traditional commercial architecture; the variant ID says Deco but does not establish visible Deco ornament."
+    },
+    "community_log_recreation_cabin": {
+      "domain": "building",
+      "archetypeId": "parkitecture_recreational",
+      "variantId": "rec_log_cabin_vernacular",
+      "modelRevision": "log-recreation-cabin-clay-v002",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "rustic",
+        "vernacular"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Log walls, stone base and a sheltered porch support rustic recreation architecture with Parkitecture affinity."
+    },
+    "community_prairie_neighbourhood_shops": {
+      "domain": "building",
+      "archetypeId": "commercial_strip_mall",
+      "variantId": "strip_weathered_1980s",
+      "modelRevision": "prairie-neighbourhood-shops-clay-v002",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Shops / services",
+      "styleIds": [
+        "industrial",
+        "contemporary"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A continuous pitched canopy and simple commercial bays form roadside retail vernacular, not Classical architecture."
+    },
+    "final_seniors_apartments": {
+      "domain": "building",
+      "archetypeId": "final-seniors-apartments",
+      "variantId": "final-seniors-apartments-v1",
+      "modelRevision": "final-seniors-apartments-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Apartment building",
+      "styleIds": [
+        "contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Restrained brick, repeated recessed balconies and a garden terrace support contemporary residential design."
+    },
+    "final_transit_pavilion": {
+      "domain": "building",
+      "archetypeId": "final-transit-pavilion",
+      "variantId": "final-transit-pavilion-v1",
+      "modelRevision": "final-transit-pavilion-clay-v002",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Infrastructure",
+      "styleIds": [
+        "timber_contemporary",
+        "structural"
+      ],
+      "planningIds": [
+        "tod"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Exposed timber V-columns, a broad canopy and a transparent waiting hall make structure and public access legible."
+    },
+    "final_courtyard_block": {
+      "domain": "building",
+      "archetypeId": "final-courtyard-block",
+      "variantId": "final-courtyard-block-v1",
+      "modelRevision": "final-courtyard-block-clay-v006",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Mixed-use building",
+      "styleIds": [
+        "contemporary"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Homes over shops, a pedestrian passage and an open planted court support compact mixed-use urbanism."
+    },
+    "final_health_centre": {
+      "domain": "building",
+      "archetypeId": "final-health-centre",
+      "variantId": "final-health-centre-v1",
+      "modelRevision": "final-health-centre-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "contemporary",
+        "timber_contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Timber shading frames, broad glazing and the garden-facing plan support contemporary civic design with biophilic intent."
+    },
+    "final_urban_grocery": {
+      "domain": "building",
+      "archetypeId": "final-urban-grocery",
+      "variantId": "final-urban-grocery-v1",
+      "modelRevision": "final-urban-grocery-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Shops / services",
+      "styleIds": [
+        "contemporary",
+        "historic_industrial"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Roof lanterns reinterpret a daylight-factory form above a transparent neighbourhood grocery frontage."
+    },
+    "claude_scottish_baronial_hotel": {
+      "domain": "building",
+      "archetypeId": "chateauesque_grand_railway_hotel",
+      "variantId": "scottish_baronial_granite_tower",
+      "modelRevision": "clay-baronial-railway-hotel-clay-v006",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Hotel",
+      "styleIds": [
+        "baronial"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Crow-stepped gables, steep roofs and turrets identify this specific Scottish Baronial railway-hotel variant."
+    },
+    "claude_parisian_corner_with_dome": {
+      "domain": "building",
+      "archetypeId": "parisian_corner_with_dome",
+      "variantId": "parisian-corner-with-dome-zinc-mansard",
+      "modelRevision": "clay-zinc-dome-corner-block-clay-v007",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Mixed-use building",
+      "styleIds": [
+        "second_empire",
+        "belle_epoque"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "Mansard roofs, dormers, corner dome and formal streetwall support Second Empire-influenced Parisian eclecticism; not every domed Parisian block is one pure style."
+    },
+    "claude_grand_magasin": {
+      "domain": "building",
+      "archetypeId": "grand_magasin",
+      "variantId": "grand-magasin-belle-epoque",
+      "modelRevision": "clay-grand-magasin-clay-v008",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Shops / services",
+      "styleIds": [
+        "belle_epoque"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Ornate classical bays, a curved glass corner and roof dome support a Belle Epoque eclectic department-store identity."
+    },
+    "claude_barcelona_mercat": {
+      "domain": "building",
+      "archetypeId": "barcelona_mercat",
+      "variantId": "mercat_modernista",
+      "modelRevision": "clay-modernista-market-hall-clay-v007",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Shops / services",
+      "styleIds": [
+        "modernisme",
+        "historic_industrial"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Decorative entrance ironwork, coloured glass and repeated metal roof bays support Catalan Modernisme market architecture."
+    },
+    "claude_montreal_second_empire_civic": {
+      "domain": "building",
+      "archetypeId": "montreal_second_empire_civic",
+      "variantId": "montreal_civic_city_hall",
+      "modelRevision": "clay-second-empire-city-hall-clay-v010",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "second_empire"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A prominent clock tower, mansard roofs and dormers identify the Second Empire civic example; City Beautiful is only a possible composition comparison."
+    },
+    "parkade_classic_concrete": {
+      "domain": "building",
+      "archetypeId": "parkade-classic-concrete",
+      "variantId": "classic-concrete-v1",
+      "modelRevision": "parkade-classic-concrete-clay-v005",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Multi-level parking building",
+      "styleIds": [
+        "modernism",
+        "industrial"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "The original elevation board shows an exposed structural grid and open decks; this is not enough to label the parkade Brutalist."
+    },
+    "parkade_urban_brick": {
+      "domain": "building",
+      "archetypeId": "parkade-urban-brick",
+      "variantId": "brick-v1",
+      "modelRevision": "parkade-urban-brick-clay-v001",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Multi-level parking building",
+      "styleIds": [
+        "contemporary"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "Brick piers and ventilation screens describe a contemporary contextual parkade, not a historic brick architectural movement."
+    },
+    "parkade_green_terraces": {
+      "domain": "building",
+      "archetypeId": "parkade-green-terraces",
+      "variantId": "green-v1",
+      "modelRevision": "parkade-green-terraces-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Multi-level parking building",
+      "styleIds": [
+        "contemporary",
+        "biophilic"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "Planted deck edges and climbing screens suggest biophilic intent while retaining the parking programme; planting does not erase vehicle priority."
+    },
+    "parkade_solar_ribbon": {
+      "domain": "building",
+      "archetypeId": "parkade-solar-ribbon",
+      "variantId": "solar-v1",
+      "modelRevision": "parkade-solar-ribbon-clay-v001",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Multi-level parking building",
+      "styleIds": [
+        "contemporary",
+        "structural"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "Angled metal fins and a solar canopy suggest structural expression in a contemporary parkade; no carbon or energy performance is established."
+    },
+    "parkade_mobility_courtyard": {
+      "domain": "building",
+      "archetypeId": "parkade-mobility-courtyard",
+      "variantId": "courtyard-v1",
+      "modelRevision": "parkade-mobility-courtyard-clay-v002",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Multi-level parking building",
+      "styleIds": [
+        "contemporary"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "An open court, bicycle hub and street cafe create a mobility-hub comparison; the dominant programme remains vehicle storage."
+    },
+    "claude_trial_arched_mill_mixed_use": {
+      "domain": "building",
+      "archetypeId": "industrial_brick_mixed_use",
+      "variantId": "industrial_brick_original_mill",
+      "modelRevision": "clay-arched-mill-mixed-use-clay-v005",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Mixed-use building",
+      "styleIds": [
+        "historic_industrial",
+        "italianate"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Repetitive arched brick bays and a mill-conversion programme support historic industrial architecture with Italianate influence."
+    },
+    "claude_trial_brick_podium_condo_tower": {
+      "domain": "building",
+      "archetypeId": "condo_podium_tower",
+      "variantId": "brick_podium_glass_tower",
+      "modelRevision": "clay-brick-podium-condo-tower-clay-v006",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Residential tower",
+      "styleIds": [
+        "contemporary",
+        "modernism"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A balcony tower over a lower shop podium is compatible with tower-and-podium urbanism; location and planning authorship are not inferred."
+    },
+    "claude_trial_calgary_cbe_brutalist_hq": {
+      "domain": "building",
+      "archetypeId": "calgary_cbe_brutalist_hq",
+      "variantId": "calgary_cbe_original",
+      "modelRevision": "clay-calgary-cbe-brutalist-hq-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Office",
+      "styleIds": [
+        "brutalism",
+        "modernism"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Concrete massing, deep repetitive openings and strong projecting elements support Brutalism; its architecture alone does not establish a complete planning ideology."
+    },
+    "claude_trial_campus_shed_office": {
+      "domain": "building",
+      "archetypeId": "corporate_office_campus_headquarters",
+      "variantId": "industrial_warehouse_campus_hq",
+      "modelRevision": "clay-campus-shed-office-clay-v009",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Office",
+      "styleIds": [
+        "industrial",
+        "structural"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Shed roof, exposed bracing and adapted work bays support an industrial reuse vocabulary; the same office parent also has a Neoclassical variant."
+    },
+    "claude_trial_cmu_dock_warehouse": {
+      "domain": "building",
+      "archetypeId": "mid_century_distribution_warehouse",
+      "variantId": "cmu_dock_utilitarian",
+      "modelRevision": "clay-cmu-dock-warehouse-clay-v006",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Industrial / working building",
+      "styleIds": [
+        "industrial"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Plain block walls, raised docks and a service apron support utilitarian warehouse design; CMU is a material system, not Brutalism."
+    },
+    "claude_trial_courtyard_primary_school": {
+      "domain": "building",
+      "archetypeId": "ecole_republicaine",
+      "variantId": "ecole-republicaine-art-deco",
+      "modelRevision": "clay-courtyard-primary-school-clay-v009",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Civic / institutional",
+      "styleIds": [
+        "modernism",
+        "contemporary"
+      ],
+      "planningIds": [],
+      "confidence": "Review",
+      "referenceReviewed": true,
+      "rationale": "The variant description says Art Deco but the reference mainly shows plain flat-roofed masonry wings. Publish a broad modernist label only after checking the exact model's intended ornament."
+    },
+    "claude_trial_ctrain_elevated_station": {
+      "domain": "building",
+      "archetypeId": "calgary_ctrain_station",
+      "variantId": "ctrain_downtown_platform",
+      "modelRevision": "clay-ctrain-elevated-station-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Infrastructure",
+      "styleIds": [
+        "contemporary",
+        "structural"
+      ],
+      "planningIds": [
+        "tod"
+      ],
+      "confidence": "Review",
+      "referenceReviewed": true,
+      "rationale": "Current title and image show an elevated station, whereas legacy variant text describes an at-grade platform. Contemporary transit expression is plausible, but the exact teaching description needs reconciliation."
+    },
+    "claude_trial_energy_centre": {
+      "domain": "building",
+      "archetypeId": "central_utilities_plant_energy_centre",
+      "variantId": "transparent_plant_showcase_urban",
+      "modelRevision": "clay-energy-centre-clay-v010",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Infrastructure",
+      "styleIds": [
+        "contemporary",
+        "industrial",
+        "structural"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Glazed plant bays expose services within a brick frame; this supports contemporary industrial expression rather than automatic civic classicism."
+    },
+    "claude_trial_garden_court_senior_residence": {
+      "domain": "building",
+      "archetypeId": "senior_living_complex",
+      "variantId": "senior_garden_courtyard",
+      "modelRevision": "clay-garden-court-senior-residence-clay-v006",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Apartment building",
+      "styleIds": [
+        "mediterranean",
+        "traditional_inspired"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "Tiled roofs, arcades and courtyard gardens suggest Mediterranean-inspired residential architecture; garden housing does not by itself establish Garden City governance."
+    },
+    "claude_trial_gastown_heritage_commercial": {
+      "domain": "building",
+      "archetypeId": "gastown_heritage_commercial",
+      "variantId": "gastown_italianate",
+      "modelRevision": "clay-gastown-heritage-commercial-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Shops / services",
+      "styleIds": [
+        "italianate"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Bracketed cornice, ornamental window heads and shopfront composition identify Italianate commercial architecture."
+    },
+    "claude_trial_halifax_georgian_colonial": {
+      "domain": "building",
+      "archetypeId": "halifax_georgian_colonial",
+      "variantId": "georgian_clapboard_original",
+      "modelRevision": "clay-halifax-georgian-colonial-clay-v003",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Detached home",
+      "styleIds": [
+        "georgian"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Balanced windows, central entrance and restrained hipped-roof composition support Georgian influence; current reference material differs from the older clapboard description."
+    },
+    "claude_trial_halifax_waterfront_warehouse": {
+      "domain": "building",
+      "archetypeId": "halifax_waterfront_warehouse",
+      "variantId": "warehouse_privateers_wharf",
+      "modelRevision": "clay-halifax-waterfront-warehouse-clay-v006",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Shops / services",
+      "styleIds": [
+        "italianate",
+        "historic_industrial"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "Review",
+      "referenceReviewed": true,
+      "rationale": "The reference shows an ornate arched-window commercial facade, while legacy text describes a gabled ironstone waterfront warehouse. Keep the exact style provisional until source identity is resolved."
+    },
+    "claude_trial_led_grow_block": {
+      "domain": "building",
+      "archetypeId": "vertical_farm_indoor_agriculture",
+      "variantId": "dark_panel_led_grow_block",
+      "modelRevision": "clay-led-grow-block-clay-v007",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Indoor farm / food production",
+      "styleIds": [
+        "contemporary",
+        "industrial"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Repetitive dark panels and narrow LED-lit slots support contemporary utilitarian architecture; vertical farming is a use, not a style or ecological performance claim."
+    },
+    "claude_trial_mews_coach_house": {
+      "domain": "building",
+      "archetypeId": "london_mews_house",
+      "variantId": "london-mews-house-original-stable",
+      "modelRevision": "clay-mews-coach-house-clay-v006",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Detached home",
+      "styleIds": [
+        "georgian",
+        "vernacular"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "The stable opening, restrained upper windows and low roof support a Georgian-influenced mews conversion."
+    },
+    "claude_trial_old_montreal_limestone_commercial": {
+      "domain": "building",
+      "archetypeId": "old_montreal_limestone_commercial",
+      "variantId": "old_mtl_french_colonial",
+      "modelRevision": "clay-old-montreal-limestone-commercial-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Shops / services",
+      "styleIds": [
+        "classical_uncertain"
+      ],
+      "planningIds": [],
+      "confidence": "Review",
+      "referenceReviewed": true,
+      "rationale": "The current reference and presentation describe a domed Classical-looking building; the variant ID and legacy text describe a steep-roofed French Colonial house. Do not teach either precise identity as settled."
+    },
+    "claude_trial_plus15_glass_office_tower": {
+      "domain": "building",
+      "archetypeId": "calgary_plus_15_connected_tower",
+      "variantId": "plus15_contemporary_glass",
+      "modelRevision": "clay-plus15-glass-office-tower-clay-v006",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Office",
+      "styleIds": [
+        "contemporary",
+        "modernism"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Curtain wall and an elevated pedestrian bridge support contemporary glass-tower architecture; grade-separated walking is a planning comparison, not proof of pedestrian vitality or transit-oriented development."
+    },
+    "claude_trial_slab_balcony_tower": {
+      "domain": "building",
+      "archetypeId": "west_end_mid_century_tower",
+      "variantId": "midcentury_concrete_slab",
+      "modelRevision": "clay-slab-balcony-tower-clay-v007",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Residential tower",
+      "styleIds": [
+        "modernism"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Repetitive balcony slabs and a freestanding apartment shaft support mid-century Modernist influence; concrete alone does not make the example Brutalist."
+    },
+    "claude_trial_toronto_bay_and_gable": {
+      "domain": "building",
+      "archetypeId": "toronto_bay_and_gable_house",
+      "variantId": "toronto_bay_gable_yellow_brick",
+      "modelRevision": "clay-toronto-bay-and-gable-house-clay-v004",
+      "modelMethod": "RLASM 6.1",
+      "typeLabel": "Detached home",
+      "styleIds": [
+        "gothic",
+        "vernacular"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Steep front gable, tracery-like bargeboard and projecting bay support a Victorian Gothic-influenced Toronto house type."
+    },
+    "garden_gravel_path_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "multi_use_trail",
+      "variantId": "garden_gravel_path_v1",
+      "modelRevision": "53d98bede5cadbf62fe5c36d2d7232291565fae3aaee44c313564695e4f087fd",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "surface"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "The authored path provides a material and walking connection; the material alone does not establish a historical or planning identity."
+    },
+    "concrete_neighbourhood_walk_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "campus_pedestrian_spine",
+      "variantId": "concrete_neighbourhood_walk_v1",
+      "modelRevision": "cbfa6d72b1b1b7aac8c842fcca64e78a122da99625ed675fa5e447ff88002e9c",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "surface"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "The authored path provides a material and walking connection; the material alone does not establish a historical or planning identity."
+    },
+    "brick_courtyard_path_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "campus_pedestrian_spine",
+      "variantId": "brick_courtyard_path_v1",
+      "modelRevision": "987de3477b8a9bc658c9456ee4b5593a5e07648a118c620506be518ea7cab575",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "surface"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "The authored path provides a material and walking connection; the material alone does not establish a historical or planning identity."
+    },
+    "timber_garden_walk_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "halifax_waterfront_boardwalk",
+      "variantId": "timber_garden_walk_v1",
+      "modelRevision": "cdd6ef784f8c1351018ec472e5464f10f0e9f4caeae62237743095b0b4aa6634",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "surface"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "The authored path provides a material and walking connection; the material alone does not establish a historical or planning identity."
+    },
+    "asphalt_shared_path_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "multi_use_trail",
+      "variantId": "asphalt_shared_path_v1",
+      "modelRevision": "d09c9368796449954516e0c5e6790857a84bb6465525cb60a14de789bb42d6e3",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "surface"
+      ],
+      "planningIds": [],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "A shared asphalt path supports walking and cycling connectivity; it is not a woonerf shared motor street."
+    },
+    "standalone_narrow_sidewalk_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "campus_pedestrian_spine",
+      "variantId": "standalone_narrow_sidewalk_v1",
+      "modelRevision": "322b6b9382cd811e18c81ae6c23e8d4868fe48d840c20dbea094bf7dbbb1ecf1",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "surface"
+      ],
+      "planningIds": [
+        "complete"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "A standalone walking surface is a network component; width does not by itself certify accessible design or a planning movement."
+    },
+    "standalone_neighbourhood_sidewalk_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "campus_pedestrian_spine",
+      "variantId": "standalone_neighbourhood_sidewalk_v1",
+      "modelRevision": "d859f4e399f17e9f6db270c6630fbc43dab8a4e355d61c880f558a102ca78b74",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "surface"
+      ],
+      "planningIds": [
+        "complete"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "A standalone walking surface is a network component; width does not by itself certify accessible design or a planning movement."
+    },
+    "standalone_urban_sidewalk_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "campus_pedestrian_spine",
+      "variantId": "standalone_urban_sidewalk_v1",
+      "modelRevision": "4ff46e23abc65c10c77525e82f5d5b8c614218b9c920c0cfbed72060f62f165f",
+      "modelMethod": "native_street_modules_v1",
+      "typeLabel": "Walking / cycling route",
+      "styleIds": [
+        "surface"
+      ],
+      "planningIds": [
+        "complete"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": false,
+      "rationale": "A standalone walking surface is a network component; width does not by itself certify accessible design or a planning movement."
+    },
+    "flexible_pocket_park_v1": {
+      "domain": "park_plaza",
+      "archetypeId": "urban_pocket_park",
+      "variantId": "urban_pocket_park_v0",
+      "modelRevision": "flexible-outline-v1",
+      "modelMethod": "public_realm_park_kit",
+      "typeLabel": "Small park",
+      "styleIds": [
+        "naturalistic",
+        "rustic"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "The reference combines a curving path, planted refuge and timber shelter; the native and flexible choices retain distinct placement identities."
+    },
+    "flexible_linear_greenway_v1": {
+      "domain": "park_plaza",
+      "archetypeId": "linear_park_greenway",
+      "variantId": "linear_park_greenway_v0",
+      "modelRevision": "flexible-outline-v1",
+      "modelMethod": "public_realm_park_kit",
+      "typeLabel": "Linear park / greenway",
+      "styleIds": [
+        "naturalistic",
+        "contemporary_landscape"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A continuous path and meadow-like planting reference a reused railway corridor; adaptive reuse is an approach, not one aesthetic style."
+    },
+    "flexible_shade_courtyard_v1": {
+      "domain": "park_plaza",
+      "archetypeId": "urban_pocket_park",
+      "variantId": "urban_pocket_park_v1",
+      "modelRevision": "flexible-outline-v1",
+      "modelMethod": "public_realm_park_kit",
+      "typeLabel": "Small park",
+      "styleIds": [
+        "contemporary_landscape"
+      ],
+      "planningIds": [
+        "new_urbanism"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A restrained planted court and seating support contemporary neighbourhood public-space design."
+    },
+    "flexible_meadow_grove_v1": {
+      "domain": "park_plaza",
+      "archetypeId": "urban_pocket_park",
+      "variantId": "urban_pocket_park_v2",
+      "modelRevision": "flexible-outline-v1",
+      "modelMethod": "public_realm_park_kit",
+      "typeLabel": "Small park",
+      "styleIds": [
+        "naturalistic",
+        "ecological_landscape"
+      ],
+      "planningIds": [
+        "ecology"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Meadow textures and irregular planting support a naturalistic ecological aesthetic; actual species or habitat performance is unverified."
+    },
+    "calgary_local_draft3_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "calgary_local",
+      "variantId": "calgary_local_draft3_v1",
+      "modelRevision": "75c9605ef7bc294eb4722192b311fb7a1888882e353fc9830dd090b1ebdabf31",
+      "modelMethod": "manual_metric_section_v1",
+      "typeLabel": "Local street",
+      "styleIds": [
+        "engineering",
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "auto",
+        "complete"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "The local road section assigns space to vehicle access and sidewalks; network design determines its wider walkability."
+    },
+    "calgary_local_industrial_draft3_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "calgary_local_industrial",
+      "variantId": "calgary_local_industrial_draft3_v1",
+      "modelRevision": "3c5580fa115a268b479e820781594ca567fa9b1c24cc30fc8ef7a82285b2d742",
+      "modelMethod": "manual_metric_section_v1",
+      "typeLabel": "Local street",
+      "styleIds": [
+        "engineering"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A standard local industrial access section is an engineering and servicing component, not an aesthetic ideology."
+    },
+    "calgary_collector_draft3_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "calgary_collector",
+      "variantId": "calgary_collector_draft3_v1",
+      "modelRevision": "d9707a946e24410cda68294ceb66f63988c9a6344ba83dcc152e2a136fec572b",
+      "modelMethod": "manual_metric_section_v1",
+      "typeLabel": "Collector",
+      "styleIds": [
+        "engineering"
+      ],
+      "planningIds": [
+        "auto",
+        "complete"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Collector function and parking provision express road hierarchy; multimodal context requires separate assessment."
+    },
+    "calgary_arterial_4lane_50_draft3_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "calgary_arterial_4lane_50",
+      "variantId": "calgary_arterial_4lane_50_draft3_v1",
+      "modelRevision": "6b19e46f5cf47fc31fa1f95baa33611fba2af3c90c4987a709b1d6951f6a19e4",
+      "modelMethod": "manual_metric_section_v1",
+      "typeLabel": "Arterial / major road",
+      "styleIds": [
+        "engineering"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Multiple traffic lanes and a large right-of-way support an automobile-oriented road-hierarchy comparison, independent of streetscape planting."
+    },
+    "calgary_arterial_4lane_70_draft3_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "calgary_arterial_4lane_70",
+      "variantId": "calgary_arterial_4lane_70_draft3_v1",
+      "modelRevision": "42de737a2b5c36f2ea1d750f66df583a91eb02e9b470b2072a7ac0700efd80b5",
+      "modelMethod": "manual_metric_section_v1",
+      "typeLabel": "Arterial / major road",
+      "styleIds": [
+        "engineering"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Multiple traffic lanes and a large right-of-way support an automobile-oriented road-hierarchy comparison, independent of streetscape planting."
+    },
+    "calgary_arterial_6lane_draft3_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "calgary_arterial_6lane",
+      "variantId": "calgary_arterial_6lane_draft3_v1",
+      "modelRevision": "0f09c562cb495caf7556b627a193ce6a850997c29de51b6c6d3996429e1c7a37",
+      "modelMethod": "manual_metric_section_v1",
+      "typeLabel": "Arterial / major road",
+      "styleIds": [
+        "engineering"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Multiple traffic lanes and a large right-of-way support an automobile-oriented road-hierarchy comparison, independent of streetscape planting."
+    },
+    "calgary_alley_draft3_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "calgary_alley",
+      "variantId": "calgary_alley_draft3_v1",
+      "modelRevision": "f4ef87d7ad02ee0db524704d92d9c7d5cb3118d2c80c06cdd376c61c197ca7b3",
+      "modelMethod": "manual_metric_section_v1",
+      "typeLabel": "Alley",
+      "styleIds": [
+        "engineering"
+      ],
+      "planningIds": [],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "A service-access alley is compatible with several urban patterns; it is not automatically a shared social street."
+    },
+    "calgary_local_high_activity_draft3_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "calgary_local_high_activity",
+      "variantId": "calgary_local_high_activity_draft3_v1",
+      "modelRevision": "2c80ed5688f89dd0a277662aed610706de5d566653bc72b91fa1b4d181056ca9",
+      "modelMethod": "manual_metric_section_v1",
+      "typeLabel": "Local street",
+      "styleIds": [
+        "engineering",
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "complete",
+        "new_urbanism"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "The high-activity section offers an active-frontage comparison, but crossings, speeds and surrounding uses must support the claim."
+    },
+    "calgary_collector_industrial_draft3_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "calgary_collector_industrial",
+      "variantId": "calgary_collector_industrial_draft3_v1",
+      "modelRevision": "c6efe487d089ae116324999d760f0816c2b33d773dbdf28ba1140e3be50b0e43",
+      "modelMethod": "manual_metric_section_v1",
+      "typeLabel": "Collector",
+      "styleIds": [
+        "engineering"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "Industrial collector geometry is primarily a servicing and vehicle-circulation section."
+    },
+    "calgary_collector_high_activity_draft3_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "calgary_collector_high_activity",
+      "variantId": "calgary_collector_high_activity_draft3_v1",
+      "modelRevision": "4e4b30180d352e8dac6cd7602781743abcba558152973a65b99d514cd7b55671",
+      "modelMethod": "manual_metric_section_v1",
+      "typeLabel": "Collector",
+      "styleIds": [
+        "engineering",
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "complete",
+        "new_urbanism"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "The high-activity section offers an active-frontage comparison, but crossings, speeds and surrounding uses must support the claim."
+    },
+    "calgary_arterial_high_activity_draft3_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "calgary_arterial_high_activity",
+      "variantId": "calgary_arterial_high_activity_draft3_v1",
+      "modelRevision": "b4b73cbe659aafb11e7e6f00c0a604855702cfab042d25c45120e198f2a7b973",
+      "modelMethod": "manual_metric_section_v1",
+      "typeLabel": "Arterial / major road",
+      "styleIds": [
+        "engineering",
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "complete",
+        "new_urbanism"
+      ],
+      "confidence": "Medium",
+      "referenceReviewed": true,
+      "rationale": "The high-activity section offers an active-frontage comparison, but crossings, speeds and surrounding uses must support the claim."
+    },
+    "calgary_skeletal_draft3_v1": {
+      "domain": "street_pathway",
+      "archetypeId": "calgary_skeletal",
+      "variantId": "calgary_skeletal_draft3_v1",
+      "modelRevision": "16c216c3eb070ad04345d763ed36744de82ea92344853b97616ab179bd75686f",
+      "modelMethod": "manual_metric_section_v1",
+      "typeLabel": "Arterial / major road",
+      "styleIds": [
+        "engineering"
+      ],
+      "planningIds": [
+        "auto"
+      ],
+      "confidence": "High",
+      "referenceReviewed": true,
+      "rationale": "The broad skeletal road is a vehicle-hierarchy component; the model is a surface layout rather than a full engineered road profile."
+    }
+  }
+}

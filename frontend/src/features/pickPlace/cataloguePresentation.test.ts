@@ -24,11 +24,12 @@ describe('catalogue presentation metadata', () => {
     expect(cataloguePresentationFor('unregistered-future-placement')).toBeUndefined();
   });
 
-  it('uses exact variant style evidence while keeping unclassified buildings unknown', () => {
+  it('uses researched exact variant styles while keeping disputed buildings unclassified', () => {
     expect(catalogueStyleIds(choiceFor('clay_neoclassical_brick_headquarters'))).toEqual(['neoclassical']);
     expect(catalogueStyleIds(choiceFor('clay_mediterranean_resort_courtyard'))).toEqual(['mediterranean']);
     expect(catalogueStyleIds(choiceFor('validation_gothic_community_church_single_spire'))).toEqual(['gothic']);
-    expect(catalogueStyleIds(choiceFor('validation_brewery_crystal_brewhouse'))).toEqual([]);
+    expect(catalogueStyleIds(choiceFor('validation_brewery_crystal_brewhouse'))).toEqual(['structural','contemporary']);
+    expect(catalogueStyleIds(choiceFor('claude_trial_courtyard_primary_school'))).toEqual([]);
   });
 
   it('finds revised description terms and styles in the correct domain', () => {

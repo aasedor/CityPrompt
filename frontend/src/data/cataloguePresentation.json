@@ -2508,5 +2508,45 @@
       "steel",
       "footbridge"
     ]
+  },
+  "native-park:court_only_basketball_v1--native-v1": {
+    "label": "Basketball court only",
+    "description": "Individual court with markings, equipment and clear playing reserve. Combine and repeat to build an athletic park.",
+    "styleIds": [],
+    "searchTags": [
+      "Basketball court only",
+      "court only",
+      "athletic park"
+    ]
+  },
+  "native-park:court_only_tennis_v1--native-v1": {
+    "label": "Tennis court only",
+    "description": "Individual court with markings, equipment and clear playing reserve. Combine and repeat to build an athletic park.",
+    "styleIds": [],
+    "searchTags": [
+      "Tennis court only",
+      "court only",
+      "athletic park"
+    ]
+  },
+  "native-park:court_only_pickleball_v1--native-v1": {
+    "label": "Pickleball court only",
+    "description": "Individual court with markings, equipment and clear playing reserve. Combine and repeat to build an athletic park.",
+    "styleIds": [],
+    "searchTags": [
+      "Pickleball court only",
+      "court only",
+      "athletic park"
+    ]
+  },
+  "native-park:court_only_beach_volleyball_v1--native-v1": {
+    "label": "Beach volleyball court only",
+    "description": "Individual court with markings, equipment and clear playing reserve. Combine and repeat to build an athletic park.",
+    "styleIds": [],
+    "searchTags": [
+      "Beach volleyball court only",
+      "court only",
+      "athletic park"
+    ]
   }
 }
