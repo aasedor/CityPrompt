@@ -32,7 +32,7 @@ export function PublicDataLayersPanel({ state }: { state: PublicDataLayersState 
             {status?.loading && <p role="status">Loading nearby data…</p>}
             {status?.error && <p role="alert" className="text-red-800">{status.error} <button type="button" onClick={status.retry} className="min-h-11 underline">Retry {dataset.name}</button></p>}
             {status?.layer && <>
-              <p>{status.layer.feature_count.toLocaleString()} displayed features · retrieved {new Date(status.layer.created_at).toLocaleDateString()}</p>
+              <p>{status.layer.feature_count.toLocaleString()} loaded records · retrieved {new Date(status.layer.created_at).toLocaleDateString()}</p>
               {status.layer.warnings.map(warning => <p key={warning} className="text-amber-800">{warning}</p>)}
             </>}
           </div>}

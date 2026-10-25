@@ -31,7 +31,7 @@ describe('optional public data requests', () => {
     expect(layer.source_url).toContain('c2es-76ed');
   });
 
-  it('clips polygons locally and preserves exact roll identifiers and dated values', async () => {
+  it('retains enclosing-area records without inventing window edges and preserves exact roll history', async () => {
     const multipolygon = { type: 'MultiPolygon', coordinates: [[[[-114.2, 51], [-114, 51], [-114, 51.1], [-114.2, 51.1], [-114.2, 51]]]] };
     respond([{ multipolygon, roll_number: '00012', roll_year: '2025', assessed_value: '500000' },
       { multipolygon, roll_number: '00012', roll_year: '2024', assessed_value: '450000' },
@@ -39,9 +39,25 @@ describe('optional public data requests', () => {
     const layer = await fetchPublicLayer('assessments', bounds, new AbortController().signal);
     expect(layer.feature_count).toBe(2);
     expect(layer.feature_collection.features[0].properties).toMatchObject({ 'Roll number': '00012', 'Assessment history (CAD)': '2025: 500000; 2024: 450000' });
-    const coordinates = JSON.stringify(layer.feature_collection.features[0].geometry);
-    expect(coordinates).not.toContain('-114.2');
-    expect(coordinates).toContain('-114.08');
+    expect(layer.feature_collection.features[0].geometry).toEqual({ type: 'GeometryCollection', geometries: [] });
+    expect(layer.warnings.join(' ')).toMatch(/original boundar/i);
+  });
+
+  it('draws only original polygon boundary segments where an area crosses the local window', async () => {
+    const multipolygon = { type: 'MultiPolygon', coordinates: [[[[-114.082, 51.041], [-114.077, 51.041], [-114.077, 51.046], [-114.082, 51.046], [-114.082, 51.041]]]] };
+    respond([{ multipolygon, objectid: 'canopy' }]);
+    const layer = await fetchPublicLayer('canopy', bounds, new AbortController().signal);
+    const outline = layer.feature_collection.features[0].geometry;
+    expect(outline.type).toBe('MultiLineString');
+    if (outline.type !== 'MultiLineString') throw new Error('Expected original boundary segments');
+    expect(outline.coordinates).toHaveLength(1);
+    const line = outline.coordinates[0];
+    expect(line).toHaveLength(3);
+    expect(line[0][0]).toBeCloseTo(bounds[0], 7);
+    expect(line[0][1]).toBeCloseTo(51.041, 7);
+    expect(line[1]).toEqual([-114.077, 51.041]);
+    expect(line[2][0]).toBeCloseTo(-114.077, 7);
+    expect(line[2][1]).toBeCloseTo(bounds[3], 7);
   });
 
   it('marks truncated, invalid and empty results without claiming complete coverage', async () => {

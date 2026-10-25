@@ -115,10 +115,14 @@ async function clip(shape: ReferenceGeometry, bounds: PublicBounds): Promise<Ref
     return coordinates.length ? { type: 'MultiLineString', coordinates } : null;
   }
   if (shape.type === 'Polygon' || shape.type === 'MultiPolygon') {
+    const polygons = (shape.type === 'Polygon' ? [shape.coordinates] : shape.coordinates) as Point[][][];
+    const outlines = polygons.flatMap(polygon => polygon.flatMap(ring => clipLine(ring, bounds)));
+    if (outlines.length) return { type: 'MultiLineString', coordinates: outlines };
+    // An area can enclose the entire window with no original edge nearby.
+    // Retain its attributes, but never draw the extract's rectangle as its edge.
     const { default: clipping } = await import('polygon-clipping');
-    const polygons = shape.type === 'Polygon' ? [shape.coordinates] : shape.coordinates;
     const coordinates = clipping.intersection(polygons as Point[][][], [[[[w, s], [e, s], [e, n], [w, n], [w, s]]]]);
-    return coordinates.length ? { type: 'MultiPolygon', coordinates } : null;
+    return coordinates.length ? { type: 'GeometryCollection', geometries: [] } : null;
   }
   return null;
 }
@@ -168,6 +172,7 @@ export async function fetchPublicLayer(datasetId: string, bounds: PublicBounds, 
     const response = await fetch(`https://data.calgary.ca/resource/${source.sourceId}.json?${query}`, { signal, credentials: 'omit' });
     if (!response.ok) throw new Error(`The public data service could not load this layer (${response.status}). Try again.`);
     const rows = await readRows(response, signal), warnings: string[] = [];
+    if (source.geometry === 'multipolygon' || source.geometry === 'the_geom') warnings.push('Area outlines show original boundaries only within the nearby window. An area covering the entire window may have no edge in view; its records remain available to inspect.');
     if (rows.length > PUBLIC_DATA_LIMITS.rows) warnings.push('Partial results: the nearby area exceeds the 300-row limit. Draw a smaller site boundary for more detail.');
     const features: ReferenceFeature[] = [], rolls = new Map<string, ReferenceFeature>();
     let vertices = 0, skipped = 0;
@@ -185,7 +190,8 @@ export async function fetchPublicLayer(datasetId: string, bounds: PublicBounds, 
       let clipped: ReferenceGeometry | null;
       try { clipped = await clip(parsed.shape, bounds); } catch { skipped++; continue; }
       if (!clipped) continue;
-      const count = Math.max(geometry(clipped)?.count ?? Infinity, groundSampleCost(clipped));
+      const count = clipped.type === 'GeometryCollection' && clipped.geometries.length === 0 ? 0
+        : Math.max(geometry(clipped)?.count ?? Infinity, groundSampleCost(clipped));
       if (vertices + count > PUBLIC_DATA_LIMITS.vertices) { skipped++; continue; }
       vertices += count;
       const feature: ReferenceFeature = { type: 'Feature', id: `${source.id}:${index}`, geometry: clipped, properties: properties(row, source) };

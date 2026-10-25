@@ -35,7 +35,7 @@ Pay particular attention to aborts when disabled, stale site/project results, re
 
 ### Task 3: Student trial and final review
 
-- [ ] Check the real bounded public API requests and a local browser session, including network inactivity with options off and error/empty states.
-- [ ] Request a fresh whole-branch review following requesting-code-review; resolve important findings with targeted tests.
-- [ ] Run final relevant checks, inspect diff/status, and commit any coherent fixes.
-- [ ] Report what is available, performance limits, verification and local-only delivery.
+- [x] Check the real bounded public API requests and a local browser session, including network inactivity with options off and error/empty states.
+- [x] Request a fresh whole-branch review following requesting-code-review; resolve important findings with targeted tests.
+- [x] Run final relevant checks, inspect diff/status, and commit any coherent fixes.
+- [x] Report what is available, performance limits, verification and local-only delivery.
