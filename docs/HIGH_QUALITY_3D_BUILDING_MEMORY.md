@@ -30,6 +30,15 @@ their horizontal transform remains independent from the authored height.
 
 ## The quality target
 
+Teaching-style local pilot, 2026-10-25: Prairie School house clay-v004 passed
+independent holistic architectural-clay review with zero P0/P1 after rejecting
+mirrored/drifting extra reference proposals and calibrating hip rise against
+normalized source pixels. Three compatible front/oblique/top sources satisfy
+the source minimum; unseen elevations remain explicit architectural inferences.
+All fourteen exact-GLB views and both phone boards were reviewed afresh. This
+does not grant textured keeper approval or runtime activation. See
+`ARCHITECTURE_TEACHING_GAPS_2026-10-25.md` and the matching machine pilot record.
+
 Large civic local pilot, 2026-10-02: Gothic Community Church v005 passed
 independent architectural-clay review before starting the bounded Timber
 Sanctuary Church build. Preserve curved partial glass cells at arch edges,
