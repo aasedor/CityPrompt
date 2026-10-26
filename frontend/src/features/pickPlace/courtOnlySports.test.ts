@@ -5,8 +5,27 @@ import { rectangleAt, resizeRectangleCorner } from './geometry';
 import { isFixedNativeScene } from './fixedNativeScene';
 import { nativeParkEditProperties, nativeParkFitProblem, readNativePark } from '@/features/parks/nativeParkRegistry';
 import type { SiteZone } from '@/types';
+import { CANONICAL_CHOICES, filterCanonicalChoices, preferredCatalogueVariant } from './canonicalCatalogue';
 
 describe('court-only student building blocks', () => {
+  it.each([
+    ['basketball', 'basketball_court'], ['tennis', 'tennis_court_cluster'],
+    ['pickleball', 'pickleball_courts'], ['beach_volleyball', 'beach_volleyball_courts'],
+  ])('offers %s court-only geometry once under its base sport', (sport, parent) => {
+    const id = `native-park:court_only_${sport}_v1--native-v1`;
+    const matches = CANONICAL_CHOICES.filter(choice => choice.placements.some(asset => asset.id === id));
+    expect(matches).toHaveLength(1);
+    const choice = matches[0];
+    expect(choice.option.id).toBe(parent);
+    expect(choice.option.variants?.filter(variant => variant.id === `court_only_${sport}_v1`)).toHaveLength(1);
+    expect(CANONICAL_CHOICES.some(choice => choice.option.id.startsWith('court_only_'))).toBe(false);
+    expect(filterCanonicalChoices('park_plaza', `${sport.replace(/_/g, ' ')} court only`, 'play_sport')).toContain(choice);
+    expect(preferredCatalogueVariant(choice, 'court only')).toBe(`court_only_${sport}_v1`);
+    // Grouping is presentation only: the stored parent, native layout and dimensions stay exact.
+    const asset = choice.placements.find(asset => asset.id === id)!;
+    expect(asset.properties.green_space_archetype_id).toBe(`court_only_${sport}`);
+    expect(asset).toBe(placeAsset(id));
+  });
   it('withholds unapproved pilots from production discovery while retaining saved identities', () => {
     const saved = courtOnlySportsAssets(false);
     expect(saved).toHaveLength(4);

@@ -23,11 +23,14 @@ describe('canonical discovery and identity', () => {
     const remainingLocal = LOCAL_CLAUDE_ASSETS.filter(asset =>
       !CLAUDE_BUILDING_RELEASE_ASSETS.some(release => release.id === asset.id)
       && !PUBLIC_REALM_RELEASE_ASSETS.some(release => release.zoneType === asset.zoneType && release.model.variantId === asset.model.variantId));
-    expect(CANONICAL_CHOICES).toHaveLength(roster.length + CLAUDE_FIVE_TRIAL_ASSETS.length + PARKADE_BUILDING_ASSETS.length + PARKADE_TRIAL_ASSETS.length + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length + FINAL_FIVE_BUILDING_ASSETS.length + MANUAL_STREET_ASSETS.length + FLEXIBLE_PARK_ASSETS.length + PATHWAY_ASSETS.length + remainingLocal.length + CLAUDE_BUILDING_RELEASE_ASSETS.length + PUBLIC_REALM_RELEASE_ASSETS.length);
+    // Three court-only cards join existing sport choices; volleyball has no other native layout.
+    expect(CANONICAL_CHOICES).toHaveLength(roster.length + CLAUDE_FIVE_TRIAL_ASSETS.length + PARKADE_BUILDING_ASSETS.length + PARKADE_TRIAL_ASSETS.length + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length + FINAL_FIVE_BUILDING_ASSETS.length + MANUAL_STREET_ASSETS.length + FLEXIBLE_PARK_ASSETS.length + PATHWAY_ASSETS.length + remainingLocal.length + CLAUDE_BUILDING_RELEASE_ASSETS.length + PUBLIC_REALM_RELEASE_ASSETS.length - 3);
     for (const entry of roster) {
-      const choice = CANONICAL_CHOICES.find(c => c.option.id === entry.archetype_id && c.placements[0]?.model.variantId === entry.variant_id);
+      const choice = CANONICAL_CHOICES.find(c => c.placements.some(asset => asset.properties.green_space_archetype_id === entry.archetype_id && asset.model.variantId === entry.variant_id)
+        || c.option.id === entry.archetype_id && c.placements[0]?.model.variantId === entry.variant_id);
       expect(choice, entry.variant_id).toBeDefined();
-      expect(choice!.option.variants?.map(v => v.id)).toEqual([entry.variant_id]);
+      expect(choice!.option.variants?.map(v => v.id)).toContain(entry.variant_id);
+      if (!choice!.groupedVariants) expect(choice!.option.variants).toHaveLength(1);
     }
     for (const choice of CANONICAL_CHOICES) for (const asset of choice.placements) {
       expect(CATALOGUE_ASSETS).toContain(asset);

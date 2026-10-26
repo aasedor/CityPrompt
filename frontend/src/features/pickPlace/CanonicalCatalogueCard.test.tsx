@@ -8,6 +8,18 @@ import { pickerHeroImage } from './pickerHeroImages';
 import { cataloguePresentationFor } from './cataloguePresentation';
 
 afterEach(cleanup);
+it('keeps court-only as a base-card variant and places its original geometry and thumbnail', () => {
+  const choice = CANONICAL_CHOICES.find(choice => choice.option.id === 'basketball_court')!;
+  const court = choice.placements.find(asset => asset.model.variantId === 'court_only_basketball_v1')!;
+  const onPlacement = vi.fn();
+  const { container } = render(<CanonicalCatalogueCard choice={choice} selected={null} onPlacement={onPlacement} onDraw={vi.fn()}/>);
+  fireEvent.click(screen.getByRole('button', { name: 'Expand details for Basketball court' }));
+  fireEvent.change(screen.getByRole('combobox'), { target: { value: court.model.variantId } });
+  expect(container.querySelector('img')?.getAttribute('src')).toBe(court.thumbnail);
+  expect(screen.getAllByRole('option').filter(option => option.getAttribute('value') === court.model.variantId)).toHaveLength(1);
+  fireEvent.click(screen.getByRole('button', { name: 'Choose & place' }));
+  expect(onPlacement).toHaveBeenCalledWith(court);
+});
 it('shows the locked market reference instead of its obsolete parent image', () => {
   const choice = CANONICAL_CHOICES.find(c => c.placements[0]?.id === 'showcase_market')!;
   const { container } = render(<CanonicalCatalogueCard choice={choice} selected={null} onPlacement={vi.fn()} onDraw={vi.fn()}/>);

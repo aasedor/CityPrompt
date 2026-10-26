@@ -245,7 +245,18 @@ export function individualStarterHome(asset: CatalogueAsset): CatalogueAsset {
 }
 
 export const LEGACY_VALIDATION_ASSETS = validation.assets as CatalogueAsset[];
-export function withStoreyMetadata(asset: CatalogueAsset): CatalogueAsset {
+export function withStoreyMetadata(asset: CatalogueAsset, localTowerPilot = import.meta.env.DEV): CatalogueAsset {
+  if (localTowerPilot && asset.kind === 'object' && asset.id === 'claude_trial_brick_podium_condo_tower'
+    && asset.model.variantId === 'brick_podium_glass_tower' && asset.model.revision === 'clay-brick-podium-condo-tower-clay-v006') {
+    return { ...asset, footprintProgram: {
+      id: 'brick-podium-condo-native-footprint-v001', mode: 'uniform_horizontal_scale',
+      nativeWidthM: 54, nativeDepthM: 44, minScale: 1, maxScale: 1, defaultScale: 1, step: 1, editable: false,
+    }, storeyProgram: {
+      id: 'brick-podium-condo-storey-program-v001', mode: 'repeat_authored_floor',
+      nativeStoreys: 13, minStoreys: 13, maxStoreys: 40, recommendedMinStoreys: 15, recommendedMaxStoreys: 40,
+      podiumStoreys: 3, podiumHeightM: 12.3, repeatedStoreyHeightM: 3, roofHeightM: 7.8,
+    } };
+  }
   if (asset.kind !== 'object' || asset.zoneType !== 'building' || asset.storeyProgram) return asset;
   const nativeStoreys = Number(asset.properties.floor_count ?? asset.properties.floors);
   const nativeHeightM = Number(asset.nativeDimensions?.[2]);

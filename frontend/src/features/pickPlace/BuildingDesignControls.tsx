@@ -179,7 +179,7 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
         ? `This exact model is currently available at ${storeyProgram.nativeStoreys} ${storeyProgram.nativeStoreys === 1 ? 'storey' : 'storeys'}.`
         : storeyProgram.mode === 'select_authored_assembly'
         ? `Choose ${storeyProgram.minStoreys}–${storeyProgram.maxStoreys} storeys. Each choice uses a complete authored house with its walls, openings and roof intact.`
-        : `Choose ${storeyProgram.minStoreys}–${storeyProgram.maxStoreys} storeys. The podium and roof stay complete while authored floors repeat at full proportions.`
+        : `Choose ${storeyProgram.minStoreys}–${storeyProgram.maxStoreys} storeys.${storeyProgram.recommendedMinStoreys && storeyProgram.recommendedMinStoreys !== storeyProgram.minStoreys ? ` Recommended: ${storeyProgram.recommendedMinStoreys}–${storeyProgram.recommendedMaxStoreys ?? storeyProgram.maxStoreys}.` : ''} The podium and roof stay complete while authored floors repeat at full proportions.`
       : 'Your footprint stays in place. Unsupported sizes use design massing.'}</p>
     {runtimeError && <p role="alert" className="text-xs text-amber-900">{runtimeError}</p>}
     <button disabled={disabled || !valid || checking} className="min-h-11 w-full rounded-lg border border-slate-700 bg-lime-200 text-sm font-semibold disabled:opacity-40">{checking?'Checking detailed model…':'Apply building'}</button>

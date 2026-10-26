@@ -33,11 +33,12 @@ export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, 
   const placement = placements.find(a => a.model.variantId === variantId);
   const variantGuide = classifyCalgaryVariant(option.id, variantId);
   const thumbnail = pickerHeroImage(placement?.id,
-    option.photoUrl || option.catalogCardImageUrl || variant?.thumbnailUrl || placement?.thumbnail || '');
+    (choice.groupedVariants ? variant?.thumbnailUrl || placement?.thumbnail : undefined)
+      || option.photoUrl || option.catalogCardImageUrl || variant?.thumbnailUrl || placement?.thumbnail || '');
   const presentation = cataloguePresentationFor(placement?.id);
   const lesson=lessonForChoice(choice,variantId);
   const styles=catalogueStyleIds(choice,variantId);
-  const label = presentation?.label ?? placement?.label ?? option.label;
+  const label = choice.groupedVariants ? option.label : presentation?.label ?? placement?.label ?? option.label;
   const placementAction = placement?.kind === 'street' ? 'Choose & draw route'
     : placement?.kind === 'object' && placement.properties.pick_place_flexible_park ? 'Choose & draw park'
     : choice.domain === 'street_pathway' ? 'Place fixed review segment' : 'Choose & place';

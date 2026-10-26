@@ -36,7 +36,9 @@ def _clip_mesh(obj: bpy.types.Object, lower_m: float, upper_m: float) -> bool:
     """Clip one imported mesh in Blender Z-up coordinates."""
     bpy.context.view_layer.objects.active = obj
     obj.select_set(True)
-    bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
+    # Floor planes are source-world datums. Translated source nodes (trees,
+    # balconies, furniture) must enter that same frame before clipping.
+    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
     obj.select_set(False)
 
     mesh = bmesh.new()

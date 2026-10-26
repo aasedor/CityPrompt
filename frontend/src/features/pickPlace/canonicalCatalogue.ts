@@ -17,10 +17,12 @@ import { LOCAL_CLAUDE_ASSETS } from './claudeAssetLocalTrial';
 import { LOCAL_TEACHING_BUILDINGS } from './localTeachingBuildings';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
 import { PUBLIC_REALM_RELEASE_ASSETS } from './publicRealmRelease';
+import { groupCourtCatalogueChoices } from './courtCatalogueGroups';
 
 export interface CanonicalChoice {
   id: string; domain: CatalogueDomain; option: AestheticOption;
   placements: CatalogueAsset[];
+  groupedVariants?: boolean;
 }
 export const CANONICAL_DOMAINS = {
   building: BUILDING_AESTHETIC_OPTIONS_V2,
@@ -132,7 +134,7 @@ function registeredSupplement(asset: CatalogueAsset): CatalogueAsset {
   if (!registered) throw new Error(`Missing supplemental catalogue registration: ${asset.id}`);
   return registered;
 }
-export const CANONICAL_CHOICES: CanonicalChoice[] = [
+export const CANONICAL_CHOICES: CanonicalChoice[] = groupCourtCatalogueChoices([
   ...resolvedRoster.choices,
   ...PATHWAY_ASSETS.map(registeredSupplement).map(asset => ({
     id: `street_pathway:${asset.properties.road_archetype_id}:${asset.model.variantId}`,
@@ -152,7 +154,7 @@ export const CANONICAL_CHOICES: CanonicalChoice[] = [
       variants: [{ id: asset.model.variantId, label: asset.label, thumbnailUrl: asset.thumbnail }],
     } };
   }),
-];
+]);
 export const UNAVAILABLE_CATALOGUE_ENTRIES = resolvedRoster.unavailable;
 /** Exact starter variants only. Parent cards must not quietly expose their other
  * variants under the classroom promise. The full catalogue remains separate. */

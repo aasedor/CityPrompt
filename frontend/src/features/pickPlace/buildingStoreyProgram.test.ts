@@ -1,11 +1,31 @@
 import { describe, expect, it } from 'vitest';
 import { placeAsset, placementProperties, assetForZone } from './catalogue';
 import { storeyProgramHeight, storeyProgramSupports } from './buildingStoreyProgram';
+import { withStoreyMetadata } from './assetRegistry';
 
 const tower = placeAsset('clay_vancouver_balcony_podium_tower');
 const program = tower.storeyProgram!;
 
 describe('authored building storey programs', () => {
+  it('offers the finite Brick Podium pilot while preserving native 13-storey saved scenes', () => {
+    const brick = placeAsset('claude_trial_brick_podium_condo_tower');
+    expect(brick.storeyProgram?.mode).toBe('repeat_authored_floor');
+    expect(brick.storeyProgram).toMatchObject({ nativeStoreys: 13, minStoreys: 13, maxStoreys: 40,
+      recommendedMinStoreys: 15, recommendedMaxStoreys: 40 });
+    for (const [floors, height] of [[13, 50.1], [15, 56.1], [25, 86.1], [40, 131.1]]) {
+      expect(storeyProgramHeight(brick.storeyProgram!, floors)).toBe(height);
+      expect(assetForZone({ properties: { ...placementProperties(brick), floor_count: floors, floors,
+        height, height_m: height, development_height_override_m: height } })?.id).toBe(brick.id);
+    }
+    expect(storeyProgramSupports(brick.storeyProgram!, 12, 47.1)).toBe(false);
+    expect(storeyProgramSupports(brick.storeyProgram!, 41, 134.1)).toBe(false);
+  });
+  it('does not expose the Brick Podium pilot in a production registry', () => {
+    const brick = placeAsset('claude_trial_brick_podium_condo_tower');
+    const { storeyProgram: _pilot, ...source } = brick;
+    const production = withStoreyMetadata(source, false);
+    expect(production.kind === 'object' && production.storeyProgram?.mode).toBe('fixed_authored_assembly');
+  });
   it('keeps fixed podium and roof heights while repeating full storeys', () => {
     expect(storeyProgramHeight(program, 16)).toBe(58.8);
     expect(storeyProgramHeight(program, 25)).toBe(87.6);

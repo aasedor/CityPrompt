@@ -14,6 +14,20 @@ beforeEach(()=>{vi.mocked(legoAssemblyApi.plan).mockReset().mockResolvedValue({}
 const zone = { id: 'home', zone_type: 'building', coordinates: [[0, 0], [1, 0], [1, 1], [0, 1]],
   properties: placementProperties(placeAsset('infill_home')) } as SiteZone;
 
+it('checks the detailed Brick Podium assembly before saving supported tower storeys', async () => {
+  const tower = placeAsset('claude_trial_brick_podium_condo_tower');
+  const onSave = vi.fn();
+  render(<BuildingDesignControls zone={{ ...zone, properties: placementProperties(tower) }} disabled={false} onSave={onSave}/>);
+  expect((screen.getByLabelText('Storeys') as HTMLInputElement).readOnly).toBe(false);
+  fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '25' } });
+  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).value).toBe('86.1');
+  fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
+  await waitFor(() => expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ floor_count: 25, height_m: 86.1,
+    pick_place_asset: tower.id, pick_place_model_revision: tower.model.revision })));
+  expect(legoAssemblyApi.plan).toHaveBeenCalledWith(expect.objectContaining({ archetype_id: tower.model.variantId, target_floors: 25,
+    target_width_m: 54, target_depth_m: 44, target_height_m: 86.1, model_revision: tower.model.revision }));
+});
+
 it('does not allow arbitrary storeys or heights for a fixed authored building', () => {
   const onSave = vi.fn(); render(<BuildingDesignControls zone={zone} disabled={false} onSave={onSave} />);
   expect((screen.getByLabelText('Storeys') as HTMLInputElement).readOnly).toBe(true);
