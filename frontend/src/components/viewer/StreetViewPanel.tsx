@@ -456,6 +456,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
               imageQuality: provider.imageQuality, providerLabel: provider.label };
             onRenderSaved?.(saved);
             setSavedImageKeys(previous => new Set(previous).add(getRenderImageKey(preview)));
+            setSavedRendersByImage(previous=>({...previous,[getRenderImageKey(preview)]:saved}));
             return preview;
           }
           const providerResult = await generateStreetView(
@@ -571,6 +572,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
       ));
     });
     setSavedImageKeys((prev) => new Set(prev).add(getRenderImageKey(editedResult)));
+    setSavedRendersByImage(previous=>({...previous,[getRenderImageKey(editedResult)]:saved}));
     onRenderSaved?.(saved);
   }, [onRenderSaved, selectedPreviewIndex]);
 
