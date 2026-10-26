@@ -32,7 +32,7 @@ export function beginPeopleCapture(scene: Object3D, enabled: boolean) {
       if (!Number.isFinite(seconds) || seconds < 0) throw new Error('People capture time must be finite and nonnegative.');
       if (!restored) current().forEach(actor => actor.pose(seconds));
     },
-    focus() { return current().get(ids[0])?.focus?.() ?? null; },
+    focus(id = ids[0]) { return current().get(id)?.focus?.() ?? null; },
     restore() {
       if (restored) return;
       restored = true;

@@ -10,7 +10,6 @@ import { GlobeParkParcelGuide } from '@/features/parks/GlobeParkParcelGuide';
 import type { PavingSurface } from '@/features/parks/pavingSurfaces';
 import type {ProjectBench, ProjectTree, ProjectProp} from '@/features/parks/projectBenches';
 import { detailAsset } from '@/features/parks/detailCatalogue';
-import { isPeopleAsset } from '@/features/people/peopleActions';
 import { assertNativeStreetsReady, waitForNativeStreetsReady, expectsNativeStreet } from './nativeStreetReadiness';
 import { hasNativePark } from '@/features/parks/nativeParkRegistry';
 import { frameLandscapeContext } from '@/features/siteLandscape/landscapeContext';
@@ -140,7 +139,7 @@ import { buildingWalkEntrance, setBuildingWalkingDoorsOpen } from '@/features/le
 import { updateWalkBuildingInspection, endBuildingInspection } from '@/features/legoAssembly/buildingInspection';
 import { lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
 import { useWalkKeyboard } from './useWalkKeyboard';
-import { STREET_RENDER_EYE_HEIGHT_METERS, manualStreetFocusHeight } from './streetRenderProfile';
+import { STREET_RENDER_EYE_HEIGHT_METERS } from './streetRenderProfile';
 import { SceneSettledMonitor } from './useSceneSettled';
 import { isPlausibleTerrainAnchor } from './globeTerrainUtils';
 import {
@@ -247,6 +246,7 @@ import {
   restoreStreetCameraProjection,
 } from './streetRenderProfile';
 import { inspectStreetRenderReadiness } from './streetRenderReadiness';
+import { applyPeopleFollowPose } from './peopleFollowCamera';
 import { getArchitecturalLightingProfile } from './rlasmPresentation';
 
 import { elevationApi } from '@/services/api';
@@ -3192,55 +3192,67 @@ export function GlobeSitePlannerMap({
     const detailFlythrough = request.cameraMotion === 'detail_flythrough';
     const bicycleRide = request.cameraMotion === 'bicycle_ride';
     const peopleFollow = request.cameraMotion === 'people_follow';
+    const followedPerson = peopleFollow ? projectProps?.find(prop => Boolean(detailAsset(prop.variant).people)) : undefined;
+    const followedFocus = peopleFollow && followedPerson ? beginPeopleCapture(scene, true).focus(followedPerson.id) : null;
+    if (peopleFollow && !followedFocus) throw new Error('Place an animated person from Add details → People before following them.');
+    const followedHeading = followedPerson ? new THREE.Vector3(0, 0, 1).transformDirection(
+      WGS84_ELLIPSOID.getEastNorthUpFrame(followedPerson.lat * DEG_TO_RAD, followedPerson.lng * DEG_TO_RAD, 0, new THREE.Matrix4())
+        .multiply(new THREE.Matrix4().makeRotationZ(followedPerson.angle * DEG_TO_RAD))
+        .multiply(new THREE.Matrix4().makeRotationX(Math.PI / 2))) : null;
     const nearFieldRoute = streetWalkby || detailFlythrough || bicycleRide || peopleFollow;
     let previousStreetProjection: ReturnType<typeof applyStreetCameraProjection> = null;
     let routeSurfacePoints: THREE.Vector3[];
     let nearFieldTerrainHeight: number | null = null;
     try {
-      // The user draws against the captured aerial frame, so resolve every
-      // point against that exact scene projection before switching to the
-      // pedestrian lens. This anchors a street route to real road/sidewalk
-      // elevations instead of an artificial plane beneath the aerial camera.
-      const projectRoute = (points: typeof sampledRoute) => points.map((point) => {
-        const ndc = normalizedVideoPointToNdc(point, sourceAspect);
-        const hit = raycastSurfacePoint(ndc.x, ndc.y);
-        if (!hit) throw new Error('Part of the drawn route does not intersect the visible 3D city. Draw the route over the ground or buildings.');
-        return { ...hit, height: authoredCameraGround(terrainZonesRef.current, hit.lngLat[0], hit.lngLat[1], hit.height) };
-      });
-      const insideZone = (zone:SiteZone,lngLat:[number,number]) => {
-        if(zone.coordinates.length<3)return false;
-        const ring=[...zone.coordinates,zone.coordinates[0]];
-        return booleanPointInPolygon(turfPoint(lngLat),turfPolygon([ring]));
-      };
-      let routeHits: ReturnType<typeof projectRoute> | undefined;
-      if(streetWalkby&&request.automaticRoute){
-        const zones=terrainZonesRef.current, boundaries=zones.filter(zone=>zone.zone_type==='site_boundary');
-        for(const candidate of automaticStreetRouteCandidates(resampleVideoRoute(request.routePoints,24))){
-          try{
-            const hits=projectRoute(candidate);
-            if(hits.every(hit=>(!boundaries.length||boundaries.some(zone=>insideZone(zone,hit.lngLat)))
-              &&!zones.some(zone=>resolveCommunity3DKind(zone)==='building'&&insideZone(zone,hit.lngLat)))){routeHits=hits;break;}
-          }catch{/* Try the next nearby corridor without moving the camera. */}
-        }
-        if(!routeHits)throw new Error('No clear automatic walking route was found. Open Advanced and draw a short route on an open street or path. No credits were used.');
-      }else routeHits=projectRoute(sampledRoute);
-      nearFieldTerrainHeight = nearFieldRoute
-        ? stableNearFieldTerrainHeight(routeHits.map((hit) => hit.height))
-        : null;
-      routeSurfacePoints = routeHits.map((hit) => {
-        const world = new THREE.Vector3();
-        WGS84_ELLIPSOID.getCartographicToPosition(
-          hit.lngLat[1] * DEG_TO_RAD,
-          hit.lngLat[0] * DEG_TO_RAD,
-          videoRouteSurfaceHeight(
-            hit.height,
-            nearFieldTerrainHeight ?? hit.height,
-            request.cameraMotion,
-          ),
-          world,
-        );
-        return world;
-      });
+      if (peopleFollow && followedFocus && followedHeading) {
+        // Subject framing is independent of the globe view and drawn route.
+        routeSurfacePoints = [followedFocus.clone(), followedFocus.clone().add(followedHeading)];
+      } else {
+        // The user draws against the captured aerial frame, so resolve every
+        // point against that exact scene projection before switching to the
+        // pedestrian lens. This anchors a street route to real road/sidewalk
+        // elevations instead of an artificial plane beneath the aerial camera.
+        const projectRoute = (points: typeof sampledRoute) => points.map((point) => {
+          const ndc = normalizedVideoPointToNdc(point, sourceAspect);
+          const hit = raycastSurfacePoint(ndc.x, ndc.y);
+          if (!hit) throw new Error('Part of the drawn route does not intersect the visible 3D city. Draw the route over the ground or buildings.');
+          return { ...hit, height: authoredCameraGround(terrainZonesRef.current, hit.lngLat[0], hit.lngLat[1], hit.height) };
+        });
+        const insideZone = (zone:SiteZone,lngLat:[number,number]) => {
+          if(zone.coordinates.length<3)return false;
+          const ring=[...zone.coordinates,zone.coordinates[0]];
+          return booleanPointInPolygon(turfPoint(lngLat),turfPolygon([ring]));
+        };
+        let routeHits: ReturnType<typeof projectRoute> | undefined;
+        if(streetWalkby&&request.automaticRoute){
+          const zones=terrainZonesRef.current, boundaries=zones.filter(zone=>zone.zone_type==='site_boundary');
+          for(const candidate of automaticStreetRouteCandidates(resampleVideoRoute(request.routePoints,24))){
+            try{
+              const hits=projectRoute(candidate);
+              if(hits.every(hit=>(!boundaries.length||boundaries.some(zone=>insideZone(zone,hit.lngLat)))
+                &&!zones.some(zone=>resolveCommunity3DKind(zone)==='building'&&insideZone(zone,hit.lngLat)))){routeHits=hits;break;}
+            }catch{/* Try the next nearby corridor without moving the camera. */}
+          }
+          if(!routeHits)throw new Error('No clear automatic walking route was found. Open Advanced and draw a short route on an open street or path. No credits were used.');
+        }else routeHits=projectRoute(sampledRoute);
+        nearFieldTerrainHeight = nearFieldRoute
+          ? stableNearFieldTerrainHeight(routeHits.map((hit) => hit.height))
+          : null;
+        routeSurfacePoints = routeHits.map((hit) => {
+          const world = new THREE.Vector3();
+          WGS84_ELLIPSOID.getCartographicToPosition(
+            hit.lngLat[1] * DEG_TO_RAD,
+            hit.lngLat[0] * DEG_TO_RAD,
+            videoRouteSurfaceHeight(
+              hit.height,
+              nearFieldTerrainHeight ?? hit.height,
+              request.cameraMotion,
+            ),
+            world,
+          );
+          return world;
+        });
+      }
     } catch (error) {
       restoreStreetCameraProjection(camera, previousStreetProjection);
       throw error;
@@ -3256,7 +3268,9 @@ export function GlobeSitePlannerMap({
     // Validate before changing lens/renderer state so a too-long ride leaves
     // the student's camera intact and starts no expensive frame capture.
     if (bicycleRide) assertBicycleRouteLength(routeDistanceMeters, request.durationSeconds);
-    const centerHit = raycastSurfacePoint(0, 0);
+    const centerHit = peopleFollow && followedPerson
+      ? { lngLat: [followedPerson.lng, followedPerson.lat] as [number, number], height: 0 }
+      : raycastSurfacePoint(0, 0);
     if (!centerHit) {
       restoreStreetCameraProjection(camera, previousStreetProjection);
       throw new Error('The center of the captured view does not intersect the city. Reframe the site and try again.');
@@ -3273,6 +3287,7 @@ export function GlobeSitePlannerMap({
       ),
       centerWorld,
     );
+    if (peopleFollow && followedFocus) centerWorld.copy(followedFocus);
     if (nearFieldRoute) previousStreetProjection = applyStreetCameraProjection(camera);
     const previousFrameProjection = applyVideoFrameProjection(camera, sourceAspect);
 
@@ -3284,13 +3299,6 @@ export function GlobeSitePlannerMap({
     const cameraOffset = nearFieldRoute
       ? new THREE.Vector3()
       : camera.position.clone().sub(centerWorld);
-    const streetFocusWorld = streetWalkby && !request.automaticRoute
-      ? centerWorld.clone().addScaledVector(streetUp, manualStreetFocusHeight({
-          hasPeople: Boolean(projectProps?.some(prop => isPeopleAsset(detailAsset(prop.variant)))),
-          hasBuildings: terrainZonesRef.current.some(zone => resolveCommunity3DKind(zone) === 'building'),
-          savedBuildings: buildings,
-        }))
-      : null;
     const previousReferenceVisibility = referenceOverlayGroup.current?.visible;
     const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
     const previousSelectedBuildingId = selectedBuildingIdRef.current;
@@ -3329,9 +3337,9 @@ export function GlobeSitePlannerMap({
 
     const applyRoutePose = (progress: number) => {
       if (peopleFollow) {
-        const focus = peopleCapture?.focus();
-        if (!focus) throw new Error('Place a person from Add details → People, then enable their animation before following them.');
-        applyStreetRoutePose(camera, pathCurve, progress, streetUp, 1.6, focus.addScaledVector(streetUp, 1.05));
+        const focus = peopleCapture?.focus(followedPerson?.id);
+        if (!focus || !followedHeading) throw new Error('The followed person changed. Prepare the preview again.');
+        applyPeopleFollowPose(camera, focus, streetUp, followedHeading, followedPerson?.people_action);
         return;
       }
       if (bicycleRide) {
@@ -3339,7 +3347,7 @@ export function GlobeSitePlannerMap({
         return;
       }
       if (streetWalkby) {
-        applyStreetRoutePose(camera, pathCurve, progress, streetUp, undefined, streetFocusWorld ?? undefined);
+        applyStreetRoutePose(camera, pathCurve, progress, streetUp);
         return;
       }
       if (detailFlythrough) {
@@ -3622,7 +3630,7 @@ export function GlobeSitePlannerMap({
       if (fadePlugin && previousFadeDuration !== null) fadePlugin.fadeDuration = previousFadeDuration;
       peopleCapture?.restore();
     }
-  }, [captureDirect3D, raycastSurfacePoint, waitForCurrentTiles, waitForSharedGround, projectProps, buildings]);
+  }, [captureDirect3D, raycastSurfacePoint, waitForCurrentTiles, waitForSharedGround, projectProps]);
 
   // Scene hygiene for street-level captures (same pattern as captureDirect3D:
   // flip clean state, two frames for React to commit, restore in finally).

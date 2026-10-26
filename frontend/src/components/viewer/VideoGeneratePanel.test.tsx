@@ -16,6 +16,33 @@ vi.mock('@/features/community3d/community3d', () => ({
 }));
 
 describe('Omni video preparation and saved-video recovery', () => {
+  it('defaults to photographic finish, previews freely and prepares its guide only on Generate', async () => {
+    api.capabilities.mockResolvedValue({video_enabled:true});
+    api.list.mockResolvedValue({attempts:[],attempts_used:0,attempts_remaining:2,max_attempts:2});
+    api.imageList.mockResolvedValue([]);
+    api.preflight.mockResolvedValue({ready:true,provider:'omni',estimated_cost_usd:.81,scene_revision_sha256:'scene',attempts_remaining:2});
+    api.imageGenerate.mockResolvedValue({purpose:'video_appearance',attempt_id:'guide',image_base64:'photo',source_video_sha256:'source',scene_revision_sha256:'scene'});
+    api.generate.mockRejectedValue(new Error('response lost'));
+    render(<VideoGeneratePanel projectId="trial" canvas={null} buildings={[]} siteZones={[]}
+      captureAerialFrame={async ()=>'data:image/jpeg;base64,ZnJhbWU='}
+      captureRouteControls={async()=>({keyframesBase64:['start'],previewVideoBase64:'data:video/mp4;base64,Z3VpZGU=',previewVideoMimeType:'video/mp4'})} onClose={vi.fn()}/>);
+    await screen.findByAltText('Captured City Prompt scene');
+    expect(screen.getByRole('checkbox',{name:'Photographic finish'})).toBeChecked();
+    expect(api.imageGenerate).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button',{name:'Preview · free'}));
+    const generate=await screen.findByRole('button',{name:/Generate video.*26 tokens/});
+    await waitFor(()=>expect(generate).toBeEnabled());
+    expect(api.imageGenerate).not.toHaveBeenCalled();
+    fireEvent.click(generate);
+    await waitFor(()=>expect(api.generate).toHaveBeenCalledOnce());
+    expect(api.imageGenerate).toHaveBeenCalledOnce();
+    expect(api.generate.mock.calls[0][0]).toMatchObject({appearance_attempt_id:'guide',omni_reference_mode:'appearance_references',route_keyframes_base64:['data:image/png;base64,photo'],preview_video_base64:'data:video/mp4;base64,Z3VpZGU='});
+    await waitFor(()=>expect(screen.getByRole('button',{name:/Generate video/})).toBeEnabled());
+    fireEvent.click(screen.getByRole('button',{name:/Generate video/}));
+    await waitFor(()=>expect(api.generate).toHaveBeenCalledTimes(2));
+    expect(api.imageGenerate).toHaveBeenCalledOnce();
+    expect(api.generate.mock.calls[1][0].request_id).toBe(api.generate.mock.calls[0][0].request_id);
+  });
   it('allows cancelling a free capture without submitting its late result or a paid request', async () => {
     api.capabilities.mockResolvedValue({video_enabled:true});
     api.list.mockResolvedValue({attempts:[],attempts_used:0,attempts_remaining:2,max_attempts:2});
@@ -74,6 +101,7 @@ describe('Omni video preparation and saved-video recovery', () => {
       captureAerialFrame: async () => 'data:image/jpeg;base64,ZnJhbWU=', captureRouteControls, onClose: vi.fn() };
     const {rerender} = render(<VideoGeneratePanel {...props} peopleDirection="Actor 7 is reading at the saved position." />);
     await screen.findByAltText('Captured City Prompt scene');
+    fireEvent.click(screen.getByRole('checkbox',{name:'Photographic finish'}));
     fireEvent.change(screen.getByLabelText('Custom prompt (optional)'), {target: {value: 'Warm daylight.'}});
     fireEvent.click(screen.getByText('Advanced'));
     fireEvent.click(screen.getByLabelText('Use only my prompt'));
@@ -120,12 +148,14 @@ describe('Omni video preparation and saved-video recovery', () => {
       captureRouteControls={async () => ({keyframesBase64:['start'], previewVideoBase64:'data:video/mp4;base64,Z3VpZGU=', previewVideoMimeType:'video/mp4'})}
       onClose={vi.fn()} />);
     await screen.findByAltText('Captured City Prompt scene');
+    fireEvent.click(screen.getByRole('checkbox',{name:'Photographic finish'}));
     fireEvent.click(screen.getByRole('button', {name: 'Preview \u00b7 free'}));
     const generate = await screen.findByRole('button', {name: /Generate.*0.81/});
     act(() => { fireEvent.click(generate); fireEvent.click(generate); });
     expect(api.generate).toHaveBeenCalledOnce();
     const submitted = api.generate.mock.calls[0][0];
-    expect(submitted).toEqual({...api.preflight.mock.calls[0][0], request_id: expect.any(String), confirm_paid_submission: true});
+    const {prepare_photographic_finish: _quoteOnly, ...checked} = api.preflight.mock.calls[0][0];
+    expect(submitted).toEqual({...checked, request_id: expect.any(String), confirm_paid_submission: true});
     await act(async () => { reject(new Error('response lost')); });
     await waitFor(() => expect(screen.getByRole('button', {name: /Generate.*0.81/})).toBeEnabled());
     expect(api.generate).toHaveBeenCalledOnce();
@@ -169,8 +199,8 @@ describe('Omni video preparation and saved-video recovery', () => {
       onClose={vi.fn()} />);
     await screen.findByAltText('Captured City Prompt scene');
     fireEvent.click(screen.getByText('Advanced'));
-    await act(async () => {fireEvent.click(screen.getByLabelText('Photographic finish'));});
-    fireEvent.click(screen.getByRole('button',{name:/Create photographic guide/}));
+
+    fireEvent.click(screen.getByRole('button',{name:/Prepare and review guide separately/}));
     await screen.findByRole('alert');
     expect(api.preflight).toHaveBeenCalledOnce();
     expect(api.imageGenerate).not.toHaveBeenCalled();
@@ -190,9 +220,9 @@ describe('Omni video preparation and saved-video recovery', () => {
     await screen.findByAltText('Captured City Prompt scene');
     fireEvent.change(screen.getByLabelText('Custom prompt (optional)'), {target:{value:'A'.repeat(600)}});
     fireEvent.click(screen.getByText('Advanced'));
-    await act(async () => {fireEvent.click(screen.getByLabelText('Photographic finish'));});
+
     expect(api.imageGenerate).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole('button',{name:/Create photographic guide/}));
+    fireEvent.click(screen.getByRole('button',{name:/Prepare and review guide separately/}));
     await screen.findByAltText('Photographic video guide to review');
     expect(api.imageGenerate).toHaveBeenCalledOnce();
     expect(api.imageGenerate.mock.calls[0][0].prompt).toBe('A'.repeat(600));
@@ -221,7 +251,6 @@ describe('Omni video preparation and saved-video recovery', () => {
       captureAerialFrame={async () => 'data:image/jpeg;base64,ZnJhbWU='} captureRouteControls={captureRouteControls} onClose={vi.fn()} />);
     await screen.findByAltText('Captured City Prompt scene');
     fireEvent.click(screen.getByText('Advanced'));
-    fireEvent.click(screen.getByRole('checkbox',{name:'Photographic finish'}));
     fireEvent.click(screen.getByText('Recover saved guides'));
     fireEvent.click(await screen.findByRole('button',{name:/Recover guide$/}));
     fireEvent.click(await screen.findByRole('button',{name:'Use guide and restore original route'}));
@@ -250,7 +279,7 @@ describe('Omni video preparation and saved-video recovery', () => {
     fireEvent.click(screen.getByRole('button',{name:'8 seconds'}));
     expect(screen.getByRole('button',{name:/Generate video/})).toBeDisabled();
   });
-  it('offers photographic finishing only for Omni route edits and requires a reviewed guide before video', async () => {
+  it('explains automatic photographic finishing and keeps separate preparation in optional recovery', async () => {
     api.capabilities.mockResolvedValue({ video_enabled: true });
     api.list.mockResolvedValue({ attempts: [], attempts_used: 0, attempts_remaining: 2, max_attempts: 2 });
     api.imageList.mockResolvedValue([]);
@@ -258,9 +287,10 @@ describe('Omni video preparation and saved-video recovery', () => {
       captureAerialFrame={async () => 'data:image/jpeg;base64,ZnJhbWU='} onClose={vi.fn()} />);
     await screen.findByAltText('Captured City Prompt scene');
     fireEvent.click(screen.getByText('Advanced'));
-    await act(async () => { fireEvent.click(screen.getByRole('checkbox', {name: 'Photographic finish'})); });
-    expect(screen.getByRole('button', {name: /Create photographic guide.*26 tokens/})).toBeVisible();
-    expect(screen.getByText(/Video is a separate paid step after review/)).toBeVisible();
+
+    fireEvent.click(screen.getByText('Recover saved guides'));
+    expect(screen.getByRole('button', {name: /Prepare and review guide separately.*26 tokens/})).toBeVisible();
+    expect(screen.getByText(/Preview, loading and changing options are free/)).toBeVisible();
     expect(api.imageGenerate).not.toHaveBeenCalled();
     expect(api.generate).not.toHaveBeenCalled();
     expect(screen.getByRole('button', {name: /Generate video/})).toBeDisabled();
@@ -279,11 +309,12 @@ describe('Omni video preparation and saved-video recovery', () => {
       captureAerialFrame={async () => 'data:image/jpeg;base64,ZnJhbWU='}
       captureRouteControls={captureRouteControls} onClose={vi.fn()} />);
     await screen.findByAltText('Captured City Prompt scene');
+    fireEvent.click(screen.getByRole('checkbox',{name:'Photographic finish'}));
     fireEvent.click(screen.getByText('Advanced'));
     fireEvent.click(screen.getByRole('checkbox', { name: 'Use scene reference frames' }));
     fireEvent.click(screen.getByLabelText('Edit route on preview'));
-    fireEvent.click(screen.getByRole('button', {name: 'Reset route'}));
-    const route = screen.getByLabelText('Add drone path vertex');
+    fireEvent.click(screen.getByRole('button', {name: 'Draw new route'}));
+    const route = screen.getByLabelText('Camera route drawing area');
     vi.spyOn(route, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 100, height: 100 } as DOMRect);
     fireEvent.click(route, { clientX: 40, clientY: 65 });
     fireEvent.click(route, { clientX: 60, clientY: 65 });
@@ -317,8 +348,8 @@ describe('Omni video preparation and saved-video recovery', () => {
     fireEvent.click(screen.getByRole('button', { name: '4 seconds' }));
     expect(screen.getByRole('checkbox', { name: 'Animate placed people' })).toBeChecked();
     fireEvent.click(screen.getByLabelText('Edit route on preview'));
-    fireEvent.click(screen.getByRole('button', {name: 'Reset route'}));
-    const route = screen.getByLabelText('Add drone path vertex');
+    fireEvent.click(screen.getByRole('button', {name: 'Draw new route'}));
+    const route = screen.getByLabelText('Camera route drawing area');
     vi.spyOn(route, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 100, height: 100 } as DOMRect);
     fireEvent.click(route, { clientX: 40, clientY: 65 });
     fireEvent.click(route, { clientX: 60, clientY: 65 });
@@ -368,8 +399,8 @@ describe('Omni video preparation and saved-video recovery', () => {
     expect(screen.getByRole('button', { name: /Draft.*720p/ })).toHaveAttribute('aria-pressed', 'true');
     fireEvent.click(screen.getByRole('button', { name: /Bicycle ride/ }));
     fireEvent.click(screen.getByLabelText('Edit route on preview'));
-    fireEvent.click(screen.getByRole('button', {name: 'Reset route'}));
-    const route = screen.getByLabelText('Add bicycle path vertex');
+    fireEvent.click(screen.getByRole('button', {name: 'Draw new route'}));
+    const route = screen.getByLabelText('Camera route drawing area');
     vi.spyOn(route, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 100, height: 100 } as DOMRect);
     fireEvent.click(route, { clientX: 40, clientY: 65 });
     fireEvent.click(route, { clientX: 60, clientY: 65 });
@@ -413,8 +444,8 @@ describe('Omni video preparation and saved-video recovery', () => {
     });
     await screen.findByAltText('Character appearance reference');
     fireEvent.click(screen.getByLabelText('Edit route on preview'));
-    fireEvent.click(screen.getByRole('button', {name: 'Reset route'}));
-    const route = screen.getByLabelText('Add drone path vertex');
+    fireEvent.click(screen.getByRole('button', {name: 'Draw new route'}));
+    const route = screen.getByLabelText('Camera route drawing area');
     vi.spyOn(route, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 100, height: 100 } as DOMRect);
     fireEvent.click(route, { clientX: 40, clientY: 65 }); fireEvent.click(route, { clientX: 60, clientY: 65 });
     fireEvent.click(screen.getByRole('button', { name: 'Preview \u00b7 free' }));
@@ -440,6 +471,7 @@ describe('Omni video preparation and saved-video recovery', () => {
       captureAerialFrame={async () => 'data:image/jpeg;base64,ZnJhbWU='}
       captureRouteControls={captureRouteControls} onClose={vi.fn()} />);
     await screen.findByAltText('Captured City Prompt scene');
+    fireEvent.click(screen.getByRole('checkbox',{name:'Photographic finish'}));
     fireEvent.click(screen.getByText('Advanced'));
     const prompt = screen.getByRole('textbox', { name: 'Custom prompt (optional)' });
     expect(screen.getByText(/targets live-action architectural footage/)).toBeVisible();
@@ -447,8 +479,8 @@ describe('Omni video preparation and saved-video recovery', () => {
     expect(prompt).toHaveAttribute('maxLength', '600');
     fireEvent.change(prompt, { target: { value: 'A woman walks her dog on the sidewalk.' } });
     fireEvent.click(screen.getByLabelText('Edit route on preview'));
-    fireEvent.click(screen.getByRole('button', {name: 'Reset route'}));
-    const route = screen.getByLabelText('Add drone path vertex');
+    fireEvent.click(screen.getByRole('button', {name: 'Draw new route'}));
+    const route = screen.getByLabelText('Camera route drawing area');
     vi.spyOn(route, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 100, height: 100 } as DOMRect);
     fireEvent.click(route, { clientX: 40, clientY: 65 });
     fireEvent.click(route, { clientX: 60, clientY: 65 });

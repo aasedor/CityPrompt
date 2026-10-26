@@ -9,6 +9,13 @@ const result = { purpose: 'video_appearance' as const, attempt_id: 'image-attemp
   output_fingerprint: 'c'.repeat(64), model: 'gpt-image-2.5-sunburst' as const, tokens_spent: 26 };
 describe('reviewed photographic video guide', () => {
   beforeEach(() => { vi.clearAllMocks(); api.list.mockResolvedValue([]); });
+  it('blocks separate paid guide creation while the video workflow owns generation', async () => {
+    render(<PhotographicVideoGuide disabled projectId="project" signature="route" guide={null}
+      prepare={vi.fn()} onChange={vi.fn()} onBusyChange={vi.fn()}/>);
+    await waitFor(()=>expect(api.list).toHaveBeenCalledOnce());
+    const create=screen.getByRole('button',{name:/Create photographic guide/});
+    expect(create).toBeDisabled();fireEvent.click(create);expect(api.generate).not.toHaveBeenCalled();
+  });
   it('creates one saved image and requires a separate visual review before using it', async () => {
     api.generate.mockResolvedValue(result);
     const change = vi.fn();

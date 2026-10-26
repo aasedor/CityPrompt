@@ -18,6 +18,13 @@ function setup() {
 
 describe('saved image attempts', () => {
   beforeEach(() => localStorage.clear());
+  it('resumes the saved running guide to its exact result without another submission', async () => {
+    const f=setup();
+    f.get.mockResolvedValueOnce({data:job('completed')}).mockResolvedValueOnce({data:{response:{image_base64:'saved-guide'},attempt:job('completed')}});
+    expect(await f.client.resume<{image_base64:string}>(job('running'))).toMatchObject({response:{image_base64:'saved-guide'}});
+    expect(f.post).not.toHaveBeenCalled();
+    expect(f.get.mock.calls.map(call=>call[0])).toEqual([`${ROOT}/attempt-1`,`${ROOT}/attempt-1/result`]);
+  });
 
   it('submits once, polls the same attempt and returns its exact result', async () => {
     const f = setup();

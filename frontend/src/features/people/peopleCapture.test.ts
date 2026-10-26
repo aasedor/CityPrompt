@@ -1,8 +1,16 @@
 import { describe, expect, it, vi } from 'vitest';
-import { Group } from 'three';
+import { Group, Vector3 } from 'three';
 import { beginPeopleCapture, PEOPLE_CAPTURE_KEY, renderPeopleCaptureFrame } from './peopleCapture';
 
 describe('people capture scope', () => {
+  it('tracks the chosen saved person when render batching changes traversal order', () => {
+    const scene=new Group(),first=new Group(),chosen=new Group();
+    first.userData.projectDetailId='first';chosen.userData.projectDetailId='chosen';
+    first.userData[PEOPLE_CAPTURE_KEY]={pose:vi.fn(),restore:vi.fn(),focus:()=>new Vector3(1,0,0)};
+    chosen.userData[PEOPLE_CAPTURE_KEY]={pose:vi.fn(),restore:vi.fn(),focus:()=>new Vector3(8,0,0)};
+    scene.add(first,chosen);
+    expect(beginPeopleCapture(scene,true).focus('chosen')).toEqual(new Vector3(8,0,0));
+  });
   it('poses visible authored actors at absolute time and restores even after a failed pass', () => {
     const scene = new Group(), actor = new Group(), hidden = new Group();
     const active = { pose: vi.fn(), restore: vi.fn() };

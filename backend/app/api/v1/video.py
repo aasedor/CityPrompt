@@ -193,6 +193,11 @@ class VideoGenerateRequest(VideoPilotRequest):
     confirm_paid_submission: Literal[True]
 
 
+class VideoPreflightRequest(VideoPilotRequest):
+    # Admission/cost quote only; this flag never reaches a provider request.
+    prepare_photographic_finish: bool = False
+
+
 class VideoPreflightResponse(BaseModel):
     ready: bool
     provider_called: Literal[False] = False
@@ -206,6 +211,9 @@ class VideoPreflightResponse(BaseModel):
     max_attempts: int | None
     allowance_scope: Literal["provider", "trial"] = "provider"
     estimated_cost_usd: float
+    video_credit_cost: int = 0
+    photographic_guide_credit_cost: int = 0
+    total_credit_cost: int = 0
     model: str
     reference_image_count: int
     geometry_checkpoint_count: int = 0
@@ -808,9 +816,21 @@ def _omni_output_cost_estimate(req) -> float:
     return float(ESTIMATED_OMNI_COST_PER_SECOND_USD * seconds)
 
 
+def _photographic_preflight_credit_cost(req, settings) -> int:
+    if not getattr(req, 'prepare_photographic_finish', False) or req.appearance_attempt_id:
+        return 0
+    if req.provider != 'omni' or req.control_mode != 'preview_video':
+        raise HTTPException(400, 'Photographic finishing requires an Omni route video.')
+    if (settings.classroom_release or not settings.direct_3d_jobs_enabled
+        or not settings.direct_3d_images_enabled or not settings.openai_api_key):
+        raise HTTPException(503, 'Photographic video preparation is unavailable on this server. Saved image jobs and the image provider must be configured before generating.')
+    from app.services.video_appearance import GUIDE_CREDIT_COST
+    return GUIDE_CREDIT_COST
+
+
 @router.post("/preflight", response_model=VideoPreflightResponse)
 async def preflight_video(
-    req: VideoPilotRequest,
+    req: VideoPreflightRequest,
     user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db),
 ):
@@ -844,7 +864,8 @@ async def preflight_video(
             status_code=409,
             detail=f"This project has used all {usage.max_attempts} authorized {req.provider.replace('_', ' ')} submissions.",
         )
-    credit_cost = _provider_credit_cost(req.provider)
+    guide_credit_cost = _photographic_preflight_credit_cost(req, settings)
+    credit_cost = _provider_credit_cost(req.provider) + guide_credit_cost
     if not is_admin_or_above(user) and user.render_credits < credit_cost:
         raise HTTPException(
             status_code=402,
@@ -872,6 +893,9 @@ async def preflight_video(
         max_attempts=usage.max_attempts,
         allowance_scope=usage.allowance_scope,
         estimated_cost_usd=estimated_cost,
+        video_credit_cost=_provider_credit_cost(req.provider),
+        photographic_guide_credit_cost=guide_credit_cost,
+        total_credit_cost=credit_cost,
         model=_provider_model(req.provider, settings, req.internal_enhance_quality),
         reference_image_count=len(keyframes) + int(character_reference is not None),
         geometry_checkpoint_count=len(geometry_checkpoints),
