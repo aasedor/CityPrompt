@@ -1,3 +1,4 @@
+import {AnimateRenderButton} from './AnimateRenderButton';
 /**
  * StreetViewPanel — floating panel that appears when the street view pegman
  * is placed on the map. Shows compass direction, rotation controls, and a
@@ -197,6 +198,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
   const [previews, setPreviews] = useState<StreetViewResult[]>([]);
   const [selectedPreviewIndex, setSelectedPreviewIndex] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
+  const [savedRendersByImage,setSavedRendersByImage] = useState<Record<string,SavedRender>>({});
   const [savedImageKeys, setSavedImageKeys] = useState<Set<string>>(() => new Set());
   const [selectedStyle, setSelectedStyle] = useState('photorealistic');
   const [customPrompt, setCustomPrompt] = useState('');
@@ -260,6 +262,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
       render.providerLabel ? `street-view / ${render.providerLabel}` : 'street-view',
     );
     setSavedImageKeys((prev) => new Set(prev).add(key));
+    setSavedRendersByImage(previous=>({...previous,[key]:saved}));
     onRenderSaved?.(saved);
     if (showToast) toast.success('Street view saved');
     return saved;
@@ -387,6 +390,10 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
               imageUrl: direct.sourceImageUrl, prompt: '', providerLabel: 'Original 3D view',
             };
             const showingOriginal = direct.render.savedRender?.id === original?.id && Boolean(original);
+            setSavedRendersByImage(previous=>({...previous,
+              ...(direct.render.savedRender?{[getRenderImageKey(directResult)]:direct.render.savedRender}:{}),
+              ...(original&&originalPreview?{[getRenderImageKey(originalPreview)]:original}:{}),
+            }));
             const index = completedPreviews.length;
             completedPreviews.push(directResult);
             if (originalPreview && !showingOriginal) completedPreviews.push(originalPreview);
@@ -615,7 +622,8 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
                 Street View AI Render ({result.providerLabel || STREET_VIEW_RENDER_LABEL}) — Looking {compassLabel(streetViewPegman.angle)}
               </span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              {projectId && !result.error && savedRendersByImage[getRenderImageKey(result)] && <AnimateRenderButton projectId={projectId} render={savedRendersByImage[getRenderImageKey(result)]}/>}
               {projectId && (
                 <button
                   onClick={handleEditRender}

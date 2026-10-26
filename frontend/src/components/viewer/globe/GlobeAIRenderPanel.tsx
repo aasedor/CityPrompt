@@ -1,3 +1,4 @@
+import {AnimateRenderButton} from '../AnimateRenderButton';
 import { STYLES } from './imageStyles';
 import { savedRenderNotice, savedRenderIsSource, savedRenderNeedsReview } from '@/utils/renderPresentation';
 import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
@@ -1522,6 +1523,7 @@ export function GlobeAIRenderPanel({
               )}
             </div>
           </div>
+          {projectId && result.savedRender && !result.error && <div className="mt-2"><AnimateRenderButton projectId={projectId} render={result.savedRender}/></div>}
           {directReview?.outcome === 'review_required' && (
             <details className="mt-2 rounded-lg border border-white/15 bg-slate-900 px-3 py-2 text-white">
               <summary className="min-h-11 cursor-pointer py-3 text-xs font-semibold">Compare with the original 3D view</summary>
