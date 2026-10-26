@@ -10,6 +10,12 @@ const canonicalJson = (value:unknown) => JSON.stringify(value, (_key, item:unkno
 export async function preparePhotographicVideo(client:ReturnType<typeof createDirect3DAttemptClient>,request:PhotographicGuideRequest,sceneSha:string):Promise<Omit<PhotographicGuide,'signature'>> {
   const attempts = await client.list(request.project_id, 'video_appearance');
   for (const attempt of attempts) {
+    if (attempt.status === 'failed' || attempt.status === 'unknown') {
+      // This explicit Generate action may start a new attempt; never replay a
+      // terminal provider job or require a separate local-storage cleanup.
+      client.acknowledge(attempt);
+      continue;
+    }
     if (!['completed','queued','running'].includes(attempt.status)) continue;
     const saved = attempt.status === 'completed'
       ? await client.recover<Omit<PhotographicGuide,'signature'>>(attempt)

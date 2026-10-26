@@ -35,4 +35,11 @@ describe('paid video photographic preparation',()=>{
     expect(client.generate).not.toHaveBeenCalled();
     expect(client.resume).toHaveBeenCalledOnce();
   });
+  it('clears a terminal saved identity on the next explicit Generate action',async()=>{
+    const stopped={id:'stopped',status:'unknown'};
+    const client={list:vi.fn().mockResolvedValue([stopped]),acknowledge:vi.fn(),recover:vi.fn(),generate:vi.fn().mockResolvedValue(guide)};
+    expect(await preparePhotographicVideo(client as never,request,'scene')).toEqual(guide);
+    expect(client.acknowledge).toHaveBeenCalledWith(stopped);
+    expect(client.generate).toHaveBeenCalledOnce();
+  });
 });
