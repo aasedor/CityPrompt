@@ -24,7 +24,7 @@ import toast from 'react-hot-toast';
 import { authApi, direct3DAttempts, getApiErrorMessage, resolveApiFileUrl, videoRenderApi } from '@/services/api';
 import { assertNearFieldVideoSourceQuality } from './videoSourceQuality';
 import { PhotographicVideoGuide, videoBytesSha256, type PhotographicGuide } from './PhotographicVideoGuide';
-import { preparePhotographicVideo } from './videoPhotographicWorkflow';
+import { findSavedPhotographicVideo, preparePhotographicVideo } from './videoPhotographicWorkflow';
 import { VideoRouteEditor } from './VideoRouteEditor';
 import { useAuthStore } from '@/store';
 import type { Building, SiteZone } from '@/types';
@@ -806,7 +806,22 @@ export function VideoGeneratePanel({
     setIsPreflighting(true);
     setError(null);
     try {
-      const body = await requestBody(Boolean(photographicGuide?.signature === appearanceSignature));
+      let body = await requestBody(Boolean(photographicGuide?.signature === appearanceSignature));
+      let recoveredGuide: Omit<PhotographicGuide,'signature'> | null = null;
+      if (usePhotographicFinish && !body.appearance_attempt_id) {
+        // Checking a completed guide is free, including when new images are
+        // paused or only the video balance remains after an earlier purchase.
+        recoveredGuide = await findSavedPhotographicVideo(direct3DAttempts, {
+          purpose:'video_appearance',project_id:projectId,beauty_image_base64:body.guide_frame_base64,
+          source_video_sha256:await videoBytesSha256(body.preview_video_base64!),
+          prompt:customPrompt.trim(),details_revision:detailsRevision,
+          community_3d_claims:body.community_3d_claims,residual_landscape_claim:body.residual_landscape_claim,
+          source_request:body,
+        });
+        if (recoveredGuide) body={...body,omni_reference_mode:'appearance_references',appearance_attempt_id:recoveredGuide.attempt_id,
+          route_keyframes_base64:[`data:image/png;base64,${recoveredGuide.image_base64}`],use_custom_prompt_only:true,
+          custom_prompt:body.custom_prompt || 'Make this exact scene look like a live-action architectural film with realistic people and materials. Clear blue sky, soft clouds and neutral sunshine.'};
+      }
       if(run!==freeCheckRun.current)return;
       const result = await videoRenderApi.preflight({...body,
         prepare_photographic_finish: usePhotographicFinish && !body.appearance_attempt_id}) as PreflightResult;
@@ -814,6 +829,10 @@ export function VideoGeneratePanel({
       if (latestSignature.current !== currentSignature) throw new Error('The scene changed during the free check. Preview the current scene again.');
       if (!result.ready || typeof result.estimated_cost_usd !== 'number' || !Number.isFinite(result.estimated_cost_usd) || result.estimated_cost_usd < 0) {
         throw new Error('The free check did not return a valid cost quote. Preview again before generating.');
+      }
+      if (recoveredGuide) {
+        if (recoveredGuide.scene_revision_sha256 !== result.scene_revision_sha256) throw new Error('The saved photographic guide belongs to a different scene revision. Preview the current scene again.');
+        setPhotographicGuide({...recoveredGuide,signature:appearanceSignature});
       }
       setPrepared(body);
       setPreparedSignature(currentSignature);
@@ -839,7 +858,7 @@ export function VideoGeneratePanel({
     } finally {
       if(run===freeCheckRun.current)setIsPreflighting(false);
     }
-  }, [requestBody, currentSignature, photographicGuide, appearanceSignature, usePhotographicFinish]);
+  }, [requestBody, currentSignature, photographicGuide, appearanceSignature, usePhotographicFinish,projectId,customPrompt,detailsRevision]);
 
   const generate = useCallback(async () => {
     if (!prepared || !hasValidPreflight || !providerCanRun || isPreparingGuide || submissionInFlight.current) return;

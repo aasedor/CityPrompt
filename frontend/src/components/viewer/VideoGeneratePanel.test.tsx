@@ -3,6 +3,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { VideoGeneratePanel } from './VideoGeneratePanel';
 import type {VideoRouteCaptureResult} from './videoRouteControls';
+import {videoBytesSha256} from './PhotographicVideoGuide';
 const BrowserURL=URL;
 
 const api = vi.hoisted(() => ({ capabilities: vi.fn(), list: vi.fn(), preflight: vi.fn(), generate: vi.fn(), imageGenerate: vi.fn(), imageList: vi.fn(), imageRecover: vi.fn() }));
@@ -16,6 +17,36 @@ vi.mock('@/features/community3d/community3d', () => ({
 }));
 
 describe('Omni video preparation and saved-video recovery', () => {
+  it('reuses a matching guide before the reopened free quote when only video credits remain and images are paused',async()=>{
+    api.capabilities.mockResolvedValue({video_enabled:true,images_enabled:false,enabled:false});
+    api.list.mockResolvedValue({attempts:[],attempts_used:0,attempts_remaining:2,max_attempts:2});
+    api.imageList.mockResolvedValue([]);
+    const quote={ready:true,provider:'omni',estimated_cost_usd:.81,scene_revision_sha256:'scene',attempts_remaining:2,total_credit_cost:50,video_credit_cost:50,photographic_guide_credit_cost:0};
+    api.preflight.mockResolvedValue(quote);
+    const props={projectId:'trial',canvas:null,buildings:[],siteZones:[],onClose:vi.fn(),
+      captureAerialFrame:async()=>'data:image/jpeg;base64,ZnJhbWU=',
+      captureRouteControls:async()=>({keyframesBase64:['start'],previewVideoBase64:'data:video/mp4;base64,Z3VpZGU=',previewVideoMimeType:'video/mp4'})};
+    const first=render(<VideoGeneratePanel {...props}/>);
+    await screen.findByAltText('Captured City Prompt scene');
+    fireEvent.click(screen.getByRole('button',{name:'Preview · free'}));
+    await waitFor(()=>expect(api.preflight).toHaveBeenCalledOnce());
+    const {prepare_photographic_finish:_quoteOnly,...savedSource}=api.preflight.mock.calls[0][0];
+    first.unmount();
+    api.imageList.mockResolvedValue([{id:'saved-guide',style:'video-appearance',status:'completed',created_at:'2026-10-26T00:00:00Z'}]);
+    api.imageRecover.mockResolvedValue({source_request:savedSource,response:{purpose:'video_appearance',attempt_id:'saved-guide',image_base64:'photo',scene_revision_sha256:'scene',source_video_sha256:await videoBytesSha256(savedSource.preview_video_base64)}});
+    api.preflight.mockImplementation(async body=>{
+      if(body.prepare_photographic_finish)throw new Error('Only50 credits remain; images paused');
+      return quote;
+    });
+    render(<VideoGeneratePanel {...props}/>);
+    await screen.findByAltText('Captured City Prompt scene');
+    fireEvent.click(screen.getByRole('button',{name:'Preview · free'}));
+    await waitFor(()=>expect(api.preflight).toHaveBeenCalledTimes(2));
+    expect(api.preflight.mock.calls[1][0]).toMatchObject({appearance_attempt_id:'saved-guide',omni_reference_mode:'appearance_references',prepare_photographic_finish:false});
+    await waitFor(()=>expect(screen.getByRole('button',{name:/Generate video/})).toBeEnabled());
+    expect(screen.getByText(/Up to 50 tokens: 50 video/)).toBeInTheDocument();
+    expect(api.imageGenerate).not.toHaveBeenCalled();expect(api.generate).not.toHaveBeenCalled();
+  });
   it('defaults to photographic finish, previews freely and prepares its guide only on Generate', async () => {
     api.capabilities.mockResolvedValue({video_enabled:true});
     api.list.mockResolvedValue({attempts:[],attempts_used:0,attempts_remaining:2,max_attempts:2});
@@ -365,6 +396,7 @@ describe('Omni video preparation and saved-video recovery', () => {
   });
   beforeEach(() => {
     vi.clearAllMocks();
+    api.imageList.mockResolvedValue([]);
     vi.stubGlobal('URL',class extends BrowserURL {
       static createObjectURL=()=> 'blob:test-preview';
       static revokeObjectURL=()=>{};

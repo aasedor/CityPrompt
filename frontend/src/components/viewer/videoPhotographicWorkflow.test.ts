@@ -1,9 +1,23 @@
 import {describe, expect, it, vi} from 'vitest';
-import {preparePhotographicVideo} from './videoPhotographicWorkflow';
+import {findSavedPhotographicVideo,preparePhotographicVideo} from './videoPhotographicWorkflow';
 
 const request = {project_id:'p',purpose:'video_appearance' as const,beauty_image_base64:'native',source_video_sha256:'source',prompt:'daylight',source_request:{route_points:[{x:.1,y:.2}],details_revision:2}};
 const guide = {purpose:'video_appearance' as const,attempt_id:'g',image_base64:'photo',source_video_sha256:'source',scene_revision_sha256:'scene',output_fingerprint:'pixels',model:'gpt-image-2.5-sunburst' as const,tokens_spent:26};
 describe('paid video photographic preparation',()=>{
+  it('looks up matching completed guides without creating, resuming or acknowledging jobs',async()=>{
+    const client={list:vi.fn().mockResolvedValue([{id:'pending',status:'running'},{id:'g',status:'completed'}]),
+      recover:vi.fn().mockResolvedValue({response:guide,source_request:request.source_request}),generate:vi.fn(),resume:vi.fn(),acknowledge:vi.fn()};
+    expect(await findSavedPhotographicVideo(client as never,request)).toEqual(guide);
+    expect(client.generate).not.toHaveBeenCalled();expect(client.resume).not.toHaveBeenCalled();expect(client.acknowledge).not.toHaveBeenCalled();
+  });
+  it.each([
+    {response:{...guide,source_video_sha256:'other-recording'},source_request:request.source_request},
+    {response:guide,source_request:{...request.source_request,details_revision:3}},
+  ])('does not reuse a changed recording or source request during a free lookup',async(saved)=>{
+    const client={list:vi.fn().mockResolvedValue([{id:'old',status:'completed'}]),recover:vi.fn().mockResolvedValue(saved),generate:vi.fn()};
+    expect(await findSavedPhotographicVideo(client as never,request)).toBeNull();
+    expect(client.generate).not.toHaveBeenCalled();
+  });
   it('recovers a matching saved guide rather than buying another',async()=>{
     const client={list:vi.fn().mockResolvedValue([{id:'g',status:'completed'}]),recover:vi.fn().mockResolvedValue({response:guide,source_request:request.source_request}),generate:vi.fn()};
     expect(await preparePhotographicVideo(client as never,request,'scene')).toEqual(guide);
