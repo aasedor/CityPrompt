@@ -1,4 +1,4 @@
-# City Prompt — current application handoff, 26 October 2026
+# City Prompt â€” current application handoff, 26 October 2026
 
 Target repository: `beemanbesh/2D-Maps2`.
 New branch: `codex/luxmodus-current-20261026`.
@@ -13,14 +13,31 @@ Its snapshot parent is the target repository's existing main commit; the
 application tree comes from the source snapshot above. This avoids importing
 unrelated development history into the handoff branch.
 
+## Transfer status: source review only; asset sync blocked
+
+The application source and Git LFS pointer files are present on this branch.
+The attempted model/image payload transfer was rejected by GitHub:
+`This repository exceeded its LFS budget. The account responsible for the budget should increase it to restore access.`
+The attempted upload reported 0 bytes transferred. **Do not treat this branch as
+a complete, deployment-ready copy until its LFS assets have been synchronized
+and verified.** No budget settings or purchases were changed.
+
+The account owner must restore LFS availability before the remaining asset
+transfer can finish. The original assets and the exact source snapshot are
+preserved locally; after that restriction is resolved, resume a normal LFS
+upload to this repository and verify the required asset downloads. Avoid
+merging this branch into a deployed branch before the preview checks below.
+
 ## What is included
 
-- Current frontend, backend, migrations, catalogue definitions and tracked assets.
+- Current frontend, backend, migrations, catalogue definitions and tracked asset
+  references. Large model/image payload synchronization is blocked as noted above.
 - The architecture/style/era/planning teaching interface, optional public data
   layers, court-only sports assets and the latest placement/recovery fixes.
 - Seven independently reviewed architectural-clay teaching buildings as
   **development-only trials**. Their exact GLBs, front/oblique/top references and
-  independent reviews are included at their declared public paths. They remain
+  independent reviews are declared at their public paths. Their model/image
+  payloads require the blocked LFS synchronization. They remain
   excluded from production discovery; this copy grants no new catalogue approval.
 - The existing database compatibility bridge for the older `2D-Maps2` schema.
   See `docs/RENDER_DATABASE_BRIDGE_2026-10-14.md`.
