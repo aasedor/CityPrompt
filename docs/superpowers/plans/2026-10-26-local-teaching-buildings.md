@@ -33,11 +33,11 @@
 
 **Interfaces:** `localTeachingBuildings(enabled: boolean): PlaceAsset[]`; `LOCAL_TEACHING_BUILDINGS`; local exact lesson/history maps. Installer `install(manifest, source_root, public_dir, candidates, apply=False)` verifies locked sources/reviews/native metrics, plans/copies only finite manifest files, and readbacks hashes.
 
-- [ ] Write Vitest cases for seven unique entries, production exclusion, saved revision rejection, fixed geometry/no resize, centred asymmetric GLB and exact teaching/stale withholding. Run and observe RED.
-- [ ] Write pytest cases for dry-run, hash mismatch, conflict refusal and exact model review binding. Run and observe RED.
-- [ ] Create the manifest from exact existing review/build/source records; wire the existing native renderer and additive lessons; implement the finite installer.
-- [ ] Run focused frontend/backend-independent tool tests, existing registry/catalogue tests and TypeScript check. Expected: PASS.
-- [ ] Dry run all seven; install only Victory as a pilot. Verify actual localhost model/reference bytes. Commit the coherent source unit after UI pilot if successful.
+- [x] Write Vitest cases for seven unique entries, production exclusion, saved revision rejection, fixed geometry/no resize, centred asymmetric GLB and exact teaching/stale withholding. Run and observe RED.
+- [x] Write pytest cases for dry-run, hash mismatch, conflict refusal and exact model review binding. Run and observe RED.
+- [x] Create the manifest from exact existing review/build/source records; wire the existing native renderer and additive lessons; implement the finite installer.
+- [x] Run focused frontend/backend-independent tool tests, existing registry/catalogue tests and TypeScript check. Expected: PASS.
+- [x] Dry run all seven; install only Victory as a pilot. Verify actual localhost model/reference bytes. Commit the coherent source unit after UI pilot if successful.
 
 ### Task 2: Complete ordinary UI runtime review and bounded continuation
 
@@ -45,7 +45,7 @@
 
 **Interfaces:** Consumes the stable trial IDs and hash-checked installer from Task 1. Produces project/evidence URLs, truthful per-variant acceptance records and ready local catalogue.
 
-- [ ] Create a disposable vacant prepared-site project through normal UI. Place Victory, rotate/move/undo, save/reload and inspect its exact model. Expected: correct geometry with no persistent generic proxy.
-- [ ] Install remaining six after the pilot succeeds; place all seven through normal controls. Inspect aerial and close views, save/reopen and browser errors. Expected: same exact variants persist.
-- [ ] Record applicable passes and all untested runtime rows honestly. Run the Task 1 focused suite and type-check. Expected: PASS.
+- [x] Create a disposable vacant prepared-site project through normal UI. Place Victory, rotate/move/undo, save/reload and inspect its exact model. Expected: correct geometry with no persistent generic proxy.
+- [x] Install remaining six after the pilot succeeds; place all seven through normal controls. Inspect aerial and close views, save/reopen and browser errors. Expected: same exact variants persist.
+- [x] Record applicable passes and all untested runtime rows honestly. Run the Task 1 focused suite and type-check. Expected: PASS.
 - [ ] Commit only intentional source/review documentation; retain ignored generated evidence separately. Request one fresh whole-branch source review, address important findings with RED/GREEN verification, and leave the local app ready. No push/deploy.
