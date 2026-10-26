@@ -1,0 +1,425 @@
+{
+  "schema": "cityprompt.rlasm.independent-review@1",
+  "candidate": "wartime-victory-house-clay-v004",
+  "archetype_id": "wartime_victory_house",
+  "variant_id": "cream_clapboard_steep_side_gable",
+  "model_sha256": "4b0df5c7fecb6b4a48002da119096b964fd03570503df1cb5fca91ae000fa2bb",
+  "method": "RLASM v6.1",
+  "reviewer": "Independent architectural-clay verifier /root/housing_pilot_visual_review",
+  "reviewed_utc": "2026-10-25T19:32:54.136100+00:00",
+  "review_scope": "holistic_architectural_clay",
+  "holistic": true,
+  "scope_limits": "Holistic source-locked review of the complete architectural-clay asset and all final evidence; closes only that delivery profile. No textured-keeper, engineering, live-runtime, installation, activation or publication approval.",
+  "decision": "architectural_clay_pass",
+  "review_state": "architectural_clay_reviewed",
+  "architectural_clay_pass": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_p2": 1,
+  "keeper_approved": false,
+  "runtime_activation": false,
+  "runtime_integration": "NOT TESTED",
+  "metadata_is_visual_proof": false,
+  "pixel_inspection": {
+    "mode": "All listed source roles, full-resolution renders and phone boards directly opened with original-resolution view_image in this v004 review",
+    "render_count": 17,
+    "render_dimensions": [
+      1600,
+      1200
+    ],
+    "phone_board_count": 3,
+    "phone_board_dimensions": [
+      1080,
+      1920
+    ],
+    "source_panel_count": 4,
+    "source_origin": "Original generated teaching design; not a historic property",
+    "inspected_files": [
+      {
+        "path": "sources/front.png",
+        "sha256": "4d79232e247c43d2da95bd3a70261862a587e162c0ae80ec79c8785efcf3b578"
+      },
+      {
+        "path": "sources/oblique.png",
+        "sha256": "b532ffc76d9d76844e5b3c312228eb9527e11368067eff6b63dea55347d242fc"
+      },
+      {
+        "path": "sources/top.png",
+        "sha256": "62801e3e512f0da15e2c869eb470d34a73b9e5e0d8396b91d97c38ec37e1dfdc"
+      },
+      {
+        "path": "sources/rear_oblique.png",
+        "sha256": "917d1ff992f331e867163b1215f3b489b06763c0f42ea2b9d91d14e3bbc4075f"
+      },
+      {
+        "path": "boards/locked-source-board.png",
+        "sha256": "1d453450a0f21ff25e5b682b974be255de52a0cc4e2e0849c97f4edcb0c845bd"
+      },
+      {
+        "path": "boards/phone-source-comparison.png",
+        "sha256": "80b669f4f31ecc39d525a1449fb47cb9b9208526b87d68ada110ed34ca2a003f"
+      },
+      {
+        "path": "boards/phone-construction.png",
+        "sha256": "4ee97e43697b7e40017f830f4aefcbfe35622d66d2891a1efd2412746d463281"
+      },
+      {
+        "path": "boards/phone-stair-supplement.png",
+        "sha256": "c992ca759b514ccfa889abbb6a4f551cf6ce9d29734fc5c08697179860f16e03"
+      },
+      {
+        "path": "renders/front.png",
+        "sha256": "b139f07f9178cdf323fa92c2334e815d3c62768f4aaf6662282ee32f4a84f724"
+      },
+      {
+        "path": "renders/front_corner.png",
+        "sha256": "ed21dddc9afe21e2935c5f28c61709190416b1dec5abc91e5311909523449308"
+      },
+      {
+        "path": "renders/aerial.png",
+        "sha256": "96a4e612541358a6d029e1476fc83890b6a572cacd4d133b04f44e0959a4a5cc"
+      },
+      {
+        "path": "renders/top.png",
+        "sha256": "2f6e83884f897d2c26ab58b5593b19c7a751977aa81440577e98eb0d2c99f585"
+      },
+      {
+        "path": "renders/left_side.png",
+        "sha256": "859b23828f962d84850998ab47c2cec3f910d22d74be83068b6d9b2475d50160"
+      },
+      {
+        "path": "renders/right_side.png",
+        "sha256": "5c3d2a0314af60dc4922cbdd2c9f0cfab62c9bbf5af15bb102c163897737bf65"
+      },
+      {
+        "path": "renders/rear.png",
+        "sha256": "27a90914741c18fc7c4d5feb74180d9795ef28dd0d617e9db533b0a69cb0249e"
+      },
+      {
+        "path": "renders/rear_side.png",
+        "sha256": "c72223554c35c529ff79195f156d0cfd8d5ca5ea1a20041f6026c5aa7667b773"
+      },
+      {
+        "path": "renders/facade_close.png",
+        "sha256": "d08e43ef7ea31ba04d30c0f64d501e8245a7b2a7867502fba118c46887d5ba47"
+      },
+      {
+        "path": "renders/architecture_close.png",
+        "sha256": "aa26f6f5398170e1cad8409af4b21825365f4e2bc74af4525c08d0880c546c15"
+      },
+      {
+        "path": "renders/glass_close.png",
+        "sha256": "05a11a56b19e471ccfd41ac92064d23eb59812bd2295a4c993f7ab716017bdaf"
+      },
+      {
+        "path": "renders/entry_contacts.png",
+        "sha256": "57b3611ddb3141bc08f04475bd6db6a0a0f4962f02e983a4ab879bf0bc38257f"
+      },
+      {
+        "path": "renders/stair_flight.png",
+        "sha256": "d13b7e93fd88ff7859b068d69b480483cb91b1ea9640eb30d23a8630ba5e3e19"
+      },
+      {
+        "path": "renders/attic_stair.png",
+        "sha256": "35f81a38312c7a25c96a60278bf09054708ffda2cccc93e3964db08368d6aa58"
+      },
+      {
+        "path": "renders/roof_chimney.png",
+        "sha256": "9ea10deb16311d82fa1e7395bfc370dbb1d4adefd68ecb71ef9158dfb3c275c8"
+      },
+      {
+        "path": "renders/stair_flight_clear.png",
+        "sha256": "8711b830d42a0323de9e63a8f73bc4124e6d5ae574e6cc0b01ddb9b22c890961"
+      },
+      {
+        "path": "renders/stair_upper_join.png",
+        "sha256": "64058d4a1a700fa095dd12a1ae410a3a41086f5c8eb576200b1a561373f75912"
+      }
+    ]
+  },
+  "per_view_pixel_findings": [
+    {
+      "path": "renders/front.png",
+      "findings": "Complete raised cottage, steep side-gable roof, centre entrance, paired windows and chimney fit with margin. Source six-light 3x2 upper sashes now appear above single lower panes."
+    },
+    {
+      "path": "renders/front_corner.png",
+      "findings": "Front and end construction continue around the corner: clapboard, trim, real openings and supported steps. No exposed gable penetration or bright QA patch occurs on the roof."
+    },
+    {
+      "path": "renders/aerial.png",
+      "findings": "Both roof slopes, one bounded ridge, source-position chimney and full footprint are coherent. No roof shard, slot, lighting patch or floating foundation was seen."
+    },
+    {
+      "path": "renders/top.png",
+      "findings": "Roof plan, ridge direction, chimney offset and both entry projections are fully framed. Source top is correctly limited to high-aerial evidence, not a survey."
+    },
+    {
+      "path": "renders/left_side.png",
+      "findings": "Complete foundation-to-ridge gable has physical main/attic openings and corrected six-light upper sashes. Gable is covered by the roof underside."
+    },
+    {
+      "path": "renders/right_side.png",
+      "findings": "Complete end elevation and chimney termination have neutral margin. Source-specific lower and attic sash depth remains intact; no blank or unfinished secondary face was found."
+    },
+    {
+      "path": "renders/rear.png",
+      "findings": "Paired six-light upper sashes, distinct glazed-upper rear door and grounded three-step entry retain the rear source hierarchy."
+    },
+    {
+      "path": "renders/rear_side.png",
+      "findings": "Rear and gable construction continue through the roof, supports and entry. Chimney penetrates its carrier. No roof/gable or lighting regression was seen."
+    },
+    {
+      "path": "renders/facade_close.png",
+      "findings": "Real returns, recessed sash/pane and occupied depth remain visible. Upper horizontal muntins now match source. Six-panel front door and supported entrance are retained."
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "findings": "Gable carrier is covered by the roof underside and bounded rake. Dark soffit reads as shaded overhang. Attic opening has returns, six-light upper sash and enclosed depth."
+    },
+    {
+      "path": "renders/glass_close.png",
+      "findings": "Cut carrier, recessed sash/pane and offset furniture/room depth remain visible. This tight optical close is not used as full-stair proof."
+    },
+    {
+      "path": "renders/entry_contacts.png",
+      "findings": "Three native front treads visibly bear at grade and meet the sill. Amended threshold is 0.53 m, with tread levels about 0.176667, 0.353333 and 0.53 m."
+    },
+    {
+      "path": "renders/stair_flight.png",
+      "findings": "Original side-context camera remains partly occluded by sofa and ceiling. Preserved honestly; not accepted alone as full-flight or endpoint proof."
+    },
+    {
+      "path": "renders/attic_stair.png",
+      "findings": "Occupied attic, bed, floor cut and guards are inspectable under adequate light. Arrival bridge reaches the solid floor and previous dark 0.19 m slot is gone. Guard-foot finish is P2."
+    },
+    {
+      "path": "renders/roof_chimney.png",
+      "findings": "Chimney positively intersects continuous roof carrier and has a seated cap. No inspection-light patch or carrier slot appears. Flue/flashing remain clay simplifications."
+    },
+    {
+      "path": "renders/stair_flight_clear.png",
+      "findings": "Added exact-GLB view exposes complete supported tread run and lower-floor bearing, with handrails, physical floor cut and upper arrival direction. Paired upper views close top-floor contact."
+    },
+    {
+      "path": "renders/stair_upper_join.png",
+      "findings": "Added close shows a continuous landing-to-floor surface around a real stair opening. Previous unsupported exit strip is absent. Minor guard-end/foot separation is recorded as P2."
+    }
+  ],
+  "phone_findings": [
+    {
+      "path": "boards/phone-source-comparison.png",
+      "findings": "Compact side-gable identity, source hierarchy, chimney offset, entrance and six-light sashes remain legible. Roles and inference limits are labelled."
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "findings": "Facade/glass sections, supported entry and occupied attic remain legible. Original occluded stair panel is supplemented and is not sufficient alone."
+    },
+    {
+      "path": "boards/phone-stair-supplement.png",
+      "findings": "Clear full-flight side view, upper join and attic view together show tread run, lower bearing and continuous upper-floor contact at phone scale. Minor guard-foot finish is visible."
+    }
+  ],
+  "categories": {
+    "identity_and_proportions": "PASS clay: compact one-and-a-half-storey source design, steep side gable, raised floor, paired sash rhythm, six-panel centre front door and different rear glazed leaf retained. Metric dimensions are inferred.",
+    "complete_elevations": "PASS: front, both gables and rear are complete and inspectable; no blank secondary elevation or cropped whole-building view.",
+    "roof_envelope": "PASS: slopes, ridge, rake, eaves and chimney form one closed envelope; old carrier penetration and bright emitter patches do not recur.",
+    "source_specific_openings": "PASS: actual apertures, returns, recessed sash/pane, six-light upper grid and single lower pane visible across all elevations.",
+    "optics_and_occupation": "PASS clay: restrained glass reveals enclosed residential depth and furniture without glowing flat cards.",
+    "circulation_and_contacts": "PASS concept geometry: grounded exterior steps/foundation, complete stair run and continuous arrival are visible. Fine guard endpoint anchoring remains P2; structural/code adequacy is outside scope.",
+    "camera_validity": "PASS as complete 17-view suite: whole views have margin; exact-GLB supplemental stair cameras close the original occluded camera duty. Original limited view is preserved.",
+    "materials": "PASS source-palette texture-free architectural clay; no textured PBR keeper claim.",
+    "landscape": "No designed landscape claimed; green QA context excluded from exported building.",
+    "lifecycle": "Clay-only pass; runtime NOT TESTED, no keeper state, activation or publication."
+  },
+  "prior_review": {
+    "path": "../victory-v003/review/independent-review.json",
+    "preserved": true,
+    "sha256": "425bf3c002d62f898336df084caa52c38a8bd26f9fdb17529437a1776164e418"
+  },
+  "prior_blocker_closure": [
+    {
+      "id": "V003-P0-01",
+      "status": "closed",
+      "proof": [
+        "renders/stair_upper_join.png",
+        "renders/attic_stair.png",
+        "independent GLB surface samples"
+      ],
+      "finding": "Bridge spans about X0.74..1.35 m and bears beyond floor-cut edge X1.23 m. Floor support at Z3.05 m exists across the former slot and both bridge sides."
+    },
+    {
+      "id": "V003-P0-02",
+      "status": "closed by paired evidence",
+      "proof": [
+        "renders/stair_flight_clear.png",
+        "renders/stair_upper_join.png",
+        "renders/attic_stair.png",
+        "boards/phone-stair-supplement.png"
+      ],
+      "finding": "Clear side view proves full tread run/lower bearing; upper views prove landing/floor connection. Original occluded view is not used alone."
+    },
+    {
+      "id": "V003-P1-01",
+      "status": "closed",
+      "proof": [
+        "renders/front.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/facade_close.png",
+        "renders/architecture_close.png",
+        "boards/phone-source-comparison.png"
+      ],
+      "finding": "Every upper sash now has source 3x2 six-light grid; lower panes remain single and prework observation is amended."
+    }
+  ],
+  "adversarial_regression": [
+    "Gable tops stay below exposed roof skin in side, oblique, aerial, top and close views.",
+    "No QA emitter patch appears on current roof; attic is sufficiently lit.",
+    "Entries and thresholds remain coherent at amended 0.53 m datum.",
+    "Secondary elevations, rear glazed door, roof, optical depth, foundation and whole-view margins remain intact."
+  ],
+  "fresh_independent_verification": {
+    "status": "PASS_INDEPENDENT_HASH_DIMENSION_AND_ARRIVAL_CHECKS",
+    "model_hash_matches": true,
+    "source_hashes_checked": 4,
+    "archived_script_hashes_checked": 6,
+    "supplement_hashes_checked": 20,
+    "glb_images": 0,
+    "glb_textures": 0,
+    "glb_cameras": 0,
+    "glb_qa_lights": 0,
+    "native_bounds_m": [
+      [
+        -4.170000076293945,
+        -3.5999999046325684,
+        0.0
+      ],
+      [
+        4.170000076293945,
+        3.5999999046325684,
+        6.119999885559082
+      ]
+    ],
+    "arrival_probe_method": "Read-only independent trimesh load; world-space triangles mapped from glTF (x,y,z) to Blender-native (x,-z,y); barycentric vertical intersections in Z2.85..3.15 m.",
+    "arrival_support_samples": [
+      {
+        "x": 0.8,
+        "y": 0,
+        "z_hits": [
+          2.95,
+          3.05
+        ]
+      },
+      {
+        "x": 0.9,
+        "y": 0,
+        "z_hits": [
+          2.95,
+          3.05
+        ]
+      },
+      {
+        "x": 1.03,
+        "y": 0,
+        "z_hits": [
+          2.95,
+          3.05
+        ]
+      },
+      {
+        "x": 1.08,
+        "y": 0,
+        "z_hits": [
+          2.95,
+          3.05
+        ]
+      },
+      {
+        "x": 1.13,
+        "y": 0,
+        "z_hits": [
+          2.95,
+          3.05
+        ]
+      },
+      {
+        "x": 1.2,
+        "y": 0,
+        "z_hits": [
+          2.95,
+          3.05
+        ]
+      },
+      {
+        "x": 1.24,
+        "y": 0,
+        "z_hits": [
+          2.95,
+          3.05
+        ]
+      },
+      {
+        "x": 1.3,
+        "y": 0,
+        "z_hits": [
+          2.95,
+          3.05
+        ]
+      },
+      {
+        "x": 1.13,
+        "y": 0.5,
+        "z_hits": [
+          2.95,
+          3.05
+        ]
+      },
+      {
+        "x": 1.13,
+        "y": -0.5,
+        "z_hits": [
+          2.95,
+          3.05
+        ]
+      }
+    ]
+  },
+  "supporting_records": [
+    "evidence/delivery-verification.json",
+    "evidence/archived-builder-scripts-verified.json",
+    "evidence/measured-entrances-and-roof.json",
+    "evidence/additional-stair-cameras.json",
+    "evidence/review-supplement-manifest.json",
+    "prework-manifest.json"
+  ],
+  "blockers": [],
+  "non_blocking_findings": [
+    {
+      "id": "V004-P2-01",
+      "priority": "P2",
+      "category": "guard_endpoint_finish",
+      "title": "Loft guard feet/end-anchor detailing remains simplified",
+      "evidence": [
+        "renders/stair_upper_join.png",
+        "renders/attic_stair.png",
+        "boards/phone-stair-supplement.png"
+      ],
+      "visible_symptom": "Some guard end members terminate at raised bottom rail, leaving small visible separation above floor instead of explicit feet/end anchors.",
+      "scope": "Non-blocking concept-detail follow-up. It does not reopen the continuous walking surface, hide stair run, alter source identity or invalidate clay evidence. No guard-load/engineering approval implied.",
+      "follow_up": "If refining detail, extend end posts or add visible floor/edge anchors and rerender affected views. Delivered geometry changes require a new immutable candidate/review."
+    }
+  ],
+  "limitations": [
+    "Original generated wartime/Victory teaching design, not a named historic-property replica.",
+    "Metric scale, concealed structure and interior arrangement are architectural inferences; source top is high aerial, not surveyed orthography.",
+    "Clay simplifies texture, weathering, flue/flashing and fine connections. No engineering, fire, accessibility or code-compliance approval.",
+    "First side-context stair view remains occluded; only its paired exact-GLB supplements close that proof duty.",
+    "All live placement, terrain, route, resizing, editing/recovery, save/reload, performance and capture checks remain NOT TESTED.",
+    "Exact variant remains fixed native scale and unactivated. No sibling use, seed installation, publication, paid generation or deployment is authorized by this review."
+  ],
+  "reviewer_modified_builder_source_or_metadata": false,
+  "reviewer_output": "review/independent-review.json"
+}

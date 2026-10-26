@@ -1,0 +1,351 @@
+{
+  "schema": "cityprompt.rlasm.independent-architectural-clay-review@1",
+  "candidate": "postmodern-neighbourhood-library-clay-v002",
+  "archetype_id": "postmodern_neighbourhood_library",
+  "variant_id": "broken_pediment_reading_room",
+  "model_sha256": "7fb72964e6da37efab1c3f3a024c33bceb445c52b7b4e2a7dce5b9012d9c534e",
+  "reviewer": "Codex independent RLASM reviewer /root/teaching_prairie_review; separate from builder",
+  "reviewed_utc": "2026-10-25T09:16:16.853374+00:00",
+  "method": "RLASM v6.1",
+  "representation_kind": "architectural_clay",
+  "scope": "Fresh holistic exact-source architectural-clay review of three unchanged source extracts and locked board, all fourteen complete full-resolution GLB-reimport renders and both 1080x1920 phone boards. Source composition/ratios, roof/plan, every elevation, circular and rectangular openings, optical depth, recognisable library program, supports, contacts, foundations, circulation, landscape interface, visibility, cameras and previous reveal defect reviewed. Builder decisions and metadata were not substituted for rendered pixels.",
+  "holistic_review_performed": true,
+  "architectural_clay_pass": true,
+  "decision": "architectural_clay_reviewed",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_p2": 2,
+  "findings": [
+    {
+      "id": "LIB-P2-01",
+      "severity": "P2",
+      "status": "non-blocking polish",
+      "finding": "The round frames show slight polygonal faceting at the extreme glass close. The circular silhouette, continuous reveal, aperture and occupied depth remain legible; no alternating dark-triangle/copanar defect remains.",
+      "evidence": [
+        "renders/glass_close.png",
+        "boards/phone-construction.png"
+      ],
+      "follow_up": "A later explicitly bounded close-detail upgrade may smooth ring shading or increase segment count. No current clay blocker."
+    },
+    {
+      "id": "LIB-P2-02",
+      "severity": "P2",
+      "status": "non-blocking presentation wording",
+      "finding": "The source board and phone board label the third source TOP, while it is visibly a high aerial perspective. The authoritative source provenance and prework already disclose this correctly and metric scale is explicitly inferred, so current source enrollment is honest.",
+      "evidence": [
+        "boards/locked-source-board.png",
+        "boards/phone-source-comparison.png",
+        "sources/source-provenance.json"
+      ],
+      "follow_up": "For teaching-facing presentation use HIGH AERIAL / PLAN REFERENCE rather than implying a surveyed orthographic view. Preserve the unchanged source extract and existing review evidence."
+    }
+  ],
+  "source_lock_review": {
+    "compatible_roles": [
+      "front",
+      "oblique",
+      "top"
+    ],
+    "top_role_interpretation": "The top-role source is a compatible high aerial, not true orthographic or survey evidence. It governs broad plan/setbacks; front and oblique establish vertical hierarchy.",
+    "original_board_sha256": "489129cc39c50f50cdbb891817a853a2cb8307d08e9cdfc371d638e85c8fc119",
+    "independent_original_crop_pixel_checks": {
+      "front": {
+        "pixels_identical": true,
+        "region_px": [
+          0,
+          0,
+          1024,
+          400
+        ],
+        "sha256": "43c06bddb7bafbaaaf405a5c14a06f7cba830adebd52e8de6cc0464e9f40f0b4"
+      },
+      "oblique": {
+        "pixels_identical": true,
+        "region_px": [
+          0,
+          450,
+          1024,
+          840
+        ],
+        "sha256": "edb678811d2627f478643d31ea3ebf36738ed7fa2ac36368a89784b32b1f3a40"
+      },
+      "top": {
+        "pixels_identical": true,
+        "region_px": [
+          0,
+          909,
+          1024,
+          1490
+        ],
+        "sha256": "656359722884cca4f814a3ebfee18cf0ebb47d65738d664b7ca849c42f720481"
+      }
+    },
+    "observed_geometry": "Two circular windows in a lower projecting left wing; rectangular right hall with blue coping; right-offset salmon two-pier portico and separated pediment halves; rear wing setback in high aerial; one occupied storey.",
+    "pixel_authority_over_prompt": "Portico about+3m, pediment5.85m and jogged rear plan follow visible sources rather than the requested+2m/6.5m/rectangular simplifications.",
+    "inferences": "Unshown left/rear opening schedules, exact metric dimensions, roof-junction construction and interior shelf arrangement are architectural inferences. No historical or surveyed accuracy claimed."
+  },
+  "regression_review": [
+    {
+      "id": "v001 LIB-B1",
+      "status": "visually resolved",
+      "proof": "Fresh glass_close shows a continuous annular blue reveal with a clean pale wall return and optical disc. Alternating dark opaque triangles are absent. Supporting family_library.py records35mm radial separation, but the pixel result is the deciding evidence."
+    },
+    {
+      "id": "whole-envelope regression",
+      "status": "pass",
+      "proof": "All fourteen fresh views were inspected, including both sides/rear, full L footprint, two supported portico piers, closed roof slabs, open pediment slot and clear door thresholds. No fix-only category acceptance."
+    }
+  ],
+  "whole_set_observations": {
+    "front": "Source-specific asymmetric composition and height hierarchy, two actual circles, small rectangular window, glazed entry/sidelights and far-right reading window; open pediment slot and no site pad.",
+    "front_corner": "Complete footprint, blue-coped lower/higher flat roofs, supported projecting canopy and right-side reading apertures. Higher review camera differs from the low source pose but preserves envelope proof.",
+    "aerial": "Closed flat slabs, bounded coping and complete roof-step construction; pediment remains a facade screen rather than a pitched hall roof.",
+    "top": "Jogged L footprint preserves projecting lower wing and rear setback; portico footprint is supported and external apron remains small.",
+    "left_side": "Three inferred rectangular wing apertures and exposed main return have visible room depth; roofs, base and ground contact continue around the envelope.",
+    "right_side": "Two broad rectangular reading apertures reveal reading furniture, circulation desk and shelving; no opaque wall ghosts.",
+    "rear": "Inferred service door/threshold and window schedule are complete. Shelf backs are identifiable furniture behind some panes, not failed wall cuts.",
+    "rear_side": "Complete caps, rear-return grammar, physical apertures and continuously grounded foundation; no floating projection.",
+    "facade_close": "Salmon piers bear on bases/apron and blue canopy; glazed double entry/sidelights have physical returns, handles and occupied room depth with clear central aisle.",
+    "architecture_close": "Both solid pediment halves seat on the canopy, their inner cut faces are visible and vertical apex slot is open without filler.",
+    "glass_close": "True circular wall section, continuous annular frame, offset optical layer and unmistakable shelves/books/reading table beyond; prior coplanar triangles absent.",
+    "portico_contact": "Positive pier-to-canopy and pediment-to-canopy bearing, with no floating support/cap.",
+    "library_programme": "Actual shelves, coloured book spines and usable central aisle identify library occupation rather than generic furniture in an empty shell.",
+    "entrance_low": "Clear threshold and approach, recessed glazing, double-leaf handles and circulation aisle remain legible.",
+    "phone_source_comparison": "Principal silhouette, circular-window pair, colour hierarchy and broken pediment remain recognisable at phone scale; no image registration claim.",
+    "phone_construction": "Circular section, support bearing, real book stacks and clear entry survive1080x1920 presentation."
+  },
+  "independent_binary_and_file_checks": {
+    "model_path": "postmodern-neighbourhood-library-clay-v002.glb",
+    "bytes": 976160,
+    "glb_version": 2,
+    "images": 0,
+    "textures": 0,
+    "cameras": 0,
+    "all_review_input_receipt_hashes_match": true,
+    "all_fourteen_render_dimensions_verified": [
+      1600,
+      1200
+    ],
+    "both_phone_dimensions_verified": [
+      1080,
+      1920
+    ],
+    "render_provenance_limit": "Exact model/file hashes, dimensions and zero image/texture counts independently read. Reimport-render provenance is supported by builder records; reviewer did not rerun Blender."
+  },
+  "inspected_files": [
+    {
+      "path": "boards/locked-source-board.png",
+      "bytes": 771484,
+      "sha256": "636c775eca0b4b876630730232d4647802d45f7879d015d7c4f08a97f127327e",
+      "width_px": 1800,
+      "height_px": 620,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "sources/library-front.png",
+      "bytes": 625756,
+      "sha256": "43c06bddb7bafbaaaf405a5c14a06f7cba830adebd52e8de6cc0464e9f40f0b4",
+      "width_px": 1024,
+      "height_px": 400,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "sources/library-oblique.png",
+      "bytes": 597006,
+      "sha256": "edb678811d2627f478643d31ea3ebf36738ed7fa2ac36368a89784b32b1f3a40",
+      "width_px": 1024,
+      "height_px": 390,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "sources/library-top.png",
+      "bytes": 1081898,
+      "sha256": "656359722884cca4f814a3ebfee18cf0ebb47d65738d664b7ca849c42f720481",
+      "width_px": 1024,
+      "height_px": 581,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1650604,
+      "sha256": "27577e58d339232e3374586656df42d46e08ce8b067fe1faf1eb8d7229034ae1",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1671783,
+      "sha256": "1f3c4aba19a0b511e44dcebad3fc895191b5bf4ee2c135915ecd797c70546043",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1714399,
+      "sha256": "9ca956984b1b8fa5be01fd77695a3f18461b0b2d075b740952ff7fdc3b1d6e8a",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "renders/top.png",
+      "bytes": 1577544,
+      "sha256": "b4a03a859775b49c94e6de898a0a7e17b533310a48baf4838bdfc51589dbc42c",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1591536,
+      "sha256": "3dd323bfbb8abb5dd9f0086b93f6dc92056b0278d597c4941162b2fd2fdd0961",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1581051,
+      "sha256": "d97596f09a71d12994882276851b13042415551cfc9d45ce873e342c7146ea7e",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1586853,
+      "sha256": "df6bf123e5aa376dab8d8d64cb3ef590249c531e7066f30e4886748a6331905b",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1639945,
+      "sha256": "65913b953fb0e5ba72e814843167a089199241a1455e335d78baf8dca56ccc31",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1704121,
+      "sha256": "533cfbefdacf47aeda42686414dee6a1b3efbf0c38f6222f55d1151a0c24819c",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1803027,
+      "sha256": "7b6799ef4d892abe645883894dd7f8b5ab0a245a72e4881aa5191ee21eaefdd0",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1696145,
+      "sha256": "20a266dc1e9168725e7c8b1a657f4fe591ce769997a0086b4578288b25198798",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "renders/portico_contact.png",
+      "bytes": 1627922,
+      "sha256": "f4e2fcc077dd8dc51d3fb3e7183acb0915e4814c9fb2b898347d9c493e530ce5",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "renders/library_programme.png",
+      "bytes": 1818983,
+      "sha256": "6a868b0e80bdd14242252058130b21b81214e6ad520663067b82911a1955668b",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "renders/entrance_low.png",
+      "bytes": 1714063,
+      "sha256": "d054acc6ed45eb388e2cc812179006c0541f8efe03da0cf72119e85ec3543112",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "bytes": 984257,
+      "sha256": "a730dc5fdda57299f5304fddfd16609e93545a37d91bd3c9fd31ffa8b7d045e7",
+      "width_px": 1080,
+      "height_px": 1920,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "bytes": 894507,
+      "sha256": "89c63c98a6842b5cf6fadb768aed24c820c4cc1097fd1d520e17716e1bfce64e",
+      "width_px": 1080,
+      "height_px": 1920,
+      "inspection": "Full-resolution pixels opened individually through view_image detail=original during this fresh review"
+    }
+  ],
+  "supporting_records": [
+    {
+      "path": "sources/source-provenance.json",
+      "sha256": "310e3da58d8b114fe1c9a1afdb255079a47e9c68836668e7f8fa0e73c3215d42",
+      "role": "Provenance, prework, delivery record or construction support; not visual proof."
+    },
+    {
+      "path": "prework-manifest.json",
+      "sha256": "f97ba6c6dbce7f53ba70b7f3a428fbd811c43e36179d033f972f8eec99db5517",
+      "role": "Provenance, prework, delivery record or construction support; not visual proof."
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "7499efcb944ba7405fb30e0ff5f524ee1aae8d85a3f1c661d766a22e79da1ef6",
+      "role": "Provenance, prework, delivery record or construction support; not visual proof."
+    },
+    {
+      "path": "evidence/layout-provenance.json",
+      "sha256": "ced831111e01d6a72ca9aae80932268171de5b5590f728318ab1d0b81c573572",
+      "role": "Provenance, prework, delivery record or construction support; not visual proof."
+    },
+    {
+      "path": "evidence/review-input-manifest.json",
+      "sha256": "7c1b22132cc692bec0e5ac4be534db1fbc9edce243f35cab1c6752e6b5b10ef5",
+      "role": "Provenance, prework, delivery record or construction support; not visual proof."
+    },
+    {
+      "path": "review/builder-visual-review.json",
+      "sha256": "53c05a61e2c1ebc1152a7abb69500bfae3c0048d50cb126bac17230b13d31a04",
+      "role": "Provenance, prework, delivery record or construction support; not visual proof."
+    },
+    {
+      "path": "scripts/family_library.py",
+      "sha256": "b8594a30a730564dae3a5c2892a3eb3a3bfd4db6156f65a7d77bd117cbf505f2",
+      "role": "Provenance, prework, delivery record or construction support; not visual proof."
+    }
+  ],
+  "previous_finite_blocker_record": {
+    "path": "../postmodern-neighbourhood-library-clay-v001/review/builder-visual-review.json",
+    "sha256": "b7815f8ba89c952407aad2df33d394b8658718173486c55a8e522876f98cc961",
+    "role": "Read builder failure record; not an independent v001 approval."
+  },
+  "limitations": [
+    "Exact-variant architectural-clay visual pass only, not keeper_approved or fully textured-keeper approval.",
+    "Original generated teaching design, not a reconstructed historical library; metric dimensions and hidden elevations/layout are inferred.",
+    "Third source is high aerial perspective; source and model views are not image registered and no pixel-overlap/survey claim is made.",
+    "Source-palette texture-free materials and simplified shelves/books communicate geometry/program without source-conditioned PBR surface realism.",
+    "Native scaling, runtime placement/picker, terrain fit, controls, resizing, save/reload and mixed-scene app gates are NOT TESTED.",
+    "Human activation is separately required for any architectural-clay runtime tier. This review grants no runtime activation, publication, deployment, arbitrary resizing or engineering approval."
+  ],
+  "keeper_approved": false,
+  "human_activation_granted": false,
+  "runtime_verified": false,
+  "immutable_record": true
+}

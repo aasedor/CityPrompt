@@ -108,3 +108,7 @@ frontend/public/archetypes/streets/standalone-sidewalks/*.png filter=lfs diff=lf
 # Teaching snapshots are SHA-bound; never normalize their reviewed line endings.
 tools/catalogue_teaching/reviewed-inputs/*.json -text whitespace=cr-at-eol
 tools/planning_history/reviewed-inputs/*.json -text whitespace=cr-at-eol
+
+# Portable local teaching trials; exact reviews retain their original bytes.
+frontend/public/validation-assets/teaching-local/*.glb filter=lfs diff=lfs merge=lfs -text
+frontend/public/validation-assets/teaching-local/*.review.json -text whitespace=cr-at-eol
