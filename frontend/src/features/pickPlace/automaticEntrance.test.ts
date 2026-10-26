@@ -50,6 +50,18 @@ describe('automatic native entrance connections',()=>{
     expect(readBuildingEntrance(house,[site,house])).toBeNull();
     expect(readBuildingEntrance(house,[site,house,road])?.streetId).toBe('road');
   });
+  it('allows a safe saved plot when an optional automatic entrance route is obstructed',()=>{
+    const road=street('road',0),house=home(25,[road]);
+    const barrier=zone('barrier','green_space',rectangleAt(ll(12,0),3,80));
+    const zones=[site,road,barrier];
+    const plan=resolvePedestrianConnections([...zones,house]).find(p=>p.ownerId===house.id);
+    expect(plan?.status).toBe('unresolved');
+    const result=snapPlacement(house.coordinates,zones,site,undefined,house.properties,'building');
+    expect(result.problem).toBeNull();
+    expect(result.coordinates).toEqual(house.coordinates);
+    expect(placementProblem(result.coordinates,zones,site,undefined,{properties:house.properties})).toBeNull();
+    expect(resolvePedestrianConnections([...zones,{...house,coordinates:result.coordinates}]).find(p=>p.ownerId===house.id)?.status).toBe('unresolved');
+  });
   it('preserves manually chosen targets and does not invent entrances for other variants or repetitions',()=>{
     const road=street('road',0),house=home(20,[road]);
     const existing=readBuildingEntrance(house)!;

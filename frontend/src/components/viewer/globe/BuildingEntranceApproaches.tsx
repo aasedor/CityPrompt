@@ -37,7 +37,12 @@ export function useBuildingEntranceApproach(contact: BuildingGroundContact, foot
       return { reason:'entrance_approach_obstructed',geometry:null,railGeometry:null,supportGeometry:null,userData:undefined };
     const approach=buildBuildingEntranceApproach({contact,footprints,lng:frame.centroidLng,lat:frame.centroidLat,
       ground,strip:plan.strips[0],heightAboveBaseM:entrance.heightAboveBaseM??0});
-    if (approach.status!=='ready') return {reason:approach.reason,geometry:null,railGeometry:null,supportGeometry:null,userData:undefined};
+    if (approach.status!=='ready') return {
+      // The owning building contact is already ready. These probes cover only
+      // the optional walkway, and must not masquerade as failed model support.
+      reason:['incomplete_footprint_ground','ground_not_ready'].includes(approach.reason)
+        ? 'entrance_ground_unavailable' : approach.reason,
+      geometry:null,railGeometry:null,supportGeometry:null,userData:undefined};
     const toGeometry=(data:{positions:number[];indices:number[]})=>{
       if(!data.positions.length)return null;
       const geometry=new THREE.BufferGeometry();

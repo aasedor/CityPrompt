@@ -62,7 +62,7 @@ export function buildingPlacementEnvelope(zone: PlacedZone): number[][] {
 }
 
 /** Near-edge attraction preserves rotation, plot size and model identity.
- * Parks meet streets at their plot edge; unreviewed buildings retain all plot
+ * Every plot can meet a street edge; unreviewed buildings retain all plot
  * padding. Only reviewed building sides may attract other building sides. */
 export function placementEdgeSnapCandidates(zone: PlacedZone, neighbours: SiteZone[], distanceM=3) {
   const contract=buildingEdgeContract(zone);
@@ -75,8 +75,8 @@ export function placementEdgeSnapCandidates(zone: PlacedZone, neighbours: SiteZo
     const road=other.zone_type==='road',otherContract=buildingEdgeContract(other);
     if(!road&&(!contract||!otherContract))continue;
     const target=(road?other.coordinates:buildingPlacementEnvelope(other)).map(local);
-    if(road&&zone.zone_type==='green_space') {
-      // An irregular or rotated park can meet a curved street at its nearest
+    if(road) {
+      // An irregular or rotated plot can meet a curved street at its nearest
       // boundary point. Translate normal to the street edge; never reshape it.
       const winding=Math.sign(target.reduce((sum,p,i)=>{
         const next=target[(i+1)%target.length];return sum+p[0]*next[1]-next[0]*p[1];
@@ -98,9 +98,8 @@ export function placementEdgeSnapCandidates(zone: PlacedZone, neighbours: SiteZo
       }
       continue;
     }
-    const ownEdges=road?(zone.zone_type==='green_space'?ring.map((_,i)=>i):[0])
-      :[...(contract?.right==='abut'?[1]:[]),...(contract?.left==='abut'?[3]:[])];
-    const targetEdges=road?target.map((_,i)=>i):[...(otherContract?.right==='abut'?[1]:[]),...(otherContract?.left==='abut'?[3]:[])];
+    const ownEdges=[...(contract?.right==='abut'?[1]:[]),...(contract?.left==='abut'?[3]:[])];
+    const targetEdges=[...(otherContract?.right==='abut'?[1]:[]),...(otherContract?.left==='abut'?[3]:[])];
     for(const i of ownEdges)for(const j of targetEdges) {
       const a=ring[i],b=ring[(i+1)%ring.length],q=target[j],r=target[(j+1)%target.length];
       const length=Math.hypot(b[0]-a[0],b[1]-a[1]),otherLength=Math.hypot(r[0]-q[0],r[1]-q[1]);

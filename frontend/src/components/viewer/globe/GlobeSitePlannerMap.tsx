@@ -118,7 +118,7 @@ import { publicRealmTrialAsset, assertPublicRealmTrialsReady } from './publicRea
 import { applyManualParkAccessSnapshot, resolveManualParkAccess } from './parkAccessConnections';
 import { resolvePedestrianConnections } from '@/features/pickPlace/pedestrianConnections';
 import { BuildingEntranceApproaches } from './BuildingEntranceApproaches';
-import { buildingGroundProblemMessage } from './buildingGroundProblemMessage';
+import { buildingCaptureIssues, buildingCaptureProblem } from './buildingCaptureReadiness';
 import { GlobePedestrianConnections } from './GlobePedestrianConnections';
 import { GlobeTerraces } from './GlobeTerraces';
 import { buildTerraceScene } from './terraceScene';
@@ -1804,7 +1804,7 @@ export function GlobeSitePlannerMap({
     while ((sharedGroundRef.current.status === 'sampling'
       || streetGroundCaptureStatus(sceneRef.current) === 'sampling'
       || (sharedGroundRef.current.status === 'ready' && pendingGroundBuildingsRef.current.length > 0
-        && !buildingGroundingIssuesRef.current.some((issue) => issue.reason !== 'ground_not_ready')))
+        && !buildingCaptureIssues(buildingGroundingIssuesRef.current).some((issue) => issue.reason !== 'ground_not_ready')))
       && performance.now() < deadline) {
       signal?.throwIfAborted();
       await new Promise((resolve) => setTimeout(resolve, 200));
@@ -1812,15 +1812,8 @@ export function GlobeSitePlannerMap({
     signal?.throwIfAborted();
     assertStreetGroundReady(sceneRef.current);
     const snapshot = captureSharedGround(sharedGroundRef.current);
-    if (pendingGroundBuildingsRef.current.length > 0 || buildingGroundingIssuesRef.current.length > 0) {
-      if (buildingGroundingIssuesRef.current.some((issue) => issue.reason === 'foundation_exceeds_3m')) {
-        throw new Error('The site is too uneven beneath a building for automatic grounding. Choose a flatter placement before rendering.');
-      }
-      const repairIssue = buildingGroundingIssuesRef.current.find((issue) => issue.reason.startsWith('entrance_')
-        || issue.reason === 'review_model_revision_unavailable');
-      if (repairIssue) throw new Error(buildingGroundProblemMessage(repairIssue.reason));
-      throw new Error(`These buildings are not ready at ground level: ${pendingGroundBuildingsRef.current.join(', ') || 'check the marked building'}. Check their placement before rendering.`);
-    }
+    const buildingProblem = buildingCaptureProblem(pendingGroundBuildingsRef.current, buildingGroundingIssuesRef.current);
+    if (buildingProblem) throw new Error(buildingProblem);
     return snapshot;
   }, []);
   // Internal camera pitch from nadir (0=top-down, 90=horizon).
@@ -5422,7 +5415,7 @@ export function GlobeSitePlannerMap({
         )}
         {sharedGroundState.status === 'ready' && buildingGroundingIssues.some((issue) => issue.reason !== 'ground_not_ready') && (
           <button type="button" onClick={() => setShowBuildingGroundProblems(true)} className="min-h-11 rounded-full border-2 border-amber-700 bg-amber-50 px-3 py-1.5 text-[11px] font-bold text-slate-900">
-            Check building ground
+            {buildingCaptureIssues(buildingGroundingIssues).length ? 'Check building ground' : 'Review entrance connections'}
           </button>
         )}
       </div>

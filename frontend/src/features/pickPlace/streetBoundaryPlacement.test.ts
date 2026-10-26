@@ -7,11 +7,79 @@ import { CALGARY_LOCAL_PLACEMENT } from './streetPlacement';
 import { snapStreetBoundaryPlacement, streetBoundaryEditCoordinates } from './streetBoundaryPlacement';
 import { streetDrawingGeometry } from './streetDrawingGeometry';
 import { streetCoordinateUpdate } from './streetPlacement';
+import { streetConnectionProblem } from './streetConnectionProblem';
+import { detectConnectedStreetIntersections } from '@/components/viewer/globe/streetGraphIntersections';
+import { resolveStreetJunctionLayout } from '@/components/viewer/globe/streetJunctionGeometry';
+import { CLASSROOM_CHOICES } from './canonicalCatalogue';
 const ll=(x:number,y:number)=>[-114+x/metersPerDegLon(51),51+y/METERS_PER_DEG_LAT];
 const site={id:'site',zone_type:'site_boundary',coordinates:rectangleAt(ll(0,0),200,200)} as SiteZone;
 const asset=CALGARY_LOCAL_PLACEMENT,width=asset.sectionWidth;
-const street=(x:number):SiteZone=>{const points=[ll(x,-40),ll(x,40)];return {id:'road',zone_type:'road',project_id:'',color:'',sort_order:0,created_at:'',updated_at:'',coordinates:bufferLineToPolygon(points,width),properties:{...asset.properties,plan_centerline:points,plan_route_controls:points}};};
+const street=(x:number):SiteZone=>{const points=[ll(x,-40),ll(x,40)];return {id:'road',zone_type:'road',project_id:'',color:'',sort_order:0,created_at:'',updated_at:'',coordinates:bufferLineToPolygon(points,width),properties:{...asset.properties,plan_centerline:points,plan_route_controls:points,public_realm_lego:{schema_version:1,family_id:'street_local_public_realm',family_version:1,kind:'street',generator:'street_section',archetype_id:'calgary_local',variant_id:'calgary_local_v0',profile_id:'calgary-local-v1',profile_version:1,appearance_kit_id:'calgary_contemporary_native',target:{target_type:'street_segment',row_width_m:16},catalog_fingerprint:'a'.repeat(64),capability_fingerprint:'b'.repeat(64),recipe_hash:'c'.repeat(64)}}};};
 describe('street full-width boundary placement',()=>{
+ it('aligns a nearly collinear end connection without moving the saved host street',()=>{
+  const host=street(0),points=[ll(.8,39.2),ll(.8,80)];
+  const candidate={...street(0),id:'draft-street',coordinates:bufferLineToPolygon(points,width),properties:{...host.properties,plan_centerline:points,plan_route_controls:points}};
+  const before=JSON.stringify(host);
+  expect(streetConnectionProblem(candidate,[host])).toBeTruthy();
+  const result=snapStreetBoundaryPlacement(candidate,[host],site);
+  expect(result.problem).toBeNull();
+  const line=result.properties.plan_centerline as number[][];
+  expect((line[0][0]+114)*metersPerDegLon(51)).toBeCloseTo(0,3);
+  expect((line[0][1]-51)*METERS_PER_DEG_LAT).toBeCloseTo(40,3);
+  expect(result.properties.plan_route_controls).toEqual(line);
+  expect(JSON.stringify(host)).toBe(before);
+ });
+ it('recovers a crossing just below the supported angle only after complete geometry validation',()=>{
+  const host=street(0),angle=46*Math.PI/180;
+  const points=[ll(-45*Math.cos(angle),-45*Math.sin(angle)),ll(45*Math.cos(angle),45*Math.sin(angle))];
+  const candidate={...street(0),id:'draft-street',coordinates:bufferLineToPolygon(points,width),properties:{...host.properties,plan_centerline:points,plan_route_controls:points}};
+  expect(streetConnectionProblem(candidate,[host])).toBeTruthy();
+  const result=snapStreetBoundaryPlacement(candidate,[host],site);
+  expect(result.problem).toBeNull();
+  const saved={...candidate,...result},network=[host,saved];
+  const nodes=detectConnectedStreetIntersections(network,true);
+  expect(nodes).toHaveLength(1);
+  expect(resolveStreetJunctionLayout(nodes[0],network)).not.toBeNull();
+  expect(result.properties.plan_route_controls).toEqual(result.properties.plan_centerline);
+  const line=result.properties.plan_centerline as number[][];
+  for(const [index,point] of line.entries())expect(Math.hypot((point[0]-points[index][0])*metersPerDegLon(51),(point[1]-points[index][1])*METERS_PER_DEG_LAT)).toBeLessThanOrEqual(3);
+ });
+ it('keeps unsupported duplicates and large-angle corrections rejected',()=>{
+  const host=street(0);
+  for(const points of [[ll(1,-40),ll(1,40)],[ll(-10,-45),ll(10,45)]]) {
+   const candidate={...street(0),id:'draft-street',coordinates:bufferLineToPolygon(points,width),properties:{...asset.properties,plan_centerline:points}};
+   const result=snapStreetBoundaryPlacement(candidate,[host],site);
+   expect(result.problem).toMatch(/junction/);
+   expect(result.coordinates).toBe(candidate.coordinates);
+  }
+ });
+ it('uses the same bounded recovery for a fresh picker route and its save without a forged recipe',()=>{
+  const host=street(0),asset=CLASSROOM_CHOICES.flatMap(choice=>choice.placements).find(row=>row.model.variantId==='student_quiet_residential_street_v1')!;
+  const angle=46*Math.PI/180,points=[ll(-45*Math.cos(angle),-45*Math.sin(angle)),ll(45*Math.cos(angle),45*Math.sin(angle))];
+  const result=streetDrawingGeometry(points,asset.properties,[site,host]);
+  const candidate={...host,...result,id:'draft-street'};
+  expect(streetConnectionProblem(candidate,[host])).toBeNull();
+  expect(result.properties.public_realm_lego).toBeUndefined();
+  expect(result.properties.plan_route_controls).toEqual(result.properties.plan_centerline);
+  expect(result).toEqual(streetDrawingGeometry(points,asset.properties,[site,host]));
+ });
+ it('rejects a nearby junction correction that would overlap occupied land',()=>{
+  const host=street(0),points=[ll(.8,39.2),ll(.8,80)];
+  const candidate={...host,id:'draft-street',coordinates:bufferLineToPolygon(points,width),properties:{...host.properties,plan_centerline:points,plan_route_controls:points}};
+  const blocker={...site,id:'occupied',zone_type:'building' as const,coordinates:rectangleAt(ll(-7.9,60),.2,20),properties:{}};
+  const before=JSON.stringify(candidate),result=snapStreetBoundaryPlacement(candidate,[host,blocker],site);
+  expect(result.problem).toBeTruthy();
+  expect(result.coordinates).toBe(candidate.coordinates);
+  expect(JSON.stringify(candidate)).toBe(before);
+ });
+ it('rejects junction snapping that would push the full street outside the site',()=>{
+  const host=street(0),points=[ll(.8,39.2),ll(.8,99.8)];
+  const candidate={...host,id:'draft-street',coordinates:bufferLineToPolygon(points,width),properties:{...host.properties,plan_centerline:points,plan_route_controls:points}};
+  expect(placementProblem(candidate.coordinates,[host],site,undefined,{allowStreetIntersections:true})).toBeNull();
+  const result=snapStreetBoundaryPlacement(candidate,[host],site);
+  expect(result.problem).toMatch(/junction/);
+  expect(result.coordinates).toBe(candidate.coordinates);
+ });
  it('preserves sparse bend handles through boundary validation and the coordinate-save pipeline',()=>{
   const original=street(0);
   const controls=[ll(0,-40),ll(5,-15),ll(0,10),ll(10,40)];

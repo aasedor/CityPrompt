@@ -201,6 +201,15 @@ Treat a hard rejection against an invisible plot envelope as a classroom defect
 when the visible geometry appears clear; do not blame the student or weaken the
 authoritative envelope to make the test pass.
 
+Entrance connectivity is advisory for classroom authoring and rendering. Keep
+unresolved approaches visible with their actual repair guidance; an optional
+automatic entrance route must not reject an otherwise clear building placement.
+All building sides and rotated corners may snap to the sidewalk within 3 m,
+using the complete reserved envelope. Exact capture still requires real models,
+current verified ground and faithful scene geometry. Only the explicit known
+entrance advisory reasons may bypass the capture blocker list; missing models,
+unsupported contact and unknown failures remain blocking.
+
 Parks use the same bounded translation recovery as buildings, with native court
 dimensions and rotation preserved. Hardscape streets and existing entrance paths
 are obstacles for parks in preview, drag and save; only street-to-street authoring
@@ -211,7 +220,11 @@ After changing a connected street's bend, body position or section, recheck the
 renderable junction patches, not just polygon contact. Live route edits clamp to
 the nearest connected position along the gesture; neighbouring routes stay put.
 Section replacements that cannot retain a working junction need recovery guidance.
-Keep existing angular, sidewalk and approach-length checks unchanged. The September
+For small straight-route inaccuracies, try bounded candidate adjustments (at most
+3 m per route vertex and 5 degrees), then run the existing angular, sidewalk,
+approach-length, boundary, occupied-land and network checks on the adjusted
+geometry. Carry its centerline and editing controls together; never relax the
+junction checks or move neighbouring streets to obtain a connection. The September
 24 Currie rehearsal caught a T that disappeared after an apparently harmless bend
 edit; its exact route is retained in `currieRehearsalStreetEdit.json`.
 

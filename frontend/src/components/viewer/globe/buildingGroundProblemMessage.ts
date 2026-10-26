@@ -1,4 +1,5 @@
 export function buildingGroundProblemMessage(reason?: string): string {
+  if (reason === 'entrance_ground_unavailable') return 'The ground along this entrance route could not be confirmed. Review the approach on measured ground or choose a different sidewalk connection.';
   if (reason === 'review_model_revision_unavailable') return 'This building’s saved 3D model is unavailable in this version. Restore the required local model or choose a replacement in Buildings. Your saved plot has been preserved.';
   if (reason === 'entrance_clear_width_too_small') return 'The side rails leave too little walking space. In Connections, increase the walkway width to at least 1.36 m, then check the route again.';
   if (reason === 'entrance_connection_required') return 'This raised foundation needs an entrance connection. Open Connections, mark the foot of the steps and choose a street, or move the building to flatter ground.';

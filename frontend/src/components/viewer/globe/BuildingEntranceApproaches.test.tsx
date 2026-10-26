@@ -7,6 +7,7 @@ import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { resolveBuildingGroundContact, type GroundPoint } from './buildingGroundContact';
 import { BuildingEntranceApproaches, useBuildingEntranceApproach } from './BuildingEntranceApproaches';
 import { preparedEntranceGround } from './preparedEntranceGround';
+import { buildingCaptureProblem } from './buildingCaptureReadiness';
 
 const ground=vi.hoisted(()=>({status:'ready',contains:()=>true,heightAt:(x:number)=>100+Math.max(0,5-(x+114)*111320*Math.cos(51*Math.PI/180))*.2}));
 vi.mock('./SharedSiteGroundProvider',()=>({useSharedSiteGround:()=>ground}));
@@ -23,6 +24,20 @@ const configured={...house,properties:{pedestrian_building_entrance:{version:1,x
   scaleWithPlot:false,streetId:'street',widthM:1.8,heightAboveBaseM:0}}};
 
 describe('foundation and entrance ownership',()=>{
+  it('keeps an unmeasured optional walkway advisory when the complete building contact is verified',()=>{
+    const originalHeightAt=ground.heightAt;
+    const probe=vi.spyOn(ground,'heightAt').mockImplementation(x=>(x+114)*metersPerDegLon(51)>10 ? Number.NaN : originalHeightAt(x));
+    try {
+      const verifiedContact=resolveBuildingGroundContact(footprints,lng,lat,ground);
+      expect(verifiedContact.status).toBe('ready');
+      const wrapper=({children}:{children:ReactNode})=><BuildingEntranceApproaches zones={[configured,street]} results={[connected]}>{children}</BuildingEntranceApproaches>;
+      const {result,unmount}=renderHook(()=>useBuildingEntranceApproach(verifiedContact,footprints,frame,'model'),{wrapper});
+      expect(result.current.geometry).toBeNull();
+      expect(result.current.reason).toBe('entrance_ground_unavailable');
+      expect(buildingCaptureProblem([],[{buildingId:'model',reason:result.current.reason!}])).toBeNull();
+      unmount();
+    } finally {probe.mockRestore();}
+  });
   it('builds the approach on the authored level when live terrain is inactive',()=>{
     const boundary={...house,id:'site',zone_type:'site_boundary' as const,coordinates:[[-114.001,50.999],[-113.999,50.999],[-113.999,51.001],[-114.001,51.001]]};
     const prepared=preparedEntranceGround(boundary,100)!;

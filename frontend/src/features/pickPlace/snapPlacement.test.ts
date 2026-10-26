@@ -105,6 +105,19 @@ describe('ideation placement snapping',()=>{
     for(const coords of [rectangleAt(ll(0,22),12,16),rectangleAt(ll(0,25),12,16,25)])
       expect(snapPlacement(coords,[road],site,undefined,{},'green_space')).toEqual({coordinates:coords,snapped:false,problem:null});
   });
+  it.each(['building','residential'] as const)('snaps any clear %s side or rotated corner to a sidewalk',zoneType=>{
+    const road=zone('street',rectangleAt(ll(0,0),80,20),'road');
+    for(const angle of [0,90,25]) {
+      const r=angle*Math.PI/180,halfNorth=6*Math.abs(Math.sin(r))+8*Math.abs(Math.cos(r));
+      const coords=rectangleAt(ll(0,10+halfNorth+2),12,16,angle);
+      const result=snapPlacement(coords,[road],site,undefined,{},zoneType);
+      expect(result.problem).toBeNull();expect(result.snapped).toBe(true);
+      const d=rectangleDimensions(result.coordinates);
+      expect((d.center[1]-51)*METERS_PER_DEG_LAT-halfNorth).toBeCloseTo(10.02,2);
+      expect(d.width).toBeCloseTo(12,4);expect(d.depth).toBeCloseTo(16,4);expect(d.degrees).toBeCloseTo(angle,4);
+      expect(placementProblem(result.coordinates,[road],site)).toBeNull();
+    }
+  });
   it('brings a rotated park corner to the street while keeping its complete outline',()=>{
     const road=zone('street',rectangleAt(ll(0,0),80,20),'road'),angle=25,rad=angle*Math.PI/180;
     const halfNorth=6*Math.sin(rad)+8*Math.cos(rad),coords=rectangleAt(ll(0,10+halfNorth+2),12,16,angle);
