@@ -15,7 +15,7 @@ export function useStreetNames(projectId: string | undefined, zones: SiteZone[],
   const query=useQuery({
     queryKey:['street-names-v1',projectId,bounds],
     queryFn:({signal})=>fetchStreetNames(bounds!,AbortSignal.any([signal,AbortSignal.timeout(30_000)])),
-    enabled:Boolean(projectId && enabled && bounds), staleTime:15*60_000,gcTime:30*60_000,retry:false,
+    enabled:Boolean(projectId && enabled && bounds), staleTime:15*60_000,gcTime:30*60_000,retry:1,retryDelay:1000,
   });
   return { enabled, setEnabled:(next:boolean)=>{
     writeBrowserPreference(key,String(next));

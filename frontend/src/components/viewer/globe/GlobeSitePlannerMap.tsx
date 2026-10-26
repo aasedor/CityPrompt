@@ -1,3 +1,5 @@
+import {pickReferenceFeature, resolveReferenceSelection, type ReferenceSelection} from '@/features/referenceLayers/referenceInspection';
+import {ReferenceFeatureDetails} from '@/features/referenceLayers/ReferenceFeatureDetails';
 import type { StreetNamesState } from '@/features/referenceLayers/useStreetNames';
 import { NativeParkLayer, assertNativeParksReady, waitForNativeParksReady } from '@/features/parks/NativeParkLayer';
 import {GlobeProjectBenches} from '@/features/parks/GlobeProjectBenches';
@@ -1741,6 +1743,8 @@ export function GlobeSitePlannerMap({
   const [sharedGroundState, setSharedGroundState] = useState<SharedSiteGroundState>(INACTIVE_SHARED_SITE_GROUND);
   const [showGroundReview, setShowGroundReview] = useState(false);
   const [showBuildingGroundProblems, setShowBuildingGroundProblems] = useState(false);
+  const [referenceSelection,setReferenceSelection] = useState<ReferenceSelection|null>(null);
+  const selectedReference = resolveReferenceSelection(referenceSelection, referenceLayers);
   const [showEntranceReview,setShowEntranceReview]=useState(false);
   const [entranceReviews,setEntranceReviews]=useState<BuildingEntranceReview[]>([]);
   const [reviewEntranceReviews,setReviewEntranceReviews]=useState<ReadonlyMap<string,BuildingEntranceReview>>(new Map());
@@ -4430,6 +4434,10 @@ export function GlobeSitePlannerMap({
     }
   }, [buildings, selectedBuildingId]);
 
+  useEffect(() => {
+    if (interactionPaused || hasDrawingTool || placementDraft || measureModeActive || streetViewPegman !== null || selectedBuildingId) setReferenceSelection(null);
+  }, [interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman, selectedBuildingId]);
+
   // Keep ref updated so onCreated closure always calls latest version
   handleCanvasClickRef.current = handleCanvasClick;
   // Inspect in the canvas capture phase. Authored objects take priority over
@@ -4453,6 +4461,7 @@ export function GlobeSitePlannerMap({
         ? pickProjectDetail(sceneRef.current, zoningRaycaster, {camera,viewportHeight:rect.height}) : null;
       const zoneId = detailId ? null : pickEditableZoneBeforePolicy(sceneRef.current, zoningRaycaster, siteZones);
       if (detailId || zoneId) {
+        setReferenceSelection(null);
         ignoreNextCanvasClickRef.current = false;
         markUserInteracted();
         zoningInspection?.select(null);
@@ -4463,6 +4472,12 @@ export function GlobeSitePlannerMap({
         if (detailId) detailInteraction?.selectItem(detailId);
         return true;
       }
+    }
+    const referenceHit = pickReferenceFeature(referenceOverlayGroup.current, zoningRaycaster, referenceLayers);
+    setReferenceSelection(referenceHit);
+    if (referenceHit) {
+      ignoreNextCanvasClickRef.current = false; markUserInteracted(); setSelectedBuildingId(null); onZoneSelected(null);
+      zoningInspection?.select(null); policyMap?.clearSelection(); cityPolicyMaps?.clearSelection(); return true;
     }
     const id = policyMapRef.current?.pick(x,y,camera);
     const cityMapId = id ? null : cityPolicyMapsRef.current?.pick(x,y,camera);
@@ -5012,6 +5027,7 @@ export function GlobeSitePlannerMap({
         </div>
       )}
 
+      {!captureOverlaysHidden && !interactionPaused && selectedReference && <ReferenceFeatureDetails {...selectedReference} onClose={()=>setReferenceSelection(null)}/>}
       {entrancePick && <section aria-label="Choose entrance in 3D" className="absolute inset-x-3 bottom-3 z-50 rounded-xl border border-slate-400 bg-white p-3 text-sm text-slate-900 shadow-lg sm:inset-x-auto sm:bottom-auto sm:right-4 sm:top-28 sm:w-80">
         <p className="font-semibold">Pick the entrance edge</p>
         <p className="mt-1">Click the outer edge of the lowest step, or the end of its paved entrance path where it meets the ground. Drag or zoom to see it clearly.</p>

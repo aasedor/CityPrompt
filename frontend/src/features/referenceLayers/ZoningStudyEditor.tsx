@@ -1,6 +1,7 @@
 import { useEffect, useId, useMemo, useRef, useState, type PointerEvent } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { api, getApiErrorMessage } from '@/services/api';
+import { ExistingLandUse } from './ExistingLandUse';
 import { StudyEditorShell } from './StudyEditorShell';
 import { CalgaryDistrictSelect } from './CalgaryDistrictSelect';
 import { CatalogueMatches } from '@/features/zoningCatalogue/ZoningCatalogueCard';
@@ -61,7 +62,7 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
     proposed:readDraft(draftPrefix+'proposed',loadedSlot(findLayer(layers,'proposed'))),
     'draft-2025':readDraft(draftPrefix+'draft-2025',loadedSlot(findLayer(layers,'draft-2025'))),
   }));
-  const [condition,setCondition]=useState<StudyCondition>('existing');
+  const [condition,setCondition]=useState<StudyCondition>('proposed');
   const [newType,setNewType]=useState('R-CG');
   const [customName,setCustomName]=useState('');
   const [customColour,setCustomColour]=useState('#75b6b0');
@@ -98,6 +99,11 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
     }
     return bylawChoices([...choices.values()]);
   },[isDraft,zoningData,slots.existing.zones,slots.proposed.zones]);
+  useEffect(()=>{
+    if(!active) return;
+    setNewType(active.custom?CUSTOM_ZONE:active.district?.designation??'R-CG');
+    if(active.custom){setCustomName(active.label);setCustomColour(active.color);}
+  },[active?.id,active?.custom,active?.district?.designation]);
   const outer=active?.rings[0]?.slice(0,-1)??[];
   const dirty=useMemo(()=>JSON.stringify(slot.zones)!==slot.baseline||slot.opacity!==slot.baselineOpacity,[slot.zones,slot.baseline,slot.opacity,slot.baselineOpacity]);
   const latestSlots=useRef(slots);
@@ -110,7 +116,7 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
 
   useEffect(()=>()=>controller.current?.abort(),[]);
   const globePreview=useMemo(()=>studyPreviewLayer(zones,boundary,condition,1),[zones,boundary,condition]);
-  useEffect(()=>{mapDrawing?.preview({...globePreview,opacity:slot.opacity});},[mapDrawing,globePreview,slot.opacity]);
+  useEffect(()=>{if(condition==='proposed') mapDrawing?.preview({...globePreview,opacity:slot.opacity});},[mapDrawing,globePreview,slot.opacity,condition]);
   useEffect(()=>{
     mapDrawing?.onSelect?.(id=>{setSelected(id);setCorner(0);});
     return ()=>mapDrawing?.onSelect?.(null);
@@ -238,10 +244,11 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
     },()=>{setDrawing(false);setPoints([]);});
   };
   return <StudyEditorShell globe={Boolean(mapDrawing)} onClose={onClose}>
-    <p className="mb-3 text-xs leading-relaxed text-stone-600">1. Use your saved site boundary. 2. Choose a zone type. 3. Draw its corners{mapDrawing?' on the Google 3D map':''}. Save existing and proposed land use as separate layers.</p>
+    <p className="mb-3 text-xs leading-relaxed text-stone-600">1. Use your saved site boundary. 2. Choose a zone type. 3. Draw its corners{mapDrawing?' on the Google 3D map':''}. Existing land use shows City records. Save your proposed changes as a separate layer.</p>
     <div className="mb-4 flex flex-wrap gap-2" role="tablist" aria-label="Study conditions">
-      {(['existing','proposed','draft-2025'] as const).map(value=><button key={value} role="tab" aria-selected={condition===value} disabled={busy} className={`${button} ${condition===value?'!border-stone-900 !bg-lime-200':''}`} onClick={()=>switchCondition(value)}>{value==='draft-2025'?'Draft bylaw · May 2025':value==='existing'?'Existing conditions':'Proposed land use'}</button>)}
+      {(['existing','proposed'] as const).map(value=><button key={value} role="tab" aria-selected={condition===value} disabled={busy} className={`${button} ${condition===value?'!border-stone-900 !bg-lime-200':''}`} onClick={()=>switchCondition(value)}>{value==='existing'?'Existing land use':'Proposed land use'}</button>)}
     </div>
+    {condition==='existing' ? <ExistingLandUse projectId={projectId} boundary={boundary} data={zoningData} mapDrawing={mapDrawing}/> : <>
     {isDraft&&<div className="mb-3 space-y-2 rounded-xl border border-stone-200 bg-white p-3 text-xs text-stone-700">
       <p>May 2025 discussion draft · student proposals only. The draft contains no zoning maps. Colours are illustrative. Current-bylaw catalogue and report checks do not assess this separate draft layer.</p>
       <p>{draftDistrictInfo(active?.district?.designation??newType)?.summary}</p>
@@ -250,10 +257,10 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
     <div className={`grid items-start gap-4 ${mapDrawing?'':'lg:grid-cols-[minmax(0,1fr)_260px]'}`}>
       <div className="min-w-0">
         <div className="mb-3 space-y-2 rounded-xl border border-stone-200 bg-white/80 p-3 text-sm">
-          <CalgaryDistrictSelect label="New zone type" value={newType} choices={districtChoices} disabled={!canEdit||busy||drawing} onChange={setNewType}/>
+          <CalgaryDistrictSelect label="New zone type" value={newType} choices={districtChoices} disabled={!canEdit||busy||drawing} onChange={value=>{setNewType(value);if(active){const district=districtChoices.find(choice=>choice.designation===value);updateZone({district,custom:value===CUSTOM_ZONE,origin:'student',label:district?.designation??(customName.trim()||'Custom zone'),color:district?districtColour(district.designation):customColour});}}}/>
           {newType===CUSTOM_ZONE?<>
-            <label className="block text-xs">Custom zone name<input aria-label="Custom zone name" value={customName} maxLength={120} disabled={!canEdit||busy||drawing} onChange={event=>setCustomName(event.target.value)} className="mt-1 min-h-11 w-full rounded-lg border border-stone-300 px-2"/></label>
-            <label className="flex min-h-11 items-center justify-between text-xs">Custom colour<input aria-label="Custom colour" type="color" value={customColour} disabled={!canEdit||busy||drawing} onChange={event=>setCustomColour(event.target.value)} className="h-11 w-14"/></label>
+            <label className="block text-xs">Custom zone name<input aria-label="Custom zone name" value={customName} maxLength={120} disabled={!canEdit||busy||drawing} onChange={event=>{setCustomName(event.target.value);if(active?.custom)updateZone({label:event.target.value});}} className="mt-1 min-h-11 w-full rounded-lg border border-stone-300 px-2"/></label>
+            <label className="flex min-h-11 items-center justify-between text-xs">Custom colour<input aria-label="Custom colour" type="color" value={customColour} disabled={!canEdit||busy||drawing} onChange={event=>{setCustomColour(event.target.value);if(active?.custom)updateZone({color:event.target.value});}} className="h-11 w-14"/></label>
           </>:<p className="flex items-center gap-2 text-xs text-stone-600"><span className="h-4 w-4 border border-stone-300" style={{backgroundColor:districtColour(newType)}}/>{isDraft?'Illustrative student palette · draft zones':'Calgary land-use class colour'}</p>}
         </div>
         <div className="mb-2 flex flex-wrap gap-2">
@@ -299,7 +306,7 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
           {drawing&&<><polyline points={points.map(point=>frame.project(point).join(',')).join(' ')} fill="none" stroke="#252821" strokeWidth="3" strokeDasharray="8 5"/>{points.map((point,i)=>{const [x,y]=frame.project(point);return <circle key={i} cx={x} cy={y} r="6" fill="#c9ff3d" stroke="#252821" strokeWidth="2"/>;})}</>}
           <path d="M930 135V95M920 110L930 95L940 110" fill="none" stroke="#252821" strokeWidth="2"/><text x="930" y="85" textAnchor="middle" fontSize="16">N</text>
           <path d={`M60 695v-7h${frame.scaleM*frame.scale}v7`} fill="none" stroke="#252821" strokeWidth="2"/><text x="60" y="716" fontSize="13">{frame.scaleM} m · approximate</text>
-          <text x="60" y="746" fontSize="12" fill="#5e6659">{condition==='existing'?'Existing conditions · student interpretation':'Proposed land use · student concept'} · study colours</text>
+          <text x="60" y="746" fontSize="12" fill="#5e6659">Proposed land use - student concept · study colours</text>
         </svg>
         </div>
         <details open={!mapDrawing} className="mb-3 rounded-xl border border-stone-200 p-3"><summary className="min-h-8 cursor-pointer text-xs font-semibold">Map key, export and sources</summary>
@@ -339,5 +346,6 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
         <button className={`${button} w-full`} disabled={busy||drawing} onClick={()=>void reloadShared()}>Reload shared version</button>
       </aside>
     </div>
+    </>}
   </StudyEditorShell>;
 }

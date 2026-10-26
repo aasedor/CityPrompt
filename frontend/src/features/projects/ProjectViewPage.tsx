@@ -1248,7 +1248,7 @@ export function ProjectViewPage() {
               loadError={Boolean(siteZonesError)} onRetry={() => pendingDrafts.forEach(retryDraft)} onReload={() => { void reloadSavedVersion(); }}
               discardableCount={discardableDrafts.length} onDiscardRejected={() => discardableDrafts.forEach(discardDraft)} saveError={saveError} />}>
             {activeStudentStep !== 'design' && !showGlobeRender && !showVideoRender && <StudentStepPanel
-              siteOptions={<StreetNamesControl state={streetNames} />}
+              siteOptions={null}
               step={activeStudentStep} hasSite={Boolean(cityPromptWorkflow.activeBoundary && isPersistedZoneId(cityPromptWorkflow.activeBoundary.id))}
               drawingSite={activeSitePlannerTool === 'site_boundary'} location={project.location?.address}
               canRender={cityPromptWorkflow.canRender} renderReason={cityPromptWorkflow.renderReason}
@@ -1257,7 +1257,21 @@ export function ProjectViewPage() {
               automatic3DStatus={automatic3D.status} automatic3DMessage={automatic3D.message}
               onSite={() => { setStudentStep('site'); handleSiteBoundary(); }} onDesign={() => changeStudentStep('design')}
               onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} onRefreshLandscape={automatic3D.retry} onRetry3D={automatic3D.retry} />}
-            {activeStudentStep === 'site' && <div className="mt-3 space-y-3"><ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend} /><LocalAreaPlanPanel state={localPolicyPanel} /><CityPolicyMapsPanel state={cityPolicyPanel} /><ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/><SiteAssessmentPanel zones={siteZones} projectId={id} state={siteAssessment} /></div>}
+            {activeStudentStep === 'site' && <div className="mt-3 space-y-3">
+              <details open className="rounded-2xl border border-slate-300 bg-white/95 p-3" aria-label="Site Context">
+                <summary className="min-h-11 cursor-pointer text-sm font-bold">Site Context</summary>
+                <p className="mb-3 text-xs text-slate-600">What exists in and around your site.</p>
+                <div className="space-y-3"><StreetNamesControl state={streetNames}/><ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend}/>
+                  <CalgaryContextButton projectId={project.id} zones={siteZones} layers={references.layers}/>
+                  <PublicDataLayersPanel state={publicData}/><SiteAssessmentPanel zones={siteZones} projectId={id} state={siteAssessment}/></div>
+              </details>
+              <details className="rounded-2xl border border-slate-300 bg-white/95 p-3" aria-label="Policy">
+                <summary className="min-h-11 cursor-pointer text-sm font-bold">Policy</summary>
+                <p className="mb-3 text-xs text-slate-600">Plans and policies for your site and its surroundings.</p>
+                <div className="space-y-3"><LocalAreaPlanPanel state={localPolicyPanel}/><CityPolicyMapsPanel state={cityPolicyPanel}/></div>
+              </details>
+              <ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/>
+            </div>}
             <div hidden={activeStudentStep !== 'design'}>
             <SitePlannerToolbar
               streetPlacement={CALGARY_LOCAL_PLACEMENT}

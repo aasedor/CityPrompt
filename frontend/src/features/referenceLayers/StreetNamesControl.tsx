@@ -19,7 +19,7 @@ export function StreetNamesControl({ state }: { state: StreetNamesState }) {
     <p id={description} className="mt-0.5 text-[11px] leading-relaxed text-slate-600">Find your bearings. Labels stay out of renders.</p>
     {state.enabled && <div className="mt-2 text-[11px] leading-relaxed text-slate-600">
       {state.problem ? <p role="status">{state.problem}</p> : state.loading ? <p role="status">Loading street names…</p>
-        : state.error ? <p role="status">Street names could not load. <button type="button" onClick={state.retry} className="min-h-8 font-semibold underline">Try again</button></p>
+        : state.error && !state.data?.length ? <p role="status">Street names could not load. <button type="button" onClick={state.retry} className="min-h-8 font-semibold underline">Try again</button></p>
         : <p role="status">{state.data?.length ? 'Street names · City of Calgary' : 'No named streets found nearby.'}</p>}
     </div>}
   </div>;
