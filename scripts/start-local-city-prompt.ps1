@@ -356,7 +356,7 @@ function Get-LocalCeleryProcessPid {
     $worker = Get-CimInstance Win32_Process -Filter "ProcessId=$workerPid" -ErrorAction SilentlyContinue
     if (
         (Test-CeleryProcessRole -Process $worker -Role $Role) -and
-        $worker.CommandLine -match ('--pidfile(?:=|\s+)"?' + [regex]::Escape($PidPath) + '"?(?:\s|$)')
+        ($worker.CommandLine -replace '\\','/') -match ('--pidfile(?:=|\s+)"?' + [regex]::Escape(($PidPath -replace '\\','/')) + '"?(?:\s|$)')
     ) {
         return $workerPid
     }
@@ -371,7 +371,7 @@ function Get-LocalCeleryBeatPid {
     $beatPid = Get-LocalCeleryProcessPid -PidPath $celeryBeatPidPath -Role beat
     if (-not $beatPid) { return $null }
     $beat = Get-CimInstance Win32_Process -Filter "ProcessId=$beatPid" -ErrorAction SilentlyContinue
-    if ($beat.CommandLine -match ('--schedule(?:=|\s+)"?' + [regex]::Escape($celerySchedulePath) + '"?(?:\s|$)')) {
+    if (($beat.CommandLine -replace '\\','/') -match ('--schedule(?:=|\s+)"?' + [regex]::Escape(($celerySchedulePath -replace '\\','/')) + '"?(?:\s|$)')) {
         return $beatPid
     }
     return $null

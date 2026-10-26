@@ -84,6 +84,15 @@ Get-LocalCeleryWorkerPid | ConvertTo-Json -Compress
 """)
         self.assertIsNone(pid)
 
+    def test_owned_worker_recognizes_windows_paths_with_forward_slashes(self):
+        pid = self.run_launcher("""
+Set-Content -LiteralPath $celeryPidPath -Value '101'
+$script:commandPidPath=$celeryPidPath.Replace('\\','/')
+function Get-CimInstance {[pscustomobject]@{Name='python.exe';CommandLine="python -m celery -A app.tasks.worker worker --pidfile=$script:commandPidPath";ProcessId=101}}
+Get-LocalCeleryWorkerPid | ConvertTo-Json -Compress
+""")
+        self.assertEqual(pid, 101)
+
     def test_keep_backend_refuses_unowned_worker_or_scheduler_before_reuse(self):
         for role, entrypoint, pid_function in [('worker', 'Ensure-CeleryWorker', 'Get-LocalCeleryWorkerPid'),
                                               ('beat', 'Ensure-CeleryBeat', 'Get-LocalCeleryBeatPid')]:
