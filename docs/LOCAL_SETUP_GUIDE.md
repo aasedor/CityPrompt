@@ -115,8 +115,18 @@ Windows contributors can use:
 .\scripts\start-local-city-prompt.ps1
 ~~~
 
-It reuses the local data services, starts the API from the current worktree,
-starts the frontend when necessary, and waits for health checks.
+It reuses the local data services, prepares the current database migrations,
+starts the API from the current worktree, and starts the frontend when necessary.
+The managed worker consumes `celery`, `direct3d`, `direct3d-maintenance` and
+`classroom-documents`; a separate Celery beat process schedules recovery.
+Startup waits for operational `/ready` checks, including the maintenance
+heartbeat when image jobs are enabled. No readiness check calls a paid provider.
+
+Worker and scheduler logs, PID files and the persistent beat schedule are in
+ignored `artifacts/local-dev/`. `-KeepBackend` reuses an owned worker only after
+matching its process ID to Celery statistics and checking that node's actual
+queues. Unowned native workers or schedulers cause an actionable failure; they are not
+silently stopped. Stop those processes explicitly before switching checkouts.
 
 ## 5. Student smoke test
 
