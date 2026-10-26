@@ -48,4 +48,4 @@
 - [x] Create a disposable vacant prepared-site project through normal UI. Place Victory, rotate/move/undo, save/reload and inspect its exact model. Expected: correct geometry with no persistent generic proxy.
 - [x] Install remaining six after the pilot succeeds; place all seven through normal controls. Inspect aerial and close views, save/reopen and browser errors. Expected: same exact variants persist.
 - [x] Record applicable passes and all untested runtime rows honestly. Run the Task 1 focused suite and type-check. Expected: PASS.
-- [ ] Commit only intentional source/review documentation; retain ignored generated evidence separately. Request one fresh whole-branch source review, address important findings with RED/GREEN verification, and leave the local app ready. No push/deploy.
+- [x] Commit only intentional source/review documentation; retain ignored generated evidence separately. Request one fresh whole-branch source review, address important findings with RED/GREEN verification, and leave the local app ready. No push/deploy.

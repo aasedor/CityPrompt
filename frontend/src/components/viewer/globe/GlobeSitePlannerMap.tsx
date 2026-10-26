@@ -87,7 +87,8 @@ import { useRoadNetwork } from '@/hooks/useRoadNetwork';
 import { roadDisplayZones } from '@/utils/proceduralRoadNetwork';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { GlobeReviewBuilding } from './GlobeReviewBuilding';
-import { nativeBuildingUrl } from '@/features/pickPlace/nativeBuildingContract';
+import { nativeBuildingRoutes } from '@/features/pickPlace/nativeBuildingRouting';
+import { NativeBuildingRecoveryNotice } from '@/features/pickPlace/NativeBuildingRecoveryNotice';
 import { updateBuildingGroundingIssues } from './buildingGroundContact';
 import { assertStreetGroundReady, streetGroundCaptureStatus } from './streetGroundCapture';
 import { streetSurfaceMaskZone } from './streetSurfaceMask';
@@ -1811,8 +1812,9 @@ export function GlobeSitePlannerMap({
       if (buildingGroundingIssuesRef.current.some((issue) => issue.reason === 'foundation_exceeds_3m')) {
         throw new Error('The site is too uneven beneath a building for automatic grounding. Choose a flatter placement before rendering.');
       }
-      const entranceIssue = buildingGroundingIssuesRef.current.find((issue) => issue.reason.startsWith('entrance_'));
-      if (entranceIssue) throw new Error(buildingGroundProblemMessage(entranceIssue.reason));
+      const repairIssue = buildingGroundingIssuesRef.current.find((issue) => issue.reason.startsWith('entrance_')
+        || issue.reason === 'review_model_revision_unavailable');
+      if (repairIssue) throw new Error(buildingGroundProblemMessage(repairIssue.reason));
       throw new Error(`These buildings are not ready at ground level: ${pendingGroundBuildingsRef.current.join(', ') || 'check the marked building'}. Check their placement before rendering.`);
     }
     return snapshot;
@@ -1901,20 +1903,19 @@ export function GlobeSitePlannerMap({
   // stack — it is excluded from the Meshy model layer (the stack wins).
   // Buildings with a saved recipe or an honest planned-massing fallback mount
   // the LEGO layer, which itself skips + debug-counts footprint-less records.
-  const reviewBuildingZones = useMemo(() => siteZones.filter((zone) =>
-    isBuildingZoneType(zone.zone_type) && Boolean(nativeBuildingUrl(zone))), [siteZones]);
-  const reviewBuildingIds = useMemo(() => new Set(reviewBuildingZones
-    .map((zone) => zone.building_id).filter((id): id is string => Boolean(id))), [reviewBuildingZones]);
+  const nativeRoutes = useMemo(() => nativeBuildingRoutes(siteZones, buildings ?? []), [siteZones, buildings]);
+  const reviewBuildingZones = nativeRoutes.reviewZones;
+  const reviewBuildingIds = nativeRoutes.buildingIds;
   const meshyBuildings = useMemo(
-    () => excludeLegoStackBuildings(buildings ?? []).filter((building) => !reviewBuildingIds.has(building.id)),
-    [buildings, reviewBuildingIds],
+    () => excludeLegoStackBuildings(nativeRoutes.otherBuildings),
+    [nativeRoutes.otherBuildings],
   );
   const legoLayerBuildings = useMemo(
-    () => (buildings ?? []).filter((building) => (
+    () => nativeRoutes.otherBuildings.filter((building) => (
       hasLegoRecipe(building)
       || hasPlannedMassing(building)
-    ) && !reviewBuildingIds.has(building.id)),
-    [buildings, reviewBuildingIds],
+    )),
+    [nativeRoutes.otherBuildings],
   );
   const direct3DProposalBuildingIds = useMemo(
     () => getCurrentCommunity3DBuildingIds(siteZones, buildings ?? []),
@@ -5017,6 +5018,10 @@ export function GlobeSitePlannerMap({
         {entrancePickError && <p role="alert" className="mt-2 text-amber-900">{entrancePickError}</p>}
         <button type="button" className="mt-2 min-h-11 rounded-lg border border-slate-600 px-3 font-semibold" onClick={()=>entrancePick.finish(null)}>Cancel pick</button>
       </section>}
+      {!captureOverlaysHidden && <NativeBuildingRecoveryNotice zones={nativeRoutes.unavailableZones} onSelect={zone => {
+        onZoneSelected(zone.id);
+        void requestProjectFrame([{ ...zone, coordinates: zone.coordinates as [number, number][] }], 'manual');
+      }}/>}
       {showEntranceReview&&<BuildingEntranceReviewPanel zones={siteZones} reviews={[...entranceReviews,...reviewEntranceReviews.values()]} issues={buildingGroundingIssues}
         groundRevision={sharedGroundState.status === 'inactive' && preparedReviewGround ? preparedReviewGround.revision : sharedGroundState.revision}
         groundCurrent={(sharedGroundState.status === 'inactive' && Boolean(preparedReviewGround))

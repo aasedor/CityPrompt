@@ -43,6 +43,18 @@ function setup() {
 afterEach(() => { cleanup(); vi.clearAllMocks(); });
 
 describe('review GLB ground lifecycle', () => {
+  it('keeps unavailable local revisions capture-blocked without loading a substitute GLB', () => {
+    const {props,report} = setup(); mocks.gltf.mockClear();
+    const stale = {...zone, properties:{...zone.properties, validation_fixed_fixture:true,
+      pick_place_asset:'local_teaching_wartime_victory_house', pick_place_model_revision:'unavailable-revision'}};
+    const view = render(<GlobeReviewBuilding {...props} zone={stale} zones={[stale]} onGroundingIssue={report}/>);
+    expect(report).toHaveBeenLastCalledWith('building','review:zone','review_model_revision_unavailable');
+    expect(mocks.gltf).not.toHaveBeenCalled();
+    expect(view.container.querySelector('primitive')).toBeNull();
+    expect(mocks.mountWalking).not.toHaveBeenCalled();
+    view.unmount();
+    expect(report).toHaveBeenLastCalledWith('building','review:zone',null);
+  });
   it('reports real mesh hits in the foundation frame without undoing the building rotation', () => {
     const frame = new THREE.Group();
     frame.position.set(1000,2000,3000);

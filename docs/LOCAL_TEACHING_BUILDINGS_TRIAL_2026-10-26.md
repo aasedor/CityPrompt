@@ -96,6 +96,17 @@ these trial choices and their teaching payload; the production seed, live
 catalogue and cityprompt.ca were not changed. No paid generations, credit
 purchases, push or deployment were performed.
 
+The independent source review found one recovery defect: an unavailable saved
+trial revision could expose the backend's generic planned-massing representation.
+The correction retains native ownership for those saved trial plots, suppresses
+their generic models, blocks capture and shows the required model revision with
+restore/replacement guidance. A selection button keeps the original plot editable.
+Consumer-level routing, visible notice, capture-blocking and recovery-message
+regressions were observed RED, then GREEN. The combined affected frontend suite
+now passes **183 tests across 12 files**; no second review was used as a substitute
+for regression verification. Natural terrain, routes and export retain their
+separate untested status above.
+
 Verification: focused registry/catalogue/native-contract/teaching Vitest tests,
 the production tree-shaking check, the finite installer pytest tests, and
 `npm run type-check`. Exact results are recorded in the implementation ledger.

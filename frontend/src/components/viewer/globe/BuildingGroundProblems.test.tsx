@@ -7,6 +7,13 @@ const zone: SiteZone = { id: 'plot', project_id: 'project', zone_type: 'building
   name: 'Hill house', building_ids: ['model'], coordinates: [[-114, 51], [-113.9999, 51], [-114, 51.0001]],
   color: '#fff', sort_order: 1, created_at: 'before', updated_at: 'before' };
 
+it('explains model-revision recovery instead of telling students to change terrain', () => {
+  render(<BuildingGroundProblems issues={[{buildingId:'model',reason:'review_model_revision_unavailable'}]}
+    zones={[zone]} onClose={vi.fn()} onSelect={vi.fn()}/>);
+  expect(screen.getByText(/Restore the required local model or choose a replacement in Buildings/)).toBeTruthy();
+  expect(screen.queryByText(/ground beneath this building could not be confirmed/)).toBeNull();
+});
+
 it('selects the exact saved plot for repair without changing its geometry', () => {
   const select = vi.fn(); const before = JSON.stringify(zone);
   render(<BuildingGroundProblems issues={[{ buildingId: 'model', reason: 'foundation_exceeds_3m' }]}

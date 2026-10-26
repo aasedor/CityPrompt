@@ -4,6 +4,7 @@ import { useGLTF } from '@react-three/drei';
 import { EastNorthUpFrame } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
 import { nativeBuildingUrl } from '@/features/pickPlace/nativeBuildingContract';
+import { isLocalTeachingBuilding } from '@/features/pickPlace/nativeBuildingRouting';
 import { computeCentroid } from '../mapEngine/geoUtils';
 import { centreNativeClayClone } from '@/features/legoAssembly/nativeClayPlacement';
 import { rectangleDimensions } from '@/features/pickPlace/geometry';
@@ -168,7 +169,10 @@ export function GlobeReviewBuilding({ zone, zones, terrainHeight, onGroundingIss
   const storedTerrain = Number(zone.properties?.terrain_elevation_m);
   const height = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)
     ?? resolveZoneTerrainHeight(null, Number.isFinite(storedTerrain) ? storedTerrain : null, terrainHeight);
-  if (!url || zone.coordinates.length < 4) return null;
+  if (zone.coordinates.length < 4) return null;
+  if (!url) return isLocalTeachingBuilding(zone)
+    ? <PendingGroundIssue zone={zone} reason="review_model_revision_unavailable" report={onGroundingIssue}/>
+    : null;
   return <ReviewBoundary key={url} fallback={<>
     <PendingGroundIssue zone={zone} reason="review_model_unavailable" report={onGroundingIssue}/>
     <EastNorthUpFrame lat={lat * Math.PI / 180} lon={lng * Math.PI / 180} height={height}>

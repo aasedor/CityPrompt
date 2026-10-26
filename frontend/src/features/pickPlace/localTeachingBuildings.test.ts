@@ -9,6 +9,8 @@ import { rectangleAt, resizeRectangleCorner } from './geometry';
 import { centreNativeClayClone } from '@/features/legoAssembly/nativeClayPlacement';
 import { lessonForChoice, styleDefinition } from '@/features/catalogueLearning/teaching';
 import { eraIds, historyForChoice } from '@/features/catalogueLearning/planningHistory';
+import { nativeBuildingRoutes } from './nativeBuildingRouting';
+import type { SiteZone } from '@/types';
 
 vi.mock('./localTeachingBuildings', async () => {
   const actual = await vi.importActual<typeof import('./localTeachingBuildings')>('./localTeachingBuildings');
@@ -52,6 +54,23 @@ describe('seven exact local teaching buildings', () => {
       expect(assetForZone(saved)).toBeUndefined();
       expect(nativeBuildingUrl(saved)).toBeUndefined();
     }
+  });
+
+  it('owns stale saved trial identities before any planned-massing or other model fallback', () => {
+    const asset = LOCAL_TEACHING_BUILDINGS[0];
+    const stale = { id: 'saved-plot', project_id:'project', color:'#fff', sort_order:0, created_at:'before', updated_at:'before',
+      building_id: 'saved-building', building_ids: ['saved-building', 'old-extra'],
+      zone_type: 'building', properties: { ...placementProperties(asset), pick_place_model_revision: 'unavailable-revision' },
+      coordinates: rectangleAt([-114.03, 51.04], asset.width, asset.depth) } as SiteZone;
+    const planned = { id: 'saved-building', metadata: { community_3d: { generator: 'planned_massing' } } };
+    const routes = nativeBuildingRoutes([stale], [planned, { id: 'old-extra' }, { id: 'unrelated' }]);
+    expect(routes.reviewZones).toEqual([stale]);
+    expect(routes.unavailableZones).toEqual([stale]);
+    expect(routes.buildingIds).toEqual(new Set(['saved-building', 'old-extra']));
+    expect(routes.otherBuildings.map(b => b.id)).toEqual(['unrelated']);
+    const current = { ...stale, properties: placementProperties(asset) };
+    expect(nativeBuildingRoutes([current], [planned]).unavailableZones).toEqual([]);
+    expect(nativeBuildingRoutes([current], [planned]).otherBuildings).toEqual([]);
   });
 
   it('centres the asymmetric side-split envelope without scaling or changing shared source', () => {
