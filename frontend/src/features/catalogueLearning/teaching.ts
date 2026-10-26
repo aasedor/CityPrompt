@@ -1,6 +1,7 @@
 import data from '@/data/catalogueTeaching.json';
 import type { CanonicalChoice } from '@/features/pickPlace/canonicalCatalogue';
 import type { CatalogueDomain } from '@/features/calgaryCatalogue/guide';
+import { LOCAL_TEACHING_LESSONS, LOCAL_TEACHING_STYLES } from '@/features/pickPlace/localTeachingBuildings';
 import { HISTORY_PLANNING_DEFINITIONS, HISTORY_PLANNING_ORDER, HISTORY_SOURCES,
   HISTORY_STYLE_DEFINITIONS, historyForChoice, historySearchTerms } from './planningHistory';
 
@@ -15,8 +16,8 @@ export interface CatalogueLesson {
 }
 export interface LessonMatch { status: 'classified' | 'review' | 'stale'; lesson: CatalogueLesson }
 
-const lessons: Readonly<Record<string, CatalogueLesson>> = data.lessons;
-const styles: Readonly<Record<string, TeachingDefinition>> = { ...data.styles, ...HISTORY_STYLE_DEFINITIONS };
+const lessons: Readonly<Record<string, CatalogueLesson>> = { ...data.lessons, ...LOCAL_TEACHING_LESSONS };
+const styles: Readonly<Record<string, TeachingDefinition>> = { ...data.styles, ...HISTORY_STYLE_DEFINITIONS, ...LOCAL_TEACHING_STYLES };
 const planning: Readonly<Record<string, PlanningDefinition>> = { ...data.planning, ...HISTORY_PLANNING_DEFINITIONS };
 export const TEACHING_SOURCES: Readonly<Record<string, {label:string;url:string}>> = { ...data.sources, ...HISTORY_SOURCES };
 export const INTRODUCTORY_PLANNING_IDS: readonly string[] = HISTORY_PLANNING_ORDER;

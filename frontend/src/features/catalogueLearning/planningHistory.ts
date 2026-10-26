@@ -1,6 +1,7 @@
 import data from '@/data/cataloguePlanningHistory.json';
 import type { CanonicalChoice } from '@/features/pickPlace/canonicalCatalogue';
 import type { CatalogueDomain } from '@/features/calgaryCatalogue/guide';
+import { LOCAL_TEACHING_HISTORY } from '@/features/pickPlace/localTeachingBuildings';
 
 export interface EraDefinition {
   label: string; dates: string; description: string; designIdea: string;
@@ -13,7 +14,7 @@ export interface PlanningHistoryLesson {
   styleIds: string[]; planningIds: string[]; constructionYear: null;
 }
 
-const lessons: Readonly<Record<string, PlanningHistoryLesson>> = data.lessons;
+const lessons: Readonly<Record<string, PlanningHistoryLesson>> = { ...data.lessons, ...LOCAL_TEACHING_HISTORY };
 const eras: Readonly<Record<string, EraDefinition>> = data.eras;
 // Plain labels for the authored use/form tags. These describe the component,
 // never its ownership, occupancy agreement, provider or affordability.

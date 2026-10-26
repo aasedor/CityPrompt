@@ -14,6 +14,7 @@ import { cataloguePresentationFor } from './cataloguePresentation';
 import { lessonForChoice, teachingSearchTerms } from '@/features/catalogueLearning/teaching';
 import { CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS, COURT_ONLY_SPORT_ASSETS } from './assetRegistry';
 import { LOCAL_CLAUDE_ASSETS } from './claudeAssetLocalTrial';
+import { LOCAL_TEACHING_BUILDINGS } from './localTeachingBuildings';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
 import { PUBLIC_REALM_RELEASE_ASSETS } from './publicRealmRelease';
 
@@ -120,7 +121,7 @@ const resolvedRoster = resolveCatalogueRoster([...validation.entries, ...expansi
     archetype_id: String(asset.properties.development_archetype_id ?? asset.properties.road_archetype_id ?? asset.properties.green_space_archetype_id),
     variant_id: asset.model.variantId, placement_id: asset.id,
   })),
-  ...[...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS].map(asset => ({ domain: 'building',
+  ...[...LOCAL_TEACHING_BUILDINGS, ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS].map(asset => ({ domain: 'building',
     archetype_id: String(asset.properties.development_archetype_id),
     variant_id: asset.model.variantId, placement_id: asset.id }))]);
 /** Supplemental choices must share the reviewed registry's exact identity and
