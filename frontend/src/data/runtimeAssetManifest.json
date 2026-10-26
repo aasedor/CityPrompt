@@ -31,6 +31,7 @@
     "src/components/viewer/ImageModelSelect.tsx",
     "src/components/viewer/LayoutPreviewPanel.tsx",
     "src/components/viewer/LocalComfyTrialButton.tsx",
+    "src/components/viewer/LocalVideoPreview.tsx",
     "src/components/viewer/OnboardingTour.tsx",
     "src/components/viewer/PhotographicVideoGuide.tsx",
     "src/components/viewer/RenderEditModal.tsx",
@@ -43,6 +44,7 @@
     "src/components/viewer/SitePlannerToolbar.tsx",
     "src/components/viewer/StreetViewPanel.tsx",
     "src/components/viewer/VideoGeneratePanel.tsx",
+    "src/components/viewer/VideoRouteEditor.tsx",
     "src/components/viewer/ZoneLegend.tsx",
     "src/components/viewer/ZonePropertiesPanel.tsx",
     "src/components/viewer/aestheticCatalog.ts",
@@ -111,6 +113,7 @@
     "src/components/viewer/globe/bridgeStreetClearance.ts",
     "src/components/viewer/globe/brtStreetProgram.ts",
     "src/components/viewer/globe/buildingApproachDetails.ts",
+    "src/components/viewer/globe/buildingCaptureReadiness.ts",
     "src/components/viewer/globe/buildingEntranceApproach.ts",
     "src/components/viewer/globe/buildingEntranceReview.ts",
     "src/components/viewer/globe/buildingGroundContact.ts",
@@ -170,6 +173,7 @@
     "src/components/viewer/globe/parkTerrain.ts",
     "src/components/viewer/globe/parkTrioLayout.ts",
     "src/components/viewer/globe/pedestrianCapture.ts",
+    "src/components/viewer/globe/peopleFollowCamera.ts",
     "src/components/viewer/globe/preparedEntranceGround.ts",
     "src/components/viewer/globe/preparedPublicRoads.ts",
     "src/components/viewer/globe/preparedSiteEdges.ts",
@@ -192,6 +196,7 @@
     "src/components/viewer/globe/residualLandscape.ts",
     "src/components/viewer/globe/reviewBuildingGlass.ts",
     "src/components/viewer/globe/reviewBuildingGround.ts",
+    "src/components/viewer/globe/reviewBuildingLandscape.ts",
     "src/components/viewer/globe/rlasmPresentation.ts",
     "src/components/viewer/globe/roadRetainingEdge.ts",
     "src/components/viewer/globe/roadTerrainRehearsal.ts",
@@ -259,6 +264,7 @@
     "src/components/viewer/useStreetViewRender.ts",
     "src/components/viewer/useVideoRoutePreview.ts",
     "src/components/viewer/videoCaptureInventory.ts",
+    "src/components/viewer/videoPhotographicWorkflow.ts",
     "src/components/viewer/videoRenderPath.ts",
     "src/components/viewer/videoRenderQuality.ts",
     "src/components/viewer/videoRouteControls.ts",
@@ -274,17 +280,21 @@
     "src/data/canalRoutePolicy.json",
     "src/data/catalogueHeroImages.json",
     "src/data/catalogueOctober2026.json",
+    "src/data/cataloguePlanningHistory.json",
     "src/data/cataloguePresentation.json",
+    "src/data/catalogueTeaching.json",
     "src/data/classroomExpansion.json",
     "src/data/classroomStarter.json",
     "src/data/claudeAssetLocalTrial.json",
     "src/data/claudeBuildingRelease.json",
     "src/data/claudeFiveTrial.json",
     "src/data/communityBuildingBatch.json",
+    "src/data/courtOnlySports.json",
     "src/data/finalFiveBuildingBatch.json",
     "src/data/flexibleParks.json",
     "src/data/landUseColours.ts",
     "src/data/legoFamilySignatures.json",
+    "src/data/localTeachingBuildings.json",
     "src/data/nativeParks.json",
     "src/data/nativeStreetModuleBounds.json",
     "src/data/nativeStreetPilots.json",
@@ -332,6 +342,10 @@
     "src/features/auth/returnTo.ts",
     "src/features/calgaryCatalogue/CatalogueBrowser.tsx",
     "src/features/calgaryCatalogue/guide.ts",
+    "src/features/catalogueLearning/CatalogueTeachingDetails.tsx",
+    "src/features/catalogueLearning/TeachingDefinition.tsx",
+    "src/features/catalogueLearning/planningHistory.ts",
+    "src/features/catalogueLearning/teaching.ts",
     "src/features/community3d/community3d.ts",
     "src/features/community3d/community3dPresentation.ts",
     "src/features/community3d/planBoundaryAlignment.ts",
@@ -427,6 +441,7 @@
     "src/features/pickPlace/ConnectionEditor.tsx",
     "src/features/pickPlace/GlobePlacementPreview.tsx",
     "src/features/pickPlace/GlobeStreetDrawingPreview.tsx",
+    "src/features/pickPlace/NativeBuildingRecoveryNotice.tsx",
     "src/features/pickPlace/ParkComponentControls.tsx",
     "src/features/pickPlace/PlacementControls.tsx",
     "src/features/pickPlace/PlacementPalette.tsx",
@@ -441,6 +456,7 @@
     "src/features/pickPlace/TerraceSummary.tsx",
     "src/features/pickPlace/UserGeneratedBuildings.tsx",
     "src/features/pickPlace/assetRegistry.ts",
+    "src/features/pickPlace/boundaryEdit.ts",
     "src/features/pickPlace/brtConnections.ts",
     "src/features/pickPlace/buildingFootprintProgram.ts",
     "src/features/pickPlace/buildingPlacementEdges.ts",
@@ -456,11 +472,14 @@
     "src/features/pickPlace/cataloguePresentation.ts",
     "src/features/pickPlace/claudeAssetLocalTrial.ts",
     "src/features/pickPlace/claudeBuildingRelease.ts",
+    "src/features/pickPlace/courtCatalogueGroups.ts",
     "src/features/pickPlace/duplicateStreet.ts",
     "src/features/pickPlace/fixedNativeScene.ts",
     "src/features/pickPlace/generatedPlacement.ts",
     "src/features/pickPlace/geometry.ts",
+    "src/features/pickPlace/localTeachingBuildings.ts",
     "src/features/pickPlace/nativeBuildingContract.ts",
+    "src/features/pickPlace/nativeBuildingRouting.ts",
     "src/features/pickPlace/nativePlacementPreview.ts",
     "src/features/pickPlace/parkOutline.ts",
     "src/features/pickPlace/pedestrianConnections.ts",
@@ -484,6 +503,7 @@
     "src/features/pickPlace/streetDrawingGeometry.ts",
     "src/features/pickPlace/streetEditConnections.ts",
     "src/features/pickPlace/streetFacing.ts",
+    "src/features/pickPlace/streetJunctionSnapping.ts",
     "src/features/pickPlace/streetPlacement.ts",
     "src/features/pickPlace/streetSnapping.ts",
     "src/features/pickPlace/useAutomatic3D.ts",
@@ -523,11 +543,17 @@
     "src/features/projects/StudentWorkflow.tsx",
     "src/features/projects/StudioControls.tsx",
     "src/features/projects/studentNavigation.ts",
+    "src/features/publicData/PublicDataLayersPanel.tsx",
+    "src/features/publicData/publicData.ts",
+    "src/features/publicData/publicDatasets.ts",
+    "src/features/publicData/usePublicDataLayers.ts",
     "src/features/referenceLayers/CalgaryContextButton.tsx",
     "src/features/referenceLayers/CalgaryDistrictSelect.tsx",
+    "src/features/referenceLayers/ExistingLandUse.tsx",
     "src/features/referenceLayers/GlobeReferenceLayer.tsx",
     "src/features/referenceLayers/GlobeZoningLabels.tsx",
     "src/features/referenceLayers/GlobeZoningSurface.tsx",
+    "src/features/referenceLayers/ReferenceFeatureDetails.tsx",
     "src/features/referenceLayers/ReferenceImportButton.tsx",
     "src/features/referenceLayers/ReferenceLayersPanel.tsx",
     "src/features/referenceLayers/SiteAssessmentPanel.tsx",
@@ -545,6 +571,7 @@
     "src/features/referenceLayers/draftZoning.ts",
     "src/features/referenceLayers/existingTransport.ts",
     "src/features/referenceLayers/referenceGeometry.ts",
+    "src/features/referenceLayers/referenceInspection.ts",
     "src/features/referenceLayers/streetNames.ts",
     "src/features/referenceLayers/useMapExploration.ts",
     "src/features/referenceLayers/useReferenceLayers.ts",
@@ -603,6 +630,7 @@
     "src/utils/coordTransform.ts",
     "src/utils/domEvents.ts",
     "src/utils/downloadDataImage.ts",
+    "src/utils/polygonOutline.ts",
     "src/utils/proceduralRoadNetwork.ts",
     "src/utils/projectWriteQueue.ts",
     "src/utils/renderPersistence.ts",
@@ -616,10 +644,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 3652,
+    "explicitReferenceCount": 3681,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5441,
-    "requiredLogicalBytes": 12460088480,
+    "requiredFileCount": 5470,
+    "requiredLogicalBytes": 12478981658,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -9497,6 +9525,174 @@
       "lfsOid": "97336518b16b53fb07cfe6294a48a29c99c60173d0558d74f282214679750409"
     },
     {
+      "url": "/archetypes/buildings/teaching-trials/bauhaus_design_workshop/29f1d0e495979a9c9b02e60e3b4192f9e7fa039def5eeb69d9be0ea48ea0ad8c.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 665485,
+      "lfsOid": "29f1d0e495979a9c9b02e60e3b4192f9e7fa039def5eeb69d9be0ea48ea0ad8c"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/bauhaus_design_workshop/5d842900e6b463e9d116e7ebb34e8d6b1305c4ed96433cdacb6e7f6e6480707a.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 463322,
+      "lfsOid": "5d842900e6b463e9d116e7ebb34e8d6b1305c4ed96433cdacb6e7f6e6480707a"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/bauhaus_design_workshop/ce39896e4c9fea0afcfe77894c189a051e1427e61834e47d41c136b9b3a64b03.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 475523,
+      "lfsOid": "ce39896e4c9fea0afcfe77894c189a051e1427e61834e47d41c136b9b3a64b03"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/destijl_artist_studio/49653faa80990e9bfe13f2335207598fa383ab706d8558fd7275b7d524fe5e48.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 599393,
+      "lfsOid": "49653faa80990e9bfe13f2335207598fa383ab706d8558fd7275b7d524fe5e48"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/destijl_artist_studio/89181bcd13032034e35d3f55082cbc03f6446bdaca5cb1404d3e58810e14671d.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 466379,
+      "lfsOid": "89181bcd13032034e35d3f55082cbc03f6446bdaca5cb1404d3e58810e14671d"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/destijl_artist_studio/932122bdae45c4244185aff617f4d9f2fdf138f40e5791ebfbcac9da2a7defec.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 464755,
+      "lfsOid": "932122bdae45c4244185aff617f4d9f2fdf138f40e5791ebfbcac9da2a7defec"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/mughal_reading_pavilion/713cb0be0d7968903d4eab97021b1cdea47eafae241e011e530a19d81880abb8.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 747783,
+      "lfsOid": "713cb0be0d7968903d4eab97021b1cdea47eafae241e011e530a19d81880abb8"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/mughal_reading_pavilion/714ebbd17362443fba2d1976de5bdffe67dde7c5442500b21ba4ac41cbccda94.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 553446,
+      "lfsOid": "714ebbd17362443fba2d1976de5bdffe67dde7c5442500b21ba4ac41cbccda94"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/mughal_reading_pavilion/923f736c1b3dd9490b6e6fb20a61ac2fbe8960a69dfda06a8ea4cce4bcbd7747.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 548391,
+      "lfsOid": "923f736c1b3dd9490b6e6fb20a61ac2fbe8960a69dfda06a8ea4cce4bcbd7747"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/postmodern_neighbourhood_library/43c06bddb7bafbaaaf405a5c14a06f7cba830adebd52e8de6cc0464e9f40f0b4.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 625756,
+      "lfsOid": "43c06bddb7bafbaaaf405a5c14a06f7cba830adebd52e8de6cc0464e9f40f0b4"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/postmodern_neighbourhood_library/656359722884cca4f814a3ebfee18cf0ebb47d65738d664b7ca849c42f720481.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 1081898,
+      "lfsOid": "656359722884cca4f814a3ebfee18cf0ebb47d65738d664b7ca849c42f720481"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/postmodern_neighbourhood_library/edb678811d2627f478643d31ea3ebf36738ed7fa2ac36368a89784b32b1f3a40.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 597006,
+      "lfsOid": "edb678811d2627f478643d31ea3ebf36738ed7fa2ac36368a89784b32b1f3a40"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/postwar_side_split_house/3169350dc3cce868c081191ccfa38bfe217bb52e2fff16286b6c53aa3997baac.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 391519,
+      "lfsOid": "3169350dc3cce868c081191ccfa38bfe217bb52e2fff16286b6c53aa3997baac"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/postwar_side_split_house/a64eac5b0f5a007061a62d4dc089a5e18e6699538a3bdd0f386a81becfcc1751.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 352001,
+      "lfsOid": "a64eac5b0f5a007061a62d4dc089a5e18e6699538a3bdd0f386a81becfcc1751"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/postwar_side_split_house/d80f7c2e2b12ebfa2e826a11a3d616833fb3d71f9a6ff80162418dfe9e712985.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 467640,
+      "lfsOid": "d80f7c2e2b12ebfa2e826a11a3d616833fb3d71f9a6ff80162418dfe9e712985"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/prairie_school_house/000a95a75e4b7a2d45635e293278fe6417d0b90e7db4b4383606a3d8413cacbf.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 462757,
+      "lfsOid": "000a95a75e4b7a2d45635e293278fe6417d0b90e7db4b4383606a3d8413cacbf"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/prairie_school_house/7a23ab5a9b5c5a1becb1fff6d49d5129d72d04d3c75aabd36ca50d7c4b13ad75.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 466415,
+      "lfsOid": "7a23ab5a9b5c5a1becb1fff6d49d5129d72d04d3c75aabd36ca50d7c4b13ad75"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/prairie_school_house/fc37068cb8cc3a03db479ceca4c0dd2cb423da07d6ac77be165ecd80ed921690.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 625153,
+      "lfsOid": "fc37068cb8cc3a03db479ceca4c0dd2cb423da07d6ac77be165ecd80ed921690"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/wartime_victory_house/4d79232e247c43d2da95bd3a70261862a587e162c0ae80ec79c8785efcf3b578.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 376508,
+      "lfsOid": "4d79232e247c43d2da95bd3a70261862a587e162c0ae80ec79c8785efcf3b578"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/wartime_victory_house/62801e3e512f0da15e2c869eb470d34a73b9e5e0d8396b91d97c38ec37e1dfdc.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 420162,
+      "lfsOid": "62801e3e512f0da15e2c869eb470d34a73b9e5e0d8396b91d97c38ec37e1dfdc"
+    },
+    {
+      "url": "/archetypes/buildings/teaching-trials/wartime_victory_house/b532ffc76d9d76844e5b3c312228eb9527e11368067eff6b63dea55347d242fc.png",
+      "sources": [
+        "src/data/localTeachingBuildings.json"
+      ],
+      "logicalBytes": 415608,
+      "lfsOid": "b532ffc76d9d76844e5b3c312228eb9527e11368067eff6b63dea55347d242fc"
+    },
+    {
       "url": "/archetypes/buildings/terraced_stepped_building/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -12142,6 +12338,42 @@
       ],
       "logicalBytes": 1418534,
       "lfsOid": "f6d1cff28c2f783f7b710d37561d94bca8d24be5ef8a5a1db6f46c6edd976d44"
+    },
+    {
+      "url": "/archetypes/openspaces/court-only-basketball-v001/preview.png",
+      "sources": [
+        "src/data/courtOnlySports.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1455443,
+      "lfsOid": "dfff2afd77519df425ad95d91e0351933a14e6809fb13d926135f2d16074d15a"
+    },
+    {
+      "url": "/archetypes/openspaces/court-only-beach-volleyball-v001/preview.png",
+      "sources": [
+        "src/data/courtOnlySports.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1470994,
+      "lfsOid": "25f849284fe35eab5ebe800f3554c5af0f7b3c80414806800c60f9fe581e4055"
+    },
+    {
+      "url": "/archetypes/openspaces/court-only-pickleball-v001/preview.png",
+      "sources": [
+        "src/data/courtOnlySports.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1440202,
+      "lfsOid": "5045fdb916ceba5673a02a92e197f18a952bfb6e135647f10cfccadad642c7a9"
+    },
+    {
+      "url": "/archetypes/openspaces/court-only-tennis-v001/preview.png",
+      "sources": [
+        "src/data/courtOnlySports.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1424271,
+      "lfsOid": "2cd893337068b8527989a6d7c366f8f1e2307313ca3734a21ea01aefbee834f7"
     },
     {
       "url": "/archetypes/openspaces/courtyard/hero.png",
@@ -24908,6 +25140,14 @@
       "lfsOid": "1e240ac4b5f96f1e1d115c6d5cc681e68bdc29b37a924b6680ca917ab4855f12"
     },
     {
+      "url": "/native-park-assets/2333fa81b824f1851a8730f0b96bc3ec2334717b56aa4869e753936450fc5504.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 486708,
+      "lfsOid": "2333fa81b824f1851a8730f0b96bc3ec2334717b56aa4869e753936450fc5504"
+    },
+    {
       "url": "/native-park-assets/2356bc5f9178f600cbf512ddafda7e740c5a172adee6f1282caf171034a42ee9.png",
       "sources": [
         "src/data/classroomExpansion.json",
@@ -25033,6 +25273,22 @@
       "lfsOid": "5d2ac31189fb9ba489af4445549c8a551895d4c5b90280fa0d82925a5d32e327"
     },
     {
+      "url": "/native-park-assets/5e3150afb5b14183172cd4aef5551f66627eab33ec6aefc58a697fb7dd458259.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 448768,
+      "lfsOid": "5e3150afb5b14183172cd4aef5551f66627eab33ec6aefc58a697fb7dd458259"
+    },
+    {
+      "url": "/native-park-assets/6b35d22789a3a7e8c045ec4c3e8e9d69a930727d17ac9c2d641fd9870ef8dd52.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 575888,
+      "lfsOid": "6b35d22789a3a7e8c045ec4c3e8e9d69a930727d17ac9c2d641fd9870ef8dd52"
+    },
+    {
       "url": "/native-park-assets/6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278.glb",
       "sources": [
         "src/data/nativeParks.json"
@@ -25048,6 +25304,14 @@
       ],
       "logicalBytes": 1394221,
       "lfsOid": "6e91cf1c1429a773244db0fac3f8dd984bd39e794f8c42d4bf01e3fe7663ea87"
+    },
+    {
+      "url": "/native-park-assets/75fa2fcf105f678bdafbe3d72c348f73e3ca0a892ee563fb871439a51a1b00f5.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 324004,
+      "lfsOid": "75fa2fcf105f678bdafbe3d72c348f73e3ca0a892ee563fb871439a51a1b00f5"
     },
     {
       "url": "/native-park-assets/798dd2f3c036e1d143163e01d85e3b816d54cb9a7a06f53f7e318cfd1ef0b6ce.png",
@@ -32094,8 +32358,8 @@
     }
   ],
   "cleanupCandidates": {
-    "unclassifiedRuntimeFileCount": 21536,
-    "unclassifiedRuntimePathDigest": "adc337d2e8bcf6e40af6885585feb294765a8616b3dd37172d1e6cff32f92a3e",
+    "unclassifiedRuntimeFileCount": 21488,
+    "unclassifiedRuntimePathDigest": "80aaba343ea01faad34b6d5261277f8fc25544439e7315768d540543935cff15",
     "unclassifiedRuntimePathSample": [
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_60.jpg",
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_90.jpg",
