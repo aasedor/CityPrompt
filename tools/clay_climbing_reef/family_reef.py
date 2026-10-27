@@ -49,13 +49,13 @@ DOMES_PX = [(603, 428, 40), (620, 212, 22), (613, 305, 19), (680, 312, 19), (550
             (830, 398, 23), (347, 413, 23), (450, 442, 19), (573, 560, 19), (653, 549, 19), (610, 632, 23)]
 GAPS = (113.0, 41.5, -44.7, -137.0)                 # curb gaps (degrees about the origin) where the shell paths arrive
 ENTRANCES = (-135.0, -50.0, 45.0, 132.0)            # arched entrances at the foot of the four bays (searched to the bay minima)
-PALETTE = dict(reef0=(.008, .11, .14), reef1=(0.001, 0.130, 0.210), reef2=(0.010, 0.244, 0.364), reef3=(0.000, 0.543, 0.693), reef4=(0.000, 0.700, 0.830),
-    reef5=(0.200, 0.970, 1.000), reef6=(0.320, 1.000, 1.000), reef7=(0.550, 1.000, 1.000), reef8=(0.480, 0.920, 0.920), reef_inner=(.52, .66, .63), rim=(.93, .93, .91), glass=(.30, .36, .40), dome=(.58, .64, .68), tint=(.025, .03, .035),
+PALETTE = dict(reef0=(.008, .11, .14), reef1=(0.001, 0.122, 0.205), reef2=(0.010, 0.224, 0.345), reef3=(0.000, 0.501, 0.660), reef4=(0.000, 0.676, 0.822),
+    reef5=(0.126, 0.970, 1.000), reef6=(0.260, 1.000, 1.000), reef7=(0.490, 1.000, 1.000), reef8=(0.660, 1.000, 0.980), reef9=(0.780, 1.000, 0.950), reef_inner=(.52, .66, .63), rim=(.98, .98, .97), glass=(.30, .36, .40), dome=(.80, .85, .88), tint=(.025, .03, .035),
     frame=(.10, .13, .14), hardware=(.06, .06, .06), floor=(.20, .25, .30), mat=(.11, .17, .26), interior=(.70, .70, .66),
     apron=(.95, .66, .42), curb=(.98, .74, .52), liner=(.80, .88, .86), shellpath=(.95, .94, .91), shell2=(.80, .76, .70), shell3=(.97, .96, .94), concrete=(.50, .48, .44), lawn=(.20, .31, .10),
     mulch=(.22, .15, .09), hold_r=(.72, .10, .08), hold_y=(.90, .70, .10), hold_b=(.08, .22, .62), hold_p=(.42, .16, .55),
     reef1p=(0.012, 0.110, 0.133), reef2p=(0.012, 0.180, 0.209), reef3p=(0.000, 0.261, 0.302), reef4p=(0.023, 0.336, 0.348), reef5p=(0.116, 0.394, 0.360), reef6p=(0.209, 0.458, 0.394), reef7p=(0.278, 0.499, 0.429), reef8p=(0.348, 0.522, 0.458),
-    hold_k=(.10, .10, .11), hold_n=(.52, .49, .44), hold_o=(.88, .40, .08), hold_g=(.20, .55, .18), bark=(.30, .23, .16), tree=(.20, .33, .12), tree2=(.27, .40, .15),
+    hold_k=(.10, .10, .11), hold_w=(.92, .92, .89), hold_n=(.52, .49, .44), hold_o=(.88, .40, .08), hold_g=(.20, .55, .18), bark=(.30, .23, .16), tree=(.20, .33, .12), tree2=(.27, .40, .15),
     tree3=(.34, .45, .18), wall=(.5, .5, .5), trim=(.84, .85, .82), stone=(.6, .6, .58), timber=(.42, .30, .18))
 
 
@@ -1938,8 +1938,10 @@ NT = 256                                            # shell segments round the o
 # shoulder, roll-over, gently domed plateau (front, oblique).
 PROFILE = [(.975, 0.0), (.986, .35), (.995, .9), (1.0, 1.6), (.998, 2.6), (.99, 3.5), (.975, 4.3), (.955, 4.9),
            (.925, 5.45), (.88, 5.95), (.82, 6.3), (.74, 6.55), (.62, 6.72), (.48, 6.82), (.32, 6.88), (.16, 6.9), (0., 6.9)]
-BANDS = (.7, 1.4, 2.3, 3.2, 4.6, 5.7, 6.5)        # contour band edges (profile heights): darkest base .. roof seafoam
-ROLES = ('reef1', 'reef2', 'reef3', 'reef4', 'reef5', 'reef6', 'reef7', 'reef8')
+# contour band edges (band value: metres along the meridian from the base, lifted by the relief): darkest base, deep teal,
+# teal, teal, aquamarine (upper wall), light aquamarine, mint (roll-over), pale mint (roof margin), seafoam (plateau)
+BANDS = (.8, 1.6, 2.5, 3.4, 4.9, 6.4, 8.0, 9.9)
+ROLES = ('reef1', 'reef2', 'reef3', 'reef4', 'reef5', 'reef6', 'reef7', 'reef8', 'reef9')
 TUCK = PROFILE[0][0]                                # base ring: fraction of the outline radius
 INNER = len(ROLES)                                  # material slot of the inner skin
 
@@ -1999,6 +2001,56 @@ def smoothstep(a, b, x):
     return t * t * (3 - 2 * t)
 
 
+def outline_arc(th, r):
+    """Arc length (m) round the plan outline at each angle, and the perimeter."""
+    dth = 2 * math.pi / len(th)
+    dr = np.gradient(np.concatenate([r[-1:], r, r[:1]]), dth)[1:-1]
+    ds = np.sqrt(r * r + dr * dr) * dth
+    return np.concatenate([[0.0], np.cumsum(ds)[:-1]]), float(ds.sum())
+
+
+def relief_field(th, r, Zp):
+    """Sculpted relief of the walls as radial metres (K x NT): meandering vertical folds and buttress ridges about 2.4-3.6 m
+    apart (1.2-2.2 m wide, 0.4-0.7 m proud, some sunk as folds), broad swells between them, and a large swell over each
+    entrance that leans out above it as a hood; all fade out at the tucked base and over the roll-over, and the folds stand
+    back from the entrance mouths."""
+    s, L_ = outline_arc(th, r)
+    S = s[None, :]; Z = Zp
+    wrap = lambda d: (d + L_ / 2) % L_ - L_ / 2
+    se = [float(np.interp(t % (2 * math.pi), th, s)) for t in ENTRY_TH]
+    rnd = random.Random(77); out = np.zeros_like(Z)
+    pos = rnd.uniform(0, 2.0)
+    while pos < L_ - 2.0:
+        a = rnd.uniform(.38, .68) * (1.0 if rnd.random() < .72 else -.7)
+        w = rnd.uniform(.75, 1.3); zt = rnd.uniform(4.6, 6.1); ph = rnd.uniform(0, 6.3); mz = rnd.uniform(.25, .55)
+        c = pos + mz * np.sin(.9 * Z + ph)                         # each fold meanders a little as it rises
+        env = smoothstep(.15, 1.3, Z) * (1 - smoothstep(zt - 1.2, zt + .3, Z))
+        out += a * env * np.exp(-(wrap(S - c) / w) ** 2)
+        pos += rnd.uniform(2.4, 3.6)
+    for s_e in se:                                                 # calm round each entrance mouth
+        out *= 1 - np.exp(-(wrap(S - s_e) / 2.8) ** 2) * (1 - smoothstep(3.0, 4.2, Z))
+    n_sw = 0
+    while n_sw < 10:
+        sc = rnd.uniform(0, L_); a = rnd.uniform(.30, .55); ws = rnd.uniform(1.6, 2.4); zc = rnd.uniform(2.8, 4.4)
+        wz = rnd.uniform(1.0, 1.5)
+        if any(abs(wrap(sc - s_e)) < 4.5 for s_e in se):
+            continue
+        out += a * np.exp(-(wrap(S - sc) / ws) ** 2 - ((Z - zc) / wz) ** 2); n_sw += 1
+    for s_e in se:                                                 # the hood swelling out over each entrance
+        out += .90 * np.exp(-(wrap(S - s_e) / 2.1) ** 2 - ((Z - 3.45) / 1.0) ** 2)
+    return out * (1 - smoothstep(5.5, 6.45, Z))
+
+
+def band_coordinate(prof, relief, th):
+    """Band value per grid vertex (K x NT): metres along the meridian from the base, lifted where the relief stands
+    proud (so the band edges swing up over the ridges and pinch between them), with slow waves on the roof contours."""
+    s = np.array([p[0] for p in prof]); z = np.array([p[1] for p in prof])
+    m = np.concatenate([[0.0], np.cumsum(np.hypot(np.diff(s) * 12.0, np.diff(z)))])
+    M = m[:, None] + .9 * relief
+    roof = smoothstep(7.0, 8.5, m)[:, None]
+    return M + roof * (.55 * np.sin(3 * th + .8) + .35 * np.sin(7 * th + 2.1) + .2 * np.sin(13 * th + .3))[None, :]
+
+
 class Shell:
     """The shell surface as a grid of rings (outer skin) with its inner skin T inside it."""
     def __init__(self):
@@ -2010,6 +2062,9 @@ class Shell:
         wall = 1 - smoothstep(.70, .93, S_)                         # 0 on the walls, 1 on the plateau
         wob = 1 + (1 - wall) * (.011 * np.sin(5 * TH + .7 * Z) + .007 * np.sin(11 * TH - .5 * Z + 1.0))
         RHO = S_ * r[None, :] * wob
+        self.relief = relief_field(th, r, Z)                       # folds, ridges, swells and the entrance hoods
+        X0 = RHO * np.cos(TH); Y0 = RHO * np.sin(TH)
+        RHO = RHO + self.relief
         X = RHO * np.cos(TH); Y = RHO * np.sin(TH)
         # the wall rings wander up and down round the shell, so the ring-aligned contour bands read as wavy layers
         amp = .62 * np.sin(3 * TH + 1.0) + .40 * np.sin(5 * TH + 2.0) + .20 * np.sin(11 * TH + .4)
@@ -2017,11 +2072,14 @@ class Shell:
         Zn = pads(X, Y, Z + wall * roof_noise(X, Y))
         self.P = np.stack([X, Y, Zn], -1)                           # (K, NT, 3); the last ring collapses to the centre
         self.P[-1, :, :] = (0.0, 0.0, Zn[-1].mean())
+        self.P0 = np.stack([X0, Y0, Zn], -1); self.P0[-1, :, :] = self.P[-1, :, :]   # the same skin without the relief
+        self.radial = np.stack([np.cos(TH), np.sin(TH), 0 * TH], -1)
         self.zprof = z; self.r = r
-        self.normals()
+        self.bv = band_coordinate(self.prof, self.relief, th)
+        self.N = self.normals(self.P); self.N0 = self.normals(self.P0)
 
-    def normals(self):
-        P = self.P
+    @staticmethod
+    def normals(P):
         dth = np.roll(P, -1, 1) - np.roll(P, 1, 1)
         dk = np.empty_like(P)
         dk[1:-1] = P[2:] - P[:-2]; dk[0] = P[1] - P[0]; dk[-1] = P[-1] - P[-2]
@@ -2029,10 +2087,12 @@ class Shell:
         L = np.linalg.norm(n, axis=-1, keepdims=True); L[L < 1e-9] = 1
         n = n / L
         n[-1] = (0, 0, 1)                                           # the centre faces up
-        self.N = n
+        return n
 
     def inner(self):
-        Pi = self.P - T * self.N
+        """The inner skin: the relief-free skin offset T inward, carried in with the folds (so a fold never pinches the
+        offset); ridges, swells and hoods only thicken the shell."""
+        Pi = self.P0 - T * self.N0 + self.radial * np.minimum(self.relief, 0.0)[..., None]
         Pi[0] = self.P[0].copy(); Pi[0, :, 2] = 0.0                  # the base ring of the inner skin sits on the floor line
         rho = np.hypot(self.P[0, :, 0], self.P[0, :, 1])
         f = (rho - T) / rho
@@ -2055,7 +2115,8 @@ def bay_minimum(deg):
 ENTRY_TH = [bay_minimum(d) for d in ENTRANCES]
 BUMPS = _bumps()
 PADS = []                                           # (centre, radius, pad height) per skylight, filled by build()
-EW, EH = 3.5, 2.6                                   # entrance clear width and height (a low, wide cave-like arch)
+EW, EH = 3.8, 2.5                                   # entrance clear width and height (a low, wide cave-like arch)
+ARCH_HB, ARCH_SKEW = 1.2, .12                       # the head is a flattened half-ellipse, its crown leaning a little
 
 
 # Shoulder pockets: where the locked top shows them on the roll-over (top-view pixels); seen from above they read as
@@ -2063,24 +2124,15 @@ EW, EH = 3.5, 2.6                                   # entrance clear width and h
 SHOULDER_PX = [(560, 172), (530, 265), (705, 255), (320, 322), (390, 322), (377, 365), (780, 320), (425, 507), (515, 610),
                (675, 690), (805, 535), (875, 515), (280, 510), (925, 370)]
 PK_N = 44                                           # segments round each pocket mouth
-PK_BEAD = .020                                      # the raised rim round each mouth (catches the light on the lower lip)
+PK_FILLET = .10                                     # the lower and side lips roll down into the cup over this depth (m)
 PK_UNDERCUT = .20                                   # the upper inner wall runs this fraction beyond the mouth, under the lip
 PK_UPPER = .40                                      # the upper half of the cup is this much deeper than the lower floor
-# Rings of each pocket patch, outside in: (ellipse radius factor, kind). 'skin' rings lie on the shell, 'bead' rises to
-# the rim crest, 'mouth' is the crisp lip, 'cup' rings go down into the bowl.
-PK_RINGS = ((1.20, 'skin'), (1.10, 'skin'), (1.045, 'bead'), (1.0, 'mouth'), (.96, 'cup'), (.90, 'cup'), (.82, 'cup'),
-            (.72, 'cup'), (.60, 'cup'), (.46, 'cup'), (.30, 'cup'), (.15, 'cup'))
-PK_SHADE_LOWER = 4.0                                # extra shade steps on the lower floor of the cup
-PK_SHADE_ON = True
-
-
-def cup_shade(rho, cphi):
-    """Graded shade suffix of a cup face from its mean ring radius and the cosine of its angle from 'up' (the shade
-    steps deepen toward the bottom of the cup and on its lower floor), '' outside the mouth."""
-    if rho >= 1.0:
-        return ''
-    step = 1 + (.98 - min(rho, .98)) / .98 * 4.6 + PK_SHADE_LOWER * max(-cphi, 0.0)
-    return 'abcdefg'[min(int(round(step)), 7) - 1]
+PK_ECC = .24                                        # the cup's inner rings (and darkest shades) sit this much low
+# Rings of each pocket patch, outside in: (radius factor, kind). 'skin' rings lie on the shell, 'fillet' rolls the lower
+# lip down, 'mouth' is the lip line (crisp only along the upper lip), 'cup' rings go down into the bowl.
+PK_RINGS = ((1.22, 'skin'), (1.13, 'skin'), (1.06, 'fillet'), (1.0, 'mouth'), (.97, 'cup'), (.93, 'cup'), (.88, 'cup'),
+            (.82, 'cup'), (.75, 'cup'), (.67, 'cup'), (.58, 'cup'), (.48, 'cup'), (.37, 'cup'), (.25, 'cup'), (.12, 'cup'))
+PK_SHADE = 'abcdefghijkl'                           # cup ring pair (mouth inwards) -> graded shade of the rim band
 
 
 def entrance_clearance(p):
@@ -2091,49 +2143,62 @@ def entrance_clearance(p):
         d = p - e * rho
         if np.linalg.norm(d[:2]) > 10.0:
             continue
-        u = float(d @ t); z = float(p[2]); r = EW / 2 + .22; zs = EH - EW / 2
-        dist = max(abs(u) - r, 0.0) if z <= zs else max(math.hypot(u, z - zs) - r, 0.0)
+        u = float(d @ t) - ARCH_SKEW * max(float(p[2]) - (EH - ARCH_HB), 0.0); z = float(p[2])
+        r = EW / 2 + .22; zs = EH - ARCH_HB
+        dist = max(abs(u) - r, 0.0) if z <= zs else max(math.hypot(u, (z - zs) * r / ARCH_HB) - r, 0.0)
         best = min(best, dist)
     return best
 
 
+def mouth_scale(shape, ph):
+    """Irregular mouth: radius factor at angle ph from 'up' (two low harmonics and a downward teardrop bias)."""
+    h2, p2, h3, p3, tb = shape
+    return 1 + h2 * math.cos(2 * ph + p2) + h3 * math.cos(3 * ph + p3) + tb * max(-math.cos(ph), 0.0) ** 1.5
+
+
 def pockets(shell):
-    """Round to slightly oval cups over the whole shell, as the locked front and oblique show them: about 40 on the walls
-    (one per sector of the outline: a third on the upper wall, a third mid wall and a third low down in the deep-teal
-    base band) and 14 on the roll-over shoulder where the locked top shows them as dimples round the plateau. Mouths
-    0.9-1.6 m across (aspect 0.85-1.15 on the walls), cups about 0.7 of the mouth radius deep. Every mouth (rim included)
-    stays at least 1 m clear of the entrance arches. Returns (depth, horizontal half-width, kind, mouth centre,
-    outer radius, axis, aspect, up) per pocket; shell_mesh() keeps the ones it can seat."""
+    """Opaque rock pockets over the whole shell, as the locked front and oblique show them: one per sector of the outline
+    on the walls (a third on the upper wall, a third mid wall and a third low down in the deep-teal base band) and 14 on
+    the roll-over shoulder where the locked top shows them as dimples round the plateau. Mouths 0.9-1.7 m across and
+    irregular (aspect 0.65-1.35, two low harmonics, a slight downward teardrop, a small tilt), cups about 0.7 of the
+    mouth radius deep. Every mouth (lip included) stays at least 1 m clear of the entrance arches. Returns (depth,
+    horizontal half-width, kind, mouth centre, outer radius, axis, aspect, up, mouth shape) per pocket; shell_mesh()
+    keeps the ones it can seat."""
     rnd = random.Random(31); out = []
     P, N = shell.P, shell.N
 
-    def frame(k, i):
+    def frame(k, i, tilt):
         nb = N[max(1, k - 2):k + 3][:, [(i + j) % NT for j in range(-3, 4)]].reshape(-1, 3).sum(0)
         ax = nb / np.linalg.norm(nb)
         up = np.array([0.0, 0.0, 1.0]) - ax * ax[2]
         if np.linalg.norm(up) < .25:                                 # nearly flat: 'up' runs toward the plateau centre
             up = -np.array([P[k, i, 0], P[k, i, 1], 0.0]); up = up - ax * (up @ ax)
-        return ax, up / np.linalg.norm(up)
+        up = up / np.linalg.norm(up); side = np.cross(ax, up)
+        return ax, up * math.cos(tilt) + side * math.sin(tilt)
 
-    def ok(p, Au, Av, up):
-        R_ = 1.2 * max(Au, Av)
-        if any(np.linalg.norm(p - q[3]) < R_ + q[4] + .35 for q in out):
-            return False
+    def shape():
+        return (rnd.uniform(-.10, .10), rnd.uniform(0, 6.3), rnd.uniform(-.06, .06), rnd.uniform(0, 6.3), rnd.uniform(0, .08))
+
+    def ok(p, Au, Av, up, sh):
+        R_ = 1.22 * max(Au, Av) * (1 + abs(sh[0]) + abs(sh[2]) + sh[4])
+        if any(np.linalg.norm(p - q[3]) < R_ + q[4] + .3 for q in out):
+            return False, R_
         if entrance_clearance(p) < R_ + 1.0:
-            return False
-        if p[2] - 1.25 * Au * abs(up[2]) < .30:                     # the patch stays clear of the base ring
-            return False
-        return not any(math.hypot(p[0] - dx, p[1] - dy) < R + R_ + 1.2 for (dx, dy), R in DOMES)
+            return False, R_
+        if p[2] - R_ * abs(up[2]) < .30:                             # the patch stays clear of the base ring
+            return False, R_
+        return not any(math.hypot(p[0] - dx, p[1] - dy) < R + R_ + 1.2 for (dx, dy), R in DOMES), R_
 
     K = P.shape[0]
     for u, v in SHOULDER_PX:
         x, y = W(u, v); th = math.atan2(y, x); s = min(math.hypot(x, y) / float(polar(R_SHELL, [th])[0]), .85)
         k = min((k for k in range(K - 4) if shell.prof[k][1] > 4.7), key=lambda k: abs(shell.prof[k][0] - s))
         i = int(round((th % (2 * math.pi)) / (2 * math.pi) * NT)) % NT
-        ax, up = frame(k, i); p = P[k, i].copy()
-        Av = rnd.uniform(.55, .78); Au = Av * rnd.uniform(.8, 1.0)
-        if ok(p, Au, Av, up):
-            out.append((min(.66, .72 * (Au + Av) / 2), Av, 'shoulder', p, 1.2 * max(Au, Av), ax, Au / Av, up))
+        ax, up = frame(k, i, rnd.uniform(-.3, .3)); p = P[k, i].copy(); sh = shape()
+        Av = rnd.uniform(.55, .78); Au = Av * rnd.uniform(.75, 1.0)
+        good, R_ = ok(p, Au, Av, up, sh)
+        if good:
+            out.append((min(.58, .70 * (Au + Av) / 2), Av, 'shoulder', p, R_, ax, Au / Av, up, sh))
     secs = np.linspace(0, 2 * math.pi, 40, endpoint=False)
     for j, s0 in enumerate(secs):
         for _ in range(60):
@@ -2141,55 +2206,73 @@ def pockets(shell):
             band_ = j % 3
             z = rnd.uniform(3.4, 4.5) if band_ == 0 else rnd.uniform(2.2, 3.4) if band_ == 1 else rnd.uniform(.9, 2.2)
             k, i = shell.grid_index(th, z)
-            ax, up = frame(k, i); p = P[k, i].copy()
-            Av = rnd.uniform(.45, .80); Au = Av * rnd.uniform(.85, 1.15)
-            if ok(p, Au, Av, up):
-                out.append((min(.76, .72 * (Au + Av) / 2), Av, 'pocket', p, 1.2 * max(Au, Av), ax, Au / Av, up))
+            ax, up = frame(k, i, rnd.uniform(-.35, .35)); p = P[k, i].copy(); sh = shape()
+            Av = rnd.uniform(.45, .80); Au = Av * rnd.uniform(.65, 1.15)
+            good, R_ = ok(p, Au, Av, up, sh)
+            if good:
+                out.append((min(.60, .72 * (Au + Av) / 2), Av, 'pocket', p, R_, ax, Au / Av, up, sh))
                 break
     return out
 
 
-def pocket_patch(q, grid, bvh, V, kap, rho_of, mouth_of, cphi_of):
-    """One pocket as a polar patch replacing the grid faces under it: a ring on the skin, a low rounded rim bead, the
-    crisp mouth and a cup whose upper wall runs back under the lip (undercut) and is deeper than its lower floor.
-    Returns the patch polygons (vertex indices into V; the outer ring is still to be zipped to the hole)."""
+def surface_sample(bvh, grid, bv, o, ax):
+    """The undisplaced shell point under o along -ax: position, band value and grid row fraction."""
     from mathutils import Vector
-    D, Av, kind, p, Rq, ax, asp, up = q
+    hit = bvh.ray_cast(Vector(o + ax * 1.5), Vector(-ax), 4.0)
+    if hit[0] is None:
+        hit = bvh.find_nearest(Vector(o))
+    x = np.array(hit[0]); kk, ii = divmod(hit[2], NT); i1 = (ii + 1) % NT
+    a0 = .5 * (grid[kk, ii] + grid[kk, i1]); a1 = .5 * (grid[kk + 1, ii] + grid[kk + 1, i1])
+    b0 = .5 * (grid[kk, ii] + grid[kk + 1, ii]); b1 = .5 * (grid[kk, i1] + grid[kk + 1, i1])
+    t = float(np.clip((x - a0) @ (a1 - a0) / ((a1 - a0) @ (a1 - a0)), 0, 1))
+    w = float(np.clip((x - b0) @ (b1 - b0) / ((b1 - b0) @ (b1 - b0)), 0, 1))
+    b = ((1 - t) * ((1 - w) * bv[kk, ii] + w * bv[kk, i1]) + t * ((1 - w) * bv[kk + 1, ii] + w * bv[kk + 1, i1]))
+    return x, float(b)
+
+
+def pocket_patch(q, grid, bv, bvh, V, val, info):
+    """One pocket as a polar patch replacing the grid faces under it: rings on the skin, a lower and side lip that rolls
+    softly down into the cup, a crisp upper lip, and a cup whose upper wall runs back under the lip (undercut) and is
+    deeper than its lower floor. Its rings sit progressively lower toward the centre, so the graded shades (by ring)
+    darken toward the lower floor. Returns the outer ring, the patch polygons (with their ring pair index; -1 outside the
+    mouth) and the upper-lip vertex pairs."""
+    D, Av, kind, p, Rq, ax, asp, up, sh = q
     Au = Av * asp; side = np.cross(ax, up)
     rows = []
     for rho, rk in PK_RINGS:
         row = []
         for m in range(PK_N):
-            ph = 2 * math.pi * m / PK_N; c, s_ = math.cos(ph), math.sin(ph)
+            ph = 2 * math.pi * m / PK_N; c, s_ = math.cos(ph), math.sin(ph); mu = mouth_scale(sh, ph)
+            lw = float(smoothstep(.35, -.30, c))                        # 0 on the upper lip, 1 on the lower lip
             if rk == 'cup':
-                g = float(smoothstep(.30, .72, rho))
-                sc = 1 + PK_UNDERCUT * max(c, 0.0) ** 2 * g
-                h = -D * math.sqrt(max(1 - rho * rho, 0.0)) * (1 + PK_UPPER * c)
+                u = Au * mu * (rho * c - PK_ECC * (1 - rho)); v = Av * mu * rho * s_
+                rg = min(math.hypot(u / (Au * mu), v / (Av * mu)), 1.0); cg = (u / (Au * mu)) / max(rg, 1e-6)
+                lwg = float(smoothstep(.35, -.30, cg)); base = PK_FILLET * lwg
+                prof = max(1 - rg * rg, 0.0) ** (.5 + .45 * lwg)
+                h = -(base + (D * (1 + PK_UPPER * max(cg, 0.0)) - base) * prof)
+                sc = 1 + PK_UNDERCUT * max(cg, 0.0) ** 2 * float(smoothstep(.30, .72, rho))
+                u *= sc; v *= sc
             else:
-                sc = 1.0; h = PK_BEAD * (1.0 if rk == 'bead' else .55 if rk == 'mouth' else 0.0)
-            u = Au * rho * sc * c; v = Av * rho * sc * s_
-            o = p + up * u + side * v
-            hit = bvh.ray_cast(Vector(o + ax * 1.5), Vector(-ax), 4.0)
-            if hit[0] is None:
-                hit = bvh.find_nearest(Vector(o))
-            x = np.array(hit[0]); fi = hit[2]
-            kk = fi // NT; ii = fi % NT
-            a0 = .5 * (grid[kk, ii] + grid[kk, (ii + 1) % NT]); a1 = .5 * (grid[kk + 1, ii] + grid[kk + 1, (ii + 1) % NT])
-            dk = a1 - a0; t = float(np.clip((x - a0) @ dk / (dk @ dk), 0, 1))
+                u = Au * mu * rho * c; v = Av * mu * rho * s_
+                h = -PK_FILLET * lw * {'skin': 0.0 if rho > 1.2 else .08, 'fillet': .45, 'mouth': 1.0}[rk]
+            x, b = surface_sample(bvh, grid, bv, p + up * u + side * v, ax)
             V.append(tuple(float(c_) for c_ in x + ax * h)); idx = len(V) - 1
-            kap[idx] = kk + t; rho_of[idx] = rho; mouth_of[idx] = rk == 'mouth'; cphi_of[idx] = c
+            val[idx] = b; info[idx] = (rho, rk == 'mouth' and c > .30)
             row.append(idx)
         rows.append(row)
-    centre = p + ax * (-D)
-    V.append(tuple(float(c_) for c_ in centre)); ci = len(V) - 1
-    kap[ci] = kap[rows[-1][0]]; rho_of[ci] = 0.0; mouth_of[ci] = False; cphi_of[ci] = 0.0
+    V.append(tuple(float(c_) for c_ in V[rows[-1][0]])); ci = len(V) - 1   # placeholder, set to the ring mean below
+    last = np.array([V[i] for i in rows[-1]]).mean(0) - ax * .02
+    V[ci] = tuple(float(c_) for c_ in last); val[ci] = val[rows[-1][0]]; info[ci] = (0.0, False)
     polys = []
-    for r0, r1 in zip(rows, rows[1:]):
+    mi = [j for j, (r_, k_) in enumerate(PK_RINGS) if k_ == 'mouth'][0]
+    for j, (r0, r1) in enumerate(zip(rows, rows[1:])):
+        tag = j - mi if j >= mi else -1
         for m in range(PK_N):
-            polys.append((r0[m], r0[(m + 1) % PK_N], r1[(m + 1) % PK_N], r1[m]))
+            polys.append(((r0[m], r0[(m + 1) % PK_N], r1[(m + 1) % PK_N], r1[m]), tag))
     for m in range(PK_N):
-        polys.append((rows[-1][m], rows[-1][(m + 1) % PK_N], ci))
-    return rows[0], polys
+        polys.append(((rows[-1][m], rows[-1][(m + 1) % PK_N], ci), len(rows) - 1 - mi))
+    lip = rows[mi][0]
+    return rows[0], polys, lip
 
 
 def zip_loops(ring, ring_ang, loop, loop_ang):
@@ -2214,38 +2297,57 @@ def zip_loops(ring, ring_ang, loop, loop_ang):
     return tris
 
 
-def seat_pockets(shell, V, F, M, pk):
-    """Replace the outer-skin grid faces under each pocket by its polar patch, zipped to the hole's edge, and split the
-    patch along the contour band lines so every band keeps its own crisp, straight edge across the cup. Returns the
-    kept pockets and the mouth edges (vertex pairs, marked sharp)."""
+def band_index(b):
+    return sum(1 for e in BANDS if b >= e)
+
+
+def shell_mesh(shell, Pi, pk):
+    """One closed solid: the outer skin with each pocket seated as its own polar patch, the inner skin at half resolution
+    (every other ring and segment) and the base annulus stitching the two. The contour bands are cut along the iso-lines
+    of the band value (so their edges are smooth curves that follow the relief); each cup takes the band of its upper lip,
+    darkened by graded shades ring by ring. Returns the shell and the pockets kept."""
     from mathutils.bvhtree import BVHTree
-    K = shell.P.shape[0]; grid = shell.P
-    nq = (K - 2) * NT                                                  # outer-skin quads come first in F
-    bvh = BVHTree.FromPolygons([tuple(x) for x in V[:(K - 1) * NT]], [F[f] for f in range(nq)])
-    rowband = [band(.5 * (shell.zprof[k] + shell.zprof[k + 1])) for k in range(K - 2)]
-    lines = [k for k in range(1, K - 2) if rowband[k] != rowband[k - 1]]
-    kap, rho_of, mouth_of, cphi_of = {}, {}, {}, {}
-    for idx in range((K - 1) * NT):
-        kap[idx] = float(idx // NT); rho_of[idx] = 9.0; mouth_of[idx] = False; cphi_of[idx] = 0.0
-    removed = set(); kept = []; new_polys = []
+    K = shell.P.shape[0]; NI = NT // 2; grid = shell.P; bv = shell.bv
+    V = [tuple(p) for p in grid[:-1].reshape(-1, 3)] + [tuple(grid[-1, 0])]
+    co = len(V) - 1                                                     # outer centre
+    val = {idx: float(bv[idx // NT, idx % NT]) for idx in range(co)}; val[co] = float(bv[-1].mean())
+    info = {}
+    off = len(V)
+    ks = list(range(0, K - 1, 2))
+    if ks[-1] != K - 2:
+        ks.append(K - 2)
+    for k in ks:
+        V += [tuple(p) for p in Pi[k, ::2]]
+    V.append(tuple(Pi[-1, 0])); ci = len(V) - 1
+    o = lambda k, i: k * NT + (i % NT)
+    q_ = lambda j, i: off + j * NI + (i % NI)
+    outer = [(o(k, i), o(k, i + 1), o(k + 1, i + 1), o(k + 1, i)) for k in range(K - 2) for i in range(NT)]
+    nq = len(outer)
+    outer += [(o(K - 2, i), o(K - 2, i + 1), co) for i in range(NT)]
+    bvh = BVHTree.FromPolygons([tuple(x) for x in V[:co]], outer[:nq])
+    removed = set(); kept = []; patch = []; lips = set()
     for q in pk:
-        D, Av, kind, p, Rq, ax, asp, up = q
+        D, Av, kind, p, Rq, ax, asp, up, sh = q
         Au = Av * asp; side = np.cross(ax, up)
-        ks, is_ = np.unravel_index(np.argmin(np.linalg.norm(grid[:K - 2] - p, axis=-1)), grid[:K - 2].shape[:2])
+        ks_, is_ = np.unravel_index(np.argmin(np.linalg.norm(grid[:K - 2] - p, axis=-1)), grid[:K - 2].shape[:2])
         cand = set()
-        for k in range(max(0, ks - 16), min(K - 4, ks + 16)):
-            for di in range(-10, 11):
+        for k in range(max(0, ks_ - 18), min(K - 4, ks_ + 18)):
+            for di in range(-12, 13):
                 i = (is_ + di) % NT
                 vs = [grid[k, i], grid[k, (i + 1) % NT], grid[k + 1, (i + 1) % NT], grid[k + 1, i]]
-                e = min(math.hypot(float((x - p) @ up) / Au, float((x - p) @ side) / Av) for x in vs)
-                if e < PK_RINGS[0][0] + .06 and all(abs(float((x - p) @ ax)) < 1.0 for x in vs):
+                e = 9.0
+                for x in vs:
+                    uu, vv = float((x - p) @ up) / Au, float((x - p) @ side) / Av
+                    e = min(e, math.hypot(uu, vv) / mouth_scale(sh, math.atan2(vv, uu)))
+                if e < PK_RINGS[0][0] + .06 and all(abs(float((x - p) @ ax)) < 1.2 for x in vs):
                     cand.add(k * NT + i)
         if not cand or cand & removed or any(f // NT == 0 for f in cand):
             continue
+        bad = True
         for _ in range(6):                                             # close pinches until the hole has one simple edge
-            nxt = {}; bad = set()
+            nxt = {}
             for f in cand:
-                fv = F[f]
+                fv = outer[f]
                 for a_, b_ in zip(fv, fv[1:] + fv[:1]):
                     nxt.setdefault(a_, []).append(b_)
             twin = {(a_, b_) for a_, bs in nxt.items() for b_ in bs}
@@ -2260,48 +2362,52 @@ def seat_pockets(shell, V, F, M, pk):
             for a_ in bad:
                 k0, i0 = divmod(a_, NT)
                 for dk_, di_ in ((0, 0), (-1, 0), (0, -1), (-1, -1)):
-                    f = (k0 + dk_) * NT + (i0 + di_) % NT
                     if 0 < k0 + dk_ < K - 4:
-                        cand.add(f)
-        if bad:
+                        cand.add((k0 + dk_) * NT + (i0 + di_) % NT)
+        if bad or cand & removed:
             continue
         start = next(iter(bnd)); loop = [start]
         while True:
             nx = bnd[loop[-1]][0]
-            if nx == start:
+            if nx == start or len(loop) > len(bnd):
                 break
             loop.append(nx)
-            if len(loop) > len(bnd):
-                break
-        if len(loop) != len(bnd) or cand & removed:
+        if len(loop) != len(bnd):
             continue
-        outer, polys = pocket_patch(q, grid, bvh, V, kap, rho_of, mouth_of, cphi_of)
+        ring0, polys, lip = pocket_patch(q, grid, bv, bvh, V, val, info)
         ang = lambda x: math.atan2(float((np.array(x) - p) @ side) / Av, float((np.array(x) - p) @ up) / Au)
         la = [ang(V[i]) for i in loop]
         if sum(((b_ - a_ + math.pi) % (2 * math.pi) - math.pi) for a_, b_ in zip(la, la[1:] + la[:1])) < 0:
             loop = loop[::-1]; la = la[::-1]
-        polys += zip_loops(outer, [2 * math.pi * m / PK_N for m in range(PK_N)], loop, la)
-        removed |= cand; kept.append(q); new_polys += [(pl, q) for pl in polys]
-    # split along the band lines (kappa = line), sharing the new vertices between neighbours
+        polys += [(t_, -1) for t_ in zip_loops(ring0, [2 * math.pi * m / PK_N for m in range(PK_N)], loop, la)]
+        removed |= cand; kept.append(q)
+        rim = band_index(val[lip])
+        patch += [(pl, tag, rim) for pl, tag in polys]
+    # every outer polygon: cut along the band iso-lines (sharing the new vertices between neighbours)
+    work = [(pl, -1, None) for f, pl in enumerate(outer) if f not in removed] + patch
     cache = {}
 
     def cut(a_, b_, L):
         key = (min(a_, b_), max(a_, b_), L)
         if key not in cache:
-            ka, kb = kap[a_], kap[b_]; t = (L - ka) / (kb - ka)
+            t = (L - val[a_]) / (val[b_] - val[a_])
             x = np.array(V[a_]) * (1 - t) + np.array(V[b_]) * t
             V.append(tuple(float(c_) for c_ in x)); n_ = len(V) - 1
-            kap[n_] = L; rho_of[n_] = rho_of[a_] * (1 - t) + rho_of[b_] * t; mouth_of[n_] = mouth_of[a_] and mouth_of[b_]
-            cphi_of[n_] = cphi_of[a_] * (1 - t) + cphi_of[b_] * t
+            val[n_] = L
+            ia, ib = info.get(a_, (9.0, False)), info.get(b_, (9.0, False))
+            info[n_] = (ia[0] * (1 - t) + ib[0] * t, ia[1] and ib[1])
             cache[key] = n_
         return cache[key]
-    eps = 1e-7; out_polys = []
-    for pl, q in new_polys:
+    eps = 1e-7; F, M = [], []
+    for pl, tag, rim in work:
         pieces = [list(pl)]
-        for L in lines:
+        vs = [val[v_] for v_ in pl]; lo_, hi_ = min(vs), max(vs)
+        for L in BANDS:
+            if not (lo_ < L < hi_):
+                continue
             nxt_ = []
             for pc in pieces:
-                ds = [kap[v_] - L for v_ in pc]
+                ds = [val[v_] - L for v_ in pc]
                 if min(ds) >= -eps or max(ds) <= eps:
                     nxt_.append(pc); continue
                 hi, lo = [], []
@@ -2315,56 +2421,20 @@ def seat_pockets(shell, V, F, M, pk):
                         c_ = cut(a_, b_, L); hi.append(c_); lo.append(c_)
                 nxt_ += [x for x in (hi, lo) if len(x) >= 3]
             pieces = nxt_
-        out_polys += [(tuple(pc), q) for pc in pieces]
-    ax_of = {}
-    F[:] = [f for j_, f in enumerate(F) if j_ not in removed]
-    M[:] = [mm for j_, mm in enumerate(M) if j_ not in removed]
-    mouth_edges = set()
-    for pc, q in out_polys:
-        km = sum(kap[v_] for v_ in pc) / len(pc)
-        role = rowband[min(max(int(km), 0), K - 3)]
-        rm = sum(min(rho_of[v_], 9.0) for v_ in pc) / len(pc)
-        sh = cup_shade(rm, sum(cphi_of[v_] for v_ in pc) / len(pc)) if PK_SHADE_ON else ''
-        F.append(pc); M.append((role, sh))
-        for a_, b_ in zip(pc, pc[1:] + pc[:1]):
-            if mouth_of[a_] and mouth_of[b_]:
-                mouth_edges.add(frozenset((a_, b_)))
-    return kept, mouth_edges, len(removed)
-
-
-def shell_mesh(shell, Pi, pk):
-    """One closed solid: the outer skin (contour-band materials) with each pocket seated as its own polar patch, the inner
-    skin at half resolution (every other ring and segment) and the base annulus stitching the two. Returns the shell
-    and the pockets kept."""
-    K = shell.P.shape[0]; NI = NT // 2
-    V = [tuple(p) for p in shell.P[:-1].reshape(-1, 3)] + [tuple(shell.P[-1, 0])]
-    co = len(V) - 1                                                     # outer centre
-    off = len(V)
-    ks = list(range(0, K - 1, 2))
-    if ks[-1] != K - 2:
-        ks.append(K - 2)
-    for k in ks:
-        V += [tuple(p) for p in Pi[k, ::2]]
-    V.append(tuple(Pi[-1, 0])); ci = len(V) - 1
-    F, M, flat = [], [], []
-    o = lambda k, i: k * NT + (i % NT)
-    q = lambda j, i: off + j * NI + (i % NI)
-    for k in range(K - 2):
-        role = band(.5 * (shell.zprof[k] + shell.zprof[k + 1]))
-        for i in range(NT):
-            F.append((o(k, i), o(k, i + 1), o(k + 1, i + 1), o(k + 1, i))); M.append((role, ''))
-    role = band(shell.zprof[K - 2])
-    for i in range(NT):
-        F.append((o(K - 2, i), o(K - 2, i + 1), co)); M.append((role, ''))
+        for pc in pieces:
+            if tag >= 0:                                               # inside a cup: its rim band, graded by ring
+                F.append(tuple(pc)); M.append((rim, PK_SHADE[min(tag, len(PK_SHADE) - 1)]))
+            else:
+                F.append(tuple(pc)); M.append((band_index(sum(val[v_] for v_ in pc) / len(pc)), ''))
     for j in range(len(ks) - 1):
         for i in range(NI):
-            F.append((q(j, i + 1), q(j, i), q(j + 1, i), q(j + 1, i + 1))); M.append((INNER, ''))
+            F.append((q_(j, i + 1), q_(j, i), q_(j + 1, i), q_(j + 1, i + 1))); M.append((INNER, ''))
+    flat = set()
     for i in range(NI):
-        F.append((q(len(ks) - 1, i + 1), q(len(ks) - 1, i), ci)); M.append((INNER, ''))
-        for tri in ((o(0, 2 * i), o(0, 2 * i + 1), q(0, i)), (o(0, 2 * i + 1), o(0, 2 * i + 2), q(0, i + 1)),
-                    (o(0, 2 * i + 1), q(0, i + 1), q(0, i))):
-            flat.append(tri); F.append(tri); M.append((0, ''))
-    kept, mouth_edges, nrem = seat_pockets(shell, V, F, M, pk)
+        F.append((q_(len(ks) - 1, i + 1), q_(len(ks) - 1, i), ci)); M.append((INNER, ''))
+        for tri in ((o(0, 2 * i), o(0, 2 * i + 1), q_(0, i)), (o(0, 2 * i + 1), o(0, 2 * i + 2), q_(0, i + 1)),
+                    (o(0, 2 * i + 1), q_(0, i + 1), q_(0, i))):
+            flat.add(tri); F.append(tri); M.append((0, ''))
     obj = C.mesh('Reef shell', V, F, 'reef1', 'shell')
     names = [ROLES[0]]
     for role in ROLES[1:] + ('reef_inner',):
@@ -2372,13 +2442,13 @@ def shell_mesh(shell, Pi, pk):
     for role in ROLES:
         for s_, f_ in SHADES:
             obj.data.materials.append(C.MATS[role + s_]); names.append(role + s_)
-    fl = set(flat)
-    for p, (m, sh) in zip(obj.data.polygons, M):
-        nm = names[m] + sh
-        p.material_index = names.index(nm); p.use_smooth = tuple(F[p.index]) not in fl   # the buried base annulus is flat
+    for p, (m, sh_) in zip(obj.data.polygons, M):
+        p.material_index = names.index(names[m] + sh_); p.use_smooth = tuple(F[p.index]) not in flat   # the base annulus is flat
+    lipset = {i for i, (r_, lp) in info.items() if lp}
     for e in obj.data.edges:
-        if frozenset(e.vertices) in mouth_edges:
-            e.use_edge_sharp = True                                    # the crisp lip of each cup
+        a_, b_ = e.vertices
+        if a_ in lipset and b_ in lipset:
+            e.use_edge_sharp = True                                    # the crisp upper lip of each cup
     bm = C.bmesh.new(); bm.from_mesh(obj.data)
     C.bmesh.ops.delete(bm, geom=[v for v in bm.verts if not v.link_faces], context='VERTS')
     bm.to_mesh(obj.data); bm.free(); obj.data.update()
@@ -2387,17 +2457,18 @@ def shell_mesh(shell, Pi, pk):
     return obj, kept
 
 
-SHADES = (('a', .76), ('b', .68), ('c', .62), ('d', .56), ('e', .51), ('f', .47), ('g', .43))   # graded shades of each band inside a pocket cup
+SHADES = tuple(zip('abcdefghijkl', [round(.92 ** (k + 1), 3) for k in range(12)]))   # graded shades of each band in a cup
 for _r in [r for r in PALETTE if r.startswith('reef') and r[4:].isdigit()]:
     for _s, _f in SHADES:
         PALETTE[_r + _s] = tuple(round(v * _f, 4) for v in PALETTE[_r])
 
 
 def soft_pairs(obj):
-    """Material index pairs within one band (the band and its graded cup shades) whose shared edges stay smooth."""
+    """Material index pairs on the shell skin (bands and their cup shades) whose shared edges stay smooth: the colour
+    changes, the surface does not."""
     names = [m.name for m in obj.data.materials]
-    base = [nm[:-1] if nm[-1] in 'ABCDEFG' and nm[:-1] in names else nm for nm in names]
-    return {frozenset((i, j)) for i in range(len(names)) for j in range(len(names)) if i != j and base[i] == base[j]}
+    sk = [i for i, nm in enumerate(names) if nm.startswith('CLAY_REEF') and 'INNER' not in nm]
+    return {frozenset((i, j)) for i in sk for j in sk if i != j}
 
 
 def entry_frame(th):
@@ -2407,10 +2478,17 @@ def entry_frame(th):
     return rho, e, t
 
 
+def arch_head(w, h, grow, n):
+    r = w / 2 + grow; b = ARCH_HB + grow; zs = h - ARCH_HB
+    return r, [(r * math.cos(math.pi * j / n) + ARCH_SKEW * b * math.sin(math.pi * j / n), zs + b * math.sin(math.pi * j / n))
+               for j in range(n + 1)]
+
+
 def arch_poly(w, h, grow=0.0, z0=0.0, n=16):
-    """Arched opening outline (closed): right jamb foot, up and over the semicircular head, down to the left jamb foot."""
-    r = w / 2 + grow; zs = h - w / 2
-    return [(r, z0)] + [(r * math.cos(math.pi * j / n), zs + r * math.sin(math.pi * j / n)) for j in range(n + 1)] + [(-r, z0)]
+    """Arched opening outline (closed): right jamb foot, up and over the flattened, slightly leaning head, down to the
+    left jamb foot (wider than tall, cave-like)."""
+    r, head = arch_head(w, h, grow, n)
+    return [(r, z0)] + head + [(-r, z0)]
 
 
 def prism_local(name, O, e, t, poly, d0, d1, role, module):
@@ -2463,7 +2541,7 @@ def cut_openings(obj):
     for th in ENTRY_TH:
         rho, e, t = entry_frame(th)
         O = e * rho * 1.03
-        cutters.append(prism_local('Entrance cutter', O, e, t, arch_poly(EW, EH, z0=-.12, n=48), -.55, 1.75, 'reef1', 'construction cutter'))
+        cutters.append(prism_local('Entrance cutter', O, e, t, arch_poly(EW, EH, z0=-.12, n=48), -1.6, 1.75, 'reef1', 'construction cutter'))
     for c in cutters:
         for p in c.data.polygons:
             p.use_smooth = False
@@ -2510,7 +2588,7 @@ def tint_glazing():
 def dome_glazing():
     """The skylight domes are thick acrylic: mostly reflective with some transmission (the sources show silver bubbles)."""
     bs = C.MATS['dome'].node_tree.nodes.get('Principled BSDF')
-    bs.inputs['Roughness'].default_value = .16; bs.inputs['Transmission Weight'].default_value = .35; bs.inputs['IOR'].default_value = 1.49
+    bs.inputs['Roughness'].default_value = .08; bs.inputs['Transmission Weight'].default_value = .60; bs.inputs['IOR'].default_value = 1.49
 
 
 def skylights():
@@ -2545,9 +2623,9 @@ def skylights():
 
 
 def arch_line(w, h, grow=0.0, z0=0.0, n=48):
-    """Open arch line: right jamb foot, up and over the semicircular head, down to the left jamb foot."""
-    r = w / 2 + grow; zs = h - w / 2
-    return [(r, z0)] + [(r * math.cos(math.pi * j / n), zs + r * math.sin(math.pi * j / n)) for j in range(n + 1)] + [(-r, z0)]
+    """Open arch line: right jamb foot, up and over the head, down to the left jamb foot."""
+    r, head = arch_head(w, h, grow, n)
+    return [(r, z0)] + head + [(-r, z0)]
 
 
 def entrances(obj):
@@ -2562,12 +2640,12 @@ def entrances(obj):
     for j, th in enumerate(ENTRY_TH):
         rho, e, t = entry_frame(th)
         O = e * rho * 1.03
-        outer = arch_line(EW, EH, grow=.04); inner = arch_line(EW, EH, grow=-.18)
+        outer = arch_line(EW, EH, grow=.04); inner = arch_line(EW, EH, grow=-.04)   # a thin lining: no collar step
         depth = []
         for u, z in outer:
-            start = O + t * u + np.array([0, 0, max(z, .05)]) + e * 1.5
-            hit = bvh.ray_cast(Vector(start), Vector(-e), 4.0)
-            depth.append(hit[3] - 1.5 if hit[0] is not None else None)
+            start = O + t * u + np.array([0, 0, max(z, .05)]) + e * 3.0
+            hit = bvh.ray_cast(Vector(start), Vector(-e), 6.0)
+            depth.append(hit[3] - 3.0 if hit[0] is not None else None)
         known = [d for d in depth if d is not None]
         depth = [d if d is not None else min(known) for d in depth]
         depth = [float(np.mean(depth[max(0, i - 4):i + 5])) for i in range(len(depth))]   # one smooth hood line, no kink
@@ -2604,16 +2682,19 @@ def entrances(obj):
 
 
 def holds(shell, Pi, dent_list):
-    """Multicoloured climbing holds: small rounded six-sided nubs seated 4 cm into the skin, scattered uniformly by
-    area over the walls (outside) and the lower inner skin (inside), clear of the pocket hollows and entrances."""
-    rnd = random.Random(11); roles = ('hold_r', 'hold_y', 'hold_b', 'hold_p', 'hold_o', 'hold_g', 'hold_k', 'hold_n', 'hold_k', 'hold_n')
+    """Multicoloured climbing holds: rounded six-sided nubs seated 4 cm into the skin, mostly strung along vertical route
+    lines (seven per lobe) with a few between, in purple, yellow, orange, blue and white (black rare), plus a large pale
+    volume beside each entrance; the inside wall carries its own scatter. All clear of the pocket cups and entrances."""
+    rnd = random.Random(11)
+    roles = ('hold_p', 'hold_p', 'hold_y', 'hold_y', 'hold_o', 'hold_o', 'hold_b', 'hold_b', 'hold_w', 'hold_w', 'hold_r', 'hold_g',
+             'hold_n', 'hold_p', 'hold_y', 'hold_o', 'hold_b', 'hold_w', 'hold_k')
     G_ = {r: ([], []) for r in roles}
 
     holes = [(q[3], q[4] * 1.05 + .08) for q in dent_list]            # holds stay off the pocket cups and rims
 
     placed = {}
 
-    def add(p, n, sz, role):
+    def add(p, n, sz, role, hh=None):
         n = n / (np.linalg.norm(n) or 1); a = np.cross(n, [0, 0, 1.0])
         if np.linalg.norm(a) < 1e-6:
             a = np.array([1.0, 0, 0])
@@ -2628,7 +2709,7 @@ def holds(shell, Pi, dent_list):
             for dy_ in (-1, 0, 1):
                 for dz_ in (-1, 0, 1):
                     placed.setdefault((key[0] + dx_, key[1] + dy_, key[2] + dz_), []).append((np.array(p), sz))
-        V, F = G_[role]; o = len(V); h = rnd.uniform(.04, .07); sx = sz * rnd.uniform(.7, 1.2)
+        V, F = G_[role]; o = len(V); h = hh or rnd.uniform(.05, .10); sx = sz * rnd.uniform(.7, 1.2)
         for d, f in ((-.04, 1.0), (h, .55)):
             for m in range(6):
                 ang6 = m * math.pi / 3
@@ -2643,11 +2724,11 @@ def holds(shell, Pi, dent_list):
     rad = np.hypot(P[1:-2, :, 0], P[1:-2, :, 1]).mean(1)
     ks = list(range(1, K - 2)); wk = list(step * rad)                       # area weight of each ring band
     routes = []; tries = 0                                              # loose vertical routes from the base up the walls
-    while len(routes) < 14 and tries < 5000:
+    while len(routes) < 28 and tries < 5000:
         tries += 1; th = rnd.uniform(0, 2 * math.pi)
         if any(abs((th - e + math.pi) % (2 * math.pi) - math.pi) < .30 for e in ENTRY_TH):
             continue
-        if any(abs((th - r_ + math.pi) % (2 * math.pi) - math.pi) < .07 for r_ in routes):
+        if any(abs((th - r_ + math.pi) % (2 * math.pi) - math.pi) < .12 for r_ in routes):
             continue
         routes.append(th)
     for th in routes:
@@ -2658,8 +2739,15 @@ def holds(shell, Pi, dent_list):
             k, i = shell.grid_index(th + rnd.uniform(-.3, .3) / max(5.0, shell.r.mean()), z)
             if any(np.linalg.norm(P[k, i] - c) < r for c, r in holes):
                 continue
-            add(P[k, i], N[k, i], rnd.uniform(.04, .09), roles[rnd.randrange(len(roles))]); n_out += 1
-    while n_out < 440:
+            add(P[k, i], N[k, i], rnd.uniform(.06, .13), roles[rnd.randrange(len(roles))]); n_out += 1
+    for th0 in ENTRY_TH:                                                # a large pale volume beside each entrance
+        rho, e, t = entry_frame(th0)
+        side_ = 1 if rnd.random() < .5 else -1
+        for _ in range(40):
+            k, i = shell.grid_index(th0 + side_ * (EW / 2 + rnd.uniform(1.1, 1.6)) / rho, rnd.uniform(1.4, 2.0))
+            if not any(np.linalg.norm(P[k, i] - c) < r for c, r in holes):
+                add(P[k, i], N[k, i], rnd.uniform(.28, .36), 'hold_n', hh=.16); break
+    while n_out < 400:
         k = rnd.choices(ks, wk)[0]; i = rnd.randrange(NT)
         z = P[k, i, 2]
         if not (.3 < z < 5.3):
@@ -2669,7 +2757,7 @@ def holds(shell, Pi, dent_list):
             continue
         if any(np.linalg.norm(P[k, i] - c) < r for c, r in holes):
             continue
-        add(P[k, i], N[k, i], rnd.uniform(.04, .09), roles[rnd.randrange(len(roles))]); n_out += 1
+        add(P[k, i], N[k, i], rnd.uniform(.06, .12), roles[rnd.randrange(len(roles))]); n_out += 1
     n_in = 0
     while n_in < 120:
         k = rnd.choices(ks, wk)[0]; i = rnd.randrange(NT)
@@ -2967,4 +3055,4 @@ def build():
 
 
 # The rig v002-v005 used (the v006 raking rig greyed the roof and darkened the walls).
-LIGHT_RIG = dict(key=(-40, -50, 48), fill=(50, -25, 30), rear=(10, 55, 42), target=(0, 0, 3.0), gain=3.3)
+LIGHT_RIG = dict(key=(-40, -50, 48), fill=(50, -25, 30), rear=(10, 55, 42), target=(0, 0, 3.0), gain=4.0)
