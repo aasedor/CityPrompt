@@ -2387,7 +2387,7 @@ def shell_mesh(shell, Pi, pk):
     return obj, kept
 
 
-SHADES = (('a', .80), ('b', .72), ('c', .65), ('d', .59), ('e', .54), ('f', .49), ('g', .45))   # graded shades of each band inside a pocket cup
+SHADES = (('a', .76), ('b', .68), ('c', .62), ('d', .56), ('e', .51), ('f', .47), ('g', .43))   # graded shades of each band inside a pocket cup
 for _r in [r for r in PALETTE if r.startswith('reef') and r[4:].isdigit()]:
     for _s, _f in SHADES:
         PALETTE[_r + _s] = tuple(round(v * _f, 4) for v in PALETTE[_r])
@@ -2599,7 +2599,7 @@ def entrances(obj):
             mg.box('frame', s * .85, dglass - .02, .10 + .95, .05, .04, 1.9)            # door jambs
             mg.box('hardware', s * .1, dglass - .045, 1.15, .025, .03, .6)              # pull handles
         d0 = min(depth) - .25                                   # the floor runs out over the apron: no gap at the mouth
-        mg.box('apron', 0.0, (d0 + dback) / 2, .030, 2 * (EW / 2 - .18) + .1, dback - d0, .060)     # tunnel floor, flush with the apron
+        mg.box('apron', 0.0, (d0 + dback) / 2, .02925, 2 * (EW / 2 - .18) + .1, dback - d0, .0585)   # tunnel floor, 1.5 mm under the apron (no coplanar faces)
         mg.flush(f'entrance {j}')
 
 
