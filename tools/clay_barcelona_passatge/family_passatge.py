@@ -638,7 +638,7 @@ def shopfront(m, f, name, uc, w, sign=True):
         m.box('shopframe', uc + s * (w - .3) / 3, .102, FZ + .36, (w - .5) / 3, .02, .36)
     m.box('hardware', uc + w / 6 - .12, .15, FZ + 1.1, .04, .04, .3)        # door pull on the middle light
     if sign:
-        m.box('sign', uc, -.06, FZ + SHOP + .45, w + .2, .08, .56)
+        m.box('sign', uc, -.06, FZ + SHOP + .45, w + .04, .08, .56)
         m.box('gold', uc, -.104, FZ + SHOP + .45, w * .62, .012, .15)       # the sign top meets the entablature frieze
 
 
@@ -667,7 +667,7 @@ def passage_facade(f, side):
     holes, specs = [], []
     for i, (u0, u1) in enumerate(BAYS):
         uc = (u0 + u1) / 2 + (-.025 if i == 0 else 0.0)
-        ws = 2.0 if i == 0 else 2.6
+        ws = 2.4 if i == 0 else 2.9                                      # shopfronts fill the bay between the pilasters
         holes.append(hole(f'{f.label} shop {i}', uc, FZ, ws, SHOP))
         holes.append(hole(f'{f.label} arch {i}', uc, RZ, AW0 if i == 0 else AW, RCROWN - RZ))
         specs.append((i, u0, u1, uc, ws))
@@ -678,7 +678,10 @@ def passage_facade(f, side):
         shopfront(m, f, f'{f.label} shop {i}', uc, ws)
         bay_arch(m, b, f, f'{f.label} bay {i}', uc, AW0 if i == 0 else AW)
     for u in RIBS + [L - .3]:                                               # stone pilasters, ground to cornice
-        m.box('stone', u, -.06, (EAVE - .62) / 2, .8 if u < L - 1 else .6, .12, EAVE - .62)
+        pw_ = .8 if u < L - 1 else .6
+        m.box('stone', u, -.06, (F1 - .06) / 2, pw_, .12, F1 - .06)         # paneled stone pilaster, stopping under the entablature corona
+        m.box('stone', u, -.125, (.8 + F1 - .6) / 2, pw_ - .3, .01, F1 - .6 - .8)  # raised panel
+        m.box('brick', u, -.03, (F1 + EAVE - .62) / 2, pw_ - .1, .06, EAVE - .62 - F1)   # brick pier through the arch tier
         if u < L - 1:
             for zc, w, d, h in ((CORBEL - .06, .7, .56, .12), (CORBEL - .3, .52, .48, .36), (CORBEL - .58, .42, .36, .2), (CORBEL - .76, .3, .24, .16)):
                 m.box('stone', u, -d / 2, zc, w, d, h)                       # moulded corbel: abacus, block, scroll, drop
@@ -893,7 +896,7 @@ def north_end_wall():
     spandrels(FN, 'portal', PU, zs, r, ENDT, 'brick', n=18)
     m = Merge(FN); b = Batch()
     archivolt(FN, 'portal passage', PU, zs, r, width=.45, n=18)
-    m.box('stone', PU, -.06, zs + r + .32, .55, .14, .64)
+    m.box('stone', PU, -.07, zs + r + .5, .7, .16, 1.0)                     # carved keystone rising towards the cornice
     for s in (-1, 1):                                                       # stone piers on bases, medallions
         m.box('stone', PU + s * (r + .5), -.04, (zs - .18) / 2, 1.0, .08, zs - .18)
         m.box('stone', PU + s * (r + .5), -.08, .3, 1.16, .16, .6)
@@ -935,6 +938,8 @@ def north_end_wall():
         x, z = poly[k]
         b.beam('iron', (0.0, L - .06, EAVE + .2), (x, L - .06, z - .04), .05, .05)
     b.beam('iron', (-VX + .3, L - .06, EAVE + .2), (VX - .3, L - .06, EAVE + .2), .08, .08)
+    for (x0, z0), (x1, z1) in zip(poly, poly[1:]):                          # dark iron end frame on the outer face
+        b.beam('iron', (x0, L + .04, z0 - .03), (x1, L + .04, z1 - .03), .08, .1, ext=.01)
     b.flush('north lunette bars')
 
 
@@ -1239,6 +1244,7 @@ def ground():
     border(b, -HW + .25, HW - .25, .1, L - .1, FZ + .003, .2, 'tile2')
     diamond_bands(b, XQ + .5, XE - .5, YSQ + .5, -.5, FZ + .003, 1.6, .14, 'tile2')
     border(b, XQ + .2, XE - .2, YSQ + .2, -.2, FZ + .003, .28, 'tile2')
+    diamond_bands(b, XQ + .5, XE - .5, YSQ + .5, -.5, FZ + .008, 6.4, .3, 'tile2')   # coarse dark diamonds over the fine lattice
     b.flush('floor patterns')
 
 
@@ -1280,7 +1286,7 @@ def furniture():
             b.box('iron', x + s * .45, y, FZ + 3.76, .26, .26, .06)
     b.flush('furniture')
     for f, k in ((FE, 5), (FE, 6), (FW, 4)):                                # clipped to the shop openings
-        awning(f, BAY * (k + .5) - 1.3, BAY * (k + .5) + 1.3)
+        awning(f, BAY * (k + .5) - 1.45, BAY * (k + .5) + 1.45)
 
 
 def car(b, x, y, ux, uy, role):
