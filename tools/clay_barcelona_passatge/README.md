@@ -69,11 +69,8 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v004
+## Open blockers after v005
 
-Candidate: `clay-barcelona-passatge-clay-v002.glb`. The v004 independent review (`evidence/v004/independent-review.md`) left these P0/P1 findings open:
+Candidate: `clay-barcelona-passatge-clay-v005.glb`. The v005 independent review (`evidence/v005/independent-review.md`) left these P0/P1 findings open:
 
-- **P1** (front, interior, south_portal, left_side, right_side, top, facade_close vs source front, oblique, top): Wrong bay rhythm. The vault has 6 crested main ribs and bays along its length (right_side crop: ribs at about x=25, 195, 330, 465, 600, 735, then the north end; top shows the same spacing of about 115 px). The locked top has 8 bays: crested ribs at about y=50, 165, 300, 435, 580, 735, 900, 1065, 1250 in a 2x crop.... Likely fix: Rebuild the facade, rib and corbel module at 8 bays over the 30 m passage (about 3.75 m centres). Narrow each recessed arch to about 2.7 m (keep the 0.6 m reveals). Keep crown, springing, entablature and cornice...
-- **P1** (front (end wall), shopfronts, floor_tiles, south_portal (far end) vs source front): Wrong material on the lower stage of the north end wall. Below the continuous stone impost band, the flanks on both sides of the portal piers are brick panels with coursing lines (front crop x=60-180 and 815-940 at 2x; shopfronts x=90-210). In the locked front, everything below the impost band is cream stone... Likely fix: Give the end-wall flanks from floor level up to the underside of the impost band the stone material, with faint ashlar joints at most. Keep brick above the band. Frame the west side doorway in the same stone....
-
-The candidate v002's own open findings are in `evidence/v002/independent-review.md`.
+- **P1** (facade_close, architecture_close, front, interior, south_portal, glass_close): Between the arches, the cream stone pilasters run unbroken from the floor through the arch tier to the modillion cornice. The stepped rib corbels sit on cream stone at mid-arch height, so the upper tier reads as alternating cream and brick bands. In the locked front (right facade around the CAFE DEL PASSATGE bay,... Likely fix: Stop the stone pilasters (with a small capital or console) at the top of the shop entablature or balcony belt. Change the arch-tier pier faces between the arches to the facade brick colour, leaving the stepped arch...
