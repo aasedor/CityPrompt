@@ -28,30 +28,61 @@ open findings of its latest review.
 
 ## Results
 
-None of the five reached PASS_ZERO_P0_P1. All five stopped under the stopping rule with no P0 open; the best
-candidates have one or two P1 findings.
+In the first pass none of the five reached PASS_ZERO_P0_P1; all five stopped under the stopping rule. The user
+then reopened all five ("Can you keep trying until it passes?"), suspending the stopping rule but keeping the
+method's v008 cap. In that second pass three families passed and two reached the v008 cap without a pass.
 
 | model | catalogue archetype | family | outcome | candidate | GLB bytes | candidate review P0 / P1 |
 |---|---|---|---|---|---|---|
-| The Reef | climbing_wall_building / variant_3 | `tools/clay_climbing_reef` | stopped: the climbing-pocket finding survived two fixes | v002 | 3,337,072 | 0 / 1 |
-| The Crucible | climbing_wall_building / variant_0 | `tools/clay_climbing_crucible` | stopped: the east curtain-wall finding recurred after two fixes | v003 | 3,294,576 | 0 / 2 |
-| The Overhang | climbing_wall_building / variant_1 | `tools/clay_climbing_overhang` | stopped: v003 and v004 did not lower v002's count | v002 | 2,951,656 | 0 / 2 |
-| Barcelona passatge | barcelona_passatge / variant_0 | `tools/clay_barcelona_passatge` | stopped: the upper-bay finding survived two fixes | v002 | 3,593,652 | 0 / 2 |
-| The Spine | climbing_wall_building / variant_2 | `tools/clay_climbing_spine` | stopped: v002 and v003 did not lower v001's count | v001 | 3,319,248 | 0 / 4 |
+| The Crucible | climbing_wall_building / variant_0 | `tools/clay_climbing_crucible` | **PASS_ZERO_P0_P1** at v004 | v004 | 3,247,880 | 0 / 0 |
+| Barcelona passatge | barcelona_passatge / variant_0 | `tools/clay_barcelona_passatge` | **PASS_ZERO_P0_P1** at v006 | v006 | 3,884,140 | 0 / 0 |
+| The Overhang | climbing_wall_building / variant_1 | `tools/clay_climbing_overhang` | **PASS_ZERO_P0_P1** at v007 | v007 | 3,498,636 | 0 / 0 |
+| The Reef | climbing_wall_building / variant_3 | `tools/clay_climbing_reef` | reached the v008 cap without a pass | v002 | 3,337,072 | 0 / 1 |
+| The Spine | climbing_wall_building / variant_2 | `tools/clay_climbing_spine` | reached the v008 cap without a pass | v007 | 3,328,180 | 0 / 2 |
 
 Every candidate GLB is the only tracked file in its `candidates/` folder and is under the 4 MiB ordinary-blob cap.
 
 ### Trajectory (P0 / P1 per independent review)
 
-| model | v001 | v002 | v003 | v004 |
-|---|---|---|---|---|
-| The Reef | 0 / 6 | **0 / 1** | 0 / 2 (stopped) | |
-| The Crucible | 0 / 5 | 0 / 5 | **0 / 2** (stopped) | |
-| The Overhang | 0 / 5 | **0 / 2** | 0 / 2 | 1 / 1 (stopped) |
-| Barcelona passatge | 0 / 4 | **0 / 2** | 0 / 2 (stopped) | |
-| The Spine | **0 / 4** | 1 / 4 | 0 / 4 (stopped) | |
+v001 to v003/v004 are the first pass; later versions are the second pass after the user reopened the families.
 
-## What each family needed
+| model | v001 | v002 | v003 | v004 | v005 | v006 | v007 | v008 |
+|---|---|---|---|---|---|---|---|---|
+| The Crucible | 0 / 5 | 0 / 5 | 0 / 2 | **0 / 0** | | | | |
+| Barcelona passatge | 0 / 4 | 0 / 2 | 0 / 2 | 0 / 2 | 0 / 1 | **0 / 0** | | |
+| The Overhang | 0 / 5 | 0 / 2 | 0 / 2 | 1 / 1 | 2 / 3 | 0 / 5 | **0 / 0** | |
+| The Reef | 0 / 6 | **0 / 1** | 0 / 2 | 0 / 2 | 0 / 4 | 0 / 4 | 0 / 3 | 0 / 2 (cap) |
+| The Spine | 0 / 4 | 1 / 4 | 0 / 4 | 0 / 5 | 0 / 4 | 1 / 3 | **0 / 2** | 1 / 2 (cap) |
+
+## Second pass (reopened by the user)
+
+- **The Crucible passed at v004.** The builder measured the hold lanes and the east curtain wall from the locked
+  views (two dense hold lanes in amber, cream and pale grey; 21 slender columns in four tiers of tall panes).
+- **The passatge passed at v006.** The v003 failure traced to a wrong storey count in the review brief, which the
+  builder had followed. With the brief corrected and the bays counted from the locked top view (8 per side), v004
+  to v006 converged: one tall tier of recessed brick arches, a cream stone lower end wall, and brick arch-tier
+  piers above stone pilasters that stop at the shop entablature.
+- **The Overhang passed at v007.** Reviewers disagreed about the climbing shell's foot (a knife-edge point at
+  v004, about four times too wide at v005, a point again at v006). v007 settled it objectively: the shell was
+  segmented by colour in the locked front and oblique, and its vertices were fitted until the rendered shell mask
+  matched with IoU 0.92 and 0.88. The same round fixed the pool's infinity edge, the inner box and crash-mat floor,
+  the lamp posts and the planting.
+- **The Reef reached the cap at v008** with 0 P0 / 2 P1, which does not beat v002's 0 / 1, so v002 stays the
+  candidate. v008 is nevertheless the closest version visually: envelope, plan, domes, entrances, sculpted relief
+  and landscape match. Its two open findings are one narrow shading defect in the climbing pockets: about eight
+  stepped concentric shade rings inside each cup, and a pinched dark crease at each cup's apex where the mesh
+  closes as a triangle fan. Across the pass the pockets went through cut-outs, faint dents, overly crisp portholes
+  and finally opaque cups whose interior shading is stepped.
+- **The Spine reached the cap at v008** with 1 P0 / 2 P1; v007 (0 / 2: relief too shallow, balconies a storey too
+  low) stays the candidate. Reviewers disagreed repeatedly on the spine (pale crisp prism versus warm cleaved
+  stone; balconies a storey too high at v002, too low at v007). I arbitrated one of those readings myself at v005 and
+  changed the brief to say the wall east of the spine is dark glazing; the v008 reviewer reports a pale east-flank
+  wall with balcony doors there, so that arbitration may have been wrong and should be re-checked against the
+  locked front before any further work.
+
+## What each family needed in the first pass
+
+The section headings record the first-pass outcome; the second pass above supersedes them.
 
 ### The Reef: stopped, v002 is the candidate
 
@@ -116,6 +147,15 @@ Every candidate GLB is the only tracked file in its `candidates/` folder and is 
 
 ## What carried over
 
+- **Measure from the locked pixels, not from words.** Every second-pass pass came from a measured target: hold
+  lanes and curtain-wall columns counted in the sources, bays counted from rib lines in the top view, the shell
+  outline fitted by mask IoU. Fixes described only in words overshot or undershot.
+- **Reviewers vary; objective checks end disputes.** Independent reviewers read ambiguous AI source images
+  differently (the Overhang's foot, the Spine's stone, balcony heights). A numeric comparison against the locked
+  pixels (mask IoU, counts, luminance statistics) settled the Overhang where narrative arbitration did not.
+- **Check before spending a full build.** Several second-pass versions were sent back after a quick source-versus-
+  smoke comparison (Reef pockets too faint, Spine frame posts, Overhang pool and colour, Spine brightness), which
+  saved full builds and reviews.
 - **Sculpted and organic identity surfaces are the hardest.** Every family that stopped did so on a textured
   identity surface rather than on massing: the Reef's pockets, the Spine's carved rock, the Overhang's shell
   and holds, the passatge's arched bays, the Crucible's curtain-wall rhythm and holds. The massing, plans and
