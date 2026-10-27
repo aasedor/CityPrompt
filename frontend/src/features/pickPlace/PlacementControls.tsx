@@ -1,4 +1,5 @@
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
+import { hasFixedBuildingFootprint } from './buildingFootprintProgram';
 import { useCallback, useEffect, useId, useState } from 'react';
 import { placeAsset } from './catalogue';
 import type { PlacementDraft } from './GlobePlacementPreview';
@@ -14,7 +15,7 @@ export function PlacementControls({ draft, onChange, getPreviewDegrees }: {
   const [expanded,setExpanded] = useState(false);
   const generated=draft.generatedModel;
   const asset=generated?null:placeAsset(draft.assetId);
-  const fixed = isFixedNativeScene(asset?.properties);
+  const fixed = isFixedNativeScene(asset?.properties) || hasFixedBuildingFootprint(asset ?? undefined);
   const entrance=asset?reviewedEntranceForAsset(asset):null;
   const minWidth=asset?.minWidth??2, minDepth=asset?.minDepth??2;
   const maxWidth=asset?(asset.maxWidth??asset.maxSize):100;

@@ -1,4 +1,5 @@
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
+import { hasFixedBuildingFootprint } from '@/features/pickPlace/buildingFootprintProgram';
 /**
  * GlobeEditMode.tsx — Zone editing UI for the 3D globe.
  *
@@ -866,7 +867,7 @@ export function GlobeEditMode({
         </EastNorthUpFrame>
       )}
 
-      {!isFixedNativeScene(zone.properties) && handleCoords.map((coord, i) => (
+      {!isFixedNativeScene(zone.properties) && !hasFixedBuildingFootprint(assetForZone(zone)) && handleCoords.map((coord, i) => (
         <EastNorthUpFrame
           key={`edit-v-${i}`}
           lat={coord[1] * DEG_TO_RAD}

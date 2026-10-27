@@ -15,6 +15,24 @@ vi.mock('./publicRealmRelease', async () => {
 });
 afterEach(cleanup);
 
+it('keeps a brick podium tower footprint fixed while retaining its storey controls', () => {
+  const asset = placeAsset('claude_trial_brick_podium_condo_tower');
+  const zone = {id:'tower', zone_type:'building', properties:placementProperties(asset),
+    coordinates:rectangleAt([-114,51],asset.width + 0.04,asset.depth + 0.04)} as SiteZone;
+  const onReshape = vi.fn();
+  render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={onReshape}
+    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} onUpdateDesign={vi.fn()}/>);
+  expect(screen.getByLabelText('Plot width (m)')).toBeDisabled();
+  expect(screen.getByLabelText('Plot depth (m)')).toBeDisabled();
+  expect(screen.getByText(/footprint.*move and rotate/i)).toBeTruthy();
+  expect(screen.getByLabelText('Storeys')).toBeEnabled();
+  fireEvent.change(screen.getByLabelText('Rotation (degrees)'), {target:{value:'5'}});
+  fireEvent.click(screen.getByRole('button',{name:'Apply shape'}));
+  const actual = rectangleDimensions(onReshape.mock.calls[0][0]);
+  expect(actual.width).toBeCloseTo(57.04,5);
+  expect(actual.depth).toBeCloseTo(47.04,5);
+});
+
 it('keeps a flexible park recognisable without offering an incompatible fixed layout', () => {
   const asset = placeAsset('flexible_pocket_park_v1');
   // Shape-first drawing previously saved the programme without its picker ID.

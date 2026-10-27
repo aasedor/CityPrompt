@@ -28,6 +28,14 @@ function GeneratedHarness() {
 const current = () => JSON.parse(screen.getByTestId('draft').textContent!) as PlacementDraft;
 afterEach(()=>{cleanup();vi.unstubAllGlobals();});
 describe('pre-placement reshaping', () => {
+  it('withholds unavailable footprint resizing for a storey-editable brick tower', () => {
+    const tower=PLACE_ASSETS.find(candidate=>candidate.id==='claude_trial_brick_podium_condo_tower')!;
+    render(<PlacementControls draft={{assetId:tower.id,width:tower.width,depth:tower.depth,degrees:0}} onChange={vi.fn()}/>);
+    expect(screen.getByLabelText('Placement width')).toBeDisabled();
+    expect(screen.getByLabelText('Placement depth')).toBeDisabled();
+    expect(screen.getByLabelText('Placement degrees')).toBeEnabled();
+    expect(screen.getByRole('status')).toHaveTextContent(/fixed.*move.*rotate/i);
+  });
   it('describes fixed dimensions without promising an unavailable resize range', () => {
     const fixed = PLACE_ASSETS.find(candidate=>candidate.properties.validation_fixed_fixture===true)!;
     render(<PlacementControls draft={{assetId:fixed.id,width:fixed.width,depth:fixed.depth,degrees:0}} onChange={vi.fn()}/>);
