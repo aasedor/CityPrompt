@@ -47,7 +47,7 @@ SIDE = 4.5                                            # side sidewalks
 EPS = .002
 FLOORS = [BASE + FH * i for i in range(NF)]
 PALETTE = dict(glass=(.13, .10, .075), spandrel=(.10, .085, .07), bronze=(.50, .34, .17), frame=(.20, .16, .12),
-    rock=(.98, .77, .50), rock2=(.74, .56, .38), hold=(.46, .42, .38), hold2=(.58, .53, .47), concrete=(.82, .80, .78), coping=(.88, .87, .84),
+    rock=(.98, .77, .50), rock2=(.62, .46, .30), hold=(.46, .42, .38), hold2=(.58, .53, .47), concrete=(.82, .80, .78), coping=(.88, .87, .84),
     canopy=(.90, .89, .86), stone=(.70, .68, .64), copper=(.70, .32, .15), timber=(.62, .45, .28), hardware=(.18, .18, .19),
     steel=(.55, .55, .55), interior=(.80, .76, .68), floor=(.48, .43, .36), core=(.66, .64, .60), roof=(.86, .86, .84),
     membrane=(.80, .80, .78), metal=(.52, .53, .54), duct=(.60, .61, .62), granite=(.58, .55, .49), granite2=(.52, .49, .44), granite3=(.64, .61, .55),
@@ -2322,7 +2322,7 @@ def _rock_object(name, grid, F, roles, extra=()):
         dn = min((abs(cx - SPX[0]), (1, 0)), (abs(cx - SPX[1]), (1, 0)), (abs(cy - SPY0), (0, 1)), (abs(cy - SPY1), (0, 1)))[1]
         n = poly.normal
         c = abs(n[0] * dn[0] + n[1] * dn[1])
-        k = 2 if (c < .38 or n[2] < -.5) else 1 if c < .84 else 0
+        k = 2 if (c < .42 or n[2] < -.5) else 1 if c < .87 else 0
         poly.material_index = k; count[k] += 1
     return o, V, count
 
@@ -2421,7 +2421,7 @@ def spine():
     fgrid, fF = _lattice('foot', None, rnd, P, fcols, ffixed, {}, frows, foot_depth, off, lambda s, z: z * seam(s) / FOOT,
                          lambda i, j: exposed(fcols[j]) and exposed(fcols[(j + 1) % len(fcols)] if (j + 1) % len(fcols) else P),
                          {0, len(frows) - 1})
-    fo, fV, fcount = _rock_object('Climbing spine foot rock', fgrid, fF, ('footrock', 'footrock2', 'rockdeep'))
+    fo, fV, fcount = _rock_object('Climbing spine foot rock', fgrid, fF, ('footrock', 'footrock2', 'footrock2'))
     fout = max(max(SPX[0] - FOOT_OUT - x, x - SPX[1] - FOOT_OUT, SPY0 - FOOT_OUT - y) for x, y, z in fV)
     print('SPINE_ENVELOPE', json.dumps(dict(shaft_max_outside_m=round(out, 4), foot_max_outside_m=round(fout, 4),
                                             shaft_faces_lit_mid_deep=count, foot_faces_lit_mid_deep=fcount, fissures=len(fis_at),
