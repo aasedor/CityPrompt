@@ -1,7 +1,7 @@
 # Climbing wall building: The Spine (RLASM v6.1 architectural clay)
 
 Candidate K3 of wave K of 2026-10-23, one of five catalogue additions the user asked for
-(all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **stopped at v003 by the stopping rule (v002 and v003 did not lower v001's count, and the spine-relief finding survived two targeted fixes); v001 (0 P0 / 4 P1) is the candidate, not keeper-approved**. Nothing here is keeper-approved,
+(all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **reached the v008 version cap without a pass after the user reopened the family; v007 (0 P0 / 2 P1) is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -72,9 +72,12 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v007
+## Open blockers after v008 (cap reached)
 
-Candidate: `clay-climbing-spine-clay-v007.glb`. The v007 independent review (`evidence/v007/independent-review.md`) left these P0/P1 findings open:
+Candidate: `clay-climbing-spine-clay-v007.glb`. The v008 independent review (`evidence/v008/independent-review.md`) left these P0/P1 findings open:
 
-- **P1** (front, front_corner, aerial, architecture_close, rest_balconies, roof_terrace, phone-01): The spine shaft reads as crumpled paper or a low-poly triangle mesh. Its relief is shallow and its highlights are flat: luminance std/mean is 0.13–0.15 in front/front_corner and 0.10 in architecture_close, against 0.25–0.29 on the source spine, and the 95th-percentile luminance is only about 11 levels above the... Likely fix: Keep the straight envelope, but recess the base plane so blocks can stand 0.4–1.0 m proud. Merge the facets of each block into 2–4 large planar cleave faces, and cut 6–10 continuous vertical fissures 0.2–0.4 m deep...
-- **P1** (front, front_corner, aerial, boulder_garden, phone-01): The six rest stations sit about one storey too low against the base. In render front and front_corner, the lowest station's slab lies on the retail storefront head and canopy line, 0.1–0.2 storey above it. In both sources it sits one full dark-glazed office storey above the storefront head, with the deep entrance... Likely fix: Reduce the base head to about two office storeys plus mezzanine, so the storefront is about 2.5 office storeys tall as in the source. Then place the stations so the lowest has one full glazed office storey below it...
+- **P0** (front vs source front; front_corner vs source oblique; board phone-01): Storey count, height and balcony rhythm are wrong. I counted the east wing transoms in the source oblique: about 15.4 storey modules from the base head to the parapet (about 35 px per storey). The source front gives about 15 (base head about y=650, parapet about y=95, about 37 px per storey). The render front has... Likely fix: Add two typical floors (about 15 above the 8 m base). Keep the base and floor-to-floor heights. Move the top balcony to about floor 12 to 12.5 (lower five stay at 1/3/5/7/9) so it sits about 2.5 storeys below the...
+- **P1** (front, front_corner, aerial, architecture_close, rest_balconies, roof_terrace vs source front / oblique): The spine reads as crumpled kraft-paper low-poly, not cleaved light stone. The shaft is covered in many small, randomly oriented triangles with thin parallel vertical fissures. There are no long cleavage planes and no consistently tilted shadow edges. The source shows large smooth slabs with long diagonal (about 60... Likely fix: Rebuild the shaft relief from about 1.5 x 3 to 4 m cleaved slabs sharing one dominant dip direction (down to the west, matching the source). Use few, large planar faces per slab with sharp stepped edges 0.3 to 0.8 m...
+- **P1** (front_corner, rest_balconies, architecture_close vs source oblique (zoom) and source front): The spine's east flank and the notch-east wall are wrong. In both sources, immediately east of the carved front face is a smooth, pale, full-height stone or concrete flank. Behind it is a pale recessed wall strip carrying a dark door or slot opening at each balcony level, and only then the dark full-height glazing... Likely fix: Make the spine's east side face a smooth pale stone plane (no relief, same palette as the cap). Add a pale recessed wall strip of about 1.5 to 2 m between that flank and the dark glazing, with one dark door opening...
+
+The candidate v007's own open findings are in `evidence/v007/independent-review.md`.
