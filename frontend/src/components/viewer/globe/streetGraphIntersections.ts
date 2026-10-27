@@ -171,7 +171,8 @@ function detectStreetIntersections(
     if (!isFixedNativeScene(zone.properties) && isSpecialistStreet(zone.properties?.road_selected_variant_id)) return false;
     // Exact surface-only pathways participate in pedestrian T/X joins. Legacy
     // trails remain excluded; a name or width alone cannot enable this path.
-    if (nativeStreetPilotForZone(zone, preview)?.program?.adapter === 'narrow-pathway-v1') return true;
+    const nativePilot = nativeStreetPilotForZone(zone, preview);
+    if (nativePilot?.program?.adapter === 'narrow-pathway-v1') return true;
     const native = publicRealmTrialAsset(zone);
     if (native) return native.kind === 'street'
       && !('preserveNativeGround' in native && native.preserveNativeGround) && native.dimensions[0] >= 5;
@@ -189,7 +190,8 @@ function detectStreetIntersections(
     const alley = (props?.road_archetype_id === 'green_alley' && effectiveRoadWidth(zone.properties) === 5)
       || (manualSection && props?.road_archetype_id === 'calgary_alley');
     return effectiveRoadWidth(zone.properties) >= (alley ? 5 : 6)
-      && !['trail', 'path', 'roundabout', ...(alley ? [] : ['laneway', 'alley'])].some((token) => semantic.includes(token));
+      && !(nativePilot ? [] : ['trail', 'path', 'roundabout', ...(alley ? [] : ['laneway', 'alley'])])
+        .some((token) => semantic.includes(token));
   });
   if (eligibleZones.length < 2) return [];
   const allCoordinates = eligibleZones.flatMap((zone) => zone.coordinates);

@@ -97,7 +97,8 @@ export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, z
     const scale = (profile.metricWidthLocked ? profile.targetRowM ?? profile.rowM : effectiveRoadWidth(zone.properties)) / profile.rowM;
     const nativePilot = nativeStreetPilotForZone(zone, true);
     const pedestrianPilot = nativePilot?.program?.adapter === 'narrow-pathway-v1'
-      || ['student_market_street_v1', 'student_planted_shared_lane_v1'].includes(nativePilot?.id ?? '');
+      || ['student_market_street_v1', 'student_planted_shared_lane_v1',
+        'student_separated_walking_cycling_greenway_v1'].includes(nativePilot?.id ?? '');
     const drive = profile.bands.filter((band) => ['motor', 'parking', 'cycle'].includes(band.kind));
     if (pedestrianPilot && drive.length === 0) drive.push(...profile.bands.filter((band) => band.kind === 'path'));
     if (!drive.length) return null;
@@ -107,7 +108,9 @@ export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, z
       : -Math.sign(Math.sin(angle - node.axisABearingRad));
     const offsets = drive.flatMap((band) => [band.startM * scale * direction / (axis === 1 ? sine : 1), band.endM * scale * direction / (axis === 1 ? sine : 1)]);
     const low = Math.min(...offsets); const high = Math.max(...offsets);
-    if (low >= 0 || high <= 0) return null;
+    // A car-free separated greenway has a real off-centre cycle track. Keep
+    // that band in place; only motor sections require a central carriageway.
+    if (high <= low || (!pedestrianPilot && (low >= 0 || high <= 0))) return null;
     const section = { low, high, raised: profile.renderCurbs, roadZ: drive[0].liftM,
       edgeZ: profile.renderCurbs ? WALK_Z : (profile.bands.find((band) => band.kind === 'shoulder')?.liftM ?? drive[0].liftM) };
     const previous = sections[axis];

@@ -1,0 +1,213 @@
+{
+  "host": {
+    "id": "6fc8e3dd-7dcb-4ee4-989d-9abc7b7df844",
+    "zone_type": "road",
+    "coordinates": [
+      [
+        -114.07477997786329,
+        51.05174218565556
+      ],
+      [
+        -114.07477414936236,
+        51.051851791770744
+      ],
+      [
+        -114.07477410200387,
+        51.051853247494265
+      ],
+      [
+        -114.07477411471454,
+        51.051854703500304
+      ],
+      [
+        -114.07478868533966,
+        51.05235094474955
+      ],
+      [
+        -114.07478871470887,
+        51.052354021474294
+      ],
+      [
+        -114.07478862216239,
+        51.05235709770442
+      ],
+      [
+        -114.07478311824194,
+        51.05246737391243
+      ],
+      [
+        -114.07464028604672,
+        51.05246455688857
+      ],
+      [
+        -114.07464576205975,
+        51.052354839831914
+      ],
+      [
+        -114.07464580412396,
+        51.05235344162438
+      ],
+      [
+        -114.07464579077507,
+        51.05235204319197
+      ],
+      [
+        -114.07463121947377,
+        51.051855778912916
+      ],
+      [
+        -114.07463119150857,
+        51.05185257550394
+      ],
+      [
+        -114.07463129570363,
+        51.05184937271633
+      ],
+      [
+        -114.07463715516063,
+        51.05173918446604
+      ]
+    ],
+    "properties": {
+      "width": 10,
+      "lane_count": 0,
+      "plan_centerline": [
+        [
+          -114.07470856651196,
+          51.0517406850608
+        ],
+        [
+          -114.07470272253299,
+          51.05185058224354
+        ],
+        [
+          -114.07470264675622,
+          51.051852911499104
+        ],
+        [
+          -114.07470266709416,
+          51.05185524120661
+        ],
+        [
+          -114.07471723805736,
+          51.05235149397076
+        ],
+        [
+          -114.07471725941642,
+          51.05235373154934
+        ],
+        [
+          -114.07471719211107,
+          51.05235596876817
+        ],
+        [
+          -114.07471170214433,
+          51.0524659654005
+        ]
+      ],
+      "public_realm_lego": {
+        "kind": "street",
+        "target": {
+          "length_m": 81.109,
+          "row_width_m": 10,
+          "target_type": "street_segment"
+        },
+        "family_id": "street_native_student_separated_walking_cycling_greenway_v1",
+        "generator": "street_section",
+        "profile_id": "native-student-separated-walking-cycling-greenway-v1-v1",
+        "variant_id": "student_separated_walking_cycling_greenway_v1",
+        "recipe_hash": "49f9dd61178d085d5025ace9d0b7176cdd741575c3aba0f1a8e1459c1d0e401e",
+        "archetype_id": "multi_use_trail",
+        "family_version": 1,
+        "schema_version": 1,
+        "terrain_policy": "terrain_drape_and_metric_assemblies",
+        "profile_version": 1,
+        "appearance_kit_id": "heritage_brick_stone",
+        "component_set_ids": [
+          "source_recipe:9426902708df20e0f8f2b7ca690f82edde688d445f604eaa831a898818a64f8e",
+          "source_assembly:0c21b11b2e4a61a6d99f1b5eafc6d191ecdb946e0baaab4b88dcce24f55a4410",
+          "reference:350c5e3475ca402979f3448ccef05cd259fa34710861caa02ce5cd3813ed5cfc",
+          "program:af0104eb1252819e0c35695b6a2e2f899683f9dc5b9d6a0d7764e53333445765",
+          "module_bench:996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7",
+          "module_flowering_perennial:c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581",
+          "module_grove_tree:6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
+          "module_meadow_grass:bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4",
+          "module_silver_shrub:d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+        ],
+        "planting_structure": null,
+        "catalog_fingerprint": "21038009521d2e3cad90f3a8996ce3476b3c08bf18d1ce21d53956fe808b917e",
+        "capability_fingerprint": "d9eb46cfb2348597167ef69f3ccedfcd3f95b7ffeefb39374ac6d5af6a217c49"
+      },
+      "road_archetype_id": "multi_use_trail",
+      "plan_route_controls": [
+        [
+          -114.07470856651196,
+          51.0517406850608
+        ],
+        [
+          -114.07470259868269,
+          51.05185291127305
+        ],
+        [
+          -114.07471730376238,
+          51.05235373172927
+        ],
+        [
+          -114.07471170214433,
+          51.0524659654005
+        ]
+      ],
+      "road_selected_variant_id": "student_separated_walking_cycling_greenway_v1",
+      "pick_place_street_section": "student_separated_walking_cycling_greenway_v1"
+    }
+  },
+  "draft": {
+    "id": "boundary-street-preview",
+    "zone_type": "road",
+    "coordinates": [
+      [
+        -114.07379265610392,
+        51.05211031684312
+      ],
+      [
+        -114.0747098486447,
+        51.05209974199462
+      ],
+      [
+        -114.07471325542947,
+        51.05221650280961
+      ],
+      [
+        -114.07379606288869,
+        51.05222707765811
+      ]
+    ],
+    "properties": {
+      "width": 13,
+      "road_archetype_id": "neighborhood_greenway",
+      "road_selected_variant_id": "student_neighbourhood_cycle_street_v1",
+      "lane_count": 2,
+      "pick_place_street_section": "student_neighbourhood_cycle_street_v1",
+      "plan_centerline": [
+        [
+          -114.0737943594963,
+          51.052168697250615
+        ],
+        [
+          -114.07471155203709,
+          51.05215812240211
+        ]
+      ],
+      "plan_route_controls": [
+        [
+          -114.0737943594963,
+          51.052168697250615
+        ],
+        [
+          -114.07471155203709,
+          51.05215812240211
+        ]
+      ]
+    }
+  }
+}

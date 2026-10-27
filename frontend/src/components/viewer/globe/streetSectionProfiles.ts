@@ -703,6 +703,7 @@ export function resolvePilotStreetSectionProfile(
         : section.name.includes('walk') || section.name.includes('furniture') ? 'sidewalk'
         : section.name.includes('parking') ? 'parking'
           : section.material === 'asphalt' ? 'travel_lane'
+          : section.material === 'cycle' ? 'cycle_track'
           : ['grass','soil'].includes(section.material) ? 'boulevard' : 'multi_use_pathway',
       width_m: section.width,
       label: section.name.replace(/_/g, ' '),
