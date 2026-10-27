@@ -2132,7 +2132,7 @@ PK_ECC = .24                                        # the cup's inner rings (and
 # lip down, 'mouth' is the lip line (crisp only along the upper lip), 'cup' rings go down into the bowl.
 PK_RINGS = ((1.22, 'skin'), (1.13, 'skin'), (1.06, 'fillet'), (1.0, 'mouth'), (.96, 'cup'), (.90, 'cup'), (.83, 'cup'),
             (.74, 'cup'), (.63, 'cup'), (.50, 'cup'), (.36, 'cup'), (.20, 'cup'))
-PK_SHADE = 'abcdefghi'                              # cup ring pair (mouth inwards) -> graded shade of the rim band
+PK_SHADE = 'abcdefgh'                               # cup ring pair (mouth inwards) -> graded shade of the rim band
 
 
 def entrance_clearance(p):
@@ -2261,7 +2261,7 @@ def pocket_patch(q, grid, bv, bvh, V, val, info):
             row.append(idx)
         rows.append(row)
     V.append(tuple(float(c_) for c_ in V[rows[-1][0]])); ci = len(V) - 1   # placeholder, set to the ring mean below
-    last = np.array([V[i] for i in rows[-1]]).mean(0) - ax * .02
+    last = np.array([V[i] for i in rows[-1]]).mean(0) - ax * .01
     V[ci] = tuple(float(c_) for c_ in last); val[ci] = val[rows[-1][0]]; info[ci] = (0.0, False)
     polys = []
     mi = [j for j, (r_, k_) in enumerate(PK_RINGS) if k_ == 'mouth'][0]
@@ -2270,7 +2270,7 @@ def pocket_patch(q, grid, bv, bvh, V, val, info):
         for m in range(PK_N):
             polys.append(((r0[m], r0[(m + 1) % PK_N], r1[(m + 1) % PK_N], r1[m]), tag))
     for m in range(PK_N):
-        polys.append(((rows[-1][m], rows[-1][(m + 1) % PK_N], ci), len(rows) - 1 - mi))
+        polys.append(((rows[-1][m], rows[-1][(m + 1) % PK_N], ci), len(rows) - 2 - mi))   # the floor keeps the last shade
     lip = rows[mi][0]
     return rows[0], polys, lip
 
@@ -2457,7 +2457,7 @@ def shell_mesh(shell, Pi, pk):
     return obj, kept
 
 
-SHADES = tuple(zip('abcdefghi', [round(.90 ** (k + 1), 3) for k in range(9)]))   # graded shades of each band in a cup
+SHADES = tuple(zip('abcdefgh', [round(.90 ** (k + 1), 3) for k in range(8)]))   # graded shades of each band in a cup
 for _r in [r for r in PALETTE if r.startswith('reef') and r[4:].isdigit()]:
     for _s, _f in SHADES:
         PALETTE[_r + _s] = tuple(round(v * _f, 4) for v in PALETTE[_r])
