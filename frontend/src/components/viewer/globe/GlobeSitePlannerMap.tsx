@@ -30,6 +30,8 @@ import { readMapCleanupBoxes, type MapCleanupBox } from './mapCleanup';
 import { assetForZone } from '@/features/pickPlace/catalogue';
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import { projectedFrameFraction, projectFrameRoofHeight } from './projectFrameHeight';
+import { findUnobstructedProjectFrame } from './projectFrameObstruction';
+import { initialContextCameraIsPaused, watchInitialProjectContext } from './initialProjectContextWatch';
 import { useWorkingViewQuality } from './useWorkingViewQuality';
 import { WorkingViewPerformance, WorkingViewStatsSampler, type WorkingViewStats } from './WorkingViewPerformance';
 /**
@@ -69,7 +71,7 @@ import {
   TilesFadePlugin,
 } from '3d-tiles-renderer/plugins';
 import { GlobeTileDecoder } from './GlobeTileDecoder';
-import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
+import { Ellipsoid, WGS84_ELLIPSOID, type TilesRenderer as CoreTilesRenderer } from '3d-tiles-renderer';
 import { Environment, Html } from '@react-three/drei';
 import type { Building, SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
@@ -2036,6 +2038,8 @@ export function GlobeSitePlannerMap({
   const cameraInteractionGenerationRef = useRef(0);
   const cameraRevealGenerationRef = useRef(0);
   const initialCameraPoseRef = useRef<GlobeCameraPose | null>(null);
+  const initialFrameContextRef = useRef<{ target: THREE.Vector3; up: THREE.Vector3; samples: THREE.Vector3[] } | null>(null);
+  const stopInitialContextWatchRef = useRef<(() => void) | null>(null);
   const projectFrameReadinessRef = useRef({
     sceneReady: false,
     terrainReady: false,
@@ -2352,6 +2356,16 @@ export function GlobeSitePlannerMap({
       if (Math.abs(frac - TARGET) < 0.03) break;
       heightM = Math.min(Math.max(heightM * (frac / TARGET), PROJECT_FRAME_MIN_HEIGHT_M), PROJECT_FRAME_MAX_HEIGHT_M);
     }
+    const pose = computeCameraPose(centerLat, centerLng, heightM,
+      terrainElevationRef.current + tallest / 2, DEFAULT_INITIAL_CAMERA_PITCH_DEGREES);
+    if (sceneRef.current) {
+      const worldSamples = [...new Map(samples.map(sample => [`${sample.coordinate.join(',')}:${sample.altitude}`, sample])).values()]
+        .map(sample => WGS84_ELLIPSOID.getCartographicToPosition(sample.coordinate[1] * DEG_TO_RAD,
+          sample.coordinate[0] * DEG_TO_RAD, terrainElevationRef.current + sample.altitude, new THREE.Vector3()));
+      initialFrameContextRef.current = { target: pose.surfacePos, up: pose.normal, samples: worldSamples };
+      const clearPosition = findUnobstructedProjectFrame(camera, sceneRef.current, pose.surfacePos, pose.normal, worldSamples);
+      if (clearPosition) applyCameraPose({ ...pose, cameraPos: clearPosition });
+    }
     focusedSiteAnchorRef.current = { lngLat: [centerLng, centerLat], height: terrainElevationRef.current };
     // Two settled frames so tiles/props re-render at the new pose before the
     // caller captures the canvas.
@@ -2395,6 +2409,8 @@ export function GlobeSitePlannerMap({
   }, []);
 
   const markUserInteracted = useCallback(() => {
+    stopInitialContextWatchRef.current?.();
+    stopInitialContextWatchRef.current = null;
     focusedSiteAnchorRef.current = null;
     // A real pointer/wheel/keyboard gesture must immediately cancel every
     // pending initial/auto-frame retry. Waiting until the delayed canvas reveal
@@ -2760,14 +2776,14 @@ export function GlobeSitePlannerMap({
   // The basic initial-pose path can run before asynchronously loaded zones
   // exist, leaving a reopened project at city scale. Queue projection-verified
   // framing as soon as both the zones and base globe controls exist. The
-  // bounded runner reapplies after late controls updates without depending on
-  // the tile-settled flag, which legitimately toggles throughout refinement.
+  // bounded runner reapplies after late controls updates. Later Google detail
+  // is handled by the separate obstruction-only visibility watch below.
   useEffect(() => {
     if (!projectZoneFocusKey || siteZones.length === 0) return;
     if (!sceneReady || !isTerrainReady || !globeControlsReady) return;
-    if (hasUserInteractedRef.current) return;
-    if (lastAutoFramedProjectKeyRef.current === projectZoneFocusKey) return;
-    if (queuedAutoFrameProjectKeyRef.current === projectZoneFocusKey) return;
+    const frameKey = projectZoneFocusKey;
+    if (hasUserInteractedRef.current || lastAutoFramedProjectKeyRef.current === frameKey
+      || queuedAutoFrameProjectKeyRef.current === frameKey) return;
 
     const activeBoundary = getActiveSiteBoundary(siteZones);
     const focusZones = activeBoundary
@@ -2776,11 +2792,11 @@ export function GlobeSitePlannerMap({
     const renderZones = focusZones.length > 0
       ? [...focusZones, ...siteZones.map(zone => ({ ...zone, coordinates: zone.coordinates as [number, number][] }))]
       : siteZones.map(zone => ({ ...zone, coordinates: zone.coordinates as [number, number][] }));
-    queuedAutoFrameProjectKeyRef.current = projectZoneFocusKey;
+    queuedAutoFrameProjectKeyRef.current = frameKey;
     void requestProjectFrame(renderZones, 'auto').then((framed) => {
-      if (queuedAutoFrameProjectKeyRef.current !== projectZoneFocusKey) return;
+      if (queuedAutoFrameProjectKeyRef.current !== frameKey) return;
       if (framed && !hasUserInteractedRef.current) {
-        lastAutoFramedProjectKeyRef.current = projectZoneFocusKey;
+        lastAutoFramedProjectKeyRef.current = frameKey;
       }
     });
   }, [
@@ -2796,6 +2812,29 @@ export function GlobeSitePlannerMap({
     projectFrameRequestGenerationRef.current += 1;
     queuedAutoFrameProjectKeyRef.current = null;
   }, []);
+
+  // Display-ready may mean four coarse tiles; a detailed facade can arrive
+  // much later. Observe actual visibility changes for this initial view only.
+  useEffect(() => {
+    if (!projectZoneFocusKey || !sceneReady || !isTerrainReady || !globeControlsReady
+      || hasUserInteractedRef.current || !tilesRendererRef.current) return;
+    const interactionGeneration = cameraInteractionGenerationRef.current;
+    const stop = watchInitialProjectContext({
+      source: tilesRendererRef.current as unknown as CoreTilesRenderer,
+      isCancelled: () => hasUserInteractedRef.current || cameraInteractionGenerationRef.current !== interactionGeneration
+        || initialContextCameraIsPaused(globeControlsRef.current),
+      adjust: () => {
+        const frame = initialFrameContextRef.current, camera = cameraRef.current, scene = sceneRef.current;
+        if (!frame || !camera || !scene) return false;
+        const position = findUnobstructedProjectFrame(camera, scene, frame.target, frame.up, frame.samples);
+        if (!position) return false;
+        applyCameraPose({ cameraPos: position, surfacePos: frame.target, normal: frame.up });
+        return true;
+      },
+    });
+    stopInitialContextWatchRef.current = stop;
+    return () => { stop(); if (stopInitialContextWatchRef.current === stop) stopInitialContextWatchRef.current = null; };
+  }, [projectZoneFocusKey, sceneReady, isTerrainReady, globeControlsReady, applyCameraPose]);
 
   // Drawing state â€” managed at DOM level
   const [drawingPoints, setDrawingPoints] = useState<number[][]>([]);
