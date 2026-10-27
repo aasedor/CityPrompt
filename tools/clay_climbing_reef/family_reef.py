@@ -49,10 +49,10 @@ DOMES_PX = [(603, 428, 40), (620, 212, 22), (613, 305, 19), (680, 312, 19), (550
             (830, 398, 23), (347, 413, 23), (450, 442, 19), (573, 560, 19), (653, 549, 19), (610, 632, 23)]
 GAPS = (113.0, 41.5, -44.7, -137.0)                 # curb gaps (degrees about the origin) where the shell paths arrive
 ENTRANCES = (-135.0, -50.0, 45.0, 132.0)            # arched entrances at the foot of the four bays (searched to the bay minima)
-PALETTE = dict(reef0=(.008, .11, .14), reef1=(0.001, 0.130, 0.204), reef2=(0.004, 0.249, 0.364), reef3=(0.000, 0.536, 0.667), reef4=(0.000, 0.667, 0.775),
-    reef5=(0.271, 0.875, 0.911), reef6=(0.371, 0.954, 0.975), reef7=(0.786, 1.000, 1.000), reef8=(0.706, 1.000, 1.000), reef_inner=(.52, .66, .63), rim=(.93, .93, .91), glass=(.30, .36, .40), dome=(.58, .64, .68), tint=(.025, .03, .035),
+PALETTE = dict(reef0=(.008, .11, .14), reef1=(0.001, 0.130, 0.210), reef2=(0.010, 0.244, 0.364), reef3=(0.000, 0.543, 0.693), reef4=(0.000, 0.700, 0.830),
+    reef5=(0.200, 0.970, 1.000), reef6=(0.320, 1.000, 1.000), reef7=(0.550, 1.000, 1.000), reef8=(0.480, 0.920, 0.920), reef_inner=(.52, .66, .63), rim=(.93, .93, .91), glass=(.30, .36, .40), dome=(.58, .64, .68), tint=(.025, .03, .035),
     frame=(.10, .13, .14), hardware=(.06, .06, .06), floor=(.20, .25, .30), mat=(.11, .17, .26), interior=(.70, .70, .66),
-    apron=(.72, .55, .34), curb=(.78, .62, .42), liner=(.62, .76, .73), shellpath=(.95, .94, .91), shell2=(.80, .76, .70), shell3=(.97, .96, .94), concrete=(.50, .48, .44), lawn=(.20, .31, .10),
+    apron=(.95, .66, .42), curb=(.98, .74, .52), liner=(.80, .88, .86), shellpath=(.95, .94, .91), shell2=(.80, .76, .70), shell3=(.97, .96, .94), concrete=(.50, .48, .44), lawn=(.20, .31, .10),
     mulch=(.22, .15, .09), hold_r=(.72, .10, .08), hold_y=(.90, .70, .10), hold_b=(.08, .22, .62), hold_p=(.42, .16, .55),
     reef1p=(0.012, 0.110, 0.133), reef2p=(0.012, 0.180, 0.209), reef3p=(0.000, 0.261, 0.302), reef4p=(0.023, 0.336, 0.348), reef5p=(0.116, 0.394, 0.360), reef6p=(0.209, 0.458, 0.394), reef7p=(0.278, 0.499, 0.429), reef8p=(0.348, 0.522, 0.458),
     hold_k=(.10, .10, .11), hold_n=(.52, .49, .44), hold_o=(.88, .40, .08), hold_g=(.20, .55, .18), bark=(.30, .23, .16), tree=(.20, .33, .12), tree2=(.27, .40, .15),
@@ -1955,7 +1955,7 @@ def _bumps():
         r = rnd.uniform(1.2, 2.6)
         if any(math.hypot(x - dx, y - dy) < dr + r * .9 + .4 for (dx, dy), dr in DOMES):
             continue
-        out.append((x, y, r, rnd.choice((-1, 1)) * rnd.uniform(.10, .20)))
+        out.append((x, y, r, rnd.choice((-1, 1)) * rnd.uniform(.16, .30)))
     return out
 
 
@@ -2062,15 +2062,15 @@ EW, EH = 3.5, 2.6                                   # entrance clear width and h
 # the dimples round the plateau edge.
 SHOULDER_PX = [(560, 172), (530, 265), (705, 255), (320, 322), (390, 322), (377, 365), (780, 320), (425, 507), (515, 610),
                (675, 690), (805, 535), (875, 515), (280, 510), (925, 370)]
-PK_N = 40                                           # segments round each pocket mouth
-PK_BEAD = .05                                       # the raised rim round each mouth (catches the light on the lower lip)
-PK_UNDERCUT = .14                                   # the upper inner wall runs this fraction beyond the mouth, under the lip
-PK_UPPER = .22                                      # the upper half of the cup is this much deeper than the lower floor
+PK_N = 44                                           # segments round each pocket mouth
+PK_BEAD = .020                                      # the raised rim round each mouth (catches the light on the lower lip)
+PK_UNDERCUT = .20                                   # the upper inner wall runs this fraction beyond the mouth, under the lip
+PK_UPPER = .40                                      # the upper half of the cup is this much deeper than the lower floor
 # Rings of each pocket patch, outside in: (ellipse radius factor, kind). 'skin' rings lie on the shell, 'bead' rises to
 # the rim crest, 'mouth' is the crisp lip, 'cup' rings go down into the bowl.
-PK_RINGS = ((1.20, 'skin'), (1.10, 'skin'), (1.045, 'bead'), (1.0, 'mouth'), (.95, 'cup'), (.86, 'cup'), (.72, 'cup'),
-            (.53, 'cup'), (.30, 'cup'))
-PK_SHADE_LOWER = 2.2                                # extra shade steps on the lower floor of the cup
+PK_RINGS = ((1.20, 'skin'), (1.10, 'skin'), (1.045, 'bead'), (1.0, 'mouth'), (.96, 'cup'), (.90, 'cup'), (.82, 'cup'),
+            (.72, 'cup'), (.60, 'cup'), (.46, 'cup'), (.30, 'cup'), (.15, 'cup'))
+PK_SHADE_LOWER = 4.0                                # extra shade steps on the lower floor of the cup
 PK_SHADE_ON = True
 
 
@@ -2079,8 +2079,8 @@ def cup_shade(rho, cphi):
     steps deepen toward the bottom of the cup and on its lower floor), '' outside the mouth."""
     if rho >= 1.0:
         return ''
-    step = 1 + (.95 - min(rho, .95)) / .95 * 3.2 + PK_SHADE_LOWER * max(-cphi, 0.0)
-    return 'abcde'[min(int(round(step)), 5) - 1]
+    step = 1 + (.98 - min(rho, .98)) / .98 * 4.6 + PK_SHADE_LOWER * max(-cphi, 0.0)
+    return 'abcdefg'[min(int(round(step)), 7) - 1]
 
 
 def entrance_clearance(p):
@@ -2101,7 +2101,7 @@ def pockets(shell):
     """Round to slightly oval cups over the whole shell, as the locked front and oblique show them: about 40 on the walls
     (one per sector of the outline: a third on the upper wall, a third mid wall and a third low down in the deep-teal
     base band) and 14 on the roll-over shoulder where the locked top shows them as dimples round the plateau. Mouths
-    0.9-1.6 m across (aspect 0.9-1.3 on the walls), cups about 0.6 of the mouth radius deep. Every mouth (rim included)
+    0.9-1.6 m across (aspect 0.85-1.15 on the walls), cups about 0.7 of the mouth radius deep. Every mouth (rim included)
     stays at least 1 m clear of the entrance arches. Returns (depth, horizontal half-width, kind, mouth centre,
     outer radius, axis, aspect, up) per pocket; shell_mesh() keeps the ones it can seat."""
     rnd = random.Random(31); out = []
@@ -2127,7 +2127,7 @@ def pockets(shell):
 
     K = P.shape[0]
     for u, v in SHOULDER_PX:
-        x, y = W(u, v); th = math.atan2(y, x); s = math.hypot(x, y) / float(polar(R_SHELL, [th])[0])
+        x, y = W(u, v); th = math.atan2(y, x); s = min(math.hypot(x, y) / float(polar(R_SHELL, [th])[0]), .85)
         k = min((k for k in range(K - 4) if shell.prof[k][1] > 4.7), key=lambda k: abs(shell.prof[k][0] - s))
         i = int(round((th % (2 * math.pi)) / (2 * math.pi) * NT)) % NT
         ax, up = frame(k, i); p = P[k, i].copy()
@@ -2142,7 +2142,7 @@ def pockets(shell):
             z = rnd.uniform(3.4, 4.5) if band_ == 0 else rnd.uniform(2.2, 3.4) if band_ == 1 else rnd.uniform(.9, 2.2)
             k, i = shell.grid_index(th, z)
             ax, up = frame(k, i); p = P[k, i].copy()
-            Av = rnd.uniform(.45, .80); Au = Av * rnd.uniform(.9, 1.3)
+            Av = rnd.uniform(.45, .80); Au = Av * rnd.uniform(.85, 1.15)
             if ok(p, Au, Av, up):
                 out.append((min(.76, .72 * (Au + Av) / 2), Av, 'pocket', p, 1.2 * max(Au, Av), ax, Au / Av, up))
                 break
@@ -2387,7 +2387,7 @@ def shell_mesh(shell, Pi, pk):
     return obj, kept
 
 
-SHADES = (('a', .84), ('b', .76), ('c', .69), ('d', .62), ('e', .54))   # graded shades of each band inside a pocket cup
+SHADES = (('a', .80), ('b', .72), ('c', .65), ('d', .59), ('e', .54), ('f', .49), ('g', .45))   # graded shades of each band inside a pocket cup
 for _r in [r for r in PALETTE if r.startswith('reef') and r[4:].isdigit()]:
     for _s, _f in SHADES:
         PALETTE[_r + _s] = tuple(round(v * _f, 4) for v in PALETTE[_r])
@@ -2396,7 +2396,7 @@ for _r in [r for r in PALETTE if r.startswith('reef') and r[4:].isdigit()]:
 def soft_pairs(obj):
     """Material index pairs within one band (the band and its graded cup shades) whose shared edges stay smooth."""
     names = [m.name for m in obj.data.materials]
-    base = [nm[:-1] if nm[-1] in 'ABCDE' and nm[:-1] in names else nm for nm in names]
+    base = [nm[:-1] if nm[-1] in 'ABCDEFG' and nm[:-1] in names else nm for nm in names]
     return {frozenset((i, j)) for i in range(len(names)) for j in range(len(names)) if i != j and base[i] == base[j]}
 
 
@@ -2570,6 +2570,7 @@ def entrances(obj):
             depth.append(hit[3] - 1.5 if hit[0] is not None else None)
         known = [d for d in depth if d is not None]
         depth = [d if d is not None else min(known) for d in depth]
+        depth = [float(np.mean(depth[max(0, i - 4):i + 5])) for i in range(len(depth))]   # one smooth hood line, no kink
         dback = max(depth) + T + .18; dglass = dback - .12       # the tunnel ends just past the inner skin
         n = len(outer); V = []
         for line in (outer, inner):
@@ -2597,8 +2598,8 @@ def entrances(obj):
         for s in (-1, 1):
             mg.box('frame', s * .85, dglass - .02, .10 + .95, .05, .04, 1.9)            # door jambs
             mg.box('hardware', s * .1, dglass - .045, 1.15, .025, .03, .6)              # pull handles
-        d0 = min(depth) + .30
-        mg.box('apron', 0.0, (d0 + dback) / 2, .031, 2 * (EW / 2 - .18) + .1, dback - d0, .062)     # tunnel floor, 2 mm above the apron
+        d0 = min(depth) - .25                                   # the floor runs out over the apron: no gap at the mouth
+        mg.box('apron', 0.0, (d0 + dback) / 2, .030, 2 * (EW / 2 - .18) + .1, dback - d0, .060)     # tunnel floor, flush with the apron
         mg.flush(f'entrance {j}')
 
 
@@ -2642,7 +2643,7 @@ def holds(shell, Pi, dent_list):
     rad = np.hypot(P[1:-2, :, 0], P[1:-2, :, 1]).mean(1)
     ks = list(range(1, K - 2)); wk = list(step * rad)                       # area weight of each ring band
     routes = []; tries = 0                                              # loose vertical routes from the base up the walls
-    while len(routes) < 34 and tries < 5000:
+    while len(routes) < 14 and tries < 5000:
         tries += 1; th = rnd.uniform(0, 2 * math.pi)
         if any(abs((th - e + math.pi) % (2 * math.pi) - math.pi) < .30 for e in ENTRY_TH):
             continue
@@ -2658,7 +2659,7 @@ def holds(shell, Pi, dent_list):
             if any(np.linalg.norm(P[k, i] - c) < r for c, r in holes):
                 continue
             add(P[k, i], N[k, i], rnd.uniform(.04, .09), roles[rnd.randrange(len(roles))]); n_out += 1
-    while n_out < 380:
+    while n_out < 440:
         k = rnd.choices(ks, wk)[0]; i = rnd.randrange(NT)
         z = P[k, i, 2]
         if not (.3 < z < 5.3):
@@ -2855,7 +2856,7 @@ def protos(kit):
     P['straw'] = arching_grass(kit, 'reef_gold_grass', blades=52, height=.55, width=.02, role='pk_leaf_light', crown_role='pk_leaf_light',
                                seed=31)
     P['shrub'] = shrub_mass(kit, 'reef_shrub', radius=.55, height=.8, lobes=6, seed=41)
-    P['tall'] = arching_grass(kit, 'reef_tall_gold', blades=60, height=.9, width=.02, role='pk_straw', crown_role='pk_straw', seed=51)
+    P['tall'] = arching_grass(kit, 'reef_tall_gold', blades=60, height=.9, width=.02, role='pk_leaf_light', crown_role='pk_leaf_light', seed=51)
     return P
 
 
@@ -2864,7 +2865,7 @@ def planting(beds):
     kit = KIT = PlantKit('planting', instancing=INSTANCING); P = protos(kit)
     for x, y, r in TREES + SMALL:
         kit.add_obstacle(_pksh.Point(x, y).buffer(.25, quad_segs=6), 3.0)
-    mix = [(P['palmetto'], 1.2), (P['tall'], 1.2), (P['fountain'], .9), (P['straw'], .8), (P['shrub'], .5)]
+    mix = [(P['palmetto'], 1.4), (P['tall'], 1.2), (P['fountain'], 1.0), (P['straw'], .6), (P['shrub'], .5)]
     rnd = random.Random(5); fields = [_PkNoise(91 + 17 * i, 2 * math.pi / 3.2) for i in range(len(mix))]
     for j, g in enumerate(beds):
         reg = kit.register_bed(pk_region(g))
@@ -2965,4 +2966,5 @@ def build():
     C.CONTACTS.append(dict(name='The Reef bouldering shell on its apron in the meadow park', box=[-15.6, 14.4, -14.4, 12.6]))
 
 
+# The rig v002-v005 used (the v006 raking rig greyed the roof and darkened the walls).
 LIGHT_RIG = dict(key=(-40, -50, 48), fill=(50, -25, 30), rear=(10, 55, 42), target=(0, 0, 3.0), gain=3.3)
