@@ -180,6 +180,16 @@ second preview-only request that can pass planning but fail locked placement.
 After generation, reload and wait for tile/model readiness before judging the
 scene. See the [seven-house Currie repair](CURRIE_GENERATE_3D_RECIPE_REPAIR_2026-09-20.md).
 
+For supported storey edits, verify the complete plan-to-place path against the
+saved zone. A successful planning response alone does not prove the recipe can
+be persisted. A fixed model may reserve a placement plot larger than its model
+footprint; the browser request and server's final locked target must resolve the
+same trusted variant/revision/programme dimensions, independently of that plot.
+Never trust client-supplied native dimensions or relax the target comparison.
+Exercise the finite range, Retry, Undo/Redo and reopen after real compilation.
+The [Brick Podium pilot](STUDENT_REVIEW_TOWERS_COURTS_2026-10-26.md) reproduced
+this distinction with a 54 × 44 m model inside a 57 × 47 m plot.
+
 For each pilot, test a level case, a slope, an edge/unsupported case with
 recovery, and an edit while ground is pending. Keep the matrix finite. Shared
 algorithm tests may be cited across candidates when the implementation is

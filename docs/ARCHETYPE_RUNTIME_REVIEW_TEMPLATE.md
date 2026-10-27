@@ -94,6 +94,7 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Boundary exclusion: readable object labels and unchanged saved geometry | NOT TESTED | |
 | Save/reload/reopen; exact persisted identity | NOT TESTED | |
 | Generate to 3D: panel recipe matches locked compiler; reload and inspect visible models | NOT TESTED | |
+| Supported storey edit: plan and saved-zone compilation agree | NOT TESTED | Distinguish model footprint from reserved placement plot. Bind both request and final server target to the exact variant/revision/programme; test finite range, Retry, Undo/Redo and reopen with the compiled geometry. Planning success alone cannot pass this row. |
 | Capture blocked while stale, then succeeds | NOT TESTED | |
 | Site landscape compatibility | NOT TESTED | Continuous custom base stays below the archetype; trees respect complete plot and access. Move or route/variant edit invalidates; Undo/Redo/reload/export retain the correct result. Verify surrounding-tile colour feathering and ground-height seams separately. Custom artwork cannot cover objects or export before loading. |
 | Student-authored placement and connections | NOT TESTED | |

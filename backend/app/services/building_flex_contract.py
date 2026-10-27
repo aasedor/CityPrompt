@@ -1,9 +1,9 @@
-"""Trusted finite low-rise footprint contracts.
+"""Trusted finite building footprint contracts.
 
 Client properties identify a selected programme and scale, but do not define
-native dimensions or limits.  Those values come only from the repository's
-hash-pinned manifest so a saved zone cannot enlarge an arbitrary model by
-supplying its own claimed approval band.
+native dimensions or limits. Those values come from server-owned contracts
+(the hash-pinned manifest for low-rise houses), so a saved zone cannot enlarge
+an arbitrary model by supplying its own claimed approval band.
 """
 
 from __future__ import annotations
@@ -17,6 +17,32 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / "seed/model-library/rlasm-architectural-clay/house-flex-pilot-v001.json"
+
+
+def trusted_building_footprint_target(properties: dict[str, Any]) -> tuple[float, float] | None:
+    """Bind an authored model target independently from its reserved plot.
+
+    The local Brick Podium programme repeats unscaled 54 x 44 m geometry
+    inside its 57 x 47 m placement plot. Inventory validation still requires
+    the installed exact source revision and its executable modules; this
+    footprint contract grants neither module availability nor publication.
+    """
+
+    if properties.get("building_footprint_program_id") != "brick-podium-condo-native-footprint-v001":
+        return trusted_house_footprint_target(properties)
+    if (
+        properties.get("pick_place_asset") != "claude_trial_brick_podium_condo_tower"
+        or properties.get("development_selected_variant_id") != "brick_podium_glass_tower"
+        or properties.get("pick_place_model_revision") != "clay-brick-podium-condo-tower-clay-v006"
+    ):
+        raise ValueError("The selected building revision is not part of this footprint programme")
+    try:
+        scale = float(properties["building_footprint_scale"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError("The building footprint scale is missing or invalid") from exc
+    if not math.isfinite(scale) or scale != 1:
+        raise ValueError("The building footprint scale is outside the reviewed range")
+    return 54.0, 44.0
 
 
 @lru_cache(maxsize=1)

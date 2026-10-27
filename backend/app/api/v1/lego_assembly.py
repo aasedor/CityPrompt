@@ -343,7 +343,7 @@ def _locked_building_target(zone: SiteZone) -> tuple[float, float, int, str, flo
                 ),
             )
     else:
-        from app.services.building_flex_contract import trusted_house_footprint_target
+        from app.services.building_flex_contract import trusted_building_footprint_target
 
         geometry = _community_source_geometry(zone)
         if geometry.geom_type == "MultiPolygon":
@@ -372,7 +372,7 @@ def _locked_building_target(zone: SiteZone) -> tuple[float, float, int, str, flo
                 width = round(math.hypot((ring[1][0] - ring[0][0]) * east, (ring[1][1] - ring[0][1]) * 111_320), 1)
                 depth = round(math.hypot((ring[2][0] - ring[1][0]) * east, (ring[2][1] - ring[1][1]) * 111_320), 1)
         try:
-            authored_footprint = trusted_house_footprint_target(properties)
+            authored_footprint = trusted_building_footprint_target(properties)
         except ValueError as exc:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
         if authored_footprint is not None:
