@@ -14,6 +14,18 @@ beforeEach(()=>{vi.mocked(legoAssemblyApi.plan).mockReset().mockResolvedValue({}
 const zone = { id: 'home', zone_type: 'building', coordinates: [[0, 0], [1, 0], [1, 1], [0, 1]],
   properties: placementProperties(placeAsset('infill_home')) } as SiteZone;
 
+it('does not apply a saved lighting-card ID as an exact architectural variant',()=>{
+  const onSave=vi.fn();
+  render(<BuildingDesignControls zone={{...zone,properties:{development_subcategory:'halifax_painted_clapboard_row',
+    development_archetype_id:'halifax_painted_clapboard_row_variant_0',
+    development_selected_variant_id:'halifax_painted_clapboard_row_variant_0',floors:3,height:9}}}
+    disabled={false} onSave={onSave}/>);
+  fireEvent.change(screen.getByLabelText('Storeys'),{target:{value:'2'}});
+  expect((screen.getByRole('button',{name:'Apply building'}) as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.click(screen.getByRole('button',{name:'Apply building'}));
+  expect(onSave).not.toHaveBeenCalled();
+});
+
 it('checks the detailed Brick Podium assembly before saving supported tower storeys', async () => {
   const tower = placeAsset('claude_trial_brick_podium_condo_tower');
   const onSave = vi.fn();

@@ -414,6 +414,28 @@ function ReloadPanel({ zone, reload, onUpdate, onClose }: {
   </>;
 }
 
+describe('ZonePropertiesPanel saved custom massing recovery', () => {
+  afterEach(cleanup);
+  it('opens detailed selection directly from the legacy inspector without saving or losing the custom design', () => {
+    Object.defineProperty(HTMLElement.prototype, 'scrollTo', {configurable:true,value:vi.fn()});
+    const zone: SiteZone={...industrialZone(),building_id:'custom-building',properties:{
+      custom_style_enabled:true,custom_style_prompt:'A new york style brownhouse',floors:3,height:9,
+      development_type:'residential_multifamily',development_subcategory:'halifax_painted_clapboard_row',
+      community_3d:{schema_version:1,state:'compiled',kind:'building',generator:'planned_massing',compiled_at:'now',
+        source_hash:'a'.repeat(64),representation_hash:'b'.repeat(64)},
+    }};
+    const onUpdate=vi.fn();
+    renderPanel(<ZonePropertiesPanel zone={zone} buildings={[{id:'custom-building',project_id:zone.project_id,created_at:'now'}]}
+      onUpdate={onUpdate} onDelete={vi.fn()} onClose={vi.fn()}/>);
+    fireEvent.click(screen.getByRole('button',{name:'Choose a detailed building'}));
+    expect(screen.getByLabelText('Building type')).toBeInTheDocument();
+    expect(onUpdate).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button',{name:'Keep custom design'}));
+    expect(screen.getByRole('button',{name:'Choose a detailed building'})).toBeInTheDocument();
+    expect(onUpdate).not.toHaveBeenCalled();
+  });
+});
+
 describe('ZonePropertiesPanel explicit saved-version reload', () => {
   beforeEach(() => {
     vi.useFakeTimers();

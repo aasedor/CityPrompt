@@ -16,8 +16,9 @@ const field = 'mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-
 const heightText = (value: unknown) => String(Math.round(Number(value) * 100) / 100);
 
 /** Essential design properties share the existing save/undo/compiler path. */
-export function BuildingDesignControls({ zone, disabled, onSave }: {
+export function BuildingDesignControls({ zone, disabled, onSave, requireExplicitSelection = false }: {
   zone: SiteZone; disabled: boolean; onSave: (properties: SiteZoneProperties) => void;
+  requireExplicitSelection?: boolean;
 }) {
   const savedProperties = zone.properties ?? {};
   const initialParent = String(savedProperties.development_subcategory ?? savedProperties.development_archetype_id ?? '');
@@ -40,8 +41,8 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
   const initialHeight = initialStoreyProgram?.mode === 'fixed_authored_assembly'
     ? storeyProgramHeight(initialStoreyProgram, initialStoreyProgram.nativeStoreys)
     : savedHeight;
-  const [choiceId, setChoiceId] = useState(initialChoice?.id ?? '');
-  const [variantId, setVariantId] = useState(String(savedProperties.development_selected_variant_id ?? ''));
+  const [choiceId, setChoiceId] = useState(requireExplicitSelection ? '' : initialChoice?.id ?? '');
+  const [variantId, setVariantId] = useState(requireExplicitSelection ? '' : initialVariant);
   const [query, setQuery] = useState('');
   const [floors, setFloors] = useState(String(initialFloors));
   const [height, setHeight] = useState(heightText(initialHeight ?? assetForZone(zone)?.nativeDimensions?.[2]));
@@ -67,7 +68,7 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
   const floorCountValid = Number.isInteger(Number(floors))
     && Number(floors) >= (storeyProgram?.minStoreys ?? 1)
     && Number(floors) <= (storeyProgram?.maxStoreys ?? 100);
-  const valid = choice && floorCountValid
+  const valid = choice && (!choice.option.variants?.length || Boolean(variant)) && floorCountValid
     && !(choiceId === initialChoice?.id && variantId === initialVariant && savedProperties.pick_place_model_revision && !initialAsset)
     && height.trim() !== '' && Number.isFinite(Number(height)) && Number(height) > 0 && Number(height) <= 1000
     && (!storeyProgram || storeyProgramSupports(storeyProgram, floors, height))
@@ -146,7 +147,7 @@ export function BuildingDesignControls({ zone, disabled, onSave }: {
       && <p role="alert" className="text-xs text-amber-800">This saved model revision is unavailable. Your design is preserved. Select another building explicitly to replace it.</p>}
     <label className="block text-xs font-semibold">Find building type<input type="search" value={query} onChange={e => setQuery(e.target.value)} className={field} /></label>
     <label className="block text-xs font-semibold">Building type<select value={choiceId} onChange={e => choose(e.target.value)} className={field}>
-      {!choice && <option value="">Current building</option>}
+      {!choice && <option value="">{requireExplicitSelection ? 'Choose a detailed building' : 'Current building'}</option>}
       {filtered.map(c => <option value={c.id} key={c.id}>{c.option.label}</option>)}
     </select></label>
     {Boolean(choice?.option.variants?.length) && <label className="block text-xs font-semibold">Building variant<select value={variantId} onChange={e => choose(choiceId, e.target.value)} className={field}>

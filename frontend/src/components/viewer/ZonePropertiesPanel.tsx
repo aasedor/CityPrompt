@@ -10,6 +10,7 @@ import type { SiteZone, SiteZoneProperties, Building, BoundaryAnalysisResponse, 
 import { ZONE_TYPE_CONFIG } from '@/types';
 import { isFixedSectionStreet, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
 import { nativeBuildingContract } from '@/features/pickPlace/nativeBuildingContract';
+import { CustomMassingRecovery } from '@/features/pickPlace/CustomMassingRecovery';
 import { getShadeForArchetype, getCustomZoneShade } from '@/data/archetypeShadeMap';
 import { CustomStyleEditor } from './CustomStyleEditor';
 import { siteZonesApi, buildingsApi, getApiErrorMessage, modelLibraryApi, resolveApiFileUrl } from '@/services/api';
@@ -954,6 +955,16 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
 
         <div className="mt-3 space-y-2.5 text-sm">
         {onConnections && <button type="button" onClick={onConnections} className="min-h-11 w-full rounded-lg border-2 border-slate-900 bg-white px-3 text-sm font-semibold text-slate-900">Connections</button>}
+        <CustomMassingRecovery zone={{...zone,properties:props}} buildings={buildings} onReplace={properties=>{
+          if (!isPersistedZoneId(zone.id) || reloadControlRef.current?.pending) return;
+          // A confirmed replacement is one complete write. An old debounced
+          // custom-style edit must not flush over it when this panel closes.
+          if (customStyleSaveTimerRef.current) window.clearTimeout(customStyleSaveTimerRef.current);
+          customStyleSavePendingRef.current = false;
+          const color = getShadeForArchetype(String(properties.development_selected_variant_id ?? properties.development_archetype_id ?? ''));
+          onUpdate(zone.id,{name:name || undefined,properties,color:color === '#888888' ? undefined : color});
+          onClose();
+        }}/>
         {/* Name */}
         <div>
           <label className={panelLabelClass}>Name</label>
