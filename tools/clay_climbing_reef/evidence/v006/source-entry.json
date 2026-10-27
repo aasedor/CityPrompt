@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-climbing-reef",
+  "variant_id": "clay-climbing-reef-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "climbing_wall_building/variant_3",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_3.png",
+      "path": "sources/front.png",
+      "bytes": 1359680,
+      "sha256": "c510322572ffa49702465f621dd95575a967787b28a37e96755cec68263fc595"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_3_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 817640,
+      "sha256": "122c06c58a3287c7eb1a503e9d94ce4a6b712275f42e5c65e1bbfdc592027ac9"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_3_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 811835,
+      "sha256": "cf5e6092abfb9702cc5fa59e2ba60b579be0c420489a4e31528466d43ec8fe34"
+    }
+  ]
+}
