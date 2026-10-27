@@ -1,7 +1,7 @@
 # Climbing wall building: The Overhang (RLASM v6.1 architectural clay)
 
 Candidate K2 of wave K of 2026-10-23, one of five catalogue additions the user asked for
-(all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **stopped at v004 by the stopping rule (v003 and v004 did not lower v002's count); v002 (0 P0 / 2 P1) is the candidate, not keeper-approved**. Nothing here is keeper-approved,
+(all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **PASS_ZERO_P0_P1 at v007 (independent review, after the user reopened the family to keep trying until it passes); v007 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -71,14 +71,6 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v006
+## Open blockers after v007 (passed)
 
-Candidate: `clay-climbing-overhang-clay-v002.glb`. The v006 independent review (`evidence/v006/independent-review.md`) left these P0/P1 findings open:
-
-- **P1** (front, front_corner, right_side, aerial (vs source front, oblique)): The climbing shell narrows to a sharp point where it meets the plaza and reads as an inverted cone or horn. In both sources the shell stands on a broad base: the bottom edge of the south face sits nearly flat on the granite for a long stretch east of the doors, then rises gently to a low east corner. In the render... Likely fix: Widen the foot along the facade to about 0.3× the rim width. Drop the lower east corner of the south face to about z = 0–1.5 m so the bottom edge runs low and nearly level before the east edge rises. Make the lower...
-- **P1** (front, front_corner, left_side, facade_close (vs source front, oblique)): The rhythm of the west front is wrong. I count 13 window bays (14 piers) on each upper storey; the source shows 11 bays (12 fins) between the north end and the frame-box corner, in both the front and oblique views. In the oblique render views the windows read as narrow slots between broad, deep piers, where the... Likely fix: Rebuild the west front at 11 bays over the same length. Thin the fin faces and reduce their projection so the glazing takes about 55–60 % of each bay in the oblique view. Keep the spandrel bands and the recessed...
-- **P1** (top, rim_interior (vs source top)): Inside the open top, the inner walls twist into a converging funnel with a diagonal ridge, and only a thin dark sliver shows along the west inner wall. The source top shows a thick-walled rectangular box: four inner walls running parallel to the rim, white holds on the inner north and south walls, and a large dark... Likely fix: Model the inner shell as a box whose walls are near vertical or slope slightly inward, parallel to the rim. Add a flat dark crash-mat floor that can be seen from above. Re-render top and rim_interior.
-- **P1** (front, front_corner, aerial (vs source front, oblique)): In both plaza planters a black lamp post rises out of the middle of the grass bed. In the source, lamp posts stand on the paving and the sidewalk, outside the planters. Likely fix: Move the lamp posts onto the paving or sidewalk at the source positions (by the SE corner and along the south sidewalk), and keep the planter beds clear.
-- **P1** (front, front_corner, aerial, rim_interior, top (vs source front, oblique, top)): Both plaza planters read as bright green lawn with thin, scattered straw tufts. In the source the beds are completely filled by dense, tall, straw-coloured grass masses, with no green ground showing. Likely fix: Raise the grass density and height until the bed reads as a continuous straw mass. Change the bed ground to a dark mulch or straw tone, not green.
-
-The candidate v002's own open findings are in `evidence/v002/independent-review.md`.
+Candidate: `clay-climbing-overhang-clay-v007.glb`. None: the v007 independent review returned zero P0 and zero P1. Its P2 polish items are in `evidence/v007/independent-review.md`.
